@@ -1,74 +1,47 @@
-Return-Path: <stable+bounces-110345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789D4A1AE85
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:29:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C569A1AEFE
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B29F1887EBC
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 012033A7E8A
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6561D5146;
-	Fri, 24 Jan 2025 02:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="rUOpBErr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF8C1D5CCC;
+	Fri, 24 Jan 2025 03:23:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5522B9BC
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 02:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25961EA65;
+	Fri, 24 Jan 2025 03:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737685761; cv=none; b=TeEjQ2Q4wvHjxDw6Y6jfAEX6s0rXx+lpkSzZTD1MReTcPYT6u1ftDfxx8DJvI8V2Kt5K8soaiKGZRWFSoc8PVUocf6gdzKp3YYwYJz9xTYfwUUDuue4imv3G52DV0bV4jpBw09ffyGaOHmQ+gXWVxwA2ZlZvOZATmOcG/QVz4Ks=
+	t=1737689018; cv=none; b=ASEH2ZMvDE/ZOvV8ssbrVjL/vymC7U+FoZInDPZdQz7HucV+IPPXdluhRuBqUjd20u0tEuSDB+D37rfzmocqaxeFMoV66y6CnO05risHZARHTg5y14JQU3rTGWFwRSpy6vhRVpo+AdjUAIbn0afqcAA0uMyeidkzE9/mgTZjrTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737685761; c=relaxed/simple;
-	bh=2k8sZQPlk8ikZ2JT8/xABmPbdndbECJ0XpU2dKdV1i0=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=BKk7k04oTUe1xrRK0v2td8bnQB2NLIzGJNt7UwRRleFCIK++DeryBxJeLBjFdDPKXG3R8NHPBlkfWAtUAaOLnIK4fOdwA9askjEh6elS4WtuT90xHgi8zln//4rl5+R9vDVi0CItQtcVVdc1uHThs84KSpES89u2DzI2JV/GaPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=rUOpBErr; arc=none smtp.client-ip=203.205.221.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1737685453;
-	bh=UV2gstlY/yVz9gzEsW8Xu47kRnV7k9+IwwSrc+4lxik=;
-	h=From:To:Cc:Subject:Date;
-	b=rUOpBErrM/uZe/wzFwG7VWxqCThZ04WrGyHL8cBsnFVmfTFlOmtyF3YFgS4YFoKMO
-	 oZq08U5WQwFjP7bYU4AaZ8iPja1FhoNVVkCJ7tjk+fo3S7DTPbdPU/EBzzoamu8A/2
-	 j4uyW8RbY+5aINGN2cGi+A+BtSRpeMwQVvVYHxcU=
-Received: from public ([120.244.194.224])
-	by newxmesmtplogicsvrszgpua8-1.qq.com (NewEsmtp) with SMTP
-	id 60887E0C; Fri, 24 Jan 2025 10:24:08 +0800
-X-QQ-mid: xmsmtpt1737685448tjxk2z1xn
-Message-ID: <tencent_84E371D061F81AB069496BFC3F862449AC09@qq.com>
-X-QQ-XMAILINFO: NbgegmlEc3JutGjXYvAzJ6i3v+SCNAthpPvpEi6SIojg0FyQ9lTzQ9BCHUdYBS
-	 Ja3mBwXlfO+qy1woLRph/89fe5SB4EwQyTBv066sMENnVToL36VDZaA//E3C5od4Y6JCBDh7TsLO
-	 hYCdeR2OZWx4KTp4425g5HlGjXT06gHbkxU9hOg0KStMp9pJZcnJX7CVmvAXlmC3xq/fImGovshN
-	 dgqK7NTBgZh5Fu4YMtjLbkwq8Z6HTg1oZWR+TNI+MD078JuDuyp66sO5WuHyp3ArKiYJ7CQwp+rS
-	 cmSwuZBon4Vxl11xLLwFFjJBttWeEZ3NZnwww0EHWoVyxpUl3McHItokQGO5eYRuomzL9R5d6zCn
-	 3n0jY9jrT3MTNb0Yq0eoKHtvESpuqUBu2bhkWTUGkMZwDjhHY1bbStVT7KyXe7iLv41FrXW3fIGU
-	 Bvu2NFwhqQvJm/js8qb5ixMJtcEln4KW84QDnpRuGCQe7zYUVH9V6vatpgZPBSP60P/eREcRJNI1
-	 SVD1SxV8HqYgiUzXBCJfGW4YCw02Rz1jL9PkA0AoxOI9oBgta/VauqcgZsby1e6PfFrae2uKASPa
-	 MOVXGifHt8qEIfC7s0gcWxknCkl7YJbpfS46Bzau0rj4CPq6xfVhMrhOIa845UMmK4rFtDOF0yCm
-	 9927AV4R5RWpjLp52/0se7g+sBmhCAsHI6lGDHh2Jp+GIyUCHzgv6s/gpJ3q823Nz3A0OFPsm++7
-	 ps5r7NpLdG6VC2u6uk04iwS1XRwBVF6398SZK6GACmkiw0UgaK1ndKAURVsdutpFYxwTzs4rcN1p
-	 7KnSUI82ylMckb6Ezwi5EA1zqpDJOSpGP8uuxn034H1wDYSNiSsfqQVbb0YH5vThiUMqde0sctlR
-	 GK0FGYLnHOFqAmiffZ5SYMrZU+fLwQI7ZYTeeGnzVCEsDa53jo+FtbSIeU60Y2wRVCj98QwiQrFB
-	 qhySj7zndeN/FGCn+JL9ymCUkp/gFQ6Mv78vuWJtUBoY2sHv3y236ufDVR+AXWoLwf4KeFbk9i4j
-	 OUxR77bWB+JLSzVfwpVKLlu5/rc+96MjQg0Ou+AMwxPbex2BIh5qwsZLfLLGHeZ33qf0m7PhiEz2
-	 sdSA8Q
-X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
-From: alvalan9@foxmail.com
-To: stable@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.10.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-Date: Fri, 24 Jan 2025 10:24:08 +0800
-X-OQ-MSGID: <20250124022408.1917-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1737689018; c=relaxed/simple;
+	bh=qkx0Gk7rjTf1YfSHOoHWCjI1qBWj8j+cUch7mzNw6Gk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o1kw7WRUZqmSJDf1xHPGkGcUWg7nkMsD2YI36LMSNbbUt1pbQU2ESREHtieQaLp/y2XH5zArZ7xWdY0MIEgDOGVyR3SZ3xk17kdQ1o0WXngjdsepg69zFEx6nf4Hw65etEdJdRO02tTLIrRKl+IHQ/xEllpfWPPb/M19+zFEq4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [220.197.230.228])
+	by APP-01 (Coremail) with SMTP id qwCowAAnVPunB5NnFf8YCQ--.21568S2;
+	Fri, 24 Jan 2025 11:23:24 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Carlos Maiolino <cem@kernel.org>,
+	"Darrick J . Wong" <djwong@kernel.org>
+Cc: linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] xfs: Propagate errors from xfs_reflink_cancel_cow_range in xfs_dax_write_iomap_end
+Date: Fri, 24 Jan 2025 11:22:28 +0800
+Message-ID: <20250124032228.587-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,78 +49,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowAAnVPunB5NnFf8YCQ--.21568S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7XFyfXFyDKrW3AryDXw1xAFb_yoWDJrX_ta
+	1vkr4xWa12y3y7Aws3Ar9YyFnIkanrKFsxXay8ta9xtryUGF1kKr4vyFZayr9rW3Za9F95
+	Gw1Durs3tFy7ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb4kFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
+	0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrV
+	AFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCI
+	c40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267
+	AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUehL0UU
+	UUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAMA2eSg5HFqwABse
 
-From: Ido Schimmel <idosch@nvidia.com>
+In xfs_dax_write_iomap_end(), directly return the result of
+xfs_reflink_cancel_cow_range() when !written, ensuring proper
+error propagation and improving code robustness.
 
-commit 90e0569dd3d32f4f4d2ca691d3fa5a8a14a13c12 upstream.
-
-The per-netns IP tunnel hash table is protected by the RTNL mutex and
-ip_tunnel_find() is only called from the control path where the mutex is
-taken.
-
-Add a lockdep expression to hlist_for_each_entry_rcu() in
-ip_tunnel_find() in order to validate that the mutex is held and to
-silence the suspicious RCU usage warning [1].
-
-[1]
-WARNING: suspicious RCU usage
-6.12.0-rc3-custom-gd95d9a31aceb #139 Not tainted
------------------------------
-net/ipv4/ip_tunnel.c:221 RCU-list traversed in non-reader section!!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by ip/362:
- #0: ffffffff86fc7cb0 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x377/0xf60
-
-stack backtrace:
-CPU: 12 UID: 0 PID: 362 Comm: ip Not tainted 6.12.0-rc3-custom-gd95d9a31aceb #139
-Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- lockdep_rcu_suspicious.cold+0x4f/0xd6
- ip_tunnel_find+0x435/0x4d0
- ip_tunnel_newlink+0x517/0x7a0
- ipgre_newlink+0x14c/0x170
- __rtnl_newlink+0x1173/0x19c0
- rtnl_newlink+0x6c/0xa0
- rtnetlink_rcv_msg+0x3cc/0xf60
- netlink_rcv_skb+0x171/0x450
- netlink_unicast+0x539/0x7f0
- netlink_sendmsg+0x8c1/0xd80
- ____sys_sendmsg+0x8f9/0xc20
- ___sys_sendmsg+0x197/0x1e0
- __sys_sendmsg+0x122/0x1f0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023123009.749764-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: ea6c49b784f0 ("xfs: support CoW in fsdax mode")
+Cc: <stable@vger.kernel.org> # v6.0
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- net/ipv4/ip_tunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_iomap.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 53cc17b1da34..cf9184928ede 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -218,7 +218,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
- 	struct ip_tunnel *t = NULL;
- 	struct hlist_head *head = ip_bucket(itn, parms);
+diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+index 50fa3ef89f6c..d61460309a78 100644
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -976,10 +976,8 @@ xfs_dax_write_iomap_end(
+ 	if (!xfs_is_cow_inode(ip))
+ 		return 0;
  
--	hlist_for_each_entry_rcu(t, head, hash_node) {
-+	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
- 		if (local == t->parms.iph.saddr &&
- 		    remote == t->parms.iph.daddr &&
- 		    link == t->parms.link &&
+-	if (!written) {
+-		xfs_reflink_cancel_cow_range(ip, pos, length, true);
+-		return 0;
+-	}
++	if (!written)
++		return xfs_reflink_cancel_cow_range(ip, pos, length, true);
+ 
+ 	return xfs_reflink_end_cow(ip, pos, written);
+ }
 -- 
-2.43.0
+2.42.0.windows.2
 
 
