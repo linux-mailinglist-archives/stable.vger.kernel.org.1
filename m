@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82432A1BCFB
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 20:52:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07054A1BCFD
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 20:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BB9D3A747B
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A606D7A5057
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6482248AC;
-	Fri, 24 Jan 2025 19:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7B81D9688;
+	Fri, 24 Jan 2025 19:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGKUy17c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sO/lz8jB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFAC4A1D
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 19:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAEF4A1D
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 19:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737748319; cv=none; b=Bh505biPa97icBWEPjAB3UTvdzkLcMH/XDcdoAv0MCVneBaifd7ge/Z/+JlgmCLXzkGCiULyxPGq0Sw/2lvb0D/m6ey2asRgZvK7T5RleVmifbzy8ZbuRGA6MgXKElsF7Gj63Wj1BDL1el3uWqPshKpggsu41GOun1Hl8Ae8ORI=
+	t=1737748322; cv=none; b=j1DRnUfBW6ntDpENA8iejQFw9sUIKrkRmJUze65vj8yzC98Psfh3FWlqLYzRpWtngXs+472bgW43qc+hNG9DrwhGryBszDojCau0FCUBPU6ww6BUN9XKP8rW+zhQrzA1Oev6r1L1QoDbrHCMb6aC3UQ8jPzI7xt78YcZXw5u0/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737748319; c=relaxed/simple;
-	bh=xCMENtct/PYOYFm9zUYSUEddDuZ6VlZ+Lw0PWeZCMaE=;
+	s=arc-20240116; t=1737748322; c=relaxed/simple;
+	bh=mMSlC+xr+7OjFjGBfdmhGCPjcD/6J/dzurzCyMm896Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mpgj1hxXGMyly2hSfifUGj87ZvWdwbDFT7Vq5mfGno7eTCPr2kqS7fygUpAGCOBVBS/WksSqN3JzkEJ7oLvOB78cPi4xkylRmQudRuhLtjqJkdO/aMLO4i25O31rfFMiAwEG20tVYV6E5tbQhgFQoL41X/o1A3aSNWt2FYnuN6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGKUy17c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD56C4CED2;
-	Fri, 24 Jan 2025 19:51:58 +0000 (UTC)
+	 MIME-Version; b=hIHagIR+U6t9YXaviRbkG6aYJuswejx+cM9+glzTVn3uL+CRt1+4wER7F3ZQD3KPzYXsOBcEs9lHv++TsFtjNqv2BCcXZymUvOH7IBr2q9IUjCz2qretetMxDrijTHSmhIXqtBFkveD3t6cf6cNgkbgE0fff3ZpgvetBgW6xoag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sO/lz8jB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E753DC4CED2;
+	Fri, 24 Jan 2025 19:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737748319;
-	bh=xCMENtct/PYOYFm9zUYSUEddDuZ6VlZ+Lw0PWeZCMaE=;
+	s=k20201202; t=1737748321;
+	bh=mMSlC+xr+7OjFjGBfdmhGCPjcD/6J/dzurzCyMm896Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGKUy17c+exqg5mG2NedfTzO3l/CGg6Y8nAiRYkxODoFH4mRvUwv9nST3fvn2b1Fr
-	 gAcwMds5yjL1iQ4dX3DmKUW2B+o0lZF6RQcZnv9EiKPY7XM6tuHxhqTg4Knte2NN1U
-	 ugUW+7OKJvsltPHDPIrHRdRrv3vU5cjPMJDHivX6sUWfVZL7XQsdafprJoUKVu36HB
-	 l2CVdWwIR6RyzAfa4aIOOZ5WOM9IkRT5/Vj0P8EbIHKlDv4yBP3KEhNYBqXoD1O5Vz
-	 Yl3GOMxNj59EY3Pabdsn4etAFaLNpyalhtuaFz3lHKCiWHnOHU31sxpYjzIPIqM3Kt
-	 Fo+FdTDDrLD9Q==
+	b=sO/lz8jBMMfv+5h8bTmIUZU0kZZh85byViJrvFgbASuebbczToxbw2vSM6KVZiEtZ
+	 k41sKbsdq4gqR2sCWEVdnnu7P3dQQ30CpP9tTIl6J/8AZeKywcqGgBiFpszYGj6ahp
+	 gJv1mkdSQ2m+S7u1B0Q6zcUVDGCK4SCNHDHSe5/mPojPMEWn4KuSwp23evQHiC5Wjy
+	 FolkRDHPOxmWfHJz6XkBkqEn766OdTdERp8bZPMxKR9x2PkVTifxwt+g5HXAM2srG7
+	 5Hmdpxz3eXsdkdK1R4DWfqTV+4BOC0sAKGpCzKwcLNv2zWveJOi/dN3HL0WEi7ptX4
+	 3py5FJjfKRfhg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: alvalan9@foxmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-Date: Fri, 24 Jan 2025 14:51:57 -0500
-Message-Id: <20250124095217-9cacdf5352ae663a@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
+Date: Fri, 24 Jan 2025 14:51:59 -0500
+Message-Id: <20250124094530-4ef7a53bc6e71514@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <tencent_998136A306E5834F52C53A0B6701A6AFE105@qq.com>
+In-Reply-To:  <tencent_84E371D061F81AB069496BFC3F862449AC09@qq.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,39 +74,18 @@ Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
 6.6.y | Not found
 6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  90e0569dd3d32 ! 1:  2111fb1f7a15e ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-    @@ Metadata
-      ## Commit message ##
-         ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-     
-    +    commit 90e0569dd3d32f4f4d2ca691d3fa5a8a14a13c12 upstream.
-    +
-         The per-netns IP tunnel hash table is protected by the RTNL mutex and
-         ip_tunnel_find() is only called from the control path where the mutex is
-         taken.
-    @@ Commit message
-         Reviewed-by: Eric Dumazet <edumazet@google.com>
-         Link: https://patch.msgid.link/20241023123009.749764-1-idosch@nvidia.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-     
-      ## net/ipv4/ip_tunnel.c ##
-     @@ net/ipv4/ip_tunnel.c: static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
-    - 
-    - 	ip_tunnel_flags_copy(flags, parms->i_flags);
-    + 	struct ip_tunnel *t = NULL;
-    + 	struct hlist_head *head = ip_bucket(itn, parms);
-      
-     -	hlist_for_each_entry_rcu(t, head, hash_node) {
-     +	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
+1:  90e0569dd3d32 < -:  ------------- ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
+-:  ------------- > 1:  01fd4e7cac868 ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
