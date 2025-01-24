@@ -1,192 +1,398 @@
-Return-Path: <stable+bounces-110383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F7FA1B7B8
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 15:18:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2DAA1B876
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 16:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F2A188E0AD
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 14:18:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BCEA188BDC1
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 15:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A422130A73;
-	Fri, 24 Jan 2025 14:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181BF155352;
+	Fri, 24 Jan 2025 15:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="haXuFAz4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f3Dz4QUZ"
 X-Original-To: stable@vger.kernel.org
-Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0B86320;
-	Fri, 24 Jan 2025 14:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2234315573D
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 15:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737728288; cv=none; b=NHKaHVipf1lZLJDKYiKJOTQMIuicUtrW7vDN65zWw0xkFnMPTXxbDukurm98w2zaNeaEgUhjL2i+5yqULq3eRMSly68OIABhjR1wNocfn4Qn1/TAFO390a7J7mXy/27iNz5kNA4SaNHXbiZ4sdPBHaSqNhVznnD7X4iocrXBFWk=
+	t=1737731345; cv=none; b=ClKKmaTEurtwv631s1hasy9+HtikJduWa9KhDWQyVeThUWPNRi76MxTmlQTgfaBQZ0qS1C3Mv355tB2B91w3JTWCqvsyZvN12AHlGQAxEGG1/N/wvXyM21+nXJtpQ5aDGrA+bBh9vVraINrGdDMze/np020VXfgfVxRntkaEMLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737728288; c=relaxed/simple;
-	bh=vMcNKfUrr6kvw1KTDIL8NbPVXX6x6jNASGpvfFsjVhM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UA9uHUKMoM0ZXHfBXRxaFxLE0SIwtABrA50QLXMmULH2aS/ZcPnsXGF8Cq8v2cEr7Np7ENdOVpAKtmB0F4rfdbEPfsIOUZya4YA8PaVcTH46Bfur5Bh5EBv/peOfSMmVdcAVF4/wZGn7qrcG+Zq6qQtJUoSWzV8Qeg7nVudu2Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=haXuFAz4; arc=none smtp.client-ip=81.200.124.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
-Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
-	by ksmg02.maxima.ru (Postfix) with ESMTP id 942041E0007;
-	Fri, 24 Jan 2025 17:17:53 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 942041E0007
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
-	s=sl; t=1737728273; bh=mhAYYhkyZeToCP7bA5KTLaEmT6/0G2AimppcOQ85rPY=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
-	b=haXuFAz48hQSn0XvM23sNjt2my/syiGnceq51w4AeIb3ZHknXMh2eXSV63dHQuZnw
-	 NEnCCBSRtwu7N8sbMVvPxbv3tLnOiZi1M0pebBtO9e2khnm895tqEMcWplUtMCaXbh
-	 dWgQPmqQkuze8tkH/RY0qxdikJMoR9Mae8D3lEggMeXpHilRBD4adYP3Xakjutxdvo
-	 Aofw7+XlVHQzXMVZAG4/SSMR9PirBLDOd6OfCGTWM6CSlb02klUuGy4NZ7k2UoEGCB
-	 qqkVhhRUiz6Q8+w+H/OZI7Yw7JwkRm+GYEC1V/di79W5Y480SDtJ/SOoL5DLhsZXPl
-	 0ffjli/MRzLgQ==
-Received: from ksmg02.maxima.ru (mail.maxima.ru [81.200.124.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg02.maxima.ru (Postfix) with ESMTPS;
-	Fri, 24 Jan 2025 17:17:53 +0300 (MSK)
-Received: from mmail-p-exch02.mt.ru (81.200.124.62) by mmail-p-exch02.mt.ru
- (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 24 Jan
- 2025 17:17:51 +0300
-Received: from mmail-p-exch02.mt.ru ([fe80::5fe7:9066:a884:475c]) by
- mmail-p-exch02.mt.ru ([fe80::5fe7:9066:a884:475c%9]) with mapi id
- 15.02.1544.004; Fri, 24 Jan 2025 17:17:51 +0300
-From: "Murad Masimov " <m.masimov@mt-integration.ru>
-To: Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
-CC: Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	"nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com"
-	<syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
-Subject: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
-Thread-Topic: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
-Thread-Index: AQHbbbW+YWbRIqLg90Kdd63unsRF6rMk03WAgADVgoY=
-Date: Fri, 24 Jan 2025 14:17:51 +0000
-Message-ID: <741f409ae5be4f1f9b62d9223f026e26@mt-integration.ru>
-References: <20250123163945.251-1-m.masimov@mt-integration.ru>,<649ed1bb-0686-42f0-802f-9f1909aeed8c@intel.com>
-In-Reply-To: <649ed1bb-0686-42f0-802f-9f1909aeed8c@intel.com>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1737731345; c=relaxed/simple;
+	bh=SYN7jUI36yhTHImTxVS/qwjaEpW4+e8FProjCmVvKdc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Itm75WREsOrxVZdaSzpmU0xib4Kca6qv/8ym319bi20POiFnLygM8mbrrm34WAGuR8nvDfZeONd3NvM8UMqIlRpWjmYSo+SJcbYt38vns6QRdf8m1FrbcX+De0CkbkNIEddzD5VWd4Rjr3vqtbPqAj6tqV0tOptYi2i8gLKqInY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f3Dz4QUZ; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aab6fa3e20eso388735866b.2
+        for <stable@vger.kernel.org>; Fri, 24 Jan 2025 07:09:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737731341; x=1738336141; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bAOmv5FCPTXNOJDPGsnz0m7/ff6FMzEiZAc+WWEKk5w=;
+        b=f3Dz4QUZtso6p4zE7OJWgm0pHhEw2t2sjt8QUxREUXKIw67CF1l8iJ8+zmieKOElpJ
+         MjUuvciK7cJKG3qSeMYJoQGtBfedoXWAmXDSk/OOxGerx4JyqXliG+TKZhWI2dMvC+ai
+         rmRQk58J6U8xQ7yFR+e8ZhBveW/Go0ifuaACgMRwmRcqwdfaSZ8JaByjQt9+us6UZ01u
+         Z0l8M41WNZ/OAKi5nYD84h9pWPoI1YNuPR1JmVeZZFwxy5Z7dQzfHoSJ4MUm6mcMFAMo
+         zUCiUC/W9BUVuQUcqIwTNGqjZ24JYbgGPdBMv0grPcwoMjD67ao3Se+23FAwCqRP+H6o
+         KIXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737731341; x=1738336141;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bAOmv5FCPTXNOJDPGsnz0m7/ff6FMzEiZAc+WWEKk5w=;
+        b=KcMii9gIWrf2qjqSERr1rlQO9z/1jZW/LzsrA6O6w6KMsM8kf86+ruXiSsGZRG/tFS
+         xxOF930JbOL706NyPt8/6HdtZetLsI8gp7GAKdagLXkfcTCoJHd4dFMPVmiU3szUjmIn
+         C+jtjECi1zDD/pcaXO7ZVeWhwlUc88/BVmx5XqzZt4kelPeOgxaSQ/8PjtkxGNLEV+KC
+         lUIUahoQUQNXAKmqGF+wKQvMC3ZO0ADegzj8T93lJYWvvH4Q2Lm+GbS0A+4mioPRosQJ
+         JIvPnKG/jXHcwThrVd9hXkg9L19EfNNL33ZMkuEbBUSY7CzsEAkP09XOxj0YWxhTdtPU
+         pWaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqat+m9tEjkvZ4s2uoruTRS6WCW+C/2fbioEBiCiK3a34m2dVbxyY5cKmYGDS7PWcdtJehwvo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQlwuJYGo2vVXWDdt5zulo81Pw9GQM1p+C6Ykil7itHcYW94hy
+	lZO0sUYk/56JM+AMwVItbh2Bn4eE0AZ9VwfskThAZldXM0E77XARpeBqer8MV1Y=
+X-Gm-Gg: ASbGncvLcnezyofyQoscRbiut2diBYYm2vetlcM79mLe2ans/7f+C04aXzU1lyKXwjX
+	o5bHrtz8XLRc2ol79QlM766bSbb4nopX9sLw7wuyuYt2rdKmoW54UhfoCHRGu/88cnyXI1KMYO2
+	DcmwMK++P7/KgjwMcGFTYcEGsg0kKGeOZfhag64lLkqBde7M/McOjfeopkK6guBIkXX85cwso8/
+	xHOVIQAyTbvLtUIKXSjCwPCXNVVU1aLbmGw8i8La3Rd6gR0dRI0sJBAH6L32gTvw0H1AhuIb8fb
+	dvK/tpOY8P1JyO2vpOeG8plqddo5Qrb4a8xcnzKpsiIji0kVUpwWIRgVWCvxpzGa
+X-Google-Smtp-Source: AGHT+IEUHPzYRalGh+hxyuLEjodrsl0WyGddaoYtcZB2H0vu5gdI49NrpaTUetnMdrHqMx1e3s6GWw==
+X-Received: by 2002:a17:907:72d0:b0:aa6:912f:7ec1 with SMTP id a640c23a62f3a-ab38b44d439mr2969999266b.39.1737731341144;
+        Fri, 24 Jan 2025 07:09:01 -0800 (PST)
+Received: from puffmais.c.googlers.com (140.20.91.34.bc.googleusercontent.com. [34.91.20.140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab676117b02sm142670366b.173.2025.01.24.07.09.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jan 2025 07:09:00 -0800 (PST)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Date: Fri, 24 Jan 2025 15:09:00 +0000
+Subject: [PATCH v4] scsi: ufs: fix use-after free in init error and remove
+ paths
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/24 12:55:00
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
-X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
-X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {rep_avail}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;mt-integration.ru:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1;81.200.124.62:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;ksmg02.maxima.ru:7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.62
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 190558 [Jan 24 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/24 11:37:00 #27111174
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2025/01/24 12:55:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 7
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAAutk2cC/23MSwrCMBSF4a3IHRtJbh62jtyHOIh5tAFpJNGgl
+ O7dtKMWHZ4D3z9Cdim4DKfdCMmVkEMc6hD7HZheD50jwdYNSFFSxjh5+dwbS3x4E4mCth4tR++
+ hgkdy9V5il2vdfcjPmD5Lu7D5/ZspjDBitOKWWXGzUp7vYdApHmLqYO4UXFuxsVgtWqPwKFuqh
+ f6xfG3VxvJqlW44pcLpRpqNnabpCx1P4tEdAQAA
+To: Alim Akhtar <alim.akhtar@samsung.com>, 
+ Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Peter Griffin <peter.griffin@linaro.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Mike Snitzer <snitzer@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, Satya Tangirala <satyat@google.com>, 
+ Eric Biggers <ebiggers@google.com>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Will McVicker <willmcvicker@google.com>, kernel-team@android.com, 
+ linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+X-Mailer: b4 0.13.0
 
+devm_blk_crypto_profile_init() registers a cleanup handler to run when
+the associated (platform-) device is being released. For UFS, the
+crypto private data and pointers are stored as part of the ufs_hba's
+data structure 'struct ufs_hba::crypto_profile'. This structure is
+allocated as part of the underlying ufshcd and therefore Scsi_host
+allocation.
 
-________________________________________
-=EF=D4: Dave Jiang <dave.jiang@intel.com>
-=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF: 24 =D1=CE=D7=C1=D2=D1 2025 =C7. 2:43
-=EB=CF=CD=D5: Masimov Murad; Dan Williams
-=EB=CF=D0=C9=D1: Vishal Verma; Ira Weiny; Rafael J. Wysocki; Len Brown; nvd=
-imm@lists.linux.dev; linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.o=
-rg; lvc-project@linuxtesting.org; stable@vger.kernel.org; syzbot+c80d8dc0d9=
-fa81a3cd8c@syzkaller.appspotmail.com
-=F4=C5=CD=C1: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit=
-_ctl
+During driver release or during error handling in ufshcd_pltfrm_init(),
+this structure is released as part of ufshcd_dealloc_host() before the
+(platform-) device associated with the crypto call above is released.
+Once this device is released, the crypto cleanup code will run, using
+the just-released 'struct ufs_hba::crypto_profile'. This causes a
+use-after-free situation:
 
-> On 1/23/25 9:39 AM, Murad Masimov wrote:
-> > Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
-> > bus families can be translated". This warning is emited if the argument
-> > is equal to NVDIMM_BUS_FAMILY_NFIT =3D=3D 0. Function acpi_nfit_ctl() f=
-irst
-> > verifies that a user-provided value call_pkg->nd_family of type u64 is
-> > not equal to 0. Then the value is converted to int, and only after that
-> > is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an inval=
-id
-> > argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
-> > the lower 32 bits are zero.
-> >
-> > All checks of the input value should be applied to the original variabl=
-e
-> > call_pkg->nd_family.
-> >
-> > Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> >
-> > Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation co=
-mmands")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3Dc80d8dc0d9fa81a3cd8c
-> > Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
->=20
-> While the change logically makes sense, the likelihood of nd_family > int=
-_size is not ever likely. Given that NVDIMM_BUS_FAMILY_MAX is defined as 1,=
- I don't think we care about values greater than that regardless of what is=
- set in the upper 32bit of the u64. I'm leaning towards the fix is unnecess=
-ary.
+  Call trace:
+   kfree+0x60/0x2d8 (P)
+   kvfree+0x44/0x60
+   blk_crypto_profile_destroy_callback+0x28/0x70
+   devm_action_release+0x1c/0x30
+   release_nodes+0x6c/0x108
+   devres_release_all+0x98/0x100
+   device_unbind_cleanup+0x20/0x70
+   really_probe+0x218/0x2d0
 
-Thank you for the review! But I believe there is a misunderstanding. The po=
-int is that the code fragment affected by this patch is intended to make su=
-re, that family is in range between 1 and NVDIMM_BUS_FAMILY_MAX. This is ne=
-cessary because call_pkg contains user-provided data. However the implement=
-ation of these validity checks is erroneous and leads to passing an invalid=
- value. The syzkaller report proves, that this bug can be triggered by a us=
-er. Here is an example to demonstrate, what exactly happens:
+In other words, the initialisation code flow is:
 
-1. Let's say call_pkg->nd_family is equal to (1ull << 32).
-2. Expression (cmd =3D=3D ND_CMD_CALL && call_pkg->nd_family) evaluates to =
-true.
-3. Since family is of type int, and call_pkg->nd_family is u64, assigning c=
-all_pkg->nd_family to family will lead to a narrowing conversion.
-4. As a result, family equals to 0, which will be passed in to_nfit_bus_uui=
-d() triggering the warning.
+  platform-device probe
+    ufshcd_pltfrm_init()
+      ufshcd_alloc_host()
+        scsi_host_alloc()
+          allocation of struct ufs_hba
+          creation of scsi-host devices
+    devm_blk_crypto_profile_init()
+      devm registration of cleanup handler using platform-device
 
-Moreover, family may also be a negative integer (e.g. call_pkg->nd_family =
-=3D=3D ~(0ull)). This can lead to an undefined behaviour in test_bit() and =
-potentially out-of-bounds in to_nfit_uuid(). Thus, even if triggering a WAR=
-N is not concerning, the bug still should be fixed.
+and during error handling of ufshcd_pltfrm_init() or during driver
+removal:
 
-> > ---
-> >  drivers/acpi/nfit/core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> > index a5d47819b3a4..ae035b93da08 100644
-> > --- a/drivers/acpi/nfit/core.c
-> > +++ b/drivers/acpi/nfit/core.c
-> > @@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_=
-desc, struct nvdimm *nvdimm,
-> >               cmd_mask =3D nd_desc->cmd_mask;
-> >               if (cmd =3D=3D ND_CMD_CALL && call_pkg->nd_family) {
-> >                       family =3D call_pkg->nd_family;
-> > -                     if (family > NVDIMM_BUS_FAMILY_MAX ||
-> > +                     if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX |=
-|
-> >                           !test_bit(family, &nd_desc->bus_family_mask))
-> >                               return -EINVAL;
-> >                       family =3D array_index_nospec(family,
-> > --
-> > 2.39.2
-> >
+  ufshcd_dealloc_host()
+    scsi_host_put()
+      put_device(scsi-host)
+        release of struct ufs_hba
+  put_device(platform-device)
+    crypto cleanup handler
+
+To fix this use-after free, change ufshcd_alloc_host() to register a
+devres action to automatically cleanup the underlying SCSI device on
+ufshcd destruction, without requiring explicit calls to
+ufshcd_dealloc_host(). This way:
+
+    * the crypto profile and all other ufs_hba-owned resources are
+      destroyed before SCSI (as they've been registered after)
+    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
+      side-effect
+    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
+      it's not needed anymore
+    * no future drivers using ufshcd_alloc_host() could ever forget
+      adding the cleanup
+
+Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
+Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
+Cc: stable@vger.kernel.org
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+Changes in v4:
+- add a kdoc note to ufshcd_alloc_host() to state why there is no
+  ufshcd_dealloc_host() (Mani)
+- use return err, without goto (Mani)
+- drop register dump and abort info from commit message (Mani)
+- Link to v3: https://lore.kernel.org/r/20250116-ufshcd-fix-v3-1-6a83004ea85c@linaro.org
+
+Changes in v3:
+- rename devres action handler to ufshcd_devres_release() (Bart)
+- Link to v2: https://lore.kernel.org/r/20250114-ufshcd-fix-v2-1-2dc627590a4a@linaro.org
+
+Changes in v2:
+- completely new approach using devres action for Scsi_host cleanup, to
+  ensure ordering
+- add Fixes: and CC: stable tags (Eric)
+- Link to v1: https://lore.kernel.org/r/20250113-ufshcd-fix-v1-1-ca63d1d4bd55@linaro.org
+---
+In my case, as per above trace I initially encountered an error in
+ufshcd_verify_dev_init(), which made me notice this problem both during
+error handling and release. For reproducing, it'd be possible to change
+that function to just return an error, or rmmod the platform glue
+driver.
+
+Other approaches for solving this issue I see are the following, but I
+believe this one here is the cleanest:
+
+* turn 'struct ufs_hba::crypto_profile' into a dynamically allocated
+  pointer, in which case it doesn't matter if cleanup runs after
+  scsi_host_put()
+* add an explicit devm_blk_crypto_profile_deinit() to be called by API
+  users when necessary, e.g. before ufshcd_dealloc_host() in this case
+* register the crypto cleanup handler against the scsi-host device
+  instead, like in v1 of this patch
+---
+ drivers/ufs/core/ufshcd.c        | 31 +++++++++++++++++++++----------
+ drivers/ufs/host/ufshcd-pci.c    |  2 --
+ drivers/ufs/host/ufshcd-pltfrm.c | 28 +++++++++-------------------
+ include/ufs/ufshcd.h             |  1 -
+ 4 files changed, 30 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 43ddae7318cb..4328f769a7c8 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10279,16 +10279,6 @@ int ufshcd_system_thaw(struct device *dev)
+ EXPORT_SYMBOL_GPL(ufshcd_system_thaw);
+ #endif /* CONFIG_PM_SLEEP  */
+ 
+-/**
+- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
+- * @hba: pointer to Host Bus Adapter (HBA)
+- */
+-void ufshcd_dealloc_host(struct ufs_hba *hba)
+-{
+-	scsi_host_put(hba->host);
+-}
+-EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
+-
+ /**
+  * ufshcd_set_dma_mask - Set dma mask based on the controller
+  *			 addressing capability
+@@ -10307,12 +10297,26 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
+ 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
+ }
+ 
++/**
++ * ufshcd_devres_release - devres cleanup handler, invoked during release of
++ *			   hba->dev
++ * @host: pointer to SCSI host
++ */
++static void ufshcd_devres_release(void *host)
++{
++	scsi_host_put(host);
++}
++
+ /**
+  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
+  * @dev: pointer to device handle
+  * @hba_handle: driver private handle
+  *
+  * Return: 0 on success, non-zero value on failure.
++ *
++ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
++ * keeps track of its allocations using devres and deallocates everything on
++ * device removal automatically.
+  */
+ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ {
+@@ -10334,6 +10338,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
+ 		err = -ENOMEM;
+ 		goto out_error;
+ 	}
++
++	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
++				       host);
++	if (err)
++		return dev_err_probe(dev, err,
++				     "failed to add ufshcd dealloc action\n");
++
+ 	host->nr_maps = HCTX_TYPE_POLL + 1;
+ 	hba = shost_priv(host);
+ 	hba->host = host;
+diff --git a/drivers/ufs/host/ufshcd-pci.c b/drivers/ufs/host/ufshcd-pci.c
+index ea39c5d5b8cf..9cfcaad23cf9 100644
+--- a/drivers/ufs/host/ufshcd-pci.c
++++ b/drivers/ufs/host/ufshcd-pci.c
+@@ -562,7 +562,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
+ 	pm_runtime_forbid(&pdev->dev);
+ 	pm_runtime_get_noresume(&pdev->dev);
+ 	ufshcd_remove(hba);
+-	ufshcd_dealloc_host(hba);
+ }
+ 
+ /**
+@@ -605,7 +604,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	err = ufshcd_init(hba, mmio_base, pdev->irq);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Initialization failed\n");
+-		ufshcd_dealloc_host(hba);
+ 		return err;
+ 	}
+ 
+diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
+index 505572d4fa87..ffe5d1d2b215 100644
+--- a/drivers/ufs/host/ufshcd-pltfrm.c
++++ b/drivers/ufs/host/ufshcd-pltfrm.c
+@@ -465,21 +465,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	struct device *dev = &pdev->dev;
+ 
+ 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mmio_base)) {
+-		err = PTR_ERR(mmio_base);
+-		goto out;
+-	}
++	if (IS_ERR(mmio_base))
++		return PTR_ERR(mmio_base);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		err = irq;
+-		goto out;
+-	}
++	if (irq < 0)
++		return irq;
+ 
+ 	err = ufshcd_alloc_host(dev, &hba);
+ 	if (err) {
+ 		dev_err(dev, "Allocation failed\n");
+-		goto out;
++		return err;
+ 	}
+ 
+ 	hba->vops = vops;
+@@ -488,13 +484,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	if (err) {
+ 		dev_err(dev, "%s: clock parse failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 	err = ufshcd_parse_regulator_info(hba);
+ 	if (err) {
+ 		dev_err(dev, "%s: regulator init failed %d\n",
+ 				__func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	ufshcd_init_lanes_per_dir(hba);
+@@ -502,25 +498,20 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
+ 	err = ufshcd_parse_operating_points(hba);
+ 	if (err) {
+ 		dev_err(dev, "%s: OPP parse failed %d\n", __func__, err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	err = ufshcd_init(hba, mmio_base, irq);
+ 	if (err) {
+ 		dev_err_probe(dev, err, "Initialization failed with error %d\n",
+ 			      err);
+-		goto dealloc_host;
++		return err;
+ 	}
+ 
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
+-
+-dealloc_host:
+-	ufshcd_dealloc_host(hba);
+-out:
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
+ 
+@@ -534,7 +525,6 @@ void ufshcd_pltfrm_remove(struct platform_device *pdev)
+ 
+ 	pm_runtime_get_sync(&pdev->dev);
+ 	ufshcd_remove(hba);
+-	ufshcd_dealloc_host(hba);
+ 	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ }
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index da0fa5c65081..58eb6e897827 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -1311,7 +1311,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
+ void ufshcd_enable_irq(struct ufs_hba *hba);
+ void ufshcd_disable_irq(struct ufs_hba *hba);
+ int ufshcd_alloc_host(struct device *, struct ufs_hba **);
+-void ufshcd_dealloc_host(struct ufs_hba *);
+ int ufshcd_hba_enable(struct ufs_hba *hba);
+ int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
+ int ufshcd_link_recovery(struct ufs_hba *hba);
+
+---
+base-commit: 4e16367cfe0ce395f29d0482b78970cce8e1db73
+change-id: 20250113-ufshcd-fix-52409f2d32ff
+
+Best regards,
+-- 
+André Draszik <andre.draszik@linaro.org>
 
 
