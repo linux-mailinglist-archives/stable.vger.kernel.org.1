@@ -1,130 +1,94 @@
-Return-Path: <stable+bounces-110380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6863AA1B6D2
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 14:32:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14733A1B75E
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 14:44:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A44D3ACA8F
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 13:32:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B69A7A6168
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 13:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130071CD15;
-	Fri, 24 Jan 2025 13:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YT4kMRIE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8BA86343;
+	Fri, 24 Jan 2025 13:43:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC53679C0;
-	Fri, 24 Jan 2025 13:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6F284D29
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 13:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737725546; cv=none; b=fV309kPZQrh82pO/RFuJd50R/sEoKE80ov45xBSwfz11Mp9O6LFWkkrO1sOqxidZT6xfvMXklwKnvTX8IRAt1DK80JOMxxJayfk1y+eqWbJspzKHBtH2RwKGWRcYiGYa06I2KSQ4sGdm/9SjMTJdlVnQ4fZYt28LhnIeieJJwhA=
+	t=1737726186; cv=none; b=UMzk1jcbVtGLquCSzG9VtHH+I4AiYLjKDnTr4N9sPKU43F5+3CSq0KU8e02epN+Go8Q6XtbjNNlagRtkeJGMJkL8Q5IGs+ZBMiQCj2IkobNFLHLGt9TWbgAMsTcjfe3+GK7dJDY5W0x3S+VLeA7o6ObNamDo0fY7hT6CmSaJZ4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737725546; c=relaxed/simple;
-	bh=4FYKS1XlVwqucqi8Ae86v922xxqNnKi/Xn6F3uH2Au4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hFTqO14In+IeTLsngMq90Dh7dH0jj14QHG0tckmThOl9X75XWiBF9PESrSAEKUzFFQcaQtP4n1NxiJxGNgKRXXNPYMR6ewDq/irD+RdbWUx+epyE+DbchOl6lhBx5vY72jYHkfJGjKxEPLuaDGagRd4ymskdtOBmHihzItTRocE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YT4kMRIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D74AC4CED2;
-	Fri, 24 Jan 2025 13:32:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737725546;
-	bh=4FYKS1XlVwqucqi8Ae86v922xxqNnKi/Xn6F3uH2Au4=;
-	h=From:Date:Subject:To:Cc:From;
-	b=YT4kMRIEv1K+OGMSzKsd+ozMsCWl3l17jt8GJUD5d4QQy2tPe+KpT2qPfc3rVLlAO
-	 JHgl1+91c3DGyoWkst9mkaf87pbNPSCR+bUOn+PcvIJ+6Twpp3prL79cZuS/rRLbAa
-	 VgSnM08qglYLxxHDKdt6FjwJhrdPuBPzXdS0WUmNfodMzSuZ3Btp6SByNPN81NXkEe
-	 DFOQguABK4X9IsD+T/AAmmE9ePQN2VgL1Hp2kSlnC3sAT8deWCv0d8hUXfT+wdPVGa
-	 VS2TATyTzxG4IZUiHkKkLB8N55rF1lmBpQcllJONoloacSLIrCkvoOpRZDslkH8NEm
-	 l4UD3e5CckBBQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Fri, 24 Jan 2025 06:31:57 -0700
-Subject: [PATCH] arm64: Handle .ARM.attributes section in linker scripts
+	s=arc-20240116; t=1737726186; c=relaxed/simple;
+	bh=n8OZ3b/yHRWJF9A8gcfHJ7tGWiWPREHXqrj4JQyfRFs=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=R2TVRaEEMZQUmGXj5XisSGtoAoKKCpuC5GCmwENuoJ0i56P3jvxoqzZKo6KYHwqnziaQWTGWhNvtg2ZGQsfH7U02W8kdhAYRfWr2t58389vdb+JVS5ujXFtoN9axOmXoQI9MTVKz1NHZCWpPU7suw6U8m5/Q78cZ8ep6dqp/Tuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-844d54c3e62so268760639f.2
+        for <stable@vger.kernel.org>; Fri, 24 Jan 2025 05:43:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737726184; x=1738330984;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2pZe/q9uQMTJ1h6+AXXu51oqWvY3EGvpD1rhxTUhiCw=;
+        b=V5S6ZU3LA+3J60PPUeoLt4uFTdHMitSxDjxBbnv8Is0jOGluKm5nayq2U6BWDRd1+/
+         WTjUh8U93BUIQQIJREuwEf6KJ8NJr/8yVEVZJ0jR+bli7Xomy6KplgbQL33YpmcDebPV
+         x3T4ac7Ge75YFe6F1f1XTeViQ/ncIcBvROys8lnDCZaHR0CjEP/GZT0SVt1REY1qZd1y
+         a41Lz1Av4pb1AMxanG/uQS10Cx/64eo6L8o793aQNxHA6LuAYycqpfF/xwF/yBwuWBcx
+         nxLHcoHZ0+4EW40uZojgHnCpHcHzWkwelKDCTFA5/I5/NAPVKrSy1DIHgDoRRDemI7CK
+         dX5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVOa4s09+UYPoprkPWRZeeCfwYFovQ/olLvv/a+yri02ht/8djRuCpREi5kVdpvcHBeOXb80OI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxURw7OR+VJsSiVa7D0ZgT9fb8VKPp9+PHB5up6eXNaobLyA8I8
+	c9dWO5z7zDSdosRKDdSPL0F8IIxDvpideyASegGdhgNzpuJ1k1jmQdII0S1uwNK/QZCaCaT/Rvv
+	pvIB73h5AgPHdQVhfrgX5QKb9BPwcfzkJWkUJnirDcoBdU0FZsI3MyQo=
+X-Google-Smtp-Source: AGHT+IHK9J8OswljrqskgVtLCWuKfDYf9V/LMLUGMG1IR6LhNN3Im86vudLsPDVLvtHBMCmDTGo+FZJvCui01vqHBrHYGxG8x3MI
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250124-arm64-handle-arm-attributes-in-linker-script-v1-1-74135b6cf349@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAEyWk2cC/x3NUQrCMBCE4auUfXah2VgRryI+rOmoizWWTRSh9
- O5GHz9+mFmowA2FDt1CjrcVe+aGsOko3TRfwTY2k/Qy9EEiqz92W25pnPADa61u51dFYcs8Wb7
- DuSS3ufJeFJAhhqiJ2uTsuNjnf3c8resXRmbOKX4AAAA=
-X-Change-ID: 20250123-arm64-handle-arm-attributes-in-linker-script-82aee25313ac
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2175; i=nathan@kernel.org;
- h=from:subject:message-id; bh=4FYKS1XlVwqucqi8Ae86v922xxqNnKi/Xn6F3uH2Au4=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOmTp2UUnHHdyyih3ld3Yd2N7+9Uf998JhNXWCS8LiSxW
- mff93D1jlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjCRlYoM/wO2xW/7VvbYmnd2
- cGXZqtoyM9t0NS2+tsMbmSRMDtuHWDH8T1ofeP6h7vr7YvO5PzM7vZnekLK22tjE9038zMxVS2R
- W8wAA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Received: by 2002:a05:6e02:4918:b0:3cf:b2b0:5d35 with SMTP id
+ e9e14a558f8ab-3cfb2b05ec7mr102563925ab.7.1737726184066; Fri, 24 Jan 2025
+ 05:43:04 -0800 (PST)
+Date: Fri, 24 Jan 2025 05:43:04 -0800
+In-Reply-To: <6786ac51.050a0220.216c54.00a6.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <679398e8.050a0220.2eae65.001d.GAE@google.com>
+Subject: Re: [syzbot] [mptcp?] WARNING in mptcp_pm_nl_set_flags (2)
+From: syzbot <syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, geliang@kernel.org, 
+	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	martineau@kernel.org, matttbe@kernel.org, mptcp@lists.linux.dev, 
+	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-A recent LLVM commit [1] started generating an .ARM.attributes section
-similar to the one that exists for 32-bit, which results in orphan
-section warnings (or errors if CONFIG_WERROR is enabled) from the linker
-because it is not handled in the arm64 linker scripts.
+syzbot has bisected this issue to:
 
-  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+commit 322ea3778965da72862cca2a0c50253aacf65fe6
+Author: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Date:   Mon Aug 19 19:45:26 2024 +0000
 
-  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+    mptcp: pm: only mark 'subflow' endp as available
 
-Add this new section to the necessary linker scripts to resolve the warnings.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=14f0bab0580000
+start commit:   d1bf27c4e176 dt-bindings: net: pse-pd: Fix unusual charact..
+git tree:       net
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=16f0bab0580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=12f0bab0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1c541fa8af5c9cc7
+dashboard link: https://syzkaller.appspot.com/bug?extid=cd16e79c1e45f3fe0377
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11262218580000
 
-Cc: stable@vger.kernel.org
-Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
-Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/arm64/kernel/vdso/vdso.lds.S | 1 +
- arch/arm64/kernel/vmlinux.lds.S   | 1 +
- 2 files changed, 2 insertions(+)
+Reported-by: syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com
+Fixes: 322ea3778965 ("mptcp: pm: only mark 'subflow' endp as available")
 
-diff --git a/arch/arm64/kernel/vdso/vdso.lds.S b/arch/arm64/kernel/vdso/vdso.lds.S
-index 4ec32e86a8da..f8418a3a2758 100644
---- a/arch/arm64/kernel/vdso/vdso.lds.S
-+++ b/arch/arm64/kernel/vdso/vdso.lds.S
-@@ -75,6 +75,7 @@ SECTIONS
- 
- 	DWARF_DEBUG
- 	ELF_DETAILS
-+	.ARM.attributes 0 : { *(.ARM.attributes) }
- 
- 	/DISCARD/	: {
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index f84c71f04d9e..c94942e9eb46 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -335,6 +335,7 @@ SECTIONS
- 	STABS_DEBUG
- 	DWARF_DEBUG
- 	ELF_DETAILS
-+	.ARM.attributes 0 : { *(.ARM.attributes) }
- 
- 	HEAD_SYMBOLS
- 
-
----
-base-commit: 1dd3393696efba1598aa7692939bba99d0cffae3
-change-id: 20250123-arm64-handle-arm-attributes-in-linker-script-82aee25313ac
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
