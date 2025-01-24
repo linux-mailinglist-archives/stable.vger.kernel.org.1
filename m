@@ -1,208 +1,149 @@
-Return-Path: <stable+bounces-110388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D7FA1BB04
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 17:55:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E03AA1BB1E
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 17:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A58453A47EC
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 16:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4AF67A54D4
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 16:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644CD19CC2A;
-	Fri, 24 Jan 2025 16:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0BF1ADC80;
+	Fri, 24 Jan 2025 16:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="CdBJ2vjd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JnnFYfEs"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6B9FBF6;
-	Fri, 24 Jan 2025 16:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B940CFBF6;
+	Fri, 24 Jan 2025 16:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737737694; cv=none; b=BQJekBS6jHzTsZ8HDG5Q2rWInVrCpIHIzpZu5Ku1/HiklC8SDObiMTiMenPRnf15E/f865K7qhxD5Ujn4MV4XkukPqn9GMMYPadS04Ub9yW5LgFJVr1u1EYV1dcX4KmNqfuhuLXROvlUrBLEuZNolEcy06ZOJYJTqyjTA+iePFk=
+	t=1737737923; cv=none; b=qabJWgMP5audAkKSFksCFv22PuKQRggbTJEBA75MmI+hD86eiLe4iSdvDnJ78aTc096BojsEkR0E9VABEDaSPG8OfDWbYYJ87xVPDWqcJ/gAgEDplL0AqkZwbt3oZZ3ZyifbIRYj9evFWCcUeu7ti/ax2lhIccTsQVReQD1Hypc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737737694; c=relaxed/simple;
-	bh=TBbVYW6WszWSAbOJhmb3FyG6vlQ3bBhEEO3HgMw7QSU=;
+	s=arc-20240116; t=1737737923; c=relaxed/simple;
+	bh=C431NWRnJgCF/ijsvy6l90G1Fa79XSLuKUsmB9gNzt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CHQJgUe1dz1xXrddm9C2eVP2BFOkW2tsWyyxO8Y1INBNoqUaQhMujnQGBkpt+3QHioA/QpqDuRUQffhVtjZlqRzTtto6vOGSAMF3GPdWxJXIXSmywuRYoLNIohfExRdqTw24BvUmjpy6SW0N0rihXDaMhcgOCFZhrcGVXk1GPcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=CdBJ2vjd; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 3774E20BEBD5; Fri, 24 Jan 2025 08:54:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3774E20BEBD5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1737737692;
-	bh=p/Ev/ixvfjDnN+f1HX/ZEmD3SPo56vV9nqjW8JhSjMg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CdBJ2vjdLBjVw/4VOt8h+eDnrkM2USNZk04ZWObCQcCyI7hTY1VFhqGy3y3KyNQfs
-	 rz4F1FYZGIpXtEyMh/OOhfK9jKxexK7QBPlUfU2ew9NLBG59TVq3+Y298M+traRcnU
-	 afU5RhcAId6lD1VmrHS0VK0S8GJk2yTjM0OwI8+o=
-Date: Fri, 24 Jan 2025 08:54:52 -0800
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: "kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"decui@microsoft.com" <decui@microsoft.com>,
-	"jikos@kernel.org" <jikos@kernel.org>,
-	"bentiss@kernel.org" <bentiss@kernel.org>,
-	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=aEsRUsSZjufID3tz5nN6q4TUXyAX+HjXJCCNBkKmhSv1rI0bvDJak73hukYAY1qoCOgjTo//rGauyutQGoqE3ffuhcWcj9onYHyJYvDdHGOGx1WtJMkXy+wCrHpWJEhsQL8r4jJmMFVltU7lMVGC2m7ldPe4wrYaSnf+nHyNbOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JnnFYfEs; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737737922; x=1769273922;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=C431NWRnJgCF/ijsvy6l90G1Fa79XSLuKUsmB9gNzt8=;
+  b=JnnFYfEsnV07OS4mnl4W+IxPbt6Rel58lnHrLB7/sidBeZNlnXXJ62Tb
+   9PrKhbzgPtiHDbBknPAcMIVVV8dzgPrJL4S3AXWi5up37yasRMhPPoqiP
+   lGkc50he38drsJZa3Hiy9WW3U0TpL3zkyorLi3jMHgQE/bj5vdmnLjsJV
+   t128ptVSNdq+tzC59IYuEzqyjOe1wfZ4SM1xMZWUPoyaj0vuXf5DHPtD3
+   L1FEMuAOTPzFWgn6TgUXLmzFzdHc6jL8A2tSGxArSNxvAYmxeCqBVuKp0
+   9Dmw7VY3e1OmZwFCxxg+jzrKT7oMZThQsk/qunumCVQUEbpZNG5G1sb+V
+   g==;
+X-CSE-ConnectionGUID: GD1TJgJoQBmdwfdgCRUQQQ==
+X-CSE-MsgGUID: yYlqfuC+R1yp+OvBiuahSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="60743851"
+X-IronPort-AV: E=Sophos;i="6.13,231,1732608000"; 
+   d="scan'208";a="60743851"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 08:58:39 -0800
+X-CSE-ConnectionGUID: +WFEQ0YgTX61NvlezkUIQQ==
+X-CSE-MsgGUID: byppk2EjSR6BbFRHinT9pA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="107669454"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.47])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 08:58:38 -0800
+Date: Fri, 24 Jan 2025 08:58:36 -0800
+From: Alison Schofield <alison.schofield@intel.com>
+To: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	"nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: Re: [PATCH v4 1/3] Drivers: hv: vmbus: Disable Suspend-to-Idle for
- VMBus
-Message-ID: <20250124165452.GA861@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1734409029-10419-1-git-send-email-ernis@linux.microsoft.com>
- <1734409029-10419-2-git-send-email-ernis@linux.microsoft.com>
- <SN6PR02MB4157123D8C5C35C2B169A1E0D4052@SN6PR02MB4157.namprd02.prod.outlook.com>
+	"syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com" <syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
+Subject: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Message-ID: <Z5PGvA-zoCV4rWii@aschofie-mobl2.lan>
+References: <20250123163945.251-1-m.masimov@mt-integration.ru>
+ <649ed1bb-0686-42f0-802f-9f1909aeed8c@intel.com>
+ <741f409ae5be4f1f9b62d9223f026e26@mt-integration.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <SN6PR02MB4157123D8C5C35C2B169A1E0D4052@SN6PR02MB4157.namprd02.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <741f409ae5be4f1f9b62d9223f026e26@mt-integration.ru>
 
-On Wed, Dec 18, 2024 at 06:27:18AM +0000, Michael Kelley wrote:
-> From: Erni Sri Satya Vennela <ernis@linux.microsoft.com> Sent: Monday, December 16, 2024 8:17 PM
+On Fri, Jan 24, 2025 at 02:17:51PM +0000, Murad Masimov  wrote:
+> 
+> ________________________________________
+> От: Dave Jiang <dave.jiang@intel.com>
+> Отправлено: 24 января 2025 г. 2:43
+> Кому: Masimov Murad; Dan Williams
+> Копия: Vishal Verma; Ira Weiny; Rafael J. Wysocki; Len Brown; nvdimm@lists.linux.dev; linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; lvc-project@linuxtesting.org; stable@vger.kernel.org; syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+> Тема: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+> 
+> > On 1/23/25 9:39 AM, Murad Masimov wrote:
+> > > Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+> > > bus families can be translated". This warning is emited if the argument
+> > > is equal to NVDIMM_BUS_FAMILY_NFIT == 0. Function acpi_nfit_ctl() first
+> > > verifies that a user-provided value call_pkg->nd_family of type u64 is
+> > > not equal to 0. Then the value is converted to int, and only after that
+> > > is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an invalid
+> > > argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+> > > the lower 32 bits are zero.
+> > >
+> > > All checks of the input value should be applied to the original variable
+> > > call_pkg->nd_family.
+> > >
+> > > Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> > >
+> > > Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation commands")
+> > > Cc: stable@vger.kernel.org
+> > > Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+> > > Closes: https://syzkaller.appspot.com/bug?extid=c80d8dc0d9fa81a3cd8c
+> > > Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
 > > 
-> > This change is specific to Hyper-V VM user.
-> > If the Virtual Machine Connection window is focused,
-> > a Hyper-V VM user can unintentionally touch the keyboard/mouse
-> > when the VM is hibernating or resuming, and consequently the
-> > hibernation or resume operation can be aborted unexpectedly.
-> > Fix the issue by no longer registering the keyboard/mouse as
-> > wakeup devices (see the other two patches for the
-> > changes to drivers/input/serio/hyperv-keyboard.c and
-> > drivers/hid/hid-hyperv.c).
+> > While the change logically makes sense, the likelihood of nd_family > int_size is not ever likely. Given that NVDIMM_BUS_FAMILY_MAX is defined as 1, I don't think we care about values greater than that regardless of what is set in the upper 32bit of the u64. I'm leaning towards the fix is unnecessary.
 > 
-> One question: For the keyboard and mouse patches, it looks like the
-> code change has the effect of changing the default value of
-> "power/wakeup" for the keyboard and mouse device under /sys to
-> be "disabled". But if a customer *wants* to enable keyboard and
-> mouse wakeups, he still has the option of just writing "enabled"
-> to "power/wakeup", and the wakeup behavior will be back like it
-> was before these patches. So in other words, the patches only
-> change the default enablement setting, and don't mess with the
-> ability to generate wakeups. Or does disabling the "freeze" option
-> for /sys/power/state mean that there's no scenario where wakeups
-> are useful, so the enabling vs. disabling of wakeups is moot?
-There is no scenario where wakeups are useful for keyboard and mouse. 
-We wanted to remove them completely initially to support for 
-hibernation. But based on Dimitry's suggestion we choose to opt for
-default behaviour.
+> Thank you for the review! But I believe there is a misunderstanding. The point is that the code fragment affected by this patch is intended to make sure, that family is in range between 1 and NVDIMM_BUS_FAMILY_MAX. This is necessary because call_pkg contains user-provided data. However the implementation of these validity checks is erroneous and leads to passing an invalid value. The syzkaller report proves, that this bug can be triggered by a user. Here is an example to demonstrate, what exactly happens:
+ > 
+> 1. Let's say call_pkg->nd_family is equal to (1ull << 32).
+> 2. Expression (cmd == ND_CMD_CALL && call_pkg->nd_family) evaluates to true.
+> 3. Since family is of type int, and call_pkg->nd_family is u64, assigning call_pkg->nd_family to family will lead to a narrowing conversion.
+> 4. As a result, family equals to 0, which will be passed in to_nfit_bus_uuid() triggering the warning.
 > 
-> As you may have noticed, I've posted a patch with documentation
-> about how hibernation works for Hyper-V VMs [1], and I probably
-> should add a paragraph about wakeups. So I want to make sure
-> I'm understanding correctly.
+> Moreover, family may also be a negative integer (e.g. call_pkg->nd_family == ~(0ull)). This can lead to an undefined behaviour in test_bit() and potentially out-of-bounds in to_nfit_uuid(). Thus, even if triggering a WARN is not concerning, the bug still should be fixed.
+
+
+Hi Murad,
+
+Here's some general feedback for any Fix with a Fixes tag: the commit log
+needs to state the user visible impact. State what user action fails and
+include the actual error message that the user will see. That makes it
+possible for folks to search and discover if a patch fixes their problem.
+
+You've done some detailed sleuthing here but it's not clear that a
+user would recognize this issue if they hit it.
+
+--Alison
+
+
+snip
 > 
-> [1] https://lore.kernel.org/linux-hyperv/20241212231700.6977-1-mhklinux@outlook.com/
-> 
-> > 
-> > The keyboard/mouse were registered as wakeup devices because the
-> > VM needs to be woken up from the Suspend-to-Idle state after
-> > a user runs "echo freeze > /sys/power/state". It seems like
-> > the Suspend-to-Idle feature has no real users in practice, so
-> > let's no longer support that by returning -EOPNOTSUPP if a
-> > user tries to use that.
-> > 
-> > Fixes: 1a06d017fb3f ("Drivers: hv: vmbus: Fix Suspend-to-Idle for Generation-2 VM")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>>
-> > ---
-> > Changes in v4:
-> > * No change
-> > 
-> > Changes in v3:
-> > * Add "Cc: stable@vger.kernel.org" in sign-off area.
-> > 
-> > Changes in v2:
-> > * Add "#define vmbus_freeze NULL" when CONFIG_PM_SLEEP is not
-> >   enabled.
-> > ---
-> >  drivers/hv/vmbus_drv.c | 16 +++++++++++++++-
-> >  1 file changed, 15 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-> > index 6d89d37b069a..4df6b12bf6a1 100644
-> > --- a/drivers/hv/vmbus_drv.c
-> > +++ b/drivers/hv/vmbus_drv.c
-> > @@ -900,6 +900,19 @@ static void vmbus_shutdown(struct device *child_device)
-> >  }
-> > 
-> >  #ifdef CONFIG_PM_SLEEP
-> > +/*
-> > + * vmbus_freeze - Suspend-to-Idle
-> > + */
-> > +static int vmbus_freeze(struct device *child_device)
-> > +{
-> > +/*
-> > + * Do not support Suspend-to-Idle ("echo freeze > /sys/power/state") as
-> > + * that would require registering the Hyper-V synthetic mouse/keyboard
-> > + * devices as wakeup devices, which can abort hibernation/resume unexpectedly.
-> > + */
-> > +	return -EOPNOTSUPP;
-> > +}
-> > +
-> >  /*
-> >   * vmbus_suspend - Suspend a vmbus device
-> >   */
-> > @@ -938,6 +951,7 @@ static int vmbus_resume(struct device *child_device)
-> >  	return drv->resume(dev);
-> >  }
-> >  #else
-> > +#define vmbus_freeze NULL
-> >  #define vmbus_suspend NULL
-> >  #define vmbus_resume NULL
-> >  #endif /* CONFIG_PM_SLEEP */
-> > @@ -969,7 +983,7 @@ static void vmbus_device_release(struct device *device)
-> >   */
-> > 
-> >  static const struct dev_pm_ops vmbus_pm = {
-> > -	.suspend_noirq	= NULL,
-> > +	.suspend_noirq  = vmbus_freeze,
-> >  	.resume_noirq	= NULL,
-> >  	.freeze_noirq	= vmbus_suspend,
-> >  	.thaw_noirq	= vmbus_resume,
-> 
-> Immediately preceding this definition and initialization of
-> the vmbus_pm structure, there's a comment that talks
-> about supporting Suspend-To-Idle. Since the intent here is
-> to *not* support Suspend-To-Idle, that comment really
-> needs to be updated so it accurately reflects this change.
-> 
-> I can't help but also notice the bizarre situation with the
-> function names. The "freeze_noirq" function is named
-> "vmbus_suspend", and the "suspend_noirq" function is
-> named "vmbus_freeze". It certainly looks exactly backwards!
-> 
-> The "suspend_noirq" function should probably be named
-> "vmbus_suspend", but that name is already taken for use
-> in the hibernation path. I don't have a great suggestion on
-> how to fix this, other than to rename vmbus_suspend() to
-> vmbus_freeze(). That change wouldn't be that hard to do,
-> though then vmbus_freeze() ends up calling the "suspend"
-> function in struct hv_driver. Fixing the name in struct
-> hv_driver is harder because most VMBus drivers would need
-> to be updated. Sigh.
-> 
-> But it might be worth fixing the top-level function names
-> of both vmbus_suspend() and vmbus_resume() so they
-> don't look misused as the freeze/thaw and poweroff/restore
-> functions. And then the suspend_noirq function could be
-> named vmbus_suspend() so it makes sense.
-> 
-Thanks for the suggestion Micheal. I will work on it as a separate
-patch.
-> Michael
 
