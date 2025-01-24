@@ -1,117 +1,192 @@
-Return-Path: <stable+bounces-110382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D84A1B7A3
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 15:12:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F7FA1B7B8
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 15:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B8087A2502
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 14:11:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F2A188E0AD
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 14:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEA04EB48;
-	Fri, 24 Jan 2025 14:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A422130A73;
+	Fri, 24 Jan 2025 14:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GAltIYKe"
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="haXuFAz4"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB1D82D98
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 14:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0B86320;
+	Fri, 24 Jan 2025 14:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737727916; cv=none; b=ISNca/uH28Jgml4qx0ZlAfdAuXmlNQc00p/J3KlhE0nfm4/7jeVET6pFX6AB2cKvzgudNmskjT6AJ/AhkCu3aae+1Hq82AkBRtMNXjeFl93C2KHH8mKCNZwFsy4Dnd6F94Fg11YLUVufZG30s2MEo7Ti4yN9YJa2a0xK7J55tTc=
+	t=1737728288; cv=none; b=NHKaHVipf1lZLJDKYiKJOTQMIuicUtrW7vDN65zWw0xkFnMPTXxbDukurm98w2zaNeaEgUhjL2i+5yqULq3eRMSly68OIABhjR1wNocfn4Qn1/TAFO390a7J7mXy/27iNz5kNA4SaNHXbiZ4sdPBHaSqNhVznnD7X4iocrXBFWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737727916; c=relaxed/simple;
-	bh=VdtKZQBkxO7tZUx9UiwHnwjq3NKxNqUPrRMq/E4Yx2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rycolo3M5La80Bg8UhY6dINirrLK+Vikm564KwkdPHQqq1ppQx+1UPfUDft5FMDZ/MKpkAw8LczpMfD2QZaTMEs8EJgO3XMv9Co2XqocCxw07AMCgin13z/BD0jP6Zwz4Is/tPJIhNTF6h/3uS6ZcKfotkEGnCFzD8Fj9fJV5to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GAltIYKe; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737727913;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zb3gGiD6zuZPuIs92MRj+WLBlMtNhGlUskbMa7ld43k=;
-	b=GAltIYKeSJCb/a2QGseMsBtThKV92CWMffANEjbph9lVEdpAeS9VfWfBH1I2Ae3NsXXd1X
-	VKMBu9SAlN6TXnXlYjlU74QPNWrvFKeicSjhKzIB1ADfGzZeVz/oX4XhrjA+fwHbaUqZ/L
-	M2o4ZdHerHkFi91mK9oBy5p6cNLc5gc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-4uq-4AjrP3GZAATjc0K1bQ-1; Fri,
- 24 Jan 2025 09:11:50 -0500
-X-MC-Unique: 4uq-4AjrP3GZAATjc0K1bQ-1
-X-Mimecast-MFC-AGG-ID: 4uq-4AjrP3GZAATjc0K1bQ
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DA5AB1801F1A;
-	Fri, 24 Jan 2025 14:11:48 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.39.193.77])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3BF561800348;
-	Fri, 24 Jan 2025 14:11:46 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Dave Airlie <airlied@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v2] drm/ast: Fix ast_dp connection status
-Date: Fri, 24 Jan 2025 15:11:31 +0100
-Message-ID: <20250124141142.2434138-1-jfalempe@redhat.com>
+	s=arc-20240116; t=1737728288; c=relaxed/simple;
+	bh=vMcNKfUrr6kvw1KTDIL8NbPVXX6x6jNASGpvfFsjVhM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UA9uHUKMoM0ZXHfBXRxaFxLE0SIwtABrA50QLXMmULH2aS/ZcPnsXGF8Cq8v2cEr7Np7ENdOVpAKtmB0F4rfdbEPfsIOUZya4YA8PaVcTH46Bfur5Bh5EBv/peOfSMmVdcAVF4/wZGn7qrcG+Zq6qQtJUoSWzV8Qeg7nVudu2Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=haXuFAz4; arc=none smtp.client-ip=81.200.124.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
+Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
+	by ksmg02.maxima.ru (Postfix) with ESMTP id 942041E0007;
+	Fri, 24 Jan 2025 17:17:53 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 942041E0007
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
+	s=sl; t=1737728273; bh=mhAYYhkyZeToCP7bA5KTLaEmT6/0G2AimppcOQ85rPY=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version:From;
+	b=haXuFAz48hQSn0XvM23sNjt2my/syiGnceq51w4AeIb3ZHknXMh2eXSV63dHQuZnw
+	 NEnCCBSRtwu7N8sbMVvPxbv3tLnOiZi1M0pebBtO9e2khnm895tqEMcWplUtMCaXbh
+	 dWgQPmqQkuze8tkH/RY0qxdikJMoR9Mae8D3lEggMeXpHilRBD4adYP3Xakjutxdvo
+	 Aofw7+XlVHQzXMVZAG4/SSMR9PirBLDOd6OfCGTWM6CSlb02klUuGy4NZ7k2UoEGCB
+	 qqkVhhRUiz6Q8+w+H/OZI7Yw7JwkRm+GYEC1V/di79W5Y480SDtJ/SOoL5DLhsZXPl
+	 0ffjli/MRzLgQ==
+Received: from ksmg02.maxima.ru (mail.maxima.ru [81.200.124.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg02.maxima.ru (Postfix) with ESMTPS;
+	Fri, 24 Jan 2025 17:17:53 +0300 (MSK)
+Received: from mmail-p-exch02.mt.ru (81.200.124.62) by mmail-p-exch02.mt.ru
+ (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 24 Jan
+ 2025 17:17:51 +0300
+Received: from mmail-p-exch02.mt.ru ([fe80::5fe7:9066:a884:475c]) by
+ mmail-p-exch02.mt.ru ([fe80::5fe7:9066:a884:475c%9]) with mapi id
+ 15.02.1544.004; Fri, 24 Jan 2025 17:17:51 +0300
+From: "Murad Masimov " <m.masimov@mt-integration.ru>
+To: Dave Jiang <dave.jiang@intel.com>, Dan Williams <dan.j.williams@intel.com>
+CC: Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	"nvdimm@lists.linux.dev" <nvdimm@lists.linux.dev>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com"
+	<syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com>
+Subject: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Thread-Topic: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit_ctl
+Thread-Index: AQHbbbW+YWbRIqLg90Kdd63unsRF6rMk03WAgADVgoY=
+Date: Fri, 24 Jan 2025 14:17:51 +0000
+Message-ID: <741f409ae5be4f1f9b62d9223f026e26@mt-integration.ru>
+References: <20250123163945.251-1-m.masimov@mt-integration.ru>,<649ed1bb-0686-42f0-802f-9f1909aeed8c@intel.com>
+In-Reply-To: <649ed1bb-0686-42f0-802f-9f1909aeed8c@intel.com>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/01/24 12:55:00
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=mt-integration.ru;spf=none smtp.mailfrom=mt-integration.ru;dkim=none
+X-KSMG-AntiSpam-Envelope-From: m.masimov@mt-integration.ru
+X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {rep_avail}, {Tracking_one_url, url3}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;mt-integration.ru:7.1.1;syzkaller.appspot.com:7.1.1,5.0.1;81.200.124.62:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;ksmg02.maxima.ru:7.1.1, FromAlignment: s, ApMailHostAddress: 81.200.124.62
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 190558 [Jan 24 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.7
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2025/01/24 11:37:00 #27111174
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/01/24 12:55:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 7
 
-ast_dp_is_connected() used to also check for link training success
-to report the DP connector as connected. Without this check, the
-physical_status is always connected. So if no monitor is present, it
-will fail to read the EDID and set the default resolution to 640x480
-instead of 1024x768.
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 2281475168d2 ("drm/ast: astdp: Perform link training during atomic_enable")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.12+
----
- drivers/gpu/drm/ast/ast_dp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+________________________________________
+=EF=D4: Dave Jiang <dave.jiang@intel.com>
+=EF=D4=D0=D2=C1=D7=CC=C5=CE=CF: 24 =D1=CE=D7=C1=D2=D1 2025 =C7. 2:43
+=EB=CF=CD=D5: Masimov Murad; Dan Williams
+=EB=CF=D0=C9=D1: Vishal Verma; Ira Weiny; Rafael J. Wysocki; Len Brown; nvd=
+imm@lists.linux.dev; linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.o=
+rg; lvc-project@linuxtesting.org; stable@vger.kernel.org; syzbot+c80d8dc0d9=
+fa81a3cd8c@syzkaller.appspotmail.com
+=F4=C5=CD=C1: Re: [PATCH] acpi: nfit: fix narrowing conversion in acpi_nfit=
+_ctl
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index 0e282b7b167c..30aad5c0112a 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -17,6 +17,12 @@ static bool ast_astdp_is_connected(struct ast_device *ast)
- {
- 	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, AST_IO_VGACRDF_HPD))
- 		return false;
-+	/*
-+	 * HPD might be set even if no monitor is connected, so also check that
-+	 * the link training was successful.
-+	 */
-+	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, AST_IO_VGACRDC_LINK_SUCCESS))
-+		return false;
- 	return true;
- }
- 
+> On 1/23/25 9:39 AM, Murad Masimov wrote:
+> > Syzkaller has reported a warning in to_nfit_bus_uuid(): "only secondary
+> > bus families can be translated". This warning is emited if the argument
+> > is equal to NVDIMM_BUS_FAMILY_NFIT =3D=3D 0. Function acpi_nfit_ctl() f=
+irst
+> > verifies that a user-provided value call_pkg->nd_family of type u64 is
+> > not equal to 0. Then the value is converted to int, and only after that
+> > is compared to NVDIMM_BUS_FAMILY_MAX. This can lead to passing an inval=
+id
+> > argument to acpi_nfit_ctl(), if call_pkg->nd_family is non-zero, while
+> > the lower 32 bits are zero.
+> >
+> > All checks of the input value should be applied to the original variabl=
+e
+> > call_pkg->nd_family.
+> >
+> > Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> >
+> > Fixes: 6450ddbd5d8e ("ACPI: NFIT: Define runtime firmware activation co=
+mmands")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: syzbot+c80d8dc0d9fa81a3cd8c@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3Dc80d8dc0d9fa81a3cd8c
+> > Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+>=20
+> While the change logically makes sense, the likelihood of nd_family > int=
+_size is not ever likely. Given that NVDIMM_BUS_FAMILY_MAX is defined as 1,=
+ I don't think we care about values greater than that regardless of what is=
+ set in the upper 32bit of the u64. I'm leaning towards the fix is unnecess=
+ary.
 
-base-commit: 798047e63ac970f105c49c22e6d44df901c486b2
--- 
-2.47.1
+Thank you for the review! But I believe there is a misunderstanding. The po=
+int is that the code fragment affected by this patch is intended to make su=
+re, that family is in range between 1 and NVDIMM_BUS_FAMILY_MAX. This is ne=
+cessary because call_pkg contains user-provided data. However the implement=
+ation of these validity checks is erroneous and leads to passing an invalid=
+ value. The syzkaller report proves, that this bug can be triggered by a us=
+er. Here is an example to demonstrate, what exactly happens:
+
+1. Let's say call_pkg->nd_family is equal to (1ull << 32).
+2. Expression (cmd =3D=3D ND_CMD_CALL && call_pkg->nd_family) evaluates to =
+true.
+3. Since family is of type int, and call_pkg->nd_family is u64, assigning c=
+all_pkg->nd_family to family will lead to a narrowing conversion.
+4. As a result, family equals to 0, which will be passed in to_nfit_bus_uui=
+d() triggering the warning.
+
+Moreover, family may also be a negative integer (e.g. call_pkg->nd_family =
+=3D=3D ~(0ull)). This can lead to an undefined behaviour in test_bit() and =
+potentially out-of-bounds in to_nfit_uuid(). Thus, even if triggering a WAR=
+N is not concerning, the bug still should be fixed.
+
+> > ---
+> >  drivers/acpi/nfit/core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > index a5d47819b3a4..ae035b93da08 100644
+> > --- a/drivers/acpi/nfit/core.c
+> > +++ b/drivers/acpi/nfit/core.c
+> > @@ -485,7 +485,7 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_=
+desc, struct nvdimm *nvdimm,
+> >               cmd_mask =3D nd_desc->cmd_mask;
+> >               if (cmd =3D=3D ND_CMD_CALL && call_pkg->nd_family) {
+> >                       family =3D call_pkg->nd_family;
+> > -                     if (family > NVDIMM_BUS_FAMILY_MAX ||
+> > +                     if (call_pkg->nd_family > NVDIMM_BUS_FAMILY_MAX |=
+|
+> >                           !test_bit(family, &nd_desc->bus_family_mask))
+> >                               return -EINVAL;
+> >                       family =3D array_index_nospec(family,
+> > --
+> > 2.39.2
+> >
 
 
