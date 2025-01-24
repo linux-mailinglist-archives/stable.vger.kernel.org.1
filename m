@@ -1,177 +1,184 @@
-Return-Path: <stable+bounces-110361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D3DA1B06F
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 07:36:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA6CA1B0C4
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 08:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1B03AC5F6
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 06:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24431168CB6
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 07:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B111D90A7;
-	Fri, 24 Jan 2025 06:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C611DB12E;
+	Fri, 24 Jan 2025 07:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="V7rZp0U4"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZdtWuQAi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40EC1D5CD4;
-	Fri, 24 Jan 2025 06:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DFA1D88BE
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 07:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737700561; cv=none; b=AJi9dHdYDgdX8gFk53rlZ2tZ5aquRn5t8kSgLfXDDkodMkSSekCr7B47SvW18vLmijCAOZB939Y0P4Z0IgNnN2aLx9N0NqRT6vUsrSg9SiQrpZd8nOksnsfCPEa2yiaoTUzDyMp95QGukCDlUFQH/L0GH7jBc/9w8jwg/CwdH7Q=
+	t=1737703256; cv=none; b=q7WYAKf67BXXbKYe92fWK33JQiw1pvI9N73gdi/Vhl2DUigd2oxoAfWf5vX95pqJTqjdFdUPSC3ZqJWUKcctWVQ0U/COZwKTQsu5xD7eULB2fQ7I/+k1O0fLrp36b6NELuNhku8/GWRmsBfnzWCNBkZlMW59dRrw3ozZ9zJdXSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737700561; c=relaxed/simple;
-	bh=WehGuOZPruh3HK8C0tSDDUs3YUz71+0V2RKd11uplro=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=OUfCccqnL27B7howOr0Q9k5VbhpExM6A2T6Cq2Ifu/dnT3865j3x4peBoIE/spL3xQ04ZstfKnI/wVGB5aMFYBrPhG7W3OF6TLjgCu5YGsVJXRY49FfyHqqlyXl2lbzoe0Ue7ilrt+P4547meCmlV+Y1zNNA7cIS+t73XH9CLH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=V7rZp0U4; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1737703256; c=relaxed/simple;
+	bh=sPH5XD4Ql4nTiFx2aUIrFzEBL8VQs0STJlcMk0WQEC8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Oen44jAMnqJ7h0DanjqUfu+hTbKCx8o2xCabUUexvAomlcvUoOWtSJJdVyFA4ILUxVEXgpFu2Rx+VYjLqYH1SW+fWY+Zcgyo5wsk4RQX74ximRdThOoDNCbdipRI7ZXG2AY96aY7/KNyWU/WHndnZ8F2G+nErbyWD42hWNeJ/iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZdtWuQAi; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5f2d8e590e2so211027eaf.3
+        for <stable@vger.kernel.org>; Thu, 23 Jan 2025 23:20:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1737703253; x=1738308053; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1o1K/JB2XR1f5n0h8797pNwCCNLrErJQ179f5P2ssZ0=;
+        b=ZdtWuQAiZCzy6a6m6j8Lj+7Jq5umG3qO9klBBS5qwmZhvC/McSeTQ0HGcmHpOeIUa7
+         m/ebaR+Tm4gAdOWGBWDBNA94/1abuhYw1cMc1AdEPJwkCZo/Ezhb26CzkTB2ptSQyUYk
+         uoGzb8i4osrwaFVIQt/h/ZaeWG+HipdpkOm4U=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737703253; x=1738308053;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1o1K/JB2XR1f5n0h8797pNwCCNLrErJQ179f5P2ssZ0=;
+        b=No1ssgEQFW4SjnMemrU+D/e8DxIgoYXGtabvT0U/Iku6GJnyqcj1aHJc6GqEvRQv+z
+         K3AmZLnZ3Mu5TwbWH288PEk2iIu0vI0MyIyfr/dtXumkZFbgbNb8NqFtKdJ6yEAspFzV
+         d9EcqsaHLalcS9ISRouj9wGGqVZVMF4bUi1XBMji93lhJcQNwzKJukstkClIqeJJfzaZ
+         Hdlh98Tu0ofhoqBxhw2047RftDl1w0abVTj2WGsgFfbr2rBFQlJk6W9kLzzC7FBM3Hp6
+         xWE4x4752yVyz5HSrL6vmC1TxrC2bVWjKtGO96nrRBrlcwE0CCx6ovxlcmuRKuJYVI8J
+         dsyg==
+X-Gm-Message-State: AOJu0Yxy4/tfpqQdIQG9glCOpgq3qxqwZPS04XCjps59gbFoAUY8Hlvl
+	ozMCgA4lN3xaQz/ygLZA6vp7/uT2V3KNtzaNkUo3QWJIqbGBKyG8bsiKa+77w//dkBMav6BZMu+
+	qk/Ft/xrUArRsTqKo7scMGjCZlnDSUIaxcPUIXZ+FsUlmBhfWhUGd+Ns+6hxXvCmrNTkWTCk9cu
+	M917H+mBpJ80QUv21tVlsYlfGwKXFQWHjl7DAhItU5b6ucSRsVBlEIKdYu0wiMsKg=
+X-Gm-Gg: ASbGncudcdsXEz3ZGYjWQW/EgZnszMYdic7axyjkpo0lOxLLUSiXAPw3dg0iAcAtlsU
+	G+UUvwQ++cStchvve4+m6Xmcvvx8GbuyqiO4GkgqmExjFs5AzYc2WD9UOxjG4IjGlu5z0D4Hs8Z
+	zt4dxEh5qB0/uGCbqNLv/HR2n7zBgETy/RnK+WOyEduBKFQ3HyXqogG1eWEIMjn3Btk0W9oHc/4
+	CzepwRHfdoEuTFKIuP1wgN9ztli7riczrU2V9ZwtNxCPnOG6N5eEYzks2rURxqr8WPmyztwSgpQ
+	WCOFAXgs67irBk5B9BOdOoUyPD5ygoWkHKT4ATzHjKUGD9NO
+X-Google-Smtp-Source: AGHT+IHZldH01kYElNZnAI13F6z/szWcYyFhNGzqChJnu6ui+DTeuDlFA51IAVpPEsPU+wsGO26fsA==
+X-Received: by 2002:a05:6871:339c:b0:29e:51ca:68ae with SMTP id 586e51a60fabf-2b1c0616e24mr5207177fac.0.1737703252872;
+        Thu, 23 Jan 2025 23:20:52 -0800 (PST)
+Received: from kk-ph5.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b28f0fad54sm432960fac.3.2025.01.23.23.20.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2025 23:20:51 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v2 v5.10.y] Bluetooth: RFCOMM: Fix not validating setsockopt user input
+Date: Fri, 24 Jan 2025 07:20:47 +0000
+Message-Id: <20250124072047.5320-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.39.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1737700551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yDcVaVVMzrXp9l580+Ibh1Pcrfg4xdal5MP+F108Ii4=;
-	b=V7rZp0U47HCH4FUtf6IyKFL7rtDgum7Ud4Vaha/e1ppJBCu+Rkeo6qkO/da+tnAvVu5Oln
-	vAy3Uuxq7HvTq9OsNkRaoIQJbdcYQXun/CDw5H8ivsu0PAtAuf2YBwsKGhB91FLiBIaTVJ
-	VLCsJXbS196nQF5idKZ/Io+zLZDdDvTs9nrIkBnsSq0v436BKJSpMbEt0PARPWn5ClCenE
-	r2SMOEBy2/RAbJvGsRSERPjqKzjGzwYL0u90eGnNFDskz8LIv8eE+tZonUmJtVKNQgUI6J
-	QLghRufuU70FSaRfLVD22ZJ0BhxYCC6chXxW/nUmTtM+sas+WrFbA/T9H6mNvA==
-Date: Fri, 24 Jan 2025 07:35:50 +0100
-From: Dragan Simic <dsimic@manjaro.org>
-To: Tianling Shen <cnsztl@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Jonas
- Karlman <jonas@kwiboo.se>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Peter Geis
- <pgwipeout@gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: change eth phy mode to rgmii-id for
- orangepi r1 plus lts
-In-Reply-To: <98387508-10de-4c2e-80ad-05d0d86b7006@gmail.com>
-References: <20250119091154.1110762-1-cnsztl@gmail.com>
- <ce15f141688c4c537ac3307b6fbed283@manjaro.org>
- <59893a67-18c7-4ab3-9b2a-5a17091d4b6c@gmail.com>
- <dffd06a341b58e9689f578c3456cc11d@manjaro.org>
- <65f4e27f-3dc4-4eaf-be4d-265ce0325ade@gmail.com>
- <98387508-10de-4c2e-80ad-05d0d86b7006@gmail.com>
-Message-ID: <59e46b34e1c8f9197565fea917335d3f@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-Hello Tianling,
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-On 2025-01-24 07:28, Tianling Shen wrote:
-> On 2025/1/19 23:48, Tianling Shen wrote:
->> On 2025/1/19 19:36, Dragan Simic wrote:
->>> On 2025-01-19 12:15, Tianling Shen wrote:
->>>> On 2025/1/19 17:54, Dragan Simic wrote:
->>>>> Thanks for the patch.  Please, see a comment below.
->>>>> 
->>>>> On 2025-01-19 10:11, Tianling Shen wrote:
->>>>>> In general the delay should be added by the PHY instead of the 
->>>>>> MAC,
->>>>>> and this improves network stability on some boards which seem to
->>>>>> need different delay.
->>>>>> 
->>>>>> Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi 
->>>>>> R1 Plus LTS")
->>>>>> Cc: stable@vger.kernel.org # 6.6+
->>>>>> Signed-off-by: Tianling Shen <cnsztl@gmail.com>
->>>>>> ---
->>>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 3 
->>>>>> +--
->>>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts     | 1 
->>>>>> +
->>>>>>  arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi    | 1 
->>>>>> -
->>>>>>  3 files changed, 2 insertions(+), 3 deletions(-)
->>>>>> 
->>>>>> diff --git
->>>>>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>>>>> index 67c246ad8b8c..ec2ce894da1f 100644
->>>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
->>>>>> @@ -17,8 +17,7 @@ / {
->>>>>> 
->>>>>>  &gmac2io {
->>>>>>      phy-handle = <&yt8531c>;
->>>>>> -    tx_delay = <0x19>;
->>>>>> -    rx_delay = <0x05>;
->>>>>> +    phy-mode = "rgmii-id";
->>>>> 
->>>>> Shouldn't the "tx_delay" and "rx_delay" DT parameters be converted
->>>>> into the "tx-internal-delay-ps" and "rx-internal-delay-ps" 
->>>>> parameters,
->>>>> respectively, so the Motorcomm PHY driver can pick them up and
->>>>> actually configure the internal PHY delays?
->>>> 
->>>> The documentation[1] says "{t,r}x-internal-delay-ps" default to 1950
->>>> and that value already works fine on my board.
->>>> 
->>>> 1. https://www.kernel.org/doc/Documentation/devicetree/bindings/net/ 
->>>> motorcomm%2Cyt8xxx.yaml
->>> 
->>> I see, but those values differ from the values found in the
->>> "tx_delay" and "rx_delay" DT parameters, so I think this patch
->>> should be tested with at least one more Orange Pi R1 Plus LTS
->>> board, to make sure it's all still fine.
->> 
->> This patch has been tested on 2 boards, and we will do more tests in 
->> next week.
->> 
-> 
-> Managed to test on another board and looks so far so good.
-> (Working network connection, no packet drop)
+[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
 
-Sounds good to me, thanks for the additional testing.
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
->>>>>>      status = "okay";
->>>>>> 
->>>>>>      mdio {
->>>>>> diff --git 
->>>>>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>>>>> index 324a8e951f7e..846b931e16d2 100644
->>>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dts
->>>>>> @@ -15,6 +15,7 @@ / {
->>>>>> 
->>>>>>  &gmac2io {
->>>>>>      phy-handle = <&rtl8211e>;
->>>>>> +    phy-mode = "rgmii";
->>>>>>      tx_delay = <0x24>;
->>>>>>      rx_delay = <0x18>;
->>>>>>      status = "okay";
->>>>>> diff --git 
->>>>>> a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>>>>> b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>>>>> index 4f193704e5dc..09508e324a28 100644
->>>>>> --- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>>>>> +++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus.dtsi
->>>>>> @@ -109,7 +109,6 @@ &gmac2io {
->>>>>>      assigned-clocks = <&cru SCLK_MAC2IO>, <&cru SCLK_MAC2IO_EXT>;
->>>>>>      assigned-clock-parents = <&gmac_clk>, <&gmac_clk>;
->>>>>>      clock_in_out = "input";
->>>>>> -    phy-mode = "rgmii";
->>>>>>      phy-supply = <&vcc_io>;
->>>>>>      pinctrl-0 = <&rgmiim1_pins>;
->>>>>>      pinctrl-names = "default";
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Keerthana: No changes from v1
+            link to v1:
+            https://lore.kernel.org/stable/2025012010-manager-dreamlike-b5c1@gregkh/]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+---
+ net/bluetooth/rfcomm/sock.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index ae6f80730561..56360da0827c 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -657,7 +657,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
+ 
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+@@ -692,7 +692,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
+ 
+ 	BT_DBG("sk %p", sk);
+@@ -714,11 +713,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -734,10 +731,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+-- 
+2.39.4
+
 
