@@ -1,130 +1,123 @@
-Return-Path: <stable+bounces-110372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58C1A1B27A
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 10:19:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B538CA1B295
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 10:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0890188F94E
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 09:19:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615E83A7EAC
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 09:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829991F5404;
-	Fri, 24 Jan 2025 09:19:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HeX8lRsg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3FE218EBF;
+	Fri, 24 Jan 2025 09:28:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B19B320B;
-	Fri, 24 Jan 2025 09:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7931DB13B;
+	Fri, 24 Jan 2025 09:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737710382; cv=none; b=rUE7sAd1QWsVEnj8e1vGYsIO8e9RvohQGcT1E/oZ0nOgZqV0sRPQYSfLk0G07T5uP1evthKYOtiJE0+sUYRxOehbtp0Ni0lSi2ReKnK16HYKrY3jGiywEZfp0dNXlxLrUuTAQNexrsNfHcn92PezsMHHrV+wN+Do03BcPesRTLQ=
+	t=1737710930; cv=none; b=JegO3CO1voKZS7mj//TkrqWihIITLM0JzgsfNLY+cCg6BTfEsoRvkrJnKIZqg3a3wXFIxN7cc3H94s1l/lfNAVEMvFCrXwBJMY9jF2gMKJK2R+taPLX9nzathcxBurlW0Trzgp9T1JyPX2vR03ydnoDDhIDGWqyTQjUbRfkD9cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737710382; c=relaxed/simple;
-	bh=A1cfsVXr7AvdNLQPHVsurlhZ45q/aSIpKhMicMhh7to=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=hBeRRK6bog/FypPRxfBU20/O4iacuwOVDb40JQA+6+OE/v4oRpa7zjZzKQHY/JPoPorQqCQxalBZjh7THpU62JF/VSVYBiKBLLdlJuJFwMwgUV9KqSP1TJQXP1w/QQOZ77dgDaSVX+cc5PAePuPiJLXsi+9YVAOaw5vR5Cghg48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HeX8lRsg; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737710381; x=1769246381;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=A1cfsVXr7AvdNLQPHVsurlhZ45q/aSIpKhMicMhh7to=;
-  b=HeX8lRsgAAH0VAkUifbfPuFCLlodCyfiDmjPU9MsKsKlqiSZjnaD+uif
-   AD9kYhhZzD5P35uWNwQ5HDPd0UhbThfjjpVf/zFHlE2zecTJiBZ3Z4gyF
-   pa6UGqjkoxEnAalmBQAZHxrFz2Ok+D1KakWdC0dIgDySbqUkdromMgVVQ
-   2KLe4Lxz5ecF9FiQNnAQeYmLeP7gN/IJh/exBPLp1OFmTjQTW7H8o/E9E
-   1Yu/UysEEEw0VAO2hAAfW4o03MeeLpGJAMI7cV+4c6Fpqw1WvDnMiOVLR
-   1VVn/y1pOVevLEy4J8IrCFHuS0SUdpxGJLMCL6WlJvTksid9EG1oR3urE
-   w==;
-X-CSE-ConnectionGUID: rNEtfK/bRKe3l65v9K0WGQ==
-X-CSE-MsgGUID: b1TevFXiTKG/K+T2wyQt6Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11324"; a="60704099"
-X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; 
-   d="scan'208";a="60704099"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 01:19:41 -0800
-X-CSE-ConnectionGUID: 9Bu5H3ndR7CU2ohHg1dEtw==
-X-CSE-MsgGUID: BhGLZww2S2OA64ZDYqJtpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,230,1732608000"; 
-   d="scan'208";a="107842091"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.158])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 01:19:36 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 24 Jan 2025 11:19:33 +0200 (EET)
-To: Ma Ke <make24@iscas.ac.cn>
-cc: bhelgaas@google.com, yinghai@kernel.org, rafael.j.wysocki@intel.com, 
-    akpm@linux-foundation.org, linux-pci@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 RESEND] PCI: fix reference leak in
- pci_alloc_child_bus()
-In-Reply-To: <20250119070550.2278800-1-make24@iscas.ac.cn>
-Message-ID: <46c252b0-880c-aca1-f6e5-c78ebe28a7a0@linux.intel.com>
-References: <20250119070550.2278800-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1737710930; c=relaxed/simple;
+	bh=nPS5b53Zs0G6o2sflMrmSqcRN33SVACBD4jaF7mu+mc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bb+L7jwBjdS03d3bhp2y07WL3TqkAb3aeffKZQNYOb0hm3l1GwJjErL3Wga8bY5ecCjbRXUxMNelRYq95hV9MBjW5CipqTmzMK/QVyDIzlGKAju56+xWkvclkr7U4T5ydevMRNZ5WT3TtJlwMXTuzRm3XtmDWCnzMjlX0qvffIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC80C497;
+	Fri, 24 Jan 2025 01:29:14 -0800 (PST)
+Received: from [10.57.95.225] (unknown [10.57.95.225])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 716153F694;
+	Fri, 24 Jan 2025 01:28:44 -0800 (PST)
+Message-ID: <738fc4af-cbee-4d14-a9eb-0932ecc3371f@arm.com>
+Date: Fri, 24 Jan 2025 09:28:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] mm: Clear uffd-wp PTE/PMD state on mremap()
+Content-Language: en-GB
+To: Peter Xu <peterx@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+ Shuah Khan <shuah@kernel.org>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Miko=C5=82aj_Lenczewski?= <miko.lenczewski@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+References: <20250107144755.1871363-1-ryan.roberts@arm.com>
+ <20250107144755.1871363-2-ryan.roberts@arm.com>
+ <850479be-000a-45a7-9669-491d4200a988@arm.com> <Z5J_FLry1C2d3BKv@x1n>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <Z5J_FLry1C2d3BKv@x1n>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, 19 Jan 2025, Ma Ke wrote:
-
-> When device_register(&child->dev) failed, calling put_device() to
-> explicitly release child->dev. Otherwise, it could cause double free
-> problem.
-
-While the code fix seem okay, this double free part in the problem 
-description isn't. The reference is held w/o this fix so it's not getting 
-freed at all, let alone freed twice.
-
-> device_register() includes device_add(). As comment of device_add()
-> says, 'if device_add() succeeds, you should call device_del() when you
-> want to get rid of it. If device_add() has not succeeded, use only
-> put_device() to drop the reference count'.
+On 23/01/2025 17:40, Peter Xu wrote:
+> On Thu, Jan 23, 2025 at 02:38:46PM +0000, Ryan Roberts wrote:
+>>> @@ -5470,7 +5471,18 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+>>>  		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+>>>  
+>>>  	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+>>> -	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+>>> +
+>>> +	if (need_clear_uffd_wp && pte_marker_uffd_wp(pte))
+>>> +		huge_pte_clear(mm, new_addr, dst_pte, sz);
+>>
+>> This is checking if the source huge_pte is a uffd-wp marker and clearing the
+>> destination if so. The destination could have previously held arbitrary valid
+>> mappings, I guess?
 > 
-> Found by code review.
+> I think it should be all cleared.  I didn't check all mremap paths, but for
+> MREMAP_FIXED at least there should be:
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v2:
-> - added the bug description about the comment of device_add();
-> - fixed the patch as suggestions;
-> - added Cc and Fixes table.
-> ---
->  drivers/pci/probe.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> 	if (flags & MREMAP_FIXED) {
+> 		/*
+> 		 * In mremap_to().
+> 		 * VMA is moved to dst address, and munmap dst first.
+> 		 * do_munmap will check if dst is sealed.
+> 		 */
+> 		ret = do_munmap(mm, new_addr, new_len, uf_unmap_early);
+> 		if (ret)
+> 			goto out;
+> 	}
 > 
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 2e81ab0f5a25..ae12f92c6a9d 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
->  add_dev:
->  	pci_set_bus_msi_domain(child);
->  	ret = device_register(&child->dev);
-> -	WARN_ON(ret < 0);
-> +	if (WARN_ON(ret < 0)) {
-> +		put_device(&child->dev);
-> +		return NULL;
-> +	}
->  
->  	pcibios_add_bus(child);
->  
-> 
+> It also doesn't sound right to leave anything in dest range, 
 
--- 
- i.
+Yes, of course. And the loop over the old ptes actually skips doing anything if
+the old pte is none without doing any operations on the new pte; so it must be
+none by default. OK panic over! I just need to fix the arm64 issue I raised in
+the other email. I'm going to send a bunch of fixes/improvements in that area.
+
+Thanks,
+Ryan
+
+
+> e.g. if there
+> can be any leftover dest ptes in move_page_tables(), then it means
+> HPAGE_P[MU]D won't work, as they install huge entries directly.  For that I
+> do see a hint in the comment too in that path:
+> 
+> move_normal_pud():
+> 	/*
+> 	 * The destination pud shouldn't be established, free_pgtables()
+> 	 * should have released it.
+> 	 */
+> 	if (WARN_ON_ONCE(!pud_none(*new_pud)))
+> 		return false;
+> 
+> PMD path has similar implications.
+> 
+> Thanks,
+> 
 
 
