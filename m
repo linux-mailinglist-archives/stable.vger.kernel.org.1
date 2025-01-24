@@ -1,85 +1,62 @@
-Return-Path: <stable+bounces-110398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B11A1BC7A
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB34A1BCB5
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 20:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E509C3A5667
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 18:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09A083A21EA
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 19:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8061224893;
-	Fri, 24 Jan 2025 18:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAB221ADAC;
+	Fri, 24 Jan 2025 19:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H6NCs46k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UE1LPkkK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A3B146A9B;
-	Fri, 24 Jan 2025 18:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ACCCA64;
+	Fri, 24 Jan 2025 19:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737744818; cv=none; b=INdKRhXogKLGX+xnPKr0WuuvW84fSbLAn3Vit9SMjqHoPONfD94YVBOaWix9LvftFlAbkHgsWgPVERXV2cGdrFnjA0ML7M/dl486lbyUL1knKsQ/Kfsk9UDVgQLhNxVFzWCvGH/o5XecbO4IokJXFie+iOtz+DyBFmSWS+x5X/g=
+	t=1737746390; cv=none; b=uos/b5Ssnb1jkYdR4uFdU1YUbYLldA2jmrsjShf0mvZppa9hkm/xNW4f9yq5gYzHVxGiOZs8dKN6TXPvLc/LOn7mSG23eka4cTE+ghn4E6CMLCVjwFr2gl8o5bZLZFBYPoJ5KzgCTBkG6x9R6559/efbRb+l+Hvd7qMR0+SA+mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737744818; c=relaxed/simple;
-	bh=U3qVEW0/wa8Sw4O5Zk6F+Bi7rQA/gwwJ+Q3Zs0TVniQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IKXoQOFbUoV1+GJisJnBMaP8lw8lvZcUwnjsAxizhDnYpw6ZOC2SI2fa4wDaZn2ciARb/ovJ+MFPB1wJMfMRW3DumcfSqU9yhKynSTbNMkWvq1n+zCYjyhuRNFCyUeBnrbESUR8h+LzU6mZ5IwFXcAN/A7O7a8vAqk3ZVBqphnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H6NCs46k; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-436249df846so16640105e9.3;
-        Fri, 24 Jan 2025 10:53:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737744814; x=1738349614; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XMLPuUT3d2AnF2eXRgJOzlbcZfjko/BgkONjKBbrmiY=;
-        b=H6NCs46kSUMAc9OC2S/Bd5x4QW+T20v4p52TuWjqL8oV+vAb+uuNTPFoHD/iDAEkTC
-         MXcdxKKKVx+xMHsPOZEhmv9bc0sB8ghuCsfcbogM9pT4198uycCl7YlNzIiGF1W3sIya
-         Va5mlrXb4DT+dqUvHuFp4aiUkSgnJcyqWgahLXwgfoxSNegRxfLO+yRwChB/h1uE9GUu
-         9y7NclOMEY9j78x5xhstrIKymTe4gR1HvrMF1MYK3ZkjYO6hVmadXmOXL+201fPZPaF9
-         J077jKzKtHlzvbfrtk9pojSzo53jUS7AHQ5ckwULtLLy58rETZu9OA8sLjwC28jlf79/
-         O+sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737744814; x=1738349614;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XMLPuUT3d2AnF2eXRgJOzlbcZfjko/BgkONjKBbrmiY=;
-        b=FJS3vh4BtkaGus8qtinon8R8QTvbl+2MH0OfboaD/ZNKVExibP6BKh5OZaYZ8NIbxz
-         pcARt/L2NGEmF8K/nYqy8DM6YgWwv/NI9KVaB/lhLqX/8MX+zTatuL5LinfwQ3Ru/Bv5
-         xYjV/Sw738nmXIfJC5KPrxa6IPfHbV3btC73wVCVtyY4PLE0HzQnuwDS82Al4zQYMrqe
-         1WBrzj1rQvjTVlE9r63/j1IrJgPthlw9YizNnhYPFNLvjV/RWvVltavkQLL+apc3XBPp
-         OMy9bjRRYtDvfmvI036R+tehQvGdmm1tnmSU1SJdhtZOIElHr2GfxZhXw6PKTmgChFSC
-         kFyA==
-X-Forwarded-Encrypted: i=1; AJvYcCXtb7QdIpT+QhmL8zyhD+o2FhehcOn5nHPwSA+mxVnzHAtJjEqT0d0rlEOxE8eETVjtMXk/qaA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxiwtnz3WxKRgN0ziRJNtxR1vaUPi3kB7io4QPiz9VUHe5WyQWe
-	7FNaiddfG4ZpNy9Kd/ZuMW/mWmiF1QZEWTiSao9xpSiPCVG/wLgnFjKHXQ==
-X-Gm-Gg: ASbGncurZkfj9+AnCMlMz4HNUkEW2ULvjCDw1iOAR6o7TSpVdrMQcwq2Vogig9mZnOS
-	DA1P0h3QWJZ9sPj9ImRfKanSUIhI/Nlups0fUPupKTX1h+RAkJPluTiYfY+WMVumCSriY/Z17Sj
-	yQYWDLx7WZEuXDKxmWIC/NfdtHklKMNv6KAByiarY+E5oCQ7kGnz//+QLdfTV6SwOSpuJTqpsOq
-	nKnS9RB93VpN03VArp65cqjDv5Qaa3KElfqgpfnBQ4jPNFvdObJF6mPYwp96Py+sO6liMLxnojD
-	5pbgK5sxNQesCRXDhA==
-X-Google-Smtp-Source: AGHT+IHZ1/g6+aic9arDvtZZ58BNt0yfa8fxO2HenoIqml9Vjiaky7Tfl3fw3gZ0YHYNfI2oNSGWGQ==
-X-Received: by 2002:a05:600c:218b:b0:436:e751:e417 with SMTP id 5b1f17b1804b1-43891919404mr306690835e9.7.1737744813596;
-        Fri, 24 Jan 2025 10:53:33 -0800 (PST)
-Received: from 127.0.0.1localhost ([148.252.128.79])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd5082d3sm34830795e9.22.2025.01.24.10.53.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 10:53:33 -0800 (PST)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	Xan Charbonnet <xan@charbonnet.com>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH stable-6.1 1/1] io_uring: fix waiters missing wake ups
-Date: Fri, 24 Jan 2025 18:53:57 +0000
-Message-ID: <760086647776a5aebfa77cfff728837d476a4fd8.1737718881.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1737746390; c=relaxed/simple;
+	bh=uxWfJQcKZSJZwKoLlWXgT8zlZHeq5O98kmC9kyGjAzo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nyd0oys9FZMYlvA348stXveJD+OjzAnJdWLbZuRaIgOfFFGsHdWZfw+CSJYy0PQ6ClnRcEzB54XmtZWu7MOWZk7hEZIE1YL1U3i/0WZXgd0jmnqxNwlX8N3e2bFXdCiqNSug1ZGpB1IC9viiNUfgtq+FK99me2i4QzBBCUSHXU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UE1LPkkK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0979C4CED2;
+	Fri, 24 Jan 2025 19:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737746389;
+	bh=uxWfJQcKZSJZwKoLlWXgT8zlZHeq5O98kmC9kyGjAzo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UE1LPkkKb0Q1Qk6D/Vp+DFAJ+5MMmwI3EDN/BDgZvhSX1BLJ8RgLJmykKoT5qfQ0h
+	 4Aismz1x/y6/X9o4Z7kQ0sVJICEalQ9THifnedsAi1ww+KHraGwpNZ8h2Ri9BMM0ri
+	 tBUg2BDjQv3F5PxorHBb88qk92f1ZKt7MzY1iwPkBXt5ew1pO5ZWJ+ZKiqkwNcTQpo
+	 QCLG/C7bpbUxXMpF4yvNCDBLA0j01QhhGUtWYd1U1hbDZGmCJvysjrtzTLO8svgXG9
+	 JL7BawxnlLrG4Q3MfyiNg5+jfl2+098dQHq8MGX5dz+8ReaeJFvWU24DaYDx3fU1PW
+	 ov1xjdwxzqdJQ==
+From: cel@kernel.org
+To: Hugh Dickins <hughd@google.com>,
+	Andrew Morten <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: <linux-fsdevel@vger.kernel.org>,
+	<stable@vger.kernel.org>,
+	<linux-mm@kvack.org>,
+	yukuai3@huawei.com,
+	yangerkun@huawei.com,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [RFC PATCH v6.6 00/10] Address CVE-2024-46701
+Date: Fri, 24 Jan 2025 14:19:35 -0500
+Message-ID: <20250124191946.22308-1-cel@kernel.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,41 +65,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ upstream commit 3181e22fb79910c7071e84a43af93ac89e8a7106 ]
+From: Chuck Lever <chuck.lever@oracle.com>
 
-There are reports of mariadb hangs, which is caused by a missing
-barrier in the waking code resulting in waiters losing events.
+This series backports several upstream fixes to origin/linux-6.6.y
+in order to address CVE-2024-46701:
 
-The problem was introduced in a backport
-3ab9326f93ec4 ("io_uring: wake up optimisations"),
-and the change restores the barrier present in the original commit
-3ab9326f93ec4 ("io_uring: wake up optimisations")
+  https://nvd.nist.gov/vuln/detail/CVE-2024-46701
 
-Reported by: Xan Charbonnet <xan@charbonnet.com>
-Fixes: 3ab9326f93ec4 ("io_uring: wake up optimisations")
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1093243#99
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/io_uring.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+As applied to origin/linux-6.6.y, this series passes fstests and the
+git regression suite.
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 9b58ba4616d40..e5a8ee944ef59 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -592,8 +592,10 @@ static inline void __io_cq_unlock_post_flush(struct io_ring_ctx *ctx)
- 	io_commit_cqring(ctx);
- 	spin_unlock(&ctx->completion_lock);
- 	io_commit_cqring_flush(ctx);
--	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
-+	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN)) {
-+		smp_mb();
- 		__io_cqring_wake(ctx);
-+	}
- }
- 
- void io_cq_unlock_post(struct io_ring_ctx *ctx)
+Before officially requesting that stable@ merge this series, I'd
+like to provide an opportunity for community review of the backport
+patches.
+
+You can also find them them in the "nfsd-6.6.y" branch in
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git
+
+Chuck Lever (10):
+  libfs: Re-arrange locking in offset_iterate_dir()
+  libfs: Define a minimum directory offset
+  libfs: Add simple_offset_empty()
+  libfs: Fix simple_offset_rename_exchange()
+  libfs: Add simple_offset_rename() API
+  shmem: Fix shmem_rename2()
+  libfs: Return ENOSPC when the directory offset range is exhausted
+  Revert "libfs: Add simple_offset_empty()"
+  libfs: Replace simple_offset end-of-directory detection
+  libfs: Use d_children list to iterate simple_offset directories
+
+ fs/libfs.c         | 177 +++++++++++++++++++++++++++++++++------------
+ include/linux/fs.h |   2 +
+ mm/shmem.c         |   3 +-
+ 3 files changed, 134 insertions(+), 48 deletions(-)
+
 -- 
-2.47.1
+2.47.0
 
 
