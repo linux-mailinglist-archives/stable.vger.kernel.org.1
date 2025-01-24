@@ -1,72 +1,73 @@
-Return-Path: <stable+bounces-110344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF8AA1AE84
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:29:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789D4A1AE85
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 03:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C96CE16861C
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B29F1887EBC
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 02:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871F21D3582;
-	Fri, 24 Jan 2025 02:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6561D5146;
+	Fri, 24 Jan 2025 02:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="GGNFLT+k"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="rUOpBErr"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-239.mail.qq.com (out203-205-221-239.mail.qq.com [203.205.221.239])
+Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B95A2B9BC
-	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 02:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5522B9BC
+	for <stable@vger.kernel.org>; Fri, 24 Jan 2025 02:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.236
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737685757; cv=none; b=LqBopU6SYA2aqSFd1yzkn1n7H5JRQsuO+RhwaqMBFh9tSEMtkqy+E9hhmmGiYFlOeWJgm7M5C/bKjDnRi4688rU74ALCRNvyBjWk/uy0ze44gLvCxYbluD5Wudv8yV+slGdklQlUjatMPy2tPjnoK64l6OBilgB4+ZQL188hEJk=
+	t=1737685761; cv=none; b=TeEjQ2Q4wvHjxDw6Y6jfAEX6s0rXx+lpkSzZTD1MReTcPYT6u1ftDfxx8DJvI8V2Kt5K8soaiKGZRWFSoc8PVUocf6gdzKp3YYwYJz9xTYfwUUDuue4imv3G52DV0bV4jpBw09ffyGaOHmQ+gXWVxwA2ZlZvOZATmOcG/QVz4Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737685757; c=relaxed/simple;
-	bh=VrjDVR7vm6PVdLX0OjRZzVSniXET7cIE/uoVJkA80OY=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=UdPTvvaiFM7AQ0iFWmfiCh+n3bcwrn4CbsqOq5BowbuMyXlHyTWRyIaKj/fbunuOw8wNLfrRU+43vuIvHVSK/Xgfpjrfm4a1g+qZZwUnXe+LvAunR9g6KUr1gK4RAIBGx9nGiBRYbQDdasrT1GYZ1FC8DzXZMqHCeyPRIGmhmCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=GGNFLT+k; arc=none smtp.client-ip=203.205.221.239
+	s=arc-20240116; t=1737685761; c=relaxed/simple;
+	bh=2k8sZQPlk8ikZ2JT8/xABmPbdndbECJ0XpU2dKdV1i0=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=BKk7k04oTUe1xrRK0v2td8bnQB2NLIzGJNt7UwRRleFCIK++DeryBxJeLBjFdDPKXG3R8NHPBlkfWAtUAaOLnIK4fOdwA9askjEh6elS4WtuT90xHgi8zln//4rl5+R9vDVi0CItQtcVVdc1uHThs84KSpES89u2DzI2JV/GaPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=rUOpBErr; arc=none smtp.client-ip=203.205.221.236
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1737685744;
-	bh=9F0ghmmwPLl5OXCu3c6DXMPcdfu2ZV/7OGw3HY7REsk=;
+	s=s201512; t=1737685453;
+	bh=UV2gstlY/yVz9gzEsW8Xu47kRnV7k9+IwwSrc+4lxik=;
 	h=From:To:Cc:Subject:Date;
-	b=GGNFLT+kYsuBjyvPgcOeLWST83qj79MlWFXDcSQgPpsQSj0h7ZUEHCZX7KpzlsD8E
-	 f39JpuwPeSue69Rv3q77PnsdB9EaYIqLRml25zKo3EXDgzKayjKFaJqeJP+BiooExL
-	 uJKIgXrJwT+JP6HHSvBIEiSGALqUnX4UBs4Xfp8Q=
+	b=rUOpBErrM/uZe/wzFwG7VWxqCThZ04WrGyHL8cBsnFVmfTFlOmtyF3YFgS4YFoKMO
+	 oZq08U5WQwFjP7bYU4AaZ8iPja1FhoNVVkCJ7tjk+fo3S7DTPbdPU/EBzzoamu8A/2
+	 j4uyW8RbY+5aINGN2cGi+A+BtSRpeMwQVvVYHxcU=
 Received: from public ([120.244.194.224])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 5F982EDE; Fri, 24 Jan 2025 10:23:57 +0800
-X-QQ-mid: xmsmtpt1737685437t0kibid5c
-Message-ID: <tencent_39296D4D4DD6C7BC24B0B51FCE080C53C306@qq.com>
-X-QQ-XMAILINFO: OOO9dHjlsLs7ksJlRQEhti3nWzZPFMQQrBsxsRwl/in87mhSdCEdzBYIbL6McP
-	 tUp0cMQCD74sjHsRGw4kF4qhKn2IDjrDVK4E8OJQqfKsMP64rGcaao+87snq0BMEd0qInJHOJSda
-	 wawq5+c+QashTO/8iL0CYGfjFzDi/eA8lut1VONAyosJyvEl4eV1Fx7TUzLX4ZdiV3fowOH89QCx
-	 0HB6RB/8kfXxa9owQcxj7V/G6/03uA2oj8DoTJXM73XZlu/PRDc7+es63QJEcVjXiVYZj/c2c5HE
-	 xLmCQMO0XEUqAqfEbuL5f1Rb5wXvyDX15Z95m1ZjLrPLMtpYSfLqMw7lkaOaeYZ8dG+rNciugVA5
-	 7z5Vch+aa+73tESddhUzJF3cqqFW6K7yOa91zqfHsEZvgae5HM2Cmzv6u4QBYETt8rCgQRrIG9ZR
-	 3+xNjxnN6vJaKyNRGN8bwkouK0qoRveqProo4qezNtK6TBG3mEyDjCQF8sYnyarUfiU47EUEDSpN
-	 ZwHlkM3r+TyAHbxhaCFYsN8CMsAK4I8nEYn7CUxXZQBtriRfQ5yJwoAFOGUJS2nLQslX+zf4p9tQ
-	 3c++6R1ItRuS87yAcpFVd6fJyhxa5PVntSn9LyW7Hibuo0uCfrFvEq7jph9phCWjJ8czPNrzCvUB
-	 cXHph2KwkU218r7sYJZa7B2EXplu7pfRfKz2wBP/h9FoYd9da3uZta74Bxyk34Z0L6jaMRjxvR9T
-	 PQaEFSUU2rKmyQQUTUb1ykU9kLEuKH0C+axJhb6JE8DLgZie6xV8X/AjfNACqcr2RR3sJQd4Rjpb
-	 Ai4Ajmj4SJN+p1k6PMM3acNPvBd/LApiTWa254nj5Thlk/7OSl1ULEoWL8+8wu1772Z7W1AF3+DX
-	 hIvojvCrQOOlSnWDIz2visf1EM9rz6wr7zfxf312z8uslvDyk/IMKjSaI09GkWMCC9i+MpzzBMAy
-	 w1yaB0bKvpJiKQ3O1Wp/H7jFusZV+jMq5DtUt9dgyYX1qUabHAy4J2FeHaSw2aqGqRXbcW2aQNPg
-	 dOgAfRTBXbuhhBhTnLLlfr2NKuOBeYI/kVK0UdegDMlqYcfAN+
-X-QQ-XMRINFO: NS+P29fieYNw95Bth2bWPxk=
+	by newxmesmtplogicsvrszgpua8-1.qq.com (NewEsmtp) with SMTP
+	id 60887E0C; Fri, 24 Jan 2025 10:24:08 +0800
+X-QQ-mid: xmsmtpt1737685448tjxk2z1xn
+Message-ID: <tencent_84E371D061F81AB069496BFC3F862449AC09@qq.com>
+X-QQ-XMAILINFO: NbgegmlEc3JutGjXYvAzJ6i3v+SCNAthpPvpEi6SIojg0FyQ9lTzQ9BCHUdYBS
+	 Ja3mBwXlfO+qy1woLRph/89fe5SB4EwQyTBv066sMENnVToL36VDZaA//E3C5od4Y6JCBDh7TsLO
+	 hYCdeR2OZWx4KTp4425g5HlGjXT06gHbkxU9hOg0KStMp9pJZcnJX7CVmvAXlmC3xq/fImGovshN
+	 dgqK7NTBgZh5Fu4YMtjLbkwq8Z6HTg1oZWR+TNI+MD078JuDuyp66sO5WuHyp3ArKiYJ7CQwp+rS
+	 cmSwuZBon4Vxl11xLLwFFjJBttWeEZ3NZnwww0EHWoVyxpUl3McHItokQGO5eYRuomzL9R5d6zCn
+	 3n0jY9jrT3MTNb0Yq0eoKHtvESpuqUBu2bhkWTUGkMZwDjhHY1bbStVT7KyXe7iLv41FrXW3fIGU
+	 Bvu2NFwhqQvJm/js8qb5ixMJtcEln4KW84QDnpRuGCQe7zYUVH9V6vatpgZPBSP60P/eREcRJNI1
+	 SVD1SxV8HqYgiUzXBCJfGW4YCw02Rz1jL9PkA0AoxOI9oBgta/VauqcgZsby1e6PfFrae2uKASPa
+	 MOVXGifHt8qEIfC7s0gcWxknCkl7YJbpfS46Bzau0rj4CPq6xfVhMrhOIa845UMmK4rFtDOF0yCm
+	 9927AV4R5RWpjLp52/0se7g+sBmhCAsHI6lGDHh2Jp+GIyUCHzgv6s/gpJ3q823Nz3A0OFPsm++7
+	 ps5r7NpLdG6VC2u6uk04iwS1XRwBVF6398SZK6GACmkiw0UgaK1ndKAURVsdutpFYxwTzs4rcN1p
+	 7KnSUI82ylMckb6Ezwi5EA1zqpDJOSpGP8uuxn034H1wDYSNiSsfqQVbb0YH5vThiUMqde0sctlR
+	 GK0FGYLnHOFqAmiffZ5SYMrZU+fLwQI7ZYTeeGnzVCEsDa53jo+FtbSIeU60Y2wRVCj98QwiQrFB
+	 qhySj7zndeN/FGCn+JL9ymCUkp/gFQ6Mv78vuWJtUBoY2sHv3y236ufDVR+AXWoLwf4KeFbk9i4j
+	 OUxR77bWB+JLSzVfwpVKLlu5/rc+96MjQg0Ou+AMwxPbex2BIh5qwsZLfLLGHeZ33qf0m7PhiEz2
+	 sdSA8Q
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
 From: alvalan9@foxmail.com
 To: stable@vger.kernel.org
 Cc: Ido Schimmel <idosch@nvidia.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
-Date: Fri, 24 Jan 2025 10:23:57 +0800
-X-OQ-MSGID: <20250124022357.1857-1-alvalan9@foxmail.com>
+Subject: [PATCH 5.10.y] ipv4: ip_tunnel: Fix suspicious RCU usage warning in ip_tunnel_find()
+Date: Fri, 24 Jan 2025 10:24:08 +0800
+X-OQ-MSGID: <20250124022408.1917-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -134,7 +135,7 @@ Signed-off-by: Alva Lan <alvalan9@foxmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 2906b4329c23..9f9b7768cd19 100644
+index 53cc17b1da34..cf9184928ede 100644
 --- a/net/ipv4/ip_tunnel.c
 +++ b/net/ipv4/ip_tunnel.c
 @@ -218,7 +218,7 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
