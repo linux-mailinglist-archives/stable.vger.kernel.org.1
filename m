@@ -1,105 +1,94 @@
-Return-Path: <stable+bounces-110352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367CAA1AF4E
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 05:08:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E655BA1AFDE
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 06:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76FF9163266
-	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 04:08:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B3773AE765
+	for <lists+stable@lfdr.de>; Fri, 24 Jan 2025 05:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83761D7E4C;
-	Fri, 24 Jan 2025 04:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB2C1D88AD;
+	Fri, 24 Jan 2025 05:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QaypUXGA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nkcPTj2R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FFD1D79B4;
-	Fri, 24 Jan 2025 04:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81B11D799D;
+	Fri, 24 Jan 2025 05:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737691730; cv=none; b=Um5/mmp9HMleFbVko5+giKfQ6JXOQj9DwMX0NW3RLPa+/MztgaW3CscXk6318lyA92g/vM2zjQ25L23hlwibGoX+7/ijpAH1C8byCqrgvDzZcIEs91iSZcMdLXftb3J2/J3CxO9rO85/Y33qEe+40Vc9jA/D9faNy3PgWCpPF0Q=
+	t=1737696398; cv=none; b=DbWh6d5W/KiHHlfjglPrPR3vps7Y+fy9U6VHZISZNss2ILxZvKqwhld/9cRN5xhDbWKxUK4y3Beax45k7Y+wmMz7d10mAM+kVSVl3Fp91vJzNUa7xm3QjPXStEamTuQ4MKFp+wam3I/ECjo7uhnthOHzfSHXwJ9rW5RsQEvR1Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737691730; c=relaxed/simple;
-	bh=CEX9iTnWVwmw7wHb8BwrgfBevsuzLYRxQx14siwDqvk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W5hfZTWVPTC0jZhEetfe1ZPyVBpcerxt2PpjeXu2UYmAK8uXtraVylXyqVqMmBAP20RmgR3X4dmhHx6zLlLaIbxT9cZbmc62k/Col3gSVUgu9p0c9nwk4OpmqZ7BiewkDw3va32OrX4+8TXmQ5ZzCy9KAbWFk6qlQuF6dp7Sdsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QaypUXGA; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1737696398; c=relaxed/simple;
+	bh=r4a+eE9LCojwQ6hwvqRjbiT+5JFgFAGWcR7fILK8wmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qSzqf2u3H6Vrz+2RrOjbXvOF0vCuiLnPNw2MdHrr8zAaPxQStSAVAw39iLFZUov+Ce0aZa53z8wWnrJljHBld8BfvbwDYoDnaTHIAANxPj+UFwgSP8CgLlp3wvg7tmcpWr99wMJM9DwyZcwJZFeAU53ifVT+e1pF2Nwj3yuQwrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nkcPTj2R; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso3100164a91.0;
-        Thu, 23 Jan 2025 20:08:48 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30036310158so14212611fa.0;
+        Thu, 23 Jan 2025 21:26:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737691727; x=1738296527; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737696395; x=1738301195; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=D6e6R/iD1t4ReAa9KfZ1qSPqX0t3TQNshzKeYKkD9yY=;
-        b=QaypUXGAWMNXBOK54kPLbfjPWO8jgkfA7gwB8m2DA2I5sUL8vcMNmKIENpbpqntbtY
-         wUFSfhBFR0SUe+7pKsZhgqpfV+VdRjg/so32NNeG8lzg3q7rVBok8BGhOAOlB8OqBkBM
-         vs2F5pcPXHp5XxMvop9kGMx9WzSW8JUwTOFozjB94QEcFFHOa6he+UEs90utXDMIxfoU
-         XejSjY91/XTr09kRYzztiXTqXmmQzbgn8PUnm40waVB2SlTuPIj7DGQQvOJNmwbNl+Dx
-         nBvXTuADVuGGVurZERIh5/elkSjlwWqcz9qy+GxEJOVeBTgDhjJLDDvvC6rWBQeusTrF
-         xQoQ==
+        bh=p07sjty6xKqv6rCV4Fqi1eiP0EADaUe999Gk077M4nk=;
+        b=nkcPTj2RE1erPvAWlbhWgJmeoStKYSBx0rUc3Pkb7nn0GSxEVxcuVGTatpKpyEgwwl
+         0OAjs4GTvw5yeiWMnzVcwSic6h2i+xYobO54Th69rDCPMosEr+SCArFIN5FjB84wUTl+
+         4LSYqFPKHOLYgPam/0y8Uee7dBZGTNuVExqfsKvsTGtmVDIbiL7BI4DGdMu+jaBw+npg
+         EjW1G3llqgC/rQogsOmV7dFKQBrgrc0vUGl+oiS51L5gEDZkWZIzStjyyrlvbOkVch9M
+         ZWem+iaR9J6bPe/8qrzmKK222BBaRYBYWfPmjWOkYziiT7R14iotUkSp1WOV6V2IH+yN
+         sOug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737691727; x=1738296527;
+        d=1e100.net; s=20230601; t=1737696395; x=1738301195;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D6e6R/iD1t4ReAa9KfZ1qSPqX0t3TQNshzKeYKkD9yY=;
-        b=XwH1uAhPU+sV1YKy5oNNADG+5+ZHrybHO2yfW3qk1xoXONmcxAhZ5Te4RbhVzMXx/2
-         0/Xd2Bz3fA8txc9jOzAjS76HPa3g0j+nR5MCcD64lh6TWRZoylz5dfg4pbofZue304rz
-         nSo3KIV789llixfIkheh+5QoBcMOKFA0LXvaB0IE12HpJMmCq+S78JC1WLqbsxo7wzF5
-         hKJxLHVctnBu3KphzWnAmFSor0s9MuZqahuqVoR/+Xe/6LniVfHYgyu9zt+FiXv+w1tP
-         P0KyaUviYwuD8EBWs92fZ7ccQHj2j4cHJwX9Y7dcM3SwK89MLcsZboOnTDG9TfwOnwUh
-         wxkg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdr606mFLPoBcUDpCl+y9F9N01QlQ70+3pMwFvL4keW8nEqRmFV4gMWN4YLRRJ3Xcd5wBkehEdDA44xQg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwH/8hiNyJRuooaLpqAkLq9gjMScjL/ryaaAhem06ah2OigsDp
-	ryXOqXNTWHLsfcMJ+NewDzYllnC8tIMx6MEO1L4VgKAxvc/s99a3ajLRnT3OHUSq/g==
-X-Gm-Gg: ASbGncscxatae4sAmqraXPllTG+23/vyQDZMlkXCnFptgQ3Zc2tAe87TDxV0VlwmFxM
-	Zce81tJkiUo+jVWNrH5ZnI28TeDLw+1aH2EsAOZ9Sx0jcYfaR5M19Ibw21sScoyVEIh/3fZt97N
-	te28aJMnIOTN7Nsny9hHoKx0FPfDbh3enz7Rclp4y1OzuM668Oh08fL95U226mGmfzt3CvpLvmE
-	P1kiwnsq+mOBtgC0JjS7edkLpHW064KcU9arySxoufyru/F9bgoHaWeGxbWexTZWuCN8sdbrv8z
-	fKn2dEqXBjEXKoLsKQxKgs9Fiwc3/JC5pt5FB53r
-X-Google-Smtp-Source: AGHT+IGKwqK3FeAP7M3pDG/EPu8XOfZtrxx0RtjPTD4kt8b1n6567njef2h1tCvlNFusMRPQtdbLkw==
-X-Received: by 2002:a17:90b:2808:b0:2ee:d433:7c54 with SMTP id 98e67ed59e1d1-2f782cb61bemr40425091a91.19.1737691727590;
-        Thu, 23 Jan 2025 20:08:47 -0800 (PST)
-Received: from jren-d3.localdomain ([221.222.59.195])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa455c0sm562670a91.3.2025.01.23.20.08.41
+        bh=p07sjty6xKqv6rCV4Fqi1eiP0EADaUe999Gk077M4nk=;
+        b=nlkCRoyM5p+Cp/qpR8DoxEAZ9wWJFAT3i2lzKjEuJLG0t832GsNFrq38F9pxZpMhff
+         b5UcqWRXKB4QUr7Y+KAH9d/94G4FUqIQTN8+gNsOtxb/0mSz5aF6PqZeV1AtmXuqX4AD
+         +0cJHKsMJDGvAijU/oz5+RpF60F5p3S4Jqx03wfQ0Ct8fSAUxACillGUwTpuQKb54vIg
+         nZH+0+JHOOVIPoxSz7gWg9D4dx/rs9/imvupUPZr1oRXGFMKTgldr8xF7oAQwiTd86sq
+         YA7BC564lmaGjD5OJYxOVHW0DPM0nGY3vLPywmYfNU42JUa0DAv58dxBH6TqrwohYznm
+         j8hw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwjGsVh4D++C0y/d1VlQSFI91JhXXZb2BXsltT9n/Vg4Cd7pantxKJ57qUtkXIgrulOQK2pYKMxfcRNWsJ@vger.kernel.org, AJvYcCWzexgiXA9tAoogxglk251Wvl+tzs/TNcVgnFf2yXR1LrclgVBGd15aM87AQsMMyiUQuVsHvFugzdUA@vger.kernel.org, AJvYcCXzoaqFonE+C4LvHtbBzhd1TdNL4J5thf2erRi09XOOOv277xogVRW3gguMoNunNQG/3E2FoAtP@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/jVYaIkrhNxBHOy/vSB1DOySL7iciT0XTwYpFkg9P663wEZML
+	z4d6WlVE6IE/+Ebrqt8M8TovioVlEGz8ruGx+Wr0IlSCfBhA0HEj
+X-Gm-Gg: ASbGncv6IuYnh4nchAGFlJAsLfeKXFKSpKIzwvLOdlp8VEtIsp0vdXTZKfGG18vhpJh
+	ttozgoR792UyYq1ECqchEo8sYCnERezALZVnhiQkos2aXqTIzC7zjIKxjbhvQR2QGyd3edp6EDj
+	mqpJ9UEQanOLNmOlxLJuPVLn8cwJx3Td+rE/kFT9Oi8yuMo8QwGnxc1ehu4jvr9nf5bBiFUSSVp
+	IW8BFjvvKlCHvyOnyxEteu61ge9Sh3+qnjJlaDQMrxNExnL/u5Y1xsnOmFVXlk8EtSvLFz4e+4U
+	A1Pxwr93AjmEeU4+/cDow5h8ZQG7
+X-Google-Smtp-Source: AGHT+IFlqUx90XIioMXK3K5xnP0U9POjUttzeJEvX3ss+rSU2HenO99mLcexlPY8+ML+vDDZJVxQcA==
+X-Received: by 2002:a2e:a263:0:b0:302:3abc:d9e2 with SMTP id 38308e7fff4ca-3072cb21f67mr76745751fa.29.1737696394396;
+        Thu, 23 Jan 2025 21:26:34 -0800 (PST)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3076bc49f46sm2389441fa.105.2025.01.23.21.26.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 20:08:47 -0800 (PST)
-From: Imkanmod Khan <imkanmodkhan@gmail.com>
-To: stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	alexander.deucher@amd.com,
-	daniel.wheeler@amd.com,
-	mario.limonciello@amd.com,
-	josip.pavic@amd.com,
-	aurabindo.pillai@amd.com,
-	sohaib.nadeem@amd.com,
-	gregkh@linuxfoundation.org,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	wayne.lin@amd.com,
-	sashal@kernel.org,
-	dri-devel@lists.freedesktop.org,
+        Thu, 23 Jan 2025 21:26:32 -0800 (PST)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: linux-rockchip@lists.infradead.org
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	charlene.liu@amd.com,
-	gabe.teeger@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	Nicholas.Kazlauskas@amd.com,
-	Imkanmod Khan <imkanmodkhan@gmail.com>
-Subject: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
-Date: Fri, 24 Jan 2025 12:08:36 +0800
-Message-ID: <20250124040836.7603-1-imkanmodkhan@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] arm64: dts: rockchip: Fix broken tsadc pinctrl binding for rk3588
+Date: Fri, 24 Jan 2025 08:26:11 +0300
+Message-Id: <20250124052611.3705-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,99 +97,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+There is no pinctrl "gpio" and "otpout" (probably designed as "output")
+handling in the tsadc driver.
+Let's use proper binding "default" and "sleep".
 
-[ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
-
-[why]:
-issues fixed:
-- comparison with wider integer type in loop condition which can cause
-infinite loops
-- pointer dereference before null check
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 32641b8ab1a5 ("arm64: dts: rockchip: add rk3588 thermal sensor")
 Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- .../gpu/drm/amd/display/dc/bios/bios_parser2.c   | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 4d2590964a20..75e44d8a7b40 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1862,19 +1862,21 @@ static enum bp_result get_firmware_info_v3_2(
- 		/* Vega12 */
- 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
- 		if (!smu_info_v3_2)
- 			return BP_RESULT_BADBIOSTABLE;
- 
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
- 	} else if (revision.minor == 3) {
- 		/* Vega20 */
- 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
- 		if (!smu_info_v3_3)
- 			return BP_RESULT_BADBIOSTABLE;
- 
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
- 	}
- 
-@@ -2439,10 +2441,11 @@ static enum bp_result get_integrated_info_v11(
- 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
- 	if (info_v11 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v11->gpucapinfo);
- 	/*
-@@ -2654,11 +2657,12 @@ static enum bp_result get_integrated_info_v2_1(
- 
- 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
- 					DATA_TABLES(integratedsysteminfo));
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
- 
- 	if (info_v2_1 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_1->gpucapinfo);
- 	/*
-@@ -2816,11 +2820,11 @@ static enum bp_result get_integrated_info_v2_2(
- 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
--
- 	if (info_v2_2 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_2->gpucapinfo);
- 	/*
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index a337f3fb8377..f141065eb69d 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -2667,9 +2667,9 @@ tsadc: tsadc@fec00000 {
+ 		rockchip,hw-tshut-temp = <120000>;
+ 		rockchip,hw-tshut-mode = <0>; /* tshut mode 0:CRU 1:GPIO */
+ 		rockchip,hw-tshut-polarity = <0>; /* tshut polarity 0:LOW 1:HIGH */
+-		pinctrl-0 = <&tsadc_gpio_func>;
+-		pinctrl-1 = <&tsadc_shut>;
+-		pinctrl-names = "gpio", "otpout";
++		pinctrl-0 = <&tsadc_shut>;
++		pinctrl-1 = <&tsadc_gpio_func>;
++		pinctrl-names = "default", "sleep";
+ 		#thermal-sensor-cells = <1>;
+ 		status = "disabled";
+ 	};
 -- 
-2.25.1
+2.39.1
 
 
