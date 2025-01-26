@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-110575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36650A1CA09
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:16:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7801CA1CA3E
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99C9A7A2DA8
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:14:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F623AA1EF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0743B1FDE05;
-	Sun, 26 Jan 2025 14:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18BC1FDE20;
+	Sun, 26 Jan 2025 14:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEduJBqM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qeEucCbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B581FDE01;
-	Sun, 26 Jan 2025 14:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2671FDE19;
+	Sun, 26 Jan 2025 14:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903392; cv=none; b=lp1yqK3wvpsQT/a1ifszrjxBTRfHBN24JD/rdGTjFtUZnaSrPyCeBAIlfD0IhWoqY2ll+CJEsy2PeIYU79CPHMsW418JPQeTgOorBeYfHz/hFby5je6B8XvaKb8PLsqVk2oPFIShtNRw99ygkyO78VT6UWCUriC1oYZn4cXIe8A=
+	t=1737903394; cv=none; b=gvAE3pzjOM8QQK4UCC/1XSE+VktMVEkdk0GiNboepZUL+SKF91bC38wVbWjvixWy95LqKrFzNNb8nmdxfDvqdQRw/5H9uyabEq8bxxYmOy7w4K17Wf58Cmw/VMoJ21DjwSE4cGij8pOVUXjQOZxeyVktYDRoKSYevJhwVG+r/+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903392; c=relaxed/simple;
-	bh=kME5yRiRSilS8XC5gTZceQWF76oZl872X/ZUtzoDK68=;
+	s=arc-20240116; t=1737903394; c=relaxed/simple;
+	bh=M85MzBk393mjoVjfLx5KyhQXTUznlB9GO2l+quRQqyA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pEKBjk7shbL4l8RHR+G2hM4tYDpQJEa95o1OY9v23Iej36bzFwwuEOiR+86PLO6iqwA9RK9hLEfQHzRfnfLmVBh0ssfN2TXP76MeIElp1NfZxwW7Geweddap97DJxuL/PGd7ltlKg096E11J08fYs1LsGGlcVfZ6KX2wWg+VLZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEduJBqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D74C4CED3;
-	Sun, 26 Jan 2025 14:56:30 +0000 (UTC)
+	 MIME-Version; b=DV2nHMr7s/+pEfdGWuWJG42FfAT8hKNuhUXWGL7lTm49UMeNvv2hWqLCsjDQ8jWBD5F0joFhQMcuRl7iUv17JR5Lw5KII4U4Ivn8Vuj83xN/DaVI2m7SBspB700y1YIwLaVSFYP9lepwyDJfbFBiIwcGquOy9kF44BxkB55eNo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qeEucCbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96637C4CEE5;
+	Sun, 26 Jan 2025 14:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903392;
-	bh=kME5yRiRSilS8XC5gTZceQWF76oZl872X/ZUtzoDK68=;
+	s=k20201202; t=1737903393;
+	bh=M85MzBk393mjoVjfLx5KyhQXTUznlB9GO2l+quRQqyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEduJBqMjTWIzlEe+NOudpf5TZUzDX2tB8ivtS6t5tkcsXp8EbJWdpQ8beVWWp/e1
-	 MUvJMo9S2dZqIA10CSPFlP5g3pgeEyswuodBIJKvB9Lq048K567AIdvi0OiNijf3zL
-	 R96v3SwBkfA4+n3x9frZfn8vj8rEQCP9w8dZJUGXF2j8rmw1hZg7vTkbQj03IVmFp9
-	 1KYe1Fdv09UJG+bqr9XyzzkqFwXFjvjAg3WtrpcQcOsmJtt6j97DdqYozl80jE0Ugy
-	 RUKb/T2HzCMHDO5nmGkXRhkztNCUorHk3oYFSd3q586pmF+7nfI+haw1FKt8sG3JaZ
-	 d79Oca24LN5sw==
+	b=qeEucCbiTH7v4oTv4lFcu33EsR/IpbiryQpKyeEcaVe+1LXGzS8b13A/AvXyB7BOF
+	 BSE2I9PFIR1vwjiL6+ZyZI5y/t7uIzw/rPrYBvCFyf8gOm3HOz9nqpgCPZNjs7W/xE
+	 HgPZxcG/2upOciqvPuiyA+46StGpyM9BozwuPfa3XKovX8LaJSCO2WDVYoXi4lfuH6
+	 ZLLMDWlKmQFX0qbsJIX7VMrNAYAwt2DqVC0R3go4EbkdX296fpe1NH/+93O4VmRr9u
+	 OQxY//VzOj/YrGMYurw7LSkEMO2DBu2b1/KIDfUhL3XvC8mul9MTP97qEPg7NLrR5G
+	 nt6ujOmNfgfpw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Maxime Ripard <mripard@kernel.org>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
+	alain.volmat@foss.st.com,
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 08/17] drm/radeon: use eld_mutex to protect access to connector->eld
-Date: Sun, 26 Jan 2025 09:56:03 -0500
-Message-Id: <20250126145612.937679-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 09/17] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
+Date: Sun, 26 Jan 2025 09:56:04 -0500
+Message-Id: <20250126145612.937679-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145612.937679-1-sashal@kernel.org>
 References: <20250126145612.937679-1-sashal@kernel.org>
@@ -73,35 +73,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b54c14f82428c8a602392d4cae1958a71a578132 ]
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
 Reading access to connector->eld can happen at the same time the
 drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
 order to protect connector->eld from concurrent access.
 
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-8-c9bce1ee8bea@linaro.org
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_audio.c | 2 ++
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_audio.c b/drivers/gpu/drm/radeon/radeon_audio.c
-index fc22fe709b9c1..da37a827337bc 100644
---- a/drivers/gpu/drm/radeon/radeon_audio.c
-+++ b/drivers/gpu/drm/radeon/radeon_audio.c
-@@ -773,8 +773,10 @@ static int radeon_audio_component_get_eld(struct device *kdev, int port,
- 		if (!dig->pin || dig->pin->id != port)
- 			continue;
- 		*enabled = true;
-+		mutex_lock(&connector->eld_mutex);
- 		ret = drm_eld_size(connector->eld);
- 		memcpy(buf, connector->eld, min(max_bytes, ret));
-+		mutex_unlock(&connector->eld_mutex);
- 		break;
- 	}
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 500936d5743c5..90c68e0f493fb 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1221,7 +1221,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
  
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
