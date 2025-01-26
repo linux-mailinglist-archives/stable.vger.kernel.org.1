@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-110451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0207A1C87F
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4821EA1C883
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB9CA16617B
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A16AB166103
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C011607AA;
-	Sun, 26 Jan 2025 14:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379F1176AA1;
+	Sun, 26 Jan 2025 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eliujxza"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVZi/5yO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F08E15CD4A;
-	Sun, 26 Jan 2025 14:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59A717084F;
+	Sun, 26 Jan 2025 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737902926; cv=none; b=gKP6ML8CTagnZwR74k5NpCRJOozqqgrtKUGZIejci5vZB/m7N1SMOJ4oladpquVLIKuLLMwSNu2VTlU8NQ+U0TN5oKK3JNbYIGsRuEkiPq/xxZA6Dt2bojvFdRBEMcYMBQ+jl3UGKTW3evBck3swUB70mdXdVSWTDKLcGbgftxM=
+	t=1737902929; cv=none; b=E+99pYm2UOgOjPmv2z4Zu4iL7N8GXRqZTxII1wUTYpVSuVl0OYqXjoGvISdoVzac7jXuO2l3mIayhKY1M76N3BunQsj+PjxcukVMBjGHl/61G5AEzh8qrsSQWwficEPft+d1pVrXdMXntKgvp5jsqKHcNMnfJhyv1c07ApLpBsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737902926; c=relaxed/simple;
-	bh=uYNSd7HZWd79B6SkTzkI0BmE60u6OMnA8ioZz/homSc=;
+	s=arc-20240116; t=1737902929; c=relaxed/simple;
+	bh=eh4cIulasgqyPYNqTd0PIqpVWaBDnASMx9Xs+U8eW9k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=A6ejpWnb+iqFAx5tV2mmqTPRf6QGsDCcgUsRabD9gtdUpOlBWqScEWfbKO1ctazGgeShRP5JNDR7ZDpUcHQ8yYE9BwLI6jBYkSEcGG6U5hWfrdx8aLnYNL6QYpvz1xYd9sxNOoC8Y8AvZhKmZgvTH0ugKlXVGP//DwyGPJ1CUC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eliujxza; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080A0C4CEE4;
-	Sun, 26 Jan 2025 14:48:44 +0000 (UTC)
+	 MIME-Version; b=TkorYxfMyeCi5rO89N+IDGhjFvJVlqGfV8UmgaxBc76HZRo9vwpkV0c86xzham/mtc6WLLQG2kZdUwVpzbrVTo+lqDzxMV20BeAnnYajja9gikFOARy0i0Z7Xas164cyt1Pd2mYwDcwGrClm9vQgTkFy3WQvkCzHMkkw01SYLKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVZi/5yO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2CFC4CED3;
+	Sun, 26 Jan 2025 14:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737902926;
-	bh=uYNSd7HZWd79B6SkTzkI0BmE60u6OMnA8ioZz/homSc=;
+	s=k20201202; t=1737902928;
+	bh=eh4cIulasgqyPYNqTd0PIqpVWaBDnASMx9Xs+U8eW9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eliujxza/OJnPFGMMnnIzu29/VHLYSm1tMsqXx6BTQabd7iuL3T6XFl9A/VNd7bxe
-	 TMVnBjes0DEyYgA8WnkSIBYQ3dYp0o8KUdHWCz1qKtprVkfldw82243/CupVELmbVY
-	 /Z8dzTazDMdR34NIivzbkTPR4+7JKa9xQU5zBP4nbFrHR4mBGhlAumpgSL/p4rUhJ+
-	 wASxk0Rm93OIGJH2HwRN/4ETfriOiYDIr2K71qcrvMjmt4YnGIxVBop9oNvhalieLL
-	 BafdJn5wJMnPm0r9/FDMrfJYIGrNZBL6ZAAqxIZSr5MXV5FRgI0R8p1RE2mdi5PMxV
-	 Cvy61TDzXuzag==
+	b=gVZi/5yOPWFByekCISiwlAzV8c+58Cc/0yQLJ3P9oUce56n0fJjrkOkZbDNdF43Ph
+	 gDjrDCagpp7SkzA72s8xJ2HvDchI0xW6dZ+exNd6WqllGRwSSUyKkT9h1Qd1cqe9Gl
+	 pCCck8taFdCwKlEp2n0EEMcwRhuKR2W6N3pHdmJLiGpBBkIL3RLZkvXVm2u0s1kLRB
+	 RzDvG+rrkVlAIj5sQ0AjUnE9Omnka6NY3EyJnbMy/BoGA5c3GzTg1LEbcsA49Kmd4f
+	 jpuNuXjb/g7LSdebLoiqDBO9YZDGmQp0qymIIkJJfnor1DH6hIoiDZ3lpLupDerAM/
+	 sTVd/e7DW0ZCg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Sven Schnelle <svens@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 3/7] block: check BLK_FEAT_POLL under q_usage_count
-Date: Sun, 26 Jan 2025 09:48:34 -0500
-Message-Id: <20250126144839.925271-3-sashal@kernel.org>
+	gor@linux.ibm.com,
+	imbrenda@linux.ibm.com,
+	meted@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 4/7] s390/stackleak: Use exrl instead of ex in __stackleak_poison()
+Date: Sun, 26 Jan 2025 09:48:35 -0500
+Message-Id: <20250126144839.925271-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126144839.925271-1-sashal@kernel.org>
 References: <20250126144839.925271-1-sashal@kernel.org>
@@ -68,111 +69,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 958148a6ac061a9a80a184ea678a5fa872d0c56f ]
+[ Upstream commit a88c26bb8e04ee5f2678225c0130a5fbc08eef85 ]
 
-Otherwise feature reconfiguration can race with I/O submission.
+exrl is present in all machines currently supported, therefore prefer
+it over ex. This saves one instruction and doesn't need an additional
+register to hold the address of the target instruction.
 
-Also drop the bio_clear_polled in the error path, as the flag does not
-matter for instant error completions, it is a left over from when we
-allowed polled I/O to proceed unpolled in this case.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250110054726.1499538-4-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 22 ++++++++++++----------
- block/blk-mq.c   | 12 ++++++++++--
- 2 files changed, 22 insertions(+), 12 deletions(-)
+ arch/s390/include/asm/processor.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 666efe8fa2020..6309b3f5a89dc 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -629,8 +629,14 @@ static void __submit_bio(struct bio *bio)
- 		blk_mq_submit_bio(bio);
- 	} else if (likely(bio_queue_enter(bio) == 0)) {
- 		struct gendisk *disk = bio->bi_bdev->bd_disk;
--
--		disk->fops->submit_bio(bio);
-+	
-+		if ((bio->bi_opf & REQ_POLLED) &&
-+		    !(disk->queue->limits.features & BLK_FEAT_POLL)) {
-+			bio->bi_status = BLK_STS_NOTSUPP;
-+			bio_endio(bio);
-+		} else {
-+			disk->fops->submit_bio(bio);
-+		}
- 		blk_queue_exit(disk->queue);
- 	}
- 
-@@ -805,12 +811,6 @@ void submit_bio_noacct(struct bio *bio)
- 		}
- 	}
- 
--	if (!(q->limits.features & BLK_FEAT_POLL) &&
--			(bio->bi_opf & REQ_POLLED)) {
--		bio_clear_polled(bio);
--		goto not_supported;
--	}
--
- 	switch (bio_op(bio)) {
- 	case REQ_OP_READ:
- 		break;
-@@ -935,7 +935,7 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
- 		return 0;
- 
- 	q = bdev_get_queue(bdev);
--	if (cookie == BLK_QC_T_NONE || !(q->limits.features & BLK_FEAT_POLL))
-+	if (cookie == BLK_QC_T_NONE)
- 		return 0;
- 
- 	blk_flush_plug(current->plug, false);
-@@ -951,7 +951,9 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
- 	 */
- 	if (!percpu_ref_tryget(&q->q_usage_counter))
- 		return 0;
--	if (queue_is_mq(q)) {
-+	if (!(q->limits.features & BLK_FEAT_POLL)) {
-+		ret = 0;
-+	} else if (queue_is_mq(q)) {
- 		ret = blk_mq_poll(q, cookie, iob, flags);
- 	} else {
- 		struct gendisk *disk = q->disk;
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 8ac19d4ae3c0a..0137a995b9f37 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3092,14 +3092,22 @@ void blk_mq_submit_bio(struct bio *bio)
- 	}
- 
- 	/*
--	 * Device reconfiguration may change logical block size, so alignment
--	 * check has to be done with queue usage counter held
-+	 * Device reconfiguration may change logical block size or reduce the
-+	 * number of poll queues, so the checks for alignment and poll support
-+	 * have to be done with queue usage counter held.
- 	 */
- 	if (unlikely(bio_unaligned(bio, q))) {
- 		bio_io_error(bio);
- 		goto queue_exit;
- 	}
- 
-+	if ((bio->bi_opf & REQ_POLLED) &&
-+	    !(q->limits.features & BLK_FEAT_POLL)) {
-+		bio->bi_status = BLK_STS_NOTSUPP;
-+		bio_endio(bio);
-+		goto queue_exit;
-+	}
-+
- 	bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
- 	if (!bio)
- 		goto queue_exit;
+diff --git a/arch/s390/include/asm/processor.h b/arch/s390/include/asm/processor.h
+index 8761fd01a9f09..4f8d5592c2981 100644
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -163,8 +163,7 @@ static __always_inline void __stackleak_poison(unsigned long erase_low,
+ 		"	la	%[addr],256(%[addr])\n"
+ 		"	brctg	%[tmp],0b\n"
+ 		"1:	stg	%[poison],0(%[addr])\n"
+-		"	larl	%[tmp],3f\n"
+-		"	ex	%[count],0(%[tmp])\n"
++		"	exrl	%[count],3f\n"
+ 		"	j	4f\n"
+ 		"2:	stg	%[poison],0(%[addr])\n"
+ 		"	j	4f\n"
 -- 
 2.39.5
 
