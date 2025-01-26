@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-110612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D82A1CA74
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:25:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C33A1CA98
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7578C188B651
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:23:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB6B3AD6FB
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C273E1DE3BC;
-	Sun, 26 Jan 2025 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF321DE4C9;
+	Sun, 26 Jan 2025 15:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb3oZD7V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdwxC1EG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625AA1DE3AF;
-	Sun, 26 Jan 2025 15:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015AC1DE3DE;
+	Sun, 26 Jan 2025 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903650; cv=none; b=JGWHrPCaQy5FY5JwpjnXpFmN8+kOjKjxoM3t68E8T7CKKzUXvslV3lvCiKk6bcwCJw/y/gY88ZVQHb9RCcOJJ/0iDlaMOqXKP/0+rSYBqOn0BO/GF5pxbRdNS/33WnTKmSu+DcD+WRdmPlKbINjeAL4wFqYuOyPOF+n3+8gqdUU=
+	t=1737903652; cv=none; b=H8AHs3tkL9SytaYIPrcVF6GyX5xI3R97GeGw1A5OJZylb624qmlcgVNV1X06s/2ZlQ3QAJI7E6iIVLWnixOwnMo1Hdejjg2N4faDdwPul/1eop5sf0YLzKabadbp34j1qMHwq94bhdYwJKXDmOecUtzluO5Y9C/xANUxo4AeBRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903650; c=relaxed/simple;
-	bh=FBWA9/9zzflDs+5rpYFzanPXtI2qMGmu3P0w8n6wdo8=;
+	s=arc-20240116; t=1737903652; c=relaxed/simple;
+	bh=02d56irNDBarfWo5Mkhq/+ZsO4/9M/5X0LzmTKTyCeY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m1clOh3imuh4Znc6WqunVTosZgY9IvyRdg3dR9tp5RJYkhNDXWiD2mIMIRVT3iGlor2p0x4fTi8UmYwwi+f46iVmbU1IPk6H2qBSULCfUwU0qp9VC8Y/L7n2nZtGPEHGlKyyDgI6XERqdWRyhuT85iWbJjEmdST6nJCNbIYHOm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb3oZD7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056B5C4AF09;
-	Sun, 26 Jan 2025 15:00:48 +0000 (UTC)
+	 MIME-Version; b=F1+1ou2X6bSIiFoamoc3fVQuDtHzl9Pw5H/2Od21iY1e3zP2gajXQ4oddxAg/kNBheueuZTyNruvojBasPEQB6XprdZntUgg2hQ08Oca04xD5pKrf81nHUTm9GHenISs+hhYB3FcmZlMrwFleja5HsB7i+zaiNRVp5Q0EvOet9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdwxC1EG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB05C4CEE2;
+	Sun, 26 Jan 2025 15:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903649;
-	bh=FBWA9/9zzflDs+5rpYFzanPXtI2qMGmu3P0w8n6wdo8=;
+	s=k20201202; t=1737903651;
+	bh=02d56irNDBarfWo5Mkhq/+ZsO4/9M/5X0LzmTKTyCeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cb3oZD7Ve1BNo2XaEhYJ75pxQQRkpkn1hfUAadSkvUPQTvnX1gaGi+3a5WLdIzYvB
-	 Mgky8kdnBFe+Gh8LvxYaJIkLjIdWAKiyYq1+yd9kKQIZDlDsMm00zJueKra72Ns9TI
-	 nmvGTCv7grll1y5LHx6fcEWYJc82F+BMOqWoLeGA+BMt65TCcdYdQFU7xWT1i2lsHt
-	 XRDyfCpiCy28KpR9ixB2+lwJExDjH7mkoAwC/UrO7StgltEMgrtev8fzKm3bMuo7lz
-	 2aOto9lJesvRUkzl0CVTpI4tVWqUf6+1HYUNodseriJ4tfeicmgDEQs3/Y+QXX5UIJ
-	 4wBqNY1FaZVVw==
+	b=kdwxC1EG0zOl2d9b+g3nNZf1Cmm9eAnHFf/oviRJ+ukcTnwjjNFL8RQNoXs3LKxPJ
+	 xD36Mhs7vvH0GG2dpWEFXcEO5E1D/0QAtVFbmEPAJZGe51zLaA5y26IYGvtXTaY9Uh
+	 2h1oDHB9QBxsHE5H7Lr0xZz8ZQ6XSS1JuFcKen6iVhP3VcoM2I0Cb0pWV/18c8XKv+
+	 RNpZgn/lh6z5UwU7ANlWwDysQCnyFmygxXEkMX9+WuhEPiD6W9SMFgyXUxBWWi+gzR
+	 h4xgmUnfY4wM46htXdFm4oTPoe2oZDLgdCi6YdsYoyw54SWpNlulGj8Ju4x0DDtxPj
+	 aCPqb2Mpb3J0g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	kernel test robot <lkp@intel.com>,
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 11/35] wifi: rtw88: add __packed attribute to efuse layout struct
-Date: Sun, 26 Jan 2025 10:00:05 -0500
-Message-Id: <20250126150029.953021-11-sashal@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 12/35] clk: qcom: Make GCC_8150 depend on QCOM_GDSC
+Date: Sun, 26 Jan 2025 10:00:06 -0500
+Message-Id: <20250126150029.953021-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -66,211 +70,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 0daa521a1c8c29ffbefe6530f0d276e74e2749d0 ]
+[ Upstream commit 1474149c4209943b37a2c01b82f07ba39465e5fe ]
 
-The layout struct of efuse should not do address alignment by compiler.
-Otherwise it leads unexpected layout and size for certain arch suc as arm.
-In x86-64, the results are identical before and after this patch.
+Like all other non-ancient Qualcomm clock drivers, QCOM_GDSC is
+required, as the GCC driver defines and instantiates a bunch of GDSCs.
 
-Also adjust bit-field to prevent over adjacent byte to avoid warning:
-  rtw88/rtw8822b.h:66:1: note: offset of packed bit-field `res2` has changed in GCC 4.4
-   66 | } __packed;
-      | ^
+Add the missing dependency.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412120131.qk0x6OhE-lkp@intel.com/
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241212054203.135046-1-pkshih@realtek.com
+Reported-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Closes: https://lore.kernel.org/linux-arm-msm/ab85f2ae-6c97-4fbb-a15b-31cc9e1f77fc@linaro.org/
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20241026-topic-8150gcc_kconfig-v1-1-3772013d8804@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.h     | 4 ++--
- drivers/net/wireless/realtek/rtw88/rtw8723x.h | 8 ++++----
- drivers/net/wireless/realtek/rtw88/rtw8821c.h | 9 +++++----
- drivers/net/wireless/realtek/rtw88/rtw8822b.h | 9 +++++----
- drivers/net/wireless/realtek/rtw88/rtw8822c.h | 9 +++++----
- 5 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/clk/qcom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index cd09fb6f7b8b3..65c7acea41aff 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -510,12 +510,12 @@ struct rtw_5g_txpwr_idx {
- 	struct rtw_5g_vht_ns_pwr_idx_diff vht_2s_diff;
- 	struct rtw_5g_vht_ns_pwr_idx_diff vht_3s_diff;
- 	struct rtw_5g_vht_ns_pwr_idx_diff vht_4s_diff;
--};
-+} __packed;
- 
- struct rtw_txpwr_idx {
- 	struct rtw_2g_txpwr_idx pwr_idx_2g;
- 	struct rtw_5g_txpwr_idx pwr_idx_5g;
--};
-+} __packed;
- 
- struct rtw_channel_params {
- 	u8 center_chan;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-index e93bfce994bf8..a99af527c92cf 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
-@@ -47,7 +47,7 @@ struct rtw8723xe_efuse {
- 	u8 device_id[2];
- 	u8 sub_vendor_id[2];
- 	u8 sub_device_id[2];
--};
-+} __packed;
- 
- struct rtw8723xu_efuse {
- 	u8 res4[48];                    /* 0xd0 */
-@@ -56,12 +56,12 @@ struct rtw8723xu_efuse {
- 	u8 usb_option;                  /* 0x104 */
- 	u8 res5[2];			/* 0x105 */
- 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
--};
-+} __packed;
- 
- struct rtw8723xs_efuse {
- 	u8 res4[0x4a];			/* 0xd0 */
- 	u8 mac_addr[ETH_ALEN];		/* 0x11a */
--};
-+} __packed;
- 
- struct rtw8723x_efuse {
- 	__le16 rtl_id;
-@@ -96,7 +96,7 @@ struct rtw8723x_efuse {
- 		struct rtw8723xu_efuse u;
- 		struct rtw8723xs_efuse s;
- 	};
--};
-+} __packed;
- 
- #define RTW8723X_IQK_ADDA_REG_NUM	16
- #define RTW8723X_IQK_MAC8_REG_NUM	3
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index 7a33ebd612eda..954e93c8020d8 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -27,7 +27,7 @@ struct rtw8821cu_efuse {
- 	u8 res11[0xcf];
- 	u8 package_type;		/* 0x1fb */
- 	u8 res12[0x4];
--};
-+} __packed;
- 
- struct rtw8821ce_efuse {
- 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
-@@ -47,7 +47,8 @@ struct rtw8821ce_efuse {
- 	u8 ltr_en:1;
- 	u8 res1:2;
- 	u8 obff:2;
--	u8 res2:3;
-+	u8 res2_1:1;
-+	u8 res2_2:2;
- 	u8 obff_cap:2;
- 	u8 res3:4;
- 	u8 res4[3];
-@@ -63,7 +64,7 @@ struct rtw8821ce_efuse {
- 	u8 res6:1;
- 	u8 port_t_power_on_value:5;
- 	u8 res7;
--};
-+} __packed;
- 
- struct rtw8821cs_efuse {
- 	u8 res4[0x4a];			/* 0xd0 */
-@@ -101,7 +102,7 @@ struct rtw8821c_efuse {
- 		struct rtw8821cu_efuse u;
- 		struct rtw8821cs_efuse s;
- 	};
--};
-+} __packed;
- 
- static inline void
- _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-index 0514958fb57c3..9fca9ba67c90f 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-@@ -27,7 +27,7 @@ struct rtw8822bu_efuse {
- 	u8 res11[0xcf];
- 	u8 package_type;		/* 0x1fb */
- 	u8 res12[0x4];
--};
-+} __packed;
- 
- struct rtw8822be_efuse {
- 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
-@@ -47,7 +47,8 @@ struct rtw8822be_efuse {
- 	u8 ltr_en:1;
- 	u8 res1:2;
- 	u8 obff:2;
--	u8 res2:3;
-+	u8 res2_1:1;
-+	u8 res2_2:2;
- 	u8 obff_cap:2;
- 	u8 res3:4;
- 	u8 res4[3];
-@@ -63,7 +64,7 @@ struct rtw8822be_efuse {
- 	u8 res6:1;
- 	u8 port_t_power_on_value:5;
- 	u8 res7;
--};
-+} __packed;
- 
- struct rtw8822bs_efuse {
- 	u8 res4[0x4a];			/* 0xd0 */
-@@ -103,7 +104,7 @@ struct rtw8822b_efuse {
- 		struct rtw8822bu_efuse u;
- 		struct rtw8822bs_efuse s;
- 	};
--};
-+} __packed;
- 
- static inline void
- _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index e2b383d633cd2..fc62b67a15f21 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -14,7 +14,7 @@ struct rtw8822cu_efuse {
- 	u8 res1[3];
- 	u8 mac_addr[ETH_ALEN];		/* 0x157 */
- 	u8 res2[0x3d];
--};
-+} __packed;
- 
- struct rtw8822cs_efuse {
- 	u8 res0[0x4a];			/* 0x120 */
-@@ -39,7 +39,8 @@ struct rtw8822ce_efuse {
- 	u8 ltr_en:1;
- 	u8 res1:2;
- 	u8 obff:2;
--	u8 res2:3;
-+	u8 res2_1:1;
-+	u8 res2_2:2;
- 	u8 obff_cap:2;
- 	u8 res3:4;
- 	u8 class_code[3];
-@@ -55,7 +56,7 @@ struct rtw8822ce_efuse {
- 	u8 res6:1;
- 	u8 port_t_power_on_value:5;
- 	u8 res7;
--};
-+} __packed;
- 
- struct rtw8822c_efuse {
- 	__le16 rtl_id;
-@@ -102,7 +103,7 @@ struct rtw8822c_efuse {
- 		struct rtw8822cu_efuse u;
- 		struct rtw8822cs_efuse s;
- 	};
--};
-+} __packed;
- 
- enum rtw8822c_dpk_agc_phase {
- 	RTW_DPK_GAIN_CHECK,
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index ef89d686cbc4e..c27ea46283fd9 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -1079,6 +1079,7 @@ config SM_GCC_7150
+ config SM_GCC_8150
+ 	tristate "SM8150 Global Clock Controller"
+ 	depends on ARM64 || COMPILE_TEST
++	select QCOM_GDSC
+ 	help
+ 	  Support for the global clock controller on SM8150 devices.
+ 	  Say Y if you want to use peripheral devices such as UART,
 -- 
 2.39.5
 
