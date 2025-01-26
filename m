@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-110468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AD6A1C8CC
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390A4A1C8BF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 408493A7EF6
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1939618858D0
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C95E1A08CA;
-	Sun, 26 Jan 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1221A2398;
+	Sun, 26 Jan 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1HbLkxx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbGBdMuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0445016F288;
-	Sun, 26 Jan 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C851A238F;
+	Sun, 26 Jan 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737902963; cv=none; b=DvAT5FI3UDNJr3DBXdgdsOhaJwrPQIaMZgB4oUZSI62LgvMYlw50Bvm4zveekTPXfoeSkBjF+cmQgZPfOASGAXWh12LqBmly44XlnmIKKAqC0fJSckQOpi0Yx8PbQdrgFWBIykUCINvSr+7sBkr1F0bi69H0LJ/GjhDWzbd7bEA=
+	t=1737902964; cv=none; b=e/ekcBm/dBSdRZx+o4sKyvSQcbKFZdvpHwbu4+QASJoePXizSAk/7H4yu0KxXejhMJxKbD0fmwarzntvJ68SmG6+idv0KoXqxUrjrX74G4c3CczjpPhb5SzoY3t9QSqYcIJ+RpSzii0U0a5NrOSGEhzQUeiYpb9RuC+rPX9jWQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737902963; c=relaxed/simple;
-	bh=EPqnee7cbUOCvKH/WkCn+vS3lvEN/aBPimSGlOlniKk=;
+	s=arc-20240116; t=1737902964; c=relaxed/simple;
+	bh=cHulVVLclM+jPBmZ3LMLj/fbXNhiWpDHCMX1PMLeXMo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wvw/mlgynzkLKRd0on8+6o+AFXpGV6t2upYbU5NMpKrnxoReXhqIUhheeHDjfuKQ+BHDhp4fJSXDu1aCGGGzwe9csX9w19u6tKx5Q8qiYFfVXsP9Wv2haRdo2Hn+bireI7EWK4aWu+w92+brLl1xCMl36Sd82ZESk/ddfVYRf1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1HbLkxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C37AC4CED3;
-	Sun, 26 Jan 2025 14:49:21 +0000 (UTC)
+	 MIME-Version; b=lyFTTs1QyE+LJl0rAkIDNp3NRd5d0EKP4Lx7MBFxEj5eRskGJ9irPGCP/WRbsUJX8uqDPJj3ElI0t49oDaHzh+TVRbBxR4KFiXVark9JqBHMsLxhEgbVU6eGG3i6PdsLMuZNhjh/2Hp+4DLUch+VjycFP87GKG3mWJcrniHBmpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbGBdMuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63888C4CED3;
+	Sun, 26 Jan 2025 14:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737902962;
-	bh=EPqnee7cbUOCvKH/WkCn+vS3lvEN/aBPimSGlOlniKk=;
+	s=k20201202; t=1737902964;
+	bh=cHulVVLclM+jPBmZ3LMLj/fbXNhiWpDHCMX1PMLeXMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1HbLkxx8xcYbgUw3U45+QBkw8e9SetgG3+5SCgYte0UMCNIz9X1Ra1oB8uSs9v1x
-	 5/vuCoU+rPFI5B+k4tX7WJE7VoRdxdsMT3yVybvDGE5RAGXQRoRghorB7l7CAv5chP
-	 SEgF7j/Bo1ftglFu2b0AcgTtkTF6bWNmF7YfruVIRm6sQGW56Fa4v4GSAZjxJT3j1Z
-	 AoHzVAjEVHoMEvKOQN0HQHIFxP0P/pMNG7gbimmv4hZSxB8n9ORp/xvfbZm93jgD8A
-	 c7PSswAB3FTadQRugKgWDwbJhHlQgVefxKj3CZVV/B1HTd8NRHWPM5kAEHDw9TcWpk
-	 JtPkUL16Xvl5Q==
+	b=YbGBdMuJybFduKA/y72bSyNqcVvg2ihxPa5Nb65oem5rBFi157xbL0abKwal/gmtg
+	 0wkGwnIOlxMd293hoHLuwqW6jFgaW+oNnLvebiAGpd0j0dOKvKJaYYBCYEkKcjy0SP
+	 Y56NinWgPf3W2Yf7PS6Y06sblfA2QrgQ0Xkc5ir3yZTw1KSwTxpIQVQZCdaSg9GkqF
+	 QSGzbkDD+fXjHHksvkx7WFppM4/KAQf/ZG//mRY4zcXpY3J8auCoofi5LTvK6/ljlq
+	 M2npx62cvXQY8888N3a9gWxPIYqBMOWxXSJsNsOQEVCFwg9e6yTl0hKoMwOiUnIDwX
+	 boZqDMnzcEWVA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	=?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Aleksa Sarai <cyphar@cyphar.com>,
+Cc: Hao-ran Zheng <zhenghaoran154@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	brauner@kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/4] exec: fix up /proc/pid/comm in the execveat(AT_EMPTY_PATH) case
-Date: Sun, 26 Jan 2025 09:49:15 -0500
-Message-Id: <20250126144918.925549-2-sashal@kernel.org>
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/4] btrfs: fix data race when accessing the inode's disk_i_size at btrfs_drop_extents()
+Date: Sun, 26 Jan 2025 09:49:16 -0500
+Message-Id: <20250126144918.925549-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126144918.925549-1-sashal@kernel.org>
 References: <20250126144918.925549-1-sashal@kernel.org>
@@ -66,111 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Hao-ran Zheng <zhenghaoran154@gmail.com>
 
-[ Upstream commit 543841d1806029889c2f69f040e88b247aba8e22 ]
+[ Upstream commit 5324c4e10e9c2ce307a037e904c0d9671d7137d9 ]
 
-Zbigniew mentioned at Linux Plumber's that systemd is interested in
-switching to execveat() for service execution, but can't, because the
-contents of /proc/pid/comm are the file descriptor which was used,
-instead of the path to the binary[1]. This makes the output of tools like
-top and ps useless, especially in a world where most fds are opened
-CLOEXEC so the number is truly meaningless.
+A data race occurs when the function `insert_ordered_extent_file_extent()`
+and the function `btrfs_inode_safe_disk_i_size_write()` are executed
+concurrently. The function `insert_ordered_extent_file_extent()` is not
+locked when reading inode->disk_i_size, causing
+`btrfs_inode_safe_disk_i_size_write()` to cause data competition when
+writing inode->disk_i_size, thus affecting the value of `modify_tree`.
 
-When the filename passed in is empty (e.g. with AT_EMPTY_PATH), use the
-dentry's filename for "comm" instead of using the useless numeral from
-the synthetic fdpath construction. This way the actual exec machinery
-is unchanged, but cosmetically the comm looks reasonable to admins
-investigating things.
+The specific call stack that appears during testing is as follows:
 
-Instead of adding TASK_COMM_LEN more bytes to bprm, use one of the unused
-flag bits to indicate that we need to set "comm" from the dentry.
+  ============DATA_RACE============
+   btrfs_drop_extents+0x89a/0xa060 [btrfs]
+   insert_reserved_file_extent+0xb54/0x2960 [btrfs]
+   insert_ordered_extent_file_extent+0xff5/0x1760 [btrfs]
+   btrfs_finish_one_ordered+0x1b85/0x36a0 [btrfs]
+   btrfs_finish_ordered_io+0x37/0x60 [btrfs]
+   finish_ordered_fn+0x3e/0x50 [btrfs]
+   btrfs_work_helper+0x9c9/0x27a0 [btrfs]
+   process_scheduled_works+0x716/0xf10
+   worker_thread+0xb6a/0x1190
+   kthread+0x292/0x330
+   ret_from_fork+0x4d/0x80
+   ret_from_fork_asm+0x1a/0x30
+  ============OTHER_INFO============
+   btrfs_inode_safe_disk_i_size_write+0x4ec/0x600 [btrfs]
+   btrfs_finish_one_ordered+0x24c7/0x36a0 [btrfs]
+   btrfs_finish_ordered_io+0x37/0x60 [btrfs]
+   finish_ordered_fn+0x3e/0x50 [btrfs]
+   btrfs_work_helper+0x9c9/0x27a0 [btrfs]
+   process_scheduled_works+0x716/0xf10
+   worker_thread+0xb6a/0x1190
+   kthread+0x292/0x330
+   ret_from_fork+0x4d/0x80
+   ret_from_fork_asm+0x1a/0x30
+  =================================
 
-Suggested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
-Suggested-by: Tycho Andersen <tandersen@netflix.com>
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://github.com/uapi-group/kernel-features#set-comm-field-before-exec [1]
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Tested-by: Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl>
-Signed-off-by: Kees Cook <kees@kernel.org>
+The main purpose of the check of the inode's disk_i_size is to avoid
+taking write locks on a btree path when we have a write at or beyond
+EOF, since in these cases we don't expect to find extent items in the
+root to drop. However if we end up taking write locks due to a data
+race on disk_i_size, everything is still correct, we only add extra
+lock contention on the tree in case there's concurrency from other tasks.
+If the race causes us to not take write locks when we actually need them,
+then everything is functionally correct as well, since if we find out we
+have extent items to drop and we took read locks (modify_tree set to 0),
+we release the path and retry again with write locks.
+
+Since this data race does not affect the correctness of the function,
+it is a harmless data race, use data_race() to check inode->disk_i_size.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Hao-ran Zheng <zhenghaoran154@gmail.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exec.c               | 29 ++++++++++++++++++++++++++---
- include/linux/binfmts.h |  4 +++-
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ fs/btrfs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index a42c9b8b070d7..2039414cc6621 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1362,7 +1362,28 @@ int begin_new_exec(struct linux_binprm * bprm)
- 		set_dumpable(current->mm, SUID_DUMP_USER);
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index c8231677c79ef..bdb0f7c70752d 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -234,7 +234,7 @@ int btrfs_drop_extents(struct btrfs_trans_handle *trans,
+ 	if (args->drop_cache)
+ 		btrfs_drop_extent_map_range(inode, args->start, args->end - 1, false);
  
- 	perf_event_exec();
--	__set_task_comm(me, kbasename(bprm->filename), true);
-+
-+	/*
-+	 * If the original filename was empty, alloc_bprm() made up a path
-+	 * that will probably not be useful to admins running ps or similar.
-+	 * Let's fix it up to be something reasonable.
-+	 */
-+	if (bprm->comm_from_dentry) {
-+		/*
-+		 * Hold RCU lock to keep the name from being freed behind our back.
-+		 * Use acquire semantics to make sure the terminating NUL from
-+		 * __d_alloc() is seen.
-+		 *
-+		 * Note, we're deliberately sloppy here. We don't need to care about
-+		 * detecting a concurrent rename and just want a terminated name.
-+		 */
-+		rcu_read_lock();
-+		__set_task_comm(me, smp_load_acquire(&bprm->file->f_path.dentry->d_name.name),
-+				true);
-+		rcu_read_unlock();
-+	} else {
-+		__set_task_comm(me, kbasename(bprm->filename), true);
-+	}
+-	if (args->start >= inode->disk_i_size && !args->replace_extent)
++	if (data_race(args->start >= inode->disk_i_size) && !args->replace_extent)
+ 		modify_tree = 0;
  
- 	/* An exec changes our domain. We are no longer part of the thread
- 	   group */
-@@ -1521,11 +1542,13 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename)
- 	if (fd == AT_FDCWD || filename->name[0] == '/') {
- 		bprm->filename = filename->name;
- 	} else {
--		if (filename->name[0] == '\0')
-+		if (filename->name[0] == '\0') {
- 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d", fd);
--		else
-+			bprm->comm_from_dentry = 1;
-+		} else {
- 			bprm->fdpath = kasprintf(GFP_KERNEL, "/dev/fd/%d/%s",
- 						  fd, filename->name);
-+		}
- 		if (!bprm->fdpath)
- 			goto out_free;
- 
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index 8d51f69f9f5ef..af9056d78fadf 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -42,7 +42,9 @@ struct linux_binprm {
- 		 * Set when errors can no longer be returned to the
- 		 * original userspace.
- 		 */
--		point_of_no_return:1;
-+		point_of_no_return:1,
-+		/* Set when "comm" must come from the dentry. */
-+		comm_from_dentry:1;
- 	struct file *executable; /* Executable to pass to the interpreter */
- 	struct file *interpreter;
- 	struct file *file;
+ 	update_refs = (root->root_key.objectid != BTRFS_TREE_LOG_OBJECTID);
 -- 
 2.39.5
 
