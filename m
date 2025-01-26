@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-110601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01315A1CA4C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:22:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE9FA1CA5E
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AD81882083
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6D391663BF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F5A203705;
-	Sun, 26 Jan 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1166414F9D6;
+	Sun, 26 Jan 2025 15:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzsskw/9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErmQaUOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A2B1DA60B;
-	Sun, 26 Jan 2025 14:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77DD70810;
+	Sun, 26 Jan 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903447; cv=none; b=Rezp2KJqb8xI+YUIuemcJgMU+txt3EEW8ukzFCYYxdYyu63kiwA97OWSAZbKgVx5BDEYuXkZsmumRYoC+SdmOyb5M69nxEH6g5cSbGFt9ichYgYUe5I3vhsVRRuCDguktFBzFvUBsqjy9VeJQx8cif0G2yD6/nP1KAqsEQFqsm8=
+	t=1737903632; cv=none; b=iQbPB9WwulRWbYzzqqchsnVMPrSN3vhGDDAyNTf2u3H0X5/lbTqiLL9eMOcigCdHpsappxx+KaP2K4KzPaEEMKwOZo2mceIu0cT7EKCtiEgs586NPhBDd2PxHkS7JrTmiLcvWvBjQAVOHUxyHTc/qpZpmbpTDTu+hY2hggsOHsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903447; c=relaxed/simple;
-	bh=4SRF8G0chdTqi7IqSsbwmIj53SwnXriDnsd9U6DDGwQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uoGTLauGMKC5fYDwW5DDBoMJFazpEbCUzNfgLHhbe7H74mlifD3WKHi6MGilPFkrOqqv74fUJrYi3w3f3JADj+f4hUcIkeBZZ6xL6jSoTyI8MmYi7Bp5yLPvyfBp5dJjh8EWahUDAZvvTrQxQmOAIpxzUEyvf8SERNXdnMnqLhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzsskw/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C392EC4CED3;
-	Sun, 26 Jan 2025 14:57:25 +0000 (UTC)
+	s=arc-20240116; t=1737903632; c=relaxed/simple;
+	bh=t7P4ntRV5agOZOjYh4DrQCUYqk7wEUB/mA7lieVWKFE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cGsC5SIrIAjyTYJCIHhlC04s6MswkzfNGLVUpPK/w+NYeinLN9t5Y4jpqHS8djUd6A9bUUODSCGIi9T0bYxbK6egVEBPruI7IgzLOm2z1iHRIy39LfKcUiN0UNigUbZmACm8fkLXzhFe3we1XIVRmAb0q/Dtw2PK7r+6qTk7fz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErmQaUOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0722FC4CED3;
+	Sun, 26 Jan 2025 15:00:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903447;
-	bh=4SRF8G0chdTqi7IqSsbwmIj53SwnXriDnsd9U6DDGwQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzsskw/9A+Y+rdti7x+I4VsDhTd2yk06dLwYeiPRB+gxKyGa76CPtEbo08SF2fHaS
-	 LDlShqTZsz3lLa2WGc1gcnMpPxElaL0jKaLJP1wpZ2nhqPGr7ZM5hLGP1x8SzuCMaw
-	 UWcFv6xIrMLIsgvC3rQsg1a8wKog4uo83U5gtBahtzELth3IXgJSNolUdKgybpVkns
-	 5UIphtox+1XxGke8mOcxTQ44C2jCwgZjLQQno9mfbRP/wOWslkuQjJ/jBHQ5+zBuP0
-	 cwlsWA3mM8i6Ww+zSYdcIEzkhdg+457Vl/JS+DFJRwmDOxQpJcVhqxJln4yjnitZ58
-	 +KZogqj9S5w+A==
+	s=k20201202; t=1737903632;
+	bh=t7P4ntRV5agOZOjYh4DrQCUYqk7wEUB/mA7lieVWKFE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ErmQaUOpIK0RlY9EmMhOvK4dEfAE0gjmNOgVukwGez8Qd2owDq3zu5IRjEUYUPHle
+	 qcrfvU+zuKr0sM9TOUfIxxV/A0C7QkU3XEvpui535VO+4mSilhL5u0wYGKn7E5+EwD
+	 GhfPuEr5JRkBujSw6/JL1C0VovruAKobwo/wPsU/q7TE+xWtMOmiiCmG4Tqqqj4SOk
+	 kdyI6tAhbhkFSkf8wflj6zuUBtjDDtla+bGj08w/+YnU12pKGpzfNp1Rri5yBv/tPc
+	 vZVjhCGNYbko6UblJZY9LPRc7L4wbLnCnOciLReyJxwUoKg2jkx/rH6wjgy2z9uvPl
+	 hbjmwbatQfR3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+Cc: Karol Przybylski <karprzy7@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alain.volmat@foss.st.com,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 2/2] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
-Date: Sun, 26 Jan 2025 09:57:23 -0500
-Message-Id: <20250126145723.947855-2-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 01/35] wifi: ath12k: Fix for out-of bound access error
+Date: Sun, 26 Jan 2025 09:59:55 -0500
+Message-Id: <20250126150029.953021-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126145723.947855-1-sashal@kernel.org>
-References: <20250126145723.947855-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,40 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.289
+X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Karol Przybylski <karprzy7@gmail.com>
 
-[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
+[ Upstream commit eb8c0534713865d190856f10bfc97cf0b88475b1 ]
 
-Reading access to connector->eld can happen at the same time the
-drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
-order to protect connector->eld from concurrent access.
+Selfgen stats are placed in a buffer using print_array_to_buf_index() function.
+Array length parameter passed to the function is too big, resulting in possible
+out-of bound memory error.
+Decreasing buffer size by one fixes faulty upper bound of passed array.
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Discovered in coverity scan, CID 1600742 and CID 1600758
+
+Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241105101132.374372-1-karprzy7@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
-index c5547fedebe30..ce7cc84499f45 100644
---- a/drivers/gpu/drm/sti/sti_hdmi.c
-+++ b/drivers/gpu/drm/sti/sti_hdmi.c
-@@ -1214,7 +1214,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
- 	struct drm_connector *connector = hdmi->drm_connector;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index c9980c0193d1d..43ea87e981f42 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -1562,7 +1562,8 @@ ath12k_htt_print_tx_selfgen_ac_stats_tlv(const void *tag_buf, u16 tag_len,
+ 			 le32_to_cpu(htt_stats_buf->ac_mu_mimo_ndp));
+ 	len += print_array_to_buf_index(buf, len, "ac_mu_mimo_brpollX_tried = ", 1,
+ 					htt_stats_buf->ac_mu_mimo_brpoll,
+-					ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS, "\n\n");
++					ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS - 1,
++					"\n\n");
  
- 	DRM_DEBUG_DRIVER("\n");
-+	mutex_lock(&connector->eld_mutex);
- 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
-+	mutex_unlock(&connector->eld_mutex);
- 
- 	return 0;
+ 	stats_req->buf_len = len;
  }
+@@ -1590,7 +1591,7 @@ ath12k_htt_print_tx_selfgen_ax_stats_tlv(const void *tag_buf, u16 tag_len,
+ 			 le32_to_cpu(htt_stats_buf->ax_mu_mimo_ndp));
+ 	len += print_array_to_buf_index(buf, len, "ax_mu_mimo_brpollX_tried = ", 1,
+ 					htt_stats_buf->ax_mu_mimo_brpoll,
+-					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS, "\n");
++					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS - 1, "\n");
+ 	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger = %u\n",
+ 			 le32_to_cpu(htt_stats_buf->ax_basic_trigger));
+ 	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_total_trigger = %u\n",
 -- 
 2.39.5
 
