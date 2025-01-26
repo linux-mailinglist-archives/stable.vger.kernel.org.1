@@ -1,70 +1,69 @@
-Return-Path: <stable+bounces-110526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8E6A1C99D
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:05:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20499A1C9AC
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FDD47A30BF
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28243AAA37
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8B81F55FA;
-	Sun, 26 Jan 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E477519FA92;
+	Sun, 26 Jan 2025 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="azskYTrf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tEugaBrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E2E154C08;
-	Sun, 26 Jan 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9771A0728;
+	Sun, 26 Jan 2025 14:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903266; cv=none; b=uF8TiibzXVfO6R1lf5oLF1Fu4pqMZaP/r4Tya/eknsxLWlAhU+S3p5bdlmdfPIM1jLolmWugcSJZftgRdfjoD9HTTAhacZ7pMijBZ7r2C61BBEMZva+bav7wYy3yLVf2ZWgv7K44ENu5EEt0WKcj1esvyeSxcIsRoU2jYWMg5wk=
+	t=1737903230; cv=none; b=OfqK5pD1wIKcDM/YCiaDR9LzuVu2jtSs+xzGU3M9w8yDcB8JuvEbd1Je57DDcMd6NvaHmAgLN+9LAVM4p+/R/Aff8SAM2fGsoNBPHvmfdB66KtVKwoWLriNuF/jDyvxaSTt/pfawKbGH/uhvLNDi1AFucK0AXOUsg/KpYXinE+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903266; c=relaxed/simple;
-	bh=GN1NMxt/gjWTVbQAZE7hiZyVilNRTegYbGnMQt5SG6M=;
+	s=arc-20240116; t=1737903230; c=relaxed/simple;
+	bh=/Vj9PjC7BZIjNtXGoymmTdhL0TXpRGwQj6u87iCc8GA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zzd/hvFJBVR1BzUcikBNYPgzxP61+WuPpXi0vF4OYpj8WKn8pSwLzT5URLKNK4K/3OWWEWrTQDockmslWblRzyLK0/CK0pvNiFvAY+kga8PAKqeZMUeFi58lHoxny08a5WxvtU46/82hQImgZSqfcfQ07PBWrIF10hEFS3ubG7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=azskYTrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605A3C4CED3;
-	Sun, 26 Jan 2025 14:54:24 +0000 (UTC)
+	 MIME-Version; b=pACGz7pEkIuchyR5JOwHgu/tUHQf/htRL2ml9VxKSrL5OVuHRQ/exRHJsPfUK8kDxWn6bu18BsqTq/n8h6KCwIryMzhNBcybptUu43/htmPQRThqoWh4yXC9ykaTDw8OmKg0NyE26sOPOUqERf4+iygF9CdTBzMnsSnpS87rnDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tEugaBrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D20DC4CED3;
+	Sun, 26 Jan 2025 14:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903266;
-	bh=GN1NMxt/gjWTVbQAZE7hiZyVilNRTegYbGnMQt5SG6M=;
+	s=k20201202; t=1737903230;
+	bh=/Vj9PjC7BZIjNtXGoymmTdhL0TXpRGwQj6u87iCc8GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azskYTrfdM4xC+PEMGc/ILiIJRvtETTtUdA7qtAEs109sEbNZYDLBEj0Rs8ae0IAW
-	 gM+M+l6c6wm2fBB3UZpOsxCJv4UyKEQdnXt8k20g1m8PQylufDzBW+Mq0t+sLGURu1
-	 4MLqzjiyHAFpBVbjdRL3s5x08JBENqRH2M2m35hOE5T9CBNnImwoV+jecfpxL+VoAb
-	 iKGXYuA2a9VzaKVQBgTOJmgEA+8Amfn2mltwhEl0xT3MfgXTbLVf7PrybASw1hku6v
-	 7gCKC4mf3mzUagX+6eym61sr26QPEb5B43K9JjH9epFCOFayHN7mkNWtKu+ArmuT0U
-	 VMLjIJC2TwcHA==
+	b=tEugaBrdMBdR2Y7IOd/ebKXin2swkiYitwbejWhFxGUbLA40sTw95HpLJ0R2y+XlH
+	 QrMSk5yyyVgZ6hMGpNyynMRgGzvEKzRjv9Ch5WA82Q9xXQWXWbDyAc8MLDQDTlJsa4
+	 5b7TD14AQ9wpdetD6kyINtyk8dANQFsWfjUsPm608jH0hVVPu8ylKH3aOwvEhnMo69
+	 33pTxrf54uTrYrjwkhhQGY2Lx61ulS194KINfvv9A3Fhfx3t6q8mfj9hwJJmSf95cN
+	 UqUYGtsudSOxhBZOUnhk8sGoou/ny/HQUr2v6V1usWrVEWK415wTw2zoK5OVv8zByI
+	 F8k6k0657u4Fg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+Cc: Ausef Yousof <Ausef.Yousof@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	chaitanya.dhere@amd.com,
+	jun.lei@amd.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	sunil.khatri@amd.com,
-	Hawking.Zhang@amd.com,
-	kevinyang.wang@amd.com,
-	lijo.lazar@amd.com,
-	tao.zhou1@amd.com,
-	jesse.zhang@amd.com,
-	Jiadong.Zhu@amd.com,
-	le.ma@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 24/34] drm/amdgpu: Don't enable sdma 4.4.5 CTXEMPTY interrupt
-Date: Sun, 26 Jan 2025 09:53:00 -0500
-Message-Id: <20250126145310.926311-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 10/34] drm/amd/display: Populate chroma prefetch parameters, DET buffer fix
+Date: Sun, 26 Jan 2025 09:52:46 -0500
+Message-Id: <20250126145310.926311-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145310.926311-1-sashal@kernel.org>
 References: <20250126145310.926311-1-sashal@kernel.org>
@@ -79,44 +78,136 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Ausef Yousof <Ausef.Yousof@amd.com>
 
-[ Upstream commit b4b7271e5ca95b581f2fcc4ae852c4079215e92d ]
+[ Upstream commit 70fec46519fca859aa209f5f02e7e0a0123aca4a ]
 
-The sdma context empty interrupt is dropped in amdgpu_irq_dispatch
-as unregistered interrupt src_id 243, this interrupt accounts to 1/3 of
-total interrupts and causes IH primary ring overflow when running
-stressful benchmark application. Disable this interrupt has no side
-effect found.
+[WHY]
+Soft hang/lag observed during 10bit playback + moving cursor, corruption
+observed in other tickets for same reason, also failing MPO.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+1. Currently, we are always running
+   calculate_lowest_supported_state_for_temp_read which is only
+   necessary on dGPU
+2. Fast validate path does not apply DET buffer allocation policy
+3. Prefetch UrgBFactor chroma parameter not populated in prefetch
+   calculation
+
+[HOW]
+1. Add a check to see if we are on APU, if so, skip the code
+2. Add det buffer alloc policy checks to fast validate path
+3. Populate UrgentBurstChroma param in call to calculate
+   UrgBChroma prefetch values
+
+-revision commits: small formatting/brackets/null check addition + remove test change + dGPU code
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Ausef Yousof <Ausef.Yousof@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ .../amd/display/dc/dml2/display_mode_core.c   |  5 ++-
+ .../drm/amd/display/dc/dml2/dml2_wrapper.c    | 35 +++++++++++++------
+ 2 files changed, 29 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-index a38553f38fdc8..ed68d7971a93a 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_4_2.c
-@@ -953,10 +953,12 @@ static int sdma_v4_4_2_inst_start(struct amdgpu_device *adev,
- 		/* set utc l1 enable flag always to 1 */
- 		temp = RREG32_SDMA(i, regSDMA_CNTL);
- 		temp = REG_SET_FIELD(temp, SDMA_CNTL, UTC_L1_ENABLE, 1);
--		/* enable context empty interrupt during initialization */
--		temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
--		WREG32_SDMA(i, regSDMA_CNTL, temp);
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index 8dabb1ac0b684..be87dc0f07799 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -6434,7 +6434,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 							/* Output */
+ 							&mode_lib->ms.UrgentBurstFactorCursorPre[k],
+ 							&mode_lib->ms.UrgentBurstFactorLumaPre[k],
+-							&mode_lib->ms.UrgentBurstFactorChroma[k],
++							&mode_lib->ms.UrgentBurstFactorChromaPre[k],
+ 							&mode_lib->ms.NotUrgentLatencyHidingPre[k]);
  
-+		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) < IP_VERSION(4, 4, 5)) {
-+			/* enable context empty interrupt during initialization */
-+			temp = REG_SET_FIELD(temp, SDMA_CNTL, CTXEMPTY_INT_ENABLE, 1);
-+			WREG32_SDMA(i, regSDMA_CNTL, temp);
+ 					mode_lib->ms.cursor_bw_pre[k] = mode_lib->ms.cache_display_cfg.plane.NumberOfCursors[k] * mode_lib->ms.cache_display_cfg.plane.CursorWidth[k] *
+@@ -9190,6 +9190,8 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 			&locals->FractionOfUrgentBandwidth,
+ 			&s->dummy_boolean[0]); // dml_bool_t *PrefetchBandwidthSupport
+ 
++
++
+ 		if (s->VRatioPrefetchMoreThanMax != false || s->DestinationLineTimesForPrefetchLessThan2 != false) {
+ 			dml_print("DML::%s: VRatioPrefetchMoreThanMax                   = %u\n", __func__, s->VRatioPrefetchMoreThanMax);
+ 			dml_print("DML::%s: DestinationLineTimesForPrefetchLessThan2    = %u\n", __func__, s->DestinationLineTimesForPrefetchLessThan2);
+@@ -9204,6 +9206,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 			}
+ 		}
+ 
++
+ 		if (locals->PrefetchModeSupported == true && mode_lib->ms.support.ImmediateFlipSupport == true) {
+ 			locals->BandwidthAvailableForImmediateFlip = CalculateBandwidthAvailableForImmediateFlip(
+ 																	mode_lib->ms.num_active_planes,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+index 9190c1328d5b2..340791d40ecbf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+@@ -531,14 +531,21 @@ static bool optimize_pstate_with_svp_and_drr(struct dml2_context *dml2, struct d
+ static bool call_dml_mode_support_and_programming(struct dc_state *context)
+ {
+ 	unsigned int result = 0;
+-	unsigned int min_state;
++	unsigned int min_state = 0;
+ 	int min_state_for_g6_temp_read = 0;
++
++
++	if (!context)
++		return false;
++
+ 	struct dml2_context *dml2 = context->bw_ctx.dml2;
+ 	struct dml2_wrapper_scratch *s = &dml2->v20.scratch;
+ 
+-	min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
++	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
++		min_state_for_g6_temp_read = calculate_lowest_supported_state_for_temp_read(dml2, context);
+ 
+-	ASSERT(min_state_for_g6_temp_read >= 0);
++		ASSERT(min_state_for_g6_temp_read >= 0);
++	}
+ 
+ 	if (!dml2->config.use_native_pstate_optimization) {
+ 		result = optimize_pstate_with_svp_and_drr(dml2, context);
+@@ -549,14 +556,20 @@ static bool call_dml_mode_support_and_programming(struct dc_state *context)
+ 	/* Upon trying to sett certain frequencies in FRL, min_state_for_g6_temp_read is reported as -1. This leads to an invalid value of min_state causing crashes later on.
+ 	 * Use the default logic for min_state only when min_state_for_g6_temp_read is a valid value. In other cases, use the value calculated by the DML directly.
+ 	 */
+-	if (min_state_for_g6_temp_read >= 0)
+-		min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
+-	else
+-		min_state = s->mode_support_params.out_lowest_state_idx;
+-
+-	if (result)
+-		result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
++	if (!context->streams[0]->sink->link->dc->caps.is_apu) {
++		if (min_state_for_g6_temp_read >= 0)
++			min_state = min_state_for_g6_temp_read > s->mode_support_params.out_lowest_state_idx ? min_state_for_g6_temp_read : s->mode_support_params.out_lowest_state_idx;
++		else
++			min_state = s->mode_support_params.out_lowest_state_idx;
++	}
+ 
++	if (result) {
++		if (!context->streams[0]->sink->link->dc->caps.is_apu) {
++			result = dml_mode_programming(&dml2->v20.dml_core_ctx, min_state, &s->cur_display_config, true);
++		} else {
++			result = dml_mode_programming(&dml2->v20.dml_core_ctx, s->mode_support_params.out_lowest_state_idx, &s->cur_display_config, true);
 +		}
- 		if (!amdgpu_sriov_vf(adev)) {
- 			if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP) {
- 				/* unhalt engine */
++	}
+ 	return result;
+ }
+ 
+@@ -685,6 +698,8 @@ static bool dml2_validate_only(struct dc_state *context)
+ 	build_unoptimized_policy_settings(dml2->v20.dml_core_ctx.project, &dml2->v20.dml_core_ctx.policy);
+ 
+ 	map_dc_state_into_dml_display_cfg(dml2, context, &dml2->v20.scratch.cur_display_config);
++	 if (!dml2->config.skip_hw_state_mapping)
++		 dml2_apply_det_buffer_allocation_policy(dml2, &dml2->v20.scratch.cur_display_config);
+ 
+ 	result = pack_and_call_dml_mode_support_ex(dml2,
+ 		&dml2->v20.scratch.cur_display_config,
 -- 
 2.39.5
 
