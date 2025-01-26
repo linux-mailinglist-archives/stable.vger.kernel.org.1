@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-110714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A73A1CBD2
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF68A1CBD6
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A0BB3AF54B
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:49:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2C9B3AD913
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D7F22A803;
-	Sun, 26 Jan 2025 15:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4DC22ACE4;
+	Sun, 26 Jan 2025 15:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+TK6QG7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5He/+5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9A22A7FA;
-	Sun, 26 Jan 2025 15:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556D922ACD1;
+	Sun, 26 Jan 2025 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903898; cv=none; b=MGB9QqnE8OZeOUzbICpEsIdOL21o3v420qlZQxNbdfLiCi4A7RzbOV2ODuHh3OARwPCJpBVoHbtX5sNPOyXF7oWMCjffQ4Svghji9eAtvXpAzIR/qpSE7J2e7dPSJwFYL9zkE+mXH2921UkKm85xMjnmcsLTjJPb4dKo/OTFcZI=
+	t=1737903900; cv=none; b=I6aTY2q3Dsxwr6mloEX0PSMijlke576oPIU0Pj2TgjnUyEVZrSuHRMV+x69BxZ/leFETmZ+3lrwUL9L16uSkYzcJ91pYWf25ntOqkUofuq9ek+B1FS2mFLIjO/41AXNSmfYaSN753cbc7UA5KreH4AGyQut26HY/MgxJQclC2pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903898; c=relaxed/simple;
-	bh=pwkJmB+zJ8BDzbAFafwV103sxFnANgTlDdQKWcc9Y+E=;
+	s=arc-20240116; t=1737903900; c=relaxed/simple;
+	bh=vawUk/qXa04AQnHkGUqDCnq5OBcbHO8vec18ktLQm9g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rMGPD2Fq7XAnziWzu2JnjLQoWyFxhdwdUfaeLjo7tDrBEkk1E9hQBi5joTQK2MMOzmw4R9d+F4o01CZOt2tjjC4AZXgvdLvdwzIGQwIRPcZaTfARDLLqj5Z7wXfGgrcfsE2EJpWap+FoEmIej8YzKQV+ftpU/MBtL7CBnjIs6pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+TK6QG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0735C4CED3;
-	Sun, 26 Jan 2025 15:04:56 +0000 (UTC)
+	 MIME-Version; b=YyKKSYryH33/to3QBAUbln+C5WAKgMXgavyiXVR2G9BZ3MuXi+bhzk2Ug0VP4RUzqak3hpKZq27399LQmSJwWIvpiWY+SW2oYs7Jpoc7sGdb11nw2BC0Q3sahlq8CoyW99AncNqa/G5gCF6CyekRQKIi+Gt2bX8+6wLFcMa2o0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5He/+5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816FCC4CEE2;
+	Sun, 26 Jan 2025 15:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903898;
-	bh=pwkJmB+zJ8BDzbAFafwV103sxFnANgTlDdQKWcc9Y+E=;
+	s=k20201202; t=1737903899;
+	bh=vawUk/qXa04AQnHkGUqDCnq5OBcbHO8vec18ktLQm9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+TK6QG758Kf8ERyfw3051kBMrw2G9ri+Vpc30CSIf9c/DP5biWgQAeUm68jxQQvH
-	 srSApnA190tXOceTToo3EICazHG+cPJhe6/SlR7D0mzxKtwvnCaUXxJJ/o87FXfiXw
-	 5P/Az2OrVpF4ra1nUHt42SWxYQ/sgAGbhCEkjE3c4EI6z7BjnksxfZesuDfXmxnqLR
-	 JuHn/o8qfMQAhyCDltFyWxOTopw/ogrT0ZMoxtWrOsDCWRyT7N6Ydjqb4EfrzwHS+J
-	 dlp3wNYjTdV0gaJfDNQlUYOTI8uHpvjoV00kmcLqth51IDPURHdAQXKw4zmnmFc7oe
-	 KyD8GhSaXukow==
+	b=C5He/+5V7rLNxrrSBxWJgWeBOGZoG7GQq9VIexHEMJ+I0oYdJ/YUL9BfJv6Px5tF4
+	 3Qvou+DwbTDHv3DCMV8n5MRloMyLUIDWiOA3F47nuLKA4W7/rzInFtJ/USmICVUbow
+	 zwyE5fFzpb3P+u3E40wzSEWuYncGcr9gwOTceTKnl6AVYRUKLPu3Umlk+PjO/iDKD9
+	 C2+LE9qL0Q+5BPxdNWq2UqhYjO49buv/NPh8SIa28B5u3hVy3PxCKUse5q3D/citE7
+	 BEUj5jnOT8/In2K+Quxrn75E09VU8vBSZAk1mA0QQHGo0F23Wjikc+OaJBx08x9sEj
+	 rAwg2KwcdaGaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Liu Ye <liuye@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jmaloy@redhat.com,
+	steffen.klassert@secunet.com,
+	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
+	shuah@kernel.org,
 	netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 5.15 13/14] tipc: re-order conditions in tipc_crypto_key_rcv()
-Date: Sun, 26 Jan 2025 10:04:29 -0500
-Message-Id: <20250126150430.958708-13-sashal@kernel.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 14/14] selftests/net/ipsec: Fix Null pointer dereference in rtattr_pack()
+Date: Sun, 26 Jan 2025 10:04:30 -0500
+Message-Id: <20250126150430.958708-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150430.958708-1-sashal@kernel.org>
 References: <20250126150430.958708-1-sashal@kernel.org>
@@ -71,39 +71,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.177
 Content-Transfer-Encoding: 8bit
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Liu Ye <liuye@kylinos.cn>
 
-[ Upstream commit 5fe71fda89745fc3cd95f70d06e9162b595c3702 ]
+[ Upstream commit 3a0b7fa095212b51ed63892540c4f249991a2d74 ]
 
-On a 32bit system the "keylen + sizeof(struct tipc_aead_key)" math could
-have an integer wrapping issue.  It doesn't matter because the "keylen"
-is checked on the next line, but just to make life easier for static
-analysis tools, let's re-order these conditions and avoid the integer
-overflow.
+Address Null pointer dereference / undefined behavior in rtattr_pack
+(note that size is 0 in the bad case).
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Flagged by cppcheck as:
+    tools/testing/selftests/net/ipsec.c:230:25: warning: Possible null pointer
+    dereference: payload [nullPointer]
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+    tools/testing/selftests/net/ipsec.c:1618:54: note: Calling function 'rtattr_pack',
+    4th argument 'NULL' value is 0
+    if (rtattr_pack(&req.nh, sizeof(req), XFRMA_IF_ID, NULL, 0)) {
+                                                       ^
+    tools/testing/selftests/net/ipsec.c:230:25: note: Null pointer dereference
+    memcpy(RTA_DATA(attr), payload, size);
+                           ^
+Signed-off-by: Liu Ye <liuye@kylinos.cn>
+
+Link: https://patch.msgid.link/20250116013037.29470-1-liuye@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/ipsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 86d1e782b8fca..b09c4a17b283e 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -2304,8 +2304,8 @@ static bool tipc_crypto_key_rcv(struct tipc_crypto *rx, struct tipc_msg *hdr)
- 	keylen = ntohl(*((__be32 *)(data + TIPC_AEAD_ALG_NAME)));
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index c5be3f390849b..ae3da27b00973 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -189,7 +189,8 @@ static int rtattr_pack(struct nlmsghdr *nh, size_t req_sz,
  
- 	/* Verify the supplied size values */
--	if (unlikely(size != keylen + sizeof(struct tipc_aead_key) ||
--		     keylen > TIPC_AEAD_KEY_SIZE_MAX)) {
-+	if (unlikely(keylen > TIPC_AEAD_KEY_SIZE_MAX ||
-+		     size != keylen + sizeof(struct tipc_aead_key))) {
- 		pr_debug("%s: invalid MSG_CRYPTO key size\n", rx->name);
- 		goto exit;
- 	}
+ 	attr->rta_len = RTA_LENGTH(size);
+ 	attr->rta_type = rta_type;
+-	memcpy(RTA_DATA(attr), payload, size);
++	if (payload)
++		memcpy(RTA_DATA(attr), payload, size);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
