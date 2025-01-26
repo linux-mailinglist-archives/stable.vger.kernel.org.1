@@ -1,68 +1,64 @@
-Return-Path: <stable+bounces-110692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE983A1CB97
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:50:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABBDA1CB9D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C43B3A4571
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F403AFA4C
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DFA2253F8;
-	Sun, 26 Jan 2025 15:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614BD225785;
+	Sun, 26 Jan 2025 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmQpe+Vy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVrmt1yh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA622253FD;
-	Sun, 26 Jan 2025 15:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141371F1520;
+	Sun, 26 Jan 2025 15:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903851; cv=none; b=VILoN6SSKH3DuJ7aUK9xiGWMI8UsQRMmig3SlukRiD4K6EtXkIyyc40aJqIa1mi8uSe7u8mYCyB2QjKjeDYloX3/iXbGX2xgWNv++Ir8iOD7RZPbWjR1gfVrp3zznWPcCY63fYIe6JOMH3PWP3uuJlPqUPLKvphwMIlbc5skM5I=
+	t=1737903854; cv=none; b=tzI7t5ut07CJkILQQpy66J+1PqjHvVCgwTynX0tbb6zLghmAin7B7kpOM9bKWR4leQmf6lWhh/KbqBX9YaIN0W+CeDEHmg9HpeHlctFd6fbPwkYlUXuDB7jwFb3+MYIEWFVN1SuoHc4KtqglffzBoVeT/ZfLkkfReNrUn7+5Z9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903851; c=relaxed/simple;
-	bh=sVlPh/U3i0Z1o6GEEtNzav9Jt92d1eFsixS67PJiSfc=;
+	s=arc-20240116; t=1737903854; c=relaxed/simple;
+	bh=54ewS7MXlW5cu7Xc8QyCMHafSN6OIUUti+mLK17lQT0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pbgyzfBU3plc77OedmNLLM7Of6JSgnPezFW7Py/08w46zq/8AIU4jHEvf7g47x8O5kJ9bPcfRP32GNuXEYF6jT61VBKBWD/zUlMMz2Dw+FnktPeFaZKWIbmYXYH8JlreOW5v9gCUR01yJVCF12cfAT/PKcdP8UCs8nTg1/Lpj2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmQpe+Vy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAC2C4CEE3;
-	Sun, 26 Jan 2025 15:04:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kwowdUCwogVoaBy9YG+dh+UVv4txykzU2CY+GqfwIKeA1nhCOt+ak4z3Lf0AdkrZuRYjA19irfsVa0QIt+FWqhFMBMpgCZ+j6t+AbNQJFzXbPf0IjrZWpzy5XRekN+2j5+AT/aVzp3nghwDrHa2cIXGJJOe4XqiZu0s+ExJ9b5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVrmt1yh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C131C4CED3;
+	Sun, 26 Jan 2025 15:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903851;
-	bh=sVlPh/U3i0Z1o6GEEtNzav9Jt92d1eFsixS67PJiSfc=;
+	s=k20201202; t=1737903854;
+	bh=54ewS7MXlW5cu7Xc8QyCMHafSN6OIUUti+mLK17lQT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmQpe+Vy3mbjU1sAu+jIEXFViH6V1UQlmQaWd4cJRNv+RKCbrwF+6mZJmkzn+s/i9
-	 RFjgXOObVCk3oRMIo/TeILV1EXX0CfpLupQT+WELDrv9uFL1KZ9RaZ0my+aX3Rmkad
-	 65p2UJuo5nztLEmincBVGBr9wQ5Bg8Z9hjki3RxkVzk+/sD01wZGDxyTJX9XnkGptp
-	 bkyTQhowky7q2sQjqBR9yfJJmiCE79MEeY+ku8Ys+mHCbMiobpmXX2D/sXJi1AXbnV
-	 cIFDYKPNjAM7aj58AovmumMRho+HjzsjVhC34WFcOqM7n6Z1bHxCVvvgPmRWOhjnMe
-	 Smd2k5bql5ZxQ==
+	b=nVrmt1yhlrrbWUeoiTnNtF7n3aXGyVHS9/tJnUYC5HSbDeCuKF3djNBitcNsS5A0x
+	 hcF4s3zJPa0oXirgO2IC5krK9VOmCCCdNZvoArm8ZhscODE9N+RpvPtjE9fPLojLAM
+	 KZjkFNNK6P8eu3nLLqyrNFizseUkgxnuqKFayYWE+9UgjPJvLuGKGQBblhrkBd+6H0
+	 RP6zWjufERfmoVMTmV97wwcQvk3iJIVxy91zJIvwA63QjP/ett0S63D3WpCAHk4k2+
+	 5ARRE+t54ZseWM2oXxKWkllkYgyAKYNKQxmPEiPPiZvXkXuwCjzu6m2oNrjGaK8av+
+	 IHyLsX23e4A/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vadim Fedorenko <vadfed@meta.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: =?UTF-8?q?Stefan=20D=C3=B6singer?= <stefan@codeweavers.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	richardcochran@gmail.com,
-	vadim.fedorenko@linux.dev,
-	rrameshbabu@nvidia.com,
-	cjubran@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 08/17] net/mlx5: use do_aux_work for PHC overflow checks
-Date: Sun, 26 Jan 2025 10:03:44 -0500
-Message-Id: <20250126150353.957794-8-sashal@kernel.org>
+	jacobe.zang@wesion.com,
+	vassilisamir@gmail.com,
+	knaerzche@gmail.com,
+	bartosz.golaszewski@linaro.org,
+	javier.carrasco.cruz@gmail.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH AUTOSEL 6.1 09/17] wifi: brcmfmac: Check the return value of of_property_read_string_index()
+Date: Sun, 26 Jan 2025 10:03:45 -0500
+Message-Id: <20250126150353.957794-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150353.957794-1-sashal@kernel.org>
 References: <20250126150353.957794-1-sashal@kernel.org>
@@ -72,132 +68,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Stefan Dösinger <stefan@codeweavers.com>
 
-[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
+[ Upstream commit 082d9e263af8de68f0c34f67b251818205160f6e ]
 
-The overflow_work is using system wq to do overflow checks and updates
-for PHC device timecounter, which might be overhelmed by other tasks.
-But there is dedicated kthread in PTP subsystem designed for such
-things. This patch changes the work queue to proper align with PTP
-subsystem and to avoid overloading system work queue.
-The adjfine() function acts the same way as overflow check worker,
-we can postpone ptp aux worker till the next overflow period after
-adjfine() was called.
+Somewhen between 6.10 and 6.11 the driver started to crash on my
+MacBookPro14,3. The property doesn't exist and 'tmp' remains
+uninitialized, so we pass a random pointer to devm_kstrdup().
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The crash I am getting looks like this:
+
+BUG: unable to handle page fault for address: 00007f033c669379
+PF: supervisor read access in kernel mode
+PF: error_code(0x0001) - permissions violation
+PGD 8000000101341067 P4D 8000000101341067 PUD 101340067 PMD 1013bb067 PTE 800000010aee9025
+Oops: Oops: 0001 [#1] SMP PTI
+CPU: 4 UID: 0 PID: 827 Comm: (udev-worker) Not tainted 6.11.8-gentoo #1
+Hardware name: Apple Inc. MacBookPro14,3/Mac-551B86E5744E2388, BIOS 529.140.2.0.0 06/23/2024
+RIP: 0010:strlen+0x4/0x30
+Code: f7 75 ec 31 c0 c3 cc cc cc cc 48 89 f8 c3 cc cc cc cc 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <80> 3f 00 74 14 48 89 f8 48 83 c0 01 80 38 00 75 f7 48 29 f8 c3 cc
+RSP: 0018:ffffb4aac0683ad8 EFLAGS: 00010202
+RAX: 00000000ffffffea RBX: 00007f033c669379 RCX: 0000000000000001
+RDX: 0000000000000cc0 RSI: 00007f033c669379 RDI: 00007f033c669379
+RBP: 00000000ffffffea R08: 0000000000000000 R09: 00000000c0ba916a
+R10: ffffffffffffffff R11: ffffffffb61ea260 R12: ffff91f7815b50c8
+R13: 0000000000000cc0 R14: ffff91fafefffe30 R15: ffffb4aac0683b30
+FS:  00007f033ccbe8c0(0000) GS:ffff91faeed00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f033c669379 CR3: 0000000107b1e004 CR4: 00000000003706f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x149/0x4c0
+ ? raw_spin_rq_lock_nested+0xe/0x20
+ ? sched_balance_newidle+0x22b/0x3c0
+ ? update_load_avg+0x78/0x770
+ ? exc_page_fault+0x6f/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? __pfx_pci_conf1_write+0x10/0x10
+ ? strlen+0x4/0x30
+ devm_kstrdup+0x25/0x70
+ brcmf_of_probe+0x273/0x350 [brcmfmac]
+
+Signed-off-by: Stefan Dösinger <stefan@codeweavers.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20250106170958.3595-1-stefan@codeweavers.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
- include/linux/mlx5/driver.h                   |  1 -
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index 2ac255bb918ba..133e8220aaeaf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -186,17 +186,16 @@ static void mlx5_pps_out(struct work_struct *work)
- 	}
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index 0eb852896322b..f117c90c53f59 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -89,13 +89,13 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+ 	if (root && err) {
+-		char *board_type;
++		char *board_type = NULL;
+ 		const char *tmp;
  
--static void mlx5_timestamp_overflow(struct work_struct *work)
-+static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
- {
--	struct delayed_work *dwork = to_delayed_work(work);
- 	struct mlx5_core_dev *mdev;
- 	struct mlx5_timer *timer;
- 	struct mlx5_clock *clock;
- 	unsigned long flags;
- 
--	timer = container_of(dwork, struct mlx5_timer, overflow_work);
--	clock = container_of(timer, struct mlx5_clock, timer);
-+	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
-+	timer = &clock->timer;
- 
- 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
- 		goto out;
-@@ -207,7 +206,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
- 	write_sequnlock_irqrestore(&clock->lock, flags);
- 
- out:
--	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
-+	return timer->overflow_period;
- }
- 
- static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
-@@ -375,6 +374,7 @@ static int mlx5_ptp_adjfreq(struct ptp_clock_info *ptp, s32 delta)
- 				       timer->nominal_c_mult + diff;
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+	ptp_schedule_worker(clock->ptp, timer->overflow_period);
- 
- 	return 0;
- }
-@@ -708,6 +708,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
- 	.settime64	= mlx5_ptp_settime,
- 	.enable		= NULL,
- 	.verify		= NULL,
-+	.do_aux_work	= mlx5_timestamp_overflow,
- };
- 
- static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
-@@ -908,12 +909,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
- 	do_div(ns, NSEC_PER_SEC / HZ);
- 	timer->overflow_period = ns;
- 
--	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
--	if (timer->overflow_period)
--		schedule_delayed_work(&timer->overflow_work, 0);
--	else
-+	if (!timer->overflow_period) {
-+		timer->overflow_period = HZ;
- 		mlx5_core_warn(mdev,
--			       "invalid overflow period, overflow_work is not scheduled\n");
-+			       "invalid overflow period, overflow_work is scheduled once per second\n");
-+	}
- 
- 	if (clock_info)
- 		clock_info->overflow_period = timer->overflow_period;
-@@ -999,6 +999,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
- 
- 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
- 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
+-		of_property_read_string_index(root, "compatible", 0, &tmp);
+-
+ 		/* get rid of '/' in the compatible string to be able to find the FW */
+-		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++		if (!of_property_read_string_index(root, "compatible", 0, &tmp))
++			board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
 +
-+	if (clock->ptp)
-+		ptp_schedule_worker(clock->ptp, 0);
- }
- 
- void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
-@@ -1015,7 +1018,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
- 	}
- 
- 	cancel_work_sync(&clock->pps_info.out_work);
--	cancel_delayed_work_sync(&clock->timer.overflow_work);
- 
- 	if (mdev->clock_info) {
- 		free_page((unsigned long)mdev->clock_info);
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 2588ddd3512b1..3c3e0f26c2446 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -716,7 +716,6 @@ struct mlx5_timer {
- 	struct timecounter         tc;
- 	u32                        nominal_c_mult;
- 	unsigned long              overflow_period;
--	struct delayed_work        overflow_work;
- };
- 
- struct mlx5_clock {
+ 		if (!board_type) {
+ 			of_node_put(root);
+ 			return;
 -- 
 2.39.5
 
