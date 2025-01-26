@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-110466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B92BA1C8BD
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C86A1C8B9
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8594C3A78F5
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:52:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116A11883B62
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BE719F438;
-	Sun, 26 Jan 2025 14:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629EA16CD1D;
+	Sun, 26 Jan 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WeodXVyO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p32zk/F5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6935919F416;
-	Sun, 26 Jan 2025 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB121A0712;
+	Sun, 26 Jan 2025 14:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737902958; cv=none; b=f28IJRNLINZuDyhYRYreN5BH4gGRzF08XGPPDc3avKIqEQWz52oHcfCae5fjsQoMs79sVCf6seAm9vmHdVjSusLPnLU2c2Pwy+oY8OjUWPD1mMuVjwD2wx8XU+Xqwj1MQuOPCdRHRTqWKZ4GJhs+/u8neRd/gb2UivTvnfT+nWM=
+	t=1737902961; cv=none; b=kZcZcGI8b41Jj/qS+6ZL1xMvH2UJyiS/9Gfr3bj24Dn+wGyaUeiC+pBc2bIRIuYx//8HWErW09Nqwog9b2Q+t+gb/JYYut/F9qqUEe8dSP6tVc5A9ZFDTza5X5xgsYNLRIODaokBpmSbCbJfdurZdZcqpP1F3Hwsr/KHUXHyukg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737902958; c=relaxed/simple;
-	bh=Q4MUxk/WytrKjrTDXy5MsH1TXPIi7kytcdrOYgRBfFk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Flfrj+OEU4KTWKiAlY/w5mSIwZTFxqilMZQEmcGseUB7bLDq6qNoE93Enjetwuy+skwH8Gc0bUYTZvfWOdR0s+g0FzX2ij0O4Ek/Hsmg5ZSo/WvOVdWr8iKLaNyqy7VCjs63YG+ttu0hMFt7agOSH1+1M4e9gSDl4mzrgv8WLSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WeodXVyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E900BC4CED3;
-	Sun, 26 Jan 2025 14:49:15 +0000 (UTC)
+	s=arc-20240116; t=1737902961; c=relaxed/simple;
+	bh=9+3vIQ8Nh0j2jwAEnfMYPpWVa7eNRZ3rs/rkruTrFUQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qOb9RO0Qk5I37gOnyAimBHvQ7N98Z0/kdKtzgrryQixOeOx3se4YMpuKRVl5YKjjvJO3FFREvJYfNwSZI0dMSt1awc4BDODHN/XuJ5O9NLM90Z6m3AJJV/4hhCkgOPcCuqno+Vo18BSJvoNDFIMKaa2D4o7TOj97/NdX9RwcjFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p32zk/F5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B54C4CED3;
+	Sun, 26 Jan 2025 14:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737902956;
-	bh=Q4MUxk/WytrKjrTDXy5MsH1TXPIi7kytcdrOYgRBfFk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeodXVyOBDmKor5U+pe8cEcGVAEcc6eFM67wyOBGOa1UQ7LI7MlL6XSuwUv/EzfxE
-	 m2co3RDsZ1Hvo8VNltJuF4gjzGfVOY0Ni7WI1H0sYknQzMWStTZWImNMkgHo39T8O7
-	 PIoNnwMpGa+F/Jx+Se+9/HOQs1LOhvppJrae1M1noTEgcK/oPmG/caKIV1by62M7DY
-	 VYrp6beOkaFcxkJpdzfX9K4To63IaDT0xZ5bccES0SuxQ9g/5zSR5npHrAlLaKS1Jt
-	 Fs6t+dwXdcSJKi9ef0ROglSWqoD/zENJxFseZ6QuDL4BNPDTwgvJ3aJjhs9s16bRpm
-	 muscmfGyOTmNg==
+	s=k20201202; t=1737902961;
+	bh=9+3vIQ8Nh0j2jwAEnfMYPpWVa7eNRZ3rs/rkruTrFUQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p32zk/F5ZNblwvQJAtASViDHLwN3gTzCa95a/B+yAcSWEGBxC9a6gfekefgt3n3iW
+	 CXCpE/mRfocMTnVQPO9E8vXHjG5ZTbO2wT9ZUMWRPNNhRCHBXlIMCd+xPTUFvoQMrZ
+	 6ZCuD6lSuoaOYoXV9BEM9XyrBS842A86nGWutBmGQOGHpJaFBAA8eA7xyX7Jg3nhXc
+	 3U3BidMiTFbaDqfBD7joscIWe44S6h2qolsPZqNoBtcyDvo9OFC/CNURINNtSnruZ8
+	 WvG5fWWHl1KsY7Qe9gh7teztpFMJnTI87JHRz+lNKfB6B47IcRMbBUCxDMtr1WYGkV
+	 JPkLpJj0W8akw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Gavin Shan <gshan@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 5/5] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
-Date: Sun, 26 Jan 2025 09:49:06 -0500
-Message-Id: <20250126144906.925468-5-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	peterx@redhat.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH AUTOSEL 6.1 1/4] arm64/mm: Ensure adequate HUGE_MAX_HSTATE
+Date: Sun, 26 Jan 2025 09:49:14 -0500
+Message-Id: <20250126144918.925549-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126144906.925468-1-sashal@kernel.org>
-References: <20250126144906.925468-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,51 +67,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.74
+X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
+[ Upstream commit 1e5823c8e86de83a43d59a522b4de29066d3b306 ]
 
-This BUG_ON is meant to catch backref cache problems, but these can
-arise from either bugs in the backref cache or corruption in the extent
-tree.  Fix it to be a proper error.
+This asserts that HUGE_MAX_HSTATE is sufficient enough preventing potential
+hugetlb_max_hstate runtime overflow in hugetlb_add_hstate() thus triggering
+a BUG_ON() there after.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Link: https://lore.kernel.org/r/20241202064407.53807-1-anshuman.khandual@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/mm/hugetlbpage.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 299eac696eb42..537e184b4b1df 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4378,8 +4378,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
- 		WARN_ON(!first_cow && level == 0);
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 134dcf6bc650c..99810310efdda 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -544,6 +544,18 @@ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
  
- 		node = rc->backref_cache.path[level];
--		BUG_ON(node->bytenr != buf->start &&
--		       node->new_bytenr != buf->start);
-+
-+		/*
-+		 * If node->bytenr != buf->start and node->new_bytenr !=
-+		 * buf->start then we've got the wrong backref node for what we
-+		 * expected to see here and the cache is incorrect.
-+		 */
-+		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
-+			btrfs_err(fs_info,
-+"bytenr %llu was found but our backref cache was expecting %llu or %llu",
-+				  buf->start, node->bytenr, node->new_bytenr);
-+			return -EUCLEAN;
-+		}
+ static int __init hugetlbpage_init(void)
+ {
++	/*
++	 * HugeTLB pages are supported on maximum four page table
++	 * levels (PUD, CONT PMD, PMD, CONT PTE) for a given base
++	 * page size, corresponding to hugetlb_add_hstate() calls
++	 * here.
++	 *
++	 * HUGE_MAX_HSTATE should at least match maximum supported
++	 * HugeTLB page sizes on the platform. Any new addition to
++	 * supported HugeTLB page sizes will also require changing
++	 * HUGE_MAX_HSTATE as well.
++	 */
++	BUILD_BUG_ON(HUGE_MAX_HSTATE < 4);
+ 	if (pud_sect_supported())
+ 		hugetlb_add_hstate(PUD_SHIFT - PAGE_SHIFT);
  
- 		btrfs_backref_drop_node_buffer(node);
- 		atomic_inc(&cow->refs);
 -- 
 2.39.5
 
