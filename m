@@ -1,117 +1,306 @@
-Return-Path: <stable+bounces-110765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C26A1CC48
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:06:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFD3A1CC8B
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96BC37A070B
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638933A4408
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8BD236A64;
-	Sun, 26 Jan 2025 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DFC1F940B;
+	Sun, 26 Jan 2025 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toPTT7ua"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V1I+fK7S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7582D236A7E;
-	Sun, 26 Jan 2025 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E9D18C034;
+	Sun, 26 Jan 2025 15:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737904117; cv=none; b=dHw7aW3eNukqR4HbqzuoR5nglw2fEHExqR9bOakvVEz+2MZhJKn4w0HRbuvL4wAufZzMZWg5j+e1+knJOYZWULDMOsG0YkEGbs6Am16hJrgDTXgTJxX0aXQq1GX4SY2PSm7yEyyDX4zAL3HQy5hc9FEVK0RN/qUxFgU16k3VkHw=
+	t=1737904122; cv=none; b=egIsPooMgKPUba7awbsTCgK3WfDlKAaxcjTxTfAAs24/PhqxnKqkl9Xr5tz7RBP4YVuAhZ4pkQ9QWJNa2+FPhBfwpLINt5vqj/j9BRFuZ9YAFPjRmYdZxE49dFCAUCB6zNXEY63CVLIGAk5GynFH/p3ZN7AnNLkKVEGfpjVW+y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737904117; c=relaxed/simple;
-	bh=t4fjBPJPZtgqsPOyZopycnLTjn8n2khOuZj3LSbSJzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QtFtE591F1rIk8HUSywqUrxeE7hwprF7fNylHR7GXIsVpWRfJWeHkkbG6w2ZcXuBQTUQyb655IHSPr3td4NLfjizaJ8fyqjwauHsR2mE520Njlq75yfSeucpRTfm79HDboTIqbtcI9didFun8FxfbJs0r+uDdPUwt8qO8rpUafU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toPTT7ua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F1CC4CEE4;
-	Sun, 26 Jan 2025 15:08:35 +0000 (UTC)
+	s=arc-20240116; t=1737904122; c=relaxed/simple;
+	bh=PPZjovQTI3gvY5YeF+kJwOLNsWm0YgE+R7WV0iHGE4M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B8hfn3y6xMXAqb7KT7jaenTpW/TUpetwdkzALcHaIQztVOHqfXSRXWdjrNfJf975+s/XekpsJfXDHx2XZI3jVcmHFNmoPSumOL96x36dqnup1dFReCfsaWKH9YbqgwFIz6BHDJlTxoAy1xuaI19epIS1Ml3gzzJinrkxKYB0RWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V1I+fK7S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0C4C4CED3;
+	Sun, 26 Jan 2025 15:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737904117;
-	bh=t4fjBPJPZtgqsPOyZopycnLTjn8n2khOuZj3LSbSJzM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toPTT7uaMIJ5IF61gD67h36kNNBOLFCYTMXyhn5XGTsW6ZJHjhPJ63BNSW2oqzzks
-	 ZNo7xRHLZYNKPIL23gUNr8jN4qFcX94sjNHe8VmNOFxAL+W3r0BJ2B9//TgVLygpVT
-	 CYrjHGTe4Eavm3bps5Kqjawg4oJLdw0tU6xRVL7RgHO7KUr7HzvBTJhXcx2fe4BIaJ
-	 mlOK44hf9BD164GcUdlR6z02DihiW7puwI9c9K7JRr3PqUiE2V7Xa8CkTCJr3oniRy
-	 mwLxzhUyNcGNftVl6E+B4iLpWJ3Ng1J0kZwCO3YziYSdWlZ1HMhkZ0dCi6KDr21F8o
-	 +n88hHBi6YeXQ==
+	s=k20201202; t=1737904122;
+	bh=PPZjovQTI3gvY5YeF+kJwOLNsWm0YgE+R7WV0iHGE4M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=V1I+fK7SUOlAwC7H4ZH99gtwJNKUDSQwrXw5itjKwlColp3N3H280CGuL4s1kqtH2
+	 YyV/PV8OpZPfq5c4bzjUbvvrr6keIEQ3cM6Jxnb7ogD4cxVGMyS+yq4vfqjaR4W3rW
+	 x+cLA5r+zEl+p8oLcMihhUBjf6nQL4kRvDEOlOIIPJUzg39ipY1mE17sB5hjEfoS3w
+	 BDTZL7MRujSEzMuea6ffEmo/CUDGIAEO1A/sHn4AnQZh6EQrC92FLuVtSpc26oIyqM
+	 LeakK4nsPtOQwMw6GjnZmTxVnRNQmDMntNuHPw76tQdLepSkCN0PVjrdCVPqsiuaeE
+	 LufKHLSrcVhWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	Farhan Anwar <farhan.anwar8@gmail.com>,
-	Rayan Margham <rayanmargham4@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+	Ingo Molnar <mingo@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jlee@suse.com,
-	hdegoede@redhat.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 14/14] platform/x86: acer-wmi: Ignore AC events
-Date: Sun, 26 Jan 2025 10:08:01 -0500
-Message-Id: <20250126150803.962459-14-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hbathini@linux.ibm.com,
+	sourabhjain@linux.ibm.com,
+	tzimmermann@suse.de,
+	steve.wahl@hpe.com,
+	david.kaplan@amd.com,
+	ltao@redhat.com
+Subject: [PATCH AUTOSEL 6.6 1/9] x86/kexec: Allocate PGD for x86_64 transition page tables separately
+Date: Sun, 26 Jan 2025 10:08:29 -0500
+Message-Id: <20250126150839.962669-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150803.962459-1-sashal@kernel.org>
-References: <20250126150803.962459-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.11
+X-stable-base: Linux 6.6.74
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit f6bfa25c6665f8721421ea94fe506cc22f1d4b43 ]
+[ Upstream commit 4b5bc2ec9a239bce261ffeafdd63571134102323 ]
 
-On the Acer Swift SFG14-41, the events 8 - 1 and 8 - 0 are printed on
-AC connect/disconnect. Ignore those events to avoid spamming the
-kernel log with error messages.
+Now that the following fix:
 
-Reported-by: Farhan Anwar <farhan.anwar8@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/2ffb529d-e7c8-4026-a3b8-120c8e7afec8@gmail.com
-Tested-by: Rayan Margham <rayanmargham4@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20250119201723.11102-2-W_Armin@gmx.de
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+  d0ceea662d45 ("x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables")
+
+stops kernel_ident_mapping_init() from scribbling over the end of a
+4KiB PGD by assuming the following 4KiB will be a userspace PGD,
+there's no good reason for the kexec PGD to be part of a single
+8KiB allocation with the control_code_page.
+
+( It's not clear that that was the reason for x86_64 kexec doing it that
+  way in the first place either; there were no comments to that effect and
+  it seems to have been the case even before PTI came along. It looks like
+  it was just a happy accident which prevented memory corruption on kexec. )
+
+Either way, it definitely isn't needed now. Just allocate the PGD
+separately on x86_64, like i386 already does.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20241205153343.3275139-6-dwmw2@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/include/asm/kexec.h       | 18 +++++++++---
+ arch/x86/kernel/machine_kexec_64.c | 45 ++++++++++++++++--------------
+ 2 files changed, 38 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 6534f0cdeb2bb..c5679e4a58a76 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -95,6 +95,7 @@ enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
-+	WMID_AC_EVENT = 0x8,
- };
+diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
+index c9f6a6c5de3cf..d54dd7084a3e1 100644
+--- a/arch/x86/include/asm/kexec.h
++++ b/arch/x86/include/asm/kexec.h
+@@ -16,6 +16,7 @@
+ # define PAGES_NR		4
+ #endif
  
- enum acer_wmi_predator_v4_sys_info_command {
-@@ -2326,6 +2327,9 @@ static void acer_wmi_notify(union acpi_object *obj, void *context)
- 		if (return_value.key_num == 0x5 && has_cap(ACER_CAP_PLATFORM_PROFILE))
- 			acer_thermal_profile_change();
- 		break;
-+	case WMID_AC_EVENT:
-+		/* We ignore AC events here */
-+		break;
- 	default:
- 		pr_warn("Unknown function number - %d - %d\n",
- 			return_value.function, return_value.key_num);
++# define KEXEC_CONTROL_PAGE_SIZE	4096
+ # define KEXEC_CONTROL_CODE_MAX_SIZE	2048
+ 
+ #ifndef __ASSEMBLY__
+@@ -44,7 +45,6 @@ struct kimage;
+ /* Maximum address we can use for the control code buffer */
+ # define KEXEC_CONTROL_MEMORY_LIMIT TASK_SIZE
+ 
+-# define KEXEC_CONTROL_PAGE_SIZE	4096
+ 
+ /* The native architecture */
+ # define KEXEC_ARCH KEXEC_ARCH_386
+@@ -59,9 +59,6 @@ struct kimage;
+ /* Maximum address we can use for the control pages */
+ # define KEXEC_CONTROL_MEMORY_LIMIT     (MAXMEM-1)
+ 
+-/* Allocate one page for the pdp and the second for the code */
+-# define KEXEC_CONTROL_PAGE_SIZE  (4096UL + 4096UL)
+-
+ /* The native architecture */
+ # define KEXEC_ARCH KEXEC_ARCH_X86_64
+ #endif
+@@ -146,6 +143,19 @@ struct kimage_arch {
+ };
+ #else
+ struct kimage_arch {
++	/*
++	 * This is a kimage control page, as it must not overlap with either
++	 * source or destination address ranges.
++	 */
++	pgd_t *pgd;
++	/*
++	 * The virtual mapping of the control code page itself is used only
++	 * during the transition, while the current kernel's pages are all
++	 * in place. Thus the intermediate page table pages used to map it
++	 * are not control pages, but instead just normal pages obtained
++	 * with get_zeroed_page(). And have to be tracked (below) so that
++	 * they can be freed.
++	 */
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
+index 2fa12d1dc6760..8509d809a9f1b 100644
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -149,7 +149,8 @@ static void free_transition_pgtable(struct kimage *image)
+ 	image->arch.pte = NULL;
+ }
+ 
+-static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
++static int init_transition_pgtable(struct kimage *image, pgd_t *pgd,
++				   unsigned long control_page)
+ {
+ 	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
+ 	unsigned long vaddr, paddr;
+@@ -160,7 +161,7 @@ static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
+ 	pte_t *pte;
+ 
+ 	vaddr = (unsigned long)relocate_kernel;
+-	paddr = __pa(page_address(image->control_code_page)+PAGE_SIZE);
++	paddr = control_page;
+ 	pgd += pgd_index(vaddr);
+ 	if (!pgd_present(*pgd)) {
+ 		p4d = (p4d_t *)get_zeroed_page(GFP_KERNEL);
+@@ -219,7 +220,7 @@ static void *alloc_pgt_page(void *data)
+ 	return p;
+ }
+ 
+-static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
++static int init_pgtable(struct kimage *image, unsigned long control_page)
+ {
+ 	struct x86_mapping_info info = {
+ 		.alloc_pgt_page	= alloc_pgt_page,
+@@ -228,12 +229,12 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		.kernpg_flag	= _KERNPG_TABLE_NOENC,
+ 	};
+ 	unsigned long mstart, mend;
+-	pgd_t *level4p;
+ 	int result;
+ 	int i;
+ 
+-	level4p = (pgd_t *)__va(start_pgtable);
+-	clear_page(level4p);
++	image->arch.pgd = alloc_pgt_page(image);
++	if (!image->arch.pgd)
++		return -ENOMEM;
+ 
+ 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
+ 		info.page_flag   |= _PAGE_ENC;
+@@ -247,8 +248,8 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		mstart = pfn_mapped[i].start << PAGE_SHIFT;
+ 		mend   = pfn_mapped[i].end << PAGE_SHIFT;
+ 
+-		result = kernel_ident_mapping_init(&info,
+-						 level4p, mstart, mend);
++		result = kernel_ident_mapping_init(&info, image->arch.pgd,
++						   mstart, mend);
+ 		if (result)
+ 			return result;
+ 	}
+@@ -263,8 +264,8 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 		mstart = image->segment[i].mem;
+ 		mend   = mstart + image->segment[i].memsz;
+ 
+-		result = kernel_ident_mapping_init(&info,
+-						 level4p, mstart, mend);
++		result = kernel_ident_mapping_init(&info, image->arch.pgd,
++						   mstart, mend);
+ 
+ 		if (result)
+ 			return result;
+@@ -274,15 +275,19 @@ static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
+ 	 * Prepare EFI systab and ACPI tables for kexec kernel since they are
+ 	 * not covered by pfn_mapped.
+ 	 */
+-	result = map_efi_systab(&info, level4p);
++	result = map_efi_systab(&info, image->arch.pgd);
+ 	if (result)
+ 		return result;
+ 
+-	result = map_acpi_tables(&info, level4p);
++	result = map_acpi_tables(&info, image->arch.pgd);
+ 	if (result)
+ 		return result;
+ 
+-	return init_transition_pgtable(image, level4p);
++	/*
++	 * This must be last because the intermediate page table pages it
++	 * allocates will not be control pages and may overlap the image.
++	 */
++	return init_transition_pgtable(image, image->arch.pgd, control_page);
+ }
+ 
+ static void load_segments(void)
+@@ -299,14 +304,14 @@ static void load_segments(void)
+ 
+ int machine_kexec_prepare(struct kimage *image)
+ {
+-	unsigned long start_pgtable;
++	unsigned long control_page;
+ 	int result;
+ 
+ 	/* Calculate the offsets */
+-	start_pgtable = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
++	control_page = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
+ 
+ 	/* Setup the identity mapped 64bit page table */
+-	result = init_pgtable(image, start_pgtable);
++	result = init_pgtable(image, control_page);
+ 	if (result)
+ 		return result;
+ 
+@@ -360,13 +365,12 @@ void machine_kexec(struct kimage *image)
+ #endif
+ 	}
+ 
+-	control_page = page_address(image->control_code_page) + PAGE_SIZE;
++	control_page = page_address(image->control_code_page);
+ 	__memcpy(control_page, relocate_kernel, KEXEC_CONTROL_CODE_MAX_SIZE);
+ 
+ 	page_list[PA_CONTROL_PAGE] = virt_to_phys(control_page);
+ 	page_list[VA_CONTROL_PAGE] = (unsigned long)control_page;
+-	page_list[PA_TABLE_PAGE] =
+-	  (unsigned long)__pa(page_address(image->control_code_page));
++	page_list[PA_TABLE_PAGE] = (unsigned long)__pa(image->arch.pgd);
+ 
+ 	if (image->type == KEXEC_TYPE_DEFAULT)
+ 		page_list[PA_SWAP_PAGE] = (page_to_pfn(image->swap_page)
+@@ -574,8 +578,7 @@ static void kexec_mark_crashkres(bool protect)
+ 
+ 	/* Don't touch the control code page used in crash_kexec().*/
+ 	control = PFN_PHYS(page_to_pfn(kexec_crash_image->control_code_page));
+-	/* Control code page is located in the 2nd page. */
+-	kexec_mark_range(crashk_res.start, control + PAGE_SIZE - 1, protect);
++	kexec_mark_range(crashk_res.start, control - 1, protect);
+ 	control += KEXEC_CONTROL_PAGE_SIZE;
+ 	kexec_mark_range(control, crashk_res.end, protect);
+ }
 -- 
 2.39.5
 
