@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-110733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990CA1CBEF
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:57:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B645CA1CBF0
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01DF57A5781
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:54:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06EBA7A36D5
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2853F22FE07;
-	Sun, 26 Jan 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA05B230270;
+	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rLu+9TQs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2O7u2yw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF89C22FDFC;
-	Sun, 26 Jan 2025 15:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBA4230263;
+	Sun, 26 Jan 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903939; cv=none; b=Ph4L1cE4CTFaPJQsNHT0f8NGwYe0eL6CDR4dFyHsCag+EEDX3US96WcQIFhgVKguScEezYzn/hHonqz7A7OGRgY/2kshtOiC6HGaxLwSX2R5kBnWVGgDXJs63J4i683WGqgsm6qsLmrgN4402jzuQx9wgo4sP8UWsP8ChI6xtfU=
+	t=1737903942; cv=none; b=nOXt9NTyaQJE9oZIESupeDhE8emlOQ8hWXRzQCqVqOj/Ivg2CusjO6uOAUYv24ORtv5npc9BVGM8KWSAYUlfUl+p1aHgJbGbIcG+PcyHwLd3QgvPlWF1s1FGl08sSwqF8lBS5PtbhJlM29b2NHDApB6DK2IHQzGvbhGjOZ61RNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903939; c=relaxed/simple;
-	bh=LoYHi79qmX2oKQtD8dw/hUllRJEgJTdOc10xSd1wR3Y=;
+	s=arc-20240116; t=1737903942; c=relaxed/simple;
+	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TOZfnLCHPvSOQgpkpE50spsERxgJepzwwK5nXSRja9fx9sssQ1oH2gu24cbd+WojiSOhAuepEBfgKL4HspbrYJg0vckOgcjSQKj9cdGpsAL9xzTo/A8hmHXGs0jm+JmaaeWO/nekSYPxNotH4qFE7Nko7fVzCFl8UDdlHlYfj18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rLu+9TQs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF3AC4CEE3;
-	Sun, 26 Jan 2025 15:05:38 +0000 (UTC)
+	 MIME-Version; b=D/RQv2HTfHCwYadR4jVbFawP29d9PSVJKhW2zNlCsQV+Qk4a/pOv2GQJh86Xq4E6cOd68fqb8elj+gdOnrIgYIYgeJM4+jZ5VcheosKHR2c0vz2Ua/odYofQUyl0qENsijzAWl5sg8SxwNEU+hrmE5WZuH+YRJI+D5KVuPNffOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2O7u2yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E467BC4CED3;
+	Sun, 26 Jan 2025 15:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903939;
-	bh=LoYHi79qmX2oKQtD8dw/hUllRJEgJTdOc10xSd1wR3Y=;
+	s=k20201202; t=1737903942;
+	bh=CNJQ+QICW40Pa+BDnOGMrVBfVz0a2+8S215DRjhfXqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLu+9TQsvgSiE5L16EM+/8bun5DJQ0Cyhy0xf63vzAUsJSbULOd7KWBC/hzly3OEh
-	 l6v1D8GI1y1oZlC0dkpyqUelssgC2X/iFqz0B6bJsbgLiHwzAYq8eaF6nHyqbL+Fsj
-	 yzB/6cMei3z4URZeZnsK/6LQLAgz0+MggR0K6GGAUHqXZmaSxlHMyh8XbDm2DXbLa8
-	 zOlRvTbujGH3EWGxaW+2Ed/Ht8Iicg40+82v2Q98be7EVWIJ3FoHB4YLRu7rKTGq+r
-	 8DJXr9v9ZEHbZ9ChyFaojYU/TJFQIrH4p9ZCyRMA5kyllXO0y7nFNSxhaZAj65vv31
-	 L9ioRFqzU5yBA==
+	b=f2O7u2ywo48sw+y61HQK2JxTM0H5B1atFnXL2YKRVvw00vf+oXv4c4+Zc5QesYn7J
+	 TVE/nTUB9ejpmqSXuGfahlKG0mu3IkzGsdaxJKM4ezPxnTH1e4Z4m9ylTY13vra2v5
+	 DGagm6orBIhlIo20rKCEyG/FAQZmrM0qgSEKALydNFwDtmI1xrp8lnx+9WeYNxWtem
+	 2Bh+1/fjQLNYnOdPPGC8qz4g2oGDTGowXtCEhEofn0qCpC/XKmyd/wF4+JLfjpU/ri
+	 VpzWHEDc+PvMgPaAjV/8u5WO0QIquTE5WDnQBFDT7sSquKxnyRMMhkR76Les94nHVX
+	 TzKbydKmixO3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Even Xu <even.xu@intel.com>,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Borislav Petkov <bp@alien8.de>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jason.gerecke@wacom.com,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/7] HID: Wacom: Add PCI Wacom device support
-Date: Sun, 26 Jan 2025 10:05:26 -0500
-Message-Id: <20250126150527.960265-6-sashal@kernel.org>
+	rafael@kernel.org,
+	dave.jiang@intel.com,
+	alison.schofield@intel.com,
+	u.kleine-koenig@baylibre.com,
+	peterz@infradead.org,
+	dan.j.williams@intel.com,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 7/7] APEI: GHES: Have GHES honor the panic= setting
+Date: Sun, 26 Jan 2025 10:05:27 -0500
+Message-Id: <20250126150527.960265-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150527.960265-1-sashal@kernel.org>
 References: <20250126150527.960265-1-sashal@kernel.org>
@@ -70,44 +73,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Even Xu <even.xu@intel.com>
+From: Borislav Petkov <bp@alien8.de>
 
-[ Upstream commit c4c123504a65583e3689b3de04a61dc5272e453a ]
+[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
 
-Add PCI device ID of wacom device into driver support list.
+The GHES driver overrides the panic= setting by force-rebooting the
+system after a fatal hw error has been reported. The intent being that
+such an error would be reported earlier.
 
-Signed-off-by: Even Xu <even.xu@intel.com>
-Tested-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+However, this is not optimal when a hard-to-debug issue requires long
+time to reproduce and when that happens, the box will get rebooted after
+30 seconds and thus destroy the whole hw context of when the error
+happened.
+
+So rip out the default GHES panic timeout and honor the global one.
+
+In the panic disabled (panic=0) case, the error will still be logged to
+dmesg for later inspection and if panic after a hw error is really
+required, then that can be controlled the usual way - use panic= on the
+cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+
+Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/apei/ghes.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 0ec75848ca805..7851cbec79dc2 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -4851,6 +4851,10 @@ static const struct wacom_features wacom_features_0x94 =
- 	HID_DEVICE(BUS_I2C, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
- 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index e0d82fab1f448..50bed5a708125 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -128,8 +128,6 @@ static unsigned long ghes_estatus_pool_size_request;
+ static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
+ static atomic_t ghes_estatus_cache_alloced;
  
-+#define PCI_DEVICE_WACOM(prod)						\
-+	HID_DEVICE(BUS_PCI, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
-+	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+-static int ghes_panic_timeout __read_mostly = 30;
+-
+ static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+ {
+ 	phys_addr_t paddr;
+@@ -707,14 +705,16 @@ static void __ghes_panic(struct ghes *ghes,
+ 			 struct acpi_hest_generic_status *estatus,
+ 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+ {
++	const char *msg = GHES_PFX "Fatal hardware error";
 +
- #define USB_DEVICE_LENOVO(prod)					\
- 	HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, prod),			\
- 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
-@@ -5020,6 +5024,7 @@ const struct hid_device_id wacom_ids[] = {
+ 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
  
- 	{ USB_DEVICE_WACOM(HID_ANY_ID) },
- 	{ I2C_DEVICE_WACOM(HID_ANY_ID) },
-+	{ PCI_DEVICE_WACOM(HID_ANY_ID) },
- 	{ BT_DEVICE_WACOM(HID_ANY_ID) },
- 	{ }
- };
+ 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
+ 
+-	/* reboot to log the error! */
+ 	if (!panic_timeout)
+-		panic_timeout = ghes_panic_timeout;
+-	panic("Fatal hardware error!");
++		pr_emerg("%s but panic disabled\n", msg);
++
++	panic(msg);
+ }
+ 
+ static int ghes_proc(struct ghes *ghes)
 -- 
 2.39.5
 
