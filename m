@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-110488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC58A1C960
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:58:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E751A1C963
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8692F166FD8
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C424418888AB
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E001DACA1;
-	Sun, 26 Jan 2025 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D45193407;
+	Sun, 26 Jan 2025 14:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSbu6HOe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EpsQ3O6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAA61DA634;
-	Sun, 26 Jan 2025 14:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8484C1DB95E;
+	Sun, 26 Jan 2025 14:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903042; cv=none; b=mwu7ZjxJP+ds5RBuoipB43bIkJLLR1+KDdgW+gwFacOpuUs4B7IR1fgBKHBMUT8UeQAs+2H+n8nwIhdSNhx0OAa70WYuSWyJ0BZVXYumOdRBeniZA6gtmwDL+rHz/dJlkRCciH6U8LoN7hplWB5OD/yVhaDvetEWZF+AuO+vmNc=
+	t=1737903045; cv=none; b=oW7ZL30gnFkxy0pZQrBQiyENQk78mxhuO/g9fhrPFH0x/yTx5H1wb4AxNVnMwD9UlOrU5qLBpxwdxZ72jeZQipCtJPlNFrp5n1Lr1Luvn/YhOZdyjmZleoH2YIEjKMk4SeSORRLVhp3O6E1hkxxNLg/nDba5MsepsQO4mQnTpoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903042; c=relaxed/simple;
-	bh=ivPLaVKVhK8FH75LuU5vK0pflfjwziZzLaukhS3zmEI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R0Nc/sCELPwmLnmuG/z5RPoMrVx2NuRpqOuOK6nV6yRrA3ihnUUOjOEr1FaDYkFSHRXwMdBI4HDp2z9ihyWM/oQVISKdKDOsIlJGj5V70vqQ644+wSwIY6p7Liu7tHWSDGvO6t9CMQN2ZU7fmlnfjh6qSnntQFbw/Fqkp18e1Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSbu6HOe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3891BC4CED3;
-	Sun, 26 Jan 2025 14:50:41 +0000 (UTC)
+	s=arc-20240116; t=1737903045; c=relaxed/simple;
+	bh=MdaCEcPL1tgyi2Yxoi9q72zYTDHD0aqsDN9HtmB77kk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ht1dewApbv8Fum5OU0ZM3MoUDwuS+HK+9e7HemLQOGrS1GDpqmuGWrRT0W8uZCkrat3TXSZFuC4wEKspDPlgp9FcyvKdqVu4bB1BZqKCnzTpRF/xpnbDZ19JU9/8r1RCL8Hwc1jn+75e8oH7fC1dsHZWxtJQa6WR6QnAA8KS5g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EpsQ3O6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7054CC4CED3;
+	Sun, 26 Jan 2025 14:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903042;
-	bh=ivPLaVKVhK8FH75LuU5vK0pflfjwziZzLaukhS3zmEI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSbu6HOerXf9YQ2AZscKEWz3TmhwTYYMevyh5rVjS/n+RRJbeR+XnxjHEF3hkixdv
-	 abPcxDgf2mlETgEbb2vJIWlr2CrGeEzEXTGh+91fuAev+QVHfMdKNIFOyPkfEF6okB
-	 pGbyic5bj4oge0UZr5nk1hc5gLpkHaF7wrcIkWy4LOXTv8+f8HRhB4QUYg5qUHxAnh
-	 qlIl8UmkEmnT8g5Ep7ZzIQn3P2++mzRXkIZdI/nDi/G/Gc5kCiKDyyDODIMy/0JJZ/
-	 1rlRrZ9xUuBb8NVAoYOOXcHlMdCOmm/ZJYtPwFTgdEgiXP2+P4AgRrFc1cZ/xnKodR
-	 gx3L4jkeBNbgw==
+	s=k20201202; t=1737903045;
+	bh=MdaCEcPL1tgyi2Yxoi9q72zYTDHD0aqsDN9HtmB77kk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EpsQ3O6cvcc8aKl0+1AqZgkGJiCt24P1yX6SeVHpZ/yPrj8IR4hSVbo4bWx0SnYVJ
+	 tZaY1RdMkTIxWCmk2S6uk9yaCM1SqqHvKx+HXfEuG1vKZMs9DD4FKqzclKI1NaijRC
+	 DlAbzqJ+k90um7LKrTqRcxU7XXVenTVPjueypaPAxmuF5mBYsB2KiF/h8amSlWo91T
+	 TJ5N/O2rFVtU+eX5HaX0tnIt5Im4BtqjTYje97zZNiluSV56kgQZe0fHPt/6j1a28N
+	 NxHz/b820G4l1cYvsyWwT9UAy4XJTLYanAcC+gTDMOlOrBEJt0WgU6/YCJsihIIYWo
+	 XQNUjVpingV2w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
-	Borislav Petkov <bp@alien8.de>,
+Cc: Suleiman Souhlal <suleiman@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
 	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	Shyam-sundar.S-k@amd.com,
-	mario.limonciello@amd.com,
-	richard.gong@amd.com
-Subject: [PATCH AUTOSEL 6.12 7/7] x86/amd_nb: Restrict init function to AMD-based systems
-Date: Sun, 26 Jan 2025 09:50:26 -0500
-Message-Id: <20250126145027.925851-7-sashal@kernel.org>
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org
+Subject: [PATCH AUTOSEL 6.6 1/3] sched: Don't try to catch up excess steal time.
+Date: Sun, 26 Jan 2025 09:50:40 -0500
+Message-Id: <20250126145043.925962-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126145027.925851-1-sashal@kernel.org>
-References: <20250126145027.925851-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,41 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.11
+X-stable-base: Linux 6.6.74
 Content-Transfer-Encoding: 8bit
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Suleiman Souhlal <suleiman@google.com>
 
-[ Upstream commit bee9e840609cc67d0a7d82f22a2130fb7a0a766d ]
+[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
 
-The code implicitly operates on AMD-based systems by matching on PCI
-IDs. However, the use of these IDs is going away.
+When steal time exceeds the measured delta when updating clock_task, we
+currently try to catch up the excess in future updates.
+However, this results in inaccurate run times for the future things using
+clock_task, in some situations, as they end up getting additional steal
+time that did not actually happen.
+This is because there is a window between reading the elapsed time in
+update_rq_clock() and sampling the steal time in update_rq_clock_task().
+If the VCPU gets preempted between those two points, any additional
+steal time is accounted to the outgoing task even though the calculated
+delta did not actually contain any of that "stolen" time.
+When this race happens, we can end up with steal time that exceeds the
+calculated delta, and the previous code would try to catch up that excess
+steal time in future clock updates, which is given to the next,
+incoming task, even though it did not actually have any time stolen.
 
-Add an explicit CPU vendor check instead of relying on PCI IDs.
+This behavior is particularly bad when steal time can be very long,
+which we've seen when trying to extend steal time to contain the duration
+that the host was suspended [0]. When this happens, clock_task stays
+frozen, during which the running task stays running for the whole
+duration, since its run time doesn't increase.
+However the race can happen even under normal operation.
 
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241206161210.163701-3-yazen.ghannam@amd.com
+Ideally we would read the elapsed cpu time and the steal time atomically,
+to prevent this race from happening in the first place, but doing so
+is non-trivial.
+
+Since the time between those two points isn't otherwise accounted anywhere,
+neither to the outgoing task nor the incoming task (because the "end of
+outgoing task" and "start of incoming task" timestamps are the same),
+I would argue that the right thing to do is to simply drop any excess steal
+time, in order to prevent these issues.
+
+[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
+
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/amd_nb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/sched/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 9fe9972d2071b..37b8244899d89 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -582,6 +582,10 @@ static __init void fix_erratum_688(void)
- 
- static __init int init_amd_nbs(void)
- {
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-+	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-+		return 0;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 86606fb9e6bc6..c686d826a91cf 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -726,13 +726,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+-		steal = paravirt_steal_clock(cpu_of(rq));
++		u64 prev_steal;
 +
- 	amd_cache_northbridges();
- 	amd_cache_gart();
++		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
+ 		steal -= rq->prev_steal_time_rq;
  
+ 		if (unlikely(steal > delta))
+ 			steal = delta;
+ 
+-		rq->prev_steal_time_rq += steal;
++		rq->prev_steal_time_rq = prev_steal;
+ 		delta -= steal;
+ 	}
+ #endif
 -- 
 2.39.5
 
