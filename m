@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-110610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE33FA1CA79
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:25:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61786A1CA92
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E2D316A23F
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1728E3A4018
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE3A1DE2B3;
-	Sun, 26 Jan 2025 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73511DE2C7;
+	Sun, 26 Jan 2025 15:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5SPZrm8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPmou8Lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C9E1DE2A9;
-	Sun, 26 Jan 2025 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6335A1DDC35;
+	Sun, 26 Jan 2025 15:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903647; cv=none; b=NqMz+L9uzt0nctjhYFTXG4uIOKg3bcSXMGq82TdNVMOToScNlx8716uSPs81i891f/KCoPlFmfzeojLSw/3kUcqLNUTmKm7kZwrLcPFxIUYD9E6aeKM9tDVNfwT1kvPsOxW7+ePzGnpDyGwOCB5H1MfrNxMY+9jEWWXGsUISKUM=
+	t=1737903648; cv=none; b=LSR5rohrW/LwEIY2XZM9YeI6dXwnjAMKi1mRZvONWNQZhyod8sQh4UQMQtuDNefqv9AD0QDmZ/bJdfj4drm9k+PiB0+8tgaMaFLou04lPYJEuhaHkQk4uJxSSUqaMhsWsgVTUo0xbDtLmr6Yw04mMu7TtafLwsN7lLq/udczwPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903647; c=relaxed/simple;
-	bh=8yq2XVg95QqNPrBbNM7POF3aaHyzT+nf9JDacZVezXY=;
+	s=arc-20240116; t=1737903648; c=relaxed/simple;
+	bh=CUsXLr4W40Q/yqnnXpzRJxtZvO6XB9k5Rb+rgCdz5wk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QxvgRhMT2BDtnYIOiYYgM3X18DoTHH0KOofE9Ehb0ppAOXS+A+aKeKU0ZWoHpdfDaEjLffda9vmwuVVJeV6YP/JhhGnraaDw8QraIBCbzEaAW9IAvE+iPABt5zYnhI1F5EHm0vwB29llNMA/9tdK4ArDlojvOMJbgQ+AHJCXViA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5SPZrm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31A9C4CEE3;
-	Sun, 26 Jan 2025 15:00:45 +0000 (UTC)
+	 MIME-Version; b=cnfmivY3+jR6SdOl2YyP93depUxspsZO5hf3Io3D99d3X1hIFgK6+BEYuBSU4xzDqcJL9jDpL8SQ49KEHUPapdiEDoZSsq9B7qVJDrdZOOqdu4TmYwnZLBRltI6n6RI2QRuBu3G7bRz8BotEUG7git4VcbDdoARIYPPWaLXq5EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPmou8Lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706FDC4CEE2;
+	Sun, 26 Jan 2025 15:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903647;
-	bh=8yq2XVg95QqNPrBbNM7POF3aaHyzT+nf9JDacZVezXY=;
+	s=k20201202; t=1737903648;
+	bh=CUsXLr4W40Q/yqnnXpzRJxtZvO6XB9k5Rb+rgCdz5wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5SPZrm8sUvFpNmIsSMUQ5Di7iotUcEYosy/QOMCq9xr/GbRuczDHMDnW2kHc4Yh3
-	 2vnqkaOlS4FCTox0X6a3HIO+yVKDimUSDXxZFNc4ufg5mx3r6/2TcMo6barSeN7+Ri
-	 xuG9zU59El5ZTga0dyJOPDhgpWpIKOWS0XsOeSTF3W+Dud/daBZcdVXuYgfAUcjdkL
-	 t1+W5SrCactsurS025fePRE8fy+WFUgGaXN3CmBqTRDD9OvfEVZ7k1WgA4IPCyoUqZ
-	 +4qspddNEToP1XYgz7PfzLWH4auzj+C1ubKRuTZin8gCSuKE/S7/DCrym3Hj+EKCuG
-	 LJj13QAQfgNHQ==
+	b=VPmou8LfkPJiu8wY3ARAYl7ISG1Bl9VgzNYhuffW2UiWRXWHyfMrLP/ZR8bAixnE6
+	 axuiIaxhVNvKFaANDr3jpwwCxlSPG8D1LpJTMB8aoq1ahi4gPofwTvAXhNcXwqqxz5
+	 GOWr3Mevm73fyBB9XiJoE5Dyoa8s85C7NnbQ0vT7CqOW+snvKE6mQ3G42u88LAwAGU
+	 mqb6+5TvOzfVmsEgaWtKtAi6w9pFinJMlkvGvBbcabxaHZwfO3xVHVnHQbMuZBwUdJ
+	 ZjyDKVkS7SB+CBceiopPysj7+kImDmXEhvasaSDe0DSlI75FA2/ODHvWnOnVcF5xDb
+	 L50janJ4SqCGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	takedakn@nttdata.co.jp,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 09/35] tomoyo: don't emit warning in tomoyo_write_control()
-Date: Sun, 26 Jan 2025 10:00:03 -0500
-Message-Id: <20250126150029.953021-9-sashal@kernel.org>
+	ptyser@xes-inc.com
+Subject: [PATCH AUTOSEL 6.13 10/35] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
+Date: Sun, 26 Jan 2025 10:00:04 -0500
+Message-Id: <20250126150029.953021-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -70,44 +66,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3df7546fc03b8f004eee0b9e3256369f7d096685 ]
+[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
 
-syzbot is reporting too large allocation warning at tomoyo_write_control(),
-for one can write a very very long line without new line character. To fix
-this warning, I use __GFP_NOWARN rather than checking for KMALLOC_MAX_SIZE,
-for practically a valid line should be always shorter than 32KB where the
-"too small to fail" memory-allocation rule applies.
+On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
+rather the 3197 found on e.g. the N4000 / N4020.
 
-One might try to write a valid line that is longer than 32KB, but such
-request will likely fail with -ENOMEM. Therefore, I feel that separately
-returning -EINVAL when a line is longer than KMALLOC_MAX_SIZE is redundant.
-There is no need to distinguish over-32KB and over-KMALLOC_MAX_SIZE.
+While at fix the existing GLK PCI-id table entry breaking the table
+being sorted by device-id.
 
-Reported-by: syzbot+7536f77535e5210a5c76@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7536f77535e5210a5c76
-Reported-by: Leo Stone <leocstone@gmail.com>
-Closes: https://lkml.kernel.org/r/20241216021459.178759-2-leocstone@gmail.com
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/tomoyo/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/lpc_ich.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/security/tomoyo/common.c b/security/tomoyo/common.c
-index 5c7b059a332aa..972664962e8f6 100644
---- a/security/tomoyo/common.c
-+++ b/security/tomoyo/common.c
-@@ -2665,7 +2665,7 @@ ssize_t tomoyo_write_control(struct tomoyo_io_buffer *head,
- 
- 		if (head->w.avail >= head->writebuf_size - 1) {
- 			const int len = head->writebuf_size * 2;
--			char *cp = kzalloc(len, GFP_NOFS);
-+			char *cp = kzalloc(len, GFP_NOFS | __GFP_NOWARN);
- 
- 			if (!cp) {
- 				error = -ENOMEM;
+diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
+index f14901660147f..4b7d0cb9340f1 100644
+--- a/drivers/mfd/lpc_ich.c
++++ b/drivers/mfd/lpc_ich.c
+@@ -834,8 +834,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
+ 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
+ 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
+-	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
+ 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
++	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
++	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
+ 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
+ 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
+ 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
 -- 
 2.39.5
 
