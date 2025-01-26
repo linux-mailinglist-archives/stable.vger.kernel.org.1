@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-110495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BC6A1C96B
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:59:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8576A1C96D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EED31888653
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:58:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76E2E18868EE
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90EA1DE2A8;
-	Sun, 26 Jan 2025 14:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421801DE2BA;
+	Sun, 26 Jan 2025 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM9EeuMW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+NGHEB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626641DDC3C;
-	Sun, 26 Jan 2025 14:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002D31DE2B5;
+	Sun, 26 Jan 2025 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903059; cv=none; b=TE0Z78Dh+1Q4oh2OxvNSoUSXhEOD7PcdiUmgKRRf7sejG5vEtHP1r6fxcx7IBMLbBYt+3NH1snL5Ve77EF5I6MuR18djexPimTbHLF7fKMIXo8lzskKZvJRZ4QgnI+QcJ8DeXpQrwOHcpgOoGHt+NABIA3WJDSBrgp8pLjlHcEA=
+	t=1737903061; cv=none; b=W94SUgbWLkA1CazMXgLnqwMk54NhPHelJtcDyhRoi3iPgQTTOu58JD11d6Pcvn5qAszXn/u2to5cECNLPPc5fXG8ZndK087STuouzh5Yqtww/HRlHDJkkC+M4wTTCGFaJYz/3olSwkpKda2fIPZYsGOpmei/ZkZJjJr82HtU/U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903059; c=relaxed/simple;
-	bh=bgy6easxO5ItOol+2b01o6Rwh77tc0QSN+Cc5faLIyA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C4aye5Gwm6H22VtEEJPfntq3m//sZlKOufH0C1ZaJORi/rh1gE7xt4NiWquQyHtBiomlT0s9DlDw+v3mck2WDjOFDYOiJ+Ad4FlLgESN62oPFJbLgYfMGA6fS8mKWdRDcf51T+Am+h2IfLmQoPtdd+YP17qEpMfKnDrFCZwxYEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM9EeuMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5CFC4CED3;
-	Sun, 26 Jan 2025 14:50:58 +0000 (UTC)
+	s=arc-20240116; t=1737903061; c=relaxed/simple;
+	bh=Yy0kQ1fyWq7SRiAk8SCR8jjTKPqZkKLL08ax73rCljw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EtUrvKatjr4TIQps1Mqw5dJQcLOND07ebh9v9pOARTjPDBXa+JkFxsRQg+UWUUCdgtxHisJR/OdbWGmjH8LsenqvFnlRa8x4VKmv2v7G3Sm4Wxq4MrRZqNaQPlYODpIg5IGsqto93lYdqob+jsuYLbQt2sg5WEwErqlpMc59PE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+NGHEB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA488C4CEE4;
+	Sun, 26 Jan 2025 14:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903059;
-	bh=bgy6easxO5ItOol+2b01o6Rwh77tc0QSN+Cc5faLIyA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=bM9EeuMWXQj7ehZSD+WFwzaPBF/hNmEj23yBTymzoJWxuQpICpLmM6DVieuky7O42
-	 A3MNNBf0nbMxopzo55fvcfcBND/Q4w07H4cgLJ31ewVtVtJ0gTyRxCGZMTBCIbElOu
-	 jBUa5yezlN2+N1wnREb4kdzI80ALvYQqoxDPhKfTacBD0biIVXjeszSzeXqyybyh87
-	 IC6mSA/ufotnz2r6U50PSXSnQ1m+E2zZBmUWSAVblXH4EZNH648ATwWpdEGW1otmGA
-	 4XcOYu1BmFwq0XjxRQ/zfLBa5kPxkKOeBXgfB0fIQsUGwSmuEidCEn8ppdF6G1ev5O
-	 PA9rXIAJpnjsw==
+	s=k20201202; t=1737903060;
+	bh=Yy0kQ1fyWq7SRiAk8SCR8jjTKPqZkKLL08ax73rCljw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V+NGHEB0xyyuCEpEzLKT33sU/E0t3k4It0VY1KFW2YuATiXXfVkabAKJhw1z7s9cz
+	 psPt8bSi6Hjlv+rNacnMgD7Xdxz05JGEOm0BDq8RWaaIC7kStxBejtsSxvryXeXkiG
+	 Ku0aT9kive/jYNCqFVc0qnyCtEllw9yCmCWIzh1oPrOwOoBynzTO26zdwl/2KM7oNt
+	 CrOoKVXQLZDpcl1uMETHi62u5ibq77stB7srzADB4satq1fqwcXb0hwXA5kEf6qD0I
+	 EWYgSYzRv2loRg94qZVSdjumvuXi3s9Ke+vBmDUHVKrvZmmzO6PRObF2xnO78FMKq3
+	 xXjb7Rq3You8g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Suleiman Souhlal <suleiman@google.com>,
+Cc: Carlos Llamas <cmllamas@google.com>,
+	"J . R . Okajima" <hooanon05g@gmail.com>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org
-Subject: [PATCH AUTOSEL 5.15 1/3] sched: Don't try to catch up excess steal time.
-Date: Sun, 26 Jan 2025 09:50:54 -0500
-Message-Id: <20250126145057.926069-1-sashal@kernel.org>
+	Boqun Feng <boqun.feng@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 2/3] lockdep: Fix upper limit for LOCKDEP_*_BITS configs
+Date: Sun, 26 Jan 2025 09:50:55 -0500
+Message-Id: <20250126145057.926069-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250126145057.926069-1-sashal@kernel.org>
+References: <20250126145057.926069-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,74 +69,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.177
 Content-Transfer-Encoding: 8bit
 
-From: Suleiman Souhlal <suleiman@google.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
+[ Upstream commit e638072e61726cae363d48812815197a2a0e097f ]
 
-When steal time exceeds the measured delta when updating clock_task, we
-currently try to catch up the excess in future updates.
-However, this results in inaccurate run times for the future things using
-clock_task, in some situations, as they end up getting additional steal
-time that did not actually happen.
-This is because there is a window between reading the elapsed time in
-update_rq_clock() and sampling the steal time in update_rq_clock_task().
-If the VCPU gets preempted between those two points, any additional
-steal time is accounted to the outgoing task even though the calculated
-delta did not actually contain any of that "stolen" time.
-When this race happens, we can end up with steal time that exceeds the
-calculated delta, and the previous code would try to catch up that excess
-steal time in future clock updates, which is given to the next,
-incoming task, even though it did not actually have any time stolen.
+Lockdep has a set of configs used to determine the size of the static
+arrays that it uses. However, the upper limit that was initially setup
+for these configs is too high (30 bit shift). This equates to several
+GiB of static memory for individual symbols. Using such high values
+leads to linker errors:
 
-This behavior is particularly bad when steal time can be very long,
-which we've seen when trying to extend steal time to contain the duration
-that the host was suspended [0]. When this happens, clock_task stays
-frozen, during which the running task stays running for the whole
-duration, since its run time doesn't increase.
-However the race can happen even under normal operation.
+  $ make defconfig
+  $ ./scripts/config -e PROVE_LOCKING --set-val LOCKDEP_BITS 30
+  $ make olddefconfig all
+  [...]
+  ld: kernel image bigger than KERNEL_IMAGE_SIZE
+  ld: section .bss VMA wraps around address space
 
-Ideally we would read the elapsed cpu time and the steal time atomically,
-to prevent this race from happening in the first place, but doing so
-is non-trivial.
+Adjust the upper limits to the maximum values that avoid these issues.
+The need for anything more, likely points to a problem elsewhere. Note
+that LOCKDEP_CHAINS_BITS was intentionally left out as its upper limit
+had a different symptom and has already been fixed [1].
 
-Since the time between those two points isn't otherwise accounted anywhere,
-neither to the outgoing task nor the incoming task (because the "end of
-outgoing task" and "start of incoming task" timestamps are the same),
-I would argue that the right thing to do is to simply drop any excess steal
-time, in order to prevent these issues.
-
-[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
-
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
+Reported-by: J. R. Okajima <hooanon05g@gmail.com>
+Closes: https://lore.kernel.org/all/30795.1620913191@jrobl/ [1]
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Link: https://lore.kernel.org/r/20241024183631.643450-2-cmllamas@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/Kconfig.debug | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index ed92b75f7e024..691af58c156e1 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -642,13 +642,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
- #endif
- #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
- 	if (static_key_false((&paravirt_steal_rq_enabled))) {
--		steal = paravirt_steal_clock(cpu_of(rq));
-+		u64 prev_steal;
-+
-+		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
- 		steal -= rq->prev_steal_time_rq;
- 
- 		if (unlikely(steal > delta))
- 			steal = delta;
- 
--		rq->prev_steal_time_rq += steal;
-+		rq->prev_steal_time_rq = prev_steal;
- 		delta -= steal;
- 	}
- #endif
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 2025b624fbb67..db4f8ac489d41 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1408,7 +1408,7 @@ config LOCKDEP_SMALL
+ config LOCKDEP_BITS
+ 	int "Bitsize for MAX_LOCKDEP_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 24
+ 	default 15
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_LOCKDEP_ENTRIES too low!" message.
+@@ -1424,7 +1424,7 @@ config LOCKDEP_CHAINS_BITS
+ config LOCKDEP_STACK_TRACE_BITS
+ 	int "Bitsize for MAX_STACK_TRACE_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 19
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_STACK_TRACE_ENTRIES too low!" message.
+@@ -1432,7 +1432,7 @@ config LOCKDEP_STACK_TRACE_BITS
+ config LOCKDEP_STACK_TRACE_HASH_BITS
+ 	int "Bitsize for STACK_TRACE_HASH_SIZE"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 14
+ 	help
+ 	  Try increasing this value if you need large MAX_STACK_TRACE_ENTRIES.
+@@ -1440,7 +1440,7 @@ config LOCKDEP_STACK_TRACE_HASH_BITS
+ config LOCKDEP_CIRCULAR_QUEUE_BITS
+ 	int "Bitsize for elements in circular_queue struct"
+ 	depends on LOCKDEP
+-	range 10 30
++	range 10 26
+ 	default 12
+ 	help
+ 	  Try increasing this value if you hit "lockdep bfs error:-1" warning due to __cq_enqueue() failure.
 -- 
 2.39.5
 
