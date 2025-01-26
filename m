@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-110521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1288A1C9AD
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:06:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAC2A1C9A8
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6816C167F68
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7229D188568E
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679D81EEA42;
-	Sun, 26 Jan 2025 14:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12CE1F2394;
+	Sun, 26 Jan 2025 14:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A314vuzr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTi2ERuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDEA1EEA30;
-	Sun, 26 Jan 2025 14:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECD91F153F;
+	Sun, 26 Jan 2025 14:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903254; cv=none; b=CKmBKIuyO4DdIr/QQWxmIfap5Ucz2Cng6PxzrC5vFW6rLjE567xKzIWMwBjcj+FVUWsAKJZBGhP7/DiuSmkOUPTUAqXCEm1yTjewdN4TVLiTsuLqKSVZCmWqYgqUfXekHsLHSXzWZLy3FyyPcLmLeOghwMRfynD8glmqZ+3m01U=
+	t=1737903257; cv=none; b=l12pCU6X2RzY+iT8W6lZQuyGyjz3cZuyft5owJeNjRe0LOrdMiE2VfYg9QOrqa47kgNaR4xclRKcoN3ADLc5drchdpA8NB4WLKZXPmwmvgBdzIs4ssJ76ItxxHehZvTRfnrq1izMZ0nyyUhMMu0+FkLM6E+4Fbhb7X45dTcBDhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903254; c=relaxed/simple;
-	bh=4mlVLYchybKNez3qJJsuH3/DFr4KppQ7p3VC8ZQJ0rs=;
+	s=arc-20240116; t=1737903257; c=relaxed/simple;
+	bh=g913gO6xT4GXclS18ziqOPs81ttbwmSm1HwBTY5c6gI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oOIOQxfg+OjWwmL1STQPoyiAArS7e8h/3wtEb7h9X/gVagAgS9YFnnA8N7ZrwFRC+UJbdo/jkvYnWbTAPD0rNLzG8IepI6iqz0Br+DdC6GUadc2HiArxnGRyI80jYhHsg3BfAslGBVR24ux2ysRlfiR8LLkvnMLdiErZxOyl0Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A314vuzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B334C4CEE2;
-	Sun, 26 Jan 2025 14:54:12 +0000 (UTC)
+	 MIME-Version; b=C9Fu5SibnoYOA0KnVFr0eVynJklfyR3tlZ9iMlyRr59YbjuiRdb/7q7yoEFHqURjSHwWOc1nQBXwLvLQiLNnsC2JjLoufTFjQdEt8d0X/9AQIPd9PqgrXT6TFpp1OzSRZ2O1/KD5iiG24cT19NNKbEwIIEnb9qPIT87ZtM9+qcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTi2ERuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6E8C4CED3;
+	Sun, 26 Jan 2025 14:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903254;
-	bh=4mlVLYchybKNez3qJJsuH3/DFr4KppQ7p3VC8ZQJ0rs=;
+	s=k20201202; t=1737903257;
+	bh=g913gO6xT4GXclS18ziqOPs81ttbwmSm1HwBTY5c6gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A314vuzrLi9kC8d2vZdNGc+1YPL9GpDsZdiYhplYiW58ifXMf+b7yIS2hq+vSSN1K
-	 Da0mNDkUlD8HYLd2iD0GxeW7PBu7hbs7Pz6IuXaUGZcjbvfA6kr5bIn3pnVnQ04Dbv
-	 AhuSZ9LOiutMwVO33q2P40zHX0xrU2BnIFOjeWo3/BMwcmQ2A0OWpsmcAGwfx9grjc
-	 NR8bWvaDGAr9kCkNXRbBO8OfvXaltvoWzzwIaHW87OhzWVdecIGNyoOkY+gHd4sEY9
-	 25K39JqCU1N5ymWM8A2Xfpg4feYpoEBykqZB3C+y6+92Hobr1HUJM2vF7CdrEn9zr7
-	 5fH6JRE0nWg2Q==
+	b=QTi2ERuv3bZEvvhm+Vuyk6ypI0vYmSsYlNeG10Ex1KleResfOsMw/Qb00vuzfcK7p
+	 VRafLFhgMTrEqPWnQKbEB2eghPAkTXf5GmYmq9JaLjFgHx29RUt6LiYgDEiJnRUHkK
+	 8dcYAO8NgRYK5rn+EhaEtBah/gXkB765wzAqWq1VZjXcXuhTaDC89ulVN8pIqrrl8E
+	 ybFVwzTkfkwE4MjacTkXReVKkuhMQD68a7XuOH2zoJygBoAs+J2kDrCXzclz+Ibf6L
+	 /AAo7llQJVbR9wkiyiFNLuopnfQn7Wrhy5YhH3cUHcK2Isfy4qe9jzRCg4TaBNwcwP
+	 HEdS6NLL7zdUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Maxime Ripard <mripard@kernel.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robdclark@gmail.com,
+	alain.volmat@foss.st.com,
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	swboyd@chromium.org,
-	quic_bjorande@quicinc.com,
-	quic_parellan@quicinc.com,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 19/34] drm/msm/dp: use eld_mutex to protect access to connector->eld
-Date: Sun, 26 Jan 2025 09:52:55 -0500
-Message-Id: <20250126145310.926311-19-sashal@kernel.org>
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.13 21/34] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
+Date: Sun, 26 Jan 2025 09:52:57 -0500
+Message-Id: <20250126145310.926311-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145310.926311-1-sashal@kernel.org>
 References: <20250126145310.926311-1-sashal@kernel.org>
@@ -76,34 +73,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 9aad030dc64f6994dc5de7bb81ceca55dbc555c3 ]
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
 Reading access to connector->eld can happen at the same time the
 drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
 order to protect connector->eld from concurrent access.
 
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-7-c9bce1ee8bea@linaro.org
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c | 2 ++
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index 74e01a5dd4195..0fd5e0abaf078 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -414,8 +414,10 @@ static int msm_dp_audio_get_eld(struct device *dev,
- 		return -ENODEV;
- 	}
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 21b46a6465f08..f8bbae6393ef8 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1225,7 +1225,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
  
-+	mutex_lock(&msm_dp_display->connector->eld_mutex);
- 	memcpy(buf, msm_dp_display->connector->eld,
- 		min(sizeof(msm_dp_display->connector->eld), len));
-+	mutex_unlock(&msm_dp_display->connector->eld_mutex);
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
  
  	return 0;
  }
