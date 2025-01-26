@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-110791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95473A1CCFD
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:45:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CD7A1CD01
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18B8C3A7F7B
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:45:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B83163CA1
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A958F15530B;
-	Sun, 26 Jan 2025 16:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CABA16EB42;
+	Sun, 26 Jan 2025 16:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkUaLgmQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZpZUMq3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D99313B59B;
-	Sun, 26 Jan 2025 16:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97E1165F01;
+	Sun, 26 Jan 2025 16:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737909926; cv=none; b=Af5h6ORRfA6+MyqkVFLbhvaoNiR/x0ldCC94Y2NVSe1JUOR9VcJhhMmTz7prZiHEdAC581+7BMmsSS+sSQIpd8BoXSB8Xna9IlNEwnwiH97E/7T3+Bhls9HDbuAUOg/S9FW0WmhImbeEpyvXIgYyNkSzMnDsyZpB/M4bh7Md5+U=
+	t=1737909928; cv=none; b=DkQ+2wPVPBEOsK5CM2z7Ib31OnLitBiRkd4oSUH/eYzX6XFliST3nZ1Mv1pJnV0ZWLDIILOG3H5c/RgP36ntq5y3GGSGcAETGSmuNK+GfuJW1hir6+EjDE8FPB4L14QYmOjhcK/NLKfCw/T+9ZmHXDpttErdmILY91paqvx2d0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737909926; c=relaxed/simple;
-	bh=w1Pkdasfspl0G+PjdpFt2OcCV0OAekVaWgJgQeKcImc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XTlkovh5sRMIV+zyJ+LDIDLfEevT85nGhSTj0SO1GMgRq5xrPCFSpGct8R1k63aWhDNk69AqfjEnY74jowHdmnUo6lmzfQI+fYzyCH3ASEr03TDZ45KGt6h1pHXT+ziJ5Q+RAa0wmHVgSqGVvr6mAsr/mhYWH7nBfF/jLABMp3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkUaLgmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D711BC4CED3;
-	Sun, 26 Jan 2025 16:45:24 +0000 (UTC)
+	s=arc-20240116; t=1737909928; c=relaxed/simple;
+	bh=Fvbo3UwreLlL541vKtBHY27Zn1LjVTBWmk37IrD4u1k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=qibwg33YDSg1bQfyUsZCUW7Y9uVPq4ts+zJasksyLFfG2J7M9ScEOiupaKjBiymsvpRn0n+ZHEX9lPu+L5KCFaRLIn6c89Nt1SPYgHdKsC5EU1ZBiXG9Xw9csGwvLGQj9wyWka5dR3wux8NJjlY4UNsExc5Bl9+fEttUoJu4f6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZpZUMq3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F859C4CEE3;
+	Sun, 26 Jan 2025 16:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737909925;
-	bh=w1Pkdasfspl0G+PjdpFt2OcCV0OAekVaWgJgQeKcImc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fkUaLgmQnKe0AfhlggbsMYAuxz94Apf29J2mFnszv5k6Mr53XB2tMmYSEv2M9SglN
-	 oQFtneMeqwPxGoXTP+PKkupM8qN52lLitf6lHgTscKuooN4mh65AdmVjjyEME/ANqP
-	 fVcMG9UJ85Ng7NXvBL2UTZQSEs+8BCdUMPuKhA48IAhodU+fCQJl81Xu4F6xpE82XI
-	 fX6fPEFeQ6zDcNE0wd3oAZwzG9Uui+hM+Ab5CefqeMZ+Kvt2nDcaDKE9CT2j9wCAL8
-	 UyDa7Y6hcDaIIcAjhwLVVynLEhsDoF9qmOIrdESwlV1rTOILYb+aeZU+s03GMcCAnF
-	 t2epXpIDfcUHQ==
+	s=k20201202; t=1737909927;
+	bh=Fvbo3UwreLlL541vKtBHY27Zn1LjVTBWmk37IrD4u1k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZpZUMq3N6cRV6ZMP27PLBzMcWfj1GETHTfNAF/O8kPlmThf1sS8BasZEGm1qSUAUQ
+	 WMvohOUIjEB7++cfmdkNMBFRtIKLq9ccrqqdr/0z74SJGQNdKT2OiO+pE4ty91MTwP
+	 48+V9XghVPiKusW/pPVEd7ev9e6SnhDkcHCpTpCgN0gDmgJX7ifKstHhGabO+Qcjko
+	 rRA+QV4YFgY1JxR8SvG8r1bT9EhDVj76mm4mLkui7jRpTYWLJj/6TJu1wuls0kNEPw
+	 noHwjtIC6lPcw5Z0uJjmqEhazpC6a2eRarp2u3RMIRQEidNPlho/hhxG3DoDdEat3g
+	 +fFoWVV3he+Lw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Michael Margolin <mrgolin@amazon.com>,
+	Firas Jahjah <firasj@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	konradybcio@kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 1/8] soc: qcom: pd-mapper: Add X1P42100
-Date: Sun, 26 Jan 2025 11:45:16 -0500
-Message-Id: <20250126164523.963930-1-sashal@kernel.org>
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 2/8] RDMA/efa: Reset device on probe failure
+Date: Sun, 26 Jan 2025 11:45:17 -0500
+Message-Id: <20250126164523.963930-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250126164523.963930-1-sashal@kernel.org>
+References: <20250126164523.963930-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,34 +68,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit e7282bf8a0e9bb8a4cb1be406674ff7bb7b264f2 ]
+[ Upstream commit 123c13f10ed3627ba112172d8bd122a72cae226d ]
 
-X1P42100 is a cousin of X1E80100, and hence can make use of the
-latter's configuration. Do so.
+Make sure the device is being reset on driver exit whatever the reason
+is, to keep the device aligned and allow it to close shared resources
+(e.g. admin queue).
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241221-topic-x1p4_soc-v1-3-55347831d73c@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://patch.msgid.link/20241225131548.15155-1-mrgolin@amazon.com
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom_pd_mapper.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/efa/efa_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
-index 6e30f08761aa4..50aa54996901f 100644
---- a/drivers/soc/qcom/qcom_pd_mapper.c
-+++ b/drivers/soc/qcom/qcom_pd_mapper.c
-@@ -561,6 +561,7 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
- 	{ .compatible = "qcom,sm8550", .data = sm8550_domains, },
- 	{ .compatible = "qcom,sm8650", .data = sm8550_domains, },
- 	{ .compatible = "qcom,x1e80100", .data = x1e80100_domains, },
-+	{ .compatible = "qcom,x1p42100", .data = x1e80100_domains, },
- 	{},
- };
+diff --git a/drivers/infiniband/hw/efa/efa_main.c b/drivers/infiniband/hw/efa/efa_main.c
+index ad225823e6f2f..45a4564c670c0 100644
+--- a/drivers/infiniband/hw/efa/efa_main.c
++++ b/drivers/infiniband/hw/efa/efa_main.c
+@@ -470,7 +470,6 @@ static void efa_ib_device_remove(struct efa_dev *dev)
+ 	ibdev_info(&dev->ibdev, "Unregister ib device\n");
+ 	ib_unregister_device(&dev->ibdev);
+ 	efa_destroy_eqs(dev);
+-	efa_com_dev_reset(&dev->edev, EFA_REGS_RESET_NORMAL);
+ 	efa_release_doorbell_bar(dev);
+ }
  
+@@ -643,12 +642,14 @@ static struct efa_dev *efa_probe_device(struct pci_dev *pdev)
+ 	return ERR_PTR(err);
+ }
+ 
+-static void efa_remove_device(struct pci_dev *pdev)
++static void efa_remove_device(struct pci_dev *pdev,
++			      enum efa_regs_reset_reason_types reset_reason)
+ {
+ 	struct efa_dev *dev = pci_get_drvdata(pdev);
+ 	struct efa_com_dev *edev;
+ 
+ 	edev = &dev->edev;
++	efa_com_dev_reset(edev, reset_reason);
+ 	efa_com_admin_destroy(edev);
+ 	efa_free_irq(dev, &dev->admin_irq);
+ 	efa_disable_msix(dev);
+@@ -676,7 +677,7 @@ static int efa_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	return 0;
+ 
+ err_remove_device:
+-	efa_remove_device(pdev);
++	efa_remove_device(pdev, EFA_REGS_RESET_INIT_ERR);
+ 	return err;
+ }
+ 
+@@ -685,7 +686,7 @@ static void efa_remove(struct pci_dev *pdev)
+ 	struct efa_dev *dev = pci_get_drvdata(pdev);
+ 
+ 	efa_ib_device_remove(dev);
+-	efa_remove_device(pdev);
++	efa_remove_device(pdev, EFA_REGS_RESET_NORMAL);
+ }
+ 
+ static void efa_shutdown(struct pci_dev *pdev)
 -- 
 2.39.5
 
