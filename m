@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-110536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C38BA1C9E7
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:11:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5633A1C9B4
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E12603A7DA9
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:06:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 491DD7A1458
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAB11F8660;
-	Sun, 26 Jan 2025 14:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0701F8687;
+	Sun, 26 Jan 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9n1SlkO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgL1hWM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A001F7913;
-	Sun, 26 Jan 2025 14:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8822185B72;
+	Sun, 26 Jan 2025 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903287; cv=none; b=N4RT//KaKlUqxyISNjoD0Pw65viMmSZ9Aj+uYmu3CEAg40NfHyG/D1JTSDNNHg+3IIo5BJkJITiybesm3z8zpgiPRztA41/KNrCkQ4Af6EfAOalf+oWeBu+5UDIu5Ou27HqgEqxK8/CJDleCw+nDiS6KuLVATQfY3nmpLE7vW3M=
+	t=1737903291; cv=none; b=XU+hmyZVwI5juwwHbnBT5Lu18EQ6u3W6VpLOL/UNFDznGuajDh64MkF3GPqvq1HY87lpx9qfKmHsZuS9eJXB7hL9RXixkRlHaQLCvEBnKZKpxjtxHtMWoHe+UXeUvVsBJrk43bDO+MKslKKUKvnsOcgb/0x1WgH0aqOSgn/hCac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903287; c=relaxed/simple;
-	bh=Ueg4UP6zDmQGO3ysgeObxBWh+1qd+reD+R1BBXHMeBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TsV2OEqkPjefXN17CWWPNYI1yCwfFlzl8wyCPX/EFvSBLR2FN4RmCNFfz7OSFFVJhi/S+wnDqL4y1nIXaFRO855O4xUHVYYP80M8a2uv1jFKJbH1h65jI1nDx9H3f+lakQZoenmdH25gN3UjoX1XGdxuLp2X82t+wbU5KDUI7ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9n1SlkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B385C4CEE2;
-	Sun, 26 Jan 2025 14:54:46 +0000 (UTC)
+	s=arc-20240116; t=1737903291; c=relaxed/simple;
+	bh=YJVaQn5BsK2QkOM6IZNqXee7nhE2W2Be5XILTAtGU7M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eC9UHopgYgkYSONrJt0wDnP5qQGevb4rQYG0UhDuS9ojSx4vaZdsyRZcZjfFti2OO3W405opGJ9BydT/B5J/kodSWbKkjPF1auglNtgdbt4H37T1gc83AYSStuTSnUwUcXdssojXt5uL4PXmp7GCwnpWDiuR6Pco/zeidQGLccc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgL1hWM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95990C4CEE7;
+	Sun, 26 Jan 2025 14:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903287;
-	bh=Ueg4UP6zDmQGO3ysgeObxBWh+1qd+reD+R1BBXHMeBM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9n1SlkOzBPM8q0ZVQfHmhsQuQaK3Taww0Otu5EhHLE8Iol9fkI/rqSdthiOckNwH
-	 SBXHIqMmy4jsEgdt26l4kJHPzmeDHMpbH+zHUm1zB7/t4duij/K4uGMIz6ZxJzOAOF
-	 AJn+P0FErJWrRGz+ReHxqQIgJrMrvCwh6o6UOlNdnKDSWuTlJ6jJtU6c3VRHwQAa7m
-	 yZNKQK9APO3sY8kS7viBybD40YUkBpsKXAaDs1vsMseD9dNXLkpJO/MLkHs+ROsxTA
-	 pOQygrBYGav8ug6Yo6PTO9US8kpqJSc+XJzPVfHBOeypcT82eQSAk0PParMTdLI6lp
-	 ZvlWceOD627Lw==
+	s=k20201202; t=1737903291;
+	bh=YJVaQn5BsK2QkOM6IZNqXee7nhE2W2Be5XILTAtGU7M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BgL1hWM8j0i0FID06h1VwvsYBJe2bc9Kuq9P7FPt5pexMOFmReXSwY/DR/PT1p721
+	 mDU4IRTxZqlmTG0VsGUhFwhL74cb8AnO3aB8K0aNbU4xwj1DCVX4YwrzRVikYoPFfi
+	 e4wvaLL9/v9Wk7Cj6TOBQn1pxlZZoBciaFpUNSeDqqnH0nKjCdhJ4pJft9jmPWZEN5
+	 ealSl60qFYo2NjW1F2qRbihap9vi+yijt42+mJ3pyWfDTSt/yEYqQ9XBEs8aynlD1I
+	 lsY9iyHbUWx5guDsaNRI7HPENm980MWke2IfyZqrUGUC6HezLwqPP0Igmwo33MsSN+
+	 9FdT4+pN5IuWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeongjun Park <aha310510@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+Cc: Dongwon Kim <dongwon.kim@intel.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Rob Clark <robdclark@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mhiramat@kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 34/34] ring-buffer: Make reading page consistent with the code logic
-Date: Sun, 26 Jan 2025 09:53:10 -0500
-Message-Id: <20250126145310.926311-34-sashal@kernel.org>
+	airlied@redhat.com,
+	kraxel@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org,
+	virtualization@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 01/31] drm/virtio: New fence for every plane update
+Date: Sun, 26 Jan 2025 09:54:17 -0500
+Message-Id: <20250126145448.930220-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126145310.926311-1-sashal@kernel.org>
-References: <20250126145310.926311-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,58 +68,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.13
+X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-[ Upstream commit 6e31b759b076eebb4184117234f0c4eb9e4bc460 ]
+[ Upstream commit d3c55b8ab6fe5fa2e7ab02efd36d09c39ee5022f ]
 
-In the loop of __rb_map_vma(), the 's' variable is calculated from the
-same logic that nr_pages is and they both come from nr_subbufs. But the
-relationship is not obvious and there's a WARN_ON_ONCE() around the 's'
-variable to make sure it never becomes equal to nr_subbufs within the
-loop. If that happens, then the code is buggy and needs to be fixed.
+Having a fence linked to a virtio_gpu_framebuffer in the plane update
+sequence would cause conflict when several planes referencing the same
+framebuffer (e.g. Xorg screen covering multi-displays configured for an
+extended mode) and those planes are updated concurrently. So it is needed
+to allocate a fence for every plane state instead of the framebuffer.
 
-The 'page' variable is calculated from cpu_buffer->subbuf_ids[s] which is
-an array of 'nr_subbufs' entries. If the code becomes buggy and 's'
-becomes equal to or greater than 'nr_subbufs' then this will be an out of
-bounds hit before the WARN_ON() is triggered and the code exiting safely.
-
-Make the 'page' initialization consistent with the code logic and assign
-it after the out of bounds check.
-
-Link: https://lore.kernel.org/20250110162612.13983-1-aha310510@gmail.com
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-[ sdr: rewrote change log ]
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+[dmitry.osipenko@collabora.com: rebase, fix up, edit commit message]
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reviewed-by: Rob Clark <robdclark@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241020230803.247419-2-dmitry.osipenko@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/virtio/virtgpu_drv.h   |  7 ++++
+ drivers/gpu/drm/virtio/virtgpu_plane.c | 58 +++++++++++++++++---------
+ 2 files changed, 46 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 60210fb5b2110..6804ab126802b 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7059,7 +7059,7 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
+index 64c236169db88..5dc8eeaf7123c 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.h
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
+@@ -194,6 +194,13 @@ struct virtio_gpu_framebuffer {
+ #define to_virtio_gpu_framebuffer(x) \
+ 	container_of(x, struct virtio_gpu_framebuffer, base)
+ 
++struct virtio_gpu_plane_state {
++	struct drm_plane_state base;
++	struct virtio_gpu_fence *fence;
++};
++#define to_virtio_gpu_plane_state(x) \
++	container_of(x, struct virtio_gpu_plane_state, base)
++
+ struct virtio_gpu_queue {
+ 	struct virtqueue *vq;
+ 	spinlock_t qlock;
+diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+index a72a2dbda031c..7acd38b962c62 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_plane.c
++++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+@@ -66,11 +66,28 @@ uint32_t virtio_gpu_translate_format(uint32_t drm_fourcc)
+ 	return format;
+ }
+ 
++static struct
++drm_plane_state *virtio_gpu_plane_duplicate_state(struct drm_plane *plane)
++{
++	struct virtio_gpu_plane_state *new;
++
++	if (WARN_ON(!plane->state))
++		return NULL;
++
++	new = kzalloc(sizeof(*new), GFP_KERNEL);
++	if (!new)
++		return NULL;
++
++	__drm_atomic_helper_plane_duplicate_state(plane, &new->base);
++
++	return &new->base;
++}
++
+ static const struct drm_plane_funcs virtio_gpu_plane_funcs = {
+ 	.update_plane		= drm_atomic_helper_update_plane,
+ 	.disable_plane		= drm_atomic_helper_disable_plane,
+ 	.reset			= drm_atomic_helper_plane_reset,
+-	.atomic_duplicate_state = drm_atomic_helper_plane_duplicate_state,
++	.atomic_duplicate_state = virtio_gpu_plane_duplicate_state,
+ 	.atomic_destroy_state	= drm_atomic_helper_plane_destroy_state,
+ };
+ 
+@@ -138,11 +155,13 @@ static void virtio_gpu_resource_flush(struct drm_plane *plane,
+ 	struct drm_device *dev = plane->dev;
+ 	struct virtio_gpu_device *vgdev = dev->dev_private;
+ 	struct virtio_gpu_framebuffer *vgfb;
++	struct virtio_gpu_plane_state *vgplane_st;
+ 	struct virtio_gpu_object *bo;
+ 
+ 	vgfb = to_virtio_gpu_framebuffer(plane->state->fb);
++	vgplane_st = to_virtio_gpu_plane_state(plane->state);
+ 	bo = gem_to_virtio_gpu_obj(vgfb->base.obj[0]);
+-	if (vgfb->fence) {
++	if (vgplane_st->fence) {
+ 		struct virtio_gpu_object_array *objs;
+ 
+ 		objs = virtio_gpu_array_alloc(1);
+@@ -151,13 +170,11 @@ static void virtio_gpu_resource_flush(struct drm_plane *plane,
+ 		virtio_gpu_array_add_obj(objs, vgfb->base.obj[0]);
+ 		virtio_gpu_array_lock_resv(objs);
+ 		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
+-					      width, height, objs, vgfb->fence);
++					      width, height, objs,
++					      vgplane_st->fence);
+ 		virtio_gpu_notify(vgdev);
+-
+-		dma_fence_wait_timeout(&vgfb->fence->f, true,
++		dma_fence_wait_timeout(&vgplane_st->fence->f, true,
+ 				       msecs_to_jiffies(50));
+-		dma_fence_put(&vgfb->fence->f);
+-		vgfb->fence = NULL;
+ 	} else {
+ 		virtio_gpu_cmd_resource_flush(vgdev, bo->hw_res_handle, x, y,
+ 					      width, height, NULL, NULL);
+@@ -247,20 +264,23 @@ static int virtio_gpu_plane_prepare_fb(struct drm_plane *plane,
+ 	struct drm_device *dev = plane->dev;
+ 	struct virtio_gpu_device *vgdev = dev->dev_private;
+ 	struct virtio_gpu_framebuffer *vgfb;
++	struct virtio_gpu_plane_state *vgplane_st;
+ 	struct virtio_gpu_object *bo;
+ 
+ 	if (!new_state->fb)
+ 		return 0;
+ 
+ 	vgfb = to_virtio_gpu_framebuffer(new_state->fb);
++	vgplane_st = to_virtio_gpu_plane_state(new_state);
+ 	bo = gem_to_virtio_gpu_obj(vgfb->base.obj[0]);
+ 	if (!bo || (plane->type == DRM_PLANE_TYPE_PRIMARY && !bo->guest_blob))
+ 		return 0;
+ 
+-	if (bo->dumb && (plane->state->fb != new_state->fb)) {
+-		vgfb->fence = virtio_gpu_fence_alloc(vgdev, vgdev->fence_drv.context,
++	if (bo->dumb) {
++		vgplane_st->fence = virtio_gpu_fence_alloc(vgdev,
++						     vgdev->fence_drv.context,
+ 						     0);
+-		if (!vgfb->fence)
++		if (!vgplane_st->fence)
+ 			return -ENOMEM;
  	}
  
- 	while (p < nr_pages) {
--		struct page *page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
-+		struct page *page;
- 		int off = 0;
+@@ -270,15 +290,15 @@ static int virtio_gpu_plane_prepare_fb(struct drm_plane *plane,
+ static void virtio_gpu_plane_cleanup_fb(struct drm_plane *plane,
+ 					struct drm_plane_state *state)
+ {
+-	struct virtio_gpu_framebuffer *vgfb;
++	struct virtio_gpu_plane_state *vgplane_st;
  
- 		if (WARN_ON_ONCE(s >= nr_subbufs)) {
-@@ -7067,6 +7067,8 @@ static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
- 			goto out;
- 		}
+ 	if (!state->fb)
+ 		return;
  
-+		page = virt_to_page((void *)cpu_buffer->subbuf_ids[s]);
-+
- 		for (; off < (1 << (subbuf_order)); off++, page++) {
- 			if (p >= nr_pages)
- 				break;
+-	vgfb = to_virtio_gpu_framebuffer(state->fb);
+-	if (vgfb->fence) {
+-		dma_fence_put(&vgfb->fence->f);
+-		vgfb->fence = NULL;
++	vgplane_st = to_virtio_gpu_plane_state(state);
++	if (vgplane_st->fence) {
++		dma_fence_put(&vgplane_st->fence->f);
++		vgplane_st->fence = NULL;
+ 	}
+ }
+ 
+@@ -291,6 +311,7 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+ 	struct virtio_gpu_device *vgdev = dev->dev_private;
+ 	struct virtio_gpu_output *output = NULL;
+ 	struct virtio_gpu_framebuffer *vgfb;
++	struct virtio_gpu_plane_state *vgplane_st;
+ 	struct virtio_gpu_object *bo = NULL;
+ 	uint32_t handle;
+ 
+@@ -303,6 +324,7 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+ 
+ 	if (plane->state->fb) {
+ 		vgfb = to_virtio_gpu_framebuffer(plane->state->fb);
++		vgplane_st = to_virtio_gpu_plane_state(plane->state);
+ 		bo = gem_to_virtio_gpu_obj(vgfb->base.obj[0]);
+ 		handle = bo->hw_res_handle;
+ 	} else {
+@@ -322,11 +344,9 @@ static void virtio_gpu_cursor_plane_update(struct drm_plane *plane,
+ 			(vgdev, 0,
+ 			 plane->state->crtc_w,
+ 			 plane->state->crtc_h,
+-			 0, 0, objs, vgfb->fence);
++			 0, 0, objs, vgplane_st->fence);
+ 		virtio_gpu_notify(vgdev);
+-		dma_fence_wait(&vgfb->fence->f, true);
+-		dma_fence_put(&vgfb->fence->f);
+-		vgfb->fence = NULL;
++		dma_fence_wait(&vgplane_st->fence->f, true);
+ 	}
+ 
+ 	if (plane->state->fb != old_state->fb) {
 -- 
 2.39.5
 
