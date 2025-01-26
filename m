@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0BAA1CD53
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 18:23:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABE9A1CD54
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 18:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD951886AE6
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39FEE3A121B
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F334155725;
-	Sun, 26 Jan 2025 17:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEE3156C72;
+	Sun, 26 Jan 2025 17:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d/crxhh0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEoZsjMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C066B335BA
-	for <stable@vger.kernel.org>; Sun, 26 Jan 2025 17:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9E6335BA
+	for <stable@vger.kernel.org>; Sun, 26 Jan 2025 17:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737912175; cv=none; b=DzPHm+G9Ag/6/Cuiu/4cIKRS+DfSJnseHxRbXC4fs2aZYfIKdRAjN5GhGVA9MJYzxu6FkWMRhKzAnVj91TTp5umveah9z8eDXNz4+LaxKXJREcXr+WIqm8qiPLmWmvpj3vmwFIDJiArD6StpGU689BB0X3+RdV1V85aV2tEHYQw=
+	t=1737912177; cv=none; b=CnaBSlNZNxbaVx79/hO+52gU1miEy1zniWYbss6kwiLqu2TJJlD2v3YOAVeF6NFaZstVV3+X1fcA6kzq1f2BHIIAmoTHt0LaA8lJyQNFEs9Xx0gaNMoXwAxc8gMuPcp+FLSB8ADNb/jmtPvWcOKu3Wop2MyaaODEq14i2xkIcw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737912175; c=relaxed/simple;
-	bh=JrA6EYPrIab3pOwhAvvuSOl2nvKTtrpO2JkCQcP9QNA=;
+	s=arc-20240116; t=1737912177; c=relaxed/simple;
+	bh=yn5OdLIYC6fkapiybJaz6iaaRs4ufjBRmkcUKRbLdBk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QQJKqfsB5UYBRsv8cPBudnsl6twZ8yJstYBlxVBuslcVyyux6r3ZLk8QAY9SuD0iJBcwApJIh/IljyzRaUToL4E08VQculQOJOOZsKXYM316nyScpZpOaYJ419gTYoj2fTc7cMyjgJFRccmxF4DbeMJxdtMAzKlOVI/hXb0iqvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d/crxhh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36F1C4CED3;
-	Sun, 26 Jan 2025 17:22:54 +0000 (UTC)
+	 MIME-Version; b=TJJU9X7lE73SNzXOOls5sZMquBjHL7LnxudwUcmsqChXNs5wP+0CxAMZlcBU5YNDlUoej5jAeoTdnjhdSmUfTZKOLt70aDvwzSzb4KFeFIoAO71A8Z/l8YCO5ETnFb7Sci4SRJfMs6MgIaeqX5aUORWMk0atDKeZw6zFa5ZuBxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEoZsjMi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74FCC4CED3;
+	Sun, 26 Jan 2025 17:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737912175;
-	bh=JrA6EYPrIab3pOwhAvvuSOl2nvKTtrpO2JkCQcP9QNA=;
+	s=k20201202; t=1737912177;
+	bh=yn5OdLIYC6fkapiybJaz6iaaRs4ufjBRmkcUKRbLdBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/crxhh0nSs9rMBBJhQ2nlWq0SfQ9l9u9TZCppoX48FnaNDsHjN0ntsMbR0iVnfZ9
-	 LgGXInj+GhgPsPQpVqN/bZyZDpsUfCv3f78BmMrbVwM029nINyUUJj5WAl9HTkTdBn
-	 80z0ynB+q/Ij/gfUSa13L65cjCQOh7YMRJge7Ixhm+WP0VXBKSW71PBbcKNpOzNwbu
-	 WzH27LMIxP4ojYNax/QZ82N0DRDKtRWRVSVRdslsz/S/DFhY4XoQ0JEN/bSOENynhJ
-	 qST8HANcP+1fTzoSZA0AYwscXU7bqC03jJhgipoW3FG5bgx4QPQXTlPiEO3dziL7pc
-	 +CIDrm1vc+lZA==
+	b=TEoZsjMiuUFGW/jcfDX7cZM00w4GsOFoZ1Bn4hUiqPCE5PDEvcB9P5KiiU8ZeWPhV
+	 Qlf5Y2gDk0trWen2N1Q7RW4aLGt9QPxaZPYKe424kMzMGIoMBmlPfEOYcwsKGd241F
+	 nv0GLNjO0mI4F3Wtij+EuhumPosd+zgh2+g/1gGhIjaYtv8z0csy5YSzR/k7o87lgs
+	 J8RI0YvEvqFGQYl3pmVBSlI97OidT2RrNv3/nbXdUhx9xsdWCRowHt8KDTX5I/FB6Q
+	 WpAoflIqNM/qjQinYApdhcHR6rR6dBiHId9k51IndiGrTgqIz1iNzFO29RmsY87buK
+	 BjxDYUKI1PYRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Imkanmod Khan <imkanmodkhan@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] ext4: fix access to uninitialised lock in fc replay path
-Date: Sun, 26 Jan 2025 12:22:53 -0500
-Message-Id: <20250126115738-7c8380bbb2949cfb@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] ext4: fix access to uninitialised lock in fc replay path
+Date: Sun, 26 Jan 2025 12:22:55 -0500
+Message-Id: <20250126121233-a58193a8a58e000a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250126072620.8474-1-imkanmodkhan@gmail.com>
+In-Reply-To:  <20250126070620.8071-1-imkanmodkhan@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,10 +73,11 @@ Commit author: Luis Henriques (SUSE)<luis.henriques@linux.dev>
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
 6.6.y | Not found
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  23dfdb56581ad ! 1:  c5ee4ab8bc5ee ext4: fix access to uninitialised lock in fc replay path
+1:  23dfdb56581ad ! 1:  d82aa31efc3cf ext4: fix access to uninitialised lock in fc replay path
     @@ Metadata
       ## Commit message ##
          ext4: fix access to uninitialised lock in fc replay path
@@ -101,12 +102,13 @@ Note: The patch differs from the upstream commit:
     - 	errseq_check_and_advance(&sb->s_bdev->bd_mapping->wb_err,
     + 	errseq_check_and_advance(&sb->s_bdev->bd_inode->i_mapping->wb_err,
       				 &sbi->s_bdev_wb_err);
-      	EXT4_SB(sb)->s_mount_state |= EXT4_ORPHAN_FS;
+    - 	EXT4_SB(sb)->s_mount_state |= EXT4_ORPHAN_FS;
+    + 	sb->s_bdev->bd_super = sb;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
