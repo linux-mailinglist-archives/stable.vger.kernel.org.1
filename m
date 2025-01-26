@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-110709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D727A1CBB1
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:52:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A219A1CBA7
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0EE71637C7
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:48:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B031C1885B88
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9666B229B1E;
-	Sun, 26 Jan 2025 15:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1A0229B3C;
+	Sun, 26 Jan 2025 15:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qV0AVGb3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYqnMgxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51070228C93;
-	Sun, 26 Jan 2025 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B17229B2E;
+	Sun, 26 Jan 2025 15:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903889; cv=none; b=disybvKsWYX7iWILVmDQ2dpYBwx7MG6C+Gg6pX4Ewx9vk0grlTUQpJ3v0Jg1+beOGumCcGd9E2o2cp8XE3OoWaLDGwPzg/nF/en4su7HdRVFyk+25fw8WMtWGscIpZf+k1K7V3v6VtYlAYEw3ZpxB8AqYhvFDv20n4FH+GHnIi0=
+	t=1737903890; cv=none; b=k6h7vbHHx6nz1yUGJR930rWm66vHA8QH/s2qD3j4oM6wlKu46DN2UTbQav6MCTrhMwaOOfa1r0SjQAmSmARx+EV7VqT7vLSI3xmd6u/I+RTuv4LBCaXAkx1uEGTM6Jj9X6Ro6jpK5M53jH7VYv+fUBt7HC4h0QMt3ncJJcZRN5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903889; c=relaxed/simple;
-	bh=v/9t26r4xpgdKWTN674OXSYMZfBZHBwkMSfAgzw83Og=;
+	s=arc-20240116; t=1737903890; c=relaxed/simple;
+	bh=6AqR+yMn3R+xNyBjXtu8IBE0UuYzJ9esTrV/RaDds38=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mVO/Bsh8c2fEhyRTduFnCH+UXS3kZfy9w12IpY4jvOeR4qd/TZ/ekLuNkFpx6wvOGWzBfXd1BJZGrgin+jN7frS5qvi14WjtQbBkVjmGft8cgTtWEMkBvmPziJp28DjWmH46+B49DYmWl0QqEkJV4jKl850QykscGGuxYxF1CqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qV0AVGb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FA4C4CED3;
-	Sun, 26 Jan 2025 15:04:47 +0000 (UTC)
+	 MIME-Version; b=iIU7RA92U5C5btAcGsWxFA4Q7CMT8UivChgrk8oRGwKPQy5/D5W9mw8w3ayGNMsL3aFgwkeNXnG7A3QUKUhHtM+AM16FR/yrN4V8MCgqOc4uJtzzW3XW32/0HVTXcxGtfOEdr191GmHBGmybVpCRA6K8qqer9rsMoUkxuIw1G8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYqnMgxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD87C4CEE2;
+	Sun, 26 Jan 2025 15:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903888;
-	bh=v/9t26r4xpgdKWTN674OXSYMZfBZHBwkMSfAgzw83Og=;
+	s=k20201202; t=1737903890;
+	bh=6AqR+yMn3R+xNyBjXtu8IBE0UuYzJ9esTrV/RaDds38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qV0AVGb3lFOHxBMu09vXr6RWn9bk0cSa0urUH0jrsHapTMgO5DzzNmJpxQGcU7bsD
-	 ExRlzJec+AEa13vJrpKH6LPhjMsp2WGhTNjLBrKE4MwBmjrFcVIn+entGVLiOQRR6E
-	 jyAMy5WMIYtiZC9cJ4dq7a6EuiLJyw79RRV+F36GcI+/ymBH86gENThwYnxqbRDDww
-	 JCoICIl1ltWlgAsDdIlk6g6yBMTVaXS0bCpLmdVZ3HR2tib5fSro5kaCLPDBwf1YsL
-	 rlSFsDWw1FFuCbsjtXRKAQRDRkONKc0n8DO+43zRLX6vNcDjC+GYzvyPu3mqZrpu3v
-	 6aMGx4dDgifgA==
+	b=iYqnMgxV/40Cshiw4otgYyxmGoXVMQMMLv3wg/qHSsEEpUl5PGBJ7rv0Jpyg39tKN
+	 bWz/Sef+BSCkHukk1LU57AofsjdbRt93Bchx41W1yJ3KhGd6lvN/YMvcX3OK4dKJTt
+	 VYM6IlfK1DtbJKPDaDYlvfm3IQImrBA5myTqAG0MDvQ3TW4MO8CnLg0v1CFm+NAqYs
+	 bcLPYeyIDID0lxkU3roeHnHxAZckByImOOzS+vKNsbh48ywoTCjbyVZap2tPypxp7N
+	 xPEyeB9cgyryPzbMzS4jP6J0J6u1/gTWAs8FJRO/sR2Is0ByE1i05TsW/P1fKhLWZR
+	 rdHO7EzSsGa/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Randolph Ha <rha051117@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	pagadala.yesu.anjaneyulu@intel.com,
-	dan.carpenter@linaro.org,
-	somashekhar.puttagangaiah@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 08/14] wifi: iwlwifi: avoid memory leak
-Date: Sun, 26 Jan 2025 10:04:24 -0500
-Message-Id: <20250126150430.958708-8-sashal@kernel.org>
+	linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 09/14] i2c: Force ELAN06FA touchpad I2C bus freq to 100KHz
+Date: Sun, 26 Jan 2025 10:04:25 -0500
+Message-Id: <20250126150430.958708-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150430.958708-1-sashal@kernel.org>
 References: <20250126150430.958708-1-sashal@kernel.org>
@@ -70,67 +67,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.177
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Randolph Ha <rha051117@gmail.com>
 
-[ Upstream commit 80e96206a3ef348fbd658d98f2f43149c36df8bc ]
+[ Upstream commit bfd74cd1fbc026f04446e67d6915c7e199c2bffd ]
 
-A caller of iwl_acpi_get_dsm_object must free the returned object.
-iwl_acpi_get_dsm_integer returns immediately without freeing
-it if the expected size is more than 8 bytes. Fix that.
+When a 400KHz freq is used on this model of ELAN touchpad in Linux,
+excessive smoothing (similar to when the touchpad's firmware detects
+a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
+V15 G4) ACPI tables specify a 400KHz frequency for this device and
+some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
+force the speed to 100KHz as a workaround.
 
-Note that with the current code this will never happen, since the caller
-of iwl_acpi_get_dsm_integer already checks that the expected size if
-either 1 or 4 bytes, so it can't exceed 8 bytes.
+For future investigation: This problem may be related to the default
+HCNT/LCNT values given by some busses' drivers, because they are not
+specified in the aforementioned devices' ACPI tables, and because
+the device works without issues on Windows at what is expected to be
+a 400KHz frequency. The root cause of the issue is not known.
 
-While at it, print the DSM value instead of the return value, as this
-was the intention in the first place.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20241228223206.bf61eaab99f8.Ibdc5df02f885208c222456d42c889c43b7e3b2f7@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Randolph Ha <rha051117@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/i2c/i2c-core-acpi.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-index 0b1c6bf729c3e..eefd42ea535cd 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-@@ -98,7 +98,7 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 				    size_t expected_size)
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index 6ce05441178a3..8b06f5d4a4c30 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -327,6 +327,25 @@ static const struct acpi_device_id i2c_acpi_force_400khz_device_ids[] = {
+ 	{}
+ };
+ 
++static const struct acpi_device_id i2c_acpi_force_100khz_device_ids[] = {
++	/*
++	 * When a 400KHz freq is used on this model of ELAN touchpad in Linux,
++	 * excessive smoothing (similar to when the touchpad's firmware detects
++	 * a noisy signal) is sometimes applied. As some devices' (e.g, Lenovo
++	 * V15 G4) ACPI tables specify a 400KHz frequency for this device and
++	 * some I2C busses (e.g, Designware I2C) default to a 400KHz freq,
++	 * force the speed to 100KHz as a workaround.
++	 *
++	 * For future investigation: This problem may be related to the default
++	 * HCNT/LCNT values given by some busses' drivers, because they are not
++	 * specified in the aforementioned devices' ACPI tables, and because
++	 * the device works without issues on Windows at what is expected to be
++	 * a 400KHz frequency. The root cause of the issue is not known.
++	 */
++	{ "ELAN06FA", 0 },
++	{}
++};
++
+ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 					   void *data, void **return_value)
  {
- 	union acpi_object *obj;
--	int ret = 0;
-+	int ret;
+@@ -348,6 +367,9 @@ static acpi_status i2c_acpi_lookup_speed(acpi_handle handle, u32 level,
+ 	if (acpi_match_device_ids(adev, i2c_acpi_force_400khz_device_ids) == 0)
+ 		lookup->force_speed = I2C_MAX_FAST_MODE_FREQ;
  
- 	obj = iwl_acpi_get_dsm_object(dev, rev, func, NULL, guid);
- 	if (IS_ERR(obj)) {
-@@ -113,8 +113,10 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	} else if (obj->type == ACPI_TYPE_BUFFER) {
- 		__le64 le_value = 0;
++	if (acpi_match_device_ids(adev, i2c_acpi_force_100khz_device_ids) == 0)
++		lookup->force_speed = I2C_MAX_STANDARD_MODE_FREQ;
++
+ 	return AE_OK;
+ }
  
--		if (WARN_ON_ONCE(expected_size > sizeof(le_value)))
--			return -EINVAL;
-+		if (WARN_ON_ONCE(expected_size > sizeof(le_value))) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
- 
- 		/* if the buffer size doesn't match the expected size */
- 		if (obj->buffer.length != expected_size)
-@@ -135,8 +137,9 @@ static int iwl_acpi_get_dsm_integer(struct device *dev, int rev, int func,
- 	}
- 
- 	IWL_DEBUG_DEV_RADIO(dev,
--			    "ACPI: DSM method evaluated: func=%d, ret=%d\n",
--			    func, ret);
-+			    "ACPI: DSM method evaluated: func=%d, value=%lld\n",
-+			    func, *value);
-+	ret = 0;
- out:
- 	ACPI_FREE(obj);
- 	return ret;
 -- 
 2.39.5
 
