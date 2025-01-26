@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-110618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC15FA1CA8E
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:28:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D60A1CA88
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:27:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F384166DDF
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A47DC18892EA
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1902040A4;
-	Sun, 26 Jan 2025 15:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8535D2045A0;
+	Sun, 26 Jan 2025 15:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEvT29ST"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJtcyTe8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7627E1DE8B0;
-	Sun, 26 Jan 2025 15:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D5120459C;
+	Sun, 26 Jan 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903689; cv=none; b=Chg8kacVT5LHAYxh8oqNnavaNFSf1qC4LWRK6uAHyI27T4F1MC4j6kINTKL0kErr6UNiQhL3B9sIKDih3OrvVFLB3rc3hXA1evpwPDVIj80Hra0AiL9HU7+vfbgZwnNI3JPRK7NXJyPCH6MACih0FmTWmubn+mUzJl4SgPkiaF4=
+	t=1737903692; cv=none; b=kRvOjft2ZD/I4dCWy2LkGje+i7ZNF+U3wNA9/SD/zOYR5UM5GmnS93vi7WZ4dFXNIh32fJbWYf3ymDDt1OcCatPlzEncWQlJ0uUh7Meqe43mgoKN1A0J1KuBabnHa7aXkJJzDlZhsZ6HcgDawqmBdfy09fasYEr6cLh6iFQ/uVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903689; c=relaxed/simple;
-	bh=jKkYIHF4skevEc1SkvAkyBLhgJzhm05aP8IIFRNROYI=;
+	s=arc-20240116; t=1737903692; c=relaxed/simple;
+	bh=KLm/CTcTL+IUclM2KT6BuF/GUzV70zOt2tO5osuving=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iN9oJZIIoU7B7z+L4u5dNrP7fckGFLCdLJBHZ+MsLl/fbflDuy0V11cbOeeSA2sn9/ZFL2OQqTEN+trxvGWGRYT63x10fzL6O1RQKClwBj95GiS2Rz1OHgplQrplKDuXNITRPA/5c3tU7M3llGhlOq0sKAORTsoV90d6fvHETxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEvT29ST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923F5C4CEE2;
-	Sun, 26 Jan 2025 15:01:27 +0000 (UTC)
+	 MIME-Version; b=dlhpGYQW8OMgO0y8TAcNUibLk+KCoP2gSNPe8Otu+uLFH9kQSRB+92FRzBbyaLyzFQBQaZqqN5CGthgF8TCDauhEUnbI6DR/r9OUB/ASVBZlaMNzr7YwCy6NvlLlYGJuMvscnlMPBQ6Qftga7+h+PlxcmXpmIOAAFaJYEqzqLCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJtcyTe8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C684EC4CED3;
+	Sun, 26 Jan 2025 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903689;
-	bh=jKkYIHF4skevEc1SkvAkyBLhgJzhm05aP8IIFRNROYI=;
+	s=k20201202; t=1737903690;
+	bh=KLm/CTcTL+IUclM2KT6BuF/GUzV70zOt2tO5osuving=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEvT29ST+vJAaBLXMrVPkbSojjkZ5UISAVdrZ5kLq+Hn9iU6VM/IbjpGg6aP7IOcf
-	 mkYbvnfilkqiPNa37+/drPsGKJj8f0jtj1Eio/gtu+ue0dQiflXbcTZkHyTBL6mmjD
-	 SZD9CkJWs7vyhV5NWS9B/9vVaRHu7XmWIypmuYF4j2jGgeBS8IgVIQPITmYAXUL9Nx
-	 mOzlSmrfZlkiAiBL90YxPv3XQFreakRIxwtATIPv/0SIPTxHUrIJofQqDfJyWtmFzJ
-	 m43iB9+fyE17+/wLC6DpsYV8r9iUbglwL6c5D/9giqwgdy9jtkAv5zZQktEPTfIXco
-	 WZjqNnfXJHeYQ==
+	b=LJtcyTe8jZQzUBqxdPZ0P6pdlCxkSpsK+UhhqVozIkyXYatKnWDdJDen58x2/bkjh
+	 yAxcwldZqnNcIXcKSgYBlfWmyRbWnfNbeHexqz9cfED5H5kNsZEg4yc3X07JVSMWOG
+	 dUOFMmNVEEOuBvFOEkNdKY0jpoQ9LNzerr5iBMDhPBSSvM5Y89+mg+DiCP3veUOExr
+	 ul7lRrePSFt0kz+xKZljPxzM1FBCDHQAEmZD87Z+ETN+qGymevDsrXPxr14sURavoC
+	 sHD96+tEj6WotrnIHaroTdMvT2l0VioThZ/Ow7zxIapxyxoaxoUqiyCebKRLT4jxv8
+	 eGvKwAVtLBPBg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vadim Fedorenko <vadfed@meta.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	richardcochran@gmail.com,
-	rrameshbabu@nvidia.com,
-	vadim.fedorenko@linux.dev,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 17/35] net/mlx5: use do_aux_work for PHC overflow checks
-Date: Sun, 26 Jan 2025 10:00:11 -0500
-Message-Id: <20250126150029.953021-17-sashal@kernel.org>
+Cc: Andre Przywara <andre.przywara@arm.com>,
+	Chris Morgan <macroalpha82@gmail.com>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 18/35] Revert "mfd: axp20x: Allow multiple regulators"
+Date: Sun, 26 Jan 2025 10:00:12 -0500
+Message-Id: <20250126150029.953021-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -76,127 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit e61e6c415ba9ff2b32bb6780ce1b17d1d76238f1 ]
+[ Upstream commit b246bd32a34c1b0d80670e60e4e4102be6366191 ]
 
-The overflow_work is using system wq to do overflow checks and updates
-for PHC device timecounter, which might be overhelmed by other tasks.
-But there is dedicated kthread in PTP subsystem designed for such
-things. This patch changes the work queue to proper align with PTP
-subsystem and to avoid overloading system work queue.
-The adjfine() function acts the same way as overflow check worker,
-we can postpone ptp aux worker till the next overflow period after
-adjfine() was called.
+As Chris and Vasily reported, the attempt to support multiple AXP PMICs
+in one system [1] breaks some of the battery and charging functionality
+on devices with AXP PMICs. The reason is that the drivers now fail to get
+the correct IIO channel for the ADC component, as the current code seems
+to rely on the zero-based enumeration of the regulator devices.
+A fix is possible, but not trivial, as it requires some rework in the AXP
+MFD driver, which cannot be fully reviewed or tested in time for the
+6.13 release.
 
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Acked-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250107104812.380225-1-vadfed@meta.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So revert this patch for now, to avoid regressions on battery powered
+devices. This patch was really only necessary for devices with two
+PMICs, support for which is not mainline yet anyway, so we don't lose
+any functionality.
+
+This reverts commit e37ec32188701efa01455b9be42a392adab06ce4.
+
+[1] https://lore.kernel.org/linux-sunxi/20241007001408.27249-4-andre.przywara@arm.com/
+
+Reported-by: Chris Morgan <macroalpha82@gmail.com>
+Closes: https://lore.kernel.org/linux-sunxi/675489c1.050a0220.8d73f.6e90@mx.google.com/
+Reported-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Closes: https://lore.kernel.org/linux-sunxi/CA+E=qVf8_9gn0y=mcdKXvj2PFoHT2eF+JN=CmtTNdRGaSnpgKg@mail.gmail.com/
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Acked-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20250108164359.2609078-1-andre.przywara@arm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/lib/clock.c   | 24 ++++++++++---------
- include/linux/mlx5/driver.h                   |  1 -
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ drivers/mfd/axp20x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index 4822d01123b45..d61a1a9297c90 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -322,17 +322,16 @@ static void mlx5_pps_out(struct work_struct *work)
- 	}
- }
- 
--static void mlx5_timestamp_overflow(struct work_struct *work)
-+static long mlx5_timestamp_overflow(struct ptp_clock_info *ptp_info)
- {
--	struct delayed_work *dwork = to_delayed_work(work);
- 	struct mlx5_core_dev *mdev;
- 	struct mlx5_timer *timer;
- 	struct mlx5_clock *clock;
- 	unsigned long flags;
- 
--	timer = container_of(dwork, struct mlx5_timer, overflow_work);
--	clock = container_of(timer, struct mlx5_clock, timer);
-+	clock = container_of(ptp_info, struct mlx5_clock, ptp_info);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
-+	timer = &clock->timer;
- 
- 	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
- 		goto out;
-@@ -343,7 +342,7 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
- 	write_sequnlock_irqrestore(&clock->lock, flags);
- 
- out:
--	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
-+	return timer->overflow_period;
- }
- 
- static int mlx5_ptp_settime_real_time(struct mlx5_core_dev *mdev,
-@@ -517,6 +516,7 @@ static int mlx5_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
- 	timer->cycles.mult = mult;
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+	ptp_schedule_worker(clock->ptp, timer->overflow_period);
- 
- 	return 0;
- }
-@@ -852,6 +852,7 @@ static const struct ptp_clock_info mlx5_ptp_clock_info = {
- 	.settime64	= mlx5_ptp_settime,
- 	.enable		= NULL,
- 	.verify		= NULL,
-+	.do_aux_work	= mlx5_timestamp_overflow,
- };
- 
- static int mlx5_query_mtpps_pin_mode(struct mlx5_core_dev *mdev, u8 pin,
-@@ -1052,12 +1053,11 @@ static void mlx5_init_overflow_period(struct mlx5_clock *clock)
- 	do_div(ns, NSEC_PER_SEC / HZ);
- 	timer->overflow_period = ns;
- 
--	INIT_DELAYED_WORK(&timer->overflow_work, mlx5_timestamp_overflow);
--	if (timer->overflow_period)
--		schedule_delayed_work(&timer->overflow_work, 0);
--	else
-+	if (!timer->overflow_period) {
-+		timer->overflow_period = HZ;
- 		mlx5_core_warn(mdev,
--			       "invalid overflow period, overflow_work is not scheduled\n");
-+			       "invalid overflow period, overflow_work is scheduled once per second\n");
-+	}
- 
- 	if (clock_info)
- 		clock_info->overflow_period = timer->overflow_period;
-@@ -1172,6 +1172,9 @@ void mlx5_init_clock(struct mlx5_core_dev *mdev)
- 
- 	MLX5_NB_INIT(&clock->pps_nb, mlx5_pps_event, PPS_EVENT);
- 	mlx5_eq_notifier_register(mdev, &clock->pps_nb);
-+
-+	if (clock->ptp)
-+		ptp_schedule_worker(clock->ptp, 0);
- }
- 
- void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
-@@ -1188,7 +1191,6 @@ void mlx5_cleanup_clock(struct mlx5_core_dev *mdev)
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 251465a656d09..bce85a58944ac 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -1445,7 +1445,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+ 		}
  	}
  
- 	cancel_work_sync(&clock->pps_info.out_work);
--	cancel_delayed_work_sync(&clock->timer.overflow_work);
+-	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
++	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_NONE, axp20x->cells,
+ 			      axp20x->nr_cells, NULL, 0, NULL);
  
- 	if (mdev->clock_info) {
- 		free_page((unsigned long)mdev->clock_info);
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index ea48eb879a0f5..fed666c5bd163 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -691,7 +691,6 @@ struct mlx5_timer {
- 	struct timecounter         tc;
- 	u32                        nominal_c_mult;
- 	unsigned long              overflow_period;
--	struct delayed_work        overflow_work;
- };
- 
- struct mlx5_clock {
+ 	if (ret) {
 -- 
 2.39.5
 
