@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-110803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A97DA1CD25
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:48:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABD2A1CD28
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A95937A2A53
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:48:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 512461885B34
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FFF199943;
-	Sun, 26 Jan 2025 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD9A19A288;
+	Sun, 26 Jan 2025 16:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKQJ4wpL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="en0yo277"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CDE1991AE;
-	Sun, 26 Jan 2025 16:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FF519993B;
+	Sun, 26 Jan 2025 16:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737909960; cv=none; b=EQ2mcryZSjZywx8Be4w2nP85djlXFdk6zRAX4TtfuhtQ7C5JKiqg+ez4OIlluAMo8MCkHRW8FoDIJAN0h/AA1UGciaNlLOppl8V/I5qH78UZsIoezZOyicJFmIhaXf+cCpac3mUgqgVwL6qg/vSeAQbgs5jVQLhPi9WFCTvRx1I=
+	t=1737909962; cv=none; b=Q9KecjvLgJjfl2jSVM2uqbUNGsdTOgDuyIWIFQDzeXaJxBJv00fNQTpLb5wPWooMbV2EXsC0M9S4wgrq5xTA3LR5+FWsJjGvlwGc627OLeQo794PSqAdVLgP1SmyMxkRfy47ERV052PEVjd0PqQfIb0zHppKFcXsf9T+yAEzdoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737909960; c=relaxed/simple;
-	bh=RAMXiLffNFxcps5QIXjr79VU4lUEaMVI9sVYxPmUPc8=;
+	s=arc-20240116; t=1737909962; c=relaxed/simple;
+	bh=84YlWhqWBeklgURgMLkHalNNz0F/RWl8SmS9xtQcU6s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SheSsSqj+oq/4KxCd92fSMbXcV5etIwcwhLgWI8cQdiOlrP0DvTFbpcCOckD0o295uvmAkmQSTxFDSRnjLwaZv/M+vTe9I8iTa/AdVZWRfbHTnEEPfcKbmXqjfGx96Imp09fy8gsB7IDq2ed6fqJr7l5bmXYYv2jmUKI8P4xiAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKQJ4wpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1476C4CED3;
-	Sun, 26 Jan 2025 16:45:58 +0000 (UTC)
+	 MIME-Version; b=L9Rt4/J+Gf3vReLVbe7Hew3GNtn6TfY0Dj3xdzbBVdxPalUbw6G/smWvlbO6/A59cl6lgrbIFVe91iBiIRSDVD/xNlN4xKGC64DXmfRm6uRBl2Fwx4H7MfFOtoxTo8/cc70HX0XX3gI63Uj+KZP57Ry9TugtLdx2/PuxQPLFLJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=en0yo277; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A488C4CED3;
+	Sun, 26 Jan 2025 16:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737909959;
-	bh=RAMXiLffNFxcps5QIXjr79VU4lUEaMVI9sVYxPmUPc8=;
+	s=k20201202; t=1737909962;
+	bh=84YlWhqWBeklgURgMLkHalNNz0F/RWl8SmS9xtQcU6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKQJ4wpLGNBAkjeCOmiylZudGo/R2sLARJbjjhxHtNKltlaQ+JyAcHY+TZwZUJLeI
-	 ismrLt9x3BteEwsg+Lt5SPsoutIuXhvshIyltRVYKGFqwGsga4lJpjjYWtspLUfZlB
-	 KPIXPgqCLN7rap9x7DQ/Eqzv3GDMaUrrUi+02oontBnp1YI5HuF3aeeMZZUeu+b5SN
-	 69ZtVloCd/2SmkHXQwZ75Y+Nm+cTkXRlJk+Zg7mo+Mrs3BfiO3TdCri0bDfQWhvH1R
-	 Zj5JmTpQFS974oy/pw3WgZN/6y6CiMHyeAaxAz3iMBeRMf8VOqDD0uvalHf19v+yof
-	 v+s0GpEwLjMkg==
+	b=en0yo277KzxX3kwF181Y26ieieJmi1g2IKrhxS0sjxglTzYEKu4BVjZbawQlCF8J8
+	 WKxvVCCeXwdH7sKU4OWNuHo+xKRI4RSwjypu3B0wTCwPTKQLAkZp3QOFgamAxJIMtR
+	 zy4QipJ6apDSnqpDmfpXXmRBkoPV2VGOYTIlKVcztM1J8kVF0X1ykZwglMMtxYywqG
+	 JJXpPuc7Pf9gyvLmBXMW7aVxverx0cvg2kfXVHvY7A/HL0VSKiyD/ikM+mVQvg1pqe
+	 A/17IVY2+LlMOZCLQebQZm4UkSHrPX7vcLPuL+hflhRz1RUzu8i3tPLmpIb1TiR+ls
+	 vJO4N1sv4eQzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kartik Rajput <kkartik@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	arnd@arndb.de,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 5/7] soc/tegra: fuse: Update Tegra234 nvmem keepout list
-Date: Sun, 26 Jan 2025 11:45:47 -0500
-Message-Id: <20250126164549.964058-5-sashal@kernel.org>
+	linux-i3c@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 6/7] i3c: mipi-i3c-hci: Add Intel specific quirk to ring resuming
+Date: Sun, 26 Jan 2025 11:45:48 -0500
+Message-Id: <20250126164549.964058-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126164549.964058-1-sashal@kernel.org>
 References: <20250126164549.964058-1-sashal@kernel.org>
@@ -68,79 +65,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Kartik Rajput <kkartik@nvidia.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
+[ Upstream commit ccdb2e0e3b00d13df90ac7a0524dd855173f1171 ]
 
-Various Nvidia userspace applications and tests access following fuse
-via Fuse nvmem interface:
+MIPI I3C HCI on Intel hardware requires a quirk where ring needs to stop
+and set to run again after resuming the halted controller. This is not
+expected from the MIPI I3C HCI specification and is Intel specific.
 
-	* odmid
-	* odminfo
-	* boot_security_info
-	* public_key_hash
-	* reserved_odm0
-	* reserved_odm1
-	* reserved_odm2
-	* reserved_odm3
-	* reserved_odm4
-	* reserved_odm5
-	* reserved_odm6
-	* reserved_odm7
-	* odm_lock
-	* pk_h1
-	* pk_h2
-	* revoke_pk_h0
-	* revoke_pk_h1
-	* security_mode
-	* system_fw_field_ratchet0
-	* system_fw_field_ratchet1
-	* system_fw_field_ratchet2
-	* system_fw_field_ratchet3
-	* optin_enable
+Add this quirk to generic aborted transfer handling and execute it only
+when ring is not in running state after a transfer error and attempted
+controller resume. This is the case on Intel hardware.
 
-Update tegra234_fuse_keepouts list to allow reading these fuse from
-nvmem sysfs interface.
+It is not fully clear to me what is the ring running state in generic
+hardware in such case. I would expect if ring is not running, then stop
+request is a no-op and run request is either required or does the same
+what controller resume would do.
 
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20241231115904.620052-1-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
-index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
---- a/drivers/soc/tegra/fuse/fuse-tegra30.c
-+++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
-@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
- };
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 13adc58400942..fe955703e59b5 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -762,9 +762,26 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci, unsigned int mask)
+ 			complete(&rh->op_done);
  
- static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
--	{ .start = 0x01c, .end = 0x0c8 },
--	{ .start = 0x12c, .end = 0x184 },
-+	{ .start = 0x01c, .end = 0x064 },
-+	{ .start = 0x084, .end = 0x0a0 },
-+	{ .start = 0x0a4, .end = 0x0c8 },
-+	{ .start = 0x12c, .end = 0x164 },
-+	{ .start = 0x16c, .end = 0x184 },
- 	{ .start = 0x190, .end = 0x198 },
- 	{ .start = 0x1a0, .end = 0x204 },
--	{ .start = 0x21c, .end = 0x250 },
--	{ .start = 0x25c, .end = 0x2f0 },
-+	{ .start = 0x21c, .end = 0x2f0 },
- 	{ .start = 0x310, .end = 0x3d8 },
--	{ .start = 0x400, .end = 0x4f0 },
--	{ .start = 0x4f8, .end = 0x7e8 },
-+	{ .start = 0x400, .end = 0x420 },
-+	{ .start = 0x444, .end = 0x490 },
-+	{ .start = 0x4bc, .end = 0x4f0 },
-+	{ .start = 0x4f8, .end = 0x54c },
-+	{ .start = 0x57c, .end = 0x7e8 },
- 	{ .start = 0x8d0, .end = 0x8d8 },
- 	{ .start = 0xacc, .end = 0xf00 }
- };
+ 		if (status & INTR_TRANSFER_ABORT) {
++			u32 ring_status;
++
+ 			dev_notice_ratelimited(&hci->master.dev,
+ 				"ring %d: Transfer Aborted\n", i);
+ 			mipi_i3c_hci_resume(hci);
++			ring_status = rh_reg_read(RING_STATUS);
++			if (!(ring_status & RING_STATUS_RUNNING) &&
++			    status & INTR_TRANSFER_COMPLETION &&
++			    status & INTR_TRANSFER_ERR) {
++				/*
++				 * Ring stop followed by run is an Intel
++				 * specific required quirk after resuming the
++				 * halted controller. Do it only when the ring
++				 * is not in running state after a transfer
++				 * error.
++				 */
++				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
++				rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE |
++							   RING_CTRL_RUN_STOP);
++			}
+ 		}
+ 		if (status & INTR_WARN_INS_STOP_MODE)
+ 			dev_warn_ratelimited(&hci->master.dev,
 -- 
 2.39.5
 
