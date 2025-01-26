@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-110564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF584A1CA2E
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:18:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3ABA1C9F4
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FE973A94BA
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:12:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29B907A323F
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B79815746E;
-	Sun, 26 Jan 2025 14:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FA51FC10F;
+	Sun, 26 Jan 2025 14:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAjWFkIv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKlu+KF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C331FC0E8;
-	Sun, 26 Jan 2025 14:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1431FC10E;
+	Sun, 26 Jan 2025 14:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903365; cv=none; b=BHTl9X5/sF9HUi2ZYxEv/ssqr9AHABznrolWNySRwYUb8os5zw14//XH/spO1iJ/Tr2FH3az9BopyLn0LjLycwFeIoVDlL7xDAgDY+KfI+DPkmzbHDXQHYz0eJDKo7wGTJZNi208V7fZXc6OaBMxQXTf7/TlZ1qI+zj8z1Rw8TY=
+	t=1737903367; cv=none; b=YCw/fXeXLQwPoHZVaS5svJlBJojCN4IrU2U+l22woprjwswBhWuz9wBQJnvwHDJJKT/ONvOYlBnoGHccw8oPBXsvUq4fNOgnDAs+bQGwWoI7YtVd3Vd51iXHCh3bw9WOaAlhbXKEcoTrYscxttG6uHpG764Qadtg0eMU3aMmUuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903365; c=relaxed/simple;
-	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
+	s=arc-20240116; t=1737903367; c=relaxed/simple;
+	bh=lUa6hxzSEHrVv1Pb4M3DcXtPzy5jghDECoP62giwwcU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qi5f/midADd8oJ3wrxeEjoX85WA9EsiF5wDrg72GjWmu+xV1HnTnbhxjpSYP/G6OsmY2cLCBbNqLoeALxU/g1uAOqmNi0k68H0sWKMF0opWzXS+7Bjz3SOX+zFnsYyxFh06i27OhmeMrqXhg+/RII4kYHH93T+enu5vKAcnmwjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAjWFkIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E2DC4CEE5;
-	Sun, 26 Jan 2025 14:56:03 +0000 (UTC)
+	 MIME-Version; b=jIr+v77YrKp2BeyuQc99zXpfuHIIKMmqXTLJBFAZy+GhxoGsrcbZOuihb0TmWE9aqtBwidc2FfjXH57eh/Ox73iyJhbYgWXqrduu9fmQkiQNcbiAMReojqzOBGgqmmfsCsZ6K+WfUqBr+qXKC73P0MTusK8+sK2q3EaodJt+DUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKlu+KF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF72C4CEE2;
+	Sun, 26 Jan 2025 14:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903364;
-	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
+	s=k20201202; t=1737903367;
+	bh=lUa6hxzSEHrVv1Pb4M3DcXtPzy5jghDECoP62giwwcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAjWFkIvFqajG+bIJpHIkpDI07BpD7dJOZdLz2rWA0ADo9QVNznvS9xAogMci55OA
-	 +mxX2W5VvIt7/CKj6ZEXoj0ggzvW1lekLnWaD9GLL5jjpgeIGtdU6Xho+UoiiOxGaH
-	 q4tDM+Ax6w+9HiGMIU2LUQagBhHN4HbomMIAg8kVS/WFrtV/H4SNYQ4a/8hAUiWg58
-	 X6uwPZ1BmH77HaVKsM2RNivwshNoqXNKRTObpCueMMRVIi/gYG2ePaDj8dW3YC+fgR
-	 5wcahjJWawqeH+2BqyAyA/uUhSnMwIDr+3bW08yMrcQ75fVnrBexTHt0rZIcpLzlqr
-	 Nk/YUjSDCth6A==
+	b=qKlu+KF98CaUamyKtaVvn7dhg3pcLBPTfgQ7bXglqyRRv0av9Z8heNzN4WvjdNTuI
+	 ALX1ZWb6SbReP9ZhA8K/QgJN4ey2anGkWBL/ub8u7Ssy2Nvb6ho8wrJmeyTn0U5hLp
+	 9JXbh5H7yG12yMciA6suEOX6hBAma4BeqcJNvMK29Wi8cdcuRSSTw2ibnnzf4ZqU8x
+	 FGWNd8OAKE95Tq2d65eEEp/f5WQy743tiz7iKfRezGhZSPgAoih81i8ett7QDVcARl
+	 +bWYH+8SM78XF1PYjiUOTH05oGSSmbFVnhW/+DdOY4xzq7MUJC0bvKnixHrXM7aQPb
+	 27Aj245jXjqJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leo Stone <leocstone@gmail.com>,
-	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
-	Paul Moore <paul@paul-moore.com>,
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mortonm@chromium.org,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 28/31] safesetid: check size of policy writes
-Date: Sun, 26 Jan 2025 09:54:44 -0500
-Message-Id: <20250126145448.930220-28-sashal@kernel.org>
+	chaitanya.dhere@amd.com,
+	jun.lei@amd.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 29/31] drm/amd/display: Increase sanitizer frame larger than limit when compile testing with clang
+Date: Sun, 26 Jan 2025 09:54:45 -0500
+Message-Id: <20250126145448.930220-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145448.930220-1-sashal@kernel.org>
 References: <20250126145448.930220-1-sashal@kernel.org>
@@ -69,40 +77,80 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Leo Stone <leocstone@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
+[ Upstream commit e4479aecf6581af81bc0908575447878d2a07e01 ]
 
-syzbot attempts to write a buffer with a large size to a sysfs entry
-with writes handled by handle_policy_update(), triggering a warning
-in kmalloc.
+Commit 24909d9ec7c3 ("drm/amd/display: Overwriting dualDPP UBF values
+before usage") added a new warning in dml2/display_mode_core.c when
+building allmodconfig with clang:
 
-Check the size specified for write buffers before allocating.
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/display_mode_core.c:6268:13: error: stack frame size (3128) exceeds limit (3072) in 'dml_prefetch_check' [-Werror,-Wframe-larger-than]
+   6268 | static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+        |             ^
 
-Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-[PM: subject tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Commit be4e3509314a ("drm/amd/display: DML21 Reintegration For Various
+Fixes") introduced one in dml2_core/dml2_core_dcn4_calcs.c with the same
+configuration:
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:7236:13: error: stack frame size (3256) exceeds limit (3072) in 'dml_core_mode_support' [-Werror,-Wframe-larger-than]
+   7236 | static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out_params)
+        |             ^
+
+In the case of the first warning, the stack usage was already at the
+limit at the parent change, so the offending change was rather
+innocuous. In the case of the second warning, there was a rather
+dramatic increase in stack usage compared to the parent:
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:7032:13: error: stack frame size (2696) exceeds limit (2048) in 'dml_core_mode_support' [-Werror,-Wframe-larger-than]
+   7032 | static bool dml_core_mode_support(struct dml2_core_calcs_mode_support_ex *in_out_params)
+        |             ^
+
+This is an unfortunate interaction between an issue with stack slot
+reuse in LLVM that gets exacerbated by sanitization (which gets enabled
+with all{mod,yes}config) and function calls using a much higher number
+of parameters than is typical in the kernel, necessitating passing most
+of these values on the stack.
+
+While it is possible that there should be source code changes to address
+these warnings, this code is difficult to modify for various reasons, as
+has been noted in other changes that have occurred for similar reasons,
+such as commit 6740ec97bcdb ("drm/amd/display: Increase frame warning
+limit with KASAN or KCSAN in dml2").
+
+Increase the frame larger than limit when compile testing with clang and
+the sanitizers enabled to avoid this breakage in all{mod,yes}config, as
+they are commonly used and valuable testing targets. While it is not the
+best to hide this issue, it is not really relevant when compile testing,
+as the sanitizers are commonly stressful on optimizations and they are
+only truly useful at runtime, which COMPILE_TEST states will not occur
+with the current build.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412121748.chuX4sap-lkp@intel.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/safesetid/securityfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml2/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
-index 25310468bcddf..8e1ffd70b18ab 100644
---- a/security/safesetid/securityfs.c
-+++ b/security/safesetid/securityfs.c
-@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
- 	char *buf, *p, *end;
- 	int err;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+index c4378e620cbf9..986a69c5bd4bc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+@@ -29,7 +29,11 @@ dml2_rcflags := $(CC_FLAGS_NO_FPU)
  
-+	if (len >= KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
- 	if (!pol)
- 		return -ENOMEM;
+ ifneq ($(CONFIG_FRAME_WARN),0)
+ ifeq ($(filter y,$(CONFIG_KASAN)$(CONFIG_KCSAN)),y)
++ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_COMPILE_TEST),yy)
++frame_warn_flag := -Wframe-larger-than=4096
++else
+ frame_warn_flag := -Wframe-larger-than=3072
++endif
+ else
+ frame_warn_flag := -Wframe-larger-than=2048
+ endif
 -- 
 2.39.5
 
