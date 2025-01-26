@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-110592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A038BA1CA37
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:19:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4168AA1CA38
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 594BB188A0DC
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B927F7A26C3
 	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210A9200B85;
-	Sun, 26 Jan 2025 14:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3165200BB9;
+	Sun, 26 Jan 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jtaqjxd1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxMT9f8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23AE200110;
-	Sun, 26 Jan 2025 14:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D8C200BA8;
+	Sun, 26 Jan 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903429; cv=none; b=Ri5IFbAr4LpfgnvFQaSnt7dq8uTO22abEbCvGDE/EBNsPkRQee++BW+GSdwcc7jkHkYniT/ES//oVZ6hUZdgXIOy7TIravLf5zkRYEW3EQs6DHDjRVCxSsXK1nno+oGqAAuwzizC6aca3HgXH/E8stlhLb0+/UKDzgPwZO0N1fU=
+	t=1737903431; cv=none; b=H+0vhKJ87PAUwo5NToElPaUloMXXks0q3loB+nsw34469XQvEZEXUCII1Ent976Ktzypqvwmu6X8lZn3q8TjHVH0qeuALRZ23Ryh6MY7MZjAHZ/M8LDqLFhhB4OIyXoZIMZ8Yk2lfMVYi6VkLw0fwQ8P/6ho9fdninRlirA+rqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903429; c=relaxed/simple;
-	bh=Dz+YK+AmTueH1xi1YDSoCCbdvhk/rBHoTvaYWYtXidE=;
+	s=arc-20240116; t=1737903431; c=relaxed/simple;
+	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Hre8aAvk+IlJth4kcfN+AptNObxM+q0lh25F+xnJhk/MyrE8p8VYjPhBdpiWnaXCLo6AWx+/zbndeOGgzHiweb1o0p60EJcwB6yMovVYzfngQjORnnEUg/OYGoA+iATl/LMEkKowYxWAqpL0Qw3UrXzOZLcbcXwUUgiO9T/sbBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jtaqjxd1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29094C4CED3;
-	Sun, 26 Jan 2025 14:57:08 +0000 (UTC)
+	 MIME-Version; b=eUTQmzdPnvndCMK7rlCJQx8JG83ks82QBZgT2NMHId3f7BEca4U2BLIxHXeX9Z5vs5r1LlekJmOPEGcR3+LvtcUFhWi/R9bbg+Dny6IhGpGQ8f7Gi7r/R/tb62rW8E7jq2f4tJqNggZxbMBJNqvXOI3CHtroIGvuw/CdfMUwbbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxMT9f8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEEAC4CED3;
+	Sun, 26 Jan 2025 14:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903429;
-	bh=Dz+YK+AmTueH1xi1YDSoCCbdvhk/rBHoTvaYWYtXidE=;
+	s=k20201202; t=1737903431;
+	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jtaqjxd11rIxgESGJ86y/rEzP+ZIVj7oT+8ydux+PCjWxxB2UcKYGUQX7DtaRgGoJ
-	 R1tD8TdXPWvxcHKmPNWvnO4DWYbpA0eIQLidy5of6n4oeaGMpwP4A5yp8B1Q/cIr34
-	 4Uyj/mzORrpSiNbhL9U3WYup2mhq2tag82q344ktRyJI+5I3XUlqVxPskRlvezc1+U
-	 BuDAokGQ3mv1zRnms9pw/iwILX55OmIw5y0v/r1JsKuudcyRHf71fXuvmO+J4xGYVC
-	 Ym8zK+VbiA8REszvufGLvO8Er1QjtMXGzTUM6Y4OZCD6/eGtSg4fLfTBRB55qsBzwH
-	 +BntDujrFWixg==
+	b=oxMT9f8Dlgluc8lm1dpiXrex9ipp0Fc6zSBBYAPJPAw8LTU48n2ef5xVcT77G121B
+	 zF2f4zb+Doohw+H42WImYGG0nmRM+b7uQ1s0XC6NF3L9p5db22bmElzXGp7hETEZe9
+	 kzm7hyntUmKX+QLMSgOxdMCVUBl5aW1hA7Yj35UuCFkF2cxg0BmTv95NjExPfyBwEm
+	 Hp3L7N+Vo2VCoYB/LEsUR9F9V51b2t+dECoLOxDuZafFdxXrKTGN9O8V8+Ko90/o0/
+	 REoyI7yvlv8vb1bOI9UDEawBeckOpl1cupjmriyrHgvZHoRg5OppPN+B32RuNkJZPj
+	 4vhwvC1HXGZ/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Leo Stone <leocstone@gmail.com>,
+	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 8/9] drm/bridge: it6505: fix HDCP CTS compare V matching
-Date: Sun, 26 Jan 2025 09:56:50 -0500
-Message-Id: <20250126145651.943149-8-sashal@kernel.org>
+	mortonm@chromium.org,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 9/9] safesetid: check size of policy writes
+Date: Sun, 26 Jan 2025 09:56:51 -0500
+Message-Id: <20250126145651.943149-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145651.943149-1-sashal@kernel.org>
 References: <20250126145651.943149-1-sashal@kernel.org>
@@ -74,76 +69,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Leo Stone <leocstone@gmail.com>
 
-[ Upstream commit 0989c02c7a5c887c70afeae80c64d0291624e1a7 ]
+[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
 
-When HDCP negotiation with a repeater device.
-Checking SHA V' matching must retry 3 times before restarting HDCP.
+syzbot attempts to write a buffer with a large size to a sysfs entry
+with writes handled by handle_policy_update(), triggering a warning
+in kmalloc.
 
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-8-e0fdd4844703@ite.corp-partner.google.com
+Check the size specified for write buffers before allocating.
+
+Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
+Signed-off-by: Leo Stone <leocstone@gmail.com>
+[PM: subject tweak]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 32 +++++++++++++++++------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ security/safesetid/securityfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 9ef0ce2c2d14a..a563b81f7db8f 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -2011,7 +2011,7 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- {
- 	struct device *dev = &it6505->client->dev;
- 	u8 av[5][4], bv[5][4];
--	int i, err;
-+	int i, err, retry;
+diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
+index 25310468bcddf..8e1ffd70b18ab 100644
+--- a/security/safesetid/securityfs.c
++++ b/security/safesetid/securityfs.c
+@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
+ 	char *buf, *p, *end;
+ 	int err;
  
- 	i = it6505_setup_sha1_input(it6505, it6505->sha1_input);
- 	if (i <= 0) {
-@@ -2020,22 +2020,28 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- 	}
- 
- 	it6505_sha1_digest(it6505, it6505->sha1_input, i, (u8 *)av);
-+	/*1B-05 V' must retry 3 times */
-+	for (retry = 0; retry < 3; retry++) {
-+		err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
-+				      sizeof(bv));
- 
--	err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
--			      sizeof(bv));
-+		if (err < 0) {
-+			dev_err(dev, "Read V' value Fail %d", retry);
-+			continue;
-+		}
- 
--	if (err < 0) {
--		dev_err(dev, "Read V' value Fail");
--		return false;
--	}
-+		for (i = 0; i < 5; i++) {
-+			if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
-+			    av[i][1] != av[i][2] || bv[i][0] != av[i][3])
-+				break;
- 
--	for (i = 0; i < 5; i++)
--		if (bv[i][3] != av[i][0] || bv[i][2] != av[i][1] ||
--		    bv[i][1] != av[i][2] || bv[i][0] != av[i][3])
--			return false;
-+			DRM_DEV_DEBUG_DRIVER(dev, "V' all match!! %d, %d", retry, i);
-+			return true;
-+		}
-+	}
- 
--	DRM_DEV_DEBUG_DRIVER(dev, "V' all match!!");
--	return true;
-+	DRM_DEV_DEBUG_DRIVER(dev, "V' NOT match!! %d", retry);
-+	return false;
- }
- 
- static void it6505_hdcp_wait_ksv_list(struct work_struct *work)
++	if (len >= KMALLOC_MAX_SIZE)
++		return -EINVAL;
++
+ 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
+ 	if (!pol)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
