@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-110474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF27FA1C918
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:55:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050FAA1C8FD
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 563773A86DC
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:54:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB6B7A10B5
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1A81AAA29;
-	Sun, 26 Jan 2025 14:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3D217084F;
+	Sun, 26 Jan 2025 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TReILKhi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYTR+pCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461F71AAA10;
-	Sun, 26 Jan 2025 14:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA5B15696E;
+	Sun, 26 Jan 2025 14:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737902976; cv=none; b=gmIGY9ohmLWRFGO7zTYIjiKN8/MlxOuKIKcaxiGineHnUWl/2FyDBtVV0D8LzqH8xGHwEHCVtX1/pSb7whAhBRYN17Y97hnLhQ3TVg2GBa9QffH7EXeYqvGLjWSMR2yJZe6U9D9WQcWz3pNkaEWGv3uup3cLxrOsgvEJrEip8as=
+	t=1737903013; cv=none; b=BNUa7GVqXOfUgwWslfmlIpBCFhZ/uVNZrItOoZW9ygyLUYw4+I9ZkSiykPexGOsNl4wfyhqGXbZ1gNsTzMMUXSadhatVGPCqaJlXVMULFWs69+SquEozy/KpyduRZXLITZxhn8+NWHf4a62kObekrdZYXdA1fc3uTHGrlQxFNpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737902976; c=relaxed/simple;
-	bh=ymdRAv+MkBFBUHahHjbRKVaIhnFI9LiYBcxnFb6W+28=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eTU1ayUCaFWajv6qjLia4FHiULMi7OLq8ELQOOH2HdvGVE0sluHUerLKf1GXrUDqUrJgyjmU99O4h1GEoEaaO/ejH+TO39cARPtQD6M0HBjjKtnu5a43F7qs54uxuXlJCuZ21PWh6Zt8vTjQeKgW1yGfBHdggT3b5hp1kjq0KiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TReILKhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B971EC4CED3;
-	Sun, 26 Jan 2025 14:49:34 +0000 (UTC)
+	s=arc-20240116; t=1737903013; c=relaxed/simple;
+	bh=g4zibbd9+cwbKfsl7WnY4qlSr54/Kjs5wpq00U7jORs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=asGlDKpGLhVaekOBnma8u8KlG6tHXu3fhFtAjC5KVN0C9khjdlbt/9huRi29E0/x5poagJULCUd8foz5x1G0kc4hDuHxbNVfG0ZMsUDROxAiHIKrMIp6xWqaSB01xTzh9j8qxdyI13uoDbM/lbWm4nbku+aIoSq538lvabTvpec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYTR+pCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4256CC4CED3;
+	Sun, 26 Jan 2025 14:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737902975;
-	bh=ymdRAv+MkBFBUHahHjbRKVaIhnFI9LiYBcxnFb6W+28=;
+	s=k20201202; t=1737903013;
+	bh=g4zibbd9+cwbKfsl7WnY4qlSr54/Kjs5wpq00U7jORs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=TReILKhiIcVpBZURFp39AJB1Nd4Qp6F6hjPx019BOKu2HVX9lI+D4KaDPMbUl/wvk
-	 ke70xrBYDvgJBp8KOoaoJVZ+wyKpjmuf1ug7N52asfAu7HgjXjFP3n9gojtqBO1VZA
-	 dJ2uwJnhXHwtyVS1wtcTyRTGtkZX5qsbw6LwLmc3dwd+2+H6PK1W0O6Ub4o3bj/LOb
-	 mAwUG92Ady+Qp1k1Z16tbOgAxx3L51Tjv+/6xmP7yUCTTunwKPe/Cbx4AtzR7yVQ4T
-	 Gwup8bkUXypM7BuNxIFWZeqkpw33zbTpL5id8rVvse2YRG3QPMk/Ua+W4TMvR9YSyi
-	 efz3UxVl6Exqw==
+	b=HYTR+pCDlB33Y8wN8TP2iiZbMQ7BD+VHjTC2rEZxMhpvQHCSb2xvLqniD1gDmQ9De
+	 RfE27RHhE+WHWRm5DCzT2bflNkdNUW7gWVZl/zEcToT/RUciQDfU2U4X/zFs7q0yyf
+	 htT22SXae852EZdD5fQez1klg9CuXqFflMxJky4ARwfY5gmOhu6c0aF/GDepampja7
+	 YNqfzsCr3TPoj4rm5ZUAD6hqPXsbPkzlTUSHv/yofghvPcUcPSl4ZvgnmFxYrZkD4a
+	 u04va8HDNd1zvP8oE/b1rbIOO4EaT0JZtdKNGftMBYOUPDQxMiwJgBQwnZforVPK5N
+	 rfa3FhvfqpBpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+Cc: Suleiman Souhlal <suleiman@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4] btrfs: convert BUG_ON in btrfs_reloc_cow_block() to proper error handling
-Date: Sun, 26 Jan 2025 09:49:33 -0500
-Message-Id: <20250126144933.925681-1-sashal@kernel.org>
+	mingo@redhat.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org
+Subject: [PATCH AUTOSEL 6.13 1/7] sched: Don't try to catch up excess steal time.
+Date: Sun, 26 Jan 2025 09:50:04 -0500
+Message-Id: <20250126145011.925720-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,51 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.289
+X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Suleiman Souhlal <suleiman@google.com>
 
-[ Upstream commit 6a4730b325aaa48f7a5d5ba97aff0a955e2d9cec ]
+[ Upstream commit 108ad0999085df2366dd9ef437573955cb3f5586 ]
 
-This BUG_ON is meant to catch backref cache problems, but these can
-arise from either bugs in the backref cache or corruption in the extent
-tree.  Fix it to be a proper error.
+When steal time exceeds the measured delta when updating clock_task, we
+currently try to catch up the excess in future updates.
+However, this results in inaccurate run times for the future things using
+clock_task, in some situations, as they end up getting additional steal
+time that did not actually happen.
+This is because there is a window between reading the elapsed time in
+update_rq_clock() and sampling the steal time in update_rq_clock_task().
+If the VCPU gets preempted between those two points, any additional
+steal time is accounted to the outgoing task even though the calculated
+delta did not actually contain any of that "stolen" time.
+When this race happens, we can end up with steal time that exceeds the
+calculated delta, and the previous code would try to catch up that excess
+steal time in future clock updates, which is given to the next,
+incoming task, even though it did not actually have any time stolen.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This behavior is particularly bad when steal time can be very long,
+which we've seen when trying to extend steal time to contain the duration
+that the host was suspended [0]. When this happens, clock_task stays
+frozen, during which the running task stays running for the whole
+duration, since its run time doesn't increase.
+However the race can happen even under normal operation.
+
+Ideally we would read the elapsed cpu time and the steal time atomically,
+to prevent this race from happening in the first place, but doing so
+is non-trivial.
+
+Since the time between those two points isn't otherwise accounted anywhere,
+neither to the outgoing task nor the incoming task (because the "end of
+outgoing task" and "start of incoming task" timestamps are the same),
+I would argue that the right thing to do is to simply drop any excess steal
+time, in order to prevent these issues.
+
+[0] https://lore.kernel.org/kvm/20240820043543.837914-1-suleiman@google.com/
+
+Signed-off-by: Suleiman Souhlal <suleiman@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241118043745.1857272-1-suleiman@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ kernel/sched/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 89ad7e12c08bb..062154c6a65f6 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4789,8 +4789,18 @@ int btrfs_reloc_cow_block(struct btrfs_trans_handle *trans,
- 		WARN_ON(!first_cow && level == 0);
- 
- 		node = rc->backref_cache.path[level];
--		BUG_ON(node->bytenr != buf->start &&
--		       node->new_bytenr != buf->start);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 3e5a6bf587f91..296e77380318e 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -766,13 +766,15 @@ static void update_rq_clock_task(struct rq *rq, s64 delta)
+ #endif
+ #ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
+ 	if (static_key_false((&paravirt_steal_rq_enabled))) {
+-		steal = paravirt_steal_clock(cpu_of(rq));
++		u64 prev_steal;
 +
-+		/*
-+		 * If node->bytenr != buf->start and node->new_bytenr !=
-+		 * buf->start then we've got the wrong backref node for what we
-+		 * expected to see here and the cache is incorrect.
-+		 */
-+		if (unlikely(node->bytenr != buf->start && node->new_bytenr != buf->start)) {
-+			btrfs_err(fs_info,
-+"bytenr %llu was found but our backref cache was expecting %llu or %llu",
-+				  buf->start, node->bytenr, node->new_bytenr);
-+			return -EUCLEAN;
-+		}
++		steal = prev_steal = paravirt_steal_clock(cpu_of(rq));
+ 		steal -= rq->prev_steal_time_rq;
  
- 		drop_node_buffer(node);
- 		extent_buffer_get(cow);
+ 		if (unlikely(steal > delta))
+ 			steal = delta;
+ 
+-		rq->prev_steal_time_rq += steal;
++		rq->prev_steal_time_rq = prev_steal;
+ 		delta -= steal;
+ 	}
+ #endif
 -- 
 2.39.5
 
