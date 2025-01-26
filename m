@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-110576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7801CA1CA3E
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:20:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE83A1CA0D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:16:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F623AA1EF
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BDEE18829FF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18BC1FDE20;
-	Sun, 26 Jan 2025 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59541FDE01;
+	Sun, 26 Jan 2025 14:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qeEucCbi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="huH2OJTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2671FDE19;
-	Sun, 26 Jan 2025 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1FB1FDE2E;
+	Sun, 26 Jan 2025 14:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903394; cv=none; b=gvAE3pzjOM8QQK4UCC/1XSE+VktMVEkdk0GiNboepZUL+SKF91bC38wVbWjvixWy95LqKrFzNNb8nmdxfDvqdQRw/5H9uyabEq8bxxYmOy7w4K17Wf58Cmw/VMoJ21DjwSE4cGij8pOVUXjQOZxeyVktYDRoKSYevJhwVG+r/+s=
+	t=1737903395; cv=none; b=k1/+tkCebaOySUEe8VBr3OpEZ/ePU3s3IgVx304tP1qnXyuin/c3/DRjRlYoTJAb77UabYQ0nNfCmdU4fx1yf0GPBI63G33fCxbfAlgLEAY4QH3j43bBehnP46E0tvosyMCIXf3pMwEePE3Dr2InI+UTeOyItdiG1ZG7n+GvVzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903394; c=relaxed/simple;
-	bh=M85MzBk393mjoVjfLx5KyhQXTUznlB9GO2l+quRQqyA=;
+	s=arc-20240116; t=1737903395; c=relaxed/simple;
+	bh=/5Oi9CSOL3jvwpW38YQkqWArt13/hsS9CBnqIU2w1Jo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DV2nHMr7s/+pEfdGWuWJG42FfAT8hKNuhUXWGL7lTm49UMeNvv2hWqLCsjDQ8jWBD5F0joFhQMcuRl7iUv17JR5Lw5KII4U4Ivn8Vuj83xN/DaVI2m7SBspB700y1YIwLaVSFYP9lepwyDJfbFBiIwcGquOy9kF44BxkB55eNo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qeEucCbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96637C4CEE5;
-	Sun, 26 Jan 2025 14:56:32 +0000 (UTC)
+	 MIME-Version; b=o7pjNJCXDqBi0byU35CXTtFTNyH4YscaKWFZTM0tL3+fKqg01yUsFqzBT9tt5GgGznJIPQ1keS/C7018Fr8a/92aBETa7p65ioxsDKxfu5WRnmBKDmHZyqBLgOzdQuIVwgsW36trxWxdQxLT3NreTZjqfYwjthBN1um2euhf1n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=huH2OJTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529E3C4CED3;
+	Sun, 26 Jan 2025 14:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903393;
-	bh=M85MzBk393mjoVjfLx5KyhQXTUznlB9GO2l+quRQqyA=;
+	s=k20201202; t=1737903395;
+	bh=/5Oi9CSOL3jvwpW38YQkqWArt13/hsS9CBnqIU2w1Jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qeEucCbiTH7v4oTv4lFcu33EsR/IpbiryQpKyeEcaVe+1LXGzS8b13A/AvXyB7BOF
-	 BSE2I9PFIR1vwjiL6+ZyZI5y/t7uIzw/rPrYBvCFyf8gOm3HOz9nqpgCPZNjs7W/xE
-	 HgPZxcG/2upOciqvPuiyA+46StGpyM9BozwuPfa3XKovX8LaJSCO2WDVYoXi4lfuH6
-	 ZLLMDWlKmQFX0qbsJIX7VMrNAYAwt2DqVC0R3go4EbkdX296fpe1NH/+93O4VmRr9u
-	 OQxY//VzOj/YrGMYurw7LSkEMO2DBu2b1/KIDfUhL3XvC8mul9MTP97qEPg7NLrR5G
-	 nt6ujOmNfgfpw==
+	b=huH2OJTr0GKKXCbGEYUdADqtRNpq62MPDRZM3IHosCBcUmZI+R05pMEeSg6EebXO4
+	 UV1KxvQpVJX7eP0IPHnwMvcrPq2FXN8FmMZGovCDzx2aMfFOmjuI4QL57LmUKwFGIX
+	 oggzjI/G1tUHrf6WGjAUQnB2as8k/X3lyW/E22vRckBFq68qfLh+R3WMB6qXAUGd6w
+	 QTx5lH6hFu5QXF3vAASHcvdsENjKwt5gEgK+6U0vp2CnSnfRM0OeckIHN0ZiP6FbuQ
+	 YSDW+M1wXWXt7tpinwHhwB3ZlXVbKAfp7xbA4IXvayjnjZOkWvl9ODkoxT86RWTVBJ
+	 8eoc4i3ZFG0ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Maxime Ripard <mripard@kernel.org>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	alain.volmat@foss.st.com,
+	dave.stevenson@raspberrypi.com,
 	maarten.lankhorst@linux.intel.com,
 	tzimmermann@suse.de,
 	airlied@gmail.com,
 	simona@ffwll.ch,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 09/17] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
-Date: Sun, 26 Jan 2025 09:56:04 -0500
-Message-Id: <20250126145612.937679-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 10/17] drm/vc4: hdmi: use eld_mutex to protect access to connector->eld
+Date: Sun, 26 Jan 2025 09:56:05 -0500
+Message-Id: <20250126145612.937679-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145612.937679-1-sashal@kernel.org>
 References: <20250126145612.937679-1-sashal@kernel.org>
@@ -73,31 +72,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
+[ Upstream commit 81a9a93b169a273ccc4a9a1ee56f17e9981d3f98 ]
 
 Reading access to connector->eld can happen at the same time the
 drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
 order to protect connector->eld from concurrent access.
 
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-10-c9bce1ee8bea@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
-index 500936d5743c5..90c68e0f493fb 100644
---- a/drivers/gpu/drm/sti/sti_hdmi.c
-+++ b/drivers/gpu/drm/sti/sti_hdmi.c
-@@ -1221,7 +1221,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
- 	struct drm_connector *connector = hdmi->drm_connector;
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 1727d447786f1..541aba80c1449 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2655,9 +2655,9 @@ static int vc4_hdmi_audio_get_eld(struct device *dev, void *data,
+ 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
+ 	struct drm_connector *connector = &vc4_hdmi->connector;
  
- 	DRM_DEBUG_DRIVER("\n");
+-	mutex_lock(&vc4_hdmi->mutex);
 +	mutex_lock(&connector->eld_mutex);
  	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
+-	mutex_unlock(&vc4_hdmi->mutex);
 +	mutex_unlock(&connector->eld_mutex);
  
  	return 0;
