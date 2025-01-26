@@ -1,104 +1,89 @@
-Return-Path: <stable+bounces-110443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D547AA1C676
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 07:45:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA07A1C68D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 08:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF0D3A7620
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 06:45:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7095D7A3542
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 07:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A358634A;
-	Sun, 26 Jan 2025 06:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2404E86348;
+	Sun, 26 Jan 2025 07:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JDW/yY3n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I3uaE59g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288B7080E;
-	Sun, 26 Jan 2025 06:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE817082F;
+	Sun, 26 Jan 2025 07:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737873918; cv=none; b=jJdI/hAnJEVIl8ie/ZlksqjpX0EfYlJslZts7+mfhv1+CENotK8lVqQDi2//kIwB24JK1D6jgh2zBGpvAczVPyyrxSjYAUeH3p/e8iGkbxvJTSuClcMjo72tT2gKGWNXcDLeO++KV0jZ4I8NCAChDPkPfpw3UcV2w8JhAZ5A8JQ=
+	t=1737875196; cv=none; b=IH3cfpDvZkXMjSjaUDW+7ZdvGyp2ttdY8SSDRSwRSEiSba+gezt6pOC7+0sLwAshM6Q4D+yCLtuFZPDOKc1vK2sH6G2/lpVjqC143xQd2ZTC459oSL3NZQ+UdpoJk03j6EK6n3LnFh0Z41sIHWA0T3TA1LUEg9hKb98MFUhNkSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737873918; c=relaxed/simple;
-	bh=acnt/doy/5XHj70XEGLItNmI0Vgak6ftbZKRvMcrXTg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ErxTldtSyOPtLsbUeMRXKgCuPOUzSp/JkeaiIC4z6HjgXjOvggRwiJ5AXY/DjW+tnbYWH0if+FTTNztXlF7P4ip733Mv1yBLNxFh357uiwljme4zbwv+ouEglPU0bmqnYj2xoTqBn8L3tBz097lGxMeUNjzqMlRUU2ZMXl5/sZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JDW/yY3n; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1737875196; c=relaxed/simple;
+	bh=DokAvFMYHvCS7wwzqg/QbP3GSVrjtUU72Ulg1mCoC+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dnb5ymcb6sjdedlZpnvB6Vem+wwTyIv6qaAvA39k071UdUTZc5XxAGSBLb0E8edJptiSzqFhp2ggnVERarv1xnzbFJAht5Udi2s09c1BmteRXUYxq9ESBWimfUHqP3CmBgl17HlCQZ1cPbBEVVvWAGU3UTJIXwyLA6uYjeuGArU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I3uaE59g; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2efded08c79so4828436a91.0;
-        Sat, 25 Jan 2025 22:45:15 -0800 (PST)
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2efe25558ddso4606694a91.2;
+        Sat, 25 Jan 2025 23:06:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737873914; x=1738478714; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1737875194; x=1738479994; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FqNaVZFEEca3E3wz8Ju8ZljshuiNP61cQ6d6L0AnGGM=;
-        b=JDW/yY3nfatfmNPJTYfZFz2MhdAHwkaPq9SuALNm2B6fxAi9f2/2R+sA8ptdITLQk5
-         WD8g4Y4aah8XIRC3dVJKl0Tq+icsJdOb5pbaTbPgI156elh/m0BqQFFiqWkZGYwH+NrN
-         TUz0dxZYtnovRcjvR7eEKgx0VFSzbEl5LYDe2mtnOF2bu3rNT/iVzhf4AZ2TvRarDGIt
-         htBgfNhWheZlkmYlg73+akN1iT3//3eOwbhG+79FKSaq33oDjGBTNirszw6jGVJX/80o
-         zBqJDD4xvSwzYkH9FztHSXcvhxXUGAbId1+GuGpjwQKps1mcbjoMf39UaBdqY11WN+YF
-         pofQ==
+        bh=Jp7vJlctohKjGrnhTeUGmb5s8Xd2NGxP7ChmuU+0czI=;
+        b=I3uaE59gGNVL+WJAEL/yIGGR4gF8WfBIAHVA5xQnjHCp/QFX0QYoHQFcGhHwuSQ2cA
+         JCHlwg8BCObUVILqMbgEOpkcg2GkI7ve22a9AW6MpmYq04LTSUz4ZG6SjwvBVtc1ZvBd
+         stXHGcAXzXk/rf8nE2+d/I1IOYVHpQlLoSzTnQ5h/Fs+N+niDrDo1pzXfmi9mpYRas9j
+         ytINNv/oyjrQTnLnjrlVnJKB+7F0dc/ozPaDtgtnaAFTeisKkW3UF0gvhdLgKQMRct+/
+         FvrEP4W76xwO8/yFgGlcrWTRmPKsbTb0TA7n+BJww2W2UnD1g+FJNK+N/FCH07H36qEI
+         27/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737873914; x=1738478714;
+        d=1e100.net; s=20230601; t=1737875194; x=1738479994;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FqNaVZFEEca3E3wz8Ju8ZljshuiNP61cQ6d6L0AnGGM=;
-        b=piO4mQeGaYLq6Tn5yUlMupDpHs9nhpKTvIytJhYFk7gxwy3wXU6mcg6iRlxYrxzDr8
-         tu+FqtwHVTj60Akwfsnl4b+b5Sj2W3n3y2fgoa54B8vPmdHoUeFqZvFDR/RTfGdg/Jy+
-         nQtRXOANgQ5+kqorHAqG28hlnTmqKB/Da1o7FkNDB6MBQ+YUlnZaKsVsAl58KuhmwKJl
-         rigTJpU6pXrSxjAgrUgZ1wkVKcyz3GmKajUAqdi1DD4NioUqGJhdu3Be4KwrwO7uGrSO
-         1zFWuMcD9G1Cgg7F0Dp0sjixlJLdbSCQtzC1LmaCgqN+fSbpphuXKdwa6wZXKqqTkYyS
-         m6+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUk8f/Ooogpg9Uzs7k3hO7VgVvr9IuC29Wj2Er7lYXyDS52OnBVyfWpVh2DxkfzQG9BnanCu4EnmIKD8+A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQmfSZur7M8nn+ZzS79rXsUFBbLvJwsAv2uZqYWnpKgwrXN25h
-	JVYZZrc+l03Ej/WTH8HJpbVqNRpQwKweALpJl/TiCga/qCcZAIWmkL1+ImpW
-X-Gm-Gg: ASbGncvJy/IWoumAXF+7WyZoCoKy1cBBU+SqtWgKua9ncltokmb9APmN1U5l6W3xEuj
-	S8rUjfs4Ak2eznnRJa7euYln8G7u13MFnpFHhJId7U+bQn9CNTEq0bnYM2nSUjs43FQTmgZ9vWK
-	T0ROeD3AwQYMi0REaSCskqqOy+n+mHIvvqRqJBjxQeZQyE4GkMjck2SX8ZAz02FvGouCNWo2GsP
-	QOm7pSBz9cbkj1fyUPPX/7Pjr4QskAXBnzgvw5MMJy9EVYbIz2xMBBd9sNafY207/FjBIRUZ8gD
-	vN7GmLxIlsi5IZ/19NsN9xnqhenI
-X-Google-Smtp-Source: AGHT+IFg7WVPs9aNmjLP+b1xdMjOuirhgOPLzTaNKIBZZkbsCXo6bvei5V5jnc7lQvWmvL9tsG/2Tg==
-X-Received: by 2002:a05:6a00:4505:b0:728:927b:7de2 with SMTP id d2e1a72fcca58-72daf9eba1bmr60305593b3a.8.1737873914435;
-        Sat, 25 Jan 2025 22:45:14 -0800 (PST)
+        bh=Jp7vJlctohKjGrnhTeUGmb5s8Xd2NGxP7ChmuU+0czI=;
+        b=YrS48WXHe0SVarZkBeGJYwmXk12d/hV4Q0uWffxND2msaJ6L5IoUZiPv1kfXYJ1C4q
+         zlVMw7yVPHcab+tx67VJOPiBGDNELIhVAXIF3FhgbNA0bHEhvuEgmy4NqZbRhVEGJCeo
+         EW7dbRaernN1/lYXetl2/NLD2KMnph6EYkYNO/1NUFRusz52VokGfUguVJdmsY+nFj3g
+         6+pQ7bs6uHYpkz3swvkRtJaXWzapVLzH81Rpegb710yQa6bkM3PVz8Acpfx58BHFANWn
+         /ODz1XZtw2Ckq1YzBCv5lT3vSt/XFX+Q+Gxvr/Hf+bD4hk7PZ+Fl/2IeudpSK+E+lhDl
+         DMtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDw1zFsYiOIXq9NuUvARp0RxwD6S1VbQYrDPc0Q2PB5u27ScrnwJpG1ThY7ZBVST8DoQqVazuk4Or4@vger.kernel.org, AJvYcCUNjBT3jUMSDCm6trdhYMOuAAZ9guJtWN+9zrHkNWlvNd823AJZmJjVIpsAMhX4dyvZ6YBUqEckxT67Spap@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9cFESPOryu/N+NJdJPVVuXOgMyep8kwlX1l2Nnqp78VSp0V3l
+	H6OzL1lzBdv9TzX28Y8tvqmhoRuC8QC8nbeEqLpN64g54NR8hXLIVGCn0cOT
+X-Gm-Gg: ASbGncs4nM8M2gvA0q706qS3fsgSiCnJ8TLfJlkVd7aJnQ8f1aa+cFCbXk5jxJ9ravB
+	Of/55Eh8QM9TR3QoRLLgYJcs2TM55JYP4zH7yVK9RUkGWlIzU9YWMHSWwWfrTfi1PgZTEtPMHqj
+	vMZxlu5Oan96Rb0ja+QXUeZAILhdeyrDhSOkXLjsqPQ6zN6wAcYmP/8vR/YRmr1TweDd7oLd1Q2
+	HA29atrJUj+7ymzORsOMy8JnJ1IAlQY7Skcf4PIRraI2C4nxkm9OrdInFD7+gqwjzEaczZORnQu
+	liRjkDQcS0arrvz2gEi9nGNMxr1v
+X-Google-Smtp-Source: AGHT+IGVUgql88xL7lvmloKC6GraKhyom+fznIVGV33PTFWKzYWPbpAU52q//gQzVZ77A8dSRI3eyw==
+X-Received: by 2002:a17:90b:280e:b0:2ee:7c65:ae8e with SMTP id 98e67ed59e1d1-2f782c700c6mr52588232a91.11.1737875193857;
+        Sat, 25 Jan 2025 23:06:33 -0800 (PST)
 Received: from jren-d3.localdomain ([221.222.59.31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a761134sm4680916b3a.115.2025.01.25.22.45.06
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa77043sm5209527a91.35.2025.01.25.23.06.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jan 2025 22:45:14 -0800 (PST)
+        Sat, 25 Jan 2025 23:06:32 -0800 (PST)
 From: Imkanmod Khan <imkanmodkhan@gmail.com>
 To: stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	n.zhandarovich@fintech.ru,
-	alexander.deucher@amd.com,
-	wayne.lin@amd.com,
+Cc: luis.henriques@linux.dev,
+	tytso@mit.edu,
+	patches@lists.linux.dev,
 	gregkh@linuxfoundation.org,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	Jerry.Zuo@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	sashal@kernel.org,
-	alex.hung@amd.com,
-	mario.limonciello@amd.com,
-	chiahsuan.chung@amd.com,
-	hersenxs.wu@amd.com,
-	shenshih@amd.com,
-	Nicholas.Kazlauskas@amd.com,
-	hanghong.ma@amd.com,
+	stable@kernel.org,
 	Imkanmod Khan <imkanmodkhan@gmail.com>
-Subject: [PATCH 6.1.y] drm/amd/display: fix NULL checks for adev->dm.dc in amdgpu_dm_fini()
-Date: Sun, 26 Jan 2025 14:44:58 +0800
-Message-ID: <20250126064459.7897-1-imkanmodkhan@gmail.com>
+Subject: [PATCH 6.1.y] ext4: fix access to uninitialised lock in fc replay path
+Date: Sun, 26 Jan 2025 15:06:20 +0800
+Message-ID: <20250126070620.8071-1-imkanmodkhan@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -108,59 +93,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: "Luis Henriques (SUSE)" <luis.henriques@linux.dev>
 
-[ Upstream commit 2a3cfb9a24a28da9cc13d2c525a76548865e182c ]
+[ commit 23dfdb56581ad92a9967bcd720c8c23356af74c1 upstream ]
 
-Since 'adev->dm.dc' in amdgpu_dm_fini() might turn out to be NULL
-before the call to dc_enable_dmub_notifications(), check
-beforehand to ensure there will not be a possible NULL-ptr-deref
-there.
+The following kernel trace can be triggered with fstest generic/629 when
+executed against a filesystem with fast-commit feature enabled:
 
-Also, since commit 1e88eb1b2c25 ("drm/amd/display: Drop
-CONFIG_DRM_AMD_DC_HDCP") there are two separate checks for NULL in
-'adev->dm.dc' before dc_deinit_callbacks() and dc_dmub_srv_destroy().
-Clean up by combining them all under one 'if'.
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 PID: 866 Comm: mount Not tainted 6.10.0+ #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x66/0x90
+ register_lock_class+0x759/0x7d0
+ __lock_acquire+0x85/0x2630
+ ? __find_get_block+0xb4/0x380
+ lock_acquire+0xd1/0x2d0
+ ? __ext4_journal_get_write_access+0xd5/0x160
+ _raw_spin_lock+0x33/0x40
+ ? __ext4_journal_get_write_access+0xd5/0x160
+ __ext4_journal_get_write_access+0xd5/0x160
+ ext4_reserve_inode_write+0x61/0xb0
+ __ext4_mark_inode_dirty+0x79/0x270
+ ? ext4_ext_replay_set_iblocks+0x2f8/0x450
+ ext4_ext_replay_set_iblocks+0x330/0x450
+ ext4_fc_replay+0x14c8/0x1540
+ ? jread+0x88/0x2e0
+ ? rcu_is_watching+0x11/0x40
+ do_one_pass+0x447/0xd00
+ jbd2_journal_recover+0x139/0x1b0
+ jbd2_journal_load+0x96/0x390
+ ext4_load_and_init_journal+0x253/0xd40
+ ext4_fill_super+0x2cc6/0x3180
+...
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+In the replay path there's an attempt to lock sbi->s_bdev_wb_lock in
+function ext4_check_bdev_write_error().  Unfortunately, at this point this
+spinlock has not been initialized yet.  Moving it's initialization to an
+earlier point in __ext4_fill_super() fixes this splat.
 
-Fixes: 81927e2808be ("drm/amd/display: Support for DMUB AUX")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ To fix CVE-2024-27041, I fix the merge conflict by still using macro
- CONFIG_DRM_AMD_DC_HDCP in the first adev->dm.dc check. ]
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Link: https://patch.msgid.link/20240718094356.7863-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Imkanmod Khan <imkanmodkhan@gmail.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/ext4/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8dc0f70df24f..7b4d44dcb343 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1882,14 +1882,14 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
- 		dc_deinit_callbacks(adev->dm.dc);
- #endif
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 0b2591c07166..53f1deb049ec 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5264,6 +5264,8 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	INIT_LIST_HEAD(&sbi->s_orphan); /* unlinked but open files */
+ 	mutex_init(&sbi->s_orphan_lock);
  
--	if (adev->dm.dc)
-+	if (adev->dm.dc) {
- 		dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
--
--	if (dc_enable_dmub_notifications(adev->dm.dc)) {
--		kfree(adev->dm.dmub_notify);
--		adev->dm.dmub_notify = NULL;
--		destroy_workqueue(adev->dm.delayed_hpd_wq);
--		adev->dm.delayed_hpd_wq = NULL;
-+		if (dc_enable_dmub_notifications(adev->dm.dc)) {
-+			kfree(adev->dm.dmub_notify);
-+			adev->dm.dmub_notify = NULL;
-+			destroy_workqueue(adev->dm.delayed_hpd_wq);
-+			adev->dm.delayed_hpd_wq = NULL;
-+		}
- 	}
++	spin_lock_init(&sbi->s_bdev_wb_lock);
++
+ 	ext4_fast_commit_init(sb);
  
- 	if (adev->dm.dmub_bo)
+ 	sb->s_root = NULL;
+@@ -5514,7 +5516,6 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	 * Save the original bdev mapping's wb_err value which could be
+ 	 * used to detect the metadata async write error.
+ 	 */
+-	spin_lock_init(&sbi->s_bdev_wb_lock);
+ 	errseq_check_and_advance(&sb->s_bdev->bd_inode->i_mapping->wb_err,
+ 				 &sbi->s_bdev_wb_err);
+ 	sb->s_bdev->bd_super = sb;
 -- 
 2.25.1
 
