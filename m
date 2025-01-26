@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-110654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D46AA1CB31
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:42:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21076A1CB38
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0567E3AFD03
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980583A8CEE
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECA82139A1;
-	Sun, 26 Jan 2025 15:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8474D213E66;
+	Sun, 26 Jan 2025 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHC7Nhe+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/A+qjZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AD72135D0;
-	Sun, 26 Jan 2025 15:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC472139D3;
+	Sun, 26 Jan 2025 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903774; cv=none; b=P60PHicvu4O1YOCIWvb8BEwB2rpcHw0pInJ1tFmixnhwBiDyoltTk170rxv/ANU8a4e4Ch93ZA4KsPrv3g+FborYCLw1HPZkO9zb+/1h5ow93bRGplINMSYxrdRiFhmujSRA/NdjSV8KKU6Kr5d9bGCo3FlpKuVBcF+xy7SvykY=
+	t=1737903776; cv=none; b=d9D/gX6qIjN1jxt/6gOqaimyU1s1AeInlYXTnk3Zj4ylB05+x0jIE/noXwnskhLcDV4Y1+eROUonPv1bIvt1BGpEBqPEqnXQWaWEQ5ZIMRbg8kOjUq8869PW9jXTtZtGoBizedfg5Eef1KL2rZVqGAmEmiOgezHShRfrKZQaqcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903774; c=relaxed/simple;
-	bh=ybt+0WYCg7XQ+suYa+qdBNCnjlvEKqD1kZ2RGSQT6gk=;
+	s=arc-20240116; t=1737903776; c=relaxed/simple;
+	bh=16MCYXWBLKwp8E8VPjen9OTA1dC0T49mccOvos84Cq8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R4KK7HNMtDkKcNNRyyGpqz4mKokSw8Aj9ECEmHv9RciDpw+k4ABQRlRhO8XXD77pa17ImC9wwTQsrJNMs2Zd9XXNVCnuapZ9BsMoiLrLhUgnVsKGRL26d4n4BXFKOVpSz09hhl9WOfjnSfLcmB/2VzyUPGx3CePE0g9jL6FFAVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHC7Nhe+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46A5C4CED3;
-	Sun, 26 Jan 2025 15:02:51 +0000 (UTC)
+	 MIME-Version; b=kqzHiQmZuiK/ACAUBKabtY6E2wYLxfwChChErbJY5hVayJX8xdrEQ6rlxbOFJQtilENEZAJ99AKXd+mApwHpqym+i4yA8SWWlmPCJy/j3g6AXgZg/wWsY/da+ZTAYpPD7z3lOLYDdqkXU9fQMLEYhxOgm6RGxMb60Cf9rweYbxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/A+qjZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7A7C4CEE2;
+	Sun, 26 Jan 2025 15:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903773;
-	bh=ybt+0WYCg7XQ+suYa+qdBNCnjlvEKqD1kZ2RGSQT6gk=;
+	s=k20201202; t=1737903774;
+	bh=16MCYXWBLKwp8E8VPjen9OTA1dC0T49mccOvos84Cq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHC7Nhe+3Ic97WxKJCCnKXeEiSUcvgof08icdQhtOdzjnzaqK9MVBo0cN8/HrDiRw
-	 wYrAlNm3vn0zJvKGIsnqpPNLX/SIC75a59paONE/JMLwgC3XDzilDd8qsAICT1I5Ud
-	 p1TO9Zp0OGYhj5dBiphFNz473u3rUcB8zqQ5uz4y/TKM3Y80/B1CcnGiI/Q68CpLe/
-	 hpkyGTHTpopd8DVaBR+PyRyR4+Jc5m9E6qnmXjcO5i2tjycU/hQBatOu7LY5y80Dfv
-	 jyWSKBv2xNKfamXdsyRzYBiLUicfGMs50JbEzsmMW3etrOcNL9MMIfcnU9M2ih4vnk
-	 URsOZm+rKGswA==
+	b=h/A+qjZx9nXZeuGur8UoAH8+4W/NWlQLSe66Q1vQtfoCsfbvtPKvDtKmu7q0+H0e3
+	 fRsnUyEl7H1rFrhsU5Og46DHjBNjwnjRvFDYQk7RvU92VqWkYrmK6GbpFxshuk/oDX
+	 DkOjgECIwEKSBAGiXEK/AuenxUvUCS1MMvSq5YWnQ5s0fA4Lf+U9EuDERgeoDqxF/R
+	 LhqUvURGyyCtfAgQBh5MYG3KBQtC1zG3Oj+eFa43m81paZBgNWjvtbD0K+1/CJtrgq
+	 IsHyzDDAFVgtV5vtAWMsYJX1gL/5bcjFYPZSIS+17HQ/z1I6Rmbirzsam+TLsYhKDG
+	 fc3S/35YLsoxA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Andrew Halaney <ajhalaney@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	dave.jiang@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dan.j.williams@intel.com,
-	u.kleine-koenig@baylibre.com,
-	peterz@infradead.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 18/29] APEI: GHES: Have GHES honor the panic= setting
-Date: Sun, 26 Jan 2025 10:01:59 -0500
-Message-Id: <20250126150210.955385-18-sashal@kernel.org>
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 19/29] Bluetooth: btusb: Add new VID/PID 13d3/3610 for MT7922
+Date: Sun, 26 Jan 2025 10:02:00 -0500
+Message-Id: <20250126150210.955385-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150210.955385-1-sashal@kernel.org>
 References: <20250126150210.955385-1-sashal@kernel.org>
@@ -73,70 +67,96 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Borislav Petkov <bp@alien8.de>
+From: Andrew Halaney <ajhalaney@gmail.com>
 
-[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
+[ Upstream commit 45e7d389bf2e52dfc893779c611dd5cff461b590 ]
 
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
+A new machine has a Archer AX3000 / TX55e in it,
+and out the box reported issues resetting hci0. It looks like
+this is a MT7922 from the lspci output, so treat it as a MediaTek
+device and use the proper callbacks. With that in place an xbox
+controller can be used without issue as seen below:
 
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
+    [    7.047388] Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
+    [    9.583883] Bluetooth: hci0: Device setup in 2582842 usecs
+    [    9.583895] Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+    [    9.644780] Bluetooth: hci0: AOSP extensions version v1.00
+    [    9.644784] Bluetooth: hci0: AOSP quality report is supported
+    [  876.379876] input: Xbox Wireless Controller as /devices/virtual/misc/uhid/0005:045E:0B13.0006/input/input27
+    [  876.380215] hid-generic 0005:045E:0B13.0006: input,hidraw3: BLUETOOTH HID v5.15 Gamepad [Xbox Wireless Controller] on c0:bf:be:27:de:f7
+    [  876.429368] input: Xbox Wireless Controller as /devices/virtual/misc/uhid/0005:045E:0B13.0006/input/input28
+    [  876.429423] microsoft 0005:045E:0B13.0006: input,hidraw3: BLUETOOTH HID v5.15 Gamepad [Xbox Wireless Controller] on c0:bf:be:27:de:f7
 
-So rip out the default GHES panic timeout and honor the global one.
+lspci output:
 
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+    root@livingroom:/home/ajhalaney/git# lspci
+    ...
+    05:00.0 Network controller: MEDIATEK Corp. MT7922 802.11ax PCI Express Wireless Network Adapter
 
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+and USB device:
+
+    root@livingroom:/home/ajhalaney/git# cat /sys/kernel/debug/usb/devices
+    ...
+    T:  Bus=01 Lev=01 Prnt=01 Port=10 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
+    D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+    P:  Vendor=13d3 ProdID=3610 Rev= 1.00
+    S:  Manufacturer=MediaTek Inc.
+    S:  Product=Wireless_Device
+    S:  SerialNumber=000000000
+    C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=100mA
+    A:  FirstIf#= 0 IfCount= 3 Cls=e0(wlcon) Sub=01 Prot=01
+    I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=125us
+    E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+    I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+    I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+    I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+    I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+    I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+    I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+    I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+    E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+    I:  If#= 2 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=8a(I) Atr=03(Int.) MxPS=  64 Ivl=125us
+    E:  Ad=0a(O) Atr=03(Int.) MxPS=  64 Ivl=125us
+    I:* If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+    E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
+    E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
+
+Signed-off-by: Andrew Halaney <ajhalaney@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index ada93cfde9ba1..cff6685fa6cc6 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -173,8 +173,6 @@ static struct gen_pool *ghes_estatus_pool;
- static struct ghes_estatus_cache __rcu *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 0c85c981a8334..86b75d26027b1 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -604,6 +604,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* MediaTek MT7922 Bluetooth devices */
+ 	{ USB_DEVICE(0x13d3, 0x3585), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3610), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
- {
- 	phys_addr_t paddr;
-@@ -983,14 +981,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
- {
-+	const char *msg = GHES_PFX "Fatal hardware error";
-+
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
-+
-+	panic(msg);
- }
- 
- static int ghes_proc(struct ghes *ghes)
+ 	/* MediaTek MT7922A Bluetooth devices */
+ 	{ USB_DEVICE(0x0489, 0xe0d8), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.39.5
 
