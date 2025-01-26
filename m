@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-110486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC7FA1C95C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:57:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DDAA1C95D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A0B18879C5
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4389416721D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 14:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30229158525;
-	Sun, 26 Jan 2025 14:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF98E1D9A49;
+	Sun, 26 Jan 2025 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgcPV+lJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rj2/kpWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0661D90C5;
-	Sun, 26 Jan 2025 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8EA191F75;
+	Sun, 26 Jan 2025 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903039; cv=none; b=ouOxzrfHSjCYLLmMlRLq8ZHd7fC1lq44uf6dx3D7uIU13uWB1QJBAUlq9F4V06Dp9OlAzetuTKgld9SoovBw2si9fSVwVy9b08YFGCKqfJfsqZXV5ZCVimLmRgkNVGjYq8lmxECgrdZFxwhIcvM6BOuMWuoqXl3Q+YJUV/waHjE=
+	t=1737903040; cv=none; b=Q7C7p87YJ8W03BRguHM1D4cbxTxE6fw/yNoctynsiwm2FbDgomzjPCax2O/Doe+y67cHbZedDBoKGHUBOKBwHANtkFfufZ3HhLeDCbNmiXfgm8Bfz3b1ZgMx4akz+DIMUq84p3844zuEjlmAicyVAYK4pNIOkii+060eAh7KlMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903039; c=relaxed/simple;
-	bh=UJrhZi1sKZ0tos0EX0w7OeImOqHu0EwtHEhPVttefR0=;
+	s=arc-20240116; t=1737903040; c=relaxed/simple;
+	bh=JdcQWJeEhTRvEkmQmDGdjDRvGX2fooPEHPSOfFZ4ojM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VU79eYL8wl9NDNDEj6vLJEuuBkGNPngqmiT1N67HRoJrIw3fliCIuGve79GrUBfoJ8YlBHJ8HcaOUTK0wu5MhaB3f+xiKz6h211RF6+oDevq8RfA6gyaF0KsfbggDgbWNjCXoAzXYHxoq3R8hWYhPo5jm6sBexm/ZT1DOhXCblM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgcPV+lJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8B4C4CEE2;
-	Sun, 26 Jan 2025 14:50:37 +0000 (UTC)
+	 MIME-Version; b=TsR08ecyM39o0TWDZ+MyKR1M+IgBdd9TY/nn0aNeMtjt2H+c1Er4M9CfgFUL0lqoI3bNeIvnqTbjZ5Z7cxFL7g5JWVysHTh6OxJUXnz563XF0Bi6243JxURerWu1nHtjoU2rYiy3r7LTH9R0hbJmVszWaTZ88Vp/gC1jPNQrTw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rj2/kpWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6FCC4CED3;
+	Sun, 26 Jan 2025 14:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903038;
-	bh=UJrhZi1sKZ0tos0EX0w7OeImOqHu0EwtHEhPVttefR0=;
+	s=k20201202; t=1737903040;
+	bh=JdcQWJeEhTRvEkmQmDGdjDRvGX2fooPEHPSOfFZ4ojM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgcPV+lJrdBs07pCoc7Mlw7fSjzRLIyFYx9pMFAeivrwl+uxMahmQfBV0e7JCryhX
-	 OUIdUNERlTFVOF8lTS00aCZ/2qw2r8lsqc5Rvoj6hPiBUHoa8DQ5LabNJUBz5t1P7z
-	 FPjLmI02Butz1K1bJNAcvC5Ew4tLK6/4LOLWgtTCHNEIQ/53NH4iE+KzIs7vKMkKTZ
-	 1nFyjmd444iVwFtVzx+zvk+sECQEOsBBngnQwPcsMX75Yuu5aWPbRaQrejpfuiqAUl
-	 2MQ17F0HS1lykZN8GWJNtpeDxr7quaVJJXv7XIQsS2Z8Lu4HEmf5by4GED99eIXEDI
-	 gSoymNPeUad1g==
+	b=rj2/kpWUdrLExG6S8sSLpcP5o76yylB2iehKxOzGuXzhPF2uZ1AhXvyozhBbgv/9N
+	 8heFTemOtnuQjTdm0LmcwVl/y24a7sar+FUTtOytMx/Pg0jq1i9Tb7xyp9e74TmqZ9
+	 IZTB1jaLLXEihjMH0P8xGSmcHv0vILrgk9VyRX1xQ3j2xDWmPPFfffAhggPg2MFj6l
+	 5GmP/POw2pnKgMnZXBZZ8vzQUPwmk2ndU1pXEJwrlPsZBUTJnG910VEH6skLVfC/Fp
+	 2GTXrfkRbp3wOcUPqu9Fs84xaQQMpESVFguha+N2EYwtWs8Q/3iCwCc4R8DYwk4pF5
+	 Oq9sqJmlnfRag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@toblux.com>,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Waiman Long <longman@redhat.com>,
+Cc: Carlos Llamas <cmllamas@google.com>,
+	"J . R . Okajima" <hooanon05g@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Boqun Feng <boqun.feng@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	peterz@infradead.org,
-	mingo@redhat.com,
-	will@kernel.org
-Subject: [PATCH AUTOSEL 6.12 5/7] locking/ww_mutex/test: Use swap() macro
-Date: Sun, 26 Jan 2025 09:50:24 -0500
-Message-Id: <20250126145027.925851-5-sashal@kernel.org>
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 6/7] lockdep: Fix upper limit for LOCKDEP_*_BITS configs
+Date: Sun, 26 Jan 2025 09:50:25 -0500
+Message-Id: <20250126145027.925851-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145027.925851-1-sashal@kernel.org>
 References: <20250126145027.925851-1-sashal@kernel.org>
@@ -70,59 +69,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 0d3547df6934b8f9600630322799a2a76b4567d8 ]
+[ Upstream commit e638072e61726cae363d48812815197a2a0e097f ]
 
-Fixes the following Coccinelle/coccicheck warning reported by
-swap.cocci:
+Lockdep has a set of configs used to determine the size of the static
+arrays that it uses. However, the upper limit that was initially setup
+for these configs is too high (30 bit shift). This equates to several
+GiB of static memory for individual symbols. Using such high values
+leads to linker errors:
 
-  WARNING opportunity for swap()
+  $ make defconfig
+  $ ./scripts/config -e PROVE_LOCKING --set-val LOCKDEP_BITS 30
+  $ make olddefconfig all
+  [...]
+  ld: kernel image bigger than KERNEL_IMAGE_SIZE
+  ld: section .bss VMA wraps around address space
 
-Compile-tested only.
+Adjust the upper limits to the maximum values that avoid these issues.
+The need for anything more, likely points to a problem elsewhere. Note
+that LOCKDEP_CHAINS_BITS was intentionally left out as its upper limit
+had a different symptom and has already been fixed [1].
 
-[Boqun: Add the report tags from Jiapeng and Abaci Robot [1].]
-
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Reported-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11531
-Link: https://lore.kernel.org/r/20241025081455.55089-1-jiapeng.chong@linux.alibaba.com [1]
+Reported-by: J. R. Okajima <hooanon05g@gmail.com>
+Closes: https://lore.kernel.org/all/30795.1620913191@jrobl/ [1]
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Will Deacon <will@kernel.org>
 Acked-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20240731135850.81018-2-thorsten.blum@toblux.com
+Link: https://lore.kernel.org/r/20241024183631.643450-2-cmllamas@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/test-ww_mutex.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ lib/Kconfig.debug | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 10a5736a21c22..b5c2a2de45788 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -402,7 +402,7 @@ static inline u32 prandom_u32_below(u32 ceil)
- static int *get_random_order(int count)
- {
- 	int *order;
--	int n, r, tmp;
-+	int n, r;
- 
- 	order = kmalloc_array(count, sizeof(*order), GFP_KERNEL);
- 	if (!order)
-@@ -413,11 +413,8 @@ static int *get_random_order(int count)
- 
- 	for (n = count - 1; n > 1; n--) {
- 		r = prandom_u32_below(n + 1);
--		if (r != n) {
--			tmp = order[n];
--			order[n] = order[r];
--			order[r] = tmp;
--		}
-+		if (r != n)
-+			swap(order[n], order[r]);
- 	}
- 
- 	return order;
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 3f9c238bb58ea..e48375fe5a50c 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1511,7 +1511,7 @@ config LOCKDEP_SMALL
+ config LOCKDEP_BITS
+ 	int "Bitsize for MAX_LOCKDEP_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 24
+ 	default 15
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_LOCKDEP_ENTRIES too low!" message.
+@@ -1527,7 +1527,7 @@ config LOCKDEP_CHAINS_BITS
+ config LOCKDEP_STACK_TRACE_BITS
+ 	int "Bitsize for MAX_STACK_TRACE_ENTRIES"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 19
+ 	help
+ 	  Try increasing this value if you hit "BUG: MAX_STACK_TRACE_ENTRIES too low!" message.
+@@ -1535,7 +1535,7 @@ config LOCKDEP_STACK_TRACE_BITS
+ config LOCKDEP_STACK_TRACE_HASH_BITS
+ 	int "Bitsize for STACK_TRACE_HASH_SIZE"
+ 	depends on LOCKDEP && !LOCKDEP_SMALL
+-	range 10 30
++	range 10 26
+ 	default 14
+ 	help
+ 	  Try increasing this value if you need large STACK_TRACE_HASH_SIZE.
+@@ -1543,7 +1543,7 @@ config LOCKDEP_STACK_TRACE_HASH_BITS
+ config LOCKDEP_CIRCULAR_QUEUE_BITS
+ 	int "Bitsize for elements in circular_queue struct"
+ 	depends on LOCKDEP
+-	range 10 30
++	range 10 26
+ 	default 12
+ 	help
+ 	  Try increasing this value if you hit "lockdep bfs error:-1" warning due to __cq_enqueue() failure.
 -- 
 2.39.5
 
