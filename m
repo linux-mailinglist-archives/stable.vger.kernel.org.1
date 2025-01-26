@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-110608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2402DA1CA58
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:23:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A567A1CA75
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C2717A397C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CF7B16A053
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3FF1DDA0F;
-	Sun, 26 Jan 2025 15:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4961DDC2A;
+	Sun, 26 Jan 2025 15:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EV3c+3KP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2Twt5N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED87B1DB153;
-	Sun, 26 Jan 2025 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52871DDC12;
+	Sun, 26 Jan 2025 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903643; cv=none; b=GsNQnRzEJygDXTVL3tsDQzYiJf97xNsDedJui2wX/AydJwkCQlTrkzYCxXcMuhf45NmCMkRdVQ71/7ZV5Eiw1ognf5q8lFFJnhxDzZ+Z/3ClqFzpV+1b/N/xtp757LBUgokb/by5sQWY+VG3R/lJyjJlAFoQOJhdnxtd0+NMRLI=
+	t=1737903646; cv=none; b=QPEvF6XgXV6OOEPTXPcIizkYc5xaGRzz1XXA218p5V6nme/IIWi99M1il5sWyfYhcS3ExZRFfcE4IMyskd55bkFvucIXOM+8dD46PAVxI8/2pusubvwZbvST36jEJNbNfmlSQCeRh5gofDI3ru22h4c5TwFt8aZ8crH+7tATMKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903643; c=relaxed/simple;
-	bh=HXqL78sZik6H23vTIxYvBkLpixgaBLaFsq92U1yLzak=;
+	s=arc-20240116; t=1737903646; c=relaxed/simple;
+	bh=CGiuOyRCSz8cyy9BQptoIIFiYUhJkgbuW56cfCSSqqM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ShMd45rLmAbvonfWFLINpV++uFzl8rBNc0DI4U/Zo7JEvACMx/qoNUjd3prpubmqqEJt5qSl+W5wkGpLRbAef6EFXDrPXq9Ifz8TqivWelrt+GHUJl1QIUpw2KDIFYZ+kdCyBpPa6p3xUp9+GWoW1nGeEpSq6y1TvFweLri2I30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EV3c+3KP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9AFC4CED3;
-	Sun, 26 Jan 2025 15:00:41 +0000 (UTC)
+	 MIME-Version; b=rfjT+cdDHaBza4+LVqVLqGzgxC0GkHDgcBx1JS11k29oRGmxCZKTRd1c32CWuEmi8puaEZIp6oFJr32/aMr4KbSKoBgTNaLCAFYHZtffPyuOZLKDEjZ+q8pIkpJP6iExS67XqUK5nJy6EyDWufr5dW83w6/tPozNmDaPOOBxR/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2Twt5N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFB6C4CED3;
+	Sun, 26 Jan 2025 15:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903642;
-	bh=HXqL78sZik6H23vTIxYvBkLpixgaBLaFsq92U1yLzak=;
+	s=k20201202; t=1737903645;
+	bh=CGiuOyRCSz8cyy9BQptoIIFiYUhJkgbuW56cfCSSqqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV3c+3KPlUimxYfWehixWfIZgKA1/KxkS/WmMLFJOloWTAoMFkh9ytNtOn8j21kpt
-	 pUX4t7MXpng8mK3D85yqjaZZGtHzI2MTfJlpC7/HRES0QxYj+xcMBwdIntCRK70kd0
-	 eUnyhdLrWl2Jy9gXj33+zXzM3V2rrDP6H+FoqdiX6ezmUUi3TA2R6RT8eNXt6mo90S
-	 das4bWYaIcZ+/Or8oC2rxBxHJAeJRXIf8T/5ti4NEv9B4oJRc8AYITjX4xhSN8/dII
-	 VDtEWDhhXiKXRxGScr5kPBkTLnBtB3iO6aF8hvUce2ZP/2AMu49fDP+yVWwwCxKsU9
-	 McQYICTG7Etww==
+	b=E2Twt5N5LDBj8aUu3WRBSNU40BrgeZhw+CSMLdVcYcxUqKn9QNa0EW2Zm5b88Fhx5
+	 ioAgoWwcccxZgrFPxfJQlsnCfmkbqe2AzJyjW4sacjbKWg7a5sHfGAE1Xhf5jHDePC
+	 C8ka1GjeSJVuv8rnaXd4KZVVaDwrdYDjXcf+RBZ+w/nvQwJ2hCBxAdXaAgn/68puqS
+	 dS6CmZiZy+Csdpuh6pDos4g58AQiDbSLz5pVi0R69GPyna32zEgyasEqw28smITEx4
+	 I3B0z/6Mdw9szZnuVd/Bz520Sgkd9zsSPLdgMWwDdkvcYydNjO+/rYnc+UkcaJjEOb
+	 Mg5JqHyk56H6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiri Kosina <jkosina@suse.com>,
-	=?UTF-8?q?Ulrich=20M=C3=BCller?= <ulm@gentoo.org>,
-	WangYuli <wangyuli@uniontech.com>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 07/35] Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
-Date: Sun, 26 Jan 2025 10:00:01 -0500
-Message-Id: <20250126150029.953021-7-sashal@kernel.org>
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH AUTOSEL 6.13 08/35] wifi: brcmsmac: add gain range check to wlc_phy_iqcal_gainparams_nphy()
+Date: Sun, 26 Jan 2025 10:00:02 -0500
+Message-Id: <20250126150029.953021-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -63,84 +64,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 3d88ba86ba6f35a0467f25a88c38aa5639190d04 ]
+[ Upstream commit 3f4a0948c3524ae50f166dbc6572a3296b014e62 ]
 
-This reverts commit 251efae73bd46b097deec4f9986d926813aed744.
+In 'wlc_phy_iqcal_gainparams_nphy()', add gain range check to WARN()
+instead of possible out-of-bounds 'tbl_iqcal_gainparams_nphy' access.
+Compile tested only.
 
-Quoting Wang Yuli:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-	"The 27C6:01E0 touchpad doesn't require the workaround and applying it
-	would actually break functionality.
-
-	The initial report came from a BBS forum, but we suspect the
-	information provided by the forum user may be incorrect which could
-	happen sometimes. [1]
-
-	Further investigation showed that the Lenovo Y9000P 2024 doesn't even
-	use a Goodix touchpad. [2]
-
-	For the broader issue of 27c6:01e0 being unusable on some devices, it
-	just need to address it with a libinput quirk.
-
-	In conclusion, we should revert this commit, which is the best
-	solution."
-
-Reported-by: Ulrich Müller <ulm@gentoo.org>
-Reported-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/all/uikt4wwpw@gentoo.org/
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241210070441.836362-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 -
- drivers/hid/hid-multitouch.c | 8 ++------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 1f47fda809b9a..d1d479ca50a21 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -506,7 +506,6 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+index d69879e1bd870..d362c4337616b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+@@ -23423,6 +23423,9 @@ wlc_phy_iqcal_gainparams_nphy(struct brcms_phy *pi, u16 core_no,
+ 				break;
+ 		}
  
- #define I2C_VENDOR_ID_GOODIX		0x27c6
--#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
- #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
- #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 785743036647c..65023bfe30ed2 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1460,8 +1460,7 @@ static const __u8 *mt_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- {
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
--	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
--		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
-+	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
-@@ -2085,10 +2084,7 @@ static const struct hid_device_id mt_devices[] = {
- 		     I2C_DEVICE_ID_GOODIX_01E8) },
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
- 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E9) },
--	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
--	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E0) },
-+		     I2C_DEVICE_ID_GOODIX_01E8) },
- 
- 	/* GoodTouch panels */
- 	{ .driver_data = MT_CLS_NSMU,
++		if (WARN_ON(k == NPHY_IQCAL_NUMGAINS))
++			return;
++
+ 		params->txgm = tbl_iqcal_gainparams_nphy[band_idx][k][1];
+ 		params->pga = tbl_iqcal_gainparams_nphy[band_idx][k][2];
+ 		params->pad = tbl_iqcal_gainparams_nphy[band_idx][k][3];
 -- 
 2.39.5
 
