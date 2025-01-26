@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-110727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AB0A1CBE4
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A9CA1CBE9
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26436163414
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BEAC164405
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AC822F140;
-	Sun, 26 Jan 2025 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB4822F162;
+	Sun, 26 Jan 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjMH94uU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHirYGEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A0522E411;
-	Sun, 26 Jan 2025 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4F522E411;
+	Sun, 26 Jan 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903927; cv=none; b=MBKs3kI3SOgg0PWlA+quV2+bOEydDp8BBsYIyupDmldx1PujE//CaJKaPGcMz6EQ1Kub85auUaUKklIryoV3HVBYh914cF6k3+0DC/yEXHxYMoiC3Rid9RqztN1GutScO9B7KkUdNnnsmaGaJm88ZPlTXvAcyt6DtcDkgKPY1rw=
+	t=1737903930; cv=none; b=VpwvEJafescSha92ToP3Yg6lPtHqX5Zy1d2DVqU2NA3LitX1FqJUNChd9t81XbVOn9WYQe5o8I5IMo0r8VjIp1BhfsmPbhvAZJhmpGkvwE/UWsreOFMKOG1oDcAByp2HSNhVuTBJJ8VIb+3R/o6uXsAIRU9cCpcRBfal4L7JCNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903927; c=relaxed/simple;
-	bh=iTju3sSUX1rtNTtNeyYFYSwXJ3u2XVDJEYpwoJrijy0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qj3HEaQXiE4xIqgdfukb02mnlHFTP1Nk6vHuu4S+698re4DrnT+66Lld0Iqs7N6EG7Xehs2Gm+/sZPG77L+iZmnPkkkzLcgMpC9WovK2dYJPUi8yauFticLHACPUjZpDLQUFQWtofLl8OnvtjOZlNGuOG18ZrYbO88ql6XFzUUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjMH94uU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933F8C4CED3;
-	Sun, 26 Jan 2025 15:05:25 +0000 (UTC)
+	s=arc-20240116; t=1737903930; c=relaxed/simple;
+	bh=RpCw+REwpZaCrS5g//d39RSKJKrwi1IL/jrAZiYKCTI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kg33AGSZcyjLM+IyU53+19KPGo1sMXaYXM+5Adgls94CaSiL5+zAWpRNmhjyXAHSjTbI5Q/7qs3qoGM840qWWoWFOzJ6rchs0hCXBYLnIBjL+FJMsW+n6je1FV27bQ1cRqT4Dy85TaKwX6uP/TsNHVx0+LVsLLecNKMSYZykgdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHirYGEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAF2C4CED3;
+	Sun, 26 Jan 2025 15:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903926;
-	bh=iTju3sSUX1rtNTtNeyYFYSwXJ3u2XVDJEYpwoJrijy0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjMH94uUYFhfmbqRdlfFrAgk5BhfC1D8cnl3mBCp922zvanWerXjP75u+D77nXCky
-	 HPwJAPDS5NXwIaolGgXh7y9E1kEA6VI7gXXPZ7yXt2ic0uhs7ecHwPTamlXDwbl96H
-	 DfqOIe0ac+Mu+imnqTAPSYTcO9VYVACEgFNF0ymQxCdebMkkHxcPJxKKSvlAeWGR5o
-	 MTMuWterb42yvz1T31ehGGPrdM04aBS2K2VN9BOWV5KTZ8jahvovai4c3KCaYBFtYQ
-	 CFZy++iDhMFwwpr++eLd4SQAIbtXegJ+UY78Gj+1mr7r9t7GXT6TpCIOc6eL359N7N
-	 XFKQjsnr/UVLA==
+	s=k20201202; t=1737903930;
+	bh=RpCw+REwpZaCrS5g//d39RSKJKrwi1IL/jrAZiYKCTI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KHirYGEmzc02v34pcQmhLz+UhdYelrAlATmp7I7xeQnBmh5C/mKnbueo/aIJ7j0Yt
+	 6BOHksz6c/UGjqp6Lh6a1v6TcMQ2RuQYK24yW++ftwEOn0JKts51iXkoQ8WM21DlI6
+	 8jMHG8XFqZaEQpsHqsSE3WnnBjTdF1OhOKcjRiXQSxNhq/PElWvLH0nBe0FTmmUUK3
+	 xhFLM+78/R1q2hzH8DdG23aJA+412EPbSkQ6O4kCWp7eZCPzVIxsoNschjMDpiGc9B
+	 +qF5qn+AYW/V211Hu6B4+9VtchtrzrfDHcz5aU/RGdpTvxJz5Izl4YwZuaGaB7LLNs
+	 lWc8nwCiB3Q1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Liu Ye <liuye@kylinos.cn>,
+Cc: Stas Sergeev <stsp2@yandex.ru>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	steffen.klassert@secunet.com,
+	willemdebruijn.kernel@gmail.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 12/12] selftests/net/ipsec: Fix Null pointer dereference in rtattr_pack()
-Date: Sun, 26 Jan 2025 10:05:00 -0500
-Message-Id: <20250126150500.959521-12-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/7] tun: fix group permission check
+Date: Sun, 26 Jan 2025 10:05:21 -0500
+Message-Id: <20250126150527.960265-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126150500.959521-1-sashal@kernel.org>
-References: <20250126150500.959521-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,51 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.233
+X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Liu Ye <liuye@kylinos.cn>
+From: Stas Sergeev <stsp2@yandex.ru>
 
-[ Upstream commit 3a0b7fa095212b51ed63892540c4f249991a2d74 ]
+[ Upstream commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3 ]
 
-Address Null pointer dereference / undefined behavior in rtattr_pack
-(note that size is 0 in the bad case).
+Currently tun checks the group permission even if the user have matched.
+Besides going against the usual permission semantic, this has a
+very interesting implication: if the tun group is not among the
+supplementary groups of the tun user, then effectively no one can
+access the tun device. CAP_SYS_ADMIN still can, but its the same as
+not setting the tun ownership.
 
-Flagged by cppcheck as:
-    tools/testing/selftests/net/ipsec.c:230:25: warning: Possible null pointer
-    dereference: payload [nullPointer]
-    memcpy(RTA_DATA(attr), payload, size);
-                           ^
-    tools/testing/selftests/net/ipsec.c:1618:54: note: Calling function 'rtattr_pack',
-    4th argument 'NULL' value is 0
-    if (rtattr_pack(&req.nh, sizeof(req), XFRMA_IF_ID, NULL, 0)) {
-                                                       ^
-    tools/testing/selftests/net/ipsec.c:230:25: note: Null pointer dereference
-    memcpy(RTA_DATA(attr), payload, size);
-                           ^
-Signed-off-by: Liu Ye <liuye@kylinos.cn>
+This patch relaxes the group checking so that either the user match
+or the group match is enough. This avoids the situation when no one
+can access the device even though the ownership is properly set.
 
-Link: https://patch.msgid.link/20250116013037.29470-1-liuye@kylinos.cn
+Also I simplified the logic by removing the redundant inversions:
+tun_not_capable() --> !tun_capable()
+
+Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://patch.msgid.link/20241205073614.294773-1-stsp2@yandex.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/ipsec.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/tun.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
-index 03b048b668315..38f0de299605a 100644
---- a/tools/testing/selftests/net/ipsec.c
-+++ b/tools/testing/selftests/net/ipsec.c
-@@ -189,7 +189,8 @@ static int rtattr_pack(struct nlmsghdr *nh, size_t req_sz,
- 
- 	attr->rta_len = RTA_LENGTH(size);
- 	attr->rta_type = rta_type;
--	memcpy(RTA_DATA(attr), payload, size);
-+	if (payload)
-+		memcpy(RTA_DATA(attr), payload, size);
- 
- 	return 0;
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 0adce9bf7a1e5..87cc7d778c3cf 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -636,14 +636,18 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
+ 	return ret;
  }
+ 
+-static inline bool tun_not_capable(struct tun_struct *tun)
++static inline bool tun_capable(struct tun_struct *tun)
+ {
+ 	const struct cred *cred = current_cred();
+ 	struct net *net = dev_net(tun->dev);
+ 
+-	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
+-		  (gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
+-		!ns_capable(net->user_ns, CAP_NET_ADMIN);
++	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
++		return 1;
++	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
++		return 1;
++	if (gid_valid(tun->group) && in_egroup_p(tun->group))
++		return 1;
++	return 0;
+ }
+ 
+ static void tun_set_real_num_queues(struct tun_struct *tun)
+@@ -2838,7 +2842,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
+ 		    !!(tun->flags & IFF_MULTI_QUEUE))
+ 			return -EINVAL;
+ 
+-		if (tun_not_capable(tun))
++		if (!tun_capable(tun))
+ 			return -EPERM;
+ 		err = security_tun_dev_open(tun->security);
+ 		if (err < 0)
 -- 
 2.39.5
 
