@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-110599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE609A1CA73
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:25:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF85FA1CA77
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B728F3A9E47
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:19:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661A43AB2AF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D7B202F80;
-	Sun, 26 Jan 2025 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BF51D90DD;
+	Sun, 26 Jan 2025 14:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sjnVOXUw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHUVnDfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC6F202F70;
-	Sun, 26 Jan 2025 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735C52036E2;
+	Sun, 26 Jan 2025 14:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903443; cv=none; b=cWNynqX3yk1Hrp1FPX0K6AT4mIaYDY/wDdzNYwuAexVOX9uzsUZI/AA/Hao0tI+JnyIIEEJs8LNvJGTDCvU0kCqBMm760LYBNDQF1UiFNLDsqkhVJkE3aNNChIEERCAN0GS/U+qvjYs+e9iX+/30313Dkn3USOF3Bki67gGvjt8=
+	t=1737903445; cv=none; b=PqXyUFIWYou9YcXPK3Vtel7c+N9QMjknaFscYjYg+DfvD4JRyB2PsUN/Rf3SgXIH6WzFv7UsVfCwmezC1pEyz+yDh6jqj0WKsy6fCbrsGf5a5OXxTMKteaiIVsdA882YOHyxKngZhHf1RSr0bML/9MYng7LtZyfMU1VZlDkVems=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903443; c=relaxed/simple;
-	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yrys5/was+6d4WjyI0i3qwwjYuviX4vK6o07MTUSX5mQOVhnelbWGmGIije4tjz2gEwv4TiMzFPoNxPEcWheMfUNjH9VYjQgqtImOEK+Af7V0an+2jmm/1n75VtrS5hDzLaQTRisoTrkNRZFNcNZw46KZXuMKrZO7Lo48fqTgRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sjnVOXUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0197C4CED3;
-	Sun, 26 Jan 2025 14:57:21 +0000 (UTC)
+	s=arc-20240116; t=1737903445; c=relaxed/simple;
+	bh=ZYvqdzhrVmnNO+3ORASNZ7xcgMmpgeqgf3QL45CbMQo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rmA5BPwLQr6+F1UtIJEKuHgMPXehpnIFMFJNkfkaMIMFxCGs8NwFsr24g5knOk911EXsxmoSARKWrHrjQi2FetWW/5PbJMAObg3OshYwIZk+uB6WG+SkdvE/B8DcHz8x3Dhy2ggEMXhBIejeo61kGIk1rTdi0yzsjF4Bimlitm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHUVnDfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC0CC4CED3;
+	Sun, 26 Jan 2025 14:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903443;
-	bh=uPc4NVSveHI7GHriDuEDZNzg3746xNX8eV/7hKr234Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjnVOXUwqXcos9y75TIhJ3ovhAWunCuUDsa9uVQ+wNLzRBkwDGShkOip2OXE2Yrkl
-	 S3A1z+R3P3LoK7KCtDvABarN1SNjOcj6Xsa5MMuiop9PlX4vtoQYlvNVSxI7gKILxg
-	 Rhf+B+8Pwq4YYth5e4tNlrQEUtWnr5rJJZ98e4M4es7Izf4nvoWPGJgkvvWcsb97PF
-	 Bh0k/WlnpYHRlSMF7wzc8rj30dGzq+JaGZIZoZy9Mz+qySa3nrggO6FgN9C4cT2DkF
-	 +gqRJ8EURy520xO5w9cSPzYCQ2aW/k1xU+6VJ54JF2QtgdtDay2Opd5Ep3dnYgqxO+
-	 X3Xs/pelAjKIQ==
+	s=k20201202; t=1737903445;
+	bh=ZYvqdzhrVmnNO+3ORASNZ7xcgMmpgeqgf3QL45CbMQo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PHUVnDfs5uYC1ALG+RwdzUgbYRkT2yePZ5idT+06SwcNYO+p2HIJezOeFLIEEYr71
+	 bz1ebpkLU5JlOSdBTKiCv6aj7RsgvLvUIDe49f5MM95qFRGVkVgk6luWRCQZMyw372
+	 Sm+9VgvoXJM/5BwcK7VTHD3iCYU4cGMpFM12q7B6YFG67MtqtoHOikuL7eCFHBtHKP
+	 4iNrMgYya3AlflKVCHRp+9Z27gu/BswS/lr8rrvQZk3hSVxI4VbDqxuF+wX/KVQ9hf
+	 an6Ojis9VXXN64ImlaGxNMfq9Ia5k9EsAht8HVYKTKok42KUewOE7D35QMihyzzKSL
+	 hPwLU4FckJXwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Leo Stone <leocstone@gmail.com>,
-	syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com,
-	Paul Moore <paul@paul-moore.com>,
-	Sasha Levin <sashal@kernel.org>,
-	mortonm@chromium.org,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/3] safesetid: check size of policy writes
-Date: Sun, 26 Jan 2025 09:57:17 -0500
-Message-Id: <20250126145717.946866-3-sashal@kernel.org>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 1/2] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
+Date: Sun, 26 Jan 2025 09:57:22 -0500
+Message-Id: <20250126145723.947855-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250126145717.946866-1-sashal@kernel.org>
-References: <20250126145717.946866-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,43 +58,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.233
+X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Leo Stone <leocstone@gmail.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit f09ff307c7299392f1c88f763299e24bc99811c7 ]
+[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
 
-syzbot attempts to write a buffer with a large size to a sysfs entry
-with writes handled by handle_policy_update(), triggering a warning
-in kmalloc.
+Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
+leads to undefined behavior. To prevent this, cast 1 to u32 before
+performing the shift, ensuring well-defined behavior.
 
-Check the size specified for write buffers before allocating.
+This change explicitly avoids any potential overflow by ensuring that
+the shift occurs on an unsigned 32-bit integer.
 
-Reported-by: syzbot+4eb7a741b3216020043a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4eb7a741b3216020043a
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-[PM: subject tweak]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Acked-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/safesetid/securityfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/printk/printk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/safesetid/securityfs.c b/security/safesetid/securityfs.c
-index 25310468bcddf..8e1ffd70b18ab 100644
---- a/security/safesetid/securityfs.c
-+++ b/security/safesetid/securityfs.c
-@@ -143,6 +143,9 @@ static ssize_t handle_policy_update(struct file *file,
- 	char *buf, *p, *end;
- 	int err;
- 
-+	if (len >= KMALLOC_MAX_SIZE)
-+		return -EINVAL;
-+
- 	pol = kmalloc(sizeof(struct setid_ruleset), GFP_KERNEL);
- 	if (!pol)
- 		return -ENOMEM;
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index ae1a97dd0c3cb..f6e1e154d9c18 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -457,7 +457,7 @@ static u32 clear_idx;
+ /* record buffer */
+ #define LOG_ALIGN __alignof__(struct printk_log)
+ #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
+-#define LOG_BUF_LEN_MAX (u32)(1 << 31)
++#define LOG_BUF_LEN_MAX ((u32)1 << 31)
+ static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
+ static char *log_buf = __log_buf;
+ static u32 log_buf_len = __LOG_BUF_LEN;
 -- 
 2.39.5
 
