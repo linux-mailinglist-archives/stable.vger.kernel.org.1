@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-110690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CCAA1CB81
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:49:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4218BA1CB77
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B00553A46A0
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:43:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF321162F6C
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12DE22488B;
-	Sun, 26 Jan 2025 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5F1224AF7;
+	Sun, 26 Jan 2025 15:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3Grm6cw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYYByGQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBE2224889;
-	Sun, 26 Jan 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E417224AE3;
+	Sun, 26 Jan 2025 15:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903847; cv=none; b=Fzbrv6VMorKvJ0tLgZBXFzWJ93N8pmCtViMFo6g3+NXkiMTxIlyT+WRZjE4m8S5zA4Tzh9/KLyw6XQPWfSwL0h0Xodhw9ROqYIfiRr7YdSWIPENRt0XLRQQYZLnETSQEZkEFeHSw/XUikSTQwxsWEJRaMCv/pDn6VkYIrpFKT3s=
+	t=1737903848; cv=none; b=BMLhDHeG1V3fdV7NyCqFQiDxY6vjUrdXZfcXShemVxWd8oPVBnR+Px2UsudE05gdGohETUnetZQZJ2l7r+JQ8/VmuypKuoxdMBPUqfvxyzSE/xEuSiOHvreWptzgxqRiuKUACkQwNPSI8VapJnDjmue8WGaNbjMi3ajJAQA48VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903847; c=relaxed/simple;
-	bh=S+TT1a07YLwKpDsU9KvkyTpwGHYmBWYne8Em3eS41Tg=;
+	s=arc-20240116; t=1737903848; c=relaxed/simple;
+	bh=ydhmTrP+GP6gCuQD/s+3rV1pZZ07rCw97kqUuNYn5Hw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SQUMR4Atz/Q30F2H1ypc0BjZJi8Een7f5auAWANyASeUgD2oKMzifBYJ5VQB3zxQw4qA+RQ2C1d5QCwLChnX8Wnle1mzPp1qNIykBDipJfs8ar8QiKzIvlZakRv+7ROK7DWv3CqGKogf9NQ8F1kQ2kA7id/KCHUY3Ao/BzAa+kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3Grm6cw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1630EC4CEE6;
-	Sun, 26 Jan 2025 15:04:04 +0000 (UTC)
+	 MIME-Version; b=lMS5M2ujg7Kuw7G3CJKXODuJZISt7BzPNlex0Im44+UM3Cf7KBagbXtRVlPFoYboS2NT7N22SJdDLYKS6qoTE5qFU2F4OCrltfCxDc8333/JxV6ZkMP4bH6D9RkvpoWM4IbKG+0imwASP3pjajwYTkFEqK4JAtl90ZwFCWKBezM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYYByGQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C978C4CEE2;
+	Sun, 26 Jan 2025 15:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903845;
-	bh=S+TT1a07YLwKpDsU9KvkyTpwGHYmBWYne8Em3eS41Tg=;
+	s=k20201202; t=1737903847;
+	bh=ydhmTrP+GP6gCuQD/s+3rV1pZZ07rCw97kqUuNYn5Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3Grm6cwWe/JShk7r27d2+4CJfGJuYrFWX0q73G+VIkrxFNaCwxXDw9W6RhlD409v
-	 ViAcsMuM2AuFyLxR5Pz+RrsxgZDDKwMalIgH4kJGNMkKvJLel/NU7+PkcGyqvpLy0f
-	 /7skExTkWn7+K9390sYy+D5Wn0krAlffnn8St2YT8HgbncmLbC1gnkxAdJTGNJ4gVO
-	 EkcKPayubl3NUboFKnIEkPA9e3Lz0UCzoHIcOiXtTj9/m+1Rx2ALi1rEXEtmw1u6XA
-	 69E57VsPdiITTPHiCDDddJBQu3Z+flPiZgG4YC5sOKfGr9cwWnKDVyxg76g+IR0clt
-	 4LSDEakHIsNaQ==
+	b=kYYByGQU6swiHTplkz1nKykjCaAzpcUz/TghoU5Av/oCpBr+BAON3PJl6ERWSp/nK
+	 TDn+r5f2/WyURN0BLhYa5YbJNByiOkRHTWRkIPFhZD0Dry7hXZcRsmZLcQVR/H/bnf
+	 n21nDAR8evm+RbhFPf3scv2kf11QPqhcQwQF3TBbSgjJdU+N4RV7R0gtpBaf577e7N
+	 p0ED4fc9cc7D5meg6lnCHEv1w/na8UgZAu3fS6mOj4lm3JTZT/i3sIl1AlfxnLXrMr
+	 lx26qDIOTYRTCT7WMO2FuxSqPDgLOAfio4Aq2YCGVbdLi6PwFotYoOQ0iotczHIP7X
+	 AwlIs1uy4NAOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+Cc: Even Xu <even.xu@intel.com>,
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ptyser@xes-inc.com
-Subject: [PATCH AUTOSEL 6.1 06/17] mfd: lpc_ich: Add another Gemini Lake ISA bridge PCI device-id
-Date: Sun, 26 Jan 2025 10:03:42 -0500
-Message-Id: <20250126150353.957794-6-sashal@kernel.org>
+	jason.gerecke@wacom.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/17] HID: Wacom: Add PCI Wacom device support
+Date: Sun, 26 Jan 2025 10:03:43 -0500
+Message-Id: <20250126150353.957794-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150353.957794-1-sashal@kernel.org>
 References: <20250126150353.957794-1-sashal@kernel.org>
@@ -66,40 +70,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Even Xu <even.xu@intel.com>
 
-[ Upstream commit 1e89d21f8189d286f80b900e1b7cf57cb1f3037e ]
+[ Upstream commit c4c123504a65583e3689b3de04a61dc5272e453a ]
 
-On N4100 / N4120 Gemini Lake SoCs the ISA bridge PCI device-id is 31e8
-rather the 3197 found on e.g. the N4000 / N4020.
+Add PCI device ID of wacom device into driver support list.
 
-While at fix the existing GLK PCI-id table entry breaking the table
-being sorted by device-id.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241114193808.110132-1-hdegoede@redhat.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Even Xu <even.xu@intel.com>
+Tested-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/lpc_ich.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mfd/lpc_ich.c b/drivers/mfd/lpc_ich.c
-index 7b1c597b6879f..03367fcac42a7 100644
---- a/drivers/mfd/lpc_ich.c
-+++ b/drivers/mfd/lpc_ich.c
-@@ -756,8 +756,9 @@ static const struct pci_device_id lpc_ich_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x2917), LPC_ICH9ME},
- 	{ PCI_VDEVICE(INTEL, 0x2918), LPC_ICH9},
- 	{ PCI_VDEVICE(INTEL, 0x2919), LPC_ICH9M},
--	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x2b9c), LPC_COUGARMOUNTAIN},
-+	{ PCI_VDEVICE(INTEL, 0x3197), LPC_GLK},
-+	{ PCI_VDEVICE(INTEL, 0x31e8), LPC_GLK},
- 	{ PCI_VDEVICE(INTEL, 0x3a14), LPC_ICH10DO},
- 	{ PCI_VDEVICE(INTEL, 0x3a16), LPC_ICH10R},
- 	{ PCI_VDEVICE(INTEL, 0x3a18), LPC_ICH10},
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 3551a6d3795e6..ce54b8354a7d4 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -4914,6 +4914,10 @@ static const struct wacom_features wacom_features_0x94 =
+ 	HID_DEVICE(BUS_I2C, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+ 
++#define PCI_DEVICE_WACOM(prod)						\
++	HID_DEVICE(BUS_PCI, HID_GROUP_WACOM, USB_VENDOR_ID_WACOM, prod),\
++	.driver_data = (kernel_ulong_t)&wacom_features_##prod
++
+ #define USB_DEVICE_LENOVO(prod)					\
+ 	HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, prod),			\
+ 	.driver_data = (kernel_ulong_t)&wacom_features_##prod
+@@ -5083,6 +5087,7 @@ const struct hid_device_id wacom_ids[] = {
+ 
+ 	{ USB_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ I2C_DEVICE_WACOM(HID_ANY_ID) },
++	{ PCI_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ BT_DEVICE_WACOM(HID_ANY_ID) },
+ 	{ }
+ };
 -- 
 2.39.5
 
