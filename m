@@ -1,64 +1,73 @@
-Return-Path: <stable+bounces-110572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD053A1CA35
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:19:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698C9A1CA04
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7493A9E70
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:13:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12C981886B26
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BFA1FCFDF;
-	Sun, 26 Jan 2025 14:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8A01D61A4;
+	Sun, 26 Jan 2025 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/FM24as"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhhZbE8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047AF1FCFD9;
-	Sun, 26 Jan 2025 14:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5371D6187;
+	Sun, 26 Jan 2025 14:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903384; cv=none; b=FELCam4GXzSMxtZKm/zMAz7DAWcIeyoZABU/aUvozc4Ul2+NhN1Z1VmSWisFZxEg3mjcyNcityfoYIgagBQvozCrOrLTULjcnspkK1dAgSbDQuvaIFlzsjfAALflGnePVEiwV+SutS417tyJJr4vfbTopHnMiRJ9nNBjqsnms1w=
+	t=1737903389; cv=none; b=EyWWQ/07SZYbJi/ewE0+lcqHnkl81Cpv6VpetX9h8HBOvGjiIp/MSM/7XRMJmzhvbs3jGSfWuXE2MGTake+2oJvKNhpZ21opgzqdXaVObw7TfwKUCaCgjP9VdyRldkSkcQbY925vYFsvg1hgolwukG/f3Be4upLc4xRNFSP0ADM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903384; c=relaxed/simple;
-	bh=8F4QJ1WVnzs5ANYh3Hp5Fu5kYNIAs2i1oIvPnzWUJLY=;
+	s=arc-20240116; t=1737903389; c=relaxed/simple;
+	bh=eOTtRRo0BVYeiu6R746gwstLSaxRow6rUQ+63N00bRU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AYMVpTBD56pi0Ru44DA9hE5tDTpYHaNfNoQTq3kMPMmBgw8Ui6fVxKLD5Bao+KJ52q9BWcdR0Ouo0QgNnVWOjP5gG24Jj8Uveqtv7qy8NX4UL+H60CCuuNh/mKhKNzO4RvQh/Afb3yHhJG7GlXaT7itIxyRCk9AZs9FSBGApDBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/FM24as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64928C4CED3;
-	Sun, 26 Jan 2025 14:56:22 +0000 (UTC)
+	 MIME-Version; b=tU0LjV+jlP8BPaGSSxPpeVcUjVu7yBhrwSneQSm5O48AcHZoBIu5dX7Fsb6JH84XVCbBO+OMbxeTB9HwIRfZpsUkvS15S6XP6zLbl7P/X44UjGHVefXqioopDsvOF1jlN31dzZ97xTwDE1K+ySn1QX6/xfnffSDz0EJIXkpQLz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhhZbE8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347B2C4CEE2;
+	Sun, 26 Jan 2025 14:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903383;
-	bh=8F4QJ1WVnzs5ANYh3Hp5Fu5kYNIAs2i1oIvPnzWUJLY=;
+	s=k20201202; t=1737903388;
+	bh=eOTtRRo0BVYeiu6R746gwstLSaxRow6rUQ+63N00bRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/FM24asPCFsonWGIQIMqvDehy2YYl6EzOsYRYwbHsA/6fzBoNUu7wDQLQbuVom9j
-	 sdQ9kLkIAwzLM5hC6gorgitR/XB3F6X7tBVwqnttPx7Mf4GTva9Zzu+8t1UC1CalZ7
-	 2OaL4QKAwuVWVtPiBdGz50cmE7uxCt1PB1JHdFfIPff6oMyJDOSVYC71+3iBZY1V6O
-	 uvJ6WhYoIZ4RYwJtyxSTbZ+3BEx68/c4616F6kCweM73XrkgYpu6S8X2mZD/CqVWwP
-	 dcIIwBBQR+8ZvRtAHLdE+ILFZX9Zr3cBrBLgbc1nTzRhWcLbH5J16UwIIbBsaoyI7U
-	 5ZJVwoSZVqOXg==
+	b=QhhZbE8guNYTV1rQx89PyLMFYag4DMQZSitTpSaMCwzG2bk9MHq5BzOzdcrJ0JtB3
+	 ED/iYJ0xMwHFUTowAo9VS4SilZvHXCeX6Lx5iHQBFkBikNbI2mHwsiehg+Do4m7hHn
+	 U3PjdEdAzNkNIttnRzhH7lLy4/qx+QSWl3LpThS6UAJfiC1sixrPTJe1n/Zl5kBqcB
+	 JthpHjAWuoAfRnj3G2IfIgn8PNyyy9XN5GDdvxumUfFJaMV1QkLOnHXSV1ThujnQUM
+	 kDI/yot05gQ0/oawO0L2Px0RCZ2w9qlphfsJFz/vEmtpSBTiAoo5o3hk+EBVXI+3nJ
+	 U8uIiXcnhUbdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Maxime Ripard <mripard@kernel.org>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ple@baylibre.com,
-	neil.armstrong@linaro.org,
-	andrzej.hajda@intel.com,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
+	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
+	chiahsuan.chung@amd.com,
+	hamza.mahfooz@amd.com,
+	sunil.khatri@amd.com,
+	alex.hung@amd.com,
+	aurabindo.pillai@amd.com,
+	hersenxs.wu@amd.com,
+	mwen@igalia.com,
+	Wayne.Lin@amd.com,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 05/17] drm/bridge: ite-it66121: use eld_mutex to protect access to connector->eld
-Date: Sun, 26 Jan 2025 09:56:00 -0500
-Message-Id: <20250126145612.937679-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 06/17] drm/amd/display: use eld_mutex to protect access to connector->eld
+Date: Sun, 26 Jan 2025 09:56:01 -0500
+Message-Id: <20250126145612.937679-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145612.937679-1-sashal@kernel.org>
 References: <20250126145612.937679-1-sashal@kernel.org>
@@ -75,35 +84,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 39ead6e02ea7d19b421e9d42299d4293fed3064e ]
+[ Upstream commit 819bee01eea06282d7bda17d46caf29cae4f6d84 ]
 
 Reading access to connector->eld can happen at the same time the
 drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
 order to protect connector->eld from concurrent access.
 
 Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-3-c9bce1ee8bea@linaro.org
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-4-c9bce1ee8bea@linaro.org
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c | 2 ++
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
-index 8f5846b76d594..2381cd1cba879 100644
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -1452,8 +1452,10 @@ static int it66121_audio_get_eld(struct device *dev, void *data,
- 		dev_dbg(dev, "No connector present, passing empty EDID data");
- 		memset(buf, 0, len);
- 	} else {
-+		mutex_lock(&ctx->connector->eld_mutex);
- 		memcpy(buf, ctx->connector->eld,
- 		       min(sizeof(ctx->connector->eld), len));
-+		mutex_unlock(&ctx->connector->eld_mutex);
- 	}
- 	mutex_unlock(&ctx->lock);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 8a152f4974d3c..aab99df3ba1ae 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -955,8 +955,10 @@ static int amdgpu_dm_audio_component_get_eld(struct device *kdev, int port,
+ 			continue;
  
+ 		*enabled = true;
++		mutex_lock(&connector->eld_mutex);
+ 		ret = drm_eld_size(connector->eld);
+ 		memcpy(buf, connector->eld, min(max_bytes, ret));
++		mutex_unlock(&connector->eld_mutex);
+ 
+ 		break;
+ 	}
 -- 
 2.39.5
 
