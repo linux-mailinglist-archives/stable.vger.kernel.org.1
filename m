@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-110728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A9CA1CBE9
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:57:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304F9A1CBE6
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BEAC164405
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F0051886DB8
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB4822F162;
-	Sun, 26 Jan 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1973522F385;
+	Sun, 26 Jan 2025 15:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHirYGEm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDaK7m5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4F522E411;
-	Sun, 26 Jan 2025 15:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF02A22F17D;
+	Sun, 26 Jan 2025 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903930; cv=none; b=VpwvEJafescSha92ToP3Yg6lPtHqX5Zy1d2DVqU2NA3LitX1FqJUNChd9t81XbVOn9WYQe5o8I5IMo0r8VjIp1BhfsmPbhvAZJhmpGkvwE/UWsreOFMKOG1oDcAByp2HSNhVuTBJJ8VIb+3R/o6uXsAIRU9cCpcRBfal4L7JCNE=
+	t=1737903932; cv=none; b=VJ2OA7iwWNg+RmFtgmmrf+vQRdPfjCFeTPJWSqdyumrUkQKlwmyzwIciYLyZGA3qB5a8UisMKkjfqRSgsVlgJwAQOLUGSgGEbgctw7E0cPPLB3GDZ09P6O+jDVl5Z/lk+6RP0gATSTTsL1zrPORQz3JUKyW+zfQiFSuCD9cGc7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903930; c=relaxed/simple;
-	bh=RpCw+REwpZaCrS5g//d39RSKJKrwi1IL/jrAZiYKCTI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Kg33AGSZcyjLM+IyU53+19KPGo1sMXaYXM+5Adgls94CaSiL5+zAWpRNmhjyXAHSjTbI5Q/7qs3qoGM840qWWoWFOzJ6rchs0hCXBYLnIBjL+FJMsW+n6je1FV27bQ1cRqT4Dy85TaKwX6uP/TsNHVx0+LVsLLecNKMSYZykgdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHirYGEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAF2C4CED3;
-	Sun, 26 Jan 2025 15:05:28 +0000 (UTC)
+	s=arc-20240116; t=1737903932; c=relaxed/simple;
+	bh=yZFM+Q/nJIaJoYU1bQxz4kIMgMsKosBL3k21lXRxsGk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=CAntzLEy/Ft+4xkgVtb8urRLFG1o2LqDIo5H5kBe0/GF2yU9Y5OOaSVO8oopFWiGFi9XJxYeOOZYit7xHy9DtrpQkt/llBBVLEHYx4NIlMjvRimzb33mitLUbDLscVErpJhBsm1CMrWvozPxXGVUBIlxI8UQ0DwD6m3Gz3XXYh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDaK7m5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94140C4CEE2;
+	Sun, 26 Jan 2025 15:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903930;
-	bh=RpCw+REwpZaCrS5g//d39RSKJKrwi1IL/jrAZiYKCTI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KHirYGEmzc02v34pcQmhLz+UhdYelrAlATmp7I7xeQnBmh5C/mKnbueo/aIJ7j0Yt
-	 6BOHksz6c/UGjqp6Lh6a1v6TcMQ2RuQYK24yW++ftwEOn0JKts51iXkoQ8WM21DlI6
-	 8jMHG8XFqZaEQpsHqsSE3WnnBjTdF1OhOKcjRiXQSxNhq/PElWvLH0nBe0FTmmUUK3
-	 xhFLM+78/R1q2hzH8DdG23aJA+412EPbSkQ6O4kCWp7eZCPzVIxsoNschjMDpiGc9B
-	 +qF5qn+AYW/V211Hu6B4+9VtchtrzrfDHcz5aU/RGdpTvxJz5Izl4YwZuaGaB7LLNs
-	 lWc8nwCiB3Q1Q==
+	s=k20201202; t=1737903932;
+	bh=yZFM+Q/nJIaJoYU1bQxz4kIMgMsKosBL3k21lXRxsGk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BDaK7m5I1UknaGNZGib+Hp3LckKkSLhGy7cHKceOmTVFjEvtLfeb+E8rNQEIrFd1T
+	 4rGCXnjjQ5l9STH/lkU32xoOzN6rSGZVQQRAHMZamDTcDgSs+Qde6OJtao9ckQwfgo
+	 RMK+3j//dTmRirNCldqdEf/GhJhiVyIE0DlPVO/WkMEv9n6kI44adhFQ/yVj3jWYjB
+	 ALZ90EkHoMMSWRhShRHa1Q+YxvTocYTnvXo1vykQIX5sU0GzRV6G4q3CfFRfAMPkKx
+	 LPBuaMBBClTAb/dmD2jXZkrr6GTCFcoQWBzm9rQs2WVc5ouINZZ95FFEXV7pwXDd1i
+	 Q0nHxJTOH277g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stas Sergeev <stsp2@yandex.ru>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	willemdebruijn.kernel@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/7] tun: fix group permission check
-Date: Sun, 26 Jan 2025 10:05:21 -0500
-Message-Id: <20250126150527.960265-1-sashal@kernel.org>
+	ricardo@marliere.net,
+	avri.altman@wdc.com,
+	adrian.hunter@intel.com,
+	linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/7] mmc: core: Respect quirk_max_rate for non-UHS SDIO card
+Date: Sun, 26 Jan 2025 10:05:22 -0500
+Message-Id: <20250126150527.960265-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250126150527.960265-1-sashal@kernel.org>
+References: <20250126150527.960265-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,70 +68,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.289
 Content-Transfer-Encoding: 8bit
 
-From: Stas Sergeev <stsp2@yandex.ru>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 3ca459eaba1bf96a8c7878de84fa8872259a01e3 ]
+[ Upstream commit a2a44f8da29352f76c99c6904ee652911b8dc7dd ]
 
-Currently tun checks the group permission even if the user have matched.
-Besides going against the usual permission semantic, this has a
-very interesting implication: if the tun group is not among the
-supplementary groups of the tun user, then effectively no one can
-access the tun device. CAP_SYS_ADMIN still can, but its the same as
-not setting the tun ownership.
+The card-quirk was added to limit the clock-rate for a card with UHS-mode
+support, although let's respect the quirk for non-UHS mode too, to make the
+behaviour consistent.
 
-This patch relaxes the group checking so that either the user match
-or the group match is enough. This avoids the situation when no one
-can access the device even though the ownership is properly set.
-
-Also I simplified the logic by removing the redundant inversions:
-tun_not_capable() --> !tun_capable()
-
-Signed-off-by: Stas Sergeev <stsp2@yandex.ru>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://patch.msgid.link/20241205073614.294773-1-stsp2@yandex.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <1732268242-72799-1-git-send-email-shawn.lin@rock-chips.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/mmc/core/sdio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 0adce9bf7a1e5..87cc7d778c3cf 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -636,14 +636,18 @@ static u16 tun_select_queue(struct net_device *dev, struct sk_buff *skb,
- 	return ret;
+diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
+index e614fd82a32a4..2362a70460f1c 100644
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -379,6 +379,8 @@ static unsigned mmc_sdio_get_max_clock(struct mmc_card *card)
+ 	if (card->type == MMC_TYPE_SD_COMBO)
+ 		max_dtr = min(max_dtr, mmc_sd_get_max_clock(card));
+ 
++	max_dtr = min_not_zero(max_dtr, card->quirk_max_rate);
++
+ 	return max_dtr;
  }
  
--static inline bool tun_not_capable(struct tun_struct *tun)
-+static inline bool tun_capable(struct tun_struct *tun)
- {
- 	const struct cred *cred = current_cred();
- 	struct net *net = dev_net(tun->dev);
- 
--	return ((uid_valid(tun->owner) && !uid_eq(cred->euid, tun->owner)) ||
--		  (gid_valid(tun->group) && !in_egroup_p(tun->group))) &&
--		!ns_capable(net->user_ns, CAP_NET_ADMIN);
-+	if (ns_capable(net->user_ns, CAP_NET_ADMIN))
-+		return 1;
-+	if (uid_valid(tun->owner) && uid_eq(cred->euid, tun->owner))
-+		return 1;
-+	if (gid_valid(tun->group) && in_egroup_p(tun->group))
-+		return 1;
-+	return 0;
- }
- 
- static void tun_set_real_num_queues(struct tun_struct *tun)
-@@ -2838,7 +2842,7 @@ static int tun_set_iff(struct net *net, struct file *file, struct ifreq *ifr)
- 		    !!(tun->flags & IFF_MULTI_QUEUE))
- 			return -EINVAL;
- 
--		if (tun_not_capable(tun))
-+		if (!tun_capable(tun))
- 			return -EPERM;
- 		err = security_tun_dev_open(tun->security);
- 		if (err < 0)
 -- 
 2.39.5
 
