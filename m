@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-110696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD67A1CB85
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:49:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823DFA1CBAF
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C13F163F6C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 248133A7F07
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70C522616E;
-	Sun, 26 Jan 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3222617E;
+	Sun, 26 Jan 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8DeQmgW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8JS+dyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B00226168;
-	Sun, 26 Jan 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D24226177;
+	Sun, 26 Jan 2025 15:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903861; cv=none; b=UOMOJNGuzcLPtt0XnOuPsP8xsyylvRNajDxipoC12nXyuZOQHUbs2yVySxDM1145luinpSlWTGR/HJ1jW6qGrCFI6Qg8A+gz34MO0mvM/3RrT0dydEB9WTd0racqlx8+zl/W2WGrrl7KCn+b+hjxcXavYHIvUOqL3rIUKCH7xuY=
+	t=1737903863; cv=none; b=TdXjk1w3rxJWSMmznGnlleKAKyAAjnhvi86hWmL1qnaUpQA0oTeY0holTvKckeax6OIM+ua9++Lgs47RN6tOy1qjRNUU5rqORdHkMzSpooGD0oExWX9baQgdS0EBMudzPmjV8VI5bMh/z9E2koYIYB3Q2eUwaDzSMN5mxRQd4Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903861; c=relaxed/simple;
-	bh=exWkzJfkVjKOIOyw1t73wPTU3bKTvW09Ms07Djw6HGU=;
+	s=arc-20240116; t=1737903863; c=relaxed/simple;
+	bh=dQeHzHZYoPYSdvlxHY9o0oJh29V4ES8rRkTY4JTZiX8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kao7RiecGMKI0HKDgx5QzohuL+3MLKHMDpoAYpJPK5xWP2bcbewW2U4qknpxTuxtAw3yQKzqI/S8SieeYmiHE8QjDXp8WHTN8xd/nJsVNZIZkfd+Uko4sBe2MSM3tddUsmyFOOieR9VcUGf7yXUZxgytT1m9xGJ8taA3Vj+Exi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8DeQmgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFA6C4CEE3;
-	Sun, 26 Jan 2025 15:04:19 +0000 (UTC)
+	 MIME-Version; b=m3Ri2gE8wvACxF1ioTNFU6a2XJHNPPMWJKPZKGLZkXqGM07gqKaf2LvhFLv0bZlfT+NHjdxcfdDPu6G+T/4Dhux7N0wN7FGhMe1amqlKCVNVRivJuiS7WtpOdRGJA+WtWoaa4aqXyKB1zlOLwx9fi4hzHUkRmMyif6FGDweaDNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8JS+dyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC5AC4CED3;
+	Sun, 26 Jan 2025 15:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903860;
-	bh=exWkzJfkVjKOIOyw1t73wPTU3bKTvW09Ms07Djw6HGU=;
+	s=k20201202; t=1737903862;
+	bh=dQeHzHZYoPYSdvlxHY9o0oJh29V4ES8rRkTY4JTZiX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8DeQmgWYcXEtrB0Kzwn9H4MoihM5iP31T31abtE5HL2IxPsFkwVzUlnfOACauE17
-	 GXhV/A+Bx9c7OoBZu6uIgwSWMjB+A62BW0dda9yCJK0VxYlvWj8VsX6QNVT7jWYodU
-	 cUFtrSql9TK0q0vsGLDx+xSlEzMGzoXI77KAU2EoM3pqpBQPxlFKXXWgz+vTwsfCBi
-	 vIx+E3L2DNG54hhErQ2x27h/isvKxIlTAC9xJF2nOid8x6r+RJ9kqAhWDTjiZb759M
-	 rpmE9yhLm49xYRK0e9cjFkQZpr8AYQLzeqzIacyk31dt1BneKxZT+16FvNL34oKUBb
-	 mCDBQuNsoqa5g==
+	b=M8JS+dyOzsfUVDYmQda8jEYnzV9AIrgflwS6ahCXFy6+ciqn7ATgf1Vd1TQ0HpsT4
+	 cb310MnxQmySzzsaIVKDI7igJ16vcZeEt755zUWBzb1IYnTSOWlzK7WLXjJW3ubNor
+	 7MmYI5Fyt3+Q9xY8im3+siL+ZVNwiNOSI+p5qjLzW/jUrrHTOMZPIYSbuNbxi2NIZn
+	 io506zxf8ABzZHqogfWhk4O0vWTuh60ZZryPjxLYl5fN3ph6LQrZrGEpyvWzZnqxUT
+	 V6XIWpBcaWGBxbe0n4VWwgbfK/vldOHfen9k1ZJSWqVY6/b6nHq8Y9fT6t1HKcDi8o
+	 1QTZoSPRcKwxw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Mazin Al Haddad <mazin@getstate.dev>,
+	syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	dan.j.williams@intel.com,
-	u.kleine-koenig@baylibre.com,
-	peterz@infradead.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/17] APEI: GHES: Have GHES honor the panic= setting
-Date: Sun, 26 Jan 2025 10:03:48 -0500
-Message-Id: <20250126150353.957794-12-sashal@kernel.org>
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 13/17] Bluetooth: MGMT: Fix slab-use-after-free Read in mgmt_remove_adv_monitor_sync
+Date: Sun, 26 Jan 2025 10:03:49 -0500
+Message-Id: <20250126150353.957794-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150353.957794-1-sashal@kernel.org>
 References: <20250126150353.957794-1-sashal@kernel.org>
@@ -73,70 +69,127 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Borislav Petkov <bp@alien8.de>
+From: Mazin Al Haddad <mazin@getstate.dev>
 
-[ Upstream commit 5c0e00a391dd0099fe95991bb2f962848d851916 ]
+[ Upstream commit 26fbd3494a7dd26269cb0817c289267dbcfdec06 ]
 
-The GHES driver overrides the panic= setting by force-rebooting the
-system after a fatal hw error has been reported. The intent being that
-such an error would be reported earlier.
+This fixes the following crash:
 
-However, this is not optimal when a hard-to-debug issue requires long
-time to reproduce and when that happens, the box will get rebooted after
-30 seconds and thus destroy the whole hw context of when the error
-happened.
+==================================================================
+BUG: KASAN: slab-use-after-free in mgmt_remove_adv_monitor_sync+0x3a/0xd0 net/bluetooth/mgmt.c:5543
+Read of size 8 at addr ffff88814128f898 by task kworker/u9:4/5961
 
-So rip out the default GHES panic timeout and honor the global one.
+CPU: 1 UID: 0 PID: 5961 Comm: kworker/u9:4 Not tainted 6.12.0-syzkaller-10684-gf1cd565ce577 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ mgmt_remove_adv_monitor_sync+0x3a/0xd0 net/bluetooth/mgmt.c:5543
+ hci_cmd_sync_work+0x22b/0x400 net/bluetooth/hci_sync.c:332
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-In the panic disabled (panic=0) case, the error will still be logged to
-dmesg for later inspection and if panic after a hw error is really
-required, then that can be controlled the usual way - use panic= on the
-cmdline or set it in the kernel .config's CONFIG_PANIC_TIMEOUT.
+Allocated by task 16026:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __kmalloc_cache_noprof+0x243/0x390 mm/slub.c:4314
+ kmalloc_noprof include/linux/slab.h:901 [inline]
+ kzalloc_noprof include/linux/slab.h:1037 [inline]
+ mgmt_pending_new+0x65/0x250 net/bluetooth/mgmt_util.c:269
+ mgmt_pending_add+0x36/0x120 net/bluetooth/mgmt_util.c:296
+ remove_adv_monitor+0x102/0x1b0 net/bluetooth/mgmt.c:5568
+ hci_mgmt_cmd+0xc47/0x11d0 net/bluetooth/hci_sock.c:1712
+ hci_sock_sendmsg+0x7b8/0x11c0 net/bluetooth/hci_sock.c:1832
+ sock_sendmsg_nosec net/socket.c:711 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:726
+ sock_write_iter+0x2d7/0x3f0 net/socket.c:1147
+ new_sync_write fs/read_write.c:586 [inline]
+ vfs_write+0xaeb/0xd30 fs/read_write.c:679
+ ksys_write+0x18f/0x2b0 fs/read_write.c:731
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Reported-by: Feng Tang <feng.tang@linux.alibaba.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Feng Tang <feng.tang@linux.alibaba.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Link: https://patch.msgid.link/20250113125224.GFZ4UMiNtWIJvgpveU@fat_crate.local
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Freed by task 16022:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:582
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x59/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2338 [inline]
+ slab_free mm/slub.c:4598 [inline]
+ kfree+0x196/0x420 mm/slub.c:4746
+ mgmt_pending_foreach+0xd1/0x130 net/bluetooth/mgmt_util.c:259
+ __mgmt_power_off+0x183/0x430 net/bluetooth/mgmt.c:9550
+ hci_dev_close_sync+0x6c4/0x11c0 net/bluetooth/hci_sync.c:5208
+ hci_dev_do_close net/bluetooth/hci_core.c:483 [inline]
+ hci_dev_close+0x112/0x210 net/bluetooth/hci_core.c:508
+ sock_do_ioctl+0x158/0x460 net/socket.c:1209
+ sock_ioctl+0x626/0x8e0 net/socket.c:1328
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Reported-by: syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=479aff51bb361ef5aa18
+Tested-by: syzbot+479aff51bb361ef5aa18@syzkaller.appspotmail.com
+Signed-off-by: Mazin Al Haddad <mazin@getstate.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/bluetooth/mgmt.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index dd808cf65c841..83a4b417b27b9 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -155,8 +155,6 @@ static unsigned long ghes_estatus_pool_size_request;
- static struct ghes_estatus_cache *ghes_estatus_caches[GHES_ESTATUS_CACHES_SIZE];
- static atomic_t ghes_estatus_cache_alloced;
- 
--static int ghes_panic_timeout __read_mostly = 30;
--
- static void __iomem *ghes_map(u64 pfn, enum fixed_addresses fixmap_idx)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index dc3921269a5ab..4f116e8c84a00 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5524,10 +5524,16 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
  {
- 	phys_addr_t paddr;
-@@ -858,14 +856,16 @@ static void __ghes_panic(struct ghes *ghes,
- 			 struct acpi_hest_generic_status *estatus,
- 			 u64 buf_paddr, enum fixed_addresses fixmap_idx)
+ 	struct mgmt_rp_remove_adv_monitor rp;
+ 	struct mgmt_pending_cmd *cmd = data;
+-	struct mgmt_cp_remove_adv_monitor *cp = cmd->param;
++	struct mgmt_cp_remove_adv_monitor *cp;
++
++	if (status == -ECANCELED ||
++	    cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
++		return;
+ 
+ 	hci_dev_lock(hdev);
+ 
++	cp = cmd->param;
++
+ 	rp.monitor_handle = cp->monitor_handle;
+ 
+ 	if (!status)
+@@ -5545,6 +5551,10 @@ static void mgmt_remove_adv_monitor_complete(struct hci_dev *hdev,
+ static int mgmt_remove_adv_monitor_sync(struct hci_dev *hdev, void *data)
  {
-+	const char *msg = GHES_PFX "Fatal hardware error";
+ 	struct mgmt_pending_cmd *cmd = data;
 +
- 	__ghes_print_estatus(KERN_EMERG, ghes->generic, estatus);
- 
- 	ghes_clear_estatus(ghes, estatus, buf_paddr, fixmap_idx);
- 
--	/* reboot to log the error! */
- 	if (!panic_timeout)
--		panic_timeout = ghes_panic_timeout;
--	panic("Fatal hardware error!");
-+		pr_emerg("%s but panic disabled\n", msg);
++	if (cmd != pending_find(MGMT_OP_REMOVE_ADV_MONITOR, hdev))
++		return -ECANCELED;
 +
-+	panic(msg);
- }
+ 	struct mgmt_cp_remove_adv_monitor *cp = cmd->param;
+ 	u16 handle = __le16_to_cpu(cp->monitor_handle);
  
- static int ghes_proc(struct ghes *ghes)
 -- 
 2.39.5
 
