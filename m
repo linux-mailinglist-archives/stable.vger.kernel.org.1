@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-110795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA651A1CD0C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:46:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DBC0A1CD11
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C99163D0A
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45DB81885B48
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DC018C03B;
-	Sun, 26 Jan 2025 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7E318E750;
+	Sun, 26 Jan 2025 16:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gAei/ssO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXIabqnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E835D15747D;
-	Sun, 26 Jan 2025 16:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CC218DF6B;
+	Sun, 26 Jan 2025 16:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737909935; cv=none; b=fSO0GsDU+vTUVgNe37Ug1ku+r8glNgp9o/Lh1B6pPE8r1GUq4PL5/0IKEXxgwduvtK2qCd4NcFUq9MkzOZrP0iGg2h4fLNNnGSgDIWq5twTGcT3lp0bdeXvVEKdiX4BJKu7K0HnKmqF6ren8fqTvctqTqjb+DZcHIcGPLcv57eI=
+	t=1737909937; cv=none; b=LtVeR7euC0Ty4z+cDfW0FWpC7OZYsorsJY358m6piwYT3UMoNlzOdklNPsqGctc3Wr5EW+MM73yz2AtuSgEDkLiMRyyNUwIJ6L9fYF7S82XfMjTtx+0FzyRKZRLZTRWwKUjJ4KNjOW4htSwvfbgNJSDsXCW6qNYsVvPEqdgHL8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737909935; c=relaxed/simple;
-	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
+	s=arc-20240116; t=1737909937; c=relaxed/simple;
+	bh=RAMXiLffNFxcps5QIXjr79VU4lUEaMVI9sVYxPmUPc8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oRpDJqZqLCkOS4WYCzu3mVRWP1Kh8JiUiNBIDpjxzVmJ8x+b+Nenu2LxZYgphGcv5LXcscQKtbtnuKExGnaQORJMZBuNSyujy2djDua+B4NJaXuxDkf06zXsm0BgTsoM4ucqORvNMdAtKV0Q6tkEgBCsksssGtLcfsreoWLBOHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gAei/ssO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531B6C4CED3;
-	Sun, 26 Jan 2025 16:45:33 +0000 (UTC)
+	 MIME-Version; b=IGRRtGLrY45R57VBpB/+zVYDV8MNu7AFrOOSzGFhXFCgoWy3L7TvCG4hA7x5oKMf8vY573gK4gdPYm4rOAQB26y8iIh1HkEhBamx9RLgRZ4OwDKgbaKnTgu6xi31WTm9bQCmwwbT+2Q4pymFCJOAyw5wsWqZpypG3gMdevV6fP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXIabqnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA09AC4CEE2;
+	Sun, 26 Jan 2025 16:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737909934;
-	bh=MEe2oo2YjYf2lKVsyVv7MzPAyJxoyZAgPw92+aRPQfc=;
+	s=k20201202; t=1737909937;
+	bh=RAMXiLffNFxcps5QIXjr79VU4lUEaMVI9sVYxPmUPc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAei/ssOrjB4EvHcjK5VKofX3FAO8FOGCjIha8GrB6pKML8Sf6j5St4PKTrYpT2Re
-	 DtqTqxC79NKaUXYTNlnFfWrJeCaDbDvFKO3HaKAYCGfLXoGxElK0ZkuvBhei8A21/M
-	 dBBN4lfKLT8G/DycErV8NIHmcdEn+7uLmqXUzn5CZVcYVV66U7GZdZyy4XDLidyTRQ
-	 GAdciXo4DqFklr4O+Uby3rvegOrSfw/J0jLe1YobJfR4z1Dchajk/kdupBbCKneubO
-	 9jJwaUdPTgmSvUuwSjc3wsijHiuG/UpEzNb9YUjyAmvPD3RlXeCyuL58/h+5JZybZ0
-	 XU/8jB0dwRr5Q==
+	b=JXIabqntlEP3PsL52PkWmIEyxVGu2ajlMU8oDhl/YNlndSr8toxcm1NT3Q1BgzjiN
+	 3FDELS9ECZ/AjjA+lHFhcIAz5iKiER2QnGmUQjsrjMzFcNfft1ajTGLeIpIIBTNMpN
+	 LeIvICb2AuaaTyX9k08Z0ucKQmXXpfb/2guJ7pSQyFdxadcVUXXieHOREHeAqj2v6O
+	 N0hA0SjhDt+1RnfUBFz1JiPHTW717rw2eMYfeIjqx8lYKM0jqZ+gu+CgOjlImV9T9j
+	 MS19PKTSQQgfN42a2bg6MxzZ3UaJVtwKKrSFfvbS0+J5cZPvDv/HOdqy1gP8s2cUwI
+	 wP9wDFnct0iLw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+Cc: Kartik Rajput <kkartik@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fbdev@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.13 5/8] fbdev: omap: use threaded IRQ for LCD DMA
-Date: Sun, 26 Jan 2025 11:45:20 -0500
-Message-Id: <20250126164523.963930-5-sashal@kernel.org>
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	arnd@arndb.de,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 6/8] soc/tegra: fuse: Update Tegra234 nvmem keepout list
+Date: Sun, 26 Jan 2025 11:45:21 -0500
+Message-Id: <20250126164523.963930-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126164523.963930-1-sashal@kernel.org>
 References: <20250126164523.963930-1-sashal@kernel.org>
@@ -68,83 +68,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-[ Upstream commit e4b6b665df815b4841e71b72f06446884e8aad40 ]
+[ Upstream commit 836b341cc8dab680acc06a7883bfeea89680b689 ]
 
-When using touchscreen and framebuffer, Nokia 770 crashes easily with:
+Various Nvidia userspace applications and tests access following fuse
+via Fuse nvmem interface:
 
-    BUG: scheduling while atomic: irq/144-ads7846/82/0x00010000
-    Modules linked in: usb_f_ecm g_ether usb_f_rndis u_ether libcomposite configfs omap_udc ohci_omap ohci_hcd
-    CPU: 0 UID: 0 PID: 82 Comm: irq/144-ads7846 Not tainted 6.12.7-770 #2
-    Hardware name: Nokia 770
-    Call trace:
-     unwind_backtrace from show_stack+0x10/0x14
-     show_stack from dump_stack_lvl+0x54/0x5c
-     dump_stack_lvl from __schedule_bug+0x50/0x70
-     __schedule_bug from __schedule+0x4d4/0x5bc
-     __schedule from schedule+0x34/0xa0
-     schedule from schedule_preempt_disabled+0xc/0x10
-     schedule_preempt_disabled from __mutex_lock.constprop.0+0x218/0x3b4
-     __mutex_lock.constprop.0 from clk_prepare_lock+0x38/0xe4
-     clk_prepare_lock from clk_set_rate+0x18/0x154
-     clk_set_rate from sossi_read_data+0x4c/0x168
-     sossi_read_data from hwa742_read_reg+0x5c/0x8c
-     hwa742_read_reg from send_frame_handler+0xfc/0x300
-     send_frame_handler from process_pending_requests+0x74/0xd0
-     process_pending_requests from lcd_dma_irq_handler+0x50/0x74
-     lcd_dma_irq_handler from __handle_irq_event_percpu+0x44/0x130
-     __handle_irq_event_percpu from handle_irq_event+0x28/0x68
-     handle_irq_event from handle_level_irq+0x9c/0x170
-     handle_level_irq from generic_handle_domain_irq+0x2c/0x3c
-     generic_handle_domain_irq from omap1_handle_irq+0x40/0x8c
-     omap1_handle_irq from generic_handle_arch_irq+0x28/0x3c
-     generic_handle_arch_irq from call_with_stack+0x1c/0x24
-     call_with_stack from __irq_svc+0x94/0xa8
-    Exception stack(0xc5255da0 to 0xc5255de8)
-    5da0: 00000001 c22fc620 00000000 00000000 c08384a8 c106fc00 00000000 c240c248
-    5dc0: c113a600 c3f6ec30 00000001 00000000 c22fc620 c5255df0 c22fc620 c0279a94
-    5de0: 60000013 ffffffff
-     __irq_svc from clk_prepare_lock+0x4c/0xe4
-     clk_prepare_lock from clk_get_rate+0x10/0x74
-     clk_get_rate from uwire_setup_transfer+0x40/0x180
-     uwire_setup_transfer from spi_bitbang_transfer_one+0x2c/0x9c
-     spi_bitbang_transfer_one from spi_transfer_one_message+0x2d0/0x664
-     spi_transfer_one_message from __spi_pump_transfer_message+0x29c/0x498
-     __spi_pump_transfer_message from __spi_sync+0x1f8/0x2e8
-     __spi_sync from spi_sync+0x24/0x40
-     spi_sync from ads7846_halfd_read_state+0x5c/0x1c0
-     ads7846_halfd_read_state from ads7846_irq+0x58/0x348
-     ads7846_irq from irq_thread_fn+0x1c/0x78
-     irq_thread_fn from irq_thread+0x120/0x228
-     irq_thread from kthread+0xc8/0xe8
-     kthread from ret_from_fork+0x14/0x28
+	* odmid
+	* odminfo
+	* boot_security_info
+	* public_key_hash
+	* reserved_odm0
+	* reserved_odm1
+	* reserved_odm2
+	* reserved_odm3
+	* reserved_odm4
+	* reserved_odm5
+	* reserved_odm6
+	* reserved_odm7
+	* odm_lock
+	* pk_h1
+	* pk_h2
+	* revoke_pk_h0
+	* revoke_pk_h1
+	* security_mode
+	* system_fw_field_ratchet0
+	* system_fw_field_ratchet1
+	* system_fw_field_ratchet2
+	* system_fw_field_ratchet3
+	* optin_enable
 
-As a quick fix, switch to a threaded IRQ which provides a stable system.
+Update tegra234_fuse_keepouts list to allow reading these fuse from
+nvmem sysfs interface.
 
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Link: https://lore.kernel.org/r/20241127061053.16775-1-kkartik@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap/lcd_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/tegra/fuse/fuse-tegra30.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/video/fbdev/omap/lcd_dma.c b/drivers/video/fbdev/omap/lcd_dma.c
-index f85817635a8c2..0da23c57e4757 100644
---- a/drivers/video/fbdev/omap/lcd_dma.c
-+++ b/drivers/video/fbdev/omap/lcd_dma.c
-@@ -432,8 +432,8 @@ static int __init omap_init_lcd_dma(void)
+diff --git a/drivers/soc/tegra/fuse/fuse-tegra30.c b/drivers/soc/tegra/fuse/fuse-tegra30.c
+index eb14e5ff5a0aa..e24ab5f7d2bf1 100644
+--- a/drivers/soc/tegra/fuse/fuse-tegra30.c
++++ b/drivers/soc/tegra/fuse/fuse-tegra30.c
+@@ -647,15 +647,20 @@ static const struct nvmem_cell_lookup tegra234_fuse_lookups[] = {
+ };
  
- 	spin_lock_init(&lcd_dma.lock);
- 
--	r = request_irq(INT_DMA_LCD, lcd_dma_irq_handler, 0,
--			"LCD DMA", NULL);
-+	r = request_threaded_irq(INT_DMA_LCD, NULL, lcd_dma_irq_handler,
-+				 IRQF_ONESHOT, "LCD DMA", NULL);
- 	if (r != 0)
- 		pr_err("unable to request IRQ for LCD DMA (error %d)\n", r);
- 
+ static const struct nvmem_keepout tegra234_fuse_keepouts[] = {
+-	{ .start = 0x01c, .end = 0x0c8 },
+-	{ .start = 0x12c, .end = 0x184 },
++	{ .start = 0x01c, .end = 0x064 },
++	{ .start = 0x084, .end = 0x0a0 },
++	{ .start = 0x0a4, .end = 0x0c8 },
++	{ .start = 0x12c, .end = 0x164 },
++	{ .start = 0x16c, .end = 0x184 },
+ 	{ .start = 0x190, .end = 0x198 },
+ 	{ .start = 0x1a0, .end = 0x204 },
+-	{ .start = 0x21c, .end = 0x250 },
+-	{ .start = 0x25c, .end = 0x2f0 },
++	{ .start = 0x21c, .end = 0x2f0 },
+ 	{ .start = 0x310, .end = 0x3d8 },
+-	{ .start = 0x400, .end = 0x4f0 },
+-	{ .start = 0x4f8, .end = 0x7e8 },
++	{ .start = 0x400, .end = 0x420 },
++	{ .start = 0x444, .end = 0x490 },
++	{ .start = 0x4bc, .end = 0x4f0 },
++	{ .start = 0x4f8, .end = 0x54c },
++	{ .start = 0x57c, .end = 0x7e8 },
+ 	{ .start = 0x8d0, .end = 0x8d8 },
+ 	{ .start = 0xacc, .end = 0xf00 }
+ };
 -- 
 2.39.5
 
