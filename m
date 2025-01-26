@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-110770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B603A1CC62
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:08:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB20A1CC44
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703DB3AD642
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB2A188B2F6
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2865323A573;
-	Sun, 26 Jan 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C837B23A59E;
+	Sun, 26 Jan 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvoWXQIY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VkWepPe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D428E23A56B;
-	Sun, 26 Jan 2025 15:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDDC23A58F;
+	Sun, 26 Jan 2025 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737904133; cv=none; b=nbxJNfVbXz0oX7c1Hc388727xUOvg74ziKoRSnA8YWJ23osKWIGwfSOxq+eGmMdpnv2oRkpKclq6MwPXSxpsjcyvcFtAFYlFki8PE4froiHxrjh6CyDc8P+Yf3+TsWDgMG7Z0RKeddgr/kQwvwLoiHcbQt/8Nh1T/tsbum4Pj9Q=
+	t=1737904135; cv=none; b=URu/iSWx1widbxuTLexQWm/sc4maJYMJCjDUL8A2Kch+xSLyS0MxdG62wC/zFHBmGQMQjLBXIWtv29HIH6AUI5SvedwIhb61x8nq6T+zSrBhkk+xy04psN3yNber+F1xsq7hFyUVTQkXJv23N7dNnlP7cvO6I/6xFPlGgXbOMHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737904133; c=relaxed/simple;
-	bh=WvXfEVf4L9LMLOW/knb5Zil35y4vEWnb1a4ozLDSwOQ=;
+	s=arc-20240116; t=1737904135; c=relaxed/simple;
+	bh=UdyZ0Kn1QvJ3WKER+4lf5+R4p9p2L/XL7W7XU3BjtR8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W0uWa7DAApV+dFIbMVXcvJSCLmYyemwLMm8d8CEAm9YPWwAKfX1h7OyHzI87nDWCD6n/osCEA0GVIrqldltTG/arnavc36/pUdnvsfrwzkJXFlb9Wl5PbhAE7BaY1YeKfZDM6cVEFI7dROCCb7zsJ+vw+NSdvD7sMkHM94SVEPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvoWXQIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86129C4CED3;
-	Sun, 26 Jan 2025 15:08:52 +0000 (UTC)
+	 MIME-Version; b=FVhDT5Mni/n+ZqMY1+DXK9o2JZQWYcrz16W7EUtIxUgDm1jVje+msSdTmI0w12MUvOTui88+rmrlQVwvN9YEy+mhPjwZjK0H1ZkIBVM7OPMFAV7ragBI+ZlYUmir3Cp53QX1Lf1BjfBNawERa5MGb+dJMefkSQg2ZyNcti9PNNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VkWepPe7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F64C4CEE2;
+	Sun, 26 Jan 2025 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737904133;
-	bh=WvXfEVf4L9LMLOW/knb5Zil35y4vEWnb1a4ozLDSwOQ=;
+	s=k20201202; t=1737904135;
+	bh=UdyZ0Kn1QvJ3WKER+4lf5+R4p9p2L/XL7W7XU3BjtR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvoWXQIYuFilyJpGHRtauDk8QSjGcYcNNvE2tFb5/7yyw4LeE+emt6wDxpXt/VIhM
-	 Z7g9nHhfODjUTXu/vVZglxRA/N3Jn3NBDKJ3mcyijlXh0p+81lPvvLSGqHLY6Up/c9
-	 fm9TfgLeomfm0woxB8FbWGZ+Ct+pn0rKxztiH9k8RahfxQ8nYfaHifL54OFptSyiho
-	 /BYQcJutg7HXpKDI9kBIc6JQH3jno0EjRgb1JQeolE2FzhFfgknleGNrOZyXeyixsq
-	 HN8qJemdUPcl9B8TecL4xR+PkynnpamsHOqwTAUL6b857PI+SRYQZJCvMLbr8W52Do
-	 XETPW5jaj3yKw==
+	b=VkWepPe7O+u+cQ1jHPjgbLri/ZULV4pxwPbwPivYmA8LQip/u9GMPBWfazOfE17F6
+	 7v4oqRS7bLvW/7TVN3Ht0S0q41MWyX5NS/rV7KooQJatpPQCReGGsqMaZicn4rCVI2
+	 uCnau1AAjB5hbkI4sfB7gwtO3TN+qNUBjAMrnsr5v8+38/sLqjHxJptjNiTRxIewR2
+	 7TDVg+txPB4CtITZfuYQxpcKq8BW3uSkA5ksMmMQ5CNgJe+Ax4UpQmptSQIWDwixlK
+	 1phnkDMcjt5eHPSY2TVx09u+N/4ddy0YHCLgHX+txEs3qSDZXtdnCz+wxvncILIlEJ
+	 HwM3wbgJx/fKw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	djrscally@gmail.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 5/9] platform/x86: int3472: Check for adev == NULL
-Date: Sun, 26 Jan 2025 10:08:33 -0500
-Message-Id: <20250126150839.962669-5-sashal@kernel.org>
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 6/9] ASoC: soc-pcm: don't use soc_pcm_ret() on .prepare callback
+Date: Sun, 26 Jan 2025 10:08:34 -0500
+Message-Id: <20250126150839.962669-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150839.962669-1-sashal@kernel.org>
 References: <20250126150839.962669-1-sashal@kernel.org>
@@ -61,61 +64,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.74
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c ]
+[ Upstream commit 301c26a018acb94dd537a4418cefa0f654500c6f ]
 
-Not all devices have an ACPI companion fwnode, so adev might be NULL. This
-can e.g. (theoretically) happen when a user manually binds one of
-the int3472 drivers to another i2c/platform device through sysfs.
+commit 1f5664351410 ("ASoC: lower "no backend DAIs enabled for ... Port"
+log severity") ignores -EINVAL error message on common soc_pcm_ret().
+It is used from many functions, ignoring -EINVAL is over-kill.
 
-Add a check for adev not being set and return -ENODEV in that case to
-avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
+The reason why -EINVAL was ignored was it really should only be used
+upon invalid parameters coming from userspace and in that case we don't
+want to log an error since we do not want to give userspace a way to do
+a denial-of-service attack on the syslog / diskspace.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+So don't use soc_pcm_ret() on .prepare callback is better idea.
+
+Link: https://lore.kernel.org/r/87v7vptzap.wl-kuninori.morimoto.gx@renesas.com
+Cc: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87bjxg8jju.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/int3472/discrete.c | 3 +++
- drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
- 2 files changed, 6 insertions(+)
+ sound/soc/soc-pcm.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
-index e33c2d75975cf..d56f79043f5e2 100644
---- a/drivers/platform/x86/intel/int3472/discrete.c
-+++ b/drivers/platform/x86/intel/int3472/discrete.c
-@@ -284,6 +284,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
- 	struct int3472_cldb cldb;
- 	int ret;
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 511446a30c057..60248a6820aac 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -38,7 +38,6 @@ static inline int _soc_pcm_ret(struct snd_soc_pcm_runtime *rtd,
+ 	switch (ret) {
+ 	case -EPROBE_DEFER:
+ 	case -ENOTSUPP:
+-	case -EINVAL:
+ 		break;
+ 	default:
+ 		dev_err(rtd->dev,
+@@ -902,7 +901,13 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
+ 	}
  
-+	if (!adev)
-+		return -ENODEV;
-+
- 	ret = skl_int3472_fill_cldb(adev, &cldb);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
-diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
-index 1e107fd49f828..81ac4c6919630 100644
---- a/drivers/platform/x86/intel/int3472/tps68470.c
-+++ b/drivers/platform/x86/intel/int3472/tps68470.c
-@@ -152,6 +152,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
- 	int ret;
- 	int i;
+ out:
+-	return soc_pcm_ret(rtd, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
  
-+	if (!adev)
-+		return -ENODEV;
+ /* PCM prepare ops for non-DPCM streams */
+@@ -914,6 +919,13 @@ static int soc_pcm_prepare(struct snd_pcm_substream *substream)
+ 	snd_soc_dpcm_mutex_lock(rtd);
+ 	ret = __soc_pcm_prepare(rtd, substream);
+ 	snd_soc_dpcm_mutex_unlock(rtd);
 +
- 	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
- 	if (n_consumers < 0)
- 		return n_consumers;
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
+ 	return ret;
+ }
+ 
+@@ -2461,7 +2473,13 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
+ 		be->dpcm[stream].state = SND_SOC_DPCM_STATE_PREPARE;
+ 	}
+ 
+-	return soc_pcm_ret(fe, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
+ 
+ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
+@@ -2501,7 +2519,13 @@ static int dpcm_fe_dai_prepare(struct snd_pcm_substream *substream)
+ 	dpcm_set_fe_update_state(fe, stream, SND_SOC_DPCM_UPDATE_NO);
+ 	snd_soc_dpcm_mutex_unlock(fe);
+ 
+-	return soc_pcm_ret(fe, ret);
++	/*
++	 * Don't use soc_pcm_ret() on .prepare callback to lower error log severity
++	 *
++	 * We don't want to log an error since we do not want to give userspace a way to do a
++	 * denial-of-service attack on the syslog / diskspace.
++	 */
++	return ret;
+ }
+ 
+ static int dpcm_run_update_shutdown(struct snd_soc_pcm_runtime *fe, int stream)
 -- 
 2.39.5
 
