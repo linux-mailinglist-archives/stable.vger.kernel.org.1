@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-110615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A56A1CA7F
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:26:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD343A1CAA6
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D06F1882A15
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 989AD3AAE62
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A27E419C566;
-	Sun, 26 Jan 2025 15:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224041DE896;
+	Sun, 26 Jan 2025 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BglAlWzv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2AbKkaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFE019992C;
-	Sun, 26 Jan 2025 15:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF6419D892;
+	Sun, 26 Jan 2025 15:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903683; cv=none; b=L+GVoDXFzrVDZHNuML87/zEU+vDrZj9aTHj+/ZUbfL7Pw1Bo629bR0J1SEJjjfUjCGQUTJrN3+VhMl8/h0GqVnAG5XBl/sx/gtOQGAktqjX/2DtHYKvUDg1QGIoM1llrkE+PopCxa+hPhMuQh7D9OImgYLzgguaIx3L8C/SCPw0=
+	t=1737903684; cv=none; b=J/EkWM4QynuDw/UBRnuyDSMaTy3puR9uf3CBLUdMlJYuNzptN3Ozb0NCsJwyQq29F6Xza2YJwrp3i8q8nGAVeG/HTklN2zDx7Mc5vYzW/VXv/AQjyNlC49hINxW39z3JkQfoLgurOa51BX/rUC79xvYF56rBHwTaoDy9Z3Kn3HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903683; c=relaxed/simple;
-	bh=R3aFH1ESDnx8HbJ794vbnL2NlubjNeI0tizQIxY15Zk=;
+	s=arc-20240116; t=1737903684; c=relaxed/simple;
+	bh=MH9EErzQ/ORF1jDEw+hxeb4L95Si43oWN24TKIPfhYU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ndiblQ27i8gnDznZOkWumoG3b3HNYe3eV5BiOZbB6YXmU0WD5wwknSjdQbyVgnkJJDxwzGNLX66U928IdS+gABB6XJ7ESKKp0f2Vtcs0H3FFwxrQsCivSlJCyHG4ixFj2m1cF3EElvUJwOEky7bImbkCMItbum4Xdt6vN7h0ODo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BglAlWzv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFD1C4CEE2;
-	Sun, 26 Jan 2025 15:01:21 +0000 (UTC)
+	 MIME-Version; b=BGvELVUBz1qkwYlfVNeDQeCPh3sbe8uhejgZu6s8LILxOLndOahQgEJe7zpgypCVIOi444AxjLTHmJMhJDZ+pqVEptw9+KyyS6H/XAtlXD1bditJrNvhRzypsxBiHN/8qsv/JafJcFzr6nWm5IxjSnQqYDbBcAQIM9hoX1ZG4vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2AbKkaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE4DC4CED3;
+	Sun, 26 Jan 2025 15:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903682;
-	bh=R3aFH1ESDnx8HbJ794vbnL2NlubjNeI0tizQIxY15Zk=;
+	s=k20201202; t=1737903684;
+	bh=MH9EErzQ/ORF1jDEw+hxeb4L95Si43oWN24TKIPfhYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BglAlWzvcIyLfbpKFMrXilhydofpFOHHt3HgDWx4neiQNYpyC7v7RAe8jqNiWWQn7
-	 PpNmLZ1c1tEIUdbx1reBt3+5yWQeWCKckyMyzNlHo3K0Nb+WcIGGrL6bTsD2FF8XIy
-	 EpfDZcIjS/ovx7ad4xjjjtxu+qP+XHXazFECliQUiCy2jLZjyat8y13kkTpij/+tjS
-	 2Y6jaq1p3tcD/ctgMLxApK0nMXHqE5PJ+3TT1zyJhkRROA3j7GnC8qMmTu4iAuM5yq
-	 m0QCNLLZ68WZuCONJPJFZJX4/qIaNmmlCBMUbHT10ddmqNBEzMxrdKkkWSEWQFOz1o
-	 9fotFoKNSWOXA==
+	b=E2AbKkaV8oaSce7N5nOvu4nsKkWusRjbZ0hATMrY7WmG9ve/a74iSW0VGK2MltACW
+	 uspzVf8/c2phIyQzK4D45y8bDu7/gQokSBWpyqvXkVYjIbq6aroVGKoUfnNMJhNyA/
+	 /eunZdYJsOsDexQHyNqH01KYfT1hb1ztOVJWlWSQdWrwU7GjHmFrdt4t8K2/sMfmbH
+	 btkylbxT0I6tkvQqGQH+oN3PuaZ/Cl/v38Vb3fV8aw4x+0aDz1aVPA4h3K9NQLTgqZ
+	 ac/p2vltgK+u8LWMYZ3f3xxpKh05WtrdqQ3bcdlES/6BxSHYh+xyKuJkCPEwG8SSFg
+	 4sAeQpCbUHkXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Youwan Wang <youwan@nfschina.com>,
+	Enze Xie <enze@nfschina.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	igozlan@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 14/35] net/mlx5: HWS, num_of_rules counter on matcher should be atomic
-Date: Sun, 26 Jan 2025 10:00:08 -0500
-Message-Id: <20250126150029.953021-14-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 15/35] HID: multitouch: Add quirk for Hantick 5288 touchpad
+Date: Sun, 26 Jan 2025 10:00:09 -0500
+Message-Id: <20250126150029.953021-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150029.953021-1-sashal@kernel.org>
 References: <20250126150029.953021-1-sashal@kernel.org>
@@ -75,113 +68,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Youwan Wang <youwan@nfschina.com>
 
-[ Upstream commit 61fb92701b8ac9174857c417cfa988adc24e32c2 ]
+[ Upstream commit b5e65ae557da9fd17b08482ee44ee108ba636182 ]
 
-Rule counter in matcher's struct is used in two places:
+This device sometimes doesn't send touch release signals when moving
+from >=2 fingers to <2 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-1. As heuristics to decide when the number of rules have crossed a
-certain percentage threshold and the matcher should be resized.
-We don't mind here if the number will be off by 1-2 due to concurrency.
-
-2. When destroying matcher, the counter value is checked and the
-user is warned if it is not 0. Here we lock all the queues, so the
-counter will be correct.
-
-We don't need to always have *exact* number, but we do need this
-number to not be corrupted, which is what is happening when the
-counter isn't atomic, due to update by different threads.
-
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250102181415.1477316-10-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Enze Xie <enze@nfschina.com>
+Signed-off-by: Youwan Wang <youwan@nfschina.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/steering/hws/bwc.c       | 17 +++++++++++------
- .../mellanox/mlx5/core/steering/hws/bwc.h       |  2 +-
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-index baacf662c0ab8..ae2849cf4dd49 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-@@ -152,6 +152,8 @@ mlx5hws_bwc_matcher_create(struct mlx5hws_table *table,
- 	if (!bwc_matcher)
- 		return NULL;
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 65023bfe30ed2..85c5d4a2d006d 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2314,6 +2314,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, USB_VENDOR_ID_SIS_TOUCH,
+ 			HID_ANY_ID) },
  
-+	atomic_set(&bwc_matcher->num_of_rules, 0);
++	/* Hantick */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			   I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288) },
 +
- 	/* Check if the required match params can be all matched
- 	 * in single STE, otherwise complex matcher is needed.
- 	 */
-@@ -199,10 +201,12 @@ int mlx5hws_bwc_matcher_destroy_simple(struct mlx5hws_bwc_matcher *bwc_matcher)
- 
- int mlx5hws_bwc_matcher_destroy(struct mlx5hws_bwc_matcher *bwc_matcher)
- {
--	if (bwc_matcher->num_of_rules)
-+	u32 num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
-+
-+	if (num_of_rules)
- 		mlx5hws_err(bwc_matcher->matcher->tbl->ctx,
- 			    "BWC matcher destroy: matcher still has %d rules\n",
--			    bwc_matcher->num_of_rules);
-+			    num_of_rules);
- 
- 	mlx5hws_bwc_matcher_destroy_simple(bwc_matcher);
- 
-@@ -309,7 +313,7 @@ static void hws_bwc_rule_list_add(struct mlx5hws_bwc_rule *bwc_rule, u16 idx)
- {
- 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
- 
--	bwc_matcher->num_of_rules++;
-+	atomic_inc(&bwc_matcher->num_of_rules);
- 	bwc_rule->bwc_queue_idx = idx;
- 	list_add(&bwc_rule->list_node, &bwc_matcher->rules[idx]);
- }
-@@ -318,7 +322,7 @@ static void hws_bwc_rule_list_remove(struct mlx5hws_bwc_rule *bwc_rule)
- {
- 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
- 
--	bwc_matcher->num_of_rules--;
-+	atomic_dec(&bwc_matcher->num_of_rules);
- 	list_del_init(&bwc_rule->list_node);
- }
- 
-@@ -704,7 +708,8 @@ hws_bwc_matcher_rehash_size(struct mlx5hws_bwc_matcher *bwc_matcher)
- 	 * Need to check again if we really need rehash.
- 	 * If the reason for rehash was size, but not any more - skip rehash.
- 	 */
--	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher, bwc_matcher->num_of_rules))
-+	if (!hws_bwc_matcher_rehash_size_needed(bwc_matcher,
-+						atomic_read(&bwc_matcher->num_of_rules)))
- 		return 0;
- 
- 	/* Now we're done all the checking - do the rehash:
-@@ -797,7 +802,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 	}
- 
- 	/* check if number of rules require rehash */
--	num_of_rules = bwc_matcher->num_of_rules;
-+	num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
- 
- 	if (unlikely(hws_bwc_matcher_rehash_size_needed(bwc_matcher, num_of_rules))) {
- 		mutex_unlock(queue_lock);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-index 0b745968e21e1..655fa7a22d84f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.h
-@@ -19,7 +19,7 @@ struct mlx5hws_bwc_matcher {
- 	u8 num_of_at;
- 	u16 priority;
- 	u8 size_log;
--	u32 num_of_rules; /* atomically accessed */
-+	atomic_t num_of_rules;
- 	struct list_head *rules;
- };
+ 	/* Generic MT device */
+ 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_MULTITOUCH, HID_ANY_ID, HID_ANY_ID) },
  
 -- 
 2.39.5
