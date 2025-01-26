@@ -1,117 +1,139 @@
-Return-Path: <stable+bounces-110437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9406A1C458
-	for <lists+stable@lfdr.de>; Sat, 25 Jan 2025 17:32:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B688BA1C61A
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 03:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF3A7A3ED2
-	for <lists+stable@lfdr.de>; Sat, 25 Jan 2025 16:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D54166889
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 02:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056513A8CB;
-	Sat, 25 Jan 2025 16:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776F9186E54;
+	Sun, 26 Jan 2025 02:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="COhqfYvT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AESrKIKP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2488018E2A;
-	Sat, 25 Jan 2025 16:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840A9288DA;
+	Sun, 26 Jan 2025 02:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737822740; cv=none; b=MhmGFSOwow757W/YJXR1+yTHzU7wNHWZcF2Us0pWFogRFm11vskbT6b5SjLhDwVjJSAsmZFzhQw3zDOV0DJky5qSiXc6LNIhRo85Eq03BQ0jnoSbkBg3NU273L3SJ0R1V8yg7yNwT98gMBtw8am8CwXSrNcEo3qdRC/PIobJxTw=
+	t=1737857308; cv=none; b=crZUGwErN+vfiyrzEmMPeZvMCd9AwJ+OYwOl228cEmpbXWzUKtb5uwjBVPN5NhoQOmAXb0EaU/rxhNcpoRiOHanK2DdMji2o+9GyIuM6QPc6/2dNVE57ytIUnHLH95fcocrSJdEzFnbwmZ+ajO9cdSkrf4POWjSFuDOeFedCnHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737822740; c=relaxed/simple;
-	bh=agl+h4mfWoesS+L4jbjlZohaO7qzQP48q9807FlKlWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R62MGcHZ88pN+2YBqyL5oomEmElB0y2sC6931fr3abDq0o+azRpeN59/x+yKv8IuLEoGKHfoyUpvwsBpHgyLmp/DR1y3lt5Tc3LkhiNZBWWUPBx2NUH1/QXcklbyu7NuimAw5hRtLgErDPwk/dEK0pcQtWcydRZPgviJxNmDzw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=COhqfYvT; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so533359266b.3;
-        Sat, 25 Jan 2025 08:32:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737822737; x=1738427537; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ugy2QSb0uIyKELP1ousTbxuIfCCnVKUEMqsw6Hi8uGA=;
-        b=COhqfYvT8Rj2YB4yuRXWgyj0uYmgrZ3BsLsueDguZNGUZQeXkbNvHlKqY64R8w8akf
-         7O6e+ySIV7s+Xk9WVLokRwR1utrZ8iScatWIcVQzEMSw/xS9itKw+pVKq9Y0ED8mY13y
-         zlokpZS5YXuOlIxia2X61NBi3DFJan6NfLpQt2BX96cbo1MdMn/OO/BWSxm2ObqYo3BK
-         4owhIyh5YE+riJnt/7n3+Bay/SBqRzybc5jRm8R0K9gPEsZC+QZjMao5hpIPqj8Pl+eE
-         A576Sg4oy8vd7+SDmiGPXcKWxRFXBcVoH1qTwk3WvzQWTgEMVQsjW6/LPibGm2QrSIhz
-         FZDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737822737; x=1738427537;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ugy2QSb0uIyKELP1ousTbxuIfCCnVKUEMqsw6Hi8uGA=;
-        b=CL9Hc4vlra7Zm7yWO+xC5oIdbQzlwp8rSeOWBCk8oPFA1ZQTu/JMMLrE3gEPebdn61
-         SouOAh6IUZ1hB/IEn4O9fFWEoUMR0Yyvjlu1ePTY93PkrMCC22JNnIYj3Wz0TYoDiJyM
-         82HDSxMzIN51wQ5UPhF7OQTmKU/LU/kal4n88xfRdP9scr+npo2k3mNX2f5FiQsi/Bl/
-         YOe47kr2xAtM1oxuEc0bLvy2m9UrC6x+o9rmc7uS9TNKke0emLbyFwtYjDFiRu5hRunw
-         gpkBrWaVe7T8iQCWqW/C2NJi+Ur1A26du/uWuq6J3fw9M+w+kEjjPsvREJ1hJMdLzAXJ
-         ROiw==
-X-Forwarded-Encrypted: i=1; AJvYcCVomFmN6FJykB7Zq7BKPluPkjelucTLm0HjjSjmQgwArERTi62iHKWIO0ROAQRenvf4XOm/tLQa2CJkDSVu@vger.kernel.org, AJvYcCXOPZtCiviwqtuaJCK+vC98C6Ez4z3Z59xhBgNA9Dlap5IfanplCagBZ7zoSk6b/hkLgGEUWCd3@vger.kernel.org, AJvYcCXP0qo1WDZ8DwWjyVw8vn35z4Ub5k8Gq9Jsx8DlYekA63ZOMWBUx/lMDttbT5XDp5ODO+tW015HYj0OErux@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7ETQvZVo1ngZSS+eD24FAsVLG2hgByD7sZVrHTodSN1NsluMB
-	6CVGynoulXhKWcGDTQEtesbEmMexHw90aFyMOFPhxy4QTYYZlIm+
-X-Gm-Gg: ASbGncuzIdon8wVVw2gIHCqoP2D6QuXnZkA8QH8QNVwImmf+/jI0PkDs7IR2e7ytmgO
-	PQdwx9GyIjgBoWvdohs+o2ZmC5gqTGNAdPm2z4hptb3irHKALZ7VBnvrCCJqeDLcbBOwwaoZLXe
-	B/cO+FvFFLjflGAIRETKs4hK3oUnH6KTMFV0SMcdzg/iY45IfIN/j3Ie4VQqqcYXJ5Lhae3vGUE
-	ETRp2y4Y8NLwCoDRnye8LXqhBtC9Hf6u0HMMEY8XFhOU0luZ0mDhjEjHDgtKpbCafPzgnKpRcPC
-	ugVlya85lJOuocCDlXeVNUgB03AymaNfoqP9FfsL4qqwmOVBnQxwMT4ykw==
-X-Google-Smtp-Source: AGHT+IEBCc+S+yKbpQ1xLe36qobhxtaaWs5E8H3claBAHtwwCMI0d8ZKQPtEi/imxO0V5ykzK8ZACQ==
-X-Received: by 2002:a17:907:d1b:b0:aa6:6fa5:65b3 with SMTP id a640c23a62f3a-ab38b3c495bmr3111650766b.47.1737822737091;
-        Sat, 25 Jan 2025 08:32:17 -0800 (PST)
-Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab675e8a72csm308683566b.79.2025.01.25.08.32.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jan 2025 08:32:16 -0800 (PST)
-Message-ID: <f838ff5d-a80c-413b-b32b-766ec4667892@gmail.com>
-Date: Sat, 25 Jan 2025 17:32:15 +0100
+	s=arc-20240116; t=1737857308; c=relaxed/simple;
+	bh=PxZHvhZ+BkqSVTeiAASewWj8FToiphcx8DljG3rQHjE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7I1ubUqGpxXQqvsU6Cln2jVk1NGIWEE+68Zlzxhr97wnnwLmpceNrzjDafnlThja9svGoFzzebXWeo+LasNfn9DguxUBCC4rIlxaJS5N+P8MJUMPx2AEHsyFtgpvm2Xo65wVg9QkWI5OapvQwMqFCqRar3Wk3gfTBcTfRAiD7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AESrKIKP; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737857306; x=1769393306;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=PxZHvhZ+BkqSVTeiAASewWj8FToiphcx8DljG3rQHjE=;
+  b=AESrKIKPuqlJtwwdpIy+un9nEbjIlvKiMZKN+z35hkx0tFtC/oCbTWMA
+   3P8M4OMXISEBGcaY7kZtSX0dJgVTrhh4aaXHc9ZFpQ9etLtKV05lJ2mfN
+   pDzsmipTEUdSFsHH8msTu30/xTb7sUO8huZ7cUt+4I0rp/QE/Tk9BH7ki
+   YmF502SeyrzwlCzqf4kk+QE9ehWuO7XeCeCtnCQuvPP82kVNdLElBvwpv
+   uYpmxCbcuGI2+1mGkoL54pix72Y9ElBJbmyklkAoF4jHjpy/Q6bvQ27h6
+   PLrLnHXtzgRZ1v/AZYbX4YkuW7UAeKbKNJvPLWMS45W+fVNg61i47sq2e
+   w==;
+X-CSE-ConnectionGUID: wP27JdLeQxSl1QEmWqAu+A==
+X-CSE-MsgGUID: yJ2qYAolT2Wqu6/b/1ikkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11326"; a="49747707"
+X-IronPort-AV: E=Sophos;i="6.13,235,1732608000"; 
+   d="scan'208";a="49747707"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2025 18:08:26 -0800
+X-CSE-ConnectionGUID: kvRKHREcStaAkmQmt6yIrg==
+X-CSE-MsgGUID: y1vmS12rTg6NeShcYlkGyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,235,1732608000"; 
+   d="scan'208";a="108093311"
+Received: from osv-sh-dnp01.sh.intel.com ([10.239.53.113])
+  by orviesa006.jf.intel.com with ESMTP; 25 Jan 2025 18:08:24 -0800
+From: Aubrey Li <aubrey.li@linux.intel.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Koba Ko <kobak@nvidia.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Matthew R . Ochs" <mochs@nvidia.com>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aubrey Li <aubrey.li@linux.intel.com>,
+	Shi Liu <aurelianliu@tencent.com>,
+	All applicable <stable@vger.kernel.org>
+Subject: [PATCH] ACPI: PRM: Remove unnecessary strict handler address checks
+Date: Sun, 26 Jan 2025 10:22:50 +0800
+Message-ID: <20250126022250.3014210-1-aubrey.li@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] firmware: qcom: uefisecapp: fix efivars registration race
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
- Elliot Berman <quic_eberman@quicinc.com>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250120151000.13870-1-johan+linaro@kernel.org>
-Content-Language: en-US
-From: Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <20250120151000.13870-1-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/20/25 4:10 PM, Johan Hovold wrote:
-> Since the conversion to using the TZ allocator, the efivars service is
-> registered before the memory pool has been allocated, something which
-> can lead to a NULL-pointer dereference in case of a racing EFI variable
-> access.
-> 
-> Make sure that all resources have been set up before registering the
-> efivars.
-> 
-> Fixes: 6612103ec35a ("firmware: qcom: qseecom: convert to using the TZ allocator")
-> Cc: stable@vger.kernel.org	# 6.11
-> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
+Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
+handler and context") added unnecessary strict handler address checks,
+caused the PRM module to fail in translating memory error addresses.
 
-Looks good to me.
+Both static data buffer address and acpi parameter buffer address may
+be NULL if they are not needed, as described in section 4.1.2 PRM Handler
+Information Structure of Platform Runtime Mechanism specification [1].
 
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
+Here are two examples from real hardware:
+
+----PRMT.dsl----
+
+- staic data address is not used
+[10Ch 0268   2]                     Revision : 0000
+[10Eh 0270   2]                       Length : 002C
+[110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-2A50D4AA109B
+[120h 0288   8]              Handler address : 0000000065CE51F4
+[128h 0296   8]           Satic Data Address : 0000000000000000
+[130h 0304   8]       ACPI Parameter Address : 000000006522A718
+
+- ACPI parameter address is not used
+[1B0h 0432   2]                     Revision : 0000
+[1B2h 0434   2]                       Length : 002C
+[1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-42E7DE1899A5
+[1C4h 0452   8]              Handler address : 0000000065C567C8
+[1CCh 0460   8]           Satic Data Address : 000000006113FB98
+[1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
+
+Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM handler and context")
+Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
+Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
+---
+ drivers/acpi/prmt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
+index 747f83f7114d..e549914a636c 100644
+--- a/drivers/acpi/prmt.c
++++ b/drivers/acpi/prmt.c
+@@ -287,9 +287,7 @@ static acpi_status acpi_platformrt_space_handler(u32 function,
+ 		if (!handler || !module)
+ 			goto invalid_guid;
+ 
+-		if (!handler->handler_addr ||
+-		    !handler->static_data_buffer_addr ||
+-		    !handler->acpi_param_buffer_addr) {
++		if (!handler->handler_addr) {
+ 			buffer->prm_status = PRM_HANDLER_ERROR;
+ 			return AE_OK;
+ 		}
+-- 
+2.34.1
+
 
