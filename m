@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-110777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF522A1CC5C
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:08:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B271A1CC55
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4479A1619FB
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328A31884634
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C510823F260;
-	Sun, 26 Jan 2025 15:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0AD2451DF;
+	Sun, 26 Jan 2025 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlFHeFzS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="euhhqIeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA1718DF6B;
-	Sun, 26 Jan 2025 15:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8527E2451D6;
+	Sun, 26 Jan 2025 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737904154; cv=none; b=Uv/bymLWjeoIc2mIYB2Xiv93QGj2nWlVWPuUmo4lNxhX5QX59u/fXBISZsk07Q6EikFCU+nFdY9pqNd//L2zhOxVo7y1yWQF1CrgY6c8TaPpThok/lU3Zz3axMX0hjGzn7moo9o8xPUoBKBHJlmbAT4l1M0yu68miXCYQBWc/1c=
+	t=1737904155; cv=none; b=hM7oddd43fts1CNvL91n3Pg2tP7W3qARBtA9pN27xCN3nEC0r4ZpO4tLQY2VSyjjDHgkAHFE4IIOs4uadSnq5YEpw8CUr/NhyFUGhxsn1r3qxwjzCKX8XSgruTXWfLTcD+JQyDUt5qpjPfAmx33vrhiXUOeTaZvdapiNvV3AClY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737904154; c=relaxed/simple;
-	bh=4gxp0Us1gN/S3Gs0f8tqzA1wk8Sit8ldVbqMDRDe/5M=;
+	s=arc-20240116; t=1737904155; c=relaxed/simple;
+	bh=kSW9BxWYGLCWm0wPaJ9MIvqC55F0Loeq4teWutAwFjE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CTlB73cOxKqvWcZnzdiLnJ0mZ5uf9RwubcQi55k+rUADDZC74FFAVCSOsBTl3I4V774ZUJFbXsnZpmjOBnyqF7DmvgM5xfaYn5VxJ/PKMDMtwJmxYyUVbRDNv6spAvFZ6lpEiaJDJWeyfTOjDg5t0aUxdlV5luj12tl+74xho4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlFHeFzS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83920C4CEE2;
-	Sun, 26 Jan 2025 15:09:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KpyWB1Glkc5bKryv5wyXEoH1dpsaOMPLIqtJ0RPgaxVaHqYz+/T+Dy7xS+XQshqMLzsE03hFjTU12vPTNdL4dPgJsEOSTqvDZruy03vVY/QHBqsHpjgG2bcGLVibc6HnZ082b+tlh++ukuynoQS7TSAANUQJ3XYXkRcoKYnLmEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=euhhqIeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913B3C4CEE4;
+	Sun, 26 Jan 2025 15:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737904154;
-	bh=4gxp0Us1gN/S3Gs0f8tqzA1wk8Sit8ldVbqMDRDe/5M=;
+	s=k20201202; t=1737904155;
+	bh=kSW9BxWYGLCWm0wPaJ9MIvqC55F0Loeq4teWutAwFjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlFHeFzSJbfWv611mDiY2k1NJ8u2mq42nxMAwknG6go/po2QJbGB2YLfnjf8nntyg
-	 d4+QnczWeaO+05n2gu8FPboT5XJcZp+pLDxayddaTth/6GadmoRWsl6ojTmttkHo/d
-	 8R62nG8WuMkkZq/j2JJW4gT0xiC+0gQSUSCsSYslBcuZ8PCIuwsGV9oGNxRxBxwBBC
-	 +phAr5gOPMNfSuSDP55vZQEWpRE3J0L0uM5pgoTxq8OhevX/dwGd6zIawitcZOV0zS
-	 z+lEiu5ZItMU8l9WdGSZYLSWAIua05nlhIzyPKs+GhOAvEn7OUjVjT4caB41NoS6FG
-	 HUHycjvQRMvow==
+	b=euhhqIeY6TwjhpDLkDOxcAyqGTeLp4HAOFTuPB94+ezoiYSN0bX9ElIS6ZP1B4Nk7
+	 AnN1pXVYUOG6ove1gAwAxATaBWH6YrsuW/C2+EbzHNL/R+Ln8t1RgbPLEL6Y2q+aUt
+	 DZ4JRBZvWZmC2UuxDOo13vXmUhCga2rTUcYyVQoddQX+tAezTHRnFJWnVbVEiCdaCl
+	 1jOMuBPMoI917P8KK/BgkJ4hbNoRFAlhMiOEQ3LE9HvuZWwnYogD4WAWI7HSgpqka7
+	 8iC+p1t4zge4sOdTrO/GjyiiwQOAkzHqaQ95FxotNMguGQgcRLqpyKAzYWhKQ5EqjM
+	 DD4jcZ1cISnMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	jgg@ziepe.ca,
-	nicolinc@nvidia.com,
-	mshavit@google.com,
-	smostafa@google.com,
-	praan@google.com,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 3/8] iommu/arm-smmu-v3: Clean up more on probe failure
-Date: Sun, 26 Jan 2025 10:08:55 -0500
-Message-Id: <20250126150902.962837-3-sashal@kernel.org>
+	djrscally@gmail.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 4/8] platform/x86: int3472: Check for adev == NULL
+Date: Sun, 26 Jan 2025 10:08:56 -0500
+Message-Id: <20250126150902.962837-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150902.962837-1-sashal@kernel.org>
 References: <20250126150902.962837-1-sashal@kernel.org>
@@ -67,78 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit fcbd621567420b3a2f21f49bbc056de8b273c625 ]
+[ Upstream commit cd2fd6eab480dfc247b737cf7a3d6b009c4d0f1c ]
 
-kmemleak noticed that the iopf queue allocated deep down within
-arm_smmu_init_structures() can be leaked by a subsequent error return
-from arm_smmu_device_probe(). Furthermore, after arm_smmu_device_reset()
-we will also leave the SMMU enabled with an empty Stream Table, silently
-blocking all DMA. This proves rather annoying for debugging said probe
-failure, so let's handle it a bit better by putting the SMMU back into
-(more or less) the same state as if it hadn't probed at all.
+Not all devices have an ACPI companion fwnode, so adev might be NULL. This
+can e.g. (theoretically) happen when a user manually binds one of
+the int3472 drivers to another i2c/platform device through sysfs.
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/5137901958471cf67f2fad5c2229f8a8f1ae901a.1733406914.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Add a check for adev not being set and return -ENODEV in that case to
+avoid a possible NULL pointer deref in skl_int3472_get_acpi_buffer().
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241209220522.25288-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/int3472/discrete.c | 3 +++
+ drivers/platform/x86/intel/int3472/tps68470.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 45b43f729f895..96b72f3dad0d0 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3880,7 +3880,7 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
- 	/* Initialise in-memory data structures */
- 	ret = arm_smmu_init_structures(smmu);
- 	if (ret)
--		return ret;
-+		goto err_free_iopf;
+diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+index c42c3faa2c32d..0f16436e5804b 100644
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -359,6 +359,9 @@ static int skl_int3472_discrete_probe(struct platform_device *pdev)
+ 	struct int3472_cldb cldb;
+ 	int ret;
  
- 	/* Record our private device structure */
- 	platform_set_drvdata(pdev, smmu);
-@@ -3891,22 +3891,29 @@ static int arm_smmu_device_probe(struct platform_device *pdev)
- 	/* Reset the device */
- 	ret = arm_smmu_device_reset(smmu, bypass);
- 	if (ret)
--		return ret;
-+		goto err_disable;
- 
- 	/* And we're up. Go go go! */
- 	ret = iommu_device_sysfs_add(&smmu->iommu, dev, NULL,
- 				     "smmu3.%pa", &ioaddr);
- 	if (ret)
--		return ret;
-+		goto err_disable;
- 
- 	ret = iommu_device_register(&smmu->iommu, &arm_smmu_ops, dev);
- 	if (ret) {
- 		dev_err(dev, "Failed to register iommu\n");
--		iommu_device_sysfs_remove(&smmu->iommu);
--		return ret;
-+		goto err_free_sysfs;
- 	}
- 
- 	return 0;
++	if (!adev)
++		return -ENODEV;
 +
-+err_free_sysfs:
-+	iommu_device_sysfs_remove(&smmu->iommu);
-+err_disable:
-+	arm_smmu_device_disable(smmu);
-+err_free_iopf:
-+	iopf_queue_free(smmu->evtq.iopf);
-+	return ret;
- }
+ 	ret = skl_int3472_fill_cldb(adev, &cldb);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Couldn't fill CLDB structure\n");
+diff --git a/drivers/platform/x86/intel/int3472/tps68470.c b/drivers/platform/x86/intel/int3472/tps68470.c
+index 5b8d1a9620a5d..82fb2fbc1000f 100644
+--- a/drivers/platform/x86/intel/int3472/tps68470.c
++++ b/drivers/platform/x86/intel/int3472/tps68470.c
+@@ -152,6 +152,9 @@ static int skl_int3472_tps68470_probe(struct i2c_client *client)
+ 	int ret;
+ 	int i;
  
- static int arm_smmu_device_remove(struct platform_device *pdev)
++	if (!adev)
++		return -ENODEV;
++
+ 	n_consumers = skl_int3472_fill_clk_pdata(&client->dev, &clk_pdata);
+ 	if (n_consumers < 0)
+ 		return n_consumers;
 -- 
 2.39.5
 
