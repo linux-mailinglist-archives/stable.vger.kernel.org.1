@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-110780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71A1A1CC95
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:15:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2229AA1CC69
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A1003A924E
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C9D1627EC
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37BA246341;
-	Sun, 26 Jan 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B34246359;
+	Sun, 26 Jan 2025 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i/TVEy5o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+sYTcRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1B3246339;
-	Sun, 26 Jan 2025 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7C918DF6E;
+	Sun, 26 Jan 2025 15:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737904159; cv=none; b=cwbqKMwsplPx9wZ4JHtj/Xz9I4ANaf+l40qIheXSWAVvYTtDJmYfVhTEQ3iK+ut5QLPl1W+VC9JlXQAvdxCIZEpXTN+rblhVJEIQfSdKemomG6H1+EqZ17nxGVvVSngVYjvQNbb2afqoqIxqAx6K388HW1i5Tsy9n7ZMwH7d2wY=
+	t=1737904161; cv=none; b=pk/RquZPIu32LTE/NQ3AmH2fxRtnQKHdwV1bhtc0JG2+c6L4aMo4qE0jVecECGu6vzu5FqlodZWPLtHC1CjCyKPZbdlESXT9RviLjRCDJRnQT8P/kzzR5O2bWhH8fg1hgMi8DekFZuudVFRW6MHox4z2C+0ZBhhedBFXTCP0BUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737904159; c=relaxed/simple;
-	bh=AQfu0qWpc3NLfGzRRW2+nrxqhUYx32R6CWe09wKCLA4=;
+	s=arc-20240116; t=1737904161; c=relaxed/simple;
+	bh=UuMvvUB36yewr3C2C5PkpkcaXSwiaZW3w3GNAUmlG8Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T0wPLqknVIFucTeLupRkkbmAusqo9UuQ3JuxeTzp8SDjcuc536DRSm3WKHDwSpweaGuYMhERuGFw0VJaQ51OWQhRbd0QBwP7j1fcq1buPQpcKwBDx2eVxVFvhhGfBTEohWD22u6u2Argr+S/nwzHJMYaJGDkY40M66WApPwlDcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i/TVEy5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBA9C4CED3;
-	Sun, 26 Jan 2025 15:09:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GKZ9izAEVd0mh8vX+XpIy9pTUHFi+XMp7DCx4vDlku1rNPSxEhWgfQIFBCiagIuv1Jq8WXi5yH9YLDE8hd05s8O2VkXNdMV63I9z0QTB16pwaPFnVxsSmtC6MJxNC3ZqrWaj2UJ5cjUBOrVP2AmXNhLzl+DtQ+td/iaA9EzgfZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+sYTcRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABF4C4CED3;
+	Sun, 26 Jan 2025 15:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737904159;
-	bh=AQfu0qWpc3NLfGzRRW2+nrxqhUYx32R6CWe09wKCLA4=;
+	s=k20201202; t=1737904160;
+	bh=UuMvvUB36yewr3C2C5PkpkcaXSwiaZW3w3GNAUmlG8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/TVEy5o68S0KVrB58ptk49JgsyHjwzO8ClkuDCOsKc5T+5Ho26hOodGreYlZm6S8
-	 O8C3Ab8hstmIyHWKoAgZE5ZHjS/4M92ajpQKOitzNjiY9LjJUOantM8Nq9eIBlY8sb
-	 htvAJCAwa9OctnUCq1mKSt0f92kROpciaDHI8KxLgOcoxy/XumRns/3Fo/UMylPgDl
-	 9sqh9LRdbWyTFLd5twXULoYgvCDV6EZDowOAeksQpKVZCXnA0Nkp0wt/f0deRV23kD
-	 MmL+QEPmWjHqnghNo+sT4RpL9wv4m6MIbTmBhl1uy481bGBnBdj0Sbw/Css6jyQATI
-	 XxWT3YmtJn38g==
+	b=f+sYTcRuTbgr93rosshi1ISiJWl45HsbS+PLoTnRFonJNnTSo/thVnxRbuQTLiDtJ
+	 Decvc3fMwt/4JS9L7QL789zj6VsDq1xvIlVEA2hgk5/bV/Y0TnJLjSyzJnIlKUCate
+	 Pa2c2kfQgOJjhOfIuh40APCm35BcsjoO6VoTN7I/DGPnjgeSrbrHSUtj6aqys+z73U
+	 wjrXe2Po6BX3G9GNWYspsBP6Msm6Yhz66PPVw+4N1whCW3nh2P6oVMu1vuP586+m51
+	 UIA4utW+pz/KDfNHBwH0+8AJXlfoAxQBPJKbYaSCBT5TWqGL312BfVwlZJTd4K6uft
+	 O5S/PilZwtT1A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Illia Ostapyshyn <illia@yshyn.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	Vijendar.Mukunda@amd.com,
-	mario.limonciello@amd.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 6/8] ASoC: amd: Add ACPI dependency to fix build error
-Date: Sun, 26 Jan 2025 10:08:58 -0500
-Message-Id: <20250126150902.962837-6-sashal@kernel.org>
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 7/8] Input: allocate keycode for phone linking
+Date: Sun, 26 Jan 2025 10:08:59 -0500
+Message-Id: <20250126150902.962837-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150902.962837-1-sashal@kernel.org>
 References: <20250126150902.962837-1-sashal@kernel.org>
@@ -66,51 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Illia Ostapyshyn <illia@yshyn.com>
 
-[ Upstream commit 7e24ec93aecd12e33d31e38e5af4625553bbc727 ]
+[ Upstream commit 1bebc7869c99d466f819dd2cffaef0edf7d7a035 ]
 
-As reported by the kernel test robot, the following error occurs:
+The F11 key on the new Lenovo Thinkpad T14 Gen 5, T16 Gen 3, and P14s
+Gen 5 laptops includes a symbol showing a smartphone and a laptop
+chained together.  According to the user manual, it starts the Microsoft
+Phone Link software used to connect to Android/iOS devices and relay
+messages/calls or sync data.
 
-   sound/soc/amd/yc/acp6x-mach.c: In function 'acp6x_probe':
->> sound/soc/amd/yc/acp6x-mach.c:573:15: error: implicit declaration of function 'acpi_evaluate_integer'; did you mean 'acpi_evaluate_object'? [-Werror=implicit-function-declaration]
-     573 |         ret = acpi_evaluate_integer(handle, "_WOV", NULL, &dmic_status);
-         |               ^~~~~~~~~~~~~~~~~~~~~
-         |               acpi_evaluate_object
-   cc1: some warnings being treated as errors
+As there are no suitable keycodes for this action, introduce a new one.
 
-The function 'acpi_evaluate_integer' and its prototype in 'acpi_bus.h'
-are only available when 'CONFIG_ACPI' is enabled. Add a 'depends on ACPI'
-directive in Kconfig to ensure proper compilation.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501090345.pBIDRTym-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Link: https://patch.msgid.link/20250109171547.362412-1-eleanor15x@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Illia Ostapyshyn <illia@yshyn.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20241114173930.44983-2-illia@yshyn.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/input-event-codes.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/amd/Kconfig b/sound/soc/amd/Kconfig
-index 44d4e6e51a358..6e358909bc5e3 100644
---- a/sound/soc/amd/Kconfig
-+++ b/sound/soc/amd/Kconfig
-@@ -103,7 +103,7 @@ config SND_SOC_AMD_ACP6x
- config SND_SOC_AMD_YC_MACH
- 	tristate "AMD YC support for DMIC"
- 	select SND_SOC_DMIC
--	depends on SND_SOC_AMD_ACP6x
-+	depends on SND_SOC_AMD_ACP6x && ACPI
- 	help
- 	  This option enables machine driver for Yellow Carp platform
- 	  using dmic. ACP IP has PDM Decoder block with DMA controller.
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 1ce8a91349e9f..f410c22e080d3 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -519,6 +519,7 @@
+ #define KEY_NOTIFICATION_CENTER	0x1bc	/* Show/hide the notification center */
+ #define KEY_PICKUP_PHONE	0x1bd	/* Answer incoming call */
+ #define KEY_HANGUP_PHONE	0x1be	/* Decline incoming call */
++#define KEY_LINK_PHONE		0x1bf   /* AL Phone Syncing */
+ 
+ #define KEY_DEL_EOL		0x1c0
+ #define KEY_DEL_EOS		0x1c1
 -- 
 2.39.5
 
