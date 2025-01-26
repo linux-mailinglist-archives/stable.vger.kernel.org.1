@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-110646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E410A1CAD5
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 413AFA1CAE7
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0A9188BDEC
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B5E16197C
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9131A0728;
-	Sun, 26 Jan 2025 15:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC15A20B7F8;
+	Sun, 26 Jan 2025 15:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UXJ+m19P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8pLO9h0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB67020B1E8;
-	Sun, 26 Jan 2025 15:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7263720B217;
+	Sun, 26 Jan 2025 15:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903750; cv=none; b=oWGdDnkgJHIH1xn5yRop2Bo1oeI3CMV1BWCjhpFgsn5OLLwsfRbvn3Y6qIwRcerk1ky778pCPcmQxNH/BMPEwgTISZOyzDW7ncDW9UI17PcbuLA3l2MDeZw9bUbYKvmolOq1anZhPJ2wCDBZjkyIkf6voQUD//EH+cM/rp5NCPs=
+	t=1737903751; cv=none; b=ORb2Qpt7wtQSGmCGvv5DFUrF9yI7xdJ/irspHK9U/ol91M3CVGF4sBqWZ5wMCWsCBm81Rr6IP3+z7VHbb+Ic4Chcqghrnz4ZC/2NYn1Gl+0gYpQ3BJ5xwWfu8faJGhY+rahZAr5Erismj9B7A3SVADJVZdB0pk/iNZmXjNiwL4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903750; c=relaxed/simple;
-	bh=AQrKtVULpApfUw3bdAoQDv2iVzMWFCfd2/IqiaJKXTQ=;
+	s=arc-20240116; t=1737903751; c=relaxed/simple;
+	bh=UxDtir6KIQ2RGr7VqMhs5XzKoRvly/KWG8bhp7yp+Q4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XBZ5oUGTg+in9NREYfwx8nB28ZXIXdmDaaTqvxeNcAVhTIGuKbwBsJgnH1Zm5uqRWChU7UNwYsWTPVtXWZyaGVh29X+Vb5Mbuvla3S9szZoppSqjtBbeiRYL5oGAjRm3IkM34wErGh+fCagmmna712MpAq+UmFo3DDu/c4fs+x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UXJ+m19P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F604C4CEE5;
-	Sun, 26 Jan 2025 15:02:28 +0000 (UTC)
+	 MIME-Version; b=U0KMvb88xt40P86iQRDdKrAnyEcWe2SHMXcAAiiU2TA92XwPUzODZmGpxtIxfX+MyhHMbFTZyKXemjESrsf/3iOp5FSVTgHc0NAsATy5cjYePvpMg/nT8KL/8kZI3EtfwilGBbwyguqCjt2iU/YQq5x9jIGxxKHBCpxFFYR7Pxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8pLO9h0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD24C4CEE2;
+	Sun, 26 Jan 2025 15:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903749;
-	bh=AQrKtVULpApfUw3bdAoQDv2iVzMWFCfd2/IqiaJKXTQ=;
+	s=k20201202; t=1737903751;
+	bh=UxDtir6KIQ2RGr7VqMhs5XzKoRvly/KWG8bhp7yp+Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXJ+m19PwyOK6/8eoUEo0Tu2APyRKlHyoJAOE1t+OAFnBh4/N10XgzGg4VSWNOBuy
-	 ZWf+Iz7uPKrx8G1L4eT/QhBBpyN7KjVF4RKulCqpReyp9HEYzQQ/q/oLZwtaDi5zvz
-	 73DMpHwirNVdjCBGZIZXe9BwOz/hyikGQw6WMTd43qAILEQSydBdJsSixvlu9zvPkA
-	 bJxIVf+VkSCsW2H+fzsh+F0+NUGyrZsUYyyu5bsM+ZKRspifijwtmUUlpKBpgVIBuU
-	 Czgta/KJVnv01/Meok2qWy81Y2LknwyMQoU+iP3gCR47gczNaGJXp4QEi/lMyzx3DM
-	 /o71ButxFNqLQ==
+	b=c8pLO9h0OdYpa12znscb0Z46812ZT6Iy1Y4b9QdkyidZvMVIgepePbHKi0ilXX1Se
+	 HoqIZS+9RRGmnjmMd61Vqm0S3SvNtdqSgQY1DwbUPpzB/ISkvlc/DkYx2ATgNi6BBn
+	 XaSKlVsmh4GYoK2LJew1ddc9xl4PFVZkX3/88EroGnZLPIC2Z5iDxzdjoeDoO6esEy
+	 usDrvQvdX2XeYjRpSe+b1ySaSj0aLtxldICYSZ0INPBP4lhiQsRrarShJv7jz91tNQ
+	 FLyxRfdxQugxcgS2bXvRe+hSnmyu2Df/1QsMT3i5wsnQGmqi14f852/TJIdIiyBTwF
+	 Zk0OIviD1q04w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Youwan Wang <youwan@nfschina.com>,
+	Enze Xie <enze@nfschina.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 10/29] clk: qcom: Make GCC_8150 depend on QCOM_GDSC
-Date: Sun, 26 Jan 2025 10:01:51 -0500
-Message-Id: <20250126150210.955385-10-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 11/29] HID: multitouch: Add quirk for Hantick 5288 touchpad
+Date: Sun, 26 Jan 2025 10:01:52 -0500
+Message-Id: <20250126150210.955385-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126150210.955385-1-sashal@kernel.org>
 References: <20250126150210.955385-1-sashal@kernel.org>
@@ -70,39 +68,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.11
 Content-Transfer-Encoding: 8bit
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Youwan Wang <youwan@nfschina.com>
 
-[ Upstream commit 1474149c4209943b37a2c01b82f07ba39465e5fe ]
+[ Upstream commit b5e65ae557da9fd17b08482ee44ee108ba636182 ]
 
-Like all other non-ancient Qualcomm clock drivers, QCOM_GDSC is
-required, as the GCC driver defines and instantiates a bunch of GDSCs.
+This device sometimes doesn't send touch release signals when moving
+from >=2 fingers to <2 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-Add the missing dependency.
-
-Reported-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Closes: https://lore.kernel.org/linux-arm-msm/ab85f2ae-6c97-4fbb-a15b-31cc9e1f77fc@linaro.org/
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20241026-topic-8150gcc_kconfig-v1-1-3772013d8804@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Enze Xie <enze@nfschina.com>
+Signed-off-by: Youwan Wang <youwan@nfschina.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
-index 9ba675f229b14..16145f74bbc85 100644
---- a/drivers/clk/qcom/Kconfig
-+++ b/drivers/clk/qcom/Kconfig
-@@ -1022,6 +1022,7 @@ config SM_GCC_7150
- config SM_GCC_8150
- 	tristate "SM8150 Global Clock Controller"
- 	depends on ARM64 || COMPILE_TEST
-+	select QCOM_GDSC
- 	help
- 	  Support for the global clock controller on SM8150 devices.
- 	  Say Y if you want to use peripheral devices such as UART,
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index d1b7ccfb3e051..160bab6e50cda 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2308,6 +2308,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		HID_DEVICE(HID_BUS_ANY, HID_GROUP_ANY, USB_VENDOR_ID_SIS_TOUCH,
+ 			HID_ANY_ID) },
+ 
++	/* Hantick */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			   I2C_VENDOR_ID_HANTICK, I2C_PRODUCT_ID_HANTICK_5288) },
++
+ 	/* Generic MT device */
+ 	{ HID_DEVICE(HID_BUS_ANY, HID_GROUP_MULTITOUCH, HID_ANY_ID, HID_ANY_ID) },
+ 
 -- 
 2.39.5
 
