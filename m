@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-110586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF316A1CA28
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:18:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2627A1CA2D
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E4C87A3C9D
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:16:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CAD1881BDA
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 15:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7962B1FF61D;
-	Sun, 26 Jan 2025 14:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42811FF7C3;
+	Sun, 26 Jan 2025 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuD7FwY+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uOvfOLK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334F21FF618;
-	Sun, 26 Jan 2025 14:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914611FF7BB;
+	Sun, 26 Jan 2025 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737903416; cv=none; b=gq+MMqZMyN963qUXxwLB8FD6VUJsPfqWr1alFskfNIPC4m5NvtG6RRfjwjQ+kgaXXQvUGDoLlD8yXFviB0GMJLnFoRS11v6LeyS+5CVriHDnZGejJVF20LELT3x+O0Q0adbuyjnHMzVzdafat6XrsYh1zcRUYQ699PuebzrG3J8=
+	t=1737903417; cv=none; b=lBEVWz0OCEH2S4Ut851IntaPqqfm0Tkct7yIDJ3rgmUKB2sSsgEVcoWkYmL3YW4A29RFKj2FXI8bmyuEtPk4msWIZoCrCHrH1Oa/X9iSvvWLQVhRFOM/PdXoy2cqG/RCqqa9i2Jkt6NuXP3OQxnhE+D79UJzeYV7ly0g7On9FfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737903416; c=relaxed/simple;
-	bh=r5xQP2kmxkcLbzRQVpciXSfD1lIp6RBQ5jEUs/vGmfE=;
+	s=arc-20240116; t=1737903417; c=relaxed/simple;
+	bh=1bo2GecgpSTPHTxmCsIzWDUvlu0mvNWQk1qBwHKKAvU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aOrbONB2kLM+H4dvbu1QO8rIi6tPLfL+r3P7X3QVIyPzxZhubh+KxzICDkqA8a/L76oTL3jX9TcW2vdU4PRZEu4/JUNwHuk30B+657T1wwuQVsodqUdMpqxA1g+9DhpY6ZGIt99KyWsFIJ5kLKmqgfx+6s+2KDd+zNJ//2kzISc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuD7FwY+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1DAC4CED3;
-	Sun, 26 Jan 2025 14:56:54 +0000 (UTC)
+	 MIME-Version; b=MhT0yjfIqervE0wPg9YsSsIcMSpPWNj4+A+zLboiQkwfwso07OIIY0BitlRxP0uNUcMREvfyxW1fVOx7RNPKQoi4j4ixHVMiwv+uzp+iY7gbjN7qZXPm8r9O4hMj3ySTsI1f9ycc4ej6ngdmgLMEFBZfN0nJRzOK0eWqHAxZkRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uOvfOLK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BCCC4CEE5;
+	Sun, 26 Jan 2025 14:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737903415;
-	bh=r5xQP2kmxkcLbzRQVpciXSfD1lIp6RBQ5jEUs/vGmfE=;
+	s=k20201202; t=1737903417;
+	bh=1bo2GecgpSTPHTxmCsIzWDUvlu0mvNWQk1qBwHKKAvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OuD7FwY+81dRSFDK0CgCvDg9JCq8sXYO2GIwZUuTVQN1JrjcGP6u3e/lesBMmNm0x
-	 b8zy93z2yTix+m9sf63/7BIUTMDjwHwQwAqOrE0/mxxDg7MGK4r+n+LQyVZPkw+5Md
-	 /tw/XQWQNuUmGZtaTFM6LMrZBrTeLwyA9JYABFne/no2cR6AtvfJlnhQwDIzQNQUv9
-	 wFbG3AZ3aeg7063NGPgrFGWXnAWSo3BPnwJxXWVs/pDhRGbHnF4d4MILqAG/DcutXG
-	 5QrJOY2oK3DE6uHUPr0ezmIE8RszY4N1PEyApP+JaxoFUtiP3WihaYRXjkieMz0rHg
-	 zLrp7f86D0TKA==
+	b=uOvfOLK6+M99qFj+DrBrvFZepOlftHnWV1F8OEpynGLgpX3OvTVWXPJrhuk0jpBZL
+	 P3noSo8A8aHYL34W+Cc2IzYxBr/23svneI9KJZxSFPmsqAvEyneLUIbG+skv5md61b
+	 TEre1B0M7socFMiuHaHHyPTF/78lR/rCGz6Z+ffcWRwSXGKp1SJQRR+Wzglbb8DyLl
+	 LkhYh7d9ozB18ERJj1Sb4M4SOza+dm0cU4pt1PJGyLR0/b16bLA9fc9WSWw6JMHCa9
+	 0q3sahmwIbSCudFOTxmS0dNqJdyb0aewKcvviKIwkTFimBhYcbCw5xfUJkq22zzRLk
+	 +5rVImOVNogQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 2/9] printk: Fix signed integer overflow when defining LOG_BUF_LEN_MAX
-Date: Sun, 26 Jan 2025 09:56:44 -0500
-Message-Id: <20250126145651.943149-2-sashal@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	alain.volmat@foss.st.com,
+	maarten.lankhorst@linux.intel.com,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 3/9] drm/sti: hdmi: use eld_mutex to protect access to connector->eld
+Date: Sun, 26 Jan 2025 09:56:45 -0500
+Message-Id: <20250126145651.943149-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250126145651.943149-1-sashal@kernel.org>
 References: <20250126145651.943149-1-sashal@kernel.org>
@@ -64,39 +71,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3d6f83df8ff2d5de84b50377e4f0d45e25311c7a ]
+[ Upstream commit e99c0b517bcd53cf61f998a3c4291333401cb391 ]
 
-Shifting 1 << 31 on a 32-bit int causes signed integer overflow, which
-leads to undefined behavior. To prevent this, cast 1 to u32 before
-performing the shift, ensuring well-defined behavior.
+Reading access to connector->eld can happen at the same time the
+drm_edid_to_eld() updates the data. Take the newly added eld_mutex in
+order to protect connector->eld from concurrent access.
 
-This change explicitly avoids any potential overflow by ensuring that
-the shift occurs on an unsigned 32-bit integer.
-
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Acked-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20240928113608.1438087-1-visitorckw@gmail.com
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241206-drm-connector-eld-mutex-v2-9-c9bce1ee8bea@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/sti/sti_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 5a88134fba79f..c93beab96c860 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -403,7 +403,7 @@ static struct latched_seq clear_seq = {
- /* record buffer */
- #define LOG_ALIGN __alignof__(unsigned long)
- #define __LOG_BUF_LEN (1 << CONFIG_LOG_BUF_SHIFT)
--#define LOG_BUF_LEN_MAX (u32)(1 << 31)
-+#define LOG_BUF_LEN_MAX ((u32)1 << 31)
- static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);
- static char *log_buf = __log_buf;
- static u32 log_buf_len = __LOG_BUF_LEN;
+diff --git a/drivers/gpu/drm/sti/sti_hdmi.c b/drivers/gpu/drm/sti/sti_hdmi.c
+index 8539fe1fedc4c..fdb28e05720ad 100644
+--- a/drivers/gpu/drm/sti/sti_hdmi.c
++++ b/drivers/gpu/drm/sti/sti_hdmi.c
+@@ -1220,7 +1220,9 @@ static int hdmi_audio_get_eld(struct device *dev, void *data, uint8_t *buf, size
+ 	struct drm_connector *connector = hdmi->drm_connector;
+ 
+ 	DRM_DEBUG_DRIVER("\n");
++	mutex_lock(&connector->eld_mutex);
+ 	memcpy(buf, connector->eld, min(sizeof(connector->eld), len));
++	mutex_unlock(&connector->eld_mutex);
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
