@@ -1,96 +1,98 @@
-Return-Path: <stable+bounces-110790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFE1A1CC9E
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:28:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95473A1CCFD
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 17:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D9E162A8D
-	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:28:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18B8C3A7F7B
+	for <lists+stable@lfdr.de>; Sun, 26 Jan 2025 16:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D693D1487FA;
-	Sun, 26 Jan 2025 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A958F15530B;
+	Sun, 26 Jan 2025 16:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="LwhHDw74"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkUaLgmQ"
 X-Original-To: stable@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B523C17;
-	Sun, 26 Jan 2025 16:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D99313B59B;
+	Sun, 26 Jan 2025 16:45:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737908920; cv=none; b=nHQhF8I8B3YjLQe/ePjFh3arQx+lSRzgDMDEoJieQB58vIHVJZHBdBOkD2fXtBug8IV/wDqZfhkwAGl8sDtm8dUgtuegZlXzQn7uTtiY43A9brhNcWkRwOJp/vZCB3cMSFPzEkfb3i2cdDqbz54t6mgZ3g6p0HG5wer/VhjkYO0=
+	t=1737909926; cv=none; b=Af5h6ORRfA6+MyqkVFLbhvaoNiR/x0ldCC94Y2NVSe1JUOR9VcJhhMmTz7prZiHEdAC581+7BMmsSS+sSQIpd8BoXSB8Xna9IlNEwnwiH97E/7T3+Bhls9HDbuAUOg/S9FW0WmhImbeEpyvXIgYyNkSzMnDsyZpB/M4bh7Md5+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737908920; c=relaxed/simple;
-	bh=YMNOtfXRHqQdVvk11GYm4yQXjj+3NcjgEEgDiKYLnYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iyS8C/S6kY9s44ChC8B1muO7NHWRFnouA0BFBryk7VaoL1E0j+dYZFvbL2UwFflfmrvcmrlV27D7WPNypRhMPzEamqtxVATcAQWDW5Ks6UGfnJ9PEWCPJ6l+4ORRyKX+cUtrNjIc4a3hdv33KJoQVy7axv6srEJyeefSP/ROLhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=LwhHDw74; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1737908907;
-	bh=YMNOtfXRHqQdVvk11GYm4yQXjj+3NcjgEEgDiKYLnYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LwhHDw7463BsJ47z8j496K0QJxJsX+5T3NyWQxZCHRk7uNGsV8IpIbBAZHpz57ypq
-	 +GUVQfdyzhLNiB+SlzN+NkTbeZ4cGzBMlaJGfdYpwUZlea+knAtRGJeXetXzWF2BGH
-	 zAgRWcS7z3LTKGzlzMBXnylAXjFLtjO0ITy2QV9o=
-Date: Sun, 26 Jan 2025 17:28:27 +0100
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	"Dustin L . Howett" <dustin@howett.net>, Mario Limonciello <mario.limonciello@amd.com>, 
-	Harry Wentland <harry.wentland@amd.com>, airlied@gmail.com, simona@ffwll.ch, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, corbet@lwn.net, 
-	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.12 02/31] drm: Add panel backlight quirks
-Message-ID: <93a9e956-9572-410e-947c-36aeba4965bf@t-8ch.de>
-References: <20250126145448.930220-1-sashal@kernel.org>
- <20250126145448.930220-2-sashal@kernel.org>
+	s=arc-20240116; t=1737909926; c=relaxed/simple;
+	bh=w1Pkdasfspl0G+PjdpFt2OcCV0OAekVaWgJgQeKcImc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XTlkovh5sRMIV+zyJ+LDIDLfEevT85nGhSTj0SO1GMgRq5xrPCFSpGct8R1k63aWhDNk69AqfjEnY74jowHdmnUo6lmzfQI+fYzyCH3ASEr03TDZ45KGt6h1pHXT+ziJ5Q+RAa0wmHVgSqGVvr6mAsr/mhYWH7nBfF/jLABMp3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkUaLgmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D711BC4CED3;
+	Sun, 26 Jan 2025 16:45:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737909925;
+	bh=w1Pkdasfspl0G+PjdpFt2OcCV0OAekVaWgJgQeKcImc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fkUaLgmQnKe0AfhlggbsMYAuxz94Apf29J2mFnszv5k6Mr53XB2tMmYSEv2M9SglN
+	 oQFtneMeqwPxGoXTP+PKkupM8qN52lLitf6lHgTscKuooN4mh65AdmVjjyEME/ANqP
+	 fVcMG9UJ85Ng7NXvBL2UTZQSEs+8BCdUMPuKhA48IAhodU+fCQJl81Xu4F6xpE82XI
+	 fX6fPEFeQ6zDcNE0wd3oAZwzG9Uui+hM+Ab5CefqeMZ+Kvt2nDcaDKE9CT2j9wCAL8
+	 UyDa7Y6hcDaIIcAjhwLVVynLEhsDoF9qmOIrdESwlV1rTOILYb+aeZU+s03GMcCAnF
+	 t2epXpIDfcUHQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	konradybcio@kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 1/8] soc: qcom: pd-mapper: Add X1P42100
+Date: Sun, 26 Jan 2025 11:45:16 -0500
+Message-Id: <20250126164523.963930-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250126145448.930220-2-sashal@kernel.org>
 
-Hi Sasha,
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-On 2025-01-26 09:54:18-0500, Sasha Levin wrote:
-> From: Thomas Weißschuh <linux@weissschuh.net>
-> 
-> [ Upstream commit 22e5c7ae12145af13785e3ff138395d5b1a22116 ]
-> 
-> Panels using a PWM-controlled backlight source do not have a standard
-> way to communicate their valid PWM ranges.
-> On x86 the ranges are read from ACPI through driver-specific tables.
-> The built-in ranges are not necessarily correct, or may grow stale if an
-> older device can be retrofitted with newer panels.
-> 
-> Add a quirk infrastructure with which the minimum valid backlight value
-> can be maintained as part of the kernel.
+[ Upstream commit e7282bf8a0e9bb8a4cb1be406674ff7bb7b264f2 ]
 
-This series [0] has been applied to the 6.12 and 6.13 stable trees.
-However it is introducing new functionality and not fixing any bug.
-Furthermore, for 6.12 the patch for drm/amd/display enabling the new
-functionality was not even applied, making all of it dead code.
+X1P42100 is a cousin of X1E80100, and hence can make use of the
+latter's configuration. Do so.
 
-[0] https://lore.kernel.org/lkml/20241111-amdgpu-min-backlight-quirk-v7-0-f662851fda69@weissschuh.net/
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241221-topic-x1p4_soc-v1-3-55347831d73c@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/qcom/qcom_pd_mapper.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-	Patches:
-	drm: Add panel backlight quirks
-	drm/amd/display: Add support for minimum backlight quirk
-	drm: panel-backlight-quirks: Add Framework 13 matte panel
-	drm: panel-backlight-quirks: Add Framework 13 glossy and 2.8k panels
+diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
+index 6e30f08761aa4..50aa54996901f 100644
+--- a/drivers/soc/qcom/qcom_pd_mapper.c
++++ b/drivers/soc/qcom/qcom_pd_mapper.c
+@@ -561,6 +561,7 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+ 	{ .compatible = "qcom,sm8550", .data = sm8550_domains, },
+ 	{ .compatible = "qcom,sm8650", .data = sm8550_domains, },
+ 	{ .compatible = "qcom,x1e80100", .data = x1e80100_domains, },
++	{ .compatible = "qcom,x1p42100", .data = x1e80100_domains, },
+ 	{},
+ };
+ 
+-- 
+2.39.5
 
-
-Regards,
-Thomas
 
