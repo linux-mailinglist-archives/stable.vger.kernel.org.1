@@ -1,148 +1,129 @@
-Return-Path: <stable+bounces-110884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD86A1DB54
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:32:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF23AA1DB92
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47471886D8E
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:32:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9613A46ED
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130AA166F1A;
-	Mon, 27 Jan 2025 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118AC17BEC5;
+	Mon, 27 Jan 2025 17:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCuQ87Up"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wz7Dvq11";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0laIihaM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE0A291E;
-	Mon, 27 Jan 2025 17:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9851662EF;
+	Mon, 27 Jan 2025 17:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737999124; cv=none; b=EG5qoH8mQqM7+TXkGr5KLeOs0Vc1VWlHJ1f+j/OYMdK8rmxqDVPOaeAJau3cpmALrmHQO6c7ZYBaC/1GmHLHt2kx2LcUjCj6DsNR25xT9ZucR0UdiXCRokl6rM0jv9y9KVWJwCTAFqQa9hCIh0bVbeRdVYVjo59jQ3Ei1uY292o=
+	t=1738000286; cv=none; b=PTc1V1S89ELb5FFv0FD1wFEG5oIVUgvcLrEmZWinDK8ygZ/O4ojzzu3zYIZfUay0T5GfuCiCwfd0SqCUa8MDeuo8TD+LIG2GGNKE8WaTYf1JbwbuWzQrIXPTYOyL+R6Il87eDAvWIQoFz/778jIjcDZoLrgFCRPrWDDr9VqlTzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737999124; c=relaxed/simple;
-	bh=WkWIpdiJC27SvGibe34DHGnMGzhRupB0Nnp9Tapr6cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFbOZcHKC7NydvQW4vdYfJaifJNc8TY89hzncNHH8RWxVKSKmcUgLMYG5M+rxyS4/OX2Ae3uQCzKluQrT2ReNCjrdSLGrGksGcpW4JAujfSI8g1lmH8DXxZSz1ySHwbwSRCAI2e7A4qW/rByE3BxIDYJL6QrjWHjjCN4bLgq2sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCuQ87Up; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so2368988f8f.2;
-        Mon, 27 Jan 2025 09:32:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737999121; x=1738603921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=z2MMQedpsH2GPbDZJATIDcslx0EmXMUJV7GkfJHRjt8=;
-        b=RCuQ87Upnvs+UkB7lQHStWarXXil5FtCorPL/l5Be60rAOqotQ79crs6lBYoe9DFCD
-         6kA5gzOY2jmWxJW4T/LHkareR198BdnnnlCH1mS1Tzg01sN+4zoJkcVWuXqOtg5ayfPJ
-         BN1s+d929lMeOxawYCDikPXh7wvvXG7xbTN1Oc8xYCORCkckXuiiMUXUCvdsSlYXdUYp
-         RZjH7p2NOG9tB6ftuciRiPFpFhsfaRaShFheU4jYGUYfd3fSEU8obUJrceRwGOwIWYwM
-         P3JFAGcrQDd83JkFZkK0hPbJ5Wha3U1wD/BYcXfHrv7+vLuGs7+BXfBzmNvvkBqjQheL
-         3v+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737999121; x=1738603921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z2MMQedpsH2GPbDZJATIDcslx0EmXMUJV7GkfJHRjt8=;
-        b=kp8q6a5VBxvjI5GN8Vrf9lz6do9yYUFSILQ7q356kC68MfZDeOnOwaj7HKC7YlRGrB
-         49PVh+tl+IH1134xAuqETyX7baX5s622ItaSK3dZM/n7NAhPwbIpa+PU5Q9Grqd735Fq
-         kIY7VlpJZ7OGBMjIS2JuXPh3ZpiP02AbKg/KeevniPhfc+AoNzTaYw4YYPAUF507Z6TF
-         ZhVPWpuVuP2Awb8KzuNej1Y/kgxJfUeHmkkOD050b6+JDH7NJ3XDLTMmu/R7Y24AtUng
-         tSAn6MjqGf2YetmjQ3GW8rWvlvfLhdJj56SxG8mIvJ/Vt5pNa+fy6hUQNArRxoUIsjrW
-         RJyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSHGnw4VRtiGse2+ClVJAup0pZnS5z8hneFvEgsltIDmJN7NXjGosIxqBoG5TDvRUFSrQGQmiLCrqb7NoF@vger.kernel.org, AJvYcCVSvJ/JGsi0Z54pui1pe5txycRUf36dcR0sTnbK5tvr4t59VFF0/NbxI460rJEQE/fL04KkKaxAz/o=@vger.kernel.org, AJvYcCXxweklzdsjrdO5D4sHT26d9lmfy3e8ORPl2WFKz9Fwd8KmhMwEp7h/N9v2EbiqfionFbkwNFdN@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJRCupqtNDxop63pt9kEqO1lZLxjMbeU9R4wmSyVRLyqhX3D3b
-	nQ7tje6rPvCZsnq9C2AYKCQ1NX3w09saD7HGnpolYbNJGIX5Ikdk
-X-Gm-Gg: ASbGncvoR5X8kKi+CcFU/GE9xHN9vNIXg5VRCgjCBvcB3+HBsfIz1WXhT2KP28AZzKd
-	J0ejKlpb6VRBtJ7voPapcQhR69tBAN1kBMGf8io95nJ3POBygTxDUMAm3f9xqdCSFe5YpZOHLC2
-	9AW/I+RyvnyQptHIKvjqBnfmZ2LahaC5BAbPwEs/oW3XADy3N6piuZnTo9Ng2LTHXkDlawPrgku
-	TJVwjfOtaKkNE21ieapI2Ivl5/tOMWAzS708cj4W2p3sIsbb64nlc1WyNed606LW4fdppCPu74c
-	XTLIpgW21YXsTr820YguvOFZ0jWJWigKyA==
-X-Google-Smtp-Source: AGHT+IH6d5dXOKjdzQ3vPvGyqq++UXn5zuy3d62YayDLxIbZfPZbXj5hd5FkKZlLuZZe9Axvbpu8GA==
-X-Received: by 2002:a05:6000:186f:b0:386:373f:47c4 with SMTP id ffacd0b85a97d-38bf57c934fmr40387836f8f.49.1737999121070;
-        Mon, 27 Jan 2025 09:32:01 -0800 (PST)
-Received: from prasmi.Home ([2a06:5906:61b:2d00:975a:72be:e657:7017])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188928sm11580551f8f.45.2025.01.27.09.32.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 09:32:00 -0800 (PST)
-From: Prabhakar <prabhakar.csengg@gmail.com>
-X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: linux-renesas-soc@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Prabhakar <prabhakar.csengg@gmail.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five SoC
-Date: Mon, 27 Jan 2025 17:31:59 +0000
-Message-ID: <20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1738000286; c=relaxed/simple;
+	bh=F5/eH/sB/zUAc0+LEZNk/psVzDvUJbxUOvI3WrPkbdU=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=f0ZSYeaI/tsfYPyIcaAKSzpxDDgM+QbxbEvIRvstjBD/XV/6uwZR3m/hV8KlOgAsmZSxeMx2JT3Ntx6jh6dBIw4fqt0vRmGx/VYg3+pYNvHmSptwvTs0DAEvorTFMHomYDfNOc1QhlO7CDO5YgDRLSQ5RIFu8Vy653UNAB+4PdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wz7Dvq11; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0laIihaM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 27 Jan 2025 17:51:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738000282;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8FZCGhjEtezE1T8IEPwIrKHdGMSkmDCOfrW67TgvIQs=;
+	b=Wz7Dvq11HeXR2uuU8t269D1omKKnHEonXm4vZw1hcjwS5mkcrpdLQV79esoUFbxKlYZwLq
+	g5iJ66PmlcHQdkzF84G+DllnN2kaz1KzMlZulG2VH3wiCAo0HaIPU4g29oQGYZ+NLacse2
+	i57DSqoMjjELpkNs3H2iyG8BgP0HNrYUI9HTrANvBbLaQoFUHPbkecL3K+P//7CrLsYVYh
+	ycnzBaqf4LfcBXCBM7Odytx6DYfLUHIBpHV5cZLsrHzID2PAwm4zZXyt50/8JyymUHMOq+
+	c/2ZNFciBmoEBbbCtyhvT0UAi0MsBusDAvzL8ArmeddwMjkEH5uHMnSumDuWhg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738000282;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8FZCGhjEtezE1T8IEPwIrKHdGMSkmDCOfrW67TgvIQs=;
+	b=0laIihaMwCGWftKFAlXJTdsTqeLa2DlF/ya4yuny07mohu2bv5Uoy8exbc3bVqG9At8UAQ
+	wgN2od7Biq6sYtCA==
+From: "tip-bot2 for Nick Chan" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/apple-aic: Only handle PMC interrupt as FIQ
+ when configured so
+Cc: Nick Chan <towinchenmi@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20250118163554.16733-1-towinchenmi@gmail.com>
+References: <20250118163554.16733-1-towinchenmi@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <173800027931.31546.17994232029719156171.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+The following commit has been merged into the irq/urgent branch of tip:
 
-According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
-source for HP is derived from PLL6 divided by 2. This patch corrects the
-implementation by configuring HP as a fixed clock source instead of a MUX.
+Commit-ID:     698244bbb3bfd32ddf9a0b70a12b1c7d69056497
+Gitweb:        https://git.kernel.org/tip/698244bbb3bfd32ddf9a0b70a12b1c7d69056497
+Author:        Nick Chan <towinchenmi@gmail.com>
+AuthorDate:    Sun, 19 Jan 2025 00:31:42 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 27 Jan 2025 18:39:15 +01:00
 
-The `CPG_PL6_ETH_SSEL` register, which is available on the RZ/G2UL SoC, is
-not present on the RZ/Five SoC, necessitating this change.
+irqchip/apple-aic: Only handle PMC interrupt as FIQ when configured so
 
-Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+The CPU PMU in Apple SoCs can be configured to fire its interrupt in one of
+several ways, and since Apple A11 one of the methods is FIQ, but the check
+of the configuration register fails to test explicitely for FIQ mode. It
+tests whether the IMODE bitfield is zero or not and the PMCRO_IACT bit is
+set. That results in false positives when the IMODE bitfield is not zero,
+but does not have the mode PMCR0_IMODE_FIQ.
+
+Only handle the PMC interrupt as a FIQ when the CPU PMU has been configured
+to fire FIQs, i.e. the IMODE bitfield value is PMCR0_IMODE_FIQ and
+PMCR0_IACT is set.
+
+Fixes: c7708816c944 ("irqchip/apple-aic: Wire PMU interrupts")
+Signed-off-by: Nick Chan <towinchenmi@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/all/20250118163554.16733-1-towinchenmi@gmail.com
 ---
-v1->v2
-- Fixed build warning for non-ARM64 arch, sel_pll6_2 defined but not used.
----
- drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/irqchip/irq-apple-aic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index b97e9a7b9708..ad712e530328 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -90,7 +90,9 @@ static const struct clk_div_table dtable_1_32[] = {
+diff --git a/drivers/irqchip/irq-apple-aic.c b/drivers/irqchip/irq-apple-aic.c
+index da5250f..2b1684c 100644
+--- a/drivers/irqchip/irq-apple-aic.c
++++ b/drivers/irqchip/irq-apple-aic.c
+@@ -577,7 +577,8 @@ static void __exception_irq_entry aic_handle_fiq(struct pt_regs *regs)
+ 						  AIC_FIQ_HWIRQ(AIC_TMR_EL02_VIRT));
+ 	}
  
- /* Mux clock tables */
- static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
-+#ifdef CONFIG_ARM64
- static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
-+#endif
- static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
- 
- static const u32 mtable_sdhi[] = { 1, 2, 3 };
-@@ -138,7 +140,12 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
- 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
- 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
- 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
-+#ifdef CONFIG_ARM64
- 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
-+#endif
-+#ifdef CONFIG_RISCV
-+	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
-+#endif
- 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
- 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
- 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
--- 
-2.43.0
-
+-	if (read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & PMCR0_IACT) {
++	if ((read_sysreg_s(SYS_IMP_APL_PMCR0_EL1) & (PMCR0_IMODE | PMCR0_IACT)) ==
++			(FIELD_PREP(PMCR0_IMODE, PMCR0_IMODE_FIQ) | PMCR0_IACT)) {
+ 		int irq;
+ 		if (cpumask_test_cpu(smp_processor_id(),
+ 				     &aic_irqc->fiq_aff[AIC_CPU_PMU_P]->aff))
 
