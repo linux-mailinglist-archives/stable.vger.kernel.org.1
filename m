@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD026A1D549
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:25:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7928DA1D546
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B66627A3A66
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:25:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6B46166BD2
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773D325A646;
-	Mon, 27 Jan 2025 11:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5111FECA0;
+	Mon, 27 Jan 2025 11:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FawtjTmL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErX5V/iO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367FB1FCF6B
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C161FE451
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737977119; cv=none; b=Al4FejVB2JSPK81nFneo88ddYwCiG7rUK5AEieju8nQw6RztuRwPfzWiZnhebGnxItT23V0RFx2GtUDYGinvYmLsW6/B58qpKScuSBN1YmAlmRzIwnt7sVMsU/pJOoIc1gKEVaiIcOK6dD9BtpVHe4oYaYCpUrR2a2quSPT12ls=
+	t=1737977121; cv=none; b=HwcOGFjjtrVM16azIL0EkEkDMBxZV9LFx73yXA1QX1eoceBzA41hPHadxW3DM9hPp8pFtQKWkYC78NOMU3ahgZc781pvjvgYIoiOuT9a0AqKc2d1yv6hcdokM92huLNqHYMC2E4NWxITML2c1VI86l4SWxg3OB8EZbf6rUVButM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737977119; c=relaxed/simple;
-	bh=tUlF6KVkoyv4+xHlWdKcES1yxWPu0z2Z34+H6J2LHyk=;
+	s=arc-20240116; t=1737977121; c=relaxed/simple;
+	bh=j07Jkd+Eh02Zg2LOYnmmNKf5svs06tMk/DU9ivXC21g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PqFIo/sRmhVM0nSQFAS6ABrwsdqFZYQm8YzaivhEwzbkvCaT2jIPeweZ6fOnTcVu2wY7jCoy9C2GWinnATZpMe4797AR85xy4SCNX/dx5gWN7Cnk9BAFJlxKT/GBL7WwOXVQoCBrVDit+lL54d8lZhenJKo3+DViYO1EsVg9IYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FawtjTmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98179C4CED2;
-	Mon, 27 Jan 2025 11:25:18 +0000 (UTC)
+	 MIME-Version; b=Oqyc3dSsCJwGOezlH/5OV5Z7c/zePPdgHCOE6mWpqSQiDZNbKmTZj9eQZw1K7YJrdftrikXCjCkIakMC2xBhcG4PgpBrnkT9fCS67VEqoAH43U3Fn0F6FhyHpDM5pMsiWGAyq+BZZlqxGHwvUpc6A/Nh++fy7wO2KSBVBCuzBgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErX5V/iO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1885C4CED2;
+	Mon, 27 Jan 2025 11:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737977119;
-	bh=tUlF6KVkoyv4+xHlWdKcES1yxWPu0z2Z34+H6J2LHyk=;
+	s=k20201202; t=1737977121;
+	bh=j07Jkd+Eh02Zg2LOYnmmNKf5svs06tMk/DU9ivXC21g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FawtjTmL3G9Wp04nFZHoRAGhCsq9GEf1dRaZ1rOQjj1eEdck4EdjLKOb6oPxGQJ6w
-	 ABQGwUXc2lLvoF3sApKqwo+RB2/FLwhq05LznKzXYTvK4VPU8zQdJtaHyL4binyGeY
-	 o0YsV9SHH79EWZ7y9xmjqaWwUyQRIyrsEzkhCjvnx1xHJCzaFHEcZx+uJxvY7+m+PN
-	 0LIBeiPLvlKK7tV5Io7MatXs0KVWbsVEFODCxSq1gfqrx34+5JFBoyl4IbrrrtyVCz
-	 H3kjrPgTFuVDufXvHPOq7Os3QGWkuHsaiXS2FxQV3QnsSpdx+QikLMPKrTuXrE1le6
-	 n2Ji7PvYRk8Mg==
+	b=ErX5V/iO+EmImOGKqlzhKRBGH4HgZufqoqAyNyQ01c8hWq0nILrl26uNsgAQITU1B
+	 LHJxpcGIkxKk9XbjZkHFID4rNPoRu05tE7LFlXnbCHf9dlfVWKn716BL8R3HTWZFwV
+	 wXZYWnzl0kK4TDmmtDkCWJMhPHjqQWEaN5oIta6WKY0QdC8VWXWznA9kGp4VrbhK6F
+	 gRhmKVW6jXIlGnfUnasYqXSCHcmQKMIk87o6t5wgZY5r5RwP1ZCqy0kQ1C9Z3aIHMN
+	 NCIKyZDbcFYE27a4hhZxrf9gwduDGDm9KefsgCwSeob8I3MCLpjzPixKZbrfGC74ku
+	 +dGfJ55Kv300g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Yu Kuai <yukuai1@huaweicloud.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 1/6] md/raid5: recheck if reshape has finished with device_lock held
-Date: Mon, 27 Jan 2025 06:25:17 -0500
-Message-Id: <20250127043040-429aec38a5285030@stable.kernel.org>
+Subject: Re: [PATCH 6.13 1/5] md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
+Date: Mon, 27 Jan 2025 06:25:19 -0500
+Message-Id: <20250127041636-cfdee9945400d753@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250127085351.3198083-2-yukuai1@huaweicloud.com>
+In-Reply-To:  <20250127084928.3197157-2-yukuai1@huaweicloud.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,49 +63,46 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 25b3a8237a03ec0b67b965b52d74862e77ef7115
+The upstream commit SHA1 provided is correct: 08c50142a128dcb2d7060aa3b4c5db8837f7a46a
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Yu Kuai<yukuai1@huaweicloud.com>
-Commit author: Benjamin Marzinski<bmarzins@redhat.com>
+Commit author: Yu Kuai<yukuai3@huawei.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.6.y | Not found
+6.12.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  25b3a8237a03e ! 1:  64000dbb8dcf7 md/raid5: recheck if reshape has finished with device_lock held
+1:  08c50142a128d ! 1:  c5f3371866713 md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
     @@ Metadata
       ## Commit message ##
-         md/raid5: recheck if reshape has finished with device_lock held
+         md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
      
-    +    commit 25b3a8237a03ec0b67b965b52d74862e77ef7115 upstream.
+    +    commit 08c50142a128dcb2d7060aa3b4c5db8837f7a46a upstream.
     +
-         When handling an IO request, MD checks if a reshape is currently
-         happening, and if so, where the IO sector is in relation to the reshape
-         progress. MD uses conf->reshape_progress for both of these tasks.  When
-    @@ Commit message
-         Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-         Signed-off-by: Song Liu <song@kernel.org>
-         Link: https://lore.kernel.org/r/20240702151802.1632010-1-bmarzins@redhat.com
-    +    Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+         behind_write is only used in raid1, prepare to refactor
+         bitmap_{start/end}write(), there are no functional changes.
      
-      ## drivers/md/raid5.c ##
-    -@@ drivers/md/raid5.c: static int add_all_stripe_bios(struct r5conf *conf,
-    - 	return ret;
-    +@@ drivers/md/raid5.c: static bool reshape_disabled(struct mddev *mddev)
-    + 	return is_md_suspended(mddev) || !md_is_rdwr(mddev);
-      }
-      
-     +enum reshape_loc {
+    @@ Commit message
+         Reviewed-by: Xiao Ni <xni@redhat.com>
+         Link: https://lore.kernel.org/r/20250109015145.158868-2-yukuai1@huaweicloud.com
+         Signed-off-by: Song Liu <song@kernel.org>
+    +    Signed-off-by: Yu Kuai <yukuai1@huaweicloud.com>
+     
+      ## drivers/md/md-bitmap.c ##
+     @@ drivers/md/md-bitmap.c: __acquires(bitmap->lock)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
 | stable/linux-6.1.y        |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Failed     |  N/A       |
+| stable/linux-5.10.y       |  Failed     |  N/A       |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
 
