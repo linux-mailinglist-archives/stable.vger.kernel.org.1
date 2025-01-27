@@ -1,168 +1,93 @@
-Return-Path: <stable+bounces-110872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D77A1D7C4
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 15:08:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D63A1D7DC
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 15:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28DD116623B
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 14:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD24A18875B7
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 14:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5BC5672;
-	Mon, 27 Jan 2025 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295F11FF1DF;
+	Mon, 27 Jan 2025 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CHsPM6l/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XazM7rLm"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8967525A643
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 14:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D0B4A1D;
+	Mon, 27 Jan 2025 14:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737986885; cv=none; b=GJGLz5z+TxiANeFbbtm9Yprh1aaMacn0ASqSo54GuzWT/90VMNcGx4pNq8mnkxWpxqW9eIVcIhYwlIP4W/z8LiQWfWMCrlvHaP9FDInm7GzW9hxbTAzIkr4aBnL+oe4dFFc84ed7Yv8CTjAKqSCc7mgZZHBlFRgeR4WFj/t0ugU=
+	t=1737987146; cv=none; b=F/AmEMLjrnn3BKEmmS2JE7x9APZs4rgKG+Kk3A2R8mg/gb5C9SSQ7ZMYuWMRzUGTDEYTJwU11XkCYXShztDEUm60+qFTlrshriMAK28DRj4u4cx8HARaznAqrkr+tIOOldtNln6DzwhQuYhKrOvAgrbLfYXF4P1janmvLKiA20c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737986885; c=relaxed/simple;
-	bh=C1RDE/iRxZXlFGXIp0NwQ66j+lYT6eO4SpkS0VQ8UiM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S8F+WZvp7Dx6aslvd3FQyIE9P7CrjCzJfnu6mGggWBLNlo5z9n7R97MSDpy9Yjj3+EPfEahzCP8B9chQNeR3EkbYFPB3OqjORpmsjfyR60vTON3kQhfjbD+dLsqOfwe+UThdcwAwkEMhMLVyOhW80E2dY/8s/6Wj1us0uAy1UTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CHsPM6l/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737986882;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zR8Lw8IGEDS84mnZ2x73Xq3Ymaut8qRwt5YhN2RHp0g=;
-	b=CHsPM6l/kqKRBilvhHzDtuMmlcbIg2z7FZWTIau3OUQnVwSgkrV/gcqYoRBR86Szdyo0+J
-	4w9SheXL12lyg9Ou+GxPQbrYO/tIBZbAzyezssSTfwi6B/sZMfS1+zG1DTutTHp3JXd2dv
-	laRKdjjPf8jSoFu6eJsWXIpeTJMkIGI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-678-XSc_wKU5N_C85i4N03V4Vg-1; Mon, 27 Jan 2025 09:08:00 -0500
-X-MC-Unique: XSc_wKU5N_C85i4N03V4Vg-1
-X-Mimecast-MFC-AGG-ID: XSc_wKU5N_C85i4N03V4Vg
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-385dcae001fso1672375f8f.1
-        for <stable@vger.kernel.org>; Mon, 27 Jan 2025 06:07:59 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737986878; x=1738591678;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zR8Lw8IGEDS84mnZ2x73Xq3Ymaut8qRwt5YhN2RHp0g=;
-        b=KHRw4KM4OAEAbSYHZJcnwWV0pjmuE4Pb00Yw1EN/CA1ABQriTWVOnTn/BP0rbdhMoc
-         I3RoO6E8rBY8fJanu2fbQhQ4YPZz5iUqrxAQaYFTTcGpENaWl5EIMOzBD8jZw5lP5Ihz
-         7eBDmEchpF0GYCZEgovH//7MChaanUd9UvvN07YZtU8gaUMTHbQvT2y5gKT9rjgVtGjt
-         i5mCHKA8t83UaovF8EpRx6JYcOmUA0t0GP4dM236QIeFfkVkajaGoxp3CoAXZwrrF+mp
-         Crp+S2ExL8kI5h8OLa4dOrjbHxi/tdsYEd2v43/GEaaV4lAXQbu7ZybOZt+D7RciO58z
-         NMGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUscbvY8iZt1xXtrnNDUY4PpoqkNLnHBTC4AUx+UlW2oL82Eb9ece6AXYRFkppcRsvyV3SjqK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2cs1zvRjzDbdwUVgDOoeGLmqydfHY3zeTaMEnVhB0VYtrg9Ux
-	RvcF/Oc712tGkLw/BXpMQG35hwJBmIQGkH2xMHeOG0t91TLWYkdHR5AAwHXd3hqONBMlsDKjTB8
-	rpR4DFSvqZ92vu4/FGn0SE7Q2u4qOIDAR5ozvOwkGhgEThDMkLJoZDydxE+zY1Q==
-X-Gm-Gg: ASbGncsNCFZtY54ne1rxdfgpRla8zBI/imtpsVJVvhBGSxf7Uo+bpShbCX1nSx9otNQ
-	7dwErtq312P2mu5D3aviveX0ziNn4ImpGmdgocNIhLMwhSI0VqUGBrZ2kcxCavz8x+SR4VJpxy9
-	f0ITuVj2yQ6OFh2wIJMKLeFie+3MtZMzOq8vc0fgT1UXLCv+1CuQf5oHRQK2ZhzduYssVZ+bR2H
-	qttddqxijGrc/f3CKl0EL+COc7opXo4nvkU2T/OLOu1cJgHgcCOVPjS9sxOJ0ceCkbsEZaZhsLx
-	xduap5zTmeIrgd/yOauvE8geWHEfrfEW6cSnUMqxn0GX
-X-Received: by 2002:a5d:6b8b:0:b0:38a:8b2c:53ac with SMTP id ffacd0b85a97d-38bf57b3fe9mr27112548f8f.42.1737986878505;
-        Mon, 27 Jan 2025 06:07:58 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEE3g8f4oZ3mR7Gu+X5ihE0o/p/nxzvRr76U53vdHbo533RF2hLIvkpnKEtGmuyjpJGP5WYSA==
-X-Received: by 2002:a5d:6b8b:0:b0:38a:8b2c:53ac with SMTP id ffacd0b85a97d-38bf57b3fe9mr27112512f8f.42.1737986878119;
-        Mon, 27 Jan 2025 06:07:58 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188a61sm11357664f8f.52.2025.01.27.06.07.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 06:07:57 -0800 (PST)
-Message-ID: <83d74018-0029-413b-ac6b-77658b109e4a@redhat.com>
-Date: Mon, 27 Jan 2025 15:07:56 +0100
+	s=arc-20240116; t=1737987146; c=relaxed/simple;
+	bh=SJQ+G0TU5BIxya1bZ/IXkDXPD3Jmv/wC12bMpA0sCGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PJPaXsMgSKJCoaC3WUqE4yF5hyR+IB/f6IOy1LGyI5tIDoIrU0cyVKl4Qvbd8EPngz28hYJUsdKWMDM5cBjfDmfJBxhX0udtNyq4m2lSLSS24Md9t07S9ChTo/94/Y6GfXYc59SCUI0U91Ay8rCPFRp51MsNmodCPa6RT2AeB64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XazM7rLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC4BC4CED2;
+	Mon, 27 Jan 2025 14:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1737987146;
+	bh=SJQ+G0TU5BIxya1bZ/IXkDXPD3Jmv/wC12bMpA0sCGY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XazM7rLmD6sGAWkbuYHRFzIWiNLKpnSC9jbyjAB7wN/sDbyPBCDKkpn6r2Gg/UIYp
+	 O16mooU0mbWdY1TAbb22Po+AS3M6uhFmJMBk85EbTdGtj9PPEVEJyt4uKuvH2uSOeL
+	 K7jfVL5isB8dLYr94EToWiwC3aMYu0PabYQkpq3c=
+Date: Mon, 27 Jan 2025 15:12:22 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rabeeh@solid-run.com,
+	jon@solid-run.com, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "mmc: sdhci_am654: Add
+ sdhci_am654_start_signal_voltage_switch"
+Message-ID: <2025012756-dividers-goon-8c9b@gregkh>
+References: <20250127-am654-mmc-regression-v1-1-d831f9a13ae9@solid-run.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ast: astdp: Fix timeout for enabling video signal
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-References: <20250127134423.84266-1-tzimmermann@suse.de>
-Content-Language: en-US, fr
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <20250127134423.84266-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250127-am654-mmc-regression-v1-1-d831f9a13ae9@solid-run.com>
 
-On 27/01/2025 14:44, Thomas Zimmermann wrote:
-> The ASTDP transmitter sometimes takes up to second for enabling the
-> video signal, while the timeout is only 200 msec. This results in a
-> kernel error message. Increase the timeout to 1 second. An example
-> of the error message is shown below.
+On Mon, Jan 27, 2025 at 02:35:29PM +0100, Josua Mayer wrote:
+> This reverts commit 941a7abd4666912b84ab209396fdb54b0dae685d.
 > 
-> [  697.084433] ------------[ cut here ]------------
-> [  697.091115] ast 0000:02:00.0: [drm] drm_WARN_ON(!__ast_dp_wait_enable(ast, enabled))
-> [  697.091233] WARNING: CPU: 1 PID: 160 at drivers/gpu/drm/ast/ast_dp.c:232 ast_dp_set_enable+0x123/0x140 [ast]
-> [...]
-> [  697.272469] RIP: 0010:ast_dp_set_enable+0x123/0x140 [ast]
-> [...]
-> [  697.415283] Call Trace:
-> [  697.420727]  <TASK>
-> [  697.425908]  ? show_trace_log_lvl+0x196/0x2c0
-> [  697.433304]  ? show_trace_log_lvl+0x196/0x2c0
-> [  697.440693]  ? drm_atomic_helper_commit_modeset_enables+0x30a/0x470
-> [  697.450115]  ? ast_dp_set_enable+0x123/0x140 [ast]
-> [  697.458059]  ? __warn.cold+0xaf/0xca
-> [  697.464713]  ? ast_dp_set_enable+0x123/0x140 [ast]
-> [  697.472633]  ? report_bug+0x134/0x1d0
-> [  697.479544]  ? handle_bug+0x58/0x90
-> [  697.486127]  ? exc_invalid_op+0x13/0x40
-> [  697.492975]  ? asm_exc_invalid_op+0x16/0x20
-> [  697.500224]  ? preempt_count_sub+0x14/0xc0
-> [  697.507473]  ? ast_dp_set_enable+0x123/0x140 [ast]
-> [  697.515377]  ? ast_dp_set_enable+0x123/0x140 [ast]
-> [  697.523227]  drm_atomic_helper_commit_modeset_enables+0x30a/0x470
-> [  697.532388]  drm_atomic_helper_commit_tail+0x58/0x90
-> [  697.540400]  ast_mode_config_helper_atomic_commit_tail+0x30/0x40 [ast]
-> [  697.550009]  commit_tail+0xfe/0x1d0
-> [  697.556547]  drm_atomic_helper_commit+0x198/0x1c0
+> This commit uses presence of device-tree properties vmmc-supply and
+> vqmmc-supply for deciding whether to enable a quirk affecting timing of
+> clock and data.
+> The intention was to address issues observed with eMMC and SD on AM62
+> platforms.
 > 
-> This is a cosmetical problem. Enabling the video signal still works
-> even with the error message. The problem has always been present, but
-> only recent versions of the ast driver warn about missing the timeout.
-
-Thanks, it looks good to me.
-
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-
+> This new quirk is however also enabled for AM64 breaking microSD access
+> on the SolidRun HimmingBoard-T which is supported in-tree since v6.11,
+> causing a regression. During boot microSD initialization now fails with
+> the error below:
 > 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 4e29cc7c5c67 ("drm/ast: astdp: Replace ast_dp_set_on_off()")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Jocelyn Falempe <jfalempe@redhat.com>
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.13+
-> ---
->   drivers/gpu/drm/ast/ast_dp.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> [    2.008520] mmc1: SDHCI controller on fa00000.mmc [fa00000.mmc] using ADMA 64-bit
+> [    2.115348] mmc1: error -110 whilst initialising SD card
 > 
-> diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-> index 30aad5c0112a1..2d7482a65f62a 100644
-> --- a/drivers/gpu/drm/ast/ast_dp.c
-> +++ b/drivers/gpu/drm/ast/ast_dp.c
-> @@ -201,7 +201,7 @@ static bool __ast_dp_wait_enable(struct ast_device *ast, bool enabled)
->   	if (enabled)
->   		vgacrdf_test |= AST_IO_VGACRDF_DP_VIDEO_ENABLE;
->   
-> -	for (i = 0; i < 200; ++i) {
-> +	for (i = 0; i < 1000; ++i) {
->   		if (i)
->   			mdelay(1);
->   		vgacrdf = ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xdf,
+> The heuristics for enabling the quirk are clearly not correct as they
+> break at least one but potentially many existing boards.
+> 
+> Revert the change and restore original behaviour until a more
+> appropriate method of selecting the quirk is derived.
+> 
+> Fixes: <941a7abd4666> ("mtd: spi-nor: core: replace dummy buswidth from addr to data")
 
+Please don't use "<>" in the Fixes: line, that's not how the
+documentation asks to use it.
+
+thanks,
+
+greg k-h
 
