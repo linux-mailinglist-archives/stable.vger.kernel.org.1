@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-110887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6691A1DC07
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:29:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5135A1DC0D
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B8F3A68A2
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFE6B1888DB8
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC6218D656;
-	Mon, 27 Jan 2025 18:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99DD18E37D;
+	Mon, 27 Jan 2025 18:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="rl4pv8ID"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HdZMh+wF"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385A013C9C4
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 18:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3C718D621
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 18:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738002564; cv=none; b=Ea04qW92J18oHbcAgFRM9zBkKHr95qc+goKJlH7fH1pyk00B/vhR2aaxK8e9l91r9QqtK9QUs9eL2UYWVTpxfA+W8p/IniYBEgxat5WyC+Aovz8p2uAXsxhoRRgzdRd8xG4Kz2Ll+45OMP21zJuPSg20qBjaC9p0earHWI+jBQM=
+	t=1738002599; cv=none; b=KeTW3onHEZPGKj2xpThJtD1xPW1wePgiNWiK7liNkYdFk+McwCkeOiuPHAQQWmAYj/CLPkvMvzelIvglgHQS68laxXDWTWsp+e6L2EsURcdFByUw/R3aScQvJ/cQb5hWWJoAZKU6vM/fmozrBHOmMrpic9zvrPz8YguCDXZlDfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738002564; c=relaxed/simple;
+	s=arc-20240116; t=1738002599; c=relaxed/simple;
 	bh=UD+we7ElAg8tZM4PJMeQ6tQcyZVHEFVawN5MyHgPdfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VmLzZ7VWiJISFhyCfgOwwjYUZYslvMkD7bECJrBY2AiJBQAPC+/hfcVAQitBuvCwql4qOBc01eFm/nfcmnHvYEfA2KhEN/u/CBPqNs1GpSIjReFt04ek040F+ch8DAAs5ieJ308FAefjSplBphlihM0vGDZzMNhg+ABomREEIC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=rl4pv8ID; arc=none smtp.client-ip=13.77.154.182
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oca65CSdy458INmHRN0gJcTSgd/TzolYuACsrUIiF4RmIdD5wPJdySVLxogKYYP0kiq2HNUVgbKjdgK03VawPZ2D7dmqwX9koKO29Tgqv0C54m5lAlL8UUVxyBen/VbnUyBR/JaJMtLpk1UGhh35K1/zhN44vTRKNVnK8YXmo6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HdZMh+wF; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: from eahariha-devbox.5bhznamrcrmeznzvghz2s0u2eh.xx.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C67D22037161;
-	Mon, 27 Jan 2025 10:29:22 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C67D22037161
+	by linux.microsoft.com (Postfix) with ESMTPSA id C8A5C2037163;
+	Mon, 27 Jan 2025 10:29:57 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C8A5C2037163
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738002562;
+	s=default; t=1738002597;
 	bh=krfdq+MbHBS2tHUA3bAzHezNbS1vSuSKBXsJTNrn+Qg=;
 	h=From:To:Cc:Subject:Date:From;
-	b=rl4pv8IDVA5c7W7hjZ2KPOAQ4dGUcpESU4Sx7x8ZLbuYnpL2kJ75atXBlHUjC+TKU
-	 KIril0JdXyCjE+xgu6OnXLu/0prx+de80A9jqcmXQeJwJxDct/PUdWaW8n+BHe9TrC
-	 xSvLwsLLuFTs9453m3RyB9Y7u851OTFUl+ClhZ64=
+	b=HdZMh+wFGEREHjxo46gOBomyAKNQZSSus2EcKxhqYUcgFhbrnah/+CgTDTX0RpFLV
+	 OIhEHgeoSQPo0CHHiMS5nVcJgjeiPTDZPtsbey3+tssmivw+x99MlzwgtZMAGKils9
+	 J2Qzd71cEHVPfxRL9iuej7kwMF0lxTR9zAwX9wFQ=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
 To: stable@vger.kernel.org
 Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
 	Michael Kelley <mhklinux@outlook.com>,
 	"Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6.y] scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
-Date: Mon, 27 Jan 2025 18:29:08 +0000
-Message-ID: <20250127182908.66971-1-eahariha@linux.microsoft.com>
+Subject: [PATCH 6.12.y] scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
+Date: Mon, 27 Jan 2025 18:29:54 +0000
+Message-ID: <20250127182955.67606-1-eahariha@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
