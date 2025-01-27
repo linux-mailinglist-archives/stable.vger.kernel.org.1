@@ -1,70 +1,59 @@
-Return-Path: <stable+bounces-110912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4059DA1FFA7
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 22:29:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BF3A20009
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 22:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A643A17DE
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 21:29:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E31C1886CB8
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 21:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140D01B412B;
-	Mon, 27 Jan 2025 21:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACB1D88DB;
+	Mon, 27 Jan 2025 21:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KqMWOfU9"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R4CbrTEs"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52A81ACED1;
-	Mon, 27 Jan 2025 21:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EAF190664;
+	Mon, 27 Jan 2025 21:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738013359; cv=none; b=FVMSiuLA3TMduyqOCXc3J3OcFDkt8MwC8wX8bsStH3ydYchQA9YxPZOxxba3riY9q29LW3SymZdLPzsFX1sH845NWHboiEleFrhbUcWKT58H4y1ZVlqGTzq39PVBL3r/7354VCvAVtWP2Pgj3qyb3RT3WjgBpjwuWP5KwILur1k=
+	t=1738014184; cv=none; b=NWwRH6MMKxeXu5P6WzaNe+o/XeEJXmKLpNYeXzrnjT5Mkx98QcwmnxyskOGE5zZSOo0UIkZfdLhaOGlBSUnVvrzPHj2iovthOlI6/ZrCBJmshrBdEhDF/SdghJy8xH9KdmPasQo4e8QUs0gag6TQeUjqXfPHbB3q/35Vzt8LkMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738013359; c=relaxed/simple;
-	bh=eq7mXsIBZmPuN99dbvkvON7tjy2PdfJnRNaYIqoWbvU=;
+	s=arc-20240116; t=1738014184; c=relaxed/simple;
+	bh=amWnXKJDfu9x7z8AEwJSfk3fbiQeT7cAvuR5bp9HWTc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VaLlxwafMesfO5upjOU8Xm9rBIM4kJfjYypi+J6i0BJQx/KTGFrOnBLMwBhwmedy5rx+r6GtE7+k2vc+hRe/ILvuW/A8xF1cqWAQM0ZGc+Dg3CXXQcq8x+0tbvBmsf9oSo+u2XXUl+vftjZSMnRtxGpArREcEm3RE9dHc6x2vaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KqMWOfU9; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eq7mXsIBZmPuN99dbvkvON7tjy2PdfJnRNaYIqoWbvU=; b=KqMWOfU9wAmiBF4SWvd9EO47wY
-	G6/c+HNFj5+uyK7n52DMOmBax5Uec7pmKObZXeQ2DQWKeZl1rg9zzN+HK/PboxwNzKqQ4vs150lqH
-	U9MXIZRa02wBnPj0vI4/5x9FfjVORtIbJzJgvQnW/5njx5lhuBgF4ciTy8BHrramvPSeAmC0Z7+kf
-	W+w4dVNi8A5eyxxgyUuxn2w8bQ2v4qhWTGc4Owf4rAyqmjCNQmMX5AKIt6D11nxWfzijhUiPHKAyB
-	eXJTdFxur6THxxpVtN5enKWAy51/4p1x1CIqMo6LFE6Yw0B+eedjXqpLZTud5XA/iNjk30njbMrq5
-	dytg26fw==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcWfG-00000009ubs-29Ep;
-	Mon, 27 Jan 2025 21:29:02 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E91373004DE; Mon, 27 Jan 2025 22:29:01 +0100 (CET)
-Date: Mon, 27 Jan 2025 22:29:01 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: "Liang, Kan" <kan.liang@linux.intel.com>
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 02/20] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-Message-ID: <20250127212901.GB9557@noisy.programming.kicks-ass.net>
-References: <20250123140721.2496639-1-dapeng1.mi@linux.intel.com>
- <20250123140721.2496639-3-dapeng1.mi@linux.intel.com>
- <20250127162917.GM16742@noisy.programming.kicks-ass.net>
- <6d5c45b4-53ad-403f-9de3-a25b80a44e0e@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eajmI1vKzMPoWGhKkhXJ42lY2rpawB4wqXb3l7ruwIgOpRkfizUuuWS/ejawNwkXAL7U3NDOsGQsBJKe/V/7GEFR10VJ8iRgM3oXhjNAHG8Xme5IrqNJ8IwWbhubVGM3cBNWNRXVX3K9CR0zD6LhudoLpl0mKOGllws4ZE/Sb9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R4CbrTEs; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from hm-sls2 (bras-base-toroon4332w-grc-51-184-146-177-43.dsl.bell.ca [184.146.177.43])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 38EF0203716A;
+	Mon, 27 Jan 2025 13:43:02 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 38EF0203716A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1738014182;
+	bh=sDyFIa9eqolzc81S1g1JJRzaiBj3izmmQxt0+YYah2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R4CbrTEs3YCAokeulW4Lh9X9v/nwjnxkI5U6CpFnK7+9EwBUlBMF+05Mi232qZu+w
+	 OVXcUu1xeANxKBlDfo9cE3oF0uAGeEzIovjeyGrS1nZKL9SE6dxdEI5D2wkGu2oBuy
+	 hC/rwIbjHCI376IJDfLPQ6cZjUQjym6fweosUrro=
+Date: Mon, 27 Jan 2025 16:42:56 -0500
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Wei Liu <wei.liu@kernel.org>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] drivers/hv: select PCI_HYPERV if PCI is enabled
+Message-ID: <Z5f94J7rzSC-TyIB@hm-sls2>
+References: <20250127180947.123174-1-hamzamahfooz@linux.microsoft.com>
+ <SN6PR02MB4157BAAEB938E7E4E849DC7CD4EC2@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,15 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6d5c45b4-53ad-403f-9de3-a25b80a44e0e@linux.intel.com>
+In-Reply-To: <SN6PR02MB4157BAAEB938E7E4E849DC7CD4EC2@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-On Mon, Jan 27, 2025 at 11:43:53AM -0500, Liang, Kan wrote:
+On Mon, Jan 27, 2025 at 09:02:22PM +0000, Michael Kelley wrote:
+> From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com> Sent: Monday, January 27, 2025 10:10 AM
+> > 
+> > We should select PCI_HYPERV here, otherwise it's possible for devices to
+> > not show up as expected, at least not in an orderly manner.
+> 
+> The commit message needs more precision:  What does "not show up"
+> mean, and what does "not in an orderly manner" mean?  And "it's possible"
+> is vague -- can you be more specific about the conditions?  Also, avoid
+> the use of personal pronouns like "we".
+> 
+> But the commit message notwithstanding, I don't think this is change
+> that should be made. CONFIG_PCI_HYPERV refers to the VMBus device
+> driver for handling vPCI (a.k.a PCI pass-thru) devices. It's perfectly
+> possible and normal for a VM on Hyper-V to not have any such devices,
+> in which case the driver isn't needed and should not be forced to be
+> included. (See Documentation/virt/hyperv/vpci.rst for more on vPCI
+> devices.)
 
-> But they are used for a 64-bit register.
-> The ARCH_PERFMON_NUM_COUNTER_LEAF is for the CPUID enumeration, which is
-> a u32.
+Ya, we ran into an issue where CONFIG_NVME_CORE=y and
+CONFIG_PCI_HYPERV=m caused the passed-through SSDs not to show up (i.e.
+they aren't visible to userspace). I guess it's cause PCI_HYPERV has
+to load in before the nvme stuff for that workload. So, I thought it was
+reasonable to select PCI_HYPERV here to prevent someone else from
+shooting themselves in the foot. Though, I guess it really it on the
+distro guys to get that right.
 
-A well, but CPUID should be using unions, no?
-
-we have cpuid10_e[abd]x cpuid28_e[abc]x, so wheres cpuid23_e?x at?
+> 
+> There are other VMBus device drivers:  storvsc, netvsc, the Hyper-V
+> frame buffer driver, the "util" drivers for shutdown, KVP, etc., and more.
+> These each have their own CONFIG_* entry, and current practice
+> doesn't select them when CONFIG_HYPERV is set. I don't see a reason
+> that the vPCI driver should be handled differently.
+> 
+> Also, different distro vendors take different approaches as to whether
+> these drivers are built as modules, or as built-in to their kernel images.
+> I'm not sure what the Kconfig tool does when a SELECT statement identifies
+> a tri-state setting. Since CONFIG_HYPERV is tri-state, does the target of
+> the SELECT get the same tri-state value as CONFIG_HYPERV? Again,
+> that may not be what distro vendors want. They may choose to have
+> some of the VMBus drivers built-in and others built as modules. Distro
+> vendors (and anyone doing a custom kernel build) should be allowed
+> to make their choices just like for any other drivers.
+> 
+> If you've come across a situation these considerations don't apply
+> or are problematic, provide more details. That's what a good commit
+> message should do -- be convincing as to *why* the change should
+> be made! :-)
+> 
+> Michael
+> 
+> > 
+> > Cc: stable@vger.kernel.org
+> > Cc: Wei Liu <wei.liu@kernel.org>
+> > Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> > ---
+> >  drivers/hv/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/drivers/hv/Kconfig b/drivers/hv/Kconfig
+> > index 862c47b191af..6ee75b3f0fa6 100644
+> > --- a/drivers/hv/Kconfig
+> > +++ b/drivers/hv/Kconfig
+> > @@ -9,6 +9,7 @@ config HYPERV
+> >  	select PARAVIRT
+> >  	select X86_HV_CALLBACK_VECTOR if X86
+> >  	select OF_EARLY_FLATTREE if OF
+> > +	select PCI_HYPERV if PCI
+> >  	help
+> >  	  Select this option to run Linux as a Hyper-V client operating
+> >  	  system.
+> > --
+> > 2.47.1
+> > 
+> 
 
