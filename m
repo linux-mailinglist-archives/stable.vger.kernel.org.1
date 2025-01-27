@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-110857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7928DA1D546
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:25:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2169A1D547
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:25:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6B46166BD2
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:25:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C35166B71
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5111FECA0;
-	Mon, 27 Jan 2025 11:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07B01FE46D;
+	Mon, 27 Jan 2025 11:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErX5V/iO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sEnxf/2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C161FE451
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFC725A646
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737977121; cv=none; b=HwcOGFjjtrVM16azIL0EkEkDMBxZV9LFx73yXA1QX1eoceBzA41hPHadxW3DM9hPp8pFtQKWkYC78NOMU3ahgZc781pvjvgYIoiOuT9a0AqKc2d1yv6hcdokM92huLNqHYMC2E4NWxITML2c1VI86l4SWxg3OB8EZbf6rUVButM=
+	t=1737977123; cv=none; b=u4WijRooZ0xfWFasMmiskx26SflF+1M9DHAsuHcQj+jh+NuwadEzL6eqRYpJ5AD3tRVt3YyoHbaC/It3MT4cAVMCuBrRr+aIjlNSDYB0Nmxp+8WLBHaGTFWBBz4aTo9YviPkBeTqeLk0Vs6HeFQzHSqYTJ1yo+RhzH9vuwzlKZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737977121; c=relaxed/simple;
-	bh=j07Jkd+Eh02Zg2LOYnmmNKf5svs06tMk/DU9ivXC21g=;
+	s=arc-20240116; t=1737977123; c=relaxed/simple;
+	bh=MC7AB7DoWTMmtpB5KTG+KljWkqThfg4l+4dlAJpuiMw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Oqyc3dSsCJwGOezlH/5OV5Z7c/zePPdgHCOE6mWpqSQiDZNbKmTZj9eQZw1K7YJrdftrikXCjCkIakMC2xBhcG4PgpBrnkT9fCS67VEqoAH43U3Fn0F6FhyHpDM5pMsiWGAyq+BZZlqxGHwvUpc6A/Nh++fy7wO2KSBVBCuzBgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErX5V/iO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1885C4CED2;
-	Mon, 27 Jan 2025 11:25:20 +0000 (UTC)
+	 MIME-Version; b=GWC0ACUUFrkXDDqg+kQbu9cY2akNLExuly7ilPLbkgC+4Ky2KvPZF2Ksb5+ogTF43K+OBRq1IAbKlUnGSLE6MXDkZFYh9eT4ZBbt4DKgutt2XvU1vUFe+LZPNO3ByozvjFESvtqHPmS8IPPM1Bes4+9cRoA+Y3HZrP4NrH7QjEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sEnxf/2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48DDC4CED2;
+	Mon, 27 Jan 2025 11:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737977121;
-	bh=j07Jkd+Eh02Zg2LOYnmmNKf5svs06tMk/DU9ivXC21g=;
+	s=k20201202; t=1737977123;
+	bh=MC7AB7DoWTMmtpB5KTG+KljWkqThfg4l+4dlAJpuiMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErX5V/iO+EmImOGKqlzhKRBGH4HgZufqoqAyNyQ01c8hWq0nILrl26uNsgAQITU1B
-	 LHJxpcGIkxKk9XbjZkHFID4rNPoRu05tE7LFlXnbCHf9dlfVWKn716BL8R3HTWZFwV
-	 wXZYWnzl0kK4TDmmtDkCWJMhPHjqQWEaN5oIta6WKY0QdC8VWXWznA9kGp4VrbhK6F
-	 gRhmKVW6jXIlGnfUnasYqXSCHcmQKMIk87o6t5wgZY5r5RwP1ZCqy0kQ1C9Z3aIHMN
-	 NCIKyZDbcFYE27a4hhZxrf9gwduDGDm9KefsgCwSeob8I3MCLpjzPixKZbrfGC74ku
-	 +dGfJ55Kv300g==
+	b=sEnxf/2Zvdr8LhnMO1kHWd2ttr3PECSwZihXgYupSvS5ZTfJrmAazJI8Q5zhBqQwJ
+	 qBfieVokn4DPMKiQ+isXOlmBFvs+YQW7revkWzatdCwDTjD57SprBuiVseEuYomc83
+	 zz+24evIAcM8Fcv0Jwz0Hzy/uodk8rpWfTSxAGxHIkEmzMjzDs6/yVNqMt7LIcDoEC
+	 E+UWGAjh/9cM8bCHaRR8GxabDipYX9RtidMjshxdl4cEzG+T2KCKS5ZgNr2B8btRU6
+	 kv//YMF9JK9ML9YDBKCzlsGNysp9bj1rgkYVAZn6KBLzF48Vt+YovKCadT68wmrcGm
+	 aK6kY96mOBgpA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Yu Kuai <yukuai1@huaweicloud.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.13 1/5] md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
-Date: Mon, 27 Jan 2025 06:25:19 -0500
-Message-Id: <20250127041636-cfdee9945400d753@stable.kernel.org>
+Subject: Re: [PATCH 6.12 1/5] md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
+Date: Mon, 27 Jan 2025 06:25:21 -0500
+Message-Id: <20250127041848-c7457d3d9d9f4ace@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250127084928.3197157-2-yukuai1@huaweicloud.com>
+In-Reply-To:  <20250127085214.3197761-2-yukuai1@huaweicloud.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,7 +75,7 @@ Status in newer kernel trees:
 
 Note: The patch differs from the upstream commit:
 ---
-1:  08c50142a128d ! 1:  c5f3371866713 md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
+1:  08c50142a128d ! 1:  d81dc3d1913b5 md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
     @@ Metadata
       ## Commit message ##
          md/md-bitmap: factor behind write counters out from bitmap_{start/end}write()
@@ -85,14 +85,6 @@ Note: The patch differs from the upstream commit:
          behind_write is only used in raid1, prepare to refactor
          bitmap_{start/end}write(), there are no functional changes.
      
-    @@ Commit message
-         Reviewed-by: Xiao Ni <xni@redhat.com>
-         Link: https://lore.kernel.org/r/20250109015145.158868-2-yukuai1@huaweicloud.com
-         Signed-off-by: Song Liu <song@kernel.org>
-    +    Signed-off-by: Yu Kuai <yukuai1@huaweicloud.com>
-     
-      ## drivers/md/md-bitmap.c ##
-     @@ drivers/md/md-bitmap.c: __acquires(bitmap->lock)
 ---
 
 Results of testing on various branches:
@@ -100,9 +92,4 @@ Results of testing on various branches:
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
 | stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
 
