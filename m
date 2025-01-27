@@ -1,96 +1,135 @@
-Return-Path: <stable+bounces-110916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083ABA200BA
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 23:40:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F0AA200C7
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 23:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459B018850A6
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 22:40:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E043C7A1278
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 22:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918091DC9BE;
-	Mon, 27 Jan 2025 22:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744CB1DDA0F;
+	Mon, 27 Jan 2025 22:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5XpSJNp"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vbiDBrf7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C6E1DC9A8;
-	Mon, 27 Jan 2025 22:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3981DD889;
+	Mon, 27 Jan 2025 22:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738017610; cv=none; b=l+O4AD5Pb6qjC8BDk/StXQZ7J/loADdoNPJm6Mz8ejA8HxOZaNl6b22eru3ld55JAsz4kh4qNRSxqa1GMAapIwoNyHy02Gh1csISFrcL2BuNo+TFSQ/7IK8A6sqv6EBed/ZGqBzLqmkR+6xw0PdplkIPPoCIXlLo4iBlsHNYfgE=
+	t=1738017695; cv=none; b=o/jAt2oJelh4BB3XhgRq+XdBncdFBaUNTe7Jz36LCg/9qzbwtbgyf8N35hLF+1A9KLUzK4gnlpuQW8de0nyzDUFkMytElO+TvayjvNPDUk7icr1qMjXgjspG+pXhanWLZf22nwLdBzAPQwOtfDRXe2v99ACB0elKS11+TRzEy8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738017610; c=relaxed/simple;
-	bh=gFEzHz1kzLWNohyv4pPvISRHlA7q66taBSyM3uaPg4Y=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=betEXwHy0RH0rg4OfwLaTyEFpbJbPiC0M5XaEHlmlEmEyq1lKacLPcdraPnmrGvlp2jcaEzZOVA2BVJzjRh4YDe876UXYmMFc1YXSknS/komCCFBjWwhmbuXu1tH+QNmGSUxRZHEX78bHCn7zNOYOb92VjbEE4e9Wsm5NqQmpGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5XpSJNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 182BEC4CEE3;
-	Mon, 27 Jan 2025 22:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738017610;
-	bh=gFEzHz1kzLWNohyv4pPvISRHlA7q66taBSyM3uaPg4Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=R5XpSJNpVIKOOEoosiSsoLbd6ttCnFsK8Jc5iLeEzpfTmEYXzhZtSXtVc6bf694CT
-	 3lELOHFaQg8B1o0Vb1Lu35tl4mXccOPBa/AdHWwR2si6bc6TX8MuF+1AznRpShLuNZ
-	 NyDcs4hVxhdOriaCzaDT21v5FM+9AMBBMc5/MN6mCsiIonMU3ajoZHJwarg0RjYZfU
-	 0sBp+I4FXCSewCXRt2h9up0iF8iPgIsghSLc6c3SwreUn/UgPPPPWh9jEThM5aRxOr
-	 WBFXGpiPGEKOmTweW/ePcDFo8fkzmk8c58s4gQ44K7H1CzIHrJ+maTVUOgKAwByS4C
-	 HVbVAfI2A4Txg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAF76380AA63;
-	Mon, 27 Jan 2025 22:40:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1738017695; c=relaxed/simple;
+	bh=D3aF3EXl2ARW7bdg64oy7Rheixf8W1HTGoRgEyGcoNA=;
+	h=Date:To:From:Subject:Message-Id; b=BGq/Da+wvyfTvckG7To/2DnH4TpSb/zfZOukq2qhpDPZlG0WDK+LIaQLjmyhdLr44ZKQ11TEbfJ3hhJL1vL8rTwSY/p66ldBSFYi1Q4bW+JsEztjdvDb350B0Y0rEiPQy0wCutcVGRnM0I1z5O7cgyxb+LSlg5LAHmlMdkUilu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vbiDBrf7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE04C4CED2;
+	Mon, 27 Jan 2025 22:41:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1738017694;
+	bh=D3aF3EXl2ARW7bdg64oy7Rheixf8W1HTGoRgEyGcoNA=;
+	h=Date:To:From:Subject:From;
+	b=vbiDBrf7fz7nZsd9HYpF7OY69Liq0yAjMluaoCO4dGV5jXeguQJr7tTO+PF0Tl0h8
+	 7VT+6bAzpjF+PgnYA0X5x9nVFaYZZdZARJ3DSVZU9GUVq6qWb92JrNv2HMADjtpx7d
+	 z6e7LHGKn0BigVb701VouvSnM2zIFQM5lKIEKato=
+Date: Mon, 27 Jan 2025 14:41:34 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,n.zhandarovich@fintech.ru,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250127224134.BFE04C4CED2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH RESEND net] ptp: Ensure info->enable callback is always set
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173801763574.3245248.16939422208206942895.git-patchwork-notify@kernel.org>
-Date: Mon, 27 Jan 2025 22:40:35 +0000
-References: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
-In-Reply-To: <20250123-ptp-enable-v1-1-b015834d3a47@weissschuh.net>
-To: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=3Clinux=40weissschuh=2Enet=3E?=@codeaurora.org
-Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- john.stultz@linaro.org, arnd@arndb.de, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+The patch titled
+     Subject: nilfs2: fix possible int overflows in nilfs_fiemap()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch
 
-On Thu, 23 Jan 2025 08:22:40 +0100 you wrote:
-> The ioctl and sysfs handlers unconditionally call the ->enable callback.
-> Not all drivers implement that callback, leading to NULL dereferences.
-> Example of affected drivers: ptp_s390.c, ptp_vclock.c and ptp_mock.c.
-> 
-> Instead use a dummy callback if no better was specified by the driver.
-> 
-> Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> 
-> [...]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch
 
-Here is the summary with links:
-  - [RESEND,net] ptp: Ensure info->enable callback is always set
-    https://git.kernel.org/netdev/net/c/fd53aa40e65f
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Subject: nilfs2: fix possible int overflows in nilfs_fiemap()
+Date: Sat, 25 Jan 2025 07:20:53 +0900
+
+Since nilfs_bmap_lookup_contig() in nilfs_fiemap() calculates its result
+by being prepared to go through potentially maxblocks == INT_MAX blocks,
+the value in n may experience an overflow caused by left shift of blkbits.
+
+While it is extremely unlikely to occur, play it safe and cast right hand
+expression to wider type to mitigate the issue.
+
+Found by Linux Verification Center (linuxtesting.org) with static analysis
+tool SVACE.
+
+Link: https://lkml.kernel.org/r/20250124222133.5323-1-konishi.ryusuke@gmail.com
+Fixes: 622daaff0a89 ("nilfs2: fiemap support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/nilfs2/inode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/fs/nilfs2/inode.c~nilfs2-fix-possible-int-overflows-in-nilfs_fiemap
++++ a/fs/nilfs2/inode.c
+@@ -1186,7 +1186,7 @@ int nilfs_fiemap(struct inode *inode, st
+ 			if (size) {
+ 				if (phys && blkphy << blkbits == phys + size) {
+ 					/* The current extent goes on */
+-					size += n << blkbits;
++					size += (u64)n << blkbits;
+ 				} else {
+ 					/* Terminate the current extent */
+ 					ret = fiemap_fill_next_extent(
+@@ -1199,14 +1199,14 @@ int nilfs_fiemap(struct inode *inode, st
+ 					flags = FIEMAP_EXTENT_MERGED;
+ 					logical = blkoff << blkbits;
+ 					phys = blkphy << blkbits;
+-					size = n << blkbits;
++					size = (u64)n << blkbits;
+ 				}
+ 			} else {
+ 				/* Start a new extent */
+ 				flags = FIEMAP_EXTENT_MERGED;
+ 				logical = blkoff << blkbits;
+ 				phys = blkphy << blkbits;
+-				size = n << blkbits;
++				size = (u64)n << blkbits;
+ 			}
+ 			blkoff += n;
+ 		}
+_
+
+Patches currently in -mm which might be from n.zhandarovich@fintech.ru are
+
+nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch
 
 
