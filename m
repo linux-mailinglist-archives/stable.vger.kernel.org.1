@@ -1,123 +1,163 @@
-Return-Path: <stable+bounces-110876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FD4A1D9DC
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 16:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8F9A1DA03
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 16:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ADAE3A4BFA
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 15:46:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C3E83A4A74
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 15:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9072613B5B6;
-	Mon, 27 Jan 2025 15:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7179914EC77;
+	Mon, 27 Jan 2025 15:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P9UdtQRt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VjM9dDZA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5983B192
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 15:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A116660B8A;
+	Mon, 27 Jan 2025 15:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737992801; cv=none; b=Y24AhUKb/GiYtf9ir+bZli+7ictsNBK1UZd13DquRHxDBDdnMBWoT1VyY9vhdhDvgFWaO+D4lRH66c3CmbIKUXy0bwrldUgNfuWq0SR/u4+6ng9inKjNem2WYNaTRa8HERJFHYmA6eRJabOgMhu5NKGiuroqtnPVR99pa1yBhLE=
+	t=1737993508; cv=none; b=JnyaHaD+CQ3nMjwO8IrAPULbo3ereE/f3ICedrFw3pOj3nDcWFJ5fmFul5CigsHT/npaZ3myeqbgg/ZZyquSy2xmh5RgDzArdbe6ITqbF4dWYssFZMWqhH05afBy6UtOgjWTHW/uEyscEyh6gH+jXMFg3neqrQ/wkbR4fb+AMSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737992801; c=relaxed/simple;
-	bh=N1Ojiro8aDPYY2Ui+tNuOUqnHpyjZQL3icPbEdgR5W8=;
+	s=arc-20240116; t=1737993508; c=relaxed/simple;
+	bh=sgn7B7gYKw4oRSChjpiRNU7Ip4Inh0W9b6zsPKwd9hM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HHq5OtxZIE9n4t91i2qsmNJDv/XMC4auskBqScDkPvY5HvQOtFw1b4GFPy78ZGo0hsaXBtq2wv5gHapcaBeqjDpbTLZyy79yKBxKyLEnkkrEq0842W5Vs/pMbsJYrDpkp8VQsU59HQD03I/ri2N4AEncZbW3GV9tSCGLS8Y+dTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P9UdtQRt; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e54bd61e793so7587228276.2
-        for <stable@vger.kernel.org>; Mon, 27 Jan 2025 07:46:39 -0800 (PST)
+	 To:Cc:Content-Type; b=FmHjj7ZQ5cpQzQuuIPt9jUHShjKeNdV3XGOopDxJQxeZhsTXMu1y9iZXBuLXjpbEnfP/cf4pf3ZEi9P/K6/70haoAnEy+wPWwoIth3eXY2u4lF28mnUQZg60WRHTWy9nQwUumTtmjVrjZoRX80sk2N+kqhVtp4i2pCXHMB6het8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VjM9dDZA; arc=none smtp.client-ip=209.85.221.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5187f0b893dso1475020e0c.3;
+        Mon, 27 Jan 2025 07:58:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737992799; x=1738597599; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FyzF5JKQNS8WVSZnXyHkt17dR177PmUZO2C7o3A2Y90=;
-        b=P9UdtQRtsmbwceyISGTJK52CDLmzGMY0OnL3nWBlQRDvaaqRGtZx4NJgWRmvyK8zQ8
-         JnQwKcLl46wsLQ93Z2xzRFzxbZjYhmwRuIXy1l8Def1eI6e1noSvfHqVLDOpLMkUEWST
-         J6zJ2S88IyTNyMERi7waH8QGG8OQqNMziXQO5i5pvXeCjNb0/FKSQWk8dYphyOh6ti4z
-         WhPMBzsinW8KE0IxojSEh6ykAumofkGqnNAXZzXrvwJ3Ed3g/BBfof01Co/bNTwoVK+M
-         drh+Pi6f7U7t6q0a9QjDpLWFSvdBAXNyAlAayOkVcSJbytF5yEehsRoYEmRi/IjnVSqi
-         Rd+Q==
+        d=gmail.com; s=20230601; t=1737993505; x=1738598305; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TrdPISaA88VM3tVAVhAjIRcAVMkAWcHxKvma6bQDGX4=;
+        b=VjM9dDZAK1+BBRFhsdJWWajczpJelG7SJub4I950AQvniWCWM8Co655L6XdXeyMe0W
+         ObdsLSvd6hSgbiYvEaBQvmFk2757SNW/c6zh71oPD0+36X0sh8t2OjE6Vo8A1CegM8ji
+         NYqXby4lR+xknc0DadR7ieEK8cIVsVP27WbO6ik+VbErdInZ1VctiPvyQ+bRXSg1rwKF
+         HY14h4ltunOYArXjzX196VxFSJPhda76tb95Fxjq33U+YD3lfAo3/Jh0JeAUS3ryr6dG
+         rkLQuUvlaX3wOpGxvPyw9Tbibo+1P0ks81tUnXFaRE9Z90LENoOuES8mm2EYz9iKQYF8
+         mFLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737992799; x=1738597599;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FyzF5JKQNS8WVSZnXyHkt17dR177PmUZO2C7o3A2Y90=;
-        b=fcJPZ+Nx6ku/8GFz6jbqA+QDxNSY3Khr5lcTSn1tE0cr0hcCKCicwminVzIkOAbBNN
-         Dn8EQ/agly0pp1OM+iaSQurhZcaqLNw+buBDeTrH5I7vP/O08DvlZa8nX5jbgYZvIy8h
-         +oqfnWcUjSwrszgnTBf/vanIn+Ip3RWpjOFpiGH7BZ0ReEVRqKe8QfJQEgdCjWsaxDXK
-         M1kxQRo3oNgIRoeUIU9tDS+zUiEocS1l3p0L9hvcjxGac59Zk7qe2T5iowIf2DW0p9bh
-         PkYQ6tq229mYmsBhep4wZ4waeckHeqLuUO55QmKEktzImY+TV7HUhF1SCxFa13k2Ci78
-         LGww==
-X-Forwarded-Encrypted: i=1; AJvYcCWLklHoKKinQl653Oc8CPotuJ9po/RmpLlnnxNOmUZNQHayyzFnUTYpnYP/l8yg2bV+b5hA09k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHzh2nJydg0YbBnlXTwg6UMCJLN4SlQHrxObiItEuLFNIfonV1
-	uikQlMY0FxlPhPMKGk8UhtyCsXlYt15Vo22r0xQeVF0Cvt61RghG+GvdLnvgATAYiymG+4wnJ3E
-	G9j/8pszgJNnquCtWWppuN0AItZ9CUmQyCK/XlCrWAODaLUXC
-X-Gm-Gg: ASbGncvUQ+coeQfqBwqK7FoT0R3z2gJeJhmp5tal4w8i3nFBLqZBY7Xios0qpYxek+8
-	F4wn6g6MJVvpJOLoBBYwWwURtKsdpC882RzWY+aIh4yXTx8V3p43hH8FJEbyZfmGjGY1JxWXvKc
-	tXneXbIypDwuU20nsPfw==
-X-Google-Smtp-Source: AGHT+IHZaLOKkERtiYS5shkEjMAlT4iStOAU7WeU2T2q/yIKvnOtjzJiNS+UNV5Jv1kfmhHEVL9ETxrqPamzGSdb3SU=
-X-Received: by 2002:a05:6902:1b81:b0:e57:414b:577e with SMTP id
- 3f1490d57ef6-e57b1051956mr31803374276.12.1737992798737; Mon, 27 Jan 2025
- 07:46:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737993505; x=1738598305;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TrdPISaA88VM3tVAVhAjIRcAVMkAWcHxKvma6bQDGX4=;
+        b=EtihSrBpVfrCctvtKKqak/HEMcvBNIioAfypS54yIZZCz9p7Dp1jszFGxyFbFjxQG7
+         DddfHvVx8ezFRhvwGBy1Q/y5LdvCaYqZSNv0aDKVfkvTrj09IPCz6epbflI7z7O3n0a3
+         wvJg3FM2dIee+TFM9EK882htlfDttuEhLzmbmor9lcUzI1qBYyFPmm1LUSQhDQQTInzL
+         ZvIXzSDnzk2Gg+js0xPGEg1EgDvO32vALHalkdtyiTPEJkPfw5BuYhdf4TM9cSiB6a85
+         j7BISonektttL0ou3cXWmc2qctwnWGF++DZ7t59GJwG2QOQkPVYT/CUw2dsDJ5ySiM5s
+         A71w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2Hpef5jB+Ms0Fs7Myt4uAaz1/SvQjxlHWoSO/DH10E/kl5jcIFAvUZzkTITwlSbmT0RufBi/fm/A=@vger.kernel.org, AJvYcCU2shHMg+LMUh/ohxktnJSJEC/KDQesRvuncXiKeyrCr4h0i+pAlfCuKOaPM5/jVOTvNKZgsCLmz2Cnpu4n8pSYqjM=@vger.kernel.org, AJvYcCV2uTYtM6I+kmdT5oiADTw5tFJBV9PBq9zXCWnLGuI1W3N4699j0yRDoAEP7lnX0ddImuZskYapbhagye2g@vger.kernel.org, AJvYcCXsYmgH2qCn14HwbCb/LG9Qngm+ihr05ns7RRRhfncZse7vlM6vs1LFKTkMq4swAR6ufTB7l5+l@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvMhbYm26Q8rOY9+mD/hPGhV6QVKJJ4/8d7JsGIcH44UB9k2u2
+	35Orzq0Ut0VsVCgLrJF3wkU6PjoJBYMRxvpffq8jZMZ7dydb+//9OMB9KQnnYCEgcKu/RUE21m1
+	h5su4NalSdMEbKFZ6RloJWBXM4oU=
+X-Gm-Gg: ASbGncsT3++CBnMOHpoBAb4CptXE2XzLgeFiwQ2V2pFHhy8awHD9ckDDK5krXjiJXW7
+	jLnGM0Ab8roTT1RMQ6ye/nrxTRcVcDQ6FvBR9rSFBK5qmv6/roX53TwVU4dBOdQ==
+X-Google-Smtp-Source: AGHT+IFewEgzh+navCckBdb7lL+wzy5gFVB2RdeBSc6PAtpESEp7ykvGRV8OwGhoOa5sYl9xq0BHhqbVkNkj6TSnp84=
+X-Received: by 2002:a05:6122:4887:b0:51b:a11f:cbdb with SMTP id
+ 71dfb90a1353d-51d592bcc7amr39968496e0c.4.1737993505400; Mon, 27 Jan 2025
+ 07:58:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250120151000.13870-1-johan+linaro@kernel.org>
-In-Reply-To: <20250120151000.13870-1-johan+linaro@kernel.org>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Mon, 27 Jan 2025 16:46:27 +0100
-X-Gm-Features: AWEUYZlPxQezcPWC_RlZRyj-Wpd76XVtWwXGlnlr4q8ReulBHMnbsaHMT-5UGVU
-Message-ID: <CACMJSesr42T=qr8GoUwxGB51mnr04TB6j4_hztGAFXx008ZJLw@mail.gmail.com>
-Subject: Re: [PATCH] firmware: qcom: uefisecapp: fix efivars registration race
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Maximilian Luz <luzmaximilian@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konradybcio@kernel.org>, Elliot Berman <quic_eberman@quicinc.com>, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20250122100828.395091-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdVP8LrqAYK7sPJqiB+Fagk=CrhSwX1CixKOxoiGgyDEoQ@mail.gmail.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Mon, 27 Jan 2025 15:57:59 +0000
+X-Gm-Features: AWEUYZn7naazeV0KeZB-JQnjTKvmJ64OyQblw-v_fwKe0kUX2om_A9-SNmN0UYk
+Message-ID: <CA+V-a8tQOGeahv37ikq9Re6_4Hqdo5XbfQOv_KMf6pw9UsidZQ@mail.gmail.com>
+Subject: Re: [PATCH] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five SoC
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>, 
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 20 Jan 2025 at 16:10, Johan Hovold <johan+linaro@kernel.org> wrote:
->
-> Since the conversion to using the TZ allocator, the efivars service is
-> registered before the memory pool has been allocated, something which
-> can lead to a NULL-pointer dereference in case of a racing EFI variable
-> access.
->
-> Make sure that all resources have been set up before registering the
-> efivars.
->
-> Fixes: 6612103ec35a ("firmware: qcom: qseecom: convert to using the TZ allocator")
-> Cc: stable@vger.kernel.org      # 6.11
-> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Hi Geert,
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Thank you for the review.
 
-> ---
+On Thu, Jan 23, 2025 at 8:29=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
 >
-> Note that commit 40289e35ca52 ("firmware: qcom: scm: enable the TZ mem
-> allocator") looks equally broken as it allocates the tzmem pool only
-> after qcom_scm_is_available() returns true and other driver can start
-> making SCM calls.
+> Hi Prabhakar,
 >
-> That one appears to be a bit harder to fix as qcom_tzmem_enable()
-> currently depends on SCM being available, but someone should definitely
-> look into untangling that mess.
+> Thanks for your patch!
 >
-> Johan
+> On Wed, Jan 22, 2025 at 11:08=E2=80=AFAM Prabhakar <prabhakar.csengg@gmai=
+l.com> wrote:
+> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >
+> > According to the Rev.1.20 hardware manual for the RZ/Five SoC, the cloc=
+k
+> > source for HP is derived from PLL6 divided by 2. This patch corrects th=
+e
+> > implementation by configuring HP as a fixed clock source instead of a M=
+UX.
+> >
+> > The `CPG_PL6_ETH_SSEL` register, which is available on the RZ/G2UL SoC,=
+ is
+> > not present on the RZ/Five SoC, necessitating this change.
+>
+> While the register is not documented to exist, it reads back the same
+> default value as on RZ/G2UL, selecting the right parent that does exist.
+>
+Yep.
 
-Yeah, I have it on my TODO list. I'll get to it.
+> > Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/F=
+ive SoC")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+>
+> > --- a/drivers/clk/renesas/r9a07g043-cpg.c
+> > +++ b/drivers/clk/renesas/r9a07g043-cpg.c
+> > @@ -138,7 +138,11 @@ static const struct cpg_core_clk r9a07g043_core_cl=
+ks[] __initconst =3D {
+> >         DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dta=
+ble_1_32),
+> >         DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
+> >         DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
+> > +#ifdef CONFIG_ARM64
+> >         DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
+>
+> When building with W=3D1 on non-ARM64:
+>
+>     error: =E2=80=98sel_pll6_2=E2=80=99 defined but not used
+>
+> so sel_pll6_2 [] needs to be protected by an #ifdef too (or __maybe_unuse=
+d,
+> but the rest of the file uses __ifdef).
+>
+Agreed, I'll use #ifdef for consistency.
 
-Bartosz
+> > +#else
+>
+> The rest of the file uses:
+>
+>     #endif
+>     #ifdef CONFIG_RISCV
+>
+> instead of #else, so please use the same construct for consistency.
+>
+Sure, I'll update it as mentioned above.
+
+Cheers,
+Prabhakar
 
