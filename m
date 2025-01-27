@@ -1,154 +1,141 @@
-Return-Path: <stable+bounces-110881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2B5A1DAC0
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:44:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15104A1DB2F
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E3993A66B6
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 16:43:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58D701889719
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C77165F01;
-	Mon, 27 Jan 2025 16:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523F818A6D7;
+	Mon, 27 Jan 2025 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NltkVsuU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G/u8ZG6e"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3A61632EF;
-	Mon, 27 Jan 2025 16:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245397DA6A
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 17:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737996239; cv=none; b=P5ail1T+XFlPwc6dxv/gb7xHSlfNAswAtfYY6Hira9pTFKSG9NYNfRYdLQhDdWWeOKUzVgmgc+z+PzJxv/oGH9mFSW5CkWUO+MVnwheaJ3TZRNbBLyx6b3kY23HMsxWCGl+LYDyFc8hm0MaDrL1KevGhjjRnrbJypD5Tc3XJFr8=
+	t=1737998525; cv=none; b=B6swn8Fl4CTVQX/J/KiA1zo8cpPKwnOwWxo64Plc8yYJAqIChZ540pTup6a8JcaO6AjeITCxJ0wpTxEPEAHlePpYfPsOruX9Mck6If7bcUmjqEBERmfbJdsB2hynxAGS/zt3Vxx1A3H4kRiQw+VV8rUwMAjq66ZCfK2yMuhVceM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737996239; c=relaxed/simple;
-	bh=zi4O12kBcOOPKp1T3hbuhiWPGUNYKWFVD8cXQTLJC2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ry1+bv2fiOWByPsJXIDz9yL6I23781+l9lpGKvjmrw8KrEpPr8fuOorJxTbIkmxDQiVj4iFlu5o/z5na2jgEXqtCr2wwgHIs7Qikhb640M8x9NWMJ/0XsFQ31QmwZ4t8RCOQBGjn7e2PLb92/cCCaPZNFrHO1K+j/uK3G8RExCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NltkVsuU; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1737998525; c=relaxed/simple;
+	bh=P3Gszlz4xLYuT0ZVy9z99gNgTYlSg48w9P7o+uZtvq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FZ0y22jrC7m0L6mdI8ia8tDGM3u5qDdIsZM5RqeoIMftyM1iXzm/GIWSX6A4F/Ett53LtJ3JD4gRnY6os7T9wjygPb8N4H8sRA5qouT6m5xveQDIHtz19wnIZVP/5yK8gKO3UoxLhTVUaANgxZlt26PIRZ+s2VsGWdL+X2KvWkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G/u8ZG6e; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737996237; x=1769532237;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zi4O12kBcOOPKp1T3hbuhiWPGUNYKWFVD8cXQTLJC2o=;
-  b=NltkVsuU/MMo+Kq365IsfSdQ/UgXBtPi/OvVY1sANWa8+qI+bh/u/RPI
-   UARMEic0WduAYJ5nGluwVgNmGR8qcJ+F0Z6TUIcEggw/7+dtGPWb0Tg3G
-   6c2couN15X+AZzmblB4mvDassoS2mu+CAyuQAj/TccXfYf+L+9PE0/9XR
-   KG/7VZafIsveceS4h4IXKQn15SonCeAjT2G1Yxf1DH3oFzDiceQho45p4
-   lP+PxMJSGRxmggl50O/W+3Sz65q5MjVkhqnruw3bSwhTL4u68lcYNpD/z
-   FWeZjKuT2Jsoehkj/A8hZUJRRy4kswCfecztFz6AWQPUZYYJJAUABPGXy
+  t=1737998523; x=1769534523;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=P3Gszlz4xLYuT0ZVy9z99gNgTYlSg48w9P7o+uZtvq8=;
+  b=G/u8ZG6e5JE4XO9BQUTV89aQaNvhFvSr41IwYIjTJd57+xdxZMQ7OQbY
+   uRXlAAO/u31BCJB9PHqaruDSn0UlBWn6mS8woWx9Bj9f0QJtNgeg6qwaz
+   ZzqcHhXhRiSp283yUOY9Q8tR1kNwLLczQgrnlJCMN7Ut/hlqswe3jHSA+
+   GAn/QqvrNTCpE+AWr4JuB7gTWd2a6d1Cud1VHH55tQrx8ScBu8KZWtDae
+   PcmAyxbgGWckvU2a1rYQr/sFawYidAwVOD8UEb7O9hTcGh/gEFCnvpmIi
+   VRy8Xp9nN0XXs+3m3ATeP2ChsapJgAwIg2DJVsqVNiJ7TehZqIRdE+HpI
    g==;
-X-CSE-ConnectionGUID: hwZqXOzdQACAym/F/O6ymg==
-X-CSE-MsgGUID: aWGeg0y0Smu84exOE6ALyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="56005134"
-X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; 
-   d="scan'208";a="56005134"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 08:43:56 -0800
-X-CSE-ConnectionGUID: d55GN29kTly2yPUqx8LTdw==
-X-CSE-MsgGUID: Y6h/MPEOQwKPUnquNDORqw==
+X-CSE-ConnectionGUID: 7Yop9vLOTbiyLcTvXO2TTQ==
+X-CSE-MsgGUID: +iOHZLJCQgaxqUUiUEE/Qw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="38501378"
+X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
+   d="scan'208";a="38501378"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 09:22:02 -0800
+X-CSE-ConnectionGUID: z7MG5m1UTPyLyykihObxkw==
+X-CSE-MsgGUID: zFwszp9jTZWDB3UdaO22NQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="145695181"
-Received: from linux.intel.com ([10.54.29.200])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 08:43:56 -0800
-Received: from [10.246.136.10] (kliang2-mobl1.ccr.corp.intel.com [10.246.136.10])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id 95B4220B5713;
-	Mon, 27 Jan 2025 08:43:54 -0800 (PST)
-Message-ID: <6d5c45b4-53ad-403f-9de3-a25b80a44e0e@linux.intel.com>
-Date: Mon, 27 Jan 2025 11:43:53 -0500
+X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
+   d="scan'208";a="108610181"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 27 Jan 2025 09:22:00 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Mon, 27 Jan 2025 19:21:59 +0200
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 01/11] drm/i915: Make sure all planes in use by the joiner have their crtc included
+Date: Mon, 27 Jan 2025 19:21:46 +0200
+Message-ID: <20250127172156.21928-2-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.3
+In-Reply-To: <20250127172156.21928-1-ville.syrjala@linux.intel.com>
+References: <20250127172156.21928-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/20] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
-To: Peter Zijlstra <peterz@infradead.org>,
- Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo
- <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- Dapeng Mi <dapeng1.mi@intel.com>, stable@vger.kernel.org
-References: <20250123140721.2496639-1-dapeng1.mi@linux.intel.com>
- <20250123140721.2496639-3-dapeng1.mi@linux.intel.com>
- <20250127162917.GM16742@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: "Liang, Kan" <kan.liang@linux.intel.com>
-In-Reply-To: <20250127162917.GM16742@noisy.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
+Any active plane needs to have its crtc included in the atomic
+state. For planes enabled via uapi that is all handler in the core.
+But when we use a plane for joiner the uapi code things the plane
+is disabled and therefore doesn't have a crtc. So we need to pull
+those in by hand. We do it first thing in
+intel_joiner_add_affected_crtcs() so that any newly added crtc will
+subsequently pull in all of its joined crtcs as well.
 
-On 2025-01-27 11:29 a.m., Peter Zijlstra wrote:
-> On Thu, Jan 23, 2025 at 02:07:03PM +0000, Dapeng Mi wrote:
->> From: Kan Liang <kan.liang@linux.intel.com>
->>
->> The EAX of the CPUID Leaf 023H enumerates the mask of valid sub-leaves.
->> To tell the availability of the sub-leaf 1 (enumerate the counter mask),
->> perf should check the bit 1 (0x2) of EAS, rather than bit 0 (0x1).
->>
->> The error is not user-visible on bare metal. Because the sub-leaf 0 and
->> the sub-leaf 1 are always available. However, it may bring issues in a
->> virtualization environment when a VMM only enumerates the sub-leaf 0.
->>
->> Fixes: eb467aaac21e ("perf/x86/intel: Support Architectural PerfMon Extension leaf")
->> Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
->> Cc: stable@vger.kernel.org
->> ---
->>  arch/x86/events/intel/core.c      | 4 ++--
->>  arch/x86/include/asm/perf_event.h | 2 +-
->>  2 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->> index 5e8521a54474..12eb96219740 100644
->> --- a/arch/x86/events/intel/core.c
->> +++ b/arch/x86/events/intel/core.c
->> @@ -4966,8 +4966,8 @@ static void update_pmu_cap(struct x86_hybrid_pmu *pmu)
->>  	if (ebx & ARCH_PERFMON_EXT_EQ)
->>  		pmu->config_mask |= ARCH_PERFMON_EVENTSEL_EQ;
->>  
->> -	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF_BIT) {
->> -		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF,
->> +	if (sub_bitmaps & ARCH_PERFMON_NUM_COUNTER_LEAF) {
->> +		cpuid_count(ARCH_PERFMON_EXT_LEAF, ARCH_PERFMON_NUM_COUNTER_LEAF_BIT,
->>  			    &eax, &ebx, &ecx, &edx);
->>  		pmu->cntr_mask64 = eax;
->>  		pmu->fixed_cntr_mask64 = ebx;
->> diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
->> index adaeb8ca3a8a..71e2ae021374 100644
->> --- a/arch/x86/include/asm/perf_event.h
->> +++ b/arch/x86/include/asm/perf_event.h
->> @@ -197,7 +197,7 @@ union cpuid10_edx {
->>  #define ARCH_PERFMON_EXT_UMASK2			0x1
->>  #define ARCH_PERFMON_EXT_EQ			0x2
->>  #define ARCH_PERFMON_NUM_COUNTER_LEAF_BIT	0x1
->> -#define ARCH_PERFMON_NUM_COUNTER_LEAF		0x1
->> +#define ARCH_PERFMON_NUM_COUNTER_LEAF		BIT(ARCH_PERFMON_NUM_COUNTER_LEAF_BIT)
-> 
-> if you'll look around, you'll note this file uses BIT_ULL(), please stay
-> consistent.
+The symptoms from failing to do this are:
+- duct tape in the form of commit 1d5b09f8daf8 ("drm/i915: Fix NULL
+  ptr deref by checking new_crtc_state")
+- the plane's hw state will get overwritten by the disabled
+  uapi state if it can't find the uapi counterpart plane in
+  the atomic state from where it should copy the correct state
 
-But they are used for a 64-bit register.
-The ARCH_PERFMON_NUM_COUNTER_LEAF is for the CPUID enumeration, which is
-a u32.
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_display.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-Thanks,
-Kan
-
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 7d68d652c1bc..2b31c8f4b7cd 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -6682,12 +6682,30 @@ static int intel_async_flip_check_hw(struct intel_atomic_state *state, struct in
+ static int intel_joiner_add_affected_crtcs(struct intel_atomic_state *state)
+ {
+ 	struct drm_i915_private *i915 = to_i915(state->base.dev);
++	const struct intel_plane_state *plane_state;
+ 	struct intel_crtc_state *crtc_state;
++	struct intel_plane *plane;
+ 	struct intel_crtc *crtc;
+ 	u8 affected_pipes = 0;
+ 	u8 modeset_pipes = 0;
+ 	int i;
+ 
++	/*
++	 * Any plane which is in use by the joiner needs its crtc.
++	 * Pull those in first as this will not have happened yet
++	 * if the plane remains disabled according to uapi.
++	 */
++	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
++		crtc = to_intel_crtc(plane_state->hw.crtc);
++		if (!crtc)
++			continue;
++
++		crtc_state = intel_atomic_get_crtc_state(&state->base, crtc);
++		if (IS_ERR(crtc_state))
++			return PTR_ERR(crtc_state);
++	}
++
++	/* Now pull in all joined crtcs */
+ 	for_each_new_intel_crtc_in_state(state, crtc, crtc_state, i) {
+ 		affected_pipes |= crtc_state->joiner_pipes;
+ 		if (intel_crtc_needs_modeset(crtc_state))
+-- 
+2.45.3
 
 
