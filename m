@@ -1,243 +1,165 @@
-Return-Path: <stable+bounces-110893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F7EA1DC3C
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:47:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B318A1DC47
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24D981886CC0
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF7E11657FF
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E78019258B;
-	Mon, 27 Jan 2025 18:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5CC18D649;
+	Mon, 27 Jan 2025 18:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XSv3W6nL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mAFN4ZNX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0727191F66;
-	Mon, 27 Jan 2025 18:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A51607AA;
+	Mon, 27 Jan 2025 18:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738003652; cv=none; b=QnbmWc8IT8mWHT/hE0Kzr2BRRx0yhlqF8I4tKUnVWDIflyPMO518Kf2iLmB+1vV1XQDht4YmE87+114aT/I3SjWGe0l8ThyPBsQ+PBDT7m24ceKKKN6XL7gGOzK3vbV88t/Qymy4kwqpO1hcQOgJLKmpJL7zeLAuJwyN1Hewor4=
+	t=1738004072; cv=none; b=lx/UDA2JwXNFqtzp0fPSpIDi0evOSqHDDSlWwp/R3/Ut3x1Y618pDmA+N8I3LHuQqrmbAEW/YhkfFcQMGF3P8YsdVQkGfG4N8WZJnhclboepaV+wL2i+iWPyzKTt3ttC/cwGrA7tbeHC2sVYbGon/rvp17XRZIWIZvBt4gZISb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738003652; c=relaxed/simple;
-	bh=9GS4OklWy9gKghj6+YfBxN2F+1ADLIQV1MOra18wIFI=;
+	s=arc-20240116; t=1738004072; c=relaxed/simple;
+	bh=SBnA42QZmVjeBYGqPuEolb6C0in4hQm6tEkwb746KWM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1ekmwhUKRjHBcwZ1Gxijo/c8fkASJQ3f/RtOCexo2jFZWRmrfUeGc9cYf6Juf5YNTfnJwL8cYsv+HVIW9KE9W/bKnLM8Ea4KJVB28g627JaehY6zmXZ6ECVvXBgCoWPTjX+vLCsYfllNvUM9Xw49XnkYcHR/lBs1W1YbOZUWJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XSv3W6nL; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738003650; x=1769539650;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=9GS4OklWy9gKghj6+YfBxN2F+1ADLIQV1MOra18wIFI=;
-  b=XSv3W6nLFIJJoWQnr3QedDf7yteBpBhQ8ZNEHNkBoby4KzdwD2hImYQt
-   HwhFQCC/WCGbe5xi3idNzBbZueI+BZmnfd5nyoKz0UxsKaIpsc4sV5yI8
-   9Phw1uRRjMe2+vfl1LizB9IjGBKD9j3/sG4Xnk3a8skZBdV0kBXwm5rvl
-   zekFu1z/BdCDOeCxhHB3oCQ9d7z/UtzkjKpZVH6CV3tktAAGxevSa6XBH
-   AEyc8rq6Lyf6lmhU2Cl6uvQYd4/L5qCxQtVDg9C0vJmCDeFQGAKOwlsue
-   xCruBJWN087ssibkfqA7nccj2K/Ut60jkJuzpqMrWZsB6AxLzCOT81B0Y
-   A==;
-X-CSE-ConnectionGUID: ggTq8zs3TbSWeRP4lCl0mg==
-X-CSE-MsgGUID: HhZErXu1R52K4RU8p0FiPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="38176433"
-X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
-   d="scan'208";a="38176433"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 10:47:28 -0800
-X-CSE-ConnectionGUID: VoIGDF70T42mRutcbLVv2g==
-X-CSE-MsgGUID: w5FrBGClTH6WtmgMQwa81A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
-   d="scan'208";a="108631350"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 27 Jan 2025 10:47:24 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Mon, 27 Jan 2025 20:47:23 +0200
-Date: Mon, 27 Jan 2025 20:47:23 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Brian Geffon <bgeffon@google.com>
-Cc: intel-gfx@lists.freedesktop.org, chris.p.wilson@intel.com,
-	jani.saarinen@intel.com, tomasz.mistat@intel.com,
-	vidya.srinivas@intel.com, jani.nikula@linux.intel.com,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	stable@vger.kernel.org, Tomasz Figa <tfiga@google.com>
-Subject: Re: [PATCH v2] drm/i915: Fix page cleanup on DMA remap failure
-Message-ID: <Z5fUu6XwUrZESb5H@intel.com>
-References: <20250116155340.533180-1-bgeffon@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=V3Xoz9jzdeTGXrBKASTu/m7QkiHWUkzJLpkVcGe1eJHo3v6yt7qvjKy2n05Yes8coBA7dvB6wN/QHxIRenu3QNgG+awJ9hc+yJzSIiQpDA30VZar4DjbnWqHOf1IHGrHgkQ75yCNCW4jQOxefJjSOIkBxn8ttUFGFtN9p4jd6gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mAFN4ZNX; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53e3778bffdso5469418e87.0;
+        Mon, 27 Jan 2025 10:54:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738004068; x=1738608868; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4DwBtqJe2G7SgnACIilduClbZR5mLhGNGSesirB98sg=;
+        b=mAFN4ZNX3Ak8DpCnBz4PxIiQUURLAB0gMwCF4r7U4jQlTu5EUiukunR3GtcPiNcMFg
+         gyT1d4+m15irzqSE4RmU+sZNGoKP8SQMp+Ms8f7B87ci3pd9rxDAjUF3EdpLSnyjuoRt
+         Rfu7CsLBzMNomCFME5+tIx8QzIMoCwD0AAP+MGbHvwPAvH5nZjFoe9YfNzZISI9Ychb5
+         VWZhJaqb2fcm1+kQ7KfEm5OFIDE/avDfXdvWpXseIcdTmaGj5zPQgA2mdxQ3p+78FZEj
+         wMgd3NAeG/nGuOIikuIkVhYUXhkbymFL+ydLds/t4e/AkTfmVObSQgPj6wxuE3EQGycs
+         P60w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738004068; x=1738608868;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4DwBtqJe2G7SgnACIilduClbZR5mLhGNGSesirB98sg=;
+        b=hZMNHpGD8uDqA8jOo0s0NJbFVl7nL1STmx1Iag7mC41XkRdRFcmoW8YwAvQ4EK2kbE
+         b9bspdX9F2MDh9182rV0m6kqWW93pn3kdxqRUeSoHvgCPiSjwkFSZebcavQn1Deg+031
+         JRaYVCPxfA6bLtdCeq8sBhBJX+Vupf0QmfCpfVc+gRfilKTIIcwC8r+IhNn2GJw9VEfa
+         a7DqX/LcPl9Nu1PQxvqdhSAVUFewJZq+rJd+uyNU6UN2FiU8gRH61VNGSF+tqRDdDJU0
+         EtrndkilObeHaM42icbn7P8PnkLzcbMkAUDuxV8CVFEwx4YrBBikLXcdorYP2U6ByUT8
+         8SyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVmdp+R58Z5u+qe/OSLFOIsAh5ouJodbwFXp9IFjxAfPSChmkxDPKkAEWHS553lCEUJE83YbAUjF8jfSQ==@vger.kernel.org, AJvYcCWzIDE+Ud6W5fL6ScLHwtKmsgwT2xx99y6quPnEZ0mSQ/dsl9R5MAibNJgK4qZW84L9HaA71fUN@vger.kernel.org, AJvYcCXSKFpC7WkCWqLIAcfFAD843rJ4bBqgx0iFMkrtklIaKHjxn6GL8llfZmzdnGxgpu9a9yqwMeihyBKeB1Ar@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdWCtQAjjvIG2HtB6Km+o6/dGgKr/7mFY4qw1Ch2MaOOgXZhXP
+	Rcv5vplkwwl/KWljs0WdLJBgWNNpdDblU2He9q6EC4uQyHfR/VPx
+X-Gm-Gg: ASbGncuYLsROckR05jdtc6Y6hpRGxgjddDBEuZ1aZvQSSn3h8MNjsm3dJm+Zj37qIeO
+	iqGANP+Xxwy/4dnkKd18JO6gjSKeUzb1xZdSoRT/b6F713CZ799J7/8XBqDdv7rJuFTXZiMcHUf
+	YbJlpHu6i21n0dKGBblCxnLPagisq8VrFApDvo1+ADhtCy1fiIlNSsrr0OopcuCxRB0gFubIvSD
+	NW9h38H5TDrWmyDL6Jz56QFDkx7I+3m0OAQvHu9RvFFFEjLhL1dXMsI4vI/vl8lopkOIYH3CeEw
+	CSjDsTM3lRIfR98SiOA=
+X-Google-Smtp-Source: AGHT+IH8UG7CJrTEaL66OM3T+KUSNCmOyng98VM7AApMTqZPYEjOJxePtiyDsiY7rxZfij2AuDFnXA==
+X-Received: by 2002:ac2:51b7:0:b0:53f:231e:6f92 with SMTP id 2adb3069b0e04-5439c28570bmr12742475e87.34.1738004068126;
+        Mon, 27 Jan 2025 10:54:28 -0800 (PST)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543c8237459sm1395598e87.106.2025.01.27.10.54.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 10:54:27 -0800 (PST)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+	by home.paul.comp (8.15.2/8.15.2/Debian-22+deb11u3) with ESMTP id 50RIsNYo002766;
+	Mon, 27 Jan 2025 21:54:24 +0300
+Received: (from paul@localhost)
+	by home.paul.comp (8.15.2/8.15.2/Submit) id 50RIsLrO002765;
+	Mon, 27 Jan 2025 21:54:21 +0300
+Date: Mon, 27 Jan 2025 21:54:21 +0300
+From: Paul Fertser <fercerpav@gmail.com>
+To: "Winiarska, Iwona" <iwona.winiarska@intel.com>
+Cc: "linux@roeck-us.net" <linux@roeck-us.net>,
+        "jae.hyun.yoo@linux.intel.com" <jae.hyun.yoo@linux.intel.com>,
+        "Rudolph, Patrick" <patrick.rudolph@9elements.com>,
+        "pierre-louis.bossart@linux.dev" <pierre-louis.bossart@linux.dev>,
+        "Solanki, Naresh" <naresh.solanki@9elements.com>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "fr0st61te@gmail.com" <fr0st61te@gmail.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
+        "joel@jms.id.au" <joel@jms.id.au>
+Subject: Re: [PATCH] hwmon: (peci/dimmtemp) Do not provide fake thresholds
+ data
+Message-ID: <Z5fWXfm+bDhGlFIi@home.paul.comp>
+References: <20250123122003.6010-1-fercerpav@gmail.com>
+ <71b63aa1646af4ae30b59f6d70f3daaeb983b6f8.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250116155340.533180-1-bgeffon@google.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <71b63aa1646af4ae30b59f6d70f3daaeb983b6f8.camel@intel.com>
 
-On Thu, Jan 16, 2025 at 10:53:40AM -0500, Brian Geffon wrote:
-> When converting to folios the cleanup path of shmem_get_pages() was
-> missed. When a DMA remap fails and the max segment size is greater than
-> PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
-> size. The cleanup code isn't properly using the folio apis and as a
-> result isn't handling compound pages correctly.
+Hi Iwona,
+
+Thank you for the review. Please see inline.
+
+On Mon, Jan 27, 2025 at 04:40:52PM +0000, Winiarska, Iwona wrote:
+> On Thu, 2025-01-23 at 15:20 +0300, Paul Fertser wrote:
+> > When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
+> > critical thresholds for particular DIMM the driver should return an
+> > error to the userspace instead of giving it stale (best case) or wrong
+> > (the structure contains all zeros after kzalloc() call) data.
+> > 
+> > The issue can be reproduced by binding the peci driver while the host is
+> > fully booted and idle, this makes PECI interaction unreliable enough.
+> > 
+> > Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
+> > Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Paul Fertser <fercerpav@gmail.com>
 > 
-> v1 -> v2:
->   (Ville) Fixed locations where we were not clearing mapping unevictable.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-> Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
-> Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
-> Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-> Signed-off-by: Brian Geffon <bgeffon@google.com>
-> Suggested-by: Tomasz Figa <tfiga@google.com>
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_object.h |  3 +--
->  drivers/gpu/drm/i915/gem/i915_gem_shmem.c  | 23 +++++++++-------------
->  drivers/gpu/drm/i915/gem/i915_gem_ttm.c    |  7 ++++---
->  3 files changed, 14 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object.h b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> index 3dc61cbd2e11..0f122a12d4a5 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
-> @@ -843,8 +843,7 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
->  			 size_t size, struct intel_memory_region *mr,
->  			 struct address_space *mapping,
->  			 unsigned int max_segment);
-> -void shmem_sg_free_table(struct sg_table *st, struct address_space *mapping,
-> -			 bool dirty, bool backup);
-> +void shmem_sg_free_table(struct sg_table *st, bool dirty, bool backup);
->  void __shmem_writeback(size_t size, struct address_space *mapping);
->  
->  #ifdef CONFIG_MMU_NOTIFIER
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> index fe69f2c8527d..b320d9dfd6d3 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> @@ -29,16 +29,13 @@ static void check_release_folio_batch(struct folio_batch *fbatch)
->  	cond_resched();
->  }
->  
-> -void shmem_sg_free_table(struct sg_table *st, struct address_space *mapping,
-> -			 bool dirty, bool backup)
-> +void shmem_sg_free_table(struct sg_table *st, bool dirty, bool backup)
+> Did you have a chance to test it with OpenBMC dbus-sensors?
 
-This still makes the alloc vs. free completely asymmetric.
-This is not what we want because it just makes it very easy
-to make it mistake in the caller.
+Using OpenBMC dbus-sensors is exactly the reason why I'm sending this
+patch, so yes, I tested it before and after the change.
 
-I think the correct fix is to simply call the current
-shmem_sg_free_table() from the now broken failure path.
-mapping_{set,clear}_unevictable() just seems to be some
-bit operation so AFAICS the slight ping-pong should be
-inconsequential.
+> In general, the change looks okay to me, but since it modifies the behavior
+> (applications will need to handle this, and returning an error will happen more
+> often) we need to confirm that it does not cause any regressions for userspace.
 
->  {
->  	struct sgt_iter sgt_iter;
->  	struct folio_batch fbatch;
->  	struct folio *last = NULL;
->  	struct page *page;
->  
-> -	mapping_clear_unevictable(mapping);
-> -
->  	folio_batch_init(&fbatch);
->  	for_each_sgt_page(page, sgt_iter, st) {
->  		struct folio *folio = page_folio(page);
-> @@ -180,10 +177,10 @@ int shmem_sg_alloc_table(struct drm_i915_private *i915, struct sg_table *st,
->  	return 0;
->  err_sg:
->  	sg_mark_end(sg);
-> +	mapping_clear_unevictable(mapping);
->  	if (sg != st->sgl) {
-> -		shmem_sg_free_table(st, mapping, false, false);
-> +		shmem_sg_free_table(st, false, false);
->  	} else {
-> -		mapping_clear_unevictable(mapping);
->  		sg_free_table(st);
->  	}
->  
-> @@ -209,8 +206,6 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
->  	struct address_space *mapping = obj->base.filp->f_mapping;
->  	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
->  	struct sg_table *st;
-> -	struct sgt_iter sgt_iter;
-> -	struct page *page;
->  	int ret;
->  
->  	/*
-> @@ -239,9 +234,8 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
->  		 * for PAGE_SIZE chunks instead may be helpful.
->  		 */
->  		if (max_segment > PAGE_SIZE) {
-> -			for_each_sgt_page(page, sgt_iter, st)
-> -				put_page(page);
-> -			sg_free_table(st);
-> +			/* Leave the mapping unevictable while we retry */
-> +			shmem_sg_free_table(st, false, false);
->  			kfree(st);
->  
->  			max_segment = PAGE_SIZE;
-> @@ -265,7 +259,8 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
->  	return 0;
->  
->  err_pages:
-> -	shmem_sg_free_table(st, mapping, false, false);
-> +	mapping_clear_unevictable(mapping);
-> +	shmem_sg_free_table(st, false, false);
->  	/*
->  	 * shmemfs first checks if there is enough memory to allocate the page
->  	 * and reports ENOSPC should there be insufficient, along with the usual
-> @@ -402,8 +397,8 @@ void i915_gem_object_put_pages_shmem(struct drm_i915_gem_object *obj, struct sg_
->  	if (i915_gem_object_needs_bit17_swizzle(obj))
->  		i915_gem_object_save_bit_17_swizzle(obj, pages);
->  
-> -	shmem_sg_free_table(pages, file_inode(obj->base.filp)->i_mapping,
-> -			    obj->mm.dirty, obj->mm.madv == I915_MADV_WILLNEED);
-> +	mapping_clear_unevictable(file_inode(obj->base.filp)->i_mapping);
-> +	shmem_sg_free_table(pages, obj->mm.dirty, obj->mm.madv == I915_MADV_WILLNEED);
->  	kfree(pages);
->  	obj->mm.dirty = false;
->  }
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> index 10d8673641f7..37f51a04b838 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> @@ -232,7 +232,8 @@ static int i915_ttm_tt_shmem_populate(struct ttm_device *bdev,
->  	return 0;
->  
->  err_free_st:
-> -	shmem_sg_free_table(st, filp->f_mapping, false, false);
-> +	mapping_clear_unevictable(filp->f_mapping);
-> +	shmem_sg_free_table(st, false, false);
->  
->  	return err;
->  }
-> @@ -243,8 +244,8 @@ static void i915_ttm_tt_shmem_unpopulate(struct ttm_tt *ttm)
->  	bool backup = ttm->page_flags & TTM_TT_FLAG_SWAPPED;
->  	struct sg_table *st = &i915_tt->cached_rsgt.table;
->  
-> -	shmem_sg_free_table(st, file_inode(i915_tt->filp)->i_mapping,
-> -			    backup, backup);
-> +	mapping_clear_unevictable(file_inode(i915_tt->filp)->i_mapping);
-> +	shmem_sg_free_table(st, backup, backup);
->  }
->  
->  static void i915_ttm_tt_release(struct kref *ref)
-> -- 
-> 2.48.0.rc2.279.g1de40edade-goog
+The change is prompted by the current behaviour which is unacceptably
+bad: every now and then while powering on the host for the first time
+BMC happens to request one of the memory thresholds at a wrong time
+(e.g. when UEFI is busy doing something which prevents normal PECI
+operation); this leads to the unfixed kernel code returning zero and
+dbus-sensors happily using that as a threshold value which later
+results in bogus critical over temperature events for the affected
+DIMM (as their normal temperatures are always above zero). It was
+relatively easy to reproduce on an IceLake-based system.
+
+I consider the current behaviour (in case of PECI timeouts when
+requesting DIMM temperature thresholds) to be so broken that changing
+it to do the right thing can only do good. The non-failure case is not
+affected by this patch.
+
+That said, for sensible operation a dbus-sensors change is indeed
+needed and I now have a patch pending upstream review[0] to handle
+those errors by retrying until success. Without the patch the daemon
+would just load with those thresholds missing but it's better to have
+thresholds missing than to have them at zero producing a critical error
+right away I think.
+
+[0] https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/77500/
 
 -- 
-Ville Syrjälä
-Intel
+Be free, use free (http://www.gnu.org/philosophy/free-sw.html) software!
+mailto:fercerpav@gmail.com
 
