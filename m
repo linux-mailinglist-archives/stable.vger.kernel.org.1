@@ -1,101 +1,197 @@
-Return-Path: <stable+bounces-110851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEDAA1D489
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:30:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1B0A1D535
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AADE03A78D9
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 10:30:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37C577A1E73
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39831FCCF3;
-	Mon, 27 Jan 2025 10:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95B91FECAB;
+	Mon, 27 Jan 2025 11:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wh70ZcK9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ryfxDeDy"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZwmzFTSm"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A5125A63A;
-	Mon, 27 Jan 2025 10:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BF71FDA85
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737973835; cv=none; b=sCpuHgIs/4IqseHHvuXJ8cKm5qCTDvQ1XEEn+e9778dMatNbPL2RYBUu64vk0rv7nZAMZoKVCw56VWHJmEIo7FL8BkBjowcnpn49gm61uU+mjFCtd6lxWG59WEjq+/2z7SxA7r1G0oNCgTyf72xXrkRHi2a+00/jrVi272BayJ0=
+	t=1737976748; cv=none; b=hgu0AeQqObPJEmOITR5tDSXdZ8OX3gya6D4i1AOp5SfmjOvQELR/LbFgVndnsagHBVTi+62eXx83SOvs1Zr2FdFBGzbwUb/n2BLU3MBY3dzn2yjp7TGogIpv02zrMp0KBlct6iIWRC8S3dDMWgOIFVb78xIeLT+IVCPMDqNabHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737973835; c=relaxed/simple;
-	bh=rFh4F968f/v/kArYJfML5kuBR1gx+LmYfebyJBX080U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=i0+7+kFOTOrl/QIROorBbTNFTn7Xsoo/OAyw0xILrgsHzbXxzpcjDmyB+cwL+2IYB9RwhryaKff3xZH4EJoa4RpvZMW8gxK+Qxrjwv1LMm11fbzUghVd48aQyPzI9CAvxPeV0pX/l25HU0P19odN/P7Xk1U2NTaD/M7gROuNuxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wh70ZcK9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ryfxDeDy; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1737973832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SoTJIxjM/g1WxUH67XffHodkk6JcBynnDz8cI4nr0gk=;
-	b=Wh70ZcK9IRdaDAMlsqNO9xBeJYA54wYNkoo+R83Svmce05g5PUsT0PiDGjy1V5FrEEaU7t
-	ZnLZvfW8y80xLjgXKIry5yKYcjUCGWxiXiVFtoaCoKxZVfrBr62ftYsmPTgguT6lxxGXrW
-	aP5B7B+px4R6a1GnfMv2i9V3NdZcW6cKXtiHkv03EgE04Hy5eJZS2LiEomXcya9xzwhdvt
-	uPnjemOY18dXufCDUZP71yCuiOgALlgtu+3zAzrxkgf2WI8oYio5WmSYZUS+EwTixHkinm
-	nOlIeIHm11iaoPpx7XqjgdjQbqp3g/6HtLzzjIyqiiGnEvN/gtb+dJHzRWmAdg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1737973832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SoTJIxjM/g1WxUH67XffHodkk6JcBynnDz8cI4nr0gk=;
-	b=ryfxDeDynswhIXKIl4gjBhNKbRi9mbPiNQmj0zvSIqXe9mm3CvJ2nYif1Hb28BCLIUDP2u
-	5m+ZUL6jkphOIhBw==
-To: Stefan Eichenberger <eichest@gmail.com>, andrew@lunn.ch,
- gregory.clement@bootlin.com, sebastian.hesselbarth@gmail.com,
- shivamurthy.shastri@linutronix.de, anna-maria@linutronix.de
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] irqchip/irq-mvebu-icu: Fix access to msi_data from
- irq_domain
-In-Reply-To: <20250124085140.44792-1-eichest@gmail.com>
-References: <20250124085140.44792-1-eichest@gmail.com>
-Date: Mon, 27 Jan 2025 11:30:32 +0100
-Message-ID: <87sep48s6v.ffs@tglx>
+	s=arc-20240116; t=1737976748; c=relaxed/simple;
+	bh=5F6uSRVC3kc2d2TPQ/hsrGAUqJkivNawdY+eXrPoi50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HcbhbTDh+HtKKTyJhrastC50xfL+5O1K+2gEcDUuWIiFYx2pLt5AwO5Lqy6J0xYaqp7scx0Vt8qDmHGxfGHu9BbFfJ1Rqzhp1/TmHSYHWPmZIFCXyAm+vf2fGLFSMsLEnVwputbOFIuBAughY6C5OZGySiAJCYse8ZRiJtROSPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZwmzFTSm; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so8390519a12.2
+        for <stable@vger.kernel.org>; Mon, 27 Jan 2025 03:19:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1737976744; x=1738581544; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bj/btp7iB/WVExe7HRHgQ+HsqxBZyERYlUan4lSFhKQ=;
+        b=ZwmzFTSmaE5SN1RhnIfg5DQEJL9qit3X75EKk07O+ZkXqwAdTy3tVEdulRJdd5CB7h
+         2/PMJPTve9KxSi+E9b2iNJ2xmHMfasyn5hAGVgztF7GfX+s3HeFwmh3DmFmqBh4PEV6v
+         fKuVK79HFMLOMdXcAn2Pe+J9W3vRXHLhO72VQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737976744; x=1738581544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bj/btp7iB/WVExe7HRHgQ+HsqxBZyERYlUan4lSFhKQ=;
+        b=kJ6nnDlvTAy8MoII4UamyLtPPXzy0gjDVsMjHhnGDsCN0ehxKz//Q4mL8m+WnIdFui
+         zsQgkWtg3toNmKfJ0l+7OezD+/FxfcMbJ/ucKwvUqTpk+MKRsedUjuWLt9cpI5CydxoI
+         jCOvLBMma5YCxSDBvV+7ru6JSAf67ezS83dWtvvojgLBTgiA/W2ADhh9ZmZa4EJI+7I4
+         vbQV/XK6KcSCJ1TaxfscDHyRJqFi818O4zckE+EE4ZMy0ET3btxD5ww4cpQvFR97tuYc
+         rzpt03ju6G5NmIKVHv0Dypnl26snIsnfBzfxA5itchzrFJduD2V5iQeUKnRGa51qH/rW
+         r+3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXt7SBisvYeV5UTjnPqtvO5zfODgoswY+BubNAKIB+Rjl01pPvJbSEkbCq/sjJ6uDm9ZaKYHpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/v0uei6I3MAClyo5R33cB5JIyhPkFUSdBd1/+K39MJufHoLXB
+	nXfKcXg/PE973BByzE3kzBlSJ/faPAOsBBCe/W8y+oHFTY2uMPk4Y6Z8zGKh1W3HCtwbGUSi+LW
+	UUw==
+X-Gm-Gg: ASbGncsfo78XYpnI4amtdBcL1jiRJFAqJ+SanO0jwFI/BA5j7Oop3RYvjk7BaLkwkmq
+	Cnx+n0fTXXEn9iImbW4fEBPilGd6F+WE4zFFevWPreIKMXduKolq3EzLUgzvrXxcAyegjmkTwEr
+	zCkxZRPy0hQW2umEPr1WBq7YuG47iGV+jQZ2sbPgekaia5esVn6sZJspMgL6SaKG0KsIWjfTHb3
+	JIdhWxecMot8VkF7fdMNbm0s0KoRLdWw48nqekLtBLziJweqks46k1tFnKppJ/vnrn5zsWkR4gj
+	9EYhmIT6E3K9YVfzWuj6WJougSVQNfhu7kbaUCgC
+X-Google-Smtp-Source: AGHT+IFuxI9laL5lEhTWTy/rdU+sTUsjFzq2p7dkFO9JZ9eNg9Ii/YiyhSVf6xj8hwXxBdJ/eyG77g==
+X-Received: by 2002:a05:6402:2683:b0:5db:6880:360 with SMTP id 4fb4d7f45d1cf-5db7d2f9bbcmr34633990a12.9.1737976743636;
+        Mon, 27 Jan 2025 03:19:03 -0800 (PST)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dc186df3e3sm5260811a12.69.2025.01.27.03.19.01
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 03:19:01 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d442f9d285so8120a12.1
+        for <stable@vger.kernel.org>; Mon, 27 Jan 2025 03:19:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU6Bo9dPoYVapFKLGFvbe7Sea6mj1vJPCem8Ki5Esw2pfvJt4A6VSs5BxtXQqWJ4rDURa6e/H0=@vger.kernel.org
+X-Received: by 2002:a50:8a8e:0:b0:5d9:693e:346 with SMTP id
+ 4fb4d7f45d1cf-5dc243b84e8mr130774a12.4.1737976741062; Mon, 27 Jan 2025
+ 03:19:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250115-b4-rkisp-noncoherent-v2-0-0853e1a24012@gmail.com> <20250115-b4-rkisp-noncoherent-v2-1-0853e1a24012@gmail.com>
+In-Reply-To: <20250115-b4-rkisp-noncoherent-v2-1-0853e1a24012@gmail.com>
+From: Tomasz Figa <tfiga@chromium.org>
+Date: Mon, 27 Jan 2025 20:18:43 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5DFuw9e85X-UhVfonb5C9F0tG6xyn9RUGitKDQXifcUyA@mail.gmail.com>
+X-Gm-Features: AWEUYZn0_AfnNbH4PuJVO5cenPSqx6huf_K_307ofmg4I9T9Tf9BB4t2frTysv0
+Message-ID: <CAAFQd5DFuw9e85X-UhVfonb5C9F0tG6xyn9RUGitKDQXifcUyA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] media: videobuf2: Fix dmabuf cache sync/flush in dma-contig
+To: Mikhail Rudenko <mike.rudenko@gmail.com>
+Cc: Dafna Hirschfeld <dafna@fastmail.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Hans Verkuil <hverkuil@xs4all.nl>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-media@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, 
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 24 2025 at 09:50, Stefan Eichenberger wrote:
-> Previously, we incorrectly cast irq_domain->host_data directly to
+Hi Mikhail,
 
-Previously 'we' do nothing. The current implementation casts inconrrectly.
-
-> mvebu_icu_msi_data. However, host_data actually stores a structure of
-> type msi_domain_info.
+On Thu, Jan 16, 2025 at 2:25=E2=80=AFAM Mikhail Rudenko <mike.rudenko@gmail=
+.com> wrote:
 >
-> This incorrect assumption caused issues such as the thermal sensors of
-> the CP110 platform malfunctioning. Specifically, the translation of the
-> SEI interrupt to IRQ_TYPE_EDGE_RISING failed, preventing proper
-> interrupt handling. The following error was observed:
-> genirq: Setting trigger mode 4 for irq 85 failed (irq_chip_set_type_parent+0x0/0x34)
-> armada_thermal f2400000.system-controller:thermal-sensor@70: Cannot request threaded IRQ 85
+> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
+> commit 129134e5415d ("media: media/v4l2: remove
+> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
+> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
+> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
+> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
+> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
+> no-ops, making cache maintenance for non-coherent dmabufs allocated by
+> dma-contig impossible.
 >
-> This commit resolves the issue by first casting host_data to
+> Fix this by reintroducing dma_sync_sg_for_{cpu,device} calls to
+> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
+> buffers.
+>
+> Fixes: c0acf9cfeee0 ("media: videobuf2: handle V4L2_MEMORY_FLAG_NON_COHER=
+ENT flag")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+> ---
+>  drivers/media/common/videobuf2/videobuf2-dma-contig.c | 14 +++++++++++++=
++
+>  1 file changed, 14 insertions(+)
+>
 
-This commit is equally wrong as 'This patch'. See Documentation/process/
+Thanks a lot for the patch!
+Sorry, for the delay. Ended up being sick with some nasty cold that
+took quite a while to recover.
+Please take a look at my comments inline.
 
-> msi_domain_info and then accessing the mvebu_icu_msi_data through
-> msi_domain_info->chip_data.
+> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c b/driv=
+ers/media/common/videobuf2/videobuf2-dma-contig.c
+> index bb0b7fa67b539aa73ad5ccf3c3bc318e26f8a4cb..889d6c11e15ab5cd4b4c317e8=
+65f1fef92df4b66 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+> @@ -427,6 +427,13 @@ static int
+>  vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+>                                    enum dma_data_direction direction)
+>  {
+> +       struct vb2_dc_buf *buf =3D dbuf->priv;
+> +       struct sg_table *sgt =3D buf->dma_sgt;
+> +
+> +       if (!buf->non_coherent_mem || buf->vb->skip_cache_sync_on_finish)
 
-I fixed it up for you.
+skip_cache_sync_on_finish shouldn't apply to this function, because
+the buffer was shared with an external DMA-buf importer and we don't
+know in what state it is at this point.
 
-Thanks,
+> +               return 0;
+> +
 
-        tglx
+We should also take care of the kernel mapping if it exists, because
+on some platforms it may not be coherent with the userspace one -
+using flush_kernel_vmap_range(). Please check how
+vb2_dc_prepare()/vb2_dc_finish() do it.
+
+> +       dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir)=
+;
+
+We can use the dma_sync_sgtable_*() variant here so we can just pass
+the entire sgt to it.
+
+>         return 0;
+>  }
+>
+> @@ -434,6 +441,13 @@ static int
+>  vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+>                                  enum dma_data_direction direction)
+>  {
+> +       struct vb2_dc_buf *buf =3D dbuf->priv;
+> +       struct sg_table *sgt =3D buf->dma_sgt;
+> +
+> +       if (!buf->non_coherent_mem || buf->vb->skip_cache_sync_on_prepare=
+)
+> +               return 0;
+> +
+> +       dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_d=
+ir);
+>         return 0;
+
+Overall the same comments here as for
+vb2_dc_dmabuf_ops_begin_cpu_access() +/- flush would change to
+invalidate.
+
+Best regards,
+Tomasz
 
