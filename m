@@ -1,183 +1,148 @@
-Return-Path: <stable+bounces-110883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47730A1DB4A
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:29:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD86A1DB54
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 18:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936283A5426
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:29:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47471886D8E
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 17:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF9618A6DE;
-	Mon, 27 Jan 2025 17:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130AA166F1A;
+	Mon, 27 Jan 2025 17:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gjN4Xwed"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCuQ87Up"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC9D18A6C5;
-	Mon, 27 Jan 2025 17:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE0A291E;
+	Mon, 27 Jan 2025 17:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737998984; cv=none; b=cSECyLQ8VpvXqk3bI+C++RKJZFc5VVa75NlNvcczWlUwt2KfvtCa2MKalAPCOkpovRqdKtCIP6xajgxhcWAlJU80TLcYjM2ReH8O0R2XR1hstnzqG62vHl2nlT/kc2RvZGBdF8ZXLnDlo4iFfa3r89JC6J302CtVuy0FOAw7i/4=
+	t=1737999124; cv=none; b=EG5qoH8mQqM7+TXkGr5KLeOs0Vc1VWlHJ1f+j/OYMdK8rmxqDVPOaeAJau3cpmALrmHQO6c7ZYBaC/1GmHLHt2kx2LcUjCj6DsNR25xT9ZucR0UdiXCRokl6rM0jv9y9KVWJwCTAFqQa9hCIh0bVbeRdVYVjo59jQ3Ei1uY292o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737998984; c=relaxed/simple;
-	bh=y2p/VhfeOKoyACYzpJvlu1+3Pu+6JMzyv8lrjEbrOcg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gTqQ/AkRHzZAhdQFBczc90+enksqlLrJgGz7EbcJY5O+DKwGIKlnWvHL3MNkfoLMfgv45RuOl/2su76J1e1lCpt3wl4NS4GmZgIaBY17RxFpiIrKGS5mfeWpDePKQU+eTgZRxwh/T0Z/lfOy0I0NdJfdyUovBzZMk8UuOguyfIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gjN4Xwed; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1737999124; c=relaxed/simple;
+	bh=WkWIpdiJC27SvGibe34DHGnMGzhRupB0Nnp9Tapr6cw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tFbOZcHKC7NydvQW4vdYfJaifJNc8TY89hzncNHH8RWxVKSKmcUgLMYG5M+rxyS4/OX2Ae3uQCzKluQrT2ReNCjrdSLGrGksGcpW4JAujfSI8g1lmH8DXxZSz1ySHwbwSRCAI2e7A4qW/rByE3BxIDYJL6QrjWHjjCN4bLgq2sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCuQ87Up; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2166651f752so95316985ad.3;
-        Mon, 27 Jan 2025 09:29:42 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so2368988f8f.2;
+        Mon, 27 Jan 2025 09:32:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737998982; x=1738603782; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDtDtJawyOQigbNs3N0WPL5lKPkOWwhgeDJjweSkGP0=;
-        b=gjN4XwedR4cO88Nj3+WxdunHNVzOWqoasH/DAvpEi+L5vj1dk6cLIeABdGBG1aruhg
-         Pwek4r1M0J+B1i6PpoMByfnWNccZ170agZuxeSqdwtUObhVwreabC1tPWkViFBQnNRcr
-         CYwsUDZlyHhdlsCYVZWm7inRcWYYuI2lTDeytSpVdcVKHHJYde8N4XBEJ7q5R3An1MHQ
-         DeCPIxMlAOiwtazWCXHGbEjv0gqgLG4hDY3MCucZaYbH5zClKO1dvdrcCqISMOPWfH/x
-         6tyLOYENN4LV/KFQw0Dk8Pqveb6bqJazJ3dlw1Z83blO5QLi5ieHhpydiZTCuqilhQlo
-         HV3Q==
+        d=gmail.com; s=20230601; t=1737999121; x=1738603921; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=z2MMQedpsH2GPbDZJATIDcslx0EmXMUJV7GkfJHRjt8=;
+        b=RCuQ87Upnvs+UkB7lQHStWarXXil5FtCorPL/l5Be60rAOqotQ79crs6lBYoe9DFCD
+         6kA5gzOY2jmWxJW4T/LHkareR198BdnnnlCH1mS1Tzg01sN+4zoJkcVWuXqOtg5ayfPJ
+         BN1s+d929lMeOxawYCDikPXh7wvvXG7xbTN1Oc8xYCORCkckXuiiMUXUCvdsSlYXdUYp
+         RZjH7p2NOG9tB6ftuciRiPFpFhsfaRaShFheU4jYGUYfd3fSEU8obUJrceRwGOwIWYwM
+         P3JFAGcrQDd83JkFZkK0hPbJ5Wha3U1wD/BYcXfHrv7+vLuGs7+BXfBzmNvvkBqjQheL
+         3v+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737998982; x=1738603782;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BDtDtJawyOQigbNs3N0WPL5lKPkOWwhgeDJjweSkGP0=;
-        b=Ad1Uf0jIHfpj9hT8+Y5YeRE8Pe3okwur4NJKN3rDqn931Hr0Qfc+bda6Tb1cdI9VBz
-         4sN9mjjytVmGmHZQ2j8izOn+2zrErpwhcRI+iIV6L+334X33Gc+8am9Cf5By8e2lpkp0
-         Rx4LJH1XuZMNCC3iv3rvl7jufc45esLQL5NFrH2wGUyqJkm3IX2MRCLxPsUOkMRB4cdZ
-         5rZbon3nNlR9csvCV5k7dWnDjfGiJb7absVjGiEobMf+f9kHd4oA2NIBWYXUvqKHlLxa
-         VDRbsYHFsJvXIc4HgGHo4xFM9nWFoIbh1Cn4uBGgcpE+Am9jYWefuooF4Hx94qque28T
-         UGRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlaOWiEpJIe71vbwDdJKuogZgFJ8e/W4Q+H1Sd14YkQHT/RgZ277Q+HDMaFtqKJ/kpLbZ3Nkx8al+K5QKR@vger.kernel.org, AJvYcCWFReozoET2A/rTg+D5rSd/crUuIwN/e6thA0EBDF6xftDQGKVdH90hjW3YTfyH8zEbZJQ3qz0SBSN7uw==@vger.kernel.org, AJvYcCWlZxAqbfUHRqW2aAwSwVhDdQc3oz2XlbwaYTtJgux5IJp1ZOQOU+SqO39glzBpOc1VNN425R+Z@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP7B1nOQqFkK3M8OzTlPCjChPvGTV4YSBLvBRqFHSyN6uvK9Ib
-	ustwqLMU1eS7BMWnHg3zeVEBzBm4zpf8d58XGuq2FZVHX4/6xYj6
-X-Gm-Gg: ASbGncs4XtA6x3FlWDtJmUpUx8P6vcn4mzew7C6MARa4ekqct0cYJ93pM42HTiow5es
-	QNGMageSQj6SSUngHdM73PKPBcL/lz+qKeCrMQFWujS14zBk7Fan7785lFM384HZsotKjxZXJ1b
-	pNbgqEVD1X8C7tcjq7okJiai48jRkJXtsEYtDycjUfUtTyz/YymsEzHty9pE1TdFLbqfTou0OCF
-	giPc95prx9fZ4OCZTuv8ZiTuw9309mmU8gCvkpw0eF5yuTLBEeIwYxUW/4Qe7JTg+g8uw4Y/M1t
-	RKCFjeH+lkTKrcF+3RVeXmzmrlIPskyHsoQjoKRbiTFXy5Vu/GZVtA==
-X-Google-Smtp-Source: AGHT+IGRBJyckC2Cm8GHkPAERJz+atimT6PIbQDDKJRuV7MBOD2JtWGFe+YDWmybnpoW6bYkVGItBA==
-X-Received: by 2002:a05:6a00:340c:b0:728:e906:e446 with SMTP id d2e1a72fcca58-72dafbda6ddmr67991863b3a.24.1737998982294;
-        Mon, 27 Jan 2025 09:29:42 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a7609aasm7576692b3a.96.2025.01.27.09.29.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 09:29:41 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <7ee2f237-2c41-4857-838b-12152bc226a9@roeck-us.net>
-Date: Mon, 27 Jan 2025 09:29:39 -0800
+        d=1e100.net; s=20230601; t=1737999121; x=1738603921;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z2MMQedpsH2GPbDZJATIDcslx0EmXMUJV7GkfJHRjt8=;
+        b=kp8q6a5VBxvjI5GN8Vrf9lz6do9yYUFSILQ7q356kC68MfZDeOnOwaj7HKC7YlRGrB
+         49PVh+tl+IH1134xAuqETyX7baX5s622ItaSK3dZM/n7NAhPwbIpa+PU5Q9Grqd735Fq
+         kIY7VlpJZ7OGBMjIS2JuXPh3ZpiP02AbKg/KeevniPhfc+AoNzTaYw4YYPAUF507Z6TF
+         ZhVPWpuVuP2Awb8KzuNej1Y/kgxJfUeHmkkOD050b6+JDH7NJ3XDLTMmu/R7Y24AtUng
+         tSAn6MjqGf2YetmjQ3GW8rWvlvfLhdJj56SxG8mIvJ/Vt5pNa+fy6hUQNArRxoUIsjrW
+         RJyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSHGnw4VRtiGse2+ClVJAup0pZnS5z8hneFvEgsltIDmJN7NXjGosIxqBoG5TDvRUFSrQGQmiLCrqb7NoF@vger.kernel.org, AJvYcCVSvJ/JGsi0Z54pui1pe5txycRUf36dcR0sTnbK5tvr4t59VFF0/NbxI460rJEQE/fL04KkKaxAz/o=@vger.kernel.org, AJvYcCXxweklzdsjrdO5D4sHT26d9lmfy3e8ORPl2WFKz9Fwd8KmhMwEp7h/N9v2EbiqfionFbkwNFdN@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJRCupqtNDxop63pt9kEqO1lZLxjMbeU9R4wmSyVRLyqhX3D3b
+	nQ7tje6rPvCZsnq9C2AYKCQ1NX3w09saD7HGnpolYbNJGIX5Ikdk
+X-Gm-Gg: ASbGncvoR5X8kKi+CcFU/GE9xHN9vNIXg5VRCgjCBvcB3+HBsfIz1WXhT2KP28AZzKd
+	J0ejKlpb6VRBtJ7voPapcQhR69tBAN1kBMGf8io95nJ3POBygTxDUMAm3f9xqdCSFe5YpZOHLC2
+	9AW/I+RyvnyQptHIKvjqBnfmZ2LahaC5BAbPwEs/oW3XADy3N6piuZnTo9Ng2LTHXkDlawPrgku
+	TJVwjfOtaKkNE21ieapI2Ivl5/tOMWAzS708cj4W2p3sIsbb64nlc1WyNed606LW4fdppCPu74c
+	XTLIpgW21YXsTr820YguvOFZ0jWJWigKyA==
+X-Google-Smtp-Source: AGHT+IH6d5dXOKjdzQ3vPvGyqq++UXn5zuy3d62YayDLxIbZfPZbXj5hd5FkKZlLuZZe9Axvbpu8GA==
+X-Received: by 2002:a05:6000:186f:b0:386:373f:47c4 with SMTP id ffacd0b85a97d-38bf57c934fmr40387836f8f.49.1737999121070;
+        Mon, 27 Jan 2025 09:32:01 -0800 (PST)
+Received: from prasmi.Home ([2a06:5906:61b:2d00:975a:72be:e657:7017])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188928sm11580551f8f.45.2025.01.27.09.32.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 09:32:00 -0800 (PST)
+From: Prabhakar <prabhakar.csengg@gmail.com>
+X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: linux-renesas-soc@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Prabhakar <prabhakar.csengg@gmail.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] clk: renesas: r9a07g043: Fix HP clock source for RZ/Five SoC
+Date: Mon, 27 Jan 2025 17:31:59 +0000
+Message-ID: <20250127173159.34572-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hwmon: (peci/dimmtemp) Do not provide fake thresholds
- data
-To: "Winiarska, Iwona" <iwona.winiarska@intel.com>,
- "jae.hyun.yoo@linux.intel.com" <jae.hyun.yoo@linux.intel.com>,
- "Rudolph, Patrick" <patrick.rudolph@9elements.com>,
- "pierre-louis.bossart@linux.dev" <pierre-louis.bossart@linux.dev>,
- "Solanki, Naresh" <naresh.solanki@9elements.com>,
- "fercerpav@gmail.com" <fercerpav@gmail.com>,
- "jdelvare@suse.com" <jdelvare@suse.com>
-Cc: "fr0st61te@gmail.com" <fr0st61te@gmail.com>,
- "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
- "joel@jms.id.au" <joel@jms.id.au>
-References: <20250123122003.6010-1-fercerpav@gmail.com>
- <71b63aa1646af4ae30b59f6d70f3daaeb983b6f8.camel@intel.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <71b63aa1646af4ae30b59f6d70f3daaeb983b6f8.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/27/25 08:40, Winiarska, Iwona wrote:
-> On Thu, 2025-01-23 at 15:20 +0300, Paul Fertser wrote:
->> When an Icelake or Sapphire Rapids CPU isn't providing the maximum and
->> critical thresholds for particular DIMM the driver should return an
->> error to the userspace instead of giving it stale (best case) or wrong
->> (the structure contains all zeros after kzalloc() call) data.
->>
->> The issue can be reproduced by binding the peci driver while the host is
->> fully booted and idle, this makes PECI interaction unreliable enough.
->>
->> Fixes: 73bc1b885dae ("hwmon: peci: Add dimmtemp driver")
->> Fixes: 621995b6d795 ("hwmon: (peci/dimmtemp) Add Sapphire Rapids support")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-> 
-> Hi!
-> 
-> Thank you for the patch.
-> Did you have a chance to test it with OpenBMC dbus-sensors?
-> In general, the change looks okay to me, but since it modifies the behavior
-> (applications will need to handle this, and returning an error will happen more
-> often) we need to confirm that it does not cause any regressions for userspace.
-> 
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-I would also like to understand if the error is temporary or permanent.
-If it is permanent, the attributes should not be created in the first
-place. It does not make sense to have limit attributes which always report
--ENODATA.
+According to the Rev.1.20 hardware manual for the RZ/Five SoC, the clock
+source for HP is derived from PLL6 divided by 2. This patch corrects the
+implementation by configuring HP as a fixed clock source instead of a MUX.
 
-Guenter
+The `CPG_PL6_ETH_SSEL` register, which is available on the RZ/G2UL SoC, is
+not present on the RZ/Five SoC, necessitating this change.
+
+Fixes: 95d48d270305ad2c ("clk: renesas: r9a07g043: Add support for RZ/Five SoC")
+Cc: stable@vger.kernel.org
+Reported-by: Hien Huynh <hien.huynh.px@renesas.com>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+---
+v1->v2
+- Fixed build warning for non-ARM64 arch, sel_pll6_2 defined but not used.
+---
+ drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
+index b97e9a7b9708..ad712e530328 100644
+--- a/drivers/clk/renesas/r9a07g043-cpg.c
++++ b/drivers/clk/renesas/r9a07g043-cpg.c
+@@ -90,7 +90,9 @@ static const struct clk_div_table dtable_1_32[] = {
+ 
+ /* Mux clock tables */
+ static const char * const sel_pll3_3[] = { ".pll3_533", ".pll3_400" };
++#ifdef CONFIG_ARM64
+ static const char * const sel_pll6_2[]	= { ".pll6_250", ".pll5_250" };
++#endif
+ static const char * const sel_sdhi[] = { ".clk_533", ".clk_400", ".clk_266" };
+ 
+ static const u32 mtable_sdhi[] = { 1, 2, 3 };
+@@ -138,7 +140,12 @@ static const struct cpg_core_clk r9a07g043_core_clks[] __initconst = {
+ 	DEF_DIV("P2", R9A07G043_CLK_P2, CLK_PLL3_DIV2_4_2, DIVPL3A, dtable_1_32),
+ 	DEF_FIXED("M0", R9A07G043_CLK_M0, CLK_PLL3_DIV2_4, 1, 1),
+ 	DEF_FIXED("ZT", R9A07G043_CLK_ZT, CLK_PLL3_DIV2_4_2, 1, 1),
++#ifdef CONFIG_ARM64
+ 	DEF_MUX("HP", R9A07G043_CLK_HP, SEL_PLL6_2, sel_pll6_2),
++#endif
++#ifdef CONFIG_RISCV
++	DEF_FIXED("HP", R9A07G043_CLK_HP, CLK_PLL6_250, 1, 1),
++#endif
+ 	DEF_FIXED("SPI0", R9A07G043_CLK_SPI0, CLK_DIV_PLL3_C, 1, 2),
+ 	DEF_FIXED("SPI1", R9A07G043_CLK_SPI1, CLK_DIV_PLL3_C, 1, 4),
+ 	DEF_SD_MUX("SD0", R9A07G043_CLK_SD0, SEL_SDHI0, SEL_SDHI0_STS, sel_sdhi,
+-- 
+2.43.0
 
 
