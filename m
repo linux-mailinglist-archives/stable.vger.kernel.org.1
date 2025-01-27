@@ -1,90 +1,216 @@
-Return-Path: <stable+bounces-110897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73231A1DCB6
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 20:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E43A1DCC8
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 20:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C668F3A1EC8
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:25:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACDF63A6AF3
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 19:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0289A190685;
-	Mon, 27 Jan 2025 19:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EA0192D66;
+	Mon, 27 Jan 2025 19:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="q+DrTscQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WPYX+578"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA117B50A
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 19:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B23D1F60A;
+	Mon, 27 Jan 2025 19:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738005920; cv=none; b=NvQrVp5gmAlT7Qdl2LIpZP7NyUHzn4gAvDiUuBKPpKetuIuAeYDD0cNGUhOyvxSNY2LiJLi0szfzra1Zvco04hNPRJ/FTzAr5SPICkEiohMfe/v0b2ShQO9nZljUB57F0qFsofmjlvpMwst+dCx3m1hz8ZyTv782fWzT8+08n2Y=
+	t=1738006511; cv=none; b=bdE75XhfbdxT2QbyYvtR+m3rCNSABc2FqWiHCqEHZQifc6w+7ZlxxEvWG934mpemYyKPRVasLrVvO5nthajW/Pto4xeB/syJKMRUBTyHJUwC6L8ubmCA4OV6aN2u/IMA0C3KPyUxzCRVUW/15rP+7lUOFN2tXsvEwCjfzUnHBDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738005920; c=relaxed/simple;
-	bh=nIY/E7PR6zJCCzcySPENn91dQ+tXsRO5a+VwTfXsLbA=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=U2fmNJtcX1sH9ExM7h8y+l7twhDsNurGO1sm/4GH70+7ikquxKSU+2gvngV6CQmulN4shR4IlCkxx9Uw8TM2EiA7SLl5sgvYOya5SfdPGXvh1ZTdOhb1MAumurbzO0e/HeHXYaU8PkY1MAZueb2JqJqNvYu7wil4/BguHG3y3ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=q+DrTscQ; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [192.168.35.166] (c-73-59-8-18.hsd1.wa.comcast.net [73.59.8.18])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 437382037161;
-	Mon, 27 Jan 2025 11:25:18 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 437382037161
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738005918;
-	bh=GH9GKL/4SckqtQ5TRyF+iLq1IzOr7zOqzFgZdaS0rvY=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=q+DrTscQ9OYeiWNCDKOxRG1E2Vlk5rWXug140I4BNP62zfHneC1OYR4VgCHzrjQwO
-	 jcriap7+fFA5XV+/xfgJZmrolHglZ9FlgKP+3cBoUrKvPukB4bGjwanzI0E9rWB/Vh
-	 yl43D+euwJGjFRPdJWQpjJvRS/BvlmfUv1B0LRyU=
-Message-ID: <2d31d777-6732-4075-aedc-a832c9713bdb@linux.microsoft.com>
-Date: Mon, 27 Jan 2025 11:25:17 -0800
+	s=arc-20240116; t=1738006511; c=relaxed/simple;
+	bh=BIWVjHdNz7VNY347CSutS5VBJas2rckQb2jBlK566Qk=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=NppuYS65k4cZEW4huBY7NCzMNaxR7Senrcp0s4Fm5n5IaftYHQUiMsG6l41B0xhfxz77WFiNaWs21Ck7PhshwQMoO1dvh8+8BMOsMiVD71l7KAXyWHI43p2sUjubyrtoQUdmUJMCvmuHhy46pLvRwM4s+PhTDvuNSd9T9ZJvQa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WPYX+578; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-303548a933aso44780851fa.3;
+        Mon, 27 Jan 2025 11:35:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738006507; x=1738611307; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5VUoGCwfVNYXwKgXNKkHD5VpTMGwmKU++/GyIsT0nn8=;
+        b=WPYX+578o6hlhafZqnIlmvS2MGXS1u9Xe7vHt9tmJYoacqFZR8SKNYZdYmvGk3tyjD
+         aq9X6Om2x7nYE+cJBSL4+25CeeDdOA6D2fTnW8jab93qoEy04YY0EMEmF4qZbQ+y3O90
+         A9aTZZJsU7teRp+mP6AgAizocL5FwJBe3w8FlyD+mWKDJLpxkVCoCPh+ECieAXEtcCos
+         8qpVpC+b+nP0Me1QiyfYJwxRzt7fyo1ShUrSDCV22zjpNn5c/IZkMP/Yt0X3GGCGgUWx
+         GZR+ABwAKnHw+okj+QPPDMw7zW7/2J8G3c9rXu+fPTSKtHhYWAiqZoT/P4v3Ceaz2qBx
+         R2kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738006507; x=1738611307;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+         :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5VUoGCwfVNYXwKgXNKkHD5VpTMGwmKU++/GyIsT0nn8=;
+        b=czJTZr6+e+oytVgFG1RmxJCDaUqIPuaxot56DOT13Dxvs97pzKwclOwaiA9UDXgtys
+         ERzXIjLpDlXttIWg4nxbwS5JmMrKZtrINwpejZxjdh0fPPctIJ4MiAoBjYWu2FUddTWw
+         hip1uS3mGRD4RloTDj95HYycU2FL2zhyLCJrEHNSlkV0buLWdnqDCQJkDB5qlh/ED3iS
+         gOfst4kD4Xo7mz8Kj3mrKL7SeLBgHcAk7CmLrAAeLyae5FiWfGGzgF9O2KSYE7dOIVi3
+         H0pVkl1H/ougr1GDFs89CfQvUUcTWl1QTqgDfaHZ6fSSGn1DtZaCYUGXyBvu+hH+033b
+         GoDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDuM/F4ir5FpN2cCopy2yd7wxEFAnkXlfOKPR/BjsTcB6bM5rx6fFBEZutwymOddhpmDRvJ/nnbi3CEyA=@vger.kernel.org, AJvYcCWrfPvQoN+LwNagch/c3zcaK7yHbbnlcIII6I8PAroluDP5qCLMVMrV9++VpoDuCVNUDLpzowjX@vger.kernel.org, AJvYcCXqfy8wzNbzRZAtJf1TFz4KWchz0HYmxoR6IBF4JfcdRbwRHku4q8SPcKHG2l8c0NtSTxLP48CLxa3nW0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPjQWCGCHK0aekK6AIV5Gmsnwdcgl17sbrB7Y2kiK8RJILvpdb
+	f/00HerggNWJPvTUyyR23YPE5aXzDVL/fzU7z9aF3iJ8R4ZTdrrPxqb4hmMG
+X-Gm-Gg: ASbGncvA4IPUWfZY1RlWHPcVWDmQ+UZ56/Eh1gzsUwiFKENAqLW3lASMYGbI1QGlva6
+	jU2FNiYcClKXGN6LgvwG2CnC3Krn0GyJKdJtrPz0UQarmvfHYj3MPpqj763p1wvHzXpYbOiLMRD
+	foL3vXRRe92mJFhCXuUjkZbftSUMERuvglz+HCr2MwHU6wren8391QvBBJ1GMUt5vjtyA9QivN3
+	feJ0VoyWhpDBwXc4ZhUVRAFCMBEkAR+eF+a5ph3foUvg4nv7BCRT4dhnQvuyGi+OOpdyhvAukRO
+	646DhXEKzaRiicZ/GSOaSufX7VqiNz57e+mTS4tVUM/LgZJidhAVjHD0PnbJsski+M80
+X-Google-Smtp-Source: AGHT+IGYlUkHvv8II3ZmzjPYZOyuE8bYVugVsv3AwxgDWrxCyoTSMTVmYGtMCYbLyZ+vF5rQMN00+g==
+X-Received: by 2002:a05:6512:1247:b0:542:98e0:7c67 with SMTP id 2adb3069b0e04-5439c27d401mr15203413e87.51.1738006506652;
+        Mon, 27 Jan 2025 11:35:06 -0800 (PST)
+Received: from razdolb (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543c8381772sm1375919e87.249.2025.01.27.11.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 11:35:05 -0800 (PST)
+References: <20250115-b4-rkisp-noncoherent-v2-0-0853e1a24012@gmail.com>
+ <20250115-b4-rkisp-noncoherent-v2-1-0853e1a24012@gmail.com>
+ <CAAFQd5DFuw9e85X-UhVfonb5C9F0tG6xyn9RUGitKDQXifcUyA@mail.gmail.com>
+User-agent: mu4e 1.10.9; emacs 29.4.50
+From: Mikhail Rudenko <mike.rudenko@gmail.com>
+To: Tomasz Figa <tfiga@chromium.org>
+Cc: Dafna Hirschfeld <dafna@fastmail.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Heiko Stuebner <heiko@sntech.de>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Hans Verkuil <hverkuil@xs4all.nl>, Sergey
+ Senozhatsky <senozhatsky@chromium.org>, linux-media@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Mauro Carvalho Chehab
+ <mchehab+huawei@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
+ dma-contig
+Date: Mon, 27 Jan 2025 22:25:51 +0300
+In-reply-to: <CAAFQd5DFuw9e85X-UhVfonb5C9F0tG6xyn9RUGitKDQXifcUyA@mail.gmail.com>
+Message-ID: <87jzag82zd.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: eahariha@linux.microsoft.com, Michael Kelley <mhklinux@outlook.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 6.6.y] scsi: storvsc: Ratelimit warning logs to prevent VM
- denial of service
-To: stable@vger.kernel.org
-References: <20250127182908.66971-1-eahariha@linux.microsoft.com>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <20250127182908.66971-1-eahariha@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 1/27/2025 10:29 AM, Easwar Hariharan wrote:
-> commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream
-> 
-> If there's a persistent error in the hypervisor, the SCSI warning for
-> failed I/O can flood the kernel log and max out CPU utilization,
-> preventing troubleshooting from the VM side. Ratelimit the warning so
-> it doesn't DoS the VM.
-> 
-> Closes: https://github.com/microsoft/WSL/issues/9173
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> ---
->  drivers/scsi/storvsc_drv.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
+Hi Tomasz,
 
-I just remembered that we should wait for Linus to tag the rc before
-sending backports, so apologies for sending this (and its 6.1 and 6.12
-friends) out before rc1 was tagged.
+and thanks for your review!
 
-- Easwar (he/him)
+On 2025-01-27 at 20:18 +09, Tomasz Figa <tfiga@chromium.org> wrote:
+
+> Hi Mikhail,
+>
+> On Thu, Jan 16, 2025 at 2:25=E2=80=AFAM Mikhail Rudenko <mike.rudenko@gma=
+il.com> wrote:
+>>
+>> When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
+>> commit 129134e5415d ("media: media/v4l2: remove
+>> V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
+>> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
+>> no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
+>> introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
+>> V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
+>> no-ops, making cache maintenance for non-coherent dmabufs allocated by
+>> dma-contig impossible.
+>>
+>> Fix this by reintroducing dma_sync_sg_for_{cpu,device} calls to
+>> vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
+>> buffers.
+>>
+>> Fixes: c0acf9cfeee0 ("media: videobuf2: handle V4L2_MEMORY_FLAG_NON_COHE=
+RENT flag")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+>> ---
+>>  drivers/media/common/videobuf2/videobuf2-dma-contig.c | 14 ++++++++++++=
+++
+>>  1 file changed, 14 insertions(+)
+>>
+>
+> Thanks a lot for the patch!
+> Sorry, for the delay. Ended up being sick with some nasty cold that
+> took quite a while to recover.
+> Please take a look at my comments inline.
+>
+>> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c b/dri=
+vers/media/common/videobuf2/videobuf2-dma-contig.c
+>> index bb0b7fa67b539aa73ad5ccf3c3bc318e26f8a4cb..889d6c11e15ab5cd4b4c317e=
+865f1fef92df4b66 100644
+>> --- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> +++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+>> @@ -427,6 +427,13 @@ static int
+>>  vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+>>                                    enum dma_data_direction direction)
+>>  {
+>> +       struct vb2_dc_buf *buf =3D dbuf->priv;
+>> +       struct sg_table *sgt =3D buf->dma_sgt;
+>> +
+>> +       if (!buf->non_coherent_mem || buf->vb->skip_cache_sync_on_finish)
+>
+> skip_cache_sync_on_finish shouldn't apply to this function, because
+> the buffer was shared with an external DMA-buf importer and we don't
+> know in what state it is at this point.
+>
+
+Ack, will fix in v3.
+
+>> +               return 0;
+>> +
+>
+> We should also take care of the kernel mapping if it exists, because
+> on some platforms it may not be coherent with the userspace one -
+> using flush_kernel_vmap_range(). Please check how
+> vb2_dc_prepare()/vb2_dc_finish() do it.
+>
+
+Thanks for the pointer, will do so in v3.
+
+>> +       dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir=
+);
+>
+> We can use the dma_sync_sgtable_*() variant here so we can just pass
+> the entire sgt to it.
+>
+
+Will do so.
+
+>>         return 0;
+>>  }
+>>
+>> @@ -434,6 +441,13 @@ static int
+>>  vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+>>                                  enum dma_data_direction direction)
+>>  {
+>> +       struct vb2_dc_buf *buf =3D dbuf->priv;
+>> +       struct sg_table *sgt =3D buf->dma_sgt;
+>> +
+>> +       if (!buf->non_coherent_mem || buf->vb->skip_cache_sync_on_prepar=
+e)
+>> +               return 0;
+>> +
+>> +       dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_=
+dir);
+>>         return 0;
+>
+> Overall the same comments here as for
+> vb2_dc_dmabuf_ops_begin_cpu_access() +/- flush would change to
+> invalidate.
+
+Ack.
+
+> Best regards,
+> Tomasz
 
 
+--
+Best regards,
+Mikhail Rudenko
 
