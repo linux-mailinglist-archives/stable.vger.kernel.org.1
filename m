@@ -1,128 +1,217 @@
-Return-Path: <stable+bounces-110860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43297A1D57A
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:40:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24D4A1D5A5
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 12:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953C7166472
-	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E3D3A6AFB
+	for <lists+stable@lfdr.de>; Mon, 27 Jan 2025 11:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFE61FECC9;
-	Mon, 27 Jan 2025 11:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90961FDE2B;
+	Mon, 27 Jan 2025 11:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="mjMiJKk3"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jsKljiLC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="21sq88+L";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jsKljiLC";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="21sq88+L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.crpt.ru (mail1.crpt.ru [91.236.205.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0F11FCFD6
-	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578307603F
+	for <stable@vger.kernel.org>; Mon, 27 Jan 2025 11:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737978044; cv=none; b=TFWgWUvIXKde/y3pfrPWeGEKZNMXTbz1Y/PxLE9o7E+GAyXUMYcYy+KRXhoe8bgrYf3fwL3C4B+vDENt0R4KHMfS2E1VX+/qSyX9WczoaS5XzZRnnxVokg+0rAQSOUgePolRRfT+lKpin9b9Xpu0/IkFH36TUkHRAJjLyYWqi3o=
+	t=1737978966; cv=none; b=NFBYde50whpm6dS+Tx/Yf1ShLgF3WauUuSvV61UvDWZLJsue3lxaYL7VxPuu78YGxrGPK8LaB0MAkPUbycrXrqAWe3WrstJnJEJCerOA1Odsj80CTl53IRiHDo0bvdqfqCcb2WXbKP63psLfLvuGxZ3K0Ijy00XRmmnVgeZmeuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737978044; c=relaxed/simple;
-	bh=NIxISyiiC4iMHYJFxPidYQlOqRY29SF/EO7KwKqyz+o=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=p6CjBe62PZACNVt9MeCa88Ch+z+bYBpqSi7RSGL8kWGgi4hOlNPRdXV7UuQRrRWOheOWOLHQ13yZCG69Lhdqws2NOes0aVYU0XvEb9GDAhaPUYPUbbYV3ydHzaCRvMuG6EfWw109l2FUHT7epO6fTKoLt8qbLKASkOKLUZBCZkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=mjMiJKk3; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
-Received: from mail.crpt.ru ([192.168.60.3])
-	by mail.crpt.ru  with ESMTP id 50RBPRLE014435-50RBPRLG014435
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Mon, 27 Jan 2025 14:25:27 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex1.crpt.local (192.168.60.3)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Mon, 27 Jan
- 2025 14:25:26 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Mon, 27 Jan 2025 14:25:26 +0300
-From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
-To: "lvc-patches@linuxtesting.org" <lvc-patches@linuxtesting.org>
-CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] drm/gem: overflow in calculating DMA GEM size
-Thread-Topic: [PATCH] drm/gem: overflow in calculating DMA GEM size
-Thread-Index: AQHbcK4p0k+1I3hZoUy3Vnl1+b1O4Q==
-Date: Mon, 27 Jan 2025 11:25:26 +0000
-Message-ID: <20250127112515.88735-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX1.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 1/26/2025 11:12:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1737978966; c=relaxed/simple;
+	bh=hGmVDJbEgcoFN5ywcjx/1dZObpSkI+rTvrlxj4naGEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pqw8iNyWdRekCTBbfhq7foPzM/k9DqX7EpSD/2GBiTQ0NFUiF2OsmMg8fQA3mak4ruzsNmeBho6id82tt/S7ufEgp9GK8k/Mi8KUZwewy3G5osmBky7ejgc9zSWxBHrSA12dwn213cmYOMunSH0JJOSgTu2tgkzljXtBGKHf7a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jsKljiLC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=21sq88+L; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jsKljiLC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=21sq88+L; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 431A321175;
+	Mon, 27 Jan 2025 11:55:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737978959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=34QMMOeNIcH+wO27mojTEPVmmqEWv3a882JghgYXIW8=;
+	b=jsKljiLC0YFze3hJfI1jlKZj6ExEA9Ykx5w21hVVkBgAy+plg43XMZEU/JZrFO7JHZ9Aw+
+	d3PQT1I+O7GnaX9/p+MLOwP2kYNpgscVdIieZfdzdBHb2ZPOWduJ4AXFC+gQCj+E7Oht0S
+	Hei42qkoPIVCqgYhRy3UBo0bTX1eNsk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737978959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=34QMMOeNIcH+wO27mojTEPVmmqEWv3a882JghgYXIW8=;
+	b=21sq88+LxTtxASNWeeh1ihhqVnDrhDL8OOGs5xHe45o0hbfA/tPWQMYsEGcItST1qt/T3q
+	5kNnSIVwzKeoaHDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1737978959; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=34QMMOeNIcH+wO27mojTEPVmmqEWv3a882JghgYXIW8=;
+	b=jsKljiLC0YFze3hJfI1jlKZj6ExEA9Ykx5w21hVVkBgAy+plg43XMZEU/JZrFO7JHZ9Aw+
+	d3PQT1I+O7GnaX9/p+MLOwP2kYNpgscVdIieZfdzdBHb2ZPOWduJ4AXFC+gQCj+E7Oht0S
+	Hei42qkoPIVCqgYhRy3UBo0bTX1eNsk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1737978959;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=34QMMOeNIcH+wO27mojTEPVmmqEWv3a882JghgYXIW8=;
+	b=21sq88+LxTtxASNWeeh1ihhqVnDrhDL8OOGs5xHe45o0hbfA/tPWQMYsEGcItST1qt/T3q
+	5kNnSIVwzKeoaHDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DE37137C0;
+	Mon, 27 Jan 2025 11:55:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oYEoAk90l2dhIQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 27 Jan 2025 11:55:59 +0000
+Message-ID: <93bfabd4-20a8-4d56-898b-943dccb41df2@suse.de>
+Date: Mon, 27 Jan 2025 12:55:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-Client-IP: 192.168.60.3
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=VjPDc6XIu+Pd+uZ/AwnKjmVj2zkk6k7QL5M85K7HYZs=;
- b=mjMiJKk3Y1QCJCKfCYK/JtJ8sqHkvG/W0j/hLHuTR0K8n3iiBiO+0byHzXYO4v36s+/ENpx3AgJ7
-	00l23hVUFo+wxyIPDV6XKF+j+M01nI9o9qVBCCkFTNwFyqu0sh3JzJclKo2xwi18N+92JA+xXf8T
-	EjOTcm58rafA5e3sU1Z1PLbcU24fIB+FtD76FrzLRRMjFYCKNzOVsRbLMeEXh4TNRcAQ180zwmx0
-	+FbdycbJjukXH8Veg2Usi2tR3iEqmBCIKqSVEuOYGNF902q8OPKoz8tbN+SDv05kNupedVCEcnrW
-	dxjEV9ZqHB290Jq4pVB/eV7Y3BGxAQLZLQ9NtQ==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/ast: Fix ast_dp connection status
+To: Jocelyn Falempe <jfalempe@redhat.com>, Dave Airlie <airlied@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+References: <20250124141142.2434138-1-jfalempe@redhat.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250124141142.2434138-1-jfalempe@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,lists.freedesktop.org:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Flag: NO
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Hi
 
-Size of variable args->pitch equals four bytes.
-Size of variable args->height equals four bytes.
 
-The expression args->pitch * args->height is currently being evaluated
-using 32-bit arithmetic. During multiplication, an overflow may occur.
+Am 24.01.25 um 15:11 schrieb Jocelyn Falempe:
+> ast_dp_is_connected() used to also check for link training success
+> to report the DP connector as connected. Without this check, the
+> physical_status is always connected. So if no monitor is present, it
+> will fail to read the EDID and set the default resolution to 640x480
+> instead of 1024x768.
+>
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> Fixes: 2281475168d2 ("drm/ast: astdp: Perform link training during atomic_enable")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.12+
 
-Above the expression args->pitch * args->height there is a check for its
-minimum value. However, if args->pitch has a value greater than this
-minimum, that check is insufficient.
+I cannot reproduce the problem, but the patch looks correct. My AST2600 
+with ASTDP still works correctly with the patch allied.
 
-Since a value of type 'u64' is used to store the eventual result,
-cast the first variable of each expression to 'u64' to provide the=20
-compiler with complete information about the appropriate arithmetic to use.
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-This is similar to commit 0f8f8a643000 ("drm/i915/gem: Detect overflow
-in calculating dumb buffer size").
+Best regards
+Thomas
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> ---
+>   drivers/gpu/drm/ast/ast_dp.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
+> index 0e282b7b167c..30aad5c0112a 100644
+> --- a/drivers/gpu/drm/ast/ast_dp.c
+> +++ b/drivers/gpu/drm/ast/ast_dp.c
+> @@ -17,6 +17,12 @@ static bool ast_astdp_is_connected(struct ast_device *ast)
+>   {
+>   	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, AST_IO_VGACRDF_HPD))
+>   		return false;
+> +	/*
+> +	 * HPD might be set even if no monitor is connected, so also check that
+> +	 * the link training was successful.
+> +	 */
+> +	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, AST_IO_VGACRDC_LINK_SUCCESS))
+> +		return false;
+>   	return true;
+>   }
+>   
+>
+> base-commit: 798047e63ac970f105c49c22e6d44df901c486b2
 
-Fixes: 6d1782919dc9 ("drm/cma: Introduce drm_gem_cma_dumb_create_internal()=
-")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
----
- drivers/gpu/drm/drm_gem_dma_helper.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem=
-_dma_helper.c
-index 870b90b78bc4..a8862f6f702a 100644
---- a/drivers/gpu/drm/drm_gem_dma_helper.c
-+++ b/drivers/gpu/drm/drm_gem_dma_helper.c
-@@ -272,8 +272,8 @@ int drm_gem_dma_dumb_create_internal(struct drm_file *f=
-ile_priv,
- 	if (args->pitch < min_pitch)
- 		args->pitch =3D min_pitch;
-=20
--	if (args->size < args->pitch * args->height)
--		args->size =3D args->pitch * args->height;
-+	if (args->size < mul_u32_u32(args->pitch, args->height))
-+		args->size =3D mul_u32_u32(args->pitch, args->height);
-=20
- 	dma_obj =3D drm_gem_dma_create_with_handle(file_priv, drm, args->size,
- 						 &args->handle);
---=20
-2.43.0
 
