@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-111036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF42A21031
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:02:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF83BA21056
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950DD167737
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:02:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4533AA676
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1081FBEB1;
-	Tue, 28 Jan 2025 17:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C881FCCEC;
+	Tue, 28 Jan 2025 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="raDUyqg/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wfw8hzQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EBE1FBC89;
-	Tue, 28 Jan 2025 17:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD981FBEA7;
+	Tue, 28 Jan 2025 17:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086894; cv=none; b=jR0qSrttjAETHU+xWRv7P55KZb2IFSM3nv/yynfpyxbY7AfVEl/0sDe0Ie0BuJ4JD4EhKpi2lW9x8ON+EzTRXtrbXJZVWi+Ii95vMECfgjtnGjLpl0FMaeYt7geu1Ba79AGPsmKWbIqO3U/qBClMdtNWO2lugFssH9XGzzHno5Q=
+	t=1738086897; cv=none; b=oqBAs6qY3lfN0/yR3hXjqDjmCY05Jo00n4aylZO89GdjJDGDEjquiWyoDQIuN6ony6XZXu8TgGnhfMrdXNnKSm0IqHcoYZ83Jzfxkp5tLxDU/xs3I7rvFEBnKmukhYnh4mZNBrVdxwvS/sZ4YdWRh2tGSiYt0hf3AnTFHU3dr18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086894; c=relaxed/simple;
-	bh=c7GpGV2WfVCigO6DAYXGLCcLdWNmU1CowOOiHpYaRu0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=d93zU1wPRbqkHLjIh5hDrZBIthI6ZP15d38oYT7+pXv/zNLYcL/GpNsIMe2EcASN5nvBcAyPxWiiNi5bOFyXf96r1+wc6UjdJRWq0pM/o5OV1DYOJt69CvfY/9I+JTXBHmRLm67ND/zcpGALECVAvKTJymoraThLOV7S3o9YW1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=raDUyqg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CACC4CED3;
-	Tue, 28 Jan 2025 17:54:53 +0000 (UTC)
+	s=arc-20240116; t=1738086897; c=relaxed/simple;
+	bh=jqC34l8TUma+5J9u0yFb/jeYTwQqzmRRxTpUcH2LfRE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WT8/WOadJpEcbYtpXmtc6y4eddSgkdzNp1opyYfo5dv2o5tNCj/6BY8alLObQc6zgFjsreJxEcVlDmpSXlUoRAa8eTTBvpHDa3dErqYzw/qAVyi2nf0+a8AfdTzLxb/rKbxbqv+molLQYPu2vNQYre0MJJrtE7+DBvkQ9jQB0Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wfw8hzQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF00C4CED3;
+	Tue, 28 Jan 2025 17:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086894;
-	bh=c7GpGV2WfVCigO6DAYXGLCcLdWNmU1CowOOiHpYaRu0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=raDUyqg/bQH2gGLTgmJ0C8us3L/iRWpjEjMsky1Pjhdz1A5JyHB/rpz/KUiRXjiQQ
-	 eqCloTUd/x+DxdX44iirM8BVSkOQx+tK6j1tGHMLP5WM1VwevLz9djCixfjaxCT4LD
-	 VAaXsZ0sjaKEX3yuEMsRnnGjg08xMTFb9TYJ+7gWuK80a0wT385cZCQHX/zmWBcRCU
-	 L/cNYZz/XaZQMJ3+FStQnnfQAR7khAmQU+y4I9FjSVfb+BoB4DPd0BYrgf7btouTqo
-	 RV8CdeHM3imTraRKKFPi1v67u8GxeBzFi3KQynkglFNaop3R3R09ILhHj8ulevQOf2
-	 99eYYR3ictacg==
+	s=k20201202; t=1738086897;
+	bh=jqC34l8TUma+5J9u0yFb/jeYTwQqzmRRxTpUcH2LfRE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wfw8hzQEaDlrh2zD1cQJqPu9yWo/k08A9YxMrL2IacpydT1AwNJ6nuSmsLGRUI32w
+	 /hf5D6drAdIjnKMV1Uh6l0kkHnqlWb/6oEOaOIShekS0LIzQ4xHMcwO459DJofcdPT
+	 nuLPUeQXZoveQv9g3zc3LGz6UjyZA8mYeVAlSuGxXxM+eMLvlu15D9wa0Uk4qRPsLf
+	 8O6Pm39nfbFMUleQuIIXMlMry5dI/Bgjh4185OQtywDsHhwwsABaj2ZJ9VhXAnV+21
+	 oZqkmhsl/ZvbogXcLTNUMiXG0mwzmPcuyIhFPE9DeUaLoPPUDie1iwWU/uFZPe5sCE
+	 Y2W/VohCRUlxA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	kurt.schwemmer@microsemi.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 11/11] PCI: switchtec: Add Microchip PCI100X device IDs
-Date: Tue, 28 Jan 2025 12:54:35 -0500
-Message-Id: <20250128175435.1197457-11-sashal@kernel.org>
+	aospan@amazon.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/5] media: cxd2841er: fix 64-bit division on gcc-9
+Date: Tue, 28 Jan 2025 12:54:50 -0500
+Message-Id: <20250128175455.1197603-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250128175435.1197457-1-sashal@kernel.org>
-References: <20250128175435.1197457-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,113 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.74
+X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a3282f84b2151d254dc4abf24d1255c6382be774 ]
+[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
 
-Add Microchip parts to the Device ID table so the driver supports PCI100x
-devices.
+It appears that do_div() once more gets confused by a complex
+expression that ends up not quite being constant despite
+__builtin_constant_p() thinking it is:
 
-Add a new macro to quirk the Microchip Switchtec PCI100x parts to allow DMA
-access via NTB to work when the IOMMU is turned on.
+ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
 
-PCI100x family has 6 variants; each variant is designed for different
-application usages, different port counts and lane counts:
+Use div_u64() instead, forcing the expression to be evaluated
+first, and making it a bit more readable.
 
-  PCI1001 has 1 x4 upstream port and 3 x4 downstream ports
-  PCI1002 has 1 x4 upstream port and 4 x2 downstream ports
-  PCI1003 has 2 x4 upstream ports, 2 x2 upstream ports, and 2 x2
-    downstream ports
-  PCI1004 has 4 x4 upstream ports
-  PCI1005 has 1 x4 upstream port and 6 x2 downstream ports
-  PCI1006 has 6 x2 upstream ports and 2 x2 downstream ports
-
-[Historical note: these parts use PCI_VENDOR_ID_EFAR (0x1055), from EFAR
-Microsystems, which was acquired in 1996 by Standard Microsystems Corp,
-which was acquired by Microchip Technology in 2012.  The PCI-SIG confirms
-that Vendor ID 0x1055 is assigned to Microchip even though it's not
-visible via https://pcisig.com/membership/member-companies]
-
-Link: https://lore.kernel.org/r/20250120095524.243103-1-Saladi.Rakeshbabu@microchip.com
-Signed-off-by: Rakesh Babu Saladi <Saladi.Rakeshbabu@microchip.com>
-[bhelgaas: Vendor ID history]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-By: Logan Gunthorpe <logang@deltatee.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: added Closes tags]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c           | 11 +++++++++++
- drivers/pci/switch/switchtec.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 37 insertions(+)
+ drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index a256928fb126c..70f484b811dea 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5978,6 +5978,17 @@ SWITCHTEC_QUIRK(0x5552);  /* PAXA 52XG5 */
- SWITCHTEC_QUIRK(0x5536);  /* PAXA 36XG5 */
- SWITCHTEC_QUIRK(0x5528);  /* PAXA 28XG5 */
+diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
+index e9d1eef40c627..798da50421368 100644
+--- a/drivers/media/dvb-frontends/cxd2841er.c
++++ b/drivers/media/dvb-frontends/cxd2841er.c
+@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
  
-+#define SWITCHTEC_PCI100X_QUIRK(vid) \
-+	DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_EFAR, vid, \
-+		PCI_CLASS_BRIDGE_OTHER, 8, quirk_switchtec_ntb_dma_alias)
-+SWITCHTEC_PCI100X_QUIRK(0x1001);  /* PCI1001XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1002);  /* PCI1002XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1003);  /* PCI1003XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1004);  /* PCI1004XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1005);  /* PCI1005XG4 */
-+SWITCHTEC_PCI100X_QUIRK(0x1006);  /* PCI1006XG4 */
-+
-+
- /*
-  * The PLX NTB uses devfn proxy IDs to move TLPs between NT endpoints.
-  * These IDs are used to forward responses to the originator on the other
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index 5a4adf6c04cf8..455fa5035a245 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -1737,6 +1737,26 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
- 		.driver_data = gen, \
- 	}
+ static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
+ {
+-	u64 tmp;
+-
+-	tmp = (u64) ifhz * 16777216;
+-	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
+-
+-	return (u32) tmp;
++	return div_u64(ifhz * 16777216ull,
++		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
+ }
  
-+#define SWITCHTEC_PCI100X_DEVICE(device_id, gen) \
-+	{ \
-+		.vendor     = PCI_VENDOR_ID_EFAR, \
-+		.device     = device_id, \
-+		.subvendor  = PCI_ANY_ID, \
-+		.subdevice  = PCI_ANY_ID, \
-+		.class      = (PCI_CLASS_MEMORY_OTHER << 8), \
-+		.class_mask = 0xFFFFFFFF, \
-+		.driver_data = gen, \
-+	}, \
-+	{ \
-+		.vendor     = PCI_VENDOR_ID_EFAR, \
-+		.device     = device_id, \
-+		.subvendor  = PCI_ANY_ID, \
-+		.subdevice  = PCI_ANY_ID, \
-+		.class      = (PCI_CLASS_BRIDGE_OTHER << 8), \
-+		.class_mask = 0xFFFFFFFF, \
-+		.driver_data = gen, \
-+	}
-+
- static const struct pci_device_id switchtec_pci_tbl[] = {
- 	SWITCHTEC_PCI_DEVICE(0x8531, SWITCHTEC_GEN3),  /* PFX 24xG3 */
- 	SWITCHTEC_PCI_DEVICE(0x8532, SWITCHTEC_GEN3),  /* PFX 32xG3 */
-@@ -1831,6 +1851,12 @@ static const struct pci_device_id switchtec_pci_tbl[] = {
- 	SWITCHTEC_PCI_DEVICE(0x5552, SWITCHTEC_GEN5),  /* PAXA 52XG5 */
- 	SWITCHTEC_PCI_DEVICE(0x5536, SWITCHTEC_GEN5),  /* PAXA 36XG5 */
- 	SWITCHTEC_PCI_DEVICE(0x5528, SWITCHTEC_GEN5),  /* PAXA 28XG5 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1001, SWITCHTEC_GEN4),  /* PCI1001 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1002, SWITCHTEC_GEN4),  /* PCI1002 12XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1003, SWITCHTEC_GEN4),  /* PCI1003 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1004, SWITCHTEC_GEN4),  /* PCI1004 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1005, SWITCHTEC_GEN4),  /* PCI1005 16XG4 */
-+	SWITCHTEC_PCI100X_DEVICE(0x1006, SWITCHTEC_GEN4),  /* PCI1006 16XG4 */
- 	{0}
- };
- MODULE_DEVICE_TABLE(pci, switchtec_pci_tbl);
+ static u32 cxd2841er_calc_iffreq(u32 ifhz)
 -- 
 2.39.5
 
