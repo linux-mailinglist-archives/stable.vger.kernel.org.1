@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-111038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2250A2105B
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:05:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C56F4A2105E
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E4B3ABB69
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:02:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86233AA0A7
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4461FCFC1;
-	Tue, 28 Jan 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564941FDE22;
+	Tue, 28 Jan 2025 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CrqPrq+K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGiLuQQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0861FCF55;
-	Tue, 28 Jan 2025 17:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049511FDA9C;
+	Tue, 28 Jan 2025 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086899; cv=none; b=kSP5dBgODMYBliTvY38lPz/q1zUUpkvB1x+kV4kj/Qez8SVQ/TSJzs87osxC8jIIcsOHwrJAowG2b+DNyjodSmN0VXIN3HcU4Ir7wMJcj8CU5lHQ9vjiZ9Hy8Vgtbxu5oBidYMDORq+w0uwsncr9hpZZuxVzKXvKCzc4ahLPegQ=
+	t=1738086901; cv=none; b=gsyz6nYWrOQUfJxYiNOlA6cHjRgI+lv2Mx8+SzIWYoT1fCgNj8guoyPTbAavsooj9vBLiZpRCVdeSSNxLBvvyNvO6p7ZIZr6q9wW6na6TzFmEPcn3eJ9Vati5bUTxpLclZ35JEJZ9G+yDXhJRxu2eSa+7jESZGyUmTWzyq3hDrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086899; c=relaxed/simple;
-	bh=Z8IEi8IbuX/ZMSjsv03rA6HiQ7FZmqkJGhsNoaBGd5c=;
+	s=arc-20240116; t=1738086901; c=relaxed/simple;
+	bh=41k5cj7AEMve9i0ebSaiso/rkjB3H3AQI/vu2YvHX1o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gvUppJ7cI9Epe7wz8l0MrwvVfI4VjXfDRhBHeLs7Z47yIS+Ey7kgicp/SSzMWMa1vFBrIo/ZscEDvecYtxGskuaLRSXKNkitfJyWYD1aUuqrX9qUTlAZQHqWXVgd7oGAPFqWX7q2F1dy5TFxJrOE2T15lA/dtIBp16drLBR3jUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CrqPrq+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2F2C4CED3;
-	Tue, 28 Jan 2025 17:54:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhLAd77Y2ILYG7eKEQP19ssZOHTwxXStrD2RpoZyYN+QZXPJHjaMp1ACfuIlaANGd9BRGOVHPt45K4lss6zuFbT8zd0cL4FSwnl0/n7QpIzyp5y59rNnShC/zVlFhleQ/A3Hw/DsFahTea401NAUBWH+45DHN2C969AyoPd1zWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGiLuQQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2225C4CED3;
+	Tue, 28 Jan 2025 17:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086899;
-	bh=Z8IEi8IbuX/ZMSjsv03rA6HiQ7FZmqkJGhsNoaBGd5c=;
+	s=k20201202; t=1738086900;
+	bh=41k5cj7AEMve9i0ebSaiso/rkjB3H3AQI/vu2YvHX1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrqPrq+KzOEuDa0HPSguuljVtQTA+Cs5TtqSsQYiYELAdYmjC2gNtWqMKXqgcT0SZ
-	 q9Fwka9PZ3hGkHtuquKHU1sJUbh8lDnplXqfEnCcm6uZRnR3H+inBsS8CLSMlvux3w
-	 KO4F+bJygk1A/InUon4g8RPTvCTQi4yT6XXg4p02bAENGCzvSAImGCji4uJPx68cIm
-	 GogBpbagwL8TyASkjthy+DU4ZR4Q00zGVko1VIdfoanqUpRbpS5TeHbaSzA0g43sT6
-	 2ZoTiY6PF27MI05PNF2mC+02ReijFmwRc/JONngYdlN6eP0BJP8aGcn7zGrritPmNT
-	 wiUYKrMm31CPw==
+	b=BGiLuQQAb21wHUOh+UZj0+J3ynttzsMQu3QUEIqrg9Lz2oamFIvcm+47KnUCFpJPW
+	 PGZjQkXN4h0YXw8HZARJqM7j6iR1/MN9TLssDImyVEi5c238/hl1/jX/OnYnLuUvd0
+	 OL5TBZyrSQYjw4fyvuCPESBv6xahW9S3LgMHWWqUy+GaK1YiIrxyk2opInDsjlodY0
+	 XMXCVn7taA1ozf8mCCqK2AydPmXY4tFCZKGFJgCd/+MuN99KpUaWhtVuYvZ8eol1Cx
+	 wMnbyLv0bMCsKW6Ta/VjCvc8pRxjSYFPRGGBIab2VUQSu3Wk3QYSuAxB8aASb5pDf6
+	 xb8JmAla6TXJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dwlsalmeida@gmail.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/5] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
-Date: Tue, 28 Jan 2025 12:54:51 -0500
-Message-Id: <20250128175455.1197603-2-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/5] PCI: Store number of supported End-End TLP Prefixes
+Date: Tue, 28 Jan 2025 12:54:52 -0500
+Message-Id: <20250128175455.1197603-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128175455.1197603-1-sashal@kernel.org>
 References: <20250128175455.1197603-1-sashal@kernel.org>
@@ -63,99 +62,139 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+[ Upstream commit e5321ae10e1323359a5067a26dfe98b5f44cc5e6 ]
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+eetlp_prefix_path in the struct pci_dev tells if End-End TLP Prefixes
+are supported by the path or not, and the value is only calculated if
+CONFIG_PCI_PASID is set.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
+The Max End-End TLP Prefixes field in the Device Capabilities Register 2
+also tells how many (1-4) End-End TLP Prefixes are supported (PCIe r6.2 sec
+7.5.3.15). The number of supported End-End Prefixes is useful for reading
+correct number of DWORDs from TLP Prefix Log register in AER capability
+(PCIe r6.2 sec 7.8.4.12).
 
-Adjust the timing of streaming initialization and check it before
-stopping it.
+Replace eetlp_prefix_path with eetlp_prefix_max and determine the number of
+supported End-End Prefixes regardless of CONFIG_PCI_PASID so that an
+upcoming commit generalizing TLP Prefix Log register reading does not have
+to read extra DWORDs for End-End Prefixes that never will be there.
 
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+The value stored into eetlp_prefix_max is directly derived from device's
+Max End-End TLP Prefixes and does not consider limitations imposed by
+bridges or the Root Port beyond supported/not supported flags. This is
+intentional for two reasons:
 
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+  1) PCIe r6.2 spec sections 2.2.10.4 & 6.2.4.4 indicate that a TLP is
+     malformed only if the number of prefixes exceed the number of Max
+     End-End TLP Prefixes, which seems to be the case even if the device
+     could never receive that many prefixes due to smaller maximum imposed
+     by a bridge or the Root Port. If TLP parsing is later added, this
+     distinction is significant in interpreting what is logged by the TLP
+     Prefix Log registers and the value matching to the Malformed TLP
+     threshold is going to be more useful.
+
+  2) TLP Prefix handling happens autonomously on a low layer and the value
+     in eetlp_prefix_max is not programmed anywhere by the kernel (i.e.,
+     there is no limiter OS can control to prevent sending more than N TLP
+     Prefixes).
+
+Link: https://lore.kernel.org/r/20250114170840.1633-7-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pci/ats.c             |  2 +-
+ drivers/pci/probe.c           | 14 +++++++++-----
+ include/linux/pci.h           |  2 +-
+ include/uapi/linux/pci_regs.h |  1 +
+ 4 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index dff7265a42ca2..c1621680ec570 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
+index c967ad6e26267..17a3894baf6be 100644
+--- a/drivers/pci/ats.c
++++ b/drivers/pci/ats.c
+@@ -376,7 +376,7 @@ int pci_enable_pasid(struct pci_dev *pdev, int features)
+ 	if (WARN_ON(pdev->pasid_enabled))
+ 		return -EBUSY;
  
- 	mux_args.mux_buf_sz  = mux_buf_sz;
+-	if (!pdev->eetlp_prefix_path && !pdev->pasid_no_tlp)
++	if (!pdev->eetlp_prefix_max && !pdev->pasid_no_tlp)
+ 		return -EINVAL;
  
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
-+
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
+ 	if (!pasid)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 5c1ab9ee65eb3..b47b33c48f33f 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2227,8 +2227,8 @@ static void pci_configure_ltr(struct pci_dev *dev)
  
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
+ static void pci_configure_eetlp_prefix(struct pci_dev *dev)
  {
- 	struct device *dev = &dvb->pdev->dev;
+-#ifdef CONFIG_PCI_PASID
+ 	struct pci_dev *bridge;
++	unsigned int eetlp_max;
+ 	int pcie_type;
+ 	u32 cap;
  
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
-+	}
+@@ -2240,15 +2240,19 @@ static void pci_configure_eetlp_prefix(struct pci_dev *dev)
+ 		return;
+ 
+ 	pcie_type = pci_pcie_type(dev);
 +
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
++	eetlp_max = FIELD_GET(PCI_EXP_DEVCAP2_EE_PREFIX_MAX, cap);
++	/* 00b means 4 */
++	eetlp_max = eetlp_max ?: 4;
++
+ 	if (pcie_type == PCI_EXP_TYPE_ROOT_PORT ||
+ 	    pcie_type == PCI_EXP_TYPE_RC_END)
+-		dev->eetlp_prefix_path = 1;
++		dev->eetlp_prefix_max = eetlp_max;
+ 	else {
+ 		bridge = pci_upstream_bridge(dev);
+-		if (bridge && bridge->eetlp_prefix_path)
+-			dev->eetlp_prefix_path = 1;
++		if (bridge && bridge->eetlp_prefix_max)
++			dev->eetlp_prefix_max = eetlp_max;
+ 	}
+-#endif
+ }
+ 
+ static void pci_configure_serr(struct pci_dev *dev)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 28f91982402aa..25deb09f9fce9 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -396,7 +396,7 @@ struct pci_dev {
+ 	u16		l1ss;		/* L1SS Capability pointer */
+ #endif
+ 	unsigned int	pasid_no_tlp:1;		/* PASID works without TLP Prefix */
+-	unsigned int	eetlp_prefix_path:1;	/* End-to-End TLP Prefix */
++	unsigned int	eetlp_prefix_max:3;	/* Max # of End-End TLP Prefixes, 0=not supported */
+ 
+ 	pci_channel_state_t error_state;	/* Current connectivity state */
+ 	struct device	dev;			/* Generic device interface */
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index 3325155036c80..1426896f4625b 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -659,6 +659,7 @@
+ #define  PCI_EXP_DEVCAP2_OBFF_MSG	0x00040000 /* New message signaling */
+ #define  PCI_EXP_DEVCAP2_OBFF_WAKE	0x00080000 /* Re-use WAKE# for OBFF */
+ #define  PCI_EXP_DEVCAP2_EE_PREFIX	0x00200000 /* End-End TLP Prefix */
++#define  PCI_EXP_DEVCAP2_EE_PREFIX_MAX	0x00c00000 /* Max End-End TLP Prefixes */
+ #define PCI_EXP_DEVCTL2		0x28	/* Device Control 2 */
+ #define  PCI_EXP_DEVCTL2_COMP_TIMEOUT	0x000f	/* Completion Timeout Value */
+ #define  PCI_EXP_DEVCTL2_COMP_TMOUT_DIS	0x0010	/* Completion Timeout Disable */
 -- 
 2.39.5
 
