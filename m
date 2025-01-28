@@ -1,153 +1,155 @@
-Return-Path: <stable+bounces-110964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2A3A209DA
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 12:40:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BF0A209E9
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 12:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8F23A88BA
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 11:40:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EA787A2AB3
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 11:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416421A0BF8;
-	Tue, 28 Jan 2025 11:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B019E96D;
+	Tue, 28 Jan 2025 11:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ob2tBffy"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b="kaVI8ecB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D39F1A08A0;
-	Tue, 28 Jan 2025 11:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097CD768FC;
+	Tue, 28 Jan 2025 11:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738064416; cv=none; b=FNxH+gWV/SLUic/dE7h/CWC+98lY3BmmezU/Pi0mOFHkkg3kiWq//4ambEzpS3XQND3h4kmFrPj39+diy31KB2AHD6fwCJjtwl98/KX/2L3wMc+8Mf6KSQcLc7XDEx41DMCHUuL/U8BdEvlA2Ww1wj6c3MpcbQ5csoRCvNeSUUw=
+	t=1738064833; cv=none; b=APVpY25k0iXNJfs06KNxwP8miXJd6YS6z88JaOgwNaCnrOaGSFfhvhp1Fa6v+1ViL+DR0y/HVSZM15EXAU2TxwQVKlujT5pYhKt2lD8kkNgJbfNrJ2N/W8NlqRCz22fJXd3/PUk3JtX41h4S7qXqwEnbgYZxN9OD0/qP/Swjrh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738064416; c=relaxed/simple;
-	bh=DeZ6DWszU6EXJ0pzU8UHnmvtpqC04ROJsGshnLIxVnQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=o5YEBExK29FVCN1fb2QSHmfCQBB634oa9P3ar1HLrUZFXz8ECsw1NltbLjN4ZTe+CPtX+cwFaaS8zhPFtC6Ybh8NIuQsbsOzQPQ80jAf7hH5kozVwfY2PJJ1PkQ8RlyKjtIAG1dzEuTTMaukl4gIh6+CdVdiX25kbr6lNlI4Xpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ob2tBffy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RMrTnf032637;
-	Tue, 28 Jan 2025 11:40:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=9G5cXrLKuXwsCCeFFeDmuR
-	TMcJ5IEQXqUgUVfwhbOtg=; b=ob2tBffy9Fyi8Zk6gny2Sb+XOeQWdKVe4CUpIb
-	zkScAWMuBU1S2zIHwlDdSFutCmku9r0/mKXJ95FAno05uM+lvzA9pHxf4RF6SSWS
-	PmNcgfxMoavSyP7BmsLkWkHbXs80nkOtQhmwqTo9iCLuIeFoJZQODhsuCGcvuxQK
-	A9B7CP6R5Wp0VzjvMfyunQYFFEe+eNrtLornlmAolNiRZLbx6hqrA0MlLSFCtVhx
-	pc8uEWGz1XIc6yHuGCvVZmxsUYEWQSyGKakADt8M+7z65+xvBRmRKReyBaLheT7y
-	smcS3s42Xac+MlA6iWTdRCMh8jJcYzXrCGSsRgxbHAN07L8w==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ekb89bhq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 11:40:11 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50SBeA2m030148
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 11:40:10 GMT
-Received: from hu-ajipan-hyd.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 28 Jan 2025 03:40:07 -0800
-From: Ajit Pandey <quic_ajipan@quicinc.com>
-Date: Tue, 28 Jan 2025 17:08:35 +0530
-Subject: [PATCH] clk: qcom: clk-branch: Fix invert halt status bit check
- for votable clocks
+	s=arc-20240116; t=1738064833; c=relaxed/simple;
+	bh=GVWqD6G9D5b/cE9nTKzbdprXQjD9z1HweCRQ+qLjFFk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nr1IMsiPBW3ZzO3JIRAVRFJ3ZytggU6AVDLW3YZIbsZMEQ/t7BT4zhr56tYJkd2C7MRL/vcmpweBcM4L4cIpfcXuvLh2W7Az64V93hGqDjHJx5/41xGPDyda8Qg4jbo6qf22RnJUWLN1cZBtlYajvCyW/g7y1n1gMKD4BLqKmwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b=kaVI8ecB; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1738064770; x=1738669570; i=efault@gmx.de;
+	bh=DKW3PGnLpxp0eBpGt94GZs93L4UL5AMwdX8B5I369cI=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=kaVI8ecBP1WDLgh5ucOveomVWrFbpXtSKf3fEf40WJNHVubDOBKb+kPEpv2DVHiB
+	 +nWZXaUfa0h8+8oUhP0sduFFSjdNfV30rAb68pbu8123VzrKxGCdMzTZWyGB4hN6V
+	 GPMT4IRK8z1zSsDNjTAko52WG+/4160AfpsTxvyy28ueSFexIEVjmzKphas4Hu3lO
+	 fWP0N2XKOrGS/XYB69dYrw16e8KlYZo11VoFAQlbFCp2qdqCKczT82/m+TN7fdPfB
+	 Zg+1NVY93Ux7kaQ0Ulu3iAbkHPd6QWIusf73KcCb47juVH8XKf9W4sONtO0yIYQSv
+	 vN+MvMbwF7I2qHjuMQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from homer.fritz.box ([91.212.106.53]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf4S-1tCmtX3AIs-00ddMH; Tue, 28
+ Jan 2025 12:46:09 +0100
+Message-ID: <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
+Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
+From: Mike Galbraith <efault@gmx.de>
+To: Ron Economos <re@w6rz.net>, Peter Zijlstra <peterz@infradead.org>, Arnd
+	Bergmann <arnd@arndb.de>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev,  linux-kernel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>,  Andrew Morton
+ <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, shuah
+ <shuah@kernel.org>,  patches@kernelci.org, lkft-triage@lists.linaro.org,
+ Pavel Machek <pavel@denx.de>,  Jon Hunter <jonathanh@nvidia.com>, Florian
+ Fainelli <f.fainelli@gmail.com>, Sudip Mukherjee
+ <sudipm.mukherjee@gmail.com>, srw@sladewatkins.net, rwarsow@gmx.de, Conor
+ Dooley <conor@kernel.org>, hargar@microsoft.com, Mark Brown
+ <broonie@kernel.org>,  Anders Roxell <anders.roxell@linaro.org>, Vincent
+ Guittot <vincent.guittot@linaro.org>, Dan Carpenter
+ <dan.carpenter@linaro.org>
+Date: Tue, 28 Jan 2025 12:46:07 +0100
+In-Reply-To: <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
+References: <20250121174532.991109301@linuxfoundation.org>
+	 <CA+G9fYtv3NNpxuipt8Dxa_=0DhieWWc07kDgCDBM+o0gKRi4Dw@mail.gmail.com>
+	 <cc947edf-bece-498c-bcb0-5bc403141257@app.fastmail.com>
+	 <20250122105949.GK7145@noisy.programming.kicks-ass.net>
+	 <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250128-push_fix-v1-1-fafec6747881@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIALrBmGcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDQyML3YLS4oz4tMwKXUNj41TTVONkE1MjSyWg8oKiVKAw2Kjo2NpaAIk
- bMo1aAAAA
-X-Change-ID: 20250128-push_fix-133e5e3c4529
-To: Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette
-	<mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Imran Shaik
-	<quic_imrashai@quicinc.com>,
-        Taniya Das <quic_tdas@quicinc.com>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Ajit Pandey <quic_ajipan@quicinc.com>,
-        Jagadeesh Kona <quic_jkona@quicinc.com>,
-        Satya Priya Kakitapalli
-	<quic_skakitap@quicinc.com>,
-        <stable@vger.kernel.org>
-X-Mailer: b4 0.15-dev-33ea6
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: kej9iebGeY_PSqdf9Np2OCXyC7uiij4h
-X-Proofpoint-ORIG-GUID: kej9iebGeY_PSqdf9Np2OCXyC7uiij4h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- clxscore=1011 priorityscore=1501 spamscore=0 adultscore=0 phishscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=756 suspectscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501280090
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LNd3PNtVtBWcaN0qY6J2BQCF9cxhKokTA2IeDesDglvUGDt3Qjs
+ 0zC827kqaRKoRzQWzfQttSjwySiBD9JHxtD9AAMWt1bVDIv9x21wODFzJsywbv5fnR8hJRb
+ T1n37+XOLRSLcMTQ3XSySTYbrnfjvJDlOtrhihTNXxV7TMIwPSqwwWJiLffqzkY9HGOjCGo
+ epHlDMCyO9AhMfKmKJZNg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Mx5CRPGPBrI=;TL8UPd/L2cg5suTaAQbInBWk8kw
+ K9G0OSYscgZ5rM++qcOh1ug89flTbw34+Ei94xcjXgnBFEIx4AfbLbzECkKk5qn4nIfD/6zqq
+ IevWCQIoIF7qF2d0yOSUxh1ltU/tvLWWa2KrJUU0p31sUtmFomRvV6s2t9TKJwJeMU5TmeCgt
+ XbxKVzET0EGTajLQQjHh7I1rTl8klxgNBHiSx/nuT5OdaSDc4aF9JEkw4V6kVHH+pMI1hHn1H
+ WD8vgXP7NFaswB5Q5JTNZNOV1zj+LefJ40bA6UyOGPTEsovgMjfazBlny+Dp51pu/5czBXONC
+ jyvBd28B7J3739tS4MX1ys9L8/8vjdxsT8D6MgAw5etM1PG9mBk5I+TXu+aOHEmxgwhe+ux0s
+ N7BgSXGRKTyjJaRVymh1OHeYp861W6AREK4xOqU8hjRBd7XCtvuEe1dnF7U8HGwCaNibZx97S
+ r1ZJqcBOdEvbEoO8uivGAefZp45Enz5MvnhkqqqSJivl1EeEbdYD7zmINdspHFuu5cdxavlRQ
+ QNhxCeskmue9II/HbSd4wtcx9dR9+1kSPEp6i/zhQlk/W0GBnRiGX8H8dzeMhISTFc+lytb+a
+ UTYb6xLfV83pk0oxFIVur4OL1oif94dr2iBVtcNembR5943soJhjJ6wYVxY5YBGz8UmA8gr64
+ xoIA2OCz28t/WwmyzisilDDONszDLaPY9jgkKqgyIenA6ts1bGcJUix+dSdxnu4cGipYq9W8s
+ eMMDLK/Bux37PpCpWHfDKlj3F7FRn42TVBccjGe7JfBAF4LnkZe9MF9cwpbXI+tZyo1gjmga3
+ GQRVZCr5WWuFNBCwinrIgmq0Keq11V42F6o4WOQqzsphRRhoUGJqYHt2l1aLPC0tf6SezzZNq
+ hy+I9duvYGulLF3yfkmHHZ2W0bOz/w7erpFDvmdPijN2OMULLgC/IgAO8TZ9gPwKGHnC/c9Rt
+ MSz/l2+UMQOi8GtYxAkPQCYXRMLu2T/4c7jflR1CtK8bXRYIdCMq7DnRrPJsN17DBZ12imK/h
+ 69a0CSURzp8bOIbjZjwsckaY4ucAj4NTrom9rzPUixq9LZWH3sgYsAo6W6CS3XZOpc1y8JiVn
+ HvDL9EVUPAmRRSWZaggyl0nsAiXYkOycbYv5oPqeUstn8YsCi2aY+222lotX0vRHaxZdg9jlN
+ M39yjrT8VDqSozlZIE0sHJxUag23a5moTCXCysnSr6w==
 
-BRANCH_HALT_ENABLE and BRANCH_HALT_ENABLE_VOTED flags are used to check
-halt status of branch clocks, which have an inverted logic for the halt
-bit in CBCR register. However, the current logic in the _check_halt()
-method only compares the BRANCH_HALT_ENABLE flags, ignoring the votable
-branch clocks.
+On Wed, 2025-01-22 at 03:11 -0800, Ron Economos wrote:
+> On 1/22/25 02:59, Peter Zijlstra wrote:
+> > On Wed, Jan 22, 2025 at 11:56:13AM +0100, Arnd Bergmann wrote:
+> > > On Wed, Jan 22, 2025, at 11:04, Naresh Kamboju wrote:
+> > > > On Tue, 21 Jan 2025 at 23:28, Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org> wrote:
+> > > > 0000000000000000
+> > > > <4>[=C2=A0 160.712071] Call trace:
+> > > > <4>[ 160.712597] place_entity (kernel/sched/fair.c:5250 (discrimin=
+ator 1))
+> > > > <4>[ 160.713221] reweight_entity (kernel/sched/fair.c:3813)
+> > > > <4>[ 160.713802] update_cfs_group (kernel/sched/fair.c:3975 (discr=
+iminator 1))
+> > > > <4>[ 160.714277] dequeue_entities (kernel/sched/fair.c:7091)
+> > > > <4>[ 160.714903] dequeue_task_fair (kernel/sched/fair.c:7144 (disc=
+riminator 1))
+> > > > <4>[ 160.716502] move_queued_task.isra.0 (kernel/sched/core.c:2437
+> > > > (discriminator 1))
+> > > I don't see anything that immediately sticks out as causing this,
+> > > but I do see five scheduler patches backported in stable-rc
+> > > on top of v6.12.8, these are the original commits:
+> > >
+> > > 66951e4860d3 ("sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE")
+> > This one reworks reweight_entity(), but I've been running with that on
+> > top of 13-rc6 for a week or so and not seen this.
+>
+> The offending commit is 6d71a9c6160479899ee744d2c6d6602a191deb1f
+> "sched/fair: Fix EEVDF entity placement bug causing scheduling lag"
+>
+> It works fine on 6.13, at least on RISC-V (which is the only arch I test=
+).
 
-Update the logic to correctly handle the invert logic for votable clocks
-using the BRANCH_HALT_ENABLE_VOTED flags.
+Seems 6.13 is gripe free thanks to it containing 4423af84b297.
 
-Fixes: 9092d1083a62 ("clk: qcom: branch: Extend the invert logic for branch2 clocks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
----
-This patch update the logic to correctly handle the invert logic for votable
-clocks using the BRANCH_HALT_ENABLE_VOTED flags.
----
- drivers/clk/qcom/clk-branch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I stumbled upon a reproducer for my x86_64 desktop box: all I need do
+is fire up a kvm guest in an enterprise configured host.  That inspires
+libvirt goop to engage group scheduling, splat follows instantly.
 
-diff --git a/drivers/clk/qcom/clk-branch.c b/drivers/clk/qcom/clk-branch.c
-index 229480c5b075..0f10090d4ae6 100644
---- a/drivers/clk/qcom/clk-branch.c
-+++ b/drivers/clk/qcom/clk-branch.c
-@@ -28,7 +28,7 @@ static bool clk_branch_in_hwcg_mode(const struct clk_branch *br)
- 
- static bool clk_branch_check_halt(const struct clk_branch *br, bool enabling)
- {
--	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
-+	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
- 	u32 val;
- 
- 	regmap_read(br->clkr.regmap, br->halt_reg, &val);
-@@ -44,7 +44,7 @@ static bool clk_branch2_check_halt(const struct clk_branch *br, bool enabling)
- {
- 	u32 val;
- 	u32 mask;
--	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
-+	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
- 
- 	mask = CBCR_NOC_FSM_STATUS;
- 	mask |= CBCR_CLK_OFF;
+Back 4423af84b297 out of 6.13, it starts griping, add it to a 6.12 tree
+containing 6d71a9c61604, it stops doing so.
 
----
-base-commit: 9a87ce288fe30f268b3a598422fe76af9bb2c2d2
-change-id: 20250128-push_fix-133e5e3c4529
+> It's already been reverted and 6.12.11-rc2 has been pushed out.
 
-Best regards,
--- 
-Ajit Pandey <quic_ajipan@quicinc.com>
+So stable should perhaps take 4423af84b297 along with 6d71a9c61604?
 
+	-Mike
 
