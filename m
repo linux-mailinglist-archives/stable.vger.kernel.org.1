@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-111000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C06A20FD0
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:54:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4360AA20FD2
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9A31888B24
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A643A16409A
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEC71DE8AD;
-	Tue, 28 Jan 2025 17:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E5C1DF733;
+	Tue, 28 Jan 2025 17:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV/Bj6oK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzioVO1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7381DE8A6;
-	Tue, 28 Jan 2025 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A041DEFFC;
+	Tue, 28 Jan 2025 17:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086831; cv=none; b=RDhAmw+7wDp9Vxa6X3w1OB/EnI80pCVmxOSIYT+LZZLJamrPaSAuLuumGOZwCWZs3h2yCzlJySWF7BcX09i6/rhcxZXvgAU+bUvR1o8OIdbtmb48GiLLoTL1MUfqsR/W9yeYby+dHs9rNCQqz74htvIpQQkcSWOpXscN3qsnJos=
+	t=1738086834; cv=none; b=u4ftEQFSUcDnetEnL1k5eMEuoFl8oc/838w61vW81ixTpQoyADWVLW2wAosnbX62o3lOBtZgkxa6PYs9L/56EDqd5SsLjtuMA4wZ2Rb+OowgbcwthabDvy3txi9hYyrGeN77dBBOAOT6W8ZG/bv4wsxp7Q4wlIOdCRRb8/buH5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086831; c=relaxed/simple;
-	bh=CDOs8WP2JNN/dHAwgr95DyRHckyBFA1Uf2K4mS/it3Y=;
+	s=arc-20240116; t=1738086834; c=relaxed/simple;
+	bh=ERFH2H++ppHidXVCUyHS8gWdXHU07AbQozk92/HoXyU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gOd3ctWKPxQOvarFIlR40FAD+HJHL9keK1X6PAEfyDexEqKKkwcBM96jQE74DivKoiU4+v4JiyXx8Df62Q6aIcW1YEnUbfmP4HsBTQF9Jcxu5lKoDw703dP4hqhEQkdRaoinT+0xnDqmVzcripdKT19e2HfA4zcrhl/NGOT1HVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV/Bj6oK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99342C4CEE1;
-	Tue, 28 Jan 2025 17:53:49 +0000 (UTC)
+	 MIME-Version; b=Ml07CC4ZuUFFxiuRWCXqR75Pl6aes+yD5MaGqWTjl31QRgwkoe0TvOGBWT66/dp7XJQuTQ6BP25uIDmnoGj56FEVoHYJRlWlvttdB2B8xswOuON39qpAC5oiw1mP6hHdQWdd0x6IlX54qZI8+lLH2iy+YGf5oY2FUpokke0yt9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzioVO1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431ECC4CEE4;
+	Tue, 28 Jan 2025 17:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086830;
-	bh=CDOs8WP2JNN/dHAwgr95DyRHckyBFA1Uf2K4mS/it3Y=;
+	s=k20201202; t=1738086832;
+	bh=ERFH2H++ppHidXVCUyHS8gWdXHU07AbQozk92/HoXyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mV/Bj6oKixuq61K/2pm3gYPQ+tJTmDje8N3xpzt1wHQ4jODmhaC363xoJeOXsE/fC
-	 VMr1bpuTCRA4Jwt6BNU+WrqNC192lROxJf0v5+Pf1ppmFI6TsPn6K6gf7IhhCVVlBz
-	 NMot0Rhntmfu5BRdmZuGqET2nU2f4cydLNDUnbqL44r2jVNLHBE+q305O4Q4qHwMTC
-	 9W2gf78+w+1hAOGtT9NG8pbujbnvStA9s6/SIU28wF1eKQKphqJBwYlsALsEA7B1dg
-	 wODPftWLN4XxLVWtF8amBoG/hr8x7mJ3xXsbyjK3DcfnHUIyaZi1u2Mtr93KKoQWYF
-	 wqOi8prq93z7A==
+	b=EzioVO1xhLrRydlE5UBSR+qSSiC+8aQ9mrObzMjMA1TvUKdVIoii53A8aQrPO9whf
+	 9AEFGaxd5v1pzheUlIJLKz6nqCBYgAQX2uVTh8iuq5fw95+H4tCK/whtR87LumV2I3
+	 uhiQjv7oargUkkzPcb3KjhBtL98ynbDfQD1W8KrmWrmXvIXYvXzxGl/jcJMTyseR3F
+	 n8CwXQJU9Wb/qGI+KdjfxmvCUXLIHuMMMu4Xr0BRarScW5rchRzYf1Xj1wJUVoK7lM
+	 ZjzZv33EHmIJj/+JffzC5yJDB8Vo97Oz3+c1zBfrO/WfBZpffivt4uF+2Y9NUQWP++
+	 V33jCDfXsEJaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kw@linux.com,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 02/15] PCI: endpoint: Add size check for fixed size BARs in pci_epc_set_bar()
-Date: Tue, 28 Jan 2025 12:53:33 -0500
-Message-Id: <20250128175346.1197097-2-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 03/15] media: i2c: ds90ub913: Add error handling to ub913_hw_init()
+Date: Tue, 28 Jan 2025 12:53:34 -0500
+Message-Id: <20250128175346.1197097-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128175346.1197097-1-sashal@kernel.org>
 References: <20250128175346.1197097-1-sashal@kernel.org>
@@ -64,65 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit f015b53d634a10fbceba545de70c3e109665c379 ]
+[ Upstream commit acd8f58d7a3bce0fbd3263961cd09555c00464ba ]
 
-A BAR of type BAR_FIXED has a fixed BAR size (the size cannot be changed).
+Add error handling to ub913_hw_init() using a new helper function,
+ub913_update_bits().
 
-When using pci_epf_alloc_space() to allocate backing memory for a BAR,
-pci_epf_alloc_space() will always set the size to the fixed BAR size if
-the BAR type is BAR_FIXED (and will give an error if you the requested size
-is larger than the fixed BAR size).
-
-However, some drivers might not call pci_epf_alloc_space() before calling
-pci_epc_set_bar(), so add a check in pci_epc_set_bar() to ensure that an
-EPF driver cannot set a size different from the fixed BAR size, if the BAR
-type is BAR_FIXED.
-
-The pci_epc_function_is_valid() check is removed because this check is now
-done by pci_epc_get_features().
-
-Link: https://lore.kernel.org/r/20241213143301.4158431-13-cassel@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reported-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Closes: https://lore.kernel.org/all/Zv40EQSR__JDN_0M@kekkonen.localdomain/
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ds90ub913.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index bed7c7d1fe3c3..c69c133701c92 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -609,10 +609,17 @@ EXPORT_SYMBOL_GPL(pci_epc_clear_bar);
- int pci_epc_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
- 		    struct pci_epf_bar *epf_bar)
- {
--	int ret;
-+	const struct pci_epc_features *epc_features;
-+	enum pci_barno bar = epf_bar->barno;
- 	int flags = epf_bar->flags;
+diff --git a/drivers/media/i2c/ds90ub913.c b/drivers/media/i2c/ds90ub913.c
+index 79bddfee2e2ec..abfeff5c86068 100644
+--- a/drivers/media/i2c/ds90ub913.c
++++ b/drivers/media/i2c/ds90ub913.c
+@@ -8,6 +8,7 @@
+  * Copyright (c) 2023 Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+@@ -146,6 +147,19 @@ static int ub913_write(const struct ub913_data *priv, u8 reg, u8 val)
+ 	return ret;
+ }
+ 
++static int ub913_update_bits(const struct ub913_data *priv, u8 reg, u8 mask,
++			     u8 val)
++{
 +	int ret;
- 
--	if (!pci_epc_function_is_valid(epc, func_no, vfunc_no))
-+	epc_features = pci_epc_get_features(epc, func_no, vfunc_no);
-+	if (!epc_features)
-+		return -EINVAL;
 +
-+	if (epc_features->bar[bar].type == BAR_FIXED &&
-+	    (epc_features->bar[bar].fixed_size != epf_bar->size))
- 		return -EINVAL;
++	ret = regmap_update_bits(priv->regmap, reg, mask, val);
++	if (ret < 0)
++		dev_err(&priv->client->dev,
++			"Cannot update register 0x%02x %d!\n", reg, ret);
++
++	return ret;
++}
++
+ /*
+  * GPIO chip
+  */
+@@ -733,10 +747,13 @@ static int ub913_hw_init(struct ub913_data *priv)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "i2c master init failed\n");
  
- 	if ((epf_bar->barno == BAR_5 && flags & PCI_BASE_ADDRESS_MEM_TYPE_64) ||
+-	ub913_read(priv, UB913_REG_GENERAL_CFG, &v);
+-	v &= ~UB913_REG_GENERAL_CFG_PCLK_RISING;
+-	v |= priv->pclk_polarity_rising ? UB913_REG_GENERAL_CFG_PCLK_RISING : 0;
+-	ub913_write(priv, UB913_REG_GENERAL_CFG, v);
++	ret = ub913_update_bits(priv, UB913_REG_GENERAL_CFG,
++				UB913_REG_GENERAL_CFG_PCLK_RISING,
++				FIELD_PREP(UB913_REG_GENERAL_CFG_PCLK_RISING,
++					   priv->pclk_polarity_rising));
++
++	if (ret)
++		return ret;
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
