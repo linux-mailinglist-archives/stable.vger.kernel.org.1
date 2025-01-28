@@ -1,50 +1,61 @@
-Return-Path: <stable+bounces-110921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1C7A20200
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 01:00:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4ECBA20288
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 01:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E22103A34E3
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 00:00:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93677A04CC
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 00:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E09C1EEA30;
-	Tue, 28 Jan 2025 00:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2085423BB;
+	Tue, 28 Jan 2025 00:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2cGadj8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="beU6vS3c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5B01EC01C;
-	Tue, 28 Jan 2025 00:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C7BBE40
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 00:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738022419; cv=none; b=M9W3EBFIqcChO5e8IMyNHvUfF2yX7j685Q4lCr1u/jkEqUDNuYQ8k+8qcOW75eM/Rn/gsG9wnhySJrpt/MvC6APvThnEV8PgfSoTW3jYYjaZHYYYPRtTaMOngJGREbgQe0YRJZrzDzTPMdBSjUEBcC9AtNjVAaCSc7IyTk5BJPw=
+	t=1738023497; cv=none; b=Px8IRqbT0HZV8qve0yhP6KsJbauBUtf6bESZynhGv5XRQHxw6iEMcxU3BrgB1ME+oXLs2oURW1M0ASEoHzgslwNfbuavSVmGqqIBJa7a5UTXcyGWKv42cDda6EqkbdT6b3Q2Ek0+TkgCMXu1jXcqIz5ACMUTIPB+mp5sd/5x/Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738022419; c=relaxed/simple;
-	bh=lj1jgYvL+AgAz7IHaOILOI39sZLkuiuGmn0PkWh0qag=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=i+NxplG9ztB9yie60bEWYEQhnrNrtR/H5EKI1DlXIzEsbnxolJZ6sABI+x1xF8JPY1z1APCYI1f+Xfy5sZA0Ej7e3r/2cUNziIvLUtWGCGjANlEyCkdX4gAgmsP8Vhukt4oHDk5V3OmKevX8cdNXtdqHscR7UQ9IXd+ueTSxXQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2cGadj8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C85C4CED2;
-	Tue, 28 Jan 2025 00:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738022417;
-	bh=lj1jgYvL+AgAz7IHaOILOI39sZLkuiuGmn0PkWh0qag=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=a2cGadj8FdAK2QJJ+WySSK2IC7r9XOzrWK8vX6X7/zFuF5i5dxv1TKZ/QrDu70OzK
-	 zLDkoIgmYp6lXFGpz6I7Rq8aTEvi2V2ht4XXP6OffaRjfUGdq3Jj0hpTfePrgr4sOr
-	 jKnKOmS+XJsB/5UWAD4MDtuMcm/OJn0tcScOH+RenYVFyGG2MiuU5C7PlO4TpNWaTV
-	 /QqKETXRk+pzII/IZafevrxJCARkX4mPDvEyo69RsjM3dJl8tqFmelYWrGFEYFsxIb
-	 h+gNR4lIzhTPQokQVIGI2FP+tIl5Z0HixAalfnjvzfX1dCiSX0fd3N4RRtGgJgXLJy
-	 V4OPSa2RrJ/Jw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C7E380AA63;
-	Tue, 28 Jan 2025 00:00:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1738023497; c=relaxed/simple;
+	bh=wpndlb7UHHc3e2B1Lgm2UlMNmFdkTD9hEnAmwHCzwdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G0Od8rG+tMyGtRcy5yqcd1MXMxfH0e1p5ZtJr94KuyGXBuVRwFUZbx2LFrybH9DYndf/zSJZmC3ISsvq+4n9YvYHHNn9hGllseXh4bCg87eGMe57VMkfwuqS2hSObe6+a3naGwFULLyWnEidQasHBt8veZvvbCGDYLFPMeoda2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=beU6vS3c; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738023478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aj8XDJDRrLpKv2EqPYDzMbVxZZ1cx8RY7GFt/SLk8Vw=;
+	b=beU6vS3cNEuyQL3B+xtsVcRI0hzOTXuhi3dYC0RRXyNVmkC9RQlcZzg0+BOZhDhdNOha7o
+	9qRNW3+XQ10BUuUsw6zkDZ7qdzIP1Vwg+PpFVuEfA+HBNJ7gtRSQ5Dm/PeCPDc5zN83git
+	obwH0WdNZSvCObCoTpSrzSRYLiQRkLo=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: linux-acpi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Zheng Zengkai <zhengzengkai@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers array count
+Date: Tue, 28 Jan 2025 00:17:49 +0000
+Message-ID: <20250128001749.3132656-1-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,51 +63,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] mptcp: fixes addressing syzbot reports
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173802244325.3265158.7038381042936906837.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Jan 2025 00:00:43 +0000
-References: <20250123-net-mptcp-syzbot-issues-v1-0-af73258a726f@kernel.org>
-In-Reply-To: <20250123-net-mptcp-syzbot-issues-v1-0-af73258a726f@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com,
- syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com,
- syzbot+ebc0b8ae5d3590b2c074@syzkaller.appspotmail.com
+X-Migadu-Flow: FLOW_OUT
 
-Hello:
+Perhaps unsurprisingly there are some platforms where the GTDT isn't
+quite right and the Platforms Timer array overflows the length of the
+overall table.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+While the recently-added sanity checking isn't wrong, it makes it
+impossible to boot the kernel on offending platforms. Try to hobble
+along and limit the Platform Timer count to the bounds of the table.
 
-On Thu, 23 Jan 2025 19:05:53 +0100 you wrote:
-> Recently, a few issues linked to MPTCP have been reported by syzbot. All
-> the remaining ones are addressed in this series.
-> 
-> - Patch 1: Address "KMSAN: uninit-value in mptcp_incoming_options (2)".
->   A fix for v5.11.
-> 
-> - Patch 2: Address "WARNING in mptcp_pm_nl_set_flags (2)". A fix for
->   v5.18.
-> 
-> [...]
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Zheng Zengkai <zhengzengkai@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 263e22d6bd1f ("ACPI: GTDT: Tighten the check for the array of platform timer structures")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+---
+ drivers/acpi/arm64/gtdt.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Here is the summary with links:
-  - [net,1/3] mptcp: consolidate suboption status
-    https://git.kernel.org/netdev/net/c/c86b000782da
-  - [net,2/3] mptcp: pm: only set fullmesh for subflow endp
-    https://git.kernel.org/netdev/net/c/1bb0d1348546
-  - [net,3/3] mptcp: handle fastopen disconnect correctly
-    https://git.kernel.org/netdev/net/c/619af16b3b57
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index 3561553eff8b..70f8290b659d 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -163,7 +163,7 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+ {
+ 	void *platform_timer;
+ 	struct acpi_table_gtdt *gtdt;
+-	int cnt = 0;
++	u32 cnt = 0;
+ 
+ 	gtdt = container_of(table, struct acpi_table_gtdt, header);
+ 	acpi_gtdt_desc.gtdt = gtdt;
+@@ -188,13 +188,17 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+ 		cnt++;
+ 
+ 	if (cnt != gtdt->platform_timer_count) {
++		cnt = min(cnt, gtdt->platform_timer_count);
++		pr_err(FW_BUG "limiting Platform Timer count to %d\n", cnt);
++	}
++
++	if (!cnt) {
+ 		acpi_gtdt_desc.platform_timer = NULL;
+-		pr_err(FW_BUG "invalid timer data.\n");
+-		return -EINVAL;
++		return 0;
+ 	}
+ 
+ 	if (platform_timer_count)
+-		*platform_timer_count = gtdt->platform_timer_count;
++		*platform_timer_count = cnt;
+ 
+ 	return 0;
+ }
 
-You are awesome, thank you!
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.48.1.262.g85cc9f2d1e-goog
 
 
