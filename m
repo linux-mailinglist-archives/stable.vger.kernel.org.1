@@ -1,144 +1,111 @@
-Return-Path: <stable+bounces-110974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E60A20CEC
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:22:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297C8A20D5D
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C0103A3BE4
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61641882AB3
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF5E1ACEBF;
-	Tue, 28 Jan 2025 15:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9784F1D5ADD;
+	Tue, 28 Jan 2025 15:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b="MYpoSbYL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b45NRoBB"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85AC26AFC;
-	Tue, 28 Jan 2025 15:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AF91D63C3
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 15:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738077718; cv=none; b=amlyRB7WLVIehpjtu+cIK9Kj6wJNJNI/WM6gjLDRlTNbKQp+mVFmc7aeyOGUShwhICG2xZlpTjtuFU4DJSSY3y4Ol461gLjteAPMCmJuwK5HcEDwgjZURzjRtUyfR7sieRMl5khdy7H/B0PGq7AixydqIkJ3STYsG/3+Byqr3pc=
+	t=1738079113; cv=none; b=dSWfPR46zfBuGRkubr/yo0KhF9vgzEDKD7AHLMSeobbFG06I+/aydTlFDxbdOuF+QyD3ePW84Lg0lce7ftLXiTBatHzzf0IoUxm6UcwvPwk1PIMDwS52EhqQv84iO81OuPI3v+3DRCGdahuUt7e2ZNbP+U2OIU6E5IpMq8Jxwfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738077718; c=relaxed/simple;
-	bh=x/B9yX/e7R0UrYl5d1VDIwIS7elP7kUmpSEP5ElElyI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YeUix1qgztU7Av0Ntj6CO1ds4KsUMjtf+417/mxYwKEwm1E59ieIOnHnmu6wuDfuwNd5fenZNbwfYg8QI+6ZbimC5pXqmB7utdmsGqj1frmfSB3gKn36GWzcxWriIUedpVKVsj1mpVBY45WZcw6bP3r1lmgofYR5IMD7lCFCbo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b=MYpoSbYL; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1738077659; x=1738682459; i=efault@gmx.de;
-	bh=x/B9yX/e7R0UrYl5d1VDIwIS7elP7kUmpSEP5ElElyI=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=MYpoSbYLi1Y9+ZFa2/1a0yI0UYq9nS4dBGsxzMnozk9a6k3xc7QZpxNRlh4lVxff
-	 RsJqhjRjfBUHWjUX8NkzeJy6Thq/aaPjc7OUM0fKRl9PZ5kW3paTOOggKHypWpCzl
-	 fGGg8HYkjrcOi/8OdHNuYuYHHkZlb7/jnJyOanUx0brq0JbhjOeXpa4SIMB/uojbG
-	 Io6zZNCstZyJtrYWO0HrENr66vAs0M2aG/jtmL2LtvyV6IUWYnZtsFo5pW80uamQx
-	 9QKPW/IM3NP2H6GCRLp7t0tXtMx3IVMx/LfvYxYBOBZegockoSTXd8T0NP1rXH9QQ
-	 Ob+VBQSxfqbKyWVE0A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from homer.fritz.box ([91.212.106.53]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0oBr-1tHwUQ2yCD-011heh; Tue, 28
- Jan 2025 16:20:59 +0100
-Message-ID: <b51f217d565609ae87395c8e23e62b15e489a0a4.camel@gmx.de>
-Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
-From: Mike Galbraith <efault@gmx.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ron Economos <re@w6rz.net>, Arnd Bergmann <arnd@arndb.de>, Naresh
- Kamboju <naresh.kamboju@linaro.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  stable@vger.kernel.org,
- patches@lists.linux.dev, linux-kernel@vger.kernel.org,  Linus Torvalds
- <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>,
- Guenter Roeck <linux@roeck-us.net>, shuah <shuah@kernel.org>,
- patches@kernelci.org,  lkft-triage@lists.linaro.org, Pavel Machek
- <pavel@denx.de>, Jon Hunter <jonathanh@nvidia.com>, Florian Fainelli
- <f.fainelli@gmail.com>, Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
- srw@sladewatkins.net, rwarsow@gmx.de, Conor Dooley <conor@kernel.org>,
- hargar@microsoft.com, Mark Brown <broonie@kernel.org>,  Anders Roxell
- <anders.roxell@linaro.org>, Vincent Guittot <vincent.guittot@linaro.org>,
- Dan Carpenter <dan.carpenter@linaro.org>
-Date: Tue, 28 Jan 2025 16:20:57 +0100
-In-Reply-To: <20250128143949.GD7145@noisy.programming.kicks-ass.net>
-References: <20250121174532.991109301@linuxfoundation.org>
-	 <CA+G9fYtv3NNpxuipt8Dxa_=0DhieWWc07kDgCDBM+o0gKRi4Dw@mail.gmail.com>
-	 <cc947edf-bece-498c-bcb0-5bc403141257@app.fastmail.com>
-	 <20250122105949.GK7145@noisy.programming.kicks-ass.net>
-	 <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
-	 <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
-	 <20250128143949.GD7145@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1738079113; c=relaxed/simple;
+	bh=noXyBqI87BE5bKgzA/bkBi5QPBLeFamw8wGuZmVJ96I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jQEVUyPQ1gh8KhmN0QsSyEbMvfKu021fl0VZ65sGeI0lT3vcjurnuR7rP++fw9m3cVpAC13KLsICo+x0DmsWVsPGzOYoexGlSiy4lEomi1iWqN4iSECBOrLew9iS0Tt1c7tfn+Q5l2bGGLDcm2ceOv45bZ2mUBumQNNoLtjyEew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b45NRoBB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738079110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J1t6D/PIMIyABHQaylKfMHsHw7I0DV8eA6V4Mnp8hC4=;
+	b=b45NRoBBnyudRWbaaBD4kD90N/2sJgiItWdwghv601R+0MzPrfO/b3trpDFKKfALvC7leg
+	2kB4CkmY159FYEeQqxIqzJyNLdkmuUZ9AFKJisGa9TYsNw5ft1YLsWDhl6AOlyuB6BlKx0
+	VT3L1iKbHPHZX374mtvbAu/jUMj2tFI=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-_UDh5xabOfuNR0SA5QAVhQ-1; Tue,
+ 28 Jan 2025 10:45:05 -0500
+X-MC-Unique: _UDh5xabOfuNR0SA5QAVhQ-1
+X-Mimecast-MFC-AGG-ID: _UDh5xabOfuNR0SA5QAVhQ
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4F7CB19560B3;
+	Tue, 28 Jan 2025 15:45:02 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.70])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 88BFC30001BE;
+	Tue, 28 Jan 2025 15:44:52 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 28 Jan 2025 16:44:35 +0100 (CET)
+Date: Tue, 28 Jan 2025 16:44:25 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Eyal Birger <eyal.birger@gmail.com>
+Cc: kees@kernel.org, luto@amacapital.net, wad@chromium.org,
+	mhiramat@kernel.org, andrii@kernel.org, jolsa@kernel.org,
+	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com,
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
+	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
+	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
+	bpf@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without
+ filtering
+Message-ID: <20250128154424.GB24845@redhat.com>
+References: <20250128145806.1849977-1-eyal.birger@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:pGEnJgsdnuVPnK9+wy2jIlrs/IgmyWsstwKE6mY6h1zLm5a3qo/
- Zx9voJFFFp4Amcd6mKF0W3IeHBLKbcj1j58Gm6mvT1KzffonJ7zTB//nPsaMXZU41ovy1cS
- MY56Cksk2FxF4pcmzwjNJqvno6iVXYLSY2hQGdPVG1+oZo14AYOoMbAmM5wIshfy0KCqp/4
- nxXxBKpapmcvexNwyFlVA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FEY3YyLg3tg=;3mCrZednNtJwNNT6r0uHLr2aleV
- D38J3OWjKaGKttY/gqHLTbC0mx8xFIFqqghaHpHLSzpoAbgKPoCToRQyRvrIoqb8hDvdwrNrO
- zfrNa3K0CUz+Xd7dwAe+cg3bnbg3zVfEcMn/njNMjZ1DKvWVzCmxpj94a4QGsMDgjWUmTYDtH
- uMr8lZgmvHNwCMEI2/YhkXkn7lTDMCQBRreJVZlwf+cSvOVWlHaksTqFIQkTPr+KIXWEtWuFp
- Ow8MiMHw4B1YxnoycvpQ0sqtf9b26l3LrbnfG449lEqwaMgBfKWN8lQcAdEbFcqp3I5OAp4Df
- K+nMOdV7leBPAUAE23/H/GNYQROafSlhdFDP60FC6CXKrHd6QVPFiAGwMPkVeRA2jjZSKEe/9
- OcjJ6Ti5Zzy83cpvC2Iplydx9Zjn8PuVc9/BtTQjn63CxCKPTxJax2I8aTh2VeLSRMSvtvdzd
- YdjLCI5WYEyhkeqbphqutZueIAf32LGCS2Qk/dzrLYeNeJOU26nMzbC+447YAFAap6V131p4m
- Jp/E8fq67/IL7SKj3NvF6AV/oF3rVwG8H4GZuDPxqhKheXh/igHSNkb2G46UTfmjpZ603/hX7
- jIOvK3kxoQKg6JIhRVczpb2iAdDKZur1L34UAfY5o8yDLjpdU5VUifFe3ACPr6w20ScIwLkiH
- XWr2Of/74drxmKPB+DdpgXCobrhoKop0VBJMfx5lZAtgSBHKH8KEKx9Inhd9TDsg07vj07uZl
- LZvVJd3Je72GNaXKoZh3LwR90YKadVo5e6E591ghl6vdV6Rl1Mi4tdp+T3dBJJ81LZVRoy+kD
- mnRH4AbZrWnoDZ1B+P8h382sTPYKTfTRCdOn+lf2UihAZH0DUid3PnpigTTUv0nKedXZrWXeE
- /TAgQXRv1qWJG8XlrsP3YEmiHoMHX/KVWOnrsKBIzILtmsyO7Hs6hP8xvuGo8tGD2QSRpi/73
- Xnoo/lfPgnycpm3ifjspNGmdeBEVEwgo/h8SSLGeapiZKsEkgkvYo10xV/uwCrFnH5a4Qinjk
- 2TXiygmWVZL7sPYzyqGqHYRP9+tB5QJcDn0Mqovy+jQg0FEpPVouRC6ByGCJU4cP9oq5WNviw
- YlDZuTKWUU/4336IICM2L+BM2tYYKlvblLgEDU7KMS0g4HQhazBETA3ydGsjQt6hpilrI6Dxa
- FV51ZHcwK8aAbrB88wp58gOFX+mAM0gAus0d9/f8BKQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250128145806.1849977-1-eyal.birger@gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-T24gVHVlLCAyMDI1LTAxLTI4IGF0IDE1OjM5ICswMTAwLCBQZXRlciBaaWpsc3RyYSB3cm90ZToN
-Cj4gT24gVHVlLCBKYW4gMjgsIDIwMjUgYXQgMTI6NDY6MDdQTSArMDEwMCwgTWlrZSBHYWxicmFp
-dGggd3JvdGU6DQo+IA0KPiA+IFNlZW1zIDYuMTMgaXMgZ3JpcGUgZnJlZSB0aGFua3MgdG8gaXQg
-Y29udGFpbmluZyA0NDIzYWY4NGIyOTcuDQo+ID4gDQo+ID4gSSBzdHVtYmxlZCB1cG9uIGEgcmVw
-cm9kdWNlciBmb3IgbXkgeDg2XzY0IGRlc2t0b3AgYm94OiBhbGwgSSBuZWVkIGRvDQo+ID4gaXMg
-ZmlyZSB1cCBhIGt2bSBndWVzdCBpbiBhbiBlbnRlcnByaXNlIGNvbmZpZ3VyZWQgaG9zdC7CoCBU
-aGF0IGluc3BpcmVzDQo+ID4gbGlidmlydCBnb29wIHRvIGVuZ2FnZSBncm91cCBzY2hlZHVsaW5n
-LCBzcGxhdCBmb2xsb3dzIGluc3RhbnRseS4NCj4gPiANCj4gPiBCYWNrIDQ0MjNhZjg0YjI5NyBv
-dXQgb2YgNi4xMywgaXQgc3RhcnRzIGdyaXBpbmcsIGFkZCBpdCB0byBhIDYuMTIgdHJlZQ0KPiA+
-IGNvbnRhaW5pbmcgNmQ3MWE5YzYxNjA0LCBpdCBzdG9wcyBkb2luZyBzby4NCj4gDQo+IE9vaCwg
-ZG9lcyBzb21ldGhpbmcgbGlrZSB0aGUgYmVsb3cgKCstIHJldmVyc2UtcmVuYW1lcyBhcyBhcHBs
-aWNhYmxlIHRvDQo+IC4xMikgYWxzbyBoZWxwPw0KDQpZdXAsIHNlZW1zIHRvLCA2LjEzIHNhbnMg
-NDQyM2FmODRiMjk3IHN0b3BwZWQgZ3JpcGluZy4NCg0KPiAtLS0NCj4gZGlmZiAtLWdpdCBhL2tl
-cm5lbC9zY2hlZC9mYWlyLmMgYi9rZXJuZWwvc2NoZWQvZmFpci5jDQo+IGluZGV4IGI2NzIyMmRl
-YTQ5MS4uODc2NmY3ZDNkMjk3IDEwMDY0NA0KPiAtLS0gYS9rZXJuZWwvc2NoZWQvZmFpci5jDQo+
-ICsrKyBiL2tlcm5lbC9zY2hlZC9mYWlyLmMNCj4gQEAgLTM3ODEsNiArMzc4MSw3IEBAIHN0YXRp
-YyB2b2lkIHJld2VpZ2h0X2VudGl0eShzdHJ1Y3QgY2ZzX3JxICpjZnNfcnEsIHN0cnVjdCBzY2hl
-ZF9lbnRpdHkgKnNlLA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVwZGF0ZV9l
-bnRpdHlfbGFnKGNmc19ycSwgc2UpOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHNlLT5kZWFkbGluZSAtPSBzZS0+dnJ1bnRpbWU7DQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgc2UtPnJlbF9kZWFkbGluZSA9IDE7DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBjZnNfcnEtPm5yX3F1ZXVlZC0tOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGlmICghY3VycikNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgX19kZXF1ZXVlX2VudGl0eShjZnNfcnEsIHNlKTsNCj4gwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqB1cGRhdGVfbG9hZF9zdWIoJmNmc19ycS0+bG9hZCwgc2UtPmxv
-YWQud2VpZ2h0KTsNCj4gQEAgLTM4MTEsNiArMzgxMiw3IEBAIHN0YXRpYyB2b2lkIHJld2VpZ2h0
-X2VudGl0eShzdHJ1Y3QgY2ZzX3JxICpjZnNfcnEsIHN0cnVjdCBzY2hlZF9lbnRpdHkgKnNlLA0K
-PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBsYWNlX2VudGl0eShjZnNfcnEsIHNl
-LCAwKTsNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoIWN1cnIpDQo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoF9fZW5xdWV1ZV9l
-bnRpdHkoY2ZzX3JxLCBzZSk7DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjZnNf
-cnEtPm5yX3F1ZXVlZCsrOw0KPiDCoA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oC8qDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogVGhlIGVudGl0eSdzIHZy
-dW50aW1lIGhhcyBiZWVuIGFkanVzdGVkLCBzbyBsZXQncyBjaGVjaw0KDQo=
+can't review, I know nothing about seccomp_cache, but
+
+On 01/28, Eyal Birger wrote:
+>
+> +static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> +				   struct seccomp_data *sd)
+> +{
+> +#ifdef __NR_uretprobe
+> +	if (sd->nr == __NR_uretprobe
+> +#ifdef SECCOMP_ARCH_COMPAT
+> +	    && sd->arch != SECCOMP_ARCH_COMPAT
+> +#endif
+
+it seems you can check
+
+            && sd->arch == SECCOMP_ARCH_NATIVE
+
+and avoid #ifdef SECCOMP_ARCH_COMPAT
+
+Oleg.
+
 
