@@ -1,123 +1,262 @@
-Return-Path: <stable+bounces-110971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CBCA20C29
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04872A20C69
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 662D53A714D
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 14:39:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB173A15C4
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 14:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4917F1A9B3B;
-	Tue, 28 Jan 2025 14:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22FF1ACEBB;
+	Tue, 28 Jan 2025 14:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="koBlIwM7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlee6Q3a"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CC919F11B;
-	Tue, 28 Jan 2025 14:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC3AF9F8;
+	Tue, 28 Jan 2025 14:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738075201; cv=none; b=d8bNSw3EUSmyFt10fcItnO+CDrpzbDRvNXaPXVAu8disQwi4D3TPhavpUoQMAXbLgVTPvZSjrg+WtoWb2BL9pfE5bhf6VHeEU2yv0G0sGH1T+fyOOAfyFjc+uYh8o1PUtuCek+Ubv5rLdpL2AkG7CVv5isiS3R463Wu1HhaqA60=
+	t=1738076306; cv=none; b=q461SAU/0ouoL4c4DItk/TadqHzaDMaBDaRAG/XdTkha2XOAbVCNQR2lFHCJKnvEOSEJap6iAzppVG8RcDw0KN6cj93QGUtAH0pzxago8V+TmsKzKb08ZQjkO+9OswU3+sDZVXSA1m7sroJjNFR7AuFWxvsxIL7OHZVm2u+aO2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738075201; c=relaxed/simple;
-	bh=oUcTmcVAmNBZ/NoDI3YkTtH9irf1hslfk+eA3qNUay0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I9yf1qL12hyrBli0N2zSMa0J6UUK/xwyFuQv53wWyeknO9EWzSPDxBIQs2m7AJ/8tDkZhlHO/iweUvq0tBb8Kq4urxV84PwUV6c6ePyDaDxPpFdTepyBbArLAiNrSroCfXgrSTE/LNTTccSZze0dL1qmj/hpfhL/egOUfDtbeAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=koBlIwM7; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=huiVco/j3yKRvxHPwa1DDY+QxVnKZ9Xl4BeWWMs3dZA=; b=koBlIwM7RLZP1G4gVu/71LraDv
-	8b1TJvLc79rwb99oP3p4SN71ErJbQ+t39XoJCMRmobl4YNv6syeeOiIM+3cJ1IZyg7VF1VVpzCd85
-	v6xG6gQdpMpp5pW5/HriTotehxMQ9/8wVr7CaL9cO8kSf65pNoWKUNvW+6+Qm+ZUmmgeUQIQzqf6r
-	JJXY7p9MMc13A3TG/DWrsqaDGVZhaocelraT07yZnDea5XBVIgKrN2/fkL5c7PwOMrZbphoOiZX0z
-	I/0pYmTkdKV4L/ooBuEUp8WA19FLhWDJ9z0W9DKBP7u0q/+qBtLypXjy2f16fmrg3jc5Ce+i4TUGb
-	2nvfcIDg==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcmko-0000000AihY-25Lf;
-	Tue, 28 Jan 2025 14:39:50 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 8C6FA30050D; Tue, 28 Jan 2025 15:39:49 +0100 (CET)
-Date: Tue, 28 Jan 2025 15:39:49 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Mike Galbraith <efault@gmx.de>
-Cc: Ron Economos <re@w6rz.net>, Arnd Bergmann <arnd@arndb.de>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
+	s=arc-20240116; t=1738076306; c=relaxed/simple;
+	bh=lM67DGGiMbIMrMTUwNR8l7KiQyWcxQfJsWFW+hgxxU0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ASXdoZNCqbEudWx3F+MzzRdTs3SfnYpEZ7/VFfv8RK4UH12kKvYwu3kvcWx+rN9keEclXXZ9HmEqBZbA7maskgfuhTh56ePaJSkkay/i30mLpVrNY8oP3zZ4KoZhLaKEJz6Obcmkb+glfwo1ucNrDdXMGI4TI5hP5O9hf1xreoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlee6Q3a; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ef70c7efa5so8031926a91.2;
+        Tue, 28 Jan 2025 06:58:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738076304; x=1738681104; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5NgK1PyzlgcgU3jbjx+DyDukT7QBmAGxcdaN+SPDB1Y=;
+        b=dlee6Q3a7RszllPDFz/TD5+8jVb30OuY9K0CargqegNTRvGqmebdZC81Alatqg22mw
+         svmD/zn4RrVIdU4gLGbLsxQ9nUJBUCAc511l7Byq8rv9QHCi0miCGPRRwYH1usvD2xcD
+         Iv3CUJujuTFf1hieSn3JY2RJgCgeU9GZKWGnNMMcyEnh6QeBBzLY6Fm1c4Wuw28bmdm7
+         WWDedAlYpzND0o20FHjQyONbON4Psn6ejBa2gNJ40R8PWrzInpUjKPeo5KNiY08ubptu
+         qoyQhwsvykWHo8O55oaEydNnrBiO+Awm0bNRAK9GmSh7V8i1HkQ2NopRk0G1zvGKmX0w
+         SrUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738076304; x=1738681104;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5NgK1PyzlgcgU3jbjx+DyDukT7QBmAGxcdaN+SPDB1Y=;
+        b=hhHpgVQlEmpYgPfEqrSnZrUlRHEDaAORqpNoaAwY8XTMGnPZG1LgRFUnScJH8d4ePU
+         42KtULOxKCcImnSLKCY2lZl8BSQg30Cb1xntJfn3X7rQodb3i6CqgDXmrYItcNXDIkOw
+         KahPaE3WIZ56kYdPB82/PCeRxVY3ndzFE0S5JDKrin38d3n4USc3HtbBzIYEo+aR4LNT
+         /mA/3Vj6X0j9HdTQrzKRibe4fbZf59iJGRJpruC8cSritCgq6iZTNhmT/McGgqCC3ghN
+         C3DNQdriqLsbchdjGOYu8WA17KnXRASKm1MgqZc1leT8UsT5/hH0BZeI9iLIsPFbckOE
+         IerA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7rwxBXTOswj9b44zZE6etqwUhKZfFijf619GP01hMcZnub+TVtdixilxAcvJp0F3h/WLV3zsWLS0u@vger.kernel.org, AJvYcCUYRAWfmu9Cg6vPjbKAeCjZRmW3RHGtPQXYvK+FbPrTlGCC4JEC7fT5qmGKyaBRe9WS6rs=@vger.kernel.org, AJvYcCVl1KdcbOA7iWDYyK/n6th3rWMg7lzTTcJkmvxGAdQ9l+RZG7dCk0DN4m5/1CGLPXf4yPAAj5A9NS9ROYnjoi03UlEd@vger.kernel.org, AJvYcCX7POaLecgnmqPruLlzqOSOnXl4ruTh9ryCmkZUK/n0WVAOE5FZvU5Ta3s48izmNubu8J+cIA/n@vger.kernel.org, AJvYcCXwKiV9tWMvbgikAX7DwXl/VIXPVm33nUsVb0c/EGazX7MN2YfJRhprQ6TTh1fCPd+WGX98BzqMC7Q8/y9p@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNKoRfqd1cSpQOFfMaGiLTV7+74b77W+myLJp0LcL/GmWz83dT
+	DicDolPtv5B070mD8HbJXpqLLY3hZpQ/i/kUYxi7gMf0/XJq3WmB
+X-Gm-Gg: ASbGncuYLKwLA0KO04qICMeMMLxA18Xtee4nT3CaCPrz2RJzibVsVzY3tfErcfWs8Fs
+	XwJQhkulHbmaVmO9JsnVeIdJ1WL0o2Jg3tcfbaDmKeDRRR9mfkVKQvBJRyirYWb6xtsfyqJAGBh
+	HNROybV5nYn2fDTw32kKLNFn1yvIkAIJgiCNMnLJPRMyxbvS29p+vYsW4aFOvyO4hz6xMf9HQpm
+	OhL/HMpmKsCxbW17hMwlxJNHssmGXDn5iqGbZvJH+mL/Vcgu6mqmaeOETUSZp6/Wi1iTrIeE1cQ
+	xPPv69CLY9Ht/6IHJZa9FWNxmKU/8yenmAlYTjm/oc0CwYrmjUjYyS0Ji60JiZt/7yycyg==
+X-Google-Smtp-Source: AGHT+IF4WOMe+E1ASphpyPufkPOsl65YTCva6RW3RPHB5aOPWPoVqJdw41Y0NpAQQaSz7q4qYh/Kcg==
+X-Received: by 2002:a17:90b:4c43:b0:2ee:c5ea:bd91 with SMTP id 98e67ed59e1d1-2f782d65adbmr61068210a91.29.1738076304080;
+        Tue, 28 Jan 2025 06:58:24 -0800 (PST)
+Received: from localhost.localdomain (syn-104-035-026-140.res.spectrum.com. [104.35.26.140])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffac2807sm9485398a91.20.2025.01.28.06.58.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jan 2025 06:58:23 -0800 (PST)
+From: Eyal Birger <eyal.birger@gmail.com>
+To: kees@kernel.org,
+	luto@amacapital.net,
+	wad@chromium.org,
+	oleg@redhat.com,
+	mhiramat@kernel.org,
+	andrii@kernel.org,
+	jolsa@kernel.org
+Cc: alexei.starovoitov@gmail.com,
+	olsajiri@gmail.com,
+	cyphar@cyphar.com,
+	songliubraving@fb.com,
+	yhs@fb.com,
+	john.fastabend@gmail.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	daniel@iogearbox.net,
+	ast@kernel.org,
+	andrii.nakryiko@gmail.com,
+	rostedt@goodmis.org,
+	rafi@rbk.io,
+	shmulik.ladkani@gmail.com,
+	bpf@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Guenter Roeck <linux@roeck-us.net>, shuah <shuah@kernel.org>,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	Pavel Machek <pavel@denx.de>, Jon Hunter <jonathanh@nvidia.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>, srw@sladewatkins.net,
-	rwarsow@gmx.de, Conor Dooley <conor@kernel.org>,
-	hargar@microsoft.com, Mark Brown <broonie@kernel.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
-Message-ID: <20250128143949.GD7145@noisy.programming.kicks-ass.net>
-References: <20250121174532.991109301@linuxfoundation.org>
- <CA+G9fYtv3NNpxuipt8Dxa_=0DhieWWc07kDgCDBM+o0gKRi4Dw@mail.gmail.com>
- <cc947edf-bece-498c-bcb0-5bc403141257@app.fastmail.com>
- <20250122105949.GK7145@noisy.programming.kicks-ass.net>
- <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
- <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
+	Eyal Birger <eyal.birger@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] seccomp: passthrough uretprobe systemcall without filtering
+Date: Tue, 28 Jan 2025 06:58:06 -0800
+Message-ID: <20250128145806.1849977-1-eyal.birger@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 28, 2025 at 12:46:07PM +0100, Mike Galbraith wrote:
+When attaching uretprobes to processes running inside docker, the attached
+process is segfaulted when encountering the retprobe.
 
-> Seems 6.13 is gripe free thanks to it containing 4423af84b297.
-> 
-> I stumbled upon a reproducer for my x86_64 desktop box: all I need do
-> is fire up a kvm guest in an enterprise configured host.  That inspires
-> libvirt goop to engage group scheduling, splat follows instantly.
-> 
-> Back 4423af84b297 out of 6.13, it starts griping, add it to a 6.12 tree
-> containing 6d71a9c61604, it stops doing so.
+The reason is that now that uretprobe is a system call the default seccomp
+filters in docker block it as they only allow a specific set of known
+syscalls. This is true for other userspace applications which use seccomp
+to control their syscall surface.
 
-Ooh, does something like the below (+- reverse-renames as applicable to
-.12) also help?
+Since uretprobe is a "kernel implementation detail" system call which is
+not used by userspace application code directly, it is impractical and
+there's very little point in forcing all userspace applications to
+explicitly allow it in order to avoid crashing tracked processes.
 
+Pass this systemcall through seccomp without depending on configuration.
+
+Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueueinfo
+uses the same number as __NR_uretprobe so the syscall isn't forced in the
+compat bitmap.
+
+Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
+Reported-by: Rafael Buchbinder <rafi@rbk.io>
+Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
+Link: https://lore.kernel.org/lkml/20250121182939.33d05470@gandalf.local.home/T/#me2676c378eff2d6a33f3054fed4a5f3afa64e65b
+Cc: stable@vger.kernel.org
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
 ---
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index b67222dea491..8766f7d3d297 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3781,6 +3781,7 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		update_entity_lag(cfs_rq, se);
- 		se->deadline -= se->vruntime;
- 		se->rel_deadline = 1;
-+		cfs_rq->nr_queued--;
- 		if (!curr)
- 			__dequeue_entity(cfs_rq, se);
- 		update_load_sub(&cfs_rq->load, se->load.weight);
-@@ -3811,6 +3812,7 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 		place_entity(cfs_rq, se, 0);
- 		if (!curr)
- 			__enqueue_entity(cfs_rq, se);
-+		cfs_rq->nr_queued++;
+v2: use action_cache bitmap and mode1 array to check the syscall
+
+The following reproduction script synthetically demonstrates the problem
+for seccomp filters:
+
+cat > /tmp/x.c << EOF
+
+char *syscalls[] = {
+	"write",
+	"exit_group",
+	"fstat",
+};
+
+__attribute__((noinline)) int probed(void)
+{
+	printf("Probed\n");
+	return 1;
+}
+
+void apply_seccomp_filter(char **syscalls, int num_syscalls)
+{
+	scmp_filter_ctx ctx;
+
+	ctx = seccomp_init(SCMP_ACT_KILL);
+	for (int i = 0; i < num_syscalls; i++) {
+		seccomp_rule_add(ctx, SCMP_ACT_ALLOW,
+				 seccomp_syscall_resolve_name(syscalls[i]), 0);
+	}
+	seccomp_load(ctx);
+	seccomp_release(ctx);
+}
+
+int main(int argc, char *argv[])
+{
+	int num_syscalls = sizeof(syscalls) / sizeof(syscalls[0]);
+
+	apply_seccomp_filter(syscalls, num_syscalls);
+
+	probed();
+
+	return 0;
+}
+EOF
+
+cat > /tmp/trace.bt << EOF
+uretprobe:/tmp/x:probed
+{
+    printf("ret=%d\n", retval);
+}
+EOF
+
+gcc -o /tmp/x /tmp/x.c -lseccomp
+
+/usr/bin/bpftrace /tmp/trace.bt &
+
+sleep 5 # wait for uretprobe attach
+/tmp/x
+
+pkill bpftrace
+
+rm /tmp/x /tmp/x.c /tmp/trace.bt
+---
+ kernel/seccomp.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 385d48293a5f..23b594a68bc0 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user *user_filter)
  
- 		/*
- 		 * The entity's vruntime has been adjusted, so let's check
+ #ifdef SECCOMP_ARCH_NATIVE
+ /**
+- * seccomp_is_const_allow - check if filter is constant allow with given data
++ * seccomp_is_filter_const_allow - check if filter is constant allow with given data
+  * @fprog: The BPF programs
+  * @sd: The seccomp data to check against, only syscall number and arch
+  *      number are considered constant.
+  */
+-static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+-				   struct seccomp_data *sd)
++static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *fprog,
++					  struct seccomp_data *sd)
+ {
+ 	unsigned int reg_value = 0;
+ 	unsigned int pc;
+@@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+ 	return false;
+ }
+ 
++static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
++				   struct seccomp_data *sd)
++{
++#ifdef __NR_uretprobe
++	if (sd->nr == __NR_uretprobe
++#ifdef SECCOMP_ARCH_COMPAT
++	    && sd->arch != SECCOMP_ARCH_COMPAT
++#endif
++	   )
++		return true;
++#endif
++
++	return seccomp_is_filter_const_allow(fprog, sd);
++}
++
+ static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sfilter,
+ 					 void *bitmap, const void *bitmap_prev,
+ 					 size_t bitmap_size, int arch)
+@@ -1023,6 +1038,9 @@ static inline void seccomp_log(unsigned long syscall, long signr, u32 action,
+  */
+ static const int mode1_syscalls[] = {
+ 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
++#ifdef __NR_uretprobe
++	__NR_uretprobe,
++#endif
+ 	-1, /* negative terminated */
+ };
+ 
+-- 
+2.43.0
+
 
