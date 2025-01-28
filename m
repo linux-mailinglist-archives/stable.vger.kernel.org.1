@@ -1,139 +1,107 @@
-Return-Path: <stable+bounces-111058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DDCA2133B
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:42:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE05A21379
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 22:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E091883F23
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 20:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6B783A13D9
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529B61E0B86;
-	Tue, 28 Jan 2025 20:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9001E3DF8;
+	Tue, 28 Jan 2025 21:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H6z2Atca"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="KdByt2Sd"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0361E1A841A
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 20:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA3E1DE4E0;
+	Tue, 28 Jan 2025 21:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738096968; cv=none; b=AGH2TH1/hGdCJqyP0jh2sZysbTS9wRHQ+K1OTDG6G3mhNBJ/pIrYG5Rm5H8EOPKZZFgY9yd0jkuBMUZWnvFseX3bkayWkq2z2lJvUjZDDSLMcWO0iH6GltKEGxsdCmGNHZu91Ny6ebRzffSQnCmLPvOGmnJ4g//dWNfWBYXLWZU=
+	t=1738098511; cv=none; b=BdKYIH4JnazDs1AJ6OmUYueZphdJSy5sPEoDoimw7HmB20SjlY4cfxaDyORjBPPTcmpzhIc6BVexf9PzLz1WNFoJXLfbycPGh5G1jbEcipx0ui20NGXHqpb9zC1yfdzB1lUz+ao1QSIdWge0MjRluqNWG96mavg4Mhy8gqkLhFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738096968; c=relaxed/simple;
-	bh=hfZURXY9Q0UNWXaXALdG56eXuQNwSwfMlU0LptzP2yI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rNNeoQ2U+yNf9oGiBw7HdBWY1nO7GWFYrohAwC2V+viEtZcouw2izeVAb1YOmI5/2evo54h53f10x9vlkNQwaO+R1nZ760Du9mFx+0W3FyuNKwk/3r8KnhlGEN0uXNeFUmbOPQekeEievvxJnpLhrgIw0cYGlfpmx16OJfUmTJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H6z2Atca; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 28 Jan 2025 12:42:24 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738096954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FZITjXCuyDtKK1qtqnTTdQ9PmU2bXeOu1iAWHigtFFs=;
-	b=H6z2AtcawhAIWMhD9yaCeCJk3LBm6DXMoLKTAkNF/PTdoPU1ntEQpTT2ear9g3GN0Ex3gp
-	Hjj9xpszPzHhxqUvb60Rg/LP2je3PbM2KTXqsZd70P1YYGDabpydCw6kfMAehbDB7EmqQK
-	SCBQXoIwD5Pxt8hT1qDsOzRdphLh2Ys=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Zheng Zengkai <zhengzengkai@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers
- array count
-Message-ID: <Z5lBMBY7XoFJmpGM@linux.dev>
-References: <20250128001749.3132656-1-oliver.upton@linux.dev>
- <Z5i2j9gFB2iyN9g4@lpieralisi>
+	s=arc-20240116; t=1738098511; c=relaxed/simple;
+	bh=1WAfUZypPU5Sv9+N2pCHJbqOmPXgv8u++eozdGIHbh4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VuqIYpZvjYhdZTUWAiR+tt0IYo8KBHnGt5rHBgnuvT7/ws5a6HmNOe23HnmyAXLTSxZOO+aBeRji4OWMxgjTgS11Ei2D9JGq6gfsWKKBAEbQSLRiUQLhFcCVVlAchkCBCJYkn2Or5k1s7cF61xID7xEYM3bJTl69qgkCm1IMZu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=KdByt2Sd; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost.localdomain (unknown [5.228.116.177])
+	by mail.ispras.ru (Postfix) with ESMTPSA id C400940777C4;
+	Tue, 28 Jan 2025 21:08:25 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C400940777C4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1738098505;
+	bh=fVNhuvRBwi7LipVeQQAxSGExIb2oIhiRBE03sQnVxes=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KdByt2Sd6+0D6C8bBbIDgbAjVtKtIo0MMGN4wtzjSfdRM0yTOrgpeLsqCrDpvkTQh
+	 L4iTg5wvRAha31bTbwoDqVAzDHhI1AhlQEg+CvBxmyFCzVEdzKJF3e6hUxPlu1FieD
+	 C701spO6m+/bkPxvLEjKgJVMrpeP32enDeJuXCAU=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: L2CAP: accept zero as a special value for MTU auto-selection
+Date: Wed, 29 Jan 2025 00:08:14 +0300
+Message-Id: <20250128210814.74476-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5i2j9gFB2iyN9g4@lpieralisi>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo,
+One of the possible ways to enable the input MTU auto-selection for L2CAP
+connections is supposed to be through passing a special "0" value for it
+as a socket option. Commit [1] added one of those into avdtp. However, it
+simply wouldn't work because the kernel still treats the specified value
+as invalid and denies the setting attempt. Recorded BlueZ logs include the
+following: 
 
-On Tue, Jan 28, 2025 at 11:50:55AM +0100, Lorenzo Pieralisi wrote:
-> > @@ -188,13 +188,17 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
-> >  		cnt++;
-> >  
-> >  	if (cnt != gtdt->platform_timer_count) {
-> > +		cnt = min(cnt, gtdt->platform_timer_count);
-> 
-> Thank you for reporting this.
-> 
-> There is something I need to understand.
-> 
-> What's wrong cnt (because platform_timer_valid() fails for some
-> reason on some entries whereas before the commit we
-> are fixing was applied we *were* parsing those entries) or
-> gtdt->platform_timer_count ?
-> 
-> I *guess* the issue is the following:
-> 
-> gtdt->platform_timer_count reports the number of GT blocks in the
-> GTDT not including Arm generic watchdogs, whereas cnt counts both
-> structure types (and that's what gtdt->platform_timer_count should
-> report too if it was correct).
+  bluetoothd[496]: profiles/audio/avdtp.c:l2cap_connect() setsockopt(L2CAP_OPTIONS): Invalid argument (22)
 
-I've seen two different issues so far:
+[1]: https://github.com/bluez/bluez/commit/ae5be371a9f53fed33d2b34748a95a5498fd4b77
 
- - In one case, the offset of the platform timer array is entirely
-   beyond the GTDT
+Found by Linux Verification Center (linuxtesting.org).
 
- - In another, the GTDT has a timer array of length 2, but only the
-   first structure falls within the length of the overall GTDT
+Fixes: 4b6e228e297b ("Bluetooth: Auto tune if input MTU is set to 0")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ net/bluetooth/l2cap_sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Since cnt is the result of doing a bounds-checked walk of the platform
-timer array, both of these issues cause the sanity check to fail.
-
-> >  	if (platform_timer_count)
-> > -		*platform_timer_count = gtdt->platform_timer_count;
-> > +		*platform_timer_count = cnt;
-> 
-> I think this should be fine as things stand (but see above).
-> 
-> It is used in:
-> 
-> gtdt_sbsa_gwdt_init() - just to check if there are platform timers entries
-> 
-> arch_timer_mem_acpi_init() - to create a temporary array to init arch mem timer
-> 			     entries (the array is oversized because it
-> 			     includes watchdog entries in the count)
-> 
-> In both cases taking the
-> 
-> min(cnt, gtdt->platform_timer_count);
-> 
-> should work AFAICS
-
-It was probably worth noting in the changelog that I did this to
-gracefully handle the reverse of this issue where we could dereference
-platform timer entries that are within the bounds of the GTDT but exceed
-gtdt->platform_timer_count.
-
-> (hard to grok though, we - as in ACPI maintainers -
-> need to clean this up).
-
-Heh, thought this smelled a little ripe ;-) Went for the minimal fix
-first.
-
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 49f97d4138ea..46ea0bee2259 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -710,12 +710,12 @@ static bool l2cap_valid_mtu(struct l2cap_chan *chan, u16 mtu)
+ {
+ 	switch (chan->scid) {
+ 	case L2CAP_CID_ATT:
+-		if (mtu < L2CAP_LE_MIN_MTU)
++		if (mtu && mtu < L2CAP_LE_MIN_MTU)
+ 			return false;
+ 		break;
+ 
+ 	default:
+-		if (mtu < L2CAP_DEFAULT_MIN_MTU)
++		if (mtu && mtu < L2CAP_DEFAULT_MIN_MTU)
+ 			return false;
+ 	}
+ 
 -- 
-Thanks,
-Oliver
+2.39.5
+
 
