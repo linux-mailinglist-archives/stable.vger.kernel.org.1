@@ -1,95 +1,119 @@
-Return-Path: <stable+bounces-110992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C2EA20F72
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:08:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95E8A20F75
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CF19188A976
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9166B7A1CC6
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F157C199E94;
-	Tue, 28 Jan 2025 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE5E1B4159;
+	Tue, 28 Jan 2025 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="dzWHcA/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeZ3YUkM"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4AA27452
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 17:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C9A27452
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 17:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738084123; cv=none; b=o7sfUKWCZKNy/wwJL6ESpx39Pog0UA2vLlXQj49eItYsfuX4CZUYhxANa496qGawiJPWrjd6uDe27YX5ypRVjF81AucdOI9l4cPHcw7E54OYpTqev6w0CNh21SO02/Qsbjek0u1+2Y837V09IFcToWrS20JBhEiRtHNQ8bsCOu0=
+	t=1738084314; cv=none; b=MN65+96VyCLwLQoeOlc4MDDtN7EEzSDDNuic2lcwiNXs0GaOIJB1z0tp7gqXaZhrVm9P4SDna/ndZE1+MbXxX3TfZ4Yb38XRxOE0IIz9u4eS/ifCMbrhqMH3KgQw7oNAtwxMnfSwMdVyPCeQLySVyV3SFHteHTRUxD8QWB/Mj3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738084123; c=relaxed/simple;
-	bh=uFT0q2IcxgTUel7Y/EPOxw/p6tRlkeCQH9hVm0dxIPU=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=utLxEitlKOj5O1m4zXHRbO2WB59itIJ+hXMFNU9IMoWkevnHjh4ZdFPUkTOIXZh+T+LQrV/a1Y46/wWzRpXDK8AH55b7aQ04JtinRAZPeFFM9jU3ZFrQnTQlSfXD5ezr6v2iUXDpD3snA27jdL+Pwx2kvsa9DMatfJVXcSG/4ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=dzWHcA/J; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.65.234.35] (unknown [20.236.10.163])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 144B32037173;
-	Tue, 28 Jan 2025 09:08:41 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 144B32037173
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738084122;
-	bh=+8FOFHPWCxXRo0Vdo6o4ZhzriYAeRQZgLFu6ashJsQE=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=dzWHcA/Jo4aw8JT30ewsQzrRkODdEiowhTIozn6HbLjc9oAbFCaR1056R7AsuH+Xf
-	 JIMrV4+apcG0gAhzejFpUHX+xaG7oLIL8V8mBy+BEgdLvdvT4ptC/BP8sngF3VMIyD
-	 nYcT+KJEifIVjh1yeJg1IvoLVP3O5lMGVRmjiFpI=
-Message-ID: <185173f5-5f46-4c24-b4fb-86dab478ea02@linux.microsoft.com>
-Date: Tue, 28 Jan 2025 09:08:42 -0800
+	s=arc-20240116; t=1738084314; c=relaxed/simple;
+	bh=mqQuUZ4ZGGVY9hiG09vTynAl8M+lQ4QKCvr1GvRvb+I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RfI/pAlDBIhzxw2gFltj0OMT7rhLgWeeURVZWJCXz5koWepOJPj1hAdUKXhs2cOWNGhOTdEMpH3WMB4mMUfxd2oEzxklvfnazT6xDKBvjg/E59L0nAES7M+vNoWq/7rdBRj1sCJNwyAjx/MPpAJYdyO/dU4/paLs56kVi8WXDms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeZ3YUkM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99269C4CED3;
+	Tue, 28 Jan 2025 17:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738084313;
+	bh=mqQuUZ4ZGGVY9hiG09vTynAl8M+lQ4QKCvr1GvRvb+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZeZ3YUkMyTzmfx7RY5jEiFY0EY9WjSl4/+f6ApoTfRoNVFNJw1DSdDoU5e1YTaNkt
+	 NfsFV0tja3vv1M0v4RmpMH2ub5mg3nQkxQx8ijExcFGmROEFrjCUDmtAXpE1KSpH1B
+	 uAnKRaoBqK+W+SIU04NpcG0ByUQE1FmH2Pz1+tLo=
+Date: Tue, 28 Jan 2025 18:11:49 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: ciprietti@google.com
+Cc: stable@vger.kernel.org, yangerkun <yangerkun@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] libfs: fix infinite directory reads for offset dir
+Message-ID: <2025012819-goal-elastic-e89f@gregkh>
+References: <20250128150322.2242111-1-ciprietti@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: eahariha@linux.microsoft.com, stable@vger.kernel.org,
- Michael Kelley <mhklinux@outlook.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 6.12.y] scsi: storvsc: Ratelimit warning logs to prevent
- VM denial of service
-To: Greg KH <gregkh@linuxfoundation.org>
-References: <20250127182955.67606-1-eahariha@linux.microsoft.com>
- <2025012856-written-jarring-4843@gregkh>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <2025012856-written-jarring-4843@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250128150322.2242111-1-ciprietti@google.com>
 
-On 1/27/2025 9:35 PM, Greg KH wrote:
-> On Mon, Jan 27, 2025 at 06:29:54PM +0000, Easwar Hariharan wrote:
->> commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream
->>
->> If there's a persistent error in the hypervisor, the SCSI warning for
->> failed I/O can flood the kernel log and max out CPU utilization,
->> preventing troubleshooting from the VM side. Ratelimit the warning so
->> it doesn't DoS the VM.
->>
->> Closes: https://github.com/microsoft/WSL/issues/9173
->> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
->> Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
->> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
->> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
->> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
->> ---
->>  drivers/scsi/storvsc_drv.c | 8 +++++++-
->>  1 file changed, 7 insertions(+), 1 deletion(-)
+On Tue, Jan 28, 2025 at 03:03:22PM +0000, ciprietti@google.com wrote:
+> From: yangerkun <yangerkun@huawei.com>
 > 
-> What about 6.13.y?
+> [ Upstream commit 64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a ]
 > 
+> After we switch tmpfs dir operations from simple_dir_operations to
+> simple_offset_dir_operations, every rename happened will fill new dentry
+> to dest dir's maple tree(&SHMEM_I(inode)->dir_offsets->mt) with a free
+> key starting with octx->newx_offset, and then set newx_offset equals to
+> free key + 1. This will lead to infinite readdir combine with rename
+> happened at the same time, which fail generic/736 in xfstests(detail show
+> as below).
+> 
+> 1. create 5000 files(1 2 3...) under one dir
+> 2. call readdir(man 3 readdir) once, and get one entry
+> 3. rename(entry, "TEMPFILE"), then rename("TEMPFILE", entry)
+> 4. loop 2~3, until readdir return nothing or we loop too many
+>    times(tmpfs break test with the second condition)
+> 
+> We choose the same logic what commit 9b378f6ad48cf ("btrfs: fix infinite
+> directory reads") to fix it, record the last_index when we open dir, and
+> do not emit the entry which index >= last_index. The file->private_data
+> now used in offset dir can use directly to do this, and we also update
+> the last_index when we llseek the dir file.
+> 
+> Fixes: a2e459555c5f ("shmem: stable directory offsets")
+> Signed-off-by: yangerkun <yangerkun@huawei.com>
+> Link: https://lore.kernel.org/r/20240731043835.1828697-1-yangerkun@huawei.com
+> Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+> [brauner: only update last_index after seek when offset is zero like Jan suggested]
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Andrea Ciprietti <ciprietti@google.com>
 
-Yes, needs a backport to that too, another miss on my part. :(
+You forgot to mention what you changed.
 
-Would you rather I send it after rc1 is tagged, or now for completeness?
+> ---
+>  fs/libfs.c | 39 ++++++++++++++++++++++++++++-----------
+>  1 file changed, 28 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fs/libfs.c b/fs/libfs.c
+> index dc0f7519045f..916c39e758b1 100644
+> --- a/fs/libfs.c
+> +++ b/fs/libfs.c
+> @@ -371,6 +371,15 @@ void simple_offset_destroy(struct offset_ctx *octx)
+>  	xa_destroy(&octx->xa);
+>  }
+>  
+> +static int offset_dir_open(struct inode *inode, struct file *file)
+> +{
+> +	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
+> +	unsigned long next_offset = (unsigned long)ctx->next_offset;
+> +
+> +	file->private_data = (void *)next_offset;
 
-- Easwar (he/him)
+Why do you need 2 casts here when the original did not?
 
+thanks,
 
+greg k-h
 
