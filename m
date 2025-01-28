@@ -1,155 +1,58 @@
-Return-Path: <stable+bounces-110965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BF0A209E9
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 12:47:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 369B8A20A72
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 13:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EA787A2AB3
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 11:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95B05166B6A
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 12:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665B019E96D;
-	Tue, 28 Jan 2025 11:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b="kaVI8ecB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C1B85270;
+	Tue, 28 Jan 2025 12:16:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from cwp.ciasite.com (ip240.ip-54-39-85.net [54.39.85.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097CD768FC;
-	Tue, 28 Jan 2025 11:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031ECBA27
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 12:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.39.85.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738064833; cv=none; b=APVpY25k0iXNJfs06KNxwP8miXJd6YS6z88JaOgwNaCnrOaGSFfhvhp1Fa6v+1ViL+DR0y/HVSZM15EXAU2TxwQVKlujT5pYhKt2lD8kkNgJbfNrJ2N/W8NlqRCz22fJXd3/PUk3JtX41h4S7qXqwEnbgYZxN9OD0/qP/Swjrh8=
+	t=1738066607; cv=none; b=EODZ+SJAILjwtO0VAcBf7p+WCPLo6OttrTZf5R3ozDQCayCy5b5+JbmjTSgmvD5PoU/M6WlsNxcBfpbGq8tw+nQ4jpDbw0KH59WUDVISYwW+vUCTHC/7Jwd1CfkR51mgEpKxfofLfi1IKa+9vIPpVRNtXnLLYNbAntKM9O//3I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738064833; c=relaxed/simple;
-	bh=GVWqD6G9D5b/cE9nTKzbdprXQjD9z1HweCRQ+qLjFFk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nr1IMsiPBW3ZzO3JIRAVRFJ3ZytggU6AVDLW3YZIbsZMEQ/t7BT4zhr56tYJkd2C7MRL/vcmpweBcM4L4cIpfcXuvLh2W7Az64V93hGqDjHJx5/41xGPDyda8Qg4jbo6qf22RnJUWLN1cZBtlYajvCyW/g7y1n1gMKD4BLqKmwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b=kaVI8ecB; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1738064770; x=1738669570; i=efault@gmx.de;
-	bh=DKW3PGnLpxp0eBpGt94GZs93L4UL5AMwdX8B5I369cI=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=kaVI8ecBP1WDLgh5ucOveomVWrFbpXtSKf3fEf40WJNHVubDOBKb+kPEpv2DVHiB
-	 +nWZXaUfa0h8+8oUhP0sduFFSjdNfV30rAb68pbu8123VzrKxGCdMzTZWyGB4hN6V
-	 GPMT4IRK8z1zSsDNjTAko52WG+/4160AfpsTxvyy28ueSFexIEVjmzKphas4Hu3lO
-	 fWP0N2XKOrGS/XYB69dYrw16e8KlYZo11VoFAQlbFCp2qdqCKczT82/m+TN7fdPfB
-	 Zg+1NVY93Ux7kaQ0Ulu3iAbkHPd6QWIusf73KcCb47juVH8XKf9W4sONtO0yIYQSv
-	 vN+MvMbwF7I2qHjuMQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from homer.fritz.box ([91.212.106.53]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf4S-1tCmtX3AIs-00ddMH; Tue, 28
- Jan 2025 12:46:09 +0100
-Message-ID: <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
-Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
-From: Mike Galbraith <efault@gmx.de>
-To: Ron Economos <re@w6rz.net>, Peter Zijlstra <peterz@infradead.org>, Arnd
-	Bergmann <arnd@arndb.de>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev,  linux-kernel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>,  Andrew Morton
- <akpm@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>, shuah
- <shuah@kernel.org>,  patches@kernelci.org, lkft-triage@lists.linaro.org,
- Pavel Machek <pavel@denx.de>,  Jon Hunter <jonathanh@nvidia.com>, Florian
- Fainelli <f.fainelli@gmail.com>, Sudip Mukherjee
- <sudipm.mukherjee@gmail.com>, srw@sladewatkins.net, rwarsow@gmx.de, Conor
- Dooley <conor@kernel.org>, hargar@microsoft.com, Mark Brown
- <broonie@kernel.org>,  Anders Roxell <anders.roxell@linaro.org>, Vincent
- Guittot <vincent.guittot@linaro.org>, Dan Carpenter
- <dan.carpenter@linaro.org>
-Date: Tue, 28 Jan 2025 12:46:07 +0100
-In-Reply-To: <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
-References: <20250121174532.991109301@linuxfoundation.org>
-	 <CA+G9fYtv3NNpxuipt8Dxa_=0DhieWWc07kDgCDBM+o0gKRi4Dw@mail.gmail.com>
-	 <cc947edf-bece-498c-bcb0-5bc403141257@app.fastmail.com>
-	 <20250122105949.GK7145@noisy.programming.kicks-ass.net>
-	 <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1738066607; c=relaxed/simple;
+	bh=H+EeeOrS0g3QK4a5kLc5tyDnahP23sBCTbZvgxY+G5s=;
+	h=To:Subject:Date:From:Message-ID:MIME-Version:Content-Type; b=A0gw8zenJ6UG/EeMKt0DGYWZRmvfK14ZMmTt+XHpUd/23IOBuMk/AMkRuRb5EovOrHQdgS1eVfbffoEp3rozjW75zIZAZNeU+4hDqyvGp6tybpzrG0GLtaAEctYP58VGuNm8+Hd1bzEsdSUM+qmfJjgZqHhiT+ZIvzCVY310tG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nosushitem.com.br; spf=pass smtp.mailfrom=nosushitem.com.br; arc=none smtp.client-ip=54.39.85.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nosushitem.com.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nosushitem.com.br
+Received: by cwp.ciasite.com (Postfix, from userid 1013)
+	id 6593CCE5D; Tue, 28 Jan 2025 06:58:55 -0500 (EST)
+To: stable@vger.kernel.org
+Subject: Supplier Needed............
+Date: Tue, 28 Jan 2025 11:58:55 +0000
+From: Cesandra Pace <support@nosushitem.com.br>
+Reply-To: cesandrapace.pace@gmail.com
+Message-ID: <8fa2435c137d40829940a821a036da8e@nosushitem.com.br>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LNd3PNtVtBWcaN0qY6J2BQCF9cxhKokTA2IeDesDglvUGDt3Qjs
- 0zC827kqaRKoRzQWzfQttSjwySiBD9JHxtD9AAMWt1bVDIv9x21wODFzJsywbv5fnR8hJRb
- T1n37+XOLRSLcMTQ3XSySTYbrnfjvJDlOtrhihTNXxV7TMIwPSqwwWJiLffqzkY9HGOjCGo
- epHlDMCyO9AhMfKmKJZNg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Mx5CRPGPBrI=;TL8UPd/L2cg5suTaAQbInBWk8kw
- K9G0OSYscgZ5rM++qcOh1ug89flTbw34+Ei94xcjXgnBFEIx4AfbLbzECkKk5qn4nIfD/6zqq
- IevWCQIoIF7qF2d0yOSUxh1ltU/tvLWWa2KrJUU0p31sUtmFomRvV6s2t9TKJwJeMU5TmeCgt
- XbxKVzET0EGTajLQQjHh7I1rTl8klxgNBHiSx/nuT5OdaSDc4aF9JEkw4V6kVHH+pMI1hHn1H
- WD8vgXP7NFaswB5Q5JTNZNOV1zj+LefJ40bA6UyOGPTEsovgMjfazBlny+Dp51pu/5czBXONC
- jyvBd28B7J3739tS4MX1ys9L8/8vjdxsT8D6MgAw5etM1PG9mBk5I+TXu+aOHEmxgwhe+ux0s
- N7BgSXGRKTyjJaRVymh1OHeYp861W6AREK4xOqU8hjRBd7XCtvuEe1dnF7U8HGwCaNibZx97S
- r1ZJqcBOdEvbEoO8uivGAefZp45Enz5MvnhkqqqSJivl1EeEbdYD7zmINdspHFuu5cdxavlRQ
- QNhxCeskmue9II/HbSd4wtcx9dR9+1kSPEp6i/zhQlk/W0GBnRiGX8H8dzeMhISTFc+lytb+a
- UTYb6xLfV83pk0oxFIVur4OL1oif94dr2iBVtcNembR5943soJhjJ6wYVxY5YBGz8UmA8gr64
- xoIA2OCz28t/WwmyzisilDDONszDLaPY9jgkKqgyIenA6ts1bGcJUix+dSdxnu4cGipYq9W8s
- eMMDLK/Bux37PpCpWHfDKlj3F7FRn42TVBccjGe7JfBAF4LnkZe9MF9cwpbXI+tZyo1gjmga3
- GQRVZCr5WWuFNBCwinrIgmq0Keq11V42F6o4WOQqzsphRRhoUGJqYHt2l1aLPC0tf6SezzZNq
- hy+I9duvYGulLF3yfkmHHZ2W0bOz/w7erpFDvmdPijN2OMULLgC/IgAO8TZ9gPwKGHnC/c9Rt
- MSz/l2+UMQOi8GtYxAkPQCYXRMLu2T/4c7jflR1CtK8bXRYIdCMq7DnRrPJsN17DBZ12imK/h
- 69a0CSURzp8bOIbjZjwsckaY4ucAj4NTrom9rzPUixq9LZWH3sgYsAo6W6CS3XZOpc1y8JiVn
- HvDL9EVUPAmRRSWZaggyl0nsAiXYkOycbYv5oPqeUstn8YsCi2aY+222lotX0vRHaxZdg9jlN
- M39yjrT8VDqSozlZIE0sHJxUag23a5moTCXCysnSr6w==
+Content-Type: text/plain; charset=UTF-8
 
-On Wed, 2025-01-22 at 03:11 -0800, Ron Economos wrote:
-> On 1/22/25 02:59, Peter Zijlstra wrote:
-> > On Wed, Jan 22, 2025 at 11:56:13AM +0100, Arnd Bergmann wrote:
-> > > On Wed, Jan 22, 2025, at 11:04, Naresh Kamboju wrote:
-> > > > On Tue, 21 Jan 2025 at 23:28, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > 0000000000000000
-> > > > <4>[=C2=A0 160.712071] Call trace:
-> > > > <4>[ 160.712597] place_entity (kernel/sched/fair.c:5250 (discrimin=
-ator 1))
-> > > > <4>[ 160.713221] reweight_entity (kernel/sched/fair.c:3813)
-> > > > <4>[ 160.713802] update_cfs_group (kernel/sched/fair.c:3975 (discr=
-iminator 1))
-> > > > <4>[ 160.714277] dequeue_entities (kernel/sched/fair.c:7091)
-> > > > <4>[ 160.714903] dequeue_task_fair (kernel/sched/fair.c:7144 (disc=
-riminator 1))
-> > > > <4>[ 160.716502] move_queued_task.isra.0 (kernel/sched/core.c:2437
-> > > > (discriminator 1))
-> > > I don't see anything that immediately sticks out as causing this,
-> > > but I do see five scheduler patches backported in stable-rc
-> > > on top of v6.12.8, these are the original commits:
-> > >
-> > > 66951e4860d3 ("sched/fair: Fix update_cfs_group() vs DELAY_DEQUEUE")
-> > This one reworks reweight_entity(), but I've been running with that on
-> > top of 13-rc6 for a week or so and not seen this.
->
-> The offending commit is 6d71a9c6160479899ee744d2c6d6602a191deb1f
-> "sched/fair: Fix EEVDF entity placement bug causing scheduling lag"
->
-> It works fine on 6.13, at least on RISC-V (which is the only arch I test=
-).
+Attention: Sir/Madam,
+ 
+I am Cesandra Pace, a Research Assistant working with Pharma CURE Laboratory Ltd. We are Bio-pharmaceutical Company here in the U.K.I'm looking for a reliable businessman/individual in your region to represent this company in sourcing some of our basic raw materials used for the manufacturing of high quality Anti-Viral Vaccines, Cancer treatment medications and other lifesaving Pharmaceutical Products. 
 
-Seems 6.13 is gripe free thanks to it containing 4423af84b297.
+When I receive a response from you, I shall divulge to you my intent for your consideration.
+ 
+Best regards,
+Cesandra Pace
+Research & Dev Dept-
+Pharma CURE Laboratory Ltd UK
 
-I stumbled upon a reproducer for my x86_64 desktop box: all I need do
-is fire up a kvm guest in an enterprise configured host.  That inspires
-libvirt goop to engage group scheduling, splat follows instantly.
-
-Back 4423af84b297 out of 6.13, it starts griping, add it to a 6.12 tree
-containing 6d71a9c61604, it stops doing so.
-
-> It's already been reverted and 6.12.11-rc2 has been pushed out.
-
-So stable should perhaps take 4423af84b297 along with 6d71a9c61604?
-
-	-Mike
 
