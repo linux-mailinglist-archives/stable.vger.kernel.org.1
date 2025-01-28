@@ -1,67 +1,66 @@
-Return-Path: <stable+bounces-111009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09249A20FEB
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BEAA20FF0
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:56:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379821889C0E
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:56:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 612E01888CF0
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC54F1F55EF;
-	Tue, 28 Jan 2025 17:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147521F5610;
+	Tue, 28 Jan 2025 17:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o39EbA+K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6HDviyG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BFB1F5430;
-	Tue, 28 Jan 2025 17:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14BC1DED48;
+	Tue, 28 Jan 2025 17:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086847; cv=none; b=eJ6XCRrY7YCeEh0gvRgPnrXLTNFVyS0oHxdNGWl3ouCOZB60MqG0lgTSJIfv1DaHESGqxG494Hom6MtmYBXa6JXIK5IOYMGo0rywBMxvkNxx6OSLlxYPsY1ABikcHCvqWcX4OPWmDek0XlnJwZHrBEDlwIwU5gzxaGlXtfgjqnA=
+	t=1738086850; cv=none; b=K3DiWR/ZcoyZlU3Gk+pKmFptyHh3Vwy1yX+o8Mp0ukA6S5RUgQ9Zu9Y66DGKBdEmsIFQTHwoHGpxO8N0Gz5qrrStCDitCTGq9ZRtZjymNTotqQ6KwCXzxTi5KpqM0iIx+Q2PBbOdCe330ln7yoVmfvX8SHZAueVgu+Yh7z9GFiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086847; c=relaxed/simple;
-	bh=6qao0JXXyZP44kcHKZCb++yOVgr2jYvsFxsrA5N7CiQ=;
+	s=arc-20240116; t=1738086850; c=relaxed/simple;
+	bh=uTwbAGSjoYcmoPMQdSqt8uRACDufhTf/5L9rzTY3n90=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NMGUdyc2tDWht+tGf4OPdkk/BbfuJE+UvGZYPR1x7OD5EEUgzhIkMngebvlNi5KpFQ8aNftNFXHdeLKlQRJmLVY6SUXRctRKXf8W1svHv23bIH6z5nu1RfRAoJdXaBpSAE7Z3MFCbYbIMbK1tpoo48ytd+oqn4SwRJ9mi/wLayw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o39EbA+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F09C4CED3;
-	Tue, 28 Jan 2025 17:54:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FUWHcK1tC7ubzp6PXckU1mHxQfRbp/AiBQ+VGifoV32m6LWARdIwR4zkjQEHe9rgRFlRSRMAmt+nTYX0PvvDdlYSJ5CjZdQJtByoq4F4yI5EN0ortvAHAvN/kIe8ioP5pR/p7KlZCcfB/9JdrnI9ueGbSnhDyi8X6d8VaXjzHQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6HDviyG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1F7C4CEE1;
+	Tue, 28 Jan 2025 17:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086846;
-	bh=6qao0JXXyZP44kcHKZCb++yOVgr2jYvsFxsrA5N7CiQ=;
+	s=k20201202; t=1738086849;
+	bh=uTwbAGSjoYcmoPMQdSqt8uRACDufhTf/5L9rzTY3n90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o39EbA+KyvLmVqYkB7RQ1S5xlU/gkS9cwaExC52zgzzkul3EZItJTuoeZermtPDaa
-	 6bnngZeg8Thwy5s2WailciBzQ/HTe5yDqUJwxANvONBdeOTpZduD7hjb4xb+z88gFz
-	 mR3k3yIbygnREn7FC8ZtDEf3yZEwZzbuuDR+dwRo3SrlBLoxb4p2TDRhWCsf4iJWDs
-	 2LMDHzhSLaiIh2BQM8M6xqYEZBw+VMlJXSKBZUV7vsQ2NLRbjg+J3fO+NIswcV1noi
-	 Ke8VQYeTbMQScjEaN6KRAGR9DZ/AB9I9SLK/6FWPjutLPEAmJEcl2BAv9moRxUc57F
-	 Tl7mgzTJHhuiQ==
+	b=a6HDviyGfVHeSrpIL5DkIp26a2Blcsnv2V4ming+k5LEF7HvMT3jqTMQ4aXbjYsjz
+	 a62l+Rqv6WxxoMUa9FQH/GclxE234l3DNZIVwst5j/XaZx5MFgkcKoE/n2+41i+0zO
+	 mmkXYGK0T86xnR8b/zMe9216xMfHCWcX/+RSDvElhN9izQdTYkKP98st3QVsdoBWHY
+	 ClldlPPcTcjmIFWkeSl0pmnBnylkZ3tJCVoUIHL8sJLqEK4yYoUMYwRgCxoKxEwPF0
+	 BQ8Tyb9WhImr/rk0LLAYai1p/oqVK0TfYjGzX7EqKlCbLJxZRqY6mI18auONhZwa5n
+	 1dXEM/v+eB8FA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Kisel <romank@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Nuno Das Neves <nunodasneves@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Hui Ma <hui.ma@airoha.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	decui@microsoft.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-hyperv@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 11/15] hyperv: Do not overlap the hvcall IO areas in hv_vtl_apicid_to_vp_id()
-Date: Tue, 28 Jan 2025 12:53:42 -0500
-Message-Id: <20250128175346.1197097-11-sashal@kernel.org>
+	ryder.lee@mediatek.com,
+	jianjun.wang@mediatek.com,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	bhelgaas@google.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-pci@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.13 12/15] PCI: mediatek-gen3: Avoid PCIe resetting via PERST# for Airoha EN7581 SoC
+Date: Tue, 28 Jan 2025 12:53:43 -0500
+Message-Id: <20250128175346.1197097-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128175346.1197097-1-sashal@kernel.org>
 References: <20250128175346.1197097-1-sashal@kernel.org>
@@ -71,50 +70,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Roman Kisel <romank@linux.microsoft.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit f285d995743269aa9f893e5e9a1065604137c1f6 ]
+[ Upstream commit 491cb9c5084790aafa02e843349492c284373231 ]
 
-The Top-Level Functional Specification for Hyper-V, Section 3.6 [1, 2],
-disallows overlapping of the input and output hypercall areas, and
-hv_vtl_apicid_to_vp_id() overlaps them.
+Airoha EN7581 has a hw bug asserting/releasing PERST# signal causing
+occasional PCIe link down issues. In order to overcome the problem,
+PERST# signal is not asserted/released during device probe or
+suspend/resume phase and the PCIe block is reset using
+en7523_reset_assert() and en7581_pci_enable().
 
-Use the output hypercall page of the current vCPU for the hypercall.
+Introduce flags field in the mtk_gen3_pcie_pdata struct in order to
+specify per-SoC capabilities.
 
-[1] https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/hypercall-interface
-[2] https://github.com/MicrosoftDocs/Virtualization-Documentation/tree/main/tlfs
-
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Closes: https://lore.kernel.org/lkml/SN6PR02MB4157B98CD34781CC87A9D921D40D2@SN6PR02MB4157.namprd02.prod.outlook.com/
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250108222138.1623703-6-romank@linux.microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20250108222138.1623703-6-romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250109-pcie-en7581-rst-fix-v4-1-4a45c89fb143@kernel.org
+Tested-by: Hui Ma <hui.ma@airoha.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_vtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pcie-mediatek-gen3.c | 59 ++++++++++++++-------
+ 1 file changed, 41 insertions(+), 18 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 04775346369c5..4e1b1e3b56584 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -189,7 +189,7 @@ static int hv_vtl_apicid_to_vp_id(u32 apic_id)
- 	input->partition_id = HV_PARTITION_ID_SELF;
- 	input->apic_ids[0] = apic_id;
+diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
+index be52e3a123abd..74dfef8ce9ec1 100644
+--- a/drivers/pci/controller/pcie-mediatek-gen3.c
++++ b/drivers/pci/controller/pcie-mediatek-gen3.c
+@@ -133,10 +133,18 @@ struct mtk_gen3_pcie;
+ #define PCIE_CONF_LINK2_CTL_STS		(PCIE_CFG_OFFSET_ADDR + 0xb0)
+ #define PCIE_CONF_LINK2_LCR2_LINK_SPEED	GENMASK(3, 0)
  
--	output = (u32 *)input;
-+	output = *this_cpu_ptr(hyperv_pcpu_output_arg);
++enum mtk_gen3_pcie_flags {
++	SKIP_PCIE_RSTB	= BIT(0), /* Skip PERST# assertion during device
++				   * probing or suspend/resume phase to
++				   * avoid hw bugs/issues.
++				   */
++};
++
+ /**
+  * struct mtk_gen3_pcie_pdata - differentiate between host generations
+  * @power_up: pcie power_up callback
+  * @phy_resets: phy reset lines SoC data.
++ * @flags: pcie device flags.
+  */
+ struct mtk_gen3_pcie_pdata {
+ 	int (*power_up)(struct mtk_gen3_pcie *pcie);
+@@ -144,6 +152,7 @@ struct mtk_gen3_pcie_pdata {
+ 		const char *id[MAX_NUM_PHY_RESETS];
+ 		int num_resets;
+ 	} phy_resets;
++	u32 flags;
+ };
  
- 	control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_ID_FROM_APIC_ID;
- 	status = hv_do_hypercall(control, input, output);
+ /**
+@@ -438,22 +447,33 @@ static int mtk_pcie_startup_port(struct mtk_gen3_pcie *pcie)
+ 	val |= PCIE_DISABLE_DVFSRC_VLT_REQ;
+ 	writel_relaxed(val, pcie->base + PCIE_MISC_CTRL_REG);
+ 
+-	/* Assert all reset signals */
+-	val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
+-	val |= PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB | PCIE_PE_RSTB;
+-	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
+-
+ 	/*
+-	 * Described in PCIe CEM specification sections 2.2 (PERST# Signal)
+-	 * and 2.2.1 (Initial Power-Up (G3 to S0)).
+-	 * The deassertion of PERST# should be delayed 100ms (TPVPERL)
+-	 * for the power and clock to become stable.
++	 * Airoha EN7581 has a hw bug asserting/releasing PCIE_PE_RSTB signal
++	 * causing occasional PCIe link down. In order to overcome the issue,
++	 * PCIE_RSTB signals are not asserted/released at this stage and the
++	 * PCIe block is reset using en7523_reset_assert() and
++	 * en7581_pci_enable().
+ 	 */
+-	msleep(100);
+-
+-	/* De-assert reset signals */
+-	val &= ~(PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB | PCIE_PE_RSTB);
+-	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
++	if (!(pcie->soc->flags & SKIP_PCIE_RSTB)) {
++		/* Assert all reset signals */
++		val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
++		val |= PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB |
++		       PCIE_PE_RSTB;
++		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
++
++		/*
++		 * Described in PCIe CEM specification revision 6.0.
++		 *
++		 * The deassertion of PERST# should be delayed 100ms (TPVPERL)
++		 * for the power and clock to become stable.
++		 */
++		msleep(PCIE_T_PVPERL_MS);
++
++		/* De-assert reset signals */
++		val &= ~(PCIE_MAC_RSTB | PCIE_PHY_RSTB | PCIE_BRG_RSTB |
++			 PCIE_PE_RSTB);
++		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
++	}
+ 
+ 	/* Check if the link is up or not */
+ 	err = readl_poll_timeout(pcie->base + PCIE_LINK_STATUS_REG, val,
+@@ -1231,10 +1251,12 @@ static int mtk_pcie_suspend_noirq(struct device *dev)
+ 		return err;
+ 	}
+ 
+-	/* Pull down the PERST# pin */
+-	val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
+-	val |= PCIE_PE_RSTB;
+-	writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
++	if (!(pcie->soc->flags & SKIP_PCIE_RSTB)) {
++		/* Assert the PERST# pin */
++		val = readl_relaxed(pcie->base + PCIE_RST_CTRL_REG);
++		val |= PCIE_PE_RSTB;
++		writel_relaxed(val, pcie->base + PCIE_RST_CTRL_REG);
++	}
+ 
+ 	dev_dbg(pcie->dev, "entered L2 states successfully");
+ 
+@@ -1285,6 +1307,7 @@ static const struct mtk_gen3_pcie_pdata mtk_pcie_soc_en7581 = {
+ 		.id[2] = "phy-lane2",
+ 		.num_resets = 3,
+ 	},
++	.flags = SKIP_PCIE_RSTB,
+ };
+ 
+ static const struct of_device_id mtk_pcie_of_match[] = {
 -- 
 2.39.5
 
