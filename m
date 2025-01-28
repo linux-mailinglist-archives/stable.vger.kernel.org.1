@@ -1,146 +1,159 @@
-Return-Path: <stable+bounces-110989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48214A20E60
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:19:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C04A20F3B
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8612D3A3FB5
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:19:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 948E016502D
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540CD1D515B;
-	Tue, 28 Jan 2025 16:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAB91B0F34;
+	Tue, 28 Jan 2025 16:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kMP28rof"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WVT5godw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1261A9B29;
-	Tue, 28 Jan 2025 16:19:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBFB1ACEC7;
+	Tue, 28 Jan 2025 16:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738081179; cv=none; b=cvChSsUBPHnK98rqLvr3qcbWfXdQpzad9RG041OzGRwzakZIKfkM1SKpGmiLj/NcyBqzcg6zZv6SQI1WxxE3QlJvnZBw9BO3w28tK1sMxcVgzLkuKn7kNU6ApTwfVXdOuseQkYc7TxqgEGsHMDHaubSu9qmMUkmBW++UpJmALdU=
+	t=1738083267; cv=none; b=FjDpgQHha78KvIt6Go6knsXFvsbrBDYmVYwC8T9nTVj76fBM8LXyrBC7s/TlShWrGLPsy2O1I+9kLQuWbT2Gr/npmRkImMQjPdXNhEsip+Kne+n+DGBsjOjsffoFsDcpI57fqLARpSP8khnU1rYx0zS97Bk7TCOh/N3JyhvYvpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738081179; c=relaxed/simple;
-	bh=RrZYsnhVtZvJnqaZ+K9b85vjJ864CR/u6n1y6fJs/UM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NLqchm3+TiFl/vpx1OPF2d2b0HH1Wp2DTzZOF8Napn2owvC7m0bGSw0dsVtGxZ1kVHXXJQhSTTmGqD2lh5y7l5ZOSwMmQf1l2UF+LXwnmxalqZ0ZFt1f/mW6W7aAUvYDdtmO8Dr4+MhrNMz2Y/zP1mQG/h08Jud3g0XGvgSnfpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kMP28rof; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738081178; x=1769617178;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=RrZYsnhVtZvJnqaZ+K9b85vjJ864CR/u6n1y6fJs/UM=;
-  b=kMP28rof+5co0mg4+HfuOPQRNKXKngStFsZOQmnTKF0AUVWTzpbOKAyb
-   3NSNUKPisBwfJnY+9soQ9OgmZOMwXscnvLpWf1NRRHH65DO2iKeQ9MFuY
-   SEIxuuK3WpravaoYTuETa0Rs2ALr0RB/3n89A5ABSA1oOcU5ZS+xtFbiH
-   QhjpeSiZVUFSfaB65Vi4wVMhhuKuRrtMvaRToWNBnfL6+kjPbmHlHZ26j
-   zxfRREuy8VC1/RLSq1un8HURYRmwtylIUK3u/b+tFjh826h5IkbkPhSxH
-   47nwxwPpUfWaxmOQWovV8AQLhJnFs2fBHbqQacWTeIOEzemaNLOpim+Vg
-   A==;
-X-CSE-ConnectionGUID: LqQyy0DOSRuM75WZAc3mtA==
-X-CSE-MsgGUID: QA+a+/ncR2+reoYxlpKrDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="38456447"
-X-IronPort-AV: E=Sophos;i="6.13,241,1732608000"; 
-   d="scan'208";a="38456447"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2025 08:19:37 -0800
-X-CSE-ConnectionGUID: KWgGovjsQfiLTnLRIYkZ5w==
-X-CSE-MsgGUID: 7ZyubuLpQXuJRP4oZ97/pw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,241,1732608000"; 
-   d="scan'208";a="108880158"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 28 Jan 2025 08:19:32 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 28 Jan 2025 18:19:31 +0200
-Date: Tue, 28 Jan 2025 18:19:31 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Brian Geffon <bgeffon@google.com>
-Cc: intel-gfx@lists.freedesktop.org, chris.p.wilson@intel.com,
-	jani.saarinen@intel.com, tomasz.mistat@intel.com,
-	vidya.srinivas@intel.com, jani.nikula@linux.intel.com,
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	stable@vger.kernel.org, Tomasz Figa <tfiga@google.com>
-Subject: Re: [PATCH v3] drm/i915: Fix page cleanup on DMA remap failure
-Message-ID: <Z5kDk69SkeHgwnj2@intel.com>
-References: <20250127204332.336665-1-bgeffon@google.com>
+	s=arc-20240116; t=1738083267; c=relaxed/simple;
+	bh=zIKA5Lnu+AAJK1GF7f7fcAkWa5s/nONDNBIBGD5M4xg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jljM2U87ja3d0L/C+Ea862Sh4NeA8o4AUt2Hnp8THIrho+dT5KHTibTGjkF/f+leh0nyqhKzpKOJ0KxgIPsgQNEFRL4LMw3mpflGEVoavHKHurQyggDOj5zgATypsvQoBNd1VsVMXlGdn99zHknuX/cECFFs+cfNN28MFiHadwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WVT5godw; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ef714374c0so9198861a91.0;
+        Tue, 28 Jan 2025 08:54:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738083265; x=1738688065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pklG817fp6sHKwwzZTujJQWYc/HiXl0PHhO5kJwA80E=;
+        b=WVT5godwbuhwpX4VvH17YN1OChglXM1LjJ7aUheD1yajgt3kLksXG7s5ul/cjI1Bpb
+         ZlCziWrxaoEd3EErd+IcmFaV3Y5E1nQDI/+VudUoxG/gLOqCaWa1qCeAQD3BJ/u33hsQ
+         VsrzIWR9crRiC9vKWdl3IhaWv4iZUAHnUaveCETaXlW4RDr+8YxxR3nQVuMBr+/Rl7oq
+         hWV0zq/nZyfM62Rb+cxjttdSt0rW+qMjwXjs3mo4LI94WuaR3dZGHC1GY15SwR+15aVl
+         rK1cLcV2GXrUzkQq2N6/Jyn/UrNZxO7UH68p1JJBbLqzMCGwrBUJBORjmMPtrLgif8rF
+         CFzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738083265; x=1738688065;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pklG817fp6sHKwwzZTujJQWYc/HiXl0PHhO5kJwA80E=;
+        b=vfTTL2M+5TPpbDsaC62JGSx3TDD2s/2gEKEY8o/CUuhkpVPeyoEgm94D1VYcnWEKGz
+         PvshZ/5nPpa8TmxYZIiVZvcZtxitCPnUXxDYdf2Z9r4jeBD7w0VRolDxLnbw7mhHyKu0
+         1IIOFJSLbxS1wadOcQxuqQd1EbvKLME6RmsD8WJlnL8rSZne4BxYT5Bg8lSOYl1D0xzk
+         pJxVssov/lZrcsUi3U5+EPjWvSeIGZJEVnBC3Xv+KoHqO/vaqYesC2+DljeOoLy2w44i
+         1IsyD0/16GlKBcWAs3PQqC4MSB4hAWEg/3hftmttC7VuQjqcsqCqp0rp9Vm6QV1fc1N6
+         H+FA==
+X-Forwarded-Encrypted: i=1; AJvYcCUemPKRBGG0bO0zlnuSd3DJF6Kiluy+fFWSeLcTPgJw3RhkvlQ5esral7XAjx09MTYqVny0NOhO@vger.kernel.org, AJvYcCUfX/yxSqo37jHaHhPqGhl3RrU15r+Rj399PLP+C7n8AmVJIKs8HOf07zgkKHZ+9vQ4uZUmsAOG6pMdSQs=@vger.kernel.org, AJvYcCVogi5BIWNIPLrjKIasWzAi+LFZ0qyYrUyf/hemG7QBY/kbyoROds7xdBFvKODLrSCjaDzcwXFdjaezmZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPH1/YIY0auwp5/OLeJovqZActWcszU1CetXrGzkUPcLc6YAa9
+	falk3TRBtofUuZ1HZj+1hrz2A4zbfP3JpGE8JBubrtkGplyIQnHW
+X-Gm-Gg: ASbGnctvTRqfgCPqHgqa0wSjXbNlfgAYLYlKWiApJ+pmKntLg/OIXaA0oUrR1yHI1cO
+	1H3nizNlIcaEg1E8+ooA+kbh1BWawtnPK+y4BkvriPXE29KusaXpbYajZhbH7Ti5KT+3oGegar5
+	UWeR5Dj26JaP31BLLpMeIA3whhNCfadpjQvaXGA/q9mBXyFJbEHYSzixSNZhGIeuYiN/10vndxy
+	OtmrAjGcvU9+1g02RTx/V5C90k3BSOLeRghNAVQrQ0RmZo2ZoeKXrnOISoeesoMlm9+kXxjKEgI
+	5wUjEK9k38PSzSCxKOmXYOkWS3fr63II0U3JJArac8c95Q==
+X-Google-Smtp-Source: AGHT+IFM2slnJ4cIIibqQwxt2drJeuuyoame4N+ZQnwddz7PiCam0uqREuO19yxO+bXp3DVEIKX9gw==
+X-Received: by 2002:a17:90b:53c4:b0:2ee:9661:eafb with SMTP id 98e67ed59e1d1-2f82c04a174mr6047406a91.12.1738083265264;
+        Tue, 28 Jan 2025 08:54:25 -0800 (PST)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa6acd0sm10600316a91.28.2025.01.28.08.54.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jan 2025 08:54:24 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: perex@perex.cz,
+	tiwai@suse.com
+Cc: gio.spacedev@pm.me,
+	austrum.lab@gmail.com,
+	luke@ljones.dev,
+	akpm@linux-foundation.org,
+	jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda: Fix headset detection failure due to unstable sort
+Date: Wed, 29 Jan 2025 00:54:15 +0800
+Message-Id: <20250128165415.643223-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250127204332.336665-1-bgeffon@google.com>
-X-Patchwork-Hint: comment
 
-On Mon, Jan 27, 2025 at 03:43:32PM -0500, Brian Geffon wrote:
-> When converting to folios the cleanup path of shmem_get_pages() was
-> missed. When a DMA remap fails and the max segment size is greater than
-> PAGE_SIZE it will attempt to retry the remap with a PAGE_SIZEd segment
-> size. The cleanup code isn't properly using the folio apis and as a
-> result isn't handling compound pages correctly.
-> 
-> v2 -> v3:
-> (Ville) Just use shmem_sg_free_table() as-is in the failure path of
-> shmem_get_pages(). shmem_sg_free_table() will clear mapping unevictable
-> but it will be reset when it retries in shmem_sg_alloc_table().
-> 
-> v1 -> v2:
-> (Ville) Fixed locations where we were not clearing mapping unevictable.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-> Cc: Vidya Srinivas <vidya.srinivas@intel.com>
-> Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13487
-> Link: https://lore.kernel.org/lkml/20250116135636.410164-1-bgeffon@google.com/
-> Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
-> Signed-off-by: Brian Geffon <bgeffon@google.com>
-> Suggested-by: Tomasz Figa <tfiga@google.com>
+The auto_parser assumed sort() was stable, but the kernel's sort() uses
+heapsort, which has never been stable. After commit 0e02ca29a563
+("lib/sort: optimize heapsort with double-pop variation"), the order of
+equal elements changed, causing the headset to fail to work.
 
-Thanks. Pushed to drm-intel-gt-next.
+Fix the issue by recording the original order of elements before
+sorting and using it as a tiebreaker for equal elements in the
+comparison function.
 
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> index fe69f2c8527d..ae3343c81a64 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-> @@ -209,8 +209,6 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
->  	struct address_space *mapping = obj->base.filp->f_mapping;
->  	unsigned int max_segment = i915_sg_segment_size(i915->drm.dev);
->  	struct sg_table *st;
-> -	struct sgt_iter sgt_iter;
-> -	struct page *page;
->  	int ret;
->  
->  	/*
-> @@ -239,9 +237,7 @@ static int shmem_get_pages(struct drm_i915_gem_object *obj)
->  		 * for PAGE_SIZE chunks instead may be helpful.
->  		 */
->  		if (max_segment > PAGE_SIZE) {
-> -			for_each_sgt_page(page, sgt_iter, st)
-> -				put_page(page);
-> -			sg_free_table(st);
-> +			shmem_sg_free_table(st, mapping, false, false);
->  			kfree(st);
->  
->  			max_segment = PAGE_SIZE;
-> -- 
-> 2.48.1.262.g85cc9f2d1e-goog
+Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
+Reported-by: Austrum <austrum.lab@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
+Tested-by: Austrum <austrum.lab@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
+ sound/pci/hda/hda_auto_parser.c | 8 +++++++-
+ sound/pci/hda/hda_auto_parser.h | 1 +
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
+diff --git a/sound/pci/hda/hda_auto_parser.c b/sound/pci/hda/hda_auto_parser.c
+index 84393f4f429d..8923813ce424 100644
+--- a/sound/pci/hda/hda_auto_parser.c
++++ b/sound/pci/hda/hda_auto_parser.c
+@@ -80,7 +80,11 @@ static int compare_input_type(const void *ap, const void *bp)
+ 
+ 	/* In case one has boost and the other one has not,
+ 	   pick the one with boost first. */
+-	return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
++	if (a->has_boost_on_pin != b->has_boost_on_pin)
++		return (int)(b->has_boost_on_pin - a->has_boost_on_pin);
++
++	/* Keep the original order */
++	return a->order - b->order;
+ }
+ 
+ /* Reorder the surround channels
+@@ -400,6 +404,8 @@ int snd_hda_parse_pin_defcfg(struct hda_codec *codec,
+ 	reorder_outputs(cfg->speaker_outs, cfg->speaker_pins);
+ 
+ 	/* sort inputs in the order of AUTO_PIN_* type */
++	for (i = 0; i < cfg->num_inputs; i++)
++		cfg->inputs[i].order = i;
+ 	sort(cfg->inputs, cfg->num_inputs, sizeof(cfg->inputs[0]),
+ 	     compare_input_type, NULL);
+ 
+diff --git a/sound/pci/hda/hda_auto_parser.h b/sound/pci/hda/hda_auto_parser.h
+index 579b11beac71..87af3d8c02f7 100644
+--- a/sound/pci/hda/hda_auto_parser.h
++++ b/sound/pci/hda/hda_auto_parser.h
+@@ -37,6 +37,7 @@ struct auto_pin_cfg_item {
+ 	unsigned int is_headset_mic:1;
+ 	unsigned int is_headphone_mic:1; /* Mic-only in headphone jack */
+ 	unsigned int has_boost_on_pin:1;
++	int order;
+ };
+ 
+ struct auto_pin_cfg;
 -- 
-Ville Syrjälä
-Intel
+2.34.1
+
 
