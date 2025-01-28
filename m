@@ -1,94 +1,106 @@
-Return-Path: <stable+bounces-110997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29B9A20F9B
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:30:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F503A20FC2
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 217C4166C45
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69E1B18868D8
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8AD1D4335;
-	Tue, 28 Jan 2025 17:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9492E1D4335;
+	Tue, 28 Jan 2025 17:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="008Pfunw"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VHMggeD7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293491ACEDF
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 17:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F264315F
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 17:47:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738085445; cv=none; b=LJzRIOsVBMkMRv84vWnCQBS/5CZmVJa5vsgGr+dlF5TuzHF1hHJhkTrjlbBCuPtFU5LTV/AoVzh1rhXqWCugl2Lsgh9YiOuaoFUB/rXwT9Xhg67tszpNVt8kcQnksYygLL8CZPKe6qR/g0S1ZXG1sGLgtS5/ybfurHud00uwhF8=
+	t=1738086430; cv=none; b=RgfsV1L4Nr9e3guGqBfd/+oeN2lIfAVH9XRrNdgnly5nZO8TEjE+7bh8mR/TwZEhyqi2UCUhBTK5rzB7bSayJp+Tgptq3nvtp26C50KITFawpD8QD29X9uIp8EJUOhNQfWy/MaH15R5WrG+/oBrqXjwTCo98f0iW331zkwcLclo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738085445; c=relaxed/simple;
-	bh=y8an0pAYmP+yxjG73kK47JSoHz9jfLNp8m3vGku4/9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V1sFRIdSiyPA7cQw1P6jkJEcuFEmkhERtaO7WrhTZTlMlj/C+GUUao8ZHFSXIXxLhOkFueL1mYcbKMUKBQNxrfkASUOcHVyJ8CLB1edfvuYKLvPzgHR2D9pppb2NzNemh4m3hmY6+/70d5/jGb0H/JAdzZjLRtcpSSA/+QH9wIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=008Pfunw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407AFC4CED3;
-	Tue, 28 Jan 2025 17:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738085443;
-	bh=y8an0pAYmP+yxjG73kK47JSoHz9jfLNp8m3vGku4/9s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=008Pfunw/eldLmDFq7w0sDFRXaNZyW9J7lU07kbaAD31+FF9eMQTbvR4Vd7MmZRYe
-	 IdSz4BDTu3eKkFX0Xw+T4iwU4J/oHGcIuXK2zRF4FoRx+DN9EFBSX+3KbYdH+ryzd9
-	 GqAAXFOPBjqEQjzi47oFts8mP6+QBXbKU422H9Rc=
-Date: Tue, 28 Jan 2025 18:30:40 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: stable@vger.kernel.org, Michael Kelley <mhklinux@outlook.com>,
+	s=arc-20240116; t=1738086430; c=relaxed/simple;
+	bh=UD+we7ElAg8tZM4PJMeQ6tQcyZVHEFVawN5MyHgPdfE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tn8fFQDKQvx4luYPLo/cz7RcQwu55Vo6WJz70BDLUKMC0Qic15CGk/GixHWRZfDtwFONL4YnXOn/C3kCzuqC9ZNCRx4HkucxCyUGhHU0n8y2xAJMcbObSiiAgoUeI3GkjYs8naOFZghyZykUqF17id4Yle+m+wsBvsfQzXD0UsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=VHMggeD7; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from eahariha-devbox.5bhznamrcrmeznzvghz2s0u2eh.xx.internal.cloudapp.net (unknown [40.91.112.99])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 963142037160;
+	Tue, 28 Jan 2025 09:47:08 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 963142037160
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1738086428;
+	bh=krfdq+MbHBS2tHUA3bAzHezNbS1vSuSKBXsJTNrn+Qg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VHMggeD77td5wjtmSzoKmoj3q5esAG/0v00/DsIAFUWIgigqMqcHVsSZjSeJ/udTK
+	 rzZtGSDjWiu1utpM12fAAuCEw9OR4CnMav1iy3R66unezZBtE5AJMdkIjmRgS28jqq
+	 XeXFYLU9WzRB1zLtB4oSFi/BfnPuvd9riKKzShsg=
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
 	"Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: Re: [PATCH 6.12.y] scsi: storvsc: Ratelimit warning logs to prevent
- VM denial of service
-Message-ID: <2025012816-usher-discover-d252@gregkh>
-References: <20250127182955.67606-1-eahariha@linux.microsoft.com>
- <2025012856-written-jarring-4843@gregkh>
- <185173f5-5f46-4c24-b4fb-86dab478ea02@linux.microsoft.com>
+Subject: [PATCH 6.13.y] scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
+Date: Tue, 28 Jan 2025 17:46:58 +0000
+Message-ID: <20250128174658.33352-1-eahariha@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <185173f5-5f46-4c24-b4fb-86dab478ea02@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 28, 2025 at 09:08:42AM -0800, Easwar Hariharan wrote:
-> On 1/27/2025 9:35 PM, Greg KH wrote:
-> > On Mon, Jan 27, 2025 at 06:29:54PM +0000, Easwar Hariharan wrote:
-> >> commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream
-> >>
-> >> If there's a persistent error in the hypervisor, the SCSI warning for
-> >> failed I/O can flood the kernel log and max out CPU utilization,
-> >> preventing troubleshooting from the VM side. Ratelimit the warning so
-> >> it doesn't DoS the VM.
-> >>
-> >> Closes: https://github.com/microsoft/WSL/issues/9173
-> >> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> >> Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
-> >> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-> >> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> >> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> >> ---
-> >>  drivers/scsi/storvsc_drv.c | 8 +++++++-
-> >>  1 file changed, 7 insertions(+), 1 deletion(-)
-> > 
-> > What about 6.13.y?
-> > 
-> 
-> Yes, needs a backport to that too, another miss on my part. :(
-> 
-> Would you rather I send it after rc1 is tagged, or now for completeness?
+commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream
 
-Whenever you have it, we can't apply any of these until -rc1 is out.
+If there's a persistent error in the hypervisor, the SCSI warning for
+failed I/O can flood the kernel log and max out CPU utilization,
+preventing troubleshooting from the VM side. Ratelimit the warning so
+it doesn't DoS the VM.
 
-thanks,
+Closes: https://github.com/microsoft/WSL/issues/9173
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+---
+ drivers/scsi/storvsc_drv.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index d0b55c1fa908..b3c588b102d9 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -171,6 +171,12 @@ do {								\
+ 		dev_warn(&(dev)->device, fmt, ##__VA_ARGS__);	\
+ } while (0)
+ 
++#define storvsc_log_ratelimited(dev, level, fmt, ...)				\
++do {										\
++	if (do_logging(level))							\
++		dev_warn_ratelimited(&(dev)->device, fmt, ##__VA_ARGS__);	\
++} while (0)
++
+ struct vmscsi_request {
+ 	u16 length;
+ 	u8 srb_status;
+@@ -1177,7 +1183,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
+ 		int loglevel = (stor_pkt->vm_srb.cdb[0] == TEST_UNIT_READY) ?
+ 			STORVSC_LOGGING_WARN : STORVSC_LOGGING_ERROR;
+ 
+-		storvsc_log(device, loglevel,
++		storvsc_log_ratelimited(device, loglevel,
+ 			"tag#%d cmd 0x%x status: scsi 0x%x srb 0x%x hv 0x%x\n",
+ 			scsi_cmd_to_rq(request->cmd)->tag,
+ 			stor_pkt->vm_srb.cdb[0],
+-- 
+2.43.0
+
 
