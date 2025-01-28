@@ -1,47 +1,58 @@
-Return-Path: <stable+bounces-111060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD38A21380
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 22:15:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2094A213B7
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 22:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 555533A41FC
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:15:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40F68163434
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246E81DE4EA;
-	Tue, 28 Jan 2025 21:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345FC192590;
+	Tue, 28 Jan 2025 21:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="WxSWhrwi"
+	dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b="heZJGV8J"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8457A3C14;
-	Tue, 28 Jan 2025 21:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mr6.vodafonemail.de (mr6.vodafonemail.de [145.253.228.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD83878F58;
+	Tue, 28 Jan 2025 21:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.253.228.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738098944; cv=none; b=CvsD8dftclwMq5wqVXao9zOGYMIQ3dm77SEn8ZtqBRsp2GYzghnVhJjkpZNZ3lcBXHdMLDeENC9uHQWwKfEAW2kyqKWrHEnK/ufmDkjOuA6LZceXvshIB8oBvSBie/xJ/TvsbDILT4QtwdTufqK69Y7ymGhZZMpzzi+t1LXmOK8=
+	t=1738101055; cv=none; b=WvlEoOtl3XsmZ+Itzc1EWvRqoaHPhQot/9L+oSxhqXWm3RIAZt4+ls/L32asqZGBeTbMrgFVU/VLjvfmCE0gX3XMNiToUkzEt/LhLH9xWK5sUaP9SLvLkphEd2U+ng/ZUIvxQcRxmlrCsyT2BPYGplSnYu0RZxkU1MWbYQlaXGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738098944; c=relaxed/simple;
-	bh=UEvLk/uh7TKxUr2pFE+gRqreDGzbw4BPWhRCqU3VKOo=;
+	s=arc-20240116; t=1738101055; c=relaxed/simple;
+	bh=HKMbHG41kO96ZF2P48iZY660NW4iqDPvky++tHvVjE0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RkTUISr1D6F3n6FdF9PQwzUHeaOzZyg18bliEc3VgQ/EFca6q23GJ79oMhQm1zRiikfxlyoOT2usd0dK3UVe2wDL7u2ZCwob3hlVIh4zYhZOufSorbp3P9adz6f5PLOrOUjIjXr66DAroxd0lefM/ZjNhEgS0VdMH1KPtTPxJgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=WxSWhrwi; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.184.60] (unknown [131.107.160.188])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E26E2203718A;
-	Tue, 28 Jan 2025 13:15:42 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E26E2203718A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738098943;
-	bh=/RmO98xeDMMsl1UmOBAPa9d6T82u+QmX8i/YdJeK+uA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WxSWhrwikpH/vJCIPFqAhiSBnzMuInlftBmKlOPE/HkHsuDKZw380FW+aHW0/nFl2
-	 UpjK/paXrOyG4XwwiV3BNNp9ZeUn0mV4l4ulp3Du1g5LSSw5DjjtIU2DdMz7TDaIrI
-	 30GjNcQwoi2X3qVDgypWhgXbQJ/ejvfoSygmfYkk=
-Message-ID: <4d7bcc3a-4c8e-4757-adae-66be1c5fe921@linux.microsoft.com>
-Date: Tue, 28 Jan 2025 13:15:42 -0800
+	 In-Reply-To:Content-Type; b=CKGko+iso+tg/amLVycvpiJ1dKemJnwoMgUhKKTIKlicdiYEaLVIwzrhMI1V1VLnBloolB/e2sdbF5LiVxVHFknDZ5Mc8vDKEXEw6v4Z4spxep7hChgy2OjrFhEicbOCxP+mKujkcmP+rQ+noGyJwfkfXSzrBmDG8mqlYrk8+6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arcor.de; spf=pass smtp.mailfrom=arcor.de; dkim=pass (1024-bit key) header.d=arcor.de header.i=@arcor.de header.b=heZJGV8J; arc=none smtp.client-ip=145.253.228.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arcor.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arcor.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcor.de;
+	s=vfde-mb-mr2-23sep; t=1738100684;
+	bh=tGbpeM79xiFk5lp0rBzeLonbHibRpHMeiZL0TF7ClVQ=;
+	h=Message-ID:Date:User-Agent:Subject:To:References:From:
+	 Content-Language:In-Reply-To:Content-Type:From;
+	b=heZJGV8J+vPNhcQzzlETPmmSiTlBizcsmYUW+lKUe46CVMEbFLGR5yYtzDzk+6iCe
+	 dcZAg33greGdgjO0FE3IemqWlsZv3l3+XDSPdGbPBnrxAiTtWTEjpSDUuRuH4B+YQH
+	 CjVk8Dokht4vNahB2wCpK2t27hhDwB9LMsJ0UAvA=
+Received: from smtp.vodafone.de (unknown [10.0.0.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mr6.vodafonemail.de (Postfix) with ESMTPS id 4YjJj82c6tz1xqh;
+	Tue, 28 Jan 2025 21:44:44 +0000 (UTC)
+Received: from [192.168.178.41] (port-83-236-36-1.dynamic.as20676.net [83.236.36.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.vodafone.de (Postfix) with ESMTPSA id 4YjJhm5f97z8snN;
+	Tue, 28 Jan 2025 21:44:21 +0000 (UTC)
+Message-ID: <6c663851-52f7-42fe-92a4-3e33f46a8dd5@arcor.de>
+Date: Tue, 28 Jan 2025 22:44:21 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,74 +60,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.13 11/15] hyperv: Do not overlap the hvcall IO
- areas in hv_vtl_apicid_to_vp_id()
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Michael Kelley <mhklinux@outlook.com>,
- Easwar Hariharan <eahariha@linux.microsoft.com>,
- Nuno Das Neves <nunodasneves@linux.microsoft.com>,
- Wei Liu <wei.liu@kernel.org>, kys@microsoft.com, haiyangz@microsoft.com,
- decui@microsoft.com, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, linux-hyperv@vger.kernel.org
-References: <20250128175346.1197097-1-sashal@kernel.org>
- <20250128175346.1197097-11-sashal@kernel.org>
-Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <20250128175346.1197097-11-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: 6.12.10: Regression in Hans' commit 613f2150 leading to excessive
+ sysfs entry recreation?
+To: Hans Verkuil <hverkuil-cisco@xs4all.nl>, stable@vger.kernel.org,
+ linux-media@vger.kernel.org
+Cc: regressions@lists.linux.dev,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Farblos <farblos@vodafonemail.de>
+References: <6555309b-830d-449b-800c-55306c19c659@vodafonemail.de>
+ <D69CB9C3-AF3E-4E60-B35B-FBBE1D363207@arcor.de>
+ <0c8c26e3-f806-4238-80e7-14ec0a288589@xs4all.nl>
+From: Jens Schmidt <jens.schmidt140@arcor.de>
+Content-Language: de-DE-frami, en-US
+In-Reply-To: <0c8c26e3-f806-4238-80e7-14ec0a288589@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-purgate-type: clean
+X-purgate: clean
+X-purgate-size: 506
+X-purgate-ID: 155817::1738100680-837FD465-FE86B99C/0/0
 
-Hi Sasha,
+On 2025-01-28  16:45, Hans Verkuil wrote:
 
-The patch picked up for the stable tree will need this bit
-"[PATCH v6 3/5] hyperv: Enable the hypercall output page for the VTL  mode"
+> Well spotted! Yes, it is related to that commit.
+> 
+> I'll take a closer look at this tomorrow since this test against
+> cec_caps needs work.
 
-https://lore.kernel.org/linux-hyperv/20250108222138.1623703-4-romank@linux.microsoft.com/
+Thanks.
 
-On 1/28/2025 9:53 AM, Sasha Levin wrote:
-> From: Roman Kisel <romank@linux.microsoft.com>
-> 
-> [ Upstream commit f285d995743269aa9f893e5e9a1065604137c1f6 ]
-> 
-> The Top-Level Functional Specification for Hyper-V, Section 3.6 [1, 2],
-> disallows overlapping of the input and output hypercall areas, and
-> hv_vtl_apicid_to_vp_id() overlaps them.
-> 
-> Use the output hypercall page of the current vCPU for the hypercall.
-> 
-> [1] https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/hypercall-interface
-> [2] https://github.com/MicrosoftDocs/Virtualization-Documentation/tree/main/tlfs
-> 
-> Reported-by: Michael Kelley <mhklinux@outlook.com>
-> Closes: https://lore.kernel.org/lkml/SN6PR02MB4157B98CD34781CC87A9D921D40D2@SN6PR02MB4157.namprd02.prod.outlook.com/
-> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> Reviewed-by: Nuno Das Neves <nunodasneves@linux.microsoft.com>
-> Link: https://lore.kernel.org/r/20250108222138.1623703-6-romank@linux.microsoft.com
-> Signed-off-by: Wei Liu <wei.liu@kernel.org>
-> Message-ID: <20250108222138.1623703-6-romank@linux.microsoft.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   arch/x86/hyperv/hv_vtl.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-> index 04775346369c5..4e1b1e3b56584 100644
-> --- a/arch/x86/hyperv/hv_vtl.c
-> +++ b/arch/x86/hyperv/hv_vtl.c
-> @@ -189,7 +189,7 @@ static int hv_vtl_apicid_to_vp_id(u32 apic_id)
->   	input->partition_id = HV_PARTITION_ID_SELF;
->   	input->apic_ids[0] = apic_id;
->   
-> -	output = (u32 *)input;
-> +	output = *this_cpu_ptr(hyperv_pcpu_output_arg);
->   
->   	control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_ID_FROM_APIC_ID;
->   	status = hv_do_hypercall(control, input, output);
+Only I feel that I messed up my first ever kernel bug by using
+the wrong MUA at the wrong time ... if there is any "reported by"
+thingy to attribute to me (no feelings hurt if not), please
+attribute to my "Open Source alter ego" 
 
--- 
-Thank you,
-Roman
+  Farblos <farblos@vodafonemail.de>
+
+Thanks again.
+
+Jens
 
 
