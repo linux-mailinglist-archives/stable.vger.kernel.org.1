@@ -1,363 +1,174 @@
-Return-Path: <stable+bounces-110924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37343A202D1
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 02:03:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3D1A20358
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 04:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79CE1163E29
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 01:03:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57A6C165868
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 03:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFD01CD2B;
-	Tue, 28 Jan 2025 01:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4C51DA4E;
+	Tue, 28 Jan 2025 03:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrokpLBI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtKwE+YX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C1F4400;
-	Tue, 28 Jan 2025 01:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C834A1D
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 03:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738026218; cv=none; b=Ezx6OnbFcQ+84qqO1BlU2LtcMswRpNYe0Kdv/zwgK7pV1IXDY4Swe5zBF1fOZX+WHwyw5DlV4tcDDqy/NhaECfFrDpBv1jG8iE/IGhCh+r4LvdQ/niNomHzM5G3+Qr7R+b2FfkjAx5ObI/0msrT/fdTEWJjS19LAXqHZT08cgyY=
+	t=1738035038; cv=none; b=RidH7wI3WZeWJVvXXIkgNQUR3csjOs2IPgTy1/4kXNedt+z9XqP+SPt3iz8RTUeDGO3lNdOqANzR5y8GWSdieAVjp2v7d1E9pcHFYX4VrcrU2SDJS3UxZLikJF6n0lqXMhM8uRL8zsFJvMV85JvuIm9lDe4PFYBnCWVuG8RdsEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738026218; c=relaxed/simple;
-	bh=xZ15X4DoghMssC9a3Un22tMSTHRvrWNtmG3QOpgDNx4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UXbXXFaandw1Juf9Va2NKlm//q1hqFVcWcJ+bEkQgnFxfOvk/kUK8cN2BOAQAHl97ZxDYaVJefgD21ToEK3d5NI3F4X5I+DQtTQY9rfULw29KAHEFIAjTYgSPGfRTHS3TD8nh0wP3lBtWoVMYyPW+wRlL3HdC7NO6z15gKg02MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrokpLBI; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1738035038; c=relaxed/simple;
+	bh=fFpgf3BzW6nJFY3bP+LtA2WAQmJ5Pn+P0AcD5DvSntw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YUU3hrpIoySSQjU0A0nRONJCn7/eQSOpXpOBG1gSO2XcXxElwOESk8oOlzn0WSZNJZ5fmIHZURZ9Xu+9LiULagvQ70IJekPN84EBeeas67BR6GZf8bsz0gaKcsJ5wfe6QeYdBs2Pps5GmKehCMQ7Yrz0PTodVCIZQ0V5r0Ij1z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtKwE+YX; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43675b1155bso58112775e9.2;
-        Mon, 27 Jan 2025 17:03:36 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa684b6d9c7so57268066b.2
+        for <stable@vger.kernel.org>; Mon, 27 Jan 2025 19:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738026215; x=1738631015; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1738035035; x=1738639835; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rhmkjsOBo2Z/j8AVygLCN1cexQOSzzXPKI5vQhYu1KU=;
-        b=TrokpLBIX7ejW6iYC97uIioGtWLGU6kIBj23GZBjH2yCYPuon/ZBBE84TUGAW6cn9n
-         aKiWF92j5XWiWTwkMczgjqTG1TxyPyxC5do0rWLBbK3CPYba3g+VnTbEIPGKLiXlObyv
-         NT20SwvccHSdSMunEXLj8sqKB3bArHe5fuRIbudaSjtQh15v6kKC04fadH5+9nA89hCJ
-         JxKRFgnC9z79/1YMg89jTB0j8oqPmg/nohD/HH2WlSmaPsVaZDZuVC747VCGTXe9A/EL
-         I5yjuPNzLBN2upuG7AUs0m3JcvQidE3yyG+Gho+lugXAbrUzxgOABaXyq3QSj49dA/Fb
-         twGQ==
+        bh=67F838oc+dojbhnQEcvwv7YodRtpbtCE6Z6PyI/ngN8=;
+        b=KtKwE+YX0U2/9AjObPxc2DdiQ4eU7o8kRzD+5zksoomkHXMKtCxbUkBbgA99G5qBO6
+         zqgzo570a+dPJNyQpWi8slusv79LW8n2aQ7vNcfE2M6cC6f++z0tzRxAZSHJfqKWvMe8
+         mhppTQ4QuyO45J6ngP8ZZl3tzapyqF/zAzu0H8VoxR6S+2VW9a0tn3ul4KEOX4LTQrqM
+         UO7PdtBpFafu9qFHn6rffNqVSEz4w5x261qUSmrL7O2jy1xX/CEV3ewPjECU3Ew6usIx
+         olCwdJ+T3gPEyUkbFPKViwKrlv8w/LlzBNazz8YBhcpL7V8pmdtNnotE/llcVEHh9XHW
+         CicA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738026215; x=1738631015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rhmkjsOBo2Z/j8AVygLCN1cexQOSzzXPKI5vQhYu1KU=;
-        b=d+Iky74I9A7G7phdjwOljJIwO93bfje5lbtZbTI14d+se742uAzoVIV1x5Hhcpf0RP
-         A8whKfUGK9Ytme2FglwtCNl+V/288ABPsvs2HdVKmqqTXHBWQsfMS7NnHxUTr4PEbPET
-         TP6/grAgxkVjZsJMpj162l90WNPJUYQecGzjrmmng+Y6TFRMtZTfXZi/EaNcvk2pU5GA
-         IoKPpcYvbhvmItIPjUkX8YwV0VtygSmNjVja2EIGBunGtuEVln/ZjEt+dYP8Le7CnPMi
-         wMdh97DvFebW+UY/CUp4pDCfiUSWDXS9mz6fhY8ZReFCJBLiFDwp/Nhx0zQq8fVZeOkw
-         IbVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWAfs7g2H11GMMjYDpqb2TsKmB3TZeqxKrdHywT6TuYswI4iivIubCIJRcjMCj+Jw6p+hirJpdA@vger.kernel.org, AJvYcCWO3MNNnEynUtn2p+6lNn5L7ayz0W1OdV1BlQeY1emmSAjvFIsAU6s7sajtZ4QnZlzA346u7H71Kg==@vger.kernel.org, AJvYcCWR0qZMBdkbCZH7WIlWtuOc0nqpLqKLHEdcOh1B45X2I3ZlbADgb0TVYzXFKjlGWEIqx8ZE92rj6+GT5AlB@vger.kernel.org, AJvYcCXe0oTwppl+TMlPPopaj3Ou5qEpM6HcO90Mu2H9Bq+m1Bbows/7bmcXr9dfhW3aot+8UmnXuI2S@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWNzeN39qDQUJScjfmfn9gGBRbH+oZNteclTy74ea0dfK2Mw7i
-	aRtb8La1hvqoUwHPIB80yqhuyv7uOdCIHA1t6rGUg46/FX1Git+JBXCIGw5caYg1uUD1hQR/RZj
-	zAqT0ZeanYy1tT6AXKJJIia2PiVquKg==
-X-Gm-Gg: ASbGncux2HdAQKgeEhEKFDPxBuJiu+TJe3TeRiaae1Zb+a8dTZ7I8HqpijIU4bNWMUd
-	w03NIcMbSLZ03Z5dvWXOGWXOYU2Jxt1zG4o+FKq0PB+Nh3gX+1I38IoIq71JO3jfX
-X-Google-Smtp-Source: AGHT+IEDWzRks3TjFTSbQ2b+zEu7/0uTZ1BChgoyrARRUlYLKlYL/SwlWG6YkqYX6NFdR8PqF8wMD0Ew7xQ1Bi9yE7g=
-X-Received: by 2002:a5d:59a3:0:b0:38c:2745:2dd8 with SMTP id
- ffacd0b85a97d-38c27452f9amr14952851f8f.37.1738026214807; Mon, 27 Jan 2025
- 17:03:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738035035; x=1738639835;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=67F838oc+dojbhnQEcvwv7YodRtpbtCE6Z6PyI/ngN8=;
+        b=GXciDjvkWOXiJM1DWX2+IbUzCKhVIGs3vk5EHBg1R0hY17pqWNf4WdedGGhVnmuW2l
+         39zWHV0iWHUXZN8T4HIFQXazpanbl+FSk+C9DJo24uG9bCahL8L82D7nPmLP6RH/jnPe
+         FaNFHI5MCVdRDf3u+iL74JqiK/RdoVyCLYWNoy5y8asXrF8ptjknfNYhq/OtGMnTHey5
+         lhXGlpQ1jAWZU5UrMd68AsTslxB6Jpe0IU4XdLCduq69Uun9VEyDCUEGVByCeog9fXtZ
+         X88oxIyasAMWL11eRvRPpRmaxfhUtEU2CAneffuOX9+cmN8d0kTF3tTAuVtxMX9UFXO/
+         ymaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXFC0vi/Dn6x/FKtVEeBXJmdCBgvaeK4ibiN5O7dxO3nPC4qI7bu5QNJpMvfs49GRo/GtWpPU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZORkv5HzOmUbp27xBG7kxcm4YIDaO3QYZcQRA48PHL/4kAnUU
+	hCRCky9wiNtTtOOLn8YUXsWO5pqaPux4cD52eHbHHdRCiyfMii3Z
+X-Gm-Gg: ASbGncs9IeFmDoTorSriTiBb+ZP6MY+MFTDDDgmUrho6TehSJ4qh7UCzNpGL3+urOQQ
+	2L6hF2cnzz9xLyAXRYuX/iX5Wig/XjTZRMD0PXkbmVX4ZTAXCY3RNUpyaSi+pczhrTBWxPdT2FQ
+	prF7RLgS5ksux6OrsxAw261V+Wu73cNbgjGe5ie3knjfRYge/SRv8rMtby7lKqR13y97If6a3Vp
+	Gc4WX2jP1Oi3CxmIN6zyq5+LdW0m6itoM+w8eqSEHu+IZqoTtBywNX7yavNNsJTNG3HBlV45QEi
+	oCntfBJwa37NEP0=
+X-Google-Smtp-Source: AGHT+IEf2qKuHXTYcAUUhGXUpk0g7e8L3G11lWnZRuVGroEYxi0LMHlRQA9QLELJdipbR0xO2rwuBA==
+X-Received: by 2002:a17:907:72cf:b0:aa6:8676:3b33 with SMTP id a640c23a62f3a-ab38b3f8f45mr3795472466b.47.1738035034510;
+        Mon, 27 Jan 2025 19:30:34 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab675e126eesm697978366b.14.2025.01.27.19.30.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 27 Jan 2025 19:30:32 -0800 (PST)
+Date: Tue, 28 Jan 2025 03:30:30 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, jannh@google.com,
+	linux-mm@kvack.org, Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/vma: fix gap check for unmapped_area with
+ VM_GROWSDOWN
+Message-ID: <20250128033030.syh64kqq3xoigl7v@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20250127075527.16614-1-richard.weiyang@gmail.com>
+ <20250127075527.16614-2-richard.weiyang@gmail.com>
+ <ae776b38-1446-439b-9597-a83c4be096ab@lucifer.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250122160645.28926-1-ryabinin.a.a@gmail.com> <20250127150357.13565-1-ryabinin.a.a@gmail.com>
-In-Reply-To: <20250127150357.13565-1-ryabinin.a.a@gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 28 Jan 2025 02:03:24 +0100
-X-Gm-Features: AWEUYZmeJLtK41LtsCBto-t2LF1U1pFl4f5DNAiSNd3CvJ2BmMeJGFRaWxwbPLE
-Message-ID: <CA+fCnZck1nvDZaq9JwOMG6pBR+Uy3gHRAOM67UvDxxLzqChsug@mail.gmail.com>
-Subject: Re: [PATCH v2] kasan, mempool: don't store free stacktrace in
- io_alloc_cache objects.
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com, 
-	io-uring@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, juntong.deng@outlook.com, lizetao1@huawei.com, 
-	stable@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae776b38-1446-439b-9597-a83c4be096ab@lucifer.local>
+User-Agent: NeoMutt/20170113 (1.7.2)
 
-On Mon, Jan 27, 2025 at 4:05=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
-.com> wrote:
+On Mon, Jan 27, 2025 at 12:08:04PM +0000, Lorenzo Stoakes wrote:
+>You have a subject line of 'fix gap check for unmapped_area with
+>VM_GROWSDOWN'. I'm not sure this is quite accurate.
 >
-> Running the testcase liburing/accept-reust.t with CONFIG_KASAN=3Dy and
-> CONFIG_KASAN_EXTRA_INFO=3Dy leads to the following crash:
+>I don't really have time to do a deep dive (again, this is why it's so
+>important to give a decent commit message - explaining under what _real
+>world_ circumstances this will be used etc.).
 >
->     Unable to handle kernel paging request at virtual address 00000c64550=
-08008
->     ...
->     pc : __kasan_mempool_unpoison_object+0x38/0x170
->     lr : io_netmsg_cache_free+0x8c/0x180
->     ...
->     Call trace:
->      __kasan_mempool_unpoison_object+0x38/0x170 (P)
->      io_netmsg_cache_free+0x8c/0x180
->      io_ring_exit_work+0xd4c/0x13a0
->      process_one_work+0x52c/0x1000
->      worker_thread+0x830/0xdc0
->      kthread+0x2bc/0x348
->      ret_from_fork+0x10/0x20
+>But anyway, it seems it will only be the case if MMF_TOPDOWN is not set in
+>the mm flags, which usually requires an mmap compatibility mode to achieve
+>unless the arch otherwise forces it.
 >
-> Since the commit b556a462eb8d ("kasan: save free stack traces for slab me=
-mpools")
-> kasan_mempool_poison_object() stores some info inside an object.
-> It was expected that the object must be reinitialized after
-> kasan_mempool_unpoison_object() call, and this is what happens in the
-> most of use cases.
+>And these arches would be ones where the stack grows UP, right? Or at least
+>ones where this is possible?
 >
-> However io_uring code expects that io_alloc_cache_put/get doesn't modify
-> the object, so kasan_mempool_poison_object() end up corrupting it leading
-> to crash later.
+>So already we're into specifics - either arches that grow the stack up, or
+>ones that intentionally use the old mmap compatibility mode are affected.
 >
-> Add @notrack argument to kasan_mempool_poison_object() call to tell
-> KASAN to avoid storing info in objects for io_uring use case.
+>This happens in:
 >
-> Reported-by: lizetao <lizetao1@huawei.com>
-> Closes: https://lkml.kernel.org/r/ec2a6ca08c614c10853fbb1270296ac4@huawei=
-.com
-> Fixes: b556a462eb8d ("kasan: save free stack traces for slab mempools")
-> Cc: stable@vger.kernel.org
-> Cc: Alexander Potapenko <glider@google.com>
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Pavel Begunkov <asml.silence@gmail.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: Simon Horman <horms@kernel.org>
-> Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> ---
->  - Changes since v1:
->     s/true/false @notrack in __kasan_slab_free() per @andreyknvl
+>[ pretty much all unmapped area callers ]
+>-> vm_unmapped_area()
+>-> unmapped_area() (if !(info->flags & VM_UNMAPPED_AREA_TOPDOWN)
 >
->  include/linux/kasan.h  | 13 +++++++------
->  io_uring/alloc_cache.h |  2 +-
->  io_uring/net.c         |  2 +-
->  io_uring/rw.c          |  2 +-
->  mm/kasan/common.c      | 11 ++++++-----
->  mm/mempool.c           |  2 +-
->  net/core/skbuff.c      |  2 +-
->  7 files changed, 18 insertions(+), 16 deletions(-)
+>Where VM_UNMAPPED_AREA_TOPDOWN is only not set in the circumstances
+>mentioned above.
 >
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index 890011071f2b..4d0bf4af399d 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -328,18 +328,19 @@ static __always_inline void kasan_mempool_unpoison_=
-pages(struct page *page,
->                 __kasan_mempool_unpoison_pages(page, order, _RET_IP_);
->  }
+>So, for this issue you claim is the case to happen, you have to:
 >
-> -bool __kasan_mempool_poison_object(void *ptr, unsigned long ip);
-> +bool __kasan_mempool_poison_object(void *ptr, bool notrack, unsigned lon=
-g ip);
->  /**
->   * kasan_mempool_poison_object - Check and poison a mempool slab allocat=
-ion.
->   * @ptr: Pointer to the slab allocation.
-> + * @notrack: Don't record stack trace of this call in the object.
->   *
->   * This function is intended for kernel subsystems that cache slab alloc=
-ations
->   * to reuse them instead of freeing them back to the slab allocator (e.g=
-.
->   * mempool).
->   *
->   * This function poisons a slab allocation and saves a free stack trace =
-for it
-> - * without initializing the allocation's memory and without putting it i=
-nto the
-> - * quarantine (for the Generic mode).
-> + * (if @notrack =3D=3D false) without initializing the allocation's memo=
-ry and
-> + * without putting it into the quarantine (for the Generic mode).
->   *
->   * This function also performs checks to detect double-free and invalid-=
-free
->   * bugs and reports them. The caller can use the return value of this fu=
-nction
-> @@ -354,10 +355,10 @@ bool __kasan_mempool_poison_object(void *ptr, unsig=
-ned long ip);
->   *
->   * Return: true if the allocation can be safely reused; false otherwise.
->   */
-> -static __always_inline bool kasan_mempool_poison_object(void *ptr)
-> +static __always_inline bool kasan_mempool_poison_object(void *ptr, bool =
-notrack)
->  {
->         if (kasan_enabled())
-> -               return __kasan_mempool_poison_object(ptr, _RET_IP_);
-> +               return __kasan_mempool_poison_object(ptr, notrack, _RET_I=
-P_);
->         return true;
->  }
+>1. Either be using a stack grows up arch, or enabling an mmap()
+>compatibility mode.
+>2. Also set MAP_GROWSDOWN on the mmap() call, which is translated to
+>VM_GROWSDOWN.
 >
-> @@ -456,7 +457,7 @@ static inline bool kasan_mempool_poison_pages(struct =
-page *page, unsigned int or
->         return true;
->  }
->  static inline void kasan_mempool_unpoison_pages(struct page *page, unsig=
-ned int order) {}
-> -static inline bool kasan_mempool_poison_object(void *ptr)
-> +static inline bool kasan_mempool_poison_object(void *ptr, bool notrack)
->  {
->         return true;
->  }
-> diff --git a/io_uring/alloc_cache.h b/io_uring/alloc_cache.h
-> index a3a8cfec32ce..dd508dddea33 100644
-> --- a/io_uring/alloc_cache.h
-> +++ b/io_uring/alloc_cache.h
-> @@ -10,7 +10,7 @@ static inline bool io_alloc_cache_put(struct io_alloc_c=
-ache *cache,
->                                       void *entry)
->  {
->         if (cache->nr_cached < cache->max_cached) {
-> -               if (!kasan_mempool_poison_object(entry))
-> +               if (!kasan_mempool_poison_object(entry, true))
->                         return false;
->                 cache->entries[cache->nr_cached++] =3D entry;
->                 return true;
-> diff --git a/io_uring/net.c b/io_uring/net.c
-> index 85f55fbc25c9..a954e37c7fd3 100644
-> --- a/io_uring/net.c
-> +++ b/io_uring/net.c
-> @@ -149,7 +149,7 @@ static void io_netmsg_recycle(struct io_kiocb *req, u=
-nsigned int issue_flags)
->         iov =3D hdr->free_iov;
->         if (io_alloc_cache_put(&req->ctx->netmsg_cache, hdr)) {
->                 if (iov)
-> -                       kasan_mempool_poison_object(iov);
-> +                       kasan_mempool_poison_object(iov, true);
->                 req->async_data =3D NULL;
->                 req->flags &=3D ~REQ_F_ASYNC_DATA;
->         }
-> diff --git a/io_uring/rw.c b/io_uring/rw.c
-> index a9a2733be842..cba475003ba7 100644
-> --- a/io_uring/rw.c
-> +++ b/io_uring/rw.c
-> @@ -167,7 +167,7 @@ static void io_rw_recycle(struct io_kiocb *req, unsig=
-ned int issue_flags)
->         iov =3D rw->free_iovec;
->         if (io_alloc_cache_put(&req->ctx->rw_cache, rw)) {
->                 if (iov)
-> -                       kasan_mempool_poison_object(iov);
-> +                       kasan_mempool_poison_object(iov, true);
->                 req->async_data =3D NULL;
->                 req->flags &=3D ~REQ_F_ASYNC_DATA;
->         }
-> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-> index ed4873e18c75..f08752dcd50b 100644
-> --- a/mm/kasan/common.c
-> +++ b/mm/kasan/common.c
-> @@ -230,7 +230,8 @@ static bool check_slab_allocation(struct kmem_cache *=
-cache, void *object,
->  }
+>We are already far from 'fix gap check for VM_GROWSDOWN' right? I mean I
+>don't have the time to absolutely dive into the guts of this, but I assume
+>this is correct right?
 >
->  static inline void poison_slab_object(struct kmem_cache *cache, void *ob=
-ject,
-> -                                     bool init, bool still_accessible)
-> +                                     bool init, bool still_accessible,
-> +                                     bool notrack)
->  {
->         void *tagged_object =3D object;
->
-> @@ -243,7 +244,7 @@ static inline void poison_slab_object(struct kmem_cac=
-he *cache, void *object,
->         kasan_poison(object, round_up(cache->object_size, KASAN_GRANULE_S=
-IZE),
->                         KASAN_SLAB_FREE, init);
->
-> -       if (kasan_stack_collection_enabled())
-> +       if (kasan_stack_collection_enabled() && !notrack)
->                 kasan_save_free_info(cache, tagged_object);
->  }
->
-> @@ -261,7 +262,7 @@ bool __kasan_slab_free(struct kmem_cache *cache, void=
- *object, bool init,
->         if (!kasan_arch_is_ready() || is_kfence_address(object))
->                 return false;
->
-> -       poison_slab_object(cache, object, init, still_accessible);
-> +       poison_slab_object(cache, object, init, still_accessible, false);
->
->         /*
->          * If the object is put into quarantine, do not let slab put the =
-object
-> @@ -495,7 +496,7 @@ void __kasan_mempool_unpoison_pages(struct page *page=
-, unsigned int order,
->         __kasan_unpoison_pages(page, order, false);
->  }
->
-> -bool __kasan_mempool_poison_object(void *ptr, unsigned long ip)
-> +bool __kasan_mempool_poison_object(void *ptr, bool notrack, unsigned lon=
-g ip)
->  {
->         struct folio *folio =3D virt_to_folio(ptr);
->         struct slab *slab;
-> @@ -519,7 +520,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsigne=
-d long ip)
->         if (check_slab_allocation(slab->slab_cache, ptr, ip))
->                 return false;
->
-> -       poison_slab_object(slab->slab_cache, ptr, false, false);
-> +       poison_slab_object(slab->slab_cache, ptr, false, false, notrack);
->         return true;
->  }
->
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index 3223337135d0..283df5d2b995 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -115,7 +115,7 @@ static inline void poison_element(mempool_t *pool, vo=
-id *element)
->  static __always_inline bool kasan_poison_element(mempool_t *pool, void *=
-element)
->  {
->         if (pool->alloc =3D=3D mempool_alloc_slab || pool->alloc =3D=3D m=
-empool_kmalloc)
-> -               return kasan_mempool_poison_object(element);
-> +               return kasan_mempool_poison_object(element, false);
->         else if (pool->alloc =3D=3D mempool_alloc_pages)
->                 return kasan_mempool_poison_pages(element,
->                                                 (unsigned long)pool->pool=
-_data);
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index a441613a1e6c..c9f58a698bb7 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1457,7 +1457,7 @@ static void napi_skb_cache_put(struct sk_buff *skb)
->         struct napi_alloc_cache *nc =3D this_cpu_ptr(&napi_alloc_cache);
->         u32 i;
->
-> -       if (!kasan_mempool_poison_object(skb))
-> +       if (!kasan_mempool_poison_object(skb, false))
->                 return;
->
->         local_lock_nested_bh(&napi_alloc_cache.bh_lock);
-> --
-> 2.45.3
+>I'm not saying we shouldn't address this, but it's VITAL to clarify what
+>exactly it is you're tackling.
 >
 
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Thanks for taking a look.
 
-Thank you!
+If my understanding is correct, your concern here is the case here never
+happen in real world.
+
+  We are searching a gap bottom-up, while the vma wants top-down.
+
+This maybe possible to me. Here is my understanding, (but maybe not correct).
+
+We have two separate flags affecting the search:
+
+  * mm->flags:      MMF_TOPDOWN  or not
+  * vma->vm_flags:  VM_GROWSDOWN or VM_GROWSUP
+
+To me, they are independent.
+
+For mm->flags, arch_pick_mmap_layout() could set/clear MMF_TOPDOWN it based on
+the result of mmap_is_legacy(). Even we provide a sysctl file
+/proc/sys/vm/legacy_vm_layout for configuration.
+
+
+For vma->vm_flags, for general, VM_STACK is set to VM_GROWSDOWN by default.
+And we use the flag in __bprm_mm_init() and setup_arg_pages().
+
+So to me the case is real and not a very specific one.
+
+But maybe I missed some background. Would you mind telling me the miss part,
+if it is not too time wasting?
+
+-- 
+Wei Yang
+Help you, Help me
 
