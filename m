@@ -1,117 +1,128 @@
-Return-Path: <stable+bounces-110999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A67AA20FCC
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:53:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C06A20FD0
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF5F162E5A
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD9A31888B24
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24381DE4DC;
-	Tue, 28 Jan 2025 17:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEC71DE8AD;
+	Tue, 28 Jan 2025 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHqen9k0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV/Bj6oK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962EB4315F;
-	Tue, 28 Jan 2025 17:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7381DE8A6;
+	Tue, 28 Jan 2025 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086829; cv=none; b=HU+Eed76+nCTu3M5Btd6cp5U7xO/XU6XLh9eCVSU2LKGzuIMSXaCIDyJp0pcCNolTrjchxYbYq2m13rWTk5cDupaQt6G0X4RyExRtvj9t0507/HH/t3KxkWRfq3S9xw26tyhYUiTzOQ6LFW3u+lV2ZwWkQbyAaVgV2WzrUQtQQo=
+	t=1738086831; cv=none; b=RDhAmw+7wDp9Vxa6X3w1OB/EnI80pCVmxOSIYT+LZZLJamrPaSAuLuumGOZwCWZs3h2yCzlJySWF7BcX09i6/rhcxZXvgAU+bUvR1o8OIdbtmb48GiLLoTL1MUfqsR/W9yeYby+dHs9rNCQqz74htvIpQQkcSWOpXscN3qsnJos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086829; c=relaxed/simple;
-	bh=yNfP5mIHDg5uYOqRD8vIgyvxFJiwGSjFvATMWg+rdEE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AFaDkbxW+eLwGt9M8u5/Q3dvyaWKrH4kiu3uDS0hJqELYGKrpMWO2Cwm+F/o1Tr26ERSP2Du28e4lZBFLbMuxX74Cvc2ZQx19sjf76XLNCdOxkEnXMou5A4GblFP0feWTjwVBxnAJInuv2OzQvFgCmt6KcUk98hM1hSFpYqxMqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHqen9k0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEABC4CED3;
-	Tue, 28 Jan 2025 17:53:47 +0000 (UTC)
+	s=arc-20240116; t=1738086831; c=relaxed/simple;
+	bh=CDOs8WP2JNN/dHAwgr95DyRHckyBFA1Uf2K4mS/it3Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gOd3ctWKPxQOvarFIlR40FAD+HJHL9keK1X6PAEfyDexEqKKkwcBM96jQE74DivKoiU4+v4JiyXx8Df62Q6aIcW1YEnUbfmP4HsBTQF9Jcxu5lKoDw703dP4hqhEQkdRaoinT+0xnDqmVzcripdKT19e2HfA4zcrhl/NGOT1HVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV/Bj6oK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99342C4CEE1;
+	Tue, 28 Jan 2025 17:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086829;
-	bh=yNfP5mIHDg5uYOqRD8vIgyvxFJiwGSjFvATMWg+rdEE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KHqen9k06xHd9x1AXewYpCBYlfaUscA79uC7RsGDnr/OveWNsjznxvZTDBZf8vHKj
-	 r6x7mF4TZNc6Z7gHCLwN96a1dAIvVfKxQJXUA+DSMDbluOCdIHQdX9zd/qOLHTYa6H
-	 fea+BcfLLq7pz8RTkRRS0WqtKwo2Ns8vrdj3q52EDSWazEcbFjhMC8R++R8cD+44Pd
-	 WqO8TthVfm5QMNOBHLC1P9qu0+vpd/dUB+dlC8kkOE/AkKP2frrm6tPMwGrqNiep8q
-	 sJoq+Ge0Iy63lOnwpHd2Vmb502XqGDas87gTTiNI+VBM2JLzghUFUFlnSewbtAY0IN
-	 rvDQJkEUkUyiQ==
+	s=k20201202; t=1738086830;
+	bh=CDOs8WP2JNN/dHAwgr95DyRHckyBFA1Uf2K4mS/it3Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mV/Bj6oKixuq61K/2pm3gYPQ+tJTmDje8N3xpzt1wHQ4jODmhaC363xoJeOXsE/fC
+	 VMr1bpuTCRA4Jwt6BNU+WrqNC192lROxJf0v5+Pf1ppmFI6TsPn6K6gf7IhhCVVlBz
+	 NMot0Rhntmfu5BRdmZuGqET2nU2f4cydLNDUnbqL44r2jVNLHBE+q305O4Q4qHwMTC
+	 9W2gf78+w+1hAOGtT9NG8pbujbnvStA9s6/SIU28wF1eKQKphqJBwYlsALsEA7B1dg
+	 wODPftWLN4XxLVWtF8amBoG/hr8x7mJ3xXsbyjK3DcfnHUIyaZi1u2Mtr93KKoQWYF
+	 wqOi8prq93z7A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	aospan@amazon.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 01/15] media: cxd2841er: fix 64-bit division on gcc-9
-Date: Tue, 28 Jan 2025 12:53:32 -0500
-Message-Id: <20250128175346.1197097-1-sashal@kernel.org>
+	kw@linux.com,
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 02/15] PCI: endpoint: Add size check for fixed size BARs in pci_epc_set_bar()
+Date: Tue, 28 Jan 2025 12:53:33 -0500
+Message-Id: <20250128175346.1197097-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250128175346.1197097-1-sashal@kernel.org>
+References: <20250128175346.1197097-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
+[ Upstream commit f015b53d634a10fbceba545de70c3e109665c379 ]
 
-It appears that do_div() once more gets confused by a complex
-expression that ends up not quite being constant despite
-__builtin_constant_p() thinking it is:
+A BAR of type BAR_FIXED has a fixed BAR size (the size cannot be changed).
 
-ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
+When using pci_epf_alloc_space() to allocate backing memory for a BAR,
+pci_epf_alloc_space() will always set the size to the fixed BAR size if
+the BAR type is BAR_FIXED (and will give an error if you the requested size
+is larger than the fixed BAR size).
 
-Use div_u64() instead, forcing the expression to be evaluated
-first, and making it a bit more readable.
+However, some drivers might not call pci_epf_alloc_space() before calling
+pci_epc_set_bar(), so add a check in pci_epc_set_bar() to ensure that an
+EPF driver cannot set a size different from the fixed BAR size, if the BAR
+type is BAR_FIXED.
 
-Cc: Dan Carpenter <dan.carpenter@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added Closes tags]
+The pci_epc_function_is_valid() check is removed because this check is now
+done by pci_epc_get_features().
+
+Link: https://lore.kernel.org/r/20241213143301.4158431-13-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/pci-epc-core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
-index d925ca24183b5..415f1f91cc307 100644
---- a/drivers/media/dvb-frontends/cxd2841er.c
-+++ b/drivers/media/dvb-frontends/cxd2841er.c
-@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
- 
- static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index bed7c7d1fe3c3..c69c133701c92 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -609,10 +609,17 @@ EXPORT_SYMBOL_GPL(pci_epc_clear_bar);
+ int pci_epc_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 		    struct pci_epf_bar *epf_bar)
  {
--	u64 tmp;
--
--	tmp = (u64) ifhz * 16777216;
--	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
--
--	return (u32) tmp;
-+	return div_u64(ifhz * 16777216ull,
-+		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
- }
+-	int ret;
++	const struct pci_epc_features *epc_features;
++	enum pci_barno bar = epf_bar->barno;
+ 	int flags = epf_bar->flags;
++	int ret;
  
- static u32 cxd2841er_calc_iffreq(u32 ifhz)
+-	if (!pci_epc_function_is_valid(epc, func_no, vfunc_no))
++	epc_features = pci_epc_get_features(epc, func_no, vfunc_no);
++	if (!epc_features)
++		return -EINVAL;
++
++	if (epc_features->bar[bar].type == BAR_FIXED &&
++	    (epc_features->bar[bar].fixed_size != epf_bar->size))
+ 		return -EINVAL;
+ 
+ 	if ((epf_bar->barno == BAR_5 && flags & PCI_BASE_ADDRESS_MEM_TYPE_64) ||
 -- 
 2.39.5
 
