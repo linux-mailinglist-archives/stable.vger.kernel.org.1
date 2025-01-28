@@ -1,262 +1,223 @@
-Return-Path: <stable+bounces-110972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04872A20C69
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:58:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F25A20C7F
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB173A15C4
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 14:58:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 702D43A1DA4
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22FF1ACEBB;
-	Tue, 28 Jan 2025 14:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556491ACECC;
+	Tue, 28 Jan 2025 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dlee6Q3a"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2jG+U6Va"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC3AF9F8;
-	Tue, 28 Jan 2025 14:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495FE1ACEAF
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 15:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738076306; cv=none; b=q461SAU/0ouoL4c4DItk/TadqHzaDMaBDaRAG/XdTkha2XOAbVCNQR2lFHCJKnvEOSEJap6iAzppVG8RcDw0KN6cj93QGUtAH0pzxago8V+TmsKzKb08ZQjkO+9OswU3+sDZVXSA1m7sroJjNFR7AuFWxvsxIL7OHZVm2u+aO2w=
+	t=1738076619; cv=none; b=eo2CX6F1OWlBphQZQ3+B13rOGJuBYugCdiBpS7CrXmEY7lFo0swCAOpZ158ESRMnW9Ofa/Kh5tutxzkZEeEwX6Imi7VekcvM5Qzwtw1WG3fWDqhVnvMXNKrM7o0esQxq7A3yb/3VcPg2z88/KCLDOoirPTG8k84HIl4XSYfd7i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738076306; c=relaxed/simple;
-	bh=lM67DGGiMbIMrMTUwNR8l7KiQyWcxQfJsWFW+hgxxU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ASXdoZNCqbEudWx3F+MzzRdTs3SfnYpEZ7/VFfv8RK4UH12kKvYwu3kvcWx+rN9keEclXXZ9HmEqBZbA7maskgfuhTh56ePaJSkkay/i30mLpVrNY8oP3zZ4KoZhLaKEJz6Obcmkb+glfwo1ucNrDdXMGI4TI5hP5O9hf1xreoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dlee6Q3a; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ef70c7efa5so8031926a91.2;
-        Tue, 28 Jan 2025 06:58:24 -0800 (PST)
+	s=arc-20240116; t=1738076619; c=relaxed/simple;
+	bh=HxZqAfmOwOmAdIkMt8il6G9o8EwW76EVjFZIgPEmI3E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KG0nO4k/AhBMsT/2dlnjZNIiwiz6TSRcCPEShjPBLjBTFd8GJASrS8JSvdw7zIxeTHlq0Ez1YTOhAIhhvQv17mcBMNoCUzGYOQEwc9tcdp0tONMow1tZuTv0Rg9CaJAOwLG0d9h3tolIHh9Oc7EJ13sD5RcHUu7cc0e0MLioWoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2jG+U6Va; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3ff3c1b34so6927358a12.1
+        for <stable@vger.kernel.org>; Tue, 28 Jan 2025 07:03:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738076304; x=1738681104; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NgK1PyzlgcgU3jbjx+DyDukT7QBmAGxcdaN+SPDB1Y=;
-        b=dlee6Q3a7RszllPDFz/TD5+8jVb30OuY9K0CargqegNTRvGqmebdZC81Alatqg22mw
-         svmD/zn4RrVIdU4gLGbLsxQ9nUJBUCAc511l7Byq8rv9QHCi0miCGPRRwYH1usvD2xcD
-         Iv3CUJujuTFf1hieSn3JY2RJgCgeU9GZKWGnNMMcyEnh6QeBBzLY6Fm1c4Wuw28bmdm7
-         WWDedAlYpzND0o20FHjQyONbON4Psn6ejBa2gNJ40R8PWrzInpUjKPeo5KNiY08ubptu
-         qoyQhwsvykWHo8O55oaEydNnrBiO+Awm0bNRAK9GmSh7V8i1HkQ2NopRk0G1zvGKmX0w
-         SrUg==
+        d=google.com; s=20230601; t=1738076615; x=1738681415; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fxA+vwnqpxls10tnWmMGS7RGdrVXAX57CVII7Fqqv/w=;
+        b=2jG+U6VaalbPn6Et61fIOzIUhkgaA3Jbw7iON6GaFQ7gahw8iZbzOPaCZThctkYN++
+         gfXyeLdyZSbObuwAdT47037k2pk9FccYC05GSQKeYscfwWN2af3mkzKbt+EUaR1wBODE
+         0BW+hUvMpZCFK9O3bPEff3cHvwQmeYG/kjltB6JpucV+txw34uBAxiZFxpHr85bk28Vi
+         jQBdYvalW0noZvLI1i1TLghGqvmXkcrb9GbDI+irQXPFk+D7HsL2Ejf4oUIWjQWYTood
+         EXuMphGoVt2pWw/rEKvCpWvzhpBrclRsDL/7EEabKGGUoqe28tV7giEkFXedTl4SDyz2
+         lpXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738076304; x=1738681104;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5NgK1PyzlgcgU3jbjx+DyDukT7QBmAGxcdaN+SPDB1Y=;
-        b=hhHpgVQlEmpYgPfEqrSnZrUlRHEDaAORqpNoaAwY8XTMGnPZG1LgRFUnScJH8d4ePU
-         42KtULOxKCcImnSLKCY2lZl8BSQg30Cb1xntJfn3X7rQodb3i6CqgDXmrYItcNXDIkOw
-         KahPaE3WIZ56kYdPB82/PCeRxVY3ndzFE0S5JDKrin38d3n4USc3HtbBzIYEo+aR4LNT
-         /mA/3Vj6X0j9HdTQrzKRibe4fbZf59iJGRJpruC8cSritCgq6iZTNhmT/McGgqCC3ghN
-         C3DNQdriqLsbchdjGOYu8WA17KnXRASKm1MgqZc1leT8UsT5/hH0BZeI9iLIsPFbckOE
-         IerA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7rwxBXTOswj9b44zZE6etqwUhKZfFijf619GP01hMcZnub+TVtdixilxAcvJp0F3h/WLV3zsWLS0u@vger.kernel.org, AJvYcCUYRAWfmu9Cg6vPjbKAeCjZRmW3RHGtPQXYvK+FbPrTlGCC4JEC7fT5qmGKyaBRe9WS6rs=@vger.kernel.org, AJvYcCVl1KdcbOA7iWDYyK/n6th3rWMg7lzTTcJkmvxGAdQ9l+RZG7dCk0DN4m5/1CGLPXf4yPAAj5A9NS9ROYnjoi03UlEd@vger.kernel.org, AJvYcCX7POaLecgnmqPruLlzqOSOnXl4ruTh9ryCmkZUK/n0WVAOE5FZvU5Ta3s48izmNubu8J+cIA/n@vger.kernel.org, AJvYcCXwKiV9tWMvbgikAX7DwXl/VIXPVm33nUsVb0c/EGazX7MN2YfJRhprQ6TTh1fCPd+WGX98BzqMC7Q8/y9p@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNKoRfqd1cSpQOFfMaGiLTV7+74b77W+myLJp0LcL/GmWz83dT
-	DicDolPtv5B070mD8HbJXpqLLY3hZpQ/i/kUYxi7gMf0/XJq3WmB
-X-Gm-Gg: ASbGncuYLKwLA0KO04qICMeMMLxA18Xtee4nT3CaCPrz2RJzibVsVzY3tfErcfWs8Fs
-	XwJQhkulHbmaVmO9JsnVeIdJ1WL0o2Jg3tcfbaDmKeDRRR9mfkVKQvBJRyirYWb6xtsfyqJAGBh
-	HNROybV5nYn2fDTw32kKLNFn1yvIkAIJgiCNMnLJPRMyxbvS29p+vYsW4aFOvyO4hz6xMf9HQpm
-	OhL/HMpmKsCxbW17hMwlxJNHssmGXDn5iqGbZvJH+mL/Vcgu6mqmaeOETUSZp6/Wi1iTrIeE1cQ
-	xPPv69CLY9Ht/6IHJZa9FWNxmKU/8yenmAlYTjm/oc0CwYrmjUjYyS0Ji60JiZt/7yycyg==
-X-Google-Smtp-Source: AGHT+IF4WOMe+E1ASphpyPufkPOsl65YTCva6RW3RPHB5aOPWPoVqJdw41Y0NpAQQaSz7q4qYh/Kcg==
-X-Received: by 2002:a17:90b:4c43:b0:2ee:c5ea:bd91 with SMTP id 98e67ed59e1d1-2f782d65adbmr61068210a91.29.1738076304080;
-        Tue, 28 Jan 2025 06:58:24 -0800 (PST)
-Received: from localhost.localdomain (syn-104-035-026-140.res.spectrum.com. [104.35.26.140])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffac2807sm9485398a91.20.2025.01.28.06.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 06:58:23 -0800 (PST)
-From: Eyal Birger <eyal.birger@gmail.com>
-To: kees@kernel.org,
-	luto@amacapital.net,
-	wad@chromium.org,
-	oleg@redhat.com,
-	mhiramat@kernel.org,
-	andrii@kernel.org,
-	jolsa@kernel.org
-Cc: alexei.starovoitov@gmail.com,
-	olsajiri@gmail.com,
-	cyphar@cyphar.com,
-	songliubraving@fb.com,
-	yhs@fb.com,
-	john.fastabend@gmail.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	daniel@iogearbox.net,
-	ast@kernel.org,
-	andrii.nakryiko@gmail.com,
-	rostedt@goodmis.org,
-	rafi@rbk.io,
-	shmulik.ladkani@gmail.com,
-	bpf@vger.kernel.org,
-	linux-api@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Eyal Birger <eyal.birger@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] seccomp: passthrough uretprobe systemcall without filtering
-Date: Tue, 28 Jan 2025 06:58:06 -0800
-Message-ID: <20250128145806.1849977-1-eyal.birger@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1738076615; x=1738681415;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fxA+vwnqpxls10tnWmMGS7RGdrVXAX57CVII7Fqqv/w=;
+        b=aN/AEpMVaFq1U/CZK7fJOBESeggaQy/y558AnJnxzfrl7+i58ihn2wppisi2apqwk8
+         ixdwTvYvB96FWQAU5SJlWGiLDjRKJVy3i4/U1Oa3GWulGhtyHbdVO5F10YQiGDnGdDFC
+         SQL/g6miaSJW0V+xsp79ZcS2+1QAJRNBBws7DXCrFUA2AvKiIxDXpOcVACbb5gBizu5O
+         CsmWCM0lE2dG7RVmRDF8Fuviw9v933nAyfg4K+cAgyhaH8gr1jG1kkRT7CdMub89hRhi
+         kkSV5syQTC1g8kAwEj6K5G0JMRfDUZ50mr4YHQq/Z3D8wyfcTWr5vKgDYXzYhR4bmGYR
+         Vljg==
+X-Gm-Message-State: AOJu0YwTUpxinnQin2u9W9AiIiPbAmz/xKy277VRlkGEyfEvqi/bQAIz
+	7OMfiro/MqXVZ+0YHUkXg9Z67d8Bj1u3lvPOXkEGqEMUmDkK8sgHiDquOFa9Bj0Kwiym7E3TXrz
+	kmnh+c8j2KeLkiQWYH2P/bfq3pctwOaZ50AloW9AtfB12ZP/C+VSU/7WkkmUiwMxGDy8+9s4fTI
+	1rFAHW2uZ2eBRIZUzXWd+0na8OvilBgxRc+5Cr+8vMqNSjvxoC
+X-Google-Smtp-Source: AGHT+IHC26ZV8SsPt/ePyqHG+Yq1YIWVyTaSaIEqI9OQLCZGI3bOc7Y2ctktffAZnVEncdYZ69L52w+a28KN0ag=
+X-Received: from edze7.prod.google.com ([2002:a05:6402:1907:b0:5d8:ab23:4682])
+ (user=ciprietti job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:13ca:b0:5dc:5860:688b with SMTP id 4fb4d7f45d1cf-5dc58606ab9mr1311866a12.16.1738076615624;
+ Tue, 28 Jan 2025 07:03:35 -0800 (PST)
+Date: Tue, 28 Jan 2025 15:03:22 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
+Message-ID: <20250128150322.2242111-1-ciprietti@google.com>
+Subject: [PATCH] libfs: fix infinite directory reads for offset dir
+From: ciprietti@google.com
+To: stable@vger.kernel.org
+Cc: ciprietti@google.com, yangerkun <yangerkun@huawei.com>, 
+	Chuck Lever <chuck.lever@oracle.com>, Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-When attaching uretprobes to processes running inside docker, the attached
-process is segfaulted when encountering the retprobe.
+From: yangerkun <yangerkun@huawei.com>
 
-The reason is that now that uretprobe is a system call the default seccomp
-filters in docker block it as they only allow a specific set of known
-syscalls. This is true for other userspace applications which use seccomp
-to control their syscall surface.
+[ Upstream commit 64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a ]
 
-Since uretprobe is a "kernel implementation detail" system call which is
-not used by userspace application code directly, it is impractical and
-there's very little point in forcing all userspace applications to
-explicitly allow it in order to avoid crashing tracked processes.
+After we switch tmpfs dir operations from simple_dir_operations to
+simple_offset_dir_operations, every rename happened will fill new dentry
+to dest dir's maple tree(&SHMEM_I(inode)->dir_offsets->mt) with a free
+key starting with octx->newx_offset, and then set newx_offset equals to
+free key + 1. This will lead to infinite readdir combine with rename
+happened at the same time, which fail generic/736 in xfstests(detail show
+as below).
 
-Pass this systemcall through seccomp without depending on configuration.
+1. create 5000 files(1 2 3...) under one dir
+2. call readdir(man 3 readdir) once, and get one entry
+3. rename(entry, "TEMPFILE"), then rename("TEMPFILE", entry)
+4. loop 2~3, until readdir return nothing or we loop too many
+   times(tmpfs break test with the second condition)
 
-Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueueinfo
-uses the same number as __NR_uretprobe so the syscall isn't forced in the
-compat bitmap.
+We choose the same logic what commit 9b378f6ad48cf ("btrfs: fix infinite
+directory reads") to fix it, record the last_index when we open dir, and
+do not emit the entry which index >= last_index. The file->private_data
+now used in offset dir can use directly to do this, and we also update
+the last_index when we llseek the dir file.
 
-Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-Reported-by: Rafael Buchbinder <rafi@rbk.io>
-Link: https://lore.kernel.org/lkml/CAHsH6Gs3Eh8DFU0wq58c_LF8A4_+o6z456J7BidmcVY2AqOnHQ@mail.gmail.com/
-Link: https://lore.kernel.org/lkml/20250121182939.33d05470@gandalf.local.home/T/#me2676c378eff2d6a33f3054fed4a5f3afa64e65b
-Cc: stable@vger.kernel.org
-Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Fixes: a2e459555c5f ("shmem: stable directory offsets")
+Signed-off-by: yangerkun <yangerkun@huawei.com>
+Link: https://lore.kernel.org/r/20240731043835.1828697-1-yangerkun@huawei.com
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+[brauner: only update last_index after seek when offset is zero like Jan suggested]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Andrea Ciprietti <ciprietti@google.com>
 ---
-v2: use action_cache bitmap and mode1 array to check the syscall
+ fs/libfs.c | 39 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
 
-The following reproduction script synthetically demonstrates the problem
-for seccomp filters:
-
-cat > /tmp/x.c << EOF
-
-char *syscalls[] = {
-	"write",
-	"exit_group",
-	"fstat",
-};
-
-__attribute__((noinline)) int probed(void)
-{
-	printf("Probed\n");
-	return 1;
-}
-
-void apply_seccomp_filter(char **syscalls, int num_syscalls)
-{
-	scmp_filter_ctx ctx;
-
-	ctx = seccomp_init(SCMP_ACT_KILL);
-	for (int i = 0; i < num_syscalls; i++) {
-		seccomp_rule_add(ctx, SCMP_ACT_ALLOW,
-				 seccomp_syscall_resolve_name(syscalls[i]), 0);
-	}
-	seccomp_load(ctx);
-	seccomp_release(ctx);
-}
-
-int main(int argc, char *argv[])
-{
-	int num_syscalls = sizeof(syscalls) / sizeof(syscalls[0]);
-
-	apply_seccomp_filter(syscalls, num_syscalls);
-
-	probed();
-
-	return 0;
-}
-EOF
-
-cat > /tmp/trace.bt << EOF
-uretprobe:/tmp/x:probed
-{
-    printf("ret=%d\n", retval);
-}
-EOF
-
-gcc -o /tmp/x /tmp/x.c -lseccomp
-
-/usr/bin/bpftrace /tmp/trace.bt &
-
-sleep 5 # wait for uretprobe attach
-/tmp/x
-
-pkill bpftrace
-
-rm /tmp/x /tmp/x.c /tmp/trace.bt
----
- kernel/seccomp.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 385d48293a5f..23b594a68bc0 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user *user_filter)
- 
- #ifdef SECCOMP_ARCH_NATIVE
- /**
-- * seccomp_is_const_allow - check if filter is constant allow with given data
-+ * seccomp_is_filter_const_allow - check if filter is constant allow with given data
-  * @fprog: The BPF programs
-  * @sd: The seccomp data to check against, only syscall number and arch
-  *      number are considered constant.
-  */
--static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
--				   struct seccomp_data *sd)
-+static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *fprog,
-+					  struct seccomp_data *sd)
- {
- 	unsigned int reg_value = 0;
- 	unsigned int pc;
-@@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
- 	return false;
+diff --git a/fs/libfs.c b/fs/libfs.c
+index dc0f7519045f..916c39e758b1 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -371,6 +371,15 @@ void simple_offset_destroy(struct offset_ctx *octx)
+ 	xa_destroy(&octx->xa);
  }
  
-+static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
-+				   struct seccomp_data *sd)
++static int offset_dir_open(struct inode *inode, struct file *file)
 +{
-+#ifdef __NR_uretprobe
-+	if (sd->nr == __NR_uretprobe
-+#ifdef SECCOMP_ARCH_COMPAT
-+	    && sd->arch != SECCOMP_ARCH_COMPAT
-+#endif
-+	   )
-+		return true;
-+#endif
++	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
++	unsigned long next_offset = (unsigned long)ctx->next_offset;
 +
-+	return seccomp_is_filter_const_allow(fprog, sd);
++	file->private_data = (void *)next_offset;
++	return 0;
 +}
 +
- static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sfilter,
- 					 void *bitmap, const void *bitmap_prev,
- 					 size_t bitmap_size, int arch)
-@@ -1023,6 +1038,9 @@ static inline void seccomp_log(unsigned long syscall, long signr, u32 action,
+ /**
+  * offset_dir_llseek - Advance the read position of a directory descriptor
+  * @file: an open directory whose position is to be updated
+@@ -384,6 +393,9 @@ void simple_offset_destroy(struct offset_ctx *octx)
   */
- static const int mode1_syscalls[] = {
- 	__NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_seccomp_sigreturn,
-+#ifdef __NR_uretprobe
-+	__NR_uretprobe,
-+#endif
- 	-1, /* negative terminated */
- };
+ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
+ {
++	struct inode *inode = file->f_inode;
++	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
++
+ 	switch (whence) {
+ 	case SEEK_CUR:
+ 		offset += file->f_pos;
+@@ -397,7 +409,11 @@ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
+ 	}
  
+ 	/* In this case, ->private_data is protected by f_pos_lock */
+-	file->private_data = NULL;
++	if (!offset) {
++		unsigned long next_offset = (unsigned long)ctx->next_offset;
++
++		file->private_data = (void *)next_offset;
++	}
+ 	return vfs_setpos(file, offset, U32_MAX);
+ }
+ 
+@@ -427,7 +443,7 @@ static bool offset_dir_emit(struct dir_context *ctx, struct dentry *dentry)
+ 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
+ }
+ 
+-static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
++static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx, long last_index)
+ {
+ 	struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
+ 	XA_STATE(xas, &so_ctx->xa, ctx->pos);
+@@ -436,17 +452,21 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+ 	while (true) {
+ 		dentry = offset_find_next(&xas);
+ 		if (!dentry)
+-			return ERR_PTR(-ENOENT);
++			return;
++
++		if (dentry2offset(dentry) >= last_index) {
++			dput(dentry);
++			return;
++		}
+ 
+ 		if (!offset_dir_emit(ctx, dentry)) {
+ 			dput(dentry);
+-			break;
++			return;
+ 		}
+ 
+ 		dput(dentry);
+ 		ctx->pos = xas.xa_index + 1;
+ 	}
+-	return NULL;
+ }
+ 
+ /**
+@@ -473,22 +493,19 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+ static int offset_readdir(struct file *file, struct dir_context *ctx)
+ {
+ 	struct dentry *dir = file->f_path.dentry;
++	long last_index = (long)file->private_data;
+ 
+ 	lockdep_assert_held(&d_inode(dir)->i_rwsem);
+ 
+ 	if (!dir_emit_dots(file, ctx))
+ 		return 0;
+ 
+-	/* In this case, ->private_data is protected by f_pos_lock */
+-	if (ctx->pos == 2)
+-		file->private_data = NULL;
+-	else if (file->private_data == ERR_PTR(-ENOENT))
+-		return 0;
+-	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
++	offset_iterate_dir(d_inode(dir), ctx, last_index);
+ 	return 0;
+ }
+ 
+ const struct file_operations simple_offset_dir_operations = {
++	.open		= offset_dir_open,
+ 	.llseek		= offset_dir_llseek,
+ 	.iterate_shared	= offset_readdir,
+ 	.read		= generic_read_dir,
 -- 
-2.43.0
+2.48.1.262.g85cc9f2d1e-goog
 
 
