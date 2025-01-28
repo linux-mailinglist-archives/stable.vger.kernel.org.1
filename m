@@ -1,223 +1,144 @@
-Return-Path: <stable+bounces-110973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F25A20C7F
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7E60A20CEC
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 16:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 702D43A1DA4
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:03:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C0103A3BE4
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 15:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556491ACECC;
-	Tue, 28 Jan 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF5E1ACEBF;
+	Tue, 28 Jan 2025 15:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2jG+U6Va"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b="MYpoSbYL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495FE1ACEAF
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 15:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85AC26AFC;
+	Tue, 28 Jan 2025 15:21:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738076619; cv=none; b=eo2CX6F1OWlBphQZQ3+B13rOGJuBYugCdiBpS7CrXmEY7lFo0swCAOpZ158ESRMnW9Ofa/Kh5tutxzkZEeEwX6Imi7VekcvM5Qzwtw1WG3fWDqhVnvMXNKrM7o0esQxq7A3yb/3VcPg2z88/KCLDOoirPTG8k84HIl4XSYfd7i4=
+	t=1738077718; cv=none; b=amlyRB7WLVIehpjtu+cIK9Kj6wJNJNI/WM6gjLDRlTNbKQp+mVFmc7aeyOGUShwhICG2xZlpTjtuFU4DJSSY3y4Ol461gLjteAPMCmJuwK5HcEDwgjZURzjRtUyfR7sieRMl5khdy7H/B0PGq7AixydqIkJ3STYsG/3+Byqr3pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738076619; c=relaxed/simple;
-	bh=HxZqAfmOwOmAdIkMt8il6G9o8EwW76EVjFZIgPEmI3E=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KG0nO4k/AhBMsT/2dlnjZNIiwiz6TSRcCPEShjPBLjBTFd8GJASrS8JSvdw7zIxeTHlq0Ez1YTOhAIhhvQv17mcBMNoCUzGYOQEwc9tcdp0tONMow1tZuTv0Rg9CaJAOwLG0d9h3tolIHh9Oc7EJ13sD5RcHUu7cc0e0MLioWoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2jG+U6Va; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3ff3c1b34so6927358a12.1
-        for <stable@vger.kernel.org>; Tue, 28 Jan 2025 07:03:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738076615; x=1738681415; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fxA+vwnqpxls10tnWmMGS7RGdrVXAX57CVII7Fqqv/w=;
-        b=2jG+U6VaalbPn6Et61fIOzIUhkgaA3Jbw7iON6GaFQ7gahw8iZbzOPaCZThctkYN++
-         gfXyeLdyZSbObuwAdT47037k2pk9FccYC05GSQKeYscfwWN2af3mkzKbt+EUaR1wBODE
-         0BW+hUvMpZCFK9O3bPEff3cHvwQmeYG/kjltB6JpucV+txw34uBAxiZFxpHr85bk28Vi
-         jQBdYvalW0noZvLI1i1TLghGqvmXkcrb9GbDI+irQXPFk+D7HsL2Ejf4oUIWjQWYTood
-         EXuMphGoVt2pWw/rEKvCpWvzhpBrclRsDL/7EEabKGGUoqe28tV7giEkFXedTl4SDyz2
-         lpXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738076615; x=1738681415;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fxA+vwnqpxls10tnWmMGS7RGdrVXAX57CVII7Fqqv/w=;
-        b=aN/AEpMVaFq1U/CZK7fJOBESeggaQy/y558AnJnxzfrl7+i58ihn2wppisi2apqwk8
-         ixdwTvYvB96FWQAU5SJlWGiLDjRKJVy3i4/U1Oa3GWulGhtyHbdVO5F10YQiGDnGdDFC
-         SQL/g6miaSJW0V+xsp79ZcS2+1QAJRNBBws7DXCrFUA2AvKiIxDXpOcVACbb5gBizu5O
-         CsmWCM0lE2dG7RVmRDF8Fuviw9v933nAyfg4K+cAgyhaH8gr1jG1kkRT7CdMub89hRhi
-         kkSV5syQTC1g8kAwEj6K5G0JMRfDUZ50mr4YHQq/Z3D8wyfcTWr5vKgDYXzYhR4bmGYR
-         Vljg==
-X-Gm-Message-State: AOJu0YwTUpxinnQin2u9W9AiIiPbAmz/xKy277VRlkGEyfEvqi/bQAIz
-	7OMfiro/MqXVZ+0YHUkXg9Z67d8Bj1u3lvPOXkEGqEMUmDkK8sgHiDquOFa9Bj0Kwiym7E3TXrz
-	kmnh+c8j2KeLkiQWYH2P/bfq3pctwOaZ50AloW9AtfB12ZP/C+VSU/7WkkmUiwMxGDy8+9s4fTI
-	1rFAHW2uZ2eBRIZUzXWd+0na8OvilBgxRc+5Cr+8vMqNSjvxoC
-X-Google-Smtp-Source: AGHT+IHC26ZV8SsPt/ePyqHG+Yq1YIWVyTaSaIEqI9OQLCZGI3bOc7Y2ctktffAZnVEncdYZ69L52w+a28KN0ag=
-X-Received: from edze7.prod.google.com ([2002:a05:6402:1907:b0:5d8:ab23:4682])
- (user=ciprietti job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:13ca:b0:5dc:5860:688b with SMTP id 4fb4d7f45d1cf-5dc58606ab9mr1311866a12.16.1738076615624;
- Tue, 28 Jan 2025 07:03:35 -0800 (PST)
-Date: Tue, 28 Jan 2025 15:03:22 +0000
+	s=arc-20240116; t=1738077718; c=relaxed/simple;
+	bh=x/B9yX/e7R0UrYl5d1VDIwIS7elP7kUmpSEP5ElElyI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YeUix1qgztU7Av0Ntj6CO1ds4KsUMjtf+417/mxYwKEwm1E59ieIOnHnmu6wuDfuwNd5fenZNbwfYg8QI+6ZbimC5pXqmB7utdmsGqj1frmfSB3gKn36GWzcxWriIUedpVKVsj1mpVBY45WZcw6bP3r1lmgofYR5IMD7lCFCbo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=efault@gmx.de header.b=MYpoSbYL; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1738077659; x=1738682459; i=efault@gmx.de;
+	bh=x/B9yX/e7R0UrYl5d1VDIwIS7elP7kUmpSEP5ElElyI=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=MYpoSbYLi1Y9+ZFa2/1a0yI0UYq9nS4dBGsxzMnozk9a6k3xc7QZpxNRlh4lVxff
+	 RsJqhjRjfBUHWjUX8NkzeJy6Thq/aaPjc7OUM0fKRl9PZ5kW3paTOOggKHypWpCzl
+	 fGGg8HYkjrcOi/8OdHNuYuYHHkZlb7/jnJyOanUx0brq0JbhjOeXpa4SIMB/uojbG
+	 Io6zZNCstZyJtrYWO0HrENr66vAs0M2aG/jtmL2LtvyV6IUWYnZtsFo5pW80uamQx
+	 9QKPW/IM3NP2H6GCRLp7t0tXtMx3IVMx/LfvYxYBOBZegockoSTXd8T0NP1rXH9QQ
+	 Ob+VBQSxfqbKyWVE0A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from homer.fritz.box ([91.212.106.53]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0oBr-1tHwUQ2yCD-011heh; Tue, 28
+ Jan 2025 16:20:59 +0100
+Message-ID: <b51f217d565609ae87395c8e23e62b15e489a0a4.camel@gmx.de>
+Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
+From: Mike Galbraith <efault@gmx.de>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Ron Economos <re@w6rz.net>, Arnd Bergmann <arnd@arndb.de>, Naresh
+ Kamboju <naresh.kamboju@linaro.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,  stable@vger.kernel.org,
+ patches@lists.linux.dev, linux-kernel@vger.kernel.org,  Linus Torvalds
+ <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Guenter Roeck <linux@roeck-us.net>, shuah <shuah@kernel.org>,
+ patches@kernelci.org,  lkft-triage@lists.linaro.org, Pavel Machek
+ <pavel@denx.de>, Jon Hunter <jonathanh@nvidia.com>, Florian Fainelli
+ <f.fainelli@gmail.com>, Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+ srw@sladewatkins.net, rwarsow@gmx.de, Conor Dooley <conor@kernel.org>,
+ hargar@microsoft.com, Mark Brown <broonie@kernel.org>,  Anders Roxell
+ <anders.roxell@linaro.org>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+Date: Tue, 28 Jan 2025 16:20:57 +0100
+In-Reply-To: <20250128143949.GD7145@noisy.programming.kicks-ass.net>
+References: <20250121174532.991109301@linuxfoundation.org>
+	 <CA+G9fYtv3NNpxuipt8Dxa_=0DhieWWc07kDgCDBM+o0gKRi4Dw@mail.gmail.com>
+	 <cc947edf-bece-498c-bcb0-5bc403141257@app.fastmail.com>
+	 <20250122105949.GK7145@noisy.programming.kicks-ass.net>
+	 <faa9e4ef-05f5-4db1-8c36-e901e156caea@w6rz.net>
+	 <bfc6d9c18eaa856cddb062ebc07c398a16d91353.camel@gmx.de>
+	 <20250128143949.GD7145@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
-Message-ID: <20250128150322.2242111-1-ciprietti@google.com>
-Subject: [PATCH] libfs: fix infinite directory reads for offset dir
-From: ciprietti@google.com
-To: stable@vger.kernel.org
-Cc: ciprietti@google.com, yangerkun <yangerkun@huawei.com>, 
-	Chuck Lever <chuck.lever@oracle.com>, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:pGEnJgsdnuVPnK9+wy2jIlrs/IgmyWsstwKE6mY6h1zLm5a3qo/
+ Zx9voJFFFp4Amcd6mKF0W3IeHBLKbcj1j58Gm6mvT1KzffonJ7zTB//nPsaMXZU41ovy1cS
+ MY56Cksk2FxF4pcmzwjNJqvno6iVXYLSY2hQGdPVG1+oZo14AYOoMbAmM5wIshfy0KCqp/4
+ nxXxBKpapmcvexNwyFlVA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FEY3YyLg3tg=;3mCrZednNtJwNNT6r0uHLr2aleV
+ D38J3OWjKaGKttY/gqHLTbC0mx8xFIFqqghaHpHLSzpoAbgKPoCToRQyRvrIoqb8hDvdwrNrO
+ zfrNa3K0CUz+Xd7dwAe+cg3bnbg3zVfEcMn/njNMjZ1DKvWVzCmxpj94a4QGsMDgjWUmTYDtH
+ uMr8lZgmvHNwCMEI2/YhkXkn7lTDMCQBRreJVZlwf+cSvOVWlHaksTqFIQkTPr+KIXWEtWuFp
+ Ow8MiMHw4B1YxnoycvpQ0sqtf9b26l3LrbnfG449lEqwaMgBfKWN8lQcAdEbFcqp3I5OAp4Df
+ K+nMOdV7leBPAUAE23/H/GNYQROafSlhdFDP60FC6CXKrHd6QVPFiAGwMPkVeRA2jjZSKEe/9
+ OcjJ6Ti5Zzy83cpvC2Iplydx9Zjn8PuVc9/BtTQjn63CxCKPTxJax2I8aTh2VeLSRMSvtvdzd
+ YdjLCI5WYEyhkeqbphqutZueIAf32LGCS2Qk/dzrLYeNeJOU26nMzbC+447YAFAap6V131p4m
+ Jp/E8fq67/IL7SKj3NvF6AV/oF3rVwG8H4GZuDPxqhKheXh/igHSNkb2G46UTfmjpZ603/hX7
+ jIOvK3kxoQKg6JIhRVczpb2iAdDKZur1L34UAfY5o8yDLjpdU5VUifFe3ACPr6w20ScIwLkiH
+ XWr2Of/74drxmKPB+DdpgXCobrhoKop0VBJMfx5lZAtgSBHKH8KEKx9Inhd9TDsg07vj07uZl
+ LZvVJd3Je72GNaXKoZh3LwR90YKadVo5e6E591ghl6vdV6Rl1Mi4tdp+T3dBJJ81LZVRoy+kD
+ mnRH4AbZrWnoDZ1B+P8h382sTPYKTfTRCdOn+lf2UihAZH0DUid3PnpigTTUv0nKedXZrWXeE
+ /TAgQXRv1qWJG8XlrsP3YEmiHoMHX/KVWOnrsKBIzILtmsyO7Hs6hP8xvuGo8tGD2QSRpi/73
+ Xnoo/lfPgnycpm3ifjspNGmdeBEVEwgo/h8SSLGeapiZKsEkgkvYo10xV/uwCrFnH5a4Qinjk
+ 2TXiygmWVZL7sPYzyqGqHYRP9+tB5QJcDn0Mqovy+jQg0FEpPVouRC6ByGCJU4cP9oq5WNviw
+ YlDZuTKWUU/4336IICM2L+BM2tYYKlvblLgEDU7KMS0g4HQhazBETA3ydGsjQt6hpilrI6Dxa
+ FV51ZHcwK8aAbrB88wp58gOFX+mAM0gAus0d9/f8BKQ==
 
-From: yangerkun <yangerkun@huawei.com>
-
-[ Upstream commit 64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a ]
-
-After we switch tmpfs dir operations from simple_dir_operations to
-simple_offset_dir_operations, every rename happened will fill new dentry
-to dest dir's maple tree(&SHMEM_I(inode)->dir_offsets->mt) with a free
-key starting with octx->newx_offset, and then set newx_offset equals to
-free key + 1. This will lead to infinite readdir combine with rename
-happened at the same time, which fail generic/736 in xfstests(detail show
-as below).
-
-1. create 5000 files(1 2 3...) under one dir
-2. call readdir(man 3 readdir) once, and get one entry
-3. rename(entry, "TEMPFILE"), then rename("TEMPFILE", entry)
-4. loop 2~3, until readdir return nothing or we loop too many
-   times(tmpfs break test with the second condition)
-
-We choose the same logic what commit 9b378f6ad48cf ("btrfs: fix infinite
-directory reads") to fix it, record the last_index when we open dir, and
-do not emit the entry which index >= last_index. The file->private_data
-now used in offset dir can use directly to do this, and we also update
-the last_index when we llseek the dir file.
-
-Fixes: a2e459555c5f ("shmem: stable directory offsets")
-Signed-off-by: yangerkun <yangerkun@huawei.com>
-Link: https://lore.kernel.org/r/20240731043835.1828697-1-yangerkun@huawei.com
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-[brauner: only update last_index after seek when offset is zero like Jan suggested]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Andrea Ciprietti <ciprietti@google.com>
----
- fs/libfs.c | 39 ++++++++++++++++++++++++++++-----------
- 1 file changed, 28 insertions(+), 11 deletions(-)
-
-diff --git a/fs/libfs.c b/fs/libfs.c
-index dc0f7519045f..916c39e758b1 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -371,6 +371,15 @@ void simple_offset_destroy(struct offset_ctx *octx)
- 	xa_destroy(&octx->xa);
- }
- 
-+static int offset_dir_open(struct inode *inode, struct file *file)
-+{
-+	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
-+	unsigned long next_offset = (unsigned long)ctx->next_offset;
-+
-+	file->private_data = (void *)next_offset;
-+	return 0;
-+}
-+
- /**
-  * offset_dir_llseek - Advance the read position of a directory descriptor
-  * @file: an open directory whose position is to be updated
-@@ -384,6 +393,9 @@ void simple_offset_destroy(struct offset_ctx *octx)
-  */
- static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
- {
-+	struct inode *inode = file->f_inode;
-+	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
-+
- 	switch (whence) {
- 	case SEEK_CUR:
- 		offset += file->f_pos;
-@@ -397,7 +409,11 @@ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
- 	}
- 
- 	/* In this case, ->private_data is protected by f_pos_lock */
--	file->private_data = NULL;
-+	if (!offset) {
-+		unsigned long next_offset = (unsigned long)ctx->next_offset;
-+
-+		file->private_data = (void *)next_offset;
-+	}
- 	return vfs_setpos(file, offset, U32_MAX);
- }
- 
-@@ -427,7 +443,7 @@ static bool offset_dir_emit(struct dir_context *ctx, struct dentry *dentry)
- 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
- }
- 
--static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
-+static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx, long last_index)
- {
- 	struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
- 	XA_STATE(xas, &so_ctx->xa, ctx->pos);
-@@ -436,17 +452,21 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- 	while (true) {
- 		dentry = offset_find_next(&xas);
- 		if (!dentry)
--			return ERR_PTR(-ENOENT);
-+			return;
-+
-+		if (dentry2offset(dentry) >= last_index) {
-+			dput(dentry);
-+			return;
-+		}
- 
- 		if (!offset_dir_emit(ctx, dentry)) {
- 			dput(dentry);
--			break;
-+			return;
- 		}
- 
- 		dput(dentry);
- 		ctx->pos = xas.xa_index + 1;
- 	}
--	return NULL;
- }
- 
- /**
-@@ -473,22 +493,19 @@ static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- static int offset_readdir(struct file *file, struct dir_context *ctx)
- {
- 	struct dentry *dir = file->f_path.dentry;
-+	long last_index = (long)file->private_data;
- 
- 	lockdep_assert_held(&d_inode(dir)->i_rwsem);
- 
- 	if (!dir_emit_dots(file, ctx))
- 		return 0;
- 
--	/* In this case, ->private_data is protected by f_pos_lock */
--	if (ctx->pos == 2)
--		file->private_data = NULL;
--	else if (file->private_data == ERR_PTR(-ENOENT))
--		return 0;
--	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
-+	offset_iterate_dir(d_inode(dir), ctx, last_index);
- 	return 0;
- }
- 
- const struct file_operations simple_offset_dir_operations = {
-+	.open		= offset_dir_open,
- 	.llseek		= offset_dir_llseek,
- 	.iterate_shared	= offset_readdir,
- 	.read		= generic_read_dir,
--- 
-2.48.1.262.g85cc9f2d1e-goog
-
+T24gVHVlLCAyMDI1LTAxLTI4IGF0IDE1OjM5ICswMTAwLCBQZXRlciBaaWpsc3RyYSB3cm90ZToN
+Cj4gT24gVHVlLCBKYW4gMjgsIDIwMjUgYXQgMTI6NDY6MDdQTSArMDEwMCwgTWlrZSBHYWxicmFp
+dGggd3JvdGU6DQo+IA0KPiA+IFNlZW1zIDYuMTMgaXMgZ3JpcGUgZnJlZSB0aGFua3MgdG8gaXQg
+Y29udGFpbmluZyA0NDIzYWY4NGIyOTcuDQo+ID4gDQo+ID4gSSBzdHVtYmxlZCB1cG9uIGEgcmVw
+cm9kdWNlciBmb3IgbXkgeDg2XzY0IGRlc2t0b3AgYm94OiBhbGwgSSBuZWVkIGRvDQo+ID4gaXMg
+ZmlyZSB1cCBhIGt2bSBndWVzdCBpbiBhbiBlbnRlcnByaXNlIGNvbmZpZ3VyZWQgaG9zdC7CoCBU
+aGF0IGluc3BpcmVzDQo+ID4gbGlidmlydCBnb29wIHRvIGVuZ2FnZSBncm91cCBzY2hlZHVsaW5n
+LCBzcGxhdCBmb2xsb3dzIGluc3RhbnRseS4NCj4gPiANCj4gPiBCYWNrIDQ0MjNhZjg0YjI5NyBv
+dXQgb2YgNi4xMywgaXQgc3RhcnRzIGdyaXBpbmcsIGFkZCBpdCB0byBhIDYuMTIgdHJlZQ0KPiA+
+IGNvbnRhaW5pbmcgNmQ3MWE5YzYxNjA0LCBpdCBzdG9wcyBkb2luZyBzby4NCj4gDQo+IE9vaCwg
+ZG9lcyBzb21ldGhpbmcgbGlrZSB0aGUgYmVsb3cgKCstIHJldmVyc2UtcmVuYW1lcyBhcyBhcHBs
+aWNhYmxlIHRvDQo+IC4xMikgYWxzbyBoZWxwPw0KDQpZdXAsIHNlZW1zIHRvLCA2LjEzIHNhbnMg
+NDQyM2FmODRiMjk3IHN0b3BwZWQgZ3JpcGluZy4NCg0KPiAtLS0NCj4gZGlmZiAtLWdpdCBhL2tl
+cm5lbC9zY2hlZC9mYWlyLmMgYi9rZXJuZWwvc2NoZWQvZmFpci5jDQo+IGluZGV4IGI2NzIyMmRl
+YTQ5MS4uODc2NmY3ZDNkMjk3IDEwMDY0NA0KPiAtLS0gYS9rZXJuZWwvc2NoZWQvZmFpci5jDQo+
+ICsrKyBiL2tlcm5lbC9zY2hlZC9mYWlyLmMNCj4gQEAgLTM3ODEsNiArMzc4MSw3IEBAIHN0YXRp
+YyB2b2lkIHJld2VpZ2h0X2VudGl0eShzdHJ1Y3QgY2ZzX3JxICpjZnNfcnEsIHN0cnVjdCBzY2hl
+ZF9lbnRpdHkgKnNlLA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHVwZGF0ZV9l
+bnRpdHlfbGFnKGNmc19ycSwgc2UpOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHNlLT5kZWFkbGluZSAtPSBzZS0+dnJ1bnRpbWU7DQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgc2UtPnJlbF9kZWFkbGluZSA9IDE7DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBjZnNfcnEtPm5yX3F1ZXVlZC0tOw0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoGlmICghY3VycikNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgX19kZXF1ZXVlX2VudGl0eShjZnNfcnEsIHNlKTsNCj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqB1cGRhdGVfbG9hZF9zdWIoJmNmc19ycS0+bG9hZCwgc2UtPmxv
+YWQud2VpZ2h0KTsNCj4gQEAgLTM4MTEsNiArMzgxMiw3IEBAIHN0YXRpYyB2b2lkIHJld2VpZ2h0
+X2VudGl0eShzdHJ1Y3QgY2ZzX3JxICpjZnNfcnEsIHN0cnVjdCBzY2hlZF9lbnRpdHkgKnNlLA0K
+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHBsYWNlX2VudGl0eShjZnNfcnEsIHNl
+LCAwKTsNCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAoIWN1cnIpDQo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoF9fZW5xdWV1ZV9l
+bnRpdHkoY2ZzX3JxLCBzZSk7DQo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjZnNf
+cnEtPm5yX3F1ZXVlZCsrOw0KPiDCoA0KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oC8qDQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogVGhlIGVudGl0eSdzIHZy
+dW50aW1lIGhhcyBiZWVuIGFkanVzdGVkLCBzbyBsZXQncyBjaGVjaw0KDQo=
 
