@@ -1,144 +1,164 @@
-Return-Path: <stable+bounces-110994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AB2A20F77
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:12:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B792A20F78
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23837188A018
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5AF51889EF1
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239F91DE3C5;
-	Tue, 28 Jan 2025 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412BD1DE3D2;
+	Tue, 28 Jan 2025 17:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="ZDWDGg5y";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="caAuWWWq"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dcdBseBP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0sPoH5AZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dcdBseBP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0sPoH5AZ"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB841AA1F6
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 17:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756781DDA20;
+	Tue, 28 Jan 2025 17:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738084360; cv=none; b=Bu9FeXNDK+oWwXkiUXBuKZZDSyxgrST6u+tpWjWtslEHAEPu7Vzzs84AhQwURBRYfm8gJ4uFM4/+2651gWNA5T8Th0ILn3lbG//r7RNKEdYLkLELGgbzWnn4CaO2AQO1SMYBEeHyvIn8mFbWsDoUlEJexZT9DWNwglARzHYYJPo=
+	t=1738084374; cv=none; b=mskBr/+H5rZby5MO5Dq6kREWAQg7Y7IgfRg/Cxt6E52DOaEY6QpWTrksq/eBQBYtFrWVmTD5GyIQvfoCxYSSdo6Wg9LA0APCOYRYsNZcg+4iM8mwUa0BBU8DnPHhrU99mh3WzcnKKfBpYLhaK3PslnfkXJyhOz2N0kSZDGzqDgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738084360; c=relaxed/simple;
-	bh=0plhGdker4HRGhx8Fou9n8nVpk3IUzxZ63BZXOBnS+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YdZYgO3uyt6kxzKUwaWTUpFVjifsoY1T/hvta1E6lwIImRH/sfXUJuao7lTtgMAbfBwqM7S4/V9n/CJZK4o+/zkloyITd5mR26Zq3+PrOnO8qcnKityI6s5CZC+lUMjhBiegPbgIOticNkHJrL/3y/AxBJbnc3/G7IoZjBVdsHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=ZDWDGg5y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=caAuWWWq; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CC4CF2540108;
-	Tue, 28 Jan 2025 12:12:36 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Tue, 28 Jan 2025 12:12:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1738084356; x=1738170756; bh=pO9u+wk/NH
-	g0qmMpuzrhyzTBHGPnxv6vqY7iLSSRJvE=; b=ZDWDGg5y1CV2sP7tFOxpSvwuNw
-	sqpJhaWR4ZyX+FWWfRw3xkrapKbPXK/fMrtiG6posKeoMAsNSB2lVDB15wppfZx0
-	5jX/p7HitzOkr088CzsTsVIEJRjaFlvfKiXXTwa03d2KBXfymWypvY/w0e90L7B+
-	93juOq+RgGn+oVFSJbrmqmIFvsDgU3EYpVt/jIikBMilv4pmAB4S5BNz7CNVsysc
-	o8g8IaDUxDtuVMImS8wUvQHvXHIDMhDSmNkm+YQnQcUPxZCX05bgslrIwaWgNQNy
-	q02mSUauGMG+USStCr41/xm0g5HOZ4XQYVkDS47XLfNyJimlwTYNfCQQOF7w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738084356; x=1738170756; bh=pO9u+wk/NHg0qmMpuzrhyzTBHGPnxv6vqY7
-	iLSSRJvE=; b=caAuWWWq0RoNjDFcE9jc1OCXBSh9MuD/9yWDid6k77wCwPZH6p3
-	6EJuamkXZBir4XwX1WKMrOj2fOMLe7TbWti3NZ18XbZhnG0y6nXV9fVRCsV57pnX
-	HLoLaG3bZrRhW8Rva2D/mipLFuvhNT5RLgHPE6+4SHxNUXY8/GeHIrwGwiQPEr1w
-	Ru1oORxZ9b9p58H6MHSsh7NboJVMl3Wc/NrNnZFMkBOV509Sh5BQqd88Uu/27cYt
-	WZr+VmRsOhkfyJ14JvYdN7S6jx6kg7Y34Q6X/s5OvWJwJtNPilcQrqaFMOZF7xNa
-	uYDdqhiYg77wxmlaDXr9leaxEv2ppYckSZw==
-X-ME-Sender: <xms:AxCZZ1zjnNb419U61bCeS1lUZoS2BsGjqJGUZzelmtd2ngfkOnOWfw>
-    <xme:AxCZZ1SS1_0xe031RlE5N_IUmCiodeJXnRLk3im4zKvHhPhkMT__Dl3UnrctQri_d
-    GV5Td_GbAq9tw>
-X-ME-Received: <xmr:AxCZZ_UdEXebh2-t30soEG1Xc35r-Xxk_PP0RwhPzu4RZGEmkkkPtQUoL-jHk6XUYZDVIS4gCUAfpJ2u3dwA5ZFElwZf4gQ8maATOg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeijecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
-    hfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeegheeuhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleev
-    tddtvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhn
-    sggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghiph
-    hrihgvthhtihesghhoohhglhgvrdgtohhmpdhrtghpthhtohepshhtrggslhgvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohephigrnhhgvghrkhhunheshhhurgifvg
-    hirdgtohhmpdhrtghpthhtoheptghhuhgtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhm
-    pdhrtghpthhtohepsghrrghunhgvrheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:AxCZZ3hL82sb_PljEjGOgroFSxbTKKkZj6pJJWyzsiqYhdHrkievGg>
-    <xmx:AxCZZ3C2SGvcYxoTAu9BBpfmHL-o1fH9-mzAEDevzcMqg9CV08S9sQ>
-    <xmx:AxCZZwLqBNIqAibW6dKZwsXl5XKjVxU5T4LjCw5hwMfKuryjYJuobg>
-    <xmx:AxCZZ2AAy76hpPRDmB1-41fWf7rO918xeddYhri9lMRhSGomLPBZHA>
-    <xmx:BBCZZ77ECQriMThwZdFarTFZ_btry3nWRR4z6TNdlCaT7jtRoArnMsyr>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Jan 2025 12:12:35 -0500 (EST)
-Date: Tue, 28 Jan 2025 18:12:33 +0100
-From: Greg KH <greg@kroah.com>
-To: ciprietti@google.com
-Cc: stable@vger.kernel.org, yangerkun <yangerkun@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] libfs: fix infinite directory reads for offset dir
-Message-ID: <2025012815-talisman-ageless-45f9@gregkh>
-References: <20250128150322.2242111-1-ciprietti@google.com>
+	s=arc-20240116; t=1738084374; c=relaxed/simple;
+	bh=4LjJCpzH5Yv7NN6OuJdtIRWKFGojGmAJhZm6xjENfog=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ATFaIYYdXYj+e8aelps1y/1MXyQ3A5PSDw7ck9csVxswoxRjbnv+TXFdz/dcK+COwMVLzy/Prpv3ZbxWgbPA2WrFDW51r+oxX+ZB2gSu3pxNztvg9efu4I6yQNMwiL0eGiH93VQYXHfzMlo8NuRrmmB6/9//nSIlyAGkBiZ4n7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dcdBseBP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0sPoH5AZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dcdBseBP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0sPoH5AZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 84A891F381;
+	Tue, 28 Jan 2025 17:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738084370; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAioC5LFKEiyTyOdaEBg/Xy+YGwJws1L9fuE0KpAnac=;
+	b=dcdBseBPgxzEdHyH5Ps1D3mRlM1//AqLpvCLX6js/llZPe7MFX/3OhRe1AswuDeJ3hereu
+	lE0NiKDURadZeRMe1FrZI78jPUsCuQueAfJw9EELdsS3AYbab6odOoAlOp0KN7I2GZ1sQt
+	NhToJ1sjt6jprOMVQD1luRZU1pvaUwo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738084370;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAioC5LFKEiyTyOdaEBg/Xy+YGwJws1L9fuE0KpAnac=;
+	b=0sPoH5AZYltkw6ZNt6/MPxJWchTjkoPcWYmYY87AqrN7VUoqHastYcNF+Zhwr1JUkwiWpf
+	utro5QszX9WboYCQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1738084370; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAioC5LFKEiyTyOdaEBg/Xy+YGwJws1L9fuE0KpAnac=;
+	b=dcdBseBPgxzEdHyH5Ps1D3mRlM1//AqLpvCLX6js/llZPe7MFX/3OhRe1AswuDeJ3hereu
+	lE0NiKDURadZeRMe1FrZI78jPUsCuQueAfJw9EELdsS3AYbab6odOoAlOp0KN7I2GZ1sQt
+	NhToJ1sjt6jprOMVQD1luRZU1pvaUwo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1738084370;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aAioC5LFKEiyTyOdaEBg/Xy+YGwJws1L9fuE0KpAnac=;
+	b=0sPoH5AZYltkw6ZNt6/MPxJWchTjkoPcWYmYY87AqrN7VUoqHastYcNF+Zhwr1JUkwiWpf
+	utro5QszX9WboYCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33D9E13625;
+	Tue, 28 Jan 2025 17:12:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TikWCxIQmWdZNAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 28 Jan 2025 17:12:50 +0000
+Date: Tue, 28 Jan 2025 18:12:49 +0100
+Message-ID: <8734h2981a.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	gio.spacedev@pm.me,
+	austrum.lab@gmail.com,
+	luke@ljones.dev,
+	akpm@linux-foundation.org,
+	jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda: Fix headset detection failure due to unstable sort
+In-Reply-To: <20250128165415.643223-1-visitorckw@gmail.com>
+References: <20250128165415.643223-1-visitorckw@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250128150322.2242111-1-ciprietti@google.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -1.80
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[perex.cz,suse.com,pm.me,gmail.com,ljones.dev,linux-foundation.org,ccns.ncku.edu.tw,cs.nycu.edu.tw,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Tue, Jan 28, 2025 at 03:03:22PM +0000, ciprietti@google.com wrote:
-> From: yangerkun <yangerkun@huawei.com>
+On Tue, 28 Jan 2025 17:54:15 +0100,
+Kuan-Wei Chiu wrote:
 > 
-> [ Upstream commit 64a7ce76fb901bf9f9c36cf5d681328fc0fd4b5a ]
+> The auto_parser assumed sort() was stable, but the kernel's sort() uses
+> heapsort, which has never been stable. After commit 0e02ca29a563
+> ("lib/sort: optimize heapsort with double-pop variation"), the order of
+> equal elements changed, causing the headset to fail to work.
 > 
-> After we switch tmpfs dir operations from simple_dir_operations to
-> simple_offset_dir_operations, every rename happened will fill new dentry
-> to dest dir's maple tree(&SHMEM_I(inode)->dir_offsets->mt) with a free
-> key starting with octx->newx_offset, and then set newx_offset equals to
-> free key + 1. This will lead to infinite readdir combine with rename
-> happened at the same time, which fail generic/736 in xfstests(detail show
-> as below).
+> Fix the issue by recording the original order of elements before
+> sorting and using it as a tiebreaker for equal elements in the
+> comparison function.
 > 
-> 1. create 5000 files(1 2 3...) under one dir
-> 2. call readdir(man 3 readdir) once, and get one entry
-> 3. rename(entry, "TEMPFILE"), then rename("TEMPFILE", entry)
-> 4. loop 2~3, until readdir return nothing or we loop too many
->    times(tmpfs break test with the second condition)
-> 
-> We choose the same logic what commit 9b378f6ad48cf ("btrfs: fix infinite
-> directory reads") to fix it, record the last_index when we open dir, and
-> do not emit the entry which index >= last_index. The file->private_data
-> now used in offset dir can use directly to do this, and we also update
-> the last_index when we llseek the dir file.
-> 
-> Fixes: a2e459555c5f ("shmem: stable directory offsets")
-> Signed-off-by: yangerkun <yangerkun@huawei.com>
-> Link: https://lore.kernel.org/r/20240731043835.1828697-1-yangerkun@huawei.com
-> Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-> [brauner: only update last_index after seek when offset is zero like Jan suggested]
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> Signed-off-by: Andrea Ciprietti <ciprietti@google.com>
-> ---
->  fs/libfs.c | 39 ++++++++++++++++++++++++++++-----------
->  1 file changed, 28 insertions(+), 11 deletions(-)
+> Fixes: b9030a005d58 ("ALSA: hda - Use standard sort function in hda_auto_parser.c")
+> Reported-by: Austrum <austrum.lab@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219158
+> Tested-by: Austrum <austrum.lab@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-No hint as to what kernel tree(s) this is for?
+Applied now.  Thanks.
 
+
+Takashi
 
