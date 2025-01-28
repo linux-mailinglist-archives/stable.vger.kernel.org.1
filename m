@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-111047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6CCA21070
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8AFA2106F
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7347D3AADE1
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:04:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DA7E3AC7A4
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F411FF1B6;
-	Tue, 28 Jan 2025 17:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226DE200BAA;
+	Tue, 28 Jan 2025 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjNvd5AG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGfCmCEX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF821EEA3D;
-	Tue, 28 Jan 2025 17:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF256200BA2;
+	Tue, 28 Jan 2025 17:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086917; cv=none; b=UqFlGvkRiFH0YMpZp5Eusd6hqfDf822Z1nScCa+N8TIck/91kD/zn5LXK2LCTDxvM7zN6h0NpTv9cNpsiKe2Q2HTbZOwJ7Ee6w2wIpLKs/we6vraA+H+hjBYFjzilwihGtEQw6Ocht4jYGK0T/fZzseSWXs7kGSTz+K59avb3Vc=
+	t=1738086915; cv=none; b=iuJltl4Ptp1tJjMQ3ZicHpgYRLUNFVY/tsLoopKWpixogMaRRd5O1rdIOoRE/XU/8RoyAOV1usQJIFIHiknYHwnKUDACB96Go3k+eh9+FhY2L1RRr2D+ID0bzOzvDMkJg3RHununybjh81wZgbvZ55HNTGUe1zR/ccfTJ3raJWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086917; c=relaxed/simple;
-	bh=wofKM/ZFU7MDZrc2EkuJF68llgpxz3E8b95DZBYGZN0=;
+	s=arc-20240116; t=1738086915; c=relaxed/simple;
+	bh=v1mfuCsD0UoyCi1L6a5JGBPlC9e9Ns/5g+EQOVxS9CE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G2wR/SrUJwFegNOfzkrj4AiGNk13S+QKD08JMt87JIGGunTrk0PMqesgBPA91X7o3q1Z6vrf3Vw1NLIaG31uz5PnaqdRG8R+FasCH7GZ/d602uSVt0EQpjYaZcZK0EHGFbQdJnCQ9+ZGAkbc7VUjTj6kj+KWkSddDREkWbsd9YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjNvd5AG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58696C4CEE4;
-	Tue, 28 Jan 2025 17:55:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YgdzRV5D6pixGreWlIQCH0AMinuRRLYb8o/BkVOzeCh8Pw9P+XKNUet9p0TQz9ABz0dvSsglks7n3C7qUmeJT/eHeHyl9F/hdEX3/r58ak5jzkGxcdNeBci4xuyD4AguisUg8HXbrX46+u5oufUOnfcI+XJ5J83u9L8M0y/ddjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGfCmCEX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79E4C4CED3;
+	Tue, 28 Jan 2025 17:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086914;
-	bh=wofKM/ZFU7MDZrc2EkuJF68llgpxz3E8b95DZBYGZN0=;
+	s=k20201202; t=1738086915;
+	bh=v1mfuCsD0UoyCi1L6a5JGBPlC9e9Ns/5g+EQOVxS9CE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjNvd5AGaKewIgb6UpJmMenyjnGw8DnwZa2JY4yGFZoTsD0buX6JEISxBnZPIsqYi
-	 W6JMk1G8SCboLKV4Bkj8V731O9jg8j96cfIr9Py1mro1EDjIGOD1VvkrBVOdbDRg+c
-	 /EzNR1vxLLxqr9+oUjejdBScMmOoExfUCahTaydJZATrGpcOXaQlcXYAf7sqkF/l1M
-	 QuVMvLsAFwwJm+ua1+sLCy5pErIrbihILFO2YwhOBrTTAQddG8p5sOgI5VqLrVwBqx
-	 82OL3LyRA6XaMMvmFegwVI0zZlZSYJKGQCugLF3BTbmPFOFhP3PgOmCMGgdYdjZyGH
-	 7BtYThmEFP4Uw==
+	b=jGfCmCEXDQNYt3QT/sA2qLghJIPtrX7UmNWgNWTBxVgUHc3162vbl3foJ/qq3Bd45
+	 TrNNhXVUsIj5BzgOSAkvxib0zDPhrhwbB1rC2XRIpBEiEMYIr1STFmqTv5SjGvLgKy
+	 uWdp7WS8n4+W/uk6j9Wa8RCf78cYeyHpSoxYGA3NyfAM46uGpKQ7Ip1DtiDzzIjab6
+	 6UfOFyIy5k1rSme5cMoAfUP0nwDMWH1pAQtDFEuGD9IvFSgBIPjU3qp2KBa+CtsWRh
+	 j+ohShJL86SWbyJdETPj98XPhPs3dP14tGbHEu362gzW1yYn8JvaGRsw0abIva0Yot
+	 kAnjZG7An9HNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dwlsalmeida@gmail.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/3] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
-Date: Tue, 28 Jan 2025 12:55:09 -0500
-Message-Id: <20250128175510.1197735-2-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/3] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
+Date: Tue, 28 Jan 2025 12:55:10 -0500
+Message-Id: <20250128175510.1197735-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128175510.1197735-1-sashal@kernel.org>
 References: <20250128175510.1197735-1-sashal@kernel.org>
@@ -63,99 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.233
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+Apparently the Raptor Lake-P reference firmware configures the PIO log size
+correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
+Zenbook UX3402VA_UX3402VA, do not.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
+Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
 
-Adjust the timing of streaming initialization and check it before
-stopping it.
+  DPC: RP PIO log size 0 is invalid
 
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+and also enables the DPC driver to dump the RP PIO Log registers when DPC
+is triggered.
 
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Note that the bug report also mentions 8086:a76e, which has been already
+added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
+Root Ports").
+
+Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index 3c281265a9ecc..60a7667ebff98 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -189,10 +189,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
- 
- 	mux_args.mux_buf_sz  = mux_buf_sz;
- 
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
-+
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
- 
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -203,6 +204,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
- {
- 	struct device *dev = &dvb->pdev->dev;
- 
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
-+	}
-+
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 7c65513e55c25..6564df6c9d0c1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5964,6 +5964,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
+ #endif
 -- 
 2.39.5
 
