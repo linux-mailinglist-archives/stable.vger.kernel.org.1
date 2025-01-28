@@ -1,125 +1,115 @@
-Return-Path: <stable+bounces-110922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-110923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4ECBA20288
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 01:18:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4086A2028F
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 01:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93677A04CC
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 00:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB3E16477C
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 00:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2085423BB;
-	Tue, 28 Jan 2025 00:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934164A1A;
+	Tue, 28 Jan 2025 00:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="beU6vS3c"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LlBD5oYb"
 X-Original-To: stable@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C7BBE40
-	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 00:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A757516415;
+	Tue, 28 Jan 2025 00:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738023497; cv=none; b=Px8IRqbT0HZV8qve0yhP6KsJbauBUtf6bESZynhGv5XRQHxw6iEMcxU3BrgB1ME+oXLs2oURW1M0ASEoHzgslwNfbuavSVmGqqIBJa7a5UTXcyGWKv42cDda6EqkbdT6b3Q2Ek0+TkgCMXu1jXcqIz5ACMUTIPB+mp5sd/5x/Jg=
+	t=1738024127; cv=none; b=E9vfe95H9D1u4z0knMxltHmZAuMtsEbU8cJVr48LskT60/2Jj+APKBp8pBvKkn1/6mL7X64ivDLglysjBZM9baHmFsXqy7Ppb3SaVjkK70rk4vooD3V2/Dynz+/maYh1oyNJ+NdRlJDLYA2sM+3gCOXOe3ZSvbHsT+Kub20PR8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738023497; c=relaxed/simple;
-	bh=wpndlb7UHHc3e2B1Lgm2UlMNmFdkTD9hEnAmwHCzwdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G0Od8rG+tMyGtRcy5yqcd1MXMxfH0e1p5ZtJr94KuyGXBuVRwFUZbx2LFrybH9DYndf/zSJZmC3ISsvq+4n9YvYHHNn9hGllseXh4bCg87eGMe57VMkfwuqS2hSObe6+a3naGwFULLyWnEidQasHBt8veZvvbCGDYLFPMeoda2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=beU6vS3c; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738023478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aj8XDJDRrLpKv2EqPYDzMbVxZZ1cx8RY7GFt/SLk8Vw=;
-	b=beU6vS3cNEuyQL3B+xtsVcRI0hzOTXuhi3dYC0RRXyNVmkC9RQlcZzg0+BOZhDhdNOha7o
-	9qRNW3+XQ10BUuUsw6zkDZ7qdzIP1Vwg+PpFVuEfA+HBNJ7gtRSQ5Dm/PeCPDc5zN83git
-	obwH0WdNZSvCObCoTpSrzSRYLiQRkLo=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: linux-acpi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Zheng Zengkai <zhengzengkai@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers array count
-Date: Tue, 28 Jan 2025 00:17:49 +0000
-Message-ID: <20250128001749.3132656-1-oliver.upton@linux.dev>
+	s=arc-20240116; t=1738024127; c=relaxed/simple;
+	bh=lRQCBu7CY8tPcCZTDPclXD0AtVkECEQvUNU8JxSxbVQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CcdGUnHT8+wZ6nRrqZr3+5r8CT7rj+JNThGD7JJXZN83Sem9ow25rrFuL8Oj77M7y0xEFFUcB4wP91Ak3pUbvEH0f5QHd9ldhIV9tY4s4S9U4WzbjEQ/u7Rt5UI8ji4gZZn95O7cY3MgmlnS2pbSCSxQdnJlhCri+F+QBO9BuzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LlBD5oYb; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738024126; x=1769560126;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lRQCBu7CY8tPcCZTDPclXD0AtVkECEQvUNU8JxSxbVQ=;
+  b=LlBD5oYb131nSVkOOL8IZkvwl4kwB4YR+1kUFSjIGtFpXITagcKjFE7d
+   MM1WHw0toT75Y9nBrYjCRQRBNW5+OUWdPzQef0ln+26+wP7DV3la4/xrh
+   kdYOnehlp/rS1Vx7tSFVyY7/TBnRrVLL4Yyb9LKda8ZuNGDUxe0P0QRW/
+   U2Lrk/vM3kClUllOvc60l3aMlWUQ0sbGTIDmmtI7cb+9TwdL/VPQ9xiwN
+   eJmGMlEeq3CXNJtkOaRefHew4KluNpRuE45G+znhsf8Ze7MmuthOFAOxU
+   j/knjWf6KRdA2Cwkb7P14nWTXYxwIaMNKAEC18Nq8W6z4RcTajfZNhEWu
+   Q==;
+X-CSE-ConnectionGUID: EaVBiYLWQcq4zmY1nbtl4w==
+X-CSE-MsgGUID: /N+ugYWnTRe1AQtV5H9ooA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="49096667"
+X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
+   d="scan'208";a="49096667"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 16:28:44 -0800
+X-CSE-ConnectionGUID: zWZR48ZRRoK9A2TolSCx+Q==
+X-CSE-MsgGUID: uUuwgUKBRR2o3r9CmwEvBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,239,1732608000"; 
+   d="scan'208";a="113596602"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 16:28:43 -0800
+Received: from [10.246.136.10] (kliang2-mobl1.ccr.corp.intel.com [10.246.136.10])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by linux.intel.com (Postfix) with ESMTPS id 1016820B5713;
+	Mon, 27 Jan 2025 16:28:41 -0800 (PST)
+Message-ID: <1d9209e0-52a0-4b26-a0a4-dcceff4c4acc@linux.intel.com>
+Date: Mon, 27 Jan 2025 19:28:40 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/20] perf/x86/intel: Fix ARCH_PERFMON_NUM_COUNTER_LEAF
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ Dapeng Mi <dapeng1.mi@intel.com>, stable@vger.kernel.org
+References: <20250123140721.2496639-1-dapeng1.mi@linux.intel.com>
+ <20250123140721.2496639-3-dapeng1.mi@linux.intel.com>
+ <20250127162917.GM16742@noisy.programming.kicks-ass.net>
+ <6d5c45b4-53ad-403f-9de3-a25b80a44e0e@linux.intel.com>
+ <20250127212901.GB9557@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <20250127212901.GB9557@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Perhaps unsurprisingly there are some platforms where the GTDT isn't
-quite right and the Platforms Timer array overflows the length of the
-overall table.
 
-While the recently-added sanity checking isn't wrong, it makes it
-impossible to boot the kernel on offending platforms. Try to hobble
-along and limit the Platform Timer count to the bounds of the table.
 
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Zheng Zengkai <zhengzengkai@huawei.com>
-Cc: stable@vger.kernel.org
-Fixes: 263e22d6bd1f ("ACPI: GTDT: Tighten the check for the array of platform timer structures")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
----
- drivers/acpi/arm64/gtdt.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+On 2025-01-27 4:29 p.m., Peter Zijlstra wrote:
+> On Mon, Jan 27, 2025 at 11:43:53AM -0500, Liang, Kan wrote:
+> 
+>> But they are used for a 64-bit register.
+>> The ARCH_PERFMON_NUM_COUNTER_LEAF is for the CPUID enumeration, which is
+>> a u32.
+> 
+> A well, but CPUID should be using unions, no?
+> 
+> we have cpuid10_e[abd]x cpuid28_e[abc]x, so wheres cpuid23_e?x at?
+> 
 
-diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-index 3561553eff8b..70f8290b659d 100644
---- a/drivers/acpi/arm64/gtdt.c
-+++ b/drivers/acpi/arm64/gtdt.c
-@@ -163,7 +163,7 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
- {
- 	void *platform_timer;
- 	struct acpi_table_gtdt *gtdt;
--	int cnt = 0;
-+	u32 cnt = 0;
- 
- 	gtdt = container_of(table, struct acpi_table_gtdt, header);
- 	acpi_gtdt_desc.gtdt = gtdt;
-@@ -188,13 +188,17 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
- 		cnt++;
- 
- 	if (cnt != gtdt->platform_timer_count) {
-+		cnt = min(cnt, gtdt->platform_timer_count);
-+		pr_err(FW_BUG "limiting Platform Timer count to %d\n", cnt);
-+	}
-+
-+	if (!cnt) {
- 		acpi_gtdt_desc.platform_timer = NULL;
--		pr_err(FW_BUG "invalid timer data.\n");
--		return -EINVAL;
-+		return 0;
- 	}
- 
- 	if (platform_timer_count)
--		*platform_timer_count = gtdt->platform_timer_count;
-+		*platform_timer_count = cnt;
- 
- 	return 0;
- }
+Sure, I will add a cpuid23_e?x to make them consistent.
 
-base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
--- 
-2.48.1.262.g85cc9f2d1e-goog
-
+Thanks,
+Kan
 
