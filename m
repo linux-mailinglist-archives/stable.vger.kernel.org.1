@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-111007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E650DA20FE1
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:55:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE73BA20FEA
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 546621674E3
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:55:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816F93A8C51
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 17:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356DA1F2C59;
-	Tue, 28 Jan 2025 17:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046981F4710;
+	Tue, 28 Jan 2025 17:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBTZ/3Rl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GcZ27YVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313E1F2391;
-	Tue, 28 Jan 2025 17:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B386E1DE8AB;
+	Tue, 28 Jan 2025 17:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086843; cv=none; b=RkLvQMcO9exnSrVdpAKAe0ZVRgzGRPfI3w8c9PM2XTgILJStWywo5EjZQq3FNq2eBoLWcDVADm/mhgRc5F/9PwW9qYMu6DU/ZQzv7453ux0PC6USdisive4gwOuKewy3vWDhtclLCXaYYofsAZH7LFOt5i4yk7N8cbNx58bmHqA=
+	t=1738086844; cv=none; b=bgM483ZXF4Vs21NZlMPee0Kwbc5izQF1vxpYM8J9nH5jymbc9sy4VhDk7W+i3gAtn4m41EFDe7CApXoQcSXSNBJkvOy0tDsbasrfqVveHvXxgJPtSrXg0RYWNPU1p+CwElBonzOkMcQ7oyxY/pgFVNp3KZFrAqrPf8wUT+EGTfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086843; c=relaxed/simple;
-	bh=FJTfihLd75Erti6+h068A60JGl9uXEuMRzHDyzhtlf0=;
+	s=arc-20240116; t=1738086844; c=relaxed/simple;
+	bh=+UYqNVefDUDRz93BVz8MExedjm34b4vwI++9x4knq1g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Axsgb1yVyDM3dgraWiRz1ZB7I9+QC72u8VIB0CyBkG6YkO5S+lYg2lgIM+seywIOBkFRDUgugFNSuejSPnUgltefaCZm948SFpxjsoF+bGDOH77eRtaigKoFfEuWxqTCVpmXC4nJ9FVpER5OAbDd/h37gJWHCC49LlmIHA29ITM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBTZ/3Rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563A4C4CEE1;
-	Tue, 28 Jan 2025 17:54:01 +0000 (UTC)
+	 MIME-Version; b=AE/lo6gAcp/PMYlykO8Rjq0z/odFjQY2PKUBkpwgdTrykI30tYjt6toUCi7Hvop07eWOjUoVgxYypwpe5y9K5uUGBhpfIor0iAv4i4F8dQKNTkfdxayQoO47PEkAnp/hgR9dldDmMjJODXDcD7GX7qi/unvb5pn/cxNE4L+PxA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GcZ27YVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461BC4CEE2;
+	Tue, 28 Jan 2025 17:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086842;
-	bh=FJTfihLd75Erti6+h068A60JGl9uXEuMRzHDyzhtlf0=;
+	s=k20201202; t=1738086844;
+	bh=+UYqNVefDUDRz93BVz8MExedjm34b4vwI++9x4knq1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBTZ/3Rlr6BHvT0/ATGFSCWL5f3LoYJQ8osp8uFkL8PKP9NVJMdxD0WOff48G+K71
-	 YF4auMyILcgfo45fn4wXv1OUSQownW4zpMslizsrN9Dr3lO/taS77mK3nQsBRwDzbc
-	 X/TPHSt/LTviHZNBd0WX8I2JkG7owZjEE/1iU0aTVeCCQWwytmr82cj14qWDOQ1gp6
-	 Zf9caPPY6TypLuygOVfb7B3bOELqHboi5L2zZAS+iHD/4cRI9HWj0pghDDE+L43B0a
-	 43h0IAhmbhrAFiSuOEI6VtBSccVDiqpAHkqzAVWZQ+/I+XM08FDxRfLBpWJhbnQwZv
-	 gZ9myDUkwfi4Q==
+	b=GcZ27YVc9EfMbhrhWaUNLkHRmyjTn0bg06zmvLfNn9kBbmjXUNm4QGuLeGrjngVw4
+	 CKS3J/WlVUTkNBnkXmGPSyLtpxaM6n0M4kh1fLnixhx9M7uev2JRnv6iF4xEE3wf/O
+	 xmXo+1056wcz0SH/9+lNpvBrjJV9VKiXuAtdBHC+bTWHR25z0++Gucr4Q94zgnUkkK
+	 z2c2lohbs/ILb33pyfE5BcVCuY0VIn6v2MMG95AGndj10dG4qMevj7wZscEe4Epqs+
+	 sKRUgzdgt5mIqenuEDAGzPYjvSxoLOgIpHC8rEnbn0iIfrIE8CuehUk0jC3fuj9m+E
+	 1plUnezMfG3/A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Naman Jain <namjain@linux.microsoft.com>,
+	John Starks <jostarks@microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dwlsalmeida@gmail.com,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 09/15] media: vidtv: Fix a null-ptr-deref in vidtv_mux_stop_thread
-Date: Tue, 28 Jan 2025 12:53:40 -0500
-Message-Id: <20250128175346.1197097-9-sashal@kernel.org>
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	decui@microsoft.com,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.13 10/15] Drivers: hv: vmbus: Wait for boot-time offers during boot and resume
+Date: Tue, 28 Jan 2025 12:53:41 -0500
+Message-Id: <20250128175346.1197097-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128175346.1197097-1-sashal@kernel.org>
 References: <20250128175346.1197097-1-sashal@kernel.org>
@@ -68,94 +72,247 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13
 Content-Transfer-Encoding: 8bit
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Naman Jain <namjain@linux.microsoft.com>
 
-[ Upstream commit 1221989555db711578a327a9367f1be46500cb48 ]
+[ Upstream commit 113386ca981c3997db6b83272c7ecf47456aeddb ]
 
-syzbot report a null-ptr-deref in vidtv_mux_stop_thread. [1]
+Channel offers are requested during VMBus initialization and resume from
+hibernation. Add support to wait for all boot-time channel offers to
+be delivered and processed before returning from vmbus_request_offers.
 
-If dvb->mux is not initialized successfully by vidtv_mux_init() in the
-vidtv_start_streaming(), it will trigger null pointer dereference about mux
-in vidtv_mux_stop_thread().
+This is in analogy to a PCI bus not returning from probe until it has
+scanned all devices on the bus.
 
-Adjust the timing of streaming initialization and check it before
-stopping it.
+Without this, user mode can race with VMBus initialization and miss
+channel offers. User mode has no way to work around this other than
+sleeping for a while, since there is no way to know when VMBus has
+finished processing boot-time offers.
 
-[1]
-KASAN: null-ptr-deref in range [0x0000000000000128-0x000000000000012f]
-CPU: 0 UID: 0 PID: 5842 Comm: syz-executor248 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-RIP: 0010:vidtv_mux_stop_thread+0x26/0x80 drivers/media/test-drivers/vidtv/vidtv_mux.c:471
-Code: 90 90 90 90 66 0f 1f 00 55 53 48 89 fb e8 82 2e c8 f9 48 8d bb 28 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 02 7e 3b 0f b6 ab 28 01 00 00 31 ff 89 ee e8
-RSP: 0018:ffffc90003f2faa8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff87cfb125
-RDX: 0000000000000025 RSI: ffffffff87d120ce RDI: 0000000000000128
-RBP: ffff888029b8d220 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000003 R12: ffff888029b8d188
-R13: ffffffff8f590aa0 R14: ffffc9000581c5c8 R15: ffff888029a17710
-FS:  00007f7eef5156c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7eef5e635c CR3: 0000000076ca6000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- vidtv_stop_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:209 [inline]
- vidtv_stop_feed+0x151/0x250 drivers/media/test-drivers/vidtv/vidtv_bridge.c:252
- dmx_section_feed_stop_filtering+0x90/0x160 drivers/media/dvb-core/dvb_demux.c:1000
- dvb_dmxdev_feed_stop.isra.0+0x1ee/0x270 drivers/media/dvb-core/dmxdev.c:486
- dvb_dmxdev_filter_stop+0x22a/0x3a0 drivers/media/dvb-core/dmxdev.c:559
- dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
- dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
- __fput+0x3f8/0xb60 fs/file_table.c:450
- task_work_run+0x14e/0x250 kernel/task_work.c:239
- get_signal+0x1d3/0x2610 kernel/signal.c:2790
- arch_do_signal_or_restart+0x90/0x7e0 arch/x86/kernel/signal.c:337
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x150/0x2a0 kernel/entry/common.c:218
- do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+With this added functionality, remove earlier logic which keeps track
+of count of offered channels post resume from hibernation. Once all
+offers delivered message is received, no further boot-time offers are
+going to be received. Consequently, logic to prevent suspend from
+happening after previous resume had missing offers, is also removed.
 
-Reported-by: syzbot+5e248227c80a3be8e96a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5e248227c80a3be8e96a
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Co-developed-by: John Starks <jostarks@microsoft.com>
+Signed-off-by: John Starks <jostarks@microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20250102130712.1661-2-namjain@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20250102130712.1661-2-namjain@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/hv/channel_mgmt.c | 61 +++++++++++++++++++++++++++++----------
+ drivers/hv/connection.c   |  4 +--
+ drivers/hv/hyperv_vmbus.h | 14 ++-------
+ drivers/hv/vmbus_drv.c    | 16 ----------
+ 4 files changed, 51 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_bridge.c b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-index e1dd8adeba469..438483c62facc 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -191,10 +191,11 @@ static int vidtv_start_streaming(struct vidtv_dvb *dvb)
+diff --git a/drivers/hv/channel_mgmt.c b/drivers/hv/channel_mgmt.c
+index 3c6011a48dabe..6e084c2074141 100644
+--- a/drivers/hv/channel_mgmt.c
++++ b/drivers/hv/channel_mgmt.c
+@@ -944,16 +944,6 @@ void vmbus_initiate_unload(bool crash)
+ 		vmbus_wait_for_unload();
+ }
  
- 	mux_args.mux_buf_sz  = mux_buf_sz;
- 
--	dvb->streaming = true;
- 	dvb->mux = vidtv_mux_init(dvb->fe[0], dev, &mux_args);
- 	if (!dvb->mux)
- 		return -ENOMEM;
-+
-+	dvb->streaming = true;
- 	vidtv_mux_start_thread(dvb->mux);
- 
- 	dev_dbg_ratelimited(dev, "Started streaming\n");
-@@ -205,6 +206,11 @@ static int vidtv_stop_streaming(struct vidtv_dvb *dvb)
+-static void check_ready_for_resume_event(void)
+-{
+-	/*
+-	 * If all the old primary channels have been fixed up, then it's safe
+-	 * to resume.
+-	 */
+-	if (atomic_dec_and_test(&vmbus_connection.nr_chan_fixup_on_resume))
+-		complete(&vmbus_connection.ready_for_resume_event);
+-}
+-
+ static void vmbus_setup_channel_state(struct vmbus_channel *channel,
+ 				      struct vmbus_channel_offer_channel *offer)
  {
- 	struct device *dev = &dvb->pdev->dev;
+@@ -1109,8 +1099,6 @@ static void vmbus_onoffer(struct vmbus_channel_message_header *hdr)
  
-+	if (!dvb->streaming) {
-+		dev_warn_ratelimited(dev, "No streaming. Skipping.\n");
-+		return 0;
+ 		/* Add the channel back to the array of channels. */
+ 		vmbus_channel_map_relid(oldchannel);
+-		check_ready_for_resume_event();
+-
+ 		mutex_unlock(&vmbus_connection.channel_mutex);
+ 		return;
+ 	}
+@@ -1296,13 +1284,28 @@ EXPORT_SYMBOL_GPL(vmbus_hvsock_device_unregister);
+ 
+ /*
+  * vmbus_onoffers_delivered -
+- * This is invoked when all offers have been delivered.
++ * The CHANNELMSG_ALLOFFERS_DELIVERED message arrives after all
++ * boot-time offers are delivered. A boot-time offer is for the primary
++ * channel for any virtual hardware configured in the VM at the time it boots.
++ * Boot-time offers include offers for physical devices assigned to the VM
++ * via Hyper-V's Discrete Device Assignment (DDA) functionality that are
++ * handled as virtual PCI devices in Linux (e.g., NVMe devices and GPUs).
++ * Boot-time offers do not include offers for VMBus sub-channels. Because
++ * devices can be hot-added to the VM after it is booted, additional channel
++ * offers that aren't boot-time offers can be received at any time after the
++ * all-offers-delivered message.
+  *
+- * Nothing to do here.
++ * SR-IOV NIC Virtual Functions (VFs) assigned to a VM are not considered
++ * to be assigned to the VM at boot-time, and offers for VFs may occur after
++ * the all-offers-delivered message. VFs are optional accelerators to the
++ * synthetic VMBus NIC and are effectively hot-added only after the VMBus
++ * NIC channel is opened (once it knows the guest can support it, via the
++ * sriov bit in the netvsc protocol).
+  */
+ static void vmbus_onoffers_delivered(
+ 			struct vmbus_channel_message_header *hdr)
+ {
++	complete(&vmbus_connection.all_offers_delivered_event);
+ }
+ 
+ /*
+@@ -1578,7 +1581,8 @@ void vmbus_onmessage(struct vmbus_channel_message_header *hdr)
+ }
+ 
+ /*
+- * vmbus_request_offers - Send a request to get all our pending offers.
++ * vmbus_request_offers - Send a request to get all our pending offers
++ * and wait for all boot-time offers to arrive.
+  */
+ int vmbus_request_offers(void)
+ {
+@@ -1596,6 +1600,10 @@ int vmbus_request_offers(void)
+ 
+ 	msg->msgtype = CHANNELMSG_REQUESTOFFERS;
+ 
++	/*
++	 * This REQUESTOFFERS message will result in the host sending an all
++	 * offers delivered message after all the boot-time offers are sent.
++	 */
+ 	ret = vmbus_post_msg(msg, sizeof(struct vmbus_channel_message_header),
+ 			     true);
+ 
+@@ -1607,6 +1615,29 @@ int vmbus_request_offers(void)
+ 		goto cleanup;
+ 	}
+ 
++	/*
++	 * Wait for the host to send all boot-time offers.
++	 * Keeping it as a best-effort mechanism, where a warning is
++	 * printed if a timeout occurs, and execution is resumed.
++	 */
++	if (!wait_for_completion_timeout(&vmbus_connection.all_offers_delivered_event,
++					 secs_to_jiffies(60))) {
++		pr_warn("timed out waiting for all boot-time offers to be delivered.\n");
 +	}
 +
- 	dvb->streaming = false;
- 	vidtv_mux_stop_thread(dvb->mux);
- 	vidtv_mux_destroy(dvb->mux);
++	/*
++	 * Flush handling of offer messages (which may initiate work on
++	 * other work queues).
++	 */
++	flush_workqueue(vmbus_connection.work_queue);
++
++	/*
++	 * Flush workqueue for processing the incoming offers. Subchannel
++	 * offers and their processing can happen later, so there is no need to
++	 * flush that workqueue here.
++	 */
++	flush_workqueue(vmbus_connection.handle_primary_chan_wq);
++
+ cleanup:
+ 	kfree(msginfo);
+ 
+diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+index f001ae880e1db..8351360bba161 100644
+--- a/drivers/hv/connection.c
++++ b/drivers/hv/connection.c
+@@ -34,8 +34,8 @@ struct vmbus_connection vmbus_connection = {
+ 
+ 	.ready_for_suspend_event = COMPLETION_INITIALIZER(
+ 				  vmbus_connection.ready_for_suspend_event),
+-	.ready_for_resume_event	= COMPLETION_INITIALIZER(
+-				  vmbus_connection.ready_for_resume_event),
++	.all_offers_delivered_event = COMPLETION_INITIALIZER(
++				  vmbus_connection.all_offers_delivered_event),
+ };
+ EXPORT_SYMBOL_GPL(vmbus_connection);
+ 
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 52cb744b4d7fd..e4058af987316 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -287,18 +287,10 @@ struct vmbus_connection {
+ 	struct completion ready_for_suspend_event;
+ 
+ 	/*
+-	 * The number of primary channels that should be "fixed up"
+-	 * upon resume: these channels are re-offered upon resume, and some
+-	 * fields of the channel offers (i.e. child_relid and connection_id)
+-	 * can change, so the old offermsg must be fixed up, before the resume
+-	 * callbacks of the VSC drivers start to further touch the channels.
++	 * Completed once the host has offered all boot-time channels.
++	 * Note that some channels may still be under process on a workqueue.
+ 	 */
+-	atomic_t nr_chan_fixup_on_resume;
+-	/*
+-	 * vmbus_bus_resume() waits for "nr_chan_fixup_on_resume" to
+-	 * drop to zero.
+-	 */
+-	struct completion ready_for_resume_event;
++	struct completion all_offers_delivered_event;
+ };
+ 
+ 
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 2892b8da20a5e..bf5608a740561 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2427,11 +2427,6 @@ static int vmbus_bus_suspend(struct device *dev)
+ 	if (atomic_read(&vmbus_connection.nr_chan_close_on_suspend) > 0)
+ 		wait_for_completion(&vmbus_connection.ready_for_suspend_event);
+ 
+-	if (atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) != 0) {
+-		pr_err("Can not suspend due to a previous failed resuming\n");
+-		return -EBUSY;
+-	}
+-
+ 	mutex_lock(&vmbus_connection.channel_mutex);
+ 
+ 	list_for_each_entry(channel, &vmbus_connection.chn_list, listentry) {
+@@ -2456,17 +2451,12 @@ static int vmbus_bus_suspend(struct device *dev)
+ 			pr_err("Sub-channel not deleted!\n");
+ 			WARN_ON_ONCE(1);
+ 		}
+-
+-		atomic_inc(&vmbus_connection.nr_chan_fixup_on_resume);
+ 	}
+ 
+ 	mutex_unlock(&vmbus_connection.channel_mutex);
+ 
+ 	vmbus_initiate_unload(false);
+ 
+-	/* Reset the event for the next resume. */
+-	reinit_completion(&vmbus_connection.ready_for_resume_event);
+-
+ 	return 0;
+ }
+ 
+@@ -2502,14 +2492,8 @@ static int vmbus_bus_resume(struct device *dev)
+ 	if (ret != 0)
+ 		return ret;
+ 
+-	WARN_ON(atomic_read(&vmbus_connection.nr_chan_fixup_on_resume) == 0);
+-
+ 	vmbus_request_offers();
+ 
+-	if (wait_for_completion_timeout(
+-		&vmbus_connection.ready_for_resume_event, secs_to_jiffies(10)) == 0)
+-		pr_err("Some vmbus device is missing after suspending?\n");
+-
+ 	/* Reset the event for the next suspend. */
+ 	reinit_completion(&vmbus_connection.ready_for_suspend_event);
+ 
 -- 
 2.39.5
 
