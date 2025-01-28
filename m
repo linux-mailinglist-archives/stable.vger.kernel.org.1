@@ -1,114 +1,117 @@
-Return-Path: <stable+bounces-111044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D29DA2106C
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:07:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB7BA21061
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 19:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42F93AC41B
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:03:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB22C188B684
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 18:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358CC1FFC66;
-	Tue, 28 Jan 2025 17:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD8B20012D;
+	Tue, 28 Jan 2025 17:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8spWj4Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqnS6CNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93111FFC56;
-	Tue, 28 Jan 2025 17:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5408A1FFC56;
+	Tue, 28 Jan 2025 17:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738086909; cv=none; b=gCC6V/ud6M0rBVrYEGkfHFG/tI+3eU8hfTQ2INIXSvB0b6gPQMymR7GEqH/xynjTCSWXW1I8PUQeAW1CdRadrUGjTlELFXKile0HVBEsaaEkdgFp2aAe41sFYogrUxwjc+pXq72wyj3M2myrfSHd85D7NL8v0oYi825Yz+ECr0U=
+	t=1738086913; cv=none; b=r9C4kmY5Sa9DpdxOkytRGwsCk3rf13dwEEdAx3RtpZO/IG6xCUxyPVDw7wtddRBVe0SvtrYsir4yD+v/sS0+QJ4MrR1K9RXpPVz5KsWLvesCXqBn9WWe7A9V+IVr7ZUWdrSPMnpld2FLCjPOTb7O+iL9KVQ5o1I8L5+FH8MKIgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738086909; c=relaxed/simple;
-	bh=SKWaARZIH6yZcoMUHUSbOouic7bxx1Ltj5a8tIdbqf0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vBm3LCyjo+wAF+FlvC9cmXpbQeuXQ3ySUQ2aZcY4Y/m+MKc+B4sJMzpgKQC2xVL1+j2I05e8rbWtb3XC56Sw8YaPV+k+q+jhHIKGR463ifB5zu/0zWrfKBNT2pZvWZ6rCTyctL86msApHIln7lqiSwmbGNPQMANSXrsAOtrXBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8spWj4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BEEC4CEE1;
-	Tue, 28 Jan 2025 17:55:08 +0000 (UTC)
+	s=arc-20240116; t=1738086913; c=relaxed/simple;
+	bh=Ofs7/mnLkbiZcf/m1/djoR4isCbvUivYL9RuLk15om8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=guavov+kGhi9QeuTD84yFDUjUG0ENALjf8QFDNRRCVnrLKNYum7kDQocMed9kYQDUe4OEGJJW1VgtklMgYQ+EGTYFKfBLMzQv1ruvRjhzaVkcRjAZ4BcVCnq+m8EuykoiIkx4tC8xoG86TwIXStmtlFCPTgpHlqCCAgkRJ8RTPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqnS6CNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9935DC4CED3;
+	Tue, 28 Jan 2025 17:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738086909;
-	bh=SKWaARZIH6yZcoMUHUSbOouic7bxx1Ltj5a8tIdbqf0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8spWj4QtUjhQF1U1y+bmJyRDQvxUBVqrWUVZUPTaE+Jn3nwJ1GaWGtHV7gq7IFr6
-	 cSKzkaPLlcCH12DwrHBxGGzslM47IEhNiObuUQQygyQxRpzUHgzVJm+4d5txNJP+PI
-	 YtFNpXzpygVJfrOKoor77tOZhu7w1y5P8p44qYqbXiaiztMaGW1hpHryFqSpUmbWFQ
-	 QO/XTWFtb5sBxaGzPWMQe9BE0+9AqDqWoAKQJGvZHntAp2MOdYUGDSNUdIXrT3ZGh3
-	 ZCoOhjq3kN1/74qErWh0xVjDpJkCT2PZ6xqQZWpHxTIyQ3jJ4JidJT7jK/thkl24Of
-	 4QyxEsMTGP9wA==
+	s=k20201202; t=1738086912;
+	bh=Ofs7/mnLkbiZcf/m1/djoR4isCbvUivYL9RuLk15om8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hqnS6CNHk0kYySLl14CRPfNr3clKi6pPfr6WA2Mu4RB1tyKVIYzfJ0M4r19UmfuQu
+	 QADpwrKB9m+eXtsh7RBJAIhVudrDACkRy3C6vsq1IGMk5m2VLW2USI6jECjhkr47Sz
+	 CkH9POU9Ys9OYGctoXkVlyBRgC5ftyXRxaeXNwZfzPGG61cga4Uo2Zr59hRfdnij9b
+	 dDU0xpuX0bVQhuujpX9QYPL+BTAk1e0y4vMh26sQeaBnbBzWZPPSvY7lOrDWy9HJEO
+	 uuLRVoW+tNeJzw/bLBalXsTwgxc1MwlQNm7kFdYgSjYlc0FAI2wb5Ow9StqBrxUrwE
+	 Nzu8aJcNpiC2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 3/3] PCI/DPC: Quirk PIO log size for Intel Raptor Lake-P
-Date: Tue, 28 Jan 2025 12:55:04 -0500
-Message-Id: <20250128175504.1197685-3-sashal@kernel.org>
+	aospan@amazon.com,
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/3] media: cxd2841er: fix 64-bit division on gcc-9
+Date: Tue, 28 Jan 2025 12:55:08 -0500
+Message-Id: <20250128175510.1197735-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250128175504.1197685-1-sashal@kernel.org>
-References: <20250128175504.1197685-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.177
+X-stable-base: Linux 5.10.233
 Content-Transfer-Encoding: 8bit
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b198499c7d2508a76243b98e7cca992f6fd2b7f7 ]
+[ Upstream commit 8d46603eeeb4c6abff1d2e49f2a6ae289dac765e ]
 
-Apparently the Raptor Lake-P reference firmware configures the PIO log size
-correctly, but some vendor BIOSes, including at least ASUSTeK COMPUTER INC.
-Zenbook UX3402VA_UX3402VA, do not.
+It appears that do_div() once more gets confused by a complex
+expression that ends up not quite being constant despite
+__builtin_constant_p() thinking it is:
 
-Apply the quirk for Raptor Lake-P.  This prevents kernel complaints like:
+ERROR: modpost: "__aeabi_uldivmod" [drivers/media/dvb-frontends/cxd2841er.ko] undefined!
 
-  DPC: RP PIO log size 0 is invalid
+Use div_u64() instead, forcing the expression to be evaluated
+first, and making it a bit more readable.
 
-and also enables the DPC driver to dump the RP PIO Log registers when DPC
-is triggered.
-
-Note that the bug report also mentions 8086:a76e, which has been already
-added by 627c6db20703 ("PCI/DPC: Quirk PIO log size for Intel Raptor Lake
-Root Ports").
-
-Link: https://lore.kernel.org/r/20250102164315.7562-1-tiwai@suse.de
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1234623
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/linux-media/CA+G9fYvvNm-aYodLaAwwTjEGtX0YxR-1R14FOA5aHKt0sSVsYg@mail.gmail.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: added Closes tags]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/dvb-frontends/cxd2841er.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 24fde99c11a70..a1f85120f97e6 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6005,6 +6005,7 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2b, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa72f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa73f, dpc_log_size);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0xa76e, dpc_log_size);
- #endif
+diff --git a/drivers/media/dvb-frontends/cxd2841er.c b/drivers/media/dvb-frontends/cxd2841er.c
+index 493ba8b6b8f62..b2c251135ce1c 100644
+--- a/drivers/media/dvb-frontends/cxd2841er.c
++++ b/drivers/media/dvb-frontends/cxd2841er.c
+@@ -311,12 +311,8 @@ static int cxd2841er_set_reg_bits(struct cxd2841er_priv *priv,
+ 
+ static u32 cxd2841er_calc_iffreq_xtal(enum cxd2841er_xtal xtal, u32 ifhz)
+ {
+-	u64 tmp;
+-
+-	tmp = (u64) ifhz * 16777216;
+-	do_div(tmp, ((xtal == SONY_XTAL_24000) ? 48000000 : 41000000));
+-
+-	return (u32) tmp;
++	return div_u64(ifhz * 16777216ull,
++		       (xtal == SONY_XTAL_24000) ? 48000000 : 41000000);
+ }
+ 
+ static u32 cxd2841er_calc_iffreq(u32 ifhz)
 -- 
 2.39.5
 
