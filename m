@@ -1,170 +1,139 @@
-Return-Path: <stable+bounces-111057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FABA2132F
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:36:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DDCA2133B
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 21:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCC073A1F40
-	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 20:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E091883F23
+	for <lists+stable@lfdr.de>; Tue, 28 Jan 2025 20:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693101EEA3C;
-	Tue, 28 Jan 2025 20:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529B61E0B86;
+	Tue, 28 Jan 2025 20:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvGpkedl"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="H6z2Atca"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBBA1E98E1;
-	Tue, 28 Jan 2025 20:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0361E1A841A
+	for <stable@vger.kernel.org>; Tue, 28 Jan 2025 20:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738096587; cv=none; b=L9+eqV8cdZGl4HT1eZ00rTc8lk1WeswKNSqVO5NasbQ3XRPpaa9jmYEuAd2TltA0zmTVV/8NGZsswRz8Z1ouP3PZP/1fpm2lmJmFClhUBCXTltuZmf8W0lpC+2uHGrmELv5ABZ8GmKUtVIfEpTBu2KsHMsV46GGBhe18+JnJWDo=
+	t=1738096968; cv=none; b=AGH2TH1/hGdCJqyP0jh2sZysbTS9wRHQ+K1OTDG6G3mhNBJ/pIrYG5Rm5H8EOPKZZFgY9yd0jkuBMUZWnvFseX3bkayWkq2z2lJvUjZDDSLMcWO0iH6GltKEGxsdCmGNHZu91Ny6ebRzffSQnCmLPvOGmnJ4g//dWNfWBYXLWZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738096587; c=relaxed/simple;
-	bh=qVTrrQkFDNqvXyLb4nP25mCPoBVYVZ41Pr+y0QNrMso=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gcHdLHDdAj32p95VI360bI8VWExvydtZEeDEDkEuItKgm9+5/Lq1F65txq71wXXVmlTMdzCwePlszzjKQr3S26aF8ptv77gx8avl3DvLG7F9o2qDHOwg20dx2M8WVW7L9xRjNr3moN8qvLO9nbSa5bvcspPfbwQIVsoz4b8/KDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvGpkedl; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5401be44b58so6557292e87.0;
-        Tue, 28 Jan 2025 12:36:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738096583; x=1738701383; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=z8MTyUlPh3gZbGYt+/m2sUV5tFwW7lwH2zL30YhNj3E=;
-        b=BvGpkedlxhN3T8I1AJiP9M5U7VQtOv6K6BAbAdWwX2uyfJD/RtegxjQ7jA8wbffrKE
-         hfgTzb05tiL3569gMJQQu2ZLLmUdcN/kgu0BnnNgpFGqyHw+L5NYCjFvrxdiQP9z9Nlu
-         qV9Q6Pdj/rXWL8O6vg7vr2ot6b/xP1wl77JTb4eIJJKr+Gse9pjlWG4rLX0uF1I8eVXM
-         sVa7YG2+sEIqnjJZwuexR97mDGqMhzYsE9bFUzJudVTU4lN0BjqNKswNxkdPVf4IYL5x
-         CJtk0rvB6DjvdugTpuoU/sfWO+SrdBhmfQGtpjB33VekG4WlfBiGZHsAV5hIZ0uaapet
-         vCrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738096583; x=1738701383;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z8MTyUlPh3gZbGYt+/m2sUV5tFwW7lwH2zL30YhNj3E=;
-        b=FIPwd7uxMY3UR+1PVoko6CEBZ6gMu9MJGQch0IIeom9S1MvIFeJZ03tiVrDCzFLv63
-         FKZQ0KtDBTPvy9VB08O1LLybzQ1IC85Ni/oqPozkPVQsRg9t92+gO+2QjyepZbILEbOv
-         Gavlo7OPHTYAEd/cJ8AYtA/u8KVZg1BsPSGWLvOZ7IHq2GhLcKtJbeVISO9XEzMHHdMb
-         EKh3xKQTWLQqEkWcECc1teJOR7t1cVuN3ojR7OI5fz52PCCPcRCyqRqvoT8H6NiMu/fS
-         3dDRzZWoFeVb6CEXDWu7J8hltsCPwaFYzAPwKr9S6dykNHafg8cPnsQa9I18xCJ9xP2W
-         0LJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7PneG0fqTR6unjt2+Q9C8pZw5LfVerldIFV/WfRCFUtd/+/jQ/NVMzSA09yZfZ2YIuX42dgm7+QoLa/o=@vger.kernel.org, AJvYcCVSbBZKh4Hj19ud/fs95fP9U7YuZZiqmBDOdn43sKtugewRuQTWT4tTwKFk1fu622mrSaHU0s+N@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmuUEGL8mDtV5iW8X8xorA3ombYXqisdyhrh4enRZyg+BnhYZH
-	9IjTSXMv3kgf2Qa5aQe90JqJyIDIEMlaeKAm8yJQK1J4go0EPo5bqCz1yQPI
-X-Gm-Gg: ASbGncuI7423aXzwC+oOSJduqw8hnsU/db9zykyqtzRSEcZNz6D3UwZkv6NCJwGf6wz
-	yUDcHlaJFwcvSjN7rY/w81Gj41bVdxl+jWFm8PREuETpTgQwuwH02jIGpsJLPoyRIrSvjkq2l7O
-	V+SpeLk6vhuExHDdJGB4mSdVHOSRsu3/NJMIhjjF9iDwlNInj0pVgZQGe3KucIEIJxrXGS0LskM
-	2InK1+DuTvB12O1nOVXAasgbZpfhxeCA+NkWqmqPktn2qc7pLnxAQNj+Wp+FkECCPC5OxmOv6dt
-	3SPv6DB+YsKABOsejc61JNlZQ1oMLHBij3pNiPlbPSm5vrzbX/uBhJR7pMeLj/4VOPqg/HD2UOa
-	09fVVkMNWj/c=
-X-Google-Smtp-Source: AGHT+IGXx8ir1+EZxeY6N5v7kjSeoMSS2MCJ9pG/fcIMmWsjx/6j0N5nIJirlOL33zDZIryOayb8uQ==
-X-Received: by 2002:ac2:43bb:0:b0:540:1a0c:9bac with SMTP id 2adb3069b0e04-543e4c32548mr129480e87.34.1738096583093;
-        Tue, 28 Jan 2025 12:36:23 -0800 (PST)
-Received: from razdolb.local (static.248.157.217.95.clients.your-server.de. [95.217.157.248])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543c822fcb0sm1778361e87.55.2025.01.28.12.36.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 12:36:21 -0800 (PST)
-From: Mikhail Rudenko <mike.rudenko@gmail.com>
-Date: Tue, 28 Jan 2025 23:35:51 +0300
-Subject: [PATCH v3 1/2] media: videobuf2: Fix dmabuf cache sync/flush in
- dma-contig
+	s=arc-20240116; t=1738096968; c=relaxed/simple;
+	bh=hfZURXY9Q0UNWXaXALdG56eXuQNwSwfMlU0LptzP2yI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rNNeoQ2U+yNf9oGiBw7HdBWY1nO7GWFYrohAwC2V+viEtZcouw2izeVAb1YOmI5/2evo54h53f10x9vlkNQwaO+R1nZ760Du9mFx+0W3FyuNKwk/3r8KnhlGEN0uXNeFUmbOPQekeEievvxJnpLhrgIw0cYGlfpmx16OJfUmTJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=H6z2Atca; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 28 Jan 2025 12:42:24 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738096954;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FZITjXCuyDtKK1qtqnTTdQ9PmU2bXeOu1iAWHigtFFs=;
+	b=H6z2AtcawhAIWMhD9yaCeCJk3LBm6DXMoLKTAkNF/PTdoPU1ntEQpTT2ear9g3GN0Ex3gp
+	Hjj9xpszPzHhxqUvb60Rg/LP2je3PbM2KTXqsZd70P1YYGDabpydCw6kfMAehbDB7EmqQK
+	SCBQXoIwD5Pxt8hT1qDsOzRdphLh2Ys=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Zheng Zengkai <zhengzengkai@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers
+ array count
+Message-ID: <Z5lBMBY7XoFJmpGM@linux.dev>
+References: <20250128001749.3132656-1-oliver.upton@linux.dev>
+ <Z5i2j9gFB2iyN9g4@lpieralisi>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250128-b4-rkisp-noncoherent-v3-1-baf39c997d2a@gmail.com>
-References: <20250128-b4-rkisp-noncoherent-v3-0-baf39c997d2a@gmail.com>
-In-Reply-To: <20250128-b4-rkisp-noncoherent-v3-0-baf39c997d2a@gmail.com>
-To: Dafna Hirschfeld <dafna@fastmail.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Heiko Stuebner <heiko@sntech.de>, Tomasz Figa <tfiga@chromium.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Hans Verkuil <hverkuil@xs4all.nl>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
- Mikhail Rudenko <mike.rudenko@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z5i2j9gFB2iyN9g4@lpieralisi>
+X-Migadu-Flow: FLOW_OUT
 
-When support for V4L2_FLAG_MEMORY_NON_CONSISTENT was removed in
-commit 129134e5415d ("media: media/v4l2: remove
-V4L2_FLAG_MEMORY_NON_CONSISTENT flag"),
-vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions were made
-no-ops. Later, when support for V4L2_MEMORY_FLAG_NON_COHERENT was
-introduced in commit c0acf9cfeee0 ("media: videobuf2: handle
-V4L2_MEMORY_FLAG_NON_COHERENT flag"), the above functions remained
-no-ops, making cache maintenance for non-coherent dmabufs allocated by
-dma-contig impossible.
+Hi Lorenzo,
 
-Fix this by reintroducing dma_sync_sgtable_for_{cpu,device} and
-{flush,invalidate}_kernel_vmap_range calls to
-vb2_dc_dmabuf_ops_{begin,end}_cpu_access() functions for non-coherent
-buffers.
+On Tue, Jan 28, 2025 at 11:50:55AM +0100, Lorenzo Pieralisi wrote:
+> > @@ -188,13 +188,17 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
+> >  		cnt++;
+> >  
+> >  	if (cnt != gtdt->platform_timer_count) {
+> > +		cnt = min(cnt, gtdt->platform_timer_count);
+> 
+> Thank you for reporting this.
+> 
+> There is something I need to understand.
+> 
+> What's wrong cnt (because platform_timer_valid() fails for some
+> reason on some entries whereas before the commit we
+> are fixing was applied we *were* parsing those entries) or
+> gtdt->platform_timer_count ?
+> 
+> I *guess* the issue is the following:
+> 
+> gtdt->platform_timer_count reports the number of GT blocks in the
+> GTDT not including Arm generic watchdogs, whereas cnt counts both
+> structure types (and that's what gtdt->platform_timer_count should
+> report too if it was correct).
 
-Fixes: c0acf9cfeee0 ("media: videobuf2: handle V4L2_MEMORY_FLAG_NON_COHERENT flag")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
----
- .../media/common/videobuf2/videobuf2-dma-contig.c  | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+I've seen two different issues so far:
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-dma-contig.c b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-index bb0b7fa67b539aa73ad5ccf3c3bc318e26f8a4cb..146d7997a0da5989fb081a6f28ce0641fe726e63 100644
---- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-@@ -427,6 +427,17 @@ static int
- vb2_dc_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
- 				   enum dma_data_direction direction)
- {
-+	struct vb2_dc_buf *buf = dbuf->priv;
-+	struct sg_table *sgt = buf->dma_sgt;
-+
-+	if (!buf->non_coherent_mem)
-+		return 0;
-+
-+	if (buf->vaddr)
-+		invalidate_kernel_vmap_range(buf->vaddr, buf->size);
-+
-+	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
-+
- 	return 0;
- }
- 
-@@ -434,6 +445,17 @@ static int
- vb2_dc_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
- 				 enum dma_data_direction direction)
- {
-+	struct vb2_dc_buf *buf = dbuf->priv;
-+	struct sg_table *sgt = buf->dma_sgt;
-+
-+	if (!buf->non_coherent_mem)
-+		return 0;
-+
-+	if (buf->vaddr)
-+		flush_kernel_vmap_range(buf->vaddr, buf->size);
-+
-+	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
-+
- 	return 0;
- }
- 
+ - In one case, the offset of the platform timer array is entirely
+   beyond the GTDT
+
+ - In another, the GTDT has a timer array of length 2, but only the
+   first structure falls within the length of the overall GTDT
+
+Since cnt is the result of doing a bounds-checked walk of the platform
+timer array, both of these issues cause the sanity check to fail.
+
+> >  	if (platform_timer_count)
+> > -		*platform_timer_count = gtdt->platform_timer_count;
+> > +		*platform_timer_count = cnt;
+> 
+> I think this should be fine as things stand (but see above).
+> 
+> It is used in:
+> 
+> gtdt_sbsa_gwdt_init() - just to check if there are platform timers entries
+> 
+> arch_timer_mem_acpi_init() - to create a temporary array to init arch mem timer
+> 			     entries (the array is oversized because it
+> 			     includes watchdog entries in the count)
+> 
+> In both cases taking the
+> 
+> min(cnt, gtdt->platform_timer_count);
+> 
+> should work AFAICS
+
+It was probably worth noting in the changelog that I did this to
+gracefully handle the reverse of this issue where we could dereference
+platform timer entries that are within the bounds of the GTDT but exceed
+gtdt->platform_timer_count.
+
+> (hard to grok though, we - as in ACPI maintainers -
+> need to clean this up).
+
+Heh, thought this smelled a little ripe ;-) Went for the minimal fix
+first.
 
 -- 
-2.47.1
-
+Thanks,
+Oliver
 
