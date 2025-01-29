@@ -1,89 +1,90 @@
-Return-Path: <stable+bounces-111219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC9A22434
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC61A22435
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8323A94DF
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 907573A9606
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B6C1E0E0D;
-	Wed, 29 Jan 2025 18:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF0D1E102E;
+	Wed, 29 Jan 2025 18:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTwizYc0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAIxa1zO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0371E2613
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295711E0DFE
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738176461; cv=none; b=BWRGRgR6vCY/gfHWZ8UQZRlwBf0fEipCyvYCtfeTfWIbXvZtytZSwEZETeTdsLAlmDOmDsNCsFuf5APHV9kH2AKcfNcuXCF3UlOIQR28c3D9bh3mJTtAOKqB2n7NfPe68TJOUIMNVg4XsIFxz0a3D9KEuxN8yumcULOpb0WVMsg=
+	t=1738176463; cv=none; b=eP6kuGrn3YmuXAI3cci/rahu8AyypiqK8+tRaF/gEx6U8gu4l88Ynb084JmV5hD1Hr2RLUsqWWxgp2/gR93A2oSvbGmkV+forTcw7lYYuvTByphgHNZHJiSxBFnblcVSCVxP8egqlJpGBrMAHprnqpDku1prrFJXUZLdUPg8CAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738176461; c=relaxed/simple;
-	bh=TV4sdDYW00JSd42dzV4sZg+iZemw0WMZ80i7Bh3dkcE=;
+	s=arc-20240116; t=1738176463; c=relaxed/simple;
+	bh=HsRPaOldrwPWdOSxDtRrVEE2qpUiEsSLchbj2YYc998=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fhb9kOhQJ3FQr/zdbXwoFoeKlH+VwLK8g1SD9L7g3KjQKvA6pEDkKR7SYJrruO/DVHeYDyxKwqZI2Uy0EmSP6pJ/3T49RFMhLbcjEOJYCfk+pJhLUHwVcjKwEvsz8g2PXk3P+EZkh/P8vlNnikJ0dHW0tA6Bmo23CrCP4c5JQIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTwizYc0; arc=none smtp.client-ip=209.85.214.177
+	 MIME-Version; b=DY6jxxJiw1iEJcZrTyUaO2BRsfjvzNsUcpJwtgQdkEcAfM1Qe6YafxENvqYQ4UbVcsS4LDjUvKec1FHpXfc2Nl9INBMohxMCF7oVe6bN75AXb6QujfLQX1QL/sIBJjQiuaOfdG3WMlP+YuZwEUmPWXzFiBCSL3Md7SenucyLF2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAIxa1zO; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21636268e43so13895625ad.2
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:39 -0800 (PST)
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2165cb60719so130473215ad.0
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738176459; x=1738781259; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738176461; x=1738781261; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B7LmLmxzI2Mhix3fXbpw61fE8KV02GcxRk3DwTin6Fk=;
-        b=mTwizYc0Wb1Kt3OevETx+Iu/iwfItmmvLFRhhcLx8G2b+Vyy/YNhcwMVPTyCiSGc9n
-         Bpn1G5Io74e2RO5WBOwX4gySCLP0x4mnXwTtNwI0XJ0zuABiDquPEIb8ec8uw/dZMCFV
-         MOfNcJB6RtP2Rj4/Xv3uGqt/YAjPmyhUcz5SaWhpn6S4G1icnX7hMLw1IRsVqV/MEa0a
-         earDmCK77xDzK9ovcD/EIvsiTuIzxsmp96wIxH6gU6MAXT7/F/BqVHJmSA/mpx9lyIMX
-         B1dSSfAfXx1+Y3o9RqeEqRCrPxDeQC6zh8DLb1NbI0BBK9jTCywetSSutsMVzO2m3gk7
-         J0IA==
+        bh=3n7OrBNqoOEdNIhYXeJ+EJjv0DnK537H8Sy2EB3xTEY=;
+        b=SAIxa1zOoefR2PTfE+z3Bw/fHx6KHVL1/u6myKm8CKwHBkKBSaQU612G18TxswbDjj
+         /j2YESIl2mYuDqoLPj07vhKTGeYjDJZipBRlGY5CBcydOUfbKa3qpIxN46L+tnmBRjMN
+         hBbmNZQFyALOhA6hTEApalVi+feKa4xK99P4Tocek8f/pah2UKB3XgTS5VUtCg7LvFSn
+         0KNm+WpncQddv8fxlE4KECyYoW0dG73SOqBvJdRnMK22fZ8OAAI/BYgnIWB+cQdE6vA7
+         GeWAwBH8HrkdvN+ijIke8ZSPzcsy8HJ3C/UlA0uEw9A4BpmJhfKGAxZutOVBqxWEsmZK
+         Pa+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738176459; x=1738781259;
+        d=1e100.net; s=20230601; t=1738176461; x=1738781261;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B7LmLmxzI2Mhix3fXbpw61fE8KV02GcxRk3DwTin6Fk=;
-        b=UKEjaCtX1MELAdKLybq+JmScDaL9AX0C3mJPidC2B304iII4mrSRk5F8i6Cy9PwYip
-         lObtAcU3AoQHlRX3XVTnf/zhExcMejOlEZ2W2lXuGQoiro3FGiZI0gTnIJJ9KvAZ0EuG
-         IAum9tp1nraxRtPvPndMy2Eoc3h72PfmUMh4FQ44qas/Z+PSQZM9g12aRyJj2abxHVCO
-         NZRPZ6d54azItLaDtXeceZqTheYURopcTTCvuInC8c4wW7FvPThpXQLYdlK6yDzri4TT
-         mgiNW9e+S5rtHH/xhEx3PWHjTGMT8gI7Ysyrf4c1e/kZjRxtfus33e5jZVYyx+U8P5I2
-         svsQ==
-X-Gm-Message-State: AOJu0Ywk69RbCCpf/NXeIHJXMqPWp+MO3vIJT8PPKn8u1C56hVzYa57T
-	XHBUoed1V76dCNnKwauwPW4JsMzHFzLfvC9aK3WNGEgNDoe5cJztWhG86P/r
-X-Gm-Gg: ASbGncs3YfVgw9jEI/wnDiUTnWL8F8eAWdMrlF8NJlQzQIHsJDBT39fkFpjtjN6+x6m
-	nXyWoLH0dUj6mg3WoSrjEqslpwKyIY5CCEbSqfzW7uShlYhhF2IGxDlNh4vUqPAnameJui2LDEb
-	WZXqkTFU71+yObwGvzmEoX586qgpmfTgVtZ4n6ICf/0r+oESF+0+f41Wwaltk9oDTDM/BNLULeR
-	jThtEie6uwvIv9ZL64M52kmdcQ/5R0ZPctZXwCHPJIE4G12AIkdAmktwsEoBEEPIluYZKQ3G/Je
-	f7qHvg81WTZ4/hYJQZkN+WQy5Q7OjSxKw0wMwhRSSP0=
-X-Google-Smtp-Source: AGHT+IFBZ+oHH9MBdREyQZPdnr/QgaHRR/xhI+KbRO7dn9ZMm+ksHZH8nCx6ZpEbXtdBKguODSDJ4Q==
-X-Received: by 2002:a17:903:244b:b0:216:4a8a:2665 with SMTP id d9443c01a7336-21dd7df43c7mr65124095ad.50.1738176458614;
-        Wed, 29 Jan 2025 10:47:38 -0800 (PST)
+        bh=3n7OrBNqoOEdNIhYXeJ+EJjv0DnK537H8Sy2EB3xTEY=;
+        b=t/bn8EwLSS15sXqchcoLqR2Zo1WQJTOa3u8VUy5lybz068RXCNZKZHxk66pAzhBG4n
+         HnctUg9kU3U2PX/nwKuqBHDr3izCc6cJK6yVnsxLsCKTFaiWKLso54C9HtksqE00txmI
+         3ixDinAV/x/47xjLLgRYqo/qj5+uMB87s8BKaqehgV7t+uMN4rWCwhZBMiIMoZ06e/jg
+         LG5O1XEJX3a+Ul6/OMz5Qvi3eu79ehsGxyHbbW4dRW8MqX5Iok9V7QLs2ZKZyitJO5fE
+         pB8nNzS/7FdHSPeFAeQLRI2Rto6SWvelH0j7/mfxROpIvoqt1mgKec9VWeRU6LCjloZK
+         BJwQ==
+X-Gm-Message-State: AOJu0YxYQ6N2LhuA0p+pqyCkSzkcAXdLywK27uKsJs6fZPV2WLX0H+6j
+	VO9aRzvO0j2o6QS0QcBIa9IoWGE0cHIHyq9Lt5IJaN/AW8moetY7GlGO91na
+X-Gm-Gg: ASbGncvUrB4JWE1/dPJyh8UY0yTvmZ3gumWyzoTY1BnRLIAMAdYVD2gJkvN7C37kpjc
+	GaWyFFqaEX2sB/9QI4TvOvazITsHApEioWS7/H4TooWL8Dqg3KOvqPMv9Cw/t0m7g4Lv7UfKouA
+	YcyaWAQ+am/7XIlfr1wg5dVgQDGWJaQML3qrx+B1o2OI/JGVrYMSIPQAdc+gdPKbcHUSH04FY6e
+	H1PENtSDjVvLCU4wf/D8NW3pcBHal45sL1bfd5QB6VDlPfzkozIA9G4PVckrllOn6ItERHcHFrA
+	8KzKx3AYKxgKgrGtcsNhsQWtDT79FLDssedB1jL67cM=
+X-Google-Smtp-Source: AGHT+IESx/Tf9vc1iCKYUSO2yK7rHxh2NGoUG2tdgGN4wbRpmHgZPrFMozZhxSdLxfKgVAIMvAv2dg==
+X-Received: by 2002:a17:902:c951:b0:215:9bc2:42ec with SMTP id d9443c01a7336-21dd7de729bmr54757505ad.47.1738176459732;
+        Wed, 29 Jan 2025 10:47:39 -0800 (PST)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:fbc6:64ef:cffe:1cc8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.37
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 10:47:38 -0800 (PST)
+        Wed, 29 Jan 2025 10:47:39 -0800 (PST)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	amir73il@gmail.com,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
-	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 08/19] xfs: handle nimaps=0 from xfs_bmapi_write in xfs_alloc_file_space
-Date: Wed, 29 Jan 2025 10:47:06 -0800
-Message-ID: <20250129184717.80816-9-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 09/19] xfs: allow read IO and FICLONE to run concurrently
+Date: Wed, 29 Jan 2025 10:47:07 -0800
+Message-ID: <20250129184717.80816-10-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
 In-Reply-To: <20250129184717.80816-1-leah.rumancik@gmail.com>
 References: <20250129184717.80816-1-leah.rumancik@gmail.com>
@@ -95,122 +96,267 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Catherine Hoang <catherine.hoang@oracle.com>
 
-[ Upstream commit 35dc55b9e80cb9ec4bcb969302000b002b2ed850 ]
+[ Upstream commit 14a537983b228cb050ceca3a5b743d01315dc4aa ]
 
-If xfs_bmapi_write finds a delalloc extent at the requested range, it
-tries to convert the entire delalloc extent to a real allocation.
+One of our VM cluster management products needs to snapshot KVM image
+files so that they can be restored in case of failure. Snapshotting is
+done by redirecting VM disk writes to a sidecar file and using reflink
+on the disk image, specifically the FICLONE ioctl as used by
+"cp --reflink". Reflink locks the source and destination files while it
+operates, which means that reads from the main vm disk image are blocked,
+causing the vm to stall. When an image file is heavily fragmented, the
+copy process could take several minutes. Some of the vm image files have
+50-100 million extent records, and duplicating that much metadata locks
+the file for 30 minutes or more. Having activities suspended for such
+a long time in a cluster node could result in node eviction.
 
-But if the allocator cannot find a single free extent large enough to
-cover the start block of the requested range, xfs_bmapi_write will
-return 0 but leave *nimaps set to 0.
+Clone operations and read IO do not change any data in the source file,
+so they should be able to run concurrently. Demote the exclusive locks
+taken by FICLONE to shared locks to allow reads while cloning. While a
+clone is in progress, writes will take the IOLOCK_EXCL, so they block
+until the clone completes.
 
-In that case we simply need to keep looping with the same startoffset_fsb
-so that one of the following allocations will eventually reach the
-requested range.
-
-Note that this could affect any caller of xfs_bmapi_write that covers
-an existing delayed allocation.  As far as I can tell we do not have
-any other such caller, though - the regular writeback path uses
-xfs_bmapi_convert_delalloc to convert delayed allocations to real ones,
-and direct I/O invalidates the page cache first.
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/linux-xfs/8911B94D-DD29-4D6E-B5BC-32EAF1866245@oracle.com/
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 ---
- fs/xfs/xfs_bmap_util.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ fs/xfs/xfs_file.c    | 63 +++++++++++++++++++++++++++++++++++---------
+ fs/xfs/xfs_inode.c   | 17 ++++++++++++
+ fs/xfs/xfs_inode.h   |  9 +++++++
+ fs/xfs/xfs_reflink.c |  4 +++
+ 4 files changed, 80 insertions(+), 13 deletions(-)
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index ce8e17ab5434..468bb61a5e46 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -778,49 +778,47 @@ xfs_alloc_file_space(
- 	xfs_off_t		offset,
- 	xfs_off_t		len)
- {
- 	xfs_mount_t		*mp = ip->i_mount;
- 	xfs_off_t		count;
--	xfs_filblks_t		allocated_fsb;
- 	xfs_filblks_t		allocatesize_fsb;
- 	xfs_extlen_t		extsz, temp;
- 	xfs_fileoff_t		startoffset_fsb;
- 	xfs_fileoff_t		endoffset_fsb;
--	int			nimaps;
- 	int			rt;
- 	xfs_trans_t		*tp;
- 	xfs_bmbt_irec_t		imaps[1], *imapp;
- 	int			error;
- 
- 	trace_xfs_alloc_file_space(ip);
- 
- 	if (xfs_is_shutdown(mp))
- 		return -EIO;
- 
- 	error = xfs_qm_dqattach(ip);
- 	if (error)
- 		return error;
- 
- 	if (len <= 0)
- 		return -EINVAL;
- 
- 	rt = XFS_IS_REALTIME_INODE(ip);
- 	extsz = xfs_get_extsz_hint(ip);
- 
- 	count = len;
- 	imapp = &imaps[0];
--	nimaps = 1;
- 	startoffset_fsb	= XFS_B_TO_FSBT(mp, offset);
- 	endoffset_fsb = XFS_B_TO_FSB(mp, offset + count);
- 	allocatesize_fsb = endoffset_fsb - startoffset_fsb;
- 
- 	/*
- 	 * Allocate file space until done or until there is an error
- 	 */
- 	while (allocatesize_fsb && !error) {
- 		xfs_fileoff_t	s, e;
- 		unsigned int	dblocks, rblocks, resblks;
-+		int		nimaps = 1;
- 
- 		/*
- 		 * Determine space reservations for data/realtime.
- 		 */
- 		if (unlikely(extsz)) {
-@@ -882,19 +880,23 @@ xfs_alloc_file_space(
- 		error = xfs_trans_commit(tp);
- 		xfs_iunlock(ip, XFS_ILOCK_EXCL);
- 		if (error)
- 			break;
- 
--		allocated_fsb = imapp->br_blockcount;
--
--		if (nimaps == 0) {
--			error = -ENOSPC;
--			break;
-+		/*
-+		 * If the allocator cannot find a single free extent large
-+		 * enough to cover the start block of the requested range,
-+		 * xfs_bmapi_write will return 0 but leave *nimaps set to 0.
-+		 *
-+		 * In that case we simply need to keep looping with the same
-+		 * startoffset_fsb so that one of the following allocations
-+		 * will eventually reach the requested range.
-+		 */
-+		if (nimaps) {
-+			startoffset_fsb += imapp->br_blockcount;
-+			allocatesize_fsb -= imapp->br_blockcount;
- 		}
--
--		startoffset_fsb += allocated_fsb;
--		allocatesize_fsb -= allocated_fsb;
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 8de40cf63a5b..821cb86a83bd 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -212,10 +212,47 @@ xfs_ilock_iocb(
  	}
  
- 	return error;
+ 	return 0;
+ }
  
- error:
++static int
++xfs_ilock_iocb_for_write(
++	struct kiocb		*iocb,
++	unsigned int		*lock_mode)
++{
++	ssize_t			ret;
++	struct xfs_inode	*ip = XFS_I(file_inode(iocb->ki_filp));
++
++	ret = xfs_ilock_iocb(iocb, *lock_mode);
++	if (ret)
++		return ret;
++
++	if (*lock_mode == XFS_IOLOCK_EXCL)
++		return 0;
++	if (!xfs_iflags_test(ip, XFS_IREMAPPING))
++		return 0;
++
++	xfs_iunlock(ip, *lock_mode);
++	*lock_mode = XFS_IOLOCK_EXCL;
++	return xfs_ilock_iocb(iocb, *lock_mode);
++}
++
++static unsigned int
++xfs_ilock_for_write_fault(
++	struct xfs_inode	*ip)
++{
++	/* get a shared lock if no remapping in progress */
++	xfs_ilock(ip, XFS_MMAPLOCK_SHARED);
++	if (!xfs_iflags_test(ip, XFS_IREMAPPING))
++		return XFS_MMAPLOCK_SHARED;
++
++	/* wait for remapping to complete */
++	xfs_iunlock(ip, XFS_MMAPLOCK_SHARED);
++	xfs_ilock(ip, XFS_MMAPLOCK_EXCL);
++	return XFS_MMAPLOCK_EXCL;
++}
++
+ STATIC ssize_t
+ xfs_file_dio_read(
+ 	struct kiocb		*iocb,
+ 	struct iov_iter		*to)
+ {
+@@ -521,11 +558,11 @@ xfs_file_dio_write_aligned(
+ 	struct iov_iter		*from)
+ {
+ 	unsigned int		iolock = XFS_IOLOCK_SHARED;
+ 	ssize_t			ret;
+ 
+-	ret = xfs_ilock_iocb(iocb, iolock);
++	ret = xfs_ilock_iocb_for_write(iocb, &iolock);
+ 	if (ret)
+ 		return ret;
+ 	ret = xfs_file_write_checks(iocb, from, &iolock);
+ 	if (ret)
+ 		goto out_unlock;
+@@ -588,11 +625,11 @@ xfs_file_dio_write_unaligned(
+ retry_exclusive:
+ 		iolock = XFS_IOLOCK_EXCL;
+ 		flags = IOMAP_DIO_FORCE_WAIT;
+ 	}
+ 
+-	ret = xfs_ilock_iocb(iocb, iolock);
++	ret = xfs_ilock_iocb_for_write(iocb, &iolock);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/*
+ 	 * We can't properly handle unaligned direct I/O to reflink files yet,
+@@ -1156,11 +1193,11 @@ xfs_file_remap_range(
+ 		goto out_unlock;
+ 
+ 	if (xfs_file_sync_writes(file_in) || xfs_file_sync_writes(file_out))
+ 		xfs_log_force_inode(dest);
+ out_unlock:
+-	xfs_iunlock2_io_mmap(src, dest);
++	xfs_iunlock2_remapping(src, dest);
+ 	if (ret)
+ 		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
+ 	/*
+ 	 * If the caller did not set CAN_SHORTEN, then it is not prepared to
+ 	 * handle partial results -- either the whole remap succeeds, or we
+@@ -1311,37 +1348,37 @@ __xfs_filemap_fault(
+ 	bool			write_fault)
+ {
+ 	struct inode		*inode = file_inode(vmf->vma->vm_file);
+ 	struct xfs_inode	*ip = XFS_I(inode);
+ 	vm_fault_t		ret;
++	unsigned int		lock_mode = 0;
+ 
+ 	trace_xfs_filemap_fault(ip, pe_size, write_fault);
+ 
+ 	if (write_fault) {
+ 		sb_start_pagefault(inode->i_sb);
+ 		file_update_time(vmf->vma->vm_file);
+ 	}
+ 
++	if (IS_DAX(inode) || write_fault)
++		lock_mode = xfs_ilock_for_write_fault(XFS_I(inode));
++
+ 	if (IS_DAX(inode)) {
+ 		pfn_t pfn;
+ 
+-		xfs_ilock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+ 		ret = xfs_dax_fault(vmf, pe_size, write_fault, &pfn);
+ 		if (ret & VM_FAULT_NEEDDSYNC)
+ 			ret = dax_finish_sync_fault(vmf, pe_size, pfn);
+-		xfs_iunlock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
++	} else if (write_fault) {
++		ret = iomap_page_mkwrite(vmf, &xfs_page_mkwrite_iomap_ops);
+ 	} else {
+-		if (write_fault) {
+-			xfs_ilock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+-			ret = iomap_page_mkwrite(vmf,
+-					&xfs_page_mkwrite_iomap_ops);
+-			xfs_iunlock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+-		} else {
+-			ret = filemap_fault(vmf);
+-		}
++		ret = filemap_fault(vmf);
+ 	}
+ 
++	if (lock_mode)
++		xfs_iunlock(XFS_I(inode), lock_mode);
++
+ 	if (write_fault)
+ 		sb_end_pagefault(inode->i_sb);
+ 	return ret;
+ }
+ 
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 1d32823d5099..dc84c75be852 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -3642,10 +3642,27 @@ xfs_iunlock2_io_mmap(
+ 	inode_unlock(VFS_I(ip2));
+ 	if (ip1 != ip2)
+ 		inode_unlock(VFS_I(ip1));
+ }
+ 
++/* Drop the MMAPLOCK and the IOLOCK after a remap completes. */
++void
++xfs_iunlock2_remapping(
++	struct xfs_inode	*ip1,
++	struct xfs_inode	*ip2)
++{
++	xfs_iflags_clear(ip1, XFS_IREMAPPING);
++
++	if (ip1 != ip2)
++		xfs_iunlock(ip1, XFS_MMAPLOCK_SHARED);
++	xfs_iunlock(ip2, XFS_MMAPLOCK_EXCL);
++
++	if (ip1 != ip2)
++		inode_unlock_shared(VFS_I(ip1));
++	inode_unlock(VFS_I(ip2));
++}
++
+ /*
+  * Reload the incore inode list for this inode.  Caller should ensure that
+  * the link count cannot change, either by taking ILOCK_SHARED or otherwise
+  * preventing other threads from executing.
+  */
+diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+index 85395ad2859c..3a81477c7797 100644
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -345,10 +345,18 @@ static inline bool xfs_inode_has_large_extent_counts(struct xfs_inode *ip)
+ #define XFS_INACTIVATING	(1 << 13)
+ 
+ /* Quotacheck is running but inode has not been added to quota counts. */
+ #define XFS_IQUOTAUNCHECKED	(1 << 14)
+ 
++/*
++ * Remap in progress. Callers that wish to update file data while
++ * holding a shared IOLOCK or MMAPLOCK must drop the lock and retake
++ * the lock in exclusive mode. Relocking the file will block until
++ * IREMAPPING is cleared.
++ */
++#define XFS_IREMAPPING		(1U << 15)
++
+ /* All inode state flags related to inode reclaim. */
+ #define XFS_ALL_IRECLAIM_FLAGS	(XFS_IRECLAIMABLE | \
+ 				 XFS_IRECLAIM | \
+ 				 XFS_NEED_INACTIVE | \
+ 				 XFS_INACTIVATING)
+@@ -593,10 +601,11 @@ bool xfs_inode_needs_inactive(struct xfs_inode *ip);
+ 
+ void xfs_end_io(struct work_struct *work);
+ 
+ int xfs_ilock2_io_mmap(struct xfs_inode *ip1, struct xfs_inode *ip2);
+ void xfs_iunlock2_io_mmap(struct xfs_inode *ip1, struct xfs_inode *ip2);
++void xfs_iunlock2_remapping(struct xfs_inode *ip1, struct xfs_inode *ip2);
+ 
+ static inline bool
+ xfs_inode_unlinked_incomplete(
+ 	struct xfs_inode	*ip)
+ {
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index fe46bce8cae6..004f5a0444be 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -1537,10 +1537,14 @@ xfs_reflink_remap_prep(
+ 		ret = xfs_flush_unmap_range(dest, pos_out, *len);
+ 	}
+ 	if (ret)
+ 		goto out_unlock;
+ 
++	xfs_iflags_set(src, XFS_IREMAPPING);
++	if (inode_in != inode_out)
++		xfs_ilock_demote(src, XFS_IOLOCK_EXCL | XFS_MMAPLOCK_EXCL);
++
+ 	return 0;
+ out_unlock:
+ 	xfs_iunlock2_io_mmap(src, dest);
+ 	return ret;
+ }
 -- 
 2.48.1.362.g079036d154-goog
 
