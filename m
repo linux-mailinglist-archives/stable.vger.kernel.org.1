@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-111103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583CBA21A4C
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:49:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD69A21A59
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2B91884FA9
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1E6B1666C3
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25CA1ACEB7;
-	Wed, 29 Jan 2025 09:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE151AB6D4;
+	Wed, 29 Jan 2025 09:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ohWyyJbW"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XD36neVS"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from relay0.mail.gandi.net (relay0.mail.gandi.net [217.70.178.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71970194C78;
-	Wed, 29 Jan 2025 09:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B481ACEAB;
+	Wed, 29 Jan 2025 09:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738144139; cv=none; b=nS7VnHP30fZDKc/jEV4PjyoKoUdWsdN4f+q9ujPfNUijwNm/ryRRSXPAGVx9Dm8tV33RDY0CnqvWZmD4XbTDmfgyvjG+oCzfCGX26VuIigfqoGw2EG6343bLnOaoKhggQ0fibgUdbhpuqfXJG0958/WSrOrZbHnR0/vGPljSsuo=
+	t=1738144262; cv=none; b=eHlCiCrr1GPYuDfVPdPCwg5jWINKrVZ8bkphWkQeHPukNv0UQX7e5uuMLNLg/BbR3jCRv97z8fWugbQIPRbngGIvqTFFNVWNzb3K0H1MX7g+0uCCRlWiz/v72J7+EznhkK8I0glwz/T5rUjPYUuDVNwMlkW8CjPPQ5N7jNlFUpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738144139; c=relaxed/simple;
-	bh=oVuTnPCAKwBS/56T6+nHjnL7KVAXlq5ifzpL9W0xdGc=;
+	s=arc-20240116; t=1738144262; c=relaxed/simple;
+	bh=F5/hH2eQNIxaEKR4UZ9Yifx6/1l0+sclpZ9danicZY8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JDEvaVQo3nBQttTja21KiwdZ4SmdTz/knci74OFxVVsM2fX/usujZlby4LJ5eaGmCz/s/HiOdC9vg04Aklc031U3NKRjgIMfwffw34BM7WnbbMNFH9ZpsxBmmk9oPkUb/miXr8kaB/DFxunCTVfwn4r39kK1yDt10qMAJdmbuOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ohWyyJbW; arc=none smtp.client-ip=217.70.183.197
+	 MIME-Version:Content-Type; b=AUprCtLJBnlrETGmALOobHf6/jX3WKHDIGa0ZksGgLLFkoFmlrYebuSIPxL0IpSzoFq1VXds7Hfx4gHo5XgJ6s260DPUbzkJNlf2h4265n2X5kk6YolCh2zOkI3qHnqMdvqnSY6Z8PzssuoLOJYI+Fj+pA3CU9hZQ6U69VF8jTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XD36neVS; arc=none smtp.client-ip=217.70.178.220
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A5D4C43315;
-	Wed, 29 Jan 2025 09:48:47 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EDDCD43CE7;
+	Wed, 29 Jan 2025 09:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738144130;
+	t=1738144252;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oVuTnPCAKwBS/56T6+nHjnL7KVAXlq5ifzpL9W0xdGc=;
-	b=ohWyyJbW9yvb8lNnxzxXHrJQwwJBvbzdYapsglHzzBA+kJQrfHrWoHl7ingGsr/jY1GmlH
-	yDFZJR1zQ++ejCSW4/3L5LihddHaG7TzxerIAU+CLJvjY27mi64B6q0bkdp36ojGcLG23v
-	R4PslEJ2xVTtiShsNmEJnMAdKeEuwU5+T4Kgs+uCS+4YnNr5t8Yr2KSHDgMoi0A6h+hnEH
-	siYeltGLgQztVJwPT+o17LYgQtU2e2244uaZnZoMS+4k7N7n0bcUQLqxH7LwOSd4Mftmgx
-	QArq09wenyO1C6s2BDiLa/wSqKQO0w9M7mjoNXF5k5R5RS/HkK7aswM3IfhNpA==
+	bh=F5/hH2eQNIxaEKR4UZ9Yifx6/1l0+sclpZ9danicZY8=;
+	b=XD36neVSI3h1WebmsU2nMfPdWrLKpbXdjiBx1m6SjRy/2Qy/WYjF++Kyba9tvZ7tUy88Xn
+	nfZ/sGdny6WZxOByOWG3x8sFV4IYiCqzOGAMYJTMtIBANIkDwhE3tMBB2p/S+KH6r3wb/9
+	MEhSHkrmnpLmYE3BI1mT5XeACzOOe1zjKIvCJov7MINCZ0Kaa6/8apvpCjmSEHZibKYVM5
+	KLR1DYDl82rl86tg5+OZMt4YQrB/Q3JdJrD0WmmjJ+AnDqrBIQz5Fm76+L3w5jAdE+Vkdu
+	2tZk/bDMi/J5/M5Pu3712VPTiZl84rIPGRtJB+S8iyJJibicFIciVCTorCRbUg==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
 Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
@@ -54,17 +54,17 @@ Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
   "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
   "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
   "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] mtd: rawnand: cadence: fix incorrect dev context
- in dma_unmap_single
-In-Reply-To: <BL3PR11MB653275BDFAB8FAA2EC499666A2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
-	(Niravkumar L. Rabara's message of "Wed, 29 Jan 2025 08:58:56 +0000")
+Subject: Re: [PATCH v2 2/3] mtd: rawnand: cadence: use dma_map_resource for
+ sdma address
+In-Reply-To: <BL3PR11MB653280E16A4399DDBB300CA8A2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
+	(Niravkumar L. Rabara's message of "Wed, 29 Jan 2025 09:02:58 +0000")
 References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
-	<20250116032154.3976447-4-niravkumar.l.rabara@intel.com>
-	<875xm8pk4n.fsf@bootlin.com>
-	<BL3PR11MB653275BDFAB8FAA2EC499666A2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
+	<20250116032154.3976447-3-niravkumar.l.rabara@intel.com>
+	<87ed0wpk6h.fsf@bootlin.com>
+	<BL3PR11MB653280E16A4399DDBB300CA8A2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Wed, 29 Jan 2025 10:48:47 +0100
-Message-ID: <878qqu2bnk.fsf@bootlin.com>
+Date: Wed, 29 Jan 2025 10:50:50 +0100
+Message-ID: <87wmee0wzp.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,22 +81,27 @@ X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hello,
 
->> > dma_map_single is using dma_dev->dev, however dma_unmap_single is
->> > using cdns_ctrl->dev, which is incorrect.
->> > Used the correct device context dma_dev->dev for dma_unmap_single.
+>> > Map the slave DMA I/O address using dma_map_resource.
+>> > When ARM SMMU is enabled, using a direct physical address of SDMA
+>> > results in DMA transaction failure.
 >>=20
->> I guess on is the physical/bus device and the other the framework device=
-? It
->> would be nice to clarify this in the commit log.
->>=20
->
-> Noted. Is the commit message below acceptable?=20
->
-> dma_map_single is using physical/bus device (DMA) but dma_unmap_single
-> is using framework device(NAND controller), which is incorrect.
-> Fixed dma_unmap_single to use correct physical/bus device.
+>> It is in general a better practice anyway. Drivers should be portable and
+>> always remap resources.
 
-Ok for me.
+I actually had a look at the kernel sources again regarding the use of
+the map_resource() helper, and it is very strangely used. Sometimes the
+DMA controller does the remapping, sometimes it is the slave device. The
+core and headers are totally unclear about who should take the action.
+Anyway, your diff is fine I believe.
+
+> Do you think the commit message below would be better, or=20
+> stick with the existing one?
+>
+> Remap the slave DMA I/O resources to enhance driver portability.
+> Using a physical address causes DMA translation failure when the
+> ARM SMMU is enabled.
+
+Fine by me!
 
 Thanks,
 Miqu=C3=A8l
