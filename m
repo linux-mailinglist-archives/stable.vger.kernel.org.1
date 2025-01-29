@@ -1,155 +1,95 @@
-Return-Path: <stable+bounces-111130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55E0A21DDC
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:27:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C3FA21DEF
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB0157A236C
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61FC163858
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C41E86250;
-	Wed, 29 Jan 2025 13:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB85F26289;
+	Wed, 29 Jan 2025 13:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Sbv7ZFm7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYkoqYs0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DBCB661;
-	Wed, 29 Jan 2025 13:27:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F3C1FDD;
+	Wed, 29 Jan 2025 13:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738157265; cv=none; b=YzoQai8J6TZ2tk1H//H8TPdrbu1Q9N6hSb7NBOHhlYPA6PzoJaHMbN0bTZEPQidz/IUO5qnBh81VL55NAXfZyA4mrZPfS/auiLdwTQbzMuWRHosWK4roqfFA7w8iPBN8FlLY8nKs8X12kL1o76OG2NBKzj1r3fhgbojct0AxMDw=
+	t=1738157827; cv=none; b=LCmVdeUH+pqTj0ZXDD5PhpY4kAJPm6ex0AhijI4Ux+iYjfj7XWkuqfYv/ArdM30bbIYdSI8iT3ajayNhJk4i34k0am74z3CCB+zCfbh4yL/SuuYsYm3ushKvJ50vpwrYCyVV9oMrI2uqXQ1GKIqHkiSHrEEUevP858sliBP0ubs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738157265; c=relaxed/simple;
-	bh=YAw90nP5pcCtcTNaoC+a9ncjf/xabU+Ci+duExlPmTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=aH+0PliU0i2yyUMfJo9JftT8wPRENY6JvvvI7zZk+cHFDi4ffOG54++UBVm15PKlXYOvqyW7Y9LYDKQ7k/gDoqMM/dFjnjwsVoGwt8Ca/MgGowO8tQmqR/scAUvCvzZMX1LMM79ceqOT4Fj2hYNdIgBD+uMsuuIdYndbPQLoEbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Sbv7ZFm7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T6Puf9008447;
-	Wed, 29 Jan 2025 13:27:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Jycu/BkhEj+iNFaJ39eTq4ky8+iSVcfgm7DSoR9muPA=; b=Sbv7ZFm72zZtL3xD
-	lN2ubFcM5pDKuRS30vAIfRTKIe2xKTG2JmZPGENupJOYafoWDJhqWVOZ1aooRL3H
-	CSedmgdN2eyATKMv2ERTUcqC5EnikW2TLXaUi+1ACzPGwpL8dUevDrcj7pbQqpTr
-	Gl2IzHTILKBegpr8dDaaylPAqeSrU0wOsN0eDk0fWkUUlaS17sgFihoUQaTQ5gvu
-	joH/PIsOHWU121kwqcs0mHr1xhp0UGZi/7IxlsbdfNJNFf/v/nxRy3KCC7MQAoSn
-	ahsLG4mrZhriIsMfM8yUj3zndsT3kxZpY6h4MmSyrjqK7ioYWUSSM4CAw8XbOiw+
-	P+VC4Q==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ff1q0pmn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jan 2025 13:27:40 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50TDRd6e011500
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jan 2025 13:27:39 GMT
-Received: from [10.217.219.207] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 Jan
- 2025 05:27:37 -0800
-Message-ID: <3e8c08fb-ec3a-4d00-a3e9-43c299dcf942@quicinc.com>
-Date: Wed, 29 Jan 2025 18:57:34 +0530
+	s=arc-20240116; t=1738157827; c=relaxed/simple;
+	bh=u6M3Ft/QSXJZVKqG9Y87RFNcgGFOdiX+iAQqcAeFpyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t9a3Crxp26AnQZRo//78KKVa4Ho8zDQd7TQnaRIvcFiWTj79XMK22Tmdk5lKfjbhUxsEAwSH3fzMl4OPDRxF4r8H7+ysCMpeGWClBnCcEoiIEBEHee6xDfi2EhANU8JCMEPtup8Dg2ajeVsY4nGws3vlJ6vHq6OiOqhQde6xHcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYkoqYs0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6504EC4CED3;
+	Wed, 29 Jan 2025 13:37:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738157826;
+	bh=u6M3Ft/QSXJZVKqG9Y87RFNcgGFOdiX+iAQqcAeFpyE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DYkoqYs0FY1o7F/u3llruer+SgXWqV63IabAK789tl6vAzybGkBjWGSXNCbaXt+W7
+	 7Flzcu7Rrh1RlfTldrAscdMwO6OMfFg9gnQ3zxnMT+nQWinfQKKiTohlzWQ/EotcTz
+	 BtcI+Wz4m8UGGF+02z31CZ3fMPOhvVZ4HWA/TRAQ=
+Date: Wed, 29 Jan 2025 14:36:07 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>
+Cc: stable@vger.kernel.org, FUKAUMI Naoki <naoki@radxa.com>,
+	Michael Zimmermann <sigmaepsilon92@gmail.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>, Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>, regressions@lists.linux.dev
+Subject: Re: [REGRESSION] USB 3 and PCIe broken on rk356x due to missing phy
+ reset
+Message-ID: <2025012925-stammer-certify-68db@gregkh>
+References: <20241230154211.711515682@linuxfoundation.org>
+ <20241230154212.527901746@linuxfoundation.org>
+ <91993fed-6398-4362-8c62-87beb9ade32b@sairon.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: microchip-core: prevent RX overflows when transmit
- size > FIFO size
-To: Conor Dooley <conor@kernel.org>, <linux-spi@vger.kernel.org>
-CC: Conor Dooley <conor.dooley@microchip.com>, <stable@vger.kernel.org>,
-        Daire
- McNamara <daire.mcnamara@microchip.com>,
-        Mark Brown <broonie@kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
-Content-Language: en-US
-From: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-In-Reply-To: <20250114-easiness-pregame-d1d2d4b57e7b@spud>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: jpVjl9zEq5diqYx5SiPsRL4J3sdsJwOW
-X-Proofpoint-ORIG-GUID: jpVjl9zEq5diqYx5SiPsRL4J3sdsJwOW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-29_02,2025-01-29_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=417
- impostorscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1011 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501290109
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <91993fed-6398-4362-8c62-87beb9ade32b@sairon.cz>
 
+On Wed, Jan 29, 2025 at 02:27:05PM +0100, Jan Čermák wrote:
+> Hi Greg, everyone,
+> 
+> unfortunately, this patch introduced a regression on rk356x boards, as the
+> current DTS is missing the reset names. This was pointed out in 6.12 series
+> by Chukun Pan [1], it applies here as well. Real world examples of breakages
+> are M.2 NVMe on ODROID-M1S [2] and USB 3 ports on ODROID-M1 [3]. This patch
+> shouldn't have been applied without the device tree change or extra fallback
+> code, as suggested in the discussion for Chukun's original commits [4].
+> Version 6.6.74 is still affected by the bug.
+> 
+> Regards,
+> Jan
+> 
+> [1]
+> https://lore.kernel.org/stable/20241231021010.17792-1-amadeus@jmu.edu.cn/
+> [2] https://github.com/home-assistant/operating-system/issues/3837
+> [3] https://github.com/home-assistant/operating-system/issues/3841
+> [4] https://lore.kernel.org/all/20250103033016.79544-1-amadeus@jmu.edu.cn/
+> 
+> #regzbot introduced: v6.6.68..v6.6.69
 
+So where should it be reverted from, 6.6.y and 6.12.y?  Or should a
+different specific commit be backported instead?
 
-On 1/14/2025 10:43 PM, Conor Dooley wrote:
-> From: Conor Dooley <conor.dooley@microchip.com>
-Not sure why this "From:" is coming here, should be not coming.
-> 
-> When the size of a transfer exceeds the size of the FIFO (32 bytes), RX
-> overflows will be generated and receive data will be corrupted and
-> warnings will be produced. For example, here's an error generated by a
-> transfer of 36 bytes:
-> 
-why warning on RX generated when TZ size is > 32 bytes ?
-Also you should be taking 32 bytes in a one go and then send remaining 4 
-bytes. I am thinking if your TX is faster than the RX receiving ?
->    spi_master spi0: mchp_corespi_interrupt: RX OVERFLOW: rxlen: 4, txlen: 0
-> 
-> I am not entirely sure how this happens, as rxlen being 4 means that 32
-> of 36 bytes have been read from the RX FIFO so there should be
-> sufficient room for 4 more bytes but timing is likely a factor as simply
-> adding a delay in the transmit path is enough to avoid the overflows.
-I suggest to try to chunk in 32 bytes size.
-> 
-> CC: stable@vger.kernel.org
-> Fixes: 9ac8d17694b6 ("spi: add support for microchip fpga spi controllers")
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
-> Been sitting on this one for a bit, original reporter claims the problem
-> isn't fixed, but it fixed the issue on my setup so I am sending the patch
-> as it's an improvement on the status quo at the very least.
-> 
-> CC: Conor Dooley <conor.dooley@microchip.com>
-> CC: Daire McNamara <daire.mcnamara@microchip.com>
-> CC: Mark Brown <broonie@kernel.org>
-> CC: linux-spi@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> ---
->   drivers/spi/spi-microchip-core.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-microchip-core.c b/drivers/spi/spi-microchip-core.c
-> index 5b6af55855ef..3582fe8d3fc4 100644
-> --- a/drivers/spi/spi-microchip-core.c
-> +++ b/drivers/spi/spi-microchip-core.c
-> @@ -221,6 +221,13 @@ static inline void mchp_corespi_write_fifo(struct mchp_corespi *spi)
->   	while ((i < fifo_max) && !(mchp_corespi_read(spi, REG_STATUS) & STATUS_TXFIFO_FULL)) {
->   		u32 word;
->   
-> +		/*
-> +		 * If the transfer is larger than FIFO_DEPTH, spin until space
-> +		 * is made in the RX FIFO to avoid losing data to RX overflows
-> +		 */
-what if you transfer first 32 bytes and then remaining ?
-> +		while (mchp_corespi_read(spi, REG_STATUS) & STATUS_RXFIFO_FULL)
-> +			;
-> +
->   		if (spi->n_bytes == 4)
->   			word = spi->tx_buf ? *((u32 *)spi->tx_buf) : 0xaa;
->   		else if (spi->n_bytes == 2)
+And this isn't an issue on 6.13, right?
 
+thanks,
+
+greg k-h
 
