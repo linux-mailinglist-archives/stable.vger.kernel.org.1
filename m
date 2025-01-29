@@ -1,94 +1,264 @@
-Return-Path: <stable+bounces-111195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A84DA221F1
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:43:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FADA221F7
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:43:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1A7C160A94
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:43:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE02718873DC
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70E11DE4ED;
-	Wed, 29 Jan 2025 16:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t3N/bdDg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAF01DF268;
+	Wed, 29 Jan 2025 16:43:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3ED143722
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 16:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FBE143722;
+	Wed, 29 Jan 2025 16:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738169012; cv=none; b=ClfGEW+FGrOUsLVW2WO+tta4aM1VMFtPYVGLzxRzTfYvhzfuT+mi1yo2gWN3k3Ed40AyOkYVB8jLx7lzjJAZgZhAebUGVNPyCf2cQnsweu3GF9DOXFXHvaBODW6Va6gTb82al7deP50aTB6c4EhNhKLau5hX61jOzO3TaTmV+3A=
+	t=1738169021; cv=none; b=C+CSGZbX+CDNUsbRUYaKG72sMOcT801mjvehs9aQejmk6TbwfjN/CiVu5di+YajSakPJ8z6aEiTKAm9vKUVkawca5+hk0XKccjNtZyJ3b6aM2r0vEDvutFeKDOZElNosl/Qc1Xf3G8NgMp9YpfOeKHIpe///9WEUB1T091iGtak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738169012; c=relaxed/simple;
-	bh=DXfiYCnZEbt67wJ/3cQw2BUg7CuK2Bic1hn0Jv53lJA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JhJhY4HTvjm3kMKMy4GuT1Ha8lUOxM2WFn+AsijezMggDoUao8YaE6OIaNuWLE7/sdRZ8l6x9nI+WEgko848R+pta9ngncVF00Js6mLwkkhWAUsRrmcwsM2vSwFDZ56u1kQBk3YT06pjmZpcy4d9ArC11NVhTXY7Xvfd1fru/BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t3N/bdDg; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ciprietti.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-5d3c284eba0so9150142a12.1
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 08:43:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738169009; x=1738773809; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zo/+FHW/bbCK2ziOInsWkp1Gete8cVfoZW7cGmsUMEU=;
-        b=t3N/bdDgWVTUqwgexdGS68gbng5r0P7Kf9S4ROCOJlj/KL5PCZLya+imLE7kBPEsGd
-         1BwzuojNHkxcfjCeaQjUTKX2EBNvoBzce+WiftchGgM/mJzERSXGc5JKmNznSPFbxNTr
-         RX10V4k3cAoUD1YxTP51MPN51BTH9eE1zIWWjVtDmDQ8uUXGlpl6yi9MiQ/1cCU6bju+
-         cV9LivH5OA10ZyBEBtMyGAqVnOwpuvzWhK468muIVzJSMJNyo5V7iAX53XDBI3BNURTy
-         emerdkopGOUvJ1HjpaIl+q3a7ntOTwq0kGQ7WfgIWSm4JDxy1lsGNJqWpoVn9pRiTPM7
-         zgTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738169009; x=1738773809;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zo/+FHW/bbCK2ziOInsWkp1Gete8cVfoZW7cGmsUMEU=;
-        b=pJWPzkA3V981Qr2v26rO4l9l0/F/GefgyskyBthnNgaVbuC8HaB6gOQVhmVda+n4+0
-         s0Bt7Zr9TzeMlS2C0lk5favSo6g98PT/N5M+Py/g0SvLzHNThnPjI2X462ncPhIdVaHs
-         WALCPuvRn7BYbhOQfzXIU70HhOYB7wJu1vClthdVAhoWxyD32O4O2uM1J6tNBCeNnOH6
-         jg0tNFH77hkK1TSsWdjqU4zGlfg0lI8uXGOWEqxOSCelDVEOCFI7aX98Pc3SqeknmiiZ
-         U+2BEbWeWrjcfPB8uQH6GqhXwfF7ajCe1Z1jbNeFgUnTN3ED1kuWnnfHQr5eoA8DO3HF
-         27Fw==
-X-Gm-Message-State: AOJu0YxgVO36f8zX16F1NNnctM/7UQM3j3wqVG6ZYeWLP/W/zAWcXAIS
-	5LNqEY1lMR6vr9d8dbPOprnWl7x1vQU4ocqBIfrElUklJs0tQCSSnGJACSTGy/cvMBbFReWLik2
-	qLbgcWxp7Nw67TNCItXKbM801fiBviW+uMWxZLnp/8MKcGDZpV0LlmgFrNXUoBoP4CYH69Ci3qS
-	1L+FFrbR2siTuiGjZPMHpoJPc5g5qzrM7uWXRTnQ4bYPKl223T
-X-Google-Smtp-Source: AGHT+IGJVSiiA3kt+a1SMH4HfX4QTNIN3ASe2v4rWT8DUkkJ4sdQqlb6OCwcYkHT0pJ33KGmNG5IRkzzEQPYVSs=
-X-Received: from edbfg11.prod.google.com ([2002:a05:6402:548b:b0:5d9:a53:f322])
- (user=ciprietti job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2348:b0:5d0:214b:96b0 with SMTP id 4fb4d7f45d1cf-5dc5efa878fmr3355618a12.1.1738169009454;
- Wed, 29 Jan 2025 08:43:29 -0800 (PST)
-Date: Wed, 29 Jan 2025 16:43:25 +0000
-In-Reply-To: <20250129163637.3420954-2-ciprietti@google.com>
+	s=arc-20240116; t=1738169021; c=relaxed/simple;
+	bh=fjFyNPumIO1qQ7Xqj2v2TIlZ56VfvMhBycV9WzRUiyw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tEQMANqHDPL8KW5IUoMafkznFduRkhEavMFXuP8MD/eNL34BfH487wUDZ2hVet2A3Gt51bnbs5Jw5eIGnbqqn+c+06UC8URO5nquy8F89fcc4XZP26V8EKec22TF643nJrVc8Bpa+68RKgGMA5wzywFI1IxAetqM67CYDGsYD2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F175497;
+	Wed, 29 Jan 2025 08:44:04 -0800 (PST)
+Received: from [10.1.196.57] (eglon.cambridge.arm.com [10.1.196.57])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2AD2A3F63F;
+	Wed, 29 Jan 2025 08:43:36 -0800 (PST)
+Message-ID: <e6820d63-a8da-4ebb-b078-741ab3fcd262@arm.com>
+Date: Wed, 29 Jan 2025 16:43:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250129163637.3420954-2-ciprietti@google.com>
-X-Mailer: git-send-email 2.48.1.262.g85cc9f2d1e-goog
-Message-ID: <20250129164325.3424666-1-ciprietti@google.com>
-Subject: Re: [PATCH 1/1] blk-cgroup: Fix UAF in blkcg_unpin_online()
-From: Andrea Ciprietti <ciprietti@google.com>
-To: stable@vger.kernel.org
-Cc: ciprietti@google.com, tj@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/5] arm64: errata: Assume that unknown CPUs _are_
+ vulnerable to Spectre BHB
+To: Douglas Anderson <dianders@chromium.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>
+Cc: Roxana Bradescu <roxabee@google.com>, Julius Werner
+ <jwerner@chromium.org>, bjorn.andersson@oss.qualcomm.com,
+ Trilok Soni <quic_tsoni@quicinc.com>, linux-arm-msm@vger.kernel.org,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ linux-arm-kernel@lists.infradead.org, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+ Scott Bauer <sbauer@quicinc.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250107200715.422172-1-dianders@chromium.org>
+ <20250107120555.v4.2.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+Content-Language: en-GB
+From: James Morse <james.morse@arm.com>
+In-Reply-To: <20250107120555.v4.2.I2040fa004dafe196243f67ebcc647cbedbb516e6@changeid>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi, this is a version of commit 86e6ca55b83c ("blk-cgroup: Fix UAF in
-blkcg_unpin_online()") adapted for porting to the 5.10 LTS tree.
+Hi Doug,
 
-The patch fixes CVE-2024-56672.
+On 07/01/2025 20:05, Douglas Anderson wrote:
+> The code for detecting CPUs that are vulnerable to Spectre BHB was
+> based on a hardcoded list of CPU IDs that were known to be affected.
+> Unfortunately, the list mostly only contained the IDs of standard ARM
+> cores. The IDs for many cores that are minor variants of the standard
+> ARM cores (like many Qualcomm Kyro CPUs) weren't listed. This led the
+> code to assume that those variants were not affected.
+> 
+> Flip the code on its head and instead assume that a core is vulnerable
+> if it doesn't have CSV2_3 but is unrecognized as being safe. This
+> involves creating a "Spectre BHB safe" list.
+> 
+> As of right now, the only CPU IDs added to the "Spectre BHB safe" list
+> are ARM Cortex A35, A53, A55, A510, and A520. This list was created by
+> looking for cores that weren't listed in ARM's list [1] as per review
+> feedback on v2 of this patch [2]. Additionally Brahma A53 is added as
+> per mailing list feedback [3].
+> 
+> NOTE: this patch will not actually _mitigate_ anyone, it will simply
+> cause them to report themselves as vulnerable. If any cores in the
+> system are reported as vulnerable but not mitigated then the whole
+> system will be reported as vulnerable though the system will attempt
+> to mitigate with the information it has about the known cores.
 
-Changes with respect to the original commit:
-  - blkcg_unpin_online() is implemented in linux/blk-cgroup.h.
+> arch/arm64/include/asm/spectre.h |   1 -
+> arch/arm64/kernel/proton-pack.c  | 203 ++++++++++++++++---------------
+> 2 files changed, 102 insertions(+), 102 deletions(-)
+
+This is a pretty hefty diff-stat for adding a list of six CPUs. It looks like there are
+multiple things going on here: I think you're adding the 'safe' list of CPUs, then
+removing the list of firmware-mitigated list, then removing some indentation to do the
+mitigation detection differently. Any chance this can be split up?
+(I'm not sure about the last chunk - it breaks automatic backporting)
+
+
+> diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+> index e149efadff20..17aa836fe46d 100644
+> --- a/arch/arm64/kernel/proton-pack.c
+> +++ b/arch/arm64/kernel/proton-pack.c
+
+
+> +static u8 spectre_bhb_loop_affected(void)
+>  {
+>  	u8 k = 0;
+> -	static u8 max_bhb_k;
+> -
+> -	if (scope == SCOPE_LOCAL_CPU) {
+> -		static const struct midr_range spectre_bhb_k32_list[] = {
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+> -			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> -			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+> -			{},
+> -		};
+> -		static const struct midr_range spectre_bhb_k24_list[] = {
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+> -			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+> -			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+> -			{},
+> -		};
+> -		static const struct midr_range spectre_bhb_k11_list[] = {
+> -			MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+> -			{},
+> -		};
+> -		static const struct midr_range spectre_bhb_k8_list[] = {
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+> -			MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+> -			{},
+> -		};
+> -
+> -		if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+> -			k = 32;
+> -		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+> -			k = 24;
+> -		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
+> -			k = 11;
+> -		else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+> -			k =  8;
+> -
+> -		max_bhb_k = max(max_bhb_k, k);
+> -	} else {
+> -		k = max_bhb_k;
+> -	}
+> +
+> +	static const struct midr_range spectre_bhb_k32_list[] = {
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+> +		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+> +		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V1),
+> +		{},
+> +	};
+> +	static const struct midr_range spectre_bhb_k24_list[] = {
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+> +		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+> +		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+> +		{},
+> +	};
+> +	static const struct midr_range spectre_bhb_k11_list[] = {
+> +		MIDR_ALL_VERSIONS(MIDR_AMPERE1),
+> +		{},
+> +	};
+> +	static const struct midr_range spectre_bhb_k8_list[] = {
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A72),
+> +		MIDR_ALL_VERSIONS(MIDR_CORTEX_A57),
+> +		{},
+> +	};
+> +
+> +	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+> +		k = 32;
+> +	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+> +		k = 24;
+> +	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k11_list))
+> +		k = 11;
+> +	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k8_list))
+> +		k =  8;
+>  
+>  	return k;
+>  }
+
+This previous hunk reduces the indent to remove the static variable from inside the
+function. Your patch-1 can be picked up automatically by stable branches, but after this
+change, that will have to be done by hand. Arm have recently updated that table of CPUs
+with extra entries (thanks for picking those up!) - but now that patch can't be easily
+applied to older kernels.
+I suspect making the reporting assuming-vulnerable may make other CPUs come out of the
+wood work too...
+
+Could we avoid changing this unless we really need to?
+
+
+As background, the idea is that CPUs that are newer than the kernel will discover the need
+for mitigation from firmware. That sucks for performance, but it can be improved once the
+kernel is updated to know about the 'local' workaround.
+
+
+> @@ -955,6 +956,8 @@ static bool supports_ecbhb(int scope)
+>  						    ID_AA64MMFR1_EL1_ECBHB_SHIFT);
+>  }
+>  
+> +static u8 max_bhb_k;
+> +
+>  bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
+>  			     int scope)
+>  {
+> @@ -963,16 +966,18 @@ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry,
+>  	if (supports_csv2p3(scope))
+>  		return false;
+>  
+> -	if (supports_clearbhb(scope))
+> -		return true;
+> -
+> -	if (spectre_bhb_loop_affected(scope))
+> -		return true;
+> +	if (is_spectre_bhb_safe(scope))
+> +		return false;
+>  
+> -	if (is_spectre_bhb_fw_affected(scope))
+> -		return true;
+> +	/*
+> +	 * At this point the core isn't known to be "safe" so we're going to
+> +	 * assume it's vulnerable. We still need to update `max_bhb_k` though,
+> +	 * but only if we aren't mitigating with clearbhb though.
+
++	or firmware.
+
+
+> +	 */
+> +	if (scope == SCOPE_LOCAL_CPU && !supports_clearbhb(SCOPE_LOCAL_CPU))
+> +		max_bhb_k = max(max_bhb_k, spectre_bhb_loop_affected());
+
+CPUs that need a firmware mitigation will get in here too. Its probably harmless as
+they'll report '0' as their k value... but you went to the trouble to weed out the CPUs
+that support the clearbhb instruction ...
+
+For the change described in the commit message, isn't it enough to replace the final
+'return false' with 'return !is_spectre_bhb_safe(scope)' ?
+
+
+>  
+> -	return false;
+> +	return true;
+>  }
+
 
 Thanks,
-Andrea
+
+James
 
