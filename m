@@ -1,88 +1,89 @@
-Return-Path: <stable+bounces-111217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60AEA22431
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6496CA22433
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34BB0168298
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D30E3A9413
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9446E1E25E8;
-	Wed, 29 Jan 2025 18:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7651E0DB0;
+	Wed, 29 Jan 2025 18:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RcRRgGPY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6J/uinE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02ED1E0DFE
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768191E25FE
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738176459; cv=none; b=eHOf2lP5QP2yswihhYskwB5Gr9ropm1gDQuhJLYprsH7Gj0R5T2mFXXcWeofvJe5HdPE4e61z2cPEHo646VmutAmn8lrbuqXcaFGDAcJmslV6Bb8haEg4rg9wt869jRNbcLl+s2RqaBupPN4v9XBn2mhPhCCcOvIEOG1Fr17u5I=
+	t=1738176460; cv=none; b=R879zW1+mKCjHHczY86XO0wUOnS0U+9EWxoMAaLOn0PuzAt/GYeT2N6Nf3700hBhM8YXkUa2JPGz/PuIF30ccB2LnlatsO2vjztaAHKHtwoBtehJaDskH2MsXHizv8Pf9QNYvjuJbUEmlfkfwpTwo8P4oo5HonLREOFmWh61JpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738176459; c=relaxed/simple;
-	bh=WGH65OyG650g0iCiSwRZlYu8XrnPMibzvq5SJI4RvQQ=;
+	s=arc-20240116; t=1738176460; c=relaxed/simple;
+	bh=J7rliugnr1XpzVevWtD5uvdGUWEIXIntqj7NgZ7tXfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tz4GbBhpABIbYAEFAC0psvMjq0wY8m7rYoMpjtwO/xWMxfCj9+N+GiRwJQe97M4xJF1E/xbPwEM7CgVeeP5DUApj8dJFxDiVCkmTg+BNKVbe2AxCjBtOTPDkkrzGeLnZnVTZxBAVdKGov3knxvsZjQndE7Y+5Lfkoz/5sg1/vjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RcRRgGPY; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version; b=u39nu4/VWR7FTi9UZslSH/77Q2DOJ5YHG4QZ1qZYClZeyBybfJb/FIqsbFsjWKISNjscF8rYMrJM+DYNubS6ZwhNlHnLSKPHPvq0HJlYosPhwOJN90heQE0lAtxz0E1PI49U3TPQmRDUJ2Fzij3j2pHAnRabXwUF9wOpCXFM+1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6J/uinE; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21661be2c2dso125379135ad.1
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:37 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21ddb406f32so11705745ad.2
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1738176457; x=1738781257; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3PXHUuyqneUoc6n+4MvWGjKQdspUTdvpjKCCoc9v2Xg=;
-        b=RcRRgGPY2j2WM0CEWQY00iA/AC1pJESGCZoOvFpJe4URK94wgRDs+m18Y1kttqGOhJ
-         VebY53rAPDPlUPzlntFF40ufvlfFrbs/EfO432qzAJ1y21GuXec7boB2hEQknPWuFHYP
-         cs0x6y1/rhwSpsUgA8ei6qj261V6v07U3OFVv4hhzs1Ki6UJNN3mh5Xzxl13FBYCJIXO
-         lwCN5KkKUH6P3QxlrhpDloFVi4xUP/7Tr0ut5Y8a+/K7tFm8mcp1laK2HUhZqVeA1bWW
-         sqgYgn+R00qkxHcLBh+Mp/sN4zsBiq1j9Ev2IsSi5vaitaMJkhJ9s0ojkxB1L4QLAzWY
-         ltuQ==
+        bh=V381xVjcpo0TThox2VvkVHfZgzGqs0VsFuzon9tzvKs=;
+        b=Q6J/uinEe/F64XTZiuqdnp/mxgkgYF+ngLZlR5wkYYThNbF97m4myCJB8gEMjjkW7b
+         sK+rslEfDoL7hV9WV7A6fkVzys7i4aaKZ3AsC6NrWVc7Q7DOryEbwTdC9Bz0eCXqdMNt
+         yJFpMth8C4ThLOvpihb9lhUUM4/q8YH1Kk37kkjfJEJGIBtjh4E1infVmoItZLcoYHFy
+         bp8JUWR2A2hcLpo6CVOYrM7UX00I8XnecsMhCwoMIO1IQSGN/R5sUeOb8JeRbgMrTBTQ
+         03EopUlMAN+6NLGEqRD8YdHZnIdaEI7kz7+V2jEWtc2VJ9dyeK0AsHqblyP3CB/4SgAA
+         zPCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1738176457; x=1738781257;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3PXHUuyqneUoc6n+4MvWGjKQdspUTdvpjKCCoc9v2Xg=;
-        b=uVjbwB+vsDeVdbLnL0E8Xpc8atqYpz5K9QZtXCuD875O61JZ7VoctvIuhjB8o1pzdk
-         aW0vFiaK9x/VP189rh4wS7k20Efe+img5gS/u1lvjoOITzTocyfMQEZskzK+BWTL5DKP
-         +GWKpeJms0aM+00AYJVv/8V9R8p/LatWHvn8CZRUbefjgLKeJtKYav3CujWEdB06R6hD
-         zYUTvmcDkA3xXSSPmvHPJEK186zHMoGMyJFy91MD7x9N0RNEFi/FC4S9wxpgSgC3QlN4
-         fdmyzUCgHNXBwyxvpeO5PNkWkFrG0KoWW//tZd+5ZwZvlu/aBItxSs2nrhBu6Db2Nl9B
-         YLzQ==
-X-Gm-Message-State: AOJu0YyGwVhqLCE0QwQtw4AVT56/AbyqtihgqDbYp8LHTf4k2tE5htW7
-	KdGFUH0E41k7vUXu+K2zHtmR0pZvEROvnzQJXRaTCcyFDEwJvdy62FdK1A==
-X-Gm-Gg: ASbGncuWTeGlBD1ifU8c9wVbaQfcPXF53y0owUW0XkP0XwiQ+19xfgfdlDTsM2+EG+5
-	jfeQphorgm7/Tp8MVSnkuOaEu3cPlNeuwDuksyPbnOAdru2w5Y22gO0VUWMNsYqFpt4bL+1hN78
-	skRaJb/u1PEBJvbSnhOhgCIzQ3J99pigzZCfCwuejg8N8QC/prK79J7n+e/bkVRnnlNhbWVaS7b
-	SY3pxMzIYm7RoY5d4rv/EvWkec30tm6oBYusYzAqzuM9KgzMJ0hndVW1DMpqNgWq7YGIr3iE4Rs
-	dvicZv9RfWJGr3WosyzkQ0qLIp1FoUlCMRevCI+DRb0=
-X-Google-Smtp-Source: AGHT+IEXnPl1lwAl2NkNLHlFWa/Xk903I0rhpcZXcPY4TxZQqKJjRBl2lAlcB23g//jxlklyX0+yMg==
-X-Received: by 2002:a17:902:d542:b0:216:2b14:b625 with SMTP id d9443c01a7336-21dd7d7f818mr71419875ad.31.1738176456644;
-        Wed, 29 Jan 2025 10:47:36 -0800 (PST)
+        bh=V381xVjcpo0TThox2VvkVHfZgzGqs0VsFuzon9tzvKs=;
+        b=q2AZ/Rj5SbLJlWqWBU6MtrXBV3asoV41nodg6okNc3a6i1LIohvZ8Jll1IfHXz1p0K
+         CX367Y68G/ITCMqs+R0wS08qrDAheHmlqc5GM9OVRda86C3qFEZPtkqQ55Or9/Uzmd7d
+         0hhM04GovvrwLTQx8vToVetjIl4IvX6zyZXfZB9Ba022qQ5dsUqCGsBeCOKLcXM2uUzD
+         rwlYZFg4Y/k9/FuzRqJJIrp5hpQsb2PbrlEfgdD3zoe8VvQ9T6ktwG3Gup/eRnMgUVNd
+         odkZtDGfrWpg5biYtiMEnHAr+wXiUasHM+hqHfq4BboHqlDISV1ZnSLvYHl2mkK2aRtW
+         ILTQ==
+X-Gm-Message-State: AOJu0YyBdu4E0/wm3AwlUiRhOom8QYAJ3fN8o0v5/Z8/I/TP/P+9u0hL
+	WkR0Ru3W33kOK9hgaVj4aAi9qtJUGGDYoHn0hcpKN1kApKJaD1HZDHtMvgQG
+X-Gm-Gg: ASbGncuH1Pz7BF4wWZZC4R57niDmWcqi4XByyVqfhy3ArFTaL4iDUiFeODHQbMRyoXk
+	+m+GluiEUn30eKFUytZ9qkwMEa+sX8uml8e7LSPMBI0EGTnTKPg1iLkqxW46RhYXzEJeNqaKIBj
+	RHPh3ist6zTmLe6i1jQsIZ4bgkwkUQaQUFHAeP06zbqmXLFdgWnPdjSx9ehJtxP4tiSlvIOWUBL
+	F3hDRs/pSzsQQzHyLGcnzExAji8UN9nzT3mCcmrnLGT4//cAoJuKs7a5FsX22dgW/j29JhS0NsP
+	g5iHNV9MmEXx5cgctPRSfOd7ohzasBdtVBE9QCTTB7I=
+X-Google-Smtp-Source: AGHT+IHzOsMLBITLWZfvPkb8YjBm8IVPk9vXjt9mE1uXxf1yH5FLqxeW2Lkuy1CLpKB/zRPFAy+imQ==
+X-Received: by 2002:a17:903:24c:b0:219:eb2a:dfa5 with SMTP id d9443c01a7336-21dd7def052mr59723745ad.39.1738176457626;
+        Wed, 29 Jan 2025 10:47:37 -0800 (PST)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:fbc6:64ef:cffe:1cc8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.35
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 10:47:35 -0800 (PST)
+        Wed, 29 Jan 2025 10:47:37 -0800 (PST)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	amir73il@gmail.com,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
+	Cheng Lin <cheng.lin130@zte.com.cn>,
 	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 06/19] xfs: make sure maxlen is still congruent with prod when rounding down
-Date: Wed, 29 Jan 2025 10:47:04 -0800
-Message-ID: <20250129184717.80816-7-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 07/19] xfs: introduce protection for drop nlink
+Date: Wed, 29 Jan 2025 10:47:05 -0800
+Message-ID: <20250129184717.80816-8-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
 In-Reply-To: <20250129184717.80816-1-leah.rumancik@gmail.com>
 References: <20250129184717.80816-1-leah.rumancik@gmail.com>
@@ -94,134 +95,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Cheng Lin <cheng.lin130@zte.com.cn>
 
-[ Upstream commit f6a2dae2a1f52ea23f649c02615d073beba4cc35 ]
+[ Upstream commit 2b99e410b28f5a75ae417e6389e767c7745d6fce ]
 
-In commit 2a6ca4baed62, we tried to fix an overflow problem in the
-realtime allocator that was caused by an overly large maxlen value
-causing xfs_rtcheck_range to run off the end of the realtime bitmap.
-Unfortunately, there is a subtle bug here -- maxlen (and minlen) both
-have to be aligned with @prod, but @prod can be larger than 1 if the
-user has set an extent size hint on the file, and that extent size hint
-is larger than the realtime extent size.
+When abnormal drop_nlink are detected on the inode,
+return error, to avoid corruption propagation.
 
-If the rt free space extents are not aligned to this file's extszhint
-because other files without extent size hints allocated space (or the
-number of rt extents is similarly not aligned), then it's possible that
-maxlen after clamping to sb_rextents will no longer be aligned to prod.
-The allocation will succeed just fine, but we still trip the assertion.
-
-Fix the problem by reducing maxlen by any misalignment with prod.  While
-we're at it, split the assertions into two so that we can tell which
-value had the bad alignment.
-
-Fixes: 2a6ca4baed62 ("xfs: make sure the rt allocator doesn't run off the end")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Cheng Lin <cheng.lin130@zte.com.cn>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 ---
- fs/xfs/xfs_rtalloc.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_inode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 34980d7c2dd6..0bfbbc1dd0da 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -209,10 +209,27 @@ xfs_rtallocate_range(
- 	 */
- 	error = xfs_rtmodify_range(mp, tp, start, len, 0);
- 	return error;
- }
- 
-+/*
-+ * Make sure we don't run off the end of the rt volume.  Be careful that
-+ * adjusting maxlen downwards doesn't cause us to fail the alignment checks.
-+ */
-+static inline xfs_extlen_t
-+xfs_rtallocate_clamp_len(
-+	struct xfs_mount	*mp,
-+	xfs_rtblock_t		startrtx,
-+	xfs_extlen_t		rtxlen,
-+	xfs_extlen_t		prod)
-+{
-+	xfs_extlen_t		ret;
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 909085269227..1d32823d5099 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -917,10 +917,17 @@ xfs_init_new_inode(
+ static int			/* error */
+ xfs_droplink(
+ 	xfs_trans_t *tp,
+ 	xfs_inode_t *ip)
+ {
++	if (VFS_I(ip)->i_nlink == 0) {
++		xfs_alert(ip->i_mount,
++			  "%s: Attempt to drop inode (%llu) with nlink zero.",
++			  __func__, ip->i_ino);
++		return -EFSCORRUPTED;
++	}
 +
-+	ret = min(mp->m_sb.sb_rextents, startrtx + rtxlen) - startrtx;
-+	return rounddown(ret, prod);
-+}
-+
- /*
-  * Attempt to allocate an extent minlen<=len<=maxlen starting from
-  * bitmap block bbno.  If we don't get maxlen then use prod to trim
-  * the length, if given.  Returns error; returns starting block in *rtblock.
-  * The lengths are all in rtextents.
-@@ -246,11 +263,11 @@ xfs_rtallocate_extent_block(
- 	for (i = XFS_BLOCKTOBIT(mp, bbno), besti = -1, bestlen = 0,
- 		end = XFS_BLOCKTOBIT(mp, bbno + 1) - 1;
- 	     i <= end;
- 	     i++) {
- 		/* Make sure we don't scan off the end of the rt volume. */
--		maxlen = min(mp->m_sb.sb_rextents, i + maxlen) - i;
-+		maxlen = xfs_rtallocate_clamp_len(mp, i, maxlen, prod);
+ 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
  
- 		/*
- 		 * See if there's a free extent of maxlen starting at i.
- 		 * If it's not so then next will contain the first non-free.
- 		 */
-@@ -353,11 +370,12 @@ xfs_rtallocate_extent_exact(
- 	int		error;		/* error value */
- 	xfs_extlen_t	i;		/* extent length trimmed due to prod */
- 	int		isfree;		/* extent is free */
- 	xfs_rtblock_t	next;		/* next block to try (dummy) */
+ 	drop_nlink(VFS_I(ip));
+ 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
  
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
- 	/*
- 	 * Check if the range in question (for maxlen) is free.
- 	 */
- 	error = xfs_rtcheck_range(mp, tp, bno, maxlen, 1, &next, &isfree);
- 	if (error) {
-@@ -436,20 +454,22 @@ xfs_rtallocate_extent_near(
- 	int		j;		/* secondary loop control */
- 	int		log2len;	/* log2 of minlen */
- 	xfs_rtblock_t	n;		/* next block to try */
- 	xfs_rtblock_t	r;		/* result block */
- 
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
-+
- 	/*
- 	 * If the block number given is off the end, silently set it to
- 	 * the last block.
- 	 */
- 	if (bno >= mp->m_sb.sb_rextents)
- 		bno = mp->m_sb.sb_rextents - 1;
- 
- 	/* Make sure we don't run off the end of the rt volume. */
--	maxlen = min(mp->m_sb.sb_rextents, bno + maxlen) - bno;
-+	maxlen = xfs_rtallocate_clamp_len(mp, bno, maxlen, prod);
- 	if (maxlen < minlen) {
- 		*rtblock = NULLRTBLOCK;
- 		return 0;
- 	}
- 
-@@ -636,11 +656,12 @@ xfs_rtallocate_extent_size(
- 	int		l;		/* level number (loop control) */
- 	xfs_rtblock_t	n;		/* next block to be tried */
- 	xfs_rtblock_t	r;		/* result block number */
- 	xfs_suminfo_t	sum;		/* summary information for extents */
- 
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
- 	ASSERT(maxlen != 0);
- 
- 	/*
- 	 * Loop over all the levels starting with maxlen.
- 	 * At each level, look at all the bitmap blocks, to see if there
 -- 
 2.48.1.362.g079036d154-goog
 
