@@ -1,178 +1,129 @@
-Return-Path: <stable+bounces-111186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152D0A22105
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1C4A22116
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:59:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F65B1884076
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 623F71881952
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B7B1DE8B2;
-	Wed, 29 Jan 2025 15:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296A1D6DB7;
+	Wed, 29 Jan 2025 15:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JegPAI6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s05e65qX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6161DE880
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 15:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0033997
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 15:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738166184; cv=none; b=H9lTyJYvrkHuTifIK+BhusM5OVD9+Jxm9tKRU8KpW3BczkW8VRSRmov8ZgRz8kmHBBpIKqKADyxS/sreDZOuwU9s4g+COFxzAdbOb1CNPhfqTbHVS4tC6Opo2MSoOyS+dLQfYSXkW43km9dvm5zoY7Wu8P551plXGhQzzjhvLiA=
+	t=1738166350; cv=none; b=OpuljnRjqqc5kU6bnPbtVR8zFJXWPJ0LmaGCfFFsTsrG2+3VF34bEm/hb/5b4KUGZXmU9HvNZhSqucdo630MSyXDYBJLbr58SW1IkUuRxe4yGe89C732K19jzVYesQWRwJ2I5AB0qLvSkhbzyrFNLpiOfs73/Hb34XT20Updmhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738166184; c=relaxed/simple;
-	bh=Dt7xkAk4I2Scvbht6IKyvbEclkFIJDnQUwr7f8DbyTg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hX5CbbIpFVS7EI9H4/lhAzj3sMohM5Y6wDJiGY7a9TiC5t9vRVPzVaWKQKuYb+JNvk0h1RhDjPI6IoOkqEb5ltFFUPCXik84PMHGa5GgLNMug0jHlXJoH+3e993ftWp2G1XcB1PmmrHzMo1n12aFxvy6N4tGBO02FoypzqRNRWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JegPAI6V; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50TEqhdD004511
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 15:56:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=DxY0icfYFDPYpLy0SN45Y3l8ipVx2gW7otJ
-	CvY2psTE=; b=JegPAI6VLv/mjpZGwYAIvo4eRCROAsoZpDS6YXmEpZLTukASaZv
-	NoVT4yrXIbsmFWMmm9nTgPod+qJ6PazaDvd3gHcU/sbCn/hJkYhN2+Ak9IIAj9jI
-	nJsQOiJLRge7WVz3qfTv2K78W35fL7rl0elpnpUTim2k7etoRDXzawhPmwFuhSq4
-	KYE+cZmX/Mv1PM6iNzQVwhg5xVRlabDAlE5TmZWaDAAkXdsl7HTlwKQEmRYErjgZ
-	9LiUJQ7N6MSssjNOPLLn13Py8OIIAT3tpZozzoqiCqU6gOvTI5/MFvNKr+TcUomC
-	UQ8nEWooVrknm9A6XWELtfqi2P+u4S48oGw==
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44fpfu850f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 15:56:22 +0000 (GMT)
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2164fad3792so122735315ad.0
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 07:56:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738166181; x=1738770981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DxY0icfYFDPYpLy0SN45Y3l8ipVx2gW7otJCvY2psTE=;
-        b=XgJIdwx7Zuf8owIIf7CuO5b7DK4RfW3bXCANXveWRBxsUJtn+p+IDwsOU8n5Q9Njk2
-         hRzivrDSjEVUeMJKsZVDAwHIgdQB6icBTnu3i6EafDwSWBU53ukyQc3X3pJAoEDyLvbo
-         ROsxyalSWk9YGCT3PE4P5V4V0Qh/JC53hUmXQ6CneM08nI7T7KD4Vy3bESQfPGXAjIIE
-         xpLSqIjtnRR9sMoNzjjyKsnunQCAZ0+T9db5jfBEyzqvlrwWHvV8ATZbstc1fT6PMgcD
-         tEUxIPiKKId1zpUx5NQhJD8SzlcI7VOvksOECVaEZR8srm4kj+SlS8Aof1O2rYnUO5i6
-         5wJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQGwkKr8aQb0MMdLae3ycJ0gM36y33v+M99IgEYtF4ROvefOsQhsGGqan7BwUICNV9qeDUgnA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyay3KpmDxewRbOvOpEDI9B2o76i+OguncsNsk6xlbyPbOvojOk
-	gx6SbMOFpapIBTt6KPbjYCI5JpnN+S9sC7/c/OuzH/FUPnTjtyCRL8p89h2SWetXxPczbtzrL3d
-	qTvW5c+WXDt9UV0A/q1TxR9U159O4eBeXWPcwlS8XNHrW3J4j50J3ZjY=
-X-Gm-Gg: ASbGncscATYQZDvFOZvc9MAhoex+hJTUw+v865tUKeVFxYccM0IysfGW20z6U5a+NNR
-	opNfKFTP0dkDGRitgPY1qp/Z6QIimTHRGv0ZB3bavq9UKluaKJwipVJ25viusZtSGLvr/9cbKI3
-	owZ4INq5zZ6Wc98/2eAeC/gQ/F9OZiOMzjWJ4t4JrNre2wW9n2E7atsOMgdIPHJzt0L0MkC52gt
-	xFdWEAlrxTefkj4Yu1y4VcqxCVhjRDeSoS+NkDCLU26RfGBJWZItbUM0BGVUBozvHUczssBwKZl
-	hdt+DsJseQtnnBPcZMtTg7jeiY48HKhP
-X-Received: by 2002:a17:903:244b:b0:212:67a5:ab2d with SMTP id d9443c01a7336-21dd7df2d21mr59553665ad.44.1738166181314;
-        Wed, 29 Jan 2025 07:56:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF2B4B+YcV7qGpZDw1PDGvvKfkjXAwRuH8rb5D436/nFHKW3TBRf6iKCQFl+v3k5Lh4v3r6VA==
-X-Received: by 2002:a17:903:244b:b0:212:67a5:ab2d with SMTP id d9443c01a7336-21dd7df2d21mr59553325ad.44.1738166180910;
-        Wed, 29 Jan 2025 07:56:20 -0800 (PST)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414edb3sm100898975ad.202.2025.01.29.07.56.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 07:56:20 -0800 (PST)
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: andersson@kernel.org, konradybcio@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>, stable@vger.kernel.org,
-        Saranya R <quic_sarar@quicinc.com>
-Subject: [PATCH v2] soc: qcom: pdr: Fix the potential deadlock
-Date: Wed, 29 Jan 2025 21:25:44 +0530
-Message-Id: <20250129155544.1864854-1-mukesh.ojha@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1738166350; c=relaxed/simple;
+	bh=DvvWrPpK6uTuKLmS7SUbKVS6HaxVo1QCxRJjRKrkMjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwMM6zfZPxaOPbX//lPSAio9dWbJ7cBdoXQmJyYgv5v29AcU9sLHuBCoI9GjHBgPPWuxx3OXIvJCLUxwmwLB+EUlOtfKJmUg0ZSpThhLVK+rLOEAgNEIPSBaLv4jGOM9EpF0FMmZxvuvqFrq71tc/mcPk7PlFQzJ5x/jum/cJr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s05e65qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A989CC4CED1;
+	Wed, 29 Jan 2025 15:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738166350;
+	bh=DvvWrPpK6uTuKLmS7SUbKVS6HaxVo1QCxRJjRKrkMjE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s05e65qX/ivOOtm2vfx7JqNnHaGv5btEcHMOBWDYpsgCSjCV+NF+1PfQ0hkumvQ/2
+	 spGWBkD/5ETO6vE5jbawUfHUKdOWTmNwtcWRkb+zOlOnhZkaw/bz9rM6G9VVY7w1SQ
+	 Dz+r+84VcSyaI61s0IFro852zkYRrxqb9PKyGcJA=
+Date: Wed, 29 Jan 2025 16:58:10 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Florian Bezdeka <florian.bezdeka@siemens.com>
+Cc: stable@vger.kernel.org, K Prateek Nayak <kprateek.nayak@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>
+Subject: Re: [PATCH 6.1] softirq: Allow raising SCHED_SOFTIRQ from
+ SMP-call-function on RT kernel
+Message-ID: <2025012928-muppet-amends-b460@gregkh>
+References: <20250129153226.818485-1-florian.bezdeka@siemens.com>
+ <2025012926-rocker-crispy-f397@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: q8fL23kIllOSYkpWA33zrp7qBEWKrlQ6
-X-Proofpoint-ORIG-GUID: q8fL23kIllOSYkpWA33zrp7qBEWKrlQ6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-29_03,2025-01-29_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 impostorscore=0 suspectscore=0 clxscore=1011 mlxscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 bulkscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501290128
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025012926-rocker-crispy-f397@gregkh>
 
-When some client process A call pdr_add_lookup() to add the look up for
-the service and does schedule locator work, later a process B got a new
-server packet indicating locator is up and call pdr_locator_new_server()
-which eventually sets pdr->locator_init_complete to true which process A
-sees and takes list lock and queries domain list but it will timeout due
-to deadlock as the response will queued to the same qmi->wq and it is
-ordered workqueue and process B is not able to complete new server
-request work due to deadlock on list lock.
+On Wed, Jan 29, 2025 at 04:47:59PM +0100, Greg KH wrote:
+> On Wed, Jan 29, 2025 at 04:32:26PM +0100, Florian Bezdeka wrote:
+> > From: K Prateek Nayak <kprateek.nayak@amd.com>
+> > 
+> > commit 6675ce20046d149e1e1ffe7e9577947dee17aad5 upstream.
+> > 
+> > do_softirq_post_smp_call_flush() on PREEMPT_RT kernels carries a
+> > WARN_ON_ONCE() for any SOFTIRQ being raised from an SMP-call-function.
+> > Since do_softirq_post_smp_call_flush() is called with preempt disabled,
+> > raising a SOFTIRQ during flush_smp_call_function_queue() can lead to
+> > longer preempt disabled sections.
+> > 
+> > Since commit b2a02fc43a1f ("smp: Optimize
+> > send_call_function_single_ipi()") IPIs to an idle CPU in
+> > TIF_POLLING_NRFLAG mode can be optimized out by instead setting
+> > TIF_NEED_RESCHED bit in idle task's thread_info and relying on the
+> > flush_smp_call_function_queue() in the idle-exit path to run the
+> > SMP-call-function.
+> > 
+> > To trigger an idle load balancing, the scheduler queues
+> > nohz_csd_function() responsible for triggering an idle load balancing on
+> > a target nohz idle CPU and sends an IPI. Only now, this IPI is optimized
+> > out and the SMP-call-function is executed from
+> > flush_smp_call_function_queue() in do_idle() which can raise a
+> > SCHED_SOFTIRQ to trigger the balancing.
+> > 
+> > So far, this went undetected since, the need_resched() check in
+> > nohz_csd_function() would make it bail out of idle load balancing early
+> > as the idle thread does not clear TIF_POLLING_NRFLAG before calling
+> > flush_smp_call_function_queue(). The need_resched() check was added with
+> > the intent to catch a new task wakeup, however, it has recently
+> > discovered to be unnecessary and will be removed in the subsequent
+> > commit after which nohz_csd_function() can raise a SCHED_SOFTIRQ from
+> > flush_smp_call_function_queue() to trigger an idle load balance on an
+> > idle target in TIF_POLLING_NRFLAG mode.
+> > 
+> > nohz_csd_function() bails out early if "idle_cpu()" check for the
+> > target CPU, and does not lock the target CPU's rq until the very end,
+> > once it has found tasks to run on the CPU and will not inhibit the
+> > wakeup of, or running of a newly woken up higher priority task. Account
+> > for this and prevent a WARN_ON_ONCE() when SCHED_SOFTIRQ is raised from
+> > flush_smp_call_function_queue().
+> > 
+> > Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Link: https://lore.kernel.org/r/20241119054432.6405-2-kprateek.nayak@amd.com
+> > Tested-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+> > Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+> > ---
+> > 
+> > Newer stable branches (6.12, 6.6) got this already, 5.10 and lower are
+> > not affected.
+> > 
+> > The warning triggered for SCHED_SOFTIRQ under high network load while
+> > testing.
+> 
+> But RT is not in the 6.1.y tree, right?  Or is it?  Why was it only
+> backported to 6.6.y and 6.12.y?
 
-       Process A                        Process B
+And see:
+	https://lore.kernel.org/r/d21a8129-e982-463f-af8b-07a14b6a674a@amd.com
+for why we added it to 6.12.y in the first place (I don't know why Sasha
+added it to 6.6.y...)
 
-                                     process_scheduled_works()
-pdr_add_lookup()                      qmi_data_ready_work()
- process_scheduled_works()             pdr_locator_new_server()
-                                         pdr->locator_init_complete=true;
-   pdr_locator_work()
-    mutex_lock(&pdr->list_lock);
+thanks,
 
-     pdr_locate_service()                  mutex_lock(&pdr->list_lock);
-
-      pdr_get_domain_list()
-       pr_err("PDR: %s get domain list
-               txn wait failed: %d\n",
-               req->service_name,
-               ret);
-
-Fix it by removing the unnecessary list iteration as the list iteration
-is already being done inside locator work, so avoid it here and just
-call schedule_work() here.
-
-Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-CC: stable@vger.kernel.org
-Signed-off-by: Saranya R <quic_sarar@quicinc.com>
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
----
-Changes in v2:
- - Added Fixes tag,
-
- drivers/soc/qcom/pdr_interface.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
-index 328b6153b2be..71be378d2e43 100644
---- a/drivers/soc/qcom/pdr_interface.c
-+++ b/drivers/soc/qcom/pdr_interface.c
-@@ -75,7 +75,6 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
- {
- 	struct pdr_handle *pdr = container_of(qmi, struct pdr_handle,
- 					      locator_hdl);
--	struct pdr_service *pds;
- 
- 	mutex_lock(&pdr->lock);
- 	/* Create a local client port for QMI communication */
-@@ -87,12 +86,7 @@ static int pdr_locator_new_server(struct qmi_handle *qmi,
- 	mutex_unlock(&pdr->lock);
- 
- 	/* Service pending lookup requests */
--	mutex_lock(&pdr->list_lock);
--	list_for_each_entry(pds, &pdr->lookups, node) {
--		if (pds->need_locator_lookup)
--			schedule_work(&pdr->locator_work);
--	}
--	mutex_unlock(&pdr->list_lock);
-+	schedule_work(&pdr->locator_work);
- 
- 	return 0;
- }
--- 
-2.34.1
-
+greg k-h
 
