@@ -1,81 +1,114 @@
-Return-Path: <stable+bounces-111085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290AAA21921
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:36:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACB9A21940
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ADCD16390A
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:36:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F461885E1A
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2C619C543;
-	Wed, 29 Jan 2025 08:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EACC1990DE;
+	Wed, 29 Jan 2025 08:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0Szo1OP"
+	dkim=pass (2048-bit key) header.d=kuehnke.de header.i=@kuehnke.de header.b="DYeBS6YW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [194.59.206.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01448183CA6;
-	Wed, 29 Jan 2025 08:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212CB2D627
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 08:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.59.206.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738139805; cv=none; b=sbM9fIiWb8fMsoN2FIFwiqVTK6mAekuu4HwY7WVW9WJXwzqmOZpbp8XTad5adCQxphLaXpBL31YCswAGIou5IIEK0K4RHWeqLgROcaNCehEUVLzAN1fyXgXd1GQjbcGC9c0A2ss5WFrhpnWgw8sSlOxmOVa5ccjpzNZCQRWeXLk=
+	t=1738140437; cv=none; b=eqJc/IYtGYdD9ZTt0NVgLWODUwX9E1R38L9HaHGZR+g+cHW1Ymgxoh52t+0cQ7GdIrKiyKm5q04qBKs0q5X+DAI2sRmKWMeuQjj1s5JVXmn4M1zAffoNBaJCCSXYIK9oVGyldB/3+YAe9z30Uv5Lv3vIu493tH0i23FKH8ocfnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738139805; c=relaxed/simple;
-	bh=VW2r6/JfcXBwlJAM+bj3qoZydV8ADfVuANDZWaGlq1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OomyTjFjWqALN+9A+nJC0N61zhZpTa9bYq70rK1qZ+iYW0/WgMhNIUR4RRa73JkhTbG+I0zE8T2xIb+7ZhxraJRJ+btscK8IDZVxrgrXVnOyFVpt3nfbKwkDtJ1aCL0XNgRdbvhu6GlW3K6wiYpXDdv6k85YmLMBnptxikXsDlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0Szo1OP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FABC4CED3;
-	Wed, 29 Jan 2025 08:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738139804;
-	bh=VW2r6/JfcXBwlJAM+bj3qoZydV8ADfVuANDZWaGlq1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L0Szo1OP12RiVurJQJGyYYgqz6jPTKmhBt+YSI0rGbppuJQsW0C73y5fq1TtdVjv/
-	 2/Jiy69mXaiswLMODjxzA/Ztcwsldv26K2UY920wT3S6CPdVh7lu21ptcTlJrqdeqt
-	 b1rezmUmtUpPfyx6LBojtI0hxPdT+u8aG50sNHXU=
-Date: Wed, 29 Jan 2025 09:35:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
-Cc: Konrad Wilk <konrad.wilk@oracle.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	"jgross@suse.com" <jgross@suse.com>,
-	"sstabellini@kernel.org" <sstabellini@kernel.org>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	stable@vger.kernel.org
-Subject: Re: v5.4.289 failed to boot with error megasas_build_io_fusion 3219
- sge_count (-12) is out of range
-Message-ID: <2025012919-series-chaps-856e@gregkh>
-References: <7dc143fa-4a48-440b-b624-ac57a361ac74@oracle.com>
- <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
+	s=arc-20240116; t=1738140437; c=relaxed/simple;
+	bh=McXkt0XZfO+9ZVkOKbvQWHZsIWwIBER6wZM++fOr/fI=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=huC4SuSTJ9lGb9T/6OQ7SMerQbkCZXNWBTDtAM9bP6ziG/Yk0fvxRbVDWmwz4++LVT1Q21t3mH8QjUPbbjxUxEfBZ1hF1wltb1ULZHQ5ky1BetZdKf5WV1HcOlQKcw1H8C4UWerBnNeiN8dD0TMkgJrb4/c+y5H5uHK08UltI4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kuehnke.de; spf=pass smtp.mailfrom=kuehnke.de; dkim=pass (2048-bit key) header.d=kuehnke.de header.i=@kuehnke.de header.b=DYeBS6YW; arc=none smtp.client-ip=194.59.206.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kuehnke.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kuehnke.de
+Received: from relay02-mors.netcup.net (localhost [127.0.0.1])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4YjbF2106Dz496r;
+	Wed, 29 Jan 2025 09:39:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kuehnke.de; s=key2;
+	t=1738139990; bh=McXkt0XZfO+9ZVkOKbvQWHZsIWwIBER6wZM++fOr/fI=;
+	h=Date:To:From:Subject:Cc:From;
+	b=DYeBS6YWIxz9J1jiBfd1SfGfGK4es+0tFrjZWNZALBlSYp5wmrplOPohF+Ww8eZvu
+	 T/pc8nsuVhFUhTsrwJL/2MnFOf64ybVhWKuzfAM76a/qeJE/I2PSp3SBpGxOsBy6m0
+	 ETRwOMTHclxAmXI1FZHJhHYvhXBBcNJZdlhBjyp3VJ0l9M4VtMfyh4ZoJ1O39OemPf
+	 MVWV7XjUFqHtZrHXl3n0fbnfQuDzVWRbmD9CnfPyrtABOTKTECni/Zr4NmgeTI18XB
+	 9Qh9Yo75Mnipz+aOKpiGOLb1iGOlz7GPI6lDCJ+wV+kGIT78pKD7vdX1m2A0d1gz1E
+	 3XenAdaMIfwFg==
+Received: from policy01-mors.netcup.net (unknown [46.38.225.35])
+	by relay02-mors.netcup.net (Postfix) with ESMTPS id 4YjbF20cYRz7x8t;
+	Wed, 29 Jan 2025 09:39:50 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at policy01-mors.netcup.net
+X-Spam-Flag: NO
+X-Spam-Score: -2.901
+X-Spam-Level: 
+Received: from mx2f74.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy01-mors.netcup.net (Postfix) with ESMTPS id 4YjbF14YM9z8tXc;
+	Wed, 29 Jan 2025 09:39:49 +0100 (CET)
+Received: from [192.168.3.2] (p4feab3aa.dip0.t-ipconnect.de [79.234.179.170])
+	by mx2f74.netcup.net (Postfix) with ESMTPSA id 27B15211EA;
+	Wed, 29 Jan 2025 09:39:45 +0100 (CET)
+Authentication-Results: mx2f74;
+        spf=pass (sender IP is 79.234.179.170) smtp.mailfrom=christian@kuehnke.de smtp.helo=[192.168.3.2]
+Received-SPF: pass (mx2f74: connection is authenticated)
+Message-ID: <64f08e31-dff8-4e86-ac5a-95ddc756031e@kuehnke.de>
+Date: Wed, 29 Jan 2025 09:39:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
+User-Agent: Mozilla Thunderbird
+To: stable@vger.kernel.org
+From: =?UTF-8?Q?Christian_K=C3=BChnke?= <christian@kuehnke.de>
+Subject: Request inclusion of 18676c6aab0863618eb35443e7b8615eea3535a9 into
+ stable 6.6
+Cc: dlemoal@kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <173813998540.28239.13077967773752668599@mx2f74.netcup.net>
+X-Rspamd-Queue-Id: 27B15211EA
+X-Rspamd-Server: rspamd-worker-8404
+X-NC-CID: BP6y/YNYqtDECJCTpG3U8bjGLkLzQ/y9bwylpFLfIZ1cp2Ji
 
-On Wed, Jan 29, 2025 at 02:03:51PM +0530, Harshvardhan Jha wrote:
-> Hi All,
-> 
-> +stable
-> 
-> There seems to be some formatting issues in my log output. I have
-> attached it as a file.
+Hi all,
 
-Confused, what are you wanting us to do here in the stable tree?
+I have been sent here from the linux-ide mailing list. Over there, I 
+have reported an issue with the 6.6 stable series of the kernel, 
+starting with 6.6.51. The root cause is as follows:
 
-thanks,
+On 12.09.2024, commit 872f86e1757bbb0a334ee739b824e47c448f5ebc ("ata: 
+libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf") was 
+applied to 6.6, adding checks of ATA_QCFLAG_RTF_FILLED to libata_scsi. 
+The patch seen in baseline commit 
+18676c6aab0863618eb35443e7b8615eea3535a9 ("ata: libata-core: Set 
+ATA_QCFLAG_RTF_FILLED in fill_result_tf()") should have gone together 
+with this.
 
-greg k-h
+Without it, I receive errors retrieving SMART data from SATA disks via a 
+C602 SAS controller, apparently because in this situation 
+ATA_QCFLAG_RTF_FILLED is not set.
+
+I applied 18676c6aab0863618eb35443e7b8615eea3535a9 from baseline to 
+6.6.74 and the problem went away.
+
+If you need any further information, do not hesitate to contact me 
+(linux user since 0.99.x, but only debugging it once every few years or 
+so...).
+
+Regards
+Christian
+
+
 
