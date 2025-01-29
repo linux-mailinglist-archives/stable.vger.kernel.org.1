@@ -1,95 +1,105 @@
-Return-Path: <stable+bounces-111111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6180CA21B39
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:49:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1684FA21B81
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C471C1651AE
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4EC3A22E1
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29051B042F;
-	Wed, 29 Jan 2025 10:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3303C19CD1E;
+	Wed, 29 Jan 2025 11:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TcJs/YsN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="naETcXE/"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6B8192D63;
-	Wed, 29 Jan 2025 10:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4EC1A83E6;
+	Wed, 29 Jan 2025 11:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738147745; cv=none; b=ny4PWyTodQHZFCBTbIVhlaTOxPelml7t77KT2AcIE6xM1cZ8q24Byl81NNSsL9B77aH4MDWxT+YhqK1XoCqygGL3K16j3fsx89m3xATN6SNnVnyHvqpLj4bkaqLvAWXq4XZsjpDlIJVt5ECFQzf6Qg2L0hM2JzifyTMX0x+RP/U=
+	t=1738148461; cv=none; b=fm3Vwh05afv96HgicUcZPbe08jUy58CaG1ROnp+ncBgpbMl0GGktK6w5pZUmOoHXMsbs6MJP6vxgMcL+ZquRLtBW5zXbRnoRyMPO2NtLmenDKyizO83udsshCiu+P+/LDpBZVhc5Gmd1LINW0kMnso66hjZJGAmsu2kgyAMvsSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738147745; c=relaxed/simple;
-	bh=PZPDbyCkjDZOGSTjDsPutxm18cRY4El2Uxthk2pAnxw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OZx0S53GfaCdnmqPZObNtcvZhkstU5vZfFjhO1yGEIxXnLJVGtEehh2d606Bi8WBFVQxFdA8yq/lYelxmHTZbJGMiMnrrf994rK7x8Gho3dynw3L9VHqn8JEqPgx5JJE4PW5/wR6WlD310zm2WooTbIyNRCN/IHCFp+8BC4/f9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TcJs/YsN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=PZPDbyCkjDZOGSTjDsPutxm18cRY4El2Uxthk2pAnxw=;
-	t=1738147744; x=1739357344; b=TcJs/YsNOLEVjQaioQLUSiHRqn/AEOgahIiujfwteu6pPrj
-	48PubBhUZXv+iYOjD0ooTnXa86k8AM3643Iky7NG6rPmzFnXnQejhvUotNocaq4jHOMmKkAx3Htm3
-	/a5WZIQWNrBn+HKHS4KwQzMFW81KaT8Dwe8TRn0cr81UnluBGa5zmoVrshH8Q3hqLp0zST6E/9PDU
-	HHJz5R7c5YhOOdo56gPXANiNA+52Tqintbhvesvuuiko3ae7adPspeY9QaeYk0R4SSOvatGW2T+oI
-	kOS1RFJ9Pzlf9yO6GHsKTTmxydE5gab+39BAV2rXQicyE4BdXlkd6649XTVIQImA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1td5cu-0000000DwWB-3ibq;
-	Wed, 29 Jan 2025 11:48:57 +0100
-Message-ID: <1bc323264d3118434fa748efa59ed4da9dba6157.camel@sipsolutions.net>
-Subject: Re: [PATCH 6.1] wifi: iwlwifi: assume known PNVM power table size
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Dmitry Antipov <dmantipov@yandex.ru>, stable@vger.kernel.org, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-Date: Wed, 29 Jan 2025 11:48:56 +0100
-In-Reply-To: <20250129103120.1985802-1-dmantipov@yandex.ru>
-References: <20250129103120.1985802-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1738148461; c=relaxed/simple;
+	bh=NLY9YZjD1ag07UaqOsQMc+/23yy2LzLeb1dAft7nyYE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=skwXw9xKqwAPkd1Gz4VTcszqHQDxiEjGTWRy24zs0DrRV5r1SES0ko7S6xFj3N2SpsTUD2qPQ/MeowFVsJo73kla52zR9v/I5NDjYFT/QDNK7bqecD+3aMQhz0SjwtpCKbQzTsgU3NvehRxtiDKvnEjV04lGIEhh5e/sZgZs5BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=naETcXE/; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738148460; x=1769684460;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NLY9YZjD1ag07UaqOsQMc+/23yy2LzLeb1dAft7nyYE=;
+  b=naETcXE/JZ/9a26TDI/QeXR7hVPtwMU+3QeUnS2MKF0vKJcv2nziCebD
+   vfBa+vJy2+nSl1T5LSKIQrLBYcYz/ot//s0wXkd43HY7kIA7p3+QiVwLn
+   VilmPNpUp3ubgirDj5HSpx7ndj72HZVmhhD+PvFKbHocD57Y39dJqHduR
+   KuWH6BQbrr3bJqZ94Cl6cBFG2SRJavamc1J8d0SndukaRcQ7NMCI2A59w
+   /o5mmptw67S3+2ZCPsMU4UhZcqB3ey5ioQy2GHVzXR0A+eIoN5khy1Gvq
+   /0Wl3bedAzCMq4a3VX36qLvdiNfsqhABhR6P62XQ0sjJ5f93TzQ/kLILf
+   w==;
+X-CSE-ConnectionGUID: s5Z2iChVRGeAWDtPCnoO/Q==
+X-CSE-MsgGUID: fQo9F98RQMmBS6jn7RiPqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="38687012"
+X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
+   d="scan'208";a="38687012"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 03:00:59 -0800
+X-CSE-ConnectionGUID: dG+oDfcPRsK/YpJ5VLsn3A==
+X-CSE-MsgGUID: BpLnQVSHQDaN1B/CTQMVJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114132173"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by orviesa005.jf.intel.com with ESMTP; 29 Jan 2025 03:00:57 -0800
+Message-ID: <ee229b33-2082-4e03-8f2b-df5b4a86a77d@linux.intel.com>
+Date: Wed, 29 Jan 2025 13:01:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] usb: xhci port capability storage change broke
+ fastboot android bootloader utility
+To: Forest <forestix@nom.one>
+Cc: linux-usb@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org
+References: <hk8umj9lv4l4qguftdq1luqtdrpa1gks5l@sonic.net>
+ <2c35ff52-78aa-4fa1-a61c-f53d1af4284d@linux.intel.com>
+ <0l5mnj5hcmh2ev7818b3m0m7pokk73jfur@sonic.net>
+ <3bd0e058-1aeb-4fc9-8b76-f0475eebbfe4@linux.intel.com>
+ <4kb3ojp4t59rm79ui8kj3t8irsp6shlinq@sonic.net>
+ <8a5bef2e-7cf9-4f5c-8281-c8043a090feb@linux.intel.com>
+ <2tq7pj5g33d76j2uddbv5k8iiuakchso16@sonic.net>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <2tq7pj5g33d76j2uddbv5k8iiuakchso16@sonic.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2025-01-29 at 13:31 +0300, Dmitry Antipov wrote:
-> In 'iwl_pnvm_load()', assume that the power table size is always
-> equal to IWL_HARDCODED_REDUCE_POWER_SIZE. Compile tested only.
->=20
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> I would gently ask Johannes to review this before taking any other
-> actions. This is intended for stable linux-6.1.y only in attempt to
-> avoid possible use of an uninitialized 'len' without backporting
+On 24.1.2025 21.44, Forest wrote:
+> On Mon, 13 Jan 2025 17:05:09 +0200, Mathias Nyman wrote:
+> 
+>> I'd recommend a patch that permanently adds USB_QUIRK_NO_LPM for this device.
+>> Let me know if you want to submit it yourself, otherwise I can do it.
+> 
+> It looks like I can't contribute a patch after all, due to an issue with my
+> Signed-off-by signature.
+> 
+> So, can you take care of the quirk patch for this device?
+> 
+> Thank you.
 
-I don't see that there's uninitialized use of 'len'. Maybe some static
-checkers aren't seeing through this, but the code is fine:
+Sure, I'll send it after rc1 is out next week
 
-If iwl_pnvm_get_from_fs() is successful, then 'len' is initialized. If
-it fails, we goto skip_parse.
-
-There, if trans->reduce_power_loaded is false, 'len' again is either
-initialized or we go to skip_reduce_power and never use 'len'.
-
-If trans->reduce_power_loaded is true, then we get to
-iwl_trans_pcie_ctx_info_gen3_set_reduce_power() which doesn't use 'len'
-in this case.
-
-I'd rather not fix this non-problem in a very confusing way.
-
-johannes
+Thanks
+Mathias
 
