@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-111081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F12A218AA
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:09:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CA6A218AD
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 787B33A10EB
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:09:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC8527A134F
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D00A19CC22;
-	Wed, 29 Jan 2025 08:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BFC194096;
+	Wed, 29 Jan 2025 08:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="WO0Qnr8c"
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="Y/rqoEob"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.crpt.ru (mail1.crpt.ru [91.236.205.1])
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCD019D07C
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 08:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66012F29
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 08:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738138172; cv=none; b=QuFtooxT74UPFoyPURLZRtJEyGF4O6aJX6jLXG3nrdIih984Ag0Gm8j8htQ4YWsnNllDLUOBL4/LxzYCQZGTkFZRR43tE6X+8i8nOTNCq7d9drGVqIb4AYqzruAC+z+n7uxGFDjmppdatoc+BEdU4Mg42vHApNwNgcS5HFZB6Yg=
+	t=1738138280; cv=none; b=u7wNwYP5fs8Uc6XrxPUpHrKZMPeLZO3J57udrzMvTGRLiDoUedzNsN2yg0SlFieXgA3zVe/YVkOt/VrDPM1iQapIyaiGYtLPXA2tMRy87DCbzEzObX0mVOr308gkPi8y3L4LtQjJwuorYJPKa5CtVbeEgzvzpehbb6vqWzlnlis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738138172; c=relaxed/simple;
-	bh=F8UzenNvcxrU6PrgPRkJBbE3wiZY/7H8B8YovLYytaA=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=b6RqPZ9s+bCKesQHLB+zUsUaTd0P2jCsgmNNlz05cFGF6VxzsQqatTAdB5qPc+WZuO5RLTNAmx2OJToVo4w58oc7A8mOP73rwInw3kpxMqRO6wUUJWDX1MpOYzvxd7mGOVb80xDMNE40/Rim4IbGdkcMU1XAGUHeRzJCPfyNEu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=WO0Qnr8c; arc=none smtp.client-ip=91.236.205.1
+	s=arc-20240116; t=1738138280; c=relaxed/simple;
+	bh=h2r953js5KMe/res5ngDhGH2T4wfjVJi31+pTjx2Bs8=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=b6q556i10qvAFmw7/KYCDkEmzdhCPaHERkZwYkN66kJjJXCjbbQSJCWqNF0LIMznsfRJNmrppwvUqv1+5T9FUx8gMMV3HqI8UXyI9Q0mQdRrJbu0VPyD+EpfVepg1iFUcp8EdhxNcukGmrr63vPD0yzeOnCpeosnqwHV5yMlGDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=Y/rqoEob; arc=none smtp.client-ip=91.236.205.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
 Received: from mail.crpt.ru ([192.168.60.3])
-	by mail.crpt.ru  with ESMTP id 50T89QlJ001438-50T89QlL001438
+	by mail.crpt.ru  with ESMTP id 50T8BDe1004712-50T8BDe3004712
 	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Wed, 29 Jan 2025 11:09:26 +0300
+	Wed, 29 Jan 2025 11:11:13 +0300
 Received: from EX2.crpt.local (192.168.60.4) by ex1.crpt.local (192.168.60.3)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 29 Jan
- 2025 11:09:26 +0300
+ 2025 11:11:12 +0300
 Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Wed, 29 Jan 2025 11:09:26 +0300
+ ([192.168.60.4]) with mapi id 15.01.2507.044; Wed, 29 Jan 2025 11:11:12 +0300
 From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
 To: "lvc-patches@linuxtesting.org" <lvc-patches@linuxtesting.org>
 CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject:
-Thread-Index: AQHbciUc8udurk4dw0KCuAc3ujXXRA==
-Date: Wed, 29 Jan 2025 08:09:26 +0000
-Message-ID: <20250129080918.30210-1-a.vatoropin@crpt.ru>
+Subject: [PATCH] hwmon: Use 64-bit arithmetic instead of 32-bit
+Thread-Topic: [PATCH] hwmon: Use 64-bit arithmetic instead of 32-bit
+Thread-Index: AQHbciVcdn0QuV8dnkKbJfGDJgSg+A==
+Date: Wed, 29 Jan 2025 08:11:12 +0000
+Message-ID: <20250129081107.30617-1-a.vatoropin@crpt.ru>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -70,16 +71,14 @@ X-FEAS-Client-IP: 192.168.60.3
 X-FE-Policy-ID: 2:4:0:SYSTEM
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
  h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=SmcCa4w34qV7YF0am9bGRHiFe7EZIOnXDy605dggeTY=;
- b=WO0Qnr8cpJ9m/eOmsLITDFuPr+fiQjwgIP3kf8ttFiaOLs7iLM8kjWYilb77s0zmocqShlzFhrRF
-	rX/mVz0rBGm1GO1JpdqPOeIUs7u07ESG3/KELADNwvf32dwjH94DZ2wYUhrRC+YEFlOXzG1QYVk/
-	SR8lCwx0gKo+85IeGAHWg+CAIi8ceMse5LC4VMqxq1E4HA5B/4SluPAeficF1ZS10H2dlWcsITP2
-	BpusdJj5BbwMKmTPGqnGvYnKeKMRcmoRy3vO5h/efh66/eFe2r+DQioMM/VCrp2awJFUj1nes46Q
-	FvmvaIdJRAA2Y0DAw/Wec1RJ2tyG5M03T+KpUw==
+ bh=nH+fCocC71NvxcKmnj5F8xJxc2NZj7A/PmZ+0JCxCps=;
+ b=Y/rqoEob8jyxCghVUGvDBZZ6PVrZ2sU2wpyDS/4da22/bcX684iv2jDVSO8knnztwRc2PBw2w/D7
+	dAwhEYqY0eJTG+xmRLhv3+A8t30j7oYyUIhAwwEySwi0wB2sInApSqlAvHoslgTsPx2qGCFG0ovs
+	S71KU4rUSEcnenEua91VgjFeJbo67TB53NIbhGC5i3cZeYcIIt3CxSprRfPDsqFBAEJlv+OrS60U
+	k0J1VvzGOF+rdoYuHouJdLWHU0zbDdDidMfoI5ni7ks0YKlrZ8r77kJahPZSL1sCEmP/pKMcR/7S
+	PxHtAEVTHZM6xKtoDQsF5GZssg0mUXR7w1nKeg==
 
 From: Andrey Vatoropin <a.vatoropin@crpt.ru>
-
-Subject: [PATCH] hwmon: Use 64-bit arithmetic instead of 32-bit
 
 Add suffix ULL to constant 500 in order to give the compiler complete
 information about the proper arithmetic to use. Notice that this
