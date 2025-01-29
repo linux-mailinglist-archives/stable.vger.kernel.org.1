@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-111169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404BFA21EA9
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:10:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B96A21EB3
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C32A83A7315
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:09:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03F46188AC11
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983BB1EE7A8;
-	Wed, 29 Jan 2025 14:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77441DF741;
+	Wed, 29 Jan 2025 14:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGyM5kXf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dCg1Ybt8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E151EE039;
-	Wed, 29 Jan 2025 14:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA71C5F25;
+	Wed, 29 Jan 2025 14:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738159423; cv=none; b=lZ9AMeK3C6F/NUAY/9GlhOH/Deb4r/6KtvjV0NKMEjJrs6l4GJevfQHkx29yzJNsWbZAzGMjH9/GO6xs3nUlFG9axuI7QkZTgA4Ux0/s5RpGe5y+EfS26TFmbQqTmUsls+4n6n0JF6PoAFlAEl1OnDJeaVzWLwlhUxwkTYaj0Ls=
+	t=1738159431; cv=none; b=AwliW+4Yt/WFyJLVW70c3TwkaBz1fPEESRf86GWINY8HqCcTuSPGfdawX5++hgkXauteDARKJifjZ4o7mUdi/0Goh2D5Okhgn6hRxFX5Sjsz9ySs9+DIV7zM0bpr9PK/IdDFLMzY4JW9tCOfUGrhwmaxTzEadD7qT4s8yScRHMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738159423; c=relaxed/simple;
-	bh=19AYU4SSbPjPQC7+XNZ1MQH3GXYQCjOF4g6ErrSsPeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GRKwSm/qS4CUMOG/7eKxu0/wtogurXDpmpFnQm1bykHHlXWneI9h1q8sK06n0ANUuWxo+dqSH4yAmpMsIxmSecpSJ+guDzT7XMVoNAWfyh6R8s0+nH6oDaBcGdsRbIy2gjiCWYjL1GXuFeAH9cwjZXSrYNlUW5s9i5bGbq8aeVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGyM5kXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3050EC4CED3;
-	Wed, 29 Jan 2025 14:03:41 +0000 (UTC)
+	s=arc-20240116; t=1738159431; c=relaxed/simple;
+	bh=h4vxqUB4hOERtsdwP43pEGBi99XkQnC4xaaefbGsTHI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W6wrkbsDgeMjSI7dr10HRJ9ZiC0PwFk7VC+fUDFCfeV/e2A2ZJ7DGe7xPYDJxte+s0gl88IPBiWxY2H1vsvjLAjjdC2S8F3QJxwvCK6cq9nykezfSjOIeuwBrNwlS9ZfvGgxKmBzzkqUwYjkyGbCE44+/2alwRwW0laEeeicGZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dCg1Ybt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E41C4CED1;
+	Wed, 29 Jan 2025 14:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738159422;
-	bh=19AYU4SSbPjPQC7+XNZ1MQH3GXYQCjOF4g6ErrSsPeE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGyM5kXfeL+73qWM+xrOTC73um30M8YDAZdIE2cgBlB3/P009X8X38LTpHPUYWOxx
-	 XrfCgFVUWezoQ/SjDbR3CqBCUlIz6qVCq9YSUucx4/ZH/F5WSUXgyT1kS6UAPpmQYW
-	 5WVG+HdNpWAkOFcwIRjIbj/ftzBQ5o1GLbi6ub/8mJhQJiWLDLEse+QAAej8Pe3x6t
-	 NoTMDhdZVf2um+hkrj6mJlnc4wV1wiNUiGQcY7mecdijBonJPfwrxCFuRdcsSDsxFC
-	 fMWiQE6kwXxOI4QXBBl+bf5JsvX0QGVCvaqKl5r/MfFtYhNrB1lciNUzcbMZu3S22e
-	 FkBi4CXxrksBQ==
+	s=k20201202; t=1738159430;
+	bh=h4vxqUB4hOERtsdwP43pEGBi99XkQnC4xaaefbGsTHI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dCg1Ybt8jiaTm13HGSLvgVO21x6z7pQypJ8H+VZetCtRu0p4HlFId4RKiGBHsWdTB
+	 Gxt8PYtMBdWSlM1H9C1qftqD8DH+I43G9HfJUVFnLPwZxmf/D0V0rynFSmQM9mQ4Bj
+	 1p4aLlNsnDE5T5XsyxAVHw7NHNahKgr7I9JDXXr37B5gg1yYh1rCQ68WgardRCaM6R
+	 DqpKo7uA3Bs84i02kuw8ffc2o3U1KEjVuXXG6ZKxUqZokMsKReQ6bA8AqjbmYNpBvD
+	 bAJYiShkcezeMuL+RGxxYSCjVOZVizzV9JaAch/cNMKwR6jLrPCdgmiHrLnon8trP0
+	 lbGNMv9Jn39zg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zichen Xie <zichenxie0106@gmail.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+Cc: Ramesh Thomas <ramesh.thomas@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/2] NFS: Fix potential buffer overflowin nfs_sysfs_link_rpc_client()
-Date: Wed, 29 Jan 2025 07:59:55 -0500
-Message-Id: <20250129125958.1273172-2-sashal@kernel.org>
+	Yunxiang.Li@amd.com,
+	gbayer@linux.ibm.com,
+	jgg@ziepe.ca,
+	ankita@nvidia.com,
+	bpsegal@us.ibm.com,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1] vfio/pci: Enable iowrite64 and ioread64 for vfio pci
+Date: Wed, 29 Jan 2025 08:00:05 -0500
+Message-Id: <20250129130008.1273212-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250129125958.1273172-1-sashal@kernel.org>
-References: <20250129125958.1273172-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,43 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.74
+X-stable-base: Linux 6.1.127
 Content-Transfer-Encoding: 8bit
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Ramesh Thomas <ramesh.thomas@intel.com>
 
-[ Upstream commit 49fd4e34751e90e6df009b70cd0659dc839e7ca8 ]
+[ Upstream commit 2b938e3db335e3670475e31a722c2bee34748c5a ]
 
-name is char[64] where the size of clnt->cl_program->name remains
-unknown. Invoking strcat() directly will also lead to potential buffer
-overflow. Change them to strscpy() and strncat() to fix potential
-issues.
+Definitions of ioread64 and iowrite64 macros in asm/io.h called by vfio
+pci implementations are enclosed inside check for CONFIG_GENERIC_IOMAP.
+They don't get defined if CONFIG_GENERIC_IOMAP is defined. Include
+linux/io-64-nonatomic-lo-hi.h to define iowrite64 and ioread64 macros
+when they are not defined. io-64-nonatomic-lo-hi.h maps the macros to
+generic implementation in lib/iomap.c. The generic implementation does
+64 bit rw if readq/writeq is defined for the architecture, otherwise it
+would do 32 bit back to back rw.
 
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Note that there are two versions of the generic implementation that
+differs in the order the 32 bit words are written if 64 bit support is
+not present. This is not the little/big endian ordering, which is
+handled separately. This patch uses the lo followed by hi word ordering
+which is consistent with current back to back implementation in the
+vfio/pci code.
+
+Signed-off-by: Ramesh Thomas <ramesh.thomas@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20241210131938.303500-2-ramesh.thomas@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/sysfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/vfio/pci/vfio_pci_rdwr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index bf378ecd5d9fd..7b59a40d40c06 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -280,9 +280,9 @@ void nfs_sysfs_link_rpc_client(struct nfs_server *server,
- 	char name[RPC_CLIENT_NAME_SIZE];
- 	int ret;
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index e27de61ac9fe7..8191c8fcfb256 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -16,6 +16,7 @@
+ #include <linux/io.h>
+ #include <linux/vfio.h>
+ #include <linux/vgaarb.h>
++#include <linux/io-64-nonatomic-lo-hi.h>
  
--	strcpy(name, clnt->cl_program->name);
--	strcat(name, uniq ? uniq : "");
--	strcat(name, "_client");
-+	strscpy(name, clnt->cl_program->name, sizeof(name));
-+	strncat(name, uniq ? uniq : "", sizeof(name) - strlen(name) - 1);
-+	strncat(name, "_client", sizeof(name) - strlen(name) - 1);
+ #include "vfio_pci_priv.h"
  
- 	ret = sysfs_create_link_nowarn(&server->kobj,
- 						&clnt->cl_sysfs->kobject, name);
 -- 
 2.39.5
 
