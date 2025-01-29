@@ -1,152 +1,197 @@
-Return-Path: <stable+bounces-111177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F752A21F40
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:34:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD7FA21F3E
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 15:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA188188578D
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32C6F188345A
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2721BD9E6;
-	Wed, 29 Jan 2025 14:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98954149C69;
+	Wed, 29 Jan 2025 14:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="gITaoJVu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WU54s9+8";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H7i/Dwdm"
 X-Original-To: stable@vger.kernel.org
-Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [178.154.239.212])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672661AE01B
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 14:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45128FF;
+	Wed, 29 Jan 2025 14:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738161243; cv=none; b=lv7UaTdljij4Vf9F0Hfd/npwPk3jMSsqet1krSxFFlDZ2VZgS6BNgEKkToxB3Ja92AOLAvK7tEE2ncS6iSNSJHg3DZlQYIM7hhFSuKAmlNVxBQqDHdJNSo4llGTuhHVgMPiMsN7+PiDQpq3myZ81nWoK1whQBRMRfpvOmEeYtoc=
+	t=1738161239; cv=none; b=ouynR1P9EslNVQutEfdRdFYRSQ8Wus1KJ+v8SERIy1ElXN4ijQWlzgFPsW+tT0VILGwC9Zbzs1Ks1cGFkKc2VBAUodnM22fi8cy8KGQG5u0oxtGYgm8oc/3I14VkGR7gakw0JHx1PwezgQx7d4xzqMQmjdi0DleY0vITrl8abgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738161243; c=relaxed/simple;
-	bh=OAbSngCjsVRryUWICk1n/syeoh02raPh4r3D1y1qVtE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Blu/bTgOGibBYnuymJHLuMJQWJYANj46XWPSXXgAA4BIFjZiTnG65KhQAEfTXRpYlNA6I7pwcJB+kAoMiC3GXUDKn0UEptANr1rl4vmR04uElHz86lbVyn4h6MTtNjvBBhl6/mY3YyHaUZcotXJ/zJMEqgF90ODfJXK5ZYjbZY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=gITaoJVu; arc=none smtp.client-ip=178.154.239.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-13.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-13.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:86a3:0:640:3a48:0])
-	by forward101d.mail.yandex.net (Yandex) with ESMTPS id BEC9160903;
-	Wed, 29 Jan 2025 17:33:52 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-13.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id pXfKqmBOra60-kqWPLICz;
-	Wed, 29 Jan 2025 17:33:52 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1738161232; bh=V8c9VXVJn9yjtHGrqT6qzQq+hqk1HI2XrjxMPiNIyJA=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=gITaoJVu6A469WGpAGgXo1ufSCctmEy2BIt8MMUiAENeY+i7do+C+lPizVwcECgT4
-	 9vhUHNDL0MLDqZ/J7cJ636uNRniyFxj7lM00lC0MZgBhceFdKALdw/va2WIAvygl30
-	 hH9if2rkH3Gfy2n7kP0HIVPUIWCb0am/mzzv7rU4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-13.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15] wifi: iwlwifi: add a few rate index validity checks
-Date: Wed, 29 Jan 2025 17:33:43 +0300
-Message-ID: <20250129143343.2449440-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1738161239; c=relaxed/simple;
+	bh=L74M3KHDpSyNvgRcggxvwCNCHyblalcP/GD0WNrpB4c=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=u2EgFd6fAABW9Ha8+lTwQj/hWIhTIIr3qaPN7Rr6su9Y5kM+D/qbSpUlTdKBkuxYsjC8udQLMpx6KGgRyUy4SEyls85l/OsdciQsdE4a02NzsXZ3Yfg0PjZ1Ss8CjK/L6+YL9YDXGrKpkCjxT7xo7E7Vs5FMdQCP2VixPvXXzy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WU54s9+8; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H7i/Dwdm; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 29 Jan 2025 14:33:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738161234;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=qMezJWQbRkxWMxDma2qkK64yeogvHOEOwq2Yrl8QBTg=;
+	b=WU54s9+8xYBFm4+L4ZrSkJwOhOoUg8gh9rNw57YsKPMqETJa7ngcnyoUXBhgET4uaoe4by
+	WJR4Nlf338BiE06peW9HreqtXKw1Qoo5O0P/hsqzuPHaKMmlFoPeE2yhDOOse/r0lYKJrG
+	GFM+alVyRq/suunMpcVT653y1wuCZ/bHm1eq4FykNkEpYfU0BDoZrbqAf5o9GClv8EsCqo
+	Gx3F7AtwOBFY3Xk66cc2/ymAtQ8NHwSvgS+qfcEUhAGkbL3z/BC9c0Peo1NhDOcEotX2O7
+	UBRuVBwOQUIYsyUvdb9NDU1hg8AWsD1QcdPQR5A78PjGVZKwkRWj9k/j/Xy+YA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738161234;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=qMezJWQbRkxWMxDma2qkK64yeogvHOEOwq2Yrl8QBTg=;
+	b=H7i/DwdmGQYV/EkQwR/GZGN2M+mjVej2i/6h/OcckZdfUUjtKpX4bG3E9dcrj/n3EYKtuW
+	qm3Q6KnPry91hQCw==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: locking/urgent] rcuref: Plug slowpath race in rcuref_put()
+Cc: kernel test robot <oliver.sang@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <173816123142.31546.2255602054894403680.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+The following commit has been merged into the locking/urgent branch of tip:
 
-commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
+Commit-ID:     b9a49520679e98700d3d89689cc91c08a1c88c1d
+Gitweb:        https://git.kernel.org/tip/b9a49520679e98700d3d89689cc91c08a1c88c1d
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Sun, 19 Jan 2025 00:55:32 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 29 Jan 2025 15:21:31 +01:00
 
-Validate index before access iwl_rate_mcs to keep rate->index
-inside the valid boundaries. Use MCS_0_INDEX if index is less
-than MCS_0_INDEX and MCS_9_INDEX if index is greater than
-MCS_9_INDEX.
+rcuref: Plug slowpath race in rcuref_put()
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Kernel test robot reported an "imbalanced put" in the rcuref_put() slow
+path, which turned out to be a false positive. Consider the following race:
+
+            ref  = 0 (via rcuref_init(ref, 1))
+ T1                                      T2
+ rcuref_put(ref)
+ -> atomic_add_negative_release(-1, ref)                                         # ref -> 0xffffffff
+ -> rcuref_put_slowpath(ref)
+                                         rcuref_get(ref)
+                                         -> atomic_add_negative_relaxed(1, &ref->refcnt)
+                                           -> return true;                       # ref -> 0
+
+                                         rcuref_put(ref)
+                                         -> atomic_add_negative_release(-1, ref) # ref -> 0xffffffff
+                                         -> rcuref_put_slowpath()
+
+    -> cnt = atomic_read(&ref->refcnt);                                          # cnt -> 0xffffffff / RCUREF_NOREF
+    -> atomic_try_cmpxchg_release(&ref->refcnt, &cnt, RCUREF_DEAD))              # ref -> 0xe0000000 / RCUREF_DEAD
+       -> return true
+                                           -> cnt = atomic_read(&ref->refcnt);   # cnt -> 0xe0000000 / RCUREF_DEAD
+                                           -> if (cnt > RCUREF_RELEASED)         # 0xe0000000 > 0xc0000000
+                                             -> WARN_ONCE(cnt >= RCUREF_RELEASED, "rcuref - imbalanced put()")
+
+The problem is the additional read in the slow path (after it
+decremented to RCUREF_NOREF) which can happen after the counter has been
+marked RCUREF_DEAD.
+
+Prevent this by reusing the return value of the decrement. Now every "final"
+put uses RCUREF_NOREF in the slow path and attempts the final cmpxchg() to
+RCUREF_DEAD.
+
+[ bigeasy: Add changelog ]
+
+Fixes: ee1ee6db07795 ("atomics: Provide rcuref - scalable reference counting")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Debugged-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/oe-lkp/202412311453.9d7636a2-lkp@intel.com
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c |  9 ++++++---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c | 11 +++++++----
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ include/linux/rcuref.h |  9 ++++++---
+ lib/rcuref.c           |  5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-index 548540dd0c0f..e1ab5b01f1c4 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -2,7 +2,7 @@
- /******************************************************************************
-  *
-  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
-- * Copyright (C) 2019 - 2020 Intel Corporation
-+ * Copyright (C) 2019 - 2020, 2022 - 2023 Intel Corporation
-  *
-  * Contact Information:
-  *  Intel Linux Wireless <linuxwifi@intel.com>
-@@ -130,7 +130,7 @@ static int iwl_hwrate_to_plcp_idx(u32 rate_n_flags)
- 				return idx;
- 	}
- 
--	return -1;
-+	return IWL_RATE_INVALID;
+diff --git a/include/linux/rcuref.h b/include/linux/rcuref.h
+index 2c8bfd0..6322d8c 100644
+--- a/include/linux/rcuref.h
++++ b/include/linux/rcuref.h
+@@ -71,27 +71,30 @@ static inline __must_check bool rcuref_get(rcuref_t *ref)
+ 	return rcuref_get_slowpath(ref);
  }
  
- static void rs_rate_scale_perform(struct iwl_priv *priv,
-@@ -3151,7 +3151,10 @@ static ssize_t rs_sta_dbgfs_scale_table_read(struct file *file,
- 	for (i = 0; i < LINK_QUAL_MAX_RETRY_NUM; i++) {
- 		index = iwl_hwrate_to_plcp_idx(
- 			le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
--		if (is_legacy(tbl->lq_type)) {
-+		if (index == IWL_RATE_INVALID) {
-+			desc += sprintf(buff + desc, " rate[%d] 0x%X invalid rate\n",
-+				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
-+		} else if (is_legacy(tbl->lq_type)) {
- 			desc += sprintf(buff+desc, " rate[%d] 0x%X %smbps\n",
- 				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags),
- 				iwl_rate_mcs[index].mbps);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index b97708cb869d..2078768b6824 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /******************************************************************************
+-extern __must_check bool rcuref_put_slowpath(rcuref_t *ref);
++extern __must_check bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt);
+ 
+ /*
+  * Internal helper. Do not invoke directly.
+  */
+ static __always_inline __must_check bool __rcuref_put(rcuref_t *ref)
+ {
++	int cnt;
++
+ 	RCU_LOCKDEP_WARN(!rcu_read_lock_held() && preemptible(),
+ 			 "suspicious rcuref_put_rcusafe() usage");
+ 	/*
+ 	 * Unconditionally decrease the reference count. The saturation and
+ 	 * dead zones provide enough tolerance for this.
+ 	 */
+-	if (likely(!atomic_add_negative_release(-1, &ref->refcnt)))
++	cnt = atomic_sub_return_release(1, &ref->refcnt);
++	if (likely(cnt >= 0))
+ 		return false;
+ 
+ 	/*
+ 	 * Handle the last reference drop and cases inside the saturation
+ 	 * and dead zones.
+ 	 */
+-	return rcuref_put_slowpath(ref);
++	return rcuref_put_slowpath(ref, cnt);
+ }
+ 
+ /**
+diff --git a/lib/rcuref.c b/lib/rcuref.c
+index 97f300e..5bd726b 100644
+--- a/lib/rcuref.c
++++ b/lib/rcuref.c
+@@ -220,6 +220,7 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+ /**
+  * rcuref_put_slowpath - Slowpath of __rcuref_put()
+  * @ref:	Pointer to the reference count
++ * @cnt:	The resulting value of the fastpath decrement
   *
-- * Copyright(c) 2005 - 2014, 2018 - 2021 Intel Corporation. All rights reserved.
-+ * Copyright(c) 2005 - 2014, 2018 - 2023 Intel Corporation. All rights reserved.
-  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+  * Invoked when the reference count is outside of the valid zone.
   *
-@@ -1119,10 +1119,13 @@ static void rs_get_lower_rate_down_column(struct iwl_lq_sta *lq_sta,
- 
- 		rate->bw = RATE_MCS_CHAN_WIDTH_20;
- 
--		WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX ||
--			     rate->index > IWL_RATE_MCS_9_INDEX);
-+		if (WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_0_INDEX];
-+		else if (WARN_ON_ONCE(rate->index > IWL_RATE_MCS_9_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_9_INDEX];
-+		else
-+			rate->index = rs_ht_to_legacy[rate->index];
- 
--		rate->index = rs_ht_to_legacy[rate->index];
- 		rate->ldpc = false;
- 	} else {
- 		/* Downgrade to SISO with same MCS if in MIMO  */
--- 
-2.48.1
-
+@@ -233,10 +234,8 @@ EXPORT_SYMBOL_GPL(rcuref_get_slowpath);
+  *	with a concurrent get()/put() pair. Caller is not allowed to
+  *	deconstruct the protected object.
+  */
+-bool rcuref_put_slowpath(rcuref_t *ref)
++bool rcuref_put_slowpath(rcuref_t *ref, unsigned int cnt)
+ {
+-	unsigned int cnt = atomic_read(&ref->refcnt);
+-
+ 	/* Did this drop the last reference? */
+ 	if (likely(cnt == RCUREF_NOREF)) {
+ 		/*
 
