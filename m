@@ -1,88 +1,70 @@
-Return-Path: <stable+bounces-111095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD95A219AE
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:08:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47984A219BA
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C50161AE4
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:08:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70E8B3A500D
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 09:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D40194147;
-	Wed, 29 Jan 2025 09:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60121990AB;
+	Wed, 29 Jan 2025 09:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fC+wfd/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unK5P0yL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A4F179BC
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 09:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C2E1DA4E
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 09:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738141693; cv=none; b=nYmceqzZiP5p+/fFz5byCMB2bTjEq5SW917l4QlWS4chuHUcqsC1sfy5UAc3xz12Rslb91TRx5+5nMBPY5KfApsTDKliExDoJmLSH4rHH5aqeZjz65lQMGWQWVQ6fpDRaF/xpOdiTjt+7dEGkIRz0YYwVn8sPBvwTbUqpFkgFcU=
+	t=1738142177; cv=none; b=d+bJU4pIsktRofLXJZ7D+lpFoovE6J0JjIBMROlqYggH6aAgB1va0SbaTYlv6oAQDn/ytRGpIy+zvo50qyiTEszulgmeLW+SBeHCdZbFjPtJQiCSiizYlW9dG/CGOwv3/Ki0huJBDIP0vb+KyZSSDL385BigMt+7756aTOF9wt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738141693; c=relaxed/simple;
-	bh=KUNLI64DkS/2Kry3Zd19jYM7epfDBucYONCA2hHK73c=;
+	s=arc-20240116; t=1738142177; c=relaxed/simple;
+	bh=uV+tYCZu0NPCLP+r9ok3upiwQmD/R5DpIksDXa7WUkY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IjUdoaGRWUw/Cjy+dAoxGxCl6j5i/mDz46jvaaKTzwF6b05kuS5SPWvF+EYeJvFA6nogD7D0v6Bj04HNGuXcjDqSMJRI6okAx+3bJaa/rUs2hEFRkLbiWAyW0nAmQPo9NvRVu+zcp6cXOKzS3N5UGsnleTf+NK5Rv97dCdKMI5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fC+wfd/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48B5C4CED3;
-	Wed, 29 Jan 2025 09:08:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=RaJoxX32GSKdftjSIsA3kAdRRwPXCg63Y7mquRV53v/hzv8Yr0PaAUlbJr7gy6zdqNfsZBLrWY7/IJbaQZvXAeyvQPgktoG8dZ7Q6uICUhYq+YJ7p28pJfoj3KMbKa4ab8xKYNo1RqFsd1lg29j2IsNdyNfAeQmQNAdo7qmpzTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=unK5P0yL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7589C4CED3;
+	Wed, 29 Jan 2025 09:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738141692;
-	bh=KUNLI64DkS/2Kry3Zd19jYM7epfDBucYONCA2hHK73c=;
+	s=korg; t=1738142176;
+	bh=uV+tYCZu0NPCLP+r9ok3upiwQmD/R5DpIksDXa7WUkY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fC+wfd/INI2GaUPs3jKJFsCxWiPkEYSk4nZvnu0VadKvd40Mf4rsjqtEZmzoMBU5G
-	 zYbMuCHYuvrY1pMc2JD0OZjgl9oNGOxOpa/B2cNG1kcYiRyiblG/28XTRgqQSB7lyN
-	 YOgHRAg+61/K3DXCunKv34JvTdFu5sKHdUkVV7S8=
-Date: Wed, 29 Jan 2025 10:06:58 +0100
+	b=unK5P0yLa0BPh1pdmRZhk1GhPTBSvvam3e0CXjWLDDor6uIKcZym+iTklBlORuFnM
+	 5yD13FHjOO4Ub4rjBBlk0aqvOmeeAaFmU7Y4yzlAZYm/9RogwBlSxDlw//p1K7FQ04
+	 PsInbuaZKZxmdGR7kwVbNg9clet1WOt5ntHiz2cE=
+Date: Wed, 29 Jan 2025 10:14:44 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Christian =?iso-8859-1?Q?K=FChnke?= <christian@kuehnke.de>
-Cc: stable@vger.kernel.org, dlemoal@kernel.org
-Subject: Re: Request inclusion of 18676c6aab0863618eb35443e7b8615eea3535a9
- into stable 6.6
-Message-ID: <2025012949-agnostic-padlock-e746@gregkh>
-References: <64f08e31-dff8-4e86-ac5a-95ddc756031e@kuehnke.de>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: stable@vger.kernel.org, bartosz.golaszewski@linaro.org
+Subject: Re: [PATCH 6.1.y v2] gpio: xilinx: Convert gpio_lock to raw spinlock
+Message-ID: <2025012905-oasis-babied-261b@gregkh>
+References: <20250121184148.3378693-1-sean.anderson@linux.dev>
+ <20250121193205.3386351-1-sean.anderson@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <64f08e31-dff8-4e86-ac5a-95ddc756031e@kuehnke.de>
+In-Reply-To: <20250121193205.3386351-1-sean.anderson@linux.dev>
 
-On Wed, Jan 29, 2025 at 09:39:42AM +0100, Christian Kühnke wrote:
-> Hi all,
-> 
-> I have been sent here from the linux-ide mailing list. Over there, I have
-> reported an issue with the 6.6 stable series of the kernel, starting with
-> 6.6.51. The root cause is as follows:
-> 
-> On 12.09.2024, commit 872f86e1757bbb0a334ee739b824e47c448f5ebc ("ata:
-> libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf") was
-> applied to 6.6, adding checks of ATA_QCFLAG_RTF_FILLED to libata_scsi. The
-> patch seen in baseline commit 18676c6aab0863618eb35443e7b8615eea3535a9
-> ("ata: libata-core: Set ATA_QCFLAG_RTF_FILLED in fill_result_tf()") should
-> have gone together with this.
-> 
-> Without it, I receive errors retrieving SMART data from SATA disks via a
-> C602 SAS controller, apparently because in this situation
-> ATA_QCFLAG_RTF_FILLED is not set.
-> 
-> I applied 18676c6aab0863618eb35443e7b8615eea3535a9 from baseline to 6.6.74
-> and the problem went away.
-> 
-> If you need any further information, do not hesitate to contact me (linux
-> user since 0.99.x, but only debugging it once every few years or so...).
-> 
+On Tue, Jan 21, 2025 at 02:32:06PM -0500, Sean Anderson wrote:
+> [ Upstream commit 9860370c2172704b6b4f0075a0c2a29fd84af96a ]
 
-Now queued up, thanks.
+For obvious reasons we can't take patches just for older trees because
+if you update to a newer stable/lts version, you will have a regression.
+Please submit backports for all relevant versions and then we will be
+glad to queue them up.
+
+thanks,
 
 greg k-h
 
