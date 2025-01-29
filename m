@@ -1,156 +1,261 @@
-Return-Path: <stable+bounces-111202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9214DA222A8
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62994A222F2
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E12471613CD
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:15:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 985BE166C46
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FF81DFE02;
-	Wed, 29 Jan 2025 17:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F21A1DFE14;
+	Wed, 29 Jan 2025 17:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GNrWIVfk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPw+KBPd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C4429A2
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 17:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB6028EB;
+	Wed, 29 Jan 2025 17:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738170910; cv=none; b=ZbQcKXLHTrcirFBf1NIoKjvDl0kYvrweZWEJNqvO1MbpbsXl1Si2xFMRZdlTbBK9qGnFEjuP4kx5dFj6RFCwD6zbN1i+/a5Nf1tAWVVmGJuhfW1mDBd/89uegh9DwX/iZ0YCu4D48qqpEXPN6zrA8LRIFjdVQuDj5MrSvKxDvHY=
+	t=1738171682; cv=none; b=Gd9Uz7/lBQ4eCNMLoS4pqVJz1TTLv4UreQ/hTdlBWnbjn6avBOcPDTHfubfZXU7KubxyC++me1j+mQE+NvzOCOXrYdVN7M6FP27iE0K5uNDE7SzZ7jt84m0Two5oGKMZ7/RRWR1+BjmIcjNTlSW4rSBAopAZhBtYSBo5Ib3ulqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738170910; c=relaxed/simple;
-	bh=CGO/f4Bac8C2gpxKd2TWti31NdBiF1wDjsLwWPvKspc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=ck1g2iDxRUfF+ndtqBNyAsFsTEph66NzDdmKnU1E3JXKmhoMdLlp+ojmoTPzwVYJaXuwo/SOl5f5phKE01qFb4rIIHspTTmHxd3jZsDXNotXqlhlNk0qD7LTiGjoSXr6dK3qAfeQ0cWYva9usb+Uq4GqPKwyG/qpPD4Yh4Yg/iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GNrWIVfk; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21625b4f978so307085ad.0
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 09:15:08 -0800 (PST)
+	s=arc-20240116; t=1738171682; c=relaxed/simple;
+	bh=yZW1QwC+l0JQ5TqrVAhLNEjfHoq71wxzLMEz3t23Kf4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qDFEPIY+Z6G28J/lbnz0lfouV5tTnirgNKSCGL+goaHLaG/Vw6GPKw51Xoy8YByskOi6NcN1OjuSSuUmb5MQeYGmD1Cww9SqUFy1c+dJ818tU6eWyr/YV99keigmAEYlmH1w1DwegUoalF3wsVnfvvyT/jh9HAWQnrNXabXTaY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPw+KBPd; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-71e2aa8d5e3so3780935a34.2;
+        Wed, 29 Jan 2025 09:28:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738170908; x=1738775708; darn=vger.kernel.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9gH+YSZ1zmMCHSxiUQyhq1Bw/glWnnyFqEqhQoLAovA=;
-        b=GNrWIVfk4VNIBYDM0EDJ4/gYP1IPQeJ/+uUIEnKv8tatyOFBb1SpGzSXGqGqkTAlmL
-         vdPgbfUj9jg9ZUjIuoAm+ey4/0Hot/BfspwoIgXQq2+Oi7gDNs6dpoRn5nxA5Y2IHLkI
-         tenggLNFkvsN3DXESZOWQjWFjs2MdSC3WhMAGxJXgxxIuvPrz//QJpQyb45EZzD3j/rz
-         EgmJOMBquDTaRuVJWF/RJHVH2sflwIMGA+ELvz9X7v+u2ypPm1QpoURNeBtgk8eNPqGY
-         0gL/7L2J4JLrkMjR54vTMcFqkww5A9ccsU+gmutzWGRCjRaKyJ6Fua0nAEcasbAdUSo3
-         NflQ==
+        d=gmail.com; s=20230601; t=1738171679; x=1738776479; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H9DYF2bVd2WYr3RnZr8LmxQYUCwZNVcKB83e7JFc1AU=;
+        b=BPw+KBPdX9lVBePQBkwJTz90LP6xd8PDwtsQmSvFrN8xmd/GQO8XG+cgmlc6T6t5/J
+         5ijCOybrg0cepi3l1YTRLGh89lJ7/1QLkPyHUkoqvinek/BZiYz3JHMHbXn4i8xdfcTa
+         2En3kl+W40vioR4dmj3kICA7dK2Kw43OVmuItpD4eAL/h0cF9s6syH/LGuQP1e/kIDnQ
+         bz0vCNrLoBsCyjLf2yPRCkFch6w3Cizug3uKuexcaHD8h+MBnC20HgwJbGsZwT3R60Ga
+         hEDMhrZ5qCWTKr0+UQXKRzcPH4rjwv7KOYd9Tf5tHWFIAX9Zd+rT3+oRXZ9SVJnviP+v
+         fk8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738170908; x=1738775708;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9gH+YSZ1zmMCHSxiUQyhq1Bw/glWnnyFqEqhQoLAovA=;
-        b=vkdBednaft6G9tfMV4K/fZKL3dgcz0+IT9J/lNKJ0ixnplBf+MpdOEAcLCnqDZOXrj
-         JElm16wpnuTRbn0/0U8+VrwTAdSwWMajtzDz4QBOSLlenyHL2d/Wt6jERkxbEkKzAJv9
-         HCinmYHZo9raZ5ZCCnPozhZMx8Iqdir1glFOENos8tfqvjbQ071BfVr16ZgM+0NqqQN0
-         5WrmMvkyjsdRYabSQLxhmWM+NULnKdwni7y2/cX47J+f2CtwD0K61X/6Zs3GgdQjXN2X
-         qkknjizGrNAdt57zjsr78j4oujP15PGKglyP8ernS/WIwqwC9S/zlYObCcRCTAoWnzMh
-         nYtw==
-X-Forwarded-Encrypted: i=1; AJvYcCVmKsUHw2prZ3QXoOAr0HLcNuLHo2Ae99GTU9ZoJF7D0G0FU9k9Ya/XbfInygMIq9tAV9tSfKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrinwTqnlzQi0kdxHh595lcr8WPUQG26+sS9aFufYYi9nDyvpw
-	aLPyY4ASC6DJ8d+ae9Ps7Ue0aZGasK7iaKgt6bL16PFO67LILFn93izYBHODJQ==
-X-Gm-Gg: ASbGncv+SMDJLXFJ/o5NA2EGFq1yc6M7S7DXqWSQcZZgyFkWK3azVpBuQ4VZ7ZcsoL/
-	7VsFamYZNBw6dQFVeRKTZRJmQl6pfIxr1SfG+2857VO6cYqWifFyvdZVR1ctmq2gCW13jExx6Km
-	4d8zGccmM/uY6fIxeXCclAzYJNm3123yhPfrVuDB5nyeNc6XXODCfT1zdMcH1fBKmyu6U3bwis9
-	ItCt6W6zLouY6r0xI4q80IYtRHyf9RMlHE2DUeUKbRBw3jWPLcmRK/MEt3KmP23mEAJ5uA4zYBs
-	FK1MpT7AHDE1K3w8EEGpEQiugBHrSj6ZbEH1c30vqwI=
-X-Google-Smtp-Source: AGHT+IHbIimiAIsjiZVjX02mLBsPolVm2/N+ESrZ6+rKVYwZe4bSzSkhdFaivEyQUxfWmnKTr6Hlvg==
-X-Received: by 2002:a17:903:950:b0:215:9ab0:402 with SMTP id d9443c01a7336-21dd809407fmr2972885ad.18.1738170907700;
-        Wed, 29 Jan 2025 09:15:07 -0800 (PST)
-Received: from [2620:0:1008:15:39d6:5c4:c4b3:d929] ([2620:0:1008:15:39d6:5c4:c4b3:d929])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a6a002csm11524739b3a.21.2025.01.29.09.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 09:15:06 -0800 (PST)
-Date: Wed, 29 Jan 2025 09:15:06 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, 
-    sourabhjain@linux.ibm.com, pavrampu@linux.ibm.com, muchun.song@linux.dev, 
-    luizcap@redhat.com, gang.li@linux.dev, donettom@linux.ibm.com, 
-    daniel.m.jordan@oracle.com, ritesh.list@gmail.com
-Subject: Re: + mm-hugetlb-fix-hugepage-allocation-for-interleaved-memory-nodes.patch
- added to mm-hotfixes-unstable branch
-In-Reply-To: <20250129042805.E4770C4CED3@smtp.kernel.org>
-Message-ID: <c2cf3b8f-41f9-fff6-4e9e-1999be619345@google.com>
-References: <20250129042805.E4770C4CED3@smtp.kernel.org>
+        d=1e100.net; s=20230601; t=1738171679; x=1738776479;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H9DYF2bVd2WYr3RnZr8LmxQYUCwZNVcKB83e7JFc1AU=;
+        b=P6Bo6ivhEPea1eOcj2H9b5hoy02SlHFyFC9fR3w62+mKopSgrhOxGw4j0+0ADkK0sS
+         w0FSkMLEJmg3qSio69Ek6N+PqwrGzn6B9DS82lPzuBTQ4WMLaQfARfQxO6hHBI9Wrmx4
+         RCtAEc4RmHeTbUsxNdePWfHR8tFVGKwQeRKAvHrMT1b84Pu3j95YP/lB4eoSine3Fbzl
+         sY6MWzV7XutObdCCuQI6o7ZZmXnM+yAqA+OPk3Vj4MkNCo+0uy84PioIT13ZNroy8JRY
+         KgOJajfJMGY9ZQT9A/CPpGXdX4hALtSBGbK6yBTWxt3sU8q+9ORIrHCcWKx1ZJ9t0EWA
+         K6zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyV+LDbBFJfnFjhwKHN5HY4/9HZsWm61pzil7YB2TlARAjK4yFQPf5eJSHwTdZYFavqq8=@vger.kernel.org, AJvYcCX+4ur8V3G3JZQBCg48x6BsbtTUQNsvzZm9n/aZRIIYh+yGTii91ufKDNi0rMYY4rYAQ+5ZDO29+R2yh/7T@vger.kernel.org, AJvYcCXknOL39obAFKT1MdCPWsze1nCFfs2E/kaET8827NwGShyAmTIKkVc1e/Exo831dfynyY8zYFCMAaQf@vger.kernel.org, AJvYcCXlBeiragPKzcDjXx9XMUBAmAgW1VAOwWTYZgME5Bzwr3bCiKphtYTtQUMQG9JU0LPFnnwjY6OK@vger.kernel.org, AJvYcCXsfzakpYXrJs+zZGufs7Z0Hs6McMJSXrFcSqXh/dD4OFmHBsypSU/G1I3enkUkY98Rs1pp8mG9MC9NTZenLlzQR0Wl@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGtVJB+oFPhwXWotRDWIev1Xci0Lj/2o1NFY64NY0dS2LFEXvX
+	OZkCKLdwajRz4zu93czkYMn8BX3coqATbFeytECSSJe8MzdBlXPBy14tHoDVFro59rNlNPwpOpI
+	II92OLtcJBy2p5jOMOfT8BoAvnxw=
+X-Gm-Gg: ASbGncslzMp22MgbT+5Z0mPfbTQxMqxusnRffi3QP0TGLYSwJQQ6yA+WXujPL1q9v7/
+	d6yIcMgIZt4AzEYEsVQ37/l5E1PVB36O0563+6uFI5rMOKCIi2CKWG6kVDoQbzgGX0mHtnp8xAu
+	l0zEKvUtw=
+X-Google-Smtp-Source: AGHT+IF1pXcGoJP6dVTYq0ejDryQaqkzioP0ZZgGSRGq8urNRacRLo/NAEqFz4POQb6pGT8s0i/QpSW2hsT7dCKY1jE=
+X-Received: by 2002:a05:6871:8112:b0:29e:6ae2:442 with SMTP id
+ 586e51a60fabf-2b32f45dbdcmr2149959fac.32.1738171679347; Wed, 29 Jan 2025
+ 09:27:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20250128145806.1849977-1-eyal.birger@gmail.com> <202501281634.7F398CEA87@keescook>
+In-Reply-To: <202501281634.7F398CEA87@keescook>
+From: Eyal Birger <eyal.birger@gmail.com>
+Date: Wed, 29 Jan 2025 09:27:49 -0800
+X-Gm-Features: AWEUYZmCw0iV7STxf7CnZJL9uiMoGQeT-yPO8VpRtz--JZkEalZYokGfejTEU88
+Message-ID: <CAHsH6Gsv3DB0O5oiEDsf2+Go4O1+tnKm-Ab0QPyohKSaroSxxA@mail.gmail.com>
+Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without filtering
+To: Kees Cook <kees@kernel.org>
+Cc: luto@amacapital.net, wad@chromium.org, oleg@redhat.com, 
+	mhiramat@kernel.org, andrii@kernel.org, jolsa@kernel.org, 
+	alexei.starovoitov@gmail.com, olsajiri@gmail.com, cyphar@cyphar.com, 
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com, 
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de, daniel@iogearbox.net, 
+	ast@kernel.org, andrii.nakryiko@gmail.com, rostedt@goodmis.org, rafi@rbk.io, 
+	shmulik.ladkani@gmail.com, bpf@vger.kernel.org, linux-api@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 28 Jan 2025, Andrew Morton wrote:
+Hi,
 
-> From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-> Subject: mm/hugetlb: fix hugepage allocation for interleaved memory nodes
-> Date: Sat, 11 Jan 2025 16:36:55 +0530
-> 
-> gather_bootmem_prealloc() assumes the start nid as 0 and size as
-> num_node_state(N_MEMORY).  That means in case if memory attached numa
-> nodes are interleaved, then gather_bootmem_prealloc_parallel() will fail
-> to scan few of these nodes.
-> 
-> Since memory attached numa nodes can be interleaved in any fashion, hence
-> ensure that the current code checks for all numa node ids
-> (.size = nr_node_ids). Let's still keep max_threads as N_MEMORY, so that
-> it can distributes all nr_node_ids among the these many no. threads.
-> 
-> e.g. qemu cmdline
-> ========================
-> numa_cmd="-numa node,nodeid=1,memdev=mem1,cpus=2-3 -numa node,nodeid=0,cpus=0-1 -numa dist,src=0,dst=1,val=20"
-> mem_cmd="-object memory-backend-ram,id=mem1,size=16G"
-> 
-> w/o this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
-> ==========================
-> ~ # cat /proc/meminfo  |grep -i huge
-> AnonHugePages:         0 kB
-> ShmemHugePages:        0 kB
-> FileHugePages:         0 kB
-> HugePages_Total:       0
-> HugePages_Free:        0
-> HugePages_Rsvd:        0
-> HugePages_Surp:        0
-> Hugepagesize:    1048576 kB
-> Hugetlb:               0 kB
-> 
-> with this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
-> ===========================
-> ~ # cat /proc/meminfo |grep -i huge
-> AnonHugePages:         0 kB
-> ShmemHugePages:        0 kB
-> FileHugePages:         0 kB
-> HugePages_Total:       2
-> HugePages_Free:        2
-> HugePages_Rsvd:        0
-> HugePages_Surp:        0
-> Hugepagesize:    1048576 kB
-> Hugetlb:         2097152 kB
-> 
-> Link: https://lkml.kernel.org/r/f8d8dad3a5471d284f54185f65d575a6aaab692b.1736592534.git.ritesh.list@gmail.com
-> Fixes: b78b27d02930 ("hugetlb: parallelize 1G hugetlb initialization")
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Reported-by: Pavithra Prakash <pavrampu@linux.ibm.com>
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
-> Cc: Donet Tom <donettom@linux.ibm.com>
-> Cc: Gang Li <gang.li@linux.dev>
-> Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
-> Cc: David Rientjes <rientjes@google.com>
+Thanks for the review!
 
-Acked-by: David Rientjes <rientjes@google.com>
+On Tue, Jan 28, 2025 at 5:41=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+>
+> On Tue, Jan 28, 2025 at 06:58:06AM -0800, Eyal Birger wrote:
+> > Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueueinfo
+> > uses the same number as __NR_uretprobe so the syscall isn't forced in t=
+he
+> > compat bitmap.
+>
+> So a 64-bit tracer cannot use uretprobe on a 32-bit process? Also is
+> uretprobe strictly an x86_64 feature?
+>
 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+My understanding is that they'd be able to do so, but use the int3 trap
+instead of the uretprobe syscall.
+
+> > [...]
+> > diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+> > index 385d48293a5f..23b594a68bc0 100644
+> > --- a/kernel/seccomp.c
+> > +++ b/kernel/seccomp.c
+> > @@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user *us=
+er_filter)
+> >
+> >  #ifdef SECCOMP_ARCH_NATIVE
+> >  /**
+> > - * seccomp_is_const_allow - check if filter is constant allow with giv=
+en data
+> > + * seccomp_is_filter_const_allow - check if filter is constant allow w=
+ith given data
+> >   * @fprog: The BPF programs
+> >   * @sd: The seccomp data to check against, only syscall number and arc=
+h
+> >   *      number are considered constant.
+> >   */
+> > -static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> > -                                struct seccomp_data *sd)
+> > +static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *fpro=
+g,
+> > +                                       struct seccomp_data *sd)
+> >  {
+> >       unsigned int reg_value =3D 0;
+> >       unsigned int pc;
+> > @@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock_fpr=
+og_kern *fprog,
+> >       return false;
+> >  }
+> >
+> > +static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> > +                                struct seccomp_data *sd)
+> > +{
+> > +#ifdef __NR_uretprobe
+> > +     if (sd->nr =3D=3D __NR_uretprobe
+> > +#ifdef SECCOMP_ARCH_COMPAT
+> > +         && sd->arch !=3D SECCOMP_ARCH_COMPAT
+> > +#endif
+>
+> I don't like this because it's not future-proof enough. __NR_uretprobe
+> may collide with other syscalls at some point.
+
+I'm not sure I got this point.
+
+> And if __NR_uretprobe_32
+> is ever implemented, the seccomp logic will be missing. I think this
+> will work now and in the future:
+>
+> #ifdef __NR_uretprobe
+> # ifdef SECCOMP_ARCH_COMPAT
+>         if (sd->arch =3D=3D SECCOMP_ARCH_COMPAT) {
+> #  ifdef __NR_uretprobe_32
+>                 if (sd->nr =3D=3D __NR_uretprobe_32)
+>                         return true;
+> #  endif
+>         } else
+> # endif
+>         if (sd->nr =3D=3D __NR_uretprobe)
+>                 return true;
+> #endif
+
+I don't know if implementing uretprobe syscall for compat binaries is
+planned or makes sense - I'd appreciate Jiri's and others opinion on that.
+That said, I don't mind adding this code for the sake of future proofing.
+
+>
+> Instead of doing a function rename dance, I think you can just stick
+> the above into seccomp_is_const_allow() after the WARN().
+
+My motivation for the renaming dance was that you mentioned we might add
+new syscalls to this as well, so I wanted to avoid cluttering the existing
+function which seems to be well defined.
+
+>
+> Also please add a KUnit tests to cover this in
+> tools/testing/selftests/seccomp/seccomp_bpf.c
+
+I think this would mean that this test suite would need to run as
+privileged. Is that Ok? or maybe it'd be better to have a new suite?
+
+> With at least these cases combinations below. Check each of:
+>
+>         - not using uretprobe passes
+>         - using uretprobe passes (and validates that uretprobe did work)
+>
+> in each of the following conditions:
+>
+>         - default-allow filter
+>         - default-block filter
+>         - filter explicitly blocking __NR_uretprobe and nothing else
+>         - filter explicitly allowing __NR_uretprobe (and only other
+>           required syscalls)
+
+Ok.
+
+>
+> Hm, is uretprobe expected to work on mips? Because if so, you'll need to
+> do something similar to the mode1 checking in the !SECCOMP_ARCH_NATIVE
+> version of seccomp_cache_check_allow().
+
+I don't know if uretprobe syscall is expected to run on mips. Personally
+I'd avoid adding this dead code.
+
+>
+> (You can see why I really dislike having policy baked into seccomp!)
+
+I definitely understand :)
+
+>
+> > +        )
+> > +             return true;
+> > +#endif
+> > +
+> > +     return seccomp_is_filter_const_allow(fprog, sd);
+> > +}
+> > +
+> >  static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sfilte=
+r,
+> >                                        void *bitmap, const void *bitmap=
+_prev,
+> >                                        size_t bitmap_size, int arch)
+> > @@ -1023,6 +1038,9 @@ static inline void seccomp_log(unsigned long sysc=
+all, long signr, u32 action,
+> >   */
+> >  static const int mode1_syscalls[] =3D {
+> >       __NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __NR_se=
+ccomp_sigreturn,
+> > +#ifdef __NR_uretprobe
+> > +     __NR_uretprobe,
+> > +#endif
+>
+> It'd be nice to update mode1_syscalls_32 with __NR_uretprobe_32 even
+> though it doesn't exist. (Is it _never_ planned to be implemented?) But
+> then, maybe the chances of a compat mode1 seccomp process running under
+> uretprobe is vanishingly small.
+
+It seems to me very unlikely. BTW, when I tested the "strict" mode change
+my program was killed by seccomp. The reason wasn't the uretprobe syscall
+(which I added to the list), it was actually the exit_group syscall which
+libc uses instead of the exit syscall.
+
+Thanks again,
+Eyal.
 
