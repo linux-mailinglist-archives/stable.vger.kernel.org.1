@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35861A22208
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:47:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E707AA22209
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CBB1162496
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DB3E3A4455
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D331E1DF255;
-	Wed, 29 Jan 2025 16:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F367C1DF743;
+	Wed, 29 Jan 2025 16:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="coSCwG+F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKWq7MiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934C61DF253
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 16:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44AA1DE892
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 16:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738169247; cv=none; b=llJb+ZpFnqhuHVcV8LhsochTTfTmZA/UNNBciOJR9ntzqKI18t7qn8pxhzZN1u2sT00I5/2A0MWH6o8RbXR62+WysBL+CE6fYL938F03VfRbjaBo85dm1vJt0fchojZg6oF470smR5TKmxT8KZo5jKXu3cz22yonvmwDFwXo4Ro=
+	t=1738169250; cv=none; b=AlUaQ3xF8z67PshbUgxaksEKH5TFkNmpuWal20Ht+P82yx7XGCwZGXAma0wndBvkcjRRDfs56HuohEjJTolc/aUf4ouweb9WrDRrGZF1Q84e9CG3/aGm2Y2BdPfTWqakxKOuFZuCW7KTn4+ld/oYfxp0x/pYLl11eqOE3iynXx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738169247; c=relaxed/simple;
-	bh=ooP3pe3KdtfDyGZLyFiXoFKRF6varPHxN9kzq9FM2jQ=;
+	s=arc-20240116; t=1738169250; c=relaxed/simple;
+	bh=pgNWWOE/b2u149pucNYj1TeP7Um3FlDwNK/KsdWBQoo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bx/SV6dcC475J97NDgvHnK9pkBsLguONgjk1BsyB3OQCPQE0F4Q8fsMY7mNrBvCpDF+KFeAd3jsoYJWiGCF7Ws3AWVKLMNfCJZ7/i3wWd4Ubra8fIQew3mLqVGHKA9s4MP0SQM2Cfcm/13hyUPU4ipQevB9aGKPxf6XNGmg8B+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=coSCwG+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96084C4CED1;
-	Wed, 29 Jan 2025 16:47:25 +0000 (UTC)
+	 MIME-Version; b=mXtUMWvh47gfIFsxgyqddcphXlQotA86ZqN5GVg1Yz7zye2gFdMFFo6I0p1+c4eqvxImbtghHaZxcyzYXhERJdVIxSrW5Get4R/F6jCTQsIFQMjsn0iYcTxkGA6xKgSNIoXqDySfpwJMVgNvM9P73+AbEGxhz7/aR3GKg6sGp0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKWq7MiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9136C4CED1;
+	Wed, 29 Jan 2025 16:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738169247;
-	bh=ooP3pe3KdtfDyGZLyFiXoFKRF6varPHxN9kzq9FM2jQ=;
+	s=k20201202; t=1738169249;
+	bh=pgNWWOE/b2u149pucNYj1TeP7Um3FlDwNK/KsdWBQoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=coSCwG+FqlXyaYenaI64c1zh8INg+S283dNaMeL+opei1pbnHUgr5tyUEABF6VHsQ
-	 8NgskU6d8NNjYdSZO+5T3QrnvqMddezD0ALJRHGIys+l8IiVc1v92yiRlNU7J+bfIF
-	 TyeDVAG0KMGD1OhZS+/asxzgEOOlLRVXW/pVV8UBU9XkDNgAoFG/4iJwDCooUgu5RH
-	 Dv/juk4D5Xuuga57YD4ns8avTao+TD1FxhRwKk8jG6IaE+0d8WXRIxi7Po8r2wBZCx
-	 QpmpXT9/s03CswLUtry0JFJljGO8O01vsCemKAjDX6nKRoLBQvTa28qv8bFDXA9OgO
-	 7aEQl/hUJU9Bg==
+	b=qKWq7MiQMz/WQhyBJHQeFTTF9ilmbjQ8bs5hRNJ6MotQRAM7yro+U/FQVHUBp6gct
+	 PfCF4mHRiZSrbKF3kk23q2bnOsM35iK3An+eFnLiaRAkAeVLT8rYrfJWESC+PnrnMY
+	 pRETcFHRoJ/Q42AQq7u6qrgPYPf5gyQ7zgvXo6oV315YSQIhw9Xe1rHMM1vC+XmcW3
+	 fapddtxBZOzsSnx5Yf7keZcIKLYX7KGGOSMSvq0c16rDlLQtfnRBT8O+G6cFb+DGsc
+	 f8Acw++xnCJxudjUrlbGFp+ARMIbcZ+J6l6rs30ah8kocEnycpK45cxjqMc8JDY788
+	 OkLwDDjP9dqag==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 5.10] wifi: iwlwifi: add a few rate index validity checks
-Date: Wed, 29 Jan 2025 11:47:24 -0500
-Message-Id: <20250129112746-f05051a5cb0ff583@stable.kernel.org>
+Subject: Re: [PATCH 5.15] wifi: iwlwifi: add a few rate index validity checks
+Date: Wed, 29 Jan 2025 11:47:27 -0500
+Message-Id: <20250129112150-3c62cdaa28d3f388@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129142555.2448994-1-dmantipov@yandex.ru>
+In-Reply-To:  <20250129143343.2449440-1-dmantipov@yandex.ru>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,11 +76,10 @@ Status in newer kernel trees:
 6.6.y | Present (exact SHA1)
 6.1.y | Not found
 5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  efbe8f81952fe ! 1:  6281b199ae74f wifi: iwlwifi: add a few rate index validity checks
+1:  efbe8f81952fe ! 1:  0db320c7e5f3d wifi: iwlwifi: add a few rate index validity checks
     @@ Metadata
       ## Commit message ##
          wifi: iwlwifi: add a few rate index validity checks
@@ -121,7 +120,7 @@ Note: The patch differs from the upstream commit:
       /******************************************************************************
        *
     -- * Copyright(c) 2005 - 2014, 2018 - 2022 Intel Corporation. All rights reserved.
-    +- * Copyright(c) 2005 - 2014, 2018 - 2020 Intel Corporation. All rights reserved.
+    +- * Copyright(c) 2005 - 2014, 2018 - 2021 Intel Corporation. All rights reserved.
      + * Copyright(c) 2005 - 2014, 2018 - 2023 Intel Corporation. All rights reserved.
        * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
        * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
@@ -136,5 +135,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
