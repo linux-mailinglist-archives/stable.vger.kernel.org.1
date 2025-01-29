@@ -1,101 +1,120 @@
-Return-Path: <stable+bounces-111132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32679A21DF0
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:38:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F53A21E29
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 14:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6A53A5F8B
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E432A188624F
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AEA8462;
-	Wed, 29 Jan 2025 13:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C633CA6B;
+	Wed, 29 Jan 2025 13:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JV7GcniA"
+	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="cehzsnkw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407C97EF09
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 13:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6061FDD
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 13:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738157917; cv=none; b=bGhsVw/d9+MD+lD73EZapga4IyQvLPB1RXVYyRb7hpTSF4lLMFfZfbD7wBleuhMWkRyj7WJQhQfjn5g2cJwIbghx7TARROh1belhP9DMiouf0//xf5v5IRwY0Sl/mya0Ss5X6P3OWLrlZcz7R0IkCFGlcJ3cFT9c11E21yADeUw=
+	t=1738158607; cv=none; b=CltrSc/ZDX2pIFWASonYJ9q+xH8J67ZAFWGTSmU6LJ9WSqbgU3kUq8J5pLRfsUtuCpSwhHnKedlva/EyF0ohp6PfwC462+nmXbDPKgFqq/H81lrwCBFz+JMVr2K9NlRJZlre6DHYk/FWgIHnODWshAb/a+RjpAKvvpvM5l/6OZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738157917; c=relaxed/simple;
-	bh=geOXmdnl+Yq5Zr+Yezc7YO8AQ7EYXSmKc01YW0AqDwk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S/m/UkTpnNIfBXxJv4bZAWCzNe7iPl0XHBSNFcT9Jb9uSkqxkDCUrFTbsmTIyX1Wk6BE6EF9IUxBrLZo8WNGukuL/pXaYdqqMV03YvUwFoky6j5HM3qfeZMkLV4fg/CqNfrWyCU4iaxzppcbE53ZJRhuBgvcN8hlUtmqv9BD01U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JV7GcniA; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa68b513abcso1344931966b.0
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 05:38:35 -0800 (PST)
+	s=arc-20240116; t=1738158607; c=relaxed/simple;
+	bh=dBykreLn8k1vK7gxPzsq0gNUUkHEVGmtIIocx/HeIro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UkTrpB2BBMcYdD80hK5pDcRhRGUQ+QWPiZMdOHUmNNXJjPFM9A2kGHrZvxFS41IyoaJGvFacgbA0S3NEySVq3r3zlbVl97qb1CrpgRlBBxXAcVG17JWLvsajD0BgqaRbVet8dOoymOyTBiuGfGfpOswWoeea2zZA/5e6HCN3EOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=cehzsnkw; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a9e44654ae3so1099666066b.1
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 05:50:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738157914; x=1738762714; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=geOXmdnl+Yq5Zr+Yezc7YO8AQ7EYXSmKc01YW0AqDwk=;
-        b=JV7GcniAqHXa1RAXtWSay5kv6rdqua95FUhtCrlT6HWJ/nV9rbVOAaNTz5PwFNfKJq
-         2gDlMvysl2CHFkz/MMzObFBFq2Sw0MWAUFfTgWL2dbJ150jiF5UIl1LEJgV35nNMnr7P
-         puaFfKRQ/GthqJ78qPlYY2w0TvfsAcn5i+l7n0F0ne2PUlDp2UsZaWekTac5UYfCM/Ws
-         VqygBbx6SDkt8B+8PAHsBOMSFKeRS2BWdzQLrqIinbYqnGXO2k+MMAPX5spWFf9Hhuuv
-         yfDH2CEmOkUjlE/Ja+pmTyJ2xeZFFlsm84mchjkiaypNOaFKKICOaUazKktXH0Ky++4K
-         cmdA==
+        d=sairon.cz; s=google; t=1738158604; x=1738763404; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=75Qk36IR/Lj4/0wn0Q30039CDztY8/cW9oi3X8VH8Mo=;
+        b=cehzsnkw2X/CfpQB8nRcQCr47vxZvMlu/krQD/45xAQRNDIIOYKeQ7eT8LHKvcOmds
+         TcVVERyQgxXyjNgw26tKRY9K3yWWKPIAfshqGlUwgQOeQ+7nu/UUrobWCz9iYZy0UMz7
+         iNEAHTJ5ssDmcBcBhWmTOZKuPoIqR6tDNmojRcMM4XwvqZjfl/GEHzdkh4BXmjuoYdQ3
+         Urmdox+qdLauv6SE5OBkGQw1/hyI4l0xlsuu5bN2o9jZMyjMs8VHyZSict/UjQdRe7x8
+         eyUUtCjv8z7my/OtD68OlA0jMWAWH5fnPDLpLGwQ8kP4Yxx3k4Le98NnsjC6FLKHqOnV
+         U3BQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738157914; x=1738762714;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=geOXmdnl+Yq5Zr+Yezc7YO8AQ7EYXSmKc01YW0AqDwk=;
-        b=ViwuTp2In/TCeP+DR+/3WVxFxEZRvS6UAd5ox70sF6fmDOO9VmpOif3ZogHQ3TvJ6X
-         1q5eij/9PhTe5dmNASpPMGj82NLrpNgx7AZndNufGBAWgdUGkkaXt1XHQFbY9dOUZtAH
-         Pf/0X/5uy6H43li7S5ruGwGPxzI/FmxFMzxT2e9+YO7iPEENEAHQrY/gJE0UQjLg1UyK
-         NXfLkDGKKUAiZKtTnP4nTZM+X2Wvup8tSXLR2mh47Lo4NDLD0rZvA8UbHn0j2MbVVQyl
-         jVvcEHzl4Gbc6xrVISudEPI01zr4BI2ItfBaKENWwmEVnjmdrdmRZZEETlX3VchZGPfD
-         GvDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ1BsvzE6jmoKuGAkr7doKNIz3zw4GTBXTUcDkUmZXUy5EDTcHQar3mi3Vq6oWafA6cQOwJtM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJKC2YwdLsMPPR+Xq7Ag+dPTUR0CXtidtSsNNKFK0o80E1MdOY
-	IdesZ48PfghTV9zOoQ1ngW5IPaxma3pVsA5rsQAF2BJ+Jr+QPktw9AzDlKIjM4r4XaXp2c+CqEq
-	z6Gg8wsXsvKSHizAsMB5Tvcsko/lV000gW8ccYxDkPAs9dcMb8vioecI=
-X-Gm-Gg: ASbGncs6Ij967mxjxHGbT/1yPR8d/0rUm1xjz0hL7mVQVuZOT63cP55RFgSe4Q2rPp2
-	hTdnhd96NMkXdon420l2G4VFeBfIoO9A6+2SUm6LVGcxfu0yZVbTeboXZStsYiHG+7X6ecDBBqz
-	xRu0P0T14ctqJDCyk8QrzVtPdshOqx5bNQ+xFv
-X-Google-Smtp-Source: AGHT+IFYaK79RKgTGAJVqdudRFWYrmC0jZoD0qFiPgjMHOc1wFuPxvEurIcZ95EBXDcl5L2L6SIOaB0J9+TXC6lQ+Jk=
-X-Received: by 2002:a17:907:7f26:b0:ab3:30c5:f6d3 with SMTP id
- a640c23a62f3a-ab6cfcb3a8bmr352966166b.9.1738157914301; Wed, 29 Jan 2025
- 05:38:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738158604; x=1738763404;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=75Qk36IR/Lj4/0wn0Q30039CDztY8/cW9oi3X8VH8Mo=;
+        b=GUmTsoPyiW/QeB1GmdlR+41lWvhL9SNBIc+GZAIX+oYlgAOQ+/7ELI7f8EoiJ6mygb
+         NnzHIxxF6kNhjOv94ZOQWTdpVLdjuRVEGUk9rv/DveXqaJA4otcPBkd7UguxiLYxrXwf
+         UBdtL4RF4eBTdlR5gR37JrQDUthZ+aGSk3twweOBsyzXs1TfZ5DCEUXT+TFd4r7DmMti
+         oLa8diWxwdhPMhbJdKjT1nyvS/y7jrv5FFLJMoGIS1m6ddvL9z2J97ukU/zVW5pZf3TZ
+         Tc8BMPhFJTpA4H6Rh7YiCzcW+WR9fxUQnD/lGqVnVVzU7Ie3JBxFYrLaUtC2zHhagA7R
+         BlzQ==
+X-Gm-Message-State: AOJu0YzmFvNBqSVtmDOKI3U1Qy5cYEZbaYjVBhv8MP7Uxirbfo54Bk3/
+	HycIcqkhIJeOBaI4wuqF453fc3COfzOzdxagl+1qDb0b4WwLNy9lxAMGtfGEn1o=
+X-Gm-Gg: ASbGncupRkv5TTbKcf2TY9FNWFA7u23GMKf+aERGfOQw4DFPjwn0cRNb0500Mtv9nR8
+	vU6hrUz7PMm2kDGqBzrN/NiLk+W0/qKK7iMXyTvFRmXCwzLPoav6F6TCMShzKpOxA0HUJwgNnCC
+	UnK/1ziQ1v7a1svyu2YNj195swFJUv4dcoe561YfcSbFa695YcYAv0hzgBOzByW9XxlhP3Npjgq
+	G6JvBwlDTniCXi+KuRogwyJLV6rlYXcm185wcrA9bah2d2Xh/CvLmg/QzpRlUnHoes8i8ZWOvBu
+	en1lvTKcnhO+xT3Bjdbidpmchqtk0ruD2hBMTl5K60EMpGSixA==
+X-Google-Smtp-Source: AGHT+IF6V6wMn2HQMQcoHVmacevAxcGpFMu1haNotIgNNU36OH5DU9Ha/1LoSQoaqi7BQjhYZAfmvQ==
+X-Received: by 2002:a17:907:7dab:b0:aa6:7cf3:c6ef with SMTP id a640c23a62f3a-ab6cfcdf31emr325837266b.15.1738158603380;
+        Wed, 29 Jan 2025 05:50:03 -0800 (PST)
+Received: from [192.168.127.42] (ip-89-103-66-201.bb.vodafone.cz. [89.103.66.201])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6760ab0bcsm985438766b.95.2025.01.29.05.50.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jan 2025 05:50:02 -0800 (PST)
+Message-ID: <4eb662b7-f15f-40f2-aa10-5a3a5c1fc8a0@sairon.cz>
+Date: Wed, 29 Jan 2025 14:50:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250128150322.2242111-1-ciprietti@google.com>
- <2025012815-talisman-ageless-45f9@gregkh> <be95b807-dfab-4a4f-9e00-b498e548361f@oracle.com>
- <CA+PG2H1tRRJkWBVdsiA1fcqYyVMdOPauJqx-HJKhXdwxK9frJg@mail.gmail.com>
-In-Reply-To: <CA+PG2H1tRRJkWBVdsiA1fcqYyVMdOPauJqx-HJKhXdwxK9frJg@mail.gmail.com>
-From: Andrea Ciprietti <ciprietti@google.com>
-Date: Wed, 29 Jan 2025 14:38:22 +0100
-X-Gm-Features: AWEUYZmr1JXaR2S3-N6mlYHN6HCOoApSsr1HrzBRTmltjla6KSQk3iWGfcU27WA
-Message-ID: <CA+PG2H1-u7ikrUjTYeGHZB7ezsxSSSpOVJxsOZczzLYGgHaqeg@mail.gmail.com>
-Subject: Re: [PATCH] libfs: fix infinite directory reads for offset dir
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: Greg KH <greg@kroah.com>, stable@vger.kernel.org, 
-	yangerkun <yangerkun@huawei.com>, Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] USB 3 and PCIe broken on rk356x due to missing phy
+ reset
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, FUKAUMI Naoki <naoki@radxa.com>,
+ Michael Zimmermann <sigmaepsilon92@gmail.com>,
+ Chukun Pan <amadeus@jmu.edu.cn>, Heiko Stuebner <heiko@sntech.de>,
+ Vinod Koul <vkoul@kernel.org>, regressions@lists.linux.dev
+References: <20241230154211.711515682@linuxfoundation.org>
+ <20241230154212.527901746@linuxfoundation.org>
+ <91993fed-6398-4362-8c62-87beb9ade32b@sairon.cz>
+ <2025012925-stammer-certify-68db@gregkh>
+Content-Language: en-US
+From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+In-Reply-To: <2025012925-stammer-certify-68db@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi all, thanks for the replies! Understood the NACK, so let's drop this
-backport.
+On 29. 01. 25 14:36, Greg Kroah-Hartman wrote:
+> So where should it be reverted from, 6.6.y and 6.12.y?  Or should a
+> different specific commit be backported instead?
 
-Just not to let Greg's questoins go unanswered: this was meant for
-linux-6.6.y (sorry forgot to mention it) and the additional cast is
-required because the type of `ctx->next_offset` is a u32 in the 6.6
-version, later changed to unsigned long which made it possible to cast it
-to (void *) directly.
+I think this is for the others in the CC to call what should be done. 
+Heiko said that backporting the DTS changes (the other commit in the 
+series) is no-go to guarantee backward device tree compatibility, so if 
+this commit should be kept here (and in other branches where it was 
+backported to without the compatible device tree), patch like [1] needs 
+to be added too. But AFAIK there is no such commit available.
 
-Best,
-Andrea
+> And this isn't an issue on 6.13, right?
+
+Haven't tested it but it should be alright thanks to 
+8b9c12757f919157752646faf3821abf2b7d2a64 present there.
+
+Regards,
+Jan
+
+[1] https://lore.kernel.org/all/20250103033016.79544-1-amadeus@jmu.edu.cn/
 
