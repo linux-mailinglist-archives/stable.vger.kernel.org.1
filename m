@@ -1,118 +1,156 @@
-Return-Path: <stable+bounces-111201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1330A2220A
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:47:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9214DA222A8
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:15:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D479188075A
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 16:47:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E12471613CD
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 17:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128F81DF254;
-	Wed, 29 Jan 2025 16:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FF81DFE02;
+	Wed, 29 Jan 2025 17:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6EYstxH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GNrWIVfk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EDC1DF75D
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 16:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C4429A2
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 17:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738169251; cv=none; b=kBwlMdPH87URdCuIJBWxwpofeBuoxzeFoedSl/g9oGqn7SVXxtEBXd2q3n10lcHiOQiGcFrnqo1cY+eGgi95YjMMHfn6kzXpMwZw5MhsR2gpkQu+qEu9kLH5MKBKyXziIDfselLiISdrg7YFuJPwh36Bq3dh6FyesToOJpyGCUk=
+	t=1738170910; cv=none; b=ZbQcKXLHTrcirFBf1NIoKjvDl0kYvrweZWEJNqvO1MbpbsXl1Si2xFMRZdlTbBK9qGnFEjuP4kx5dFj6RFCwD6zbN1i+/a5Nf1tAWVVmGJuhfW1mDBd/89uegh9DwX/iZ0YCu4D48qqpEXPN6zrA8LRIFjdVQuDj5MrSvKxDvHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738169251; c=relaxed/simple;
-	bh=KeOtj1UDl4SbupeL823Fw2wAcI6eBjhvE3Qtue14OAs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fmck4+j07WvuE+s/nkyETvPswrcnVxcHw+cFzaQKkf5SQmB+x/1oeWwFsOTJD5OI1mE/m376KWpdIl2SIb11JX0AysjLTHvNdjM+83BlKt9NE/Y4IvSlRctF+2IiBQRywED+bdrR2plREQSJp8JETNfXx/jLPmg3+R00ZFk2WiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6EYstxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED52C4CED3;
-	Wed, 29 Jan 2025 16:47:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738169251;
-	bh=KeOtj1UDl4SbupeL823Fw2wAcI6eBjhvE3Qtue14OAs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6EYstxHlvcEPpHY+Kw74mjFuMzsi50F0HB4IwsKWeYAl48CVA83CFbqkjsIeIi9u
-	 OUi09ALtd0q/AOuIr2kolfg9FqERnlXpYTpPe9MmndwQU8i7nU+n7mqMKNPjDLhHfF
-	 L/46HLONXiFFQ51iYl+btyoKgEQOUtYjPQDNq7wK+jsq8SG2aPyxXGapsREb8KoiuI
-	 wb1MxkHYNdjX0P71XF2FIWC2smP1gQMAsQvwJKlUC5XnbDi8lfmb7pRPEt2AcWWJSH
-	 ZfzBEfBZVTa6aglJZH5sANdRTnVXTMVtECUn/kQkDMTtx7FQU2AZ2RiB1YYQVU1NR8
-	 HujPi8rUCXDmQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 6.1] wifi: iwlwifi: add a few rate index validity checks
-Date: Wed, 29 Jan 2025 11:47:29 -0500
-Message-Id: <20250129113248-3aefa55fbfeb08b9@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129143230.2449278-1-dmantipov@yandex.ru>
-References: 
+	s=arc-20240116; t=1738170910; c=relaxed/simple;
+	bh=CGO/f4Bac8C2gpxKd2TWti31NdBiF1wDjsLwWPvKspc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ck1g2iDxRUfF+ndtqBNyAsFsTEph66NzDdmKnU1E3JXKmhoMdLlp+ojmoTPzwVYJaXuwo/SOl5f5phKE01qFb4rIIHspTTmHxd3jZsDXNotXqlhlNk0qD7LTiGjoSXr6dK3qAfeQ0cWYva9usb+Uq4GqPKwyG/qpPD4Yh4Yg/iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GNrWIVfk; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21625b4f978so307085ad.0
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 09:15:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738170908; x=1738775708; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gH+YSZ1zmMCHSxiUQyhq1Bw/glWnnyFqEqhQoLAovA=;
+        b=GNrWIVfk4VNIBYDM0EDJ4/gYP1IPQeJ/+uUIEnKv8tatyOFBb1SpGzSXGqGqkTAlmL
+         vdPgbfUj9jg9ZUjIuoAm+ey4/0Hot/BfspwoIgXQq2+Oi7gDNs6dpoRn5nxA5Y2IHLkI
+         tenggLNFkvsN3DXESZOWQjWFjs2MdSC3WhMAGxJXgxxIuvPrz//QJpQyb45EZzD3j/rz
+         EgmJOMBquDTaRuVJWF/RJHVH2sflwIMGA+ELvz9X7v+u2ypPm1QpoURNeBtgk8eNPqGY
+         0gL/7L2J4JLrkMjR54vTMcFqkww5A9ccsU+gmutzWGRCjRaKyJ6Fua0nAEcasbAdUSo3
+         NflQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738170908; x=1738775708;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9gH+YSZ1zmMCHSxiUQyhq1Bw/glWnnyFqEqhQoLAovA=;
+        b=vkdBednaft6G9tfMV4K/fZKL3dgcz0+IT9J/lNKJ0ixnplBf+MpdOEAcLCnqDZOXrj
+         JElm16wpnuTRbn0/0U8+VrwTAdSwWMajtzDz4QBOSLlenyHL2d/Wt6jERkxbEkKzAJv9
+         HCinmYHZo9raZ5ZCCnPozhZMx8Iqdir1glFOENos8tfqvjbQ071BfVr16ZgM+0NqqQN0
+         5WrmMvkyjsdRYabSQLxhmWM+NULnKdwni7y2/cX47J+f2CtwD0K61X/6Zs3GgdQjXN2X
+         qkknjizGrNAdt57zjsr78j4oujP15PGKglyP8ernS/WIwqwC9S/zlYObCcRCTAoWnzMh
+         nYtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmKsUHw2prZ3QXoOAr0HLcNuLHo2Ae99GTU9ZoJF7D0G0FU9k9Ya/XbfInygMIq9tAV9tSfKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrinwTqnlzQi0kdxHh595lcr8WPUQG26+sS9aFufYYi9nDyvpw
+	aLPyY4ASC6DJ8d+ae9Ps7Ue0aZGasK7iaKgt6bL16PFO67LILFn93izYBHODJQ==
+X-Gm-Gg: ASbGncv+SMDJLXFJ/o5NA2EGFq1yc6M7S7DXqWSQcZZgyFkWK3azVpBuQ4VZ7ZcsoL/
+	7VsFamYZNBw6dQFVeRKTZRJmQl6pfIxr1SfG+2857VO6cYqWifFyvdZVR1ctmq2gCW13jExx6Km
+	4d8zGccmM/uY6fIxeXCclAzYJNm3123yhPfrVuDB5nyeNc6XXODCfT1zdMcH1fBKmyu6U3bwis9
+	ItCt6W6zLouY6r0xI4q80IYtRHyf9RMlHE2DUeUKbRBw3jWPLcmRK/MEt3KmP23mEAJ5uA4zYBs
+	FK1MpT7AHDE1K3w8EEGpEQiugBHrSj6ZbEH1c30vqwI=
+X-Google-Smtp-Source: AGHT+IHbIimiAIsjiZVjX02mLBsPolVm2/N+ESrZ6+rKVYwZe4bSzSkhdFaivEyQUxfWmnKTr6Hlvg==
+X-Received: by 2002:a17:903:950:b0:215:9ab0:402 with SMTP id d9443c01a7336-21dd809407fmr2972885ad.18.1738170907700;
+        Wed, 29 Jan 2025 09:15:07 -0800 (PST)
+Received: from [2620:0:1008:15:39d6:5c4:c4b3:d929] ([2620:0:1008:15:39d6:5c4:c4b3:d929])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72f8a6a002csm11524739b3a.21.2025.01.29.09.15.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2025 09:15:06 -0800 (PST)
+Date: Wed, 29 Jan 2025 09:15:06 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+cc: mm-commits@vger.kernel.org, stable@vger.kernel.org, 
+    sourabhjain@linux.ibm.com, pavrampu@linux.ibm.com, muchun.song@linux.dev, 
+    luizcap@redhat.com, gang.li@linux.dev, donettom@linux.ibm.com, 
+    daniel.m.jordan@oracle.com, ritesh.list@gmail.com
+Subject: Re: + mm-hugetlb-fix-hugepage-allocation-for-interleaved-memory-nodes.patch
+ added to mm-hotfixes-unstable branch
+In-Reply-To: <20250129042805.E4770C4CED3@smtp.kernel.org>
+Message-ID: <c2cf3b8f-41f9-fff6-4e9e-1999be619345@google.com>
+References: <20250129042805.E4770C4CED3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-[ Sasha's backport helper bot ]
+On Tue, 28 Jan 2025, Andrew Morton wrote:
 
-Hi,
+> From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+> Subject: mm/hugetlb: fix hugepage allocation for interleaved memory nodes
+> Date: Sat, 11 Jan 2025 16:36:55 +0530
+> 
+> gather_bootmem_prealloc() assumes the start nid as 0 and size as
+> num_node_state(N_MEMORY).  That means in case if memory attached numa
+> nodes are interleaved, then gather_bootmem_prealloc_parallel() will fail
+> to scan few of these nodes.
+> 
+> Since memory attached numa nodes can be interleaved in any fashion, hence
+> ensure that the current code checks for all numa node ids
+> (.size = nr_node_ids). Let's still keep max_threads as N_MEMORY, so that
+> it can distributes all nr_node_ids among the these many no. threads.
+> 
+> e.g. qemu cmdline
+> ========================
+> numa_cmd="-numa node,nodeid=1,memdev=mem1,cpus=2-3 -numa node,nodeid=0,cpus=0-1 -numa dist,src=0,dst=1,val=20"
+> mem_cmd="-object memory-backend-ram,id=mem1,size=16G"
+> 
+> w/o this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
+> ==========================
+> ~ # cat /proc/meminfo  |grep -i huge
+> AnonHugePages:         0 kB
+> ShmemHugePages:        0 kB
+> FileHugePages:         0 kB
+> HugePages_Total:       0
+> HugePages_Free:        0
+> HugePages_Rsvd:        0
+> HugePages_Surp:        0
+> Hugepagesize:    1048576 kB
+> Hugetlb:               0 kB
+> 
+> with this patch for cmdline (default_hugepagesz=1GB hugepagesz=1GB hugepages=2):
+> ===========================
+> ~ # cat /proc/meminfo |grep -i huge
+> AnonHugePages:         0 kB
+> ShmemHugePages:        0 kB
+> FileHugePages:         0 kB
+> HugePages_Total:       2
+> HugePages_Free:        2
+> HugePages_Rsvd:        0
+> HugePages_Surp:        0
+> Hugepagesize:    1048576 kB
+> Hugetlb:         2097152 kB
+> 
+> Link: https://lkml.kernel.org/r/f8d8dad3a5471d284f54185f65d575a6aaab692b.1736592534.git.ritesh.list@gmail.com
+> Fixes: b78b27d02930 ("hugetlb: parallelize 1G hugetlb initialization")
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Reported-by: Pavithra Prakash <pavrampu@linux.ibm.com>
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Reviewed-by: Luiz Capitulino <luizcap@redhat.com>
+> Cc: Donet Tom <donettom@linux.ibm.com>
+> Cc: Gang Li <gang.li@linux.dev>
+> Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
+> Cc: David Rientjes <rientjes@google.com>
 
-The upstream commit SHA1 provided is correct: efbe8f81952fe469d38655744627d860879dcde8
+Acked-by: David Rientjes <rientjes@google.com>
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Dmitry Antipov<dmantipov@yandex.ru>
-Commit author: Anjaneyulu<pagadala.yesu.anjaneyulu@intel.com>
-
-
-Status in newer kernel trees:
-6.13.y | Branch not found
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  efbe8f81952fe ! 1:  bd8976ccdf328 wifi: iwlwifi: add a few rate index validity checks
-    @@ Metadata
-      ## Commit message ##
-         wifi: iwlwifi: add a few rate index validity checks
-     
-    +    commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
-    +
-         Validate index before access iwl_rate_mcs to keep rate->index
-         inside the valid boundaries. Use MCS_0_INDEX if index is less
-    -    than MCS_0_INDEX and MCS_9_INDEX if index is greater then
-    +    than MCS_0_INDEX and MCS_9_INDEX if index is greater than
-         MCS_9_INDEX.
-     
-         Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-         Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-         Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
-         Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-    +    Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-     
-      ## drivers/net/wireless/intel/iwlwifi/dvm/rs.c ##
-     @@
-    @@ drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-      // SPDX-License-Identifier: GPL-2.0-only
-      /******************************************************************************
-       *
-    -- * Copyright(c) 2005 - 2014, 2018 - 2022 Intel Corporation. All rights reserved.
-    +- * Copyright(c) 2005 - 2014, 2018 - 2021 Intel Corporation. All rights reserved.
-     + * Copyright(c) 2005 - 2014, 2018 - 2023 Intel Corporation. All rights reserved.
-       * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
-       * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
