@@ -1,194 +1,122 @@
-Return-Path: <stable+bounces-111106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D77A21AB8
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:09:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D83A21ABB
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6256E16198D
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:09:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 038041888572
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 10:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D1A1990C3;
-	Wed, 29 Jan 2025 10:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C398191F92;
+	Wed, 29 Jan 2025 10:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h464clCH"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="efCQwwYo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E132F171CD
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD2171CD
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738145339; cv=none; b=MVONwasRpeW3whc57TI0j531cUXoJCNJoNaDGz7pjLRyJlBwpwpPI811eWFKS11JtYUZ4a/w3ktLbq7NnXWnpncRc6K5FQ34jRA3imyjtcQssOiXk7btSuwpKbmzxzG86GrutJoNxMd/aNogwFRSFWR8N7f0bcO/bKFr9HfGnWc=
+	t=1738145450; cv=none; b=gC/5Yix7lDJL9LSGZnp98TE0ygkpgk2ONspfUhtX+xge0wJWUxeI917DovCGnxdOH1ffw0NFSdEbUMbcILAZBQpzQpqU3+JvV1QD5AjU6OQuPvhzDltLzXw7ts0eVEs6bYbUzsLT/6RiWJXJ22kANhTPTEKrr1cXMwLlpQnZTE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738145339; c=relaxed/simple;
-	bh=3oaltrIqO711OfCwUxwH9l9Tl0SYOcBxEsYnB0BVv+c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MTIH+gvFNw0nUHkHXMSlOSf5N1a+K85LP60Apn1zWoEqVd9N9uu/o9z1r+PTsU/9QAXSoOzM9vvpZUmRYfNe4IIkfUlSqsT60vPr2hHiDVaJVV5UdjHxpiTjktdxc7lCT0PvnB6f2QpPIBjQ3u0rHCXR+AEylrTmIUX4ysPpVEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h464clCH; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2164b1f05caso114757595ad.3
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 02:08:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738145337; x=1738750137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4eFjJLmA7+jY5KjyB1yzIOfrExQ6VpabMonRw1hJ84E=;
-        b=h464clCH0jz0dAY6FdLUZXIpCpA96Ki7SaVAeIEakS72CW9orIa2zSTBQE9TDsgCL1
-         jNTlGdlireOpq7Odku0Iza6qRVpz4h2FgBJWUXXrlTX+THmYtSxwYQ3Vf5OD2cggBszC
-         XyJXST2y7ttmAI9Q4Z+OLjK9E5Likm+yFH5n4tZjAUTd90oxV3gy1q0Hf2tB7xDhrm0b
-         VtCCNgmh3KrusJtyuUC5RvWYpcyGum5nuqm/xIFu8tBYhewwitWtn8qNsh0EKhDzx5ry
-         BAMHGrR2Z5Uvubq8YinRpd2LSnwSniTW44+kMnt+v9ESmV4U8dV1P+WrtWDhDJ/LNhjk
-         0fyA==
+	s=arc-20240116; t=1738145450; c=relaxed/simple;
+	bh=2cmhX3SiaBDOmlDhoCnQW8LAo9uSMEqjwJRfVQ3bk88=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bzQH5WymEnJCnyqD3LNiPOsvngAxhWNuIXJeGLKUrmEgkosqoFJiMusfVbaPbMExXOB9d/0Fws7B3ZcAZRiQWZ829kX6INiQ44BSVT48TxbLaE1mOIuS4sZYBHA+dJJ1odko+DTemEtFPlyKVVoBrrdhc4K3Tzvu8gdMHYAfB3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=efCQwwYo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738145447;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qZBAxKVcNOmMz7bK06WcrszPx+JkZyVjuNJwgFNHpPU=;
+	b=efCQwwYoXxeHn3shsjZEjmi21NYZl0YOd6g36hNSGYMSIympeSg33hjqXXHLVQk0ttc4b0
+	yFCCo8jcxAs6gjUlufGc+mdLup22j7T+Gdi+f8m1gWFJbTOvx6FeEknxgBJ0//Upzw4g3N
+	cBDdIhKdkV7WY4CsVCSIaLKJjdB6zSo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-gDofOAZaORiMOi3-DHyd7g-1; Wed, 29 Jan 2025 05:10:45 -0500
+X-MC-Unique: gDofOAZaORiMOi3-DHyd7g-1
+X-Mimecast-MFC-AGG-ID: gDofOAZaORiMOi3-DHyd7g
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-436225d4389so2473955e9.1
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 02:10:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738145337; x=1738750137;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4eFjJLmA7+jY5KjyB1yzIOfrExQ6VpabMonRw1hJ84E=;
-        b=a+hFBko5Yp30JnFfz2qPOt0VA7qcFAED9uzU7yHGlhlq0Qp8xX8Hy3Qb44MYOVjV7P
-         qwIkltTC06Z3pQIFVGJtctvZCZOTQxqUNF4UFL5EnTbh2yqpJWqpiKSpzI1VhEY3e1aV
-         e69hTDNA3uw9fbvqo8pDqcNPXfe2LU+qmpyamikVh8Prr33b2Hhe9gca84A1vaAHmbvo
-         cvnpovqYQxtFdJnxdui/gFF+ZsBfNugW2u3UjdQ9AAc/7bkFE3Ixm5kO4X+Empy/2rMW
-         sGtsgzfXR5zRm1w7zzHUyXAf1uOzYmyHVuImAxqXM44dtn9ZJSjLqn+qlrJrqqgD9Unt
-         +I0g==
-X-Forwarded-Encrypted: i=1; AJvYcCX6InfsneiTKa+qH0C0mG640s6MM7nazX+ldSB+nkHOQm0H+fbKgi76c9tfBL6LRXs8/kPU60s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysPYNpmAfCw07dnsL4xGtMuYu+7MJrnBOmCQMOH2h/zgLDxzJz
-	Gt/YUZXIQ+ZE5qTEP7x3Iua1uOgpntNFnw4nxGclg2tkgflkZ/2t
-X-Gm-Gg: ASbGncsmjnPvxIhqfZNR6QJqcJa6/HGSMpHiLKwqY11G3jDuoKGdzPwVwjmQmhydhtW
-	lQGskZvheEduezdlQk5sIwFbB2kTIntwcP8M688GnfcywBH+fsZcddgXjj6KTYZGrGGaCvxIi0a
-	srCYD/Czi850SYn30Vp1Mcn2kGr/sYJ+HCz+jtPSzTjhhR952s9Ec6ezQzbYYMh9XyGJAFB+MxL
-	FRPmxIk0Yw8k67g0HQwqxZxTM5GjBX/bq8k0X0gzsn0m2xHZ72+Nf0XBVCg6HGUuB3ellEojYnC
-	WBWt9LcZIOluuhAX0nQpvto+ZY9XAD0V
-X-Google-Smtp-Source: AGHT+IFu9zutwwiyXSYXOvcIiiLZl95OQxh8Qw0wNADOnSiF1SeNm1oMoqrIjLHbcsHK4atO62YRog==
-X-Received: by 2002:a17:902:ec8f:b0:216:5561:70d7 with SMTP id d9443c01a7336-21dd7e4264emr39113415ad.52.1738145337032;
-        Wed, 29 Jan 2025 02:08:57 -0800 (PST)
-Received: from hyeyoo-laptop.localdomain ([114.29.17.235])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da555a428sm94359375ad.84.2025.01.29.02.08.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 02:08:56 -0800 (PST)
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 mm-hotfixes] mm/zswap: fix inconsistency when zswap_store_page() fails
-Date: Wed, 29 Jan 2025 19:08:44 +0900
-Message-ID: <20250129100844.2935-1-42.hyeyoo@gmail.com>
-X-Mailer: git-send-email 2.47.1
+        d=1e100.net; s=20230601; t=1738145444; x=1738750244;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZBAxKVcNOmMz7bK06WcrszPx+JkZyVjuNJwgFNHpPU=;
+        b=VmYScX+v78u1TjSbgZziQ+RrcAoVFrmEYuGV1bkv7a//mZzrKYCIJD5rU1OFCPHfCU
+         988VKbeaYeT8sKP3a5v1TF3vP4dm+ecPFxqX5U71NONY6Kn9q5VmAtzxrglAqoGitClC
+         BmXGKmhP8GGSG7TVtmJq0njA/JzUZUD6jy9VSNaWkBEZPOO/2azmF0TWkl2pOe1Z6h3N
+         UQA6JiysjflDR+cDrF2CzVI6gxe8WosuyA8A/xxPw7sijfntLfvafKYVK7sWglwxwhZt
+         WtvWM+X2gmcWsJ+1un74wrEYd/eJrHwArFYj+anS57zaBe6UxmeJbcjUCpGKrgORE6vU
+         NnMw==
+X-Gm-Message-State: AOJu0YyMD7Iqh8ocJhKZk6fDLKreBvwRpUWD+5cBzRdZzGgXBU2yaU9J
+	RMXPBVtNR4NnRyMOlPdHX+KOWSafOLp3fGjCx7AxE+UyMQl8XkWnel4QW9d26N13wgSVVRKQbyr
+	pWTtf4EBepG+7opCFr0+fbZr1pfAy5n34kTwmoC2SROXi7Z2ix9cYZg==
+X-Gm-Gg: ASbGncvGAWHs78dNBEg20uRbodVMxY0vGmNjFpCzzgwLMoIzn5Zb9EA0WSzxLauL81Y
+	UKHxpEDbLYkdAIiNyFDwk0FIVr8Ic6bZGe0gmajsl+9UbMog+d3Nmz7+f9KH/ZL3IJRYsjMfzqC
+	B6t7YSrp/1KD9wrVR13NpaD0F4yePfq0OcN0kRNRCM3sXsQzXEgnaLjGnvBOqekBWp+SJ7XNdZA
+	ArO9u+PMLGvYLfYwCO6MykAJWGFQyOvgdEKUxpoZFQoKKcs0nqcplQeBb14xNdoTunn9p+ko5M1
+	Bq6uNVGhB/zj0S7RVbv1hPmHZuAL2jixp+nKMq3QS3yW
+X-Received: by 2002:a05:600c:4f0f:b0:434:fddf:5c06 with SMTP id 5b1f17b1804b1-438dbe8ca78mr21348585e9.1.1738145444646;
+        Wed, 29 Jan 2025 02:10:44 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFBPzW3m8objqfkQTJJB9YBCasvaC7BkSPKIlC03mwbU1xU7WmoynMSJnXRYI2mTeBYRgl58g==
+X-Received: by 2002:a05:600c:4f0f:b0:434:fddf:5c06 with SMTP id 5b1f17b1804b1-438dbe8ca78mr21348295e9.1.1738145444306;
+        Wed, 29 Jan 2025 02:10:44 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc13139sm17121495e9.3.2025.01.29.02.10.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jan 2025 02:10:43 -0800 (PST)
+Message-ID: <1972874d-50f7-418e-aeeb-a8b5a1c5f298@redhat.com>
+Date: Wed, 29 Jan 2025 11:10:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Commit b7c0ccdfbafd ("mm: zswap: support large folios in zswap_store()")
-skips charging any zswap entries when it failed to zswap the entire
-folio.
-
-However, when some base pages are zswapped but it failed to zswap
-the entire folio, the zswap operation is rolled back.
-When freeing zswap entries for those pages, zswap_entry_free() uncharges
-the zswap entries that were not previously charged, causing zswap charging
-to become inconsistent.
-
-This inconsistency triggers two warnings with following steps:
-  # On a machine with 64GiB of RAM and 36GiB of zswap
-  $ stress-ng --bigheap 2 # wait until the OOM-killer kills stress-ng
-  $ sudo reboot
-
-  The two warnings are:
-    in mm/memcontrol.c:163, function obj_cgroup_release():
-      WARN_ON_ONCE(nr_bytes & (PAGE_SIZE - 1));
-
-    in mm/page_counter.c:60, function page_counter_cancel():
-      if (WARN_ONCE(new < 0, "page_counter underflow: %ld nr_pages=%lu\n",
-	  new, nr_pages))
-
-zswap_stored_pages also becomes inconsistent in the same way.
-
-As suggested by Kanchana, increment zswap_stored_pages and charge zswap
-entries within zswap_store_page() when it succeeds. This way,
-zswap_entry_free() will decrement the counter and uncharge the entries
-when it failed to zswap the entire folio.
-
-While this could potentially be optimized by batching objcg charging
-and incrementing the counter, let's focus on fixing the bug this time
-and leave the optimization for later after some evaluation.
-
-After resolving the inconsistency, the warnings disappear.
-
-Fixes: b7c0ccdfbafd ("mm: zswap: support large folios in zswap_store()")
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/ast: Fix ast_dp connection status
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, Dave Airlie
+ <airlied@redhat.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org
 Cc: stable@vger.kernel.org
-Co-developed-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
----
+References: <20250124141142.2434138-1-jfalempe@redhat.com>
+ <93bfabd4-20a8-4d56-898b-943dccb41df2@suse.de>
+ <c0446bfe-5a06-47e1-b12a-3fae73365f36@redhat.com>
+Content-Language: en-US, fr
+In-Reply-To: <c0446bfe-5a06-47e1-b12a-3fae73365f36@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-v2 -> v3:
-  - Adjusted Kanchana's feedback:
-    - Fixed inconsistency in zswap_stored_pages
-    - Now objcg charging and incrementing zswap_store_pages is done
-      within zswap_stored_pages, one by one
+On 27/01/2025 13:52, Jocelyn Falempe wrote:
+> 
+> Thanks, interesting that it doesn't affect all hardwares.
+> I got reports from two different vendors about this issue.
+> 
+> If no other comments, I will push it to drm-misc-next tomorrow (only 
+> adding reported-by: and tested-by: tags).
+> 
 
- mm/zswap.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+I just pushed it to drm-misc-next.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 6504174fbc6a..f0bd962bffd5 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1504,11 +1504,14 @@ static ssize_t zswap_store_page(struct page *page,
- 	entry->pool = pool;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
-+	if (objcg)
-+		obj_cgroup_charge_zswap(objcg, entry->length);
- 	entry->referenced = true;
- 	if (entry->length) {
- 		INIT_LIST_HEAD(&entry->lru);
- 		zswap_lru_add(&zswap_list_lru, entry);
- 	}
-+	atomic_long_inc(&zswap_stored_pages);
- 
- 	return entry->length;
- 
-@@ -1526,7 +1529,6 @@ bool zswap_store(struct folio *folio)
- 	struct obj_cgroup *objcg = NULL;
- 	struct mem_cgroup *memcg = NULL;
- 	struct zswap_pool *pool;
--	size_t compressed_bytes = 0;
- 	bool ret = false;
- 	long index;
- 
-@@ -1569,15 +1571,11 @@ bool zswap_store(struct folio *folio)
- 		bytes = zswap_store_page(page, objcg, pool);
- 		if (bytes < 0)
- 			goto put_pool;
--		compressed_bytes += bytes;
- 	}
- 
--	if (objcg) {
--		obj_cgroup_charge_zswap(objcg, compressed_bytes);
-+	if (objcg)
- 		count_objcg_events(objcg, ZSWPOUT, nr_pages);
--	}
- 
--	atomic_long_add(nr_pages, &zswap_stored_pages);
- 	count_vm_events(ZSWPOUT, nr_pages);
- 
- 	ret = true;
+Thanks
+
 -- 
-2.47.1
+
+Jocelyn
 
 
