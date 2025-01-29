@@ -1,217 +1,209 @@
-Return-Path: <stable+bounces-111115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B61A21C6B
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:46:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C44FAA21CC4
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ED5C3A372D
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:46:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A516D1670D0
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5850A1B425C;
-	Wed, 29 Jan 2025 11:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7071D90C5;
+	Wed, 29 Jan 2025 11:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QPRpLZds"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="FrGNJGhx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B4C1EEE6
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 11:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA1C1BD007;
+	Wed, 29 Jan 2025 11:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738151189; cv=none; b=QJfVFMmTEHOC4mK5KoNrKKnRBYVjdmNJD2QRY0z0zRa5SKrQJMLt/sKwmzH1/aU7uMbxhAN15+lmJr6m1ssi9l7sTQe94Lzy3Iz7+XfzjP9tF+MQv33RgSgTKRissZoRq2+FEPfGcTEvDAhmXPyjPOH/6LktBxJ2NcmP7e2PGDw=
+	t=1738151803; cv=none; b=HyPRu5q+BuIARGnpgs4ykmvtgSl4U7/IHODk7B82EJpisPjzW8pPvdx+oosEi4kSGYJrYHMbb0s64KadKtImUyN8Jen5QyBcXCp6x/iKJLZIK8NKv17Vm9+q/81GZ0+8aLCJkJRDzGmnFNeo3VObTX1Ra23OpPMxnFzhd7LaqBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738151189; c=relaxed/simple;
-	bh=2/5Cesm6T52JGLmP1V0bhCfHUOuO0BHy8umtVnI6bWQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ADqSgvkW8zHFkLs7ioDYkISu2nG0d7nw/0tvEGAlxKGS2zgQxmVZ0jwou/jNMBK/ev7fNpH2ZYbFoRnM1N3MysUOThqlFe0lj/aQDJIgXedrrqkopx6n0jT8/ZYkp1O22ZjLu5Vs6OwQsARtfPccoCfcGO4DkqGH1HANZ33bz94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QPRpLZds; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso48134505e9.2
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 03:46:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738151185; x=1738755985; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0RG5JoDAs1zv39F8cCeeXgMYLOoJDk5jYs6kzdh8JQs=;
-        b=QPRpLZdscQTZot47BJjTRa8CUP6jfBUPMpXoYX3OdBrMZo/HA/MOKKeiHVevwq7cQ2
-         gkUXhionWEXwrZyI2KUBUWOmZsUH0RJr7tYxOtEEyvpgrJAVyyF9CCRQCbVO16UjvSBS
-         NhzKlzpDu5Xg7Do5OQuS6+0Hf5iPid9LO6I7VELQUKEisLceoRpb9hkc8KGM7Ylqcqnl
-         CYRU8mgLsQWRfOcN8/MGaJy1VphwwDM1xTjbV/sxSSltMh93P/JvFsEXdYCbatxMzsSf
-         nDa+2PdMXUr7CJn6nSM+s6vC9c8ZI2/RyW0QceyrBppEPRhAjhAZjMWCv2TALYWDzklB
-         uuBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738151185; x=1738755985;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0RG5JoDAs1zv39F8cCeeXgMYLOoJDk5jYs6kzdh8JQs=;
-        b=iNnl3YIdFZi/KB0CIsGJXhpPHBjnfoZ0XCM0nNp6jg2nmfOk7SiRYW++E7oUEC/KQp
-         DL/wPJOr+XQFDXLCSD7rvkAzUJWY3e+ZtKvX63mY+sExKXlMvjc96jzyNorOvapn0fui
-         JJRu9WZNyGk+vQnKKBNOUUdIBLA1la36uIHZqTPBCFKo8W+xAg1+nYWL2PbbLkBGSQpB
-         WolKGr3LEUNsRx/9qZzuDr+iF863LxunOal9ZPU/m9dLILWqyXPGvAOkbb2QBXtg33lK
-         AUPuxEYPM2pOw+cvcy74Jtc4LHVKGPIlVeVr3681Zh15CLkVSP4rRT9oTFUA5MlKJ5sG
-         68Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcT9WksQlt/XXcyuIRoK5XStysattYzoJea+z4gtyCLd6s5GVji12On7ZpkbBd5yzpJV8z8D4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3k5zOtlaQldNzU+X22pEtXYN6omTuI1mw4xOeGhRFLbvus2e3
-	p2CT3z6OJ26OL11IDTv74u3SUW0WDvzPz8xcigPOgLOo76zGII1ojnaiMGPCnB8=
-X-Gm-Gg: ASbGnctl5se+EYY5iGStlVqORO6ag8Cnht2WIGBV2G5J8jzPihHyVuGXgBMio5l96I2
-	NFjeNTmnI2EyblgXRCiEswet+5luEum/nxkzmjh5dfaQysFteRxQV8jY3y/fgxZrfWnzKlI1YEY
-	1j6AnfHtsVW7oke4KONskHuXddputGKvHlkjPA86zxcq4pu9VFrrO1+tXtSxTZ2xi0sM8gIo4ub
-	PFs9qSwm0BEBu5T9PZ/mbWXSRbeEHgpHLo4OZ8jdIkR7xO6QI+U5dOn26sxKAriPB9/fT52Qkpu
-	crEqfAelorORMmU=
-X-Google-Smtp-Source: AGHT+IF8VEpU773V6Mv4gA6jpI+wlQBAoSpOa7pNliiIowvKtUjXOHDFyMOKjA0N8si3dnY7ndFgOA==
-X-Received: by 2002:a05:600c:3b94:b0:434:a929:42bb with SMTP id 5b1f17b1804b1-438dc3cbb71mr22847265e9.18.1738151185218;
-        Wed, 29 Jan 2025 03:46:25 -0800 (PST)
-Received: from [127.0.1.1] ([86.123.96.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc2f17dsm19914475e9.23.2025.01.29.03.46.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 03:46:24 -0800 (PST)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Wed, 29 Jan 2025 13:46:15 +0200
-Subject: [PATCH RFC v2] soc: qcom: pmic_glink: Fix device access from
- worker during suspend
+	s=arc-20240116; t=1738151803; c=relaxed/simple;
+	bh=wE9jWyFd1b3UACwyfBErLDYaZMqPYfhGjiMBUJGGYpw=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
+	 In-Reply-To:Content-Type; b=URN4WKkbpWK1csnwwt6Qghlf5r9/e0iAcszr8ZUulgb8Af/Fr6m6MqvsPGja7VRdiOfG+q480sothWISguvgHQOvNCtYOSUZAIjDmVsed5/9JHgLUXn6dCJBM/1CRPMCnJ26baBqZaF5Hj9T/SZMk8a+FJS/vmbGaGcDLlEIIAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=FrGNJGhx; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:c:0:640:bd4a:0])
+	by forward500a.mail.yandex.net (Yandex) with ESMTPS id D0D8061A3C;
+	Wed, 29 Jan 2025 14:50:19 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id HocYHI8OmqM0-2ooCYqPw;
+	Wed, 29 Jan 2025 14:50:19 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1738151419; bh=6bXVcXuRvFT9i7bAH3dfCAQMGE1LXEeA2uARmJsIq9w=;
+	h=In-Reply-To:Subject:To:From:Cc:Date:References:Message-ID;
+	b=FrGNJGhxsV5ssI6R+OZ7z4yoUgvHhaVr9wiGpaOvZ3XB91G+1g5hhYHdlqw3BHDpw
+	 iCpu+5lvpvMQCVDcUN2Ak9Y+KmdGwrzeYid+t1KnLc4dVpAZykT20suyOFsnGhzn65
+	 xIqGu+53+TYbmADXGfTXCzDTG0CFhoFAJTJy/c5Y=
+Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <c3861593-7905-421b-8833-989e6a4e3c3c@yandex.ru>
+Date: Wed, 29 Jan 2025 14:50:17 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org,
+ stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20250129103120.1985802-1-dmantipov@yandex.ru>
+ <1bc323264d3118434fa748efa59ed4da9dba6157.camel@sipsolutions.net>
+Content-Language: en-MW
+From: Dmitry Antipov <dmantipov@yandex.ru>
+Autocrypt: addr=dmantipov@yandex.ru; keydata=
+ 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
+ A/UwwXBRuvydGV0=
+Subject: Re: [PATCH 6.1] wifi: iwlwifi: assume known PNVM power table size
+In-Reply-To: <1bc323264d3118434fa748efa59ed4da9dba6157.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v2-1-de2a3eca514e@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAYVmmcC/62OzQ6CMBCEX4Xs2TW0/Bw8mZj4AF4NB2wX2AAtd
- hU0hHe34Rk8zkxm5ltBKDAJnJIVAs0s7F0U+pCA6WrXErKNGnSqi1SpFMUbfBo/4jSywXZg12P
- DH7SxbAhrY0gEvcPFh54CLh0PhPKWiZwli3VT5KagPCNbQnyZAsX6TnCH2/UCVTQ7lpcP351qV
- nv0N4BZoULKdGPLR5NpTec4UQd/9KGFatu2H782wjIUAQAA
-X-Change-ID: 20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-af54c5e43ed6
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org, 
- Abel Vesa <abel.vesa@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4794; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=2/5Cesm6T52JGLmP1V0bhCfHUOuO0BHy8umtVnI6bWQ=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnmhULILNLbNYBd02zsf/Rk3N6ATT657LrCwWJX
- DAGpWJLuh2JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ5oVCwAKCRAbX0TJAJUV
- VoZ6D/4weXPPSkpuITPjCxYwdKngGIngl+opFnUYiAxKTW/tQGDT17/jlCpc6EIC1lvRP2IxN+y
- xJsQqu74Pe4j8kfZ54FBVAYra92E8j2TE8x1Rqh2G5WY3k/d0ermvZpwSleQzUC3g0fWab2WGoZ
- SZbfxJhIKzapx4zkus/EtMo82/cR8Onb1AimtZB1Ycll2c+J7waogt2zprFYKl2KP+rkdsJxzGh
- EEnuEhPvSZ4u3J+P1qUXG39853nFQ6U3TzWQHUqIMPVlYtoItSwXW5x5yF7JELRIOIFrywqVN/g
- 8/E1Y6QLVwRyKcyqk8akzcdcmMb+9XiZY+Ot7bSraWxlTFxhmOXHjKmnDUzXboRhghMtNuoTK9s
- D+T9TNJGiPOqbnRbYv4Xx+YElic1N+CA8jOtNLiEgEqE8IqTjrNcI02NZ4TTr00vwlR3op/mc3y
- 4QwiPIorRrcIj8U+MUYuJ1FuUzUY36/6g/GX8/e45K5eccSf216qNii1pj9cQBJo9JsFgQBBgk7
- +HODGTl8g42sGmS8sGunavf7W11TD59yc1SJoVJ+p/Rb01hINqwRellewNzVaJm3t3BrC7iDnPO
- 6PY9soDHhiTIxqgRBfxqQBAK6qJhh7ribpGw0lrvOrpXySI75dmm6KWEZ8VIdp6n0Y6ZHvLKl9A
- LJdD+lJCbZMrzeA==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-For historical reasons, the GLINK smem interrupt is registered with
-IRRQF_NO_SUSPEND flag set, which is the underlying problem here, since the
-incoming messages can be delivered during late suspend and early
-resume.
+On 1/29/25 1:48 PM, Johannes Berg wrote:
 
-In this specific case, the pmic_glink_altmode_worker() currently gets
-scheduled on the system_wq which can be scheduled to run while devices
-are still suspended. This proves to be a problem when a Type-C retimer,
-switch or mux that is controlled over a bus like I2C, because the I2C
-controller is suspended.
+> I don't see that there's uninitialized use of 'len'. Maybe some static
+> checkers aren't seeing through this, but the code is fine:
+> 
+> If iwl_pnvm_get_from_fs() is successful, then 'len' is initialized. If
+> it fails, we goto skip_parse.
+> 
+> There, if trans->reduce_power_loaded is false, 'len' again is either
+> initialized or we go to skip_reduce_power and never use 'len'.
+> 
+> If trans->reduce_power_loaded is true, then we get to
+> iwl_trans_pcie_ctx_info_gen3_set_reduce_power() which doesn't use 'len'
+> in this case.
 
-This has been proven to be the case on the X Elite boards where such
-retimers (ParadeTech PS8830) are used in order to handle Type-C
-orientation and altmode configuration. The following warning is thrown:
+Hm. As of 6.1.127, what I'm seeing is ('cat -n' annotated by me):
 
-[   35.134876] i2c i2c-4: Transfer while suspended
-[   35.143865] WARNING: CPU: 0 PID: 99 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xb4/0x57c [i2c_core]
-[   35.352879] Workqueue: events pmic_glink_altmode_worker [pmic_glink_altmode]
-[   35.360179] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   35.455242] Call trace:
-[   35.457826]  __i2c_transfer+0xb4/0x57c [i2c_core] (P)
-[   35.463086]  i2c_transfer+0x98/0xf0 [i2c_core]
-[   35.467713]  i2c_transfer_buffer_flags+0x54/0x88 [i2c_core]
-[   35.473502]  regmap_i2c_write+0x20/0x48 [regmap_i2c]
-[   35.478659]  _regmap_raw_write_impl+0x780/0x944
-[   35.483401]  _regmap_bus_raw_write+0x60/0x7c
-[   35.487848]  _regmap_write+0x134/0x184
-[   35.491773]  regmap_write+0x54/0x78
-[   35.495418]  ps883x_set+0x58/0xec [ps883x]
-[   35.499688]  ps883x_sw_set+0x60/0x84 [ps883x]
-[   35.504223]  typec_switch_set+0x48/0x74 [typec]
-[   35.508952]  pmic_glink_altmode_worker+0x44/0x1fc [pmic_glink_altmode]
-[   35.515712]  process_scheduled_works+0x1a0/0x2d0
-[   35.520525]  worker_thread+0x2a8/0x3c8
-[   35.524449]  kthread+0xfc/0x184
-[   35.527749]  ret_from_fork+0x10/0x20
+    258	int iwl_pnvm_load(struct iwl_trans *trans,
+    259			  struct iwl_notif_wait_data *notif_wait)
+    260	{
+    261		u8 *data;
+    262		size_t len;                                                     /* uninitialized */
+    263		struct pnvm_sku_package *package;
+    264		struct iwl_notification_wait pnvm_wait;
+    265		static const u16 ntf_cmds[] = { WIDE_ID(REGULATORY_AND_NVM_GROUP,
+    266							PNVM_INIT_COMPLETE_NTFY) };
+    267		int ret;
+    268	
+    269		/* if the SKU_ID is empty, there's nothing to do */
+    270		if (!trans->sku_id[0] && !trans->sku_id[1] && !trans->sku_id[2])
+    271			return 0;
+    272	
+    273		/*
+    274		 * If we already loaded (or tried to load) it before, we just
+    275		 * need to set it again.
+    276		 */
+    277		if (trans->pnvm_loaded) {
+    278			ret = iwl_trans_set_pnvm(trans, NULL, 0);
+    279			if (ret)
+    280				return ret;
+    281			goto skip_parse;                                        /* taking goto */
+    282		}
+    283	
+    284		/* First attempt to get the PNVM from BIOS */
+    285		package = iwl_uefi_get_pnvm(trans, &len);
+    286		if (!IS_ERR_OR_NULL(package)) {
+    287			if (len >= sizeof(*package)) {
+    288				/* we need only the data */
+    289				len -= sizeof(*package);
+    290				data = kmemdup(package->data, len, GFP_KERNEL);
+    291			} else {
+    292				data = NULL;
+    293			}
+    294	
+    295			/* free package regardless of whether kmemdup succeeded */
+    296			kfree(package);
+    297	
+    298			if (data)
+    299				goto parse;
+    300		}
+    301	
+    302		/* If it's not available, try from the filesystem */
+    303		ret = iwl_pnvm_get_from_fs(trans, &data, &len);
+    304		if (ret) {
+    305			/*
+    306			 * Pretend we've loaded it - at least we've tried and
+    307			 * couldn't load it at all, so there's no point in
+    308			 * trying again over and over.
+    309			 */
+    310			trans->pnvm_loaded = true;
+    311	
+    312			goto skip_parse;
+    313		}
+    314	
+    315	parse:
+    316		iwl_pnvm_parse(trans, data, len);
+    317	
+    318		kfree(data);
+    319	
+    320	skip_parse:
+    321		data = NULL;
+    322		/* now try to get the reduce power table, if not loaded yet */
+    323		if (!trans->reduce_power_loaded) {                              /* the condition is false */
+    324			data = iwl_uefi_get_reduced_power(trans, &len);
+    325			if (IS_ERR_OR_NULL(data)) {
+    326				/*
+    327				 * Pretend we've loaded it - at least we've tried and
+    328				 * couldn't load it at all, so there's no point in
+    329				 * trying again over and over.
+    330				 */
+    331				trans->reduce_power_loaded = true;
+    332	
+    333				goto skip_reduce_power;
+    334			}
+    335		}
+    336	
+    337		ret = iwl_trans_set_reduce_power(trans, data, len);             /* len - ? */
+    338		if (ret)
+    339			IWL_DEBUG_FW(trans,
+    340				     "Failed to set reduce power table %d\n",
+    341				     ret);
+    342		kfree(data);
 
-The proper solution here should be to not deliver these kind of messages
-during system suspend at all, or at least make it configurable per glink
-client. But simply dropping the IRQF_NO_SUSPEND flag entirely will break
-other clients. The final shape of the rework of the pmic glink driver in
-order to fulfill both the filtering of the messages that need to be able
-to wake-up the system and the queueing of these messages until the system
-has properly resumed is still being discussed and it is planned as a
-future effort.
+Am I missing something?
 
-Meanwhile, the stop-gap fix here is to schedule the pmic glink altmode
-worker on the system_freezable_wq instead of the system_wq. This will
-result in the altmode worker not being scheduled to run until the
-devices are resumed first, which will give the controllers like I2C a
-chance to resume before the transfer is requested.
-
-Reported-by: Johan Hovold <johan+linaro@kernel.org>
-Closes: https://lore.kernel.org/lkml/Z1CCVjEZMQ6hJ-wK@hovoldconsulting.com/
-Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-Cc: stable@vger.kernel.org    # 6.3
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
-Changes in v2:
-- Re-worded the commit to explain the underlying problem and how
-  this fix is just a stop-gap for the pmic glink client for now.
-- Added Johan's Reported-by tag and link
-- Added Caleb's Reviewed-by tag
-- Link to v1: https://lore.kernel.org/r/20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org
----
- drivers/soc/qcom/pmic_glink_altmode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
-index bd06ce16180411059e9efb14d9aeccda27744280..bde129aa7d90a39becaa720376c0539bcaa492fb 100644
---- a/drivers/soc/qcom/pmic_glink_altmode.c
-+++ b/drivers/soc/qcom/pmic_glink_altmode.c
-@@ -295,7 +295,7 @@ static void pmic_glink_altmode_sc8180xp_notify(struct pmic_glink_altmode *altmod
- 	alt_port->mode = mode;
- 	alt_port->hpd_state = hpd_state;
- 	alt_port->hpd_irq = hpd_irq;
--	schedule_work(&alt_port->work);
-+	queue_work(system_freezable_wq, &alt_port->work);
- }
- 
- #define SC8280XP_DPAM_MASK	0x3f
-@@ -338,7 +338,7 @@ static void pmic_glink_altmode_sc8280xp_notify(struct pmic_glink_altmode *altmod
- 	alt_port->mode = mode;
- 	alt_port->hpd_state = hpd_state;
- 	alt_port->hpd_irq = hpd_irq;
--	schedule_work(&alt_port->work);
-+	queue_work(system_freezable_wq, &alt_port->work);
- }
- 
- static void pmic_glink_altmode_callback(const void *data, size_t len, void *priv)
-
----
-base-commit: da7e6047a6264af16d2cb82bed9b6caa33eaf56a
-change-id: 20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-af54c5e43ed6
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
+Dmitry
 
 
