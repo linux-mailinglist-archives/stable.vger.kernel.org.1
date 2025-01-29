@@ -1,324 +1,217 @@
-Return-Path: <stable+bounces-111114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B52EA21C12
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:23:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B61A21C6B
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE92C3A3404
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ED5C3A372D
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 11:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4B51BD9E6;
-	Wed, 29 Jan 2025 11:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5850A1B425C;
+	Wed, 29 Jan 2025 11:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="f7vc5PDh";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="f7vc5PDh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QPRpLZds"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15F61AAE01;
-	Wed, 29 Jan 2025 11:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B4C1EEE6
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 11:46:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738149774; cv=none; b=ZsnHrHP1pLsO3bbdZYtOce9DG43QovhRTst2vp/xDvvu8LPwsb6HeR5Rrbdz8bEgg8zGbxvvAshhuoYK47WdML3AFYrvbTGyLZ/iHELqa+dqaW9eT8KzAr51R+Tt7bboPx4t5ypy/pPjktJz4lyROzvXC1AitbnvXhPJ+NswwmY=
+	t=1738151189; cv=none; b=QJfVFMmTEHOC4mK5KoNrKKnRBYVjdmNJD2QRY0z0zRa5SKrQJMLt/sKwmzH1/aU7uMbxhAN15+lmJr6m1ssi9l7sTQe94Lzy3Iz7+XfzjP9tF+MQv33RgSgTKRissZoRq2+FEPfGcTEvDAhmXPyjPOH/6LktBxJ2NcmP7e2PGDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738149774; c=relaxed/simple;
-	bh=kJ+sVjc09SMmCjC36y3BSChpyhgwQ/u/jQHMHdFN9Nc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bWVn9p0SaqjheNq7koMVM5SqDNyr8SNokvWhUR+tAxCsR/o9gvSEGg1Gyx9VdZ/jIRrfGCRcg4yF2D86XNheB3XWREMQ11fGz9N5I/KAP9RsWfbiZ5jdf6zLtikLO1QCDeGVzsx7yvYuAG36p3bcXvU3/oUbiFQsOe8JodoD+mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=f7vc5PDh; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=f7vc5PDh; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id AFE231F365;
-	Wed, 29 Jan 2025 11:22:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1738149769; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kJ+sVjc09SMmCjC36y3BSChpyhgwQ/u/jQHMHdFN9Nc=;
-	b=f7vc5PDhDRqWblW/GZdLTykMmWWjLklpvDwps0adPsGref8qZhZb3sW1yy4cxwQ99Fu5h8
-	ls8SyILmsY1GTfjutMcTrzJ/mDSUK0xRS2R96L7Pfjbf8tMf3BctFsGxR8RSgIPqrZf7TY
-	2YKH1FV2x48ldHUoU1sjVCNoCIRjuM4=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1738149769; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=kJ+sVjc09SMmCjC36y3BSChpyhgwQ/u/jQHMHdFN9Nc=;
-	b=f7vc5PDhDRqWblW/GZdLTykMmWWjLklpvDwps0adPsGref8qZhZb3sW1yy4cxwQ99Fu5h8
-	ls8SyILmsY1GTfjutMcTrzJ/mDSUK0xRS2R96L7Pfjbf8tMf3BctFsGxR8RSgIPqrZf7TY
-	2YKH1FV2x48ldHUoU1sjVCNoCIRjuM4=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5DC99137DB;
-	Wed, 29 Jan 2025 11:22:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RAg8FYkPmmf4PQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Wed, 29 Jan 2025 11:22:49 +0000
-Message-ID: <83bd90c7-8879-4462-9548-bb5b69cac39e@suse.com>
-Date: Wed, 29 Jan 2025 12:22:48 +0100
+	s=arc-20240116; t=1738151189; c=relaxed/simple;
+	bh=2/5Cesm6T52JGLmP1V0bhCfHUOuO0BHy8umtVnI6bWQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ADqSgvkW8zHFkLs7ioDYkISu2nG0d7nw/0tvEGAlxKGS2zgQxmVZ0jwou/jNMBK/ev7fNpH2ZYbFoRnM1N3MysUOThqlFe0lj/aQDJIgXedrrqkopx6n0jT8/ZYkp1O22ZjLu5Vs6OwQsARtfPccoCfcGO4DkqGH1HANZ33bz94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QPRpLZds; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso48134505e9.2
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 03:46:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738151185; x=1738755985; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0RG5JoDAs1zv39F8cCeeXgMYLOoJDk5jYs6kzdh8JQs=;
+        b=QPRpLZdscQTZot47BJjTRa8CUP6jfBUPMpXoYX3OdBrMZo/HA/MOKKeiHVevwq7cQ2
+         gkUXhionWEXwrZyI2KUBUWOmZsUH0RJr7tYxOtEEyvpgrJAVyyF9CCRQCbVO16UjvSBS
+         NhzKlzpDu5Xg7Do5OQuS6+0Hf5iPid9LO6I7VELQUKEisLceoRpb9hkc8KGM7Ylqcqnl
+         CYRU8mgLsQWRfOcN8/MGaJy1VphwwDM1xTjbV/sxSSltMh93P/JvFsEXdYCbatxMzsSf
+         nDa+2PdMXUr7CJn6nSM+s6vC9c8ZI2/RyW0QceyrBppEPRhAjhAZjMWCv2TALYWDzklB
+         uuBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738151185; x=1738755985;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0RG5JoDAs1zv39F8cCeeXgMYLOoJDk5jYs6kzdh8JQs=;
+        b=iNnl3YIdFZi/KB0CIsGJXhpPHBjnfoZ0XCM0nNp6jg2nmfOk7SiRYW++E7oUEC/KQp
+         DL/wPJOr+XQFDXLCSD7rvkAzUJWY3e+ZtKvX63mY+sExKXlMvjc96jzyNorOvapn0fui
+         JJRu9WZNyGk+vQnKKBNOUUdIBLA1la36uIHZqTPBCFKo8W+xAg1+nYWL2PbbLkBGSQpB
+         WolKGr3LEUNsRx/9qZzuDr+iF863LxunOal9ZPU/m9dLILWqyXPGvAOkbb2QBXtg33lK
+         AUPuxEYPM2pOw+cvcy74Jtc4LHVKGPIlVeVr3681Zh15CLkVSP4rRT9oTFUA5MlKJ5sG
+         68Aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcT9WksQlt/XXcyuIRoK5XStysattYzoJea+z4gtyCLd6s5GVji12On7ZpkbBd5yzpJV8z8D4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3k5zOtlaQldNzU+X22pEtXYN6omTuI1mw4xOeGhRFLbvus2e3
+	p2CT3z6OJ26OL11IDTv74u3SUW0WDvzPz8xcigPOgLOo76zGII1ojnaiMGPCnB8=
+X-Gm-Gg: ASbGnctl5se+EYY5iGStlVqORO6ag8Cnht2WIGBV2G5J8jzPihHyVuGXgBMio5l96I2
+	NFjeNTmnI2EyblgXRCiEswet+5luEum/nxkzmjh5dfaQysFteRxQV8jY3y/fgxZrfWnzKlI1YEY
+	1j6AnfHtsVW7oke4KONskHuXddputGKvHlkjPA86zxcq4pu9VFrrO1+tXtSxTZ2xi0sM8gIo4ub
+	PFs9qSwm0BEBu5T9PZ/mbWXSRbeEHgpHLo4OZ8jdIkR7xO6QI+U5dOn26sxKAriPB9/fT52Qkpu
+	crEqfAelorORMmU=
+X-Google-Smtp-Source: AGHT+IF8VEpU773V6Mv4gA6jpI+wlQBAoSpOa7pNliiIowvKtUjXOHDFyMOKjA0N8si3dnY7ndFgOA==
+X-Received: by 2002:a05:600c:3b94:b0:434:a929:42bb with SMTP id 5b1f17b1804b1-438dc3cbb71mr22847265e9.18.1738151185218;
+        Wed, 29 Jan 2025 03:46:25 -0800 (PST)
+Received: from [127.0.1.1] ([86.123.96.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc2f17dsm19914475e9.23.2025.01.29.03.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2025 03:46:24 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+Date: Wed, 29 Jan 2025 13:46:15 +0200
+Subject: [PATCH RFC v2] soc: qcom: pmic_glink: Fix device access from
+ worker during suspend
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: v5.4.289 failed to boot with error megasas_build_io_fusion 3219
- sge_count (-12) is out of range
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: Konrad Wilk <konrad.wilk@oracle.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "sstabellini@kernel.org" <sstabellini@kernel.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org
-References: <7dc143fa-4a48-440b-b624-ac57a361ac74@oracle.com>
- <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
- <2025012919-series-chaps-856e@gregkh>
- <8eb33b38-23e1-4e43-8952-3f2b05660236@oracle.com>
- <2025012936-finalize-ducktail-c524@gregkh>
- <1f017284-1a29-49d8-b0d9-92409561990e@oracle.com>
- <2025012956-jiffy-condone-3137@gregkh>
- <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
-Content-Language: en-US
-From: Juergen Gross <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ATVvY1dA3DXYncI2xe3rxfCi"
-X-Spam-Score: -6.20
-X-Spamd-Result: default: False [-6.20 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SIGNED_PGP(-2.00)[];
-	NEURAL_HAM_LONG(-1.00)[-0.998];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_UNKNOWN(0.10)[application/pgp-keys];
-	MIME_BASE64_TEXT(0.10)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	HAS_ATTACHMENT(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250129-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v2-1-de2a3eca514e@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAAYVmmcC/62OzQ6CMBCEX4Xs2TW0/Bw8mZj4AF4NB2wX2AAtd
+ hU0hHe34Rk8zkxm5ltBKDAJnJIVAs0s7F0U+pCA6WrXErKNGnSqi1SpFMUbfBo/4jSywXZg12P
+ DH7SxbAhrY0gEvcPFh54CLh0PhPKWiZwli3VT5KagPCNbQnyZAsX6TnCH2/UCVTQ7lpcP351qV
+ nv0N4BZoULKdGPLR5NpTec4UQd/9KGFatu2H782wjIUAQAA
+X-Change-ID: 20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-af54c5e43ed6
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Caleb Connolly <caleb.connolly@linaro.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org, 
+ Abel Vesa <abel.vesa@linaro.org>
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4794; i=abel.vesa@linaro.org;
+ h=from:subject:message-id; bh=2/5Cesm6T52JGLmP1V0bhCfHUOuO0BHy8umtVnI6bWQ=;
+ b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBnmhULILNLbNYBd02zsf/Rk3N6ATT657LrCwWJX
+ DAGpWJLuh2JAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCZ5oVCwAKCRAbX0TJAJUV
+ VoZ6D/4weXPPSkpuITPjCxYwdKngGIngl+opFnUYiAxKTW/tQGDT17/jlCpc6EIC1lvRP2IxN+y
+ xJsQqu74Pe4j8kfZ54FBVAYra92E8j2TE8x1Rqh2G5WY3k/d0ermvZpwSleQzUC3g0fWab2WGoZ
+ SZbfxJhIKzapx4zkus/EtMo82/cR8Onb1AimtZB1Ycll2c+J7waogt2zprFYKl2KP+rkdsJxzGh
+ EEnuEhPvSZ4u3J+P1qUXG39853nFQ6U3TzWQHUqIMPVlYtoItSwXW5x5yF7JELRIOIFrywqVN/g
+ 8/E1Y6QLVwRyKcyqk8akzcdcmMb+9XiZY+Ot7bSraWxlTFxhmOXHjKmnDUzXboRhghMtNuoTK9s
+ D+T9TNJGiPOqbnRbYv4Xx+YElic1N+CA8jOtNLiEgEqE8IqTjrNcI02NZ4TTr00vwlR3op/mc3y
+ 4QwiPIorRrcIj8U+MUYuJ1FuUzUY36/6g/GX8/e45K5eccSf216qNii1pj9cQBJo9JsFgQBBgk7
+ +HODGTl8g42sGmS8sGunavf7W11TD59yc1SJoVJ+p/Rb01hINqwRellewNzVaJm3t3BrC7iDnPO
+ 6PY9soDHhiTIxqgRBfxqQBAK6qJhh7ribpGw0lrvOrpXySI75dmm6KWEZ8VIdp6n0Y6ZHvLKl9A
+ LJdD+lJCbZMrzeA==
+X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
+ fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ATVvY1dA3DXYncI2xe3rxfCi
-Content-Type: multipart/mixed; boundary="------------Vp4XYrfeinVwEvuNrWn450MA";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: Konrad Wilk <konrad.wilk@oracle.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "sstabellini@kernel.org" <sstabellini@kernel.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org
-Message-ID: <83bd90c7-8879-4462-9548-bb5b69cac39e@suse.com>
-Subject: Re: v5.4.289 failed to boot with error megasas_build_io_fusion 3219
- sge_count (-12) is out of range
-References: <7dc143fa-4a48-440b-b624-ac57a361ac74@oracle.com>
- <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
- <2025012919-series-chaps-856e@gregkh>
- <8eb33b38-23e1-4e43-8952-3f2b05660236@oracle.com>
- <2025012936-finalize-ducktail-c524@gregkh>
- <1f017284-1a29-49d8-b0d9-92409561990e@oracle.com>
- <2025012956-jiffy-condone-3137@gregkh>
- <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
-In-Reply-To: <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
+For historical reasons, the GLINK smem interrupt is registered with
+IRRQF_NO_SUSPEND flag set, which is the underlying problem here, since the
+incoming messages can be delivered during late suspend and early
+resume.
 
---------------Vp4XYrfeinVwEvuNrWn450MA
-Content-Type: multipart/mixed; boundary="------------cRXte0Sy5h7PSMais8nDyUqr"
+In this specific case, the pmic_glink_altmode_worker() currently gets
+scheduled on the system_wq which can be scheduled to run while devices
+are still suspended. This proves to be a problem when a Type-C retimer,
+switch or mux that is controlled over a bus like I2C, because the I2C
+controller is suspended.
 
---------------cRXte0Sy5h7PSMais8nDyUqr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+This has been proven to be the case on the X Elite boards where such
+retimers (ParadeTech PS8830) are used in order to handle Type-C
+orientation and altmode configuration. The following warning is thrown:
 
-T24gMjkuMDEuMjUgMTA6MTUsIEhhcnNodmFyZGhhbiBKaGEgd3JvdGU6DQo+IA0KPiBPbiAy
-OS8wMS8yNSAyOjM0IFBNLCBHcmVnIEtIIHdyb3RlOg0KPj4gT24gV2VkLCBKYW4gMjksIDIw
-MjUgYXQgMDI6Mjk6NDhQTSArMDUzMCwgSGFyc2h2YXJkaGFuIEpoYSB3cm90ZToNCj4+PiBI
-aSBHcmVnLA0KPj4+DQo+Pj4gT24gMjkvMDEvMjUgMjoxOCBQTSwgR3JlZyBLSCB3cm90ZToN
-Cj4+Pj4gT24gV2VkLCBKYW4gMjksIDIwMjUgYXQgMDI6MTM6MzRQTSArMDUzMCwgSGFyc2h2
-YXJkaGFuIEpoYSB3cm90ZToNCj4+Pj4+IEhpIHRoZXJlLA0KPj4+Pj4NCj4+Pj4+IE9uIDI5
-LzAxLzI1IDI6MDUgUE0sIEdyZWcgS0ggd3JvdGU6DQo+Pj4+Pj4gT24gV2VkLCBKYW4gMjks
-IDIwMjUgYXQgMDI6MDM6NTFQTSArMDUzMCwgSGFyc2h2YXJkaGFuIEpoYSB3cm90ZToNCj4+
-Pj4+Pj4gSGkgQWxsLA0KPj4+Pj4+Pg0KPj4+Pj4+PiArc3RhYmxlDQo+Pj4+Pj4+DQo+Pj4+
-Pj4+IFRoZXJlIHNlZW1zIHRvIGJlIHNvbWUgZm9ybWF0dGluZyBpc3N1ZXMgaW4gbXkgbG9n
-IG91dHB1dC4gSSBoYXZlDQo+Pj4+Pj4+IGF0dGFjaGVkIGl0IGFzIGEgZmlsZS4NCj4+Pj4+
-PiBDb25mdXNlZCwgd2hhdCBhcmUgeW91IHdhbnRpbmcgdXMgdG8gZG8gaGVyZSBpbiB0aGUg
-c3RhYmxlIHRyZWU/DQo+Pj4+Pj4NCj4+Pj4+PiB0aGFua3MsDQo+Pj4+Pj4NCj4+Pj4+PiBn
-cmVnIGstaA0KPj4+Pj4gU2luY2UsIHRoaXMgaXMgcmVwcm9kdWNpYmxlIG9uIDUuNC55IEkg
-aGF2ZSBhZGRlZCBzdGFibGUuIFRoZSBjdWxwcml0DQo+Pj4+PiBjb21taXQgd2hpY2ggdXBv
-biBnZXR0aW5nIHJldmVydGVkIGZpeGVzIHRoaXMgaXNzdWUgaXMgYWxzbyBwcmVzZW50IGlu
-DQo+Pj4+PiA1LjQueSBzdGFibGUuDQo+Pj4+IFdoYXQgY3VscHJpdCBjb21taXQ/ICBJIHNl
-ZSBubyBpbmZvcm1hdGlvbiBoZXJlIDooDQo+Pj4+DQo+Pj4+IFJlbWVtYmVyLCB0b3AtcG9z
-dGluZyBpcyBldmlsLi4uDQo+Pj4gTXkgYXBvbG9naWVzLA0KPj4+DQo+Pj4gVGhlIHN0YWJs
-ZSB0YWcgdjUuNC4yODkgc2VlbXMgdG8gZmFpbCB0byBib290IHdpdGggdGhlIGZvbGxvd2lu
-ZyBwcm9tcHQgaW4gYW4gaW5maW5pdGUgbG9vcDoNCj4+PiBbICAgMjQuNDI3MjE3XSBtZWdh
-cmFpZF9zYXMgMDAwMDo2NTowMC4wOiBtZWdhc2FzX2J1aWxkX2lvX2Z1c2lvbiAzMjczIHNn
-ZV9jb3VudCAoLTEyKSBpcyBvdXQgb2YgcmFuZ2UuIFJhbmdlIGlzOiAgMC0yNTYNCj4+Pg0K
-Pj4+IFJldmVydGluZyB0aGUgZm9sbG93aW5nIHBhdGNoIHNlZW1zIHRvIGZpeCB0aGUgaXNz
-dWU6DQo+Pj4NCj4+PiBzdGFibGUtNS40wqDCoMKgwqDCoCA6IHY1LjQuMjg1wqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIC0gNWRmMjlhNDQ1ZjNhIHhlbi9zd2lvdGxiOiBhZGQNCj4+PiBh
-bGlnbm1lbnQgY2hlY2sgZm9yIGRtYSBidWZmZXJzDQo+Pj4NCj4+PiBJIHRyaWVkIGNoYW5n
-aW5nIHN3aW90bGIgZ3J1YiBjb21tYW5kIGxpbmUgYXJndW1lbnRzIGJ1dCB0aGF0IGRpZG4n
-dA0KPj4+IHNlZW0gdG8gaGVscCBtdWNoIHVuZm9ydHVuYXRlbHkgYW5kIHRoZSBlcnJvciB3
-YXMgc2VlbiBhZ2Fpbi4NCj4+Pg0KPj4gT2ssIGNhbiB5b3Ugc3VibWl0IHRoaXMgcmV2ZXJ0
-IHdpdGggdGhlIGluZm9ybWF0aW9uIGFib3V0IHdoeSBpdCBzaG91bGQNCj4+IG5vdCBiZSBp
-bmNsdWRlZCBpbiB0aGUgNS40LnkgdHJlZSBhbmQgY2M6IGV2ZXJ5b25lIGludm9sdmVkIGFu
-ZCB0aGVuIHdlDQo+PiB3aWxsIGJlIGdsYWQgdG8gcXVldWUgaXQgdXAuDQo+Pg0KPj4gdGhh
-bmtzLA0KPj4NCj4+IGdyZWcgay1oDQo+IA0KPiBUaGlzIG1pZ2h0IGJlIHJlcHJvZHVjaWJs
-ZSBvbiBvdGhlciBzdGFibGUgdHJlZXMgYW5kIG1haW5saW5lIGFzIHdlbGwgc28NCj4gd2Ug
-d2lsbCBnZXQgaXQgZml4ZWQgdGhlcmUgYW5kIEkgd2lsbCBzdWJtaXQgdGhlIG5lY2Vzc2Fy
-eSBmaXggdG8gc3RhYmxlDQo+IHdoZW4gZXZlcnl0aGluZyBpcyBzb3J0ZWQgb3V0IG9uIG1h
-aW5saW5lLg0KDQpSaWdodC4gSnVzdCByZXZlcnRpbmcgbXkgcGF0Y2ggd2lsbCB0cmFkZSBv
-bmUgZXJyb3Igd2l0aCBhbm90aGVyIG9uZSAodGhlDQpvbmUgd2hpY2ggdHJpZ2dlcmVkIG1l
-IHRvIHdyaXRlIHRoZSBwYXRjaCkuDQoNClRoZXJlIGFyZSB0d28gcG9zc2libGUgd2F5cyB0
-byBmaXggdGhlIGlzc3VlOg0KDQotIGFsbG93IGxhcmdlciBETUEgYnVmZmVycyBpbiB4ZW4v
-c3dpb3RsYiAodG9kYXkgMk1CIGFyZSB0aGUgbWF4LiBzdXBwb3J0ZWQNCiAgIHNpemUsIHRo
-ZSBtZWdhcmFpZF9zYXMgZHJpdmVyIHNlZW1zIHRvIGVmZmVjdGl2ZWx5IHJlcXVlc3QgNE1C
-KQ0KDQotIGZpeCB0aGUgbWVnYXJhaWRfc2FzIGRyaXZlciBieSBzcGxpdHRpbmcgdXAgdGhl
-IGFsbG9jYXRlZCBETUEgYnVmZmVyIChpdCBpcw0KICAgcmVxdWVzdGluZyAyLjNNQiwgd2hp
-Y2ggd2lsbCBiZSByb3VuZGVkIHVwIHRvIDRNQiAtIGl0IGlzIHByb2JhYmx5IG5vdCBuZWVk
-ZWQNCiAgIHRvIGJlIGluIG9uZSBjaHVuaywgc28gYSBzcGxpdCB3b3VsZCByZXN1bHQgaW4g
-bWF4LiAyTUIgY2h1bmsgc2l6ZSkNCg0KQm90aCB2YXJpYW50cyBoYXZlIHRoZWlyIHByb3Mg
-YW5kIGNvbnMsIHRob3VnaC4NCg0KDQpKdWVyZ2VuDQo=
---------------cRXte0Sy5h7PSMais8nDyUqr
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+[   35.134876] i2c i2c-4: Transfer while suspended
+[   35.143865] WARNING: CPU: 0 PID: 99 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xb4/0x57c [i2c_core]
+[   35.352879] Workqueue: events pmic_glink_altmode_worker [pmic_glink_altmode]
+[   35.360179] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   35.455242] Call trace:
+[   35.457826]  __i2c_transfer+0xb4/0x57c [i2c_core] (P)
+[   35.463086]  i2c_transfer+0x98/0xf0 [i2c_core]
+[   35.467713]  i2c_transfer_buffer_flags+0x54/0x88 [i2c_core]
+[   35.473502]  regmap_i2c_write+0x20/0x48 [regmap_i2c]
+[   35.478659]  _regmap_raw_write_impl+0x780/0x944
+[   35.483401]  _regmap_bus_raw_write+0x60/0x7c
+[   35.487848]  _regmap_write+0x134/0x184
+[   35.491773]  regmap_write+0x54/0x78
+[   35.495418]  ps883x_set+0x58/0xec [ps883x]
+[   35.499688]  ps883x_sw_set+0x60/0x84 [ps883x]
+[   35.504223]  typec_switch_set+0x48/0x74 [typec]
+[   35.508952]  pmic_glink_altmode_worker+0x44/0x1fc [pmic_glink_altmode]
+[   35.515712]  process_scheduled_works+0x1a0/0x2d0
+[   35.520525]  worker_thread+0x2a8/0x3c8
+[   35.524449]  kthread+0xfc/0x184
+[   35.527749]  ret_from_fork+0x10/0x20
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+The proper solution here should be to not deliver these kind of messages
+during system suspend at all, or at least make it configurable per glink
+client. But simply dropping the IRQF_NO_SUSPEND flag entirely will break
+other clients. The final shape of the rework of the pmic glink driver in
+order to fulfill both the filtering of the messages that need to be able
+to wake-up the system and the queueing of these messages until the system
+has properly resumed is still being discussed and it is planned as a
+future effort.
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+Meanwhile, the stop-gap fix here is to schedule the pmic glink altmode
+worker on the system_freezable_wq instead of the system_wq. This will
+result in the altmode worker not being scheduled to run until the
+devices are resumed first, which will give the controllers like I2C a
+chance to resume before the transfer is requested.
 
---------------cRXte0Sy5h7PSMais8nDyUqr--
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/Z1CCVjEZMQ6hJ-wK@hovoldconsulting.com/
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Cc: stable@vger.kernel.org    # 6.3
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+---
+Changes in v2:
+- Re-worded the commit to explain the underlying problem and how
+  this fix is just a stop-gap for the pmic glink client for now.
+- Added Johan's Reported-by tag and link
+- Added Caleb's Reviewed-by tag
+- Link to v1: https://lore.kernel.org/r/20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org
+---
+ drivers/soc/qcom/pmic_glink_altmode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---------------Vp4XYrfeinVwEvuNrWn450MA--
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index bd06ce16180411059e9efb14d9aeccda27744280..bde129aa7d90a39becaa720376c0539bcaa492fb 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -295,7 +295,7 @@ static void pmic_glink_altmode_sc8180xp_notify(struct pmic_glink_altmode *altmod
+ 	alt_port->mode = mode;
+ 	alt_port->hpd_state = hpd_state;
+ 	alt_port->hpd_irq = hpd_irq;
+-	schedule_work(&alt_port->work);
++	queue_work(system_freezable_wq, &alt_port->work);
+ }
+ 
+ #define SC8280XP_DPAM_MASK	0x3f
+@@ -338,7 +338,7 @@ static void pmic_glink_altmode_sc8280xp_notify(struct pmic_glink_altmode *altmod
+ 	alt_port->mode = mode;
+ 	alt_port->hpd_state = hpd_state;
+ 	alt_port->hpd_irq = hpd_irq;
+-	schedule_work(&alt_port->work);
++	queue_work(system_freezable_wq, &alt_port->work);
+ }
+ 
+ static void pmic_glink_altmode_callback(const void *data, size_t len, void *priv)
 
---------------ATVvY1dA3DXYncI2xe3rxfCi
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+---
+base-commit: da7e6047a6264af16d2cb82bed9b6caa33eaf56a
+change-id: 20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-af54c5e43ed6
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+-- 
+Abel Vesa <abel.vesa@linaro.org>
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmeaD4gFAwAAAAAACgkQsN6d1ii/Ey/e
-QAf/b0DOiXqpS126jdS6Narc1sI8VN+8jDIFFn9YcdLpcys5SSyrhT1I/zwX+8wyDP3m2i/41Mq+
-VoGjfmMGL2+Be9hvUmrHVBgoHXuj+Sj2A4Vcsx0w4fm8vUfxVkYZLWlhh42OJYpq0PT/6sP6haAT
-lVulWT3Jpyx2K0UrTS3+5C55jyZkdCWAKTisAd/Wfp5rn3NUNzk7LjFAfXJFHxuPKEoLE51KT5RC
-XjANN0XT3KyslLpCLwwUGT1wkX1MxXhTHBbqK4uCxVWXsOY7OkVBrypedqFU6wqu3OIG29/6rSg8
-zSdLdLtS+Kfl7dMDEl+goVmoAUtRY3i3jqfmIhyPDQ==
-=Zw5T
------END PGP SIGNATURE-----
-
---------------ATVvY1dA3DXYncI2xe3rxfCi--
 
