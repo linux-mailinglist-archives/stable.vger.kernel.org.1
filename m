@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-111218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6496CA22433
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFC9A22434
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 19:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D30E3A9413
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D8323A94DF
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 18:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7651E0DB0;
-	Wed, 29 Jan 2025 18:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B6C1E0E0D;
+	Wed, 29 Jan 2025 18:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6J/uinE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTwizYc0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768191E25FE
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0371E2613
+	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 18:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738176460; cv=none; b=R879zW1+mKCjHHczY86XO0wUOnS0U+9EWxoMAaLOn0PuzAt/GYeT2N6Nf3700hBhM8YXkUa2JPGz/PuIF30ccB2LnlatsO2vjztaAHKHtwoBtehJaDskH2MsXHizv8Pf9QNYvjuJbUEmlfkfwpTwo8P4oo5HonLREOFmWh61JpY=
+	t=1738176461; cv=none; b=BWRGRgR6vCY/gfHWZ8UQZRlwBf0fEipCyvYCtfeTfWIbXvZtytZSwEZETeTdsLAlmDOmDsNCsFuf5APHV9kH2AKcfNcuXCF3UlOIQR28c3D9bh3mJTtAOKqB2n7NfPe68TJOUIMNVg4XsIFxz0a3D9KEuxN8yumcULOpb0WVMsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738176460; c=relaxed/simple;
-	bh=J7rliugnr1XpzVevWtD5uvdGUWEIXIntqj7NgZ7tXfc=;
+	s=arc-20240116; t=1738176461; c=relaxed/simple;
+	bh=TV4sdDYW00JSd42dzV4sZg+iZemw0WMZ80i7Bh3dkcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u39nu4/VWR7FTi9UZslSH/77Q2DOJ5YHG4QZ1qZYClZeyBybfJb/FIqsbFsjWKISNjscF8rYMrJM+DYNubS6ZwhNlHnLSKPHPvq0HJlYosPhwOJN90heQE0lAtxz0E1PI49U3TPQmRDUJ2Fzij3j2pHAnRabXwUF9wOpCXFM+1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6J/uinE; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=Fhb9kOhQJ3FQr/zdbXwoFoeKlH+VwLK8g1SD9L7g3KjQKvA6pEDkKR7SYJrruO/DVHeYDyxKwqZI2Uy0EmSP6pJ/3T49RFMhLbcjEOJYCfk+pJhLUHwVcjKwEvsz8g2PXk3P+EZkh/P8vlNnikJ0dHW0tA6Bmo23CrCP4c5JQIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTwizYc0; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21ddb406f32so11705745ad.2
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:38 -0800 (PST)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21636268e43so13895625ad.2
+        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 10:47:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738176457; x=1738781257; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738176459; x=1738781259; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V381xVjcpo0TThox2VvkVHfZgzGqs0VsFuzon9tzvKs=;
-        b=Q6J/uinEe/F64XTZiuqdnp/mxgkgYF+ngLZlR5wkYYThNbF97m4myCJB8gEMjjkW7b
-         sK+rslEfDoL7hV9WV7A6fkVzys7i4aaKZ3AsC6NrWVc7Q7DOryEbwTdC9Bz0eCXqdMNt
-         yJFpMth8C4ThLOvpihb9lhUUM4/q8YH1Kk37kkjfJEJGIBtjh4E1infVmoItZLcoYHFy
-         bp8JUWR2A2hcLpo6CVOYrM7UX00I8XnecsMhCwoMIO1IQSGN/R5sUeOb8JeRbgMrTBTQ
-         03EopUlMAN+6NLGEqRD8YdHZnIdaEI7kz7+V2jEWtc2VJ9dyeK0AsHqblyP3CB/4SgAA
-         zPCA==
+        bh=B7LmLmxzI2Mhix3fXbpw61fE8KV02GcxRk3DwTin6Fk=;
+        b=mTwizYc0Wb1Kt3OevETx+Iu/iwfItmmvLFRhhcLx8G2b+Vyy/YNhcwMVPTyCiSGc9n
+         Bpn1G5Io74e2RO5WBOwX4gySCLP0x4mnXwTtNwI0XJ0zuABiDquPEIb8ec8uw/dZMCFV
+         MOfNcJB6RtP2Rj4/Xv3uGqt/YAjPmyhUcz5SaWhpn6S4G1icnX7hMLw1IRsVqV/MEa0a
+         earDmCK77xDzK9ovcD/EIvsiTuIzxsmp96wIxH6gU6MAXT7/F/BqVHJmSA/mpx9lyIMX
+         B1dSSfAfXx1+Y3o9RqeEqRCrPxDeQC6zh8DLb1NbI0BBK9jTCywetSSutsMVzO2m3gk7
+         J0IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738176457; x=1738781257;
+        d=1e100.net; s=20230601; t=1738176459; x=1738781259;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V381xVjcpo0TThox2VvkVHfZgzGqs0VsFuzon9tzvKs=;
-        b=q2AZ/Rj5SbLJlWqWBU6MtrXBV3asoV41nodg6okNc3a6i1LIohvZ8Jll1IfHXz1p0K
-         CX367Y68G/ITCMqs+R0wS08qrDAheHmlqc5GM9OVRda86C3qFEZPtkqQ55Or9/Uzmd7d
-         0hhM04GovvrwLTQx8vToVetjIl4IvX6zyZXfZB9Ba022qQ5dsUqCGsBeCOKLcXM2uUzD
-         rwlYZFg4Y/k9/FuzRqJJIrp5hpQsb2PbrlEfgdD3zoe8VvQ9T6ktwG3Gup/eRnMgUVNd
-         odkZtDGfrWpg5biYtiMEnHAr+wXiUasHM+hqHfq4BboHqlDISV1ZnSLvYHl2mkK2aRtW
-         ILTQ==
-X-Gm-Message-State: AOJu0YyBdu4E0/wm3AwlUiRhOom8QYAJ3fN8o0v5/Z8/I/TP/P+9u0hL
-	WkR0Ru3W33kOK9hgaVj4aAi9qtJUGGDYoHn0hcpKN1kApKJaD1HZDHtMvgQG
-X-Gm-Gg: ASbGncuH1Pz7BF4wWZZC4R57niDmWcqi4XByyVqfhy3ArFTaL4iDUiFeODHQbMRyoXk
-	+m+GluiEUn30eKFUytZ9qkwMEa+sX8uml8e7LSPMBI0EGTnTKPg1iLkqxW46RhYXzEJeNqaKIBj
-	RHPh3ist6zTmLe6i1jQsIZ4bgkwkUQaQUFHAeP06zbqmXLFdgWnPdjSx9ehJtxP4tiSlvIOWUBL
-	F3hDRs/pSzsQQzHyLGcnzExAji8UN9nzT3mCcmrnLGT4//cAoJuKs7a5FsX22dgW/j29JhS0NsP
-	g5iHNV9MmEXx5cgctPRSfOd7ohzasBdtVBE9QCTTB7I=
-X-Google-Smtp-Source: AGHT+IHzOsMLBITLWZfvPkb8YjBm8IVPk9vXjt9mE1uXxf1yH5FLqxeW2Lkuy1CLpKB/zRPFAy+imQ==
-X-Received: by 2002:a17:903:24c:b0:219:eb2a:dfa5 with SMTP id d9443c01a7336-21dd7def052mr59723745ad.39.1738176457626;
-        Wed, 29 Jan 2025 10:47:37 -0800 (PST)
+        bh=B7LmLmxzI2Mhix3fXbpw61fE8KV02GcxRk3DwTin6Fk=;
+        b=UKEjaCtX1MELAdKLybq+JmScDaL9AX0C3mJPidC2B304iII4mrSRk5F8i6Cy9PwYip
+         lObtAcU3AoQHlRX3XVTnf/zhExcMejOlEZ2W2lXuGQoiro3FGiZI0gTnIJJ9KvAZ0EuG
+         IAum9tp1nraxRtPvPndMy2Eoc3h72PfmUMh4FQ44qas/Z+PSQZM9g12aRyJj2abxHVCO
+         NZRPZ6d54azItLaDtXeceZqTheYURopcTTCvuInC8c4wW7FvPThpXQLYdlK6yDzri4TT
+         mgiNW9e+S5rtHH/xhEx3PWHjTGMT8gI7Ysyrf4c1e/kZjRxtfus33e5jZVYyx+U8P5I2
+         svsQ==
+X-Gm-Message-State: AOJu0Ywk69RbCCpf/NXeIHJXMqPWp+MO3vIJT8PPKn8u1C56hVzYa57T
+	XHBUoed1V76dCNnKwauwPW4JsMzHFzLfvC9aK3WNGEgNDoe5cJztWhG86P/r
+X-Gm-Gg: ASbGncs3YfVgw9jEI/wnDiUTnWL8F8eAWdMrlF8NJlQzQIHsJDBT39fkFpjtjN6+x6m
+	nXyWoLH0dUj6mg3WoSrjEqslpwKyIY5CCEbSqfzW7uShlYhhF2IGxDlNh4vUqPAnameJui2LDEb
+	WZXqkTFU71+yObwGvzmEoX586qgpmfTgVtZ4n6ICf/0r+oESF+0+f41Wwaltk9oDTDM/BNLULeR
+	jThtEie6uwvIv9ZL64M52kmdcQ/5R0ZPctZXwCHPJIE4G12AIkdAmktwsEoBEEPIluYZKQ3G/Je
+	f7qHvg81WTZ4/hYJQZkN+WQy5Q7OjSxKw0wMwhRSSP0=
+X-Google-Smtp-Source: AGHT+IFBZ+oHH9MBdREyQZPdnr/QgaHRR/xhI+KbRO7dn9ZMm+ksHZH8nCx6ZpEbXtdBKguODSDJ4Q==
+X-Received: by 2002:a17:903:244b:b0:216:4a8a:2665 with SMTP id d9443c01a7336-21dd7df43c7mr65124095ad.50.1738176458614;
+        Wed, 29 Jan 2025 10:47:38 -0800 (PST)
 Received: from lrumancik.svl.corp.google.com ([2620:15c:2c5:11:fbc6:64ef:cffe:1cc8])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414151fsm103248795ad.121.2025.01.29.10.47.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 10:47:37 -0800 (PST)
+        Wed, 29 Jan 2025 10:47:38 -0800 (PST)
 From: Leah Rumancik <leah.rumancik@gmail.com>
 To: stable@vger.kernel.org
 Cc: xfs-stable@lists.linux.dev,
 	amir73il@gmail.com,
 	chandan.babu@oracle.com,
 	catherine.hoang@oracle.com,
-	Cheng Lin <cheng.lin130@zte.com.cn>,
+	Christoph Hellwig <hch@lst.de>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 07/19] xfs: introduce protection for drop nlink
-Date: Wed, 29 Jan 2025 10:47:05 -0800
-Message-ID: <20250129184717.80816-8-leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 08/19] xfs: handle nimaps=0 from xfs_bmapi_write in xfs_alloc_file_space
+Date: Wed, 29 Jan 2025 10:47:06 -0800
+Message-ID: <20250129184717.80816-9-leah.rumancik@gmail.com>
 X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
 In-Reply-To: <20250129184717.80816-1-leah.rumancik@gmail.com>
 References: <20250129184717.80816-1-leah.rumancik@gmail.com>
@@ -95,43 +95,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Cheng Lin <cheng.lin130@zte.com.cn>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2b99e410b28f5a75ae417e6389e767c7745d6fce ]
+[ Upstream commit 35dc55b9e80cb9ec4bcb969302000b002b2ed850 ]
 
-When abnormal drop_nlink are detected on the inode,
-return error, to avoid corruption propagation.
+If xfs_bmapi_write finds a delalloc extent at the requested range, it
+tries to convert the entire delalloc extent to a real allocation.
 
-Signed-off-by: Cheng Lin <cheng.lin130@zte.com.cn>
+But if the allocator cannot find a single free extent large enough to
+cover the start block of the requested range, xfs_bmapi_write will
+return 0 but leave *nimaps set to 0.
+
+In that case we simply need to keep looping with the same startoffset_fsb
+so that one of the following allocations will eventually reach the
+requested range.
+
+Note that this could affect any caller of xfs_bmapi_write that covers
+an existing delayed allocation.  As far as I can tell we do not have
+any other such caller, though - the regular writeback path uses
+xfs_bmapi_convert_delalloc to convert delayed allocations to real ones,
+and direct I/O invalidates the page cache first.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 ---
- fs/xfs/xfs_inode.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/xfs/xfs_bmap_util.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 909085269227..1d32823d5099 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -917,10 +917,17 @@ xfs_init_new_inode(
- static int			/* error */
- xfs_droplink(
- 	xfs_trans_t *tp,
- 	xfs_inode_t *ip)
+diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
+index ce8e17ab5434..468bb61a5e46 100644
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -778,49 +778,47 @@ xfs_alloc_file_space(
+ 	xfs_off_t		offset,
+ 	xfs_off_t		len)
  {
-+	if (VFS_I(ip)->i_nlink == 0) {
-+		xfs_alert(ip->i_mount,
-+			  "%s: Attempt to drop inode (%llu) with nlink zero.",
-+			  __func__, ip->i_ino);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
+ 	xfs_mount_t		*mp = ip->i_mount;
+ 	xfs_off_t		count;
+-	xfs_filblks_t		allocated_fsb;
+ 	xfs_filblks_t		allocatesize_fsb;
+ 	xfs_extlen_t		extsz, temp;
+ 	xfs_fileoff_t		startoffset_fsb;
+ 	xfs_fileoff_t		endoffset_fsb;
+-	int			nimaps;
+ 	int			rt;
+ 	xfs_trans_t		*tp;
+ 	xfs_bmbt_irec_t		imaps[1], *imapp;
+ 	int			error;
  
- 	drop_nlink(VFS_I(ip));
- 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
+ 	trace_xfs_alloc_file_space(ip);
  
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+ 
+ 	error = xfs_qm_dqattach(ip);
+ 	if (error)
+ 		return error;
+ 
+ 	if (len <= 0)
+ 		return -EINVAL;
+ 
+ 	rt = XFS_IS_REALTIME_INODE(ip);
+ 	extsz = xfs_get_extsz_hint(ip);
+ 
+ 	count = len;
+ 	imapp = &imaps[0];
+-	nimaps = 1;
+ 	startoffset_fsb	= XFS_B_TO_FSBT(mp, offset);
+ 	endoffset_fsb = XFS_B_TO_FSB(mp, offset + count);
+ 	allocatesize_fsb = endoffset_fsb - startoffset_fsb;
+ 
+ 	/*
+ 	 * Allocate file space until done or until there is an error
+ 	 */
+ 	while (allocatesize_fsb && !error) {
+ 		xfs_fileoff_t	s, e;
+ 		unsigned int	dblocks, rblocks, resblks;
++		int		nimaps = 1;
+ 
+ 		/*
+ 		 * Determine space reservations for data/realtime.
+ 		 */
+ 		if (unlikely(extsz)) {
+@@ -882,19 +880,23 @@ xfs_alloc_file_space(
+ 		error = xfs_trans_commit(tp);
+ 		xfs_iunlock(ip, XFS_ILOCK_EXCL);
+ 		if (error)
+ 			break;
+ 
+-		allocated_fsb = imapp->br_blockcount;
+-
+-		if (nimaps == 0) {
+-			error = -ENOSPC;
+-			break;
++		/*
++		 * If the allocator cannot find a single free extent large
++		 * enough to cover the start block of the requested range,
++		 * xfs_bmapi_write will return 0 but leave *nimaps set to 0.
++		 *
++		 * In that case we simply need to keep looping with the same
++		 * startoffset_fsb so that one of the following allocations
++		 * will eventually reach the requested range.
++		 */
++		if (nimaps) {
++			startoffset_fsb += imapp->br_blockcount;
++			allocatesize_fsb -= imapp->br_blockcount;
+ 		}
+-
+-		startoffset_fsb += allocated_fsb;
+-		allocatesize_fsb -= allocated_fsb;
+ 	}
+ 
+ 	return error;
+ 
+ error:
 -- 
 2.48.1.362.g079036d154-goog
 
