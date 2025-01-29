@@ -1,129 +1,145 @@
-Return-Path: <stable+bounces-111122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABE3A21D13
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:25:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D0A21D32
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 13:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2141A1885555
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:25:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 246717A2766
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 12:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35C81DE2BB;
-	Wed, 29 Jan 2025 12:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C07210E9;
+	Wed, 29 Jan 2025 12:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lffxxIQe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T5s7sXAy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDED1DE2A6;
-	Wed, 29 Jan 2025 12:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A38184;
+	Wed, 29 Jan 2025 12:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738153491; cv=none; b=bRM5mnoNEevk+PyrnX1BOoWNJcWi8qQxhU2dumXqyF0vgbm8bm5MIoziN85poGn/7F+n9qNhlbkD9TSkIyAIkfPAMfiEAMpEAj45rdPW2zD45XOfi9LoZFAfoXQ6sS4QICQsOyBzh+/NcC+Bv8oWUxsdLr8w6gzwgyoj7NfzTTM=
+	t=1738154272; cv=none; b=Rnhr8D3cSJfJwLZOjD86EFwkTyi8EqQ7gHkt6jOdAgAA+uB0uu+6J5lLdifO7+JKwbzeTtz7oP5uU82Ir7/UFEuAxg75OdFk3+zFSkR82RWTQI4MnPUWvfiZZ+gVEHI7qOd7XiywwnxcSgtlp1BpP4irtsrUrhWWoBiv9QOXVtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738153491; c=relaxed/simple;
-	bh=UXyvtuE/CKBndTT3gNNBA7RzFyEwhwYl9+yICjuKZpQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mvdXDzERPGd3iVdVqJs6bzcb2QTiknTVZKwgoFC1ui9oJrQYAI9knuu8g7d4dsbQvN7dbQLP6EjpPJay9G2UplPmOs3dgpuSTVAvyUVzTU2ooqJP7QSH1X3D4AjWYwACUBi7iIZGPelXVkjoK+S/l5fHVAy7UXmHNiNDu3Us5Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lffxxIQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68893C4CEDF;
-	Wed, 29 Jan 2025 12:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738153491;
-	bh=UXyvtuE/CKBndTT3gNNBA7RzFyEwhwYl9+yICjuKZpQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=lffxxIQefayAgHoWfgYwMoMQo/H7OeF7HFFZD74hjwOlXrYY53qUA+N0aTDCLhtGG
-	 DQ0AdRUskqoAt6GyTJOviIK9xWo/51/dFJzMTfK8xmTXGFDjIiZ96TYXEGg4bIE5rP
-	 hoorgx3vbtv/K36lA6+54qFTE2swPMEpmAK4oObdhm4T2Dw2MKW1/obu1HA5q/7u8M
-	 0Fi8/YTc7NCARdLlZx6Mfjvlz1ONcVTLDu5urA4eXHBSaWXWwJC1a3zWncZKESUjpM
-	 OFRyLOU1ZfzgVv74ZoF8PIqMay7DNIx4ze7D9uykycwjrGVF7sPx5SM7I9P+zV3qoE
-	 b0WFREc9sUDLQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 29 Jan 2025 13:24:32 +0100
-Subject: [PATCH net 1/2] mptcp: blackhole only if 1st SYN retrans w/o MPC
- is accepted
+	s=arc-20240116; t=1738154272; c=relaxed/simple;
+	bh=WRRnDwa/KTqpTFBdHKVLrRFE8LMDYxRKranHALVFdEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QPTRni0ZFHUvA9C7lTvIVKlJuhrNgQNNra35Yn28KTbKu5I5T4uPNCw4NpxO/fmIxG21qhTtRw7jygh+AHYxiJQNjmtH5csesp43dvfGQmhTXXorESqIReL6n6vcgq54jP1PlfIEzkPgDXVWLXkKdbPhPJtvj87Rf7MLa9ydWM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T5s7sXAy; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738154270; x=1769690270;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WRRnDwa/KTqpTFBdHKVLrRFE8LMDYxRKranHALVFdEw=;
+  b=T5s7sXAyxzJiwk5efFz5BVSIb1Q0+Q18mEcIuz2qO2Zw3YB5rjROqnDp
+   SpHCf4uo2hkzi2tLhrz8ZgljhNr2ivJA5OJJ+XdGPj0+4wPY/sNuxzo89
+   g6lLmhZRhRxU6at8LbRyipPpp7/JShM4HEH/ZKdgvRV0Zc4j4DGApPUYm
+   sXjNLmfWe6oIlcw47zbnT6VwCcW28muHShPNzZ60NYl0xTUIwT1AT3OUj
+   L4zKAYedgBI4uLJT9Xji4xPrfyL9i/9O3htpVN816zIcY/wZaiOR7zSN2
+   R88id0xGQzO28xQbqWgsxGt5Xe0vcaBiKRFFDrduVxGzpxNFiL4fPEro2
+   g==;
+X-CSE-ConnectionGUID: i90njIwET5GLS/6Okd0nSQ==
+X-CSE-MsgGUID: JMMH0wWcRb+GTXo3PsSgnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11329"; a="38695174"
+X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
+   d="scan'208";a="38695174"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 04:37:34 -0800
+X-CSE-ConnectionGUID: xVr1OLfvRfyWON2pY22Hzg==
+X-CSE-MsgGUID: hYaEMfpRSPu0X/hnM10ErQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
+   d="scan'208";a="109573857"
+Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa010.fm.intel.com with ESMTP; 29 Jan 2025 04:37:32 -0800
+Message-ID: <1c44ff09-dd26-489d-9867-8d300a3574ac@linux.intel.com>
+Date: Wed, 29 Jan 2025 14:38:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-net-mptcp-blackhole-fix-v1-1-afe88e5a6d2c@kernel.org>
-References: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
-In-Reply-To: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] usb: xhci: quirk for data loss in ISOC transfers
+To: Raju Rangoju <Raju.Rangoju@amd.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: mathias.nyman@intel.com, gregkh@linuxfoundation.org,
  stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1574; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=UXyvtuE/CKBndTT3gNNBA7RzFyEwhwYl9+yICjuKZpQ=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnmh4MBPxBfqaQRw5pGyO4MBmx46jbJ4MA1sbaW
- 2JRJ+zv9IuJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ5oeDAAKCRD2t4JPQmmg
- c/cuD/9dJfOZ0STBMl7Z934pnJjO4Ljdz/RamDilVeS6fC/i1tIYIM4XIgzV6RULiZD+vz/gQmg
- 6Pd8OX38okF/8DR3VnxGkTb6RvRR7Xl47wIKPOU78DD1fnYPdCqksDkz1NWIxdQZYmTLI6kEEIC
- oQSn4gHw9nEKPtwF8WiC62BiVrbBCjOybYmhaY0ROhIUx0uWBE8NzWwOLytWX/7y13Vxf93f1A/
- Kk10++mB2igb3jAocuEHJQMc9zaILgLDbTH9ntmG//bCNjm008kVWDzMeblQI3Ekp6SBfkzNcUq
- GM9VTscGsIwSA01HgiFHoX7fMEbdKf2oUjOpkJ4DwBzzuueuJLZb+b7XnZjBBgGonHb3+OSRoBJ
- AZ/acCgBEQ6zqhFrwpKbtzY2jfYHm58ieZVYwpZJ58P5hJ+HrPPH4fK/PskgtgA5vPc8yqmrM/x
- lia9ReraT+6WTMOf2FngwFcnGXvUqRqVeSK5+gREh3VEEs0vuVp42oILJYTGnjthmWRujIEkCQ/
- rttsU+8C1popo+TY2VHnt1+Z66u1N9b8pNEEicGKH7gmdyaCMnO3IxV053E1YSYSFHE9A2T3LAt
- 8683igp+pj8R2+xuvmdK/FTk1CSfji5Mxevx7+BNck2kztI77OQj4JXH0JsDqke/TaYNDTI7vVr
- +cISZJzqVOh7xNQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+References: <20250127120631.799287-1-Raju.Rangoju@amd.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <20250127120631.799287-1-Raju.Rangoju@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The Fixes commit mentioned this:
+On 27.1.2025 14.06, Raju Rangoju wrote:
+> During the High-Speed Isochronous Audio transfers, xHCI
+> controller on certain AMD platforms experiences momentary data
+> loss. This results in Missed Service Errors (MSE) being
+> generated by the xHCI.
+> 
+> The root cause of the MSE is attributed to the ISOC OUT endpoint
+> being omitted from scheduling. This can happen either when an IN
+> endpoint with a 64ms service interval is pre-scheduled prior to
+> the ISOC OUT endpoint or when the interval of the ISOC OUT
+> endpoint is shorter than that of the IN endpoint. Consequently,
+> the OUT service is neglected when an IN endpoint with a service
+> interval exceeding 32ms is scheduled concurrently (every 64ms in
+> this scenario).
+> 
+> This issue is particularly seen on certain older AMD platforms.
+> To mitigate this problem, it is recommended to adjust the service
+> interval of the IN endpoint to not exceed 32ms (interval 8). This
+> adjustment ensures that the OUT endpoint will not be bypassed,
+> even if a smaller interval value is utilized.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+> ---
+> Changes since v3:
+>   - Bump up the enum number XHCI_LIMIT_ENDPOINT_INTERVAL_9
+> 
+> Changes since v2:
+>   - added stable tag to backport to all stable kernels
+> 
+> Changes since v1:
+>   - replaced hex values with pci device names
+>   - corrected the commit message
+> 
+>   drivers/usb/host/xhci-mem.c |  5 +++++
+>   drivers/usb/host/xhci-pci.c | 25 +++++++++++++++++++++++++
+>   drivers/usb/host/xhci.h     |  1 +
+>   3 files changed, 31 insertions(+)
+> 
+> diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+> index 92703efda1f7..d3182ba98788 100644
+> --- a/drivers/usb/host/xhci-mem.c
+> +++ b/drivers/usb/host/xhci-mem.c
+> @@ -1420,6 +1420,11 @@ int xhci_endpoint_init(struct xhci_hcd *xhci,
+>   	/* Periodic endpoint bInterval limit quirk */
+>   	if (usb_endpoint_xfer_int(&ep->desc) ||
+>   	    usb_endpoint_xfer_isoc(&ep->desc)) {
+> +		if ((xhci->quirks & XHCI_LIMIT_ENDPOINT_INTERVAL_9) &&
+> +		    usb_endpoint_xfer_int(&ep->desc) &&
+> +		    interval >= 9) {
+> +			interval = 8;
 
-> An MPTCP firewall blackhole can be detected if the following SYN
-> retransmission after a fallback to "plain" TCP is accepted.
+Commit message describes this as an issue triggered by High-Speed Isoc In
+endpoints that have interval larger than 32ms.
 
-But in fact, this blackhole was detected if any following SYN
-retransmissions after a fallback to TCP was accepted.
+This code limits interval to 32ms for Interrupt endpoints (any speed),
+should it be isoc instead?
 
-That's because 'mptcp_subflow_early_fallback()' will set 'request_mptcp'
-to 0, and 'mpc_drop' will never be reset to 0 after.
+Are Full-/Low-speed devices really also affected?
 
-This is an issue, because some not so unusual situations might cause the
-kernel to detect a false-positive blackhole, e.g. a client trying to
-connect to a server while the network is not ready yet, causing a few
-SYN retransmissions, before reaching the end server.
-
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/ctrl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/mptcp/ctrl.c b/net/mptcp/ctrl.c
-index 3999e0ba2c35b50c36ce32277e0b8bfb24197946..2dd81e6c26bdb5220abed68e26d70d2dc3ab14fb 100644
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -418,9 +418,9 @@ void mptcp_active_detect_blackhole(struct sock *ssk, bool expired)
- 			MPTCP_INC_STATS(net, MPTCP_MIB_MPCAPABLEACTIVEDROP);
- 			subflow->mpc_drop = 1;
- 			mptcp_subflow_early_fallback(mptcp_sk(subflow->conn), subflow);
--		} else {
--			subflow->mpc_drop = 0;
- 		}
-+	} else if (ssk->sk_state == TCP_SYN_SENT) {
-+		subflow->mpc_drop = 0;
- 	}
- }
- 
-
--- 
-2.47.1
+Thanks
+Mathias
 
 
