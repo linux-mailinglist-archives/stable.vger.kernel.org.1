@@ -1,155 +1,267 @@
-Return-Path: <stable+bounces-111236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C9ADA225DD
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 22:32:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615DDA225ED
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 22:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588DB3A1AD3
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 21:31:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78D2A3A39F6
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 21:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7791E0DCC;
-	Wed, 29 Jan 2025 21:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9511E32DB;
+	Wed, 29 Jan 2025 21:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="IBsFidiR"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JRUuLpvJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2063.outbound.protection.outlook.com [40.107.96.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2144F22619
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 21:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738186319; cv=none; b=mE51Bd2H2sRpk5mOjsQ5edS1f4tS1vr8NmO+LWTaLVS8vdk0gp+1v8pcRAp8A5iRlCIWAk4j9LNEaLLaCizIgBxszrKrZ5Hc2Dy4YzhJfXj9FNTEmF3Mk/bj4iy8Ad4CAs9aVEtJskyeBosO+5WdfMxeX5VyEQy8oixCdxOTgxE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738186319; c=relaxed/simple;
-	bh=XJziHGOCj5eKjY/DVLA9c0hF58UmkFmJt303gbhQN50=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=qlZOxQaUDvo5JbrkXUsCeoWiewZTBjFTXv/zSCWd9QP70lViDMtOhXQYfd8OOoYkW6av+jj2jyN5G2feaSPMB2UgqRisGwuJSQm6PgSU2+9IatvmOfh0EEVqceS2Rs1AYQjfdtifaYlnIGJOj86ZOWeQ4Rt2FfD+KcwiP/tomVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=IBsFidiR; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso328465e9.1
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 13:31:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1738186316; x=1738791116; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to
-         :reply-to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3mxRYzzqPEi81Yfzc+wDSZaiIM1NQOITOroGLR3jJeE=;
-        b=IBsFidiRsXq4KllEuyQyKD+6nBq6LuQodkmgvmfmM8oDILY0DhZGs3BAL4ulmcqO/Q
-         kMvp1nsBxgedow37K5yXxQslnc1+hpZ6UM3PCLSvJgMEy2H4S33r7m11lV/xIUItjSPf
-         yXZwN3pJ0Z67FNc+oa6yc3r98VUiy/ZQ7p2MXiWn9TTdsCK/BlCQwdZbgdZ4Lz4WzGTe
-         yKLzn8YhD6JymwDG+giRmaZoF3HbT0+Pbr3Oz/0q9bSyQf+EGxju8JdpnHGBIxPbqB6W
-         SqHGCdrisevnSMABXzWyH5jJgRyn9zRrfm2MMN+Pcd4SxSxIJo/OBm6qKRk7ejqThymH
-         nLuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738186316; x=1738791116;
-        h=mime-version:user-agent:content-transfer-encoding:date:cc:to
-         :reply-to:from:subject:message-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3mxRYzzqPEi81Yfzc+wDSZaiIM1NQOITOroGLR3jJeE=;
-        b=exO47WbVMGvtWVQkaax3w5C+gnHZy5Yxar4rFnCXUJctJqMx4ZoqzFTd32sa1ElF8Y
-         PlajBCLfPZBJ++CxX1RvtmfdAt2r1PtWtrK/EPyM5GqZXC4/GQiBqqDFe16tHV3imSyb
-         Ifu2WF0oOyiafI+qRqgLRxfWr+4IWbFAM35WR0WpUnaSPqqjkatMbT/oTV86nCsx13CZ
-         zjli4dkA5gnnxxdWGoZWpksqFyv8yElAuRFYscsNSEcseNSmFRg7stkLKpryiortD7yR
-         bUf0LHDbGdLAghtVyzazuPoTD7klpJlaPZraD8batGm8755fxZFI1QTjcDkGDKqhQFbc
-         IEdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyUX+I3bcyH4fUXCon0xoB10DH0E+uXnpSywO/WJF4Yoe33nidA6U3ZANwnERsYwDQtsMnx1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu0lMzl03JE06i2nMN8p1TK4/GBZUBfQGu1gkw2/35wknmmDYQ
-	RjxDRXBwKqG3x6TUntiKPzYvL7RYSY5iWrXYnrTRCEOHNv+q8hwM
-X-Gm-Gg: ASbGncsAfhs9uYHYfTGTlUMtKYyeM2GCfEm0/kItsZySQ3KrwHGRRVcwLFJEUvOGKNB
-	Y+bYBPKnWqXsS4tdcUbXBrmi5eZDCV8KTiTNVQ57ee3un44wos4cDLVOH2YyTSGcAyjJbQXMhMp
-	RqanXj+4rKwVALwZusUqvkrR47pU5AxJJqrSpqUBeGGGejpuwsYNBq6qMq01OslUQv894r5uTrq
-	/wDU6PMlI/AyH6vl0b/YME+WBqqd0B7R8N7fJpgymrwwEPCDwI4LyUgu+KzQ0iDNLV3VNagiUve
-	f2CAuzNthLymR8XeaedwGz2NF77GTw==
-X-Google-Smtp-Source: AGHT+IGedQx8nJF0pB4rZnHrhu3PXTi+i9kN1ECPmuwLHVbiAK9j1q7WJRyCg7jJveT7M1cRft1Ahw==
-X-Received: by 2002:a05:600c:4445:b0:436:e3ea:64dd with SMTP id 5b1f17b1804b1-438e1709453mr7299525e9.11.1738186316020;
-        Wed, 29 Jan 2025 13:31:56 -0800 (PST)
-Received: from mars.fritz.box ([2a02:8071:7130:82c0:da34:bd1d:ae27:5be6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc51672sm34892865e9.36.2025.01.29.13.31.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 13:31:53 -0800 (PST)
-Message-ID: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
-Subject: rk3399 fails to boot since v6.12.7
-From: Christoph Fritz <chf.fritz@googlemail.com>
-Reply-To: chf.fritz@googlemail.com
-To: Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Chen-Yu Tsai
-	 <wens@csie.org>, KeverYang <kever.yang@rock-chips.com>
-Cc: Heiko Stuebner <heiko@sntech.de>, linux-rockchip@lists.infradead.org, 
- stable <stable@vger.kernel.org>, linux-arm-kernel
- <linux-arm-kernel@lists.infradead.org>
-Date: Wed, 29 Jan 2025 22:31:53 +0100
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FDF1E0DCC;
+	Wed, 29 Jan 2025 21:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738186986; cv=fail; b=O+3MREBiE8UTgczaRJu4R15AZ2a/MIM40UHjZ58zybB6oUF84qzWcRWcXL7coTGvjMuwVIedgelKEn4gjYic4XERIzExkBc8ZhujEhaO3J1RyyoEsYXoHcu3f0vCB7x9bFZA57OkUPgaRl/qhN0oQ0HA87BK4JPRUFhPZofkBA8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738186986; c=relaxed/simple;
+	bh=BrTq4A2D7TYuZtHjSYVKtmMe1WUJJUHv3DN7/VkZHRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=IR7pw1wz7dKcMbJ7utmN2kWPr7tWEjWWmJGrxffvco2gyuxzfBnAbPdZHrawaZCDJRl2x0MI6rE2iSPkLEB0vRkIv8FIcgzg8BXMXFdbJvkWMXZYeTxVL/8T7Yyq2QHyfL0MAQvfnlM4B5wBWHN4scmBT7TQaWPajNOTeG5N3eA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JRUuLpvJ; arc=fail smtp.client-ip=40.107.96.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l/Y3ozbiHXo06gnlgQYCRD5KoWnyCjilBIq762rJnj/qlO40G5AU1oyAdpkpZzyOrDytFk4Xqz/8mhTI1IJeGBZpgc1eRh8+/Z5tSi/gvztE0VM75s12US7wD0lyIiH2sQVDxFx6jX0J7C/7KEPgwKo/6Db/XgHX8woFAoz+YZO7t4iypjV3GjLHt/PUD0BxjwEUC5eZqITOlB9VDdTtZRkeoXL1Q5AtEZqaIBh9aO9whtuPz1Nif+jdM6EIqAPknZn+BygALNinRYPz4eT4ZaShfvJ1ZJt5gFSyt9kJP6Z8MWUS8H9dUxnVgWeO1okn8hT5J/f1ml5C3rFVZMLYBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y+xm6bZ4u2WVBXmjdGFsWMI8eKqdH839TUVOVN7HUSc=;
+ b=cG5m9e6E98n2u+3jXAQE4iGajDTnYRVXouIHRmO0qBq5lgCX8BwcZcJNAGDs5LO7b/XfeCebWeK1RX/qp1/hh32EOE5n7YHiBFCmHRIjchtMObBAV3oqb3+o5AeBT95+/zN6Ge6fxydHL6gp4Ww78rD3kmw7/eJizQHBUqi9zMlPU4BnrdfRmpUsKSrYb7HltxOdcesK1AjeUmLR1az2j1r0VvRsN1fHXXEKdhRpALkByPNLj5Alk369MJeIfPCMsEWA+rvQxlxAT8lkyVAv0V8fKtN/4NjXXIxGpC8fWuxn89yrZN1T9YMTv2hlOUpozHAD/a3EBUh2rIC7vhijIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y+xm6bZ4u2WVBXmjdGFsWMI8eKqdH839TUVOVN7HUSc=;
+ b=JRUuLpvJDBbNQd+IpiCs/0NwO8pdUvRNBalOO7XgR2Gq1/112IVZE2YfFAk/n16Xwq1ucAPJxC3YUqfTheYOfDTEwX+rkTThwrSLJLwl4XJnvdbWEXhEtjXbcRDLo8+KRxy7iuJQTb4k3k3Ix0+edeVALMf+ncGknvRjsNouQ8qkhq30/aAdxM95ov2pwZRQwyoNrxK1jIWWtAX5WY6WPRyH3jHdOF9ST5lQ1/0LU9UfOjuuJawquZyC7aaoqIMuAccCrZ6UBJcGyu8mUB4uQYfJobCQDEJqocwVWX8PVtdsImoRylwUP0USRJQHfjJ3zeh13/3ulU6ZGjiEd7g0SQ==
+Received: from IA1P220CA0024.NAMP220.PROD.OUTLOOK.COM (2603:10b6:208:464::12)
+ by PH7PR12MB8055.namprd12.prod.outlook.com (2603:10b6:510:268::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.23; Wed, 29 Jan
+ 2025 21:42:59 +0000
+Received: from BL02EPF00029929.namprd02.prod.outlook.com
+ (2603:10b6:208:464:cafe::76) by IA1P220CA0024.outlook.office365.com
+ (2603:10b6:208:464::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.17 via Frontend Transport; Wed,
+ 29 Jan 2025 21:42:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL02EPF00029929.mail.protection.outlook.com (10.167.249.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Wed, 29 Jan 2025 21:42:58 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 29 Jan
+ 2025 13:42:44 -0800
+Received: from [10.110.48.28] (10.126.230.35) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Wed, 29 Jan
+ 2025 13:42:43 -0800
+Message-ID: <24e88fec-65b5-47ad-8833-67257f86fde5@nvidia.com>
+Date: Wed, 29 Jan 2025 13:42:41 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 01/12] mm/gup: reject FOLL_SPLIT_PMD with hugetlb VMAs
+To: David Hildenbrand <david@redhat.com>, <linux-kernel@vger.kernel.org>
+CC: <linux-doc@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-mm@kvack.org>, <nouveau@lists.freedesktop.org>, Andrew Morton
+	<akpm@linux-foundation.org>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
+	<jglisse@redhat.com>, Jonathan Corbet <corbet@lwn.net>, Alex Shi
+	<alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Karol Herbst
+	<kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>, Danilo Krummrich
+	<dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter
+	<simona@ffwll.ch>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Lorenzo
+ Stoakes" <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>,
+	"Jann Horn" <jannh@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Peter Xu <peterx@redhat.com>, Alistair Popple <apopple@nvidia.com>, Jason
+ Gunthorpe <jgg@nvidia.com>, <stable@vger.kernel.org>
+References: <20250129115411.2077152-1-david@redhat.com>
+ <20250129115411.2077152-2-david@redhat.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <20250129115411.2077152-2-david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00029929:EE_|PH7PR12MB8055:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96a907b1-641c-4b57-74d7-08dd40ade62f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SURZSXBVanNRMlNZNlJ5T2FvbGF5OWl5bTJXa0pMTzNsSXZMMDBlcEllbng0?=
+ =?utf-8?B?Z1VWTzFseVNjUVhyNXU1ck9PdFBYdkI2dEJLQTIrbkEwRmM4UVgyRS9aTkpG?=
+ =?utf-8?B?TFVzOWFxbG5aN2dWeVNxcU9RL29jVVFtZWc5VGxCSDJSTTN3WTU1TFlmOFBa?=
+ =?utf-8?B?ajdqVzU2RktBU1NyY3NCUHJBQjdQNmdURmw1SXN5ZlNZUlNuN0xXTWZoMDl5?=
+ =?utf-8?B?WTl3bVR0Rlg4OEc0L2U5SHA2OC83L0gwY2lzbDgwemhsRzhhelR1VGsyK2Ey?=
+ =?utf-8?B?OWF1dmFyUFRnWFNzSFFCbU1MWmQrdTFXUVA3eHBicVpaZ28zeGt0WDBBS01M?=
+ =?utf-8?B?T2dYNVBSWmpETm9IUDdJMnRpbmFIT2kyZ2dPRytBVkZiMXNqcVVaaCttMDho?=
+ =?utf-8?B?M2ZUM2FvVW0xR2ZtTVZnNVh2NG8zR2JjM1VRZkhRUnoxc1BDMy8yL1VhZllJ?=
+ =?utf-8?B?RXF0YUxVWjFNaGhzMVNVMUFhT3NlWU9SOWFIWnNEaXpXWjNIWFNNa0ZHbEpL?=
+ =?utf-8?B?cjBsOXNwOW9BbkMxZnFybkNDQmhLTEZEOWtIVWtNclJMSkFObnVpaDNRY2l6?=
+ =?utf-8?B?UzVObmdCRlZ0eThKNGZyaDN2UVhCdzhPR1ozVFBDekZsTXMveXgxb1hpMHFO?=
+ =?utf-8?B?cHE5bmtKK0NwQUdFOGNER2x2RjFtazB0dnRrZWhIZWZzUkdPODBkemJSM3Zj?=
+ =?utf-8?B?THBsNWJBeTYwVzc3eHRodHprbEI4WEFZQzRTUWdwMzZmamRlbDdoVFZrTEhy?=
+ =?utf-8?B?V3dHV2M5ZTNrUHViNFdZZTBia1RDSG93bUVVcElTalhwVllDVGkzWXNtZHZG?=
+ =?utf-8?B?TlBGM09hbHM0eVAwcm81VXVsMW0yd0t5Y0lNNkpOclRZREQ4aHVxbnZUQlpE?=
+ =?utf-8?B?d0dYcFY5ZHpmVWtnOGwwYjR2ZVlZL2R5ZEhWVGRJTTVqUFNxVjNKaXQ2Z2pL?=
+ =?utf-8?B?Tzc5Wk1EeTAxaGpRNm5vb0Q4MXF0Y0JheFk1QVdCbzluTUxjU3RXNWVxYkxZ?=
+ =?utf-8?B?M0hucEw0bERNMUU3MU1iRlVLTDhVaFlOdWc4em9SajloRVZSdkw5Q0NPb25K?=
+ =?utf-8?B?ek5kcldLNnhEVDV5U1RCeWxRUGxYMjd2d0lYRFZ1aXprc2dUNE10R0ZLbmFh?=
+ =?utf-8?B?dGg4S3dFb2hXd0pHZ1NWTFduampIRDdneXV2YlIxQlRPdmlsZGFkZkZKc1Ax?=
+ =?utf-8?B?UTRVTzBlNlovbWNiM3o0V1RlK0VYS1ord2FmYUh5c1dCb3lDSGU5dDArNFhz?=
+ =?utf-8?B?djBreUxlNTlXVWpnU1cwQ0UzOGQwUzk4clR6Ry9wUnRqRit3UHhCU2FuZHlm?=
+ =?utf-8?B?UkExdVptVEpsUVk1WWc1SlF6VVhjTTNiNWh2YnN2UE14WWRYQjU0ZVcxdm5C?=
+ =?utf-8?B?b2g5c3VXcU15QkhwQVJPVEhuUU0vTWlkUzNXaHQ5UXlsMkZzUkY3S1c5L2p3?=
+ =?utf-8?B?Tmt4LzdqRFYwenVrOWxVNFNtWGlvZEFVbHk1dXdRa3h4ZUd4Y2UrRjFhTkNJ?=
+ =?utf-8?B?VVV1bGJ0dnZjRnJxZkt3TGJ2VFI5bzVZNXMzV2hZQjhXN3loNXNOeERFcStp?=
+ =?utf-8?B?NHRlOE0yRFU5TnRLL0RoTHBPTWt3SkdxWCtVRDc5NTh4L0pzSnV1S3Y0OS92?=
+ =?utf-8?B?b3RUOWF1SkpxcjRiMHg3QTE5elZwWE9pQlRFT2RLK28weW5CTnlIejkxaFk2?=
+ =?utf-8?B?SGVzTW9CY3J4S0gvYlU0a1BLSG1ENHVnNjZDaXhrKzd4YkgvNEJnb1FXNFR1?=
+ =?utf-8?B?SDBCcmZLMktpUXZnaDB5TkljejBBTmhyMlhCN3JWZy9scTlUUlBUQlRiWmhR?=
+ =?utf-8?B?UUdqR2VwRTlCNzRQeGZjcm1yZ1l6Wm1JdW9Wci9wYzJaRm1qWnRPTmE2VXdT?=
+ =?utf-8?B?cUhoTHdSdHVoUlA4alNvb29EYzFHY2tBdmYvOXNkRCtLNWlqdVBrRTNEaW93?=
+ =?utf-8?B?ZXRIWlUrRkwwbnlhSDA3MG9EYkR1SjFZZlZoVGtRU0cvdzJ2UlhCZU9uUHVX?=
+ =?utf-8?Q?l/sAhJxrTdvB+PJU/25XUiCUw6AQog=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2025 21:42:58.9836
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96a907b1-641c-4b57-74d7-08dd40ade62f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00029929.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8055
 
-Hello Marc,
+On 1/29/25 3:53 AM, David Hildenbrand wrote:
+> We only have two FOLL_SPLIT_PMD users. While uprobe refuses hugetlb
+> early, make_device_exclusive_range() can end up getting called on
+> hugetlb VMAs.
+> 
+> Right now, this means that with a PMD-sized hugetlb page, we can end
+> up calling split_huge_pmd(), because pmd_trans_huge() also succeeds
+> with hugetlb PMDs.
+> 
+> For example, using a modified hmm-test selftest one can trigger:
+> 
+> [  207.017134][T14945] ------------[ cut here ]------------
+> [  207.018614][T14945] kernel BUG at mm/page_table_check.c:87!
+> [  207.019716][T14945] Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+> [  207.021072][T14945] CPU: 3 UID: 0 PID: ...
+> [  207.023036][T14945] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+> [  207.024834][T14945] RIP: 0010:page_table_check_clear.part.0+0x488/0x510
+> [  207.026128][T14945] Code: ...
+> [  207.029965][T14945] RSP: 0018:ffffc9000cb8f348 EFLAGS: 00010293
+> [  207.031139][T14945] RAX: 0000000000000000 RBX: 00000000ffffffff RCX: ffffffff8249a0cd
+> [  207.032649][T14945] RDX: ffff88811e883c80 RSI: ffffffff8249a357 RDI: ffff88811e883c80
+> [  207.034183][T14945] RBP: ffff888105c0a050 R08: 0000000000000005 R09: 0000000000000000
+> [  207.035688][T14945] R10: 00000000ffffffff R11: 0000000000000003 R12: 0000000000000001
+> [  207.037203][T14945] R13: 0000000000000200 R14: 0000000000000001 R15: dffffc0000000000
+> [  207.038711][T14945] FS:  00007f2783275740(0000) GS:ffff8881f4980000(0000) knlGS:0000000000000000
+> [  207.040407][T14945] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  207.041660][T14945] CR2: 00007f2782c00000 CR3: 0000000132356000 CR4: 0000000000750ef0
+> [  207.043196][T14945] PKRU: 55555554
+> [  207.043880][T14945] Call Trace:
+> [  207.044506][T14945]  <TASK>
+> [  207.045086][T14945]  ? __die+0x51/0x92
+> [  207.045864][T14945]  ? die+0x29/0x50
+> [  207.046596][T14945]  ? do_trap+0x250/0x320
+> [  207.047430][T14945]  ? do_error_trap+0xe7/0x220
+> [  207.048346][T14945]  ? page_table_check_clear.part.0+0x488/0x510
+> [  207.049535][T14945]  ? handle_invalid_op+0x34/0x40
+> [  207.050494][T14945]  ? page_table_check_clear.part.0+0x488/0x510
+> [  207.051681][T14945]  ? exc_invalid_op+0x2e/0x50
+> [  207.052589][T14945]  ? asm_exc_invalid_op+0x1a/0x20
+> [  207.053596][T14945]  ? page_table_check_clear.part.0+0x1fd/0x510
+> [  207.054790][T14945]  ? page_table_check_clear.part.0+0x487/0x510
+> [  207.055993][T14945]  ? page_table_check_clear.part.0+0x488/0x510
+> [  207.057195][T14945]  ? page_table_check_clear.part.0+0x487/0x510
+> [  207.058384][T14945]  __page_table_check_pmd_clear+0x34b/0x5a0
+> [  207.059524][T14945]  ? __pfx___page_table_check_pmd_clear+0x10/0x10
+> [  207.060775][T14945]  ? __pfx___mutex_unlock_slowpath+0x10/0x10
+> [  207.061940][T14945]  ? __pfx___lock_acquire+0x10/0x10
+> [  207.062967][T14945]  pmdp_huge_clear_flush+0x279/0x360
+> [  207.064024][T14945]  split_huge_pmd_locked+0x82b/0x3750
+> ...
+> 
+> Before commit 9cb28da54643 ("mm/gup: handle hugetlb in the generic
+> follow_page_mask code"), we would have ignored the flag; instead, let's
 
- since 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC
-integrations") landed in stable v6.12.7 as 0bf32f482887, here the
-rk3399 fails to boot (~4 out of 10 times) because OP-TEE panics (gets a
-secure interrupt that it cannot handle).
+...and so after that commit (which doesn't touch FOLL_SPLIT_PMD, we no
+longer ignore the flag? At a first look at that commit, I don't quite
+understand the connection, can you clarify just a bit for me?
 
-Setup is:
- - BL31 proprietary (since mainline TF-A has no DMA)
- - OP-TEE mainline version: 3.20
- - Kernel v6.12.7
+> simply refuse the combination completely in check_vma_flags(): the
+> caller is likely not prepared to handle any hugetlb folios.
 
-<snip>
-[    0.000000] GICv3: Broken GIC integration, security disabled
-<snip>
-E/TC:4 0 Panic 'Secure interrupt handler not defined' at core/kernel/interr=
-upt.c:139 <itr_core_handler>
-E/TC:4 0 TEE load address @ 0x30000000
-E/TC:4 0 Call stack:
-E/TC:4 0  0x300091f8
-E/TC:4 0  0x30016664
-E/TC:4 0  0x30015710
-E/TC:4 0  0x30005714
-[   26.087363] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   26.087925] rcu:     (detected by 2, t=3D21002 jiffies, g=3D2233, q=3D24=
-16 ncpus=3D6)
-[   26.088530] rcu: All QSes seen, last rcu_preempt kthread activity 21002 =
-(4294693363-4294672361), jiffies_till_next_fqs=3D3, root ->qsmask 0x0
-[   26.089623] rcu: rcu_preempt kthread timer wakeup didn't happen for 2099=
-9 jiffies! g2233 f0x2 RCU_GP_WAIT_FQS(5) ->state=3D0x200
-[   26.090617] rcu:     Possible timer handling issue on cpu=3D4 timer-soft=
-irq=3D293
-[   26.091218] rcu: rcu_preempt kthread starved for 21002 jiffies! g2233 f0=
-x2 RCU_GP_WAIT_FQS(5) ->state=3D0x200 ->cpu=3D4
-[   26.092131] rcu:     Unless rcu_preempt kthread gets sufficient CPU time=
-, OOM is now expected behavior.
-[   26.092926] rcu: RCU grace-period kthread stack dump:
-[   26.093369] task:rcu_preempt     state:R stack:0     pid:16    tgid:16  =
-  ppid:2      flags:0x00000008
-[   26.094192] Call trace:
-[   26.094409]  __switch_to+0xf0/0x14c
-[   26.094728]  __schedule+0x264/0xa90
-[   26.095040]  schedule+0x34/0x104
-[   26.095329]  schedule_timeout+0x80/0xf4
-[   26.095672]  rcu_gp_fqs_loop+0x14c/0x4a4
-[   26.096027]  rcu_gp_kthread+0x138/0x164
-[   26.096369]  kthread+0x114/0x118
-[   26.096661]  ret_from_fork+0x10/0x20
-[   26.096982] rcu: Stack dump where RCU GP kthread last ran:
-[   26.097463] Sending NMI from CPU 2 to CPUs 4:
-[   46.276364] sched: DL replenish lagged too much
+Yes.
 
-Is it too late for the kernel to disable the "security" since OP-TEE
-assumes it is enabled?
+> 
+> We'll teach make_device_exclusive_range() separately to ignore any hugetlb
+> folios as a future-proof safety net.
+> 
+> Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   mm/gup.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 3883b307780e..61e751baf862 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -1283,6 +1283,9 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+>   	if ((gup_flags & FOLL_LONGTERM) && vma_is_fsdax(vma))
+>   		return -EOPNOTSUPP;
+>   
+> +	if ((gup_flags & FOLL_SPLIT_PMD) && is_vm_hugetlb_page(vma))
+> +		return -EOPNOTSUPP;
+> +
 
-Any ideas?
+This seems correct by inspection, as one cannot split a hugetlbfs page, so:
 
-Thanks
-  -- Christoph
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+
+
+thanks,
+-- 
+John Hubbard
+
+>   	if (vma_is_secretmem(vma))
+>   		return -EFAULT;
+>   
+
 
 
