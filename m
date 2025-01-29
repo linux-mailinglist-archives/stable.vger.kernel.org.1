@@ -1,126 +1,170 @@
-Return-Path: <stable+bounces-111076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30724A2183A
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:35:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE8DA21857
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 08:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CDE21886185
-	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 07:35:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C04416679B
+	for <lists+stable@lfdr.de>; Wed, 29 Jan 2025 07:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611B8198A36;
-	Wed, 29 Jan 2025 07:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="X8aNVg3N"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9466194C94;
+	Wed, 29 Jan 2025 07:54:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.crpt.ru (mail1.crpt.ru [91.236.205.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF75F19580F
-	for <stable@vger.kernel.org>; Wed, 29 Jan 2025 07:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
+Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E572F30;
+	Wed, 29 Jan 2025 07:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738136137; cv=none; b=grJPq/wl8B05xRMV4+nIRZFssJYILvBui0fV7Bcd22H8TIuQa9wG8IA2vAqp9qnEVQDN7nQ5lom2uLZmKB1KnbS4QovXQebkcUjMJYVrGsBlz5Fv9gF68Uwv/WX2j8iqVyUXBsBQ75rdkEGNCSgmGQai0TaoZTGzJIrTQ3C9zxo=
+	t=1738137297; cv=none; b=lfIohIJIOMX/2eXnPOOpv05fshu6fLiZIaflub4kp0c06SKsnxUad1EU6xfVNJm4qIBZeYDC6dio5MCtBNdd/TrhgdqwwdtcLjFKB5wnWFjdmeijzjWsADuazdnxQFrZc27WuJcomqoIqMqBsXZ9Z7u17A3Lmp4gyAS6R3lkUiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738136137; c=relaxed/simple;
-	bh=/PrXWxohQ205RW/ae0fQlLa42s0+6zVNBySmFktGVTw=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tmfBrKAa9rwRNz0SNUcfXgE7/xpof/uMBQYCU7PJf/wE/VMBbT9zQDpE4MzHbkqVnAS7P3nQwBDjwBToQlCutvtGonKf/LfssIq2VgliNwVlu/Q4wzI9cbsGl8fphu/cYcJwXpikDKzLE4LVv+Y6rv38Wz/GEJs80GNijoXpGhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=X8aNVg3N; arc=none smtp.client-ip=91.236.205.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
-Received: from mail.crpt.ru ([192.168.60.4])
-	by mail.crpt.ru  with ESMTP id 50T7ZUNv007607-50T7ZUNx007607
-	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
-	Wed, 29 Jan 2025 10:35:30 +0300
-Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Wed, 29 Jan
- 2025 10:35:29 +0300
-Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
- ([192.168.60.4]) with mapi id 15.01.2507.044; Wed, 29 Jan 2025 10:35:29 +0300
-From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
-To: "lvc-patches@linuxtesting.org" <lvc-patches@linuxtesting.org>
-CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: [PATCH] power: supply: da9150-fg: fix potential overflow
-Thread-Topic: [PATCH] power: supply: da9150-fg: fix potential overflow
-Thread-Index: AQHbciBeVfngnClpf0+wmCQJvzHG8w==
-Date: Wed, 29 Jan 2025 07:35:29 +0000
-Message-ID: <20250129073524.23360-1-a.vatoropin@crpt.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: EX2.crpt.local, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 1/28/2025 10:00:00 PM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: protection disabled
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1738137297; c=relaxed/simple;
+	bh=3z7U0+GxeSanoE7V2Ah7ljJeeessQQSQKUHKd62z0Vw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XyD3yYYzT7GoauJLuF29qyepzvj1JB8kg4aaYNwHOdSrP+IoJp2TJzanW15vn+f8LofQi0zX+Hn+TQZGqm2Gf1HWgOY1+KLXj22mlja5HnbgmbnXjH7vD8+W2i9R2JXeiQR7dPBSS13pvtRmpE76AaGIgIglrpPwFxGJpMh+2ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
+Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 29 Jan 2025 16:54:47 +0900
+Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
+	by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id 8639B2019755;
+	Wed, 29 Jan 2025 16:54:47 +0900 (JST)
+Received: from iyokan2.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Wed, 29 Jan 2025 16:54:47 +0900
+Received: from [10.212.246.222] (unknown [10.212.246.222])
+	by iyokan2.css.socionext.com (Postfix) with ESMTP id BBB64AB186;
+	Wed, 29 Jan 2025 16:54:46 +0900 (JST)
+Message-ID: <2cdb5e43-47e0-43ba-ba17-87e8d5dc602d@socionext.com>
+Date: Wed, 29 Jan 2025 16:54:46 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-Client-IP: 192.168.60.4
-X-FE-Policy-ID: 2:4:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
- h=from:to:cc:subject:date:message-id:content-type:mime-version;
- bh=o54c9MrkUFXn90FGbRmy5zFWqtUULMfirflS/ppsvvI=;
- b=X8aNVg3NjNHDR01NJhMk9Lk3d0kOt/4bmCH9WECkChNIJZ5WW9dfpOreGS4NU/a/mmL/FYFY+tJA
-	r9les7Cndvn/sCnpQ6QG5Q1vHb/vScq0yJr8mZuRUxmS0z3aJ8jmaOLLQMhgR+GacaTPgd9XhP85
-	kLRNSvXm0JmzfyOeOwAdJwum9V8/aeoCKrmm1ma4Wixaz+DX2vWqMNnrYflaZwbBoFzkEeWmoQrW
-	H8c3mYiMmtzjpWykKCY2wU0cdOYWIhyKD4iLXXSj5nfV1CWZmdmuueknP7MRSRA6ns16sadNZVAQ
-	n8ktJSCJaCYfk6XvrPcS0Uj0ynPVmTDsxJ0QQA==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] misc: pci_endpoint_test: Avoid issue of interrupts
+ remaining after request_irq error
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250122022446.2898248-1-hayashi.kunihiko@socionext.com>
+ <20250122022446.2898248-2-hayashi.kunihiko@socionext.com>
+ <20250128141242.pog2tuorvqmobain@thinkpad>
+Content-Language: en-US
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+In-Reply-To: <20250128141242.pog2tuorvqmobain@thinkpad>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Hi Manivannan,
 
-Size of variable sd_gain equals four bytes - DA9150_QIF_SD_GAIN_SIZE.
-Size of variable shunt_val equals two bytes - DA9150_QIF_SHUNT_VAL_SIZE.
+On 2025/01/28 23:12, Manivannan Sadhasivam wrote:
+> On Wed, Jan 22, 2025 at 11:24:44AM +0900, Kunihiko Hayashi wrote:
+>> After devm_request_irq() fails with error,
+>> pci_endpoint_test_free_irq_vectors() is called to free allocated vectors
+>> with pci_free_irq_vectors().
+>>
+> 
+> You should mention the function name which you are referring to. Here it is,
+> pci_endpoint_test_request_irq().
 
-The expression sd_gain * shunt_val is currently being evaluated using
-32-bit arithmetic. So during the multiplication an overflow may occur.
+I see. I'll make the commit message more clear.
 
-As the value of type 'u64' is used as storage for the eventual result, put
-ULL variable at the first position of each expression in order to give the
-compiler complete information about the proper arithmetic to use. According
-to C99 the guaranteed width for a variable of type 'unsigned long long' >=
-=3D
-64 bits.
+>> However some requested IRQs are still allocated, so there are still
+> 
+> This is confusing. Are you saying that the previously requested IRQs are not
+> freed when an error happens during the for loop in
+> pci_endpoint_test_request_irq()?
 
-Remove the explicit cast to u64 as it is meaningless.
+Yes, after jumping to "fail:" label, it just prints an error message and
+returns the function.
 
-Just for the sake of consistency, perform the similar trick with another
-expression concerning 'iavg'.
+The pci_endpoint_test_request_irq() is called from the following functions:
+- pci_endpoint_test_probe()
+- pci_endpoint_test_set_irq()
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Both call pci_endpoint_test_free_irq_vectors() after the error, though,
+requested IRQs are not freed anywhere.
 
-Fixes: a419b4fd9138 ("power: Add support for DA9150 Fuel-Gauge")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>=20
+>> /proc/irq/* entries remaining and we encounters WARN() with the following
+>> message:
+>>
+>>      remove_proc_entry: removing non-empty directory 'irq/30', leaking at
+>>      least 'pci-endpoint-test.0'
+>>      WARNING: CPU: 0 PID: 80 at fs/proc/generic.c:717 remove_proc_entry
+>>      +0x190/0x19c
+> 
+> When did you encounter this WARN?
+
+Usually request_irq() can successfully get an interrupt.
+If request_irq() returned an error, pci_endpoint_test_free_irq_vectors() was
+called and the following call-trace was obtained:
+
+[   18.772522] Call trace:
+[   18.773743]  remove_proc_entry+0x190/0x19c
+[   18.775789]  unregister_irq_proc+0xd0/0x104
+[   18.777881]  free_desc+0x4c/0xcc
+[   18.779495]  irq_free_descs+0x68/0x8c
+[   18.781325]  irq_domain_free_irqs+0x15c/0x1bc
+[   18.783502]  msi_domain_free_locked.part.0+0x184/0x1d4
+[   18.786069]  msi_domain_free_irqs_all_locked+0x64/0x8c
+[   18.788637]  pci_msi_teardown_msi_irqs+0x48/0x54
+[   18.790947]  pci_free_msi_irqs+0x18/0x38
+[   18.792907]  pci_free_irq_vectors+0x64/0x8c
+[   18.794997]  pci_endpoint_test_ioctl+0x7e8/0xf40
+[   18.797304]  __arm64_sys_ioctl+0xa4/0xe8
+[   18.799265]  invoke_syscall+0x48/0x110
+[   18.801139]  el0_svc_common.constprop.0+0x40/0xe8
+[   18.803489]  do_el0_svc+0x20/0x2c
+[   18.805145]  el0_svc+0x30/0xd0
+[   18.806673]  el0t_64_sync_handler+0x13c/0x158
+[   18.808850]  el0t_64_sync+0x190/0x194
+[   18.810680] ---[ end trace 0000000000000000 ]---
+
+>> To solve this issue, set the number of remaining IRQs and release the IRQs
+>> in advance by calling pci_endpoint_test_release_irq().
+>>
+> 
+> First of all, using devm_request_irq() is wrong here as
+> pci_endpoint_test_request_irq() might be called multiple times by the userspace.
+> So we cannot use managed version of request_irq(). It is infact pointless since
+> pci_endpoint_test_clear_irq() would free them anyway. Instead we should just use
+> request_irq() and call pci_endpoint_test_clear_irq() in the error path as like
+> this patch does.
+
+The pci_endpoint_test_clear_irq() will free all the number of IRQs.
+However, in this error case, since only some IRQs are allocated, need to change the
+number of IRQs that need to be freed.
+
+And pci_endpoint_test_free_irq_vectors() is called just before return from the function,
+call only pci_endpoint_test_release_irq() in the error case of
+pci_endpoint_test_request_irq().
+
+For example:
+   pci_endpoint_test_set_irq()
+     pci_endpoint_test_request_irq()
+       request_irq()
+       fail:
+       >> test->num_irqs = i                // add in this patch
+       >> pci_endpoint_test_release_irq()   // add in this patch
+     err:
+     pci_endpoint_test_free_irq_vectors()
+
+> But this should be a separate patch.
+
+Agreed. I'll add another patch to use non-managed version.
+
+Thank you,
+
 ---
- drivers/power/supply/da9150-fg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/power/supply/da9150-fg.c b/drivers/power/supply/da9150=
--fg.c
-index 652c1f213af1..63bec706167c 100644
---- a/drivers/power/supply/da9150-fg.c
-+++ b/drivers/power/supply/da9150-fg.c
-@@ -247,7 +247,7 @@ static int da9150_fg_current_avg(struct da9150_fg *fg,
- 				      DA9150_QIF_SD_GAIN_SIZE);
- 	da9150_fg_read_sync_end(fg);
-=20
--	div =3D (u64) (sd_gain * shunt_val * 65536ULL);
-+	div =3D 65536ULL * sd_gain * shunt_val;
- 	do_div(div, 1000000);
--	res =3D (u64) (iavg * 1000000ULL);
-+	res =3D 1000000ULL * iavg;
- 	do_div(res, div);
---=20
-2.43.0
+Best Regards
+Kunihiko Hayashi
 
