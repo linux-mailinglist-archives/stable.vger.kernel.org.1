@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-111312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2B7A22E6B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B909A22ECC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6367F167F29
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BE53A6231
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EA71DFDA5;
-	Thu, 30 Jan 2025 14:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D231E9B21;
+	Thu, 30 Jan 2025 14:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2oidPXl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDulm+BW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415D4C13D;
-	Thu, 30 Jan 2025 14:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626671E9B1A;
+	Thu, 30 Jan 2025 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245645; cv=none; b=obWDA00dIJuhjQ7b5KO/L9XytJv0AQbMMJ7+bZILc3IhPLuxtLrQ+Afl6A7WFaPoEiw3jr2DYDKoTNbAY57+5b30Sy6k6JcDVLzRZWHae78D6CnZnjXW+zG52+DW2414xLFfXAmvK2IsutUcbboURIrE3Moszj3V6T9sr/FH38g=
+	t=1738246514; cv=none; b=OVF4z0fqLtpxuTU9F5WRHh9ipiyeTc5zx8p+Gule1OvAus0tEOxSodA1TmP6uL8d5duk4DcbRoUflS6QUs7GLUqdN9ZXwjsxu+9kwqPnGOxOdwR0HJ/Wp0x3T79YupfKXaWMLe3tinXRaSm5smAmn+F8Lrumb+LhgwObuX4UhnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245645; c=relaxed/simple;
-	bh=6i6CqQnyDpJi0LrOUiLgcptX/TRH1zZ/3AL3tHc6ggc=;
+	s=arc-20240116; t=1738246514; c=relaxed/simple;
+	bh=PC/nooqNg5MrnQQKHf0Ts58jsCcs4rRVwfObVOgJSas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ao0Tx8Fiy+OQ6k07wHxFwwX1heicyESgDv2nDVchoHjtvNZ3e15xaEU5KYfmftyqJ/p5EoD0OZrwQHE5e2ZMAKwcYoemZSVN0e74NZ5uA9+KTCG5x5ZmQI+qPHIzMCLN9xoiZ173WBH811wJpnGXvuMF5gY1mjcNkqfaE0YMnhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2oidPXl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6922DC4CEE2;
-	Thu, 30 Jan 2025 14:00:44 +0000 (UTC)
+	 MIME-Version; b=QiTwS0j+Ba+ZxhUlZ7ULxFcpmw1Ke5NRAaBSCOHwnshpHQADaM1OFQLkKDadV4Pjgbnq7R/K7Gj7oWxFZojtShca46yMkNzUhENsXzMnzGJ90PE4UHghhVr5pVZ+vToRjl23f3ypazL93KaPELGRaYIMxmSHRkFGg0UHEITE4cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDulm+BW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC26C4CED2;
+	Thu, 30 Jan 2025 14:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245644;
-	bh=6i6CqQnyDpJi0LrOUiLgcptX/TRH1zZ/3AL3tHc6ggc=;
+	s=korg; t=1738246513;
+	bh=PC/nooqNg5MrnQQKHf0Ts58jsCcs4rRVwfObVOgJSas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2oidPXl5lpTEESWXClsxFfmXizbUWT7dq3+m2RJe1OBaId3ZBlH2FVXiaV3HmdhI
-	 l5hyWlcP5Fak3p7GW73UA8H5/aBs04rZ+m+yOT9v7yUKL9Bwl99Hef37DNwl398Ucu
-	 tlGdq/+cBOGJowrAdQrkY9txky4adz99T3tsZnZE=
+	b=qDulm+BWvhDedHcLn2oAF8sNdjlcgkBurF3AuxmCJo1QJHR4zBn0lcuW8tZ6yCxsP
+	 H2eaXbfccchWeocDGcFMfVS0DPB7hX60iRqRH0VcRclhrnBFNZlJsi6a/cnfIX43BR
+	 qajTbgeimE5g6H49Dkuz6h+ac2iWPER37BiyEM6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 12/40] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
+Subject: [PATCH 6.6 05/43] drm/amd/display: Use HW lock mgr for PSR1
 Date: Thu, 30 Jan 2025 14:59:12 +0100
-Message-ID: <20250130133500.202367456@linuxfoundation.org>
+Message-ID: <20250130133459.118244786@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philippe Simons <simons.philippe@gmail.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-[ Upstream commit 3a748d483d80f066ca4b26abe45cdc0c367d13e9 ]
+[ Upstream commit b5c764d6ed556c4e81fbe3fd976da77ec450c08e ]
 
-Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
-pin instead of a normal GPIO. Since the power key is connected to the PMIC,
-and people expect to wake up a suspended system via this key, the NMI IRQ
-controller must stay alive when the system goes into suspend.
+[Why]
+Without the dmub hw lock, it may cause the lock timeout issue
+while do modeset on PSR1 eDP panel.
 
-Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
-sleep, so that the power key can wake up those systems.
+[How]
+Allow dmub hw lock for PSR1.
 
-[ tglx: Fixed up coding style ]
-
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a2b5a9956269f4c1a09537177f18ab0229fe79f7)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
-index bb92fd85e975f..0b43121520243 100644
---- a/drivers/irqchip/irq-sunxi-nmi.c
-+++ b/drivers/irqchip/irq-sunxi-nmi.c
-@@ -186,7 +186,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
- 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
- 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
- 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
--	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
-+	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
-+						  IRQCHIP_SKIP_SET_WAKE;
- 	gc->chip_types[0].regs.ack		= reg_offs->pend;
- 	gc->chip_types[0].regs.mask		= reg_offs->enable;
- 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+index 2aa0e01a6891b..f11b071a896f5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -63,7 +63,8 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
+ 
+ bool should_use_dmub_lock(struct dc_link *link)
+ {
+-	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
++	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
++	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
+ 		return true;
+ 	return false;
+ }
 -- 
 2.39.5
 
