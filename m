@@ -1,166 +1,98 @@
-Return-Path: <stable+bounces-111723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44491A2333C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 18:40:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2633CA2337C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 18:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F943A0619
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9141A164672
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0E31F03D0;
-	Thu, 30 Jan 2025 17:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F401EF0B8;
+	Thu, 30 Jan 2025 17:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3aXBrT1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OxLd9odX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43681EF0B7;
-	Thu, 30 Jan 2025 17:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0681A1EBFE2;
+	Thu, 30 Jan 2025 17:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738258626; cv=none; b=S9t6B0UOWvdnBn5pP8E2nkgY4RMsf46JFVqLBgJRhtOfVKSu42epgG+4/uWTUXSc2TpEQ3MirTpgKPGhJq+rfQSQUC0JpLB3+fGVL7c5m+UB/qo1tkFVL3wmIns5iYeebBgXr08FlXw+hOmKDBZKbBHP2aiWP0sU5LLGB/ZXb20=
+	t=1738259815; cv=none; b=BwhtSUOekS20kVDUoy6b80tUOuq+oG9dDvFab/eKod6xtofH2yJOs6YsJK7OiyTI1SMHQFtYD+Yc3bqMUGYaAcjwFmuasS4f1eYLGi/DEDtbnP+frj/g7kOzJAcZCodsRphoVgmzBTyO1x2F8+3muS0CBET8PFLX3qsuvUtAuyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738258626; c=relaxed/simple;
-	bh=uSM1MPbvBqUgJ0jp5x1Q+m8RSmC36vz1+mKZC8DAuew=;
+	s=arc-20240116; t=1738259815; c=relaxed/simple;
+	bh=Dk3oD+0b6J+PCkTG4WPoTGs90LkDDKIjHV0xGebl3DU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I9bjemDxR/o7qBQ8liVPXVPJ97zSorL0v/WFJaiY0d1CL06D9+Yc5fZNwOPNX5dmfgyAwHy7UJYMxcbD0Cg4/tpj1/xuIWEXrIdL7lFcmxGrMPsUFksZcisTPCCtMv8ELg+hiPnT9SKrXNb/XNLs2R9Z3fxYvuHnXC0vTKtGcoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3aXBrT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766E9C4CED2;
-	Thu, 30 Jan 2025 17:37:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UFQs4q9fldiL8tfbIfCDcZNHsPF5afvfzL+r0hRpGQYgbgMCLC5YD5TXtzEbMh1/GwELHMECce0Va7mwIIkfwHwOjjUQgJrsSkw3trHx7GapF65yidK4qeeZlm+nWQ2GlicGVBjEdwYt6+utVhLV2QRaqiTTt4qMOMtqYDtfkcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OxLd9odX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65F6C4CEE0;
+	Thu, 30 Jan 2025 17:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738258626;
-	bh=uSM1MPbvBqUgJ0jp5x1Q+m8RSmC36vz1+mKZC8DAuew=;
+	s=k20201202; t=1738259813;
+	bh=Dk3oD+0b6J+PCkTG4WPoTGs90LkDDKIjHV0xGebl3DU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M3aXBrT1xWurjBUpscuGw4PcYy9pbYV8+odimCcMebVNDWpTgDv1Cb/DfvS7o9RrW
-	 7vwbI46DvKvtqWyNRqdmNUnTR1xQjxfiNGLF/QtG8BCPczGZkGvw1vfYYGG9r6JzoV
-	 uMMy889mgmFWrw4CpPWuXbXjSygGQLqwAU5z1SCwefC02EfCb6VIX4D/5Lu5F3wy2F
-	 RqKYGc+4Zr9tLA4nh8/jAVgtwGwNfM8Zwy7ikxu/Rdp8iSd/XP6PDr8IJm9n/nqQMa
-	 tyOtbIpUAzVQp6wIoh8PR011LfVWQqyrXwOl9b28ZMutQQ7dxPI+gDtupBfewd+kwG
-	 xCfLjLTn0aQ4w==
-Date: Thu, 30 Jan 2025 18:37:00 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Zheng Zengkai <zhengzengkai@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: GTDT: Relax sanity checking on Platform Timers
- array count
-Message-ID: <Z5u4vCwVCIhiE72I@lpieralisi>
-References: <20250128001749.3132656-1-oliver.upton@linux.dev>
- <Z5i2j9gFB2iyN9g4@lpieralisi>
- <Z5lBMBY7XoFJmpGM@linux.dev>
+	b=OxLd9odX+Ervm+9tVe60csJIFIU6EJpZm7lO9nWhOLGOpqxS+Ye/l6fIudO8brL1a
+	 xuufxBEv3vhhpcVqTb7+QoWU2TRAeDxtkLXewHlySI9JbduCepjA/2u+Fpjo5awfrK
+	 s1WuzAooddq9kVm3LMdlnOZvjvAgmmTrQsq9fSozEIAtEMnF24Kj0gBZJXbvh2cc9a
+	 kGkFpjNEqWoJA7BC5W6v2Ouu8xXex/Q/myN5r7Dn+sQPmYaIawA047UXbgY/Y+skLO
+	 HaNttBipq88A0cyN3F5E9pfo6FoKBNEJMjf0nVjMzj9Dg8wDcyHTtM2X4ZYPCNzmPv
+	 z9o2Bd0RLdN7g==
+Date: Thu, 30 Jan 2025 17:56:46 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.6 00/43] 6.6.75-rc1 review
+Message-ID: <3d9a42f7-4082-4c72-a09a-b9335dbf2e0c@sirena.org.uk>
+References: <20250130133458.903274626@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oDwOdvXmL/dJe8sR"
+Content-Disposition: inline
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+X-Cookie: Password:
+
+
+--oDwOdvXmL/dJe8sR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z5lBMBY7XoFJmpGM@linux.dev>
 
-On Tue, Jan 28, 2025 at 12:42:24PM -0800, Oliver Upton wrote:
-> Hi Lorenzo,
-> 
-> On Tue, Jan 28, 2025 at 11:50:55AM +0100, Lorenzo Pieralisi wrote:
-> > > @@ -188,13 +188,17 @@ int __init acpi_gtdt_init(struct acpi_table_header *table,
-> > >  		cnt++;
-> > >  
-> > >  	if (cnt != gtdt->platform_timer_count) {
-> > > +		cnt = min(cnt, gtdt->platform_timer_count);
-> > 
-> > Thank you for reporting this.
-> > 
-> > There is something I need to understand.
-> > 
-> > What's wrong cnt (because platform_timer_valid() fails for some
-> > reason on some entries whereas before the commit we
-> > are fixing was applied we *were* parsing those entries) or
-> > gtdt->platform_timer_count ?
-> > 
-> > I *guess* the issue is the following:
-> > 
-> > gtdt->platform_timer_count reports the number of GT blocks in the
-> > GTDT not including Arm generic watchdogs, whereas cnt counts both
-> > structure types (and that's what gtdt->platform_timer_count should
-> > report too if it was correct).
-> 
-> I've seen two different issues so far:
-> 
->  - In one case, the offset of the platform timer array is entirely
->    beyond the GTDT
+On Thu, Jan 30, 2025 at 02:59:07PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.75 release.
+> There are 43 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-And we were parsing it before the commit you are fixing was applied
-because we weren't validating the first entry ?
+Tested-by: Mark Brown <broonie@kernel.org>
 
-That's how the loop was working before:
+--oDwOdvXmL/dJe8sR
+Content-Type: application/pgp-signature; name="signature.asc"
 
-#define for_each_platform_timer(_g)
-	for (_g = acpi_gtdt_desc.platform_timer; _g;
-		_g = next_platform_timer(_g))
+-----BEGIN PGP SIGNATURE-----
 
-We were parsing the first entry and now we don't anymore (rightly so),
-even with this fix applied, correct ?
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmebvV4ACgkQJNaLcl1U
+h9DRjwf/UjIeBm14O1O4gtnykhl4V90QgwrUAgzSb/4kLH+fGd/nl99yXvdWXMe/
+mMdSEIlw1dyNnBidvhQCkma0Qn8GNumOhFEr20Grvk2REXV70Ua8+LE2YzUfHdbs
+7f6QGGooAscar6+13TCFcxU2W2a3Rb9+d5gnruJ6vMmT4mJ5dsFQyzmsiYlT/i2k
+IWHNrPllmEkfdfWvclIjCD06hqeVf9XLg4wF+L6gADTdnl/aw5psIkYjNFyO6hQ0
+vpCQLqDGqqNwG+E7Sec3l8KfFrA+KGClu3ho9hGdMwxsNNQApUZlF2mKmWK8ILaa
+jBG092nCzbzJnz59gw/dBmjFnFW4UA==
+=r3Zr
+-----END PGP SIGNATURE-----
 
->  - In another, the GTDT has a timer array of length 2, but only the
->    first structure falls within the length of the overall GTDT
-
-Right.
-
-> Since cnt is the result of doing a bounds-checked walk of the platform
-> timer array, both of these issues cause the sanity check to fail.
-
-Yep.
-
-> > >  	if (platform_timer_count)
-> > > -		*platform_timer_count = gtdt->platform_timer_count;
-> > > +		*platform_timer_count = cnt;
-> > 
-> > I think this should be fine as things stand (but see above).
-> > 
-> > It is used in:
-> > 
-> > gtdt_sbsa_gwdt_init() - just to check if there are platform timers entries
-> > 
-> > arch_timer_mem_acpi_init() - to create a temporary array to init arch mem timer
-> > 			     entries (the array is oversized because it
-> > 			     includes watchdog entries in the count)
-> > 
-> > In both cases taking the
-> > 
-> > min(cnt, gtdt->platform_timer_count);
-> > 
-> > should work AFAICS
-> 
-> It was probably worth noting in the changelog that I did this to
-> gracefully handle the reverse of this issue where we could dereference
-> platform timer entries that are within the bounds of the GTDT but exceed
-> gtdt->platform_timer_count.
-
-Yes, that's strike three, where platform_timer_count is borked,
-I understand you have not hit this one though but it seems
-right to fix it the way you did.
-
-I am just trying to understand given that we are sending the fix to
-stable whether this fix can affect other broken GTDTs (or better, whether
-other borked FW can affect this change) but I hope not, it should not.
-
-> > (hard to grok though, we - as in ACPI maintainers -
-> > need to clean this up).
-> 
-> Heh, thought this smelled a little ripe ;-) Went for the minimal fix
-> first.
-
-I am sorry you have to deal with this, the kernel is not there to
-validate the firmware but on the other hand when it doesn't that's the
-outcome. Apologies.
-
-Lorenzo
+--oDwOdvXmL/dJe8sR--
 
