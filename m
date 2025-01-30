@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB6DA22EDC
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA2C3A22E86
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F9F164719
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DFD67A3B18
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F49383;
-	Thu, 30 Jan 2025 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08E21E3775;
+	Thu, 30 Jan 2025 14:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgNS770e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFrx5Hiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EF91DDE9;
-	Thu, 30 Jan 2025 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E13B1E47A8;
+	Thu, 30 Jan 2025 14:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246546; cv=none; b=WCv5LeKhxeMRmrVuC9n5ssdoGURTkoUA6tMIIRGHMXZ1Xwc/ZkMtuWpnRJ2hFJc+rXWYDHxZKQIuZW8TAO3afG1vLHdtcmb+DAdkyh7WkFFHayDmJlMrtmsAF3ztQ8F6oldQqm+Jig/wrRzauMkFHO6DC+G+R4g4qpE5NWGjeZk=
+	t=1738245714; cv=none; b=tA44/6ewi7hrNsGnpfQgsZ30VjXlIcJmA8bZrSedbfdMX8jFq88ITjqiwI4momnNYUP4Xm86lXIGXLfm/WbHOrJWNMP4wjr4rk4NZLHX0VP60I0xuoSfLdcyygQ38aQrpQ76pI3jPdL5YrZ1J4wTv14uIr6sG1IosNPFhgQRyek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246546; c=relaxed/simple;
-	bh=myyL/K/zUH6FpfcP7ZkrdCb/Ms/q10j5dCW5RVM/T3o=;
+	s=arc-20240116; t=1738245714; c=relaxed/simple;
+	bh=IiTbktcje7DmKLjjaZYdtMweM753hWmFrdim+iVJos4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4vm54z9wf+rxU5w00gIRDVV3Vw5LD2GgowkudJiKxTlWhf752vpJ5xT54qOiC/mzZndn7Y2ejwLYcyKqUg/liSCXfQxPLQXk2tD0Z8XC/vng/QRCxZCU8juWfRdJNH0EocoTiP2NimeyzlA+zS/6nVIRXVfUFQ9PSJAf3QIasc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgNS770e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE07C4CED2;
-	Thu, 30 Jan 2025 14:15:45 +0000 (UTC)
+	 MIME-Version; b=TugUgdmYPQWH6Y/pKwhMxjoVqBd3RPFJEOimlDDLUOYNfrXyAHjWkVpESViLbnF5VwzeoMteI6Y6GXCdioxI2A0A3x77AEXAx1J3ezA8OYHdERnccezDALJgNMQZW9cOnlEUrJJ42DOl1RJVuIGxyBQHZt9pXjKCl2OuEnS7758=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFrx5Hiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB484C4CED2;
+	Thu, 30 Jan 2025 14:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246545;
-	bh=myyL/K/zUH6FpfcP7ZkrdCb/Ms/q10j5dCW5RVM/T3o=;
+	s=korg; t=1738245714;
+	bh=IiTbktcje7DmKLjjaZYdtMweM753hWmFrdim+iVJos4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgNS770e3nfsOWFDDS5gA0mYiyudhE3gAimavRynPlqsufRsRAnIn5+vvXlboj6U4
-	 6iscK9ES93mWCstAk0ID9vH7Fc737c8KFJQyUAX1qyDbuDDgejnszDAGujBQ/n7XQa
-	 gUYCwW6gK4uOslbUuVBMjF2fzoonJLvtd0bpPqsY=
+	b=uFrx5Hiz4yFo2i/e1GD9BGiXMpi98sn/Jon0kzAZfndClvox1j6c9FxnhpXcF152V
+	 Xf8/AGHua3A/YzQA3GpBORIp81NCRQaHvoFgoHgLBchuLUqMUrjsl5xy7JMywWLsvS
+	 D25Z151xbcZOBjjEEbOqr3PRJX+tJkYoROkc3VnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheendra Raghav Neela <sneela@tugraz.at>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 29/43] cachestat: fix page cache statistics permission checking
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Pavel Rojtberg <rojtberg@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 36/40] Input: xpad - add unofficial Xbox 360 wireless receiver clone
 Date: Thu, 30 Jan 2025 14:59:36 +0100
-Message-ID: <20250130133500.075179757@linuxfoundation.org>
+Message-ID: <20250130133501.155149808@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-commit 5f537664e705b0bf8b7e329861f20128534f6a83 upstream.
+commit e4940fe6322c851659c17852b671c6e7b1aa9f56 upstream.
 
-When the 'cachestat()' system call was added in commit cf264e1329fb
-("cachestat: implement cachestat syscall"), it was meant to be a much
-more convenient (and performant) version of mincore() that didn't need
-mapping things into the user virtual address space in order to work.
+Although it mimics the Microsoft's VendorID, it is in fact a clone.
+Taking into account that the original Microsoft Receiver is not being
+manufactured anymore, this drive can solve dpad issues encontered by
+those who still use the original 360 Wireless controller
+but are using a receiver clone.
 
-But it ended up missing the "check for writability or ownership" fix for
-mincore(), done in commit 134fca9063ad ("mm/mincore.c: make mincore()
-more conservative").
-
-This just adds equivalent logic to 'cachestat()', modified for the file
-context (rather than vma).
-
-Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
-Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
-Tested-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
+Link: https://lore.kernel.org/r/20250107192830.414709-12-rojtberg@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/filemap.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4271,6 +4271,20 @@ resched:
- }
- 
- /*
-+ * See mincore: reveal pagecache information only for files
-+ * that the calling process has write access to, or could (if
-+ * tried) open for writing.
-+ */
-+static inline bool can_do_cachestat(struct file *f)
-+{
-+	if (f->f_mode & FMODE_WRITE)
-+		return true;
-+	if (inode_owner_or_capable(file_mnt_idmap(f), file_inode(f)))
-+		return true;
-+	return file_permission(f, MAY_WRITE) == 0;
-+}
-+
-+/*
-  * The cachestat(2) system call.
-  *
-  * cachestat() returns the page cache statistics of a file in the
-@@ -4329,6 +4343,11 @@ SYSCALL_DEFINE4(cachestat, unsigned int,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (!can_do_cachestat(f.file)) {
-+		fdput(f);
-+		return -EPERM;
-+	}
-+
- 	if (flags != 0) {
- 		fdput(f);
- 		return -EINVAL;
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -150,6 +150,7 @@ static const struct xpad_device {
+ 	{ 0x045e, 0x028e, "Microsoft X-Box 360 pad", 0, XTYPE_XBOX360 },
+ 	{ 0x045e, 0x028f, "Microsoft X-Box 360 pad v2", 0, XTYPE_XBOX360 },
+ 	{ 0x045e, 0x0291, "Xbox 360 Wireless Receiver (XBOX)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
++	{ 0x045e, 0x02a9, "Xbox 360 Wireless Receiver (Unofficial)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
+ 	{ 0x045e, 0x02d1, "Microsoft X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02dd, "Microsoft X-Box One pad (Firmware 2015)", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02e3, "Microsoft X-Box One Elite pad", MAP_PADDLES, XTYPE_XBOXONE },
 
 
 
