@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3026EA22F14
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C5DA22FD1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A00EF18889AE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57851889835
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684E41E8823;
-	Thu, 30 Jan 2025 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F041E7C25;
+	Thu, 30 Jan 2025 14:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsUAntGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eni489q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F761E493C;
-	Thu, 30 Jan 2025 14:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEBB1E8855;
+	Thu, 30 Jan 2025 14:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246700; cv=none; b=niHwdIN0toa7BcBKmh5tL6G28gq06JiUHdCVz5YSkhPyExcH1uOCz7m3oFfF+GgRKYc0j/8CNRgvI18vNQc1e1ncZJww7bV/AoH53/J6itIhpe3uNoQfIKTJHHERrxT6XwWowDRFoF31wo7XXGDKzNgsE1UH8foBH8x4vfFb1CU=
+	t=1738247142; cv=none; b=oPyzjxiEx8mlSLxu3I8msgFsSeAznyd6Ujl3NZMHs+2CIfvfBA4YGVdDz1RBSMUwPRa6Yva5yfbivJz5RKOpJI4hKVHK4yTGynyljpRsUWzjeO8b4mNyjYUYN13LYDtSO8KjcM9lU1coDgPw6uGEHqbwJthWe6zHpgvTe2yTwRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246700; c=relaxed/simple;
-	bh=Qe/GBKpBpv3XL0RAYmbptcSPLeu/bqjTIrrKtgzA2ro=;
+	s=arc-20240116; t=1738247142; c=relaxed/simple;
+	bh=0dwb1vwzYNNWfiTuCMs+EhaWEz+Q02v0YA97IBSUTpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekVxijylNgiwrVo1jWcQIeb0CAVp1s/E68O40yjWBUjgsxkkra+VntO89VokCDoEImO/auffjllxeZpdX1rrzQ3F4I/a6tTe8cG+7w0pGEqIiC1Gm0Ol/9h66YhHQ+UqA/TIqtznFC9PCwUBZg53iem4q7j2OxZ+iGzIwsSJZH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsUAntGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99788C4CEE2;
-	Thu, 30 Jan 2025 14:18:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U/4tKPURbIbwmVLjCA+q4w1ojPU/P1kVjUTXh5eP9wWAlfcjcSu7dQgJuV/bApaUT8G9EJ08j1jey+qQ1xhlCG2pIcGlxAxggenDnCXYKIki66E5Nr50ge0PtgHO3YupYjtVRy9gy+lvTLZAzFKzoBf+NQBbuE7cz9aPumNqIUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eni489q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4152C4CED2;
+	Thu, 30 Jan 2025 14:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246700;
-	bh=Qe/GBKpBpv3XL0RAYmbptcSPLeu/bqjTIrrKtgzA2ro=;
+	s=korg; t=1738247142;
+	bh=0dwb1vwzYNNWfiTuCMs+EhaWEz+Q02v0YA97IBSUTpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsUAntGcHTi+cS6s8t8WFH6Mkc5NMcE9hu3DIk4+WqC/xwryG7GNShq9ufnGY4d59
-	 ALurVvIN6Oh7CESTknvmJLm4AVfo7J4fsGJgwLUohLuM9NxHOYezi97ohrfJ6kNlhI
-	 o5BrwuVNib2xwhhw1q/ipZm82nAVaL7BF9zL5ObY=
+	b=eni489q85N0LI07KF+X4Z4nwvvFhhycECew28DJ1h2966kE5TszOHiR7CKbWTm32E
+	 YS+nylzpLsn2KMOrWw9CN2bm5md3ZueW/iguAA3MCHklZaU9/gbf6l9a+o+rVMrWBl
+	 Wx+IePL/9w12a1hfzmR8EfCuhmXwk9qmuJWy8+YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 37/91] iio: inkern: call iio_device_put() only on mapped devices
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/133] drm: adv7511: Fix use-after-free in adv7533_attach_dsi()
 Date: Thu, 30 Jan 2025 15:00:56 +0100
-Message-ID: <20250130140135.154603384@linuxfoundation.org>
+Message-ID: <20250130140145.214783446@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 64f43895b4457532a3cc524ab250b7a30739a1b1 upstream.
+[ Upstream commit 81adbd3ff21c1182e06aa02c6be0bfd9ea02d8e8 ]
 
-In the error path of iio_channel_get_all(), iio_device_put() is called
-on all IIO devices, which can cause a refcount imbalance. Fix this error
-by calling iio_device_put() only on IIO devices whose refcounts were
-previously incremented by iio_device_get().
+The host_node pointer was assigned and freed in adv7533_parse_dt(), and
+later, adv7533_attach_dsi() uses the same. Fix this use-after-free issue
+by dropping of_node_put() in adv7533_parse_dt() and calling of_node_put()
+in error path of probe() and also in the remove().
 
-Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e4d58cd7f88 ("drm/bridge: adv7533: Create a MIPI DSI device")
+Cc: stable@vger.kernel.org
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241119192040.152657-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 10 ++++++++--
+ drivers/gpu/drm/bridge/adv7511/adv7533.c     |  2 --
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -466,7 +466,7 @@ struct iio_channel *iio_channel_get_all(
- 	return chans;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index 9255bce51753..46782f72564b 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1220,8 +1220,10 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 		return ret;
  
- error_free_chans:
--	for (i = 0; i < nummaps; i++)
-+	for (i = 0; i < mapind; i++)
- 		iio_device_put(chans[i].indio_dev);
- 	kfree(chans);
- error_ret:
+ 	ret = adv7511_init_regulators(adv7511);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "failed to init regulators\n");
++	if (ret) {
++		dev_err_probe(dev, ret, "failed to init regulators\n");
++		goto err_of_node_put;
++	}
+ 
+ 	/*
+ 	 * The power down GPIO is optional. If present, toggle it from active to
+@@ -1329,6 +1331,8 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ 	i2c_unregister_device(adv7511->i2c_edid);
+ uninit_regulators:
+ 	adv7511_uninit_regulators(adv7511);
++err_of_node_put:
++	of_node_put(adv7511->host_node);
+ 
+ 	return ret;
+ }
+@@ -1337,6 +1341,8 @@ static int adv7511_remove(struct i2c_client *i2c)
+ {
+ 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
+ 
++	of_node_put(adv7511->host_node);
++
+ 	adv7511_uninit_regulators(adv7511);
+ 
+ 	drm_bridge_remove(&adv7511->bridge);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+index f8d5fa6652af..ee33e7a033ef 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -184,8 +184,6 @@ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+ 	if (!adv->host_node)
+ 		return -ENODEV;
+ 
+-	of_node_put(adv->host_node);
+-
+ 	adv->use_timing_gen = !of_property_read_bool(np,
+ 						"adi,disable-timing-generator");
+ 
+-- 
+2.39.5
+
 
 
 
