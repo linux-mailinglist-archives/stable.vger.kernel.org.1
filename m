@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CB9A2303C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D5EA22FFE
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 889F9168F5C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83A01884AEF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E881E9B1A;
-	Thu, 30 Jan 2025 14:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB391E8855;
+	Thu, 30 Jan 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bail6BCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvdeN9b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3651F1E991B;
-	Thu, 30 Jan 2025 14:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760A11BD9D3;
+	Thu, 30 Jan 2025 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247408; cv=none; b=Z0bv9dkdCUPCxGyMk7qH2eL4kJCzVBPl3V4kvWi/3W5Ue44w3+KNa6OkkLnyiwIrMXee7ttneKybnY9xKbk7BDVC93lrYRhyHTxZtJuQHmG91N/9ySXmu1fphCHeKzS7rfLF2lqPeTIycVmJoTppJ2CUUAccFkQM6th8LD8Hnog=
+	t=1738247256; cv=none; b=VSSpdP7Tz8YDN1HjJlQ9+rEkfjf0CXyATDGiqZRYym15a6xb2Ot+vIzEvAS31RVw/R0+pz3yfrXaeLk1FcRI47o6qZznbAjX3Zl++vGmvQjqWY3waPORGl8TqxkV39XkVCEMMNWcsPR1olYBFtKLUsoFVohnHHzf/b8Ix7tSRJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247408; c=relaxed/simple;
-	bh=O+zHP9S8wuHrpxle5Gl+YPEZy7rhQe4eyoHwQP/CV9Q=;
+	s=arc-20240116; t=1738247256; c=relaxed/simple;
+	bh=lQjJDOW+wa1suQW1lVCAn2uMiqFS9q1f2Mu9WP/A1gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sg03TxMoNzbp2k+uSXa39nc2Dk+KEK45pMQAYGRuRiOraPBjMjY0mWXnyRsjyL+8ViIJAJlNhMwYdUfcoMGSIPwaUmeIwtVwfDgEvS9olUomT3s+DNLqxvPYzM73rfyUvu2xOluUuPjd8Ov9VoKXOzRAiLbTMD0CNdF4MeppMTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bail6BCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA6DC4CED2;
-	Thu, 30 Jan 2025 14:30:07 +0000 (UTC)
+	 MIME-Version; b=uDCs/livod8NM3tjNwmhSzqNRxE5p2Rur3TnQQjbPnC1ffCPlkR9OTGPfQmBHLb9w+KCfh04vHEjEVP2f0RWmmSaS4X7pjL5b6UY3SvmgwQ19yQipw7f8Wj/vXsMCKSRqV0NCpJWmMEsYLOY31x+xDBaNQ0E/aKoDOWRwZZJp9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvdeN9b0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B9C4CED2;
+	Thu, 30 Jan 2025 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247408;
-	bh=O+zHP9S8wuHrpxle5Gl+YPEZy7rhQe4eyoHwQP/CV9Q=;
+	s=korg; t=1738247256;
+	bh=lQjJDOW+wa1suQW1lVCAn2uMiqFS9q1f2Mu9WP/A1gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bail6BCDfk6mTweK7jSzyyV7sWFhXkw13U/TM139XJeo/Tfy+J2TUuXlfmhKwfD2y
-	 F3Es7VdQFU/b5W0eHAo0Soq7tbs27COWyUd6qq24iS5d9xL1jujzIYNJedlGgzODvY
-	 wXdLQ7BbN8WDMXG8Pg4VHSXQN7h4eULi/GQ8A6xU=
+	b=SvdeN9b0Wgm3M9F/+UdX+6uVykhGrZWYua5Hbu5cElfFNY4nn+HbAd44edS0uoeqz
+	 AVhJOKaaNKzqgO8AB5t7L7/w9cQ+x08FeLZAEhAQFgQYf7tH1FG765iERqkeT1QQn1
+	 QsUQpbcvjcCaWed5wr56kyYOm1JD1V4v7PlyC/84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 21/49] xfs: factor out xfs_defer_pending_abort
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 128/133] wifi: iwlwifi: add a few rate index validity checks
 Date: Thu, 30 Jan 2025 15:01:57 +0100
-Message-ID: <20250130140134.691316123@linuxfoundation.org>
+Message-ID: <20250130140147.680911558@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 2a5db859c6825b5d50377dda9c3cc729c20cad43 ]
+commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
 
-Factor out xfs_defer_pending_abort() from xfs_defer_trans_abort(), which
-not use transaction parameter, so it can be used after the transaction
-life cycle.
+Validate index before access iwl_rate_mcs to keep rate->index
+inside the valid boundaries. Use MCS_0_INDEX if index is less
+than MCS_0_INDEX and MCS_9_INDEX if index is greater then
+MCS_9_INDEX.
 
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_defer.c |   23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c |    7 +++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c |    9 ++++++---
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_defer.c
-+++ b/fs/xfs/libxfs/xfs_defer.c
-@@ -245,21 +245,18 @@ xfs_defer_create_intents(
- 	return ret;
- }
- 
--/* Abort all the intents that were committed. */
- STATIC void
--xfs_defer_trans_abort(
--	struct xfs_trans		*tp,
--	struct list_head		*dop_pending)
-+xfs_defer_pending_abort(
-+	struct xfs_mount		*mp,
-+	struct list_head		*dop_list)
- {
- 	struct xfs_defer_pending	*dfp;
- 	const struct xfs_defer_op_type	*ops;
- 
--	trace_xfs_defer_trans_abort(tp, _RET_IP_);
--
- 	/* Abort intent items that don't have a done item. */
--	list_for_each_entry(dfp, dop_pending, dfp_list) {
-+	list_for_each_entry(dfp, dop_list, dfp_list) {
- 		ops = defer_op_types[dfp->dfp_type];
--		trace_xfs_defer_pending_abort(tp->t_mountp, dfp);
-+		trace_xfs_defer_pending_abort(mp, dfp);
- 		if (dfp->dfp_intent && !dfp->dfp_done) {
- 			ops->abort_intent(dfp->dfp_intent);
- 			dfp->dfp_intent = NULL;
-@@ -267,6 +264,16 @@ xfs_defer_trans_abort(
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -130,7 +130,7 @@ static int iwl_hwrate_to_plcp_idx(u32 ra
+ 				return idx;
  	}
+ 
+-	return -1;
++	return IWL_RATE_INVALID;
  }
  
-+/* Abort all the intents that were committed. */
-+STATIC void
-+xfs_defer_trans_abort(
-+	struct xfs_trans		*tp,
-+	struct list_head		*dop_pending)
-+{
-+	trace_xfs_defer_trans_abort(tp, _RET_IP_);
-+	xfs_defer_pending_abort(tp->t_mountp, dop_pending);
-+}
-+
- /*
-  * Capture resources that the caller said not to release ("held") when the
-  * transaction commits.  Caller is responsible for zero-initializing @dres.
+ static void rs_rate_scale_perform(struct iwl_priv *priv,
+@@ -3151,7 +3151,10 @@ static ssize_t rs_sta_dbgfs_scale_table_
+ 	for (i = 0; i < LINK_QUAL_MAX_RETRY_NUM; i++) {
+ 		index = iwl_hwrate_to_plcp_idx(
+ 			le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
+-		if (is_legacy(tbl->lq_type)) {
++		if (index == IWL_RATE_INVALID) {
++			desc += sprintf(buff + desc, " rate[%d] 0x%X invalid rate\n",
++				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
++		} else if (is_legacy(tbl->lq_type)) {
+ 			desc += sprintf(buff+desc, " rate[%d] 0x%X %smbps\n",
+ 				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags),
+ 				iwl_rate_mcs[index].mbps);
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -1120,10 +1120,13 @@ static void rs_get_lower_rate_down_colum
+ 
+ 		rate->bw = RATE_MCS_CHAN_WIDTH_20;
+ 
+-		WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX ||
+-			     rate->index > IWL_RATE_MCS_9_INDEX);
++		if (WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX))
++			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_0_INDEX];
++		else if (WARN_ON_ONCE(rate->index > IWL_RATE_MCS_9_INDEX))
++			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_9_INDEX];
++		else
++			rate->index = rs_ht_to_legacy[rate->index];
+ 
+-		rate->index = rs_ht_to_legacy[rate->index];
+ 		rate->ldpc = false;
+ 	} else {
+ 		/* Downgrade to SISO with same MCS if in MIMO  */
 
 
 
