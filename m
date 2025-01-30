@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20E3A22F00
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79742A22F8C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2D53A42B9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD0E3188411E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D161E9907;
-	Thu, 30 Jan 2025 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BA21E990A;
+	Thu, 30 Jan 2025 14:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+BH0Fhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTqOmfgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013C41E7C25;
-	Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D51BDA95;
+	Thu, 30 Jan 2025 14:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246645; cv=none; b=o8F43fWdDcd8xJFbR1bkKAxmgmBJ3PYo/4WsCXibVkP8x4HAfdev+QTGCx/rjpwIRxA+9Wh7UQigXKbPZ2ivODQfgHVXsClbu8OA/lkeynsuhRp0XJgznc6mEYhbqDaojAYtHs43+t7rK0t5p6YWdeK1qaDVVqMYPd3GDeqleY4=
+	t=1738246978; cv=none; b=QwRZ0dHtf2yGA2uTPIWBm0z+PDMCq6xB4MDTZj7yJXUPBEEQrQmni3UGgzro4iftPWtVn7/0ifAs2WZWQOx/wWSObTyrCj9d2YfaTI5nB9oTapjVs4488NKVEfvLGa0qLxvwWN18fvmV41z3G9l03KMInwJdaUzrOi0okJXrJrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246645; c=relaxed/simple;
-	bh=UJ+aj+mXbfMQDVGaNKlNDXjJ/FZ5mN5+Ka38Fd1QYzU=;
+	s=arc-20240116; t=1738246978; c=relaxed/simple;
+	bh=FT5RzeYv7+4ZJmu9k5nSwekv6c6D5P0eThMKBrHnFHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fp2ZW5jHFpapXnb1K9SJoe33QC6CjWH903jxMTLkCVApsdfe1XnMwJQYCK9RbQZ5S6ZJdBs1PCBi6947UJ2SNmvBd7lF9CMxqJjIp8xY0ZFetbwH0hEVKefqdR9gquOSSMf04xS2gUCaAom0zEtXd5sk7BJXoU8KvkzlD3uW++Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+BH0Fhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81483C4CED2;
-	Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
+	 MIME-Version; b=GpU0pz3057Ks5vLDKpg0x1J4n5k1X2R50UK7wZXHxuJyup9cOAtSxGn6KQcS/PW5vgEUshm6c9/O/7GbMK+1xURbKjTPY66WcbZYsSJtbiq+lM+EtzsM8AsnZDYlDC5LkYOc8paIMInZwiinfLRnbdK/+TQ1PS18dl3WqKNu/Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTqOmfgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFA8C4CED2;
+	Thu, 30 Jan 2025 14:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246644;
-	bh=UJ+aj+mXbfMQDVGaNKlNDXjJ/FZ5mN5+Ka38Fd1QYzU=;
+	s=korg; t=1738246977;
+	bh=FT5RzeYv7+4ZJmu9k5nSwekv6c6D5P0eThMKBrHnFHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+BH0FhmQ4t6Frk25OMndaXRYfi2zvznkpPV8kBb17kjWzxjgH+zXQCV23OZfEunz
-	 tMJPY5SpKyP2Cpg/cRoB/rsDsmWrzu22uK/v1YX3o2v7PbPPONlXsLxCyDxBnULQdt
-	 nUF15FZ8pq++R3OudcNaGSdXYEksliuAotBjwZOg=
+	b=HTqOmfgrIykqOwo2EC535b2eE8RaR2Dnh5qjKCK4zZD2EGCrczT8HrzJRt81qIt2r
+	 guVGxCtL9q0lpcjQl4NsVXwEMCrZokFIaSXzORZTd+pqTvWk4fCmDTRyWZf8zF/5e7
+	 0QcVzeEb3ECdDXz713Y5vePMvD/4ezr/ATZOw6mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.4 11/91] dm thin: make get_first_thin use rcu-safe list first function
+	stable <stable@kernel.org>,
+	Akash M <akash.m5@samsung.com>
+Subject: [PATCH 5.10 041/133] usb: gadget: f_fs: Remove WARN_ON in functionfs_bind
 Date: Thu, 30 Jan 2025 15:00:30 +0100
-Message-ID: <20250130140134.120699220@linuxfoundation.org>
+Message-ID: <20250130140144.166911749@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Akash M <akash.m5@samsung.com>
 
-commit 80f130bfad1dab93b95683fc39b87235682b8f72 upstream.
+commit dfc51e48bca475bbee984e90f33fdc537ce09699 upstream.
 
-The documentation in rculist.h explains the absence of list_empty_rcu()
-and cautions programmers against relying on a list_empty() ->
-list_first() sequence in RCU safe code.  This is because each of these
-functions performs its own READ_ONCE() of the list head.  This can lead
-to a situation where the list_empty() sees a valid list entry, but the
-subsequent list_first() sees a different view of list head state after a
-modification.
+This commit addresses an issue related to below kernel panic where
+panic_on_warn is enabled. It is caused by the unnecessary use of WARN_ON
+in functionsfs_bind, which easily leads to the following scenarios.
 
-In the case of dm-thin, this author had a production box crash from a GP
-fault in the process_deferred_bios path.  This function saw a valid list
-head in get_first_thin() but when it subsequently dereferenced that and
-turned it into a thin_c, it got the inside of the struct pool, since the
-list was now empty and referring to itself.  The kernel on which this
-occurred printed both a warning about a refcount_t being saturated, and
-a UBSAN error for an out-of-bounds cpuid access in the queued spinlock,
-prior to the fault itself.  When the resulting kdump was examined, it
-was possible to see another thread patiently waiting in thin_dtr's
-synchronize_rcu.
+1.adb_write in adbd               2. UDC write via configfs
+  =================	             =====================
 
-The thin_dtr call managed to pull the thin_c out of the active thins
-list (and have it be the last entry in the active_thins list) at just
-the wrong moment which lead to this crash.
+->usb_ffs_open_thread()           ->UDC write
+ ->open_functionfs()               ->configfs_write_iter()
+  ->adb_open()                      ->gadget_dev_desc_UDC_store()
+   ->adb_write()                     ->usb_gadget_register_driver_owner
+                                      ->driver_register()
+->StartMonitor()                       ->bus_add_driver()
+ ->adb_read()                           ->gadget_bind_driver()
+<times-out without BIND event>           ->configfs_composite_bind()
+                                          ->usb_add_function()
+->open_functionfs()                        ->ffs_func_bind()
+ ->adb_open()                               ->functionfs_bind()
+                                       <ffs->state !=FFS_ACTIVE>
 
-Fortunately, the fix here is straight forward.  Switch get_first_thin()
-function to use list_first_or_null_rcu() which performs just a single
-READ_ONCE() and returns NULL if the list is already empty.
+The adb_open, adb_read, and adb_write operations are invoked from the
+daemon, but trying to bind the function is a process that is invoked by
+UDC write through configfs, which opens up the possibility of a race
+condition between the two paths. In this race scenario, the kernel panic
+occurs due to the WARN_ON from functionfs_bind when panic_on_warn is
+enabled. This commit fixes the kernel panic by removing the unnecessary
+WARN_ON.
 
-This was run against the devicemapper test suite's thin-provisioning
-suites for delete and suspend and no regressions were observed.
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+[   14.542395] Call trace:
+[   14.542464]  ffs_func_bind+0x1c8/0x14a8
+[   14.542468]  usb_add_function+0xcc/0x1f0
+[   14.542473]  configfs_composite_bind+0x468/0x588
+[   14.542478]  gadget_bind_driver+0x108/0x27c
+[   14.542483]  really_probe+0x190/0x374
+[   14.542488]  __driver_probe_device+0xa0/0x12c
+[   14.542492]  driver_probe_device+0x3c/0x220
+[   14.542498]  __driver_attach+0x11c/0x1fc
+[   14.542502]  bus_for_each_dev+0x104/0x160
+[   14.542506]  driver_attach+0x24/0x34
+[   14.542510]  bus_add_driver+0x154/0x270
+[   14.542514]  driver_register+0x68/0x104
+[   14.542518]  usb_gadget_register_driver_owner+0x48/0xf4
+[   14.542523]  gadget_dev_desc_UDC_store+0xf8/0x144
+[   14.542526]  configfs_write_iter+0xf0/0x138
 
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Fixes: b10ebd34ccca ("dm thin: fix rcu_read_lock being held in code that can sleep")
-Cc: stable@vger.kernel.org
-Acked-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: ddf8abd25994 ("USB: f_fs: the FunctionFS driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Akash M <akash.m5@samsung.com>
+Link: https://lore.kernel.org/r/20241219125221.1679-1-akash.m5@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-thin.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-thin.c
-+++ b/drivers/md/dm-thin.c
-@@ -2325,10 +2325,9 @@ static struct thin_c *get_first_thin(str
- 	struct thin_c *tc = NULL;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -1856,7 +1856,7 @@ static int functionfs_bind(struct ffs_da
  
- 	rcu_read_lock();
--	if (!list_empty(&pool->active_thins)) {
--		tc = list_entry_rcu(pool->active_thins.next, struct thin_c, list);
-+	tc = list_first_or_null_rcu(&pool->active_thins, struct thin_c, list);
-+	if (tc)
- 		thin_get(tc);
--	}
- 	rcu_read_unlock();
+ 	ENTER();
  
- 	return tc;
+-	if (WARN_ON(ffs->state != FFS_ACTIVE
++	if ((ffs->state != FFS_ACTIVE
+ 		 || test_and_set_bit(FFS_FL_BOUND, &ffs->flags)))
+ 		return -EBADFD;
+ 
 
 
 
