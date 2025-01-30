@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42AEA22FD0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E8BA22F2F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59203169277
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30CDF16503E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA8F1E98F1;
-	Thu, 30 Jan 2025 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD561E9901;
+	Thu, 30 Jan 2025 14:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWX716sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzXG4xdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70E1E6DCF;
-	Thu, 30 Jan 2025 14:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598051E98F3;
+	Thu, 30 Jan 2025 14:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247124; cv=none; b=PvTu2i1dKPCdMPoDAQLTgCV+mFflbCnuuq8ZBm8No/aTSxTlSKEOIT9BXx/KdyxkkVCoADNwr8Ft6u9gVB1P1JiaIFvfGQRXLoVFHwZqc/up7lwSCie8skUa7or9fVwWS4ZCaeWwAzscO2T3eKOfQQrYKpcrNpXlnLuh1hi4GJ8=
+	t=1738246768; cv=none; b=QoBJCkjgFYnUl6WqZATuvbTPo8Zh1Gznfc4h8M+Ub/ZOwxQVBl+eA023TxNe51a/Kc/lKQ0eUqnzgTKFC4vzmHadPM9jPhoRnYEjJt4LnSeYIgb8UzNbssSiCYeMPwjmXAtehoU1Zavu/q8U3upwluL3XBt4+7ghz8PudcJmJ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247124; c=relaxed/simple;
-	bh=l/EdMW0D0BtjD4hjy0IF3JnuRn/nlnavImiYdqDMkNg=;
+	s=arc-20240116; t=1738246768; c=relaxed/simple;
+	bh=wcaOjBWqis6DlC5mbWXnJU7tK+QPgamDkIgpUR7m85Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3lTNIp6NQ/PnGUgsYR90C/jvm3bNbezu1tCke/jghmd8l6XZSz9Kem9W2y8DuQPr3ouxHNGSJvxrQekP1Wz9qNAVIu/r2+3w4xuhTDgd3ZEIC7qqp3FPBEwSgnB5tZZRN/HQz/zc1swqgQdemB+0wlUr40x1kMi+JKcuwSnu9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWX716sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2806DC4CED2;
-	Thu, 30 Jan 2025 14:25:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jNP7204USooG32AJ2rvob/KeC5nUQFgQCgjZLZQzW71AR7RCJUBp+dyBaaCIws9DlZGeBsS2pDW9uVjugPk0iJ9+Rt9rzNSti372rwN/mdThIrb7Tdl+11Jxk0m+uBUgXkk4oce8K9t4HrEsI9UuhNR4ZKyT9FwbdAclOZ7hFYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzXG4xdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0C2C4CED2;
+	Thu, 30 Jan 2025 14:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247124;
-	bh=l/EdMW0D0BtjD4hjy0IF3JnuRn/nlnavImiYdqDMkNg=;
+	s=korg; t=1738246768;
+	bh=wcaOjBWqis6DlC5mbWXnJU7tK+QPgamDkIgpUR7m85Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWX716sjU45vOpYJkRvkixPNTB24yxV+vcse1NYVxDG+kAfaw2obpxXaM1GgT0tGt
-	 7Os/RRZ0ZjCzmDs/SxgmeQH03Ut1lcl0nNSwWsc9Bi8GcYSNJPIvTvkexqlGyEgvAw
-	 2meqkC7gLRIvg8A7C9Bv/VLdi9hFrMq6r1/hXv7s=
+	b=rzXG4xdHU3KvmjHLUmVOUGPM0hYFVIH/G4sUguWErfcgUw4gNV/qjnNiAVRIUN+ly
+	 xKkE5t+Rr0kdWwewHuGLoGBALgV/9UPy80jLLO2q4jyMzWpwNn5o3KdnPBHTABDHHl
+	 kqUoWpy7Q2fzE0FhrxoCEjg5Yawp39utDRbQSoKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/133] nvmet: propagate npwg topology
-Date: Thu, 30 Jan 2025 15:01:19 +0100
-Message-ID: <20250130140146.143582150@linuxfoundation.org>
+Subject: [PATCH 5.4 61/91] drm/v3d: Ensure job pointer is set to NULL after job completion
+Date: Thu, 30 Jan 2025 15:01:20 +0100
+Message-ID: <20250130140136.123058408@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Chamberlain <mcgrof@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
+[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
 
-Ensure we propagate npwg to the target as well instead
-of assuming its the same logical blocks per physical block.
+After a job completes, the corresponding pointer in the device must
+be set to NULL. Failing to do so triggers a warning when unloading
+the driver, as it appears the job is still active. To prevent this,
+assign the job pointer to NULL after completing the job, indicating
+the job has finished.
 
-This ensures devices with large IUs information properly
-propagated on the target.
-
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/io-cmd-bdev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
-index 6a9626ff07135..58dd91d2d71c8 100644
---- a/drivers/nvme/target/io-cmd-bdev.c
-+++ b/drivers/nvme/target/io-cmd-bdev.c
-@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
- 	 */
- 	id->nsfeat |= 1 << 4;
- 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
--	id->npwg = lpp0b;
-+	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
- 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
- 	id->npwa = id->npwg;
- 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index 662e67279a7bb..aa27b7654dee5 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->bin_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->render_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->csd_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+ 
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->tfu_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
 -- 
 2.39.5
 
