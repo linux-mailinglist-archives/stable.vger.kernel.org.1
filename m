@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-111395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E18A22EF4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C97A22ED5
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA8893A6E4F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:16:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8393A5FBD
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D2B1E991C;
-	Thu, 30 Jan 2025 14:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE101E991C;
+	Thu, 30 Jan 2025 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3J+wZjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Vb9foa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E0E1E990D;
-	Thu, 30 Jan 2025 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D81E990D;
+	Thu, 30 Jan 2025 14:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246612; cv=none; b=Ui/6v5JAseBRlFsCrf26ZGeRKet/OV3BQEOpii+scgQ4iohFcRkFj9+KfEL66IFhiwc6tjKhGv0y6htEam373yEXMn4mxdocZCiWVf/pM+DZdrTyeOdBJ9HNgvbny9YR34CBU5JMoTE7uWZviICEKxhsX7mMY7grv0WwO/4WUSA=
+	t=1738246532; cv=none; b=K0MO8zSGSneTBagxRPP+RZ733ppZgkPVjm1gxJn0iJr4H627hBEmfXx8Kc4sWrgTjBYksYyaQQpOzvfYoTYHPhX9fsekiV37p5cLUh3zCL6wNbnE+5MkqpmfYA/nHL49Ph4v8ml39bScyJasFpKLNGwYtuwW8w3mkPKgGnWX30c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246612; c=relaxed/simple;
-	bh=sLeSR9UzgQL74RSjRbpyUbr0tPqvwiF/PwHbHvelT+I=;
+	s=arc-20240116; t=1738246532; c=relaxed/simple;
+	bh=z2udORKE3W1ekGdIRM2EveHK0Qtl+ar0phPE9rOEEwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmE4oh/oWUclXU8dgkWSvBqNzWkrF647YusOB93mBKMNAIU90Wcw+MozCwS7ZmbJQZ0kR7kk156QlvIX3VHSPXm6KcIyO378eNVp4lrlPyGNNIHBmXeObJ3idvcL0Mwrh8rMHB1WFQd7V6H9CZr0KBlZWG5qV5JwxV3W5scqzF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3J+wZjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D37FC4CED2;
-	Thu, 30 Jan 2025 14:16:52 +0000 (UTC)
+	 MIME-Version; b=lBqzvSSFTW4Uj6FUHFjwul3YZL1xPvnXS0JDmErvl5/rntgnFx1OmdP1pFqiSuuNufA6+z+JNZk6uj4cstoP8O7LS+6rvCCeK6BRNc/CGheq408TCye0hZoJ6/BvXUwi0spbyxv7WiHkaI22DPS2Uta8uC6faaUBIlrt9r3gCus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Vb9foa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16080C4CED2;
+	Thu, 30 Jan 2025 14:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246612;
-	bh=sLeSR9UzgQL74RSjRbpyUbr0tPqvwiF/PwHbHvelT+I=;
+	s=korg; t=1738246531;
+	bh=z2udORKE3W1ekGdIRM2EveHK0Qtl+ar0phPE9rOEEwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3J+wZjqmKr9ebKCb30HU9WXslqJl1nreUD7y2gxkc8Fsiz9WAPeM7MGq+IFTB1ie
-	 4TO3OB9G/MlPa6wKrSu6JfksHy+Y820WeiWwibSCGHd7uWcCpq+j4Kek6JkeWBsyGl
-	 vvb7TGQX5KPaduDQf8twSzDRTy71mdiAmHFS40jw=
+	b=2Vb9foa0mfMvg8Qq9CJ1X6wbYWIs+ci/pHsS/0GhWywEnqHK9r6Xmc3Wo3dDCHMvT
+	 mVpleZU6YNu71cbUL7TbBDgq3LRv5c/fjMjmWWvarg6dcE0BEH+KPQVY6Z5OZ2fsEw
+	 t2BeTy83YVvO1/7MKdgKE2VeISLrIbRJj1oWaaFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
 	Jan Kara <jack@suse.cz>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 15/43] libfs: Re-arrange locking in offset_iterate_dir()
-Date: Thu, 30 Jan 2025 14:59:22 +0100
-Message-ID: <20250130133459.514969822@linuxfoundation.org>
+Subject: [PATCH 6.6 16/43] libfs: Define a minimum directory offset
+Date: Thu, 30 Jan 2025 14:59:23 +0100
+Message-ID: <20250130133459.555541361@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
 References: <20250130133458.903274626@linuxfoundation.org>
@@ -69,81 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 3f6d810665dfde0d33785420618ceb03fba0619d ]
+[ Upstream commit 7beea725a8ca412c6190090ce7c3a13b169592a1 ]
 
-Liam and Matthew say that once the RCU read lock is released,
-xa_state is not safe to re-use for the next xas_find() call. But the
-RCU read lock must be released on each loop iteration so that
-dput(), which might_sleep(), can be called safely.
+This value is used in several places, so make it a symbolic
+constant.
 
-Thus we are forced to walk the offset tree with fresh state for each
-directory entry. xa_find() can do this for us, though it might be a
-little less efficient than maintaining xa_state locally.
-
-We believe that in the current code base, inode->i_rwsem provides
-protection for the xa_state maintained in
-offset_iterate_dir(). However, there is no guarantee that will
-continue to be the case in the future.
-
-Since offset_iterate_dir() doesn't build xa_state locally any more,
-there's no longer a strong need for offset_find_next(). Clean up by
-rolling these two helpers together.
-
-Suggested-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Message-ID: <170785993027.11135.8830043889278631735.stgit@91.116.238.104.host.secureserver.net>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/170820142021.6328.15047865406275957018.stgit@91.116.238.104.host.secureserver.net
 Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/170820142741.6328.12428356024575347885.stgit@91.116.238.104.host.secureserver.net
 Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: ecba88a3b32d ("libfs: Add simple_offset_empty()")
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/libfs.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 --- a/fs/libfs.c
 +++ b/fs/libfs.c
-@@ -401,12 +401,13 @@ static loff_t offset_dir_llseek(struct f
- 	return vfs_setpos(file, offset, U32_MAX);
+@@ -239,6 +239,11 @@ const struct inode_operations simple_dir
+ };
+ EXPORT_SYMBOL(simple_dir_inode_operations);
+ 
++/* 0 is '.', 1 is '..', so always start with offset 2 or more */
++enum {
++	DIR_OFFSET_MIN	= 2,
++};
++
+ static void offset_set(struct dentry *dentry, u32 offset)
+ {
+ 	dentry->d_fsdata = (void *)((uintptr_t)(offset));
+@@ -260,9 +265,7 @@ void simple_offset_init(struct offset_ct
+ {
+ 	xa_init_flags(&octx->xa, XA_FLAGS_ALLOC1);
+ 	lockdep_set_class(&octx->xa.xa_lock, &simple_offset_xa_lock);
+-
+-	/* 0 is '.', 1 is '..', so always start with offset 2 */
+-	octx->next_offset = 2;
++	octx->next_offset = DIR_OFFSET_MIN;
  }
  
--static struct dentry *offset_find_next(struct xa_state *xas)
-+static struct dentry *offset_find_next(struct offset_ctx *octx, loff_t offset)
+ /**
+@@ -275,7 +278,7 @@ void simple_offset_init(struct offset_ct
+  */
+ int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry)
  {
- 	struct dentry *child, *found = NULL;
-+	XA_STATE(xas, &octx->xa, offset);
+-	static const struct xa_limit limit = XA_LIMIT(2, U32_MAX);
++	static const struct xa_limit limit = XA_LIMIT(DIR_OFFSET_MIN, U32_MAX);
+ 	u32 offset;
+ 	int ret;
  
- 	rcu_read_lock();
--	child = xas_next_entry(xas, U32_MAX);
-+	child = xas_next_entry(&xas, U32_MAX);
- 	if (!child)
- 		goto out;
- 	spin_lock(&child->d_lock);
-@@ -429,12 +430,11 @@ static bool offset_dir_emit(struct dir_c
+@@ -480,7 +483,7 @@ static int offset_readdir(struct file *f
+ 		return 0;
  
- static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- {
--	struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
--	XA_STATE(xas, &so_ctx->xa, ctx->pos);
-+	struct offset_ctx *octx = inode->i_op->get_offset_ctx(inode);
- 	struct dentry *dentry;
- 
- 	while (true) {
--		dentry = offset_find_next(&xas);
-+		dentry = offset_find_next(octx, ctx->pos);
- 		if (!dentry)
- 			return ERR_PTR(-ENOENT);
- 
-@@ -443,8 +443,8 @@ static void *offset_iterate_dir(struct i
- 			break;
- 		}
- 
-+		ctx->pos = dentry2offset(dentry) + 1;
- 		dput(dentry);
--		ctx->pos = xas.xa_index + 1;
- 	}
- 	return NULL;
- }
+ 	/* In this case, ->private_data is protected by f_pos_lock */
+-	if (ctx->pos == 2)
++	if (ctx->pos == DIR_OFFSET_MIN)
+ 		file->private_data = NULL;
+ 	else if (file->private_data == ERR_PTR(-ENOENT))
+ 		return 0;
 
 
 
