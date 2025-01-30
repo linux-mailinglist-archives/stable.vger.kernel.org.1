@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-111662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3B8A23035
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F26A8A22F69
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 166AF1685B6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A31CB7A3880
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3881E7C27;
-	Thu, 30 Jan 2025 14:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2261E6DCF;
+	Thu, 30 Jan 2025 14:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaQ3cBf+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Px2ci4S0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878241E522;
-	Thu, 30 Jan 2025 14:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7771E493C;
+	Thu, 30 Jan 2025 14:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247390; cv=none; b=AjzPEwMfUnoPOkx5vJ5mWTTZbQIQSwjL2Knoose5bqS0+OrakMmPQuf5nnI6XMPCMyBo6J8OwV/TiFpRhS7LnTtvM129IbJk8WILCg451pHikICOKg0y57lcmTmrdndZsdIQR7mOu4hBgKYDvgpPmQfsR2ViSkaYps8KLViC86o=
+	t=1738246873; cv=none; b=FaKsHlckx3yafsdGU8YQ+fkgEAU5VnmFyx6UcDsljUj6JsoTuQav8JJQLrS123BNzURjPhO9Z5ncuFNlkKqGakF7TT6n4r4YrFbf7pVceEFHKpW2iL5OoBKfHLEwaHYrPp8W5Lg5yGbEVmIXsrLjWeXEtY4SDoZ5tA2V8C42+dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247390; c=relaxed/simple;
-	bh=nn4AMd3TvT7uvNmP0r0N51O6kRJYtUcAU2v//LqcqpM=;
+	s=arc-20240116; t=1738246873; c=relaxed/simple;
+	bh=dAgC29DAgvJMTBRhu9qoAnaiGzfMmxVDEBrSpjsjmTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBkvuh5pHtpeypxIIn+ZcsajZP202twVxXHuVrin50T4FepUwuaJ3DPcv6WbLTIeFAEd98s60fDcGUrEbGxxTVbiKLfuzwCC4bEH53583XOozZgGheCADG0/EGyI0NF3OHgNgNZslsgX3om3NjtF8PkYDqU1NzRP4I0tZv8Ab9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaQ3cBf+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E157C4CED2;
-	Thu, 30 Jan 2025 14:29:49 +0000 (UTC)
+	 MIME-Version; b=AvZVHCSRqN97Vl6CmV1skBTwLCxsJJMBWP64YA1Mb0WkZ6hYByaUjqiIn6l4UtLayaARsPTtpa0G5ug9hP6QjF6aTs8PtxfrbSlDqLZ+svAfQiYdtNdxwCnxMdsY442szMG+PHrNMpEpDSQoDRSyyQHQXpVo4ayYWUSpoWrFM0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Px2ci4S0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AE0C4CED2;
+	Thu, 30 Jan 2025 14:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247390;
-	bh=nn4AMd3TvT7uvNmP0r0N51O6kRJYtUcAU2v//LqcqpM=;
+	s=korg; t=1738246873;
+	bh=dAgC29DAgvJMTBRhu9qoAnaiGzfMmxVDEBrSpjsjmTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LaQ3cBf+YhH2JVGGUCffeimu2GNB5XuVh4TvZ7epoIG8Tk2xeNd0joTwt3qM03Bmq
-	 t2HfS54S6nWcCTVVkWU9yoXCRxdBYLOLc9Je3XHEW14Qb77hBfodNNdyVmmxiLyrI8
-	 vj3BQJQgA6I6cp4LPHqQxQcqj6ZjVEZBTAzCUGdQ=
+	b=Px2ci4S0qF+q/uXNzmL/Y/lLftyAdAahEpDfYkbMBZT/Z736xmI7jZ1IqrDiHJhsn
+	 bDsmAMVMS4xq6NAzMEFlTU9BR6YXozou7Mns4v6dcyrh2fbQh+JhlXyEBIBxwfmZeD
+	 LOuZjp5LeInYwPtHgll2PzkBK5klfiumtkSnwe/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 05/49] drm/amd/display: Use HW lock mgr for PSR1
+	Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Hagar Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 5.4 82/91] net: xen-netback: hash.c: Use built-in RCU list checking
 Date: Thu, 30 Jan 2025 15:01:41 +0100
-Message-ID: <20250130140134.047307223@linuxfoundation.org>
+Message-ID: <20250130140136.977938402@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
 
-[ Upstream commit b5c764d6ed556c4e81fbe3fd976da77ec450c08e ]
+commit f3265971ded98a069ad699b51b8a5ab95e9e5be1 upstream.
 
-[Why]
-Without the dmub hw lock, it may cause the lock timeout issue
-while do modeset on PSR1 eDP panel.
+list_for_each_entry_rcu has built-in RCU and lock checking.
+Pass cond argument to list_for_each_entry_rcu.
 
-[How]
-Allow dmub hw lock for PSR1.
-
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a2b5a9956269f4c1a09537177f18ab0229fe79f7)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 0fa5e94a1811 ("net/xen-netback: prevent UAF in xenvif_flush_hash()")
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/xen-netback/hash.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-index 3f32e9c3fbaf4..8d7b2eee8c7c3 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -65,7 +65,8 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
+--- a/drivers/net/xen-netback/hash.c
++++ b/drivers/net/xen-netback/hash.c
+@@ -51,7 +51,8 @@ static void xenvif_add_hash(struct xenvi
  
- bool should_use_dmub_lock(struct dc_link *link)
- {
--	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
-+	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
-+	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
- 		return true;
- 	return false;
- }
--- 
-2.39.5
-
+ 	found = false;
+ 	oldest = NULL;
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
++	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
++				lockdep_is_held(&vif->hash.cache.lock)) {
+ 		/* Make sure we don't add duplicate entries */
+ 		if (entry->len == len &&
+ 		    memcmp(entry->tag, tag, len) == 0)
+@@ -102,7 +103,8 @@ static void xenvif_flush_hash(struct xen
+ 
+ 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
++	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
++				lockdep_is_held(&vif->hash.cache.lock)) {
+ 		list_del_rcu(&entry->link);
+ 		vif->hash.cache.count--;
+ 		kfree_rcu(entry, rcu);
 
 
 
