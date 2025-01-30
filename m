@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-111696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1359A2305B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CAA2A23019
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 230473A2CF9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95EF33A6949
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED348BFF;
-	Thu, 30 Jan 2025 14:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F09E71E98F3;
+	Thu, 30 Jan 2025 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qc/d3oq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8vFgttB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1F37482;
-	Thu, 30 Jan 2025 14:31:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC30D1E7C25;
+	Thu, 30 Jan 2025 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247490; cv=none; b=bvJ9aWZjyiej8uPXYiM9/TcRgpXO92ksFDlF8eP8KifZpojH4k7jY/A1DxpaKgdJj0DeQUuZYvUzSi7YKe7/Tf7lOrz22PSe/SrF33r6wGnvF3QFkgzdlq11sooJqeJE2c3o5hOxStHTRc4dzCe5/CxyMp10qqGO8+Ju1GnszPE=
+	t=1738247326; cv=none; b=ekNMRMwZvcT3hOgF5XYx5HUEAeSi36iPMS/5K6pQ18G7b5JlF8t8hqDwcWXThSBC2JPTc/csRN437QhcooeLOYjmUqW1Gw7HFoauAPTBQfSqqdlSQvzsqNob9ricIOCwLbtnVzD2c6lFsFBg3R7YPB7L71jB7qIdzZw9YR43g9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247490; c=relaxed/simple;
-	bh=tiGqpYi3u+zfjmTx3kkjkjK5LNEKtq56bLcEVkMWs/A=;
+	s=arc-20240116; t=1738247326; c=relaxed/simple;
+	bh=dr0O06D2QwJ8zQOa98VGoUwxv2Ei4UpUdh1s54xaQAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uj2nfLZRDDaxPy3YgGz6moqVYw11B3c2oGff1SD9WxVY1oZvEpim6LL+wEp7bLsOgDzHTOOiBd1Ugj8PHwXz2Bw1lZN0M4svaET2/05MMa3vbMJ8Vlg9tDJtn0xNO/yAx38Dys9hrjeHPRnbQfk9mqn2e4E8QmS8pIbnPH1Q9ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qc/d3oq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFBBC4CED2;
-	Thu, 30 Jan 2025 14:31:29 +0000 (UTC)
+	 MIME-Version; b=oVx9aAYMGVZgFTyUg3MJjm3gYiL1oYrcS59XxszaO+b9WaNEEp7Bxz732L2Ycpf33Q/q6yD4jNPax+47gHP7laa7EA+pURqTUKPzqGaN04IPBloPMbQb/BTLsOvEYNfZjSjfHJAZBWv6IiNyKF9llCMekAHvur9k96wi+b1orjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8vFgttB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359EAC4CED2;
+	Thu, 30 Jan 2025 14:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247489;
-	bh=tiGqpYi3u+zfjmTx3kkjkjK5LNEKtq56bLcEVkMWs/A=;
+	s=korg; t=1738247326;
+	bh=dr0O06D2QwJ8zQOa98VGoUwxv2Ei4UpUdh1s54xaQAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qc/d3oq19QoHN5sAJEIRmYvWnxLC/lS5Gev0enuTNsZO2WQ+b71cSB8C2ovGSSW96
-	 Vs1kYpLpOeMX3fIOsqGZeppLwqA8zllIQZObch4bUE0hYr2MUTM7DjyXEyfmv9P/cD
-	 rD/0T08UryqD87NnClu/q8xrSsKgDzbYap8DyGKE=
+	b=O8vFgttB+hpnhuNwkWP4YKHWfSnv2cY4eUNh2H6rjag+S9zgPsK+aTfbrRw47Z68C
+	 jLWQ4kca+gHfd+HsnYLTqd+aA+6sMKCbFj4lZDVForm8kPvaDJHbvsMI1CfRNd8hmn
+	 goidU650tLOA0WuUx/8F9WURUzncMN2DfQ3ETr6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 29/49] xfs: clean up FS_XFLAG_REALTIME handling in xfs_ioctl_setattr_xflags
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.15 13/24] Bluetooth: RFCOMM: Fix not validating setsockopt user input
 Date: Thu, 30 Jan 2025 15:02:05 +0100
-Message-ID: <20250130140135.008438257@linuxfoundation.org>
+Message-ID: <20250130140127.828836645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit c421df0b19430417a04f68919fc3d1943d20ac04 ]
+commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 upstream.
 
-Introduce a local boolean variable if FS_XFLAG_REALTIME to make the
-checks for it more obvious, and de-densify a few of the conditionals
-using it to make them more readable while at it.
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231025141020.192413-4-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_ioctl.c |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ net/bluetooth/rfcomm/sock.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -1120,23 +1120,25 @@ xfs_ioctl_setattr_xflags(
- 	struct fileattr		*fa)
- {
- 	struct xfs_mount	*mp = ip->i_mount;
-+	bool			rtflag = (fa->fsx_xflags & FS_XFLAG_REALTIME);
- 	uint64_t		i_flags2;
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -636,7 +636,7 @@ static int rfcomm_sock_setsockopt_old(st
  
--	/* Can't change realtime flag if any extents are allocated. */
--	if ((ip->i_df.if_nextents || ip->i_delayed_blks) &&
--	    XFS_IS_REALTIME_INODE(ip) != (fa->fsx_xflags & FS_XFLAG_REALTIME))
--		return -EINVAL;
-+	if (rtflag != XFS_IS_REALTIME_INODE(ip)) {
-+		/* Can't change realtime flag if any extents are allocated. */
-+		if (ip->i_df.if_nextents || ip->i_delayed_blks)
-+			return -EINVAL;
-+	}
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+@@ -671,7 +671,6 @@ static int rfcomm_sock_setsockopt(struct
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
  
--	/* If realtime flag is set then must have realtime device */
--	if (fa->fsx_xflags & FS_XFLAG_REALTIME) {
-+	if (rtflag) {
-+		/* If realtime flag is set then must have realtime device */
- 		if (mp->m_sb.sb_rblocks == 0 || mp->m_sb.sb_rextsize == 0 ||
- 		    (ip->i_extsize % mp->m_sb.sb_rextsize))
- 			return -EINVAL;
--	}
+ 	BT_DBG("sk %p", sk);
+@@ -693,11 +692,9 @@ static int rfcomm_sock_setsockopt(struct
  
--	/* Clear reflink if we are actually able to set the rt flag. */
--	if ((fa->fsx_xflags & FS_XFLAG_REALTIME) && xfs_is_reflink_inode(ip))
--		ip->i_diflags2 &= ~XFS_DIFLAG2_REFLINK;
-+		/* Clear reflink if we are actually able to set the rt flag. */
-+		if (xfs_is_reflink_inode(ip))
-+			ip->i_diflags2 &= ~XFS_DIFLAG2_REFLINK;
-+	}
+ 		sec.level = BT_SECURITY_LOW;
  
- 	/* Don't allow us to set DAX mode for a reflinked file for now. */
- 	if ((fa->fsx_xflags & FS_XFLAG_DAX) && xfs_is_reflink_inode(ip))
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -713,10 +710,9 @@ static int rfcomm_sock_setsockopt(struct
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
 
 
 
