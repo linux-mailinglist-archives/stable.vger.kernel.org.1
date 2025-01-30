@@ -1,110 +1,255 @@
-Return-Path: <stable+bounces-111750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACA9A236F1
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 22:49:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4537A236FA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 22:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C93F3A5499
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1EFF3A68F4
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4491F12F6;
-	Thu, 30 Jan 2025 21:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430B21F1526;
+	Thu, 30 Jan 2025 21:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSkJIVEl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MljO4/1x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84591DA5F;
-	Thu, 30 Jan 2025 21:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1A1DA5F;
+	Thu, 30 Jan 2025 21:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738273751; cv=none; b=sflngozXzhTXQs493pSS96UkUPvFkvtE87QLHLrDo7yGfJ1cu0SWvNqkH8iuKLss13QiQslRnU5mQfOtzOJmNR/O9nYYGLXcaOMr6bBQBBZ7d2aJMAc7gIyiuIzOm6ppBwl+BmESGCRAtTq5WwuqoXvQH2gLGC8tEefTKLU2eo0=
+	t=1738274035; cv=none; b=WRwX80/F1SOd6Yne8xpTPBSpJPydKCRt0iPeqrUjlZP3o9l7k9CwASIRQ1Y6egMyHNx9hG4D/px0DsiwR+xx/9W1TU8iXW5KG5I/W2aOuM5vtwx5cY7N4WsDKp2JAYmaSaMITeIhVhFE1CxxwM3j+r3T8zQs2GME1CGIGKDr2H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738273751; c=relaxed/simple;
-	bh=v9cA1UeLXNARJOxVOlCXVATDoCFX4K7MnNcdOFH14rk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=svM9cFjwNHlJlV1xCqiuaFG/B06dLkkLAnDJvWiUmc/Y5xHItRmiI/bmIpgWxCRlH7gwmNcyBlnhqsaDUV9ISyogYGKno/27r/zo6M9Z++C0Qx4x50p3sPJ1AdwEVT1Kxu6JyVgla3HR0yfJa5gjj6YIrKdDpKrOmhWNZLSQbhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSkJIVEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC5C4CEE4;
-	Thu, 30 Jan 2025 21:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738273751;
-	bh=v9cA1UeLXNARJOxVOlCXVATDoCFX4K7MnNcdOFH14rk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BSkJIVElc5hm3FBv0tBJK/9SQvqb3rg2WqjDGiRayeIG18GV6uN/QXgZ6har2Crmy
-	 2q01SbUOlCvwDptGAGz07dF2DroOh00wMr18QP6Ee0Qf72dVI7To6OUS+D367j7G41
-	 MXrrU3ZkUjyZzyQrkiITZuLmqUObDhVsBMM3SgFy1pB+tE9ms6SjwPS+hXCWLTzlrS
-	 JHASK6K81Pw6AWCOaBCbP/48B3nJ0snbcMBBtKm9F0GtGmXMQL4jcKZPRuayJoyJ4e
-	 dSdm1AhrD9juO5Z9omChhaBsX1DJ9zJOGVow4GyHvoP+I5tuRAYRhTBiGhxtytxRlN
-	 6b1q57SY1BJSw==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53ff1f7caaeso1333811e87.0;
-        Thu, 30 Jan 2025 13:49:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUonKiSLxs3Stj2g+L0PKEIxCSEw2lC2ipzbBMKePH1kquJIS2Pr5mdNqpppsLkvlNJ1Na04VXg@vger.kernel.org, AJvYcCVWs/q1/mvE/71YErSOA2IzSPtxxDq9A7jID1/afKAuwQ+tGbWI7d80ZnTKKemvpGziMevoRYiMH/h6dek=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLh5N8VTdAXoGMGzx8MRNpQUXVudATJFDM1Vis1SkdZFL9prA0
-	VoVIcIfJ8By0zByaGmAVsrel3q+kGzc+j02sk4NHBs5xpmyVa8DS3lT9GD8yd0/kff/ru6uOW4h
-	70E0LRchz5S6a0KJeZ5c0xu0giqs=
-X-Google-Smtp-Source: AGHT+IGvsZ9UV23BN7NAzI3cBwpZgGYzUNfAG/ADzOOwOyeo8NhgHVLMg1B/e14T3YmWFv4z3T9psdaM5dSo92pIl0w=
-X-Received: by 2002:a05:6512:10d6:b0:540:20f5:be77 with SMTP id
- 2adb3069b0e04-543e4be00e6mr3243865e87.3.1738273749389; Thu, 30 Jan 2025
- 13:49:09 -0800 (PST)
+	s=arc-20240116; t=1738274035; c=relaxed/simple;
+	bh=BlisCc4UQ53UOk7mUSn+L0PAgkzzYubPamyOMdZ/dbw=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Iw/j186Fcgywogk75f4uI/XVREZyjWZF0a6E6cqPD9oeiCt5oQU3bHJAGPOUF0LOT7dyUIJWJfZ70Uk+HmuyOFtfgmpRA2xe67+K5HBqS+VJqUXeB1DEHNPvs9JcvBAcZyEF/1eVj6DLuqokLw68petGQl5tdKmVF+zGqA8S264=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MljO4/1x; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3863c36a731so1042024f8f.1;
+        Thu, 30 Jan 2025 13:53:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738274030; x=1738878830; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SElByFX55HRRZEi5sy6VH1uZg/J2K83OEEcHgYpO8qo=;
+        b=MljO4/1xMEpoMlflKETNVosK0MR2+hbcv7QJqvU/UG1bM+GqE5ZAuLU1ftIuwneNyt
+         cVXu3TwgDbM+ot+FQN2elkLI+fd/2lobHrDpr2DbNnO59Qe17lUnTfl87hP1gQF3AnI8
+         GPOg8JMEm3N5zpQIXRvH1q7X06OzY8BPmH3XtnUykmUZNiwXrht/JbBYI5WsbZndTz6T
+         o1a9eETYyr7Sa0+NnGwa9Vp77KbkKbMtVFbd9DSQnAcRYl4No5pjvS4nuhPPNZcMIY5b
+         zooql22dy1ALxnufx7qlDgcUbUXQUg4zmraR93mn+dbmYuhHKrPs5olgyGWay6I7EJ4f
+         u4yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738274030; x=1738878830;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SElByFX55HRRZEi5sy6VH1uZg/J2K83OEEcHgYpO8qo=;
+        b=acNvMw0yQ1hAdKLFXj+1dt5fM1Npt08cHzTcq6Fit02s1JK9KAIW/0RkD9gZmuu6Uq
+         g7+VKJQSVYj0aNKnSRwB1M6QZCAyUctSyIzFxpNNSJ8FPQLc2FAR+FkT+wNy09Xq/moD
+         X9WdPZEgoIdlIjJIlTUeIQQmrw5u35NQJLGu66HWezfxnLSRS/XGdl9yNAwZPHomEvpD
+         QmfEX0ykVkby53diB7cOrKS1/XqhWIVSKcCvsmd3H4pHcu0LOxfSHhY8/a+Og/4jnpoy
+         6mKtpEiPEVy4NjZesOxmyffsd9ce87s244sWBdZtyY/9RVadNrFSjXE76ChhAdnUQZS8
+         gRNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeHTA07fxL6J/ZTjOFXXlkPIO1KdpkZlw/ot4gvvWt3IM43Q734bRXV1Lz0NAmrM6VvAc=@vger.kernel.org, AJvYcCW5jEjnRVEQkSdREKmLyHYaIU5F+CTRpw+1ttsStFoHVKpwDWEiuo2T6776O/Ir8ZAQRIzJsFIJ@vger.kernel.org, AJvYcCWAXHJFEvk0Jinm+PkPTOKOgWZDVJYdwFRyOyMObWG+pY1asrC//p/x10DziIILmSvYZOwWc3SfAE/5iBnW@vger.kernel.org, AJvYcCWWYQzrqp+DwajXyK7nlXsWCa16nylSwQI+yfJEVezzOEMuTDdRBq6I4Dg7hyzGhC1VZ351gFh58rI+@vger.kernel.org, AJvYcCXXIvoTmse6LHuuN1C+XRbq563FziPVOeUR46oquoznclbZFKzDKY+YvaN0xDICnAld5l3MrifzYD8Z2WLlsRYyMJx8@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKt6W3N5TZcJbV5amaQi1hZr4QQeEniXqiG8BoswUsWTcU8GlI
+	bNPa7bFj6a/62RmW/lswQ/BHJ+z1bGfnM6w2GxHjgJCEYbQC7ckD
+X-Gm-Gg: ASbGncv7aOW000pZS5BvD0KSYSWqh4L3hbIsnz5qburUJCNfjLkSZuOFhZ0HaJHKcyJ
+	8y5gbEUGC4m6dhpHXN2o5I7sA9r+BYG5hgrH/S95H8b1R/JM/tU3epeBVezVC0LPfzVfUzNLEMC
+	X+5lMKOovUi0rV1zsp1E/AtNihNNEw7tTmYmdILAKyIlcsJQ2HhBcWZwf9z41OZScPRNx6kHDcS
+	LFGYQwkVYc0hfsVPG6O029IpJmQe6+NF9l6g/SJQGEwGS8f5FNtM29LdSnW1HHcV0vrqxI9vLCF
+	Xdel/JSUx+vrpcU3Tas=
+X-Google-Smtp-Source: AGHT+IEh6os44BnNcNnrkansmGStdkdiA/EweUgFYf4Q/Kzk+a8Jf2qrIaH2MEgysghthnExU6q14A==
+X-Received: by 2002:a5d:588d:0:b0:38a:68f4:66a2 with SMTP id ffacd0b85a97d-38c51b600f7mr7386249f8f.31.1738274030038;
+        Thu, 30 Jan 2025 13:53:50 -0800 (PST)
+Received: from krava (85-193-35-4.rib.o2.cz. [85.193.35.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1b57b6sm3042176f8f.72.2025.01.30.13.53.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jan 2025 13:53:49 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 30 Jan 2025 22:53:47 +0100
+To: Eyal Birger <eyal.birger@gmail.com>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+	luto@amacapital.net, wad@chromium.org, oleg@redhat.com,
+	mhiramat@kernel.org, andrii@kernel.org,
+	alexei.starovoitov@gmail.com, cyphar@cyphar.com,
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
+	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
+	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
+	bpf@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without
+ filtering
+Message-ID: <Z5v063xNVJfXCnKV@krava>
+References: <20250128145806.1849977-1-eyal.birger@gmail.com>
+ <202501281634.7F398CEA87@keescook>
+ <CAHsH6Gsv3DB0O5oiEDsf2+Go4O1+tnKm-Ab0QPyohKSaroSxxA@mail.gmail.com>
+ <Z5s3S5X8FYJDAHfR@krava>
+ <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130204614.64621-1-oliver.upton@linux.dev>
-In-Reply-To: <20250130204614.64621-1-oliver.upton@linux.dev>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 30 Jan 2025 22:48:58 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXHchMo1dMAd5N--vZOnegoci=kRDQ2N06dVZueixzzhaw@mail.gmail.com>
-X-Gm-Features: AWEUYZnBwtpu0VhT2GWd3rq9lUk_NVWIl74tK03ECfTc-9lJwZURu3xgt8g3hZU
-Message-ID: <CAMj1kXHchMo1dMAd5N--vZOnegoci=kRDQ2N06dVZueixzzhaw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: Move storage of idreg overrides into mmuoff section
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Brown <broonie@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	James Morse <james.morse@arm.com>, stable@vger.kernel.org, 
-	Moritz Fischer <moritzf@google.com>, Pedro Martelletto <martelletto@google.com>, 
-	Jon Masters <jonmasters@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
 
-Hi Oliver,
+On Thu, Jan 30, 2025 at 07:05:42AM -0800, Eyal Birger wrote:
+> On Thu, Jan 30, 2025 at 12:24 AM Jiri Olsa <olsajiri@gmail.com> wrote:
+> >
+> > On Wed, Jan 29, 2025 at 09:27:49AM -0800, Eyal Birger wrote:
+> > > Hi,
+> > >
+> > > Thanks for the review!
+> > >
+> > > On Tue, Jan 28, 2025 at 5:41 PM Kees Cook <kees@kernel.org> wrote:
+> > > >
+> > > > On Tue, Jan 28, 2025 at 06:58:06AM -0800, Eyal Birger wrote:
+> > > > > Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueueinfo
+> > > > > uses the same number as __NR_uretprobe so the syscall isn't forced in the
+> > > > > compat bitmap.
+> > > >
+> > > > So a 64-bit tracer cannot use uretprobe on a 32-bit process? Also is
+> > > > uretprobe strictly an x86_64 feature?
+> > > >
+> > >
+> > > My understanding is that they'd be able to do so, but use the int3 trap
+> > > instead of the uretprobe syscall.
+> > >
+> > > > > [...]
+> > > > > diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+> > > > > index 385d48293a5f..23b594a68bc0 100644
+> > > > > --- a/kernel/seccomp.c
+> > > > > +++ b/kernel/seccomp.c
+> > > > > @@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user *user_filter)
+> > > > >
+> > > > >  #ifdef SECCOMP_ARCH_NATIVE
+> > > > >  /**
+> > > > > - * seccomp_is_const_allow - check if filter is constant allow with given data
+> > > > > + * seccomp_is_filter_const_allow - check if filter is constant allow with given data
+> > > > >   * @fprog: The BPF programs
+> > > > >   * @sd: The seccomp data to check against, only syscall number and arch
+> > > > >   *      number are considered constant.
+> > > > >   */
+> > > > > -static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> > > > > -                                struct seccomp_data *sd)
+> > > > > +static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *fprog,
+> > > > > +                                       struct seccomp_data *sd)
+> > > > >  {
+> > > > >       unsigned int reg_value = 0;
+> > > > >       unsigned int pc;
+> > > > > @@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> > > > >       return false;
+> > > > >  }
+> > > > >
+> > > > > +static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
+> > > > > +                                struct seccomp_data *sd)
+> > > > > +{
+> > > > > +#ifdef __NR_uretprobe
+> > > > > +     if (sd->nr == __NR_uretprobe
+> > > > > +#ifdef SECCOMP_ARCH_COMPAT
+> > > > > +         && sd->arch != SECCOMP_ARCH_COMPAT
+> > > > > +#endif
+> > > >
+> > > > I don't like this because it's not future-proof enough. __NR_uretprobe
+> > > > may collide with other syscalls at some point.
+> > >
+> > > I'm not sure I got this point.
+> > >
+> > > > And if __NR_uretprobe_32
+> > > > is ever implemented, the seccomp logic will be missing. I think this
+> > > > will work now and in the future:
+> > > >
+> > > > #ifdef __NR_uretprobe
+> > > > # ifdef SECCOMP_ARCH_COMPAT
+> > > >         if (sd->arch == SECCOMP_ARCH_COMPAT) {
+> > > > #  ifdef __NR_uretprobe_32
+> > > >                 if (sd->nr == __NR_uretprobe_32)
+> > > >                         return true;
+> > > > #  endif
+> > > >         } else
+> > > > # endif
+> > > >         if (sd->nr == __NR_uretprobe)
+> > > >                 return true;
+> > > > #endif
+> > >
+> > > I don't know if implementing uretprobe syscall for compat binaries is
+> > > planned or makes sense - I'd appreciate Jiri's and others opinion on that.
+> > > That said, I don't mind adding this code for the sake of future proofing.
+> >
+> > as Andrii wrote in the other email ATM it's just strictly x86_64,
+> > but let's future proof it
+> 
+> Thank you. So I'm ok with using the suggestion above, but more on this below.
+> 
+> >
+> > AFAIK there was an attempt to do similar on arm but it did not show
+> > any speed up
+> >
+> > >
+> > > >
+> > > > Instead of doing a function rename dance, I think you can just stick
+> > > > the above into seccomp_is_const_allow() after the WARN().
+> > >
+> > > My motivation for the renaming dance was that you mentioned we might add
+> > > new syscalls to this as well, so I wanted to avoid cluttering the existing
+> > > function which seems to be well defined.
+> > >
+> > > >
+> > > > Also please add a KUnit tests to cover this in
+> > > > tools/testing/selftests/seccomp/seccomp_bpf.c
+> > >
+> > > I think this would mean that this test suite would need to run as
+> > > privileged. Is that Ok? or maybe it'd be better to have a new suite?
+> > >
+> > > > With at least these cases combinations below. Check each of:
+> > > >
+> > > >         - not using uretprobe passes
+> > > >         - using uretprobe passes (and validates that uretprobe did work)
+> > > >
+> > > > in each of the following conditions:
+> > > >
+> > > >         - default-allow filter
+> > > >         - default-block filter
+> > > >         - filter explicitly blocking __NR_uretprobe and nothing else
+> > > >         - filter explicitly allowing __NR_uretprobe (and only other
+> > > >           required syscalls)
+> > >
+> > > Ok.
+> >
+> > please let me know if I can help in any way with tests
+> 
+> Thanks! Is there a way to partition this work? I'd appreciate the help
+> if we can find some way of doing so.
 
-On Thu, 30 Jan 2025 at 21:47, Oliver Upton <oliver.upton@linux.dev> wrote:
->
-> There are a few places where the idreg overrides are read w/ the MMU
-> off, for example the VHE and hVHE checks in __finalise_el2. And while
-> the infrastructure gets this _mostly_ right (i.e. does the appropriate
-> cache maintenance), the placement of the data itself is problematic and
-> could share a cache line with something else.
->
-> Depending on how unforgiving an implementation's handling of mismatched
-> attributes is, this could lead to data corruption. In one observed case,
-> the system_cpucaps shared a line with arm64_sw_feature_override and the
-> cpucaps got nuked after entering the hyp stub...
->
+sure, I'll check the seccomp selftests and let you know
 
-I'd like to understand this part a bit better: we wipe BSS right
-before we parse the idreg overrides, all via the ID map with the
-caches enabled. The ftr_override globals are cleaned+invalidated to
-the PoC after we populate them. At this point, system_cpucaps is still
-cleared, and it gets populated only much later.
+> 
+> >
+> > >
+> > > >
+> > > > Hm, is uretprobe expected to work on mips? Because if so, you'll need to
+> > > > do something similar to the mode1 checking in the !SECCOMP_ARCH_NATIVE
+> > > > version of seccomp_cache_check_allow().
+> > >
+> > > I don't know if uretprobe syscall is expected to run on mips. Personally
+> > > I'd avoid adding this dead code.
+> 
+> Jiri, what is your take on this one?
 
-So how do you reckon this corruption occurs? Is there a memory type
-mismatch between the 1:1 mapping and the kernel virtual mapping?
+uretprobe syscall is not expected to work on mips, atm it's strictly x86_64
 
-
-> Even though only a few overrides are read without the MMU on, just throw
-> the whole lot into the mmuoff section and be done with it.
->
-
-This is fine in principle, but I suspect that it could be anywhere as
-long as it is inside the kernel image, rather than memory like BSS
-that is part of the executable image but not covered by the file.
+jirka
 
