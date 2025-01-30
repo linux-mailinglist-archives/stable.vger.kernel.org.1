@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-111500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D215A22F72
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:22:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5461CA22F7B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD3953A8105
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FC551884166
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E5C1E6DCF;
-	Thu, 30 Jan 2025 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735501E7C25;
+	Thu, 30 Jan 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eV2XXeuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t15g+U38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DA61E522;
-	Thu, 30 Jan 2025 14:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7771E522;
+	Thu, 30 Jan 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246917; cv=none; b=h+KUFx+LCBlnPCNmmdfucA+CTElG9yC0oLQX9ZI/vCEynEHiPtYT0PpPeHuaQryD9lU3q/mjV95F9cVIczU3mNTXaTZQA9WAfrjbVdE9K+SqvptJfQ9DFquuLox9RCR2JkXUSzWrBnpm/AqN3w79GI2I+XgsstPGPNyBGteVZvg=
+	t=1738246946; cv=none; b=iqzJDQYXuG5tSqzUAVYkQTDpx2NiK/pCW506Q4e6VYrZy283XBGofw2Kx7zbQzE3wwiN4RnNpY/apVaV6Q+ya9Yqoy/4pQwwmuMNsYqDev7zqsPVTJHz7nbAkHykl5VKLOWjBjTRdwopaTDhtT5FGiQlRuQZxItud2jRS5JQ8FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246917; c=relaxed/simple;
-	bh=VzT4YMB94IkQ1trKLjIdZ75tnnpOlZd9UMZjfniYSFs=;
+	s=arc-20240116; t=1738246946; c=relaxed/simple;
+	bh=efKWKMNkTg+rMGcJYCBICdJuWB56Gm0Fa4GLWoOyNR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVYwMgitfN1znBk4EnPIdxzKFRzpyv54hAWpbrwt1rz4I5JDvSCwk7is+5iMpyKEoyNnDzWDLRa1lT22ZgQWfGywFH4F+X9RmH5I+Ylcv3+jcuruKt7wYC8pJStXHcg1Cw3tMlJ+ct9qgrA5F/mKie9ARV0SAHUg54zzIQLjWAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eV2XXeuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70482C4CED2;
-	Thu, 30 Jan 2025 14:21:56 +0000 (UTC)
+	 MIME-Version; b=djFTLb3LAu5I31nbo8648KqH1ZhkOKlFwKPffcvDF40h0UEFcOfE3iCmRt6K/nIfcyhU2Sht28KnpoeTAMV7trYNzvkWcjsaqHRYMM9YiQd5OMIxpZeAscyS7XOqpR6MsAsNxI1IJ+np86xFW953OunqRJuu+SH5GEeQiklLeYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t15g+U38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD94DC4CED2;
+	Thu, 30 Jan 2025 14:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246916;
-	bh=VzT4YMB94IkQ1trKLjIdZ75tnnpOlZd9UMZjfniYSFs=;
+	s=korg; t=1738246946;
+	bh=efKWKMNkTg+rMGcJYCBICdJuWB56Gm0Fa4GLWoOyNR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eV2XXeufQ70skXpuxQ1+gharuv3wsnQTvWCxJHtB4b+R653LTca7xDpzLGZQl9lc1
-	 L4m9nqM8mafRgiAcU61WcEEJbA6cDJrejMSRktACqmpdNNcq1Zs+tO2L851z/ivv5V
-	 /fRMPJq/IBc4CQt20aUAyHIBzQKQyNkHjZfwYRkg=
+	b=t15g+U38XrYurv09dVV47lVISpJvPcjS9AfkXm6OeQVeOQF9jDmrWZVcyspvp/zsU
+	 4NJa15cS1HeSokCDEsO3XK8P5r9cYn6CD1Fhn/vwqtiDuCX2fUZ4/uj7HErNEV8Awa
+	 oFUwJIDPOmsdkOufHYAhXV81Ytug0Pm+PZvIy4ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/133] jbd2: flush filesystem device before updating tail sequence
-Date: Thu, 30 Jan 2025 14:59:51 +0100
-Message-ID: <20250130140142.593458939@linuxfoundation.org>
+Subject: [PATCH 5.10 003/133] dm array: fix releasing a faulty array block twice in dm_array_cursor_end
+Date: Thu, 30 Jan 2025 14:59:52 +0100
+Message-ID: <20250130140142.635529570@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -67,43 +67,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit a0851ea9cd555c333795b85ddd908898b937c4e1 ]
+[ Upstream commit f2893c0804d86230ffb8f1c8703fdbb18648abc8 ]
 
-When committing transaction in jbd2_journal_commit_transaction(), the
-disk caches for the filesystem device should be flushed before updating
-the journal tail sequence. However, this step is missed if the journal
-is not located on the filesystem device. As a result, the filesystem may
-become inconsistent following a power failure or system crash. Fix it by
-ensuring that the filesystem device is flushed appropriately.
+When dm_bm_read_lock() fails due to locking or checksum errors, it
+releases the faulty block implicitly while leaving an invalid output
+pointer behind. The caller of dm_bm_read_lock() should not operate on
+this invalid dm_block pointer, or it will lead to undefined result.
+For example, the dm_array_cursor incorrectly caches the invalid pointer
+on reading a faulty array block, causing a double release in
+dm_array_cursor_end(), then hitting the BUG_ON in dm-bufio cache_put().
 
-Fixes: 3339578f0578 ("jbd2: cleanup journal tail after transaction commit")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://lore.kernel.org/r/20241203014407.805916-3-yi.zhang@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reproduce steps:
+
+1. initialize a cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. wipe the second array block offline
+
+dmsteup remove cache cmeta cdata corig
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try reopen the cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+Kernel logs:
+
+(snip)
+device-mapper: array: array_block_check failed: blocknr 0 != wanted 10
+device-mapper: block manager: array validator check failed for block 10
+device-mapper: array: get_ablock failed
+device-mapper: cache metadata: dm_array_cursor_next for mapping failed
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-bufio.c:638!
+
+Fix by setting the cached block pointer to NULL on errors.
+
+In addition to the reproducer described above, this fix can be
+verified using the "array_cursor/damaged" test in dm-unit:
+  dm-unit run /pdata/array_cursor/damaged --kernel-dir <KERNEL_DIR>
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/commit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/persistent-data/dm-array.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index 7d548821854e..84e4cc9ef08b 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -823,9 +823,9 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 	/* 
- 	 * If the journal is not located on the file system device,
- 	 * then we must flush the file system device before we issue
--	 * the commit record
-+	 * the commit record and update the journal tail sequence.
- 	 */
--	if (commit_transaction->t_need_data_flush &&
-+	if ((commit_transaction->t_need_data_flush || update_tail) &&
- 	    (journal->j_fs_dev != journal->j_dev) &&
- 	    (journal->j_flags & JBD2_BARRIER))
- 		blkdev_issue_flush(journal->j_fs_dev, GFP_NOFS);
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index 185dc60360b5..849eb1b97c43 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -907,23 +907,27 @@ static int load_ablock(struct dm_array_cursor *c)
+ 	if (c->block)
+ 		unlock_ablock(c->info, c->block);
+ 
+-	c->block = NULL;
+-	c->ab = NULL;
+ 	c->index = 0;
+ 
+ 	r = dm_btree_cursor_get_value(&c->cursor, &key, &value_le);
+ 	if (r) {
+ 		DMERR("dm_btree_cursor_get_value failed");
+-		dm_btree_cursor_end(&c->cursor);
++		goto out;
+ 
+ 	} else {
+ 		r = get_ablock(c->info, le64_to_cpu(value_le), &c->block, &c->ab);
+ 		if (r) {
+ 			DMERR("get_ablock failed");
+-			dm_btree_cursor_end(&c->cursor);
++			goto out;
+ 		}
+ 	}
+ 
++	return 0;
++
++out:
++	dm_btree_cursor_end(&c->cursor);
++	c->block = NULL;
++	c->ab = NULL;
+ 	return r;
+ }
+ 
 -- 
 2.39.5
 
