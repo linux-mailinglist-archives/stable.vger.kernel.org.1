@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248BCA22F34
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BA4A22FE2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61E41884041
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70EA77A460A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8992E1E8824;
-	Thu, 30 Jan 2025 14:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8431E8835;
+	Thu, 30 Jan 2025 14:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hX68eTOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VB7duHDA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A341BDA95;
-	Thu, 30 Jan 2025 14:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A9B1DDC22;
+	Thu, 30 Jan 2025 14:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246771; cv=none; b=PchyF2i3NM35900J4y4dm9jpusJO+tPb3nKP8YGzsx7lheiOdOfFZfG2P6ALRbnSNyJadUE7TNiGqEo71Z7OsTlBl6YSKERvj7wYcXRpkPxrlk8Wy0a1ShDCaKcwLquZTFRPwHLWQsTsciaUaxMKslh2oqrilcjRHttLoiK4Ek8=
+	t=1738247133; cv=none; b=PwX9l4xb8j0pzirHP2Z5jcsFkqkOfqSR1BYSE40OQhYA3oDE3Hd19V/0kOUZNIBHjvcWdWgdzgp2/cer4jAYvi/jfrO0T2Pkuto8p0Yo8DvId2DoKKOcTxOM5sOaeOw4zaGWCGlQ8MX6/Lk5gEGRRHEsr+wtdU1aMJw9esGmUmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246771; c=relaxed/simple;
-	bh=m50uJK3Y06UYw3i+KEiTOIJd1nFLAuSRrzyhPHt8pLw=;
+	s=arc-20240116; t=1738247133; c=relaxed/simple;
+	bh=/NvR8DuToIcXPkPe0o/kQIVfIyh/XewsVLgCsD0OCNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dl2tuMVgwiIv+x0kMVzkh/3dbREIq0413+fjVYFw4z1oq3j7lRFJ8ODYu8kFbYZBW92AEQOTTuq1WDxEPNiF+vdsshTnCqrbTuoI35ES9m1BdbgtXB4kO+ExMYB6B+/exE7aH6cfC+rUoSW+/OJ2Kf76qcQEBVqJcLXDtcmzrhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hX68eTOW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C303CC4CED2;
-	Thu, 30 Jan 2025 14:19:30 +0000 (UTC)
+	 MIME-Version; b=Kp2PlcPPBHy+oqotT98jNG5RasJMZewKzclvFoh2YV7gABgoSGacgWs2GYTP4aOVR1RXZJGnM2eIDY+pY60io8Zf9dCG2radzoXA3+QHZc0JtNZhdQDzxUEqDJHzwJuqzOsoPq0zeh+5t6FuiBVmhk8arSUXAMYTZRqMe8mb6lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VB7duHDA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E606CC4CED2;
+	Thu, 30 Jan 2025 14:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246771;
-	bh=m50uJK3Y06UYw3i+KEiTOIJd1nFLAuSRrzyhPHt8pLw=;
+	s=korg; t=1738247133;
+	bh=/NvR8DuToIcXPkPe0o/kQIVfIyh/XewsVLgCsD0OCNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hX68eTOW8/ZnwuZAXa8y1aHQ5T9Op6ywj/ZaBVE9/28E4XZ8zsA+D5LyWw1BweRQ5
-	 8xUA/W1YdUCrcWa0dhmyEeiVskBEA/zHsbhs2V0NaIHffaFYTjDzB8Vz1h9Cmupe+F
-	 qvJVmvwCcdvpwaPuh2TdJPxTY9HwZg5kFe+9SnL4=
+	b=VB7duHDAb7pxU7oAysvNA91qowFBTjpj9ao19Y6g4OTuH0stM1TraBx+OMDGmvA5X
+	 kC5lgO18FQx2sGcvwzXiDKAjhwor2ZXrgTVw1oDxp+Sv6gKlVV/LSb8i+GGtNZzk9X
+	 JObSGd625/zbsCvSv06KiDAZXyhFTU8IZu5NLjXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 62/91] i2c: mux: demux-pinctrl: check initial mux selection, too
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 092/133] net: ethernet: xgbe: re-add aneg to supported features in PHY quirks
 Date: Thu, 30 Jan 2025 15:01:21 +0100
-Message-ID: <20250130140136.170091205@linuxfoundation.org>
+Message-ID: <20250130140146.222242670@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit ca89f73394daf92779ddaa37b42956f4953f3941 ]
+commit 6be7aca91009865d8c2b73589270224a6b6e67ab upstream.
 
-When misconfigured, the initial setup of the current mux channel can
-fail, too. It must be checked as well.
+In 4.19, before the switch to linkmode bitmaps, PHY_GBIT_FEATURES
+included feature bits for aneg and TP/MII ports.
 
-Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+				 SUPPORTED_TP | \
+				 SUPPORTED_MII)
+
+				 SUPPORTED_10baseT_Full)
+
+				 SUPPORTED_100baseT_Full)
+
+				 SUPPORTED_1000baseT_Full)
+
+				 PHY_100BT_FEATURES | \
+				 PHY_DEFAULT_FEATURES)
+
+				 PHY_1000BT_FEATURES)
+
+Referenced commit expanded PHY_GBIT_FEATURES, silently removing
+PHY_DEFAULT_FEATURES. The removed part can be re-added by using
+the new PHY_GBIT_FEATURES definition.
+Not clear to me is why nobody seems to have noticed this issue.
+
+I stumbled across this when checking what it takes to make
+phy_10_100_features_array et al private to phylib.
+
+Fixes: d0939c26c53a ("net: ethernet: xgbe: expand PHY_GBIT_FEAUTRES")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/46521973-7738-4157-9f5e-0bb6f694acba@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c |   19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-index 45a3f7e7b3f68..cea057704c00c 100644
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -261,7 +261,9 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
- 	pm_runtime_no_callbacks(&pdev->dev);
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -856,7 +856,6 @@ static void xgbe_phy_free_phy_device(str
  
- 	/* switch to first parent as active master */
--	i2c_demux_activate_master(priv, 0);
-+	err = i2c_demux_activate_master(priv, 0);
-+	if (err)
-+		goto err_rollback;
+ static bool xgbe_phy_finisar_phy_quirks(struct xgbe_prv_data *pdata)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
  
- 	err = device_create_file(&pdev->dev, &dev_attr_available_masters);
- 	if (err)
--- 
-2.39.5
-
+@@ -878,14 +877,7 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 	phy_write(phy_data->phydev, 0x04, 0x0d01);
+ 	phy_write(phy_data->phydev, 0x00, 0x9140);
+ 
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
+ 
+ 	phy_support_asym_pause(phy_data->phydev);
+ 
+@@ -897,7 +889,6 @@ static bool xgbe_phy_finisar_phy_quirks(
+ 
+ static bool xgbe_phy_belfuse_phy_quirks(struct xgbe_prv_data *pdata)
+ {
+-	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported) = { 0, };
+ 	struct xgbe_phy_data *phy_data = pdata->phy_data;
+ 	struct xgbe_sfp_eeprom *sfp_eeprom = &phy_data->sfp_eeprom;
+ 	unsigned int phy_id = phy_data->phydev->phy_id;
+@@ -961,13 +952,7 @@ static bool xgbe_phy_belfuse_phy_quirks(
+ 	reg = phy_read(phy_data->phydev, 0x00);
+ 	phy_write(phy_data->phydev, 0x00, reg & ~0x00800);
+ 
+-	linkmode_set_bit_array(phy_10_100_features_array,
+-			       ARRAY_SIZE(phy_10_100_features_array),
+-			       supported);
+-	linkmode_set_bit_array(phy_gbit_features_array,
+-			       ARRAY_SIZE(phy_gbit_features_array),
+-			       supported);
+-	linkmode_copy(phy_data->phydev->supported, supported);
++	linkmode_copy(phy_data->phydev->supported, PHY_GBIT_FEATURES);
+ 	phy_support_asym_pause(phy_data->phydev);
+ 
+ 	netif_dbg(pdata, drv, pdata->netdev,
 
 
 
