@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D6DA22FD3
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA439A22F49
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D58297A421A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46663A48E0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CF1E98E8;
-	Thu, 30 Jan 2025 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257151E8823;
+	Thu, 30 Jan 2025 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LJctpbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDXZ26Mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BE91DDC22;
-	Thu, 30 Jan 2025 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DAA1E3DC8;
+	Thu, 30 Jan 2025 14:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247101; cv=none; b=gjyWJ/OU4aidjyfqXqU5Yarx5LSE12wmd9iTxNOi42UGI+vD3k5pP1y9GQljUXTjB+qBOm1BPugZMN5RZdiEwihHG97t8pqAsPW4CvSoiA9Wk5vlF9hljdlF801X0KprKgTZeEgjPy7wYVD8UUf5H8Rvzd6GdxuqtBSX62nhKjc=
+	t=1738246829; cv=none; b=MPLyjZJXsiwmMH9kqQlyjIZowrESWwpAHZVOumY4GPPXlZ8HnhQM2ZOKYJm2KYQH4cPcrkHYtbMvdut4ROn/UZXHREdAJvqjY40ddvbCSR35iMZbC7lO1K6mYvC9QPD9B8D/0AS+kF0NRKcgMLJG3pQVAy9uG/cClOMuHyebXSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247101; c=relaxed/simple;
-	bh=nPfpUEhEMbgAeaadhogWbOXiIDD52axYu1AXQpHIEOU=;
+	s=arc-20240116; t=1738246829; c=relaxed/simple;
+	bh=hapBAqyn4bvwHpvdTyQTpOOa6Au4jvPfN4YCEQ0wRYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=peR49Qr5o3RIN+rFdUx5PEnrYdsTWwU1B28hT+tsMk/08PQRQz4PMC+SC6xeSoEUY1jxXhq3bmupphHKt7kbWANvknGGxuW4KMdX9oYafcegaggALQuYLyzNHEL7eXEX7mY9/6uS7ypvjnAUCWl+vQlLqRsGKZ1ucXbRwhdctGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LJctpbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70BFC4CED2;
-	Thu, 30 Jan 2025 14:25:00 +0000 (UTC)
+	 MIME-Version; b=gdrP4+6yZOYR4XeLW5fkkYoJ4mwToX0WyznWmsiCF/fZwMvg1mw7H1yN++VlqXThhnEfpVPn72bcbOIDo5+WnRs+gnhAc2eZhoTFqzijxfraoiakvP9WtGmMdxydmp2hUVFI6CiHw1cVj8tvSIk15dbgj4yjHqDqd73iSYM9cAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDXZ26Mq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ADDC4CED2;
+	Thu, 30 Jan 2025 14:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247101;
-	bh=nPfpUEhEMbgAeaadhogWbOXiIDD52axYu1AXQpHIEOU=;
+	s=korg; t=1738246829;
+	bh=hapBAqyn4bvwHpvdTyQTpOOa6Au4jvPfN4YCEQ0wRYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LJctpbpHhebXtx6eaDdHIC4v/Pvf9u8v+dWwsnpUdCxFDHcp8lPbTjx7yf4RBfW3
-	 JgwRe7JLjJGdDed+CSy42Z0wGxQTxXnvycHgA02VBdZC1UPBFgnZFoLxsZvL+Rwint
-	 4cn4BWfAuvaR86FnNER8O32xgwQajCC7/wlfOpWY=
+	b=EDXZ26Mqjx7WBajI/r4VZTP52Ud5PJBxzcGX7RB28/NsUl9sV6xdQyZqujqeBhLYO
+	 82NXsIa/d43WBtdgQX+kuGDqQyqHwHCVeETdbMhN5gPCRbOQgYQNZomvh/b7bTLKMM
+	 OxfHrSZ3VOO+uOQqjCP/wWPpFmbsB0LI28KukXlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/133] drm/v3d: Ensure job pointer is set to NULL after job completion
+	Olof Johansson <olof@lixom.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>
+Subject: [PATCH 5.4 52/91] riscv: prefix IRQ_ macro names with an RV_ namespace
 Date: Thu, 30 Jan 2025 15:01:11 +0100
-Message-ID: <20250130140145.823285670@linuxfoundation.org>
+Message-ID: <20250130140135.751296849@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Paul Walmsley <paul.walmsley@sifive.com>
 
-[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+commit 2f3035da4019780250658d1ffe486bc324e04805 upstream.
 
-After a job completes, the corresponding pointer in the device must
-be set to NULL. Failing to do so triggers a warning when unloading
-the driver, as it appears the job is still active. To prevent this,
-assign the job pointer to NULL after completing the job, indicating
-the job has finished.
+"IRQ_TIMER", used in the arch/riscv CSR header file, is a sufficiently
+generic macro name that it's used by several source files across the
+Linux code base.  Some of these other files ultimately include the
+arch/riscv CSR include file, causing collisions.  Fix by prefixing the
+RISC-V csr.h IRQ_ macro names with an RV_ prefix.
 
-Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4c3733d32a72 ("riscv: abstract out CSR names for supervisor vs machine mode")
+Reported-by: Olof Johansson <olof@lixom.net>
+Acked-by: Olof Johansson <olof@lixom.net>
+Signed-off-by: Paul Walmsley <paul.walmsley@sifive.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/include/asm/csr.h      |   18 +++++++++---------
+ arch/riscv/kernel/irq.c           |    6 +++---
+ drivers/irqchip/irq-sifive-plic.c |    2 +-
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index c88686489b888..22aa02d75c5cc 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -114,9 +114,9 @@
+ # define SR_PIE		SR_MPIE
+ # define SR_PP		SR_MPP
  
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->bin_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+-# define IRQ_SOFT	IRQ_M_SOFT
+-# define IRQ_TIMER	IRQ_M_TIMER
+-# define IRQ_EXT	IRQ_M_EXT
++# define RV_IRQ_SOFT		IRQ_M_SOFT
++# define RV_IRQ_TIMER	IRQ_M_TIMER
++# define RV_IRQ_EXT		IRQ_M_EXT
+ #else /* CONFIG_RISCV_M_MODE */
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+@@ -131,15 +131,15 @@
+ # define SR_PIE		SR_SPIE
+ # define SR_PP		SR_SPP
  
-@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+-# define IRQ_SOFT	IRQ_S_SOFT
+-# define IRQ_TIMER	IRQ_S_TIMER
+-# define IRQ_EXT	IRQ_S_EXT
++# define RV_IRQ_SOFT		IRQ_S_SOFT
++# define RV_IRQ_TIMER	IRQ_S_TIMER
++# define RV_IRQ_EXT		IRQ_S_EXT
+ #endif /* CONFIG_RISCV_M_MODE */
  
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->render_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+ /* IE/IP (Supervisor/Machine Interrupt Enable/Pending) flags */
+-#define IE_SIE		(_AC(0x1, UL) << IRQ_SOFT)
+-#define IE_TIE		(_AC(0x1, UL) << IRQ_TIMER)
+-#define IE_EIE		(_AC(0x1, UL) << IRQ_EXT)
++#define IE_SIE		(_AC(0x1, UL) << RV_IRQ_SOFT)
++#define IE_TIE		(_AC(0x1, UL) << RV_IRQ_TIMER)
++#define IE_EIE		(_AC(0x1, UL) << RV_IRQ_EXT)
  
-@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+ #ifndef __ASSEMBLY__
  
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->csd_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+--- a/arch/riscv/kernel/irq.c
++++ b/arch/riscv/kernel/irq.c
+@@ -23,11 +23,11 @@ asmlinkage __visible void __irq_entry do
  
-@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+ 	irq_enter();
+ 	switch (regs->cause & ~CAUSE_IRQ_FLAG) {
+-	case IRQ_TIMER:
++	case RV_IRQ_TIMER:
+ 		riscv_timer_interrupt();
+ 		break;
+ #ifdef CONFIG_SMP
+-	case IRQ_SOFT:
++	case RV_IRQ_SOFT:
+ 		/*
+ 		 * We only use software interrupts to pass IPIs, so if a non-SMP
+ 		 * system gets one, then we don't know what to do.
+@@ -35,7 +35,7 @@ asmlinkage __visible void __irq_entry do
+ 		riscv_software_interrupt();
+ 		break;
+ #endif
+-	case IRQ_EXT:
++	case RV_IRQ_EXT:
+ 		handle_arch_irq(regs);
+ 		break;
+ 	default:
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -262,7 +262,7 @@ static int __init plic_init(struct devic
+ 		 * Skip contexts other than external interrupts for our
+ 		 * privilege level.
+ 		 */
+-		if (parent.args[0] != IRQ_EXT)
++		if (parent.args[0] != RV_IRQ_EXT)
+ 			continue;
  
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->tfu_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
--- 
-2.39.5
-
+ 		hartid = plic_find_hart_id(parent.np);
 
 
 
