@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-111611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76950A22FFC
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4248A22F42
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C3187A1790
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C861E18863D7
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FA51E8835;
-	Thu, 30 Jan 2025 14:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B6B1E7C08;
+	Thu, 30 Jan 2025 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9rdYdcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixexa+U8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E2F1E522;
-	Thu, 30 Jan 2025 14:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7385A1BDA95;
+	Thu, 30 Jan 2025 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247241; cv=none; b=W4mhU+r+zKko+SHo5wcL0fit8pLPGs2eGiqQ4dpDUqm1SCEtaTyqJvSY2KqzZGigKiE3IunzaKpdbCwzIlb3O2d3HTFXmzGTrMCNAHiE/B+UvMV3Ru7x1h9aE9LEGcS+bL8y5z9n+L+KY8YjzrF7h87qLsqU5hwxOJygELjI1yM=
+	t=1738246803; cv=none; b=HksX6047GksAnajCDB8AVumHE9QGkw4jzw7Cnb3gI/xu5omPW+D1VmXTH/s9+uD14F279gcOveC4heq+GyQ3q62yrEPh/JS9FgCzLIBqv71MaAXZORxtLBUu+BXeFnHpvi90DYBGGubjexw5DkpEnkEEEHuMvxSmd33EUWiYEbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247241; c=relaxed/simple;
-	bh=mpGYR+qz+ySDUX2aaHfk3nnR1ya20Xxh6TnH/QwJId8=;
+	s=arc-20240116; t=1738246803; c=relaxed/simple;
+	bh=d0LQv71Cwp0RQCs9hNoNOQQ/IB3jDeLMaxbzHZ/FbYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1SrXJD0syvww2h7/mOtsIJWh9RRHsmcES9x0qQOAaNwZ01eSozmpanfbcKoOi8nwoQjE3hKDCrtZNXS0jtPqyaXC5iNjPqboj3asWveceyjtfpDi/nNoV/neBqkD52X33C49nw5cpikqcFaBQH68+BC72KyTeEAE8BzfEWe8Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9rdYdcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44693C4CED2;
-	Thu, 30 Jan 2025 14:27:21 +0000 (UTC)
+	 MIME-Version; b=c8bOZkh6HPQw8qY86opVUPfkaIbtUVPqJe6LMFnwL16W/JcUeWo7b7x925EXKo+VoPd1h9tx64L2fdI99eLRadZFt37+LjYWBjx7YQ2+ZuwMTZsJMomg/YLYXAujO+2KYJNYZMfEMyH0gp2Sv7hq75CBxmvauHtITRn+kV50m74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixexa+U8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B37FC4CED2;
+	Thu, 30 Jan 2025 14:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247241;
-	bh=mpGYR+qz+ySDUX2aaHfk3nnR1ya20Xxh6TnH/QwJId8=;
+	s=korg; t=1738246802;
+	bh=d0LQv71Cwp0RQCs9hNoNOQQ/IB3jDeLMaxbzHZ/FbYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9rdYdcKk4lupASJiIsP1uy7neurvUaBQN9DiG04sKVJkIDiPc7Avg8Ph9aI19K0I
-	 VxtUptj/MtQ77k+G9Et+EjWRYG6B7xfZSJrWVKMJE78CehmoahK9WS9PHBtKeTaRS3
-	 /ivUJIUvE4MRfW77ESca4sWpStiHx4DCkwWXrPf0=
+	b=Ixexa+U8bsp8pnjYps3E+JK6Z6OKhLpOrZCato14AuV8m+y3PWTawOfG6FxVjQXhX
+	 Kryr+v9IR4BBITeRO+hA6uiC/Syt52A2dUrk2EeIV2/WARwR1Y1Q3oSLFcaGfxf8PR
+	 lzY5PI+j2Jj5tmF1liYtrzyvRYAJ7ROxNd4lCk9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 101/133] iio: imu: inv_icm42600: fix timestamps after suspend if sensor is on
-Date: Thu, 30 Jan 2025 15:01:30 +0100
-Message-ID: <20250130140146.604760015@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	BRUNO VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.4 72/91] ipv6: avoid possible NULL deref in rt6_uncached_list_flush_dev()
+Date: Thu, 30 Jan 2025 15:01:31 +0100
+Message-ID: <20250130140136.574461130@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 65a60a590142c54a3f3be11ff162db2d5b0e1e06 upstream.
+commit 04ccecfa959d3b9ae7348780d8e379c6486176ac upstream.
 
-Currently suspending while sensors are one will result in timestamping
-continuing without gap at resume. It can work with monotonic clock but
-not with other clocks. Fix that by resetting timestamping.
+Blamed commit accidentally removed a check for rt->rt6i_idev being NULL,
+as spotted by syzbot:
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20241113-inv_icm42600-fix-timestamps-after-suspend-v1-1-dfc77c394173@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 UID: 0 PID: 10998 Comm: syz-executor Not tainted 6.11.0-rc6-syzkaller-00208-g625403177711 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+ RIP: 0010:rt6_uncached_list_flush_dev net/ipv6/route.c:177 [inline]
+ RIP: 0010:rt6_disable_ip+0x33e/0x7e0 net/ipv6/route.c:4914
+Code: 41 80 3c 04 00 74 0a e8 90 d0 9b f7 48 8b 7c 24 08 48 8b 07 48 89 44 24 10 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 64 d0 9b f7 48 8b 44 24 18 49 39 06
+RSP: 0018:ffffc900047374e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 1ffff1100fdf8f33 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffff88807efc78c0
+RBP: ffffc900047375d0 R08: 0000000000000003 R09: fffff520008e6e8c
+R10: dffffc0000000000 R11: fffff520008e6e8c R12: 1ffff1100fdf8f18
+R13: ffff88807efc7998 R14: 0000000000000000 R15: ffff88807efc7930
+FS:  0000000000000000(0000) GS:ffff8880b8900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020002a80 CR3: 0000000022f62000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  addrconf_ifdown+0x15d/0x1bd0 net/ipv6/addrconf.c:3856
+ addrconf_notify+0x3cb/0x1020
+  notifier_call_chain+0x19f/0x3e0 kernel/notifier.c:93
+  call_netdevice_notifiers_extack net/core/dev.c:2032 [inline]
+  call_netdevice_notifiers net/core/dev.c:2046 [inline]
+  unregister_netdevice_many_notify+0xd81/0x1c40 net/core/dev.c:11352
+  unregister_netdevice_many net/core/dev.c:11414 [inline]
+  unregister_netdevice_queue+0x303/0x370 net/core/dev.c:11289
+  unregister_netdevice include/linux/netdevice.h:3129 [inline]
+  __tun_detach+0x6b9/0x1600 drivers/net/tun.c:685
+  tun_detach drivers/net/tun.c:701 [inline]
+  tun_chr_close+0x108/0x1b0 drivers/net/tun.c:3510
+  __fput+0x24a/0x8a0 fs/file_table.c:422
+  task_work_run+0x24f/0x310 kernel/task_work.c:228
+  exit_task_work include/linux/task_work.h:40 [inline]
+  do_exit+0xa2f/0x27f0 kernel/exit.c:882
+  do_group_exit+0x207/0x2c0 kernel/exit.c:1031
+  __do_sys_exit_group kernel/exit.c:1042 [inline]
+  __se_sys_exit_group kernel/exit.c:1040 [inline]
+  __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1040
+  x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f1acc77def9
+Code: Unable to access opcode bytes at 0x7f1acc77decf.
+RSP: 002b:00007ffeb26fa738 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f1acc77def9
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000043
+RBP: 00007f1acc7dd508 R08: 00007ffeb26f84d7 R09: 0000000000000003
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 0000000000000003 R14: 00000000ffffffff R15: 00007ffeb26fa8e0
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+ RIP: 0010:rt6_uncached_list_flush_dev net/ipv6/route.c:177 [inline]
+ RIP: 0010:rt6_disable_ip+0x33e/0x7e0 net/ipv6/route.c:4914
+Code: 41 80 3c 04 00 74 0a e8 90 d0 9b f7 48 8b 7c 24 08 48 8b 07 48 89 44 24 10 4c 89 f0 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df <80> 3c 08 00 74 08 4c 89 f7 e8 64 d0 9b f7 48 8b 44 24 18 49 39 06
+RSP: 0018:ffffc900047374e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 1ffff1100fdf8f33 RCX: dffffc0000000000
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffff88807efc78c0
+RBP: ffffc900047375d0 R08: 0000000000000003 R09: fffff520008e6e8c
+R10: dffffc0000000000 R11: fffff520008e6e8c R12: 1ffff1100fdf8f18
+R13: ffff88807efc7998 R14: 0000000000000000 R15: ffff88807efc7930
+FS:  0000000000000000(0000) GS:ffff8880b8900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020002a80 CR3: 0000000022f62000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: e332bc67cf5e ("ipv6: Don't call with rt6_uncached_list_flush_dev")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20240913083147.3095442-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/ipv6/route.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -720,6 +720,8 @@ out_unlock:
- static int __maybe_unused inv_icm42600_resume(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	struct inv_icm42600_timestamp *gyro_ts = iio_priv(st->indio_gyro);
-+	struct inv_icm42600_timestamp *accel_ts = iio_priv(st->indio_accel);
- 	int ret;
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -173,7 +173,7 @@ static void rt6_uncached_list_flush_dev(
+ 			struct inet6_dev *rt_idev = rt->rt6i_idev;
+ 			struct net_device *rt_dev = rt->dst.dev;
  
- 	mutex_lock(&st->lock);
-@@ -740,9 +742,12 @@ static int __maybe_unused inv_icm42600_r
- 		goto out_unlock;
- 
- 	/* restore FIFO data streaming */
--	if (st->fifo.on)
-+	if (st->fifo.on) {
-+		inv_icm42600_timestamp_reset(gyro_ts);
-+		inv_icm42600_timestamp_reset(accel_ts);
- 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
- 				   INV_ICM42600_FIFO_CONFIG_STREAM);
-+	}
- 
- out_unlock:
- 	mutex_unlock(&st->lock);
+-			if (rt_idev->dev == dev) {
++			if (rt_idev && rt_idev->dev == dev) {
+ 				rt->rt6i_idev = in6_dev_get(loopback_dev);
+ 				in6_dev_put(rt_idev);
+ 			}
 
 
 
