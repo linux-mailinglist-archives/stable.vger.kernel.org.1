@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596E3A22F63
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD94BA23036
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B6F1883C7E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54ECC18838CA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71841E9916;
-	Thu, 30 Jan 2025 14:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADE61E98F3;
+	Thu, 30 Jan 2025 14:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8pl1sZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSPYenX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838791E9906;
-	Thu, 30 Jan 2025 14:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CF51E522;
+	Thu, 30 Jan 2025 14:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246876; cv=none; b=l+pLfJw0PAntQw/zSArWEq5SDI6sEiovS7vd9YTF6NN4zch0cWRguYfguo/VxH1UBiI4lPMzM1GBjJAco3rI5lhnWKIrlOHSqaq9Pn0AipdjS9hE7MocaSDQbc7ZLX740JdMsseGhdTMIUAmkV+yQn7yErbPfODNM9mLiA1j5H4=
+	t=1738247393; cv=none; b=P9NeEQsiBBG4WyecN9qrAUPLrUtgYNx3bhX1kFH3Alu1oOj/o3sc08Nyj7OfXPFHSCKQvBMnzCNDCriih6mVUrt9l/+qAgqW4Oior7rtU1I5iYZydQw2IrCydL3GUqoZlbipH5QBq2rKEIpxKTYNXTC9+1N6n1NuVX8swP2gbHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246876; c=relaxed/simple;
-	bh=HLn8CzkK2huCnj6Z5pbv9Pgyaoh/k48rpceUKE2w9lA=;
+	s=arc-20240116; t=1738247393; c=relaxed/simple;
+	bh=73GBAkK9oDH+fYg92J7t/31MIqPpPlKTHK1dXHgjbOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiBXvtUXuE0EbYiYBw/fsIGaAKJePa7xWMYqnjTdooLuwA7nhwS6tOuRhQlyxi+90XhDEaHPmj5bgnMBGYW84Pk1WxLUjO7d6nHinskKwTL7GxA0tDQOXyAuObLp3Y2p1Zc0zB+/TpEMvkwmxJtjYgyLHcqAeKTLNe/L8Ps0GP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8pl1sZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBCBC4CED2;
-	Thu, 30 Jan 2025 14:21:15 +0000 (UTC)
+	 MIME-Version; b=UVde63EMAWCNs9KH/R/wN+ANnrxMSDpnAUohZ20CDqwOczWtL1vcJ/g8Eiuaf7VDmqJwKTnEu1t9BfXm6+jdqsQLrCBI5dwTxXEEwXb3i0z3gc+G5ywelK4/5IG2c98UjccUmmalDkfRErSrj+covjWs3ccwdOkq0xjM3i/KuHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSPYenX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F38C4CED2;
+	Thu, 30 Jan 2025 14:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246876;
-	bh=HLn8CzkK2huCnj6Z5pbv9Pgyaoh/k48rpceUKE2w9lA=;
+	s=korg; t=1738247393;
+	bh=73GBAkK9oDH+fYg92J7t/31MIqPpPlKTHK1dXHgjbOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8pl1sZC3YUxxvoBPl5EXO9Bj/G/va18gyxzbZltFLOQfRvMHuatJ2XjCVwfJXnti
-	 cE6VxGj+OIoR6kyh0Ai1rXIKCZ+/8KExqey0GGiAzfvHlsdyLxcuzjMQeQRpb1OvKv
-	 7+P0B0vENHctN2+bRLL+O486P9T5dqT8i+H/mKqw=
+	b=aSPYenX71eOr6LHH8MQ0Z2Iu1m2esciM0WgeOVxfRngPrjQzDGXPQPo6YcKBP76Hw
+	 qaWzivD0oNvio5hImK4sS7UacpYnz47vUIwaDNUS4G9ijnLV653ujoYrs6ayQ6WwkO
+	 GlvLTY27K9wJBVdQeTHg88cvXbMoZAwrku+SVFSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4 83/91] net/xen-netback: prevent UAF in xenvif_flush_hash()
+	Philippe Simons <simons.philippe@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/49] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
 Date: Thu, 30 Jan 2025 15:01:42 +0100
-Message-ID: <20250130140137.022524835@linuxfoundation.org>
+Message-ID: <20250130140134.087020341@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Philippe Simons <simons.philippe@gmail.com>
 
-commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 upstream.
+[ Upstream commit 3a748d483d80f066ca4b26abe45cdc0c367d13e9 ]
 
-During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
-kfree_rcu does not exist inside the rcu read critical section, so if
-kfree_rcu is called when the rcu grace period ends during the iteration,
-UAF occurs when accessing head->next after the entry becomes free.
+Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
+pin instead of a normal GPIO. Since the power key is connected to the PMIC,
+and people expect to wake up a suspended system via this key, the NMI IRQ
+controller must stay alive when the system goes into suspend.
 
-Therefore, to solve this, you need to change it to list_for_each_entry_safe.
+Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
+sleep, so that the power key can wake up those systems.
 
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ tglx: Fixed up coding style ]
+
+Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/hash.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/xen-netback/hash.c
-+++ b/drivers/net/xen-netback/hash.c
-@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif
- 
- static void xenvif_flush_hash(struct xenvif *vif)
- {
--	struct xenvif_hash_cache_entry *entry;
-+	struct xenvif_hash_cache_entry *entry, *n;
- 	unsigned long flags;
- 
- 	if (xenvif_hash_cache_size == 0)
-@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xen
- 
- 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
- 
--	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
--				lockdep_is_held(&vif->hash.cache.lock)) {
-+	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
- 		list_del_rcu(&entry->link);
- 		vif->hash.cache.count--;
- 		kfree_rcu(entry, rcu);
+diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
+index 21d49791f8552..83c7417611fa5 100644
+--- a/drivers/irqchip/irq-sunxi-nmi.c
++++ b/drivers/irqchip/irq-sunxi-nmi.c
+@@ -187,7 +187,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
+ 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
+ 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
+ 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
+-	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
++	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
++						  IRQCHIP_SKIP_SET_WAKE;
+ 	gc->chip_types[0].regs.ack		= reg_offs->pend;
+ 	gc->chip_types[0].regs.mask		= reg_offs->enable;
+ 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
+-- 
+2.39.5
+
 
 
 
