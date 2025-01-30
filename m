@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3206A22FAB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17179A22F0F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1669A164D8C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B951888B44
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4491E98E8;
-	Thu, 30 Jan 2025 14:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD131E6DCF;
+	Thu, 30 Jan 2025 14:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7rQ4Cbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUYPzHuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E382B1E7C25;
-	Thu, 30 Jan 2025 14:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6721DDE9;
+	Thu, 30 Jan 2025 14:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247067; cv=none; b=rXQ4X5UoK84UUJ5jTSB0Z9wAlg6EgJD/fNp3HaT/uGBHd7o/n4prCs4fepgTxko+ZLE8tAaQQkzBnYnc4/QRMudxRTIuXkigca4O4HWToBYY8OMpOKUu6AgpWEdVJz0l+9+6hOzUNYajEFxA9yr1HTKP9yl9t60lsdaQmEs2p08=
+	t=1738246691; cv=none; b=MAVoRTOXo/bpeucJR2svxUrPvqaY0H9qA+cOZ8eeOQl0jG56QgRA0hzkF5RPrrTuasyCPWhDT/j0AJvfUYVckUCWpbIIlNqQQx9R3UmJhUMEFtzXqAKGX2jIHwWg6ahY6FcqvEu41v5u9i+QXl18RBu5W02ri7aq/LjIvmPA0KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247067; c=relaxed/simple;
-	bh=PggC1I/mMTVKyrVKgKjf6qD/ACyOswhL3vW9yTra5Dc=;
+	s=arc-20240116; t=1738246691; c=relaxed/simple;
+	bh=yWdKyH0cNQknx3jSzE23xhmKRqbvOdA1u1nTuFBHWjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avysYkxAM35n8wQV/37C1tGInDXdkqZzvle0mekBhdsflkm1/cWBAmLGhmqGxmGj33t3CIlmRW52D79wq+RcjYkDO8xbhjnYbCvyDBs5e94BH5YXHwOXCqJVdE51La+4rxC84LyauMDXrZB4lyYD0Pxa2hbIEm9vuCs6aajcoUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7rQ4Cbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA82C4CED2;
-	Thu, 30 Jan 2025 14:24:25 +0000 (UTC)
+	 MIME-Version; b=cQxbZuMFk9v/ruV3dBHRWvo5RdFatsaNJATAKd1wsh61EPUAHsqmNrjptycZtqeMdfb+yCQos9HMau61Vy9uezDuzf9LJmfasDr1Z5Q+KM/pzFQ/AmKZgtIYxERZPeiNeUdSUsgakbvbBoxDYRgzywnYamxgesB+PD6ntE/cUnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUYPzHuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60B5C4CED2;
+	Thu, 30 Jan 2025 14:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247066;
-	bh=PggC1I/mMTVKyrVKgKjf6qD/ACyOswhL3vW9yTra5Dc=;
+	s=korg; t=1738246691;
+	bh=yWdKyH0cNQknx3jSzE23xhmKRqbvOdA1u1nTuFBHWjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7rQ4CbnTNpKnlaPoVwkfBvYU0GeZUxykJJA8iPh0wV5BF4HXkMMDEKT5vMMiL/kM
-	 qn2gx6+CT98K2ew/9m7Dvzd8oe4iGjgOWG+WhxZaz9LNWfqy0OaTtQMt26l5VEts0B
-	 W/WfTWIEUOXrOmBT9tv+U4oDxoWujQWtzrJQy8j0=
+	b=bUYPzHuWs76RS2KoPwnPfH4GCCIEt25uQV0XgtYDi0FdvZPhH7ay92+cDTVME639z
+	 a/AdOJbFzXOE7we8Daa2aQNNcQsSlKlMKv4MTli7Dh+qAHOuLchrpfv2RKN7SxXkrB
+	 OkcjvW019kQgFuNfs761QlX+B+SzHbyD7+NCn2hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Hajda <a.hajda@samsung.com>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/133] drm/mipi-dsi: Create devm device attachment
-Date: Thu, 30 Jan 2025 15:00:52 +0100
-Message-ID: <20250130140145.053563613@linuxfoundation.org>
+	Carlos Song <carlos.song@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 34/91] iio: gyro: fxas21002c: Fix missing data update in trigger handler
+Date: Thu, 30 Jan 2025 15:00:53 +0100
+Message-ID: <20250130140135.034225011@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <maxime@cerno.tech>
+From: Carlos Song <carlos.song@nxp.com>
 
-[ Upstream commit db6568498b35a4d5d5a99420df27ed25fae31406 ]
+commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
 
-MIPI-DSI devices need to call mipi_dsi_attach() when their probe is done
-to attach against their host.
+The fxas21002c_trigger_handler() may fail to acquire sample data because
+the runtime PM enters the autosuspend state and sensor can not return
+sample data in standby mode..
 
-However, at removal or when an error occurs, that attachment needs to be
-undone through a call to mipi_dsi_detach().
+Resume the sensor before reading the sample data into the buffer within the
+trigger handler. After the data is read, place the sensor back into the
+autosuspend state.
 
-Let's create a device-managed variant of the attachment function that
-will automatically detach the device at unbind.
-
-Reviewed-by: Andrzej Hajda <a.hajda@samsung.com>
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-Link: https://patchwork.freedesktop.org/patch/msgid/20210910101218.1632297-5-maxime@cerno.tech
-Stable-dep-of: 81adbd3ff21c ("drm: adv7511: Fix use-after-free in adv7533_attach_dsi()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 35 ++++++++++++++++++++++++++++++++++
- include/drm/drm_mipi_dsi.h     |  1 +
- 2 files changed, 36 insertions(+)
+ drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index e53a5b14b47b..468a3a7cb6a5 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -405,6 +405,41 @@ int mipi_dsi_detach(struct mipi_dsi_device *dsi)
- }
- EXPORT_SYMBOL(mipi_dsi_detach);
+--- a/drivers/iio/gyro/fxas21002c_core.c
++++ b/drivers/iio/gyro/fxas21002c_core.c
+@@ -664,14 +664,21 @@ static irqreturn_t fxas21002c_trigger_ha
+ 	int ret;
  
-+static void devm_mipi_dsi_detach(void *arg)
-+{
-+	struct mipi_dsi_device *dsi = arg;
+ 	mutex_lock(&data->lock);
++	ret = fxas21002c_pm_get(data);
++	if (ret < 0)
++		goto out_unlock;
 +
-+	mipi_dsi_detach(dsi);
-+}
+ 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
+ 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
+ 	if (ret < 0)
+-		goto out_unlock;
++		goto out_pm_put;
+ 
+ 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+ 					   data->timestamp);
+ 
++out_pm_put:
++	fxas21002c_pm_put(data);
 +
-+/**
-+ * devm_mipi_dsi_attach - Attach a MIPI-DSI device to its DSI Host
-+ * @dev: device to tie the MIPI-DSI device attachment lifetime to
-+ * @dsi: DSI peripheral
-+ *
-+ * This is the managed version of mipi_dsi_attach() which automatically
-+ * calls mipi_dsi_detach() when @dev is unbound.
-+ *
-+ * Returns:
-+ * 0 on success, a negative error code on failure.
-+ */
-+int devm_mipi_dsi_attach(struct device *dev,
-+			 struct mipi_dsi_device *dsi)
-+{
-+	int ret;
-+
-+	ret = mipi_dsi_attach(dsi);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, devm_mipi_dsi_detach, dsi);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(devm_mipi_dsi_attach);
-+
- static ssize_t mipi_dsi_device_transfer(struct mipi_dsi_device *dsi,
- 					struct mipi_dsi_msg *msg)
- {
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index af8ed48749eb..75995f3f2099 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -230,6 +230,7 @@ devm_mipi_dsi_device_register_full(struct device *dev, struct mipi_dsi_host *hos
- struct mipi_dsi_device *of_find_mipi_dsi_device_by_node(struct device_node *np);
- int mipi_dsi_attach(struct mipi_dsi_device *dsi);
- int mipi_dsi_detach(struct mipi_dsi_device *dsi);
-+int devm_mipi_dsi_attach(struct device *dev, struct mipi_dsi_device *dsi);
- int mipi_dsi_shutdown_peripheral(struct mipi_dsi_device *dsi);
- int mipi_dsi_turn_on_peripheral(struct mipi_dsi_device *dsi);
- int mipi_dsi_set_maximum_return_packet_size(struct mipi_dsi_device *dsi,
--- 
-2.39.5
-
+ out_unlock:
+ 	mutex_unlock(&data->lock);
+ 
 
 
 
