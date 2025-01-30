@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-111470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C56A22F4B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31869A22F23
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E5F3A511B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CF3E7A0529
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0EB1E6DCF;
-	Thu, 30 Jan 2025 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43ED1E990D;
+	Thu, 30 Jan 2025 14:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR3vrNHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QY+cIlV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFE21BDA95;
-	Thu, 30 Jan 2025 14:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2641E98FF;
+	Thu, 30 Jan 2025 14:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246832; cv=none; b=nnDgTgncDgwgTbVgEFpaTyPNTZd2xDgIEyh2xnOKD0MltGK4sGFMV7jhlyqNXOBhjPVp+hKpfQUfPYMS3/mpoPPbSizhxqcSSzk1f4KJ0NBdNxtQCp0a2OefmCeylPL5Y59bW2T778pQVqBwgzmBZoBwDQnOxhFrtPkmKYalG1I=
+	t=1738246741; cv=none; b=KR/IodaIKOfdoo497GLmPMKcGxKZeQ5BBceSbSjWhK8wxgOYqPryfkwdFalPq1YnqY1i1+8hQMCdDww9LGs9xWf63aEZAIw9/EhOYFSxT2nM/Hi21+qSTTK5W8L46oSLSel2GzrhLu8YPzwrG+5KNVFDsjA4kxPYbNydmfZYf5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246832; c=relaxed/simple;
-	bh=ILAhGmG8NDdApmhwKuGGrT/Fw9e3v+HwmGqi5LvChNU=;
+	s=arc-20240116; t=1738246741; c=relaxed/simple;
+	bh=J9UMIHx/E/GQX/QMDO0CmvQCjmCeNQcHCzRrJCrqmms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOIT6+YcpCrqSUOxq/jnErWncF1PPA0SS0Z3QGBhsbH5vMPNJEJ/5kkBx0mKgd5lSiN9aKabj73Ss6AHmrGKemrZ7HqB+70ulioNbWKQEdYiEwSJp8NyIGYh9iew9Tc2pIiyaG+SiFgcFxAg9IxKgfw43iQrTPFQJ56DhJzqj/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR3vrNHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B8EC4CED2;
-	Thu, 30 Jan 2025 14:20:32 +0000 (UTC)
+	 MIME-Version; b=sPjxCU3/1Few0TrX6EXyoI0kbCvh/LsMRauWaXHjV//EQ2IRnuTKB69DEJENzbC1++P8ysDgOXVnr6+HoPKiYTGl8KVyWpWgFf30twjfz+4gldb5d+SZtVwI1utsL2dI7nV2RPj1hiq3mXfkRkf3CuVCUIxq6ZKM4a43b5FEwQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QY+cIlV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9E0C4CEE0;
+	Thu, 30 Jan 2025 14:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246832;
-	bh=ILAhGmG8NDdApmhwKuGGrT/Fw9e3v+HwmGqi5LvChNU=;
+	s=korg; t=1738246741;
+	bh=J9UMIHx/E/GQX/QMDO0CmvQCjmCeNQcHCzRrJCrqmms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tR3vrNHpYioiFyEZTdAELtJgsggX7CadltKGLCLTPiDBiptc1KUI21ZBauC8KMboJ
-	 0T8m98whuV2bAtzeHLJlnLwury2KJdbTcfiNGZKU1NmY9YCbrBbi/8BgsClJAnYplh
-	 lUCa3rNiensTf6SPtFT7JqBPli172/YmyotO/Bq0=
+	b=QY+cIlV2tp3T4U/LCP552Y69dzymKL32rd0sMGnjmMBYUXB1RKzUfKw5sIFZmSR1M
+	 ExLKtzEOBajhQ7aIRp1lLw2/CiIlzoClTNjRsObvN02lsXrk0NHOvqhKmtdVyJB5+y
+	 ZSUJ+qRuhuIhr8Z7hUJjCy0BM5jIIUdipXAEnRVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 43/91] phy: core: Fix that API devm_of_phy_provider_unregister() fails to unregister the phy provider
-Date: Thu, 30 Jan 2025 15:01:02 +0100
-Message-ID: <20250130140135.392502152@linuxfoundation.org>
+Subject: [PATCH 5.4 44/91] ocfs2: correct return value of ocfs2_local_free_info()
+Date: Thu, 30 Jan 2025 15:01:03 +0100
+Message-ID: <20250130140135.430606960@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
 References: <20250130140133.662535583@linuxfoundation.org>
@@ -67,53 +73,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit c0b82ab95b4f1fbc3e3aeab9d829d012669524b6 ]
+[ Upstream commit d32840ad4a111c6abd651fbf6b5996e6123913da ]
 
-For devm_of_phy_provider_unregister(), its comment says it needs to invoke
-of_phy_provider_unregister() to unregister the phy provider, but it will
-not actually invoke the function since devres_destroy() does not call
-devm_phy_provider_release(), and the missing of_phy_provider_unregister()
-call will cause:
+Now in ocfs2_local_free_info(), it returns 0 even if it actually fails.
+Though it doesn't cause any real problem since the only caller
+dquot_disable() ignores the return value, we'd better return correct as it
+is.
 
-- The phy provider fails to be unregistered.
-- Leak both memory and the OF node refcount.
-
-Fortunately, the faulty API has not been used by current kernel tree.
-Fix by using devres_release() instead of devres_destroy() within the API.
-
-Fixes: ff764963479a ("drivers: phy: add generic PHY framework")
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/stable/20241213-phy_core_fix-v6-2-40ae28f5015a%40quicinc.com
-Link: https://lore.kernel.org/r/20241213-phy_core_fix-v6-2-40ae28f5015a@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lkml.kernel.org/r/20230528132033.217664-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 5f3fd772d152 ("ocfs2: fix slab-use-after-free due to dangling pointer dqi_priv")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/phy-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ocfs2/quota_local.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index ffe89ed15a36..c94a0d2c4516 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -1094,12 +1094,12 @@ EXPORT_SYMBOL_GPL(of_phy_provider_unregister);
-  * of_phy_provider_unregister to unregister the phy provider.
-  */
- void devm_of_phy_provider_unregister(struct device *dev,
--	struct phy_provider *phy_provider)
-+				     struct phy_provider *phy_provider)
- {
- 	int r;
+diff --git a/fs/ocfs2/quota_local.c b/fs/ocfs2/quota_local.c
+index 7a1c8da9e44b..fbab536741e2 100644
+--- a/fs/ocfs2/quota_local.c
++++ b/fs/ocfs2/quota_local.c
+@@ -815,7 +815,7 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
+ 	struct ocfs2_quota_chunk *chunk;
+ 	struct ocfs2_local_disk_chunk *dchunk;
+ 	int mark_clean = 1, len;
+-	int status;
++	int status = 0;
  
--	r = devres_destroy(dev, devm_phy_provider_release, devm_phy_match,
--		phy_provider);
-+	r = devres_release(dev, devm_phy_provider_release, devm_phy_match,
-+			   phy_provider);
- 	dev_WARN_ONCE(dev, r, "couldn't find PHY provider device resource\n");
+ 	iput(oinfo->dqi_gqinode);
+ 	ocfs2_simple_drop_lockres(OCFS2_SB(sb), &oinfo->dqi_gqlock);
+@@ -857,17 +857,14 @@ static int ocfs2_local_free_info(struct super_block *sb, int type)
+ 				 oinfo->dqi_libh,
+ 				 olq_update_info,
+ 				 info);
+-	if (status < 0) {
++	if (status < 0)
+ 		mlog_errno(status);
+-		goto out;
+-	}
+-
+ out:
+ 	ocfs2_inode_unlock(sb_dqopt(sb)->files[type], 1);
+ 	brelse(oinfo->dqi_libh);
+ 	brelse(oinfo->dqi_lqi_bh);
+ 	kfree(oinfo);
+-	return 0;
++	return status;
  }
- EXPORT_SYMBOL_GPL(devm_of_phy_provider_unregister);
+ 
+ static void olq_set_dquot(struct buffer_head *bh, void *private)
 -- 
 2.39.5
 
