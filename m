@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-111625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57B1A23008
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6CAAA23005
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F300D1659CB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E129A3A5F8F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262CC1E8835;
-	Thu, 30 Jan 2025 14:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1907D1E98E8;
+	Thu, 30 Jan 2025 14:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hz6E5lyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw8/C35L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D676C1E522;
-	Thu, 30 Jan 2025 14:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CAA1BD9D3;
+	Thu, 30 Jan 2025 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247282; cv=none; b=h8TT4a3PyDvxblyKnYJax5+wdrgUb2P8Nj3v/nzpQ+9k6wNN8MuM/xNWgAdjuf0wXwqe4k8or5SmLDY2GMcpfV2ASQORgugYivURSo1+v6CuAHmiae45hDcR9R2cCi9rgSTUtcL2HCivulhBK5r9xjk3F+wcVZBII4wZpnO8FeQ=
+	t=1738247273; cv=none; b=QKBaislu5TRJ0pYFLIKlD2GLmheJUOjfYxw8ChCdNCIUyOCIpR9XUuxsNn29ptATjRxshCj0vjLREuhkc673qYdEVOexv7j4Zo//N8B+MmP422atH8qg1eM5GHGgsKuh8GZ0gKg5ok76kbJN/tXf/lA0IzZg/XY8EAiG/xj/LAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247282; c=relaxed/simple;
-	bh=kPYPyK6gwMnWJWhmkkdkRtuYMizUG3bqI/iN4Bf96Jg=;
+	s=arc-20240116; t=1738247273; c=relaxed/simple;
+	bh=+jFWLYQeCzyP/M0PZKVYYZqcdBMOPxiLF5boHbtipUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fik/qS0cmY8g4lBZ9ZNFfWcpLpfuF0sw//Kl7FxMzH7PpCiL0tigLagVcOCZ7I4DmjiFfTaAbVg0umVMcA9KzFeXBsAsT+nEUQaAyDBkT4EvGb+FxtRujV5xf7p0g8IAoIgFqVUg46oa2iHegFbBVLdbbAtzMxNIvIcfhLsJs2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hz6E5lyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60395C4CED2;
-	Thu, 30 Jan 2025 14:28:02 +0000 (UTC)
+	 MIME-Version; b=c04OdBlCzkRU7nJBR7tF7cp0n6OpoR2BNIyzaH1xTy5aEF9vnhuDifC2R09z6mwFXHAYtDENMgfK69rkfLII+khoZHSyyrDtFMm8YITwMNUoassHMQiLR/QQLdoDMb4jMwyrJuwjWo3Pg+4DkDT4nnntxWfLZ4Z63TYQXSahvkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw8/C35L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C43C4CED2;
+	Thu, 30 Jan 2025 14:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247282;
-	bh=kPYPyK6gwMnWJWhmkkdkRtuYMizUG3bqI/iN4Bf96Jg=;
+	s=korg; t=1738247273;
+	bh=+jFWLYQeCzyP/M0PZKVYYZqcdBMOPxiLF5boHbtipUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hz6E5lyj777Cbg+fyzTffYjuks6O3l36vflCZbUMMYsywCuaxcq0VbERezeC006dA
-	 zeFp8v5ABei4MKFa8lzt1vI8gcZMdY60e3wmsvFBefBAWHkzR+M31Z0ZL3CvvDko/g
-	 zl0R0MluCQAbT2CUkoP5kUP+BzTnxv+DdoAqh7kg=
+	b=Lw8/C35LMNzB1Wrn/Wv/r1NZfux3pIWAkcCYOGpRsYnyGyWZSAyf1ZddUE/0z3MC6
+	 KiRGevqgBjCPP6mm5/ad+GQqHg+FonuygbELamMVY9INKNau5ky/yFqRLTEMGuKo9i
+	 CCzlKypsNaeLxdo9yvTTqr2G2TbqsbBcOpM6CUQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/24] seccomp: Stub for !CONFIG_SECCOMP
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.10 126/133] Bluetooth: RFCOMM: Fix not validating setsockopt user input
 Date: Thu, 30 Jan 2025 15:01:55 +0100
-Message-ID: <20250130140127.433034470@linuxfoundation.org>
+Message-ID: <20250130140147.600522150@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit f90877dd7fb5085dd9abd6399daf63dd2969fc90 ]
+commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 upstream.
 
-When using !CONFIG_SECCOMP with CONFIG_GENERIC_ENTRY, the
-randconfig bots found the following snag:
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
-   kernel/entry/common.c: In function 'syscall_trace_enter':
->> kernel/entry/common.c:52:23: error: implicit declaration
-   of function '__secure_computing' [-Wimplicit-function-declaration]
-      52 |                 ret = __secure_computing(NULL);
-         |                       ^~~~~~~~~~~~~~~~~~
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
 
-Since generic entry calls __secure_computing() unconditionally,
-fix this by moving the stub out of the ifdef clause for
-CONFIG_HAVE_ARCH_SECCOMP_FILTER so it's always available.
-
-Link: https://lore.kernel.org/oe-kbuild-all/202501061240.Fzk9qiFZ-lkp@intel.com/
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250108-seccomp-stub-2-v2-1-74523d49420f@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/seccomp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/rfcomm/sock.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 0c564e5d40ff2..15dee3991f11b 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -68,10 +68,10 @@ struct seccomp_data;
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -631,7 +631,7 @@ static int rfcomm_sock_setsockopt_old(st
  
- #ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
- static inline int secure_computing(void) { return 0; }
--static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
- #else
- static inline void secure_computing_strict(int this_syscall) { return; }
- #endif
-+static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+@@ -666,7 +666,6 @@ static int rfcomm_sock_setsockopt(struct
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
  
- static inline long prctl_get_seccomp(void)
- {
--- 
-2.39.5
-
+ 	BT_DBG("sk %p", sk);
+@@ -688,11 +687,9 @@ static int rfcomm_sock_setsockopt(struct
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -708,10 +705,9 @@ static int rfcomm_sock_setsockopt(struct
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
 
 
 
