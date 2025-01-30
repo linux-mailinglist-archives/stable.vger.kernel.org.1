@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE38FA22E74
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7819AA22E55
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3626A1689CA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45193A479E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1B61E2853;
-	Thu, 30 Jan 2025 14:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E111E3775;
+	Thu, 30 Jan 2025 13:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzP/kwXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpJYBkiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54DC13D;
-	Thu, 30 Jan 2025 14:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27E31BEF85;
+	Thu, 30 Jan 2025 13:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245668; cv=none; b=B6UMoUVNMpXf6FMT14uqW+kTYP8MxmRU2/KaKXCed3KloS44dry2IhySmX1Kj4XnGjZRX6eBy/DAUSN47kJrQbCQ6tkok1d0DkMUPs6VKGXZ8a8G920PePsnZ0iv5AmtYTn1JzUsHDTYZg/Sh6YgGNKjJainqak41PKhyoOwWFc=
+	t=1738245582; cv=none; b=W4YogkABSqv/AmYClWnghNqgOu62YFwrE2ofpoq/vWDmrPHkF9XNwJxx/lLHgZkbG7/xywbOpXe47ikVPsVgG6OUvv6wc5RLVlkAjw8GyrrY7f+M3V5/Fve2OQtSFAgUn+GFha63Hur7joYhqaSfrip0J/Zshc+BeNjGl4cTkcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245668; c=relaxed/simple;
-	bh=3aM9dJmSgIbBB1lfnLd2hJnoP8LM3NjcGV9nRbVHbcg=;
+	s=arc-20240116; t=1738245582; c=relaxed/simple;
+	bh=fzE7lCc4Df/nZWsxpA+JJrwRe7xMSADFt1Bx4EHRsXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebrpTROvhUDV//cpQ72U+2U9xD23+llxHMGtqJ0r83yU5MfpAvkyZl53U68+sKKqmbAGq/zfxzOQSmxv2kJ5kC+b/hYc+qvRBFoDsue/asi3YN0ZeFHiumnzEgp28k1+tAWfIwRfcQPrJb+tPI6Gs+XJ8YPakP7QlkOXLjWYAkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzP/kwXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B0CC4CEE0;
-	Thu, 30 Jan 2025 14:01:07 +0000 (UTC)
+	 MIME-Version; b=VkHVweB9qI8LXXs/7/HEDM4bG6RrZ2fA+LQ9qJR6sNNL+uS9SF9SfKA3ka7Ov3dK0/AfOcPO5mEK96SfBXHoUZ1fAlglZ0qqrbGSJR0gk/YGiumA5qiJVqf2xremE+7EEZuGb802BQgl6JuatyzNWc5aCrF7EHdFs0sUtKbFxyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpJYBkiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBDDC4CED2;
+	Thu, 30 Jan 2025 13:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245667;
-	bh=3aM9dJmSgIbBB1lfnLd2hJnoP8LM3NjcGV9nRbVHbcg=;
+	s=korg; t=1738245582;
+	bh=fzE7lCc4Df/nZWsxpA+JJrwRe7xMSADFt1Bx4EHRsXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LzP/kwXqicKAOzrVdlrKG0ny6uqne8GzKswfSJn0bA4pSTgzbpiOw+/z9XZgbT8Sj
-	 G3NmP+g4KHMjh+KLBPpGDXeJEsnV14aN7HM1+16Y+LaiZM7EL4cxylDyWbCtohk3XF
-	 83tUeRkt5H5Ap8/7jIPxHyHF/VgVOWVS+2tAcoYw=
+	b=gpJYBkiHv58bOdvJPYaKu4QmmhUIDk2jXJNLT0ZG5MR26K9iZoucByzeu2zP7tj88
+	 ZMd3El0vaWg4wf9hyNO1Gly5INo4cnFqIcfMWvm1mKaOYCVQjS95z8F2PGAwRs9LwI
+	 zPBpsXMTgoaiZcGmbpoREARKx+xNfQCS3s6Q28ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marian Postevca <posteuca@mutex.one>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 02/40] ASoC: codecs: es8316: Fix HW rate calculation for 48Mhz MCLK
+	Peter Robinson <pbrobinson@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.13 16/25] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
 Date: Thu, 30 Jan 2025 14:59:02 +0100
-Message-ID: <20250130133459.799816621@linuxfoundation.org>
+Message-ID: <20250130133457.593483572@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
+References: <20250130133456.914329400@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marian Postevca <posteuca@mutex.one>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 85c9ac7a56f731ecd59317c822cb6295464444cc ]
+commit 31be3175bd7be89e39c82b3973c9d4ff55a17583 upstream.
 
-For 48Mhz MCLK systems the calculation of the HW rate is broken,
-and will not produce even one sane rate. Since es83xx supports
-the option to halve MCLK, calculate also rates with MCLK/2.
+The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
+except for the following 10, add these to the untested section so they
+can be used with the rtl8xxxu as the rtl8192cu are well supported.
 
-Signed-off-by: Marian Postevca <posteuca@mutex.one>
-Link: https://patch.msgid.link/20241227202751.244954-1-posteuca@mutex.one
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes these wifi modules not working on distributions which have
+disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
+like Fedora.
+
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+Cc: stable@vger.kernel.org
+Cc: Peter Robinson <pbrobinson@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241107140833.274986-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/es8316.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
-index 61729e5b50a8e..f508df01145bf 100644
---- a/sound/soc/codecs/es8316.c
-+++ b/sound/soc/codecs/es8316.c
-@@ -39,7 +39,9 @@ struct es8316_priv {
- 	struct snd_soc_jack *jack;
- 	int irq;
- 	unsigned int sysclk;
--	unsigned int allowed_rates[ARRAY_SIZE(supported_mclk_lrck_ratios)];
-+	/* ES83xx supports halving the MCLK so it supports twice as many rates
-+	 */
-+	unsigned int allowed_rates[ARRAY_SIZE(supported_mclk_lrck_ratios) * 2];
- 	struct snd_pcm_hw_constraint_list sysclk_constraints;
- 	bool jd_inverted;
- };
-@@ -386,6 +388,12 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
- 
- 		if (freq % ratio == 0)
- 			es8316->allowed_rates[count++] = freq / ratio;
-+
-+		/* We also check if the halved MCLK produces a valid rate
-+		 * since the codec supports halving the MCLK.
-+		 */
-+		if ((freq / ratio) % 2 == 0)
-+			es8316->allowed_rates[count++] = freq / ratio / 2;
- 	}
- 
- 	if (count) {
--- 
-2.39.5
-
+--- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
+@@ -8147,6 +8147,8 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x817e, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8186, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818a, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x317f, 0xff, 0xff, 0xff),
+@@ -8157,12 +8159,18 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1102, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x11f2, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9043, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ba, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x1e1e, 0xff, 0xff, 0xff),
+@@ -8179,6 +8187,10 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3357, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3358, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3359, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330b, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0x4902, 0xff, 0xff, 0xff),
+@@ -8193,6 +8205,8 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x4856, 0x0091, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x9846, 0x9041, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0xcdab, 0x8010, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x04f2, 0xaff7, 0xff, 0xff, 0xff),
+@@ -8218,6 +8232,8 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x341f, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe035, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ab, 0xff, 0xff, 0xff),
+@@ -8226,6 +8242,8 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0070, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0077, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016d, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x07aa, 0x0056, 0xff, 0xff, 0xff),
+@@ -8248,6 +8266,8 @@ static const struct usb_device_id dev_ta
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330a, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
++{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330d, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab2b, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192cu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x624d, 0xff, 0xff, 0xff),
 
 
 
