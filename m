@@ -1,166 +1,199 @@
-Return-Path: <stable+bounces-111269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CD5A22B14
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:59:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFD7A22B46
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 11:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0B53A5F48
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:59:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26EF63AABA9
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9FB1BBBD4;
-	Thu, 30 Jan 2025 09:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2591A9B32;
+	Thu, 30 Jan 2025 10:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFUEQjKW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="anMHB3O1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D24D1BAEDC
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 09:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85CB372;
+	Thu, 30 Jan 2025 10:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738231142; cv=none; b=rOXOqZYpjbKtCdGYDLD14eBEpr9KyyRGKp6ZEehEKfQD9v623/ubOjw2Z03GBN3wtiWqX8oXX7mj+YaQCtLTlA5QUsalzaXg0f2SEOA57etDGe1iHLYbi5umkZo3hOBQQxNl7Z+TZiUB4xv4EJHXh+w7erFwlPgOwou4gedPoj8=
+	t=1738231541; cv=none; b=FV5yLB8+rBYULSZ5l6h0u8PU+yHUAtL1/cca+8tUQFs5RNwjDNrVZAXc5u/Cbp7pe23X6XXWb3AECy4V4Dc2qdj23u1Me4ByF+6NlxYPr7nuXKUjabdBh7/KJ0Mlb/rDkpPLzgEaX75YYNC9hKAImA98qs2trBevLscmbgE10ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738231142; c=relaxed/simple;
-	bh=X4O8RHC23bDLL4d0U/H61Gdzfi5M7BgXiXGvH6PLJJA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I0pmlTMrR4jo/9TZBIfCsjomTjm1+uhiBqmRTspX/cghr9H4dqQu6KsK42g4H/350ksSehFE8Z0rsCeXu8bmIyquFHubJP6laImbvrzSMqV+jtMLKYT4N4SggshwpfXqRgoYb/3RBb3egshdkFk52ybBvMBbn+C54iFx27MNZrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFUEQjKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD127C4CEE4;
-	Thu, 30 Jan 2025 09:59:01 +0000 (UTC)
+	s=arc-20240116; t=1738231541; c=relaxed/simple;
+	bh=C9wDU7pwLV0RekbM8uxPv1jXFKPR+bcAS3GXMtcE3tI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PNkBV3BFFmiP+Dt4EsgXmKp6WXbK7etIOYZR/xX1BhjvgBjptD7ZiDJ007l0ImHAp7XGGKCyAuHyjX3EfIqCGjCttjsOT5qTIZCTFWmafz0HvNi5zVYcJh14QnXA354Y9cr0Z9ve9hh8FRDEN1eKeVICl2CcuaID1cq9UtZsOtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=anMHB3O1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3A0C4CED3;
+	Thu, 30 Jan 2025 10:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738231141;
-	bh=X4O8RHC23bDLL4d0U/H61Gdzfi5M7BgXiXGvH6PLJJA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kFUEQjKWgcsfHb+wdCn3LBnTSei0cOXdeLxglggqIwSewERj1TpC9Q4jkextL9SzK
-	 P8YdJ7G5ASCTbEOuN/c4DAFyaVwSPEFfKXEyQkBOOSRMsMhwGfYt1F1F+xHYZErdSy
-	 opZBMqw463Ybf1fMOX/I8UGe9236Ye2cf/7VZQyVyECyfMJfmyssH2N0H2Aglrq7Na
-	 WUfxWoi9oV88b+WjVaRsbyqb0QG30tckJT4UhqhmarRTZrZK8RdQegH+UBxZZnPMug
-	 pFn3PH3rDLo5cbyBIb0sxwm3WEFbjYMXQj8D9q+jUhduQwSdECCwGa6k5DXrc0XyFW
-	 lZhjbp7A99rZA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1tdRK7-00GZPZ-AP;
-	Thu, 30 Jan 2025 09:58:59 +0000
-Date: Thu, 30 Jan 2025 09:58:58 +0000
-Message-ID: <86a5b8vd0d.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: chf.fritz@googlemail.com
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Chen-Yu Tsai
-	 <wens@csie.org>,
-	KeverYang <kever.yang@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-rockchip@lists.infradead.org,
-	stable <stable@vger.kernel.org>,
-	linux-arm-kernel
- <linux-arm-kernel@lists.infradead.org>
-Subject: Re: rk3399 fails to boot since v6.12.7
-In-Reply-To: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
-References: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=k20201202; t=1738231540;
+	bh=C9wDU7pwLV0RekbM8uxPv1jXFKPR+bcAS3GXMtcE3tI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=anMHB3O1uGd7PYynvgIMeTrWouTqRQvsxUW2grYkkiiAKkxil/6+sPJIj4GoM4B7l
+	 PwYHoG0s2SrWwjer/X5q1U0tbtI+/aldwSYISCLNiqH6Hq/qWx7I3jJOM64b4wME+Z
+	 nxGrrscLuD/JPs8rmrbcVJYXYuKlMsqOnpPk+fOqlmNBuZMquRQxHcsJhHapkLDpy4
+	 17v78NFHEL8YTysyJHPFfmJj4hFHlgjbln2mj5UbGceV4j3JD7Gk2/5SjAmhCjQWdA
+	 54P2fJhYK1YoI4sbI/yrNuQvKgyBGNUac9z3gkrXJO/YsGJN6/chTMWYcgumfZ9MLl
+	 wFLiCTKjVWB0g==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e3778bffdso648632e87.0;
+        Thu, 30 Jan 2025 02:05:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVGZDciDHgDXJkYKQG4Ynp1YW37BLbkXKY6L4WW++lrp9CN5f42BFwu9/DKCEIJAhgbXhgfcfg2@vger.kernel.org, AJvYcCWTxDJLfrZvg1A7BE+YNguTBQWdC2EYQXW6DMRdREWskud0bEIFnHilkfUMKmX5lvcOIUcRrbqHO9T4T2w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQmO3eQqlLw6abm53PvH+aDD5JwnLlNU8Riv3Ok1dUvN9JY6K2
+	HT/AEyiWFmXWsLDcJV12LZ7BmuCWvSDZgDsO+8GuxKcvkTZ5OYKpyhLoAPyHdAKmLtEI2/gvHRS
+	6ms6DYsM0bzT1iKqTeV9enhizL/I=
+X-Google-Smtp-Source: AGHT+IFwXvIggK2Dtyju5LXqKD3V9iqpgJ4UOwEp/NQNACdHT9mHUHDkawh0Ijd4NxOjoQyUlIxGY8PWpfPYlVngyYE=
+X-Received: by 2002:a05:6512:2344:b0:542:2905:ae52 with SMTP id
+ 2adb3069b0e04-543e4c3c083mr2345634e87.45.1738231538642; Thu, 30 Jan 2025
+ 02:05:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: chf.fritz@googlemail.com, mark.rutland@arm.com, wens@csie.org, kever.yang@rock-chips.com, heiko@sntech.de, linux-rockchip@lists.infradead.org, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
+ <20250109165419.1623683-2-florian.fainelli@broadcom.com> <62786457-d4a1-4861-8bec-7e478626f4db@broadcom.com>
+ <2025011247-enable-freezing-ffa2@gregkh> <27bbea11-61fa-4f41-8b39-8508f2d2e385@broadcom.com>
+ <2025012002-tactics-murky-aaab@gregkh> <41550c7f-1313-41b4-aa2e-cb4809ad68c2@broadcom.com>
+ <2025012938-abreast-explain-f5f7@gregkh> <1fc6d5c8-80ec-4d6b-bc14-c584d89c15b4@broadcom.com>
+ <CAMj1kXHheRQYHddgehLbZot6o-xAxkbeHBUq7nS8npyB9A0FvQ@mail.gmail.com> <8994e7c5-812c-4605-9bdf-18a5b402196a@broadcom.com>
+In-Reply-To: <8994e7c5-812c-4605-9bdf-18a5b402196a@broadcom.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 30 Jan 2025 11:05:26 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHhgyRSzSgRQfWKRseFSifV1X=OqcTkL0_7ZWfi+UjhcA@mail.gmail.com>
+X-Gm-Features: AWEUYZmZyunDbwpw1BQcc0lwJHSSHtpfuzTTNYqADTNclCDIo2dr16ndgmkUVzk
+Message-ID: <CAMj1kXHhgyRSzSgRQfWKRseFSifV1X=OqcTkL0_7ZWfi+UjhcA@mail.gmail.com>
+Subject: Re: [PATCH] arm64: mm: account for hotplug memory when randomizing
+ the linear region
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Will Deacon <will@kernel.org>, 
+	Steven Price <steven.price@arm.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Baruch Siach <baruch@tkos.co.il>, 
+	Petr Tesarik <ptesarik@suse.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Joey Gouly <joey.gouly@arm.com>, "Mike Rapoport (IBM)" <rppt@kernel.org>, 
+	Yang Shi <yang@os.amperecomputing.com>, 
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Christoph,
+On Thu, 30 Jan 2025 at 00:31, Florian Fainelli
+<florian.fainelli@broadcom.com> wrote:
+>
+> On 1/29/25 14:15, Ard Biesheuvel wrote:
+> > On Wed, 29 Jan 2025 at 18:45, Florian Fainelli
+> > <florian.fainelli@broadcom.com> wrote:
+> >>
+> >> On 1/29/25 01:17, Greg KH wrote:
+> >>> On Mon, Jan 20, 2025 at 08:33:12AM -0800, Florian Fainelli wrote:
+> >>>>
+> >>>>
+> >>>> On 1/20/2025 5:59 AM, Greg KH wrote:
+> >>>>> On Mon, Jan 13, 2025 at 07:44:50AM -0800, Florian Fainelli wrote:
+> >>>>>>
+> >>>>>>
+> >>>>>> On 1/12/2025 3:54 AM, Greg KH wrote:
+> >>>>>>> On Thu, Jan 09, 2025 at 09:01:13AM -0800, Florian Fainelli wrote:
+> >>>>>>>> On 1/9/25 08:54, Florian Fainelli wrote:
+> >>>>>>>>> From: Ard Biesheuvel <ardb@kernel.org>
+> >>>>>>>>>
+> >>>>>>>>> commit 97d6786e0669daa5c2f2d07a057f574e849dfd3e upstream
+> >>>>>>>>>
+> >>>>>>>>> As a hardening measure, we currently randomize the placement of
+> >>>>>>>>> physical memory inside the linear region when KASLR is in effect.
+> >>>>>>>>> Since the random offset at which to place the available physical
+> >>>>>>>>> memory inside the linear region is chosen early at boot, it is
+> >>>>>>>>> based on the memblock description of memory, which does not cover
+> >>>>>>>>> hotplug memory. The consequence of this is that the randomization
+> >>>>>>>>> offset may be chosen such that any hotplugged memory located above
+> >>>>>>>>> memblock_end_of_DRAM() that appears later is pushed off the end of
+> >>>>>>>>> the linear region, where it cannot be accessed.
+> >>>>>>>>>
+> >>>>>>>>> So let's limit this randomization of the linear region to ensure
+> >>>>>>>>> that this can no longer happen, by using the CPU's addressable PA
+> >>>>>>>>> range instead. As it is guaranteed that no hotpluggable memory will
+> >>>>>>>>> appear that falls outside of that range, we can safely put this PA
+> >>>>>>>>> range sized window anywhere in the linear region.
+> >>>>>>>>>
+> >>>>>>>>> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> >>>>>>>>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> >>>>>>>>> Cc: Will Deacon <will@kernel.org>
+> >>>>>>>>> Cc: Steven Price <steven.price@arm.com>
+> >>>>>>>>> Cc: Robin Murphy <robin.murphy@arm.com>
+> >>>>>>>>> Link: https://lore.kernel.org/r/20201014081857.3288-1-ardb@kernel.org
+> >>>>>>>>> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> >>>>>>>>> Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> >>>>>>>>
+> >>>>>>>> Forgot to update the patch subject, but this one is for 5.10.
+> >>>>>>>
+> >>>>>>> You also forgot to tell us _why_ this is needed :(
+> >>>>>>
+> >>>>>> This is explained in the second part of the first paragraph:
+> >>>>>>
+> >>>>>> The consequence of this is that the randomization offset may be chosen such
+> >>>>>> that any hotplugged memory located above memblock_end_of_DRAM() that appears
+> >>>>>> later is pushed off the end of the linear region, where it cannot be
+> >>>>>> accessed.
+> >>>>>>
+> >>>>>> We use both memory hotplug and KASLR on our systems and that's how we
+> >>>>>> eventually found out about the bug.
+> >>>>>
+> >>>>> And you still have 5.10.y ARM64 systems that need this?  Why not move to
+> >>>>> a newer kernel version already?
+> >>>>
+> >>>> We still have ARM64 systems running 5.4 that need this, and the same bug
+> >>>> applies to 5.10 that we used to support but dropped in favor of 5.15/6.1.
+> >>>> Those are the kernel versions used by Android, and Android TV in particular,
+> >>>> so it's kind of the way it goes for us.
+> >>>>
+> >>>>>
+> >>>>> Anyway, I need an ack from the ARM64 maintainers that this is ok to
+> >>>>> apply here before I can take it.
+> >>>>
+> >>>> Just out of curiosity, the change is pretty innocuous and simple to review,
+> >>>> why the extra scrutiny needed here?
+> >>>
+> >>> Why shouldn't the maintainers review a proposed backport patch for core
+> >>> kernel code that affects everyone who uses that arch?
+> >>
+> >> They should, but they are not, we can keep sending messages like those
+> >> in the hope that someone does, but clearly that is not working at the
+> >> moment.
+> >>
+> >> This patch cherry picked cleanly into 5.4 and 5.10 maybe they just trust
+> >> whoever submit stable bugfixes to have done their due diligence, too, I
+> >> don't know how to get that moving now but it fixes a real problem we
+> >> observed.
+> >>
+> >
+> > FWIW, I understand why this might be useful when running under a
+> > non-KVM hypervisor that relies on memory hotplug to perform resource
+> > balancing between VMs. But the upshot of this change is that existing
+> > systems that do not rely on memory hotplug at all will suddenly lose
+> > any randomization of the linear map if its CPU happens to be able to
+> > address more than ~40 bits of physical memory. So I'm not convinced
+> > this is a change we should make for these older kernels.
+>
+> Are there other patches that we could backport in order not to lose the
+> randomization in the linear range?
 
-Thanks for reporting this.
+No, this never got fixed. Only recently, I proposed some patches that
+allow the PARange field in the CPU id registers to be overridden, and
+this would also bring back the ability to randomize the linear map on
+CPUs with a wide PARange.
 
-On Wed, 29 Jan 2025 21:31:53 +0000,
-Christoph Fritz <chf.fritz@googlemail.com> wrote:
-> 
-> Hello Marc,
-> 
->  since 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC
-> integrations") landed in stable v6.12.7 as 0bf32f482887, here the
-> rk3399 fails to boot (~4 out of 10 times) because OP-TEE panics (gets a
-> secure interrupt that it cannot handle).
+Android also enables memory hotplug, and so I didn't bother with
+preserving the old behavior when memory hotplug is disabled, and so
+linear map randomization has basically been disabled ever since
+(unless you are using an older core with only 40 physical address
+bits).
 
-I think it may actually get a *non-secure* interrupt.
-
-> 
-> Setup is:
->  - BL31 proprietary (since mainline TF-A has no DMA)
->  - OP-TEE mainline version: 3.20
->  - Kernel v6.12.7
-> 
-> <snip>
-> [    0.000000] GICv3: Broken GIC integration, security disabled
-> <snip>
-> E/TC:4 0 Panic 'Secure interrupt handler not defined' at core/kernel/interrupt.c:139 <itr_core_handler>
-> E/TC:4 0 TEE load address @ 0x30000000
-> E/TC:4 0 Call stack:
-> E/TC:4 0  0x300091f8
-> E/TC:4 0  0x30016664
-> E/TC:4 0  0x30015710
-> E/TC:4 0  0x30005714
-> [   26.087363] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> [   26.087925] rcu:     (detected by 2, t=21002 jiffies, g=2233, q=2416 ncpus=6)
-> [   26.088530] rcu: All QSes seen, last rcu_preempt kthread activity 21002 (4294693363-4294672361), jiffies_till_next_fqs=3, root ->qsmask 0x0
-> [   26.089623] rcu: rcu_preempt kthread timer wakeup didn't happen for 20999 jiffies! g2233 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200
-> [   26.090617] rcu:     Possible timer handling issue on cpu=4 timer-softirq=293
-> [   26.091218] rcu: rcu_preempt kthread starved for 21002 jiffies! g2233 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=4
-> [   26.092131] rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-> [   26.092926] rcu: RCU grace-period kthread stack dump:
-> [   26.093369] task:rcu_preempt     state:R stack:0     pid:16    tgid:16    ppid:2      flags:0x00000008
-> [   26.094192] Call trace:
-> [   26.094409]  __switch_to+0xf0/0x14c
-> [   26.094728]  __schedule+0x264/0xa90
-> [   26.095040]  schedule+0x34/0x104
-> [   26.095329]  schedule_timeout+0x80/0xf4
-> [   26.095672]  rcu_gp_fqs_loop+0x14c/0x4a4
-> [   26.096027]  rcu_gp_kthread+0x138/0x164
-> [   26.096369]  kthread+0x114/0x118
-> [   26.096661]  ret_from_fork+0x10/0x20
-> [   26.096982] rcu: Stack dump where RCU GP kthread last ran:
-> [   26.097463] Sending NMI from CPU 2 to CPUs 4:
-> [   46.276364] sched: DL replenish lagged too much
-> 
-> Is it too late for the kernel to disable the "security" since OP-TEE
-> assumes it is enabled?
-
-Well, it was never effective security the first place, but clearly
-this effect is not expected (my own machine doesn't have anything
-running on the secure side).
-
-> Any ideas?
-
-I think this calls for a revert of this patch, potentially at the
-expense if NMI support on this machine. Could you show how SCR_EL3.FIQ
-is configured on this machine? Mine shows:
-
-[    0.000000] GICv3: GICD_CTRL.DS=0, SCR_EL3.FIQ=0
-
-and I suspect yours has FIQ=1. If that's the case, we could use that
-as the discriminant.
-
-However, this machine has a much bigger issues. For things to work as
-expected, the GIC driver must preserve all the secure configuration,
-and nothing does that today.
-
-So even before this patch, your secure payload won't get any
-interrupt, as we blindly configure everything to be Group-1NS.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Nobody ever complained about losing this linear map randomization, but
+taking it away at this point from 5.4 and 5.10 goes a bit too far imo.
 
