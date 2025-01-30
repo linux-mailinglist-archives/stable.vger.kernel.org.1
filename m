@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-111569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1178A22FC9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07F3A22F2C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24CC2168E9A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BA31625C2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD81E991C;
-	Thu, 30 Jan 2025 14:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123AE1E7C25;
+	Thu, 30 Jan 2025 14:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUuon1/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxbvOVwp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D976B1E522;
-	Thu, 30 Jan 2025 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49811E3772;
+	Thu, 30 Jan 2025 14:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247119; cv=none; b=p3HsT/tOkKb+c1YZSDdJKZDLOKF7Byl6qMBAyWuAkcxhcguu6taYsz5IjlCW6xCb3+NWChkZOeOov2wCffB2TYLhHJPkQ76oNeaU9pGZKwgtozq1aG3xcUT/tu7Wfw1VRZjOHB4xz7v/khMkkke/VXs3jsAMaY2ZvynshoV4+Ts=
+	t=1738246760; cv=none; b=pAEGxHNw/BzY1h17EJVFGst/aQCw6F5+Rfeg05Y86WL+/3l8fGEwYmAhCu9Vr1upQ18/7Xqksxtp0chb2wVsdrgquZ8SbvU/GpMU/nX6Q8xmlg8s83UHbqWH5wHxnlZd91OAC1VeDoHdI7d0gpwouW8pw92oGT105SJQNE0Mucg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247119; c=relaxed/simple;
-	bh=ZRgpEW34JMjQh3hedWGfqmmuz6l889KGJ7H7rlpzn/4=;
+	s=arc-20240116; t=1738246760; c=relaxed/simple;
+	bh=64Nhb1pccEf9A4rkCM2tUaX9IEicu2STuR/ysapRXK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He/+GPLaBCV/iGcsd4IfXWpTisXHMrSREk6hFjd8MBz7yBKKf/ydz65Y0YlvjtqlTLdGD1U63AMmdKxxfKGdL8f1QyN4jP6amsKYlCTqvApJBaW16y2hHq1YQ42nuzrKnBrno19xMSmnWCBCa7JLOQvpTgI3y22CG8qK0fM1imA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUuon1/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B45C4CED2;
-	Thu, 30 Jan 2025 14:25:18 +0000 (UTC)
+	 MIME-Version; b=coCgVWzW1+53DRxXDfSV5/AdN/MPTd7/lzoW4GHteAFRK+LGFcvUA6ok17R0zzgI1DhmtoLudharT1zlxwC2DoRWyYRJBAEK7Vu4iTb5S5v8S+zbWjPg8E3gUW3us1UrGC2trt8UAEfEg5LbbO+5gBTOO/8kyCwoaF5yD9Fe3dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxbvOVwp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD34C4CED2;
+	Thu, 30 Jan 2025 14:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247118;
-	bh=ZRgpEW34JMjQh3hedWGfqmmuz6l889KGJ7H7rlpzn/4=;
+	s=korg; t=1738246759;
+	bh=64Nhb1pccEf9A4rkCM2tUaX9IEicu2STuR/ysapRXK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUuon1/dcX9Y/dRuQYRLKtIUDpRWsvSomT0c47PLN2hg6y/0Hhltsm+MoXsJ6s8Cc
-	 D+xRJvguZWlEJCGH8HSAbcd8xatucjak764TD2cm1bKKc1D7S35cwdKV7Tdzeevjog
-	 BYLZtUEKl9Laxe/uKY52GT9W9ZQKsOnu8nHsTeWU=
+	b=bxbvOVwp4T5Bd3skXeMiKNa9Yipd3VR9+P/abUa+P7Y+ZNASWCc3L5ZBrHYTSsxgp
+	 m41uiX9b4FAyr3NziDAngtx/B3uE+ek7viRT+o9SsMHSL441xLoNLG2iDKOEnTFkbU
+	 kWSa3IUTq1OmNPtKwuAZT6ba0h3Nl8XGcGu/PZhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/133] kheaders: Ignore silly-rename files
+Subject: [PATCH 5.4 58/91] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
 Date: Thu, 30 Jan 2025 15:01:17 +0100
-Message-ID: <20250130140146.063287842@linuxfoundation.org>
+Message-ID: <20250130140135.996463167@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,62 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
+[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
 
-Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
-the header archive.  These occur when a file that is open is unlinked
-locally, but hasn't yet been closed.  Such files are visible to the user
-via the getdents() syscall and so programs may want to do things with them.
+gtp_newlink() links the gtp device to a list in dev_net(dev).
 
-During the kernel build, such files may be made during the processing of
-header files and the cleanup may get deferred by fput() which may result in
-tar seeing these files when it reads the directory, but they may have
-disappeared by the time it tries to open them, causing tar to fail with an
-error.  Further, we don't want to include them in the tarball if they still
-exist.
+However, even after the gtp device is moved to another netns,
+it stays on the list but should be invisible.
 
-With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+Let's use for_each_netdev_rcu() for netdev traversal in
+gtp_genl_dump_pdp().
 
-   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+Note that gtp_dev_list is no longer used under RCU, so list
+helpers are converted to the non-RCU variant.
 
-The find warning doesn't seem to cause a problem.
-
-Fix this by telling tar when called from in gen_kheaders.sh to exclude such
-files.  This only affects afs and nfs; cifs uses the Windows Hidden
-attribute to prevent the file from being seen.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
-cc: Masahiro Yamada <masahiroy@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Reported-by: Xiao Liang <shaw.leon@gmail.com>
+Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/gtp.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index 206ab3d41ee76..7fc44d8da2052 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -84,6 +84,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index fd5d3f58b5c10..e08cd4b1be6c1 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -691,7 +691,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
+ 	}
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --exclude=".__afs*" --exclude=".nfs*" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
+ 	gn = net_generic(dev_net(dev), gtp_net_id);
+-	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
++	list_add(&gtp->list, &gn->gtp_dev_list);
+ 	dev->priv_destructor = gtp_destructor;
  
+ 	netdev_dbg(dev, "registered new GTP interface\n");
+@@ -717,7 +717,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
+ 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
+ 			pdp_context_delete(pctx);
+ 
+-	list_del_rcu(&gtp->list);
++	list_del(&gtp->list);
+ 	unregister_netdevice_queue(dev, head);
+ }
+ 
+@@ -1259,16 +1259,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
+ 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
+ 	int i, j, bucket = cb->args[0], skip = cb->args[1];
+ 	struct net *net = sock_net(skb->sk);
++	struct net_device *dev;
+ 	struct pdp_ctx *pctx;
+-	struct gtp_net *gn;
+-
+-	gn = net_generic(net, gtp_net_id);
+ 
+ 	if (cb->args[4])
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
++	for_each_netdev_rcu(net, dev) {
++		if (dev->rtnl_link_ops != &gtp_link_ops)
++			continue;
++
++		gtp = netdev_priv(dev);
++
+ 		if (last_gtp && last_gtp != gtp)
+ 			continue;
+ 		else
+@@ -1362,9 +1365,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
+ 
+ 	list_for_each_entry(net, net_list, exit_list) {
+ 		struct gtp_net *gn = net_generic(net, gtp_net_id);
+-		struct gtp_dev *gtp;
++		struct gtp_dev *gtp, *gtp_next;
+ 
+-		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
++		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
+ 			gtp_dellink(gtp->dev, dev_to_kill);
+ 	}
+ }
 -- 
 2.39.5
 
