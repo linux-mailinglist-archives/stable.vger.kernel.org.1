@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-111337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18CCA22E89
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8F1A22EDB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 648C7188A72B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AFF73A5FE5
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7281E571B;
-	Thu, 30 Jan 2025 14:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268651E7C08;
+	Thu, 30 Jan 2025 14:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Al5/RjnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek3d8ehA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486671BBBEB;
-	Thu, 30 Jan 2025 14:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89491DDC22;
+	Thu, 30 Jan 2025 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245717; cv=none; b=fa/q8lIE92CmSo7o2GNnniaTDOjETugYzgRunvZipiJEPjEhKY9TZDFhk6n3G4UWyLvGt3Vjg3Scg3NW5iSDZk3TZ52ALsbVtsN226KDJixR9c67wSfn3dxergVmPZNWHyhw+oXvxlDkNIhGuKjCr4/mKKwMHmieLn5y/KsVxLA=
+	t=1738246551; cv=none; b=FOFsPY8k3Gi2RD97vXx1Rbi362ZDIiaZ+t7SRJIRXrbt5qW9yfozk3ejBdkIzGyW2EEpoj4gZ8xgJmcuZ2Hw6l/pNOgAt3s1eFkpTwgkbZE0qLpisFQf2pGvZy3+elVQnNN9Mp7rQbromssSmUpP9kBGohaMzL6f68NEHYIoT+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245717; c=relaxed/simple;
-	bh=PxRJGV/1GWe6cDSZDCGeU1chXldas1bBchnevNYtjTY=;
+	s=arc-20240116; t=1738246551; c=relaxed/simple;
+	bh=qfWP0gMwouGu2bS34AyVR3J5qEoRH94ERzMgy43XIBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2ZJiBuJ9sWAhcEWh1nDCtTPbuajtw0pzW8crxsmW3lpPcxNLA4OC9NOgNS2XB6qjSl1zFeCAftiS1dp+T8VMeVq7W3rx1BdKsINwZublF6bObM4ix6YWB7U0McagGrF4LQmpL0HXvW+zCwAXHsn5RjxKsuvajFV8BY0YkRRZiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Al5/RjnZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9047C4CED2;
-	Thu, 30 Jan 2025 14:01:56 +0000 (UTC)
+	 MIME-Version; b=Z5ysG/w92AN8ZeyZMnQBaueDs9kpA0I5yFvtDSuHOEmOASuhig6nO1ML53RtLV5HMLJNRz8KjKM85vnOKzH7fjrM57lMBV/vfYVosf0KiOyi2blK3xnscMHC6rOlH7aZ72ZJFFqaQ5Gufwm0AO6+Mxw6bxPX8v2N3X0UXndsdBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek3d8ehA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AC4C4CED2;
+	Thu, 30 Jan 2025 14:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245717;
-	bh=PxRJGV/1GWe6cDSZDCGeU1chXldas1bBchnevNYtjTY=;
+	s=korg; t=1738246551;
+	bh=qfWP0gMwouGu2bS34AyVR3J5qEoRH94ERzMgy43XIBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Al5/RjnZc4mgIou9LFL1mFxIorIeibJmBngm5Yfrl456Q4bt3N7KwfS391zu31P15
-	 xUJgCot3vPvOD+otP9ycw2krzjtSbu6nIGQjkQIe8cndpFO5y3nDYX6yVzDu6d+uAY
-	 zQ2ol/UziiJgtAG46AtfiR6TmSZj1qIpMDA4iQFI=
+	b=ek3d8ehAP+t4M+CHhPOnsflmuFSGBGLyQYkUFApmc3reqdci1Bz6jhMzKfS/ZhsDY
+	 ZNvGnKsVThpMc7hxo1Fm/7cuUdFusmtH2KOgB6pWHj0Py6hXnhPVD1yWrdIKtyn10f
+	 A9I52OXxceOH+Cov6z16J3FLrHUZVLjV8TM7EwLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pierre-Loup A. Griffais" <pgriffais@valvesoftware.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 37/40] Input: xpad - add QH Electronics VID/PID
-Date: Thu, 30 Jan 2025 14:59:37 +0100
-Message-ID: <20250130133501.193363514@linuxfoundation.org>
+	"Luis Henriques (SUSE)" <luis.henriques@linux.dev>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Victor Giraud <vgiraud.opensource@witekio.com>
+Subject: [PATCH 6.6 31/43] ext4: fix access to uninitialised lock in fc replay path
+Date: Thu, 30 Jan 2025 14:59:38 +0100
+Message-ID: <20250130133500.153996883@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
+From: Luis Henriques (SUSE) <luis.henriques@linux.dev>
 
-commit 92600f3295ff571890c981d886c6544030cc05f3 upstream.
+commit 23dfdb56581ad92a9967bcd720c8c23356af74c1 upstream.
 
-Add support for QH Electronics Xbox 360-compatible controller
+The following kernel trace can be triggered with fstest generic/629 when
+executed against a filesystem with fast-commit feature enabled:
 
-Signed-off-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20250116012518.3476735-1-vi@endrift.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 PID: 866 Comm: mount Not tainted 6.10.0+ #11
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x66/0x90
+ register_lock_class+0x759/0x7d0
+ __lock_acquire+0x85/0x2630
+ ? __find_get_block+0xb4/0x380
+ lock_acquire+0xd1/0x2d0
+ ? __ext4_journal_get_write_access+0xd5/0x160
+ _raw_spin_lock+0x33/0x40
+ ? __ext4_journal_get_write_access+0xd5/0x160
+ __ext4_journal_get_write_access+0xd5/0x160
+ ext4_reserve_inode_write+0x61/0xb0
+ __ext4_mark_inode_dirty+0x79/0x270
+ ? ext4_ext_replay_set_iblocks+0x2f8/0x450
+ ext4_ext_replay_set_iblocks+0x330/0x450
+ ext4_fc_replay+0x14c8/0x1540
+ ? jread+0x88/0x2e0
+ ? rcu_is_watching+0x11/0x40
+ do_one_pass+0x447/0xd00
+ jbd2_journal_recover+0x139/0x1b0
+ jbd2_journal_load+0x96/0x390
+ ext4_load_and_init_journal+0x253/0xd40
+ ext4_fill_super+0x2cc6/0x3180
+...
+
+In the replay path there's an attempt to lock sbi->s_bdev_wb_lock in
+function ext4_check_bdev_write_error().  Unfortunately, at this point this
+spinlock has not been initialized yet.  Moving it's initialization to an
+earlier point in __ext4_fill_super() fixes this splat.
+
+Signed-off-by: Luis Henriques (SUSE) <luis.henriques@linux.dev>
+Link: https://patch.msgid.link/20240718094356.7863-1-luis.henriques@linux.dev
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Victor Giraud <vgiraud.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/super.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -306,6 +306,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
-+	{ 0x1a86, 0xe310, "QH Electronics Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -516,6 +517,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
- 	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
-+	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5366,6 +5366,8 @@ static int __ext4_fill_super(struct fs_c
+ 	INIT_LIST_HEAD(&sbi->s_orphan); /* unlinked but open files */
+ 	mutex_init(&sbi->s_orphan_lock);
+ 
++	spin_lock_init(&sbi->s_bdev_wb_lock);
++
+ 	ext4_fast_commit_init(sb);
+ 
+ 	sb->s_root = NULL;
+@@ -5586,7 +5588,6 @@ static int __ext4_fill_super(struct fs_c
+ 	 * Save the original bdev mapping's wb_err value which could be
+ 	 * used to detect the metadata async write error.
+ 	 */
+-	spin_lock_init(&sbi->s_bdev_wb_lock);
+ 	errseq_check_and_advance(&sb->s_bdev->bd_inode->i_mapping->wb_err,
+ 				 &sbi->s_bdev_wb_err);
+ 	EXT4_SB(sb)->s_mount_state |= EXT4_ORPHAN_FS;
 
 
 
