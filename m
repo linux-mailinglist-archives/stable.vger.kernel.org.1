@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CC1A22E66
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7E8A22ECA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11D1168936
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39CEF18886F3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2881E3775;
-	Thu, 30 Jan 2025 14:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D6A1E9B1C;
+	Thu, 30 Jan 2025 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhLvx/qS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fkcoxn4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF035C13D;
-	Thu, 30 Jan 2025 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743171E9B17;
+	Thu, 30 Jan 2025 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245632; cv=none; b=ikFmXG2pCbdhumSwPXExHVhxSLxxNdBCv0LgepMpdUnNO0mVOQQc1vsBdqwiuj0E/w+MDxr+U1AGo2ohPdUvI4XyRx7mnQ62UG2Tmw4BZ7OW+qMUtDsyzcg5ffUHyJ/mgfdiwDp2hSG4NiPnDMiXSyK0x2Hc07wbIbEdrN02lN8=
+	t=1738246504; cv=none; b=qXM6Ys1QbJmTQqWn+VzP8t6CZyyGdcQGyKRlHSIQ3xu6vb6YiARYiTihe5rjEE+t3qiRUJ5e7WZ4jw8nvyeveV7yBDdYHRnaMXyH9mbXhmTba6B+Iaty+QqXaPV3NhZbpcj9toZwVV8pjfssaTQBHmOXyUncBg+dJRfpYRSgU8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245632; c=relaxed/simple;
-	bh=NahfPWjPmr0Mux000+QY6CQeInetFv2bWnju7Fm1Td0=;
+	s=arc-20240116; t=1738246504; c=relaxed/simple;
+	bh=kpDbO71tfKWgArVDFriL2lpe8yTMzgqWbOo3AJT/52Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpaMVNuQbiY6wIhelA03/TG/ko4XFLMSAP73Hrm4EhzKkOk2Y2oD9WK7lS1ILvtEOBwlT9KWKubYTUlVs25O+Tq2K+8U9sllvHSrwl5gCHXpzCiriht1ipRDhE9RpRdoGyUdOulo1TN9iekQQM+v0/m2wRqx/QCRZ3eANo2FIjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhLvx/qS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B98C4CED2;
-	Thu, 30 Jan 2025 14:00:31 +0000 (UTC)
+	 MIME-Version; b=SukAn/LhB1Atjp5RHMEJBhqZf3t32913nAePONsTHHOZg696g+ZyUie5GXcSjqQJEtPxNF563stvvB9XA5lyxIzcnF/IYjO6RljOJqnlodRo9SOAKeGuN8V8mkxHjspW4KgKPS6IKaoH5aWYmcnJLwZaY5eqMh08z64ZRsLO3hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fkcoxn4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83AAC4CED2;
+	Thu, 30 Jan 2025 14:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245632;
-	bh=NahfPWjPmr0Mux000+QY6CQeInetFv2bWnju7Fm1Td0=;
+	s=korg; t=1738246504;
+	bh=kpDbO71tfKWgArVDFriL2lpe8yTMzgqWbOo3AJT/52Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhLvx/qSQ5Q7Z73UscRnTOq6VPRBvz7Ldt0OyBfKSetQfZm+SyZGEBj6xPheXEQAK
-	 wK/c2GaIOCZpaBKF7V6lU3pwFWPZurDX97aohkS4nQN7aQmzMntAMpsUKm/4VP0l0J
-	 2Zr0im9ADmbV2ydWWBdz1KSn49SAb+ax0Mk+dZ6w=
+	b=Fkcoxn4/XqS1jmNhkcLJOGvbWBLjAgHVbyf58IhOO3shwrkqPagLYHiyCfKOvj67i
+	 6AAv59LC53A8VfoIowSxrKyu65Hc2AG+rcunX/eWA5xL9XmLgcse0n0MA+sOsMqOLD
+	 hCCGYJT0z7SYqRnWNWk4w2RMGJ5V9RNAVvDrZvF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
-	Pavel Rojtberg <rojtberg@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 23/25] Input: xpad - improve name of 8BitDo controller 2dc8:3106
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 02/43] ASoC: samsung: Add missing selects for MFD_WM8994
 Date: Thu, 30 Jan 2025 14:59:09 +0100
-Message-ID: <20250130133457.864499081@linuxfoundation.org>
+Message-ID: <20250130133459.001819630@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
-References: <20250130133456.914329400@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leonardo Brondani Schenkel <leonardo@schenkel.net>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 66372fa9936088bf29c4f47907efeff03c51a2c8 upstream.
+[ Upstream commit fd55c6065bec5268740e944a1800e6fad00974d9 ]
 
-8BitDo Pro 2 Wired Controller shares the same USB identifier
-(2dc8:3106) as a different device, so amend name to reflect that and
-reduce confusion as the user might think the controller was misdetected.
+Anything selecting SND_SOC_WM8994 should also select MFD_WM8994, as
+SND_SOC_WM8994 does not automatically do so. Add the missing selects.
 
-Because Pro 2 Wired will not work in XTYPE_XBOXONE mode (button presses
-won't register), tagging it as XTYPE_XBOX360 remains appropriate.
-
-Signed-off-by: Leonardo Brondani Schenkel <leonardo@schenkel.net>
-Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
-Link: https://lore.kernel.org/r/20250107192830.414709-2-rojtberg@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071530.UwIXs7OL-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250107104134.12147-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/samsung/Kconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -375,7 +375,7 @@ static const struct xpad_device {
- 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
- 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
- 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
--	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
-+	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
- 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
- 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
+diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
+index 93c2b1b08d0a6..77d3beea1d715 100644
+--- a/sound/soc/samsung/Kconfig
++++ b/sound/soc/samsung/Kconfig
+@@ -127,8 +127,9 @@ config SND_SOC_SAMSUNG_TM2_WM5110
+ 
+ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 	tristate "SoC I2S Audio support for WM8994 on Aries"
+-	depends on SND_SOC_SAMSUNG && MFD_WM8994 && IIO && EXTCON
++	depends on SND_SOC_SAMSUNG && IIO && EXTCON
+ 	select SND_SOC_BT_SCO
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	select SND_SAMSUNG_I2S
+ 	help
+@@ -142,6 +143,7 @@ config SND_SOC_SAMSUNG_MIDAS_WM1811
+ 	tristate "SoC I2S Audio support for Midas boards"
+ 	depends on SND_SOC_SAMSUNG
+ 	select SND_SAMSUNG_I2S
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	help
+ 	  Say Y if you want to add support for SoC audio on the Midas boards.
+-- 
+2.39.5
+
 
 
 
