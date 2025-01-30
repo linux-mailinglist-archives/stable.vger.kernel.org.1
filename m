@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EE2A22E8F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A81A22EED
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 547607A3CC3
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 594667A158B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BF01E3775;
-	Thu, 30 Jan 2025 14:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8371219DFAB;
+	Thu, 30 Jan 2025 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeNJm5Hn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXBboroA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF621B4243;
-	Thu, 30 Jan 2025 14:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403C3383;
+	Thu, 30 Jan 2025 14:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245737; cv=none; b=ohnF8RRQ+9iGEJ6cMoTaenurxMMkrL+l9IF0HKQDhUl6USzb3EDnIdM6iGMQEDDWXYAkjaTGKx32Wis9501nZB5qUsSgCce75qUP4nSR9KdljUKQSBhtfetbqdtB29Ioj7kViM8xgavacooLjlVWw4EKpcQTRJVP01hnQgDVowU=
+	t=1738246598; cv=none; b=UOfU9AkCrStJ+IBzgb6i24hWU6pdEVgK2Khj6/ir+AsPde9o+QtARlK4uRr9C7mpVIhOkew0L7rn5XoTSyHvdTO7F/wXM4dUxKaPWD5kjETsIH2+CCT2/GJxc6mZZrUtjSzn020/SlgjpMnHRIIksdrOPknRehFepB0P0V1ixVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245737; c=relaxed/simple;
-	bh=9zgAwHjrtpQgTHqU+D2XG4eNND46YZgo5p1E3vDLJP8=;
+	s=arc-20240116; t=1738246598; c=relaxed/simple;
+	bh=zP/JlQgZJkNPQHU7Lo6xJqVwbYRWM4BbhtqctEKQKf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g+nYQiwFlhC/N/ztwJR4vqNsRVrdZUoxSf1peMd/H4VsqYq0+EDYjfu1k+TU9C6QYj5AoD6rYyiKx8NjCvL2Qrkfjiiy/3GlJ6aaVTZ+nShdDsb18B5tdKVgbVU39jkEUsInrLHQ67BrzUAsN6qEEqq/0pBfJxUVUdEQzZGrK3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeNJm5Hn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BBAC4CED2;
-	Thu, 30 Jan 2025 14:02:16 +0000 (UTC)
+	 MIME-Version; b=O88pfhQXXypcn5VwcPOh3P6vBwcKcWeP/w+Yb36iI2JVNbboGMLYbKzSovV5zmikRJ8pLQuomj+Q+wrTYprtTb0xXex/spQKu6Fr8X1GgxeA9xGJlsPWlTvm8sWtd1+6zppiZ93zgnoqrZ9DYwGc1nOxClZqCcDEgm2xpF0HGOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXBboroA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC0C4CED2;
+	Thu, 30 Jan 2025 14:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245737;
-	bh=9zgAwHjrtpQgTHqU+D2XG4eNND46YZgo5p1E3vDLJP8=;
+	s=korg; t=1738246598;
+	bh=zP/JlQgZJkNPQHU7Lo6xJqVwbYRWM4BbhtqctEKQKf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeNJm5HnWGVAepYNQVuIm1f2Q2UrByEeCIVAi95Pu4qgjv9voyotYnjhMwCLo3ptw
-	 cSCAe1QhOpzdIUbVal9eDTipta9GuZ1bpgrwrH3HsbDobAXhh82M9j1yzr6tkMX/HQ
-	 YdWvGe4W79P5Pr16ARi5Jy8BAgHDMYFpBjDm2Uj8=
+	b=OXBboroAUBu5oayxsCLD+fqHORPshG2SwG5Sn6CPwBA/IBMiGAs1hvZps4fPh4m8W
+	 tdmGFgvpBONgGKtbO7QhVYXP5qAhDhDyxKqZFcusEsUEUQSHjOCOdozxBXPWQ9iykf
+	 IKOJgpGkhC0mR0mhTKfhouuk/pjHHj3HxiT+6aEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 6.12 27/40] vfio/platform: check the bounds of read/write syscalls
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 20/43] shmem: Fix shmem_rename2()
 Date: Thu, 30 Jan 2025 14:59:27 +0100
-Message-ID: <20250130133500.792837595@linuxfoundation.org>
+Message-ID: <20250130133459.715321846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
+[ Upstream commit ad191eb6d6942bb835a0b20b647f7c53c1d99ca4 ]
 
-count and offset are passed from user space and not checked, only
-offset is capped to 40 bits, which can be used to read/write out of
-bounds of the device.
+When renaming onto an existing directory entry, user space expects
+the replacement entry to have the same directory offset as the
+original one.
 
-Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
-Cc: stable@vger.kernel.org
-Reported-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Link: https://gitlab.alpinelinux.org/alpine/aports/-/issues/15966
+Fixes: a2e459555c5f ("shmem: stable directory offsets")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20240415152057.4605-4-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/libfs.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -388,6 +388,11 @@ static ssize_t vfio_platform_read_mmio(s
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -365,6 +365,9 @@ int simple_offset_empty(struct dentry *d
+  *
+  * Caller provides appropriate serialization.
+  *
++ * User space expects the directory offset value of the replaced
++ * (new) directory entry to be unchanged after a rename.
++ *
+  * Returns zero on success, a negative errno value on failure.
+  */
+ int simple_offset_rename(struct inode *old_dir, struct dentry *old_dentry,
+@@ -372,8 +375,14 @@ int simple_offset_rename(struct inode *o
  {
- 	unsigned int done = 0;
+ 	struct offset_ctx *old_ctx = old_dir->i_op->get_offset_ctx(old_dir);
+ 	struct offset_ctx *new_ctx = new_dir->i_op->get_offset_ctx(new_dir);
++	long new_offset = dentry2offset(new_dentry);
  
-+	if (off >= reg->size)
-+		return -EINVAL;
+ 	simple_offset_remove(old_ctx, old_dentry);
 +
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -467,6 +472,11 @@ static ssize_t vfio_platform_write_mmio(
- {
- 	unsigned int done = 0;
++	if (new_offset) {
++		offset_set(new_dentry, 0);
++		return simple_offset_replace(new_ctx, old_dentry, new_offset);
++	}
+ 	return simple_offset_add(new_ctx, old_dentry);
+ }
  
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
 
 
 
