@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-111509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A28A22F8A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D888A22FB0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C0847A3FC6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6961883D96
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1AE1E7C27;
-	Thu, 30 Jan 2025 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF071E522;
+	Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLzCstQ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/wbWht9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460551E522;
-	Thu, 30 Jan 2025 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB7C1DDC22;
+	Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246943; cv=none; b=Q/+vgP3UBFqRe+Z0+Wuj86eauCjfmw0qVgRjjNHcFDoanDfAG/CmW8tvQSl/0U1bdSBsaDSCb+I2sqfVu+a5DagSwYcdGkXb9wWdLuEJPn5hMf8ANbc+w1JIkZ+9/ssU3WL3iq8LYyv/BsNqD6y6vsggIA/9oJwKEbyr36kwQA8=
+	t=1738247063; cv=none; b=Paf8BcSoCUHbdSkIuwsSGll8fMYmAAagZIpzERRYdTKoidO1c11FtyuObB3QWNWBmTCH8LZK4Chy7l+mI4Jg9wtnL5muO+qZ7aJkbKb6DjhNE18YIzcr4/VwHB31Yr6KNEQ1bE/Du2KoHR2+8KXeipiw3HigNlIRYc5GG50Dm9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246943; c=relaxed/simple;
-	bh=5rjPvy8nHEO1TAaNPKUCpWiQfjCAlNDzAV3kKJtpMk8=;
+	s=arc-20240116; t=1738247063; c=relaxed/simple;
+	bh=0n9FiblZ5ElYa7taYtutX6zNwWFyVoiHlCqTRe/r7d8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUhT5qivWNGXZERdNXfSBUoMf8bdUdiJutg1Asu1QRSltWn10f5z/8AYSEgpH9U8qkqX9Ka4afsoa/hm5CARyLCxXqxXee/JzGKNfXqKcaWwZP5CC/QVeliC/iHJiHG55Fj0vMyPwW+AbrDDaQp3XlzbYwz1xb8Vsnls8o8My48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLzCstQ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA498C4CED2;
-	Thu, 30 Jan 2025 14:22:22 +0000 (UTC)
+	 MIME-Version; b=Uz7hpLff+yexXqfBf+iii2ZsLkjtioyG29GGnNzeSWgKszGBK2hQbqww8a1ZJn/lwPwp4/tmi5BEKgV4DuXUCV29hgK1gaf6UqUl7LlWG5HNdYJHN+V82uxNnrHX2A52VQDgBVvwHwQSKNe/4Ki+7+S/gi+hSsVdDZJG6htdrZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/wbWht9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18102C4CED2;
+	Thu, 30 Jan 2025 14:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246943;
-	bh=5rjPvy8nHEO1TAaNPKUCpWiQfjCAlNDzAV3kKJtpMk8=;
+	s=korg; t=1738247063;
+	bh=0n9FiblZ5ElYa7taYtutX6zNwWFyVoiHlCqTRe/r7d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLzCstQ/XMrZvpN6oYXnZc53j4XOqOumhJCrZj+zcfAEZEHst0fG1msPPso4/Fqwu
-	 YQM7WxGFvOgDRpbMJolPbDW6gfANCZOmWiASEDWOmCp092l/1fsC9w33t3MD5+2qma
-	 epAchk3koZA9zG5OrAnZcddFJFMdXX/NBIgIu9I4=
+	b=G/wbWht98Cs8PG9q9QtURGi7xEMhukEu0dwH19RIUoTUF/SBCauEGBVBrO01uT/fE
+	 cell0siox5wR8anc/hlG1oPZFNbXKwJMkVw3ypIIzkw1rBPVInJDxLgo4qRM+PuErN
+	 MqKKS4D0H1IiQktgfFAZE7+G7pcDxxKmlXkqPM3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Ching-Chun (Jim) Huang" <jserv@ccns.ncku.edu.tw>,
-	chuang@cs.nycu.edu.tw,
-	Ingo Molnar <mingo@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Shile Zhang <shile.zhang@linux.alibaba.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 028/133] scripts/sorttable: fix orc_sort_cmp() to maintain symmetry and transitivity
-Date: Thu, 30 Jan 2025 15:00:17 +0100
-Message-ID: <20250130140143.645489718@linuxfoundation.org>
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 5.10 029/133] md/raid5: fix atomicity violation in raid5_cache_count
+Date: Thu, 30 Jan 2025 15:00:18 +0100
+Message-ID: <20250130140143.683914814@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -72,69 +66,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-commit 0210d251162f4033350a94a43f95b1c39ec84a90 upstream.
+commit dfd2bf436709b2bccb78c2dda550dde93700efa7 upstream.
 
-The orc_sort_cmp() function, used with qsort(), previously violated the
-symmetry and transitivity rules required by the C standard.  Specifically,
-when both entries are ORC_TYPE_UNDEFINED, it could result in both a < b
-and b < a, which breaks the required symmetry and transitivity.  This can
-lead to undefined behavior and incorrect sorting results, potentially
-causing memory corruption in glibc implementations [1].
+In raid5_cache_count():
+    if (conf->max_nr_stripes < conf->min_nr_stripes)
+        return 0;
+    return conf->max_nr_stripes - conf->min_nr_stripes;
+The current check is ineffective, as the values could change immediately
+after being checked.
 
-Symmetry: If x < y, then y > x.
-Transitivity: If x < y and y < z, then x < z.
+In raid5_set_cache_size():
+    ...
+    conf->min_nr_stripes = size;
+    ...
+    while (size > conf->max_nr_stripes)
+        conf->min_nr_stripes = conf->max_nr_stripes;
+    ...
 
-Fix the comparison logic to return 0 when both entries are
-ORC_TYPE_UNDEFINED, ensuring compliance with qsort() requirements.
+Due to intermediate value updates in raid5_set_cache_size(), concurrent
+execution of raid5_cache_count() and raid5_set_cache_size() may lead to
+inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
+The current checks are ineffective as values could change immediately
+after being checked, raising the risk of conf->min_nr_stripes exceeding
+conf->max_nr_stripes and potentially causing an integer overflow.
 
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Link: https://lkml.kernel.org/r/20241226140332.2670689-1-visitorckw@gmail.com
-Fixes: 57fa18994285 ("scripts/sorttable: Implement build-time ORC unwind table sorting")
-Fixes: fb799447ae29 ("x86,objtool: Split UNWIND_HINT_EMPTY in two")
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Cc: Ching-Chun (Jim) Huang <jserv@ccns.ncku.edu.tw>
-Cc: <chuang@cs.nycu.edu.tw>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including data races and atomicity violations. The above possible bug is
+reported when our tool analyzes the source code of Linux 6.2.
+
+To resolve this issue, it is suggested to introduce local variables
+'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
+values remain stable throughout the check. Adding locks in
+raid5_cache_count() fails to resolve atomicity violations, as
+raid5_set_cache_size() may hold intermediate values of
+conf->min_nr_stripes while unlocked. With this patch applied, our tool no
+longer reports the bug, with the kernel configuration allyesconfig for
+x86_64. Due to the lack of associated hardware, we cannot test the patch
+in runtime testing, and just verify it according to the code logic.
+
+Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240112071017.16313-1-2045gemini@gmail.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/sorttable.h |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/md/raid5.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/scripts/sorttable.h
-+++ b/scripts/sorttable.h
-@@ -103,7 +103,7 @@ static inline unsigned long orc_ip(const
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -2349,7 +2349,7 @@ static int grow_one_stripe(struct r5conf
+ 	atomic_inc(&conf->active_stripes);
  
- static int orc_sort_cmp(const void *_a, const void *_b)
- {
--	struct orc_entry *orc_a;
-+	struct orc_entry *orc_a, *orc_b;
- 	const int *a = g_orc_ip_table + *(int *)_a;
- 	const int *b = g_orc_ip_table + *(int *)_b;
- 	unsigned long a_val = orc_ip(a);
-@@ -120,8 +120,12 @@ static int orc_sort_cmp(const void *_a,
- 	 * These terminator entries exist to handle any gaps created by
- 	 * whitelisted .o files which didn't get objtool generation.
- 	 */
--	orc_a = g_orc_table + (a - g_orc_ip_table);
--	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
-+ 	orc_a = g_orc_table + (a - g_orc_ip_table);
-+	orc_b = g_orc_table + (b - g_orc_ip_table);
-+	if (orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end &&
-+	    orc_b->sp_reg == ORC_REG_UNDEFINED && !orc_b->end)
-+		return 0;
-+ 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+ 	raid5_release_stripe(sh);
+-	conf->max_nr_stripes++;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
+ 	return 1;
  }
  
- static void *sort_orctable(void *arg)
+@@ -2646,7 +2646,7 @@ static int drop_one_stripe(struct r5conf
+ 	shrink_buffers(sh);
+ 	free_stripe(conf->slab_cache, sh);
+ 	atomic_dec(&conf->active_stripes);
+-	conf->max_nr_stripes--;
++	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
+ 	return 1;
+ }
+ 
+@@ -6575,7 +6575,7 @@ raid5_set_cache_size(struct mddev *mddev
+ 	if (size <= 16 || size > 32768)
+ 		return -EINVAL;
+ 
+-	conf->min_nr_stripes = size;
++	WRITE_ONCE(conf->min_nr_stripes, size);
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size < conf->max_nr_stripes &&
+ 	       drop_one_stripe(conf))
+@@ -6587,7 +6587,7 @@ raid5_set_cache_size(struct mddev *mddev
+ 	mutex_lock(&conf->cache_size_mutex);
+ 	while (size > conf->max_nr_stripes)
+ 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
+-			conf->min_nr_stripes = conf->max_nr_stripes;
++			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
+ 			result = -ENOMEM;
+ 			break;
+ 		}
+@@ -7151,11 +7151,13 @@ static unsigned long raid5_cache_count(s
+ 				       struct shrink_control *sc)
+ {
+ 	struct r5conf *conf = container_of(shrink, struct r5conf, shrinker);
++	int max_stripes = READ_ONCE(conf->max_nr_stripes);
++	int min_stripes = READ_ONCE(conf->min_nr_stripes);
+ 
+-	if (conf->max_nr_stripes < conf->min_nr_stripes)
++	if (max_stripes < min_stripes)
+ 		/* unlikely, but not impossible */
+ 		return 0;
+-	return conf->max_nr_stripes - conf->min_nr_stripes;
++	return max_stripes - min_stripes;
+ }
+ 
+ static struct r5conf *setup_conf(struct mddev *mddev)
 
 
 
