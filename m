@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13138A22F66
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A6CA22FDB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16C33A03CF
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53351168E52
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5378D1E98E8;
-	Thu, 30 Jan 2025 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477AF1E98F1;
+	Thu, 30 Jan 2025 14:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aScg6JCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpNlrHpo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1117B1E493C;
-	Thu, 30 Jan 2025 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0446B1E6DCF;
+	Thu, 30 Jan 2025 14:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246882; cv=none; b=M5M04otyxwZGTWCCGZEHseM+QzrKTASqsCgKPjVoy9l+GjKbJkyb5fCHLgOQislwsqVg2X/rDM3U0T1PMW4+BthJxaiUOCW6xXpbd486mD3M1J1h8N/aFSQbNgXUhVAqCr/I/IfxM8g9JU1MF/dVXWfmYopqxTlRjJy89Iwxh9w=
+	t=1738247166; cv=none; b=MUdx16NvQLiZ6JAhA79fv0iwyf3tfZt+Gj5fGUpB6MSQbydM4V2fDO86iixcbLPFw1z8uHoZRBosIXeuXnhI5TrszXm6OH4cwi/Uealvg0Y3Xqnjh9r9DcUKAN3MpkMrZLkHbKcfitIeO67bEDuKmAGcdpxqq1eK9nx+ulCwwMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246882; c=relaxed/simple;
-	bh=eL0GORssWdJaRYosDqumLH7z1CK/GAaFvn8U1zT+iOU=;
+	s=arc-20240116; t=1738247166; c=relaxed/simple;
+	bh=ORTrMVxZCiCoNax+e/6yAsyF5HwUx/i+AE7pbq8wfBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZHTiAtOClI802J22hdNsLmpeIc7nGnU49YhImbB8ysksVoe/tLp+gsEFI1QbHmZQLAnPM0vXmuRU5T0I4G/FG9EvTk1T8WqQDOmOYb/ky8wI9Iq/cBBhNBv9ZPfKjZ4BoS05AdYjE8/GPwV77lPxAsUH6mOSD3JN2Wt7uwSbiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aScg6JCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA28C4CED2;
-	Thu, 30 Jan 2025 14:21:21 +0000 (UTC)
+	 MIME-Version; b=H1tO7mQR3o0yfHjpjSFNEhkA16lj+kfweqZqNVlSVizHr+WGw0Es52xuofa60UjBkM/caqUQ/h1jkEGhZ992YmBps4qp3ALRR26C3Be6OPvGUmEeyWg/XSsboHwcPkpgHVfwBOBRp/HI+xQmLpai0zXVMdMvCIdKuuyymY4lAdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpNlrHpo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C01FC4CED2;
+	Thu, 30 Jan 2025 14:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246881;
-	bh=eL0GORssWdJaRYosDqumLH7z1CK/GAaFvn8U1zT+iOU=;
+	s=korg; t=1738247165;
+	bh=ORTrMVxZCiCoNax+e/6yAsyF5HwUx/i+AE7pbq8wfBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aScg6JCGXoaCBhh8/+TxnHWo5gCcNETCzWbbxit35c9NP75rRFGX9g6w/blfZRjDA
-	 UY/GbV8bbupuWvz1vQZUMQrvoQQxXqt7NDqFMKpbw6tW35C5LyoFOAUhqm5ARMfazx
-	 TnbmO75zN5avNrWxNfmFlS4kh+t+7dUKan3IUxzU=
+	b=cpNlrHpoibGMxtUJRpBNSR+XIqpkKVmEd7Q9rfe8n2AtWJTesAhCfdPEWeH+v+Fuf
+	 hQurjE4gzHFx10kocTw06P7KNvVh0eLUDMnI6xVvr/h0FVl+8uqV5ZzK073vgwFK2E
+	 RWuQ1UyVcP2i5HhljcZnTpVp+ZaZZ8dnuFrq1RWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 75/91] ASoC: wm8994: Add depends on MFD core
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.10 105/133] RDMA/hns: Fix deadlock on SRQ async events.
 Date: Thu, 30 Jan 2025 15:01:34 +0100
-Message-ID: <20250130140136.690128306@linuxfoundation.org>
+Message-ID: <20250130140146.767195010@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 5ed01155cea69801f1f0c908954a56a5a3474bed ]
+commit b46494b6f9c19f141114a57729e198698f40af37 upstream.
 
-The ASoC driver should not be used without the MFD component. This was
-causing randconfig issues with regmap IRQ which is selected by the MFD
-part of the wm8994 driver.
+xa_lock for SRQ table may be required in AEQ. Use xa_store_irq()/
+xa_erase_irq() to avoid deadlock.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501061337.R0DlBUoD-lkp@intel.com/
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250106154639.3999553-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 81fce6291d99 ("RDMA/hns: Add SRQ asynchronous event support")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20240412091616.370789-5-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/hns/hns_roce_main.c |    1 +
+ drivers/infiniband/hw/hns/hns_roce_srq.c  |    6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
-index dfc536cd9d2fc..7b03ff158d782 100644
---- a/sound/soc/codecs/Kconfig
-+++ b/sound/soc/codecs/Kconfig
-@@ -1400,6 +1400,7 @@ config SND_SOC_WM8993
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,6 +37,7 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
++#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include <rdma/hns-abi.h>
+--- a/drivers/infiniband/hw/hns/hns_roce_srq.c
++++ b/drivers/infiniband/hw/hns/hns_roce_srq.c
+@@ -120,7 +120,7 @@ static int alloc_srqc(struct hns_roce_de
+ 		goto err_out;
+ 	}
  
- config SND_SOC_WM8994
- 	tristate
-+	depends on MFD_WM8994
+-	ret = xa_err(xa_store(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
++	ret = xa_err(xa_store_irq(&srq_table->xa, srq->srqn, srq, GFP_KERNEL));
+ 	if (ret) {
+ 		ibdev_err(ibdev, "failed to store SRQC, ret = %d.\n", ret);
+ 		goto err_put;
+@@ -149,7 +149,7 @@ static int alloc_srqc(struct hns_roce_de
+ 	return ret;
  
- config SND_SOC_WM8995
- 	tristate
--- 
-2.39.5
-
+ err_xa:
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ 
+ err_put:
+ 	hns_roce_table_put(hr_dev, &srq_table->table, srq->srqn);
+@@ -169,7 +169,7 @@ static void free_srqc(struct hns_roce_de
+ 		dev_err(hr_dev->dev, "DESTROY_SRQ failed (%d) for SRQN %06lx\n",
+ 			ret, srq->srqn);
+ 
+-	xa_erase(&srq_table->xa, srq->srqn);
++	xa_erase_irq(&srq_table->xa, srq->srqn);
+ 
+ 	if (atomic_dec_and_test(&srq->refcount))
+ 		complete(&srq->free);
 
 
 
