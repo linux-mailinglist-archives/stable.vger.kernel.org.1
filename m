@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-111561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CF2A22FBF
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D6DA22FD3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1654E1882D0E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D58297A421A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48531E7C25;
-	Thu, 30 Jan 2025 14:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642CF1E98E8;
+	Thu, 30 Jan 2025 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaP0zcaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LJctpbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918551E522;
-	Thu, 30 Jan 2025 14:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BE91DDC22;
+	Thu, 30 Jan 2025 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247095; cv=none; b=Bj5YjWsZBPr9FRh98EfbRfNM+GaMqdgHI+M/bilaBJA+kEZTkTzdL3R0NI9iVoogQfJrJASqbX1g3/+ShLCA93Hq2EW0dQO4L2BcqjlPOrs2+TNJzms05SeyUHeXyEVsp147BEAPxOzNb8HZ4/EwbNFC216U7YhuiR4qmEYmIiw=
+	t=1738247101; cv=none; b=gjyWJ/OU4aidjyfqXqU5Yarx5LSE12wmd9iTxNOi42UGI+vD3k5pP1y9GQljUXTjB+qBOm1BPugZMN5RZdiEwihHG97t8pqAsPW4CvSoiA9Wk5vlF9hljdlF801X0KprKgTZeEgjPy7wYVD8UUf5H8Rvzd6GdxuqtBSX62nhKjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247095; c=relaxed/simple;
-	bh=S50AAcEASruFDhmO/hFHGxPf7ocG+kjCf/Qvsm3wi1s=;
+	s=arc-20240116; t=1738247101; c=relaxed/simple;
+	bh=nPfpUEhEMbgAeaadhogWbOXiIDD52axYu1AXQpHIEOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6plLRyfU1ci5E5E5YM6qAXNiJGHIK3wmP0GyWiI2YKuqNl9ITJibPFdX72R8v8Ax7ZTxcpTrYFSqZp/ULCdPqLtaW81Ooc+oMr5COro47O1wtp0thTumqsdbG6GExAzcgOeHPoT5i7KMQODUeinGb1JTKgrswvVRchmJx3zxr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaP0zcaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF4EC4CED2;
-	Thu, 30 Jan 2025 14:24:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=peR49Qr5o3RIN+rFdUx5PEnrYdsTWwU1B28hT+tsMk/08PQRQz4PMC+SC6xeSoEUY1jxXhq3bmupphHKt7kbWANvknGGxuW4KMdX9oYafcegaggALQuYLyzNHEL7eXEX7mY9/6uS7ypvjnAUCWl+vQlLqRsGKZ1ucXbRwhdctGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LJctpbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70BFC4CED2;
+	Thu, 30 Jan 2025 14:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247095;
-	bh=S50AAcEASruFDhmO/hFHGxPf7ocG+kjCf/Qvsm3wi1s=;
+	s=korg; t=1738247101;
+	bh=nPfpUEhEMbgAeaadhogWbOXiIDD52axYu1AXQpHIEOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaP0zcaCVqzLIGkEjg8oinKsFV8ovgxvUH7gJDKx1jYfLL49niE4IWjuyJxkOrnxh
-	 1J/SPMi6VA0bXf0bfDAz7d7Dvkt1G0WgE1BH3iFHlZa0uyxuI/MrSWwV1RF3qTTgfe
-	 MNmY/6mY0SqS3Bc3nRS6Y5WuMNwti1J8G4ZQm1+c=
+	b=2LJctpbpHhebXtx6eaDdHIC4v/Pvf9u8v+dWwsnpUdCxFDHcp8lPbTjx7yf4RBfW3
+	 JgwRe7JLjJGdDed+CSy42Z0wGxQTxXnvycHgA02VBdZC1UPBFgnZFoLxsZvL+Rwint
+	 4cn4BWfAuvaR86FnNER8O32xgwQajCC7/wlfOpWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/133] net/mlx5: Fix RDMA TX steering prio
-Date: Thu, 30 Jan 2025 15:01:10 +0100
-Message-ID: <20250130140145.785258500@linuxfoundation.org>
+Subject: [PATCH 5.10 082/133] drm/v3d: Ensure job pointer is set to NULL after job completion
+Date: Thu, 30 Jan 2025 15:01:11 +0100
+Message-ID: <20250130140145.823285670@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -63,43 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit c08d3e62b2e73e14da318a1d20b52d0486a28ee0 ]
+[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
 
-User added steering rules at RDMA_TX were being added to the first prio,
-which is the counters prio.
-Fix that so that they are correctly added to the BYPASS_PRIO instead.
+After a job completes, the corresponding pointer in the device must
+be set to NULL. Failing to do so triggers a warning when unloading
+the driver, as it appears the job is still active. To prevent this,
+assign the job pointer to NULL after completing the job, indicating
+the job has finished.
 
-Fixes: 24670b1a3166 ("net/mlx5: Add support for RDMA TX steering")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 3c5e9bf1cde33..c1a33f05702ec 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -2358,6 +2358,7 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_TX:
- 		root_ns = steering->rdma_tx_root_ns;
-+		prio = RDMA_TX_BYPASS_PRIO;
- 		break;
- 	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
- 		root_ns = steering->rdma_rx_root_ns;
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index c88686489b888..22aa02d75c5cc 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->bin_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->render_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+ 
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->csd_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
+@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+ 
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+ 		dma_fence_signal(&fence->base);
++		v3d->tfu_job = NULL;
+ 		status = IRQ_HANDLED;
+ 	}
+ 
 -- 
 2.39.5
 
