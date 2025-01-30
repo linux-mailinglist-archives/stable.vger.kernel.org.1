@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-111413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15216A22F07
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5758A22F99
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D6C63A3DDC
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E31F161E43
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D61E7C08;
-	Thu, 30 Jan 2025 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BCD1E8855;
+	Thu, 30 Jan 2025 14:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKEc23SH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4GfOPcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C221DDE9;
-	Thu, 30 Jan 2025 14:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F42291E522;
+	Thu, 30 Jan 2025 14:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246665; cv=none; b=ZPwOgccJs/vjEa+k+Ip+9jgTTNuzQy5G2QtaRKIQ8L/T5+lOjx72BWjKW+GxQLvuNd8U4ytYxWopz9+Uq9MkreSBNugvXvwcMG6051uomZRPFMXqWGcmYQSk8rFBRWnNz30rn5tl0dPpkjYCdgsr9MsbrFtmBxDMj1ttVJ/5Hzo=
+	t=1738247026; cv=none; b=iwzRGVFasUH/S2tp50Kbtq7spqVt1ZddkE3Mw/LSrs/G7TP/NMATKXiqFkBl/VyRhuXpHijv3imHuZ4iSB1O0SqSSPyX7FeXHe7IM4FiGLoruSVN20n9ftJ2m6TvGFCk2Y0G+r6kju+Cokw7vi4NLIwnLYITKde24i/HCjz1E6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246665; c=relaxed/simple;
-	bh=nNOCzqR/mfSNdNSv07j/avyHBNwsAb6WrIs0ti+Rh4g=;
+	s=arc-20240116; t=1738247026; c=relaxed/simple;
+	bh=0lJNERQVA8Ne8I31etI0XB4d9BVK2yMFBzVtMe6+hX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKWtdQyHG7InliSTiq9tIfPR/kC3w5Q011e4f5iBwsN2uci/DJ4Hqo0DLZZuvvP+w39bfUAtcGfGEBNBmlGFajUxA8r7GJIoohSstsSrjSLBYFjTuI3vKjtLnxX/K51hUbKQCkhKw6d6NRn7vScqbmV+CWvDVbqfRHZboj8hYmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKEc23SH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA92BC4CED2;
-	Thu, 30 Jan 2025 14:17:44 +0000 (UTC)
+	 MIME-Version; b=dNoC9Sxzav+GxlCryVYwf+aJg0+VYRJTOpZWB0XMgocMz269H0lY7ItueQbC9CHnwg+8ROXp757OcPuM0fUF5KAzUaOAhXMUuEQdNIP/GArhzHvCridE5SVIbs3qk+qM3RUiDO4xSNo73Tn5PARyp7zGwHk/q7gASG/aesftSNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4GfOPcD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBA3C4CED2;
+	Thu, 30 Jan 2025 14:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246665;
-	bh=nNOCzqR/mfSNdNSv07j/avyHBNwsAb6WrIs0ti+Rh4g=;
+	s=korg; t=1738247025;
+	bh=0lJNERQVA8Ne8I31etI0XB4d9BVK2yMFBzVtMe6+hX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKEc23SHupOA+RePO4c6llXpbWkLP0M0w/VrwJcQZJwI8+KGSCzuG3BTljSj3/jbD
-	 g6FoO1JqozA83E38/TbSCZ5+g2BMHgWmXP5GYmJphibXDyFNvyFeqOA3iH4BVFbR2+
-	 sOoTjslsKUCJfRSRXne93GAhkZ/ldVTsTpjaNSGs=
+	b=J4GfOPcDdQzlKMnWu0R4d398BcPT5/viv2vy1fOp/4CQbv0eWIhSXsJ9gP7C08hxc
+	 qCrgMdCAp/6yxtEmT5EJgeTmKZzp1W/ipRpRw+gyjAwR5P/NvBC/JxqYO6PDA52m0p
+	 R7ZhQp+xjEJyZuOSzu30AIDm9nvxh9c/1jSZq1Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	stable <stable@kernel.org>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 5.4 26/91] USB: core: Disable LPM only for non-suspended ports
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Petr Vorel <pvorel@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 056/133] block: remove the update_bdev parameter to set_capacity_revalidate_and_notify
 Date: Thu, 30 Jan 2025 15:00:45 +0100
-Message-ID: <20250130140134.718094999@linuxfoundation.org>
+Message-ID: <20250130140144.776738093@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kaihengf@nvidia.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 59bfeaf5454b7e764288d84802577f4a99bf0819 upstream.
+[ Upstream commit 449f4ec9892ebc2f37a7eae6d97db2cf7c65e09a ]
 
-There's USB error when tegra board is shutting down:
-[  180.919315] usb 2-3: Failed to set U1 timeout to 0x0,error code -113
-[  180.919995] usb 2-3: Failed to set U1 timeout to 0xa,error code -113
-[  180.920512] usb 2-3: Failed to set U2 timeout to 0x4,error code -113
-[  186.157172] tegra-xusb 3610000.usb: xHCI host controller not responding, assume dead
-[  186.157858] tegra-xusb 3610000.usb: HC died; cleaning up
-[  186.317280] tegra-xusb 3610000.usb: Timeout while waiting for evaluate context command
+The update_bdev argument is always set to true, so remove it.  Also
+rename the function to the slighly less verbose set_capacity_and_notify,
+as propagating the disk size to the block device isn't really
+revalidation.
 
-The issue is caused by disabling LPM on already suspended ports.
-
-For USB2 LPM, the LPM is already disabled during port suspend. For USB3
-LPM, port won't transit to U1/U2 when it's already suspended in U3,
-hence disabling LPM is only needed for ports that are not suspended.
-
-Cc: Wayne Chang <waynec@nvidia.com>
-Cc: stable <stable@kernel.org>
-Fixes: d920a2ed8620 ("usb: Disable USB3 LPM at shutdown")
-Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20241206074817.89189-1-kaihengf@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block/genhd.c                | 13 +++++--------
+ drivers/block/loop.c         |  2 +-
+ drivers/block/virtio_blk.c   |  2 +-
+ drivers/block/xen-blkfront.c |  2 +-
+ drivers/nvme/host/core.c     |  2 +-
+ drivers/scsi/sd.c            |  5 ++---
+ include/linux/genhd.h        |  3 +--
+ 7 files changed, 12 insertions(+), 17 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -294,10 +294,11 @@ static int usb_port_runtime_suspend(stru
- static void usb_port_shutdown(struct device *dev)
- {
- 	struct usb_port *port_dev = to_usb_port(dev);
-+	struct usb_device *udev = port_dev->child;
+diff --git a/block/genhd.c b/block/genhd.c
+index 796baf761202..768a49460bf1 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -46,17 +46,15 @@ static void disk_del_events(struct gendisk *disk);
+ static void disk_release_events(struct gendisk *disk);
  
--	if (port_dev->child) {
--		usb_disable_usb2_hardware_lpm(port_dev->child);
--		usb_unlocked_disable_lpm(port_dev->child);
-+	if (udev && !udev->port_is_suspended) {
-+		usb_disable_usb2_hardware_lpm(udev);
-+		usb_unlocked_disable_lpm(udev);
- 	}
+ /*
+- * Set disk capacity and notify if the size is not currently
+- * zero and will not be set to zero
++ * Set disk capacity and notify if the size is not currently zero and will not
++ * be set to zero.  Returns true if a uevent was sent, otherwise false.
+  */
+-bool set_capacity_revalidate_and_notify(struct gendisk *disk, sector_t size,
+-					bool update_bdev)
++bool set_capacity_and_notify(struct gendisk *disk, sector_t size)
+ {
+ 	sector_t capacity = get_capacity(disk);
+ 
+ 	set_capacity(disk, size);
+-	if (update_bdev)
+-		revalidate_disk_size(disk, true);
++	revalidate_disk_size(disk, true);
+ 
+ 	if (capacity != size && capacity != 0 && size != 0) {
+ 		char *envp[] = { "RESIZE=1", NULL };
+@@ -67,8 +65,7 @@ bool set_capacity_revalidate_and_notify(struct gendisk *disk, sector_t size,
+ 
+ 	return false;
+ }
+-
+-EXPORT_SYMBOL_GPL(set_capacity_revalidate_and_notify);
++EXPORT_SYMBOL_GPL(set_capacity_and_notify);
+ 
+ /*
+  * Format the device name of the indicated disk into the supplied buffer and
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 198f7ce3234b..b30f4d525bc8 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -238,7 +238,7 @@ static void __loop_update_dio(struct loop_device *lo, bool dio)
+  */
+ static void loop_set_size(struct loop_device *lo, loff_t size)
+ {
+-	if (!set_capacity_revalidate_and_notify(lo->lo_disk, size, true))
++	if (!set_capacity_and_notify(lo->lo_disk, size))
+ 		kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
  }
  
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 28ea9b511fd0..c87c6a4eb3b3 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -470,7 +470,7 @@ static void virtblk_update_capacity(struct virtio_blk *vblk, bool resize)
+ 		   cap_str_10,
+ 		   cap_str_2);
+ 
+-	set_capacity_revalidate_and_notify(vblk->disk, capacity, true);
++	set_capacity_and_notify(vblk->disk, capacity);
+ }
+ 
+ static void virtblk_config_changed_work(struct work_struct *work)
+diff --git a/drivers/block/xen-blkfront.c b/drivers/block/xen-blkfront.c
+index d68a8ca2161f..19ddbf977d28 100644
+--- a/drivers/block/xen-blkfront.c
++++ b/drivers/block/xen-blkfront.c
+@@ -2443,7 +2443,7 @@ static void blkfront_connect(struct blkfront_info *info)
+ 			return;
+ 		printk(KERN_INFO "Setting capacity to %Lu\n",
+ 		       sectors);
+-		set_capacity_revalidate_and_notify(info->gd, sectors, true);
++		set_capacity_and_notify(info->gd, sectors);
+ 
+ 		return;
+ 	case BLKIF_STATE_SUSPENDED:
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index c8e64a1e2fc0..c739ac1761ba 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2132,7 +2132,7 @@ static void nvme_update_disk_info(struct gendisk *disk,
+ 			capacity = 0;
+ 	}
+ 
+-	set_capacity_revalidate_and_notify(disk, capacity, true);
++	set_capacity_and_notify(disk, capacity);
+ 
+ 	nvme_config_discard(disk, ns);
+ 	nvme_config_write_zeroes(disk->queue, ns->ctrl);
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 355d38cab862..da6df9809b0c 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3292,8 +3292,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
+ 
+ 	sdkp->first_scan = 0;
+ 
+-	set_capacity_revalidate_and_notify(disk,
+-		logical_to_sectors(sdp, sdkp->capacity), true);
++	set_capacity_and_notify(disk, logical_to_sectors(sdp, sdkp->capacity));
+ 	sd_config_write_same(sdkp);
+ 	kfree(buffer);
+ 
+@@ -3303,7 +3302,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
+ 	 * capacity to 0.
+ 	 */
+ 	if (sd_zbc_revalidate_zones(sdkp))
+-		set_capacity_revalidate_and_notify(disk, 0, true);
++		set_capacity_and_notify(disk, 0);
+ 
+  out:
+ 	return 0;
+diff --git a/include/linux/genhd.h b/include/linux/genhd.h
+index 03da3f603d30..4b22bfd9336e 100644
+--- a/include/linux/genhd.h
++++ b/include/linux/genhd.h
+@@ -315,8 +315,7 @@ static inline int get_disk_ro(struct gendisk *disk)
+ extern void disk_block_events(struct gendisk *disk);
+ extern void disk_unblock_events(struct gendisk *disk);
+ extern void disk_flush_events(struct gendisk *disk, unsigned int mask);
+-bool set_capacity_revalidate_and_notify(struct gendisk *disk, sector_t size,
+-		bool update_bdev);
++bool set_capacity_and_notify(struct gendisk *disk, sector_t size);
+ 
+ /* drivers/char/random.c */
+ extern void add_disk_randomness(struct gendisk *disk) __latent_entropy;
+-- 
+2.39.5
+
 
 
 
