@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-111583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38B5A22FE7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEF6A22FE4
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 907027A1BBA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 290E03A4374
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792A1E8835;
-	Thu, 30 Jan 2025 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE411E8855;
+	Thu, 30 Jan 2025 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BC80XJ1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf2OoBVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88731E522;
-	Thu, 30 Jan 2025 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2900C1E522;
+	Thu, 30 Jan 2025 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247159; cv=none; b=JO/59GrnjZHJFaHirwHTeMCCbwiXDkLodk8RZYqrejgEOmtspY7IoiXpiH0scxD2RSbKlf2D2L34IPovFZdlbjE+tQWKrPI+5ucbvYLL/OqOEtOXn3tPfBfxLpq9P9SS+9FOt16QF3Ug4B73sJqDhrvAXzdHibpsnTjakA3b6Js=
+	t=1738247192; cv=none; b=iED/d6iET4j64wkPslvzqatUW9x5GZaSfZs4MGseqWn1wfYkUwhHCvGlc1qIfbXFwPrCntI/kDZhedci6XEGpdE3kMvY79f5o2MYlPhB/UaGdtOgP2a52oqpjs80USaBYe1zXYYjxssmaH2tUwP+kcHqnq4HM73GfmuepMAqKb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247159; c=relaxed/simple;
-	bh=O4OAZmX0+AE/yf3+6Z8MCqWrKvPk+8IGB8FuOxR05JU=;
+	s=arc-20240116; t=1738247192; c=relaxed/simple;
+	bh=P9JOufGnYVwfwba3QyNh765ejfMewHcW2532r1eYiBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9OSnl1bCyuedBBNNBo8iy8jA8s41j0E4YiQ9gfAx66rDacFV55lh7S5HmJYbhdoPcfgKtmhs0u1YYc+vrweQffUGMMdN28stdP/i/1DbU/aR/5xe/WZSFOQa0XEq3+2nRkJt85Kex3SN5MMCYKQiyh3CylMvBP1JT2plW3AYRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BC80XJ1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5253CC4CED2;
-	Thu, 30 Jan 2025 14:25:59 +0000 (UTC)
+	 MIME-Version; b=eogrC7VEJivyIKTrAMLKV4EAw8bufC0tJ4zuIe7JdtmQj0nDl0vl35Y8AD1edcuK0wv6hxQFkBOsYX3P1IN1zazfWcme4r49iURHWllwZgtJJ/wt7MyDgh15FIguI8gBeQGoj11tGsemtAnS3eGf+fMp29k8Ifc2deFoixU2Ax4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf2OoBVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1CCC4CED2;
+	Thu, 30 Jan 2025 14:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247159;
-	bh=O4OAZmX0+AE/yf3+6Z8MCqWrKvPk+8IGB8FuOxR05JU=;
+	s=korg; t=1738247192;
+	bh=P9JOufGnYVwfwba3QyNh765ejfMewHcW2532r1eYiBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BC80XJ1JIiacaRnyJTIg0EejD1aXGzWqqG1jFpA02G/z0iFymquGNrLGziXBAlClR
-	 1spvItWAp6H1+dIb58RpXmZKJ2hHhOTIljyvW+lxyxEZgv3W+kwwnCERGdNwuTpCNi
-	 zTK/PwKnJcKWjsZUTQL30RzZNYYaoB4Lg4940ffc=
+	b=nf2OoBVlu6t5qKqOclsl4TgRXca18lzNNn8hRVYM2qZ0FNzU6PXffbJbLThX84goV
+	 plsBVA/L0n5FcJi2g5nkKLq9F6IHsbtJIsdrm6ckAcCUbTxqlK/6dfkb2LR3cNrKj2
+	 Vu2PZOLtUWscgKjpqoIOKhB3rqaMctXzCStJh3Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 095/133] fs/proc: fix softlockup in __read_vmcore (part 2)
-Date: Thu, 30 Jan 2025 15:01:24 +0100
-Message-ID: <20250130140146.354651512@linuxfoundation.org>
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bruno VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.10 096/133] gpiolib: cdev: Fix use after free in lineinfo_changed_notify
+Date: Thu, 30 Jan 2025 15:01:25 +0100
+Message-ID: <20250130140146.394623527@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -69,50 +67,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
+commit 02f6b0e1ec7e0e7d059dddc893645816552039da upstream.
 
-Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
-number of softlockups in __read_vmcore at kdump time have gone down, but
-they still happen sometimes.
+The use-after-free issue occurs as follows: when the GPIO chip device file
+is being closed by invoking gpio_chrdev_release(), watched_lines is freed
+by bitmap_free(), but the unregistration of lineinfo_changed_nb notifier
+chain failed due to waiting write rwsem. Additionally, one of the GPIO
+chip's lines is also in the release process and holds the notifier chain's
+read rwsem. Consequently, a race condition leads to the use-after-free of
+watched_lines.
 
-In a memory constrained environment like the kdump image, a softlockup is
-not just a harmless message, but it can interfere with things like RCU
-freeing memory, causing the crashdump to get stuck.
+Here is the typical stack when issue happened:
 
-The second loop in __read_vmcore has a lot more opportunities for natural
-sleep points, like scheduling out while waiting for a data write to
-happen, but apparently that is not always enough.
+[free]
+gpio_chrdev_release()
+  --> bitmap_free(cdev->watched_lines)                  <-- freed
+  --> blocking_notifier_chain_unregister()
+    --> down_write(&nh->rwsem)                          <-- waiting rwsem
+          --> __down_write_common()
+            --> rwsem_down_write_slowpath()
+                  --> schedule_preempt_disabled()
+                    --> schedule()
 
-Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
-get rid of the softlockups.
+[use]
+st54spi_gpio_dev_release()
+  --> gpio_free()
+    --> gpiod_free()
+      --> gpiod_free_commit()
+        --> gpiod_line_state_notify()
+          --> blocking_notifier_call_chain()
+            --> down_read(&nh->rwsem);                  <-- held rwsem
+            --> notifier_call_chain()
+              --> lineinfo_changed_notify()
+                --> test_bit(xxxx, cdev->watched_lines) <-- use after free
 
-Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
-Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The side effect of the use-after-free issue is that a GPIO line event is
+being generated for userspace where it shouldn't. However, since the chrdev
+is being closed, userspace won't have the chance to read that event anyway.
+
+To fix the issue, call the bitmap_free() function after the unregistration
+of lineinfo_changed_nb notifier chain.
+
+Fixes: 51c1064e82e7 ("gpiolib: add new ioctl() for monitoring changes in line info")
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240505141156.2944912-1-quic_zhonhan@quicinc.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpiolib-cdev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -396,6 +396,8 @@ static ssize_t __read_vmcore(char *buffe
- 			if (buflen == 0)
- 				return acc;
- 		}
-+
-+		cond_resched();
- 	}
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2352,9 +2352,9 @@ static int gpio_chrdev_release(struct in
+ 	struct gpio_chardev_data *cdev = file->private_data;
+ 	struct gpio_device *gdev = cdev->gdev;
  
- 	return acc;
+-	bitmap_free(cdev->watched_lines);
+ 	blocking_notifier_chain_unregister(&gdev->notifier,
+ 					   &cdev->lineinfo_changed_nb);
++	bitmap_free(cdev->watched_lines);
+ 	put_device(&gdev->dev);
+ 	kfree(cdev);
+ 
 
 
 
