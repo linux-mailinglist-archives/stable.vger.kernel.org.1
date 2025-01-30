@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7819AA22E55
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFFA4A22E77
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45193A479E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 733BB7A2BC7
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E111E3775;
-	Thu, 30 Jan 2025 13:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73161DFDA5;
+	Thu, 30 Jan 2025 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpJYBkiH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZlX8Tbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27E31BEF85;
-	Thu, 30 Jan 2025 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C3C13D;
+	Thu, 30 Jan 2025 14:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245582; cv=none; b=W4YogkABSqv/AmYClWnghNqgOu62YFwrE2ofpoq/vWDmrPHkF9XNwJxx/lLHgZkbG7/xywbOpXe47ikVPsVgG6OUvv6wc5RLVlkAjw8GyrrY7f+M3V5/Fve2OQtSFAgUn+GFha63Hur7joYhqaSfrip0J/Zshc+BeNjGl4cTkcg=
+	t=1738245676; cv=none; b=haReO+I2hK3J7ZclEmzOmEEgDC92SNPBpFpaxpUDLh8PMF8erSK7gHit2/AcTU6MBa/ERQHaOgL//l5KH3HjZqKeKWQIKz08v2kvZasv6CltDVPYTqUr7cpwvi8FeuXot6HVMq3QlaFi5fgzQarpfwJFnyuIm7sqkNDvtQeKnIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245582; c=relaxed/simple;
-	bh=fzE7lCc4Df/nZWsxpA+JJrwRe7xMSADFt1Bx4EHRsXU=;
+	s=arc-20240116; t=1738245676; c=relaxed/simple;
+	bh=NaOuzccEKcTEgf4AvnuDvVb79IkpeqMQz3F87ZQn+bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkHVweB9qI8LXXs/7/HEDM4bG6RrZ2fA+LQ9qJR6sNNL+uS9SF9SfKA3ka7Ov3dK0/AfOcPO5mEK96SfBXHoUZ1fAlglZ0qqrbGSJR0gk/YGiumA5qiJVqf2xremE+7EEZuGb802BQgl6JuatyzNWc5aCrF7EHdFs0sUtKbFxyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpJYBkiH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBDDC4CED2;
-	Thu, 30 Jan 2025 13:59:42 +0000 (UTC)
+	 MIME-Version; b=dN9Y2dUyoKZSlPMc7N+5kc1zbUJdNnVxZjlxukYSMcFP9YwD1L6q8Tns56nOxRU7q+/HyBInKm6Ht3KqdLiizSL36ztq6zlZUdKtqjaTeedxiuqtoLGmN30CCYX4RYRIKZQbfz/++g2Q4SG6rnbd3T7fl6TsvbgLbaBOP89JAKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZlX8Tbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A106C4CED2;
+	Thu, 30 Jan 2025 14:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245582;
-	bh=fzE7lCc4Df/nZWsxpA+JJrwRe7xMSADFt1Bx4EHRsXU=;
+	s=korg; t=1738245676;
+	bh=NaOuzccEKcTEgf4AvnuDvVb79IkpeqMQz3F87ZQn+bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gpJYBkiHv58bOdvJPYaKu4QmmhUIDk2jXJNLT0ZG5MR26K9iZoucByzeu2zP7tj88
-	 ZMd3El0vaWg4wf9hyNO1Gly5INo4cnFqIcfMWvm1mKaOYCVQjS95z8F2PGAwRs9LwI
-	 zPBpsXMTgoaiZcGmbpoREARKx+xNfQCS3s6Q28ug=
+	b=nZlX8TbqvScmuNmjog+QQVmI7+98Y2CgwC27C9lJbro5FukWGqgk19qMkTBv0cSwm
+	 hkDgtkGmLUtNeVKz+AY4DIixdAxjdlDsWWdoq7yEe1tcnNOfyW6UHhQ/eJbUJRrw6p
+	 RcxZINdnos3uZhOljHViE9e7sAhidj69nr+ioZKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.13 16/25] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Date: Thu, 30 Jan 2025 14:59:02 +0100
-Message-ID: <20250130133457.593483572@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 03/40] ASoC: samsung: Add missing selects for MFD_WM8994
+Date: Thu, 30 Jan 2025 14:59:03 +0100
+Message-ID: <20250130133459.839016980@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
-References: <20250130133456.914329400@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 31be3175bd7be89e39c82b3973c9d4ff55a17583 upstream.
+[ Upstream commit fd55c6065bec5268740e944a1800e6fad00974d9 ]
 
-The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
-except for the following 10, add these to the untested section so they
-can be used with the rtl8xxxu as the rtl8192cu are well supported.
+Anything selecting SND_SOC_WM8994 should also select MFD_WM8994, as
+SND_SOC_WM8994 does not automatically do so. Add the missing selects.
 
-This fixes these wifi modules not working on distributions which have
-disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
-like Fedora.
-
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
-Cc: stable@vger.kernel.org
-Cc: Peter Robinson <pbrobinson@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107140833.274986-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071530.UwIXs7OL-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250107104134.12147-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ sound/soc/samsung/Kconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -8147,6 +8147,8 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x817e, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8186, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818a, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x317f, 0xff, 0xff, 0xff),
-@@ -8157,12 +8159,18 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1102, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x11f2, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9043, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ba, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x1e1e, 0xff, 0xff, 0xff),
-@@ -8179,6 +8187,10 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3357, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3358, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3359, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330b, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0x4902, 0xff, 0xff, 0xff),
-@@ -8193,6 +8205,8 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x4856, 0x0091, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x9846, 0x9041, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0xcdab, 0x8010, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x04f2, 0xaff7, 0xff, 0xff, 0xff),
-@@ -8218,6 +8232,8 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x341f, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe035, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ab, 0xff, 0xff, 0xff),
-@@ -8226,6 +8242,8 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0070, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0077, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016d, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x07aa, 0x0056, 0xff, 0xff, 0xff),
-@@ -8248,6 +8266,8 @@ static const struct usb_device_id dev_ta
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330a, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
-+{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330d, 0xff, 0xff, 0xff),
-+	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab2b, 0xff, 0xff, 0xff),
- 	.driver_info = (unsigned long)&rtl8192cu_fops},
- {USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x624d, 0xff, 0xff, 0xff),
+diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
+index 4b1ea7b2c7961..1a05f0e7078d3 100644
+--- a/sound/soc/samsung/Kconfig
++++ b/sound/soc/samsung/Kconfig
+@@ -127,8 +127,9 @@ config SND_SOC_SAMSUNG_TM2_WM5110
+ 
+ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 	tristate "SoC I2S Audio support for WM8994 on Aries"
+-	depends on SND_SOC_SAMSUNG && MFD_WM8994 && IIO && EXTCON
++	depends on SND_SOC_SAMSUNG && IIO && EXTCON
+ 	select SND_SOC_BT_SCO
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	select SND_SAMSUNG_I2S
+ 	help
+@@ -142,6 +143,7 @@ config SND_SOC_SAMSUNG_MIDAS_WM1811
+ 	tristate "SoC I2S Audio support for Midas boards"
+ 	depends on SND_SOC_SAMSUNG && IIO
+ 	select SND_SAMSUNG_I2S
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	help
+ 	  Say Y if you want to add support for SoC audio on the Midas boards.
+-- 
+2.39.5
+
 
 
 
