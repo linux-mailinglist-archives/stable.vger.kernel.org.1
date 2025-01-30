@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF83A22EE1
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:16:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C45A22E85
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A0CC3A5EEB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E036168B4E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB9B1DDC22;
-	Thu, 30 Jan 2025 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B911E5708;
+	Thu, 30 Jan 2025 14:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/JAZVSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUOFBdXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEE7383;
-	Thu, 30 Jan 2025 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13D61DFDA5;
+	Thu, 30 Jan 2025 14:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246563; cv=none; b=djdSc7S4o2lxUBvEk/uLqmdbuPHcAC7xJ+5RXZ+QF5AN1WhNaNcCl67LrcyiGMpFdfEZ0Mnva3qY6vy70miiBBTeSgqMS/ml9Dae3GG7aAlTZYi1TNF94auUH/NOlkB5SUzXNZL9H7N/OwLJAmFCXyjs2J0rp9ipJCH+2jRhCZ8=
+	t=1738245731; cv=none; b=KoWd2yDyuNutUJaGV6L5RrTzVmGmzVNAXiRd8VRySakzy/P23TwKbAC/54kqkCvx0CjBfl0lBNxE5dizClP9rKBH5zONYJx4TMPkc8w8whTp6njnQmOb+3imxT4RMSuwREJoQZT6YOSHc9GurSHvi1DXV6Bo3Kaa0Bbd5Nw/26M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246563; c=relaxed/simple;
-	bh=DeMR4lfn4fvaIfq2AjuGmQ/qfr545h/qpbkBxbc0Xdg=;
+	s=arc-20240116; t=1738245731; c=relaxed/simple;
+	bh=EFPyLraN7P/9BBM6DjLAMJn9q12sUZSHN/INCVIQ/fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UANSdcY3NWKgTKucMpYcBBea4CO+IseLyXmvaBQw7lOJ+ji4wiFQaEIUnyoNmgIOa1C4mgNDJ7jFVEDwBLoxr0E4/EajQTx7tiAr4+P0mXcju3O6QBEi1AjNlCv1t9Z/HT1UiiDsuMhimLDos6LI/hupwJ3Z1ueh8KdAbkzZDRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/JAZVSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E7CC4CED2;
-	Thu, 30 Jan 2025 14:16:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eKnwwIQHvkdItAHxiJQcoOCt6RzZPE9viEWWGruuPDulz/d9vgy1dCGm25Ou0MPf4GU+xKks2HTlcva2JQmvKajMRHEPN1CIYBjj6oEd00YvvvO6qEEnVe8KxJqOahnONBM/AVHEtvc3DR2rvWlnfpjun9TNk0wvBrcbSef/Y3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUOFBdXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADD2C4CED2;
+	Thu, 30 Jan 2025 14:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246563;
-	bh=DeMR4lfn4fvaIfq2AjuGmQ/qfr545h/qpbkBxbc0Xdg=;
+	s=korg; t=1738245731;
+	bh=EFPyLraN7P/9BBM6DjLAMJn9q12sUZSHN/INCVIQ/fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/JAZVSilob+13tKYXVlGHfDdWvpaE+2DRy6ikCiG4QBpE2PiW4SSf95TLAPv9nrk
-	 jbVp1BNN83PA6QNm81sjgIfMwAL3+drhBgHyFUo9x7heBzX1HxWFqC+z1MCZHVCjXK
-	 785Oa5OzOjD2BKDd9DgASnZmEAiSphj9l7f/3dB8=
+	b=tUOFBdXFeifBH3P65xPN6FKkp0QmLNu/8Yw6RHYtbGqGQ4DRE7fawuFRGpkirmlI1
+	 AvfT3ou6Q0jf7F7uL16oIqY3+5QKDsGb7b96zFfaUUtm8TSN6NBxP2OnSUdySZOaR3
+	 MRmalbrdHEHqYVI/dewOjQN+nu3PGlSoo9PHcfO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 17/43] libfs: Add simple_offset_empty()
-Date: Thu, 30 Jan 2025 14:59:24 +0100
-Message-ID: <20250130133459.596391569@linuxfoundation.org>
+	=?UTF-8?q?Ulrich=20M=C3=BCller?= <ulm@gentoo.org>,
+	WangYuli <wangyuli@uniontech.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 25/40] Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
+Date: Thu, 30 Jan 2025 14:59:25 +0100
+Message-ID: <20250130133500.714173128@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jiri Kosina <jkosina@suse.com>
 
-[ Upstream commit ecba88a3b32d733d41e27973e25b2bc580f64281 ]
+commit 3d88ba86ba6f35a0467f25a88c38aa5639190d04 upstream.
 
-For simple filesystems that use directory offset mapping, rely
-strictly on the directory offset map to tell when a directory has
-no children.
+This reverts commit 251efae73bd46b097deec4f9986d926813aed744.
 
-After this patch is applied, the emptiness test holds only the RCU
-read lock when the directory being tested has no children.
+Quoting Wang Yuli:
 
-In addition, this adds another layer of confirmation that
-simple_offset_add/remove() are working as expected.
+	"The 27C6:01E0 touchpad doesn't require the workaround and applying it
+	would actually break functionality.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/170820143463.6328.7872919188371286951.stgit@91.116.238.104.host.secureserver.net
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 5a1a25be995e ("libfs: Add simple_offset_rename() API")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+	The initial report came from a BBS forum, but we suspect the
+	information provided by the forum user may be incorrect which could
+	happen sometimes. [1]
+
+	Further investigation showed that the Lenovo Y9000P 2024 doesn't even
+	use a Goodix touchpad. [2]
+
+	For the broader issue of 27c6:01e0 being unusable on some devices, it
+	just need to address it with a libinput quirk.
+
+	In conclusion, we should revert this commit, which is the best
+	solution."
+
+Reported-by: Ulrich Müller <ulm@gentoo.org>
+Reported-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/all/uikt4wwpw@gentoo.org/
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c         |   32 ++++++++++++++++++++++++++++++++
- include/linux/fs.h |    1 +
- mm/shmem.c         |    4 ++--
- 3 files changed, 35 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ids.h        |    1 -
+ drivers/hid/hid-multitouch.c |    8 ++------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -313,6 +313,38 @@ void simple_offset_remove(struct offset_
- }
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -506,7 +506,6 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
  
- /**
-+ * simple_offset_empty - Check if a dentry can be unlinked
-+ * @dentry: dentry to be tested
-+ *
-+ * Returns 0 if @dentry is a non-empty directory; otherwise returns 1.
-+ */
-+int simple_offset_empty(struct dentry *dentry)
-+{
-+	struct inode *inode = d_inode(dentry);
-+	struct offset_ctx *octx;
-+	struct dentry *child;
-+	unsigned long index;
-+	int ret = 1;
-+
-+	if (!inode || !S_ISDIR(inode->i_mode))
-+		return ret;
-+
-+	index = DIR_OFFSET_MIN;
-+	octx = inode->i_op->get_offset_ctx(inode);
-+	xa_for_each(&octx->xa, index, child) {
-+		spin_lock(&child->d_lock);
-+		if (simple_positive(child)) {
-+			spin_unlock(&child->d_lock);
-+			ret = 0;
-+			break;
-+		}
-+		spin_unlock(&child->d_lock);
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-  * simple_offset_rename_exchange - exchange rename with directory offsets
-  * @old_dir: parent of dentry being moved
-  * @old_dentry: dentry being moved
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3197,6 +3197,7 @@ struct offset_ctx {
- void simple_offset_init(struct offset_ctx *octx);
- int simple_offset_add(struct offset_ctx *octx, struct dentry *dentry);
- void simple_offset_remove(struct offset_ctx *octx, struct dentry *dentry);
-+int simple_offset_empty(struct dentry *dentry);
- int simple_offset_rename_exchange(struct inode *old_dir,
- 				  struct dentry *old_dentry,
- 				  struct inode *new_dir,
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3368,7 +3368,7 @@ static int shmem_unlink(struct inode *di
- 
- static int shmem_rmdir(struct inode *dir, struct dentry *dentry)
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
+-#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
+ #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
+ #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1452,8 +1452,7 @@ static const __u8 *mt_report_fixup(struc
  {
--	if (!simple_empty(dentry))
-+	if (!simple_offset_empty(dentry))
- 		return -ENOTEMPTY;
+ 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
+ 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
+-	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
+-		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
++	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
+ 		if (rdesc[607] == 0x15) {
+ 			rdesc[607] = 0x25;
+ 			dev_info(
+@@ -2079,10 +2078,7 @@ static const struct hid_device_id mt_dev
+ 		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+ 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E9) },
+-	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
+-	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
+-		     I2C_DEVICE_ID_GOODIX_01E0) },
++		     I2C_DEVICE_ID_GOODIX_01E8) },
  
- 	drop_nlink(d_inode(dentry));
-@@ -3425,7 +3425,7 @@ static int shmem_rename2(struct mnt_idma
- 		return simple_offset_rename_exchange(old_dir, old_dentry,
- 						     new_dir, new_dentry);
- 
--	if (!simple_empty(new_dentry))
-+	if (!simple_offset_empty(new_dentry))
- 		return -ENOTEMPTY;
- 
- 	if (flags & RENAME_WHITEOUT) {
+ 	/* GoodTouch panels */
+ 	{ .driver_data = MT_CLS_NSMU,
 
 
 
