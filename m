@@ -1,85 +1,99 @@
-Return-Path: <stable+bounces-111281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4787EA22D1F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:58:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09F9A22D62
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D99B1889594
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 12:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8848A3A7DC4
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AABC1C5F37;
-	Thu, 30 Jan 2025 12:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873501E501C;
+	Thu, 30 Jan 2025 13:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEDYr6sd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="na/IuZnz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09D8B660
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 12:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0801E47BA;
+	Thu, 30 Jan 2025 13:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738241910; cv=none; b=GbRMYmqxY5waniwBhOMXvnVTX7WfS3MHGZJdfn/V9S2thRUMNbU8Imgbf0vJcBOuRL0r6qWtCq6GQzIwCTpEOdMhxGwD1dS5cKtFvFmkkMgjTj0xHcUDUt8E5zfjmrBmvIqkxOBH6n6Iz4t8Fi4HWznWe45A536LJSRYb5Nr8cg=
+	t=1738242605; cv=none; b=DAwnp/5v92FUwh6gKy3xZuqY+vUxelj3/gA7K22S9yZy+LfLGLreFoha+Xi/Fr9HrGIQ7+cfsvC5dqc7XYXlzn4c931c/ZR3f7dip4u2zF8o6NwoqpeUfPHk3CP0dNzjXtPKqsoYjX6iTL0oOI5gQE01E8/aKoUln4Uo/Dy8d8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738241910; c=relaxed/simple;
-	bh=1gU1WrhXgCqGWiTgROc1qu5vJGYP4uLpr0W1MAQ4FIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TfXDworrvjBkMHywzRPw6dYyRpgmmJCuymGOefaqhiihJbEnfGqh8vxFkPXVK8X2XwD3I138ZDQOfueUVisje5A7KfjgtClpAY/u0I5i7KSbiAxmk31AbBacl2rZRzGvybVQ7/7WdOeeVRtq3Q/88/JixaTStSWMQ4ZDzJxWKog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEDYr6sd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2DCC4CED2;
-	Thu, 30 Jan 2025 12:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738241910;
-	bh=1gU1WrhXgCqGWiTgROc1qu5vJGYP4uLpr0W1MAQ4FIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eEDYr6sdc2IVuuM7B9L3iEP3e4ouLpM5UIYcJoVPnWU1mtyjB3CPLirYalXnWlOGg
-	 Fkm6FlhJlT2M1r0n8dX2QLAWsUCeetpaF3j3c2p6945mjhTDiflLbNZ95SNh5e+Pgi
-	 R4nr+PW4aQkFC68nz+9U7bgW+hQNT0Yv9OSthCoM=
-Date: Thu, 30 Jan 2025 13:58:27 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Rajani kantha <rajanikantha@engineer.com>
-Cc: lizhi.xu@windriver.com, tytso@mit.edu, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] ext4: filesystems without casefold feature cannot
- be mounted with siphash
-Message-ID: <2025013034-whooping-defraud-f4bd@gregkh>
-References: <trinity-9fdb9995-866f-4221-8e4b-f08e3d33894b-1737681797536@3c-app-mailcom-lxa10>
+	s=arc-20240116; t=1738242605; c=relaxed/simple;
+	bh=cBceCA/xS8yHpbhHipp+y3e2MOgF35l21oMstBDuqKQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lz3j4Puo/pPaci+DlCy68tXpjqpgF9cfU0goJGewGt1tUmJWZyXxCegX6KTTKfar3Rn98igtAG4FmKHyiJum/YvB8ky9n6lovgMG/xwTd3Wb868Gh+8yyHhxD3k8h4AsWmdFpnWvYTgMSaM/H117EOm0ajm5euvVeadFED2oKX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=na/IuZnz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85735C4CED2;
+	Thu, 30 Jan 2025 13:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738242604;
+	bh=cBceCA/xS8yHpbhHipp+y3e2MOgF35l21oMstBDuqKQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=na/IuZnzG6iLaHJ0ekFF7NXxYd3Mq3AK2vtaFRQffsjwpd2kp5ISHfKa02MHazQ1J
+	 J2H1jl3OiqyjDUbgmzPHxo0LK3Ag1YpVGy8Budp5G1VgfMUgOXmQ5ddaV0G4sU30/+
+	 DLoAU8RuGuSfAniQp9oyD/rLB7QuRogjxE13xmNFJxcKKG8TGAQegPS164m9x4PYoE
+	 ahO2/JydR0bfnmfr4+XN976VqAuynPc2DDCh27WAA9PZr/lbwI8OJxiugWGq3oFcK5
+	 uMvhj/MQxPnWIWRMxMTITU3cTpOwnUfr+xEZlo8qui1sY8vBoTQfrBrsoz9/or9qda
+	 VW6bj7IJFZqdQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB7EC380AA66;
+	Thu, 30 Jan 2025 13:10:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <trinity-9fdb9995-866f-4221-8e4b-f08e3d33894b-1737681797536@3c-app-mailcom-lxa10>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] mptcp: blackhole only if 1st SYN retrans w/o MPC
+ is accepted
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173824263075.953543.6219182517471965649.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Jan 2025 13:10:30 +0000
+References: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
+In-Reply-To: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, corbet@lwn.net, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ stable@vger.kernel.org
 
-On Fri, Jan 24, 2025 at 02:23:17AM +0100, Rajani kantha wrote:
-> From: Lizhi Xu <lizhi.xu@windriver.com>
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 29 Jan 2025 13:24:31 +0100 you wrote:
+> Here are two small fixes for issues introduced in v6.12.
 > 
-> [ upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
+> - Patch 1: reset the mpc_drop mark for other SYN retransmits, to only
+>   consider an MPTCP blackhole when the first SYN retransmitted without
+>   the MPTCP options is accepted, as initially intended.
 > 
-> When mounting the ext4 filesystem, if the default hash version is set to
-> DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
+> - Patch 2: also mention in the doc that the blackhole_timeout sysctl
+>   knob is per-netns, like all the others.
 > 
-> Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
-> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-> Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
-> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-> Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
-> ---
->  fs/ext4/super.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+> [...]
 
-Why are you submitting this for these 2 kernels?  Why are they required
-for them?  You didn't provide any information here at all :(
+Here is the summary with links:
+  - [net,1/2] mptcp: blackhole only if 1st SYN retrans w/o MPC is accepted
+    https://git.kernel.org/netdev/net/c/e598d8981fd3
+  - [net,2/2] doc: mptcp: sysctl: blackhole_timeout is per-netns
+    https://git.kernel.org/netdev/net/c/18da4b5d1232
 
-And what about the fix for this commit?  You forgot that.  Please send a
-proper series of backports and make sure you actually tested them.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-thanks,
 
-gre gk-h
 
