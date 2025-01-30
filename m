@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1D0A22FA3
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9116BA22EF6
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97DB188411A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5091888C24
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003501E9901;
-	Thu, 30 Jan 2025 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BB41E8823;
+	Thu, 30 Jan 2025 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyDg+hoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRszMn7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10681E7C25;
-	Thu, 30 Jan 2025 14:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F90F1DDE9;
+	Thu, 30 Jan 2025 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247034; cv=none; b=UqB2SQvNxfrKSX+QAUKYkyvQ2HEAXfNgqHuFidclS7TL0eqmPgoMXTcE8l8OBwOBbVMY3cbqqmOHNExNinD78DTBpiuqzPpQnXVY/75OGXeU928Rurgm/dsIhf+ivrldJLD6R0MYriMVQpSaFlOLUjtWfCtyH4VXOp716sSmDsM=
+	t=1738246618; cv=none; b=E9AjKPmctd74O0GXfSfpJ0UC/ztojwQ51vPMv4TyP+jv/6YOAZKPC101icJhqZbTNlGFmg0uzGtjwXdftYmeoGWXxZA7MKaCF+dmqZAD8Rj/ni7sg/xg+laLGUTftNwKakMyiUjkx5/QLcGiGywasVX6vJKXCvtu2m2PUOMOfro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247034; c=relaxed/simple;
-	bh=HQwUUIQB+I5IwVkT4Pd32tSlgxmqejAhnRtndbIfae0=;
+	s=arc-20240116; t=1738246618; c=relaxed/simple;
+	bh=Fn3Do9ejV/+2j9t2mEPskQLfr+zt4FSlCic/3mVyMM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eioEOnX37PQOvtBJhR1Hu1UY2Q90ns0q4NIqjvSrpBhzhg/l73pi8Dpm4VwXKDUo33SAFqTsv0dokkB0FJ3iuwH5M5/G3K2LKwyadu8b5TF2v08zC1cwwASUd6TK9YtoNX4/Zs+9FWrl4pU7yROzzxhCNrPP1/7aeDGPnHwrMQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyDg+hoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D91C4CED2;
-	Thu, 30 Jan 2025 14:23:54 +0000 (UTC)
+	 MIME-Version; b=HU+1gmg/RrjNXwd0UQOxjHwfzqL5lmath+y03FfXfWe8a0LAVjshkHJynD/tXz0lcqy6XBzVWvesH8i+G1F38QA6fX9rqsxWNfEiK9kql/1+Xx3rBU9juYVrMXEKaSogjwZ5sVYGheCwPag/TVh1csj2C+Sfo8fXhXwOi8Y1QcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRszMn7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A47FC4CED2;
+	Thu, 30 Jan 2025 14:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247034;
-	bh=HQwUUIQB+I5IwVkT4Pd32tSlgxmqejAhnRtndbIfae0=;
+	s=korg; t=1738246618;
+	bh=Fn3Do9ejV/+2j9t2mEPskQLfr+zt4FSlCic/3mVyMM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyDg+hoPcy7ZlXawk+d9DNhZgprJuyG2Xh4mikXvBKh3tfhGBAqP8iw3XoHTa/LC6
-	 pWcw7OF7OZ4TUB+RKcc+eXTPjsNvNMXhVwPOfkHneV/pXkk6bH4+tBa4VJIHeXtK5O
-	 k8mBTOOdoc3vzXE4a87YnV6PBKHUWg8DR1vpkjRk=
+	b=QRszMn7cV5j2o+XjNvoVSUApsSWymPDatKSFm07p6OZ31AqVSLWXNiTYNnM4T74fK
+	 AMmp51m4xiRJNpjD4cW/O+R3RUPWTKpbpeMIIP9xVMapPOHl6iHd24S1++URpzt9CM
+	 xg/EFPdLjKaKUz2v27PbALWwjAzRjUGJsIe8smnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 032/133] staging: iio: ad9834: Correct phase range check
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Joe Thornber <thornber@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 02/91] dm array: fix releasing a faulty array block twice in dm_array_cursor_end
 Date: Thu, 30 Jan 2025 15:00:21 +0100
-Message-ID: <20250130140143.805135671@linuxfoundation.org>
+Message-ID: <20250130140133.769988916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-commit c0599762f0c7e260b99c6b7bceb8eae69b804c94 upstream.
+[ Upstream commit f2893c0804d86230ffb8f1c8703fdbb18648abc8 ]
 
-User Perspective:
-When a user sets the phase value, the ad9834_write_phase() is called.
-The phase register has a 12-bit resolution, so the valid range is 0 to
-4095. If the phase offset value of 4096 is input, it effectively exactly
-equals 0 in the lower 12 bits, meaning no offset.
+When dm_bm_read_lock() fails due to locking or checksum errors, it
+releases the faulty block implicitly while leaving an invalid output
+pointer behind. The caller of dm_bm_read_lock() should not operate on
+this invalid dm_block pointer, or it will lead to undefined result.
+For example, the dm_array_cursor incorrectly caches the invalid pointer
+on reading a faulty array block, causing a double release in
+dm_array_cursor_end(), then hitting the BUG_ON in dm-bufio cache_put().
 
-Reasons for the Change:
-1) Original Condition (phase > BIT(AD9834_PHASE_BITS)):
-This condition allows a phase value equal to 2^12, which is 4096.
-However, this value exceeds the valid 12-bit range, as the maximum valid
-phase value should be 4095.
-2) Modified Condition (phase >= BIT(AD9834_PHASE_BITS)):
-Ensures that the phase value is within the valid range, preventing
-invalid datafrom being written.
+Reproduce steps:
 
-Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
-If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
-is AD9834_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
-1101 0000 0000 0000, occupying DB12. According to the section of WRITING
-TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
-DB11. The original condition leads to incorrect DB12 usage, which
-contradicts the datasheet and could pose potential issues for future
-updates if DB12 is used in such related cases.
+1. initialize a cache device
 
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20241107011015.2472600-2-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dd if=/dev/zero of=/dev/mapper/cmeta bs=4k count=1
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+2. wipe the second array block offline
+
+dmsteup remove cache cmeta cdata corig
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try reopen the cache device
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc $262144"
+dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+
+Kernel logs:
+
+(snip)
+device-mapper: array: array_block_check failed: blocknr 0 != wanted 10
+device-mapper: block manager: array validator check failed for block 10
+device-mapper: array: get_ablock failed
+device-mapper: cache metadata: dm_array_cursor_next for mapping failed
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-bufio.c:638!
+
+Fix by setting the cached block pointer to NULL on errors.
+
+In addition to the reproducer described above, this fix can be
+verified using the "array_cursor/damaged" test in dm-unit:
+  dm-unit run /pdata/array_cursor/damaged --kernel-dir <KERNEL_DIR>
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Fixes: fdd1315aa5f0 ("dm array: introduce cursor api")
+Reviewed-by: Joe Thornber <thornber@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/persistent-data/dm-array.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -132,7 +132,7 @@ static int ad9834_write_frequency(struct
- static int ad9834_write_phase(struct ad9834_state *st,
- 			      unsigned long addr, unsigned long phase)
- {
--	if (phase > BIT(AD9834_PHASE_BITS))
-+	if (phase >= BIT(AD9834_PHASE_BITS))
- 		return -EINVAL;
- 	st->data = cpu_to_be16(addr | phase);
+diff --git a/drivers/md/persistent-data/dm-array.c b/drivers/md/persistent-data/dm-array.c
+index 185dc60360b5..849eb1b97c43 100644
+--- a/drivers/md/persistent-data/dm-array.c
++++ b/drivers/md/persistent-data/dm-array.c
+@@ -907,23 +907,27 @@ static int load_ablock(struct dm_array_cursor *c)
+ 	if (c->block)
+ 		unlock_ablock(c->info, c->block);
  
+-	c->block = NULL;
+-	c->ab = NULL;
+ 	c->index = 0;
+ 
+ 	r = dm_btree_cursor_get_value(&c->cursor, &key, &value_le);
+ 	if (r) {
+ 		DMERR("dm_btree_cursor_get_value failed");
+-		dm_btree_cursor_end(&c->cursor);
++		goto out;
+ 
+ 	} else {
+ 		r = get_ablock(c->info, le64_to_cpu(value_le), &c->block, &c->ab);
+ 		if (r) {
+ 			DMERR("get_ablock failed");
+-			dm_btree_cursor_end(&c->cursor);
++			goto out;
+ 		}
+ 	}
+ 
++	return 0;
++
++out:
++	dm_btree_cursor_end(&c->cursor);
++	c->block = NULL;
++	c->ab = NULL;
+ 	return r;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
