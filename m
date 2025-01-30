@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-111290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51617A22E53
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE38FA22E74
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B42051682E9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3626A1689CA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1278F1E5708;
-	Thu, 30 Jan 2025 13:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1B61E2853;
+	Thu, 30 Jan 2025 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND98tvCF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzP/kwXq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22731BEF85;
-	Thu, 30 Jan 2025 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD54DC13D;
+	Thu, 30 Jan 2025 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245579; cv=none; b=tPyHxbHhatKWUz9ubW3TZOY9LA5XvMVPkhsuqfYKkxV4zrPSUQoWwNCs284w0S7rQXcdCNwXc4QsEJt4rs9Xrt5ex0Ws5QXouVaFuI9nzgS5K5huPEgdS1A7tupGzux4SMNdKxsaSyKOR/WTxY4XplD8TTnV4kJ9mmj+9iP9iiY=
+	t=1738245668; cv=none; b=B6UMoUVNMpXf6FMT14uqW+kTYP8MxmRU2/KaKXCed3KloS44dry2IhySmX1Kj4XnGjZRX6eBy/DAUSN47kJrQbCQ6tkok1d0DkMUPs6VKGXZ8a8G920PePsnZ0iv5AmtYTn1JzUsHDTYZg/Sh6YgGNKjJainqak41PKhyoOwWFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245579; c=relaxed/simple;
-	bh=7w9xN2YnAthjeOrGloTz/DMTRLnZljQnTTc9kZb9mas=;
+	s=arc-20240116; t=1738245668; c=relaxed/simple;
+	bh=3aM9dJmSgIbBB1lfnLd2hJnoP8LM3NjcGV9nRbVHbcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxJM+OUZWBhvJsVFkPkRddPwa2HoM3fCUPEcSF5DEblW+inUKThOVE1wwn1+g5LQQPxlkrvbmC0IFSvVHyVANsEoRdZS/mUgDK2Cus+TZioI0JQoBu/IYOyQVbQ4A5FDfi1NxnlP9nxkJdUbj7eUVPXXPuP5BYV49RXG4+1M98M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ND98tvCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AED1C4CED2;
-	Thu, 30 Jan 2025 13:59:39 +0000 (UTC)
+	 MIME-Version; b=ebrpTROvhUDV//cpQ72U+2U9xD23+llxHMGtqJ0r83yU5MfpAvkyZl53U68+sKKqmbAGq/zfxzOQSmxv2kJ5kC+b/hYc+qvRBFoDsue/asi3YN0ZeFHiumnzEgp28k1+tAWfIwRfcQPrJb+tPI6Gs+XJ8YPakP7QlkOXLjWYAkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzP/kwXq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B0CC4CEE0;
+	Thu, 30 Jan 2025 14:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245579;
-	bh=7w9xN2YnAthjeOrGloTz/DMTRLnZljQnTTc9kZb9mas=;
+	s=korg; t=1738245667;
+	bh=3aM9dJmSgIbBB1lfnLd2hJnoP8LM3NjcGV9nRbVHbcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ND98tvCFugit4CgUwoS2g99ntXbmz3ReB7LKcjqzA6zH+M5k9ffjlY9vVG9xGrf7o
-	 U3ezIwNsboUCGtWMvO+ZVnjpj/F+A9QmyXJ+bA1Bn6BacKIXbzqhsJCfNRdWOpkUyG
-	 BEOhSpmBRT0vgbvDdpEDOpP0cGy9Db266nSt+Rmk=
+	b=LzP/kwXqicKAOzrVdlrKG0ny6uqne8GzKswfSJn0bA4pSTgzbpiOw+/z9XZgbT8Sj
+	 G3NmP+g4KHMjh+KLBPpGDXeJEsnV14aN7HM1+16Y+LaiZM7EL4cxylDyWbCtohk3XF
+	 83tUeRkt5H5Ap8/7jIPxHyHF/VgVOWVS+2tAcoYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.13 15/25] ALSA: usb-audio: Add delay quirk for USB Audio Device
-Date: Thu, 30 Jan 2025 14:59:01 +0100
-Message-ID: <20250130133457.555009268@linuxfoundation.org>
+	Marian Postevca <posteuca@mutex.one>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 02/40] ASoC: codecs: es8316: Fix HW rate calculation for 48Mhz MCLK
+Date: Thu, 30 Jan 2025 14:59:02 +0100
+Message-ID: <20250130133459.799816621@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
-References: <20250130133456.914329400@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Marian Postevca <posteuca@mutex.one>
 
-commit ad5b205f9e022b407d91f952faddd05718be2866 upstream.
+[ Upstream commit 85c9ac7a56f731ecd59317c822cb6295464444cc ]
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+For 48Mhz MCLK systems the calculation of the HW rate is broken,
+and will not produce even one sane rate. Since es83xx supports
+the option to halve MCLK, calculate also rates with MCLK/2.
 
-usb 1-1: New USB device found, idVendor=0d8c, idProduct=0014
-usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-usb 1-1: Product: USB Audio Device
-usb 1-1: Manufacturer: C-Media Electronics Inc.
-
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/TYUPR06MB6217E94D922B9BF422A73F32D2192@TYUPR06MB6217.apcprd06.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marian Postevca <posteuca@mutex.one>
+Link: https://patch.msgid.link/20241227202751.244954-1-posteuca@mutex.one
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/es8316.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2239,6 +2239,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0c45, 0x6340, /* Sonix HD USB Camera */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE),
-+	DEVICE_FLG(0x0d8c, 0x0014, /* USB Audio Device */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x0ecb, 0x205c, /* JBL Quantum610 Wireless */
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index 61729e5b50a8e..f508df01145bf 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -39,7 +39,9 @@ struct es8316_priv {
+ 	struct snd_soc_jack *jack;
+ 	int irq;
+ 	unsigned int sysclk;
+-	unsigned int allowed_rates[ARRAY_SIZE(supported_mclk_lrck_ratios)];
++	/* ES83xx supports halving the MCLK so it supports twice as many rates
++	 */
++	unsigned int allowed_rates[ARRAY_SIZE(supported_mclk_lrck_ratios) * 2];
+ 	struct snd_pcm_hw_constraint_list sysclk_constraints;
+ 	bool jd_inverted;
+ };
+@@ -386,6 +388,12 @@ static int es8316_set_dai_sysclk(struct snd_soc_dai *codec_dai,
+ 
+ 		if (freq % ratio == 0)
+ 			es8316->allowed_rates[count++] = freq / ratio;
++
++		/* We also check if the halved MCLK produces a valid rate
++		 * since the codec supports halving the MCLK.
++		 */
++		if ((freq / ratio) % 2 == 0)
++			es8316->allowed_rates[count++] = freq / ratio / 2;
+ 	}
+ 
+ 	if (count) {
+-- 
+2.39.5
+
 
 
 
