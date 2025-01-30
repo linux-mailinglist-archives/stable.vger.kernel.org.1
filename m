@@ -1,291 +1,249 @@
-Return-Path: <stable+bounces-111272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668C1A22BEE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 11:50:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AB9A22C03
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 11:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1823A2FF8
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C80A168C4F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E6A1BD9CD;
-	Thu, 30 Jan 2025 10:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3292D1BEF77;
+	Thu, 30 Jan 2025 10:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hXebBeIl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hD7VuTgr";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hXebBeIl";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hD7VuTgr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FhgHYfWe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512A51BBBFD;
-	Thu, 30 Jan 2025 10:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1835219F120
+	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 10:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738234220; cv=none; b=J24FgV64a/6761qKeL+LKwvP9iWzaXLSkz1HFS3iPn6FnBzwPpM6BQiGuiKZN6JbSBosVg48ltH17FC0EAnvtv5Igm01cMBH5PQqboVnha8lhreQuvi81Kzmys69NSnpFMx8+9d9Lxcj0RzB38GdEL4XG0NQJhjTQvJicHpWyq8=
+	t=1738234443; cv=none; b=S0paDNxnI2tOjTEeqlje1PMUulE5tC1o1oU8FP86nKSVWy8dMviGMAYJKpYj7WwyOHBu19BiZjGlONNDIPd9h4gB2OLOKKZt2x4/addRwZa43QLQ8LYecbrN5aLNPmsGO7FYqX5WGMgGXREfH9TzXO/R/a9AbtQX087YCK7OF8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738234220; c=relaxed/simple;
-	bh=9tnIPb79lowIP2B4WO5y3JY64yOb0cXO4zNmsAdvlvI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ca5wc1afZT/hrEsBm7SE08b7X8ITNx3zmfnChq0BzJZDF5odyjlXuXsLmLFKU8p1cOm34ouiXmXMaK5jFACJOaDKqpNXjp9ugcV8y2qeQLLI6SNyT9inyOAV1h7jBKSrRIrQF2LFif3enqrk18xFhta7Cx1zd2cnazJQrWmsZk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hXebBeIl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hD7VuTgr; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hXebBeIl; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hD7VuTgr; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6BE571F80F;
-	Thu, 30 Jan 2025 10:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738234216; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gHG1Iw+GcqY7foqXFAxe0roPovyvY6qgmMssLYHu2O8=;
-	b=hXebBeIl7+ccSi3XVKW8u6zZVFR1Eq7ZPxCqDB2msFR3r816BRw9YvqajD/pc3bFLSRULT
-	7MhER/TQSN6AMfMbkymILFhwo5aSt5Vz5KWiMAkUdPMYgnNVf08bsId7iamm2sjGzQ57uN
-	5QH9WDMNk4K5fUD1BZB50PxHF1Xlx7o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738234216;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gHG1Iw+GcqY7foqXFAxe0roPovyvY6qgmMssLYHu2O8=;
-	b=hD7VuTgr45ZEiBWSmw3eKnHPoNqh6HYievTH8r01AXKuNHZQjmq/8An/ujI30FRi9is4XG
-	9aP4TWrsr1mkiKDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738234216; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gHG1Iw+GcqY7foqXFAxe0roPovyvY6qgmMssLYHu2O8=;
-	b=hXebBeIl7+ccSi3XVKW8u6zZVFR1Eq7ZPxCqDB2msFR3r816BRw9YvqajD/pc3bFLSRULT
-	7MhER/TQSN6AMfMbkymILFhwo5aSt5Vz5KWiMAkUdPMYgnNVf08bsId7iamm2sjGzQ57uN
-	5QH9WDMNk4K5fUD1BZB50PxHF1Xlx7o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738234216;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gHG1Iw+GcqY7foqXFAxe0roPovyvY6qgmMssLYHu2O8=;
-	b=hD7VuTgr45ZEiBWSmw3eKnHPoNqh6HYievTH8r01AXKuNHZQjmq/8An/ujI30FRi9is4XG
-	9aP4TWrsr1mkiKDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42EF91364B;
-	Thu, 30 Jan 2025 10:50:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ZAW/D2hZm2fCMAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 30 Jan 2025 10:50:16 +0000
-Date: Thu, 30 Jan 2025 11:50:07 +0100
-Message-ID: <87sep060f4.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: John Keeping <jkeeping@inmusicbrands.com>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	linux-usb@vger.kernel.org,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kees Cook <kees@kernel.org>,
-	Abdul Rahim <abdul.rahim@myyahoo.com>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Felipe Balbi <balbi@ti.com>,
-	Daniel Mack <zonque@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: f_midi: fix MIDI Streaming descriptor lengths
-In-Reply-To: <Z5pl96d1OCF0RaCe-jkeeping@inmusicbrands.com>
-References: <20250129160520.2485991-1-jkeeping@inmusicbrands.com>
-	<871pwl7evv.wl-tiwai@suse.de>
-	<Z5pl96d1OCF0RaCe-jkeeping@inmusicbrands.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1738234443; c=relaxed/simple;
+	bh=9HTHek1dmkQ8Qe+MriUAq+WvBkohEfAoyj0Y9lB3LNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UtZxWhvXH7cnuG2ud7J88QWR0VPDIaaACess3gN2HSiUDkm8hbE8uwQYY9DdBPH9a+LNYXvJEajVqXzzxSrQwveE0NCWnTyazXjczdah28GaZx/J0HtL9HRvR/kM+ortIDHgafZBZOF4dLx9CPMpQc2i2HXhiroU4aH6kczu0g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FhgHYfWe; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43635796b48so3710815e9.0
+        for <stable@vger.kernel.org>; Thu, 30 Jan 2025 02:54:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738234439; x=1738839239; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=463H0ryAldONuNur80/Z8cz/xApgRCPX52vvMZzIz4Y=;
+        b=FhgHYfWeK+JPkPebotIDq1VUD7TaYjz9dOM3WauscsfNE76Oa0E9hVyGWmypylpHa1
+         pdRUMZwM+WGTFrUesOWJk8RDME4qIRzylqxWaJNwlc0ut0ZZBYvgITDpcL41/4hYtElK
+         SCHiQxgVxWrkgvka9KHRhdrD+OvFRphK1JDV+ptm9pbSrnJnV01nIG7ekU67K08uiRXu
+         kyQxg5SlSCrxNcw79vODavIxPTzU3nc2+lqVJQGBacxJElCCH3DeFjS8a7g1eH76mwNt
+         VxDKiFjUE2yCXIGFsDsmTjmAYLJKMYhQkskXVDlx6iOQcAW8XRSI+9Sq2XShCaiZOFJo
+         NSJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738234439; x=1738839239;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=463H0ryAldONuNur80/Z8cz/xApgRCPX52vvMZzIz4Y=;
+        b=dxVliF5rSi8HvvtuB8wQ2uCxTwvLCxBf5qJlXXpOSVGYnDiDyeaT7ScsXn1edgnbvi
+         PVC/67KWXAteOWwqx0kx53lgT99uHuIkhtWLQ8933RiZknKjw+uSDFzg9iV5r/+msarK
+         SxPPMDNFWqlUizpPyr4Bd94InMx8BTC6rTtsVJ0Pxpq3hVrlRh44q1P6unIreft7DPTS
+         vRx+87TthIUh9gI47EJ/HcdvQ4p4ZhbBJFAOEgSFoXYXA+B+B4kdGNOWqh2IBqPXdYWJ
+         +1G8j13SSCFsPvCFa7pOm3tBKHY7ksFKnxb1MtUI1TM/flXWRKKTCwBhH/0BE8BSQVuy
+         N+8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWszWrI3lvjYxF3RsINaml0JBCRC120shYwx+Epol/C1xhv6r0hcIEsKFrb8sfsFFq20S7gYgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZzfknV2rnQGYTIFykoqtykuWWtNC36TwShl/OX3tlr2LO+pCO
+	TRzsrqYidyr+MaP9QeMY0ZSAPZwjeMd3l+mJG9SNIJ7xlf8T69wss3fMQ/JnGds=
+X-Gm-Gg: ASbGncvHg9F3ljWhuyeEhh1cKBNV+gPSzrq51kx6nzqpvsMECPiLLjF+S9Fqdtdx4q6
+	XpdwbhoCoimnAJOyK4gz0DXWwhkj2zMf/isWghmSdCHHe90ce1QJoe347G38bqIrHhP/aM8H6aX
+	m4MB3Oj9Yl7EQhiKDWM+GheJAuXSTi1zP1uUGHAx2rsF6PKB43pYCjEz7ouRNGjy7kOYJM7Tar5
+	9l7W+yvFPlQ60VPFvxWkrvA2D1iLvpiSB7lqTGzV7cKVXbwG8PF1jO9X2sKAED2Zh45dXrG7uLx
+	clh2h4YusA4WrA==
+X-Google-Smtp-Source: AGHT+IHiDFpxMP68wQ6LjOR1WCEBWr3xqs+Yj4+VT6M4CR/kMwsvp5X0TCoKZFy4smul3HHtJfE/4Q==
+X-Received: by 2002:a05:600c:4710:b0:436:1af3:5b13 with SMTP id 5b1f17b1804b1-438e171a60fmr24268765e9.15.1738234439389;
+        Thu, 30 Jan 2025 02:53:59 -0800 (PST)
+Received: from linaro.org ([86.123.96.125])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc6df2asm54389675e9.29.2025.01.30.02.53.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jan 2025 02:53:58 -0800 (PST)
+Date: Thu, 30 Jan 2025 12:53:57 +0200
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC v2] soc: qcom: pmic_glink: Fix device access from
+ worker during suspend
+Message-ID: <Z5taRZ0om5y/DJ69@linaro.org>
+References: <20250129-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v2-1-de2a3eca514e@linaro.org>
+ <Z5tJvgrYS5UoAHRD@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.de,vger.kernel.org,linuxfoundation.org,kernel.org,myyahoo.com,pengutronix.de,quicinc.com,ti.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z5tJvgrYS5UoAHRD@hovoldconsulting.com>
 
-On Wed, 29 Jan 2025 18:31:35 +0100,
-John Keeping wrote:
+On 25-01-30 10:43:26, Johan Hovold wrote:
+> On Wed, Jan 29, 2025 at 01:46:15PM +0200, Abel Vesa wrote:
+> > For historical reasons, the GLINK smem interrupt is registered with
 > 
-> On Wed, Jan 29, 2025 at 05:40:04PM +0100, Takashi Iwai wrote:
-> > On Wed, 29 Jan 2025 17:05:19 +0100,
-> > John Keeping wrote:
-> > > 
-> > > In the two loops before setting the MIDIStreaming descriptors,
-> > > ms_in_desc.baAssocJackID[] has entries written for "in_ports" values and
-> > > ms_out_desc.baAssocJackID[] has entries written for "out_ports" values.
-> > > But the counts and lengths are set the other way round in the
-> > > descriptors.
-> > > 
-> > > Fix the descriptors so that the bNumEmbMIDIJack values and the
-> > > descriptor lengths match the number of entries populated in the trailing
-> > > arrays.
+> Please spell out these reasons so that we can determine if they are
+> still valid or not.
+
+Sure.
+
+Bjorn, Caleb, please correct me if I'm wrong, but IIRC the historical
+reasons here have to do with notifications from mdsp and sdsp being
+needed on mobile platforms. Was there something else?
+
+> 
+> > IRRQF_NO_SUSPEND flag set, which is the underlying problem here, since the
+> > incoming messages can be delivered during late suspend and early
+> > resume.
 > > 
-> > Are you sure that it's a correct change?
+> > In this specific case, the pmic_glink_altmode_worker() currently gets
+> > scheduled on the system_wq which can be scheduled to run while devices
+> > are still suspended. This proves to be a problem when a Type-C retimer,
+> > switch or mux that is controlled over a bus like I2C, because the I2C
+> > controller is suspended.
+> 
+> This is not just an issue with an i2c retimer, this is a plain generic
+> bug in that the glink code which is calling drivers while their devices
+> are suspended.
+
+Yes, that's true. I merely used the i2c scenario since this is the first real
+usecase where this proves to be a problem. I do agree that this is a
+problem in the glink code design though and needs to be reworked
+properly.
+
+> 
+> > This has been proven to be the case on the X Elite boards where such
+> > retimers (ParadeTech PS8830) are used in order to handle Type-C
+> > orientation and altmode configuration. The following warning is thrown:
+> 
+> > The proper solution here should be to not deliver these kind of messages
+> > during system suspend at all, or at least make it configurable per glink
+> > client. But simply dropping the IRQF_NO_SUSPEND flag entirely will break
+> > other clients.
+> 
+> Which clients? Do we care enough about them to be papering over this
+> very real bug which can potentially crash the system (e.g. due to
+> unclocked register accesses)?
+
+Well, you just pointed out the ucsi below, which I totally missed.
+
+I guess this fix would have to be replicated to ucsi as well in this
+case. But then it is not just a one-off anymore, like Bjorn suggested.
+
+Since this hasn't proved to be a problem until now, I guess all the
+other clients are fine with scheduling work while suspended. But this
+might be a wrong assumption as well.
+
+> 
+> > The final shape of the rework of the pmic glink driver in
+> > order to fulfill both the filtering of the messages that need to be able
+> > to wake-up the system and the queueing of these messages until the system
+> > has properly resumed is still being discussed and it is planned as a
+> > future effort.
 > > 
-> > IIUC, the in_ports and out_ports parameters are for external IN and
-> > OUT jacks, where an external OUT jack is connected to an embedded IN
-> > jack, and an external IN jack is connected to an embedded OUT jack.
+> > Meanwhile, the stop-gap fix here is to schedule the pmic glink altmode
+> > worker on the system_freezable_wq instead of the system_wq. This will
+> > result in the altmode worker not being scheduled to run until the
+> > devices are resumed first, which will give the controllers like I2C a
+> > chance to resume before the transfer is requested.
 > 
-> I think it depends how the in_ports and out_ports values in configfs are
-> interpreted.  However, the case where in_ports != out_ports has been
-> broken since these files were added!
-> 
-> Without this change, setting in_ports=4 out_ports=2 we end up with:
-> 
->       Endpoint Descriptor:
->         [...]
->         bEndpointAddress     0x01  EP 1 OUT
->         [...]
->         MIDIStreaming Endpoint Descriptor:
->           bLength                 8
->           bDescriptorType        37
->           bDescriptorSubtype      1 (Invalid)
->           bNumEmbMIDIJack         4
->           baAssocJackID( 0)       9
->           baAssocJackID( 1)      11
->           baAssocJackID( 2)       9
->           baAssocJackID( 3)       0
->       Endpoint Descriptor:
->         [...]
->         bEndpointAddress     0x81  EP 1 IN
->         [...]
->         MIDIStreaming Endpoint Descriptor:
->           bLength                 6
->           bDescriptorType        37
->           bDescriptorSubtype      1 (Invalid)
->           bNumEmbMIDIJack         2
->           baAssocJackID( 0)       2
->           baAssocJackID( 1)       4
-> 
-> Note that baAssocJackID values 2 and 3 on the OUT endpoint are wrong.
-> 
-> From the same config, the jack definitions are:
-> 
-> 	1:  IN  External
-> 	2:  OUT Embedded, source 1
-> 	3:  IN  External
-> 	4:  OUT Embedded, source 3
-> 	5:  IN  External
-> 	6:  OUT Embedded, source 5
-> 	7:  IN  External
-> 	8:  OUT Embedded, source 7
-> 
-> 	9:  IN  Embedded
-> 	10: OUT External, source 9
-> 	11: IN  Embedded
-> 	12: OUT External, source 11
-> 
-> So it seems that the first 2 entries in each endpoint list are correct.
-> For the OUT endpoint, jacks 9 and 11 are embedded IN jacks and for the
-> IN endpoint, jacks 2 and 4 are embedded OUT jacks.
-> 
-> The problem is that the OUT endpoint lists two extra invalid jack IDs
-> and the IN endpoint should list jacks 6 and 8 but does not.
-> 
-> After applying this patch, the endpoint descriptors for the same config
-> are:
-> 
->       Endpoint Descriptor:
->         [...]
->         bEndpointAddress     0x01  EP 1 OUT
->         [...]
->         MIDIStreaming Endpoint Descriptor:
->           bLength                 6
->           bDescriptorType        37
->           bDescriptorSubtype      1 (Invalid)
->           bNumEmbMIDIJack         2
->           baAssocJackID( 0)       9
->           baAssocJackID( 1)      11
->       Endpoint Descriptor:
->         [...]
->         bEndpointAddress     0x81  EP 1 IN
->         [...]
->         MIDIStreaming Endpoint Descriptor:
->           bLength                 8
->           bDescriptorType        37
->           bDescriptorSubtype      1 (Invalid)
->           bNumEmbMIDIJack         4
->           baAssocJackID( 0)       2
->           baAssocJackID( 1)       4
->           baAssocJackID( 2)       6
->           baAssocJackID( 3)       8
-> 
-> Which lists all the jack IDs where they should be.
+> This is incomplete at best, even as a stop gap. I just threw a
+> dump_stack() in qmp_combo_typec_switch_set() and see that it is being
+> called four times (don't ask me why) from two different workers on
+> hotplug.
 
-Hmm, I don't get your point.  The embedded IN is paired with the
-external OUT.  That's the intended behavior, no?
-
-
-Takashi
+Yes, that is expected. From the pmic glink altmode worker and then the
+ucsi worker (for the gpio based orientation).
 
 > 
+> Even if you use the freezable workqueue for altmode notifications, you
+> can still end up here via the ucsi notifications, and that now also
+> seems to generate a warning in the PM code during resume.
 > 
-> Regards,
-> John
+> [   25.684039] Call trace:
+> [   25.686633]  show_stack+0x18/0x24 (C)
+> [   25.690492]  dump_stack_lvl+0xc0/0xd0
+> [   25.694350]  dump_stack+0x18/0x24
+> [   25.697851]  qmp_combo_typec_switch_set+0x28/0x210 [phy_qcom_qmp_combo]
+> [   25.704764]  typec_switch_set+0x58/0x90 [typec]
+> [   25.709525]  ps883x_sw_set+0x2c/0x98 [ps883x]
+> [   25.714092]  typec_switch_set+0x58/0x90 [typec]
+> [   25.718861]  typec_set_orientation+0x24/0x6c [typec]
+> [   25.724068]  pmic_glink_ucsi_connector_status+0x5c/0x88 [ucsi_glink]
+> [   25.730726]  ucsi_handle_connector_change+0xc4/0x448 [typec_ucsi]
+> [   25.737099]  process_one_work+0x20c/0x610
+> [   25.741322]  worker_thread+0x23c/0x378
+> [   25.745274]  kthread+0x124/0x128
+> [   25.748680]  ret_from_fork+0x10/0x20
+> [   25.753631] typec port4-partner: PM: parent port4 should not be sleeping
+
+Yes, totally missed this one. I guess in the end we could apply the same
+fix, considering the alternative of reworking the glink code now.
+
+Or I can just start reworking the glink code now but that is a broader
+effort since we will be trying to fix the unconditionally wake-up glink
+interrupts as well in one go. And will impact all platforms ...
+
 > 
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: c8933c3f79568 ("USB: gadget: f_midi: allow a dynamic number of input and output ports")
-> > > Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-> > > ---
-> > >  drivers/usb/gadget/function/f_midi.c | 8 ++++----
-> > >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
-> > > index 837fcdfa3840f..6cc3d86cb4774 100644
-> > > --- a/drivers/usb/gadget/function/f_midi.c
-> > > +++ b/drivers/usb/gadget/function/f_midi.c
-> > > @@ -1000,11 +1000,11 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
-> > >  	}
-> > >  
-> > >  	/* configure the endpoint descriptors ... */
-> > > -	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
-> > > -	ms_out_desc.bNumEmbMIDIJack = midi->in_ports;
-> > > +	ms_out_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
-> > > +	ms_out_desc.bNumEmbMIDIJack = midi->out_ports;
-> > >  
-> > > -	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->out_ports);
-> > > -	ms_in_desc.bNumEmbMIDIJack = midi->out_ports;
-> > > +	ms_in_desc.bLength = USB_DT_MS_ENDPOINT_SIZE(midi->in_ports);
-> > > +	ms_in_desc.bNumEmbMIDIJack = midi->in_ports;
-> > >  
-> > >  	/* ... and add them to the list */
-> > >  	endpoint_descriptor_index = i;
-> > > -- 
-> > > 2.48.1
-> > > 
-> > > 
+> When you first brought up the possible workaround of using a freezable
+> workqueue, I mistakenly thought this would apply to all glink messages
+> (I realise that would defeat the purpose of allowing some early
+> notifications).
+
+No, only the altmode worker. In fact, everything stays the same with
+respect to the other glink messages as we don't want to break other
+clients (hopefully Caleb and Bjorn can describe better the ones that
+they know about, IIRC, mobile platforms related).
+
+That was the whole point of doing the altmode only (for now).
+
+But now I'm not sure this is a good idea anymore, since we are starting
+to play wack-a-mole if we add ucsi to the list.
+
+> 
+> You've also found that the glink interrupts are waking up the system
+> unconditionally on battery notifications, which would be yet another
+> reason for disabling the interrupts (or implementing some kind of
+> masking).
+
+Yes, that is something that needs to be addressed. But IIUC it involves
+telling adsp to keep quiet about some notifications, which I don't know
+if it's possible and how should be done.
+
+For example, with some chargers, I do get "unknown notification: 0x283"
+from the pmic_glink.power-supply and it wakes up from suspend even.
+
+> 
+> I'm leaning towards just disabling the glink interrupts during suspend,
+> but that depends a bit on what (historical?) functionality actually need
+> them.
+
+So the disabling needs to be at least per platform if not per client (or
+even notification type). This is what the proper solution discussed with
+Bjorn off-list was, IIRC.
+
+> 
+> Johan
+
+Thanks for reviewing and reporting this new ucsi case.
+
+Abel
 
