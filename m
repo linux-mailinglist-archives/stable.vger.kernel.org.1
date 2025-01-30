@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-111418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51B4A22F0D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E99D1A22FA8
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265D41888D19
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995051889910
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CF01E98E8;
-	Thu, 30 Jan 2025 14:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE681E9918;
+	Thu, 30 Jan 2025 14:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3hSaGxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1gvZhsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71B31E7C27;
-	Thu, 30 Jan 2025 14:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578D01E98FF;
+	Thu, 30 Jan 2025 14:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246680; cv=none; b=khrN0guF2tgQLmi1ZYGFhb6p4NPoQ5BG9xMmTuGXukS4Kd0vyypTZK1ck/RxyoVu2AvGMvtLxgYZO0tYdwhzVe5nFeXBp9dqxA/W4KB5QKyuGCa/PqRhB0rMYdUj8L88aTiRI7g7VTqG9x40+4V+CdsDDTtVR3fg+wgWe+9EKPk=
+	t=1738247043; cv=none; b=kKn148YymEm20oxUFi5bpdKN4CVp4TgrTM6o7yxcnTWNOz183dmwimVSFFfZN9nTbrQtjnnMOo/nxIr1ng/HaOi4us1pwrt4rF91wutsqVZUt9h6OHxSDXwn1oN/dXCfa5/Xbgxl+QzcY376wQMgeeOtl1V2tuqQ1W82PvT2pgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246680; c=relaxed/simple;
-	bh=nIXf1e/VnWlpN+na/3NO/tjyQQAMPwjIlnQ5Bbd9Mbg=;
+	s=arc-20240116; t=1738247043; c=relaxed/simple;
+	bh=60aT/Na+lbMr898H3I+ZxwZaJZTnenLqzmIyZn0IpM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbqyPhqcz58rtPSnbBNAnYodkBJuFDUFgzd2L5c54BSuGIALfe1JwB/Yein1N5HlWCP12oA70PS68lTIcrVBQyoHBoFV5nWOegphWb8kg1l2ecmY3RyXHqfEaP7GquAjsIXdLQoP/0BYuzMiXngVoU29/ukJs30mDWRQ9DOBI/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3hSaGxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D956C4CED2;
-	Thu, 30 Jan 2025 14:17:59 +0000 (UTC)
+	 MIME-Version; b=Prnp9XR8WnNPmCCyBn0j2+Q3EheMWMOQX2lwELqSOmE1rfsnbQI1E2/hMjUTXd72QLrmsRFPFTj16Ty2y2QnrXZ38Y3cmDB4P9PiH4FR5jfIDrhLJZ5VDL9wZQ9bbmaSwzTqq6ldoLpwqmPKkKm2BNvi/wDdkjSlBbOASNudNO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1gvZhsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D900CC4CED2;
+	Thu, 30 Jan 2025 14:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246679;
-	bh=nIXf1e/VnWlpN+na/3NO/tjyQQAMPwjIlnQ5Bbd9Mbg=;
+	s=korg; t=1738247043;
+	bh=60aT/Na+lbMr898H3I+ZxwZaJZTnenLqzmIyZn0IpM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3hSaGxrQdxRjg13cGUcmc7PbQaFfWH47vOSGls9R60d3wowzK06eEJPPSiiXyhCH
-	 f6ajwAwUdYQbjd61zbfv73VWM/COK5ZdzF/w6MQ4yLtOb27K13PqMV5R0sWBgPMHrJ
-	 dQ7zemZLFbkBj9d5EFLEcOBpV9hsKvHi03G0exPg=
+	b=X1gvZhsGpkIxQ3HdgXFp+WLIKby704LrUep3/HaTewk56B2CdUymAYD3WQwdQB0Vr
+	 38d9v9r6YAkQYjNk2YcEzoGaDTh5lME/k2dKlt1ZPiDsm5dO7D3IehxMXyz3Ws49wX
+	 OMIwhXAOZBGn60D5y4QctgWaStXap9bAFRryL1JI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 30/91] iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
-Date: Thu, 30 Jan 2025 15:00:49 +0100
-Message-ID: <20250130140134.875856318@linuxfoundation.org>
+	Xu Wang <vulab@iscas.ac.cn>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 061/133] drm: bridge: adv7511: Remove redundant null check before clk_disable_unprepare
+Date: Thu, 30 Jan 2025 15:00:50 +0100
+Message-ID: <20250130140144.977448945@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Xu Wang <vulab@iscas.ac.cn>
 
-commit 333be433ee908a53f283beb95585dfc14c8ffb46 upstream.
+[ Upstream commit 3fc5a284213d5fca1c0807ea8725355d39808930 ]
 
-The 'data' array is allocated via kmalloc() and it is used to push data
-to user space from a triggered buffer, but it does not set values for
-inactive channels, as it only uses iio_for_each_active_channel()
-to assign new values.
+Because clk_disable_unprepare() already checked NULL clock parameter,
+so the additional check is unnecessary, just remove them.
 
-Use kzalloc for the memory allocation to avoid pushing uninitialized
-information to userspace.
-
-Cc: stable@vger.kernel.org
-Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xu Wang <vulab@iscas.ac.cn>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Stable-dep-of: 81adbd3ff21c ("drm: adv7511: Fix use-after-free in adv7533_attach_dsi()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dummy/iio_simple_dummy_buffer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
-+++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
-@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trig
- 	int len = 0;
- 	u16 *data;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index e50c741cbfe7..60400efe1dd3 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1324,8 +1324,7 @@ static int adv7511_probe(struct i2c_client *i2c, const struct i2c_device_id *id)
+ err_unregister_cec:
+ 	cec_unregister_adapter(adv7511->cec_adap);
+ 	i2c_unregister_device(adv7511->i2c_cec);
+-	if (adv7511->cec_clk)
+-		clk_disable_unprepare(adv7511->cec_clk);
++	clk_disable_unprepare(adv7511->cec_clk);
+ err_i2c_unregister_packet:
+ 	i2c_unregister_device(adv7511->i2c_packet);
+ err_i2c_unregister_edid:
+@@ -1343,8 +1342,7 @@ static int adv7511_remove(struct i2c_client *i2c)
+ 	if (adv7511->type == ADV7533 || adv7511->type == ADV7535)
+ 		adv7533_detach_dsi(adv7511);
+ 	i2c_unregister_device(adv7511->i2c_cec);
+-	if (adv7511->cec_clk)
+-		clk_disable_unprepare(adv7511->cec_clk);
++	clk_disable_unprepare(adv7511->cec_clk);
  
--	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
-+	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
- 	if (!data)
- 		goto done;
+ 	adv7511_uninit_regulators(adv7511);
  
+-- 
+2.39.5
+
 
 
 
