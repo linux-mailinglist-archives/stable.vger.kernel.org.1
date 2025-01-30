@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A233CA23056
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D510A23012
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 450397A10B6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F243E165E89
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D881E32C5;
-	Thu, 30 Jan 2025 14:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586A01E9B19;
+	Thu, 30 Jan 2025 14:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yzdk14O6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlOVnVqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159528BFF;
-	Thu, 30 Jan 2025 14:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B431E9B0C;
+	Thu, 30 Jan 2025 14:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247481; cv=none; b=bqfXIcp9gE1NHIsQep+uBxaC/B7nxHCu0Mx+lWl32/O3mD+x4cFJ+G483r6hqnSH7+9KU+MdXIBgNKAlZyDIGXoXGUrYnR9Cx5l3/WnIoWbUJeSlMT1jM2zFLg2UmLrKgqyQt1/vEJEmt15sEhsrP7P0W5ER5tSswHX/iEzTCZQ=
+	t=1738247306; cv=none; b=FICQBDddt7UUMDYxSE+jgEcBNmoH9rO+610hVT7QdvjPd89YUBazliu8TD//hYGWdZnvAsAMQ2H8I1q9BguvHYI5rqYIJ9bd4AN5xZscUp3H1INPsAZcnO3rrSvrinf0owGWZEIA7cmut8DyG9L1KAOnI72+yioC/+jSJXmMLIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247481; c=relaxed/simple;
-	bh=80j+asbeRHebB9AXGrY5hX+/gatIpSscO1BDQaHntmE=;
+	s=arc-20240116; t=1738247306; c=relaxed/simple;
+	bh=XB7AlbMSphuVbyq3Z5Mo+8fZ9cL4lMktAzTAoUuGu2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utQqf14dGA0eFevW34bdwdtf0pdVOM3I9WQ/VVTluADqvo3e/CocwjiAbBWLklBhtfPZDOBWUwZXuLOI4KL8ZM9QX20uqYKsBabdXHLdsMZpLcIEJP1/vWTFkwd1gnbL4mQnEfonh53DBL07StLjjDRR7MKeF0zgJC7hl53wL+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yzdk14O6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900E1C4CED2;
-	Thu, 30 Jan 2025 14:31:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BxI8ea9I6BA6BtUDnKc/jX3zxmUnu8PAhiJ/290wpx3eMNO17m8uRgTDDZIUIUu3LdURovohBgAa39NaQuf1dS4136qa7RRFmHF3VRWN307z7XV8hNhb+2TDNJkChh+6oe1fz70VhX1PMKrL5bG8yJgunrkVBmTrxg2ecJyb/ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlOVnVqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED55C4CEE2;
+	Thu, 30 Jan 2025 14:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247480;
-	bh=80j+asbeRHebB9AXGrY5hX+/gatIpSscO1BDQaHntmE=;
+	s=korg; t=1738247306;
+	bh=XB7AlbMSphuVbyq3Z5Mo+8fZ9cL4lMktAzTAoUuGu2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yzdk14O6P34OXb4IUkE3Ztd9Cu3VLCXy4v2Yj9CW8SHiYhynA4ZZfvheo53dbYR90
-	 R2rl4NnH+1toBgVV8aLJM6pTq1awquRA6HeCdfJnEt2OlyiUl4oFVYUSm9wu6D3B4N
-	 t7BV/LOJU0bLu0aYyQIovBZS6Kmeec4Re2b7h7cY=
+	b=AlOVnVqznwTa1+8V59DCASWSsrKPso79SAEZTYtCofSbhLVvPRYF2USVBOoQtXZjY
+	 wH0/e3kTbeb3PMOhcK0MI7NoHg0243YQNyMbAUyhyNBBvyg4kqXb5jUeg6bOzriwQV
+	 4Mj6BV5yzAQt1HD/dS06ft243ly/af5YWAqzyaWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 26/49] xfs: inode recovery does not validate the recovered inode
-Date: Thu, 30 Jan 2025 15:02:02 +0100
-Message-ID: <20250130140134.889460054@linuxfoundation.org>
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.15 11/24] vfio/platform: check the bounds of read/write syscalls
+Date: Thu, 30 Jan 2025 15:02:03 +0100
+Message-ID: <20250130140127.752626307@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 038ca189c0d2c1570b4d922f25b524007c85cf94 ]
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-Discovered when trying to track down a weird recovery corruption
-issue that wasn't detected at recovery time.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-The specific corruption was a zero extent count field when big
-extent counts are in use, and it turns out the dinode verifier
-doesn't detect that specific corruption case, either. So fix it too.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_inode_buf.c   |    3 +++
- fs/xfs/xfs_inode_item_recover.c |   14 +++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_inode_buf.c
-+++ b/fs/xfs/libxfs/xfs_inode_buf.c
-@@ -507,6 +507,9 @@ xfs_dinode_verify(
- 	if (mode && nextents + naextents > nblocks)
- 		return __this_address;
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -388,6 +388,11 @@ static ssize_t vfio_platform_read_mmio(s
+ {
+ 	unsigned int done = 0;
  
-+	if (nextents + naextents == 0 && nblocks != 0)
-+		return __this_address;
++	if (off >= reg->size)
++		return -EINVAL;
 +
- 	if (S_ISDIR(mode) && nextents > mp->m_dir_geo->max_extents)
- 		return __this_address;
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -466,6 +471,11 @@ static ssize_t vfio_platform_write_mmio(
+ {
+ 	unsigned int done = 0;
  
---- a/fs/xfs/xfs_inode_item_recover.c
-+++ b/fs/xfs/xfs_inode_item_recover.c
-@@ -286,6 +286,7 @@ xlog_recover_inode_commit_pass2(
- 	struct xfs_log_dinode		*ldip;
- 	uint				isize;
- 	int				need_free = 0;
-+	xfs_failaddr_t			fa;
- 
- 	if (item->ri_buf[0].i_len == sizeof(struct xfs_inode_log_format)) {
- 		in_f = item->ri_buf[0].i_addr;
-@@ -530,8 +531,19 @@ out_owner_change:
- 	    (dip->di_mode != 0))
- 		error = xfs_recover_inode_owner_change(mp, dip, in_f,
- 						       buffer_list);
--	/* re-generate the checksum. */
-+	/* re-generate the checksum and validate the recovered inode. */
- 	xfs_dinode_calc_crc(log->l_mp, dip);
-+	fa = xfs_dinode_verify(log->l_mp, in_f->ilf_ino, dip);
-+	if (fa) {
-+		XFS_CORRUPTION_ERROR(
-+			"Bad dinode after recovery",
-+				XFS_ERRLEVEL_LOW, mp, dip, sizeof(*dip));
-+		xfs_alert(mp,
-+			"Metadata corruption detected at %pS, inode 0x%llx",
-+			fa, in_f->ilf_ino);
-+		error = -EFSCORRUPTED;
-+		goto out_release;
-+	}
- 
- 	ASSERT(bp->b_mount == mp);
- 	bp->b_flags |= _XBF_LOGRECOVERY;
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
 
 
 
