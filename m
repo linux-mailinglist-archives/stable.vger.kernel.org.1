@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869F1A22ED8
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B3EA22E87
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CADD93A624F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CCBB3A946E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CCD1BD4F7;
-	Thu, 30 Jan 2025 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FF81E573B;
+	Thu, 30 Jan 2025 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gucs9gXq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4i3nSGR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35238383;
-	Thu, 30 Jan 2025 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777371BBBEB;
+	Thu, 30 Jan 2025 14:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246540; cv=none; b=iNUQHPOkRmQnEUH1GyPTkt9QkVXjVdRBKoRGPCkJfBWWmNKm5uU/lIpnA95t7+ryMRyv7qu0s2iw2GGayURGg7ZbQ5weCxivIHQKCl0R7vyGc7VJ630MbQGLiXnRchCbXzDZJzLuXeLWEr8Z10gbex/SF417fgMMzAvI4Kd8GZ0=
+	t=1738245708; cv=none; b=u0/eavQeqPTnhtyGBpMZzk+zkvRz9L35wZexSL2rsBOoL9Hi0M6/7W77KX71z3+VjbO7Ym9pk0zeSixHnZFN87sjM0qmC2jDb7ATrDLFYNZezUjqez5KmUFs4sOhwqQTXAMmhJCRewuksLpxjdlB+y6o0W5mKCvaosmZaD/QCIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246540; c=relaxed/simple;
-	bh=3nrZeS71jK+EwtMfm5RWqaHpnCwWj6rLjt9BRaj+Y2M=;
+	s=arc-20240116; t=1738245708; c=relaxed/simple;
+	bh=qJRJaI2tfOSEqZbprPbxh9OS4nSwD5V0m3+QfOEs7/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHqENAM0cHdISzY/mMMRLkWLdY0rs7zyZSgIW+hDe5da39HCL8cwX8sLT6v+tUQLA8M2/6g0Q3/WL++LWS2/Sxe6wzg69SDXq1GnaILjiJI+VMsifnpEMEHKoBaW5n1vZe4EY4U+f8faii9utMMnCSlvPFd7X97G7tRuoVx7atE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gucs9gXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B806AC4CEE0;
-	Thu, 30 Jan 2025 14:15:39 +0000 (UTC)
+	 MIME-Version; b=EF19vlK5VxPZFqjggINsGENI8fa63oznFhyrS0Vq+VPpSobshKd2XTQP9gUB2Zgb0ZtU5BDn0S+2AU8LqotYqU+4GeMlt0+hRrj8ZqDUmZNfuX4RUdINHAY+0T18i7vADow12n5puPjaicCAs80760m/caO6I9gbQEmkv/+0KSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4i3nSGR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07633C4CED2;
+	Thu, 30 Jan 2025 14:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246540;
-	bh=3nrZeS71jK+EwtMfm5RWqaHpnCwWj6rLjt9BRaj+Y2M=;
+	s=korg; t=1738245708;
+	bh=qJRJaI2tfOSEqZbprPbxh9OS4nSwD5V0m3+QfOEs7/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gucs9gXqboDqMsOalVkr83pXlu10x1GUzkWi6a2NpgCLFKheP5yQQEE2QL2UUbZkc
-	 xVOSgRm1Cd6ixqQDwUNEe5CSgIhTX+LFxB/bLfhH3vxx/NvZG1z6YasJHiKczsUEC7
-	 JZH4alB/SWluvpI1Q5YYoubIIFjwIFc+JruwGj7g=
+	b=E4i3nSGRDYhg0WxhHgZhdR3KXMRpt3nR9UPEsfsCk1kft2fxVe86T9dRNkYBlcFiq
+	 XCjD4difnIi+BVAL5C9KshWhsk8ZIk21uSvJgHTqSWPta9Y/u+5Bagmtyvk7Ki/txn
+	 1npVxoUeDlaQ1QQAf6s3Xbg0ABtYbDV46Zmgf554=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Rajani Kantha <rajanikantha@engineer.com>
-Subject: [PATCH 6.6 27/43] block: fix integer overflow in BLKSECDISCARD
+	Nicolas Nobelis <nicolas@nobelis.eu>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 34/40] Input: xpad - add support for Nacon Pro Compact
 Date: Thu, 30 Jan 2025 14:59:34 +0100
-Message-ID: <20250130133459.995930116@linuxfoundation.org>
+Message-ID: <20250130133501.075123552@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Nicolas Nobelis <nicolas@nobelis.eu>
 
-commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 upstream.
+commit 1bba29603a2812e7b3dbb4ec1558ecb626ee933e upstream.
 
-I independently rediscovered
+Add Nacon Pro Compact to the list of supported devices. These are the
+ids of the "Colorlight" variant. The buttons, sticks and vibrations
+work. The decorative LEDs on the other hand do not (they stay turned
+off).
 
-	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
-	block: fix overflow in blk_ioctl_discard()
-
-but for secure erase.
-
-Same problem:
-
-	uint64_t r[2] = {512, 18446744073709551104ULL};
-	ioctl(fd, BLKSECDISCARD, r);
-
-will enter near infinite loop inside blkdev_issue_secure_erase():
-
-	a.out: attempt to access beyond end of device
-	loop0: rw=5, sector=3399043073, nr_sectors = 1024 limit=2048
-	bio_check_eod: 3286214 callbacks suppressed
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+Signed-off-by: Nicolas Nobelis <nicolas@nobelis.eu>
+Link: https://lore.kernel.org/r/20241116182419.33833-1-nicolas@nobelis.eu
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -115,7 +115,7 @@ static int blk_ioctl_discard(struct bloc
- 		return -EINVAL;
- 
- 	filemap_invalidate_lock(inode->i_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (err)
- 		goto fail;
- 	err = blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
-@@ -127,7 +127,7 @@ fail:
- static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
- 		void __user *argp)
- {
--	uint64_t start, len;
-+	uint64_t start, len, end;
- 	uint64_t range[2];
- 	int err;
- 
-@@ -142,11 +142,12 @@ static int blk_ioctl_secure_erase(struct
- 	len = range[1];
- 	if ((start & 511) || (len & 511))
- 		return -EINVAL;
--	if (start + len > bdev_nr_bytes(bdev))
-+	if (check_add_overflow(start, len, &end) ||
-+	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
- 
- 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (!err)
- 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
- 						GFP_KERNEL);
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -383,6 +383,7 @@ static const struct xpad_device {
+ 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
++	{ 0x3285, 0x0646, "Nacon Pro Compact", 0, XTYPE_XBOXONE },
+ 	{ 0x3537, 0x1004, "GameSir T4 Kaleid", 0, XTYPE_XBOX360 },
+ 	{ 0x3767, 0x0101, "Fanatec Speedster 3 Forceshock Wheel", 0, XTYPE_XBOX },
+ 	{ 0xffff, 0xffff, "Chinese-made Xbox Controller", 0, XTYPE_XBOX },
 
 
 
