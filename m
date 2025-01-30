@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-111565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FE7A22FD6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185B6A22F28
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E1977A4429
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95CB73A48B8
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6971E9B01;
-	Thu, 30 Jan 2025 14:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589741E9907;
+	Thu, 30 Jan 2025 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4d+msFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpAb/CYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5D71E9916;
-	Thu, 30 Jan 2025 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161E71E8855;
+	Thu, 30 Jan 2025 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247107; cv=none; b=GauabY7zfUypeZDSR0lBPq+6kPpKNiwPt6Xiufn0M7SVCYxMjXqVoivSHNcR4NFC/EzVrC9z4PBxvnsIgge3X9DcmkhBYGEAT7xpc/7SrPEXWZj2DebJrZnWXHGyao9h1vSWnPIic7vPzIttaZDPmihVmbcG7X/0t2nkUKS4zXU=
+	t=1738246747; cv=none; b=Jod4QgfHTbQWy0q9iknEf9vBQ7BmqIAMDNk72BC62hD6Y6gHHuAh6k4nVACT7OJtUPPn1IrIH/gmTFrnkER0tDFnrl3zWKE1GNbPJ0UVAsOiXm2l16ip8ER6FIxBaA8RBb7sgHN6tEDfKzcRIHS8dd25mikI61wO/QRqrVJFhiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247107; c=relaxed/simple;
-	bh=pFO9gypAqw+rcpTEjs0tCESpm18jM0C3EkbC1Yay37o=;
+	s=arc-20240116; t=1738246747; c=relaxed/simple;
+	bh=fnfe4Qems97e9rwXHO2rkKZDNLilJeF3KP6DNc9Z4fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QB0wA8BDOhGp+oHIXA24VDjb0zueakJGaQjeHTC3tEpORPXTD3eoQldQ17PBSKKefuJhPb6t4YYKP3peYe2JFR8GnkkStvhikFNPuj5VNmKmxE6IEpiG5jemnHmPhuXbEAPjiGsDpyOh7QtMMo0MVo8ZDRMCAd2CMlBXP04zPs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4d+msFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67261C4CEE2;
-	Thu, 30 Jan 2025 14:25:06 +0000 (UTC)
+	 MIME-Version; b=i3NcC29NgWD9ZnCjPfpeWog08CUq1tw+zISYVHe7s7IxiUOe5joaDTI9EF3uSrS6s7MzxIq8C1AjTCkTsHjoLC/Ruu8iGeC1Fixwt6YkTqQbCmA9HXB14suiOJqDI+L0Hl1CfOgdjXifOYIJ5V2DP2xZogZ5kL6Dc+ygugCJE4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpAb/CYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFB0C4CED2;
+	Thu, 30 Jan 2025 14:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247106;
-	bh=pFO9gypAqw+rcpTEjs0tCESpm18jM0C3EkbC1Yay37o=;
+	s=korg; t=1738246747;
+	bh=fnfe4Qems97e9rwXHO2rkKZDNLilJeF3KP6DNc9Z4fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4d+msFNRpCERu0Pn3bZCLi2VUd9NfS/UAAE6CqOp7qxyNeOGz3OgzxoGJc5qnq80
-	 R2llQ0S1WyEPE1S02Z95hSWAwSZ4ZUAsWNUkM506aF0J9hhOMGzQNih0wOJPBXZU5/
-	 9p6ubGNrXBi7eaWZ9GvcLkdKwYwK/XVx5I5cKiYU=
+	b=EpAb/CYUxCGbwmvMycATy+z3o4C8zOzVnWwOyxDZwICU8ze+nMCQWhJEzaeXXy6xV
+	 cz3ca70/Zmlw6id+l9MAGaznoO3DUi5YvlO54m+juJUfPKh9C9ZpW6pHNiUQytF0Te
+	 mFmToK1oEDsWOgShAFR0e0+SB2vWiPVNaYo/zV+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sudheer Kumar Doredla <s-doredla@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/133] i2c: rcar: fix NACK handling when being a target
+Subject: [PATCH 5.4 54/91] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
 Date: Thu, 30 Jan 2025 15:01:13 +0100
-Message-ID: <20250130140145.901608632@linuxfoundation.org>
+Message-ID: <20250130140135.834718327@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Sudheer Kumar Doredla <s-doredla@ti.com>
 
-[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
+[ Upstream commit 03d120f27d050336f7e7d21879891542c4741f81 ]
 
-When this controller is a target, the NACK handling had two issues.
-First, the return value from the backend was not checked on the initial
-WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
-Also, the NACK always arrives one byte late on the bus, even in the
-WRITE_RECEIVED case. This seems to be a HW issue. We should then not
-rely on the backend to correctly NACK the superfluous byte as well. Fix
-both issues by introducing a flag which gets set whenever the backend
-requests a NACK and keep sending it until we get a STOP condition.
+CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
+ALE field entries spanning up to two words at the most.
 
-Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
+expected when ALE field spanned across word1 and word2, but fails when
+ALE field spanned across word2 and word3.
+
+For example, while reading the ALE field spanned across word2 and word3
+(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
+due to the index becoming zero while flipping.
+The same issue occurred when setting an ALE entry.
+
+This issue has not been seen in practice but will be an issue in the future
+if the driver supports accessing ALE fields spanning word2 and word3
+
+Fix the methods to handle getting/setting fields spanning up to two words.
+
+Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
+Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://patch.msgid.link/20250108172433.311694-1-s-doredla@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
-index 7a6bae9df568b..08b1580d59c98 100644
---- a/drivers/i2c/busses/i2c-rcar.c
-+++ b/drivers/i2c/busses/i2c-rcar.c
-@@ -112,6 +112,8 @@
- #define ID_P_PM_BLOCKED		BIT(31)
- #define ID_P_MASK		GENMASK(31, 28)
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index f17619c545ae5..9280601961c79 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -60,15 +60,15 @@
  
-+#define ID_SLAVE_NACK		BIT(0)
-+
- enum rcar_i2c_type {
- 	I2C_RCAR_GEN1,
- 	I2C_RCAR_GEN2,
-@@ -145,6 +147,7 @@ struct rcar_i2c_priv {
- 	int irq;
- 
- 	struct i2c_client *host_notify_client;
-+	u8 slave_flags;
- };
- 
- #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
-@@ -573,6 +576,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
  {
- 	u32 ssr_raw, ssr_filtered;
- 	u8 value;
-+	int ret;
+-	int idx, idx2;
++	int idx, idx2, index;
+ 	u32 hi_val = 0;
  
- 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
- 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
-@@ -588,7 +592,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 			rcar_i2c_write(priv, ICRXTX, value);
- 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
- 		} else {
--			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
-+			if (ret)
-+				priv->slave_flags |= ID_SLAVE_NACK;
-+
- 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
- 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
- 		}
-@@ -601,18 +608,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
- 	if (ssr_filtered & SSR) {
- 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
- 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
-+		priv->slave_flags &= ~ID_SLAVE_NACK;
- 		rcar_i2c_write(priv, ICSIER, SAR);
- 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
+ 	idx    = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be fetched exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
++		index = 2 - idx2; /* flip */
++		hi_val = ale_entry[index] << ((idx2 * 32) - start);
  	}
+ 	start -= idx * 32;
+ 	idx    = 2 - idx; /* flip */
+@@ -78,16 +78,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
+ static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
+ 				      u32 value)
+ {
+-	int idx, idx2;
++	int idx, idx2, index;
  
- 	/* master wants to write to us */
- 	if (ssr_filtered & SDR) {
--		int ret;
--
- 		value = rcar_i2c_read(priv, ICRXTX);
- 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
--		/* Send NACK in case of error */
--		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
-+		if (ret)
-+			priv->slave_flags |= ID_SLAVE_NACK;
-+
-+		/* Send NACK in case of error, but it will come 1 byte late :( */
-+		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
-+			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
- 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
+ 	value &= BITMASK(bits);
+ 	idx = start / 32;
+ 	idx2 = (start + bits - 1) / 32;
+ 	/* Check if bits to be set exceed a word */
+ 	if (idx != idx2) {
+-		idx2 = 2 - idx2; /* flip */
+-		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
+-		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
++		index = 2 - idx2; /* flip */
++		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
++		ale_entry[index] |= (value >> ((idx2 * 32) - start));
  	}
- 
+ 	start -= idx * 32;
+ 	idx = 2 - idx; /* flip */
 -- 
 2.39.5
 
