@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2598A22E76
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C40BA22EAC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199E61688E7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42DA718853D7
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428361E3DF8;
-	Thu, 30 Jan 2025 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24401E991B;
+	Thu, 30 Jan 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgVRXd3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="In+4LUwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F81C13D;
-	Thu, 30 Jan 2025 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8051A1E9901;
+	Thu, 30 Jan 2025 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245674; cv=none; b=PyA6ZtvifKD2Ius3LuaWI767r9ksZ+5NCdeIffThXu4oOM09Z8RnornY0Md9xNpK48iAZqOZOlgX0n1hu46YsyouHM+bQzxWgGX3VrW71Gzr+yzUktMnI451I3r2nCdnld1hzJ0ZWJxU40oWcZd/2y5vbQFaA2odcw884Qkt2fI=
+	t=1738245769; cv=none; b=sqy4ahXLpiOQzORRY7ahSF5yya+4kk8c6ij+IxGEho6WIPJwd0nXylHE2VGXdqlE/DWKDdIHrFDJ9av5VUvaSOdNkVhjzY4cVwtS0j0Y0JPFPYplq3FyTc/sLTWEN4Xm8/53JSX+Ve/mWEeGKku5F2ooUj2Ev57j8UAsOiutM/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245674; c=relaxed/simple;
-	bh=qPfx9kAU1/oyHdAGh+bC+tCwAngXMQSwXokJEtqfAYI=;
+	s=arc-20240116; t=1738245769; c=relaxed/simple;
+	bh=fAURZL/Fn/HsnjWgxI9CqxGi4cxj9vmGDKItVMQxAjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvNg8W97esoCQuPVx95Ku/B4BCTsNWp2qh/j988ABWYirv1hGCXksQuJiPUeZ9UrWBGgkG1XbgjbQ5COulKYUaNzk/7Wxg2GkMH8R8JcdEg3s5oUmCiM2jf1unxJZi/QvaQA/Uy58aiUkwHNGAkU2d5v18umhMrz6L1dKR0iREw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgVRXd3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCFBC4CED2;
-	Thu, 30 Jan 2025 14:01:12 +0000 (UTC)
+	 MIME-Version; b=NkAPtJrYgrn3vq8P64u3l4nn0WooGKRFKC6ssa+Y1sm2JPgDUgUqoI+Oco/haJqmGjNx/j1tzhYIdB288yuJJ9jClLA/bosSRveP1w5djQhOpebG8nO7vjRkV2dUWm4gLZ6Ur6IQZ8lL6fuf2xmzIZNjRtAEqiZVtZESHlZ+Kyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=In+4LUwO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEC0C4CED2;
+	Thu, 30 Jan 2025 14:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245673;
-	bh=qPfx9kAU1/oyHdAGh+bC+tCwAngXMQSwXokJEtqfAYI=;
+	s=korg; t=1738245769;
+	bh=fAURZL/Fn/HsnjWgxI9CqxGi4cxj9vmGDKItVMQxAjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgVRXd3hk43pDHb1IGvcgzIPyh+TXTxa+2DxpkvZzUZF2DRgsGvYp54nkGNysMZ3u
-	 E7GtVtEjkv8h8SYKI0/IkZE8hy+XkzBxkcaeE7BK86+hy5I7l2bSNWzAOaNAlKFiQg
-	 r74QHl0+KrGDY9Vp08f9gGXa6k6ZtJ7cREc9rtXQ=
+	b=In+4LUwO8K1RSkcYXaUZFwg3h2OoRDssp1b03ugR2Y+wmw1HATqlz3W5evZGgyFUe
+	 53oodximpW7cPmqdLQyQx26Vr244ZAPezm/StMJDlfWDfVsFpHMyma81ouYO3B7Xuf
+	 hbp4yQ19X6FZa0pd0bHnJuxGW1c7L76/0a3CMFdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 21/40] libfs: Replace simple_offset end-of-directory detection
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Kun Hu <huk23@m.fudan.edu.cn>
+Subject: [PATCH 6.6 14/43] gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
 Date: Thu, 30 Jan 2025 14:59:21 +0100
-Message-ID: <20250130133500.561438053@linuxfoundation.org>
+Message-ID: <20250130133459.475292847@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,154 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 68a3a65003145644efcbb651e91db249ccd96281 upstream.
+commit 7c9d9223802fbed4dee1ae301661bf346964c9d2 upstream.
 
-According to getdents(3), the d_off field in each returned directory
-entry points to the next entry in the directory. The d_off field in
-the last returned entry in the readdir buffer must contain a valid
-offset value, but if it points to an actual directory entry, then
-readdir/getdents can loop.
+Truncate an inode's address space when flipping the GFS2_DIF_JDATA flag:
+depending on that flag, the pages in the address space will either use
+buffer heads or iomap_folio_state structs, and we cannot mix the two.
 
-This patch introduces a specific fixed offset value that is placed
-in the d_off field of the last entry in a directory. Some user space
-applications assume that the EOD offset value is larger than the
-offsets of real directory entries, so the largest valid offset value
-is reserved for this purpose. This new value is never allocated by
-simple_offset_add().
-
-When ->iterate_dir() returns, getdents{64} inserts the ctx->pos
-value into the d_off field of the last valid entry in the readdir
-buffer. When it hits EOD, offset_readdir() sets ctx->pos to the EOD
-offset value so the last entry is updated to point to the EOD marker.
-
-When trying to read the entry at the EOD offset, offset_readdir()
-terminates immediately.
-
-It is worth noting that using a Maple tree for directory offset
-value allocation does not guarantee a 63-bit range of values --
-on platforms where "long" is a 32-bit type, the directory offset
-value range is still 0..(2^31 - 1). For broad compatibility with
-32-bit user space, the largest tmpfs directory cookie value is now
-S32_MAX.
-
-Fixes: 796432efab1e ("libfs: getdents() should return 0 after reaching EOD")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20241228175522.1854234-5-cel@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c |   37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ fs/gfs2/file.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -241,9 +241,15 @@ const struct inode_operations simple_dir
- };
- EXPORT_SYMBOL(simple_dir_inode_operations);
- 
--/* 0 is '.', 1 is '..', so always start with offset 2 or more */
-+/* simple_offset_add() never assigns these to a dentry */
- enum {
--	DIR_OFFSET_MIN	= 2,
-+	DIR_OFFSET_EOD		= S32_MAX,
-+};
-+
-+/* simple_offset_add() allocation range */
-+enum {
-+	DIR_OFFSET_MIN		= 2,
-+	DIR_OFFSET_MAX		= DIR_OFFSET_EOD - 1,
- };
- 
- static void offset_set(struct dentry *dentry, long offset)
-@@ -287,7 +293,8 @@ int simple_offset_add(struct offset_ctx
- 		return -EBUSY;
- 
- 	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
--				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
-+				 DIR_OFFSET_MAX, &octx->next_offset,
-+				 GFP_KERNEL);
- 	if (unlikely(ret < 0))
- 		return ret == -EBUSY ? -ENOSPC : ret;
- 
-@@ -443,8 +450,6 @@ static loff_t offset_dir_llseek(struct f
- 		return -EINVAL;
+--- a/fs/gfs2/file.c
++++ b/fs/gfs2/file.c
+@@ -251,6 +251,7 @@ static int do_gfs2_set_flags(struct inod
+ 		error = filemap_fdatawait(inode->i_mapping);
+ 		if (error)
+ 			goto out;
++		truncate_inode_pages(inode->i_mapping, 0);
+ 		if (new_flags & GFS2_DIF_JDATA)
+ 			gfs2_ordered_del_inode(ip);
  	}
- 
--	/* In this case, ->private_data is protected by f_pos_lock */
--	file->private_data = NULL;
- 	return vfs_setpos(file, offset, LONG_MAX);
- }
- 
-@@ -454,7 +459,7 @@ static struct dentry *offset_find_next(s
- 	struct dentry *child, *found = NULL;
- 
- 	rcu_read_lock();
--	child = mas_find(&mas, LONG_MAX);
-+	child = mas_find(&mas, DIR_OFFSET_MAX);
- 	if (!child)
- 		goto out;
- 	spin_lock(&child->d_lock);
-@@ -475,7 +480,7 @@ static bool offset_dir_emit(struct dir_c
- 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
- }
- 
--static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
-+static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- {
- 	struct offset_ctx *octx = inode->i_op->get_offset_ctx(inode);
- 	struct dentry *dentry;
-@@ -483,7 +488,7 @@ static void *offset_iterate_dir(struct i
- 	while (true) {
- 		dentry = offset_find_next(octx, ctx->pos);
- 		if (!dentry)
--			return ERR_PTR(-ENOENT);
-+			goto out_eod;
- 
- 		if (!offset_dir_emit(ctx, dentry)) {
- 			dput(dentry);
-@@ -493,7 +498,10 @@ static void *offset_iterate_dir(struct i
- 		ctx->pos = dentry2offset(dentry) + 1;
- 		dput(dentry);
- 	}
--	return NULL;
-+	return;
-+
-+out_eod:
-+	ctx->pos = DIR_OFFSET_EOD;
- }
- 
- /**
-@@ -513,6 +521,8 @@ static void *offset_iterate_dir(struct i
-  *
-  * On return, @ctx->pos contains an offset that will read the next entry
-  * in this directory when offset_readdir() is called again with @ctx.
-+ * Caller places this value in the d_off field of the last entry in the
-+ * user's buffer.
-  *
-  * Return values:
-  *   %0 - Complete
-@@ -525,13 +535,8 @@ static int offset_readdir(struct file *f
- 
- 	if (!dir_emit_dots(file, ctx))
- 		return 0;
--
--	/* In this case, ->private_data is protected by f_pos_lock */
--	if (ctx->pos == DIR_OFFSET_MIN)
--		file->private_data = NULL;
--	else if (file->private_data == ERR_PTR(-ENOENT))
--		return 0;
--	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
-+	if (ctx->pos != DIR_OFFSET_EOD)
-+		offset_iterate_dir(d_inode(dir), ctx);
- 	return 0;
- }
- 
 
 
 
