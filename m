@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30B3A22FED
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A87A23028
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6065A18836C8
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B76B16674C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338891E7C27;
-	Thu, 30 Jan 2025 14:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048551E98F9;
+	Thu, 30 Jan 2025 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBCAVpMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3V7b3Ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C731E522;
-	Thu, 30 Jan 2025 14:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52B41E7C25;
+	Thu, 30 Jan 2025 14:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247210; cv=none; b=pkIDGK46ITbK9Ph71bBofSJdTT1/5tW6ANHun7GeBxeodG8Ujqg2Q/6+ZAKupdD/n3sIhlbGllwnq8f4yVqEtKo/lbUBhuwk91Zl500mAniCaQVWG6lqXFebK2iD/Ru+BZbk6y6l9Yn0JoA701K+YAyZS7kv2aMEyojeE+DEjlQ=
+	t=1738247358; cv=none; b=FjDfyC8TVI2nIRIbJ7+ACcvXhMnlpUkzAlVA9TJDNMTFKN040Wu78VlU0ERC9y9C/0n0mRaLG3ar+//cjpaR83NpY529CzeQOUlPLF0k1s2lZfK2MefuHHCPJ/tFN+49f4LuZMuj5C3C6PdMrgZ7B3OlERHMpP3UBTwqzfj5x0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247210; c=relaxed/simple;
-	bh=xpVTSzHEnHnL37B2LCVVBDY2jDGT1sxWjheweOjPrkA=;
+	s=arc-20240116; t=1738247358; c=relaxed/simple;
+	bh=La/s5fw+My5mMi+VbKmjtC35Lpt/fKQqTIjjYzsmDS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzmmgTvfy8S0iPg7smJRPr8BcbzVRQq2R1luPXYD82DsAMkjRIqxEpwWfFOPLC47mIp0oU5sOlM09CTU4GDxqqUOaO5tzx4o8ZFH6CsQm92PwPWzh3pJ1sNswOf1vOQOrTJWIK5G8NRFxnIL4sLOYcilcHShzxqPtoa5jHLDRE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBCAVpMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6173EC4CED2;
-	Thu, 30 Jan 2025 14:26:49 +0000 (UTC)
+	 MIME-Version; b=GfYNNf8dFn3nF9x+5N+1VNiOnf/tIT4Fvg9kMFVoS31SUilJCYbq7OxWu4ku4RWu005p3FUSsIrilY4BmTsP5JpJftRFs9iPnXreCODUnKjfQrU1hcEneM/iUIwIRLyHAjVT5ahgq5R21FOr9qF9XdcYaVSAEXv61F9zwPM4RMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3V7b3Ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E68C4CED2;
+	Thu, 30 Jan 2025 14:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247209;
-	bh=xpVTSzHEnHnL37B2LCVVBDY2jDGT1sxWjheweOjPrkA=;
+	s=korg; t=1738247358;
+	bh=La/s5fw+My5mMi+VbKmjtC35Lpt/fKQqTIjjYzsmDS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CBCAVpMDGuOukm1UFZqmilAxa0eklZF+wn340bNLSlXkpg5vnGtDxH1Od2HnP+nWW
-	 yuHYGCA19o/HCe3GJbFjbmt/3WmQqeVEQcNHbfCA9snD6dIqOhcoEmhbPiPxppkbr9
-	 4gOpd33nZ1mNWSmSz53zSr+/gwZzas+eCGrO+Kuk=
+	b=P3V7b3Ipk0gik9wMo3RIkV9kka8fwtHivQjaRqBqXNvlrm+BZ5mTvvZhlycxRr79d
+	 9M1iN8uXzj7dTyor7lLzyv43Q9sIVZLMvOQRHMfSm2cOkSCy3/zpyafK9Iwj1J9D+5
+	 is07gcn5768GdvdjBk+c4JZLbXJAdxPeLIAJJtcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/133] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 12/49] xfs: bump max fsgeom struct version
 Date: Thu, 30 Jan 2025 15:01:48 +0100
-Message-ID: <20250130140147.320399762@linuxfoundation.org>
+Message-ID: <20250130140134.325001378@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philippe Simons <simons.philippe@gmail.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 3a748d483d80f066ca4b26abe45cdc0c367d13e9 ]
+[ Upstream commit 9488062805943c2d63350d3ef9e4dc093799789a ]
 
-Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
-pin instead of a normal GPIO. Since the power key is connected to the PMIC,
-and people expect to wake up a suspended system via this key, the NMI IRQ
-controller must stay alive when the system goes into suspend.
+The latest version of the fs geometry structure is v5.  Bump this
+constant so that xfs_db and mkfs calls to libxfs_fs_geometry will fill
+out all the fields.
 
-Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
-sleep, so that the power key can wake up those systems.
+IOWs, this commit is a no-op for the kernel, but will be useful for
+userspace reporting in later changes.
 
-[ tglx: Fixed up coding style ]
-
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_sb.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
-index a412b5d5d0fac..a2aadfdc47728 100644
---- a/drivers/irqchip/irq-sunxi-nmi.c
-+++ b/drivers/irqchip/irq-sunxi-nmi.c
-@@ -200,7 +200,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
- 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
- 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
- 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
--	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
-+	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
-+						  IRQCHIP_SKIP_SET_WAKE;
- 	gc->chip_types[0].regs.ack		= reg_offs->pend;
- 	gc->chip_types[0].regs.mask		= reg_offs->enable;
- 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
--- 
-2.39.5
-
+--- a/fs/xfs/libxfs/xfs_sb.h
++++ b/fs/xfs/libxfs/xfs_sb.h
+@@ -25,7 +25,7 @@ extern uint64_t	xfs_sb_version_to_featur
+ 
+ extern int	xfs_update_secondary_sbs(struct xfs_mount *mp);
+ 
+-#define XFS_FS_GEOM_MAX_STRUCT_VER	(4)
++#define XFS_FS_GEOM_MAX_STRUCT_VER	(5)
+ extern void	xfs_fs_geometry(struct xfs_mount *mp, struct xfs_fsop_geom *geo,
+ 				int struct_version);
+ extern int	xfs_sb_read_secondary(struct xfs_mount *mp,
 
 
 
