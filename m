@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90D3A22FA5
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33948A22F22
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F33917A341E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:22:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3347164A89
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608921E990D;
-	Thu, 30 Jan 2025 14:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0E41E8835;
+	Thu, 30 Jan 2025 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+/x83P7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UchU6tpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E16D1BDA95;
-	Thu, 30 Jan 2025 14:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2661E7C08;
+	Thu, 30 Jan 2025 14:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246975; cv=none; b=eV0EKaMVZJhVpXL9eVtjtVCOU6jGUDg7JwGLbibuGO0Jfw98S9kIT5bGqO21cK9AtzpgQJ48oZ0UN2elHd/OFXOJePWJmGTT7T8QudGI2Njdn6eTUjPOlOYRKadNbUgcT194REA7KElb3wckRDXRHiwO1ddj8U5+SA5HwFvyX2I=
+	t=1738246738; cv=none; b=Qwq5/97V2iWQ4ZEW9TK/06AAraCJqi7Wa0pY+DEVRhh3CmwM2NgFI36L6n8sJWj+wI4tUDBQ0egrueXxjD3JLM6KTtV8jkJBvA7aS8erGiQduEoCANHDPsQ3PKeGkWoVqQ6SkNPczB51h0Vw4bbogZU9BzCt7F6jZf/pVQLoJcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246975; c=relaxed/simple;
-	bh=2qUhejFZQBpSaEQ0G1/w2IK/+Xg3nXJ+BUyePBrn46U=;
+	s=arc-20240116; t=1738246738; c=relaxed/simple;
+	bh=PiFVp/AUjgRmVD2Ex9RmJbhgpUUVxUU33tMEp45RVns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1ADgWW38up2aap3KYpnmI175CnC9vHIPxiuJIKckEI/4EAZlT9BP+20NgcbzNO2ZnM319/sgUE3RcgI3vT+J3r7BfKoabp5LbzJLa9tOcg9dITQGgK9RCIWsvg/Wz1aAF8gEt2hoz+BmssvMdvWXGGQ04vcx7ydTuG7YAbHusk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+/x83P7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C8EC4CED2;
-	Thu, 30 Jan 2025 14:22:54 +0000 (UTC)
+	 MIME-Version; b=PoVXQWUQzckU1fQKhCPxa774fz/XGjDrABCL4cQne0QxIFnOqEne4bjlSx+bGMROGaO2HOi1ULu3+AaDBdMFYStuQLVOg2+6lf6X1kSoZqbEC4gGmMcqXrRNurBVTMbosq3mf3g3FwVlug2QIw0wUR4LX8xqiYuw5MEw1Q7bL9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UchU6tpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18DAC4CED2;
+	Thu, 30 Jan 2025 14:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246975;
-	bh=2qUhejFZQBpSaEQ0G1/w2IK/+Xg3nXJ+BUyePBrn46U=;
+	s=korg; t=1738246738;
+	bh=PiFVp/AUjgRmVD2Ex9RmJbhgpUUVxUU33tMEp45RVns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+/x83P7qoVv4aHlm79JJKRFJg5ArOayWqkGQ1sOm5amJYQJDnrd6hWBShQmnu7wo
-	 s819ZvrM6DviDI8qkCDZVJely/vAHxDgj14r/K/KHcQJ4NpvMy+Kg7TqoAtSESqf/P
-	 mKpdjPWJQzAOLEyxDygd7QPbcYAXqAcPWlQ3KgHw=
+	b=UchU6tpOFlj0Ks1yCdlIC8oaNQY48Fmpr/IiCQW2pgroZb4vfxILsr4MQFA4bSNSa
+	 Gqhnpn+oz0bU56zZtyZcOSzo9/pay/IiGAMmyvijbxnz3tmvKOChsSluuL4VZ0u4eP
+	 aXTpKM4Z1a0DbuexhnoKazbUzs62VYPNFeQ2HAiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make_ruc2021@163.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.10 040/133] usb: fix reference leak in usb_new_device()
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 10/91] tls: Fix tls_sw_sendmsg error handling
 Date: Thu, 30 Jan 2025 15:00:29 +0100
-Message-ID: <20250130140144.126654805@linuxfoundation.org>
+Message-ID: <20250130140134.081481749@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
+[ Upstream commit b341ca51d2679829d26a3f6a4aa9aee9abd94f92 ]
 
-When device_add(&udev->dev) succeeds and a later call fails,
-usb_new_device() does not properly call device_del(). As comment of
-device_add() says, 'if device_add() succeeds, you should call
-device_del() when you want to get rid of it. If device_add() has not
-succeeded, use only put_device() to drop the reference count'.
+We've noticed that NFS can hang when using RPC over TLS on an unstable
+connection, and investigation shows that the RPC layer is stuck in a tight
+loop attempting to transmit, but forever getting -EBADMSG back from the
+underlying network.  The loop begins when tcp_sendmsg_locked() returns
+-EPIPE to tls_tx_records(), but that error is converted to -EBADMSG when
+calling the socket's error reporting handler.
 
-Found by code review.
+Instead of converting errors from tcp_sendmsg_locked(), let's pass them
+along in this path.  The RPC layer handles -EPIPE by reconnecting the
+transport, which prevents the endless attempts to transmit on a broken
+connection.
 
-Cc: stable <stable@kernel.org>
-Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Link: https://patch.msgid.link/9594185559881679d81f071b181a10eb07cd079f.1736004079.git.bcodding@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2604,13 +2604,13 @@ int usb_new_device(struct usb_device *ud
- 		err = sysfs_create_link(&udev->dev.kobj,
- 				&port_dev->dev.kobj, "port");
- 		if (err)
--			goto fail;
-+			goto out_del_dev;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 910da98d6bfb..03f608da594e 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -425,7 +425,7 @@ int tls_tx_records(struct sock *sk, int flags)
  
- 		err = sysfs_create_link(&port_dev->dev.kobj,
- 				&udev->dev.kobj, "device");
- 		if (err) {
- 			sysfs_remove_link(&udev->dev.kobj, "port");
--			goto fail;
-+			goto out_del_dev;
- 		}
+ tx_err:
+ 	if (rc < 0 && rc != -EAGAIN)
+-		tls_err_abort(sk, -EBADMSG);
++		tls_err_abort(sk, rc);
  
- 		if (!test_and_set_bit(port1, hub->child_usage_bits))
-@@ -2622,6 +2622,8 @@ int usb_new_device(struct usb_device *ud
- 	pm_runtime_put_sync_autosuspend(&udev->dev);
- 	return err;
- 
-+out_del_dev:
-+	device_del(&udev->dev);
- fail:
- 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
- 	pm_runtime_disable(&udev->dev);
+ 	return rc;
+ }
+-- 
+2.39.5
+
 
 
 
