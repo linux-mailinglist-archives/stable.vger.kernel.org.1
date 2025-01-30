@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A87A23028
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C18E5A22F55
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B76B16674C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A2423A597B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048551E98F9;
-	Thu, 30 Jan 2025 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0161E9B01;
+	Thu, 30 Jan 2025 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3V7b3Ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkYaUVFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52B41E7C25;
-	Thu, 30 Jan 2025 14:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D8A1E8855;
+	Thu, 30 Jan 2025 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247358; cv=none; b=FjDfyC8TVI2nIRIbJ7+ACcvXhMnlpUkzAlVA9TJDNMTFKN040Wu78VlU0ERC9y9C/0n0mRaLG3ar+//cjpaR83NpY529CzeQOUlPLF0k1s2lZfK2MefuHHCPJ/tFN+49f4LuZMuj5C3C6PdMrgZ7B3OlERHMpP3UBTwqzfj5x0g=
+	t=1738246850; cv=none; b=sJ0jb0kFB2kM/+9CNalUFPop/qP5IPjOJ98jhPWSzluEgg5lwJf3K9LX9+mQQn1TmDFu5pHaupdDMJ56xyacxzeoqfWyp3OBVRuFF+o8PEVL3wdB2I2StPEcPKD+izgbFXu8V1ixxhbZlVIeG52Z+e0UINhvQP0QvLRfUweHMZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247358; c=relaxed/simple;
-	bh=La/s5fw+My5mMi+VbKmjtC35Lpt/fKQqTIjjYzsmDS4=;
+	s=arc-20240116; t=1738246850; c=relaxed/simple;
+	bh=G4tkHYke724t2E9MTefArUhwAKmRqaGQjRrUJv7Zigc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfYNNf8dFn3nF9x+5N+1VNiOnf/tIT4Fvg9kMFVoS31SUilJCYbq7OxWu4ku4RWu005p3FUSsIrilY4BmTsP5JpJftRFs9iPnXreCODUnKjfQrU1hcEneM/iUIwIRLyHAjVT5ahgq5R21FOr9qF9XdcYaVSAEXv61F9zwPM4RMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3V7b3Ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E68C4CED2;
-	Thu, 30 Jan 2025 14:29:18 +0000 (UTC)
+	 MIME-Version; b=u8iYyYVYd3h+jUdXV3TutJbXrQ8a9FlZllr0kllJGe/AyOJmy2wbHwiEpc5U8tW5+xO4xs6nQwJcOLBvOZNHQ0Cz+utLI1uRzEjEZpqgwtrhmtmS2btsb/JTLfo5GZOv4zN9IMf/5+dsNKKbAMMmCFQZVAgYHG7dZjsLeuip9To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkYaUVFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ACC4CEE4;
+	Thu, 30 Jan 2025 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247358;
-	bh=La/s5fw+My5mMi+VbKmjtC35Lpt/fKQqTIjjYzsmDS4=;
+	s=korg; t=1738246850;
+	bh=G4tkHYke724t2E9MTefArUhwAKmRqaGQjRrUJv7Zigc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3V7b3Ipk0gik9wMo3RIkV9kka8fwtHivQjaRqBqXNvlrm+BZ5mTvvZhlycxRr79d
-	 9M1iN8uXzj7dTyor7lLzyv43Q9sIVZLMvOQRHMfSm2cOkSCy3/zpyafK9Iwj1J9D+5
-	 is07gcn5768GdvdjBk+c4JZLbXJAdxPeLIAJJtcQ=
+	b=VkYaUVFJjngAz0VrKR7/z58w3tKo02wDOMJuJQ7CUWS4Pv6QeGMtX448AO15MjyLo
+	 jJDel+5LzwbG/NMgRtjt+Y2xUmg3+7+sbLZcszXOYeKd8b5QrexBQsJN5IS5nDI9QC
+	 fg5ksYrUbf4e9aLSNi/buHBtIiFjq5yqgFFUD3+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 12/49] xfs: bump max fsgeom struct version
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 89/91] Input: atkbd - map F23 key to support default copilot shortcut
 Date: Thu, 30 Jan 2025 15:01:48 +0100
-Message-ID: <20250130140134.325001378@linuxfoundation.org>
+Message-ID: <20250130140137.262255720@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 9488062805943c2d63350d3ef9e4dc093799789a ]
+commit 907bc9268a5a9f823ffa751957a5c1dd59f83f42 upstream.
 
-The latest version of the fs geometry structure is v5.  Bump this
-constant so that xfs_db and mkfs calls to libxfs_fs_geometry will fill
-out all the fields.
+Microsoft defined Meta+Shift+F23 as the Copilot shortcut instead of a
+dedicated keycode, and multiple vendors have their keyboards emit this
+sequence in response to users pressing a dedicated "Copilot" key.
+Unfortunately the default keymap table in atkbd does not map scancode
+0x6e (F23) and so the key combination does not work even if userspace
+is ready to handle it.
 
-IOWs, this commit is a no-op for the kernel, but will be useful for
-userspace reporting in later changes.
+Because this behavior is common between multiple vendors and the
+scancode is currently unused map 0x6e to keycode 193 (KEY_F23) so that
+key sequence is generated properly.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+MS documentation for the scan code:
+https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input#scan-codes
+Confirmed on Lenovo, HP and Dell machines by Canonical.
+Tested on Lenovo T14s G6 AMD.
+
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250107034554.25843-1-mpearson-lenovo@squebb.ca
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_sb.h |    2 +-
+ drivers/input/keyboard/atkbd.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_sb.h
-+++ b/fs/xfs/libxfs/xfs_sb.h
-@@ -25,7 +25,7 @@ extern uint64_t	xfs_sb_version_to_featur
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -84,7 +84,7 @@ static const unsigned short atkbd_set2_k
+ 	  0, 46, 45, 32, 18,  5,  4, 95,  0, 57, 47, 33, 20, 19,  6,183,
+ 	  0, 49, 48, 35, 34, 21,  7,184,  0,  0, 50, 36, 22,  8,  9,185,
+ 	  0, 51, 37, 23, 24, 11, 10,  0,  0, 52, 53, 38, 39, 25, 12,  0,
+-	  0, 89, 40,  0, 26, 13,  0,  0, 58, 54, 28, 27,  0, 43,  0, 85,
++	  0, 89, 40,  0, 26, 13,  0,193, 58, 54, 28, 27,  0, 43,  0, 85,
+ 	  0, 86, 91, 90, 92,  0, 14, 94,  0, 79,124, 75, 71,121,  0,  0,
+ 	 82, 83, 80, 76, 77, 72,  1, 69, 87, 78, 81, 74, 55, 73, 70, 99,
  
- extern int	xfs_update_secondary_sbs(struct xfs_mount *mp);
- 
--#define XFS_FS_GEOM_MAX_STRUCT_VER	(4)
-+#define XFS_FS_GEOM_MAX_STRUCT_VER	(5)
- extern void	xfs_fs_geometry(struct xfs_mount *mp, struct xfs_fsop_geom *geo,
- 				int struct_version);
- extern int	xfs_sb_read_secondary(struct xfs_mount *mp,
 
 
 
