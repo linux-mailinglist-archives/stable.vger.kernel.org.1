@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-111670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209DAA2303E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9B7A2301B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5621887BD6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E041659D6
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF1E1E7668;
-	Thu, 30 Jan 2025 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320961E8855;
+	Thu, 30 Jan 2025 14:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThKbPDip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0olxTrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7D91B87F8;
-	Thu, 30 Jan 2025 14:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DB71BD9D3;
+	Thu, 30 Jan 2025 14:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247414; cv=none; b=tu2MlWUckaTwkA73NzY3a7BwzsNPFAXfXbiN0vGUFxTTEAdijK327dAFvWWO92Lgx7japcaYYQ3GlA7YNa7YrR1Hku3vQt+VgxrIiT4jWRYieIvoZXXeLnT4F5AIRqtA2Le0Jkhxt+2h9N/9WpLfqNdJ46Kc4pqYIFMM5E28too=
+	t=1738247333; cv=none; b=iiFOYS+CkTJ5sNjPJVyuz+mEOpMl1G5rNd1fjTGRhC/JEQ50d/EM7/hbP0gGBRJk1Ij5ixNoSQj63iKTjwXcwBuC0JHCjrvxfjJBS6F8FeQFtybUbOBrf+6/sxPA7BQKZeo1RtuLTV35tjp97Sqqosa1H41kZCbLdZrQCIgmuV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247414; c=relaxed/simple;
-	bh=WUSdxR8klIHhzKYWY2oadBNvmZ3S1pamPryOnQjX2dA=;
+	s=arc-20240116; t=1738247333; c=relaxed/simple;
+	bh=KFeAlNCCa9uwtbCnxOfli1gDDcJVOfZw+wuRl/UH68M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ImpHpTzgQlZmSDD6gJ/HjzDo5KS/coa2pMgGTLHrjYHwHAx0M0mSEBYeGx+jUTwNIKDDjJMGhpY7sXWHZOcRXi+SZ03umtVkJe2kmLt0PrrkztuKQWDKpV5cmJceGzLV/gDfhkOnMx8nHKc0vC4DXhsnr3cncrTxIXLPjo/9px0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThKbPDip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9C2C4CED2;
-	Thu, 30 Jan 2025 14:30:13 +0000 (UTC)
+	 MIME-Version; b=bSZURHPTU902+H4boubR53ffkYx2lU/9LhjFaveCizv08PA9DiW7a36MlPmtMgV9ok/o1pz6SSHvrz0IKDkKQqw/jwOLx/cQ6ePkfuB4NSvFkC3EVTR0dWbpEqtKTqDZhb7DJTelgmx4eEFruzXGcGny4pk7rDu9O48xFuaVOMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0olxTrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD13C4CED2;
+	Thu, 30 Jan 2025 14:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247414;
-	bh=WUSdxR8klIHhzKYWY2oadBNvmZ3S1pamPryOnQjX2dA=;
+	s=korg; t=1738247332;
+	bh=KFeAlNCCa9uwtbCnxOfli1gDDcJVOfZw+wuRl/UH68M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThKbPDipk6sEHTov3/z9703AAa8Hal/FJ4OWRG/b1GSV7WzXhzmWVsa4nDsVe1Zsz
-	 /LjNgHXE/Hf2s1YxErJiaMYOVEZuyM5R95Rqh/lkyvIQ5uQkZi5fO6t55pQxl3EP2a
-	 v8NsNXjpjOKjNv7+Vswh8tCNP2qAj/g8t3gEr7n8=
+	b=V0olxTrjCHWhudDm0L9l2ZjNyz4LYqNIt42Fpc7TpAu4NY7OsilTrIDl6v5+BJ+I8
+	 UhvyPD945wSSMK9ioj4aAUuRkPD34YN4RB9jL6zexRBxqVl2Ya4xLwgDOAW/BJREGc
+	 Iqi+9v/rJDgZkkWPggvajQRIH75qtJ6Slh0C8usw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Kun Hu <huk23@m.fudan.edu.cn>
-Subject: [PATCH 6.1 31/49] gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
+	Akihiko Odaki <akihiko.odaki@gmail.com>,
+	Guenter Roeck <groeck@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Laura Nao <laura.nao@collabora.com>
+Subject: [PATCH 5.15 15/24] platform/chrome: cros_ec_typec: Check for EC driver
 Date: Thu, 30 Jan 2025 15:02:07 +0100
-Message-ID: <20250130140135.086970748@linuxfoundation.org>
+Message-ID: <20250130140127.903847480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
 
-commit 7c9d9223802fbed4dee1ae301661bf346964c9d2 upstream.
+commit 7464ff8bf2d762251b9537863db0e1caf9b0e402 upstream.
 
-Truncate an inode's address space when flipping the GFS2_DIF_JDATA flag:
-depending on that flag, the pages in the address space will either use
-buffer heads or iomap_folio_state structs, and we cannot mix the two.
+The EC driver may not be initialized when cros_typec_probe is called,
+particulary when CONFIG_CROS_EC_CHARDEV=m.
 
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@gmail.com>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Link: https://lore.kernel.org/r/20220404041101.6276-1-akihiko.odaki@gmail.com
+Signed-off-by: Prashant Malani <pmalani@chromium.org>
+Signed-off-by: Laura Nao <laura.nao@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/file.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/chrome/cros_ec_typec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -250,6 +250,7 @@ static int do_gfs2_set_flags(struct inod
- 		error = filemap_fdatawait(inode->i_mapping);
- 		if (error)
- 			goto out;
-+		truncate_inode_pages(inode->i_mapping, 0);
- 		if (new_flags & GFS2_DIF_JDATA)
- 			gfs2_ordered_del_inode(ip);
+--- a/drivers/platform/chrome/cros_ec_typec.c
++++ b/drivers/platform/chrome/cros_ec_typec.c
+@@ -1123,6 +1123,9 @@ static int cros_typec_probe(struct platf
  	}
+ 
+ 	ec_dev = dev_get_drvdata(&typec->ec->ec->dev);
++	if (!ec_dev)
++		return -EPROBE_DEFER;
++
+ 	typec->typec_cmd_supported = !!cros_ec_check_features(ec_dev, EC_FEATURE_TYPEC_CMD);
+ 	typec->needs_mux_ack = !!cros_ec_check_features(ec_dev,
+ 							EC_FEATURE_TYPEC_MUX_REQUIRE_AP_ACK);
 
 
 
