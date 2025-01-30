@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25906A2302F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0847AA22FF4
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D84887A00BA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 790301884F6C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE301BD9D3;
-	Thu, 30 Jan 2025 14:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CDD1E7C27;
+	Thu, 30 Jan 2025 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fruw3jzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I366FbOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B71E7C27;
-	Thu, 30 Jan 2025 14:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066B71E522;
+	Thu, 30 Jan 2025 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247376; cv=none; b=NYVCLP82/0jEiLrjYsfOJSInVB8Qdgo/8VJ0+CLne8RG8DQzAHmnfMgN2RRUWR/KqFGNBf1JuS29URrPIgIWVxHATV5v7DfVTTpYWjIH+aoN1LRqHwMQ0d2pgK3pSwsoGG/xt9QhwrdbUQ9XEOS232TCFzKPRcxN9k3efJMsYSQ=
+	t=1738247230; cv=none; b=jyKi15JMxNs7RnnIqwzptjtH2DTH135PUN4dojw6If7dDm4nkOlXQPAdmCRFsWO0Q9uTqLCIC5xDddwV3O0cVrXB/5zJsrrkjLpqTgA447Vl9dzokR3coLwqh9qyKQelKzsrhVUb1RPxVbsWMoT+0vyUrkvPxWYw5hREMi/ubVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247376; c=relaxed/simple;
-	bh=BG3O/gBkSgzS9aifryPckHxc4EdSedBANfnj8ob6DY8=;
+	s=arc-20240116; t=1738247230; c=relaxed/simple;
+	bh=ny3zJyJtz3K1An5Vhdn/riUCyc+rPffE6pDi9xGHf28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6NngdwIIHgiKNIT+Nlg/P2MJfgcxjINcXh1FDlikfZO9CDinWPYJFf7b+pc+bcjivaj3s1iUGbOupvTAfitXk0uSTTVjpeS3rHDgLShB9zy/cQfMMKtgjRfHsPevJN1h4sCPjl6+E5/AWdZB15sqRaiA8qFuKVymZN6H60Ja94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fruw3jzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D38DC4CED2;
-	Thu, 30 Jan 2025 14:29:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z/XoNOrK2/ixuX0GJ8dtv86mcMjdJh4BJOFoKKjs7vvwtcVtqysc4GkccA3OdeqL8zLKMB1lP9XaHzhdoQC0LAYTUg8/V9S3JQSY+V+eZzOgL9wTyUhVvbi3Ih/vVmQfSYAEFAn4NyEXjHMdmWaS60fBfb3Vob+JcILmFP4UeWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I366FbOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CA7C4CED2;
+	Thu, 30 Jan 2025 14:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247376;
-	bh=BG3O/gBkSgzS9aifryPckHxc4EdSedBANfnj8ob6DY8=;
+	s=korg; t=1738247229;
+	bh=ny3zJyJtz3K1An5Vhdn/riUCyc+rPffE6pDi9xGHf28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fruw3jzmYgO/bSluqUuaARmOm0t+tyFrSdfhGQYqinKe7kUsBErkx5ibyTG2vIXIl
-	 DbWIAp9Xe4d9+tWFPisUT2daHOgGzKGhrkcV1av/N9dZyPHfbb/J8ccsRD2nP0zjDB
-	 YHVW2DYCTLuD9ZginG2UVhjzga9I4lGJ07Zrw5Dk=
+	b=I366FbOu98XC29WsaSiu05OVEIQtD/e5Jc9tNrrmGbH4FZSpF0LOl2VcvOy5Lmi/H
+	 hSszW84GZubrSV/D2XFNJwo2Lsue2A9JGNO956NsAXEOkKvNC+nfE7cii4oIqTbjMH
+	 v0ev2TYw9nBW6i2jmOU4qLACv0BiGcmgrSn+J75M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Lin <cheng.lin130@zte.com.cn>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 18/49] xfs: introduce protection for drop nlink
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.10 125/133] vfio/platform: check the bounds of read/write syscalls
 Date: Thu, 30 Jan 2025 15:01:54 +0100
-Message-ID: <20250130140134.572636448@linuxfoundation.org>
+Message-ID: <20250130140147.561289478@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Lin <cheng.lin130@zte.com.cn>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 2b99e410b28f5a75ae417e6389e767c7745d6fce ]
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-When abnormal drop_nlink are detected on the inode,
-return error, to avoid corruption propagation.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Signed-off-by: Cheng Lin <cheng.lin130@zte.com.cn>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_inode.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -919,6 +919,13 @@ xfs_droplink(
- 	xfs_trans_t *tp,
- 	xfs_inode_t *ip)
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -405,6 +405,11 @@ static ssize_t vfio_platform_read_mmio(s
  {
-+	if (VFS_I(ip)->i_nlink == 0) {
-+		xfs_alert(ip->i_mount,
-+			  "%s: Attempt to drop inode (%llu) with nlink zero.",
-+			  __func__, ip->i_ino);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
+ 	unsigned int done = 0;
  
- 	drop_nlink(VFS_I(ip));
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -482,6 +487,11 @@ static ssize_t vfio_platform_write_mmio(
+ {
+ 	unsigned int done = 0;
+ 
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
 
 
 
