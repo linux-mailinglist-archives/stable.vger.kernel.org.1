@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5177A2301E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C27B6A23040
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7A5168D47
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B903A7D96
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214B1E6DCF;
-	Thu, 30 Jan 2025 14:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4311E32C5;
+	Thu, 30 Jan 2025 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJKDlkeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpycMoeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901A81E8855;
-	Thu, 30 Jan 2025 14:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F3F7482;
+	Thu, 30 Jan 2025 14:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247341; cv=none; b=caAT8MtPR3ZLl2Ua1q6k1AWJCfoXJNsg9cizHDm766Q+royqWHH5fp074ZOda10hhezUYOCjgnQU7yUq+XEU46MCj2rz/nWhIPT1yB+oOzVj1E9KVE67tCwYoBcdbGK1nRGsaUgi6gzgDD7ng44Nknv2BF8Bk0s3aaM9nVlg4sY=
+	t=1738247423; cv=none; b=MjmfRyJKzkSCIwwWLg9N131B2QntmdKe1sD5TOC4fC0yN0LTUJPcT6QYDSFm67Dr7ySXYU5WVAkERper9CWc6bp4ABMkm9f5FMIY9zCVgTpXc5MErr3eUCb2mpfGe7p3QR3Qjjzgn72r0vFQqRVyOmwpeW8F0fo39tPqn4QVvrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247341; c=relaxed/simple;
-	bh=LMFZ6vnB7VoWJXH+i7mA9wpQTkaRqfbbi1Ywfuh/T0E=;
+	s=arc-20240116; t=1738247423; c=relaxed/simple;
+	bh=7JsmaW9I/2AoRJG6oYbCAp/5LAovujGLZ9Gmq04c23c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGFoFVgKXOqu7lloNBRRIeffvZPqiiho536ewUSHaC2CjvkkN5ZOFLIrSf40dWLbnSyU5EtlUiBi5NUppv8sdzvw6nCTNarHb5F0h05fkRNlilbLeIZU48aPMxDhjJp7EjfyZ2xCCXzxRqBeAZpiSxuBcUTYSbfRrta0BbxAHR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJKDlkeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CF7C4CED2;
-	Thu, 30 Jan 2025 14:29:00 +0000 (UTC)
+	 MIME-Version; b=Y6Hwc+UVY0z0Ru/fhd7J+/cXQP//M4ZMGOI5t6VOuR+ZvehGmXYQBnim+uUWgSd0Q7ARpeHbGTlvMRRIiyXBRLA4MkgKmNUQHNMMI9mBjnj8wA0FpHXU+798YoVYsnApZ7011dKd35wlOA5I2FRV1TqbH2y2D1L4HAvtBZ1LhSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpycMoeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6726C4CED2;
+	Thu, 30 Jan 2025 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247341;
-	bh=LMFZ6vnB7VoWJXH+i7mA9wpQTkaRqfbbi1Ywfuh/T0E=;
+	s=korg; t=1738247423;
+	bh=7JsmaW9I/2AoRJG6oYbCAp/5LAovujGLZ9Gmq04c23c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJKDlkeLIeNTkOjP7Ycaipgpa8AkZUIc6iW9mUhaY17k2fEQKDsGuvFLB+4PwzFCw
-	 2COQA66ICov2+WWhNbjh/5kebMlrMaWcjmsfNWCauPcJkcEXUbD4+8AwPDBPr1PKyV
-	 B0qCe2BTTJ7ixr7ti+mpHJ8JDmc7db0AmKOvNXs4=
+	b=hpycMoeuQVOD1oFYmG4PXhvJ+De8XFMrXo0W/f/GUyENGVopd6Wm4uyp4Xbe3QgYa
+	 Xs4DX3X9FwmlQipwwjhHlTIZAP5VkwJB6VHrYJVy80aTeE5sD/u7pjOrnugvtyomkv
+	 3W8kRI/xFSkalcCq13dHAIndjzy4NKMFKVnPK86M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 18/24] wifi: iwlwifi: add a few rate index validity checks
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Rajani Kantha <rajanikantha@engineer.com>
+Subject: [PATCH 6.1 34/49] block: fix integer overflow in BLKSECDISCARD
 Date: Thu, 30 Jan 2025 15:02:10 +0100
-Message-ID: <20250130140128.022505906@linuxfoundation.org>
+Message-ID: <20250130140135.201870569@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
+commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 upstream.
 
-Validate index before access iwl_rate_mcs to keep rate->index
-inside the valid boundaries. Use MCS_0_INDEX if index is less
-than MCS_0_INDEX and MCS_9_INDEX if index is greater then
-MCS_9_INDEX.
+I independently rediscovered
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
+	block: fix overflow in blk_ioctl_discard()
+
+but for secure erase.
+
+Same problem:
+
+	uint64_t r[2] = {512, 18446744073709551104ULL};
+	ioctl(fd, BLKSECDISCARD, r);
+
+will enter near infinite loop inside blkdev_issue_secure_erase():
+
+	a.out: attempt to access beyond end of device
+	loop0: rw=5, sector=3399043073, nr_sectors = 1024 limit=2048
+	bio_check_eod: 3286214 callbacks suppressed
+
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c |    7 +++++--
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c |    9 ++++++---
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ block/ioctl.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -130,7 +130,7 @@ static int iwl_hwrate_to_plcp_idx(u32 ra
- 				return idx;
- 	}
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -115,7 +115,7 @@ static int blk_ioctl_discard(struct bloc
+ 		return -EINVAL;
  
--	return -1;
-+	return IWL_RATE_INVALID;
- }
+ 	filemap_invalidate_lock(inode->i_mapping);
+-	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
++	err = truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (err)
+ 		goto fail;
+ 	err = blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
+@@ -127,7 +127,7 @@ fail:
+ static int blk_ioctl_secure_erase(struct block_device *bdev, fmode_t mode,
+ 		void __user *argp)
+ {
+-	uint64_t start, len;
++	uint64_t start, len, end;
+ 	uint64_t range[2];
+ 	int err;
  
- static void rs_rate_scale_perform(struct iwl_priv *priv,
-@@ -3151,7 +3151,10 @@ static ssize_t rs_sta_dbgfs_scale_table_
- 	for (i = 0; i < LINK_QUAL_MAX_RETRY_NUM; i++) {
- 		index = iwl_hwrate_to_plcp_idx(
- 			le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
--		if (is_legacy(tbl->lq_type)) {
-+		if (index == IWL_RATE_INVALID) {
-+			desc += sprintf(buff + desc, " rate[%d] 0x%X invalid rate\n",
-+				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
-+		} else if (is_legacy(tbl->lq_type)) {
- 			desc += sprintf(buff+desc, " rate[%d] 0x%X %smbps\n",
- 				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags),
- 				iwl_rate_mcs[index].mbps);
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1119,10 +1119,13 @@ static void rs_get_lower_rate_down_colum
+@@ -142,11 +142,12 @@ static int blk_ioctl_secure_erase(struct
+ 	len = range[1];
+ 	if ((start & 511) || (len & 511))
+ 		return -EINVAL;
+-	if (start + len > bdev_nr_bytes(bdev))
++	if (check_add_overflow(start, len, &end) ||
++	    end > bdev_nr_bytes(bdev))
+ 		return -EINVAL;
  
- 		rate->bw = RATE_MCS_CHAN_WIDTH_20;
- 
--		WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX ||
--			     rate->index > IWL_RATE_MCS_9_INDEX);
-+		if (WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_0_INDEX];
-+		else if (WARN_ON_ONCE(rate->index > IWL_RATE_MCS_9_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_9_INDEX];
-+		else
-+			rate->index = rs_ht_to_legacy[rate->index];
- 
--		rate->index = rs_ht_to_legacy[rate->index];
- 		rate->ldpc = false;
- 	} else {
- 		/* Downgrade to SISO with same MCS if in MIMO  */
+ 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
+-	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
++	err = truncate_bdev_range(bdev, mode, start, end - 1);
+ 	if (!err)
+ 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
+ 						GFP_KERNEL);
 
 
 
