@@ -1,112 +1,106 @@
-Return-Path: <stable+bounces-111714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED762A23166
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:02:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5851FA2317D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3DC1676FF
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 383781887EAB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670B31E9B3A;
-	Thu, 30 Jan 2025 16:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30301EBA02;
+	Thu, 30 Jan 2025 16:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="IRqJGuea"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7xX/6ZR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5381DA5F
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 16:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E4D84D34;
+	Thu, 30 Jan 2025 16:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738252941; cv=none; b=kGQd6L5LWM0/EZ6t+lAVVAbH+awRL9BFbxtVAuTdRo+efOGGZNXqiYgNNDq/bWO2Q3R84IV+buEcwynP093D/kfw4J/IRzN1hS5kf2I5OJ5OysQlBZoe95jcF0EPkmmOQ4PGO5QYNGuOWa7dNCZug6Ckfkba+TyLkbKff2RFVXo=
+	t=1738253256; cv=none; b=mDPR7dExbwk0+hrEwBYa8BrHFIwzKNx/h4yQaheB8eQ3Nf8hhRcax6QCD/xsM3I0BJL7Pf2Kb4gLiZoRr1s05Gmwoq/NOm4wW/9kHT3uH5nP0HDkedIavnnF26jwIxyFAgmpdhvbdiIDdj174hWM6GZ+kBZOhCNGPHNFOH4L3nQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738252941; c=relaxed/simple;
-	bh=7MBdSk1BwpNy2hET1MIgRuFKrd5FE+flA5d+9r0ciIc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B19rJxFpDt/1vK23XRoMynpJX+gf7i21YUI/6htHXU0SbfZbAnyReF5FXQTfACB1SILTa0OktbyXY+HCBqGj5yeJMgFi/qkYiBeicCp5D4zAh1woYiRP0msjqUaD56ehA8zVU69XQVyM/CJhq3OA/jpGPEnsxXstBIfiM94yDCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=IRqJGuea; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3cf880d90bdso3491525ab.3
-        for <stable@vger.kernel.org>; Thu, 30 Jan 2025 08:02:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1738252938; x=1738857738; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ltspuTTT7wImpABc2X8tmjQrqpC9O8a4ARLx4Ty4zio=;
-        b=IRqJGueao5qD+6ixAouFt+o9SWa52+dH87GtKc7qCVMzTaC8sK1B8yhhAL0po7iHlp
-         usceISkwJLFDEReA2UcCPLmBP9Dn98TJSmof8AlkgGDyWE4msYarFU7B2l85WqjoLOhT
-         zu99jC2HV9gjRGjLcVsc9kKiO43KuTtvFyRLI7bZigRyy2iesnlorg0z9T22Q4+lAYSA
-         +jH82qE4gUH/xJPPIdQOLSyHC4CsyttFgP3KYob/5mOCvKbFmLfnmDUw6agdBb3pXgrB
-         gEwCgnykkJdxFQXAsc+cAT0J01PvDdXA9lOnd90MeAA8KdOJ6UwLziMuAesH38t7dXZC
-         3jBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738252938; x=1738857738;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ltspuTTT7wImpABc2X8tmjQrqpC9O8a4ARLx4Ty4zio=;
-        b=T4w3gnd1QuyGBqOpSNDtVYr+w6uT/3LS8fRzkCtePKzhYTM19+2j129thwSJ3+MneW
-         EF4F7gE00b8zHLpHqH6aOdhrSxgRN/3IIX8UTRG/yygpDeLcvE77HpYg95talBi8gkEQ
-         1vQjq+dtjperc+MIRMOGUe7udesz7znyK6hvWgrF13j4MVWMn+lvX9Ykv/PeVLWJzz6Q
-         qHe43OtR6T7snVKavoIigf46ktwrRw3LN44tlhDhcH/LQRYUrPN2xL+LWQwIAZNU83bf
-         +D2aM8U/z7uSu5ubdRsFZbZ52SuETlu2eojseQQ7fvDft+LA3yjjIOSNXVDW4dQQdDND
-         W30g==
-X-Forwarded-Encrypted: i=1; AJvYcCURU1rASm8c2q+PPvkJIz0bkPRzrvbpRm/r6jVoJbPcGV+2WkbUTEQGm8g12WWHVhp4zHTaowA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzoyrUE2gRh6SsNbTqk27jgZ7fz+HZ8BrAuwegsJqOWPH/MExx7
-	g3a2gloxmKC+abdKqGnQ6l9L4TLQcy2Y0eQGf99MEuwaj6CQbxW1XQZukVu58GQ=
-X-Gm-Gg: ASbGncvvcnfcNx/W72+02oNI5I4OUGNUetJoRvU2Z4ISUowyCQbfPoqXs998Qx/F5JS
-	7EiL+KJyF1gTlE//ciaa083+qXwBgA+Znd3qgnIuW7w6xWhukt/RvIbDYpCImW86AsevDC7RAGY
-	NZtYAJFb1s8L4a9PVvpNGyRikFS9Cd9kgg9Vr51D1HlEi0kQfGoDO2FigkKTktZAC+KhD1cscap
-	LeAijX+uKS3sNHufdPVCzl+242IhpvSbf3ke6GEHTsVPSuYXRf7PhfHvhM6uAVK97P2Fe/mFK3+
-	UTwX0e3TAyg=
-X-Google-Smtp-Source: AGHT+IEyfjBLFtwVqhDL1I53GZ/4BxHmuOhR1GSFC1bm0nbAYhWgUJncLJfkZcCqVW2Vcnd1wsa9Jw==
-X-Received: by 2002:a05:6e02:17c7:b0:3cf:ba21:8a20 with SMTP id e9e14a558f8ab-3cffe470222mr76274605ab.18.1738252938099;
-        Thu, 30 Jan 2025 08:02:18 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ec7469f02esm396436173.90.2025.01.30.08.02.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 08:02:17 -0800 (PST)
-Message-ID: <04ca477d-36f8-4b5a-b4b8-a33afc75d144@kernel.dk>
-Date: Thu, 30 Jan 2025 09:02:15 -0700
+	s=arc-20240116; t=1738253256; c=relaxed/simple;
+	bh=w/YOoMVtzzyliGHIn9zfArDIGrhdrWf4TbtOCpdheVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RQYkOJrICRbRhZ3HUMCWxol8M7lXR6u5tqAPuKWzdttUMN8H1lKLdwFAQGkjj/CwqNEOLRlwpiulgS01M7UKhCyvd8BfcjL6Zf9O0juqNlMPb4u3jhI1qaRxGs+SqB5rfzq1H6qZizYdGFuqm8rHPGpryQa/fkk5d2Bv0PtoaPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7xX/6ZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC70CC4CED2;
+	Thu, 30 Jan 2025 16:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738253254;
+	bh=w/YOoMVtzzyliGHIn9zfArDIGrhdrWf4TbtOCpdheVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B7xX/6ZRmcIStaIZJt0IhrQeilmcQQcA39GDRoP5Nty2srKRUQEImNlKOGjlTkIMT
+	 TnRWqFdmXRcn5qrqWw5EHJ3iTqwrbXro22fBifKxWr+62EEbpOu/RrWmqswwyrud0j
+	 PmNzZrWe1XrTQ0T1RjysJdg+iJviL/dzkKfAuIG0sJAYFCVT0WMX+B6mO15nlDZ5WF
+	 BJkC72/ZGKgNI1tIi9B8zqHZMAO9glQ+oiqRr95jY/narGMpBG3sRqfLBl0HcG5w/p
+	 pvyLfaIlFnQIowaXepWEAH2zAPBT2jAFJxV3yoq+iGYqIvTaIlebMkDwWJMQVMDVsx
+	 BSaawU91q/vww==
+Date: Thu, 30 Jan 2025 08:07:30 -0800
+From: Kees Cook <kees@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Sam James <sam@gentoo.org>, Masahiro Yamada <masahiroy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+	linux-efi@vger.kernel.org, stable@vger.kernel.org,
+	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
+	Jakub Jelinek <jakub@redhat.com>
+Subject: Re: [PATCH 0/2] A couple of build fixes for x86 when using GCC 15
+Message-ID: <202501300804.20D8CC2@keescook>
+References: <20250121-x86-use-std-consistently-gcc-15-v1-0-8ab0acf645cb@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] kasan, mempool: don't store free stacktrace in
- io_alloc_cache objects.
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: kasan-dev@googlegroups.com, io-uring@vger.kernel.org, linux-mm@kvack.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- juntong.deng@outlook.com, lizetao1@huawei.com, stable@vger.kernel.org,
- Alexander Potapenko <glider@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Pavel Begunkov <asml.silence@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>
-References: <20250122160645.28926-1-ryabinin.a.a@gmail.com>
- <20250127150357.13565-1-ryabinin.a.a@gmail.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20250127150357.13565-1-ryabinin.a.a@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250121-x86-use-std-consistently-gcc-15-v1-0-8ab0acf645cb@kernel.org>
 
-I don't think we need this with the recent cleanup of the io_uring
-struct caching. That should go into 6.14-rc1, it's queued up. So I think
-let's defer on this one for now? It'll conflict with those changes too.
+On Tue, Jan 21, 2025 at 06:11:32PM -0700, Nathan Chancellor wrote:
+> GCC 15 changed the default C standard version from gnu17 to gnu23, which
+> reveals a few places in the kernel where a C standard version was not
+> set, resulting in build failures because bool, true, and false are
+> reserved keywords in C23 [1][2]. Update these places to use the same C
+> standard version as the rest of the kernel, gnu11.
+
+Hello x86 maintainers!
+
+I think this would be valuable to get into -rc1 since we're getting very
+close to a GCC 15 release. Can someone get this into -tip urgent,
+please? If everyone is busy I can take it via the hardening tree, as we
+appear to be the ones tripping over it the most currently. :)
+
+-Kees
+
+> [1]: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=@protonmail.com/
+> [2]: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
+> 
+> ---
+> Nathan Chancellor (2):
+>       x86/boot: Use '-std=gnu11' to fix build with GCC 15
+>       efi: libstub: Use '-std=gnu11' to fix build with GCC 15
+> 
+>  arch/x86/boot/compressed/Makefile     | 1 +
+>  drivers/firmware/efi/libstub/Makefile | 2 +-
+>  2 files changed, 2 insertions(+), 1 deletion(-)
+> ---
+> base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+> change-id: 20250121-x86-use-std-consistently-gcc-15-f95146e0050f
+> 
+> Best regards,
+> -- 
+> Nathan Chancellor <nathan@kernel.org>
+> 
 
 -- 
-Jens Axboe
+Kees Cook
 
