@@ -1,275 +1,86 @@
-Return-Path: <stable+bounces-111268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69D8A22AAC
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:51:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DB5DA22AA2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B57E53A7162
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:51:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD831887964
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EB91B6D0B;
-	Thu, 30 Jan 2025 09:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F42B1A8415;
+	Thu, 30 Jan 2025 09:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWAsnHKx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358CC1B6CF1;
-	Thu, 30 Jan 2025 09:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB04118F2DD
+	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 09:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738230663; cv=none; b=m6g0qFjCG3Od0iabMrq5lmn9rkS63sbbuzQtOh1heviNUxAM4w4EhXjA2aPXPvYJ4CnhsXT49QcUnuO/4DaQAwDh/UJXUZ8RWWTaJAzLfAW9f+wR6np4ZsNxac5clMVgnnGKykzFL0rraA3hlBmlwvnPvRKBrmY7a1RGCf4v3wg=
+	t=1738230420; cv=none; b=W5VDREGZKKdqe/pO5P8DVJnU7bLx9xQ4w81axqW04a5uhT8UV8kwDOBW5eWZDTjnjx4lOzuUdfkNgsAJeKlZmECf7M75+2N1z2RUPzKQv8UYQLe3suYZWtQL0Ei4NcTg+Vyl1Pd523eFYq+PP49Jfttn4Nj+CknRa9kpLQ2X0os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738230663; c=relaxed/simple;
-	bh=zFw/oxD/hhXERfjqXxTSGrmCJAlGKIGfDHc0udUzyQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BDlU5VvsmmapfHI+bMMXS4kVSCqmsUGChelHIxBgntUH7WIRDgnkqzpo6Aa+e7/kAOpj+cUQfODqHsmGla9gZHznhF/jKM48DFIhvr9BGMqz8eUFuFUpAeLvtkMzCYVP0R049m61TxNY8xq4BoOwzucqHyDA3Vify/y/pY9r9ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=37.230.196.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id A365524B8E;
-	Thu, 30 Jan 2025 12:44:10 +0300 (MSK)
-Received: from new-mail.astralinux.ru (gca-yc-ruca-srv-mail04.astralinux.ru [10.177.185.109])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Thu, 30 Jan 2025 12:44:08 +0300 (MSK)
-Received: from localhost.localdomain (unknown [10.177.20.111])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4YkDcj4HlSzkWyW;
-	Thu, 30 Jan 2025 12:44:05 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Anastasia Belova <abelova@astralinux.ru>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@cjr.nz>,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1] smb: client: fix UAF in async decryption
-Date: Thu, 30 Jan 2025 12:43:50 +0300
-Message-ID: <20250130094353.627234-1-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1738230420; c=relaxed/simple;
+	bh=GMStrwcL7R1LNP4jJGW9WSvxAScuig1trqKtU8sFqXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDPQk8PZxFv3SvutqwzZ5TjxOVEbEgjCjfS22+D0b2qTtT6XtreFJMM4Mnmwnlaio91bm0DarwFjOIjX4NEulbOdYJup5lKxg+EFJepa8g4/G+BSQGzYYXN8gfuVgHJhvKbXvSywb5vPywvAzVAJ0MVMvh4jVouIGdy9AAf5M44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWAsnHKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F46C4CED2;
+	Thu, 30 Jan 2025 09:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738230419;
+	bh=GMStrwcL7R1LNP4jJGW9WSvxAScuig1trqKtU8sFqXI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qWAsnHKxUkz8a4OdXAFZn47m3U2dpI053y4ZIOTnI8vAnWhI7FllOfXRuXaH/WrHA
+	 9DGXf+VwF1dte1fM4XeLEZUmezEg0z5nr3CKMFJH+mSgUCY6Cfd+e0NhoeaZWdF6ff
+	 dl7nS6A5xh7vN/idsMQcNTNd67J9wcbj6zHYwhvI=
+Date: Thu, 30 Jan 2025 10:46:56 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: stable@vger.kernel.org, lvc-project@linuxtesting.org,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH v2 6.1] wifi: iwlwifi: add a few rate index validity
+ checks
+Message-ID: <2025013031-slit-claw-f9bb@gregkh>
+References: <2025012949-unclasp-probation-a0df@gregkh>
+ <20250129143230.2449278-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 50 0.3.50 df4aeb250ed63fd3baa80a493fa6caee5dd9e10f, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;astralinux.ru:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 190683 [Jan 30 2025]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.7
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/01/30 07:21:00 #27156911
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250129143230.2449278-1-dmantipov@yandex.ru>
 
-From: Enzo Matsumiya <ematsumiya@suse.de>
+On Wed, Jan 29, 2025 at 05:32:30PM +0300, Dmitry Antipov wrote:
+> From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+> 
+> commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
+> 
+> Validate index before access iwl_rate_mcs to keep rate->index
+> inside the valid boundaries. Use MCS_0_INDEX if index is less
+> than MCS_0_INDEX and MCS_9_INDEX if index is greater than
+> MCS_9_INDEX.
+> 
+> Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+> Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+> Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+> v2: (re)adjust copyright notice
 
-[ Upstream commit b0abcd65ec545701b8793e12bc27dc98042b151a ]
+You also fixed the grammer in the changelog!  Ugh, let me just go
+backport these myself, please don't change things that you shouldn't
+need to change...
 
-Doing an async decryption (large read) crashes with a
-slab-use-after-free way down in the crypto API.
-
-Reproducer:
-    # mount.cifs -o ...,seal,esize=1 //srv/share /mnt
-    # dd if=/mnt/largefile of=/dev/null
-    ...
-    [  194.196391] ==================================================================
-    [  194.196844] BUG: KASAN: slab-use-after-free in gf128mul_4k_lle+0xc1/0x110
-    [  194.197269] Read of size 8 at addr ffff888112bd0448 by task kworker/u77:2/899
-    [  194.197707]
-    [  194.197818] CPU: 12 UID: 0 PID: 899 Comm: kworker/u77:2 Not tainted 6.11.0-lku-00028-gfca3ca14a17a-dirty #43
-    [  194.198400] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-prebuilt.qemu.org 04/01/2014
-    [  194.199046] Workqueue: smb3decryptd smb2_decrypt_offload [cifs]
-    [  194.200032] Call Trace:
-    [  194.200191]  <TASK>
-    [  194.200327]  dump_stack_lvl+0x4e/0x70
-    [  194.200558]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.200809]  print_report+0x174/0x505
-    [  194.201040]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-    [  194.201352]  ? srso_return_thunk+0x5/0x5f
-    [  194.201604]  ? __virt_addr_valid+0xdf/0x1c0
-    [  194.201868]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202128]  kasan_report+0xc8/0x150
-    [  194.202361]  ? gf128mul_4k_lle+0xc1/0x110
-    [  194.202616]  gf128mul_4k_lle+0xc1/0x110
-    [  194.202863]  ghash_update+0x184/0x210
-    [  194.203103]  shash_ahash_update+0x184/0x2a0
-    [  194.203377]  ? __pfx_shash_ahash_update+0x10/0x10
-    [  194.203651]  ? srso_return_thunk+0x5/0x5f
-    [  194.203877]  ? crypto_gcm_init_common+0x1ba/0x340
-    [  194.204142]  gcm_hash_assoc_remain_continue+0x10a/0x140
-    [  194.204434]  crypt_message+0xec1/0x10a0 [cifs]
-    [  194.206489]  ? __pfx_crypt_message+0x10/0x10 [cifs]
-    [  194.208507]  ? srso_return_thunk+0x5/0x5f
-    [  194.209205]  ? srso_return_thunk+0x5/0x5f
-    [  194.209925]  ? srso_return_thunk+0x5/0x5f
-    [  194.210443]  ? srso_return_thunk+0x5/0x5f
-    [  194.211037]  decrypt_raw_data+0x15f/0x250 [cifs]
-    [  194.212906]  ? __pfx_decrypt_raw_data+0x10/0x10 [cifs]
-    [  194.214670]  ? srso_return_thunk+0x5/0x5f
-    [  194.215193]  smb2_decrypt_offload+0x12a/0x6c0 [cifs]
-
-This is because TFM is being used in parallel.
-
-Fix this by allocating a new AEAD TFM for async decryption, but keep
-the existing one for synchronous READ cases (similar to what is done
-in smb3_calc_signature()).
-
-Also remove the calls to aead_request_set_callback() and
-crypto_wait_req() since it's always going to be a synchronous operation.
-
-Signed-off-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
-Backport fix for CVE-2024-50047
- fs/smb/client/smb2ops.c | 47 ++++++++++++++++++++++++-----------------
- fs/smb/client/smb2pdu.c |  6 ++++++
- 2 files changed, 34 insertions(+), 19 deletions(-)
-
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 62935d61192a..4b9cd9893ac6 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4488,7 +4488,7 @@ smb2_get_enc_key(struct TCP_Server_Info *server, __u64 ses_id, int enc, u8 *key)
-  */
- static int
- crypt_message(struct TCP_Server_Info *server, int num_rqst,
--	      struct smb_rqst *rqst, int enc)
-+	      struct smb_rqst *rqst, int enc, struct crypto_aead *tfm)
- {
- 	struct smb2_transform_hdr *tr_hdr =
- 		(struct smb2_transform_hdr *)rqst[0].rq_iov[0].iov_base;
-@@ -4499,8 +4499,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	u8 key[SMB3_ENC_DEC_KEY_SIZE];
- 	struct aead_request *req;
- 	u8 *iv;
--	DECLARE_CRYPTO_WAIT(wait);
--	struct crypto_aead *tfm;
- 	unsigned int crypt_len = le32_to_cpu(tr_hdr->OriginalMessageSize);
- 	void *creq;
- 
-@@ -4511,14 +4509,6 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 		return rc;
- 	}
- 
--	rc = smb3_crypto_aead_allocate(server);
--	if (rc) {
--		cifs_server_dbg(VFS, "%s: crypto alloc failed\n", __func__);
--		return rc;
--	}
--
--	tfm = enc ? server->secmech.enc : server->secmech.dec;
--
- 	if ((server->cipher_type == SMB2_ENCRYPTION_AES256_CCM) ||
- 		(server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
- 		rc = crypto_aead_setkey(tfm, key, SMB3_GCM256_CRYPTKEY_SIZE);
-@@ -4557,11 +4547,7 @@ crypt_message(struct TCP_Server_Info *server, int num_rqst,
- 	aead_request_set_crypt(req, sg, sg, crypt_len, iv);
- 	aead_request_set_ad(req, assoc_data_len);
- 
--	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
--				  crypto_req_done, &wait);
--
--	rc = crypto_wait_req(enc ? crypto_aead_encrypt(req)
--				: crypto_aead_decrypt(req), &wait);
-+	rc = enc ? crypto_aead_encrypt(req) : crypto_aead_decrypt(req);
- 
- 	if (!rc && enc)
- 		memcpy(&tr_hdr->Signature, sign, SMB2_SIGNATURE_SIZE);
-@@ -4650,7 +4636,7 @@ smb3_init_transform_rq(struct TCP_Server_Info *server, int num_rqst,
- 	/* fill the 1st iov with a transform header */
- 	fill_transform_hdr(tr_hdr, orig_len, old_rq, server->cipher_type);
- 
--	rc = crypt_message(server, num_rqst, new_rq, 1);
-+	rc = crypt_message(server, num_rqst, new_rq, 1, server->secmech.enc);
- 	cifs_dbg(FYI, "Encrypt message returned %d\n", rc);
- 	if (rc)
- 		goto err_free;
-@@ -4676,8 +4662,9 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
- 		 unsigned int npages, unsigned int page_data_size,
- 		 bool is_offloaded)
- {
--	struct kvec iov[2];
-+	struct crypto_aead *tfm;
- 	struct smb_rqst rqst = {NULL};
-+	struct kvec iov[2];
- 	int rc;
- 
- 	iov[0].iov_base = buf;
-@@ -4692,9 +4679,31 @@ decrypt_raw_data(struct TCP_Server_Info *server, char *buf,
- 	rqst.rq_pagesz = PAGE_SIZE;
- 	rqst.rq_tailsz = (page_data_size % PAGE_SIZE) ? : PAGE_SIZE;
- 
--	rc = crypt_message(server, 1, &rqst, 0);
-+	if (is_offloaded) {
-+		if ((server->cipher_type == SMB2_ENCRYPTION_AES128_GCM) ||
-+		    (server->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
-+			tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
-+		else
-+			tfm = crypto_alloc_aead("ccm(aes)", 0, 0);
-+		if (IS_ERR(tfm)) {
-+			rc = PTR_ERR(tfm);
-+			cifs_server_dbg(VFS, "%s: Failed alloc decrypt TFM, rc=%d\n", __func__, rc);
-+
-+			return rc;
-+		}
-+	} else {
-+		if (unlikely(!server->secmech.dec))
-+			return -EIO;
-+
-+		tfm = server->secmech.dec;
-+	}
-+
-+	rc = crypt_message(server, 1, &rqst, 0, tfm);
- 	cifs_dbg(FYI, "Decrypt message returned %d\n", rc);
- 
-+	if (is_offloaded)
-+		crypto_free_aead(tfm);
-+
- 	if (rc)
- 		return rc;
- 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 9975711236b2..ae38ba7f1966 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1105,6 +1105,12 @@ SMB2_negotiate(const unsigned int xid,
- 		else
- 			cifs_server_dbg(VFS, "Missing expected negotiate contexts\n");
- 	}
-+
-+	if (server->cipher_type && !rc) {
-+		rc = smb3_crypto_aead_allocate(server);
-+		if (rc)
-+			cifs_server_dbg(VFS, "%s: crypto alloc failed, rc=%d\n", __func__, rc);
-+	}
- neg_exit:
- 	free_rsp_buf(resp_buftype, rsp);
- 	return rc;
--- 
-2.43.0
-
+greg k-h
 
