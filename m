@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-111388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91782A22EEB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:16:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FE8A22E90
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354EC7A1273
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E80188AEAA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE041DDC22;
-	Thu, 30 Jan 2025 14:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19591E571A;
+	Thu, 30 Jan 2025 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhJVB+I0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uaVxsrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B347383;
-	Thu, 30 Jan 2025 14:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8431E3775;
+	Thu, 30 Jan 2025 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246592; cv=none; b=MAOU4W20IgitBxio+/dieBe7PoRV19YMzqnnRp6flyKnQtTRX8TCVMbMAhnZlfPDAChOPiugMD5INYkTZx7PC0nGyTIAvECo1GBYOiLz1RjoXznB98TTv22EJSHHhtI5n6JkPASmEpcU1P9WXE+HVEmqT81c0dNa64B8pHjfiWU=
+	t=1738245734; cv=none; b=EWqJ+NY7cqZjUC6iPrM5Z31Pjiv7VkFpCDBP7PKJ7O/A4VcXRiaLlioqC9etltllsuNQrIW+vypJn/lPUXm2o9I3vTDtggwbRcWkXPaIy9F2W3k/55GyVAqA4ok+WsYYZ8ljJhbDFyndhP9NMj/e8fyQ+NvxgRzcl0CwYSslFVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246592; c=relaxed/simple;
-	bh=XIGm+p+Qjicu9T40H8U7Vx5Ok5XMchM1PoIiAYqerVA=;
+	s=arc-20240116; t=1738245734; c=relaxed/simple;
+	bh=jBxKXjv5bfoO27IkKorB8hM5iaIADC375WXWGtH4bE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfYigKBdJXJsOpvTosTvQjAzptc5WZEJdLJV2iKRunPvODYhUgds9uB47+G6tRCxlOceF2Ex7AxJfwYmssi3o0GtqhPrvpPtSsl9JlieH0EeaAEYLvsCKvJ3tDH1U6NCdRMUNlZzSbR+vmpFEYrOh0YMmrQKOfiw60fWtK6k7ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhJVB+I0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3C7C4CED2;
-	Thu, 30 Jan 2025 14:16:31 +0000 (UTC)
+	 MIME-Version; b=D7d9zj/UzTGK3o6+yxtaLq6ABgZmeSA4cwqcINBgKPwtcLXi20NJ7NV3tgpu8g5Fmwf0m2XkLbyOEQEJgEv8vhA6dhxvTnuxp1ULOBNr2Y2vnCQy4WKD4xkj/0DpOxkjjy1po/G2Kz84JQkAUOWprPs3iYyEZITpmm4KvfNUv2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uaVxsrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB06C4CED2;
+	Thu, 30 Jan 2025 14:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246592;
-	bh=XIGm+p+Qjicu9T40H8U7Vx5Ok5XMchM1PoIiAYqerVA=;
+	s=korg; t=1738245734;
+	bh=jBxKXjv5bfoO27IkKorB8hM5iaIADC375WXWGtH4bE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhJVB+I0zVFp4e/fpKvxS12dutbq2XqTRWe3iW646pRTCymALQtZt5OY/y6xMpHLd
-	 jGiVGkHdVYHYBclmTF77cuht33Q2CGgvCb6ZZzxbRlQOgmyPbcbT3CYkZQDWs1maII
-	 5+XEXTxMzphwWZGAsqF+/CjImM/brBSYhjI9czZ4=
+	b=0uaVxsrSW1ACab1QLbr9tuMgyznE9EemKTzGB04rzYjCmgLltKd83Qff44KfUxbza
+	 82afnvQ0HYL2D3DYrIcUjkPPWsSYakY6s+7Kzhek3juPWzjczwcdWXfZZszKnagRCz
+	 2YkZcoDexMi5y+kf9S8xV/icLxN5H+X95/0E1FmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 18/43] libfs: Fix simple_offset_rename_exchange()
-Date: Thu, 30 Jan 2025 14:59:25 +0100
-Message-ID: <20250130133459.636074785@linuxfoundation.org>
+	Sudheendra Raghav Neela <sneela@tugraz.at>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.12 26/40] cachestat: fix page cache statistics permission checking
+Date: Thu, 30 Jan 2025 14:59:26 +0100
+Message-ID: <20250130133500.754796018@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 23cdd0eed3f1fff3af323092b0b88945a7950d8e ]
+commit 5f537664e705b0bf8b7e329861f20128534f6a83 upstream.
 
-User space expects the replacement (old) directory entry to have
-the same directory offset after the rename.
+When the 'cachestat()' system call was added in commit cf264e1329fb
+("cachestat: implement cachestat syscall"), it was meant to be a much
+more convenient (and performant) version of mincore() that didn't need
+mapping things into the user virtual address space in order to work.
 
-Suggested-by: Christian Brauner <brauner@kernel.org>
-Fixes: a2e459555c5f ("shmem: stable directory offsets")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20240415152057.4605-2-cel@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ cel: adjusted to apply to origin/linux-6.6.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+But it ended up missing the "check for writability or ownership" fix for
+mincore(), done in commit 134fca9063ad ("mm/mincore.c: make mincore()
+more conservative").
+
+This just adds equivalent logic to 'cachestat()', modified for the file
+context (rather than vma).
+
+Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
+Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+Tested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ mm/filemap.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -294,6 +294,18 @@ int simple_offset_add(struct offset_ctx
- 	return 0;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4384,6 +4384,20 @@ resched:
  }
  
-+static int simple_offset_replace(struct offset_ctx *octx, struct dentry *dentry,
-+				 long offset)
+ /*
++ * See mincore: reveal pagecache information only for files
++ * that the calling process has write access to, or could (if
++ * tried) open for writing.
++ */
++static inline bool can_do_cachestat(struct file *f)
 +{
-+	void *ret;
-+
-+	ret = xa_store(&octx->xa, offset, dentry, GFP_KERNEL);
-+	if (xa_is_err(ret))
-+		return xa_err(ret);
-+	offset_set(dentry, offset);
-+	return 0;
++	if (f->f_mode & FMODE_WRITE)
++		return true;
++	if (inode_owner_or_capable(file_mnt_idmap(f), file_inode(f)))
++		return true;
++	return file_permission(f, MAY_WRITE) == 0;
 +}
 +
- /**
-  * simple_offset_remove - Remove an entry to a directory's offset map
-  * @octx: directory offset ctx to be updated
-@@ -351,6 +363,9 @@ int simple_offset_empty(struct dentry *d
-  * @new_dir: destination parent
-  * @new_dentry: destination dentry
++/*
+  * The cachestat(2) system call.
   *
-+ * This API preserves the directory offset values. Caller provides
-+ * appropriate serialization.
-+ *
-  * Returns zero on success. Otherwise a negative errno is returned and the
-  * rename is rolled back.
-  */
-@@ -368,11 +383,11 @@ int simple_offset_rename_exchange(struct
- 	simple_offset_remove(old_ctx, old_dentry);
- 	simple_offset_remove(new_ctx, new_dentry);
+  * cachestat() returns the page cache statistics of a file in the
+@@ -4442,6 +4456,11 @@ SYSCALL_DEFINE4(cachestat, unsigned int,
+ 		return -EOPNOTSUPP;
+ 	}
  
--	ret = simple_offset_add(new_ctx, old_dentry);
-+	ret = simple_offset_replace(new_ctx, old_dentry, new_index);
- 	if (ret)
- 		goto out_restore;
- 
--	ret = simple_offset_add(old_ctx, new_dentry);
-+	ret = simple_offset_replace(old_ctx, new_dentry, old_index);
- 	if (ret) {
- 		simple_offset_remove(new_ctx, old_dentry);
- 		goto out_restore;
-@@ -387,10 +402,8 @@ int simple_offset_rename_exchange(struct
- 	return 0;
- 
- out_restore:
--	offset_set(old_dentry, old_index);
--	xa_store(&old_ctx->xa, old_index, old_dentry, GFP_KERNEL);
--	offset_set(new_dentry, new_index);
--	xa_store(&new_ctx->xa, new_index, new_dentry, GFP_KERNEL);
-+	(void)simple_offset_replace(old_ctx, old_dentry, old_index);
-+	(void)simple_offset_replace(new_ctx, new_dentry, new_index);
- 	return ret;
- }
- 
++	if (!can_do_cachestat(fd_file(f))) {
++		fdput(f);
++		return -EPERM;
++	}
++
+ 	if (flags != 0) {
+ 		fdput(f);
+ 		return -EINVAL;
 
 
 
