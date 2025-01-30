@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40DCA23041
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91510A23022
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3207D18805BE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788BA1888AA3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA661BD9D3;
-	Thu, 30 Jan 2025 14:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594881E98F3;
+	Thu, 30 Jan 2025 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkiMx5Ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqWwqXqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F1C1B87F8;
-	Thu, 30 Jan 2025 14:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168811BD9D3;
+	Thu, 30 Jan 2025 14:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247426; cv=none; b=YyYtwrQKDkRSHViQp2eQ7VcYDFoJglLKtbO7MVpnv+ninZbbiQ0JwBITIIa8ABziDuIocQwWFgROAeyLqoaHMYdKSp3FpeKJLoaQB8UPCm4g0KjoDsykQQaldrNCJPmQ+6/9Y80d2xLmNXfkZpbdmqMJ/bKGV2erULmcOMtFVqg=
+	t=1738247344; cv=none; b=iCI7z4BcLOdfdXicWEJA7FPiUvggfQQpdq5Hz3WRGt5ztMjY/TBRRBht0VVljpAwsGpFRAHS2rn1+FL4GviI5YTZTxVh/Uvl1kJ8c/zpZfzSPa755Y3Y05bklXQe1zrLQIQ7Vgleny70FwN6VXaUDb+VxC7orUDgmBCKZH8RHSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247426; c=relaxed/simple;
-	bh=J/jduN65z9m0d8BpYrQnHCKx9DO3y5LbmFzBSgR6I2w=;
+	s=arc-20240116; t=1738247344; c=relaxed/simple;
+	bh=rWfBUhBh2L7cXWId/J/YqsqhTPLf5QJuO1FkFN0xxN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bewudRAt9CH99QuVPOUV7GXlsaua/46+XSfAoKUuZJ8g3rA7i0LdmjlQQVmC04Ge4Y5PAB1jZKiFzXINordjSCnecD9TN/H/1qguKl5tGLBK7X5kUwptCVd6RrjgoXwL12yaOYSwgZ30lFJoPTceWDJ7uLLGz1abKF5zcqCn2Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkiMx5Ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FED8C4CED2;
-	Thu, 30 Jan 2025 14:30:25 +0000 (UTC)
+	 MIME-Version; b=lnlP6Zj79l6R+yxSLtODg84aK7Knlp6qIwud7qDctLvbu6ukO5PBnVIe3hPWs8g4gHlwfCXhRrrFb2622nQLv3inRiXsrFaVTzA9+uhNa/IzlfCNpuS8i9Fxyqx7E3R6rTe2EUeuhslzk9KgpIWMw+4zJlBBMjuzzaZF/yZ/gbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqWwqXqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957E2C4CED2;
+	Thu, 30 Jan 2025 14:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247426;
-	bh=J/jduN65z9m0d8BpYrQnHCKx9DO3y5LbmFzBSgR6I2w=;
+	s=korg; t=1738247344;
+	bh=rWfBUhBh2L7cXWId/J/YqsqhTPLf5QJuO1FkFN0xxN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkiMx5Wwqd3brmvGpyptZyhi2e7bP5pw28NDDQVR3iJnfs1qWs3pQCAeeVQgPObVO
-	 yMx7UthGWNfTfky3PsjtB7scXlMQK8vXiUGt22JKzDoyIllqFlfPheHIHFbyKRAlDk
-	 sUdkYAPJvBYQB8UFQFkOlnVe79F5HdIpn1by6KT0=
+	b=WqWwqXqaEqxRAeNu3liKn64Cc5OSPRW2m1ap0COxQ3+WaCPrNLelbBOYz4CVdNyuy
+	 KlzThQZ2v9BfycEOtGrDyeshEXHL3XW5wYxmVvHUQHUaw0dhw+SgKKWz+6mLASmusr
+	 BX2sznoHOs2IVcBHm3AyLY6Pp4NEwhIOKmoixPFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ulrich=20M=C3=BCller?= <ulm@gentoo.org>,
-	WangYuli <wangyuli@uniontech.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 35/49] Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
+	syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 19/24] USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()
 Date: Thu, 30 Jan 2025 15:02:11 +0100
-Message-ID: <20250130140135.243602274@linuxfoundation.org>
+Message-ID: <20250130140128.061076270@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 3d88ba86ba6f35a0467f25a88c38aa5639190d04 upstream.
+commit 575a5adf48b06a2980c9eeffedf699ed5534fade upstream.
 
-This reverts commit 251efae73bd46b097deec4f9986d926813aed744.
+This patch addresses a null-ptr-deref in qt2_process_read_urb() due to
+an incorrect bounds check in the following:
 
-Quoting Wang Yuli:
+       if (newport > serial->num_ports) {
+               dev_err(&port->dev,
+                       "%s - port change to invalid port: %i\n",
+                       __func__, newport);
+               break;
+       }
 
-	"The 27C6:01E0 touchpad doesn't require the workaround and applying it
-	would actually break functionality.
+The condition doesn't account for the valid range of the serial->port
+buffer, which is from 0 to serial->num_ports - 1. When newport is equal
+to serial->num_ports, the assignment of "port" in the
+following code is out-of-bounds and NULL:
 
-	The initial report came from a BBS forum, but we suspect the
-	information provided by the forum user may be incorrect which could
-	happen sometimes. [1]
+       serial_priv->current_port = newport;
+       port = serial->port[serial_priv->current_port];
 
-	Further investigation showed that the Lenovo Y9000P 2024 doesn't even
-	use a Goodix touchpad. [2]
+The fix checks if newport is greater than or equal to serial->num_ports
+indicating it is out-of-bounds.
 
-	For the broader issue of 27c6:01e0 being unusable on some devices, it
-	just need to address it with a libinput quirk.
-
-	In conclusion, we should revert this commit, which is the best
-	solution."
-
-Reported-by: Ulrich Müller <ulm@gentoo.org>
-Reported-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/all/uikt4wwpw@gentoo.org/
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=506479ebf12fe435d01a
+Fixes: f7a33e608d9a ("USB: serial: add quatech2 usb to serial driver")
+Cc: <stable@vger.kernel.org>      # 3.5
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h        |    1 -
- drivers/hid/hid-multitouch.c |    8 ++------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ drivers/usb/serial/quatech2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -507,7 +507,6 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+--- a/drivers/usb/serial/quatech2.c
++++ b/drivers/usb/serial/quatech2.c
+@@ -525,7 +525,7 @@ static void qt2_process_read_urb(struct
  
- #define I2C_VENDOR_ID_GOODIX		0x27c6
--#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
- #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
- #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1447,8 +1447,7 @@ static __u8 *mt_report_fixup(struct hid_
- {
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
--	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
--		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
-+	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
-@@ -2073,10 +2072,7 @@ static const struct hid_device_id mt_dev
- 		     I2C_DEVICE_ID_GOODIX_01E8) },
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
- 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E9) },
--	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
--	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E0) },
-+		     I2C_DEVICE_ID_GOODIX_01E8) },
+ 				newport = *(ch + 3);
  
- 	/* GoodTouch panels */
- 	{ .driver_data = MT_CLS_NSMU,
+-				if (newport > serial->num_ports) {
++				if (newport >= serial->num_ports) {
+ 					dev_err(&port->dev,
+ 						"%s - port change to invalid port: %i\n",
+ 						__func__, newport);
 
 
 
