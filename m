@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB59A22FC7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCF1A22F2D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC561887041
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BF917A2E42
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01891E9906;
-	Thu, 30 Jan 2025 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFEA1E990A;
+	Thu, 30 Jan 2025 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TklKE2b9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLM+yvID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBC51E522;
-	Thu, 30 Jan 2025 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4231E7C25;
+	Thu, 30 Jan 2025 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247115; cv=none; b=TmriIC73gqywAt46GHJ9Sh60xCDFAf/THLnodc2eZf3GIcwm0h5+ONn/EdTFy60GxF19Xeww8u5hIkToTvEFSbOnDBpwrPenZNR1PCLGuDG3ja1hhvSw7nZuKZS1AW2aGmmCwBTp7QlUAeuTRPmO66YCQOATiSb+Z14221JiI1E=
+	t=1738246756; cv=none; b=sfNo8lwMGIoo1LGQdjCvvXvaB0N3JNSDQ0dDgqK5NdOQ1miAuQ0DowytH48Ol+u47wSlTPEQd8/TDkUl7zscTnNC5bdiDnpkyZEAcMn+O+GSozKd83/nC/I9TzBO6tF1N1wU5Ywzp5j8YNcyVSXPv1EbH1R2pOQifYeQIvEo7Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247115; c=relaxed/simple;
-	bh=diP1WdGfgCYj72zzxwiPP54UOl0HhLlj22iTFQorBFw=;
+	s=arc-20240116; t=1738246756; c=relaxed/simple;
+	bh=S6QOIM+bH9PJiQoXEO/LLz8xFomQrSojTWVlNB1SZTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjDY6Cegia4MBnag+eWRVIz/L/w/4C88OsecVN+UwkPZLzb8dAguy6T4+niCujonmI170m5nQhag5fLc+LEavX41MuvaBy9GlaLnXtRRGAK+c6P8Ynu0qb5Y0rYan6e9yvJ4ujPi2e2kxi8Tg+M95bT8SsfbdMiM/20Br2dsqyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TklKE2b9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390F9C4CED2;
-	Thu, 30 Jan 2025 14:25:15 +0000 (UTC)
+	 MIME-Version; b=E8tir/Dbu//1Fdzkpl5RdASlfHKHaSrA89M9mQTsfr3bCmshEpf7+UoqnVcZOdoY77v+DHQXoziqwiGsrwzUliDMYhcSCSrdwqU9K7iy3v7nqNwAPFs/lkM8OBNmyK9pSyF9cw5KLdhlBVXgc7z1IauVL7wQWhKA1+1SoiNUovE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLM+yvID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0387C4CED2;
+	Thu, 30 Jan 2025 14:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247115;
-	bh=diP1WdGfgCYj72zzxwiPP54UOl0HhLlj22iTFQorBFw=;
+	s=korg; t=1738246756;
+	bh=S6QOIM+bH9PJiQoXEO/LLz8xFomQrSojTWVlNB1SZTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TklKE2b9OfB6fRnQs6+hAJS339Po4gjLu46dY5HVB+Djaf7TQG9zVawRPUiPRRXEo
-	 FpMaKsKGewb/V+ED17z6uxQGwuA9ZG2/uyONS1eADuBQ9CP3Rdgeur1+qYSb1p6Xin
-	 LONbH4aecQSGagQ8eftnaARlF4mUYO36VYyFxWKw=
+	b=BLM+yvID2tuc6dDXdqawp8btA0C9JTH4PXX37XyQrdTNIH1aDbXBUuvkh3swPQyUV
+	 fZm//vZj4IAZEHKGIxnqsDsgvVZLOi/M7CE8bT/dDK5bzB27f3ktzMUHcfTdJ52Gdd
+	 14lA3qSRfveFRj/z76yjsHpj7UX9NA0vv6YbjyUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Kunbo <zhangkunbo@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/133] fs: fix missing declaration of init_files
+Subject: [PATCH 5.4 57/91] gtp: use exit_batch_rtnl() method
 Date: Thu, 30 Jan 2025 15:01:16 +0100
-Message-ID: <20250130140146.022322323@linuxfoundation.org>
+Message-ID: <20250130140135.956804088@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Kunbo <zhangkunbo@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2b2fc0be98a828cf33a88a28e9745e8599fb05cf ]
+[ Upstream commit 6eedda01b2bfdcf427b37759e053dc27232f3af1 ]
 
-fs/file.c should include include/linux/init_task.h  for
- declaration of init_files. This fixes the sparse warning:
+exit_batch_rtnl() is called while RTNL is held,
+and devices to be unregistered can be queued in the dev_kill_list.
 
-fs/file.c:501:21: warning: symbol 'init_files' was not declared. Should it be static?
+This saves one rtnl_lock()/rtnl_unlock() pair per netns
+and one unregister_netdevice_many() call per netns.
 
-Signed-off-by: Zhang Kunbo <zhangkunbo@huawei.com>
-Link: https://lore.kernel.org/r/20241217071836.2634868-1-zhangkunbo@huawei.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Link: https://lore.kernel.org/r/20240206144313.2050392-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/gtp.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index 40a7fc127f37a..975b1227a2f6d 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -21,6 +21,7 @@
- #include <linux/rcupdate.h>
- #include <linux/close_range.h>
- #include <net/sock.h>
-+#include <linux/init_task.h>
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index f85f4e3d28215..fd5d3f58b5c10 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1355,23 +1355,23 @@ static int __net_init gtp_net_init(struct net *net)
+ 	return 0;
+ }
  
- #include "internal.h"
+-static void __net_exit gtp_net_exit(struct net *net)
++static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
++					       struct list_head *dev_to_kill)
+ {
+-	struct gtp_net *gn = net_generic(net, gtp_net_id);
+-	struct gtp_dev *gtp;
+-	LIST_HEAD(list);
++	struct net *net;
  
+-	rtnl_lock();
+-	list_for_each_entry(gtp, &gn->gtp_dev_list, list)
+-		gtp_dellink(gtp->dev, &list);
++	list_for_each_entry(net, net_list, exit_list) {
++		struct gtp_net *gn = net_generic(net, gtp_net_id);
++		struct gtp_dev *gtp;
+ 
+-	unregister_netdevice_many(&list);
+-	rtnl_unlock();
++		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
++			gtp_dellink(gtp->dev, dev_to_kill);
++	}
+ }
+ 
+ static struct pernet_operations gtp_net_ops = {
+ 	.init	= gtp_net_init,
+-	.exit	= gtp_net_exit,
++	.exit_batch_rtnl = gtp_net_exit_batch_rtnl,
+ 	.id	= &gtp_net_id,
+ 	.size	= sizeof(struct gtp_net),
+ };
 -- 
 2.39.5
 
