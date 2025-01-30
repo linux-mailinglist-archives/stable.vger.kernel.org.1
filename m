@@ -1,120 +1,147 @@
-Return-Path: <stable+bounces-111248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0EBA22732
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 01:28:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1D0A2277A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 02:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E9416185D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 00:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CCD01886367
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 01:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23DA8BE8;
-	Thu, 30 Jan 2025 00:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D95629408;
+	Thu, 30 Jan 2025 01:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzZqnHIy"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCA98C1F
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 00:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B294431;
+	Thu, 30 Jan 2025 01:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738196898; cv=none; b=urTBiHEEO31D8WXe7VmW+o0M7wPZF/8BeAtG4hipKpYkUTPeH+vR8O0DBl3offYx+w7q+Bgg0KxvfkZY99Hy5X1EjaIlY0m4kEajo60fU0ZVjcyg0+tp/6L0o0enbdP32t/Hz5JZGfdzMU1WMpY7U+kPyZadmDgimTiQnOG55V8=
+	t=1738200335; cv=none; b=Y02NByAaIF8Df+JKGw2Le+5e1eaGjSVAUFGW3huB2EVU1yza9yngO7V6fm0jfcnYBavPMBJeWhyuw1Tr/JwCtNrLLZH3ghZWwB7lk67w5hq1RAcfC3cfHQf6BG09CR+PGXMq6ooAXhwx7ms3TxUTWLgXJ069MZs2K20D2wCizh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738196898; c=relaxed/simple;
-	bh=Y8Ai1JGmV2H19nrg3fxEBsIxN+goQJftVfoEUwZNzaM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UNA2AkpHtSgoBgZvGAnwPNl3XC+Keh0P0SUDqpT83MVWEuK93uSohLaZGUKZvUvGGb4Bo8Q9eETku6deD0JjO+DoCfdGeKDTGYGuFPPjrcMdYxtdtrd9dygj2IGpe5CdqYGiH8eEud29S35jrMb4+y/DPLol4JKfWnIS4dlhM+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 7626F23417;
-	Thu, 30 Jan 2025 03:28:06 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	Andrey Ryabinin <aryabinin@virtuozzo.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Kees Cook <keescook@chromium.org>,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH v2 5.10/5.15/6.1 5/5] x86/mm: Do not shuffle CPU entry areas without KASLR
-Date: Thu, 30 Jan 2025 03:27:41 +0300
-Message-Id: <20250130002741.66796-6-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20250130002741.66796-1-kovalev@altlinux.org>
-References: <20250130002741.66796-1-kovalev@altlinux.org>
+	s=arc-20240116; t=1738200335; c=relaxed/simple;
+	bh=a9EQGLaLQ63V8C1g4jacKCgE1IBr1sG4RVQZ6PHSF4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQs6nKPdsOyzSI2iltRswMwnFUBCxOeHwZ9XpHoupEfc7dGyZ9MemWn42Ee5ISfGutddFWpJoAad+OLfBzuaFkTu3LxXBfHNIi01vnTtapREpSc1w5NnHvTg8NH4K4QdIAuCVvbzum6/8n/9uX70+FAOd63tR8SN8D9xH0raBk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzZqnHIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AECC4CED1;
+	Thu, 30 Jan 2025 01:25:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738200335;
+	bh=a9EQGLaLQ63V8C1g4jacKCgE1IBr1sG4RVQZ6PHSF4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AzZqnHIyUkdd9j4YPjb7ti9EY012tiiYl4bzdy8COzBwzCvPYAQHccVgM+YI27XQX
+	 Fwi8b5P8qgCVZ3LmzBOzCbxcM8MecOF1WaHP9p814TKLgL8zoLZNaNxbhcJV+JenAD
+	 Dj0XFfhbQ/Pa0cpRju1wxolpv1PypDJuEiN8DiuVcNwUE5+4GXK/iwFHriIqd0uYYe
+	 bJYnzrQBdH3OV0kqaGD2wLUFgQGL0k4EWKwGTJ/yA6T/DHzmCOS1Jk4f2Zis2OhcGU
+	 Nxj0eKP1T6mMZ9ISe8feNeFEIltjv4YJQ+ARXdBe5jp2iV+VC+NkPHULttSTEQ5Bw/
+	 OLuLMJDeMh7Ow==
+Date: Wed, 29 Jan 2025 17:25:32 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: =?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Mike Snitzer <snitzer@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Satya Tangirala <satyat@google.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Will McVicker <willmcvicker@google.com>, kernel-team@android.com,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] scsi: ufs: fix use-after free in init error and
+ remove paths
+Message-ID: <20250130012532.GB66821@sol.localdomain>
+References: <20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org>
 
-From: Michal Koutn√Ω <mkoutny@suse.com>
+On Fri, Jan 24, 2025 at 03:09:00PM +0000, AndrÈ Draszik wrote:
+> devm_blk_crypto_profile_init() registers a cleanup handler to run when
+> the associated (platform-) device is being released. For UFS, the
+> crypto private data and pointers are stored as part of the ufs_hba's
+> data structure 'struct ufs_hba::crypto_profile'. This structure is
+> allocated as part of the underlying ufshcd and therefore Scsi_host
+> allocation.
+> 
+> During driver release or during error handling in ufshcd_pltfrm_init(),
+> this structure is released as part of ufshcd_dealloc_host() before the
+> (platform-) device associated with the crypto call above is released.
+> Once this device is released, the crypto cleanup code will run, using
+> the just-released 'struct ufs_hba::crypto_profile'. This causes a
+> use-after-free situation:
+> 
+>   Call trace:
+>    kfree+0x60/0x2d8 (P)
+>    kvfree+0x44/0x60
+>    blk_crypto_profile_destroy_callback+0x28/0x70
+>    devm_action_release+0x1c/0x30
+>    release_nodes+0x6c/0x108
+>    devres_release_all+0x98/0x100
+>    device_unbind_cleanup+0x20/0x70
+>    really_probe+0x218/0x2d0
+> 
+> In other words, the initialisation code flow is:
+> 
+>   platform-device probe
+>     ufshcd_pltfrm_init()
+>       ufshcd_alloc_host()
+>         scsi_host_alloc()
+>           allocation of struct ufs_hba
+>           creation of scsi-host devices
+>     devm_blk_crypto_profile_init()
+>       devm registration of cleanup handler using platform-device
+> 
+> and during error handling of ufshcd_pltfrm_init() or during driver
+> removal:
+> 
+>   ufshcd_dealloc_host()
+>     scsi_host_put()
+>       put_device(scsi-host)
+>         release of struct ufs_hba
+>   put_device(platform-device)
+>     crypto cleanup handler
+> 
+> To fix this use-after free, change ufshcd_alloc_host() to register a
+> devres action to automatically cleanup the underlying SCSI device on
+> ufshcd destruction, without requiring explicit calls to
+> ufshcd_dealloc_host(). This way:
+> 
+>     * the crypto profile and all other ufs_hba-owned resources are
+>       destroyed before SCSI (as they've been registered after)
+>     * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
+>       side-effect
+>     * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
+>       it's not needed anymore
+>     * no future drivers using ufshcd_alloc_host() could ever forget
+>       adding the cleanup
+> 
+> Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
+> Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: AndrÈ Draszik <andre.draszik@linaro.org>
 
-commit a3f547addcaa10df5a226526bc9e2d9a94542344 upstream.
+Acked-by: Eric Biggers <ebiggers@kernel.org>
 
-The commit 97e3d26b5e5f ("x86/mm: Randomize per-cpu entry area") fixed
-an omission of KASLR on CPU entry areas. It doesn't take into account
-KASLR switches though, which may result in unintended non-determinism
-when a user wants to avoid it (e.g. debugging, benchmarking).
-
-Generate only a single combination of CPU entry areas offsets -- the
-linear array that existed prior randomization when KASLR is turned off.
-
-Since we have 3f148f331814 ("x86/kasan: Map shadow for percpu pages on
-demand") and followups, we can use the more relaxed guard
-kasrl_enabled() (in contrast to kaslr_memory_enabled()).
-
-Fixes: 97e3d26b5e5f ("x86/mm: Randomize per-cpu entry area")
-Signed-off-by: Michal Koutn√Ω <mkoutny@suse.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230306193144.24605-1-mkoutny%40suse.com
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- arch/x86/mm/cpu_entry_area.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/x86/mm/cpu_entry_area.c b/arch/x86/mm/cpu_entry_area.c
-index 559d12ecef712a..e81363fe8d06fb 100644
---- a/arch/x86/mm/cpu_entry_area.c
-+++ b/arch/x86/mm/cpu_entry_area.c
-@@ -11,6 +11,7 @@
- #include <asm/fixmap.h>
- #include <asm/desc.h>
- #include <asm/kasan.h>
-+#include <asm/setup.h>
- 
- static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage);
- 
-@@ -30,6 +31,12 @@ static __init void init_cea_offsets(void)
- 	unsigned int max_cea;
- 	unsigned int i, j;
- 
-+	if (!kaslr_enabled()) {
-+		for_each_possible_cpu(i)
-+			per_cpu(_cea_offset, i) = i;
-+		return;
-+	}
-+
- 	max_cea = (CPU_ENTRY_AREA_MAP_SIZE - PAGE_SIZE) / CPU_ENTRY_AREA_SIZE;
- 
- 	/* O(sodding terrible) */
--- 
-2.33.8
-
+- Eric
 
