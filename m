@@ -1,311 +1,158 @@
-Return-Path: <stable+bounces-111706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F6EA230CA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:06:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC06A230F0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F751888F69
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:06:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00231889180
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ECF1EB9E1;
-	Thu, 30 Jan 2025 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87EE1E9B11;
+	Thu, 30 Jan 2025 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZGu1W6Ia"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hlX/R9OC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5331E9B37;
-	Thu, 30 Jan 2025 15:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512101B21A9;
+	Thu, 30 Jan 2025 15:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738249556; cv=none; b=ZSdwI0fayw2TqEedbxxl7ycOYDqRoTXjqSAqdYydxV65HK9KI/HKuAijV71fJet3FOa4KtzW4gR/3YfFkrwlvXWLr3oWx4ZmfZk7nmNDy0zxfdr4/dAX0FIWVyBgcUmnYE5M9lbYho72RQdI2bw36Ha3/agFf0ecS+dy0VgA7e8=
+	t=1738250399; cv=none; b=Tntnx2HlR/5LNkXarVSPY3mSEKv5rDOqL6q0SFAZp4TznOMM28ozKqnp1NcdITwzqW9AtueH2ZSqHyrf1VHmwO3auCqxDU9C2hl15uXMLWzPg4avS2YzkpyKcZjIOJmqaMBj1SU3gisUx0Vzze4RmKXjmZFsrV97/B15nvlIPh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738249556; c=relaxed/simple;
-	bh=UzPOvN+QpHN78UMPLisEGiii/yIhWTrX8w3eeaX30BI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RDLIEhGT4uoJwNnl4k4HC/SFz8mmJ5dvDHvO3ZJHVchhkdWNPhxaFDwp2yD1YWo1Fjp+OikDrfeLYTdR7o44DzUkl4F72/rZbHkt6u/sD6IFI0p/KvxpIfq+BDoB9k6aCBYClbwgo1qVpqxjjlaWnnC9R+dnpxlfxFMXKtGsNzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZGu1W6Ia; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-29e70c9dc72so582342fac.0;
-        Thu, 30 Jan 2025 07:05:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738249553; x=1738854353; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DHLolQsZ2zlhGRc6ypaKnmQFnYcZDwNFc2rA1pE2dUY=;
-        b=ZGu1W6IawBe8GzO91xEE3nf2ySt9h+9HVmimhgcBO8Go4vAh7pwJlZwq+R85RbIC8l
-         eNJBPcxEprjpmYmiUYE6ZAvlDm3xbXsxdz39wg9WAExz0g7CTh4s5N+l2AujLPnz60xB
-         UnL6j9TqlIY9GcqQb/zuGn4Ybundud5Paxezs3LwYX2/nP757+D+7iponpbLfNk4SH/N
-         POKfTPTJh/ygi844+p+q0sl/gpVq4sFYQfFHRfJ9ikdEp3zKzeaxsB4xm/qFD4Y0ZKCF
-         dsH9p6JmS8uX9HFYpfKcLnQVydVckYZMgOwoY4wh5zOkh/Mj7evJGEMdbxP1UVf/aKRs
-         s5zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738249553; x=1738854353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DHLolQsZ2zlhGRc6ypaKnmQFnYcZDwNFc2rA1pE2dUY=;
-        b=Oczd9yJ9Kssvbc7mT92mYJLo5gMmRrmNhOTE6Dc4UEl5mdR0QKCB91LOH9FJW3iRNd
-         ktYsMiV+4RnciKMMzN9n0mw0bDJfDUKnbtL3UokGFHb9aTuRWhpm/dwi1TS96T1fXrPS
-         ArXyQFETkOVE4bVrjiHGCD0jtFbEOdkj6G4TWumPMHLITTQfMwRnsX3DQW/lUKY1K0MP
-         MyKYcWujfnPVuG5i2+hdhZ4/TV4mEsTL3+8brD2Ma3z+nhqrVo7v6cyH3JHQIJ28YZO3
-         tPeNeM34dxuAlpfCHSS2zFqGBT92pRa21Wz6oT2VYpKk05o9gdzc96z120Gn5VsLvL2I
-         a/RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgNaliIBdtUB/y6DoVKKqSdL5r1i8hw6flNn1kX3866Puc+9wTh0BeusUCYQqEPSfZVN+hIP11gb1J@vger.kernel.org, AJvYcCVDd7uRHTKj2v6GFAM1MYJtRtI8LmpyF4tl/EptaXC3+kJmc11QG1Ji2qIs+tUDlaZETRA=@vger.kernel.org, AJvYcCWbcnICGlRo6BY99FioANvRnhwN1b0iYFZLQd1gFiUx7qNdHuMJzn7m78brcEbBJpmLefHsBipk@vger.kernel.org, AJvYcCX+NJzNy9AoDkNr+Gt6CqSigEenM9tNZ0Fn1+t+cW7gLEdH1Qx7kyIIF50MGTL++Cf3NzelRoK0rc1c6UKPqJCF69lV@vger.kernel.org, AJvYcCXHXQKRnDhsV+D815TniQ8cMAWUz7wYxbuYzV3SnnNdEanLKaHAiAA5tNtfzW57zv8fPlZ92Y/9eHnFIhAT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxnfd1DvK2w5TD3N50dO5Ti7kw+wJTREmDSK0HUsyzpJI/5vngK
-	nPsmKVx8+Wk5sUImV4Rj4iQp3a9Ebn5C1NOFU0w5lzvF+/XV6TXX7Ehxi+EbbgeigK9G1HGBCRz
-	Wq8yk/lZTFXRr6U72QCsEyNcsE5c=
-X-Gm-Gg: ASbGncs/D5lDQ6/GnarQQua5kSbV3WC1eypROZciOx5PLe4c6CtRbwGTHV82FfVE97k
-	B4synv6S+Jw3exOaW0GTd6YK6LD+c7XNtsk923XMFdOIcIIKjUdqDphM5Ledg+8p/E7O78w/2
-X-Google-Smtp-Source: AGHT+IGwWbz4A9cAN6NUern7dANMSvQ3zxnrtwfKoZS9UDwPuqVpZ21D56igh9I6qthewqT7OwDZiANpe+moDbvsPUk=
-X-Received: by 2002:a05:6870:17a2:b0:29d:c86b:cdec with SMTP id
- 586e51a60fabf-2b32f37097emr5262216fac.29.1738249552982; Thu, 30 Jan 2025
- 07:05:52 -0800 (PST)
+	s=arc-20240116; t=1738250399; c=relaxed/simple;
+	bh=++5F+U/NM5cGq1DEAB3TXntJxWEnJwv2eL4zaC6Opxw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qQRMeVnhcKJnZTgJ/UgRsOvo6R/ODqfEhYqvlx+2LsboU/wPTcvy5AN2I1S7OnaIEac1paqdY5xz2wrcHnWzCsD3Hh6CauuHIR0goZLH7gHbz192BnoKVohJx9nB9CKjoX/qdXW40r589BTSi9yvCt7m9Zsjytk8GTBqPTrJOek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hlX/R9OC; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 535D544280;
+	Thu, 30 Jan 2025 15:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738250395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mthSOymJzZU3NBmJRQSU6dHuOu/XGt2aFg8/OQCwRBI=;
+	b=hlX/R9OCvuRRz9TzdoX5x2NhDsPTeQ5LsAlA0ZE7l7BchG9XBhMUjmgWYMOP8J0Ifhwxh7
+	8Th0Hg2aH6+/RaAmzvGY6hY/vWhXV2lPSwbf5kEdzEO4gK4zbdywX+RwxhILhoRKy7jQM6
+	fNkqlkYEMNYV78vY1/vJ5p2iThdAi4sITHhKRjz/Zw7kZSDEIU9auSE+P43fmxl/pWTpKl
+	YknKucUQo5Yp/fGaN+jGImu45E4ZDlVgntE7qw32BP5fl2xwWKUHIq+laW92GXd0Y5W6O+
+	9f8VfIxoCb+/pqjoO1HMw5wdyVChvXnyMre7kDdvxOVtELsPxPJ9/deli5pDSw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  "linux@treblig.org" <linux@treblig.org>,  Shen Lichuan
+ <shenlichuan@vivo.com>,  Jinjie Ruan <ruanjinjie@huawei.com>,
+  "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
+  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob
+ when DMA is not ready
+In-Reply-To: <BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
+	(Niravkumar L. Rabara's message of "Thu, 30 Jan 2025 03:51:08 +0000")
+References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
+	<20250116032154.3976447-2-niravkumar.l.rabara@intel.com>
+	<87plkgpk8k.fsf@bootlin.com>
+	<BL3PR11MB653276DFD3339ADAADC70CCFA2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
+	<874j1i0wfq.fsf@bootlin.com>
+	<BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
+User-Agent: mu4e 1.12.7; emacs 29.4
+Date: Thu, 30 Jan 2025 16:19:53 +0100
+Message-ID: <87msf8z5uu.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250128145806.1849977-1-eyal.birger@gmail.com>
- <202501281634.7F398CEA87@keescook> <CAHsH6Gsv3DB0O5oiEDsf2+Go4O1+tnKm-Ab0QPyohKSaroSxxA@mail.gmail.com>
- <Z5s3S5X8FYJDAHfR@krava>
-In-Reply-To: <Z5s3S5X8FYJDAHfR@krava>
-From: Eyal Birger <eyal.birger@gmail.com>
-Date: Thu, 30 Jan 2025 07:05:42 -0800
-X-Gm-Features: AWEUYZle5Jz5iPcb2yaCal2ANp1nG2oO_se0ysxDSQIB8pXBm9OhyhcKOHe4XPo
-Message-ID: <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
-Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without filtering
-To: Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>
-Cc: luto@amacapital.net, wad@chromium.org, oleg@redhat.com, 
-	mhiramat@kernel.org, andrii@kernel.org, alexei.starovoitov@gmail.com, 
-	cyphar@cyphar.com, songliubraving@fb.com, yhs@fb.com, 
-	john.fastabend@gmail.com, peterz@infradead.org, tglx@linutronix.de, 
-	bp@alien8.de, daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com, 
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com, 
-	bpf@vger.kernel.org, linux-api@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiudeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehnihhrrghvkhhumhgrrhdrlhdrrhgrsggrrhgrsehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepshhhvghnlhhitghhuhgrnhesvhhivhhordgtohhmpdhrtghpthhtoheprhhurghnjhhinhhji
+ hgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehurdhklhgvihhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhg
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Thu, Jan 30, 2025 at 12:24=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wro=
-te:
+Hello,
+
+>> > Driver works without external DMA interface i.e. has_dma=3D0.
+>> > However current driver does not have a mechanism to configure it from
+>> > device tree.
+>>=20
+>> What? Why are you requesting a DMA channel from a dmaengine in this case?
+>>=20
+>> Please make the distinction between the OS implementation (the driver) a=
+nd
+>> the DT binding which describe the HW and only the HW.
+>>=20
 >
-> On Wed, Jan 29, 2025 at 09:27:49AM -0800, Eyal Birger wrote:
-> > Hi,
-> >
-> > Thanks for the review!
-> >
-> > On Tue, Jan 28, 2025 at 5:41=E2=80=AFPM Kees Cook <kees@kernel.org> wro=
-te:
-> > >
-> > > On Tue, Jan 28, 2025 at 06:58:06AM -0800, Eyal Birger wrote:
-> > > > Note: uretprobe isn't supported in i386 and __NR_ia32_rt_tgsigqueue=
-info
-> > > > uses the same number as __NR_uretprobe so the syscall isn't forced =
-in the
-> > > > compat bitmap.
-> > >
-> > > So a 64-bit tracer cannot use uretprobe on a 32-bit process? Also is
-> > > uretprobe strictly an x86_64 feature?
-> > >
-> >
-> > My understanding is that they'd be able to do so, but use the int3 trap
-> > instead of the uretprobe syscall.
-> >
-> > > > [...]
-> > > > diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-> > > > index 385d48293a5f..23b594a68bc0 100644
-> > > > --- a/kernel/seccomp.c
-> > > > +++ b/kernel/seccomp.c
-> > > > @@ -734,13 +734,13 @@ seccomp_prepare_user_filter(const char __user=
- *user_filter)
-> > > >
-> > > >  #ifdef SECCOMP_ARCH_NATIVE
-> > > >  /**
-> > > > - * seccomp_is_const_allow - check if filter is constant allow with=
- given data
-> > > > + * seccomp_is_filter_const_allow - check if filter is constant all=
-ow with given data
-> > > >   * @fprog: The BPF programs
-> > > >   * @sd: The seccomp data to check against, only syscall number and=
- arch
-> > > >   *      number are considered constant.
-> > > >   */
-> > > > -static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
-> > > > -                                struct seccomp_data *sd)
-> > > > +static bool seccomp_is_filter_const_allow(struct sock_fprog_kern *=
-fprog,
-> > > > +                                       struct seccomp_data *sd)
-> > > >  {
-> > > >       unsigned int reg_value =3D 0;
-> > > >       unsigned int pc;
-> > > > @@ -812,6 +812,21 @@ static bool seccomp_is_const_allow(struct sock=
-_fprog_kern *fprog,
-> > > >       return false;
-> > > >  }
-> > > >
-> > > > +static bool seccomp_is_const_allow(struct sock_fprog_kern *fprog,
-> > > > +                                struct seccomp_data *sd)
-> > > > +{
-> > > > +#ifdef __NR_uretprobe
-> > > > +     if (sd->nr =3D=3D __NR_uretprobe
-> > > > +#ifdef SECCOMP_ARCH_COMPAT
-> > > > +         && sd->arch !=3D SECCOMP_ARCH_COMPAT
-> > > > +#endif
-> > >
-> > > I don't like this because it's not future-proof enough. __NR_uretprob=
-e
-> > > may collide with other syscalls at some point.
-> >
-> > I'm not sure I got this point.
-> >
-> > > And if __NR_uretprobe_32
-> > > is ever implemented, the seccomp logic will be missing. I think this
-> > > will work now and in the future:
-> > >
-> > > #ifdef __NR_uretprobe
-> > > # ifdef SECCOMP_ARCH_COMPAT
-> > >         if (sd->arch =3D=3D SECCOMP_ARCH_COMPAT) {
-> > > #  ifdef __NR_uretprobe_32
-> > >                 if (sd->nr =3D=3D __NR_uretprobe_32)
-> > >                         return true;
-> > > #  endif
-> > >         } else
-> > > # endif
-> > >         if (sd->nr =3D=3D __NR_uretprobe)
-> > >                 return true;
-> > > #endif
-> >
-> > I don't know if implementing uretprobe syscall for compat binaries is
-> > planned or makes sense - I'd appreciate Jiri's and others opinion on th=
-at.
-> > That said, I don't mind adding this code for the sake of future proofin=
-g.
+> Let me clarify from bindings(hw) and driver prospective.=20
 >
-> as Andrii wrote in the other email ATM it's just strictly x86_64,
-> but let's future proof it
-
-Thank you. So I'm ok with using the suggestion above, but more on this belo=
-w.
-
+> Bindings :-
+> Cadence NAND controller HW has MMIO registers, so called slave DMA interf=
+ace
+> for page programming or page read.=20
+>         reg =3D <0x10b80000 0x10000>,
+>               <0x10840000 0x10000>;
+>         reg-names =3D "reg", "sdma"; // sdma =3D  Slave DMA data port reg=
+ister set
 >
-> AFAIK there was an attempt to do similar on arm but it did not show
-> any speed up
+> It appears that dt bindings has captured sdma interface correctly.
+
+Slave DMA is very confusing because in Linux we make the distinction
+between:
+1- external DMA (generic DMA controller) driven
+   through the dmaengine API, through which we interact using the so
+   called slave API
+2- peripheral DMA (DMA controller embedded in the NAND IP) when there is
+   no "external/generic" engine. In this case we control DMA transfers
+   using the registers of the NAND controller (or a nearby range, in
+   this case), the same driver handles both the NAND and the DMA part.
+
+You used the wording Slave DMA (#1), but it feels like you are talking
+about the other (#2). Can you please confirm in which case we are?
+
+> Linux Driver:-
+> Driver can read these sdma registers directly or it can use the DMA.
+> Existing driver code has hardcoded has_dma with an assumption that
+> an external DMA is always used and relies on DMA API for data
+> transfer.
+
+I am sorry but DMA API does not mean much. There are 3 APIs:
+- dma-mapping, for the buffers and the coherency
+- dmaengine, used in case #1 only, to drive the external DMA controllers
+- dma-buf to share buffers between areas in the kernel (out of scope)
+
+> Thant is why it requires to use DMA channel from dmaengine.
+
+If I understand it right, no :-)
+
+Either you have an external DMA controller (#2) or an internal one (#1)
+but in this second case there is no DMA channel request nor any
+engine-related API. Of course you need to use the dma-mapping API for
+the buffers.
+
+> In my previous reply, I tried to describe this driver scenario but maybe =
+I mixed up.=20
+> has_dma=3D0, i.e. accessing sdma register without using dmaengine is
+> also working.
+
+But do you have an external DMA engine in the end? Or is it specific to
+the NAND controller?
+
+> However, currently there is no option in driver to choose between using d=
+maengine and
+> direct register access.
 >
-> >
-> > >
-> > > Instead of doing a function rename dance, I think you can just stick
-> > > the above into seccomp_is_const_allow() after the WARN().
-> >
-> > My motivation for the renaming dance was that you mentioned we might ad=
-d
-> > new syscalls to this as well, so I wanted to avoid cluttering the exist=
-ing
-> > function which seems to be well defined.
-> >
-> > >
-> > > Also please add a KUnit tests to cover this in
-> > > tools/testing/selftests/seccomp/seccomp_bpf.c
-> >
-> > I think this would mean that this test suite would need to run as
-> > privileged. Is that Ok? or maybe it'd be better to have a new suite?
-> >
-> > > With at least these cases combinations below. Check each of:
-> > >
-> > >         - not using uretprobe passes
-> > >         - using uretprobe passes (and validates that uretprobe did wo=
-rk)
-> > >
-> > > in each of the following conditions:
-> > >
-> > >         - default-allow filter
-> > >         - default-block filter
-> > >         - filter explicitly blocking __NR_uretprobe and nothing else
-> > >         - filter explicitly allowing __NR_uretprobe (and only other
-> > >           required syscalls)
-> >
-> > Ok.
->
-> please let me know if I can help in any way with tests
 
-Thanks! Is there a way to partition this work? I'd appreciate the help
-if we can find some way of doing so.
-
->
-> >
-> > >
-> > > Hm, is uretprobe expected to work on mips? Because if so, you'll need=
- to
-> > > do something similar to the mode1 checking in the !SECCOMP_ARCH_NATIV=
-E
-> > > version of seccomp_cache_check_allow().
-> >
-> > I don't know if uretprobe syscall is expected to run on mips. Personall=
-y
-> > I'd avoid adding this dead code.
-
-Jiri, what is your take on this one?
-
-> >
-> > >
-> > > (You can see why I really dislike having policy baked into seccomp!)
-> >
-> > I definitely understand :)
-> >
-> > >
-> > > > +        )
-> > > > +             return true;
-> > > > +#endif
-> > > > +
-> > > > +     return seccomp_is_filter_const_allow(fprog, sd);
-> > > > +}
-> > > > +
-> > > >  static void seccomp_cache_prepare_bitmap(struct seccomp_filter *sf=
-ilter,
-> > > >                                        void *bitmap, const void *bi=
-tmap_prev,
-> > > >                                        size_t bitmap_size, int arch=
-)
-> > > > @@ -1023,6 +1038,9 @@ static inline void seccomp_log(unsigned long =
-syscall, long signr, u32 action,
-> > > >   */
-> > > >  static const int mode1_syscalls[] =3D {
-> > > >       __NR_seccomp_read, __NR_seccomp_write, __NR_seccomp_exit, __N=
-R_seccomp_sigreturn,
-> > > > +#ifdef __NR_uretprobe
-> > > > +     __NR_uretprobe,
-> > > > +#endif
-> > >
-> > > It'd be nice to update mode1_syscalls_32 with __NR_uretprobe_32 even
-> > > though it doesn't exist. (Is it _never_ planned to be implemented?) B=
-ut
-> > > then, maybe the chances of a compat mode1 seccomp process running und=
-er
-> > > uretprobe is vanishingly small.
->
-> no plans for __NR_uretprobe_32 at this point
-
-So if we go with the suggestion above, we'll support the theoretical
-__NR_uretprobe_32 for filtered seccomp, but not for strict seccomp, and
-that's ok because strict seccomp is less common?
-
-Personally I'd prefer to limit the scope of this fix to the problem we
-are aware of, and not possible problems should someone decide to reimplemen=
-t
-uretprobes on different archs in a different way. Especially as this fix ne=
-eds
-to be backmerged to stable kernels.
-So my personal preference would be to avoid __NR_uretprobe_32 in this patch
-and deal with it if it ever gets implemented.
-
-Thoughts and advice appreciated,
-Eyal.
+Thanks,
+Miqu=C3=A8l
 
