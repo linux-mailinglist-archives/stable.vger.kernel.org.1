@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-111562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CE6A22FC0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 905D7A22FD2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B6518839ED
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A60516930B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D3C1E8855;
-	Thu, 30 Jan 2025 14:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C301C1E9916;
+	Thu, 30 Jan 2025 14:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/4VQFHO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="argv7UDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C281E522;
-	Thu, 30 Jan 2025 14:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2481DDC22;
+	Thu, 30 Jan 2025 14:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247098; cv=none; b=EPE3afEkI3Q+B6egbjU42W+UApfUwiKmqcT4UpcesBb50AtLCIwr1PK3RgtJVY1kJhbwXzucf+2aisKOgTazYDcjPxsAgQQ9hL9HPw+P9eTa9Ki+AtZSf1xbGD4cIi1CY4ICiNUQGUju8s1UdelfzEjBWBpT3+CfuRp5k4DTgRg=
+	t=1738247130; cv=none; b=bbHIww8kbJP/PNAr6YBozlSy4im12qOUJWp4szQ5jAPtUvjmPgIQ6vm927qNs02gahdKrQv3lHkGPXptLxXuPQw2JCyAqMujYKS5z5DmIYYeORncMSTgy4VInF8GFBx8r02+3YIw5QeDBEx6DukeUdftOvv/GKO0RcwtvnWkS90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247098; c=relaxed/simple;
-	bh=mVpKx64Hv7VDivFnXEX4sujzREahTM6d4cd9OUeyt3k=;
+	s=arc-20240116; t=1738247130; c=relaxed/simple;
+	bh=0DZCFOhy77OC9MaoJwRQu/aKwpvNz/lnY6cOlTdQB2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3GcILqcm9w/kin/HNQVXwmTzeZJvWS82kmdNplx1Vwz8C447EszBrIkKF/+4Driv7wbVhrx8Vbrnfwp4fkWgooMRcBih5EIleovAz+Q1ObIWJEfneNdWGIIQvk+25PgyGPT/J208cB7VBsB3qdc3H7sljGehMHwyVQu/ztpmj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/4VQFHO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19F3C4CED2;
-	Thu, 30 Jan 2025 14:24:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QcfOHpoX5o55Y4+8daXPMKh/+OF61QYHsNRPjMrkdXFkY1QYsQG1yi+Kp59zyCNygLP5dxUE6a3eiwzH/M4XECmwA2DQJVPyO1v5FLO/jL8gGGX8kPI21Vfia0ZBFbLGG1B4fAs4Riu5Fbl+uu6sdotWlGkw6vYuEnTFmfFAh9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=argv7UDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11C7C4CED2;
+	Thu, 30 Jan 2025 14:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247098;
-	bh=mVpKx64Hv7VDivFnXEX4sujzREahTM6d4cd9OUeyt3k=;
+	s=korg; t=1738247130;
+	bh=0DZCFOhy77OC9MaoJwRQu/aKwpvNz/lnY6cOlTdQB2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/4VQFHOfdeaqdziHe+w9Wp8wMvpTKGR44vZzfOZiy8i4MOOAknjtO2bVymszJWWl
-	 Ro4QnfioWRygwUwXmxnsjnb4MLG5iR5BfeY+Ymp5KNG/KwgJjzO4ysv5o1Cl7x5nL2
-	 F8z2Sg01F+Hxdk/rHR3z2X9AaS06TYQVXiJ2Yd7I=
+	b=argv7UDbnpX/fw72z2pPujXeOWMU0tLqWRM1SHwEJuQvVcJLeZUOcXf7mfbmTqX8I
+	 vbnLyfFL8St7uqKjQwl7M2sTzju4ecycM2YLDwzZNDO/LE+L7Kq9VliL/DB4cc4/Kz
+	 k5r6gzzD9NmqVF6716Vp6rdDyMXhrvAZE6S9b9ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	John Stultz <john.stultz@linaro.org>,
-	Maxime Ripard <maxime@cerno.tech>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Robert Foss <robert.foss@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/133] drm/bridge: adv7533: Switch to devm MIPI-DSI helpers
-Date: Thu, 30 Jan 2025 15:00:53 +0100
-Message-ID: <20250130140145.095394956@linuxfoundation.org>
+Subject: [PATCH 5.10 065/133] drm: bridge: adv7511: unregister cec i2c device after cec adapter
+Date: Thu, 30 Jan 2025 15:00:54 +0100
+Message-ID: <20250130140145.134729345@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -61,102 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <maxime@cerno.tech>
+From: Alvin Šipraga <alsi@bang-olufsen.dk>
 
-[ Upstream commit ee9418808bcce77e2c31dbbfc58621ea99a05597 ]
+[ Upstream commit 40cdb02cb9f965732eb543d47f15bef8d10f0f5f ]
 
-Let's switch to the new devm MIPI-DSI function to register and attach
-our secondary device. This also avoids leaking the device when we detach
-the bridge.
+cec_unregister_adapter() assumes that the underlying adapter ops are
+callable. For example, if the CEC adapter currently has a valid physical
+address, then the unregistration procedure will invalidate the physical
+address by setting it to f.f.f.f. Whence the following kernel oops
+observed after removing the adv7511 module:
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Tested-by: John Stultz <john.stultz@linaro.org>
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-Link: https://patchwork.freedesktop.org/patch/msgid/20211025151536.1048186-2-maxime@cerno.tech
+    Unable to handle kernel execution of user memory at virtual address 0000000000000000
+    Internal error: Oops: 86000004 [#1] PREEMPT_RT SMP
+    Call trace:
+     0x0
+     adv7511_cec_adap_log_addr+0x1ac/0x1c8 [adv7511]
+     cec_adap_unconfigure+0x44/0x90 [cec]
+     __cec_s_phys_addr.part.0+0x68/0x230 [cec]
+     __cec_s_phys_addr+0x40/0x50 [cec]
+     cec_unregister_adapter+0xb4/0x118 [cec]
+     adv7511_remove+0x60/0x90 [adv7511]
+     i2c_device_remove+0x34/0xe0
+     device_release_driver_internal+0x114/0x1f0
+     driver_detach+0x54/0xe0
+     bus_remove_driver+0x60/0xd8
+     driver_unregister+0x34/0x60
+     i2c_del_driver+0x2c/0x68
+     adv7511_exit+0x1c/0x67c [adv7511]
+     __arm64_sys_delete_module+0x154/0x288
+     invoke_syscall+0x48/0x100
+     el0_svc_common.constprop.0+0x48/0xe8
+     do_el0_svc+0x28/0x88
+     el0_svc+0x1c/0x50
+     el0t_64_sync_handler+0xa8/0xb0
+     el0t_64_sync+0x15c/0x160
+    Code: bad PC value
+    ---[ end trace 0000000000000000 ]---
+
+Protect against this scenario by unregistering i2c_cec after
+unregistering the CEC adapter. Duly disable the CEC clock afterwards
+too.
+
+Fixes: 3b1b975003e4 ("drm: adv7511/33: add HDMI CEC support")
+Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Reviewed-by: Robert Foss <robert.foss@linaro.org>
+Signed-off-by: Robert Foss <robert.foss@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220612144854.2223873-3-alvin@pqrs.dk
 Stable-dep-of: 81adbd3ff21c ("drm: adv7511: Fix use-after-free in adv7533_attach_dsi()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511.h     |  1 -
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c |  2 --
- drivers/gpu/drm/bridge/adv7511/adv7533.c     | 20 ++++----------------
- 3 files changed, 4 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511.h b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-index e95abeb64b93..dcb792adc62c 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511.h
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511.h
-@@ -399,7 +399,6 @@ enum drm_mode_status adv7533_mode_valid(struct adv7511 *adv,
- int adv7533_patch_registers(struct adv7511 *adv);
- int adv7533_patch_cec_registers(struct adv7511 *adv);
- int adv7533_attach_dsi(struct adv7511 *adv);
--void adv7533_detach_dsi(struct adv7511 *adv);
- int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv);
- 
- #ifdef CONFIG_DRM_I2C_ADV7511_AUDIO
 diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index 60400efe1dd3..42d93f314699 100644
+index 42d93f314699..9e8f45fa5c5e 100644
 --- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
 +++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -1339,8 +1339,6 @@ static int adv7511_remove(struct i2c_client *i2c)
+@@ -1339,9 +1339,6 @@ static int adv7511_remove(struct i2c_client *i2c)
  {
  	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
  
--	if (adv7511->type == ADV7533 || adv7511->type == ADV7535)
--		adv7533_detach_dsi(adv7511);
- 	i2c_unregister_device(adv7511->i2c_cec);
- 	clk_disable_unprepare(adv7511->cec_clk);
- 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-index 2cade7ae0c0d..ec624b9d5077 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
-@@ -151,11 +151,10 @@ int adv7533_attach_dsi(struct adv7511 *adv)
- 		return -EPROBE_DEFER;
- 	}
- 
--	dsi = mipi_dsi_device_register_full(host, &info);
-+	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
- 	if (IS_ERR(dsi)) {
- 		dev_err(dev, "failed to create dsi device\n");
--		ret = PTR_ERR(dsi);
--		goto err_dsi_device;
-+		return PTR_ERR(dsi);
- 	}
- 
- 	adv->dsi = dsi;
-@@ -165,24 +164,13 @@ int adv7533_attach_dsi(struct adv7511 *adv)
- 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 			  MIPI_DSI_MODE_EOT_PACKET | MIPI_DSI_MODE_VIDEO_HSE;
- 
--	ret = mipi_dsi_attach(dsi);
-+	ret = devm_mipi_dsi_attach(dev, dsi);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to attach dsi to host\n");
--		goto err_dsi_attach;
-+		return ret;
- 	}
- 
- 	return 0;
+-	i2c_unregister_device(adv7511->i2c_cec);
+-	clk_disable_unprepare(adv7511->cec_clk);
 -
--err_dsi_attach:
--	mipi_dsi_device_unregister(dsi);
--err_dsi_device:
--	return ret;
--}
--
--void adv7533_detach_dsi(struct adv7511 *adv)
--{
--	mipi_dsi_detach(adv->dsi);
--	mipi_dsi_device_unregister(adv->dsi);
- }
+ 	adv7511_uninit_regulators(adv7511);
  
- int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+ 	drm_bridge_remove(&adv7511->bridge);
+@@ -1349,6 +1346,8 @@ static int adv7511_remove(struct i2c_client *i2c)
+ 	adv7511_audio_exit(adv7511);
+ 
+ 	cec_unregister_adapter(adv7511->cec_adap);
++	i2c_unregister_device(adv7511->i2c_cec);
++	clk_disable_unprepare(adv7511->cec_clk);
+ 
+ 	i2c_unregister_device(adv7511->i2c_packet);
+ 	i2c_unregister_device(adv7511->i2c_edid);
 -- 
 2.39.5
 
