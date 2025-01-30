@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216D6A22F60
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E14A23033
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235F13A4CBB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C21167B7A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A83C1E98E8;
-	Thu, 30 Jan 2025 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97511E7C27;
+	Thu, 30 Jan 2025 14:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M93uF6aU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6a++iSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2705F1BDA95;
-	Thu, 30 Jan 2025 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78EB1E522;
+	Thu, 30 Jan 2025 14:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246865; cv=none; b=aQWIdXqpb9JkkX8ZJqGxKgl4NQUGwQqOWK2WaagbWs6eHHXMjkkvc7u7y65GisCKTN/dZZZoOefz58+kb2I/hkwILwXvAC7mayshmkFS6bN8HtdL/Z2QpvFUGFdDJtqnSspWM4nDqMlCIl5L7YR4ILBvsi32m23DU9BsFQJzBCM=
+	t=1738247384; cv=none; b=sW0CmfHCiZ+/dNgrNVT76YWbOHcl/YGANp9d+d894vP9PAVjkXDAGtCl1ZAPoUte0S4vnEpil2wmJ/xEMnu5Z2ErcDos9txDZrVXq5PrW00h4vYtszKoCBrUY2zrNUQX8E5b9gm37BH2ao80jR9qtu1guYcwcQGNnnGgurlePQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246865; c=relaxed/simple;
-	bh=MSDa1hTBuo5GXDoiZ4cw0zZox9l8e3RJirIRxjOVn/Q=;
+	s=arc-20240116; t=1738247384; c=relaxed/simple;
+	bh=WoHeu89h2l3l+j2GW7C46bDqorfZt+eSGRreLVPauUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lm3Yrz50KtOJiy/wBac6Oz/2wPKFHrpZPVZJOFsOFAPu3RJzzJQ6MlRqqTSPDxD9/KmJh3JWh7cbcH+HeXlCsKGT+SU5UtKmlKJFLU4B5Pr45632YsV8IQ+x2h81DzucETtRSEdigiWNrhM5sb6wd/Lez/6m6YdrgzFGJF4HVgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M93uF6aU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7184C4CED2;
-	Thu, 30 Jan 2025 14:21:04 +0000 (UTC)
+	 MIME-Version; b=sGuiDIYRj/0HxZ2AItXrdi3Pev+rpGtMPjV23XvxSjblWGG1zZusZd0W9o3PneYbAKVakVRSEIlljsMEeo1ZhinXCbFgBhbS2JmlsBFmGdpXN+Ii7CR/6y8uLloeqklebU7vvrwRQwxnwexnFAqMVuPUhXNN+plHO1BOtr5cPzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6a++iSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D81EC4CED2;
+	Thu, 30 Jan 2025 14:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246865;
-	bh=MSDa1hTBuo5GXDoiZ4cw0zZox9l8e3RJirIRxjOVn/Q=;
+	s=korg; t=1738247384;
+	bh=WoHeu89h2l3l+j2GW7C46bDqorfZt+eSGRreLVPauUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M93uF6aUFW4FyUQbj/3orYnvnuuK8UXmfo+nxmqVmpkqFBzEE64k4HCH759VmF40p
-	 y9wLcBipytar03BbCRgYDbnkhJT7DdSwh44DMneaHnSwptDOvZOOWPpkpBvzHibjbK
-	 EII7awcfehXA3ns+5AszAXh0/tDXAORAh4uXAUDk=
+	b=f6a++iSjEbldqaAyfalscXNlNjH8xNn3EnMv8jKd7O4szP7BmjajIxbpbDAFGenbp
+	 gAcmB7xoX0pf0JkI34UGXzbek8tsUlLYlzaaFDWBI6j7Zay+9ziGB0KLR9MLyecpIP
+	 fN3N8qrsn+gbf+zZiy9RSMHoksSJoiztquZhjrJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 5.4 79/91] m68k: Update ->thread.esp0 before calling syscall_trace() in ret_from_signal
-Date: Thu, 30 Jan 2025 15:01:38 +0100
-Message-ID: <20250130140136.857486717@linuxfoundation.org>
+	Linus Walleij <linus.walleij@linaro.org>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 03/49] seccomp: Stub for !CONFIG_SECCOMP
+Date: Thu, 30 Jan 2025 15:01:39 +0100
+Message-ID: <20250130140133.968698472@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 50e43a57334400668952f8e551c9d87d3ed2dfef upstream.
+[ Upstream commit f90877dd7fb5085dd9abd6399daf63dd2969fc90 ]
 
-We get there when sigreturn has performed obscene acts on kernel stack;
-in particular, the location of pt_regs has shifted.  We are about to call
-syscall_trace(), which might stop for tracer.  If that happens, we'd better
-have task_pt_regs() returning correct result...
+When using !CONFIG_SECCOMP with CONFIG_GENERIC_ENTRY, the
+randconfig bots found the following snag:
 
-Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
-Fixes: bd6f56a75bb2 ("m68k: Missing syscall_trace() on sigreturn")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Tested-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/YP2dMWeV1LkHiOpr@zeniv-ca.linux.org.uk
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   kernel/entry/common.c: In function 'syscall_trace_enter':
+>> kernel/entry/common.c:52:23: error: implicit declaration
+   of function '__secure_computing' [-Wimplicit-function-declaration]
+      52 |                 ret = __secure_computing(NULL);
+         |                       ^~~~~~~~~~~~~~~~~~
+
+Since generic entry calls __secure_computing() unconditionally,
+fix this by moving the stub out of the ifdef clause for
+CONFIG_HAVE_ARCH_SECCOMP_FILTER so it's always available.
+
+Link: https://lore.kernel.org/oe-kbuild-all/202501061240.Fzk9qiFZ-lkp@intel.com/
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20250108-seccomp-stub-2-v2-1-74523d49420f@linaro.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/entry.S |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/seccomp.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/m68k/kernel/entry.S
-+++ b/arch/m68k/kernel/entry.S
-@@ -182,6 +182,8 @@ ENTRY(ret_from_signal)
- 	movel	%curptr@(TASK_STACK),%a1
- 	tstb	%a1@(TINFO_FLAGS+2)
- 	jge	1f
-+	lea	%sp@(SWITCH_STACK_SIZE),%a1
-+	movel	%a1,%curptr@(TASK_THREAD+THREAD_ESP0)
- 	jbsr	syscall_trace
- 1:	RESTORE_SWITCH_STACK
- 	addql	#4,%sp
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index d31d76be49825..91ff537c62462 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -69,10 +69,10 @@ struct seccomp_data;
+ 
+ #ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
+ static inline int secure_computing(void) { return 0; }
+-static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
+ #else
+ static inline void secure_computing_strict(int this_syscall) { return; }
+ #endif
++static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
+ 
+ static inline long prctl_get_seccomp(void)
+ {
+-- 
+2.39.5
+
 
 
 
