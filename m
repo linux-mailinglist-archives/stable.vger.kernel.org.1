@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-111453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCEEA22F38
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38B5A22FE7
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F015163227
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 907027A1BBA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E671E9901;
-	Thu, 30 Jan 2025 14:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792A1E8835;
+	Thu, 30 Jan 2025 14:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EefcbhtR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BC80XJ1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB05F1E3DC8;
-	Thu, 30 Jan 2025 14:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88731E522;
+	Thu, 30 Jan 2025 14:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246782; cv=none; b=XbZw56gnhL2KkkYzm7lA50jsEl+N+0Rt/v2sN/JOceckFiey4VrfPxIx4H66x5Mnn6mYAH+F4WaRW/MPdCEffiNRxYhs0WqCv8j51IgMUVLa/mvaW7m4nSNvVni+P4pMEP/tOyrIaBPWQFaMnweBsNzgDrUeXY2Yzc5l6v+hcKY=
+	t=1738247159; cv=none; b=JO/59GrnjZHJFaHirwHTeMCCbwiXDkLodk8RZYqrejgEOmtspY7IoiXpiH0scxD2RSbKlf2D2L34IPovFZdlbjE+tQWKrPI+5ucbvYLL/OqOEtOXn3tPfBfxLpq9P9SS+9FOt16QF3Ug4B73sJqDhrvAXzdHibpsnTjakA3b6Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246782; c=relaxed/simple;
-	bh=Bsv2iW63WoGZ0KDHVebw9lAh6mApNHHvA7ec+yONvMI=;
+	s=arc-20240116; t=1738247159; c=relaxed/simple;
+	bh=O4OAZmX0+AE/yf3+6Z8MCqWrKvPk+8IGB8FuOxR05JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7MNtg3XlX/qefNJe2yb8PUuacsYJsm+fxAuSRv4eV8td8IflVgVJbI/yVya0e+ZZJemT3usj6Ay8xQIARqiH/+3WBPHQRTu/N4/gN0+VKtstyDuvy/kZxDX/8xEZbzVKQPVQPawudpDjoId88Y95q74+QhAdLL3uBLD0+q+W0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EefcbhtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38DECC4CED2;
-	Thu, 30 Jan 2025 14:19:42 +0000 (UTC)
+	 MIME-Version; b=t9OSnl1bCyuedBBNNBo8iy8jA8s41j0E4YiQ9gfAx66rDacFV55lh7S5HmJYbhdoPcfgKtmhs0u1YYc+vrweQffUGMMdN28stdP/i/1DbU/aR/5xe/WZSFOQa0XEq3+2nRkJt85Kex3SN5MMCYKQiyh3CylMvBP1JT2plW3AYRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BC80XJ1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5253CC4CED2;
+	Thu, 30 Jan 2025 14:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246782;
-	bh=Bsv2iW63WoGZ0KDHVebw9lAh6mApNHHvA7ec+yONvMI=;
+	s=korg; t=1738247159;
+	bh=O4OAZmX0+AE/yf3+6Z8MCqWrKvPk+8IGB8FuOxR05JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EefcbhtR44DhcdKa6E9/2GIJJbimTUz85PWezw6rndsQ0uOPSfgf6oCWtjAIpKu3V
-	 z/YXckvkh+Lt2InU4etX23B5vWXlPsA8Tjb6r8tF98N8wXdT+dxpHkRZeEw5G2TDE9
-	 NauWqQTSo5IWfSpZBJzzcDDD9E4tZXHY0xP6FINM=
+	b=BC80XJ1JIiacaRnyJTIg0EejD1aXGzWqqG1jFpA02G/z0iFymquGNrLGziXBAlClR
+	 1spvItWAp6H1+dIb58RpXmZKJ2hHhOTIljyvW+lxyxEZgv3W+kwwnCERGdNwuTpCNi
+	 zTK/PwKnJcKWjsZUTQL30RzZNYYaoB4Lg4940ffc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 65/91] kheaders: Ignore silly-rename files
+	Rik van Riel <riel@surriel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 095/133] fs/proc: fix softlockup in __read_vmcore (part 2)
 Date: Thu, 30 Jan 2025 15:01:24 +0100
-Message-ID: <20250130140136.291051235@linuxfoundation.org>
+Message-ID: <20250130140146.354651512@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,65 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 973b710b8821c3401ad7a25360c89e94b26884ac ]
+commit cbc5dde0a461240046e8a41c43d7c3b76d5db952 upstream.
 
-Tell tar to ignore silly-rename files (".__afs*" and ".nfs*") when building
-the header archive.  These occur when a file that is open is unlinked
-locally, but hasn't yet been closed.  Such files are visible to the user
-via the getdents() syscall and so programs may want to do things with them.
+Since commit 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore") the
+number of softlockups in __read_vmcore at kdump time have gone down, but
+they still happen sometimes.
 
-During the kernel build, such files may be made during the processing of
-header files and the cleanup may get deferred by fput() which may result in
-tar seeing these files when it reads the directory, but they may have
-disappeared by the time it tries to open them, causing tar to fail with an
-error.  Further, we don't want to include them in the tarball if they still
-exist.
+In a memory constrained environment like the kdump image, a softlockup is
+not just a harmless message, but it can interfere with things like RCU
+freeing memory, causing the crashdump to get stuck.
 
-With CONFIG_HEADERS_INSTALL=y, something like the following may be seen:
+The second loop in __read_vmcore has a lot more opportunities for natural
+sleep points, like scheduling out while waiting for a data write to
+happen, but apparently that is not always enough.
 
-   find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-   tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+Add a cond_resched() to the second loop in __read_vmcore to (hopefully)
+get rid of the softlockups.
 
-The find warning doesn't seem to cause a problem.
-
-Fix this by telling tar when called from in gen_kheaders.sh to exclude such
-files.  This only affects afs and nfs; cifs uses the Windows Hidden
-attribute to prevent the file from being seen.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241213135013.2964079-2-dhowells@redhat.com
-cc: Masahiro Yamada <masahiroy@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-nfs@vger.kernel.org
-cc: linux-kernel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250110102821.2a37581b@fangorn
+Fixes: 5cbcb62dddf5 ("fs/proc: fix softlockup in __read_vmcore")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/gen_kheaders.sh | 1 +
- 1 file changed, 1 insertion(+)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/gen_kheaders.sh b/kernel/gen_kheaders.sh
-index 206ab3d41ee76..7fc44d8da2052 100755
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -84,6 +84,7 @@ find $cpio_dir -type f -print0 |
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -396,6 +396,8 @@ static ssize_t __read_vmcore(char *buffe
+ 			if (buflen == 0)
+ 				return acc;
+ 		}
++
++		cond_resched();
+ 	}
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
-+    --exclude=".__afs*" --exclude=".nfs*" \
-     --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
- 
--- 
-2.39.5
-
+ 	return acc;
 
 
 
