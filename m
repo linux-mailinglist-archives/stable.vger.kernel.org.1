@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455B4A22FDA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67458A22F13
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20557168E65
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F53B1668F9
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113FF1E98F9;
-	Thu, 30 Jan 2025 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50091E8823;
+	Thu, 30 Jan 2025 14:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+qakpaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9IocjdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25F31E98F1;
-	Thu, 30 Jan 2025 14:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9236A1DDE9;
+	Thu, 30 Jan 2025 14:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247156; cv=none; b=Dh69OqZmno11/UP409hFUrJ8ieWlEVn42cTDgockrt+Vi1CTMMjwNpewwq7mDYtOvaYKVCjk+xxlG5E7jQavlN9Rk9aqOrTUwJls27IAIWjEdFqLgleH1uYeVzYXb8+IOTyYdDF21rRpB3R47Dt5UE7nVMpkgoZXzvkRzGn/yvs=
+	t=1738246685; cv=none; b=jds9j7XfAa0LEI6cME6nci+NeT8aAUH6w5YZKyBwwan04D1IQtH9e1R73Z85P1eWtibtt6WNqhirGLWe/C1oI4/Tv6mFCgRenZMtvtI0RPwcerXMvwrxwSeddM2oai8RWUjnyQvGOgh3OueDX1eka61wd8SLRssPV4QCBT3luBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247156; c=relaxed/simple;
-	bh=ar9bApVvHLTMr9/ngIDonaJPMbij4ploO4Tzl0kJ2Nc=;
+	s=arc-20240116; t=1738246685; c=relaxed/simple;
+	bh=pYll21GBMmtwMIv9HmyTMRWpUKC91QRts+lUovJaAaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZnT3SjjqNdpPxvhUGrMYAwArRGoaOO3PAr+5z/UFkV59Fktz/3LzFQa42UjjjkRo90Qy80wiDJ7ygPL7K/8IhgH3KjbggmbaKkv17DVy+xIcGAg1X9pzZHBetTlE6/EBY8uQg43h/igzQSCGZzA4+NRMf9PnXg927yfBQM9cKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+qakpaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F84C4CED2;
-	Thu, 30 Jan 2025 14:25:56 +0000 (UTC)
+	 MIME-Version; b=uhk4a1amGNVdKwZaX9lk9APiKAh5hClaN8b7gorZ+5au9ZD4X3l/uhaA/0yoXAh+F/GT0K0BeVriS4j1yx2IW11lPYiUEZ+5yf2aV7SHKyaessdPY4nYwBFDfF1pM8OG6GiH9aYOOq7eHwL3X+aOpRNst+hsdhCgxUE/hGWeS8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9IocjdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212D1C4CED2;
+	Thu, 30 Jan 2025 14:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247156;
-	bh=ar9bApVvHLTMr9/ngIDonaJPMbij4ploO4Tzl0kJ2Nc=;
+	s=korg; t=1738246685;
+	bh=pYll21GBMmtwMIv9HmyTMRWpUKC91QRts+lUovJaAaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+qakpaAdjY+b99G3C60m3oClSZ4PltzvSbryfW283TPGk4vuGcD7pAI5dQ1l3RGj
-	 xaH5PcwufAxKMfwuNC475KRiVhTGsqXVuBX6pEMu/td3G/RodVCy+fdrTYJ7Rxr5gN
-	 f7T1/MkmqivDOOkdym+13ZtJtYF58zN5IWLcg99I=
+	b=E9IocjdTbszcsDSzPgcvTITKT6++R+ExANP2jgvs07CWGFrahJjaoYhID2kpmzRtQ
+	 3TO843M1QqwZPtMBwk4DByx88qJQ9vP1d6XwKmuvXZcrch319LOfQ55Ve56UvsOyTO
+	 OofkaK1P5R/TgeoXkeezHUg7Cnlv+GuklOlNw2p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Hajda <a.hajda@samsung.com>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/133] drm/mipi-dsi: Create devm device registration
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 32/91] iio: imu: kmx61: fix information leak in triggered buffer
 Date: Thu, 30 Jan 2025 15:00:51 +0100
-Message-ID: <20250130140145.015753362@linuxfoundation.org>
+Message-ID: <20250130140134.955098774@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <maxime@cerno.tech>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit a1419fb4a73e47f0eab2985dff594ed52397471b ]
+commit 6ae053113f6a226a2303caa4936a4c37f3bfff7b upstream.
 
-Devices that take their data through the MIPI-DSI bus but are controlled
-through a secondary bus like I2C have to register a secondary device on
-the MIPI-DSI bus through the mipi_dsi_device_register_full() function.
+The 'buffer' local array is used to push data to user space from a
+triggered buffer, but it does not set values for inactive channels, as
+it only uses iio_for_each_active_channel() to assign new values.
 
-At removal or when an error occurs, that device needs to be removed
-through a call to mipi_dsi_device_unregister().
+Initialize the array to zero before using it to avoid pushing
+uninitialized information to userspace.
 
-Let's create a device-managed variant of the registration function that
-will automatically unregister the device at unbind.
-
-Reviewed-by: Andrzej Hajda <a.hajda@samsung.com>
-Signed-off-by: Maxime Ripard <maxime@cerno.tech>
-Link: https://patchwork.freedesktop.org/patch/msgid/20210910101218.1632297-4-maxime@cerno.tech
-Stable-dep-of: 81adbd3ff21c ("drm: adv7511: Fix use-after-free in adv7533_attach_dsi()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c3a23ecc0901 ("iio: imu: kmx61: Add support for data ready triggers")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-5-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 46 ++++++++++++++++++++++++++++++++++
- include/drm/drm_mipi_dsi.h     |  3 +++
- 2 files changed, 49 insertions(+)
+ drivers/iio/imu/kmx61.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 107a98484f50..e53a5b14b47b 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -246,6 +246,52 @@ void mipi_dsi_device_unregister(struct mipi_dsi_device *dsi)
- }
- EXPORT_SYMBOL(mipi_dsi_device_unregister);
+--- a/drivers/iio/imu/kmx61.c
++++ b/drivers/iio/imu/kmx61.c
+@@ -1198,7 +1198,7 @@ static irqreturn_t kmx61_trigger_handler
+ 	struct kmx61_data *data = kmx61_get_data(indio_dev);
+ 	int bit, ret, i = 0;
+ 	u8 base;
+-	s16 buffer[8];
++	s16 buffer[8] = { };
  
-+static void devm_mipi_dsi_device_unregister(void *arg)
-+{
-+	struct mipi_dsi_device *dsi = arg;
-+
-+	mipi_dsi_device_unregister(dsi);
-+}
-+
-+/**
-+ * devm_mipi_dsi_device_register_full - create a managed MIPI DSI device
-+ * @dev: device to tie the MIPI-DSI device lifetime to
-+ * @host: DSI host to which this device is connected
-+ * @info: pointer to template containing DSI device information
-+ *
-+ * Create a MIPI DSI device by using the device information provided by
-+ * mipi_dsi_device_info template
-+ *
-+ * This is the managed version of mipi_dsi_device_register_full() which
-+ * automatically calls mipi_dsi_device_unregister() when @dev is
-+ * unbound.
-+ *
-+ * Returns:
-+ * A pointer to the newly created MIPI DSI device, or, a pointer encoded
-+ * with an error
-+ */
-+struct mipi_dsi_device *
-+devm_mipi_dsi_device_register_full(struct device *dev,
-+				   struct mipi_dsi_host *host,
-+				   const struct mipi_dsi_device_info *info)
-+{
-+	struct mipi_dsi_device *dsi;
-+	int ret;
-+
-+	dsi = mipi_dsi_device_register_full(host, info);
-+	if (IS_ERR(dsi))
-+		return dsi;
-+
-+	ret = devm_add_action_or_reset(dev,
-+				       devm_mipi_dsi_device_unregister,
-+				       dsi);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	return dsi;
-+}
-+EXPORT_SYMBOL_GPL(devm_mipi_dsi_device_register_full);
-+
- static DEFINE_MUTEX(host_lock);
- static LIST_HEAD(host_list);
- 
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index 0dbed65c0ca5..af8ed48749eb 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -224,6 +224,9 @@ struct mipi_dsi_device *
- mipi_dsi_device_register_full(struct mipi_dsi_host *host,
- 			      const struct mipi_dsi_device_info *info);
- void mipi_dsi_device_unregister(struct mipi_dsi_device *dsi);
-+struct mipi_dsi_device *
-+devm_mipi_dsi_device_register_full(struct device *dev, struct mipi_dsi_host *host,
-+				   const struct mipi_dsi_device_info *info);
- struct mipi_dsi_device *of_find_mipi_dsi_device_by_node(struct device_node *np);
- int mipi_dsi_attach(struct mipi_dsi_device *dsi);
- int mipi_dsi_detach(struct mipi_dsi_device *dsi);
--- 
-2.39.5
-
+ 	if (indio_dev == data->acc_indio_dev)
+ 		base = KMX61_ACC_XOUT_L;
 
 
 
