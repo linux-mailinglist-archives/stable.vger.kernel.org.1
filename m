@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE667A22EEE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:16:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8060A22E92
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46197163F01
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47ADE188AFF8
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3A21DDC22;
-	Thu, 30 Jan 2025 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF291E5700;
+	Thu, 30 Jan 2025 14:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLYG+Xu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ple7GK5T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2B5383;
-	Thu, 30 Jan 2025 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5081DFDA5;
+	Thu, 30 Jan 2025 14:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246601; cv=none; b=I9d4KOkg0QD8q5zu0SpkIcgJOleQR/2TeOJ/IEAa30GBNGbFFIQ0DtuEF9NkCe2SBbr4hk/9fRNx61bJpk6Kuw/fmGXlEyNNDc0GOo90xFNFKxGW23Hk5EEMpUFavF9IuxnMCzHO1EMPLqXWQIylqnEhJgsXILVqs8l9mjOCjNE=
+	t=1738245740; cv=none; b=QJlOB0IS1qcgnNIaysGEZoFqEMMREIZC3/STAFSgEaV+cH4wE9O3wIjgrTxYb1RTDrT7mqbtEr4enriNAPjJVc/kPYW+rUfApIBV28EtkdjfDlnm5h6MHn0Y/W1/hw5EH/ouRa309Wr6qF+KF4iEKiLgrOwn/2nzPwhwx6+w6Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246601; c=relaxed/simple;
-	bh=U2Ktzn0fKusRqApCLFMp/evE78hrHvfP4GasRhf77tk=;
+	s=arc-20240116; t=1738245740; c=relaxed/simple;
+	bh=YPzYqc7/dTru1AzrBVUBSTSbheLy6sqDzbD2RWpUHBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3k+9nVkbOUVM5arnDspTrC9+hIyrpVXqJJm64oWf2zvt0YHlo0+Kc63BfnM40sDC8NJ2e645/7SkTLO9NzNRPIUoCfJBpCumwJyAYRcpRzoN/xLrW4sEeN87ySUjMjGM4DQHkcE5fp6Aj9l1tvSRePUKXb3YI3GIGrtei8yV5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLYG+Xu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA30C4CED2;
-	Thu, 30 Jan 2025 14:16:40 +0000 (UTC)
+	 MIME-Version; b=ZqYgtqnT7OYDadY/fZLRKdZMZW3pTtMkCmPNAThgUzMuAq5I8vlY/2nhpsRbE43nqkqnY6ks+Mt08Y01FCm1sPZC2P3RVPvol2w1MzssEAXq3KiCiHCL7eU9/pOlWh6RVXjsnd7PgSHbx3aVPG8hqA9afc0hRkfhX32AX/8pdag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ple7GK5T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E922AC4CED2;
+	Thu, 30 Jan 2025 14:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246601;
-	bh=U2Ktzn0fKusRqApCLFMp/evE78hrHvfP4GasRhf77tk=;
+	s=korg; t=1738245740;
+	bh=YPzYqc7/dTru1AzrBVUBSTSbheLy6sqDzbD2RWpUHBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLYG+Xu8YJXMLltUoTXihb4sv43isVJWA+CZJ68MQh7YE1EDLbrC5VhfI04P7u1iL
-	 2hOVn34kns6Ej6ihegQKwnZcREpcVKxfKn4Ds5zYl9qJqeVa8+KXRJ+d2RJ3ruvXOH
-	 Ob00vKJbU44budpwJq1cQOjeWiI1Gxh3D0mHoSxw=
+	b=Ple7GK5TWGKDmTsjCR2+q6oiI+c/K6v20/TmOULeK2rA85VQVKlVTJua54i44YZFZ
+	 5zTUoACN7ti9T4owp/f2mRlN+fyMk/XcQk0TLO1qW3XhNscZWIz2G0WcdPj9n8hIB5
+	 fnqjpFtbNHwEzea/NQSUEHi1PSOIJgDSGpEJT6K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 21/43] libfs: Return ENOSPC when the directory offset range is exhausted
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 28/40] scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
 Date: Thu, 30 Jan 2025 14:59:28 +0100
-Message-ID: <20250130133459.754795073@linuxfoundation.org>
+Message-ID: <20250130133500.830380226@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-[ Upstream commit 903dc9c43a155e0893280c7472d4a9a3a83d75a6 ]
+commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream.
 
-Testing shows that the EBUSY error return from mtree_alloc_cyclic()
-leaks into user space. The ERRORS section of "man creat(2)" says:
+If there's a persistent error in the hypervisor, the SCSI warning for
+failed I/O can flood the kernel log and max out CPU utilization,
+preventing troubleshooting from the VM side. Ratelimit the warning so
+it doesn't DoS the VM.
 
->	EBUSY	O_EXCL was specified in flags and pathname refers
->		to a block device that is in use by the system
->		(e.g., it is mounted).
-
-ENOSPC is closer to what applications expect in this situation.
-
-Note that the normal range of simple directory offset values is
-2..2^63, so hitting this error is going to be rare to impossible.
-
-Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
-Cc: stable@vger.kernel.org # v6.9+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/20241228175522.1854234-2-cel@kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ cel: adjusted to apply to origin/linux-6.6.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Closes: https://github.com/microsoft/WSL/issues/9173
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/storvsc_drv.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -287,8 +287,8 @@ int simple_offset_add(struct offset_ctx
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -171,6 +171,12 @@ do {								\
+ 		dev_warn(&(dev)->device, fmt, ##__VA_ARGS__);	\
+ } while (0)
  
- 	ret = xa_alloc_cyclic(&octx->xa, &offset, dentry, limit,
- 			      &octx->next_offset, GFP_KERNEL);
--	if (ret < 0)
--		return ret;
-+	if (unlikely(ret < 0))
-+		return ret == -EBUSY ? -ENOSPC : ret;
++#define storvsc_log_ratelimited(dev, level, fmt, ...)				\
++do {										\
++	if (do_logging(level))							\
++		dev_warn_ratelimited(&(dev)->device, fmt, ##__VA_ARGS__);	\
++} while (0)
++
+ struct vmscsi_request {
+ 	u16 length;
+ 	u8 srb_status;
+@@ -1177,7 +1183,7 @@ static void storvsc_on_io_completion(str
+ 		int loglevel = (stor_pkt->vm_srb.cdb[0] == TEST_UNIT_READY) ?
+ 			STORVSC_LOGGING_WARN : STORVSC_LOGGING_ERROR;
  
- 	offset_set(dentry, offset);
- 	return 0;
+-		storvsc_log(device, loglevel,
++		storvsc_log_ratelimited(device, loglevel,
+ 			"tag#%d cmd 0x%x status: scsi 0x%x srb 0x%x hv 0x%x\n",
+ 			scsi_cmd_to_rq(request->cmd)->tag,
+ 			stor_pkt->vm_srb.cdb[0],
 
 
 
