@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD3DA22F5D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC65A2302A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6951882AE3
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A673A636A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994151E9906;
-	Thu, 30 Jan 2025 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A21E98F3;
+	Thu, 30 Jan 2025 14:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ku23Soes"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asjjO6O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C5C1E3DC8;
-	Thu, 30 Jan 2025 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47661E7C25;
+	Thu, 30 Jan 2025 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246856; cv=none; b=HtNtqPkKLylEXw1cd+dGxjBerZsgCpg0Y16IsoEW1NQG8xQgw8WevEE0pzNcZ+5JA77pGZ2G4W7NhrcHwzu0rLNH4Bp5Fh66uYomhSnNtvgAnlRPUfKAmjZH1mVEYECkvP/NvBaIonF9eMLN5c5w8aH2wvgbTWkXEniKyhy1v80=
+	t=1738247367; cv=none; b=oHQGl8zxGzR+HWI8dDoB/Kionpotv0z8+vhymr3ZTDOxuGhb9VJxw+/5Q5lFYCmOpEn/yKFwbDcy3gl2QAkbQ06uULvsanSMpnJ2yJqped6rrlBe88sk98eBv6FMzw5Q3QAqWpy4QDM/a+UVUOm+vVvca+HyjfxvdROkSWEOdDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246856; c=relaxed/simple;
-	bh=X2fLsDDlOnntThAQ/+aqWGPseSdfo7RwDLcPkSxVVqs=;
+	s=arc-20240116; t=1738247367; c=relaxed/simple;
+	bh=jmTa+mBg+GdIY68vjpw0InxFtykQE7+xshVDSGCMzHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZ5BAD5iQYP+mSpOIlSslVjjave0q430fFQxj771m+fGeGEBJ1wqei5T2jYfavIhhxVV8cgdfwECnC3Wl/TBCksAkkLmuGhouvpGdvidMq87q4IqEMaPvTx6EWVTaZXPyjId/tzx6HgHe9U89vmniF8JlOirZeEsHmr6DntJhgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ku23Soes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D060DC4CED2;
-	Thu, 30 Jan 2025 14:20:55 +0000 (UTC)
+	 MIME-Version; b=oWXgBY7LLsAojSSsdDUQVjqk5atHpfZmZVrWQBklrFm12WF94CbLm4n3ZE46F3Kbfi8Rw2az2wbg2xwdyOUoiQT+1lZs4ODAZmendINYFUiwlB+G9NhcTdNWQxJQynmA8iM9LSp3nASaho5vOaZJ+cCgmKIOyGTCWU//IjQ2qaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asjjO6O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9C4C4CED2;
+	Thu, 30 Jan 2025 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246856;
-	bh=X2fLsDDlOnntThAQ/+aqWGPseSdfo7RwDLcPkSxVVqs=;
+	s=korg; t=1738247367;
+	bh=jmTa+mBg+GdIY68vjpw0InxFtykQE7+xshVDSGCMzHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ku23SoespHO61trxoABwAnE6geQVPa6Zwv+lV6T3Ng5e+/ZmXy7gbSUQa7Wn+Vsig
-	 y4onfBfXgpRiLCTyyNsvZL1963GNqu1r6CAlSpeYTvn21G4/fjrvgqMDxNm00pzI4P
-	 f05eddYFIgBKEJ9pefIdsZwEOiavixQopW5jZRbw=
+	b=asjjO6O/vg7PPwC/KyMmbMqOsnKC66DSmH7IJ4V2UxWfoTwYc3pL+eoSgPpCT19Ck
+	 kdtAMfhzlgh28kNxHVKAyfHNAcN1EJlZB7nIG5BAzDwcOvtpe42iyEQrD4vPlIjiKp
+	 BvkUjongpLQUscYi7o7RMRf/+KKxBBvzozjUdMNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Greiner <jack@emoss.org>,
-	Pavel Rojtberg <rojtberg@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 91/91] Input: xpad - add support for wooting two he (arm)
-Date: Thu, 30 Jan 2025 15:01:50 +0100
-Message-ID: <20250130140137.342074222@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 15/49] xfs: rt stubs should return negative errnos when rt disabled
+Date: Thu, 30 Jan 2025 15:01:51 +0100
+Message-ID: <20250130140134.445811278@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Greiner <jack@emoss.org>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 222f3390c15c4452a9f7e26f5b7d9138e75d00d5 upstream.
+[ Upstream commit c2988eb5cff75c02bc57e02c323154aa08f55b78 ]
 
-Add Wooting Two HE (ARM) to the list of supported devices.
+When realtime support is not compiled into the kernel, these functions
+should return negative errnos, not positive errnos.  While we're at it,
+fix a broken macro declaration.
 
-Signed-off-by: Jack Greiner <jack@emoss.org>
-Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
-Link: https://lore.kernel.org/r/20250107192830.414709-3-rojtberg@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_rtalloc.h |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -345,6 +345,7 @@ static const struct xpad_device {
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1220, "Wooting Two HE", 0, XTYPE_XBOX360 },
-+	{ 0x31e3, 0x1230, "Wooting Two HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
+--- a/fs/xfs/xfs_rtalloc.h
++++ b/fs/xfs/xfs_rtalloc.h
+@@ -141,17 +141,17 @@ int xfs_rtalloc_extent_is_free(struct xf
+ 			       bool *is_free);
+ int xfs_rtalloc_reinit_frextents(struct xfs_mount *mp);
+ #else
+-# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)    (ENOSYS)
+-# define xfs_rtfree_extent(t,b,l)                       (ENOSYS)
+-# define xfs_rtfree_blocks(t,rb,rl)			(ENOSYS)
+-# define xfs_rtpick_extent(m,t,l,rb)                    (ENOSYS)
+-# define xfs_growfs_rt(mp,in)                           (ENOSYS)
+-# define xfs_rtalloc_query_range(t,l,h,f,p)             (ENOSYS)
+-# define xfs_rtalloc_query_all(m,t,f,p)                 (ENOSYS)
+-# define xfs_rtbuf_get(m,t,b,i,p)                       (ENOSYS)
+-# define xfs_verify_rtbno(m, r)			(false)
+-# define xfs_rtalloc_extent_is_free(m,t,s,l,i)          (ENOSYS)
+-# define xfs_rtalloc_reinit_frextents(m)                (0)
++# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)	(-ENOSYS)
++# define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
++# define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
++# define xfs_rtpick_extent(m,t,l,rb)			(-ENOSYS)
++# define xfs_growfs_rt(mp,in)				(-ENOSYS)
++# define xfs_rtalloc_query_range(m,t,l,h,f,p)		(-ENOSYS)
++# define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
++# define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
++# define xfs_verify_rtbno(m, r)				(false)
++# define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
++# define xfs_rtalloc_reinit_frextents(m)		(0)
+ static inline int		/* error */
+ xfs_rtmount_init(
+ 	xfs_mount_t	*mp)	/* file system mount structure */
+@@ -162,7 +162,7 @@ xfs_rtmount_init(
+ 	xfs_warn(mp, "Not built with CONFIG_XFS_RT");
+ 	return -ENOSYS;
+ }
+-# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (ENOSYS))
++# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (-ENOSYS))
+ # define xfs_rtunmount_inodes(m)
+ #endif	/* CONFIG_XFS_RT */
+ 
 
 
 
