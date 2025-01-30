@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-111476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18E5A22F55
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFBC1A22FF5
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A2423A597B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3835C7A2957
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0161E9B01;
-	Thu, 30 Jan 2025 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8451E8835;
+	Thu, 30 Jan 2025 14:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkYaUVFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfZqUmKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D8A1E8855;
-	Thu, 30 Jan 2025 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F71E522;
+	Thu, 30 Jan 2025 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246850; cv=none; b=sJ0jb0kFB2kM/+9CNalUFPop/qP5IPjOJ98jhPWSzluEgg5lwJf3K9LX9+mQQn1TmDFu5pHaupdDMJ56xyacxzeoqfWyp3OBVRuFF+o8PEVL3wdB2I2StPEcPKD+izgbFXu8V1ixxhbZlVIeG52Z+e0UINhvQP0QvLRfUweHMZ8=
+	t=1738247213; cv=none; b=ePVUyzdsHu29M+Vxl0lntdwnfl5n9nCEIIsRtTSu9h5V4W8vZupz85t1FVFGMx+GXhw4p/ovx+oxjvG9qAp3h+T4Om/rGRoxfxBxmZzlgHkzhtzAfVdJFa6mGBcSzTlqOuZEBOZdY5EN8HZOIM1OP9c3tGN4bICoH7rBSSMWhIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246850; c=relaxed/simple;
-	bh=G4tkHYke724t2E9MTefArUhwAKmRqaGQjRrUJv7Zigc=;
+	s=arc-20240116; t=1738247213; c=relaxed/simple;
+	bh=XpmDTMTt5XrnD4OFUIgf8JgIXVtIh08kIxElXcDdjKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8iYyYVYd3h+jUdXV3TutJbXrQ8a9FlZllr0kllJGe/AyOJmy2wbHwiEpc5U8tW5+xO4xs6nQwJcOLBvOZNHQ0Cz+utLI1uRzEjEZpqgwtrhmtmS2btsb/JTLfo5GZOv4zN9IMf/5+dsNKKbAMMmCFQZVAgYHG7dZjsLeuip9To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkYaUVFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61ACC4CEE4;
-	Thu, 30 Jan 2025 14:20:49 +0000 (UTC)
+	 MIME-Version; b=VgbRLXUByHLjRm/+eCuixCQlYje9mJJQquGNLP3KBGqdWy2NckulGzVo+deMc/g6DywOsmX5t9rwV3gRu1cQHVl/ydgPe3uEdAdMQG1CDqj4S695tygcxHbb6qUwgGq6zfyfCoifOQYsxLlvmDIbSIFbxcL1+69K6Ohus5qFvp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfZqUmKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A08C4CED2;
+	Thu, 30 Jan 2025 14:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246850;
-	bh=G4tkHYke724t2E9MTefArUhwAKmRqaGQjRrUJv7Zigc=;
+	s=korg; t=1738247212;
+	bh=XpmDTMTt5XrnD4OFUIgf8JgIXVtIh08kIxElXcDdjKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkYaUVFJjngAz0VrKR7/z58w3tKo02wDOMJuJQ7CUWS4Pv6QeGMtX448AO15MjyLo
-	 jJDel+5LzwbG/NMgRtjt+Y2xUmg3+7+sbLZcszXOYeKd8b5QrexBQsJN5IS5nDI9QC
-	 fg5ksYrUbf4e9aLSNi/buHBtIiFjq5yqgFFUD3+o=
+	b=SfZqUmKJCqx32IDJNrY4GvOeqtu0XvqzYduOrR1wfURbIbiwl5eFywRtTocxjIG9o
+	 r7UpoE7shC2cacm2XdIXm2COqLn9JtuQ5oBzCNV+a/TiDbPQC6oSyo/RsZkXfulcsA
+	 3fmp0bV3KTfHVgn67XoB68KrYDERb54ZF9iIPXxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 89/91] Input: atkbd - map F23 key to support default copilot shortcut
-Date: Thu, 30 Jan 2025 15:01:48 +0100
-Message-ID: <20250130140137.262255720@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 120/133] ASoC: samsung: Add missing depends on I2C
+Date: Thu, 30 Jan 2025 15:01:49 +0100
+Message-ID: <20250130140147.359885641@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Pearson <mpearson-lenovo@squebb.ca>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 907bc9268a5a9f823ffa751957a5c1dd59f83f42 upstream.
+[ Upstream commit 704dbe97a68153a84319ad63f526e12ba868b88e ]
 
-Microsoft defined Meta+Shift+F23 as the Copilot shortcut instead of a
-dedicated keycode, and multiple vendors have their keyboards emit this
-sequence in response to users pressing a dedicated "Copilot" key.
-Unfortunately the default keymap table in atkbd does not map scancode
-0x6e (F23) and so the key combination does not work even if userspace
-is ready to handle it.
+When switching to selects for MFD_WM8994 a dependency should have also
+been added for I2C, as the dependency on MFD_WM8994 will not be
+considered by the select.
 
-Because this behavior is common between multiple vendors and the
-scancode is currently unused map 0x6e to keycode 193 (KEY_F23) so that
-key sequence is generated properly.
-
-MS documentation for the scan code:
-https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input#scan-codes
-Confirmed on Lenovo, HP and Dell machines by Canonical.
-Tested on Lenovo T14s G6 AMD.
-
-Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Link: https://lore.kernel.org/r/20250107034554.25843-1-mpearson-lenovo@squebb.ca
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fd55c6065bec ("ASoC: samsung: Add missing selects for MFD_WM8994")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501082020.2bpGGVTW-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250108134828.246570-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/atkbd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/samsung/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -84,7 +84,7 @@ static const unsigned short atkbd_set2_k
- 	  0, 46, 45, 32, 18,  5,  4, 95,  0, 57, 47, 33, 20, 19,  6,183,
- 	  0, 49, 48, 35, 34, 21,  7,184,  0,  0, 50, 36, 22,  8,  9,185,
- 	  0, 51, 37, 23, 24, 11, 10,  0,  0, 52, 53, 38, 39, 25, 12,  0,
--	  0, 89, 40,  0, 26, 13,  0,  0, 58, 54, 28, 27,  0, 43,  0, 85,
-+	  0, 89, 40,  0, 26, 13,  0,193, 58, 54, 28, 27,  0, 43,  0, 85,
- 	  0, 86, 91, 90, 92,  0, 14, 94,  0, 79,124, 75, 71,121,  0,  0,
- 	 82, 83, 80, 76, 77, 72,  1, 69, 87, 78, 81, 74, 55, 73, 70, 99,
+diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
+index 159bc501186f9..c04c38d58804c 100644
+--- a/sound/soc/samsung/Kconfig
++++ b/sound/soc/samsung/Kconfig
+@@ -214,7 +214,7 @@ config SND_SOC_SAMSUNG_TM2_WM5110
  
+ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 	tristate "SoC I2S Audio support for WM8994 on Aries"
+-	depends on SND_SOC_SAMSUNG && IIO && EXTCON
++	depends on SND_SOC_SAMSUNG && I2C && IIO && EXTCON
+ 	select SND_SOC_BT_SCO
+ 	select MFD_WM8994
+ 	select SND_SOC_WM8994
+@@ -228,7 +228,7 @@ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 
+ config SND_SOC_SAMSUNG_MIDAS_WM1811
+ 	tristate "SoC I2S Audio support for Midas boards"
+-	depends on SND_SOC_SAMSUNG
++	depends on SND_SOC_SAMSUNG && I2C
+ 	select SND_SAMSUNG_I2S
+ 	select MFD_WM8994
+ 	select SND_SOC_WM8994
+-- 
+2.39.5
+
 
 
 
