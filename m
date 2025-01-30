@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8E2A2300B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08335A23000
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754113A50C6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846091885E33
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20831E7C27;
-	Thu, 30 Jan 2025 14:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1F51E9901;
+	Thu, 30 Jan 2025 14:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/WyZjhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/LOoHZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810401E522;
-	Thu, 30 Jan 2025 14:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4857A1E6DCF;
+	Thu, 30 Jan 2025 14:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247291; cv=none; b=Wg0J8xQoVOO3JkI5IIdfPx6iLJeNMTBHq+49PYkPQeDN7PGhezyx/dwEIIidzI9skngrAljC5e1PPIWjzp1x71ZRqeFD4BsQpJB4GzUNEe+leNq2LRDvzcPcjOvoxrwymAG6isv0eDz9+726MyxntvXP8zgsURV3Mlf+2XpEmjc=
+	t=1738247259; cv=none; b=MLib2vmkyP68FiVtFAz7opIFnlOTv4cTP/tKoxo+88CNQXyEzH6FdDH1UfeZ5KCs0dicehka34TyktcrzRPW3ENLxGAL181M15cYs3MnQKMXSdidXSGoed+UeT7wKYgDokJ0XGG9DBcS9qyWw31M7r1vb3Pyhf4Eprmej7wGouM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247291; c=relaxed/simple;
-	bh=ouAfgo4k4j3CSmmlOu5K+UQWE2ECBlx6AmavgktZdY0=;
+	s=arc-20240116; t=1738247259; c=relaxed/simple;
+	bh=cVDEHMLB6I1ypLMxdZKoP4nHnegURcCAG9oaz70N2IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzGVuE6huEO/SlVdbtYONohyqpWWvFJwRGXHcBm9c4S/yRd3BcrH0fQ8w1UWA0cE8HSgI21oDxeM48Dx27bhaQv/lLB60ygcSeBRbs0zicF7Fcr+JStXSyrLKnOgYWu2v9rK7xOZQSbEYLzTsF/yhwClRZVea2skss8w8nRidr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/WyZjhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB72C4CED2;
-	Thu, 30 Jan 2025 14:28:10 +0000 (UTC)
+	 MIME-Version; b=hpsH7SvIsTFWUGOJm85vAVr9NdXSVfou0JlTtP8X7lNT3Mh1JKtYirQFfG0gLf1S5U4kNG8wl2mTtAnidovlXPldNpPUSzzEmm2DB6JkKhtNAc93E3PmS00p8aK8F62m3LI2uJ+1jDZNLj020kd928UYIZL9x1SCWMa9k5ZMIEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/LOoHZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98D3C4CED2;
+	Thu, 30 Jan 2025 14:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247291;
-	bh=ouAfgo4k4j3CSmmlOu5K+UQWE2ECBlx6AmavgktZdY0=;
+	s=korg; t=1738247259;
+	bh=cVDEHMLB6I1ypLMxdZKoP4nHnegURcCAG9oaz70N2IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/WyZjhA6Dmu6otZsaGTeNgkuu59q0HJHpCvLhR2+J2vY4ZUw02Fp3WLvys9eqrJO
-	 tqKjy1KIkTWd8bWc2IF1nMexeAvGc6+gQRIqs/C9n7coTDSVhpocc9yQX9Yec4FW14
-	 9aYyzUU+oQgL4g9cseH4o1mE+L/zkjAJQgO3vhqY=
+	b=D/LOoHZcWPr1SQfyP8m1bK97Zs2YWCMr86nSQ6iWR3sANBe3LrFXM3CF2GXa3P/tg
+	 /gDhTPI8JDz42t7cKbKRb0UeQlJ4DuPlM8OhTvc+4dqGmfbTmHwKtfZaMmGNMAU1ks
+	 2kXEivnfPhCRKlb1821qCpmK/92oosNj+5bC7MIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/24] ASoC: samsung: Add missing depends on I2C
+	syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 129/133] USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()
 Date: Thu, 30 Jan 2025 15:01:58 +0100
-Message-ID: <20250130140127.551868625@linuxfoundation.org>
+Message-ID: <20250130140147.720600695@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 704dbe97a68153a84319ad63f526e12ba868b88e ]
+commit 575a5adf48b06a2980c9eeffedf699ed5534fade upstream.
 
-When switching to selects for MFD_WM8994 a dependency should have also
-been added for I2C, as the dependency on MFD_WM8994 will not be
-considered by the select.
+This patch addresses a null-ptr-deref in qt2_process_read_urb() due to
+an incorrect bounds check in the following:
 
-Fixes: fd55c6065bec ("ASoC: samsung: Add missing selects for MFD_WM8994")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501082020.2bpGGVTW-lkp@intel.com/
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250108134828.246570-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+       if (newport > serial->num_ports) {
+               dev_err(&port->dev,
+                       "%s - port change to invalid port: %i\n",
+                       __func__, newport);
+               break;
+       }
+
+The condition doesn't account for the valid range of the serial->port
+buffer, which is from 0 to serial->num_ports - 1. When newport is equal
+to serial->num_ports, the assignment of "port" in the
+following code is out-of-bounds and NULL:
+
+       serial_priv->current_port = newport;
+       port = serial->port[serial_priv->current_port];
+
+The fix checks if newport is greater than or equal to serial->num_ports
+indicating it is out-of-bounds.
+
+Reported-by: syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=506479ebf12fe435d01a
+Fixes: f7a33e608d9a ("USB: serial: add quatech2 usb to serial driver")
+Cc: <stable@vger.kernel.org>      # 3.5
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/samsung/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/quatech2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
-index 159bc501186f9..c04c38d58804c 100644
---- a/sound/soc/samsung/Kconfig
-+++ b/sound/soc/samsung/Kconfig
-@@ -214,7 +214,7 @@ config SND_SOC_SAMSUNG_TM2_WM5110
+--- a/drivers/usb/serial/quatech2.c
++++ b/drivers/usb/serial/quatech2.c
+@@ -540,7 +540,7 @@ static void qt2_process_read_urb(struct
  
- config SND_SOC_SAMSUNG_ARIES_WM8994
- 	tristate "SoC I2S Audio support for WM8994 on Aries"
--	depends on SND_SOC_SAMSUNG && IIO && EXTCON
-+	depends on SND_SOC_SAMSUNG && I2C && IIO && EXTCON
- 	select SND_SOC_BT_SCO
- 	select MFD_WM8994
- 	select SND_SOC_WM8994
-@@ -228,7 +228,7 @@ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 				newport = *(ch + 3);
  
- config SND_SOC_SAMSUNG_MIDAS_WM1811
- 	tristate "SoC I2S Audio support for Midas boards"
--	depends on SND_SOC_SAMSUNG
-+	depends on SND_SOC_SAMSUNG && I2C
- 	select SND_SAMSUNG_I2S
- 	select MFD_WM8994
- 	select SND_SOC_WM8994
--- 
-2.39.5
-
+-				if (newport > serial->num_ports) {
++				if (newport >= serial->num_ports) {
+ 					dev_err(&port->dev,
+ 						"%s - port change to invalid port: %i\n",
+ 						__func__, newport);
 
 
 
