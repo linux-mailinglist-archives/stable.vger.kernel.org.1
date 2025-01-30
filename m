@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D5EA22FFE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82B7A2300A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83A01884AEF
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50AF91887B22
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB391E8855;
-	Thu, 30 Jan 2025 14:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB1F1E98E8;
+	Thu, 30 Jan 2025 14:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvdeN9b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+BXskHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760A11BD9D3;
-	Thu, 30 Jan 2025 14:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD461E522;
+	Thu, 30 Jan 2025 14:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247256; cv=none; b=VSSpdP7Tz8YDN1HjJlQ9+rEkfjf0CXyATDGiqZRYym15a6xb2Ot+vIzEvAS31RVw/R0+pz3yfrXaeLk1FcRI47o6qZznbAjX3Zl++vGmvQjqWY3waPORGl8TqxkV39XkVCEMMNWcsPR1olYBFtKLUsoFVohnHHzf/b8Ix7tSRJ8=
+	t=1738247288; cv=none; b=ZaHOXaMO+shCRGx3b7IM5kpeq83VxaZ3x7QcWbR9p0iFs0Z5QQba40JiHfb+AuEFT21MFHFGzwc9pBH4Y3Wxic7gUu/EMURs/m7mGRepNea3PQ4hCt6J3Xd7ptAKEJiNO45sTN7RdDWpqo4qW6vumUOUcPa/z1UIROse0NBReMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247256; c=relaxed/simple;
-	bh=lQjJDOW+wa1suQW1lVCAn2uMiqFS9q1f2Mu9WP/A1gE=;
+	s=arc-20240116; t=1738247288; c=relaxed/simple;
+	bh=Wjh1F6PIxS1YlxTaQFcT3HQ/JJZUT1dpvgSC1d1lUI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDCs/livod8NM3tjNwmhSzqNRxE5p2Rur3TnQQjbPnC1ffCPlkR9OTGPfQmBHLb9w+KCfh04vHEjEVP2f0RWmmSaS4X7pjL5b6UY3SvmgwQ19yQipw7f8Wj/vXsMCKSRqV0NCpJWmMEsYLOY31x+xDBaNQ0E/aKoDOWRwZZJp9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvdeN9b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008B9C4CED2;
-	Thu, 30 Jan 2025 14:27:35 +0000 (UTC)
+	 MIME-Version; b=kUS2oR/XMYFsF6eAwYLL/3dmzw2v48wl7b/AQTa6o6gf05Wt6R7OS2eeYwEFJBymGNzrNKamOlcw5ZijlM3Vn2din2dCAcuf+NSw0gMCTgt5m0KXlxFIj7YigmssfuLGf2alMZIMYOWMeNO2ZVUj6t/uxYMEdxpV8JlWAkzOnCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+BXskHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294ECC4CED2;
+	Thu, 30 Jan 2025 14:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247256;
-	bh=lQjJDOW+wa1suQW1lVCAn2uMiqFS9q1f2Mu9WP/A1gE=;
+	s=korg; t=1738247288;
+	bh=Wjh1F6PIxS1YlxTaQFcT3HQ/JJZUT1dpvgSC1d1lUI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvdeN9b0Wgm3M9F/+UdX+6uVykhGrZWYua5Hbu5cElfFNY4nn+HbAd44edS0uoeqz
-	 AVhJOKaaNKzqgO8AB5t7L7/w9cQ+x08FeLZAEhAQFgQYf7tH1FG765iERqkeT1QQn1
-	 QsUQpbcvjcCaWed5wr56kyYOm1JD1V4v7PlyC/84=
+	b=B+BXskHwrtHEspucMo+lEWr8qbMwnJ101NN7VN33vMULxiXUwsvNwZ71A7cHapGCE
+	 vJ0Jvsx3ya/JMPkbdWlVmzhAMC8KAu5WTT9AsSJt5CkW2ba+it8BNYEjMhGtQ/DNF3
+	 /+4r/2Lh1++KoDvrNYND1/cO0KIXqp9OsbQBnwTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.10 128/133] wifi: iwlwifi: add a few rate index validity checks
+	Philippe Simons <simons.philippe@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 05/24] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
 Date: Thu, 30 Jan 2025 15:01:57 +0100
-Message-ID: <20250130140147.680911558@linuxfoundation.org>
+Message-ID: <20250130140127.513721537@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Philippe Simons <simons.philippe@gmail.com>
 
-commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
+[ Upstream commit 3a748d483d80f066ca4b26abe45cdc0c367d13e9 ]
 
-Validate index before access iwl_rate_mcs to keep rate->index
-inside the valid boundaries. Use MCS_0_INDEX if index is less
-than MCS_0_INDEX and MCS_9_INDEX if index is greater then
-MCS_9_INDEX.
+Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
+pin instead of a normal GPIO. Since the power key is connected to the PMIC,
+and people expect to wake up a suspended system via this key, the NMI IRQ
+controller must stay alive when the system goes into suspend.
 
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
+sleep, so that the power key can wake up those systems.
+
+[ tglx: Fixed up coding style ]
+
+Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/rs.c |    7 +++++--
- drivers/net/wireless/intel/iwlwifi/mvm/rs.c |    9 ++++++---
- 2 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
-@@ -130,7 +130,7 @@ static int iwl_hwrate_to_plcp_idx(u32 ra
- 				return idx;
- 	}
- 
--	return -1;
-+	return IWL_RATE_INVALID;
- }
- 
- static void rs_rate_scale_perform(struct iwl_priv *priv,
-@@ -3151,7 +3151,10 @@ static ssize_t rs_sta_dbgfs_scale_table_
- 	for (i = 0; i < LINK_QUAL_MAX_RETRY_NUM; i++) {
- 		index = iwl_hwrate_to_plcp_idx(
- 			le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
--		if (is_legacy(tbl->lq_type)) {
-+		if (index == IWL_RATE_INVALID) {
-+			desc += sprintf(buff + desc, " rate[%d] 0x%X invalid rate\n",
-+				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
-+		} else if (is_legacy(tbl->lq_type)) {
- 			desc += sprintf(buff+desc, " rate[%d] 0x%X %smbps\n",
- 				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags),
- 				iwl_rate_mcs[index].mbps);
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -1120,10 +1120,13 @@ static void rs_get_lower_rate_down_colum
- 
- 		rate->bw = RATE_MCS_CHAN_WIDTH_20;
- 
--		WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX ||
--			     rate->index > IWL_RATE_MCS_9_INDEX);
-+		if (WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_0_INDEX];
-+		else if (WARN_ON_ONCE(rate->index > IWL_RATE_MCS_9_INDEX))
-+			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_9_INDEX];
-+		else
-+			rate->index = rs_ht_to_legacy[rate->index];
- 
--		rate->index = rs_ht_to_legacy[rate->index];
- 		rate->ldpc = false;
- 	} else {
- 		/* Downgrade to SISO with same MCS if in MIMO  */
+diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
+index 21d49791f8552..83c7417611fa5 100644
+--- a/drivers/irqchip/irq-sunxi-nmi.c
++++ b/drivers/irqchip/irq-sunxi-nmi.c
+@@ -187,7 +187,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
+ 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
+ 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
+ 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
+-	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
++	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
++						  IRQCHIP_SKIP_SET_WAKE;
+ 	gc->chip_types[0].regs.ack		= reg_offs->pend;
+ 	gc->chip_types[0].regs.mask		= reg_offs->enable;
+ 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
+-- 
+2.39.5
+
 
 
 
