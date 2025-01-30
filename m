@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D941A22E54
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA572A22E67
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6943A488E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76E967A2991
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7462F1E8841;
-	Thu, 30 Jan 2025 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD3E1DFDA5;
+	Thu, 30 Jan 2025 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umTQG78O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI152wfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0771E8824;
-	Thu, 30 Jan 2025 13:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78370C13D;
+	Thu, 30 Jan 2025 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245577; cv=none; b=FvQmZUVqxP3Jj5K7Os/nPe7Ao+RkmUkhAFaTI5ie1Zm9jyE4bXuQWn63zEzltvqOUlgAhaNTgYd3e7QadhCB2zg1+jzk7Lvs6asd4csBSq/NHM0uzuACOAIvz76DczRRopvi1DmqwcTiSar6x6bn5yvoXEGaQoVkvLK4QUoP55c=
+	t=1738245636; cv=none; b=jkz3gTj92tVl5RFMhy47w+vlzorbnA9TwhDFdi1OBK20Zf7Wxw7DqLx5/d0zDKFF7lO2IbVX1pOMDBdsJDP6PLVtnY44fERooCTy2PSfueocHjLEdBAGZRjM5Fxhy4PmBzlxeVMqDtY1UhDX03zJ7d0kVW6/ftZ/DzGrJcdQgyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245577; c=relaxed/simple;
-	bh=6NiRXj4Qjeg2NRpQkQcuKHO2JOilkRS541soDKs2Zxo=;
+	s=arc-20240116; t=1738245636; c=relaxed/simple;
+	bh=s7Om5Eej6f7ATTchlM0PWu9p4VedolSL8coZ+pBKjuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEUyQGm8hZvAQSYz9xH/cfynYMN7c4+sf6sGgM296a4s6DptN3K0P69f0kw/pgCktffmYd760VFxZkDOhP0vqTRPFsR1omC2fts5ydMsQVwN3dx7leOzxEZ0Xo0Aa/XGGayI2USRl+qJ7tp+XyS+R7Ba5jGE9RWKr/a7noxZe6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umTQG78O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D95FC4CEE0;
-	Thu, 30 Jan 2025 13:59:36 +0000 (UTC)
+	 MIME-Version; b=uKRE3Rg1doqjNmEjdQ9rrFHJY4GUN40X4ekJk1jkkjtYb6NP2vJJecVdIRY+dKPfHm9QYZ2FMGdw1ruQJ3UZWJ24zgpIWPD0JiYaS+yFP7K1kcwqa1ARVLrKkCP8s0NheQTHBulSQo1UuY8DUq/hHNPT0DBTCyXmmUQDxLqILgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI152wfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC53C4CED2;
+	Thu, 30 Jan 2025 14:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245576;
-	bh=6NiRXj4Qjeg2NRpQkQcuKHO2JOilkRS541soDKs2Zxo=;
+	s=korg; t=1738245636;
+	bh=s7Om5Eej6f7ATTchlM0PWu9p4VedolSL8coZ+pBKjuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umTQG78OP5VxM02wraHO/5VSS6Ej10uYIuP/khLGAMHfw+qYfmYNYEsp6S36r3Pfw
-	 43XInj4VGDcNZthOiQTZAP/zMB7mEJqZdCjySlYhk2T3ngJ+d1RHgd0cegRFOe3l2x
-	 cBT0ihRowzBIkE0juQ62FFHm4FNi3hUPk/9P/FuM=
+	b=xI152wfW6XT+Koziv1feAF0TaMjNgIlTLdTKZfVpxzKP8GChsh0K7PHPaksh9yCEH
+	 0YXql5QMpFrknbKANgHQJBZ35wWolJa49+1ZvUclpQ+0Nt2K1vMnZpLp+1VF2NqsXt
+	 EnzIZdWuQ441vn6q5HVJMIK8aoBU95D8nULg1a78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	stable <stable@kernel.org>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 6.13 14/25] Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
-Date: Thu, 30 Jan 2025 14:59:00 +0100
-Message-ID: <20250130133457.513024240@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 01/40] ASoC: wm8994: Add depends on MFD core
+Date: Thu, 30 Jan 2025 14:59:01 +0100
+Message-ID: <20250130133459.760661432@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
-References: <20250130133456.914329400@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit 086fd062bc3883ae1ce4166cff5355db315ad879 upstream.
+[ Upstream commit 5ed01155cea69801f1f0c908954a56a5a3474bed ]
 
-This reverts commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec.
+The ASoC driver should not be used without the MFD component. This was
+causing randconfig issues with regmap IRQ which is selected by the MFD
+part of the wm8994 driver.
 
-It is reported to cause crashes on Tegra systems, so revert it for now.
-
-Link: https://lore.kernel.org/r/1037c1ad-9230-4181-b9c3-167dbaa47644@nvidia.com
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable <stable@kernel.org>
-Cc: Lianqin Hu <hulianqin@vivo.com>
-Link: https://lore.kernel.org/r/2025011711-yippee-fever-a737@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501061337.R0DlBUoD-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250106154639.3999553-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1420,10 +1420,6 @@ void gserial_disconnect(struct gserial *
- 	/* REVISIT as above: how best to track this? */
- 	port->port_line_coding = gser->port_line_coding;
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 7092842480ef1..0d9d1d250f2b5 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -2397,6 +2397,7 @@ config SND_SOC_WM8993
  
--	/* disable endpoints, aborting down any active I/O */
--	usb_ep_disable(gser->out);
--	usb_ep_disable(gser->in);
--
- 	port->port_usb = NULL;
- 	gser->ioport = NULL;
- 	if (port->port.count > 0) {
-@@ -1435,6 +1431,10 @@ void gserial_disconnect(struct gserial *
- 	spin_unlock(&port->port_lock);
- 	spin_unlock_irqrestore(&serial_port_lock, flags);
+ config SND_SOC_WM8994
+ 	tristate
++	depends on MFD_WM8994
  
-+	/* disable endpoints, aborting down any active I/O */
-+	usb_ep_disable(gser->out);
-+	usb_ep_disable(gser->in);
-+
- 	/* finally, free any unused/unusable I/O buffers */
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (port->port.count == 0)
+ config SND_SOC_WM8995
+ 	tristate
+-- 
+2.39.5
+
 
 
 
