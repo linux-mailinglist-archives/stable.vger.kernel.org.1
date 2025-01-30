@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-111602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F46A22FEE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE64A2302B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8473A42A7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F53169092
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCA61E8855;
-	Thu, 30 Jan 2025 14:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C862D1E8855;
+	Thu, 30 Jan 2025 14:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8T7YnaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldB3qLxA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281421E522;
-	Thu, 30 Jan 2025 14:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843941BD9D3;
+	Thu, 30 Jan 2025 14:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247216; cv=none; b=nbseT6enXvN2QEzLOplDJtoooISALimS05rwzUJr7+I2rW8fQrTevy5ZlxZUQJZgwHbR/Ot7uXNv6cRfuPFbIuHAKLuOLFx48E2aSvqr37vPqLOXmEp3t4palsNkYGP8cddb5XRb1z6ZyB1082zkAmq823FnO1gWSv9zd2/Jm9Q=
+	t=1738247364; cv=none; b=qalcD3Ozhour7yvx17elCNfs15+QTa2qD6UiqUvin9EwnAwkTouwSns2SGBV0E9uqbuy772CmdgqNbSiXzBJDUKVrO3kD+KYyR9XfNveOFpsY+/BsCi6YTgy08R5J0SkLSG2pOxioy3AdYbPjfAnmfKUs5Y1eKGN/XHyqh6W0Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247216; c=relaxed/simple;
-	bh=dY7txAotGSk4uxRSEnoiwp8toHI6JMp/OpGmPNt3ExU=;
+	s=arc-20240116; t=1738247364; c=relaxed/simple;
+	bh=1aUFo5KsWr4u4qm1UY2IrfzgfgfV/FzjeymemkBIInY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2c1gNthzVp268H7jlb7iQtK2On1HBRZGk5yQ6DwJXfpLJWNqHZoqpV+hwg2qUDRjZka7CNPpanxcB/3aA2v2vJS85NnInlEnPOmpEcU/qO3vmOd5Kbdrw2KBL1sjj0n4WO8q8Qc9mOf9g2HkcQCBIfgTC7T+pCRkwc3VXzLTdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8T7YnaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C77EC4CED2;
-	Thu, 30 Jan 2025 14:26:54 +0000 (UTC)
+	 MIME-Version; b=ciq6EiuHNaVuPlq1NyWMm3buKzUmM4kGn8/QvdMKwHkIrWApvzsA2mldfpbhLz5DvYJ5C5Mlqa5faRyR/MAuGagjg0zqhjs6JamNsiauo6gYN0g3FH/4++vnRbBB6QtnOBgNl4CgWd0ZzzbcsC76nCiq08fk8xEYbwe2Nz4UW9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldB3qLxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FD1C4CED2;
+	Thu, 30 Jan 2025 14:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247215;
-	bh=dY7txAotGSk4uxRSEnoiwp8toHI6JMp/OpGmPNt3ExU=;
+	s=korg; t=1738247364;
+	bh=1aUFo5KsWr4u4qm1UY2IrfzgfgfV/FzjeymemkBIInY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8T7YnaRFzqfPeQ5UNafd2brE/VXpBLAWL4jqBL0Ce03RSpq4MonVoewG1UzBEL8d
-	 r2fCyvCru5kIFEqVFdh2nastq0Je8+eBIrOEaZllI9eVTKq8ysQ0qoZTiJPHZPR8N6
-	 ReoVuSpYNJ5vqFFpRnWqQanCp/FXPYSBVmsDihAE=
+	b=ldB3qLxAn9w1m3Uq43mhbx+Xdo9WNK8Egex+bbS3uecgs9mq4l815sMQrVLhefkXZ
+	 JcSj+6MXYDswQqH2AliBk0UQ2evYOVyFZQcfU3vSHm5K/gJjvM1s5ZJLv1ITyAhq+R
+	 /65Veu4u9fx1G9O3rIJ+OUXBGyUFUl/dqx7bNL/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Kun Hu <huk23@m.fudan.edu.cn>
-Subject: [PATCH 5.10 121/133] gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 14/49] xfs: prevent rt growfs when quota is enabled
 Date: Thu, 30 Jan 2025 15:01:50 +0100
-Message-ID: <20250130140147.400840280@linuxfoundation.org>
+Message-ID: <20250130140134.405811183@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 7c9d9223802fbed4dee1ae301661bf346964c9d2 upstream.
+[ Upstream commit b73494fa9a304ab95b59f07845e8d7d36e4d23e0 ]
 
-Truncate an inode's address space when flipping the GFS2_DIF_JDATA flag:
-depending on that flag, the pages in the address space will either use
-buffer heads or iomap_folio_state structs, and we cannot mix the two.
+Quotas aren't (yet) supported with realtime, so we shouldn't allow
+userspace to set up a realtime section when quotas are enabled, even if
+they attached one via mount options.  IOWS, you shouldn't be able to do:
 
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+# mkfs.xfs -f /dev/sda
+# mount /dev/sda /mnt -o rtdev=/dev/sdb,usrquota
+# xfs_growfs -r /mnt
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/file.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/xfs/xfs_rtalloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -271,6 +271,7 @@ static int do_gfs2_set_flags(struct file
- 		error = filemap_fdatawait(inode->i_mapping);
- 		if (error)
- 			goto out;
-+		truncate_inode_pages(inode->i_mapping, 0);
- 		if (new_flags & GFS2_DIF_JDATA)
- 			gfs2_ordered_del_inode(ip);
- 	}
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -954,7 +954,7 @@ xfs_growfs_rt(
+ 		return -EINVAL;
+ 
+ 	/* Unsupported realtime features. */
+-	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp))
++	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
+ 		return -EOPNOTSUPP;
+ 
+ 	nrblocks = in->newblocks;
 
 
 
