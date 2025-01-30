@@ -1,143 +1,158 @@
-Return-Path: <stable+bounces-111741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B75A234F5
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923E0A2350B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30E6516169E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 20:14:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFBEF1884AE2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 20:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683FC1F0E5E;
-	Thu, 30 Jan 2025 20:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8207C1F0E49;
+	Thu, 30 Jan 2025 20:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dLlQb+c2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W1LPAwxB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9EB199939;
-	Thu, 30 Jan 2025 20:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9F1194141;
+	Thu, 30 Jan 2025 20:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738268062; cv=none; b=gLCpXBROqdq9d3yWbJphSECYRVTzAowqRBDoI9HJ8hmBtTNE8ip90ZaIR56MFvad/cVfQGmj4/0F61sxTFuFxPElZZ7HcQT4CrNRuogOYZIRgD3JFkE96hn/MZ49STY7vu7UpjZGtXaOUpE/Jng+oeatjol2OBmnvztpKBLCiYE=
+	t=1738268694; cv=none; b=B+qGX4UefQA41LUcYQo3sI5w3qWh3B2bT+tI7fEk5Vls1K+Vji2cTL6BoFx85lY8jJsLq1oc0hBPJtEqSgVIqeGmN353cPHNWeG4XLQyp7VgXI6ugeqnnwH0YrN3woHzT8VCoggazcc90wA80dk8jlBGc6ZUnhu2Hx9HwtugDmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738268062; c=relaxed/simple;
-	bh=moOYb6q877U5I7NnA82Nsf1lQuxDbCUGya80mzW9XzA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBrQeU7a3ZIvI+xL3YbHO3HVj7j5vpsPQS2iY5tWZ/SfD2VmA1NnYtHGIWPyGiUnZeMd7+GW33xhw9zDZBMYuQOAKPgwtZB2yYsVKNBvag1vJereWStd6xKeUUyHrsjoqC6zXIZWp/+KaJBUHVUWDIUyBLWWq4e0RbUXqHWxcm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dLlQb+c2; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1738268694; c=relaxed/simple;
+	bh=yFI2K7k1DYXfkT8AOWYfMld5LKYdMpO4AcfHcfiC+Rk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xq/QfHY7dEipCgQ5tvRVRtOD5soX12nqpbcqlMoTiOneEyB6/0EjjmPp782z+9Cheps5xE9T53VXad7Gm+0L6QrdHCoBMxHoO5+ieA6ppvj/upeUO1dCQ+ca7MQ6JIXSD9/n7sd3bbSULYTb8lwdqo5R/nK5maTTIXQC6x57yzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W1LPAwxB; arc=none smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso1282488f8f.2;
-        Thu, 30 Jan 2025 12:14:20 -0800 (PST)
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eba0f09c3aso374406b6e.1;
+        Thu, 30 Jan 2025 12:24:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738268059; x=1738872859; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BXg8UxAY9MsETmzcn/5hHuR64+FACNvOgpPBjgXkbss=;
-        b=dLlQb+c2ozMp10mbKbdFz1MhQYFdHqo1ipm9mqzPPb6dftdXnF/xjmYVPXt6EvK9cV
-         igjTH7Yz/ner/F05MuVllZ2qE8KKmME58kb6gnskIr802xbmoDX9e5qzpP0CVofMSluB
-         7KzaqxSB9qcD5S01oe52pUntk2Mu2QufQXYQhg3RGDZkUnJk9Gg/IyzxBpzYI30RznNN
-         H2yvf5y70xveOPioAHfVSnrym/qZLGpva+b/Bn/iI1u3PQEHyNkgVWbnh8VMsNetIYeY
-         d7t1iA8AEq0xIVmt3kozh4jOn3Jw/dMW2LouO/2WXwt2FyyRmkVh3geI+71evC2+uOKt
-         0Opg==
+        d=gmail.com; s=20230601; t=1738268692; x=1738873492; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=MSZrxWZoTLP5LT/YGVk/BMp7ULLcYj5MlBHfkghYdjk=;
+        b=W1LPAwxBLxqwQV5D4Hmg6MBxYWydJFt+iqO+viVHrfZUvpRTogk8ZC//uPIMw3ldHB
+         XCO/xTqvlWlKdLhvwhiqq+6HP8M73fNImWIGpIQuWsY0E/tN23GdvDJviOFQa1wcjQF5
+         mUxdz+vSCCwt4Nyx1Mw8shnXqVlMYBteeeRO8PkFU/PMM7N+ObVL/y8YmSakSdkhkIDj
+         kYFm5MMo1+n5tWTfSAOlULB8CPAUsZQkOAgb4iPgAjIrc9mqIdAYFlLAsl4kiqEPzgs2
+         qU0AcrHzRcossyaOhMXW/XHdWewI7G5aPYWl3Cd31AsXO199kYUjFAG3lv3uRYn3GesG
+         z5ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738268059; x=1738872859;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BXg8UxAY9MsETmzcn/5hHuR64+FACNvOgpPBjgXkbss=;
-        b=SjLV0C8HMoDwfiReIwTpKZwHAIvH11A9q8xYa4KjPii6nF/F87Qdj7vYHya76jeQzN
-         4nToWWFAd1a0n/R3SL+gRKj8wkrq8DRxucp3cq44EKOt91uxDOZzwzQBndE36MgcEcPb
-         NxERTMy01PeYEfBQyt3VevedyTFoKW6YQj1tZNfS/DpWMUr24HYJh8mYMcSOZ3V93YXv
-         I+Er0yCS2tT1YedrFTmgZxLc0PFEOJ8rIquwBpCypJd7gAlvemUOCSgdhhqa2HeCv0Au
-         cfzzbmqEfV8kXNjotz2ZgjNc8VbxcC3gzMotUKUn1I8iSfYQsUxtx+7ygGhjFYZY6EYK
-         BXqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7e+xhRqIZ8BxUIJbtTOJ2c6vbDTG72ytJhapXFYY8VBf1jI5edqcjWwXu4N9YM24RwlO/pAxu@vger.kernel.org, AJvYcCW5+1WrmFgLwJu98dAoAo9zyIg9Acd5IydwHaICkrV8rH6zlPCNp9iG/GkUPaBLzsEhtOL4k5Hs6EVuTZs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFFIqY7rnD0p+qnWuffCemm+RAldm0soKPUpIWHnwRhcZitHim
-	qa1Yc/RlUD6/9jHIgQnrhwLOvIV5G8ltTuR2W6LPeyrcIZtsSOnH
-X-Gm-Gg: ASbGnct6HV4lbguAN+VYDeQ1l0cEICRiAFIDISgg2tCpfsqCVMEiPvnVJpjl8m4r5MX
-	wcbEwZhhanoIKmRsxBdgxFDsI3P0DTGnmsH8umbG2LYrn+yrHvM4NQYGb/UDestw4mSHE1bpGcC
-	YJTdWmTydHTBzvtdtMHhcp7y1YQ1kneFYWW18EmHHyhuHrfis6NvJlTvBK1gNTL4b7rkNBLl6RN
-	NtIX3v1kdBPXThNkCJsqApxi1krBBnUwvYqnZyG3dEcjKtpiKTqoIxF295J19SYGsO3+U1tLBz4
-	vQbGbY2l12RrK6stHVFngj0HyUkkAb5bC7onx60Za8oL4QxQiFOFxA==
-X-Google-Smtp-Source: AGHT+IF3rnXIybqyjHJwiSBQ1tP8SIXoluuYcvQsGkvFUsXMJoY6MvH237Ft6mYQ/0KzORimBw3oRQ==
-X-Received: by 2002:a5d:6c65:0:b0:38c:5cd0:ecf3 with SMTP id ffacd0b85a97d-38c5cd0efe3mr2808478f8f.11.1738268058626;
-        Thu, 30 Jan 2025 12:14:18 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcbc1510sm69784965e9.0.2025.01.30.12.14.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2025 12:14:18 -0800 (PST)
-Date: Thu, 30 Jan 2025 20:14:17 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Luiz
- Augusto von Dentz <luiz.von.dentz@intel.com>, Miguel Ojeda
- <ojeda@kernel.org>, linux-kernel@vger.kernel.org (open list),
- stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, kernel
- test robot <lkp@intel.com>
-Subject: Re: [PATCH] jiffies: Cast to unsigned long for secs_to_jiffies()
- conversion
-Message-ID: <20250130201417.32b0a86f@pumpkin>
-In-Reply-To: <20250130184320.69553-1-eahariha@linux.microsoft.com>
-References: <20250130184320.69553-1-eahariha@linux.microsoft.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1738268692; x=1738873492;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MSZrxWZoTLP5LT/YGVk/BMp7ULLcYj5MlBHfkghYdjk=;
+        b=V9H1yE7ll/WpIVd2OlvmjM5oN6x7NU/y7k6Di7YvtDfdjF8ox0yKMdw8UdrDLVKAVP
+         1AatUAHrJwUtO33tPPdsKza5u80fIRueUqJMv5I3uxPA6kn1YJNhh5S7FDcMQAldSkpO
+         CCjPHwyhv/DcDS6idC5UFFcmEyetreUITz0K/Ja99SzZ0VVWwkeWwWfOOB7fDxsaVTcw
+         NAe9OYUQA7w23k/9nSZXxdz4dln4+UzqehJ997MqwNzD4iujULdVLqASf0fIAvAcuP2Y
+         +hihhZauTRcR2J80xQKOr5+vLR+aC22gbcMv+Nqom46yOzVr7BVLmnCvwVLZOOb6oBfi
+         Y8LA==
+X-Forwarded-Encrypted: i=1; AJvYcCVh8odZj5LvyhAkFJc4U5jem2VN6Ca2mm124gxUcGx4pzgvQ/4HaACuRzL3IY57ZSBsafLkvOoWvaLn/JI=@vger.kernel.org, AJvYcCW2yAWA17opyQx8i4OH0QAWbnQJtnwaOucRRw0GvkHKiAIx7ckIldBpq+/PzAejjhaZ/430t8Vi@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWXFZzO5jOKdrj3NjuZ1y73VQrBYqOZgG6nrbfI/Uk58ciS4xw
+	r0VwExIbgDyqIR9ycRy6KFyer8+Snx7k6ya6tVCYlMPTPVdowSXy
+X-Gm-Gg: ASbGncty1raqwIdwaAjcgWs7J9IBtMeOIwWvlM9novEcz9pPSBx2LHC5hjo/F5o9R0O
+	BM09zoemTthF4p6d3A0T4iiWVRZuQfQNv86mFJJxiGXM+1eWqSer2+6T0FlSZVayKs/Hjlvw8pV
+	XuncptuzaEPoqjmYiEZ9E/9GTlsdeZTikuoBx0WWZ1fNIhpC8oYxytVoJpu8pUx7Hmmm+spCS13
+	BkpTw0Hpy7HqXxJu/lp8npZAm7wFUBuYLGbsdbT4eVhR6IZ6QmMo+0gg1oTi7blm+9ceAp3KWlX
+	Zy3h7UzNECCw6VuZp083K237J8tEIdhAW5oXrPfDtuo=
+X-Google-Smtp-Source: AGHT+IH+wdR8z/my3k+Wtg9bRozw/6mpj2un8CmOp1PD/NwoijSOx6W5JZiGI0j06z7YWKK8abFg5g==
+X-Received: by 2002:a05:6808:2f0b:b0:3eb:3b6e:a73c with SMTP id 5614622812f47-3f323a158f2mr6695042b6e.1.1738268691896;
+        Thu, 30 Jan 2025 12:24:51 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f33365be5dsm406349b6e.33.2025.01.30.12.24.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jan 2025 12:24:50 -0800 (PST)
+Message-ID: <8d436706-d9ee-4a63-8110-a9c2e67c84a2@gmail.com>
+Date: Thu, 30 Jan 2025 12:24:47 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 00/91] 5.4.290-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250130140133.662535583@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 Jan 2025 18:43:17 +0000
-Easwar Hariharan <eahariha@linux.microsoft.com> wrote:
-
-> While converting users of msecs_to_jiffies(), lkp reported that some
-> range checks would always be true because of the mismatch between the
-> implied int value of secs_to_jiffies() vs the unsigned long
-> return value of the msecs_to_jiffies() calls it was replacing. Fix this
-> by casting secs_to_jiffies() values as unsigned long.
-
-Surely 'unsigned long' can't be the right type ?
-It changes between 32bit and 64bit systems.
-Either it is allowed to wrap - so should be 32bit on both,
-or wrapping is unexpected and it needs to be 64bit on both.
-
-As we all know (to our cost in many cases) a ms counter wraps 32bit in
-about 48 days.
-
-	David
-
+On 1/30/25 06:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.290 release.
+> There are 91 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: b35108a51cf7ba ("jiffies: Define secs_to_jiffies()")
-> CC: stable@vger.kernel.org # 6.12+
-> CC: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202501301334.NB6NszQR-lkp@intel.com/
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> ---
->  include/linux/jiffies.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Responses should be made by Sat, 01 Feb 2025 14:01:13 +0000.
+> Anything received after that time might be too late.
 > 
-> diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-> index ed945f42e064..0ea8c9887429 100644
-> --- a/include/linux/jiffies.h
-> +++ b/include/linux/jiffies.h
-> @@ -537,7 +537,7 @@ static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
->   *
->   * Return: jiffies value
->   */
-> -#define secs_to_jiffies(_secs) ((_secs) * HZ)
-> +#define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
->  
->  extern unsigned long __usecs_to_jiffies(const unsigned int u);
->  #if !(USEC_PER_SEC % HZ)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.290-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
