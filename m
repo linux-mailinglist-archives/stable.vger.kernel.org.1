@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-111328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D9FA22E7C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A213AA22EA6
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F8DB3A1F75
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA37B3A9B5C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706191E3DF8;
-	Thu, 30 Jan 2025 14:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A09D1EE00F;
+	Thu, 30 Jan 2025 14:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRn/7QsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgYZMGcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E679C13D;
-	Thu, 30 Jan 2025 14:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD0A1E98E7;
+	Thu, 30 Jan 2025 14:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245691; cv=none; b=c9bVUYl7epes2DIeQHNqIUmEDl6Z6AcoJ3svxrdhuhe4XiTpXwuWC6h4jMcIMwzVRNhwoWcOLqGPFtekpqS1H/OBRYLGz8Uzt63JQBbdPsaAxvC2cD7JAfmYM7sg0ujkiXT7r8dCNAWkieMdFBLUsXTmZ+HCYH1r4AfS2IbKZMQ=
+	t=1738245754; cv=none; b=VHcTYS9d89if/2+8KvBog7n0LcU/9sFuEV/EtFHEyjrckONT7SUqDUZHkOuyzEUQcJDzo4GWb8/Agb4shZQ1z+J+aywQU4lmsi8xMKk4ci4i9QB0nX7IrBu/ZbXB6RxKyDTf7XfHdveNdWcGcqwX0tb8Y/uVR0AY3AjnIvuC+g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245691; c=relaxed/simple;
-	bh=hoFzjedfnoq/56QprmeLuSidtMl6DaafCsyYVVd+zAU=;
+	s=arc-20240116; t=1738245754; c=relaxed/simple;
+	bh=CNSH61maOtbT+52trt429CJ9p150lM1fQwuajq1Rw3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaD9Px0CaGxv1uqAUHsDMfI6eFyeeyhotBptL5Leh26TSjr2GSYhwZVI440ggeaiHu/iNINYrgyIWmbf9v25E5ZxAcLzh9TEw/CHj7e8dAgX8taQxbuRfkDQc37K7LxT/1M7QbsJtYNJvGaXWZuUc0e2mGyu68qNbDJaSHpv7+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRn/7QsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87BFC4CED2;
-	Thu, 30 Jan 2025 14:01:30 +0000 (UTC)
+	 MIME-Version; b=h9Gv86I7OZ0bRHrdzuAqdWXAt9HX/wVjqtFI4fjLuCRdrm8l9nQ456EvwFWpY3jWrDVh8mzdVHl6LAqWNCjKmp8LFc7wm5H8DzWFZHmrU/BOuCy4Dkb0GsvFT/y/HpipRmPBbBw84MTRbx2vW51Bui/aZCi96VsbJcuUMtRI9Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgYZMGcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64203C4CED2;
+	Thu, 30 Jan 2025 14:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245691;
-	bh=hoFzjedfnoq/56QprmeLuSidtMl6DaafCsyYVVd+zAU=;
+	s=korg; t=1738245754;
+	bh=CNSH61maOtbT+52trt429CJ9p150lM1fQwuajq1Rw3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRn/7QsGKyaz5R2v8fnT202Fp2OP0NEjPU0MfSCtG8SUX4VE/UOBRMw9E3RpNDLfp
-	 K9SuFd1K9025S2AoXFsPygh7sq25QbdmkkgNNuZzSAaWz0jfBo/Zn8XhMW8KQpfuyF
-	 49CPsWUJ+KkpYdn5YT3ppCI/LIJ7QIr7InZOJrq8=
+	b=HgYZMGcSdb0mTQeAL9lVWwMqkgf+1V+OKV+WHqM29UJMzR4LV2I1PP+ak7MZgDXid
+	 Eaiu37kBKNA2j0Vq88q5sFPfvx+L5vDOKVsQAXW+4Rs9v+tQpbPlqf/2qY5Gz7iZAb
+	 SzpYe26KzhEPahBwoKEGvalPVbm10cpOZM39Zses=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Austin Zheng <austin.zheng@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 08/40] drm/amd/display: Initialize denominator defaults to 1
+Subject: [PATCH 6.6 01/43] ASoC: wm8994: Add depends on MFD core
 Date: Thu, 30 Jan 2025 14:59:08 +0100
-Message-ID: <20250130133500.047477297@linuxfoundation.org>
+Message-ID: <20250130133458.963913232@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 36b23e3baf9129d5b6c3a3a85b6b7ffb75ae287c ]
+[ Upstream commit 5ed01155cea69801f1f0c908954a56a5a3474bed ]
 
-[WHAT & HOW]
-Variables, used as denominators and maybe not assigned to other values,
-should be initialized to non-zero to avoid DIVIDE_BY_ZERO, as reported
-by Coverity.
+The ASoC driver should not be used without the MFD component. This was
+causing randconfig issues with regmap IRQ which is selected by the MFD
+part of the wm8994 driver.
 
-Reviewed-by: Austin Zheng <austin.zheng@amd.com>
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e2c4c6c10542ccfe4a0830bb6c9fd5b177b7bbb7)
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501061337.R0DlBUoD-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250106154639.3999553-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c        | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-index 3ea54fd52e468..e2a3764d9d181 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
-@@ -578,8 +578,8 @@ static void CalculateBytePerPixelAndBlockSizes(
- {
- 	*BytePerPixelDETY = 0;
- 	*BytePerPixelDETC = 0;
--	*BytePerPixelY = 0;
--	*BytePerPixelC = 0;
-+	*BytePerPixelY = 1;
-+	*BytePerPixelC = 1;
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index f1e1dbc509f6e..6d105a23c8284 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -2209,6 +2209,7 @@ config SND_SOC_WM8993
  
- 	if (SourcePixelFormat == dml2_444_64) {
- 		*BytePerPixelDETY = 8;
+ config SND_SOC_WM8994
+ 	tristate
++	depends on MFD_WM8994
+ 
+ config SND_SOC_WM8995
+ 	tristate
 -- 
 2.39.5
 
