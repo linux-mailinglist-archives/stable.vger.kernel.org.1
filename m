@@ -1,158 +1,167 @@
-Return-Path: <stable+bounces-111707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC06A230F0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:20:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7749FA23134
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00231889180
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79BEB3A6A86
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87EE1E9B11;
-	Thu, 30 Jan 2025 15:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F1D1E9B24;
+	Thu, 30 Jan 2025 15:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hlX/R9OC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSz+AemA"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512101B21A9;
-	Thu, 30 Jan 2025 15:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0951E1C22;
+	Thu, 30 Jan 2025 15:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738250399; cv=none; b=Tntnx2HlR/5LNkXarVSPY3mSEKv5rDOqL6q0SFAZp4TznOMM28ozKqnp1NcdITwzqW9AtueH2ZSqHyrf1VHmwO3auCqxDU9C2hl15uXMLWzPg4avS2YzkpyKcZjIOJmqaMBj1SU3gisUx0Vzze4RmKXjmZFsrV97/B15nvlIPh8=
+	t=1738252424; cv=none; b=RJHHN/uvRlu8CC/KrO66axWMHNqKIniWUHIiRWU3bkXuOhzkV1i4sZdxIFceU7hdUpxOY46XC60ugvpQzFTWxV0NHIrBc3OZvjpOa8aI058CThB0d3u8KpzVE9KgvFcWi8x+r5GdKX5l6kHEwaK0MDOx3bdVO5rnRo3rlqI1WmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738250399; c=relaxed/simple;
-	bh=++5F+U/NM5cGq1DEAB3TXntJxWEnJwv2eL4zaC6Opxw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qQRMeVnhcKJnZTgJ/UgRsOvo6R/ODqfEhYqvlx+2LsboU/wPTcvy5AN2I1S7OnaIEac1paqdY5xz2wrcHnWzCsD3Hh6CauuHIR0goZLH7gHbz192BnoKVohJx9nB9CKjoX/qdXW40r589BTSi9yvCt7m9Zsjytk8GTBqPTrJOek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hlX/R9OC; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 535D544280;
-	Thu, 30 Jan 2025 15:19:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738250395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mthSOymJzZU3NBmJRQSU6dHuOu/XGt2aFg8/OQCwRBI=;
-	b=hlX/R9OCvuRRz9TzdoX5x2NhDsPTeQ5LsAlA0ZE7l7BchG9XBhMUjmgWYMOP8J0Ifhwxh7
-	8Th0Hg2aH6+/RaAmzvGY6hY/vWhXV2lPSwbf5kEdzEO4gK4zbdywX+RwxhILhoRKy7jQM6
-	fNkqlkYEMNYV78vY1/vJ5p2iThdAi4sITHhKRjz/Zw7kZSDEIU9auSE+P43fmxl/pWTpKl
-	YknKucUQo5Yp/fGaN+jGImu45E4ZDlVgntE7qw32BP5fl2xwWKUHIq+laW92GXd0Y5W6O+
-	9f8VfIxoCb+/pqjoO1HMw5wdyVChvXnyMre7kDdvxOVtELsPxPJ9/deli5pDSw==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  "linux@treblig.org" <linux@treblig.org>,  Shen Lichuan
- <shenlichuan@vivo.com>,  Jinjie Ruan <ruanjinjie@huawei.com>,
-  "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
-  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob
- when DMA is not ready
-In-Reply-To: <BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
-	(Niravkumar L. Rabara's message of "Thu, 30 Jan 2025 03:51:08 +0000")
-References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
-	<20250116032154.3976447-2-niravkumar.l.rabara@intel.com>
-	<87plkgpk8k.fsf@bootlin.com>
-	<BL3PR11MB653276DFD3339ADAADC70CCFA2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<874j1i0wfq.fsf@bootlin.com>
-	<BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Thu, 30 Jan 2025 16:19:53 +0100
-Message-ID: <87msf8z5uu.fsf@bootlin.com>
+	s=arc-20240116; t=1738252424; c=relaxed/simple;
+	bh=7h9AoUeAiY5qK0t9g6t0B8QXd1IuLuDyE6xrUN15wak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g6OWQFuD5lIlCr8C/EY8bBpbi4wNvvHIdLQIFSQ2ipDWsWqkTaezA2H92sho7232XHX4y19ZLulL96hebkpu4GOF0Vo+enyKuceRvIOlCxyrM8p/l+8ndBvVL08s5hFZ3xDIVx1yr45yGXbOuD5N4XeElECc4Ue80/6EWAusY7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSz+AemA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DABC4CED2;
+	Thu, 30 Jan 2025 15:53:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738252424;
+	bh=7h9AoUeAiY5qK0t9g6t0B8QXd1IuLuDyE6xrUN15wak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MSz+AemA4HvWhT1qKASkH7CfaAnGuQSnaQXbmGIPuHfXTnG/WnW0aDSkvlEQ1QJOl
+	 g8DdVDe34FcQbv36QMe+Uyuzi2aLTwFdU4qx+qsIjxOsBUnXa3/u0ygyMIJYJLoKek
+	 4ECPnGEz06oz6QaDvo1kNOgHJhDipV0V2h9mhZcqf49x476PMeM30vSZqy36X1xhe/
+	 FQ8vyRtKVRxA89Ul3mAmS0eRm7VJ/1GpKx6X879LQB5dvXYrsFpFxXN2IU2VYlYQLe
+	 R5ONbV/D8AMNG2+8dIYd/UZfN5BADD9yv4ysItJYhHvD3BLjE7UvsHy4eTz1VOOumK
+	 GTbhRXnWMjCzQ==
+Message-ID: <59cbde54-e1df-4e92-9291-5546118dd2ca@kernel.org>
+Date: Thu, 30 Jan 2025 16:53:36 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeiudeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutddprhgtphhtthhopehnihhrrghvkhhumhgrrhdrlhdrrhgrsggrrhgrsehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhitghhrghrugesnhhougdrrghtpdhrtghpthhtohepvhhighhnvghshhhrsehtihdrtghomhdprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepshhhvghnlhhitghhuhgrnhesvhhivhhordgtohhmpdhrtghpthhtoheprhhurghnjhhinhhji
- hgvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehurdhklhgvihhnvgdqkhhovghnihhgsegsrgihlhhisghrvgdrtghomhdprhgtphhtthhopehlihhnuhigqdhmthgusehlihhsthhsrdhinhhfrhgruggvrggurdhorhhg
-X-GND-Sasl: miquel.raynal@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] soc: qcom: pmic_glink: Fix device access from worker
+ during suspend
+To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+ Caleb Connolly <caleb.connolly@linaro.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
+ <8aef8331-662d-49ee-a918-8a4a5000d9ec@kernel.org>
+ <7nce4if7gowtbvenqhwzw6bazgfcgml6enwufomqxs4uruj3vs@sgagkj3zpx4t>
+ <Z5nq3Y7YOyxwqcmg@linaro.org>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <Z5nq3Y7YOyxwqcmg@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 29/01/2025 09:46, Abel Vesa wrote:
+>>
+>>> 1. Maybe the driver just lacks proper suspend/resume handling?
+>>> I assume all this happens during system suspend, so what certainty you
+>>> have that your second work - pmic_glink_altmode_pdr_notify() - is not
+>>> executed as well?
+>>>
+>>> 2. Follow up: all other drivers and all other future use cases will be
+>>> affected as well. Basically what this patch is admitting is that driver
+>>> can be executed anytime, even during suspend, so each call of
+>>> pmic_glink_send() has to be audited. Now and in the future, because what
+>>> stops some developer of adding one more path calling pmic_glink_send(),
+>>> which also turns out to be executed during suspend?
+>>>
+>>> 3. So qcom_battmgr.c is buggy as well?
+>>>
+>>> 4. ucsi_glink.c? I don't see handling suspend, either...
+>>>
+>>> Maybe the entire problem is how pmic glink was designed: not as proper
+>>> bus driver which handles both child-parent relationship and system suspend.
+>>
+>> The underlying problem is that GLINK register its interrupt as
+>> IRQF_NO_SUSPEND (for historical reasons) and as such incoming messages
+>> will be delivered in late suspend and early resume. In this specific
+>> case, a specific message is handled by pmic_glink_altmode_callback(), by
+>> invoking schedule_work() which in this case happens to schedule
+>> pmic_glink_altmode_worker before we've resumed the I2C controller. 
+>>
+>> I presume with your suggestion about a pmic_glink bus driver we'd come
+>> up with some mechanism for pmic_glink to defer these messages until
+>> resume has happened?
+> 
+> So is the suggestion here to rework the entire pmic_glink into a bus
+> driver? (I like the sound of that)
+> 
+> I'd assume the new bus driver will have to queue the messages until it
+> has resumed, which is fine.
 
->> > Driver works without external DMA interface i.e. has_dma=3D0.
->> > However current driver does not have a mechanism to configure it from
->> > device tree.
->>=20
->> What? Why are you requesting a DMA channel from a dmaengine in this case?
->>=20
->> Please make the distinction between the OS implementation (the driver) a=
-nd
->> the DT binding which describe the HW and only the HW.
->>=20
->
-> Let me clarify from bindings(hw) and driver prospective.=20
->
-> Bindings :-
-> Cadence NAND controller HW has MMIO registers, so called slave DMA interf=
-ace
-> for page programming or page read.=20
->         reg =3D <0x10b80000 0x10000>,
->               <0x10840000 0x10000>;
->         reg-names =3D "reg", "sdma"; // sdma =3D  Slave DMA data port reg=
-ister set
->
-> It appears that dt bindings has captured sdma interface correctly.
+Queue or just disable interrupts/notifications to clients.
 
-Slave DMA is very confusing because in Linux we make the distinction
-between:
-1- external DMA (generic DMA controller) driven
-   through the dmaengine API, through which we interact using the so
-   called slave API
-2- peripheral DMA (DMA controller embedded in the NAND IP) when there is
-   no "external/generic" engine. In this case we control DMA transfers
-   using the registers of the NAND controller (or a nearby range, in
-   this case), the same driver handles both the NAND and the DMA part.
+> 
+> But still doesn't solve the fact that we can't filter out when to
+> wake-up or not. What am I missing here?
 
-You used the wording Slave DMA (#1), but it feels like you are talking
-about the other (#2). Can you please confirm in which case we are?
+I think this was not the concern in my email. I was only wondering about
+the design flaw that we allow pmic glink to send notifications to
+children anytime. And that's not how the bus-like driver should be written.
 
-> Linux Driver:-
-> Driver can read these sdma registers directly or it can use the DMA.
-> Existing driver code has hardcoded has_dma with an assumption that
-> an external DMA is always used and relies on DMA API for data
-> transfer.
 
-I am sorry but DMA API does not mean much. There are 3 APIs:
-- dma-mapping, for the buffers and the coherency
-- dmaengine, used in case #1 only, to drive the external DMA controllers
-- dma-buf to share buffers between areas in the kernel (out of scope)
 
-> Thant is why it requires to use DMA channel from dmaengine.
-
-If I understand it right, no :-)
-
-Either you have an external DMA controller (#2) or an internal one (#1)
-but in this second case there is no DMA channel request nor any
-engine-related API. Of course you need to use the dma-mapping API for
-the buffers.
-
-> In my previous reply, I tried to describe this driver scenario but maybe =
-I mixed up.=20
-> has_dma=3D0, i.e. accessing sdma register without using dmaengine is
-> also working.
-
-But do you have an external DMA engine in the end? Or is it specific to
-the NAND controller?
-
-> However, currently there is no option in driver to choose between using d=
-maengine and
-> direct register access.
->
-
-Thanks,
-Miqu=C3=A8l
+Best regards,
+Krzysztof
 
