@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-111630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED570A2300E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A719A23055
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 651421621DA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94EF01885BE1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCDE1E8835;
-	Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636AB1BB6BC;
+	Thu, 30 Jan 2025 14:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4wq7kzG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fGUqUMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B351E522;
-	Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6D97482;
+	Thu, 30 Jan 2025 14:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247297; cv=none; b=SPItvrfSWAQYjobWIvW+Fm79cSofV+7+K9b8TuRDcOJ4KtNX2UdlKS2wFMBh4V2EdINpA/qUitMfDhdaBSHkyprPPSkPD86ZsTAhVvVwMTaGkQLlhLU24rMPOWPr4gN07yK4cSUyrD0xyyqMP/zN79OqZLjrz5CSruAv5z4lQLM=
+	t=1738247478; cv=none; b=eFs3/InGmVQKMDkI0BG/0ocEsCLJINQ4pEDHVe3GAG8rc+fSaRgXrPEw3Isk6VGbtNqW6XTQ8xBzREuRAJQxn2i9Wcgi2K81rgtfK1lPDgFSQOXP+p1U38/m9T8HVgUgLku4jGee+vId249oCg1uWJQMZxfeABQ4b51t+tzjKU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247297; c=relaxed/simple;
-	bh=A/KZO45pPPXc33zgC/gjKvAIULTh+cBWXE8OVUaNjGk=;
+	s=arc-20240116; t=1738247478; c=relaxed/simple;
+	bh=mEeWBBG5+jZvPf3eC0dUQ2s5AGpy+OdHwg4/KZCCBNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/pePh20JYxEiFqOGAyWcsnfiPvReosx5ZahTJvBKMlhR4LzJ68k17231dkALrjlyLWj6rmQSBYF+2ANRT4SQhPuj4wu5JJGIueSLOnB//v9KjPsSfww1150fpde3nQ/Te2TccJDT4Tb1yYTQKyyIW8NWDqbWLxqIz4QE+jo+uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4wq7kzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D35C4CED2;
-	Thu, 30 Jan 2025 14:28:16 +0000 (UTC)
+	 MIME-Version; b=uaKtrqdJpuFDJY06BWjiMr1wyTVKTFXkDZZUwjdWctjDRB6P67cwx6RfWq/P3e30phYy8MEmvEVnblqmnjnk9K8qQxdDSgcZkozYq4GS9yhR0RPilZQXexouBBL3/EgRa1ko8SSYuHcLdAEVTT4w6oW848aN3SPvc/xtUaP/UHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fGUqUMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC04C4CED2;
+	Thu, 30 Jan 2025 14:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247297;
-	bh=A/KZO45pPPXc33zgC/gjKvAIULTh+cBWXE8OVUaNjGk=;
+	s=korg; t=1738247478;
+	bh=mEeWBBG5+jZvPf3eC0dUQ2s5AGpy+OdHwg4/KZCCBNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4wq7kzGTGyt70uBaxYCyjNEeQq+GDkLzVbggkdrSrzfp6CFCXlB1uc3a4Iehga71
-	 fLsdpO7w3DJfVKNdKQxXK/A5NXWQFWlYJEjgplP3SNzTqcxT2o1eHCProRQXawPC6W
-	 wMiDzG22aTLjN/sYjIVR5I+YLQF6CaSiTLC66QgM=
+	b=1fGUqUMbUUDtWEAYTJMY9ywvm3QcAhX6/U1l8LQioMHT3IPD+vlACwI2gsxzjnftw
+	 PO46PQlatyxJfsqdrIY6eiAkCEkMxzji4AJnHSVNCRShepZtnlCh1P23SG5Pn19cwx
+	 mIiw5Sth98HPzVhceG4Udl9K0WuilM04YbM5zCls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 08/24] mptcp: dont always assume copied data in mptcp_cleanup_rbuf()
-Date: Thu, 30 Jan 2025 15:02:00 +0100
-Message-ID: <20250130140127.632501332@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Omar Sandoval <osandov@fb.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 25/49] xfs: fix internal error from AGFL exhaustion
+Date: Thu, 30 Jan 2025 15:02:01 +0100
+Message-ID: <20250130140134.848423005@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Omar Sandoval <osandov@fb.com>
 
-commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
+[ Upstream commit f63a5b3769ad7659da4c0420751d78958ab97675 ]
 
-Under some corner cases the MPTCP protocol can end-up invoking
-mptcp_cleanup_rbuf() when no data has been copied, but such helper
-assumes the opposite condition.
+We've been seeing XFS errors like the following:
 
-Explicitly drop such assumption and performs the costly call only
-when strictly needed - before releasing the msk socket lock.
+XFS: Internal error i != 1 at line 3526 of file fs/xfs/libxfs/xfs_btree.c.  Caller xfs_btree_insert+0x1ec/0x280
+...
+Call Trace:
+ xfs_corruption_error+0x94/0xa0
+ xfs_btree_insert+0x221/0x280
+ xfs_alloc_fixup_trees+0x104/0x3e0
+ xfs_alloc_ag_vextent_size+0x667/0x820
+ xfs_alloc_fix_freelist+0x5d9/0x750
+ xfs_free_extent_fix_freelist+0x65/0xa0
+ __xfs_free_extent+0x57/0x180
+...
 
-Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflicts in this version, because commit 581302298524 ("mptcp: error
-  out earlier on disconnect") has not been backported to this version,
-  and there was no need to do so. The only conflict was in protocol.c,
-  and easy to resolve: the context was different, but the same addition
-  can still be made at the same spot in mptcp_recvmsg(). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+This is the XFS_IS_CORRUPT() check in xfs_btree_insert() when
+xfs_btree_insrec() fails.
+
+After converting this into a panic and dissecting the core dump, I found
+that xfs_btree_insrec() is failing because it's trying to split a leaf
+node in the cntbt when the AG free list is empty. In particular, it's
+failing to get a block from the AGFL _while trying to refill the AGFL_.
+
+If a single operation splits every level of the bnobt and the cntbt (and
+the rmapbt if it is enabled) at once, the free list will be empty. Then,
+when the next operation tries to refill the free list, it allocates
+space. If the allocation does not use a full extent, it will need to
+insert records for the remaining space in the bnobt and cntbt. And if
+those new records go in full leaves, the leaves (and potentially more
+nodes up to the old root) need to be split.
+
+Fix it by accounting for the additional splits that may be required to
+refill the free list in the calculation for the minimum free list size.
+
+P.S. As far as I can tell, this bug has existed for a long time -- maybe
+back to xfs-history commit afdf80ae7405 ("Add XFS_AG_MAXLEVELS macros
+...") in April 1994! It requires a very unlucky sequence of events, and
+in fact we didn't hit it until a particular sparse mmap workload updated
+from 5.12 to 5.19. But this bug existed in 5.12, so it must've been
+exposed by some other change in allocation or writeback patterns. It's
+also much less likely to be hit with the rmapbt enabled, since that
+increases the minimum free list size and is unlikely to split at the
+same time as the bnobt and cntbt.
+
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/xfs/libxfs/xfs_alloc.c |   27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -462,13 +462,13 @@ static void mptcp_send_ack(struct mptcp_
- 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
- }
+--- a/fs/xfs/libxfs/xfs_alloc.c
++++ b/fs/xfs/libxfs/xfs_alloc.c
+@@ -2273,16 +2273,37 @@ xfs_alloc_min_freelist(
  
--static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
-+static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
- {
- 	bool slow;
+ 	ASSERT(mp->m_alloc_maxlevels > 0);
  
- 	slow = lock_sock_fast(ssk);
- 	if (tcp_can_send_ack(ssk))
--		tcp_cleanup_rbuf(ssk, 1);
-+		tcp_cleanup_rbuf(ssk, copied);
- 	unlock_sock_fast(ssk, slow);
- }
- 
-@@ -485,7 +485,7 @@ static bool mptcp_subflow_could_cleanup(
- 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
- }
- 
--static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
-+static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
- {
- 	int old_space = READ_ONCE(msk->old_wspace);
- 	struct mptcp_subflow_context *subflow;
-@@ -493,14 +493,14 @@ static void mptcp_cleanup_rbuf(struct mp
- 	int space =  __mptcp_space(sk);
- 	bool cleanup, rx_empty;
- 
--	cleanup = (space > 0) && (space >= (old_space << 1));
--	rx_empty = !__mptcp_rmem(sk);
-+	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
-+	rx_empty = !__mptcp_rmem(sk) && copied;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
--			mptcp_subflow_cleanup_rbuf(ssk);
-+			mptcp_subflow_cleanup_rbuf(ssk, copied);
- 	}
- }
- 
-@@ -2098,9 +2098,6 @@ static int mptcp_recvmsg(struct sock *sk
- 
- 		copied += bytes_read;
- 
--		/* be sure to advertise window change */
--		mptcp_cleanup_rbuf(msk);
--
- 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
- 			continue;
- 
-@@ -2152,9 +2149,12 @@ static int mptcp_recvmsg(struct sock *sk
- 		}
- 
- 		pr_debug("block timeout %ld\n", timeo);
-+		mptcp_cleanup_rbuf(msk, copied);
- 		sk_wait_data(sk, &timeo, NULL);
- 	}
- 
-+	mptcp_cleanup_rbuf(msk, copied);
++	/*
++	 * For a btree shorter than the maximum height, the worst case is that
++	 * every level gets split and a new level is added, then while inserting
++	 * another entry to refill the AGFL, every level under the old root gets
++	 * split again. This is:
++	 *
++	 *   (full height split reservation) + (AGFL refill split height)
++	 * = (current height + 1) + (current height - 1)
++	 * = (new height) + (new height - 2)
++	 * = 2 * new height - 2
++	 *
++	 * For a btree of maximum height, the worst case is that every level
++	 * under the root gets split, then while inserting another entry to
++	 * refill the AGFL, every level under the root gets split again. This is
++	 * also:
++	 *
++	 *   2 * (current height - 1)
++	 * = 2 * (new height - 1)
++	 * = 2 * new height - 2
++	 */
 +
- out_err:
- 	if (cmsg_flags && copied >= 0) {
- 		if (cmsg_flags & MPTCP_CMSG_TS)
+ 	/* space needed by-bno freespace btree */
+ 	min_free = min_t(unsigned int, levels[XFS_BTNUM_BNOi] + 1,
+-				       mp->m_alloc_maxlevels);
++				       mp->m_alloc_maxlevels) * 2 - 2;
+ 	/* space needed by-size freespace btree */
+ 	min_free += min_t(unsigned int, levels[XFS_BTNUM_CNTi] + 1,
+-				       mp->m_alloc_maxlevels);
++				       mp->m_alloc_maxlevels) * 2 - 2;
+ 	/* space needed reverse mapping used space btree */
+ 	if (xfs_has_rmapbt(mp))
+ 		min_free += min_t(unsigned int, levels[XFS_BTNUM_RMAPi] + 1,
+-						mp->m_rmap_maxlevels);
++						mp->m_rmap_maxlevels) * 2 - 2;
+ 
+ 	return min_free;
+ }
 
 
 
