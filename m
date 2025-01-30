@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-111466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56428A22F47
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75557A22FBD
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C74591882FAD
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF893A4949
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DE81E6DCF;
-	Thu, 30 Jan 2025 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD94D1E8855;
+	Thu, 30 Jan 2025 14:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8GIAOIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndcviyes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220791BDA95;
-	Thu, 30 Jan 2025 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5A11DDC22;
+	Thu, 30 Jan 2025 14:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246821; cv=none; b=JFA1n/FEDoJOyup1fmh4Z0R7+UMuoTHEKkoa9G0w1Grzlmuua1CS/bsWuhE8ZJV5A2kf41ov9Nu1Cs2X7k8PSiIo+23gLMEkKPq574Mj3OfmsxCegSmMhbJ2vvnN3fazTnUHc/OOufyl43duK5gvyo1wou47zFPYOQbRv2+LJ9k=
+	t=1738247092; cv=none; b=U0gfN31VazvIQ9afMOU19SKpzHK95YzYgZPz0maAiArgbBjVFG9AMD9aL0Wn/gD3/eRbJ7obKLArGURBv3FnHeSHX+Z3yDM2pKRvQKmE0keiboIV1ls2wRoNLdcoJz2o+1kPUAi809SzE3v4Q9L1OacQucFO1oguNa7rw5uNOZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246821; c=relaxed/simple;
-	bh=BwV4JYOho5/IxREn2Uwq4f+grOKFdP9jDB++RvAIxLk=;
+	s=arc-20240116; t=1738247092; c=relaxed/simple;
+	bh=Z8tJZVSei7+M8Y925ttOvVw0+4LXGRVgIu3RnpcZBBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCWuogAQvc1ngfwSneBmMJkwwcsyNo82m8HRXpVGGk1CtKRlHkhKGlNbI6vj7ca/WNdynw9Vz8tUOWcaaeUUNGZv4+Gat9tBe79re5e/2oxu0UnBs9DNZkqwQCmzMcF2oGlZcbnGNVWyA6+eq6xb4p/nh4RWc5yv5Evn7cGtEtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8GIAOIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BC6C4CED2;
-	Thu, 30 Jan 2025 14:20:20 +0000 (UTC)
+	 MIME-Version; b=eXzYwG6/kTFLVYbrHCqshRpP5KyD5bIC4ar/35fybdclqrMiWPb92IOi7LMwZqqHt8QJIghgM/AINVGDGO2eQOP4StPSkquLek9wJD3XSbba6he+rA8EaVAcNI8w1XE247fr4SOC3LvVVnCiRAxJ6B4kBvNKgmwAOQLOUv7747Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndcviyes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F13C4CED2;
+	Thu, 30 Jan 2025 14:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246820;
-	bh=BwV4JYOho5/IxREn2Uwq4f+grOKFdP9jDB++RvAIxLk=;
+	s=korg; t=1738247092;
+	bh=Z8tJZVSei7+M8Y925ttOvVw0+4LXGRVgIu3RnpcZBBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8GIAOILEeoe0dlqKzrWOCTdb2fXMVjVBXwMtedGIaVl4ONGSsYdwpfkZb8qr/eVP
-	 wqDY4K+jGTxDkmGlRLw5bS6ROF+b8agCXxCOjShV+z17ofB3IXg9LfQO2W8O8f0USN
-	 CL1d17gkirEcnSTXlBX22p3mg0vFBNq2bqC/eL8U=
+	b=ndcviyesubxktNZedfSdC9AlHaisMkZux4FlD/ePXdKVG7PiK2p5eNf/T/Lb3NwEg
+	 UG1HYcLsDZJPvzL39u/hdDJkFX1up7xTL178hPKU05t5QMQmbSTJVb6+CTI3kFZP0d
+	 tLi7IR4jFOjIn56xpHdDhWrQ6cYVWcWi94F519AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 49/91] RISC-V: Avoid dereferening NULL regs in die()
-Date: Thu, 30 Jan 2025 15:01:08 +0100
-Message-ID: <20250130140135.632995641@linuxfoundation.org>
+Subject: [PATCH 5.10 080/133] net/mlx5: Refactor mlx5_get_flow_namespace
+Date: Thu, 30 Jan 2025 15:01:09 +0100
+Message-ID: <20250130140145.744587830@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-[ Upstream commit f2913d006fcdb61719635e093d1b5dd0dafecac7 ]
+[ Upstream commit 4588fed7beae6d54ef4c67c77fc39364f8fc42af ]
 
-I don't think we can actually die() without a regs pointer, but the
-compiler was warning about a NULL check after a dereference.  It seems
-prudent to just avoid the possibly-NULL dereference, given that when
-die()ing the system is already toast so who knows how we got there.
+Have all the namespace type check in the same switch case.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20220920200037.6727-1-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: 6a97f4118ac0 ("riscv: Fix sleeping in invalid context in die()")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: c08d3e62b2e7 ("net/mlx5: Fix RDMA TX steering prio")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/fs_core.c | 44 ++++++++++++++-----
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 184f7b82c5ae..533087439e80 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -29,6 +29,7 @@ void die(struct pt_regs *regs, const char *str)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 3f49eff271cf2..3c5e9bf1cde33 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -2302,6 +2302,22 @@ struct mlx5_flow_namespace *mlx5_get_fdb_sub_ns(struct mlx5_core_dev *dev,
+ }
+ EXPORT_SYMBOL(mlx5_get_fdb_sub_ns);
+ 
++static bool is_nic_rx_ns(enum mlx5_flow_namespace_type type)
++{
++	switch (type) {
++	case MLX5_FLOW_NAMESPACE_BYPASS:
++	case MLX5_FLOW_NAMESPACE_LAG:
++	case MLX5_FLOW_NAMESPACE_OFFLOADS:
++	case MLX5_FLOW_NAMESPACE_ETHTOOL:
++	case MLX5_FLOW_NAMESPACE_KERNEL:
++	case MLX5_FLOW_NAMESPACE_LEFTOVERS:
++	case MLX5_FLOW_NAMESPACE_ANCHOR:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
+ 						    enum mlx5_flow_namespace_type type)
  {
- 	static int die_counter;
- 	int ret;
-+	long cause;
+@@ -2327,31 +2343,35 @@ struct mlx5_flow_namespace *mlx5_get_flow_namespace(struct mlx5_core_dev *dev,
+ 		if (steering->sniffer_tx_root_ns)
+ 			return &steering->sniffer_tx_root_ns->ns;
+ 		return NULL;
+-	default:
+-		break;
+-	}
+-
+-	if (type == MLX5_FLOW_NAMESPACE_EGRESS ||
+-	    type == MLX5_FLOW_NAMESPACE_EGRESS_KERNEL) {
++	case MLX5_FLOW_NAMESPACE_EGRESS:
++	case MLX5_FLOW_NAMESPACE_EGRESS_KERNEL:
+ 		root_ns = steering->egress_root_ns;
+ 		prio = type - MLX5_FLOW_NAMESPACE_EGRESS;
+-	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX) {
++		break;
++	case MLX5_FLOW_NAMESPACE_RDMA_RX:
+ 		root_ns = steering->rdma_rx_root_ns;
+ 		prio = RDMA_RX_BYPASS_PRIO;
+-	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL) {
++		break;
++	case MLX5_FLOW_NAMESPACE_RDMA_RX_KERNEL:
+ 		root_ns = steering->rdma_rx_root_ns;
+ 		prio = RDMA_RX_KERNEL_PRIO;
+-	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX) {
++		break;
++	case MLX5_FLOW_NAMESPACE_RDMA_TX:
+ 		root_ns = steering->rdma_tx_root_ns;
+-	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS) {
++		break;
++	case MLX5_FLOW_NAMESPACE_RDMA_RX_COUNTERS:
+ 		root_ns = steering->rdma_rx_root_ns;
+ 		prio = RDMA_RX_COUNTERS_PRIO;
+-	} else if (type == MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS) {
++		break;
++	case MLX5_FLOW_NAMESPACE_RDMA_TX_COUNTERS:
+ 		root_ns = steering->rdma_tx_root_ns;
+ 		prio = RDMA_TX_COUNTERS_PRIO;
+-	} else { /* Must be NIC RX */
++		break;
++	default: /* Must be NIC RX */
++		WARN_ON(!is_nic_rx_ns(type));
+ 		root_ns = steering->root_ns;
+ 		prio = type;
++		break;
+ 	}
  
- 	oops_enter();
- 
-@@ -38,11 +39,13 @@ void die(struct pt_regs *regs, const char *str)
- 
- 	pr_emerg("%s [#%d]\n", str, ++die_counter);
- 	print_modules();
--	show_regs(regs);
-+	if (regs)
-+		show_regs(regs);
- 
--	ret = notify_die(DIE_OOPS, str, regs, 0, regs->cause, SIGSEGV);
-+	cause = regs ? regs->cause : -1;
-+	ret = notify_die(DIE_OOPS, str, regs, 0, cause, SIGSEGV);
- 
--	if (regs && kexec_should_crash(current))
-+	if (kexec_should_crash(current))
- 		crash_kexec(regs);
- 
- 	bust_spinlocks(0);
+ 	if (!root_ns)
 -- 
 2.39.5
 
