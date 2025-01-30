@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-111283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9B8A22E4A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A03A22E59
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A301886940
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C279F7A2068
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AD71DE8B2;
-	Thu, 30 Jan 2025 13:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F51C1E570E;
+	Thu, 30 Jan 2025 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwHpRON6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL66fBHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B272BB15;
-	Thu, 30 Jan 2025 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CCD1E3775;
+	Thu, 30 Jan 2025 13:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245556; cv=none; b=NkegJgS42Fwyr32nHWthfnoqM69NQ9IryywwClv/v2Zr+faJSN/fuMQDB5rWptGvU55omdceTVkOF9df2kNjCPSQoB1oiTHX3vbVZLdzUG851/BnjFahbNwXIFTm1kyRrQPYco7ZVVaAXYPfsB9esQw2gTCkuqvFVgFY/UwbRRM=
+	t=1738245594; cv=none; b=rP7rJrJI0cU2bZrdnVFyXFWZqAfuug3cJZ787KnACxxmx4lWz/1rJhm0TC4rc8t3qLP4TZgNO3HyArfDuWI1FRDYz4VteORZPqa74JUZVG+xsuXPHM3jAlwG3LGsdL7qb90likBwOskKdoqpMkge+lUjT19uAlOHZYXTrHlPriI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245556; c=relaxed/simple;
-	bh=vUIM3lJDQv/iFqVLxwAY1Dr+ggO5vbhnQmF2ZN1iq0Y=;
+	s=arc-20240116; t=1738245594; c=relaxed/simple;
+	bh=ujKFZ/vZnEQCrw2DlcMxpZGbUV91UyEHvn5OxUmfRVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6GPtf/NLMgcfwO5+Tbp4dFSwcOfi1zHLjpdxvvhQaE8aWrVkpQkjUUSKqnBRrcTQ9QQcJhAO4Hn8ztWLaQkUim/RJoQ8TsTQlAhkhVBojLOG5ay/JnREs3zhhkIRXnDdlYPrl8EPl7OEX9WHHhqsfjZFex2ZwPp4AzNPQqw/xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwHpRON6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDAAC4CED2;
-	Thu, 30 Jan 2025 13:59:15 +0000 (UTC)
+	 MIME-Version; b=FW1cFdqrugwC22Q87xb5BMr0/lQUCJPHcBB9zJPBH0iuUmnY4tBWvo7vyEweBuwxcOvAGPRG90n0dSZTKvykT51POuvEpY0fzwTex6yH/Je0dEWeifvQi8nlRlLP1Ka6Te0EX7Q1EnayfbGzFGlbeq+KNzLBhYRDJJCtPY6KXFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL66fBHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB68C4CED2;
+	Thu, 30 Jan 2025 13:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245556;
-	bh=vUIM3lJDQv/iFqVLxwAY1Dr+ggO5vbhnQmF2ZN1iq0Y=;
+	s=korg; t=1738245594;
+	bh=ujKFZ/vZnEQCrw2DlcMxpZGbUV91UyEHvn5OxUmfRVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwHpRON6xhrqqjreRBV1y9MWT06MnGC8suLdtL63H+O6fHF1fAeoqPk+znGZ7jwU5
-	 skZrgBGWB5qYfhym/YGGtorkztEiaX20FCWhyg+7/IRMh+wCIORSeqf9NwSLtI+NHs
-	 QR88vYaA3NhLeia3tw8sLW6cVvm7zor60pvd7MlE=
+	b=cL66fBHRbUMg3XkpDRPxcS7VBoRuffVvU59ddvAcuc/Cic3F8ns4yXZp6wJjAybk5
+	 0tFT8Ky4sMveR9kguKMrCCjuefXcEVXoxWDfEa0nRIj9ow0FlcInqMwNa4aSO4oN+O
+	 DH2LmU2syL7hs86Zi9psIGn4XPleYBAnYYD8TinA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Kun Hu <huk23@m.fudan.edu.cn>
-Subject: [PATCH 6.13 01/25] gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
-Date: Thu, 30 Jan 2025 14:58:47 +0100
-Message-ID: <20250130133456.976335595@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.13 02/25] libfs: Return ENOSPC when the directory offset range is exhausted
+Date: Thu, 30 Jan 2025 14:58:48 +0100
+Message-ID: <20250130133457.016233651@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
 References: <20250130133456.914329400@linuxfoundation.org>
@@ -65,31 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 7c9d9223802fbed4dee1ae301661bf346964c9d2 upstream.
+commit 903dc9c43a155e0893280c7472d4a9a3a83d75a6 upstream.
 
-Truncate an inode's address space when flipping the GFS2_DIF_JDATA flag:
-depending on that flag, the pages in the address space will either use
-buffer heads or iomap_folio_state structs, and we cannot mix the two.
+Testing shows that the EBUSY error return from mtree_alloc_cyclic()
+leaks into user space. The ERRORS section of "man creat(2)" says:
 
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>, Jiaji Qin <jjtan24@m.fudan.edu.cn>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+>	EBUSY	O_EXCL was specified in flags and pathname refers
+>		to a block device that is in use by the system
+>		(e.g., it is mounted).
+
+ENOSPC is closer to what applications expect in this situation.
+
+Note that the normal range of simple directory offset values is
+2..2^63, so hitting this error is going to be rare to impossible.
+
+Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
+Cc: stable@vger.kernel.org # v6.9+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20241228175522.1854234-2-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/file.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/libfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/gfs2/file.c
-+++ b/fs/gfs2/file.c
-@@ -251,6 +251,7 @@ static int do_gfs2_set_flags(struct inod
- 		error = filemap_fdatawait(inode->i_mapping);
- 		if (error)
- 			goto out;
-+		truncate_inode_pages(inode->i_mapping, 0);
- 		if (new_flags & GFS2_DIF_JDATA)
- 			gfs2_ordered_del_inode(ip);
- 	}
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -292,8 +292,8 @@ int simple_offset_add(struct offset_ctx
+ 
+ 	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
+ 				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
+-	if (ret < 0)
+-		return ret;
++	if (unlikely(ret < 0))
++		return ret == -EBUSY ? -ENOSPC : ret;
+ 
+ 	offset_set(dentry, offset);
+ 	return 0;
 
 
 
