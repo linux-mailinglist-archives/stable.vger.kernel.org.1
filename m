@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DA4A22EDE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EABA22E8D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B25D3A5F14
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 269B8188A64E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A891E3DC8;
-	Thu, 30 Jan 2025 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3F41E2853;
+	Thu, 30 Jan 2025 14:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsKam5R4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7Y65ZeZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C09F1DDE9;
-	Thu, 30 Jan 2025 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA2C1E47C4;
+	Thu, 30 Jan 2025 14:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246557; cv=none; b=re8m/ROcDseYh2r1eg1fEw9pY1ugGqSWezCiDCZv2yKrLG8WFOMMTGc6Ik6IRCWpuA6XzCCX4Qm8eq7FFTEXAgbRv2gKBYx22S+PnFTv29peDJG6U5mRvMtPD2GjcmZtJX6wD/sJSkSBcrV1e2GaQbM2YDuYeokyoGMzsivdmYo=
+	t=1738245726; cv=none; b=N4ty0BpvO862rGL1dEI9RKNVQp40AW6CWLWqusfvzi+AltKUAFftZjCh5yR9X6ehnYTWBtm/Ls9/Vjjelzk0IxeI/zFNjyRf4Xj3NOXHvFa3IPoLpwbBCO8amK5s0Vq8c4g+MFO3WX3z+/A4wuJWvnXdwn0fdvwSfPgDRP+ZmAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246557; c=relaxed/simple;
-	bh=ZHz1dK8HMoaOOFhYbBoEHfqEPfEMIYm6JqKSh4m2jHg=;
+	s=arc-20240116; t=1738245726; c=relaxed/simple;
+	bh=6rXS5hRHzdgkhVaaoTDvky54xvKw/D9Ar6S2PKSpF7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odqPtijzHRuy2EVpBY13QxzIpTGciloibKoUF5AvJ5YWYy3hsOtHBhMC+mcFhP7axkaU2kiVjbOo28iKU0JVCMzI3K45pgHfVQo1vtMxmzr/yZ+Ttawnm2bSVDe+c/U9j8QTViIbwsTQVXNvdV7vv9yEAYxJqgIvvtwmF4QtXBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsKam5R4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD47C4CED2;
-	Thu, 30 Jan 2025 14:15:56 +0000 (UTC)
+	 MIME-Version; b=p2s9X/U2+lDsCVLkhcTfjwYSYey2q4KIyMN1iVmoJZjPjMvSEp/HkrGjP58gw/7Y4V4jQ6LdGqve7PSTUuBb+huVhffrXGC0cCbhoCuxs1fgemA0e16Zk2yEGkBjovPUy/Sp3IZ84QyEsQBtB9ssRYjrzwfBSnKhjYUBnQRA0/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7Y65ZeZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A894C4CED2;
+	Thu, 30 Jan 2025 14:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246557;
-	bh=ZHz1dK8HMoaOOFhYbBoEHfqEPfEMIYm6JqKSh4m2jHg=;
+	s=korg; t=1738245725;
+	bh=6rXS5hRHzdgkhVaaoTDvky54xvKw/D9Ar6S2PKSpF7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsKam5R4JhcT2W29CJ+HLyW3i5DxqELNcHgAaMZz9zmr5xgis6cccttzff/35ZJax
-	 Ck081uSVLZ11YOVfrJzu8nCrW+nhciFpl/TF/d+1uvXcRomSYFhsTVnJ5O8OTFfNFA
-	 iQ1t0ECsQhfZ+HJSsZJ6cQd6S5YpoHp9taZQjfZw=
+	b=H7Y65ZeZpHbr1lKeRyPuLBp315Jdx678mmghBTETZuGyhEMoolxKYHo7IFISm2U7x
+	 KEYKB1DYZM2mRfS+YDgZY2Rbxf4xPPKFpGyR2ZyfnogUsHFCaonFEmckOl+34OVqLC
+	 W5ix1gfT5DMy6FUU6PmrhuZrQ7vvcTr53ZKedoKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 33/43] scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
+	Jack Greiner <jack@emoss.org>,
+	Pavel Rojtberg <rojtberg@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 40/40] Input: xpad - add support for wooting two he (arm)
 Date: Thu, 30 Jan 2025 14:59:40 +0100
-Message-ID: <20250130133500.234798683@linuxfoundation.org>
+Message-ID: <20250130133501.313475053@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Jack Greiner <jack@emoss.org>
 
-commit d2138eab8cde61e0e6f62d0713e45202e8457d6d upstream.
+commit 222f3390c15c4452a9f7e26f5b7d9138e75d00d5 upstream.
 
-If there's a persistent error in the hypervisor, the SCSI warning for
-failed I/O can flood the kernel log and max out CPU utilization,
-preventing troubleshooting from the VM side. Ratelimit the warning so
-it doesn't DoS the VM.
+Add Wooting Two HE (ARM) to the list of supported devices.
 
-Closes: https://github.com/microsoft/WSL/issues/9173
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250107-eahariha-ratelimit-storvsc-v1-1-7fc193d1f2b0@linux.microsoft.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jack Greiner <jack@emoss.org>
+Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
+Link: https://lore.kernel.org/r/20250107192830.414709-3-rojtberg@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -171,6 +171,12 @@ do {								\
- 		dev_warn(&(dev)->device, fmt, ##__VA_ARGS__);	\
- } while (0)
- 
-+#define storvsc_log_ratelimited(dev, level, fmt, ...)				\
-+do {										\
-+	if (do_logging(level))							\
-+		dev_warn_ratelimited(&(dev)->device, fmt, ##__VA_ARGS__);	\
-+} while (0)
-+
- struct vmscsi_request {
- 	u16 length;
- 	u8 srb_status;
-@@ -1177,7 +1183,7 @@ static void storvsc_on_io_completion(str
- 		int loglevel = (stor_pkt->vm_srb.cdb[0] == TEST_UNIT_READY) ?
- 			STORVSC_LOGGING_WARN : STORVSC_LOGGING_ERROR;
- 
--		storvsc_log(device, loglevel,
-+		storvsc_log_ratelimited(device, loglevel,
- 			"tag#%d cmd 0x%x status: scsi 0x%x srb 0x%x hv 0x%x\n",
- 			scsi_cmd_to_rq(request->cmd)->tag,
- 			stor_pkt->vm_srb.cdb[0],
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -382,6 +382,7 @@ static const struct xpad_device {
+ 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1220, "Wooting Two HE", 0, XTYPE_XBOX360 },
++	{ 0x31e3, 0x1230, "Wooting Two HE (ARM)", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
+ 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
+ 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
 
 
 
