@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E63AA22F16
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA19A22F8E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8051888C12
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5C91884A51
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1391E7C08;
-	Thu, 30 Jan 2025 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909C01E991E;
+	Thu, 30 Jan 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpeoVSfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIF5AzYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F3B1BDA95;
-	Thu, 30 Jan 2025 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC0B1BDA95;
+	Thu, 30 Jan 2025 14:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246709; cv=none; b=CyA6mG3TxArKYzYXgwKA3usX3Pff21qUNEQwb/fG7djQ2fy7JML6U5kBU8BmEHNuzYaR+y0h+wWMneaXnOnmqSvUjucF7RRVIS9P19Kwptcw/7NgWGKz89q/VPzzdMVP2/Q1Q2A2Szh7+FDJzQ+074A6mBAk04RfcLvPtrMmYlg=
+	t=1738246984; cv=none; b=Blhqd6SAQzjvmhNMwTEg97knolo2/NR9rD9HC/r5budfkIfA9WbKlVQTEp5FXx/CKMpFgvmo/ZlYkRkUXTw+4pery59U2aWF8ZhRS3o3BuRVK1wBWcZDAGJ5NH75rn6qQJmuL3EWLjUIer1ajbwC+1utgFELoUoCCoUDFr+sZvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246709; c=relaxed/simple;
-	bh=vXTzCZqsvRDzNg7dVQvp0P778GjNpdy7sYZHdob7XKk=;
+	s=arc-20240116; t=1738246984; c=relaxed/simple;
+	bh=NHBQf2gX7Ldb+IQFXibTVZv7Be8LDlnb0OuN+6FUges=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o0wavcSGXbI6ku0OPVpm98HLYbeLBwGBmaQ0lum8c5EvuEoI89KuMVXapqmy75crCMjDtKQMn4+n7qc5kTkxcf/8QWrh6fzTKLQvaSQVKAxAHtjT51nyJhYZLHvEJi9xv/Ps+Bad92uYCasK6S3jMeJhg8gadun4BLQxhiRtpW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpeoVSfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F79BC4CED2;
-	Thu, 30 Jan 2025 14:18:28 +0000 (UTC)
+	 MIME-Version; b=HlNJ1NGyIYiwfQ8MAepfbIPKNHKM6XyM5/AfNmYLpS2Li+dPlOx6iNCd7NAqLdJViWBgJoNQQiG/Psfbu3o073awSrnoBgwHTvTJLgYj/5imbf0wxkdUOZ+WBbr+V8artir7NWF2bfVM5dcrj8FP+mRXhRxH0TKdyUeH3z0q+Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIF5AzYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C30AC4CEE2;
+	Thu, 30 Jan 2025 14:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246709;
-	bh=vXTzCZqsvRDzNg7dVQvp0P778GjNpdy7sYZHdob7XKk=;
+	s=korg; t=1738246983;
+	bh=NHBQf2gX7Ldb+IQFXibTVZv7Be8LDlnb0OuN+6FUges=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpeoVSfHsNySubCUYxOc+1MURUZ3JcDByMAQjrZfwrJTHKeP2kVmyRVIQkuxxFzoC
-	 VtsiD7IdnK1qn/ZjOKklnANI9CAXWcktqqe9MtLc1+QROuPck1hVBPGuX+j75PflvT
-	 ha4/9eR4G03dVI5JwQK/rZUrf6QnZE0Y+zZTSB8M=
+	b=mIF5AzYmvjbUJllxNTxgbVLg0j/UxhIL0OboHP2S8gremU0TX8XN5y01e8BL94ZGi
+	 2SVsr6+JNu1rw/g3P7QYx7Mg1j+ZeFWjsqUplfcDm3rUGYDGuA7DJucEyPdYmbRoN8
+	 pld+XijgU4xAd3S7qdVwe/OzPVWw436j8fkxaEsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 13/91] sctp: sysctl: auth_enable: avoid using current->nsproxy
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 043/133] iio: dummy: iio_simply_dummy_buffer: fix information leak in triggered buffer
 Date: Thu, 30 Jan 2025 15:00:32 +0100
-Message-ID: <20250130140134.198925063@linuxfoundation.org>
+Message-ID: <20250130140144.248126571@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 15649fd5415eda664ef35780c2013adeb5d9c695 upstream.
+commit 333be433ee908a53f283beb95585dfc14c8ffb46 upstream.
 
-As mentioned in a previous commit of this series, using the 'net'
-structure via 'current' is not recommended for different reasons:
+The 'data' array is allocated via kmalloc() and it is used to push data
+to user space from a triggered buffer, but it does not set values for
+inactive channels, as it only uses iio_for_each_active_channel()
+to assign new values.
 
-- Inconsistency: getting info from the reader's/writer's netns vs only
-  from the opener's netns.
+Use kzalloc for the memory allocation to avoid pushing uninitialized
+information to userspace.
 
-- current->nsproxy can be NULL in some cases, resulting in an 'Oops'
-  (null-ptr-deref), e.g. when the current task is exiting, as spotted by
-  syzbot [1] using acct(2).
-
-The 'net' structure can be obtained from the table->data using
-container_of().
-
-Note that table->data could also be used directly, but that would
-increase the size of this fix, while 'sctp.ctl_sock' still needs to be
-retrieved from 'net' structure.
-
-Fixes: b14878ccb7fa ("net: sctp: cache auth_enable per endpoint")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/67769ecb.050a0220.3a8527.003f.GAE@google.com [1]
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250108-net-sysctl-current-nsproxy-v1-6-5df34b2083e8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sysctl.c |    2 +-
+ drivers/iio/dummy/iio_simple_dummy_buffer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sctp/sysctl.c
-+++ b/net/sctp/sysctl.c
-@@ -326,7 +326,7 @@ static int proc_sctp_do_hmac_alg(struct
- 				void __user *buffer, size_t *lenp,
- 				loff_t *ppos)
- {
--	struct net *net = current->nsproxy->net_ns;
-+	struct net *net = container_of(ctl->data, struct net, sctp.auth_enable);
- 	struct ctl_table tbl;
- 	bool changed = false;
- 	char *none = "none";
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trig
+ 	int len = 0;
+ 	u16 *data;
+ 
+-	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
++	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+ 	if (!data)
+ 		goto done;
+ 
 
 
 
