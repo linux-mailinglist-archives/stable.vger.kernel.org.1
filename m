@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A419FA22F92
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 235FFA22F20
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEB833A32AA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3753A4D15
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B91E8835;
-	Thu, 30 Jan 2025 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27E91E98FF;
+	Thu, 30 Jan 2025 14:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTTJsByE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nexuAr/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AD11E522;
-	Thu, 30 Jan 2025 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCF41BDA95;
+	Thu, 30 Jan 2025 14:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247004; cv=none; b=ZyAM5njWkl3/JtF4lyJV6s10VMtFXre2tLF2K4GQlb1irc9hrk58CW2DFkBgTynIrayHbgRq1GdremuR0G9LdVG5PasDGA/nlz55PdFTjmzMPoZu0l6JWzDW25BxKrf0jluNkssKu8uN8srvWOz0pkDHZ0Wupk1c5wNl8U8DL9I=
+	t=1738246736; cv=none; b=tg4HFDQ1difz5zofKGEnaL+zfAJSDc6VLmDzxX6By/gB/un9ZO8GXY9tfuGqJEELrIoDLyJocmN/L3QgcdP+TI1RMKMSz0g9WCoOFLQFFyjgyKPbqHJ+RskVdSJ9nELdn0dREEc26p/1bbjxrdotP96/BaJ2uVjTZbQvQfoSV4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247004; c=relaxed/simple;
-	bh=I0JMaR4vRt4kqFxFvDotLmmJ/T0HKwEEO8ra3AmEpIQ=;
+	s=arc-20240116; t=1738246736; c=relaxed/simple;
+	bh=dUErjhxfhgRD4UKKDAGLtI0xSuf1G8IDFUwqztl/o/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/aBtMq/d8ZgXWsNAIk9Z6pBOHqU3zvQR/uccq653rJSMhwgvFs42JzLXEV4y5j0D0Qnjt7giz2DgDd9xlIYs7rO1sD3cJBnAfH8SLukY3VjXGudTOu7xkqCPQcYjd2WthzHjcYWemIWyV7T1XbT8R2vIHvHh4UfzmgOpuNCAX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTTJsByE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CE7C4CED2;
-	Thu, 30 Jan 2025 14:23:23 +0000 (UTC)
+	 MIME-Version; b=jvLmxdsqi5CPVta7T4S/1aNKGRGoceiiqbXMIFQnjTlex2bygAMRBlpAFggaNbNvBuc+uc6HB0WuhxvQGKfMTHk+dtp9M2JqcOgxSYfZxyPC2PnGe/jGsnnsRp4hSowx9h7HWRTGmJWHfrwVZOlF4hNacAIWYAnq+x+VSvEArP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nexuAr/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC60DC4CED2;
+	Thu, 30 Jan 2025 14:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247004;
-	bh=I0JMaR4vRt4kqFxFvDotLmmJ/T0HKwEEO8ra3AmEpIQ=;
+	s=korg; t=1738246735;
+	bh=dUErjhxfhgRD4UKKDAGLtI0xSuf1G8IDFUwqztl/o/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTTJsByEaCzCB4dcr/Gy/c5IVx37SMG5N/EGDUjPK4oQRGoVstLehO+A0xUQgu8KS
-	 zTYT2AnKyqqlH2jfiFnCJua+zLldZ65Fhk3xkMw6ULRgsStPxyaS7/o99h/hBz6+LV
-	 ysgmttqPvNebUKZJBaYDzmtxvOPVySMGFdfVvEdI=
+	b=nexuAr/Y+WwNqibKPGaaD+lUW9w8X32T2LzGPPno3Hh6tWPv6YE+EWHhyO4o0cNhK
+	 8O6YL90J4FjiaRHshTPphs/ulfU5aBU4afqc/lZ3xsnJbgLtSpIRnC9JjpacoQhDbB
+	 7x9IiblrnQMkchcJupp6DRaej78RU21kMS5TWcME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 049/133] iio: adc: at91: call input_free_device() on allocated iio_dev
+	Michal Hrusecky <michal.hrusecky@turris.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 19/91] USB: serial: option: add Neoway N723-EA support
 Date: Thu, 30 Jan 2025 15:00:38 +0100
-Message-ID: <20250130140144.496245449@linuxfoundation.org>
+Message-ID: <20250130140134.430799501@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Michal Hrusecky <michal.hrusecky@turris.com>
 
-commit de6a73bad1743e9e81ea5a24c178c67429ff510b upstream.
+commit f5b435be70cb126866fa92ffc6f89cda9e112c75 upstream.
 
-Current implementation of at91_ts_register() calls input_free_deivce()
-on st->ts_input, however, the err label can be reached before the
-allocated iio_dev is stored to st->ts_input. Thus call
-input_free_device() on input instead of st->ts_input.
+Update the USB serial option driver to support Neoway N723-EA.
 
-Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ID 2949:8700 Marvell Mobile Composite Device Bus
+
+T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2949 ProdID=8700 Rev= 1.00
+S:  Manufacturer=Marvell
+S:  Product=Mobile Composite Device Bus
+S:  SerialNumber=200806006809080000
+C:* #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0e(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Tested successfully connecting to the Internet via rndis interface after
+dialing via AT commands on If#=4 or If#=6.
+
+Not sure of the purpose of the other serial interface.
+
+Signed-off-by: Michal Hrusecky <michal.hrusecky@turris.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/at91_adc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/at91_adc.c
-+++ b/drivers/iio/adc/at91_adc.c
-@@ -1139,7 +1139,7 @@ static int at91_ts_register(struct iio_d
- 	return ret;
- 
- err:
--	input_free_device(st->ts_input);
-+	input_free_device(input);
- 	return ret;
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2413,6 +2413,7 @@ static const struct usb_device_id option
+ 	  .driver_info = NCTRL(1) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
+ 	  .driver_info = NCTRL(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x2949, 0x8700, 0xff) },			/* Neoway N723-EA */
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
