@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-111305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B7CA22E63
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9212A22E4F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F81F3A335E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 702C81889539
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9631E3DF8;
-	Thu, 30 Jan 2025 14:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D25A1E7C3B;
+	Thu, 30 Jan 2025 13:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AddwWblz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwmFq+lo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75762941C;
-	Thu, 30 Jan 2025 14:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572212BB15;
+	Thu, 30 Jan 2025 13:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245623; cv=none; b=OphxL8ygooz3MF2SSTOSm4M9yT5oDY2LsKZoOAhgOgHnQoytTInlHis5dYFoBJxgjrUa/FdMIOkt4FcxgxT+e+yHPf/6Z+/AdwK2Y5SwYf/mvSN9imPWD2ygxf7RIi+Q4BsNGpko82wDDwVaQkAuqazSfZJzht2kQaNa87pvEWc=
+	t=1738245564; cv=none; b=az8NGVReKAtzU/oOOYRo3t5RckpxWHRSdqVKxxd2uvLS2JACrNs8smLBSx8GXkxwawWbB9Sm8Q57O24SCBsPXfxIhLn5uL4WnEK5nXyIj49iLThOf1dcv8Sc6+HL0CWDligoXC+/fBvf1ZwjXI1ukmDMCT/FcIARYjsb17fblL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245623; c=relaxed/simple;
-	bh=aBcyOJ32UUlXK9/DYEoUSwU+RlY9tM2ECIF1GA0Tq2A=;
+	s=arc-20240116; t=1738245564; c=relaxed/simple;
+	bh=kAGM/rdz+pBORgFfGGiFgNYsmP9EGJD9NdyvTJma+6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H0WiqagxOpABBZOmc+x7ndXcku28jIeNL+5f91N5uTpJfVYYDeTrjAPhd3ZR/9UHnOZZczkN/8Z6XAJZstMXFb7NAA2LeaDDyfVa9IUig+hI8hWarNScwXV0hvi7R1xiM5oBTEuhhBrTrBe055SlXhl6lQxR4ta8ktwArFm3Kz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AddwWblz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248AAC4CED2;
-	Thu, 30 Jan 2025 14:00:22 +0000 (UTC)
+	 MIME-Version; b=YC8W93gLx09tHD/AmvQT//MPYujIDhm18dG4D91JMXwmyZ3gi7tDQB/P7ZO2TF3IoFXqXt3q+kxs9Oh+iWNzFQ/PRgK2Q2XwQRxDrhjP4gCYGux0xeJUlsyTdLNslR9QdStK2GqEL1JIJmvEAmsuhyU9XnVvsdPqJ6xNWC3f7fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwmFq+lo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98E4C4CED2;
+	Thu, 30 Jan 2025 13:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245623;
-	bh=aBcyOJ32UUlXK9/DYEoUSwU+RlY9tM2ECIF1GA0Tq2A=;
+	s=korg; t=1738245564;
+	bh=kAGM/rdz+pBORgFfGGiFgNYsmP9EGJD9NdyvTJma+6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AddwWblztrGBe6HameCi+z2pPlA3ZYPws0Il91LZ8LGshBreYmxVGFKTluflZIW9Q
-	 7j6GBV4j9uXpkvijQ1SKBH04mXQ+RRYV59xKswQ1O4IRrTiGDnjPaYQBubliV5eyIK
-	 j33gicz7sGGJoPbRD+C+r3yZOXw+qWrnVpEibOjw=
+	b=cwmFq+loJw2hDQCmVjMDVxfgkWq7xdvsDIr7H3goGVOHpFFkMus8wwlUq29/P2MZ1
+	 yicbsjcYSU7ZCVU3Yb+62NdbzV99PI9D8akWeCWUb+97GX4vwYY5onGgkoSq2xrCmP
+	 QRUL1cOa1UIH/kNVLXSql/5v09UlnW9RmtgZwNCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ulrich=20M=C3=BCller?= <ulm@gentoo.org>,
-	WangYuli <wangyuli@uniontech.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.13 09/25] Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
-Date: Thu, 30 Jan 2025 14:58:55 +0100
-Message-ID: <20250130133457.302578367@linuxfoundation.org>
+	Sudheendra Raghav Neela <sneela@tugraz.at>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.13 10/25] cachestat: fix page cache statistics permission checking
+Date: Thu, 30 Jan 2025 14:58:56 +0100
+Message-ID: <20250130133457.343862392@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
 References: <20250130133456.914329400@linuxfoundation.org>
@@ -60,81 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 3d88ba86ba6f35a0467f25a88c38aa5639190d04 upstream.
+commit 5f537664e705b0bf8b7e329861f20128534f6a83 upstream.
 
-This reverts commit 251efae73bd46b097deec4f9986d926813aed744.
+When the 'cachestat()' system call was added in commit cf264e1329fb
+("cachestat: implement cachestat syscall"), it was meant to be a much
+more convenient (and performant) version of mincore() that didn't need
+mapping things into the user virtual address space in order to work.
 
-Quoting Wang Yuli:
+But it ended up missing the "check for writability or ownership" fix for
+mincore(), done in commit 134fca9063ad ("mm/mincore.c: make mincore()
+more conservative").
 
-	"The 27C6:01E0 touchpad doesn't require the workaround and applying it
-	would actually break functionality.
+This just adds equivalent logic to 'cachestat()', modified for the file
+context (rather than vma).
 
-	The initial report came from a BBS forum, but we suspect the
-	information provided by the forum user may be incorrect which could
-	happen sometimes. [1]
-
-	Further investigation showed that the Lenovo Y9000P 2024 doesn't even
-	use a Goodix touchpad. [2]
-
-	For the broader issue of 27c6:01e0 being unusable on some devices, it
-	just need to address it with a libinput quirk.
-
-	In conclusion, we should revert this commit, which is the best
-	solution."
-
-Reported-by: Ulrich Müller <ulm@gentoo.org>
-Reported-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/all/uikt4wwpw@gentoo.org/
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
+Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+Tested-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h        |    1 -
- drivers/hid/hid-multitouch.c |    8 ++------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ mm/filemap.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -506,7 +506,6 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4376,6 +4376,20 @@ resched:
+ }
  
- #define I2C_VENDOR_ID_GOODIX		0x27c6
--#define I2C_DEVICE_ID_GOODIX_01E0	0x01e0
- #define I2C_DEVICE_ID_GOODIX_01E8	0x01e8
- #define I2C_DEVICE_ID_GOODIX_01E9	0x01e9
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1460,8 +1460,7 @@ static const __u8 *mt_report_fixup(struc
- {
- 	if (hdev->vendor == I2C_VENDOR_ID_GOODIX &&
- 	    (hdev->product == I2C_DEVICE_ID_GOODIX_01E8 ||
--	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9 ||
--		 hdev->product == I2C_DEVICE_ID_GOODIX_01E0)) {
-+	     hdev->product == I2C_DEVICE_ID_GOODIX_01E9)) {
- 		if (rdesc[607] == 0x15) {
- 			rdesc[607] = 0x25;
- 			dev_info(
-@@ -2085,10 +2084,7 @@ static const struct hid_device_id mt_dev
- 		     I2C_DEVICE_ID_GOODIX_01E8) },
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
- 	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E9) },
--	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
--	  HID_DEVICE(BUS_I2C, HID_GROUP_ANY, I2C_VENDOR_ID_GOODIX,
--		     I2C_DEVICE_ID_GOODIX_01E0) },
-+		     I2C_DEVICE_ID_GOODIX_01E8) },
+ /*
++ * See mincore: reveal pagecache information only for files
++ * that the calling process has write access to, or could (if
++ * tried) open for writing.
++ */
++static inline bool can_do_cachestat(struct file *f)
++{
++	if (f->f_mode & FMODE_WRITE)
++		return true;
++	if (inode_owner_or_capable(file_mnt_idmap(f), file_inode(f)))
++		return true;
++	return file_permission(f, MAY_WRITE) == 0;
++}
++
++/*
+  * The cachestat(2) system call.
+  *
+  * cachestat() returns the page cache statistics of a file in the
+@@ -4430,6 +4444,9 @@ SYSCALL_DEFINE4(cachestat, unsigned int,
+ 	if (is_file_hugepages(fd_file(f)))
+ 		return -EOPNOTSUPP;
  
- 	/* GoodTouch panels */
- 	{ .driver_data = MT_CLS_NSMU,
++	if (!can_do_cachestat(fd_file(f)))
++		return -EPERM;
++
+ 	if (flags != 0)
+ 		return -EINVAL;
+ 
 
 
 
