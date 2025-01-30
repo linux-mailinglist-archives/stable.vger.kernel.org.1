@@ -1,267 +1,113 @@
-Return-Path: <stable+bounces-111330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D99A22E7E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D941A22E54
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119C7168AD2
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6943A488E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38931E47A8;
-	Thu, 30 Jan 2025 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7462F1E8841;
+	Thu, 30 Jan 2025 13:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si7t5HVS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umTQG78O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA58C13D;
-	Thu, 30 Jan 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0771E8824;
+	Thu, 30 Jan 2025 13:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245697; cv=none; b=O20s+mVvlXFiPG8OBzrFy2mmdZZmawJ3ixthIRRaFpHrXNrbLSuGiE/jOc5UsG58kRM1ALuywoUgDZntClXOo+KG3JnaDGVhJHyLMzNxtTaM14J7BIoA+My8ussm/mbLqjPwI0H56qxFY8ZT+482o49H987RXO+/hUTkolpeG9Q=
+	t=1738245577; cv=none; b=FvQmZUVqxP3Jj5K7Os/nPe7Ao+RkmUkhAFaTI5ie1Zm9jyE4bXuQWn63zEzltvqOUlgAhaNTgYd3e7QadhCB2zg1+jzk7Lvs6asd4csBSq/NHM0uzuACOAIvz76DczRRopvi1DmqwcTiSar6x6bn5yvoXEGaQoVkvLK4QUoP55c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245697; c=relaxed/simple;
-	bh=gCRHDCCPfiXFVhqNmt72zRp/hZixAsQbrhL8GG0x9Zw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TPcaXuNvIrIqpXwsUDyADzQuEXzGWTkrNZYbtzLdSju3aOiB0LJla/ggFXdi9341DIqTUD4zqiAaq88LfIJjgh4gXJ9NDANzAbJR0o5RQq3dVduSwNoemiWKu+XswNcnfhb0KrwBxUqATXSJlRvTu5cLiSf7ni0dZ0S1TVuEnpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si7t5HVS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DCEC4CED2;
-	Thu, 30 Jan 2025 14:01:36 +0000 (UTC)
+	s=arc-20240116; t=1738245577; c=relaxed/simple;
+	bh=6NiRXj4Qjeg2NRpQkQcuKHO2JOilkRS541soDKs2Zxo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AEUyQGm8hZvAQSYz9xH/cfynYMN7c4+sf6sGgM296a4s6DptN3K0P69f0kw/pgCktffmYd760VFxZkDOhP0vqTRPFsR1omC2fts5ydMsQVwN3dx7leOzxEZ0Xo0Aa/XGGayI2USRl+qJ7tp+XyS+R7Ba5jGE9RWKr/a7noxZe6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umTQG78O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D95FC4CEE0;
+	Thu, 30 Jan 2025 13:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245696;
-	bh=gCRHDCCPfiXFVhqNmt72zRp/hZixAsQbrhL8GG0x9Zw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=si7t5HVSCL/5SDF1YRVhpB8+WrMyObBKB0Z84GtoZGQePcEPKL7PBMtwcuyUeXrtJ
-	 XTEf+3EER67ePaN4M2KaoXpE4R3h5wtiuV5UwyDvDGoatsZIFF/QOM08g0hhuPg+9v
-	 coqHRgEnB7bB/Sc77OvybqYn4beb7VvSaKlOXOxY=
+	s=korg; t=1738245576;
+	bh=6NiRXj4Qjeg2NRpQkQcuKHO2JOilkRS541soDKs2Zxo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=umTQG78OP5VxM02wraHO/5VSS6Ej10uYIuP/khLGAMHfw+qYfmYNYEsp6S36r3Pfw
+	 43XInj4VGDcNZthOiQTZAP/zMB7mEJqZdCjySlYhk2T3ngJ+d1RHgd0cegRFOe3l2x
+	 cBT0ihRowzBIkE0juQ62FFHm4FNi3hUPk/9P/FuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.12 00/40] 6.12.12-rc1 review
+	Jon Hunter <jonathanh@nvidia.com>,
+	stable <stable@kernel.org>,
+	Lianqin Hu <hulianqin@vivo.com>
+Subject: [PATCH 6.13 14/25] Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
 Date: Thu, 30 Jan 2025 14:59:00 +0100
-Message-ID: <20250130133459.700273275@linuxfoundation.org>
+Message-ID: <20250130133457.513024240@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
+References: <20250130133456.914329400@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.12-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.12.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.12.12-rc1
-X-KernelTest-Deadline: 2025-02-01T13:35+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.12.12 release.
-There are 40 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Sat, 01 Feb 2025 13:34:42 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.12-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-and the diffstat can be found below.
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-thanks,
+commit 086fd062bc3883ae1ce4166cff5355db315ad879 upstream.
 
-greg k-h
+This reverts commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec.
 
--------------
-Pseudo-Shortlog of commits:
+It is reported to cause crashes on Tegra systems, so revert it for now.
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.12.12-rc1
+Link: https://lore.kernel.org/r/1037c1ad-9230-4181-b9c3-167dbaa47644@nvidia.com
+Reported-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable <stable@kernel.org>
+Cc: Lianqin Hu <hulianqin@vivo.com>
+Link: https://lore.kernel.org/r/2025011711-yippee-fever-a737@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/gadget/function/u_serial.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Jack Greiner <jack@emoss.org>
-    Input: xpad - add support for wooting two he (arm)
-
-Matheos Mattsson <matheos.mattsson@gmail.com>
-    Input: xpad - add support for Nacon Evol-X Xbox One Controller
-
-Leonardo Brondani Schenkel <leonardo@schenkel.net>
-    Input: xpad - improve name of 8BitDo controller 2dc8:3106
-
-Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-    Input: xpad - add QH Electronics VID/PID
-
-Nilton Perim Neto <niltonperimneto@gmail.com>
-    Input: xpad - add unofficial Xbox 360 wireless receiver clone
-
-Mark Pearson <mpearson-lenovo@squebb.ca>
-    Input: atkbd - map F23 key to support default copilot shortcut
-
-Nicolas Nobelis <nicolas@nobelis.eu>
-    Input: xpad - add support for Nacon Pro Compact
-
-Jason Gerecke <jason.gerecke@wacom.com>
-    HID: wacom: Initialize brightness of LED trigger
-
-Hans de Goede <hdegoede@redhat.com>
-    wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-
-Lianqin Hu <hulianqin@vivo.com>
-    ALSA: usb-audio: Add delay quirk for USB Audio Device
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
-
-Qasim Ijaz <qasdev00@gmail.com>
-    USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()
-
-Easwar Hariharan <eahariha@linux.microsoft.com>
-    scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
-
-Alex Williamson <alex.williamson@redhat.com>
-    vfio/platform: check the bounds of read/write syscalls
-
-Linus Torvalds <torvalds@linux-foundation.org>
-    cachestat: fix page cache statistics permission checking
-
-Jiri Kosina <jikos@kernel.org>
-    Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
-
-Jamal Hadi Salim <jhs@mojatatu.com>
-    net: sched: fix ets qdisc OOB Indexing
-
-Paulo Alcantara <pc@manguebit.com>
-    smb: client: handle lack of EA support in smb2_query_path_info()
-
-Chuck Lever <chuck.lever@oracle.com>
-    libfs: Use d_children list to iterate simple_offset directories
-
-Chuck Lever <chuck.lever@oracle.com>
-    libfs: Replace simple_offset end-of-directory detection
-
-Chuck Lever <chuck.lever@oracle.com>
-    Revert "libfs: fix infinite directory reads for offset dir"
-
-Chuck Lever <chuck.lever@oracle.com>
-    Revert "libfs: Add simple_offset_empty()"
-
-Chuck Lever <chuck.lever@oracle.com>
-    libfs: Return ENOSPC when the directory offset range is exhausted
-
-Andreas Gruenbacher <agruenba@redhat.com>
-    gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
-
-Yosry Ahmed <yosryahmed@google.com>
-    mm: zswap: move allocations during CPU init outside the lock
-
-Yosry Ahmed <yosryahmed@google.com>
-    mm: zswap: properly synchronize freeing resources during CPU hotunplug
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: samsung: Add missing depends on I2C
-
-Russell Harmon <russ@har.mn>
-    hwmon: (drivetemp) Set scsi command timeout to 10s
-
-Philippe Simons <simons.philippe@gmail.com>
-    irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
-
-Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-    drm/connector: hdmi: Validate supported_formats matches ycbcr_420_allowed
-
-Yage Geng <icoderdev@gmail.com>
-    ALSA: hda/realtek: Fix volume adjustment issue on Lenovo ThinkBook 16P Gen5
-
-Rob Herring (Arm) <robh@kernel.org>
-    of/unittest: Add test that of_address_to_resource() fails on non-translatable address
-
-Alex Hung <alex.hung@amd.com>
-    drm/amd/display: Initialize denominator defaults to 1
-
-Tom Chung <chiahsuan.chung@amd.com>
-    drm/amd/display: Use HW lock mgr for PSR1
-
-Xiang Zhang <hawkxiang.cpp@gmail.com>
-    scsi: iscsi: Fix redundant response for ISCSI_UEVENT_GET_HOST_STATS request
-
-Maciej Strozek <mstrozek@opensource.cirrus.com>
-    ASoC: cs42l43: Add codec force suspend/resume ops
-
-Linus Walleij <linus.walleij@linaro.org>
-    seccomp: Stub for !CONFIG_SECCOMP
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: samsung: Add missing selects for MFD_WM8994
-
-Marian Postevca <posteuca@mutex.one>
-    ASoC: codecs: es8316: Fix HW rate calculation for 48Mhz MCLK
-
-Charles Keepax <ckeepax@opensource.cirrus.com>
-    ASoC: wm8994: Add depends on MFD core
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- .../gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c  |   3 +-
- .../dml21/src/dml2_core/dml2_core_dcn4_calcs.c     |   4 +-
- drivers/gpu/drm/drm_connector.c                    |   3 +
- drivers/hid/hid-ids.h                              |   1 -
- drivers/hid/hid-multitouch.c                       |   8 +-
- drivers/hid/wacom_sys.c                            |  24 +--
- drivers/hwmon/drivetemp.c                          |   2 +-
- drivers/input/joystick/xpad.c                      |   9 +-
- drivers/input/keyboard/atkbd.c                     |   2 +-
- drivers/irqchip/irq-sunxi-nmi.c                    |   3 +-
- drivers/net/wireless/realtek/rtl8xxxu/core.c       |  20 +++
- drivers/of/unittest-data/tests-platform.dtsi       |  13 ++
- drivers/of/unittest.c                              |  14 ++
- drivers/scsi/scsi_transport_iscsi.c                |   4 +-
- drivers/scsi/storvsc_drv.c                         |   8 +-
- drivers/usb/gadget/function/u_serial.c             |   8 +-
- drivers/usb/serial/quatech2.c                      |   2 +-
- drivers/vfio/platform/vfio_platform_common.c       |  10 ++
- fs/gfs2/file.c                                     |   1 +
- fs/libfs.c                                         | 162 ++++++++++-----------
- fs/smb/client/smb2inode.c                          | 104 +++++++++----
- include/linux/fs.h                                 |   1 -
- include/linux/seccomp.h                            |   2 +-
- mm/filemap.c                                       |  19 +++
- mm/shmem.c                                         |   4 +-
- mm/zswap.c                                         |  90 ++++++++----
- net/sched/sch_ets.c                                |   2 +
- sound/pci/hda/patch_realtek.c                      |   4 +-
- sound/soc/codecs/Kconfig                           |   1 +
- sound/soc/codecs/cs42l43.c                         |   1 +
- sound/soc/codecs/es8316.c                          |  10 +-
- sound/soc/samsung/Kconfig                          |   6 +-
- sound/usb/quirks.c                                 |   2 +
- 34 files changed, 367 insertions(+), 184 deletions(-)
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -1420,10 +1420,6 @@ void gserial_disconnect(struct gserial *
+ 	/* REVISIT as above: how best to track this? */
+ 	port->port_line_coding = gser->port_line_coding;
+ 
+-	/* disable endpoints, aborting down any active I/O */
+-	usb_ep_disable(gser->out);
+-	usb_ep_disable(gser->in);
+-
+ 	port->port_usb = NULL;
+ 	gser->ioport = NULL;
+ 	if (port->port.count > 0) {
+@@ -1435,6 +1431,10 @@ void gserial_disconnect(struct gserial *
+ 	spin_unlock(&port->port_lock);
+ 	spin_unlock_irqrestore(&serial_port_lock, flags);
+ 
++	/* disable endpoints, aborting down any active I/O */
++	usb_ep_disable(gser->out);
++	usb_ep_disable(gser->in);
++
+ 	/* finally, free any unused/unusable I/O buffers */
+ 	spin_lock_irqsave(&port->port_lock, flags);
+ 	if (port->port.count == 0)
 
 
 
