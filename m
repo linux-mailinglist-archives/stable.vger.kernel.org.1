@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-111485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26A8A22F69
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38F3A22FE3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A31CB7A3880
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AD8D167B4D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2261E6DCF;
-	Thu, 30 Jan 2025 14:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805411E98F3;
+	Thu, 30 Jan 2025 14:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Px2ci4S0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoP9FMvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7771E493C;
-	Thu, 30 Jan 2025 14:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBAA1E6DCF;
+	Thu, 30 Jan 2025 14:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246873; cv=none; b=FaKsHlckx3yafsdGU8YQ+fkgEAU5VnmFyx6UcDsljUj6JsoTuQav8JJQLrS123BNzURjPhO9Z5ncuFNlkKqGakF7TT6n4r4YrFbf7pVceEFHKpW2iL5OoBKfHLEwaHYrPp8W5Lg5yGbEVmIXsrLjWeXEtY4SDoZ5tA2V8C42+dI=
+	t=1738247189; cv=none; b=n4eYxv08tHNgINLT9XuyCN5sX0vytfEWIR4HrvuGUZ9TyW/w5/FtG6T8EWj7dWdNQ9JbP8Tvmi8FNzLyTiVmnyU++OEqP5TsVkjXafmrTKws7upE/YtXBqddZKjhYweAO8CxioCSp9zAxjRQQtD90p879X6+XtVbk20EM2K9LJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246873; c=relaxed/simple;
-	bh=dAgC29DAgvJMTBRhu9qoAnaiGzfMmxVDEBrSpjsjmTQ=;
+	s=arc-20240116; t=1738247189; c=relaxed/simple;
+	bh=Jtq+P5jKQVDJKAQWUI9/SNXGvcFLFn5B668jWcaboxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvZVHCSRqN97Vl6CmV1skBTwLCxsJJMBWP64YA1Mb0WkZ6hYByaUjqiIn6l4UtLayaARsPTtpa0G5ug9hP6QjF6aTs8PtxfrbSlDqLZ+svAfQiYdtNdxwCnxMdsY442szMG+PHrNMpEpDSQoDRSyyQHQXpVo4ayYWUSpoWrFM0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Px2ci4S0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AE0C4CED2;
-	Thu, 30 Jan 2025 14:21:13 +0000 (UTC)
+	 MIME-Version; b=gBQs8ksKWLE295n0fkU6gc5aDZd/lwgcKk82KH2RfzYWvaQGM+xKG33hmezlXY1UiWOwlbX/NF8kzhab81Un+tnMQttmRxAJwM87Fh6oTVtIdE/D/Nn83D4z4aB5CxgZENB3/XJgnLGrO9oTjySuZMsu2ne39HahC0bOZ4ZQYMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoP9FMvV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD258C4CED2;
+	Thu, 30 Jan 2025 14:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246873;
-	bh=dAgC29DAgvJMTBRhu9qoAnaiGzfMmxVDEBrSpjsjmTQ=;
+	s=korg; t=1738247189;
+	bh=Jtq+P5jKQVDJKAQWUI9/SNXGvcFLFn5B668jWcaboxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Px2ci4S0qF+q/uXNzmL/Y/lLftyAdAahEpDfYkbMBZT/Z736xmI7jZ1IqrDiHJhsn
-	 bDsmAMVMS4xq6NAzMEFlTU9BR6YXozou7Mns4v6dcyrh2fbQh+JhlXyEBIBxwfmZeD
-	 LOuZjp5LeInYwPtHgll2PzkBK5klfiumtkSnwe/o=
+	b=AoP9FMvVRL/I5DZWaxG/IIAYl1RYcR0x/GpfWZ10BlSpGTJ3B8A2Wmm/gi8McOL+M
+	 4zOA0IK29HBFqWqhVbKtLUUnUT+KZjubWdfZEZ+Pysxjr5DGnVrDWiBeWjxhKHIR10
+	 jVZz5zimylJUMVVEf2pRyyNs+iCzbAgAgVh6VdHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 5.4 82/91] net: xen-netback: hash.c: Use built-in RCU list checking
-Date: Thu, 30 Jan 2025 15:01:41 +0100
-Message-ID: <20250130140136.977938402@linuxfoundation.org>
+	syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	BRUNO VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.10 113/133] scsi: sg: Fix slab-use-after-free read in sg_release()
+Date: Thu, 30 Jan 2025 15:01:42 +0100
+Message-ID: <20250130140147.082961793@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-commit f3265971ded98a069ad699b51b8a5ab95e9e5be1 upstream.
+commit f10593ad9bc36921f623361c9e3dd96bd52d85ee upstream.
 
-list_for_each_entry_rcu has built-in RCU and lock checking.
-Pass cond argument to list_for_each_entry_rcu.
+Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
 
-Signed-off-by: Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 0fa5e94a1811 ("net/xen-netback: prevent UAF in xenvif_flush_hash()")
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+kernel/locking/lockdep.c:5838
+__mutex_unlock_slowpath+0xe2/0x750 kernel/locking/mutex.c:912
+sg_release+0x1f4/0x2e0 drivers/scsi/sg.c:407
+
+In sg_release(), the function kref_put(&sfp->f_ref, sg_remove_sfp) is
+called before releasing the open_rel_lock mutex. The kref_put() call may
+decrement the reference count of sfp to zero, triggering its cleanup
+through sg_remove_sfp(). This cleanup includes scheduling deferred work
+via sg_remove_sfp_usercontext(), which ultimately frees sfp.
+
+After kref_put(), sg_release() continues to unlock open_rel_lock and may
+reference sfp or sdp. If sfp has already been freed, this results in a
+slab-use-after-free error.
+
+Move the kref_put(&sfp->f_ref, sg_remove_sfp) call after unlocking the
+open_rel_lock mutex. This ensures:
+
+ - No references to sfp or sdp occur after the reference count is
+   decremented.
+
+ - Cleanup functions such as sg_remove_sfp() and
+   sg_remove_sfp_usercontext() can safely execute without impacting the
+   mutex handling in sg_release().
+
+The fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures proper
+sequencing of resource cleanup and mutex operations, eliminating the
+risk of use-after-free errors in sg_release().
+
+Reported-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7efb5850a17ba6ce098b
+Tested-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Fixes: cc833acbee9d ("sg: O_EXCL and other lock handling")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netback/hash.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/sg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/xen-netback/hash.c
-+++ b/drivers/net/xen-netback/hash.c
-@@ -51,7 +51,8 @@ static void xenvif_add_hash(struct xenvi
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -390,7 +390,6 @@ sg_release(struct inode *inode, struct f
  
- 	found = false;
- 	oldest = NULL;
--	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
-+	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
-+				lockdep_is_held(&vif->hash.cache.lock)) {
- 		/* Make sure we don't add duplicate entries */
- 		if (entry->len == len &&
- 		    memcmp(entry->tag, tag, len) == 0)
-@@ -102,7 +103,8 @@ static void xenvif_flush_hash(struct xen
+ 	mutex_lock(&sdp->open_rel_lock);
+ 	scsi_autopm_put_device(sdp->device);
+-	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	sdp->open_cnt--;
  
- 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 	/* possibly many open()s waiting on exlude clearing, start many;
+@@ -402,6 +401,7 @@ sg_release(struct inode *inode, struct f
+ 		wake_up_interruptible(&sdp->open_wait);
+ 	}
+ 	mutex_unlock(&sdp->open_rel_lock);
++	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	return 0;
+ }
  
--	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link) {
-+	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
-+				lockdep_is_held(&vif->hash.cache.lock)) {
- 		list_del_rcu(&entry->link);
- 		vif->hash.cache.count--;
- 		kfree_rcu(entry, rcu);
 
 
 
