@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-111326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE8CA22E7A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C6FA22E5A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39BB73A39B0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12D4C3A44CF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947851E2853;
-	Thu, 30 Jan 2025 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1C42BB15;
+	Thu, 30 Jan 2025 13:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuRgTUMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaSAT5Jw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53243C13D;
-	Thu, 30 Jan 2025 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F971E3775;
+	Thu, 30 Jan 2025 13:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245685; cv=none; b=WR1yrLWyK7N3ia+5au7A2dO7M+8MoxLGgkMN6GhzVcAG+v9b98md5JNaXfg1Ap9Ey6V6JvSX0pLZvT8TioMXuQ7r4jsdZEARxSieRJQLM2TtlxuYhbN8gYuo5dHCjroiVEU1/g4YugwPx778tELQPXnFzlAzQ1/AuwAEAheQhYs=
+	t=1738245597; cv=none; b=FpGLH93Fs2Q4fF8y7V1u2aLxAkGo8zX76Ba+NXdtJV17wJ2CzrEYj7Hhy9JqhDsDy/hdZeQ0qS/nHurlTW69iKnUTFzgJ27ySGt13HOj1Xhj1mg5bvjSo/aZAJdgDXs3QykQhzf12aJUFBgXFF1JKDbU9igGf6MtDLaHI5AGDdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245685; c=relaxed/simple;
-	bh=FQqgCjEOROfjkIsfrzZGRZjdjeJdfk81hdM85CB1lX0=;
+	s=arc-20240116; t=1738245597; c=relaxed/simple;
+	bh=NSfHs+EZmkefQgTEaN+EUTLO/45491pZMr4HQjBGQR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6hk5JDpuGDbAiTyortySLOgmVaG6CD4dNHjNjea7OFzICcIE3Lg3v6mxMBBwMht/tkx58dzQXGZes4QNAqrpCix0Vv5twabGERkRLIAaKsZFKKqfk5q18iVGjmoofAWjJ+b8UNcwSx5EPq/PxPGjrUhCyOk/zF25ChVa4vjbGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuRgTUMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A64C4CED2;
-	Thu, 30 Jan 2025 14:01:24 +0000 (UTC)
+	 MIME-Version; b=FIDKXmnWwKlrTofmYk/KruF5cA4jWCb/3uBB6J1W9fGi5pUo00v/m7kDjKPV109MWWK9JawJgih9mVBmdigNM1DdZrmZmpP//0ytbV29KpYbPCxkE6w34BvxKVIOO51Yr6INE/Nlvw/kCAGw9CIG6cJeYmLta8YAOTYu8jY41T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaSAT5Jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851E9C4CED2;
+	Thu, 30 Jan 2025 13:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245685;
-	bh=FQqgCjEOROfjkIsfrzZGRZjdjeJdfk81hdM85CB1lX0=;
+	s=korg; t=1738245596;
+	bh=NSfHs+EZmkefQgTEaN+EUTLO/45491pZMr4HQjBGQR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuRgTUMbhrz9LexlFxiWE50e9aihMl40+8Wp/VpbBQzEf8IlX/CQoi0xXtgkMez26
-	 dCBvHVCWgc7u+e0J1D+QrrdvOokMPRvCTtTYKYa4/zLEclA2l78l1haFPVwIQkAw+x
-	 O6p0n6rG7r3Kpk8vK7qPajusmnjDc9uAT471NBxc=
+	b=GaSAT5JwJ2uwRGqzJmYgHwhqXLi77qG1zF21Ce18zf1YaeWlxDafVyd9efMdD+cyw
+	 aZtozPR2CE8BFb8m/CybXF1MFRD/dB6mIWld7MPyp2M0VyEAFuMZ78YV5AonUxyNTa
+	 rrPoJK4MXnkcvFOWwNSHEhwXONokZqAiSXwimopA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Zhang <hawkxiang.cpp@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 06/40] scsi: iscsi: Fix redundant response for ISCSI_UEVENT_GET_HOST_STATS request
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.13 20/25] Input: atkbd - map F23 key to support default copilot shortcut
 Date: Thu, 30 Jan 2025 14:59:06 +0100
-Message-ID: <20250130133459.964771949@linuxfoundation.org>
+Message-ID: <20250130133457.750762915@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
+References: <20250130133456.914329400@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Zhang <hawkxiang.cpp@gmail.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 63ca02221cc5aa0731fe2b0cc28158aaa4b84982 ]
+commit 907bc9268a5a9f823ffa751957a5c1dd59f83f42 upstream.
 
-The ISCSI_UEVENT_GET_HOST_STATS request is already handled in
-iscsi_get_host_stats(). This fix ensures that redundant responses are
-skipped in iscsi_if_rx().
+Microsoft defined Meta+Shift+F23 as the Copilot shortcut instead of a
+dedicated keycode, and multiple vendors have their keyboards emit this
+sequence in response to users pressing a dedicated "Copilot" key.
+Unfortunately the default keymap table in atkbd does not map scancode
+0x6e (F23) and so the key combination does not work even if userspace
+is ready to handle it.
 
- - On success: send reply and stats from iscsi_get_host_stats()
-   within if_recv_msg().
+Because this behavior is common between multiple vendors and the
+scancode is currently unused map 0x6e to keycode 193 (KEY_F23) so that
+key sequence is generated properly.
 
- - On error: fall through.
+MS documentation for the scan code:
+https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input#scan-codes
+Confirmed on Lenovo, HP and Dell machines by Canonical.
+Tested on Lenovo T14s G6 AMD.
 
-Signed-off-by: Xiang Zhang <hawkxiang.cpp@gmail.com>
-Link: https://lore.kernel.org/r/20250107022432.65390-1-hawkxiang.cpp@gmail.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250107034554.25843-1-mpearson-lenovo@squebb.ca
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/input/keyboard/atkbd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index fde7de3b1e553..9b47f91c5b972 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -4104,7 +4104,7 @@ iscsi_if_rx(struct sk_buff *skb)
- 		}
- 		do {
- 			/*
--			 * special case for GET_STATS:
-+			 * special case for GET_STATS, GET_CHAP and GET_HOST_STATS:
- 			 * on success - sending reply and stats from
- 			 * inside of if_recv_msg(),
- 			 * on error - fall through.
-@@ -4113,6 +4113,8 @@ iscsi_if_rx(struct sk_buff *skb)
- 				break;
- 			if (ev->type == ISCSI_UEVENT_GET_CHAP && !err)
- 				break;
-+			if (ev->type == ISCSI_UEVENT_GET_HOST_STATS && !err)
-+				break;
- 			err = iscsi_if_send_reply(portid, nlh->nlmsg_type,
- 						  ev, sizeof(*ev));
- 			if (err == -EAGAIN && --retries < 0) {
--- 
-2.39.5
-
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -89,7 +89,7 @@ static const unsigned short atkbd_set2_k
+ 	  0, 46, 45, 32, 18,  5,  4, 95,  0, 57, 47, 33, 20, 19,  6,183,
+ 	  0, 49, 48, 35, 34, 21,  7,184,  0,  0, 50, 36, 22,  8,  9,185,
+ 	  0, 51, 37, 23, 24, 11, 10,  0,  0, 52, 53, 38, 39, 25, 12,  0,
+-	  0, 89, 40,  0, 26, 13,  0,  0, 58, 54, 28, 27,  0, 43,  0, 85,
++	  0, 89, 40,  0, 26, 13,  0,193, 58, 54, 28, 27,  0, 43,  0, 85,
+ 	  0, 86, 91, 90, 92,  0, 14, 94,  0, 79,124, 75, 71,121,  0,  0,
+ 	 82, 83, 80, 76, 77, 72,  1, 69, 87, 78, 81, 74, 55, 73, 70, 99,
+ 
 
 
 
