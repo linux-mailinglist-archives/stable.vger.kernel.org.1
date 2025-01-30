@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-111298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C69CAA22E5D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CC1A22E66
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFBDE188A611
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11D1168936
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FC11E571A;
-	Thu, 30 Jan 2025 14:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2881E3775;
+	Thu, 30 Jan 2025 14:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKcCTLDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhLvx/qS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40781E573B;
-	Thu, 30 Jan 2025 14:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF035C13D;
+	Thu, 30 Jan 2025 14:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245603; cv=none; b=PVLvgkx0xtrTyCOZacfcRTHegU3Ta8BD5yLyFTAHxBS/94ePE1Gk6vcbXmgGkQYgnJMt/Llbi/+Xa9ACHIhwNE1XtcAS2AvKpqzEgNSW7tWEZZc+U6vnVVE/pN6L4zFq0KiS8XMvMl4Sywl5QJylnFOBVA8afu0xSGM8rKFKjeE=
+	t=1738245632; cv=none; b=ikFmXG2pCbdhumSwPXExHVhxSLxxNdBCv0LgepMpdUnNO0mVOQQc1vsBdqwiuj0E/w+MDxr+U1AGo2ohPdUvI4XyRx7mnQ62UG2Tmw4BZ7OW+qMUtDsyzcg5ffUHyJ/mgfdiwDp2hSG4NiPnDMiXSyK0x2Hc07wbIbEdrN02lN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245603; c=relaxed/simple;
-	bh=XbwOLY1xa577XcIqnUA+X++urwccB3dc5bgOMuAZ+bY=;
+	s=arc-20240116; t=1738245632; c=relaxed/simple;
+	bh=NahfPWjPmr0Mux000+QY6CQeInetFv2bWnju7Fm1Td0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXrt0gm3bI2JSXA2pZYnmTSecD/PX1c87NzMcCImC0Tp8+DWo7U0YcJ6zghCeTxyhUZkRDXSsXZ2wBswqhKXObWeHy0T3jxZ6RqTwiLx2YNepiIEVvxs68h/ZI91HvKVa4Qm3kx4FjpjuU8CYtj4vbzfQoZwJuEXDKB8RSk0pN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iKcCTLDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A74C4CEE3;
-	Thu, 30 Jan 2025 14:00:02 +0000 (UTC)
+	 MIME-Version; b=ZpaMVNuQbiY6wIhelA03/TG/ko4XFLMSAP73Hrm4EhzKkOk2Y2oD9WK7lS1ILvtEOBwlT9KWKubYTUlVs25O+Tq2K+8U9sllvHSrwl5gCHXpzCiriht1ipRDhE9RpRdoGyUdOulo1TN9iekQQM+v0/m2wRqx/QCRZ3eANo2FIjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhLvx/qS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B98C4CED2;
+	Thu, 30 Jan 2025 14:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245602;
-	bh=XbwOLY1xa577XcIqnUA+X++urwccB3dc5bgOMuAZ+bY=;
+	s=korg; t=1738245632;
+	bh=NahfPWjPmr0Mux000+QY6CQeInetFv2bWnju7Fm1Td0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKcCTLDTUJ7M3RSlPDO7yNcb57zV4cLUAVjBtk/jqOq9LYpHSTZmSN8v17oSFbH3f
-	 jAWLpaAx0hdQ2301VW+ZQ0Z+S2Mraia+sCdFVz24SVNQCfbKhTpssrGQTecDCwJuqb
-	 y9uQCj9prdLBLorQPrkwIseRU24Q24tHtO2oP1aM=
+	b=RhLvx/qSQ5Q7Z73UscRnTOq6VPRBvz7Ldt0OyBfKSetQfZm+SyZGEBj6xPheXEQAK
+	 wK/c2GaIOCZpaBKF7V6lU3pwFWPZurDX97aohkS4nQN7aQmzMntAMpsUKm/4VP0l0J
+	 2Zr0im9ADmbV2ydWWBdz1KSn49SAb+ax0Mk+dZ6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Pierre-Loup A. Griffais" <pgriffais@valvesoftware.com>,
-	Vicki Pfau <vi@endrift.com>,
+	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
+	Pavel Rojtberg <rojtberg@gmail.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 22/25] Input: xpad - add QH Electronics VID/PID
-Date: Thu, 30 Jan 2025 14:59:08 +0100
-Message-ID: <20250130133457.827271328@linuxfoundation.org>
+Subject: [PATCH 6.13 23/25] Input: xpad - improve name of 8BitDo controller 2dc8:3106
+Date: Thu, 30 Jan 2025 14:59:09 +0100
+Message-ID: <20250130133457.864499081@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
 References: <20250130133456.914329400@linuxfoundation.org>
@@ -66,40 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
+From: Leonardo Brondani Schenkel <leonardo@schenkel.net>
 
-commit 92600f3295ff571890c981d886c6544030cc05f3 upstream.
+commit 66372fa9936088bf29c4f47907efeff03c51a2c8 upstream.
 
-Add support for QH Electronics Xbox 360-compatible controller
+8BitDo Pro 2 Wired Controller shares the same USB identifier
+(2dc8:3106) as a different device, so amend name to reflect that and
+reduce confusion as the user might think the controller was misdetected.
 
-Signed-off-by: Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20250116012518.3476735-1-vi@endrift.com
+Because Pro 2 Wired will not work in XTYPE_XBOXONE mode (button presses
+won't register), tagging it as XTYPE_XBOX360 remains appropriate.
+
+Signed-off-by: Leonardo Brondani Schenkel <leonardo@schenkel.net>
+Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
+Link: https://lore.kernel.org/r/20250107192830.414709-2-rojtberg@gmail.com
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/input/joystick/xpad.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/input/joystick/xpad.c
 +++ b/drivers/input/joystick/xpad.c
-@@ -306,6 +306,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
-+	{ 0x1a86, 0xe310, "QH Electronics Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0130, "Ion Drum Rocker", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -516,6 +517,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
- 	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
-+	XPAD_XBOX360_VENDOR(0x1a86),		/* QH Electronics */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
- 	XPAD_XBOXONE_VENDOR(0x20d6),		/* PowerA controllers */
+@@ -375,7 +375,7 @@ static const struct xpad_device {
+ 	{ 0x294b, 0x3303, "Snakebyte GAMEPAD BASE X", 0, XTYPE_XBOXONE },
+ 	{ 0x294b, 0x3404, "Snakebyte GAMEPAD RGB X", 0, XTYPE_XBOXONE },
+ 	{ 0x2dc8, 0x2000, "8BitDo Pro 2 Wired Controller fox Xbox", 0, XTYPE_XBOXONE },
+-	{ 0x2dc8, 0x3106, "8BitDo Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
++	{ 0x2dc8, 0x3106, "8BitDo Ultimate Wireless / Pro 2 Wired Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x2dc8, 0x310a, "8BitDo Ultimate 2C Wireless Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x2e24, 0x0652, "Hyperkin Duke X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x31e3, 0x1100, "Wooting One", 0, XTYPE_XBOX360 },
 
 
 
