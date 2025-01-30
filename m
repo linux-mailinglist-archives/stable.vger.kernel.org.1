@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-111436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2F2A22F21
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84418A22FB1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4281882CA2
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1134D7A411A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A681E7C25;
-	Thu, 30 Jan 2025 14:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB8A1E9906;
+	Thu, 30 Jan 2025 14:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ino5zOko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU3h9tbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A320E1BDA95;
-	Thu, 30 Jan 2025 14:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AA31E9B05;
+	Thu, 30 Jan 2025 14:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246732; cv=none; b=OeFUYMTRwsi+8VvoJ8115tkXl9RCYyvmEWzlTs+2+2DHGWqA7yDjv9bf9w34n+HHtVoU7S02L6RGFstnbBGufCduFXDAc6XhzxYJegQmNeM81WvoCNS5Hz3LjNTnOYKsBhvTl/lWXDppG8HaB1qjpU/DZHXxakcfex1ICOjtMCE=
+	t=1738246998; cv=none; b=g91j0yqyp+cVxfaxTrPd3rx9pTShB0MkvLZhSOOZ9ZAVw5boQ80JuxVAukR/nG/Hf+bZlnD969sF7NDPNBS5CssFqMxlVPsPTxLhedgo1vbfhceUcfE+3TMs2auWLt4xr+v5yi0mQcuVJnLUglLrVFKlccrCrzlBGiZFkX8wM3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246732; c=relaxed/simple;
-	bh=4XcfYoGuwo/nyiUCRSK4xfncYEJSxTfck5cokqMW92E=;
+	s=arc-20240116; t=1738246998; c=relaxed/simple;
+	bh=BH2Rd6Jr/MWWriybKIkoCPMfoxrEa5xSqOtXsb0b+DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEzjIBC05pZfi7eOPgokn6h3PxfdcORP0ZHD6xZ/BAIN+PsGd3ga96yE1Gf2JnPFZAcGPXrOPayWJYUW01n+OYvtrIetw93NfLC7SwyOB+/UeS3PjZ3SC2fVs71uWKA1F+RQTGbFA7XU0nN9gGMUFUBA5+9eHzxR378xCbOk6xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ino5zOko; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22C6C4CED2;
-	Thu, 30 Jan 2025 14:18:51 +0000 (UTC)
+	 MIME-Version; b=bfe4fukbXs40+OdIf2ONlr2+lrhOEz6CNaHfO2OcaaF9xaQ2rsS1mqtRiCdks9ist4Rz2tuTDBObBf9SMA3Z49xuY1ucwWYihJyDxBI6Ffq3Sh6pZONu1W/9SlnnHwvDxKaZvab4pwocDR2lpnNmYcNWvalJGSsORY/Q8mgBOXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU3h9tbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5A7C4CED2;
+	Thu, 30 Jan 2025 14:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246732;
-	bh=4XcfYoGuwo/nyiUCRSK4xfncYEJSxTfck5cokqMW92E=;
+	s=korg; t=1738246998;
+	bh=BH2Rd6Jr/MWWriybKIkoCPMfoxrEa5xSqOtXsb0b+DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ino5zOkowjXkG4lH0LqZMl/+rE5NTrqnxEmTzPVhOwZi0C+UKHjTD0BpgzzcPeTy7
-	 XN5MnfjX8OdhjNDqs6RJlUiDd6RnKeUjR2euXlLS+7wvCfdahs6oDrXE/4OeOSrth7
-	 g9hDcJO41yXdot/F8u1BT4IbeDIWQ+x3xeCo3koo=
+	b=GU3h9tbLhelI5fo4O/Y/NpvpcrzB06du1bNNc9+e9oBaGyooc5x+hlUBCvXH42lDr
+	 irFcE8XG2/IBpch0LLWMbdLcYMZ1CD3f2JQ9eEhEEDXUSx/z/moWucwJpEWoCC6XeZ
+	 YFtDB5qSPnZRee9PHtnyg/gF0U5nd/D7pnK8+fhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 18/91] USB: serial: option: add MeiG Smart SRM815
+	stable@kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 048/133] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
 Date: Thu, 30 Jan 2025 15:00:37 +0100
-Message-ID: <20250130140134.390174250@linuxfoundation.org>
+Message-ID: <20250130140144.456644620@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Fabio Estevam <festevam@gmail.com>
 
-commit c1947d244f807b1f95605b75a4059e7b37b5dcc3 upstream.
+commit 2a8e34096ec70d73ebb6d9920688ea312700cbd9 upstream.
 
-It looks like SRM815 shares ID with SRM825L.
+Using gpiod_set_value() to control the reset GPIO causes some verbose
+warnings during boot when the reset GPIO is controlled by an I2C IO
+expander.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=123456
-C:* #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+fix the issue.
 
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/lkml/20241215100027.1970930-1-amadeus@jmu.edu.cn/
-Link: https://lore.kernel.org/all/4333b4d0-281f-439d-9944-5570cbc4971d@gmail.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Tested on a custom i.MX93 board with a ADS124S08 ADC.
+
+Cc: stable@kernel.org
+Fixes: e717f8c6dfec ("iio: adc: Add the TI ads124s08 ADC code")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Link: https://patch.msgid.link/20241122164308.390340-1-festevam@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ti-ads124s08.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -621,7 +621,7 @@ static void option_instat_callback(struc
+--- a/drivers/iio/adc/ti-ads124s08.c
++++ b/drivers/iio/adc/ti-ads124s08.c
+@@ -184,9 +184,9 @@ static int ads124s_reset(struct iio_dev
+ 	struct ads124s_private *priv = iio_priv(indio_dev);
  
- /* MeiG Smart Technology products */
- #define MEIGSMART_VENDOR_ID			0x2dee
--/* MeiG Smart SRM825L based on Qualcomm 315 */
-+/* MeiG Smart SRM815/SRM825L based on Qualcomm 315 */
- #define MEIGSMART_PRODUCT_SRM825L		0x4d22
- /* MeiG Smart SLM320 based on UNISOC UIS8910 */
- #define MEIGSMART_PRODUCT_SLM320		0x4d41
-@@ -2405,6 +2405,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
+ 	if (priv->reset_gpio) {
+-		gpiod_set_value(priv->reset_gpio, 0);
++		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+ 		udelay(200);
+-		gpiod_set_value(priv->reset_gpio, 1);
++		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 	} else {
+ 		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+ 	}
 
 
 
