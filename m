@@ -1,98 +1,80 @@
-Return-Path: <stable+bounces-111716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E76A231AE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:20:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A10A231C1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 17:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 450A13A76F6
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3202A1889773
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FE41EB9EF;
-	Thu, 30 Jan 2025 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124951EBFF7;
+	Thu, 30 Jan 2025 16:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBOquXda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iv7fcrGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D525139B;
-	Thu, 30 Jan 2025 16:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A543F139B;
+	Thu, 30 Jan 2025 16:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738254017; cv=none; b=PWJsPuKY4FFcf0acX75BqOzjWb9Ixl2oepxEh+LbKNQ3RPmmtk+dVj31TidhBMZqZDo/oNINduk3Ywhfbww+ZxKs5kbg4rVXC0VQBFG6eiyj6S43gILmemPuwY6a57xc4oqkVTKA7zBTWQxpuSvsZ/oMVuH4IXka0hQwNhp/5yo=
+	t=1738254400; cv=none; b=SIrD8TQXCVrwcavHfTd8S444vbYo/vAORwWdbT5lC6kUhAN5f4a4PH9n/VjaHe6hGmFcUsuRbX6Ec9Jq7H53hI+ibcxTgqYC9qvEoRcpyABuvmpquqgb0qumNgQsaXvgEugM66M27IhGxnIsqvhbQC1q55a7UoZxQSncYY1R+cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738254017; c=relaxed/simple;
-	bh=FYEXyEAib+ybKB4YBQDIvAkC2oKSQt7aP7l4qin8tv4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tTYd+EUEslsQUdL2cMfDFUUSbanLtKSJ5wfXf1Jp1ZEsKZIrHskykJc/4Fzp13tcPghNWrOw/olNa1jcpj3IBPmkTPQC1quIMqrV1nQ3dUrDT7sUZxE6+k/LfJlV0dA0KkzoaUPUb6okzB0X11QbqS6FU/vSHCw1IJRFCW0PinQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBOquXda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB15C4AF09;
-	Thu, 30 Jan 2025 16:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738254016;
-	bh=FYEXyEAib+ybKB4YBQDIvAkC2oKSQt7aP7l4qin8tv4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=mBOquXdacEo5mkOV5G8iKJ1cuHEC7axtYUMoGv9elW7G/5XcFFAxJeajyBiY7fJGr
-	 Dhj8QudOUZwSadqthnR8h9o+w71mCF2KWABUY5JrSokf8HkqDf8nl8XwMyO2DNqhHg
-	 lRQg4HIKFX7GyMGPx22mxxVz7QKlGrFT+YkvjZOcBrOlWXPCF2hp2gJAG91mzo2ujV
-	 yYZi5jvqSUpofuQDSReQCpKbQsmTI1Ovlt95gUgXXkGY6PvjHEnb81KD6hXnFD+C6o
-	 7ADB0I9dzvNHpTsAiN7JNuXDKyhM+Vo2CyyslMGG2uwTAiRW3PZXgv2ybAa2itx9BM
-	 ytXxuiGIr8fRA==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-543d8badc30so1105250e87.0;
-        Thu, 30 Jan 2025 08:20:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVtPrTENVnNL+bSPXhWi9iQ/GfvPKwtuR+0viRQ1NAvLEyqRf/14k0652KkCSMgzhG71xzwg/r00FZZIhle@vger.kernel.org, AJvYcCWS6saNH6odKgj6oZltg2bRFOcIp3W8mng4bTC0F1/IpBk2Brn6NG/d1nynz69ORQn8YnoYR+lwx3A=@vger.kernel.org, AJvYcCXdy+K1EiLnBvgqdPL3Iak3uy1exPfjtSldPHkQGXNynUS/wpY4BBoueZhRc/lgVabxjJlcaN3x@vger.kernel.org
-X-Gm-Message-State: AOJu0YypzTBe9riWBCPDPKNPGyZfJHsgVNJs6c0pjH/Y6EXxYGGO2DG8
-	joQN327dxuZSGga62UpZ4IWI1snvCotOgDsYBy8CjeWYTeILcerQ2pdaFzOx1SxdnyQ4YfpCWRM
-	HUM8FH6M01WglHemiJes+1s7QFD8=
-X-Google-Smtp-Source: AGHT+IE1C8s1VteGDGRQ35A6NwlNvkftxbcxG3ORQcL/+819zw8iJPqJkpUleI0FcgMO+muHiYGV2FURQ1bQvolF4AE=
-X-Received: by 2002:a05:6512:3a8e:b0:542:213f:78fd with SMTP id
- 2adb3069b0e04-543e4c373e2mr2566854e87.40.1738254014946; Thu, 30 Jan 2025
- 08:20:14 -0800 (PST)
+	s=arc-20240116; t=1738254400; c=relaxed/simple;
+	bh=HN1mRR8TFX8KYO/njRdpKDYUyYE0DKdmMdh/XV3HVtk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RRveI3fnrVjg2O5FShR7pnOASeMXg4oWuk4dlk60VdGHz54vX4WKb1EIjss5NX6AjrD3XR4LjSpNrWaQx6SbPjQG5MZCAsTxQBYrdnyXO2Q2WfyglFuRFJtrupfAlguMV5vbJ1rwn8rCe7bgO0xmHWipgczgFu5Lxrj7qK2dbZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iv7fcrGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B84C4CED2;
+	Thu, 30 Jan 2025 16:26:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738254400;
+	bh=HN1mRR8TFX8KYO/njRdpKDYUyYE0DKdmMdh/XV3HVtk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Iv7fcrGVruVe8rsz9Yme4phEnCXenJuV1l067ak10qI/PlGsbQkLRjVckxEvGSZ2q
+	 Vd6PVXDhP3IKaNnWL7Cb1F2VmBGIDpaZioqIBHZDuxNEPWqSidJ8XAPf9PkgE+USm0
+	 rVnKAWciKRbBuVODwjwfasS31LIlssj0kAUAl7PU=
+Date: Thu, 30 Jan 2025 17:26:37 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 082/133] drm/v3d: Ensure job pointer is set to NULL
+ after job completion
+Message-ID: <2025013044-tipped-discourse-e9e7@gregkh>
+References: <20250130140142.491490528@linuxfoundation.org>
+ <20250130140145.823285670@linuxfoundation.org>
+ <12607ce2-01f3-4fb6-8b50-33a9f7f26381@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250121-x86-use-std-consistently-gcc-15-v1-0-8ab0acf645cb@kernel.org>
- <202501300804.20D8CC2@keescook>
-In-Reply-To: <202501300804.20D8CC2@keescook>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 30 Jan 2025 17:20:03 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXH0T5XJGMyC72DQjp0zjTAC5JbtDjY=rDGPeMs6cVDXug@mail.gmail.com>
-X-Gm-Features: AWEUYZnwsfsYJJdne2_iTicN1qLSgaMkQiOjaWjhQMNVqVd5tyGM7exSGwdd-h8
-Message-ID: <CAMj1kXH0T5XJGMyC72DQjp0zjTAC5JbtDjY=rDGPeMs6cVDXug@mail.gmail.com>
-Subject: Re: [PATCH 0/2] A couple of build fixes for x86 when using GCC 15
-To: Kees Cook <kees@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Sam James <sam@gentoo.org>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, stable@vger.kernel.org, 
-	Kostadin Shishmanov <kostadinshishmanov@protonmail.com>, Jakub Jelinek <jakub@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <12607ce2-01f3-4fb6-8b50-33a9f7f26381@igalia.com>
 
-On Thu, 30 Jan 2025 at 17:07, Kees Cook <kees@kernel.org> wrote:
->
-> On Tue, Jan 21, 2025 at 06:11:32PM -0700, Nathan Chancellor wrote:
-> > GCC 15 changed the default C standard version from gnu17 to gnu23, which
-> > reveals a few places in the kernel where a C standard version was not
-> > set, resulting in build failures because bool, true, and false are
-> > reserved keywords in C23 [1][2]. Update these places to use the same C
-> > standard version as the rest of the kernel, gnu11.
->
-> Hello x86 maintainers!
->
-> I think this would be valuable to get into -rc1 since we're getting very
-> close to a GCC 15 release. Can someone get this into -tip urgent,
-> please? If everyone is busy I can take it via the hardening tree, as we
-> appear to be the ones tripping over it the most currently. :)
->
+On Thu, Jan 30, 2025 at 12:56:25PM -0300, Maíra Canal wrote:
+> Hi Greg,
+> 
+> This patch introduced a race-condition that was fixed in
+> 6e64d6b3a3c39655de56682ec83e894978d23412 ("drm/v3d: Assign job pointer
+> to NULL before signaling the fence") - already in torvalds/master. Is it
+> possible to push the two patches together? This way we wouldn't break
+> any devices.
 
-+1
+As all 5.15 and newer devices are broken right now, that's not good :(
 
-Note that I already took the EFI one.
+> If possible, same thing for 5.4.
+
+Ok, let me queue it up now, thanks.
+
+greg k-h
 
