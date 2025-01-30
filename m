@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD94BA23036
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F301A22F64
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54ECC18838CA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E2C7188547A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADE61E98F3;
-	Thu, 30 Jan 2025 14:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8898A1E8824;
+	Thu, 30 Jan 2025 14:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSPYenX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnOJnYC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CF51E522;
-	Thu, 30 Jan 2025 14:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4564D1BDA95;
+	Thu, 30 Jan 2025 14:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247393; cv=none; b=P9NeEQsiBBG4WyecN9qrAUPLrUtgYNx3bhX1kFH3Alu1oOj/o3sc08Nyj7OfXPFHSCKQvBMnzCNDCriih6mVUrt9l/+qAgqW4Oior7rtU1I5iYZydQw2IrCydL3GUqoZlbipH5QBq2rKEIpxKTYNXTC9+1N6n1NuVX8swP2gbHA=
+	t=1738246879; cv=none; b=RiJEiy01InuUVk/2Xplea/JIGRVS8gGH0eGnpFYFb1yR65TPguF+5iGgvj+8kbQS8fJNK5uRxQJhHuwPMmbFxiWEUFLaAraGmUniI7HnCc9pf5jZ96CKZH2eAw/7Xv7wbI+JZPNRRfV4+39htjGFo5VFRs5cq+M6FFBlURqwJ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247393; c=relaxed/simple;
-	bh=73GBAkK9oDH+fYg92J7t/31MIqPpPlKTHK1dXHgjbOw=;
+	s=arc-20240116; t=1738246879; c=relaxed/simple;
+	bh=a1yj5/aeML5wgMGRnCIt9wxN/Bu89FWqz9QZVGod8Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVde63EMAWCNs9KH/R/wN+ANnrxMSDpnAUohZ20CDqwOczWtL1vcJ/g8Eiuaf7VDmqJwKTnEu1t9BfXm6+jdqsQLrCBI5dwTxXEEwXb3i0z3gc+G5ywelK4/5IG2c98UjccUmmalDkfRErSrj+covjWs3ccwdOkq0xjM3i/KuHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSPYenX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F38C4CED2;
-	Thu, 30 Jan 2025 14:29:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N2AeDI4lT/WMcFM+Ua3LtUg/G/KI8j/YEv9nBwgqwW/P554FtShux4Z4lBvtE2AVTBzt/x4RpsJ3jFGq2Vq+7KuECeMiNN3p91b7QWVKM33ZpU6Ac9mXwhAs5FXRfaEIRDpAc0Pc7s40BGaXfay7CtSsxagR0Gwcj6pKxiF76JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnOJnYC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7BC4CED2;
+	Thu, 30 Jan 2025 14:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247393;
-	bh=73GBAkK9oDH+fYg92J7t/31MIqPpPlKTHK1dXHgjbOw=;
+	s=korg; t=1738246879;
+	bh=a1yj5/aeML5wgMGRnCIt9wxN/Bu89FWqz9QZVGod8Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSPYenX71eOr6LHH8MQ0Z2Iu1m2esciM0WgeOVxfRngPrjQzDGXPQPo6YcKBP76Hw
-	 qaWzivD0oNvio5hImK4sS7UacpYnz47vUIwaDNUS4G9ijnLV653ujoYrs6ayQ6WwkO
-	 GlvLTY27K9wJBVdQeTHg88cvXbMoZAwrku+SVFSc=
+	b=MnOJnYC2beFbxZEv0LgsIuAE16CHSRJIg3gPTpnd/c45DiHOAhAlgBu58TSHMoXTl
+	 kg9OeZ73Uk1UOmEwURVKM974geqzlyyrR5LJt93YExsN9OUxBhxEMtvAzj6Z7HKgjO
+	 oJtucYEEbrviE+b5YgxFAPy90MlDzDWSZPhwu78I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/49] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
-Date: Thu, 30 Jan 2025 15:01:42 +0100
-Message-ID: <20250130140134.087020341@linuxfoundation.org>
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 5.4 84/91] vfio/platform: check the bounds of read/write syscalls
+Date: Thu, 30 Jan 2025 15:01:43 +0100
+Message-ID: <20250130140137.063628703@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philippe Simons <simons.philippe@gmail.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 3a748d483d80f066ca4b26abe45cdc0c367d13e9 ]
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
-pin instead of a normal GPIO. Since the power key is connected to the PMIC,
-and people expect to wake up a suspended system via this key, the NMI IRQ
-controller must stay alive when the system goes into suspend.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
-sleep, so that the power key can wake up those systems.
-
-[ tglx: Fixed up coding style ]
-
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
-index 21d49791f8552..83c7417611fa5 100644
---- a/drivers/irqchip/irq-sunxi-nmi.c
-+++ b/drivers/irqchip/irq-sunxi-nmi.c
-@@ -187,7 +187,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
- 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
- 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
- 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
--	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
-+	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
-+						  IRQCHIP_SKIP_SET_WAKE;
- 	gc->chip_types[0].regs.ack		= reg_offs->pend;
- 	gc->chip_types[0].regs.mask		= reg_offs->enable;
- 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
--- 
-2.39.5
-
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -405,6 +405,11 @@ static ssize_t vfio_platform_read_mmio(s
+ {
+ 	unsigned int done = 0;
+ 
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap_nocache(reg->addr, reg->size);
+@@ -482,6 +487,11 @@ static ssize_t vfio_platform_write_mmio(
+ {
+ 	unsigned int done = 0;
+ 
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap_nocache(reg->addr, reg->size);
 
 
 
