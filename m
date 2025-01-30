@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFBC1A22FF5
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFE4A22F5B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3835C7A2957
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 429FD163DA2
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8451E8835;
-	Thu, 30 Jan 2025 14:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF41F1E9B0C;
+	Thu, 30 Jan 2025 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfZqUmKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlMKqty9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280F71E522;
-	Thu, 30 Jan 2025 14:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DD41E98F3;
+	Thu, 30 Jan 2025 14:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247213; cv=none; b=ePVUyzdsHu29M+Vxl0lntdwnfl5n9nCEIIsRtTSu9h5V4W8vZupz85t1FVFGMx+GXhw4p/ovx+oxjvG9qAp3h+T4Om/rGRoxfxBxmZzlgHkzhtzAfVdJFa6mGBcSzTlqOuZEBOZdY5EN8HZOIM1OP9c3tGN4bICoH7rBSSMWhIo=
+	t=1738246853; cv=none; b=gSIwN/VRy5VlMRwn6zf9W8nz4D3ML+T+a1OvKGx8oxomh2MU1VTagNdizm6dpy+i8gwK4JR3Pa4sTRLl5YqVkrYgu8/MNvHx7+gjgHru7PpeUIn9jkE9siD55T+577Hevi9cqqOcNFePsXev+bDB49JcuSOpmZaEwUmTnXvScqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247213; c=relaxed/simple;
-	bh=XpmDTMTt5XrnD4OFUIgf8JgIXVtIh08kIxElXcDdjKw=;
+	s=arc-20240116; t=1738246853; c=relaxed/simple;
+	bh=5Ivz5oSFCS+7jADpJQg2KSCnS81w0zB+uic8Xz9rQL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgbRLXUByHLjRm/+eCuixCQlYje9mJJQquGNLP3KBGqdWy2NckulGzVo+deMc/g6DywOsmX5t9rwV3gRu1cQHVl/ydgPe3uEdAdMQG1CDqj4S695tygcxHbb6qUwgGq6zfyfCoifOQYsxLlvmDIbSIFbxcL1+69K6Ohus5qFvp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfZqUmKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A08C4CED2;
-	Thu, 30 Jan 2025 14:26:52 +0000 (UTC)
+	 MIME-Version; b=hOuvnyqG8ZAhyEYNTyUqby51LmgeS+rpq0IqvxInZfwv9PCHK+veb8iTjuuEtaj1aKdvTQfpcjDWQo9dJJwhCYpHv/nUojdPu1kYghvtdLAudl4onAQga86wlPMKs7JyUWzT7YKqcfcwVouSzVMrz9Zs16lNTb15Y/0RUDdib8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlMKqty9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56CBC4CED2;
+	Thu, 30 Jan 2025 14:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247212;
-	bh=XpmDTMTt5XrnD4OFUIgf8JgIXVtIh08kIxElXcDdjKw=;
+	s=korg; t=1738246853;
+	bh=5Ivz5oSFCS+7jADpJQg2KSCnS81w0zB+uic8Xz9rQL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfZqUmKJCqx32IDJNrY4GvOeqtu0XvqzYduOrR1wfURbIbiwl5eFywRtTocxjIG9o
-	 r7UpoE7shC2cacm2XdIXm2COqLn9JtuQ5oBzCNV+a/TiDbPQC6oSyo/RsZkXfulcsA
-	 3fmp0bV3KTfHVgn67XoB68KrYDERb54ZF9iIPXxM=
+	b=OlMKqty9GwLUkCtFalGssGygAF8N0et+dCxS03jIxTNpZ6MnCW2p41v+F8ZRLO0U0
+	 EYEwuqNi0Jiedz2lnNgI0WYEZMlB1vtyEdM9riXIjZ2ZNDqSKDOLAGMH2//ZSQ7zLE
+	 DaQB1Tcik/GRow0IvOd2hSC/f1c43W5/V7DzTGH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/133] ASoC: samsung: Add missing depends on I2C
+	Nilton Perim Neto <niltonperimneto@gmail.com>,
+	Pavel Rojtberg <rojtberg@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 90/91] Input: xpad - add unofficial Xbox 360 wireless receiver clone
 Date: Thu, 30 Jan 2025 15:01:49 +0100
-Message-ID: <20250130140147.359885641@linuxfoundation.org>
+Message-ID: <20250130140137.301869417@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Nilton Perim Neto <niltonperimneto@gmail.com>
 
-[ Upstream commit 704dbe97a68153a84319ad63f526e12ba868b88e ]
+commit e4940fe6322c851659c17852b671c6e7b1aa9f56 upstream.
 
-When switching to selects for MFD_WM8994 a dependency should have also
-been added for I2C, as the dependency on MFD_WM8994 will not be
-considered by the select.
+Although it mimics the Microsoft's VendorID, it is in fact a clone.
+Taking into account that the original Microsoft Receiver is not being
+manufactured anymore, this drive can solve dpad issues encontered by
+those who still use the original 360 Wireless controller
+but are using a receiver clone.
 
-Fixes: fd55c6065bec ("ASoC: samsung: Add missing selects for MFD_WM8994")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501082020.2bpGGVTW-lkp@intel.com/
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250108134828.246570-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
+Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
+Link: https://lore.kernel.org/r/20250107192830.414709-12-rojtberg@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/samsung/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
-index 159bc501186f9..c04c38d58804c 100644
---- a/sound/soc/samsung/Kconfig
-+++ b/sound/soc/samsung/Kconfig
-@@ -214,7 +214,7 @@ config SND_SOC_SAMSUNG_TM2_WM5110
- 
- config SND_SOC_SAMSUNG_ARIES_WM8994
- 	tristate "SoC I2S Audio support for WM8994 on Aries"
--	depends on SND_SOC_SAMSUNG && IIO && EXTCON
-+	depends on SND_SOC_SAMSUNG && I2C && IIO && EXTCON
- 	select SND_SOC_BT_SCO
- 	select MFD_WM8994
- 	select SND_SOC_WM8994
-@@ -228,7 +228,7 @@ config SND_SOC_SAMSUNG_ARIES_WM8994
- 
- config SND_SOC_SAMSUNG_MIDAS_WM1811
- 	tristate "SoC I2S Audio support for Midas boards"
--	depends on SND_SOC_SAMSUNG
-+	depends on SND_SOC_SAMSUNG && I2C
- 	select SND_SAMSUNG_I2S
- 	select MFD_WM8994
- 	select SND_SOC_WM8994
--- 
-2.39.5
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -128,6 +128,7 @@ static const struct xpad_device {
+ 	{ 0x045e, 0x028e, "Microsoft X-Box 360 pad", 0, XTYPE_XBOX360 },
+ 	{ 0x045e, 0x028f, "Microsoft X-Box 360 pad v2", 0, XTYPE_XBOX360 },
+ 	{ 0x045e, 0x0291, "Xbox 360 Wireless Receiver (XBOX)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
++	{ 0x045e, 0x02a9, "Xbox 360 Wireless Receiver (Unofficial)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
+ 	{ 0x045e, 0x02d1, "Microsoft X-Box One pad", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02dd, "Microsoft X-Box One pad (Firmware 2015)", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x02e3, "Microsoft X-Box One Elite pad", 0, XTYPE_XBOXONE },
 
 
 
