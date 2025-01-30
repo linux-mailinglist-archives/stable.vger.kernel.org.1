@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-111708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7749FA23134
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:53:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E3BA2313E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79BEB3A6A86
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:53:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FC11883ACB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F1D1E9B24;
-	Thu, 30 Jan 2025 15:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C91E991C;
+	Thu, 30 Jan 2025 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSz+AemA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IJaRPwpF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0951E1C22;
-	Thu, 30 Jan 2025 15:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E0B1E98F3;
+	Thu, 30 Jan 2025 15:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738252424; cv=none; b=RJHHN/uvRlu8CC/KrO66axWMHNqKIniWUHIiRWU3bkXuOhzkV1i4sZdxIFceU7hdUpxOY46XC60ugvpQzFTWxV0NHIrBc3OZvjpOa8aI058CThB0d3u8KpzVE9KgvFcWi8x+r5GdKX5l6kHEwaK0MDOx3bdVO5rnRo3rlqI1WmQ=
+	t=1738252604; cv=none; b=qCiUQazwReMtH3Tfs9+0l5d+gajQaCiMxfDJ1yuJqqvxLPNP7IQ6YREw9Euw5lZRUxuZnxmr+wQwbnfGz9IOoaO8H9SREvvjUA769ZF8qrWc+gGD/d4VypZwreZjFp5HKmnbMltZM8pYaxxK5aOk90SGpJBuKXKEYBx3GcadpBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738252424; c=relaxed/simple;
-	bh=7h9AoUeAiY5qK0t9g6t0B8QXd1IuLuDyE6xrUN15wak=;
+	s=arc-20240116; t=1738252604; c=relaxed/simple;
+	bh=kyueqhJCMqDvblVFcCdgbr8Ha4b8qWO7dbnUxsJEkrQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g6OWQFuD5lIlCr8C/EY8bBpbi4wNvvHIdLQIFSQ2ipDWsWqkTaezA2H92sho7232XHX4y19ZLulL96hebkpu4GOF0Vo+enyKuceRvIOlCxyrM8p/l+8ndBvVL08s5hFZ3xDIVx1yr45yGXbOuD5N4XeElECc4Ue80/6EWAusY7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSz+AemA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DABC4CED2;
-	Thu, 30 Jan 2025 15:53:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738252424;
-	bh=7h9AoUeAiY5qK0t9g6t0B8QXd1IuLuDyE6xrUN15wak=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MSz+AemA4HvWhT1qKASkH7CfaAnGuQSnaQXbmGIPuHfXTnG/WnW0aDSkvlEQ1QJOl
-	 g8DdVDe34FcQbv36QMe+Uyuzi2aLTwFdU4qx+qsIjxOsBUnXa3/u0ygyMIJYJLoKek
-	 4ECPnGEz06oz6QaDvo1kNOgHJhDipV0V2h9mhZcqf49x476PMeM30vSZqy36X1xhe/
-	 FQ8vyRtKVRxA89Ul3mAmS0eRm7VJ/1GpKx6X879LQB5dvXYrsFpFxXN2IU2VYlYQLe
-	 R5ONbV/D8AMNG2+8dIYd/UZfN5BADD9yv4ysItJYhHvD3BLjE7UvsHy4eTz1VOOumK
-	 GTbhRXnWMjCzQ==
-Message-ID: <59cbde54-e1df-4e92-9291-5546118dd2ca@kernel.org>
-Date: Thu, 30 Jan 2025 16:53:36 +0100
+	 In-Reply-To:Content-Type; b=F2yjtUIM1Bw/mpu/8PSxcuTrfyocJnwC6PnhA7FPhdLjQTwlgfUE2FF9tVW2Sa3vXXPnhgsizaU+AJ+MXeo5dn4L1+Blogy0PoSRYqgyrrF2BjYkV7nH0yZKSHbLYl42JvBSvhdfuD4SxBeKeZTQdbomyilewYc5jvA2yhFZHRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IJaRPwpF; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=y8WowStiuFjtFiRY/j+QKKzZT9+b6Vju/ceYoKEPRYk=; b=IJaRPwpF4gbIObU8fUTSiyhgEV
+	YzFhvVx5h9DEqE71We2TGaRnvnxdE5eOYMlC9VTAXR2D8jNDz0y/6UhAB9g0+NqouafIrwCk8eeEe
+	lbgAqNWAloEDPV0fpDPqfoLyTiBkzU9WrdIVZO7ItX24my+5om2eKhgnMHFPONTCKAjSJVwXMpM3H
+	9JdXbU8/H002fEFaicIwfZAHtpwPViyeSL/TlvuoJASByGPKOXIoXVp+Pd+wUMqSqhzEfWQqv7Xy4
+	zmLUVLGBedQRamU+BLYl3UjZ8p3kX6e/u+qrdYjfmU1gVTtdZnjA23u9mPIdSTGI6re29MvUObz3T
+	XefyNjTQ==;
+Received: from [189.16.81.54] (helo=[10.154.220.147])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1tdWu1-0015Mv-1g; Thu, 30 Jan 2025 16:56:31 +0100
+Message-ID: <12607ce2-01f3-4fb6-8b50-33a9f7f26381@igalia.com>
+Date: Thu, 30 Jan 2025 12:56:25 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,118 +56,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] soc: qcom: pmic_glink: Fix device access from worker
- during suspend
-To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>
-Cc: Konrad Dybcio <konradybcio@kernel.org>,
- Caleb Connolly <caleb.connolly@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Johan Hovold <johan@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250110-soc-qcom-pmic-glink-fix-device-access-on-worker-while-suspended-v1-1-e32fd6bf322e@linaro.org>
- <8aef8331-662d-49ee-a918-8a4a5000d9ec@kernel.org>
- <7nce4if7gowtbvenqhwzw6bazgfcgml6enwufomqxs4uruj3vs@sgagkj3zpx4t>
- <Z5nq3Y7YOyxwqcmg@linaro.org>
+Subject: Re: [PATCH 5.10 082/133] drm/v3d: Ensure job pointer is set to NULL
+ after job completion
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+ Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+ Sasha Levin <sashal@kernel.org>
+References: <20250130140142.491490528@linuxfoundation.org>
+ <20250130140145.823285670@linuxfoundation.org>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Z5nq3Y7YOyxwqcmg@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+In-Reply-To: <20250130140145.823285670@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 29/01/2025 09:46, Abel Vesa wrote:
->>
->>> 1. Maybe the driver just lacks proper suspend/resume handling?
->>> I assume all this happens during system suspend, so what certainty you
->>> have that your second work - pmic_glink_altmode_pdr_notify() - is not
->>> executed as well?
->>>
->>> 2. Follow up: all other drivers and all other future use cases will be
->>> affected as well. Basically what this patch is admitting is that driver
->>> can be executed anytime, even during suspend, so each call of
->>> pmic_glink_send() has to be audited. Now and in the future, because what
->>> stops some developer of adding one more path calling pmic_glink_send(),
->>> which also turns out to be executed during suspend?
->>>
->>> 3. So qcom_battmgr.c is buggy as well?
->>>
->>> 4. ucsi_glink.c? I don't see handling suspend, either...
->>>
->>> Maybe the entire problem is how pmic glink was designed: not as proper
->>> bus driver which handles both child-parent relationship and system suspend.
->>
->> The underlying problem is that GLINK register its interrupt as
->> IRQF_NO_SUSPEND (for historical reasons) and as such incoming messages
->> will be delivered in late suspend and early resume. In this specific
->> case, a specific message is handled by pmic_glink_altmode_callback(), by
->> invoking schedule_work() which in this case happens to schedule
->> pmic_glink_altmode_worker before we've resumed the I2C controller. 
->>
->> I presume with your suggestion about a pmic_glink bus driver we'd come
->> up with some mechanism for pmic_glink to defer these messages until
->> resume has happened?
+Hi Greg,
+
+This patch introduced a race-condition that was fixed in
+6e64d6b3a3c39655de56682ec83e894978d23412 ("drm/v3d: Assign job pointer
+to NULL before signaling the fence") - already in torvalds/master. Is it
+possible to push the two patches together? This way we wouldn't break
+any devices.
+
+If possible, same thing for 5.4.
+
+Best Regards,
+- Maíra
+
+On 30/01/25 11:01, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
 > 
-> So is the suggestion here to rework the entire pmic_glink into a bus
-> driver? (I like the sound of that)
+> ------------------
 > 
-> I'd assume the new bus driver will have to queue the messages until it
-> has resumed, which is fine.
-
-Queue or just disable interrupts/notifications to clients.
-
+> From: Maíra Canal <mcanal@igalia.com>
 > 
-> But still doesn't solve the fact that we can't filter out when to
-> wake-up or not. What am I missing here?
+> [ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+> 
+> After a job completes, the corresponding pointer in the device must
+> be set to NULL. Failing to do so triggers a warning when unloading
+> the driver, as it appears the job is still active. To prevent this,
+> assign the job pointer to NULL after completing the job, indicating
+> the job has finished.
+> 
+> Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
+> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+> Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+> index c88686489b888..22aa02d75c5cc 100644
+> --- a/drivers/gpu/drm/v3d/v3d_irq.c
+> +++ b/drivers/gpu/drm/v3d/v3d_irq.c
+> @@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+>   
+>   		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+>   		dma_fence_signal(&fence->base);
+> +		v3d->bin_job = NULL;
+>   		status = IRQ_HANDLED;
+>   	}
+>   
+> @@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
+>   
+>   		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+>   		dma_fence_signal(&fence->base);
+> +		v3d->render_job = NULL;
+>   		status = IRQ_HANDLED;
+>   	}
+>   
+> @@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
+>   
+>   		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+>   		dma_fence_signal(&fence->base);
+> +		v3d->csd_job = NULL;
+>   		status = IRQ_HANDLED;
+>   	}
+>   
+> @@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
+>   
+>   		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+>   		dma_fence_signal(&fence->base);
+> +		v3d->tfu_job = NULL;
+>   		status = IRQ_HANDLED;
+>   	}
+>   
 
-I think this was not the concern in my email. I was only wondering about
-the design flaw that we allow pmic glink to send notifications to
-children anytime. And that's not how the bus-like driver should be written.
-
-
-
-Best regards,
-Krzysztof
 
