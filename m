@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-111612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F21EA22FF9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC2CCA22F43
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 895C23A53A4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B73418878EB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97821E7C27;
-	Thu, 30 Jan 2025 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7621E98E7;
+	Thu, 30 Jan 2025 14:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pukIVRx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXngzQmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70A61E522;
-	Thu, 30 Jan 2025 14:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4CE1BDA95;
+	Thu, 30 Jan 2025 14:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247244; cv=none; b=e/rkKCnQ4shUp4AkYrNKaATLpgSxXWqYAUPriLjAkr+yH+IOBHPHCBCPsYQRnDXtuuRkMnUysKPteW7EfekyBvVi8tCd8r3fiOtGMpEqoMxAYHl+2UJu3m//6g45x6T0Fdc+sYnrJjJuiD4OLRUPKLpNSK6RnqR71jHjNUHqSyI=
+	t=1738246808; cv=none; b=Wj4G1WzxxBqxeMy6SZcoEJvb3InaxBuRyUhih+B1EbG4rGAQ3xksZKX0dibuRFV/RR7NON1GRFeJbrsQC69wM4Llx055WiBDCt13hPVqztCm5xduLcmWZb2lVN+DvgzYg5JZIL4lseD43k60fImVLrngsRHJP11SnhlsIAiCNBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247244; c=relaxed/simple;
-	bh=8BwEabZwXBKMCuW/SF38zjG//MT3+uedWEenFBKYzKY=;
+	s=arc-20240116; t=1738246808; c=relaxed/simple;
+	bh=lzOoedfmIovX7pi4pq20lBHJB/6IqEsBmAJXEVbwThs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qY8yh9nmYmx/pbbOtiQemQc/Biq88KSxVdLds0T0zsLaJTqO1zKQrrhkKi7n11XXJGRUkxgb6Uj4135RmxPJefy8+F7rvfuSb3UDHJPV3Y0FRL9bvOSaGDq86JC8WTCGJZ/qCFOh4o8Nmr04SKjCd1P27gParWkj+jTYu6Tkuqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pukIVRx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8F2C4CED2;
-	Thu, 30 Jan 2025 14:27:24 +0000 (UTC)
+	 MIME-Version; b=HAi7mjulnxZZy3GHvMV/d9Wt/DOtb2sZONh3Bqxow/3b5iF45bzOrYyqYdgFzLy0pNJRvBLOeeKZtyu2lJH4+Bu5W8Db//2lnfNEVCXqJABI50x8+DjUKTErg+5Ccx/LaU+x0rZJ6usWeCG7HWtaQcY1bgjjhUvHZRTe0S/1SDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXngzQmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579ACC4CED2;
+	Thu, 30 Jan 2025 14:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247244;
-	bh=8BwEabZwXBKMCuW/SF38zjG//MT3+uedWEenFBKYzKY=;
+	s=korg; t=1738246808;
+	bh=lzOoedfmIovX7pi4pq20lBHJB/6IqEsBmAJXEVbwThs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pukIVRx+MLyMwBgpZ6cdwze1+x1bHRYF066RtFijrCLjVeX3akyfGHCr1EM9IaQA2
-	 mNPn8kbhR+8fERIHsFus9Qfu9Zah31GLAhCyS+7ka5fzlnzJ7iy/3q0G13e74v+weT
-	 RfCZbdguPHIhid/fA134PXR8V6vFeB9BtlK8qORM=
+	b=KXngzQmpa9WVM1lurKeyv08UWOE1GN6uuNg1pn06M0FvdUh8gmFjDpxi+qaaGi7yM
+	 lR1bVUQZRmLunSZKesgR24KijAfdOteBBpILSbc2/cur1ROCvGbHcsFY0xDT8UY/vm
+	 WCyq0IX0m4w4v6OFD6Vai2j7LgSSirCeuZk3YzYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bin Lan <lanbincn@qq.com>
-Subject: [PATCH 5.10 102/133] iio: adc: rockchip_saradc: fix information leak in triggered buffer
-Date: Thu, 30 Jan 2025 15:01:31 +0100
-Message-ID: <20250130140146.643583189@linuxfoundation.org>
+	syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com,
+	Suraj Sonawane <surajsonawane0215@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	BRUNO VERNAY <bruno.vernay@se.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.4 73/91] scsi: sg: Fix slab-use-after-free read in sg_release()
+Date: Thu, 30 Jan 2025 15:01:32 +0100
+Message-ID: <20250130140136.613684030@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Suraj Sonawane <surajsonawane0215@gmail.com>
 
-commit 38724591364e1e3b278b4053f102b49ea06ee17c upstream.
+commit f10593ad9bc36921f623361c9e3dd96bd52d85ee upstream.
 
-The 'data' local struct is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+Fix a use-after-free bug in sg_release(), detected by syzbot with KASAN:
 
-Initialize the struct to zero before using it to avoid pushing
-uninitialized information to userspace.
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30
+kernel/locking/lockdep.c:5838
+__mutex_unlock_slowpath+0xe2/0x750 kernel/locking/mutex.c:912
+sg_release+0x1f4/0x2e0 drivers/scsi/sg.c:407
 
-Cc: stable@vger.kernel.org
-Fixes: 4e130dc7b413 ("iio: adc: rockchip_saradc: Add support iio buffers")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://patch.msgid.link/20241125-iio_memset_scan_holes-v1-4-0cb6e98d895c@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Bin Lan <lanbincn@qq.com>
+In sg_release(), the function kref_put(&sfp->f_ref, sg_remove_sfp) is
+called before releasing the open_rel_lock mutex. The kref_put() call may
+decrement the reference count of sfp to zero, triggering its cleanup
+through sg_remove_sfp(). This cleanup includes scheduling deferred work
+via sg_remove_sfp_usercontext(), which ultimately frees sfp.
+
+After kref_put(), sg_release() continues to unlock open_rel_lock and may
+reference sfp or sdp. If sfp has already been freed, this results in a
+slab-use-after-free error.
+
+Move the kref_put(&sfp->f_ref, sg_remove_sfp) call after unlocking the
+open_rel_lock mutex. This ensures:
+
+ - No references to sfp or sdp occur after the reference count is
+   decremented.
+
+ - Cleanup functions such as sg_remove_sfp() and
+   sg_remove_sfp_usercontext() can safely execute without impacting the
+   mutex handling in sg_release().
+
+The fix has been tested and validated by syzbot. This patch closes the
+bug reported at the following syzkaller link and ensures proper
+sequencing of resource cleanup and mutex operations, eliminating the
+risk of use-after-free errors in sg_release().
+
+Reported-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7efb5850a17ba6ce098b
+Tested-by: syzbot+7efb5850a17ba6ce098b@syzkaller.appspotmail.com
+Fixes: cc833acbee9d ("sg: O_EXCL and other lock handling")
+Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
+Link: https://lore.kernel.org/r/20241120125944.88095-1-surajsonawane0215@gmail.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: BRUNO VERNAY <bruno.vernay@se.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/rockchip_saradc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/sg.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -254,6 +254,8 @@ static irqreturn_t rockchip_saradc_trigg
- 	int ret;
- 	int i, j = 0;
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -390,7 +390,6 @@ sg_release(struct inode *inode, struct f
  
-+	memset(&data, 0, sizeof(data));
-+
- 	mutex_lock(&i_dev->mlock);
+ 	mutex_lock(&sdp->open_rel_lock);
+ 	scsi_autopm_put_device(sdp->device);
+-	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	sdp->open_cnt--;
  
- 	for_each_set_bit(i, i_dev->active_scan_mask, i_dev->masklength) {
+ 	/* possibly many open()s waiting on exlude clearing, start many;
+@@ -402,6 +401,7 @@ sg_release(struct inode *inode, struct f
+ 		wake_up_interruptible(&sdp->open_wait);
+ 	}
+ 	mutex_unlock(&sdp->open_rel_lock);
++	kref_put(&sfp->f_ref, sg_remove_sfp);
+ 	return 0;
+ }
+ 
 
 
 
