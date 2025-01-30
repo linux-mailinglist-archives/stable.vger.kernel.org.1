@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-111550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D888A22FB0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B67F4A22F88
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E6961883D96
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF0C162B9C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF071E522;
-	Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC8B1E9B0F;
+	Thu, 30 Jan 2025 14:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/wbWht9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xc1u6Brk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB7C1DDC22;
-	Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF3F1E9B03;
+	Thu, 30 Jan 2025 14:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247063; cv=none; b=Paf8BcSoCUHbdSkIuwsSGll8fMYmAAagZIpzERRYdTKoidO1c11FtyuObB3QWNWBmTCH8LZK4Chy7l+mI4Jg9wtnL5muO+qZ7aJkbKb6DjhNE18YIzcr4/VwHB31Yr6KNEQ1bE/Du2KoHR2+8KXeipiw3HigNlIRYc5GG50Dm9s=
+	t=1738246969; cv=none; b=bwBBgJ1fn49EPCJakbTNYoixKSSKzmw67CtJqnK/2Uu4MJT2e+G/b/kyL+Z4Onhyn1bltb3vZtY6Z7hwL88nkgbZsMAW54lG9MbsNZJ5pOOE5qhOZcBG3rVHC9QWl6Xy7K8V8UHW/FxR4z+9D2OIsXRZ7fWoicfCS9MApfqzmZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247063; c=relaxed/simple;
-	bh=0n9FiblZ5ElYa7taYtutX6zNwWFyVoiHlCqTRe/r7d8=;
+	s=arc-20240116; t=1738246969; c=relaxed/simple;
+	bh=NzCkwX+K5OyPpCMG+sLwoGWwoNCdXpapywfnPCg7rGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uz7hpLff+yexXqfBf+iii2ZsLkjtioyG29GGnNzeSWgKszGBK2hQbqww8a1ZJn/lwPwp4/tmi5BEKgV4DuXUCV29hgK1gaf6UqUl7LlWG5HNdYJHN+V82uxNnrHX2A52VQDgBVvwHwQSKNe/4Ki+7+S/gi+hSsVdDZJG6htdrZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/wbWht9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18102C4CED2;
-	Thu, 30 Jan 2025 14:24:22 +0000 (UTC)
+	 MIME-Version; b=et+vdDqnwnKGL8RNdSyds1rE4ht3/dLVhmAS3oxu8XD72cbBY6quOryCeoiFI5XfMIQO8GTKR6Hde5UKLUt7kTDNjFBrf262v45QqRgxM4jVmSNIzZyOvUJicaHLbMWFaOivY62xSaqIKiD7qGGWqoci5PeVQkMv+M2A1UiRxro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xc1u6Brk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30EAC4CED2;
+	Thu, 30 Jan 2025 14:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247063;
-	bh=0n9FiblZ5ElYa7taYtutX6zNwWFyVoiHlCqTRe/r7d8=;
+	s=korg; t=1738246969;
+	bh=NzCkwX+K5OyPpCMG+sLwoGWwoNCdXpapywfnPCg7rGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/wbWht98Cs8PG9q9QtURGi7xEMhukEu0dwH19RIUoTUF/SBCauEGBVBrO01uT/fE
-	 cell0siox5wR8anc/hlG1oPZFNbXKwJMkVw3ypIIzkw1rBPVInJDxLgo4qRM+PuErN
-	 MqKKS4D0H1IiQktgfFAZE7+G7pcDxxKmlXkqPM3k=
+	b=Xc1u6BrkdAa4EXT+NVFkP8rSnc3z7/+6wndu82J9dcRfJnYlCSQB960PiT5giouw8
+	 Q4zVzlblDvaFaY75YkMAIkftxOi0Vh4nV2FtkWq3ojhoTDEsXBb4PzjL7qyxljlbjc
+	 IucdbT9XVhhrn46GPSCHH3qvnUtzo7yDF0LZgGPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 5.10 029/133] md/raid5: fix atomicity violation in raid5_cache_count
-Date: Thu, 30 Jan 2025 15:00:18 +0100
-Message-ID: <20250130140143.683914814@linuxfoundation.org>
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 030/133] USB: serial: option: add MeiG Smart SRM815
+Date: Thu, 30 Jan 2025 15:00:19 +0100
+Message-ID: <20250130140143.724417407@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -66,115 +65,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-commit dfd2bf436709b2bccb78c2dda550dde93700efa7 upstream.
+commit c1947d244f807b1f95605b75a4059e7b37b5dcc3 upstream.
 
-In raid5_cache_count():
-    if (conf->max_nr_stripes < conf->min_nr_stripes)
-        return 0;
-    return conf->max_nr_stripes - conf->min_nr_stripes;
-The current check is ineffective, as the values could change immediately
-after being checked.
+It looks like SRM815 shares ID with SRM825L.
 
-In raid5_set_cache_size():
-    ...
-    conf->min_nr_stripes = size;
-    ...
-    while (size > conf->max_nr_stripes)
-        conf->min_nr_stripes = conf->max_nr_stripes;
-    ...
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=123456
+C:* #Ifs= 5 Cfg#= 1 Atr=80 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Due to intermediate value updates in raid5_set_cache_size(), concurrent
-execution of raid5_cache_count() and raid5_set_cache_size() may lead to
-inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
-The current checks are ineffective as values could change immediately
-after being checked, raising the risk of conf->min_nr_stripes exceeding
-conf->max_nr_stripes and potentially causing an integer overflow.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including data races and atomicity violations. The above possible bug is
-reported when our tool analyzes the source code of Linux 6.2.
-
-To resolve this issue, it is suggested to introduce local variables
-'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
-values remain stable throughout the check. Adding locks in
-raid5_cache_count() fails to resolve atomicity violations, as
-raid5_set_cache_size() may hold intermediate values of
-conf->min_nr_stripes while unlocked. With this patch applied, our tool no
-longer reports the bug, with the kernel configuration allyesconfig for
-x86_64. Due to the lack of associated hardware, we cannot test the patch
-in runtime testing, and just verify it according to the code logic.
-
-Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/lkml/20241215100027.1970930-1-amadeus@jmu.edu.cn/
+Link: https://lore.kernel.org/all/4333b4d0-281f-439d-9944-5570cbc4971d@gmail.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240112071017.16313-1-2045gemini@gmail.com
-Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -2349,7 +2349,7 @@ static int grow_one_stripe(struct r5conf
- 	atomic_inc(&conf->active_stripes);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -621,7 +621,7 @@ static void option_instat_callback(struc
  
- 	raid5_release_stripe(sh);
--	conf->max_nr_stripes++;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
- 	return 1;
- }
- 
-@@ -2646,7 +2646,7 @@ static int drop_one_stripe(struct r5conf
- 	shrink_buffers(sh);
- 	free_stripe(conf->slab_cache, sh);
- 	atomic_dec(&conf->active_stripes);
--	conf->max_nr_stripes--;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
- 	return 1;
- }
- 
-@@ -6575,7 +6575,7 @@ raid5_set_cache_size(struct mddev *mddev
- 	if (size <= 16 || size > 32768)
- 		return -EINVAL;
- 
--	conf->min_nr_stripes = size;
-+	WRITE_ONCE(conf->min_nr_stripes, size);
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size < conf->max_nr_stripes &&
- 	       drop_one_stripe(conf))
-@@ -6587,7 +6587,7 @@ raid5_set_cache_size(struct mddev *mddev
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size > conf->max_nr_stripes)
- 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
--			conf->min_nr_stripes = conf->max_nr_stripes;
-+			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
- 			result = -ENOMEM;
- 			break;
- 		}
-@@ -7151,11 +7151,13 @@ static unsigned long raid5_cache_count(s
- 				       struct shrink_control *sc)
- {
- 	struct r5conf *conf = container_of(shrink, struct r5conf, shrinker);
-+	int max_stripes = READ_ONCE(conf->max_nr_stripes);
-+	int min_stripes = READ_ONCE(conf->min_nr_stripes);
- 
--	if (conf->max_nr_stripes < conf->min_nr_stripes)
-+	if (max_stripes < min_stripes)
- 		/* unlikely, but not impossible */
- 		return 0;
--	return conf->max_nr_stripes - conf->min_nr_stripes;
-+	return max_stripes - min_stripes;
- }
- 
- static struct r5conf *setup_conf(struct mddev *mddev)
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
+-/* MeiG Smart SRM825L based on Qualcomm 315 */
++/* MeiG Smart SRM815/SRM825L based on Qualcomm 315 */
+ #define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
+@@ -2405,6 +2405,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM770A, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
 
 
 
