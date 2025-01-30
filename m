@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92810A22F2A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FE7A22FD6
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6265166D63
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E1977A4429
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5494F1E98F3;
-	Thu, 30 Jan 2025 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6971E9B01;
+	Thu, 30 Jan 2025 14:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeI2332T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4d+msFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110461BDA95;
-	Thu, 30 Jan 2025 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5D71E9916;
+	Thu, 30 Jan 2025 14:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246744; cv=none; b=ekWFQyypueWg6Vx2fwDuMFbExKTlAlH+K1GYrb/q31T3qUUlaTtceXbHkZ7Bx5SJ4HYaPuT9r+hU+ww6A2WvrwEo1GJm/grK9+H189lcvu12XmNJ/aniPD9QG7hPkWqIsiZkgBp1KD8MaiTanskrG4OgFFKuzZMpQiAy23qMQRM=
+	t=1738247107; cv=none; b=GauabY7zfUypeZDSR0lBPq+6kPpKNiwPt6Xiufn0M7SVCYxMjXqVoivSHNcR4NFC/EzVrC9z4PBxvnsIgge3X9DcmkhBYGEAT7xpc/7SrPEXWZj2DebJrZnWXHGyao9h1vSWnPIic7vPzIttaZDPmihVmbcG7X/0t2nkUKS4zXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246744; c=relaxed/simple;
-	bh=eSn608g5A6J7il4PaWZF24HGp2OZbg1CIDrGb/3YtxU=;
+	s=arc-20240116; t=1738247107; c=relaxed/simple;
+	bh=pFO9gypAqw+rcpTEjs0tCESpm18jM0C3EkbC1Yay37o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6vqkF8GSCcBwmf/oe+j7g6eFCVtOaVyDwj+NilEm9qWgGRLh6y45j1+uV30jvuUDWwhdGIt4bDoPNEhYsqJ7uR+l2mGFlF5cDw+VKlneBNhfuHM92Sp9IKrTiMvl3eW3rXZRF+8ETg17YoeBf8tECYzotAKB9o5DYpuOdCp5Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeI2332T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E32DC4CEE2;
-	Thu, 30 Jan 2025 14:19:03 +0000 (UTC)
+	 MIME-Version; b=QB0wA8BDOhGp+oHIXA24VDjb0zueakJGaQjeHTC3tEpORPXTD3eoQldQ17PBSKKefuJhPb6t4YYKP3peYe2JFR8GnkkStvhikFNPuj5VNmKmxE6IEpiG5jemnHmPhuXbEAPjiGsDpyOh7QtMMo0MVo8ZDRMCAd2CMlBXP04zPs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4d+msFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67261C4CEE2;
+	Thu, 30 Jan 2025 14:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246743;
-	bh=eSn608g5A6J7il4PaWZF24HGp2OZbg1CIDrGb/3YtxU=;
+	s=korg; t=1738247106;
+	bh=pFO9gypAqw+rcpTEjs0tCESpm18jM0C3EkbC1Yay37o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeI2332T+MhfmMr+GXPFiuGpRg69nO1JaMYFXCLvfKNpgap/e5GUQCPQBJVVaitOe
-	 B6NhgmGqo9mhnCgCP1YUaxXVMCdLLJVzFKkJrZF0VLI/voP+05IpaAQo5UM15MLpk0
-	 F4sV4LEJdfwOF4jprOzfkF5bmu1CuZRsJQatJLFA=
+	b=F4d+msFNRpCERu0Pn3bZCLi2VUd9NfS/UAAE6CqOp7qxyNeOGz3OgzxoGJc5qnq80
+	 R2llQ0S1WyEPE1S02Z95hSWAwSZ4ZUAsWNUkM506aF0J9hhOMGzQNih0wOJPBXZU5/
+	 9p6ubGNrXBi7eaWZ9GvcLkdKwYwK/XVx5I5cKiYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anup Patel <anup.patel@wdc.com>,
-	Atish Patra <atish.patra@wdc.com>,
-	Palmer Dabbelt <palmerdabbelt@google.com>
-Subject: [PATCH 5.4 53/91] RISC-V: Dont enable all interrupts in trap_init()
-Date: Thu, 30 Jan 2025 15:01:12 +0100
-Message-ID: <20250130140135.795712284@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 084/133] i2c: rcar: fix NACK handling when being a target
+Date: Thu, 30 Jan 2025 15:01:13 +0100
+Message-ID: <20250130140145.901608632@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <anup.patel@wdc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 6a1ce99dc4bde564e4a072936f9d41f4a439140e upstream.
+[ Upstream commit 093f70c134f70e4632b295240f07d2b50b74e247 ]
 
-Historically, we have been enabling all interrupts for each
-HART in trap_init(). Ideally, we should only enable M-mode
-interrupts for M-mode kernel and S-mode interrupts for S-mode
-kernel in trap_init().
+When this controller is a target, the NACK handling had two issues.
+First, the return value from the backend was not checked on the initial
+WRITE_REQUESTED. So, the driver missed to send a NACK in this case.
+Also, the NACK always arrives one byte late on the bus, even in the
+WRITE_RECEIVED case. This seems to be a HW issue. We should then not
+rely on the backend to correctly NACK the superfluous byte as well. Fix
+both issues by introducing a flag which gets set whenever the backend
+requests a NACK and keep sending it until we get a STOP condition.
 
-Currently, we get suprious S-mode interrupts on Kendryte K210
-board running M-mode NO-MMU kernel because we are enabling all
-interrupts in trap_init(). To fix this, we only enable software
-and external interrupt in trap_init(). In future, trap_init()
-will only enable software interrupt and PLIC driver will enable
-external interrupt using CPU notifiers.
-
-Fixes: a4c3733d32a7 ("riscv: abstract out CSR names for supervisor vs machine mode")
-Signed-off-by: Anup Patel <anup.patel@wdc.com>
-Reviewed-by: Atish Patra <atish.patra@wdc.com>
-Tested-by: Palmer Dabbelt <palmerdabbelt@google.com> [QMEU virt machine with SMP]
-[Palmer: Move the Fixes up to a newer commit]
-Reviewed-by: Palmer Dabbelt <palmerdabbelt@google.com>
-Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: de20d1857dd6 ("i2c: rcar: add slave support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-rcar.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -162,6 +162,6 @@ void __init trap_init(void)
- 	csr_write(CSR_SCRATCH, 0);
- 	/* Set the exception vector address */
- 	csr_write(CSR_TVEC, &handle_exception);
--	/* Enable all interrupts */
--	csr_write(CSR_IE, -1);
-+	/* Enable interrupts */
-+	csr_write(CSR_IE, IE_SIE | IE_EIE);
- }
+diff --git a/drivers/i2c/busses/i2c-rcar.c b/drivers/i2c/busses/i2c-rcar.c
+index 7a6bae9df568b..08b1580d59c98 100644
+--- a/drivers/i2c/busses/i2c-rcar.c
++++ b/drivers/i2c/busses/i2c-rcar.c
+@@ -112,6 +112,8 @@
+ #define ID_P_PM_BLOCKED		BIT(31)
+ #define ID_P_MASK		GENMASK(31, 28)
+ 
++#define ID_SLAVE_NACK		BIT(0)
++
+ enum rcar_i2c_type {
+ 	I2C_RCAR_GEN1,
+ 	I2C_RCAR_GEN2,
+@@ -145,6 +147,7 @@ struct rcar_i2c_priv {
+ 	int irq;
+ 
+ 	struct i2c_client *host_notify_client;
++	u8 slave_flags;
+ };
+ 
+ #define rcar_i2c_priv_to_dev(p)		((p)->adap.dev.parent)
+@@ -573,6 +576,7 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ {
+ 	u32 ssr_raw, ssr_filtered;
+ 	u8 value;
++	int ret;
+ 
+ 	ssr_raw = rcar_i2c_read(priv, ICSSR) & 0xff;
+ 	ssr_filtered = ssr_raw & rcar_i2c_read(priv, ICSIER);
+@@ -588,7 +592,10 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 			rcar_i2c_write(priv, ICRXTX, value);
+ 			rcar_i2c_write(priv, ICSIER, SDE | SSR | SAR);
+ 		} else {
+-			i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_REQUESTED, &value);
++			if (ret)
++				priv->slave_flags |= ID_SLAVE_NACK;
++
+ 			rcar_i2c_read(priv, ICRXTX);	/* dummy read */
+ 			rcar_i2c_write(priv, ICSIER, SDR | SSR | SAR);
+ 		}
+@@ -601,18 +608,21 @@ static bool rcar_i2c_slave_irq(struct rcar_i2c_priv *priv)
+ 	if (ssr_filtered & SSR) {
+ 		i2c_slave_event(priv->slave, I2C_SLAVE_STOP, &value);
+ 		rcar_i2c_write(priv, ICSCR, SIE | SDBS); /* clear our NACK */
++		priv->slave_flags &= ~ID_SLAVE_NACK;
+ 		rcar_i2c_write(priv, ICSIER, SAR);
+ 		rcar_i2c_write(priv, ICSSR, ~SSR & 0xff);
+ 	}
+ 
+ 	/* master wants to write to us */
+ 	if (ssr_filtered & SDR) {
+-		int ret;
+-
+ 		value = rcar_i2c_read(priv, ICRXTX);
+ 		ret = i2c_slave_event(priv->slave, I2C_SLAVE_WRITE_RECEIVED, &value);
+-		/* Send NACK in case of error */
+-		rcar_i2c_write(priv, ICSCR, SIE | SDBS | (ret < 0 ? FNA : 0));
++		if (ret)
++			priv->slave_flags |= ID_SLAVE_NACK;
++
++		/* Send NACK in case of error, but it will come 1 byte late :( */
++		rcar_i2c_write(priv, ICSCR, SIE | SDBS |
++			       (priv->slave_flags & ID_SLAVE_NACK ? FNA : 0));
+ 		rcar_i2c_write(priv, ICSSR, ~SDR & 0xff);
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
