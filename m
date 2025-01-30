@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7032CA22FDD
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E70A23032
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEB11676C9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423E11883ABD
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB691E98F1;
-	Thu, 30 Jan 2025 14:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2191E8835;
+	Thu, 30 Jan 2025 14:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrwdHr5v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuvP2V8R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92921E7C25;
-	Thu, 30 Jan 2025 14:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6591E522;
+	Thu, 30 Jan 2025 14:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247177; cv=none; b=SSqJtbFXT/TfNq8Vd0iesk+ArURg6Y4PIfqJSuxf7OlJ3Jxha9uL5hhEe7tbhM8lwP4B2agAdv3c0ha0EQN5EB8w1FJ4Sc77KEv83zlZkEMMseqX6cjusozE8BzLFZ/Hmp3ZJC+R1KUhsy9fjxeQAYWpyoZ8jl1TmSgVcRzcQqI=
+	t=1738247381; cv=none; b=GYIybMrjDXdgOIRgO34fvnSeOXXMcfSwE2xpxKTu/z4RewT1R7wWUtbk8fjXLcgz/pwDBHMdKVmtVaqV7LQsAjAwFusk3fBykW658bkoJi7nmXzoJ2cvo8uPBoVMhoZYaKgr+N871Jq23KIo6012sfLMV59U4FWQF55ShPwNNWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247177; c=relaxed/simple;
-	bh=bquP7pQfJklJtsvttCHnh7PcjPY9QKlenpNPUn8GX2M=;
+	s=arc-20240116; t=1738247381; c=relaxed/simple;
+	bh=kf0uhNEgkPtORFWFOtVB/d614YTJnQUAJ1G/ZtVG4cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEXU2ShdNug8KA0tL2sCIGOLXLiotC/lSwHTUIiD9YJesH6TZpAiw5vLBLhQNHA7GvdcDP9f8Pwx8PyZHGmgcqo76YEwZIsqNgEJlQ0w7P8CfF7fpLkwNwgrA5Irx0ICZNNr4o9L0s44ZaAzc8TnaW/6wctcfLEZ3VypV+vvLzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrwdHr5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DCCC4CED2;
-	Thu, 30 Jan 2025 14:26:17 +0000 (UTC)
+	 MIME-Version; b=VVulK/e2NDd6MrW46hj9P2qwHVyElj2/taVLR+JSb9lwRbQDPpfUkqTEJXXLDPDQCIUPl8SBq3mSOHAPmQWjHZLj7G4cxMjp+F0ng4+Kc9tG8vCbsrgWTcg3pC/kLrHIbVFRlv5AA12pIslVQcQC1p4aTbqAHZKaoHKAkl/yFEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuvP2V8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E42C4CED2;
+	Thu, 30 Jan 2025 14:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247177;
-	bh=bquP7pQfJklJtsvttCHnh7PcjPY9QKlenpNPUn8GX2M=;
+	s=korg; t=1738247381;
+	bh=kf0uhNEgkPtORFWFOtVB/d614YTJnQUAJ1G/ZtVG4cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrwdHr5vfEQBEywGD2jasulVpAfCDT07tv80wHqdWKC7bqTZpBqzhWSeoIkLTIk1W
-	 lJtateyIkj5YSLVUnLD7QX81iCv8NDsb4x+YwUcREsAajWbvDRjhHd6FNpqP/eENUC
-	 +VZjqh3s6VmQTmNDggU4oRC5rLpVS5Cs9auDRmBo=
+	b=EuvP2V8R2nSWFie1n55lKpMZqIlMfg/a9W5och6lhqH73sfn3LYWeUvxVo3ehRqdo
+	 U6/xJGKQbP0WWIbHd7Ke7ZebKhwJbR72cNMa6QtowlaUlGWpw7PHNQMMe7st/q6mlh
+	 Oa3pkacjH5P2EOV30m9JSq0vBsEOBJWyD/Ce84x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 109/133] fou: remove warn in gue_gro_receive on unsupported protocol
+	kernel test robot <lkp@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 02/49] ASoC: samsung: Add missing selects for MFD_WM8994
 Date: Thu, 30 Jan 2025 15:01:38 +0100
-Message-ID: <20250130140146.925714822@linuxfoundation.org>
+Message-ID: <20250130140133.924617565@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-commit dd89a81d850fa9a65f67b4527c0e420d15bf836c upstream.
+[ Upstream commit fd55c6065bec5268740e944a1800e6fad00974d9 ]
 
-Drop the WARN_ON_ONCE inn gue_gro_receive if the encapsulated type is
-not known or does not have a GRO handler.
+Anything selecting SND_SOC_WM8994 should also select MFD_WM8994, as
+SND_SOC_WM8994 does not automatically do so. Add the missing selects.
 
-Such a packet is easily constructed. Syzbot generates them and sets
-off this warning.
-
-Remove the warning as it is expected and not actionable.
-
-The warning was previously reduced from WARN_ON to WARN_ON_ONCE in
-commit 270136613bf7 ("fou: Do WARN_ON_ONCE in gue_gro_receive for bad
-proto callbacks").
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240614122552.1649044-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071530.UwIXs7OL-lkp@intel.com/
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250107104134.12147-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fou.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/samsung/Kconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/fou.c
-+++ b/net/ipv4/fou.c
-@@ -453,7 +453,7 @@ next_proto:
+diff --git a/sound/soc/samsung/Kconfig b/sound/soc/samsung/Kconfig
+index 2a61e620cd3b0..6bf9fd720d4bf 100644
+--- a/sound/soc/samsung/Kconfig
++++ b/sound/soc/samsung/Kconfig
+@@ -220,8 +220,9 @@ config SND_SOC_SAMSUNG_TM2_WM5110
  
- 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
- 	ops = rcu_dereference(offloads[proto]);
--	if (WARN_ON_ONCE(!ops || !ops->callbacks.gro_receive))
-+	if (!ops || !ops->callbacks.gro_receive)
- 		goto out;
- 
- 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
+ config SND_SOC_SAMSUNG_ARIES_WM8994
+ 	tristate "SoC I2S Audio support for WM8994 on Aries"
+-	depends on SND_SOC_SAMSUNG && MFD_WM8994 && IIO && EXTCON
++	depends on SND_SOC_SAMSUNG && IIO && EXTCON
+ 	select SND_SOC_BT_SCO
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	select SND_SAMSUNG_I2S
+ 	help
+@@ -235,6 +236,7 @@ config SND_SOC_SAMSUNG_MIDAS_WM1811
+ 	tristate "SoC I2S Audio support for Midas boards"
+ 	depends on SND_SOC_SAMSUNG
+ 	select SND_SAMSUNG_I2S
++	select MFD_WM8994
+ 	select SND_SOC_WM8994
+ 	help
+ 	  Say Y if you want to add support for SoC audio on the Midas boards.
+-- 
+2.39.5
+
 
 
 
