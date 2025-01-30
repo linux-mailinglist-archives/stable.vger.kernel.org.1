@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EABA22E8D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:02:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFB0A22EE0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 269B8188A64E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:02:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37EF93A6003
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3F41E2853;
-	Thu, 30 Jan 2025 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932831E7C27;
+	Thu, 30 Jan 2025 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7Y65ZeZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="al4ODDLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA2C1E47C4;
-	Thu, 30 Jan 2025 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEC8383;
+	Thu, 30 Jan 2025 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245726; cv=none; b=N4ty0BpvO862rGL1dEI9RKNVQp40AW6CWLWqusfvzi+AltKUAFftZjCh5yR9X6ehnYTWBtm/Ls9/Vjjelzk0IxeI/zFNjyRf4Xj3NOXHvFa3IPoLpwbBCO8amK5s0Vq8c4g+MFO3WX3z+/A4wuJWvnXdwn0fdvwSfPgDRP+ZmAE=
+	t=1738246560; cv=none; b=DJBhBudVfel4kLbbTLM5A8ekBKo81nfiChveMK4iXYVo3i0fCRFUXP3EJLjG5LulztH4CujjBT30p9aWR0SmuEi97Gk1tN4ndbiuAT7C/NBELuI8jhVuG8D5hq04n6hcyXiH0SR1x0OkkvNaqxbmmIBXwXoMUAc6y5+H/lK/jDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245726; c=relaxed/simple;
-	bh=6rXS5hRHzdgkhVaaoTDvky54xvKw/D9Ar6S2PKSpF7s=;
+	s=arc-20240116; t=1738246560; c=relaxed/simple;
+	bh=FCZXFoFN3uabneV4473AjWVUjLKSiorjC6KlYluzm0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2s9X/U2+lDsCVLkhcTfjwYSYey2q4KIyMN1iVmoJZjPjMvSEp/HkrGjP58gw/7Y4V4jQ6LdGqve7PSTUuBb+huVhffrXGC0cCbhoCuxs1fgemA0e16Zk2yEGkBjovPUy/Sp3IZ84QyEsQBtB9ssRYjrzwfBSnKhjYUBnQRA0/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7Y65ZeZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A894C4CED2;
-	Thu, 30 Jan 2025 14:02:05 +0000 (UTC)
+	 MIME-Version; b=H1S2asEk6Y9pMEjQ3l/O67ms8jZAzVWqdu84f5aiHavcg1piviAz94OwLqg6Y6vWDwHCwvSSbNfKGogylHqISSCxTmxNANzVXifZDe7ibWRJ1sTskCAYV8MSbDCbtV1LPk34AiRc5GnfLnY2zEdKWdYP9bZvCRZMd6fLvin/hx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=al4ODDLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71B2C4CEE0;
+	Thu, 30 Jan 2025 14:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245725;
-	bh=6rXS5hRHzdgkhVaaoTDvky54xvKw/D9Ar6S2PKSpF7s=;
+	s=korg; t=1738246560;
+	bh=FCZXFoFN3uabneV4473AjWVUjLKSiorjC6KlYluzm0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7Y65ZeZpHbr1lKeRyPuLBp315Jdx678mmghBTETZuGyhEMoolxKYHo7IFISm2U7x
-	 KEYKB1DYZM2mRfS+YDgZY2Rbxf4xPPKFpGyR2ZyfnogUsHFCaonFEmckOl+34OVqLC
-	 W5ix1gfT5DMy6FUU6PmrhuZrQ7vvcTr53ZKedoKo=
+	b=al4ODDLoIyZULP1DgO/E+meyGOmj7dYE3JkRyWaWZ+gm7S+unLXe33G9gFbY7udYt
+	 FgPgsZql1hK4YZ+v8C8GKf339oFF80RWDUv6LE7EVKNAXkVNxS01+0/XubZiexW8S2
+	 E5bLAUO4OEQWAw85NMnKBDnnHde8Hxgb2YiMtgRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Greiner <jack@emoss.org>,
-	Pavel Rojtberg <rojtberg@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 40/40] Input: xpad - add support for wooting two he (arm)
-Date: Thu, 30 Jan 2025 14:59:40 +0100
-Message-ID: <20250130133501.313475053@linuxfoundation.org>
+	syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 34/43] USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()
+Date: Thu, 30 Jan 2025 14:59:41 +0100
+Message-ID: <20250130133500.275018216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
-References: <20250130133459.700273275@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Greiner <jack@emoss.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-commit 222f3390c15c4452a9f7e26f5b7d9138e75d00d5 upstream.
+commit 575a5adf48b06a2980c9eeffedf699ed5534fade upstream.
 
-Add Wooting Two HE (ARM) to the list of supported devices.
+This patch addresses a null-ptr-deref in qt2_process_read_urb() due to
+an incorrect bounds check in the following:
 
-Signed-off-by: Jack Greiner <jack@emoss.org>
-Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
-Link: https://lore.kernel.org/r/20250107192830.414709-3-rojtberg@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+       if (newport > serial->num_ports) {
+               dev_err(&port->dev,
+                       "%s - port change to invalid port: %i\n",
+                       __func__, newport);
+               break;
+       }
+
+The condition doesn't account for the valid range of the serial->port
+buffer, which is from 0 to serial->num_ports - 1. When newport is equal
+to serial->num_ports, the assignment of "port" in the
+following code is out-of-bounds and NULL:
+
+       serial_priv->current_port = newport;
+       port = serial->port[serial_priv->current_port];
+
+The fix checks if newport is greater than or equal to serial->num_ports
+indicating it is out-of-bounds.
+
+Reported-by: syzbot <syzbot+506479ebf12fe435d01a@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=506479ebf12fe435d01a
+Fixes: f7a33e608d9a ("USB: serial: add quatech2 usb to serial driver")
+Cc: <stable@vger.kernel.org>      # 3.5
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/quatech2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -382,6 +382,7 @@ static const struct xpad_device {
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1220, "Wooting Two HE", 0, XTYPE_XBOX360 },
-+	{ 0x31e3, 0x1230, "Wooting Two HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
+--- a/drivers/usb/serial/quatech2.c
++++ b/drivers/usb/serial/quatech2.c
+@@ -503,7 +503,7 @@ static void qt2_process_read_urb(struct
+ 
+ 				newport = *(ch + 3);
+ 
+-				if (newport > serial->num_ports) {
++				if (newport >= serial->num_ports) {
+ 					dev_err(&port->dev,
+ 						"%s - port change to invalid port: %i\n",
+ 						__func__, newport);
 
 
 
