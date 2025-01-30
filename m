@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE8EA22F46
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CCAA22FBA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A1D3A4C11
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 684911882F6F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9C41E7C25;
-	Thu, 30 Jan 2025 14:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF3E1E8835;
+	Thu, 30 Jan 2025 14:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3lKiu3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrCPP/4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84F31E3772;
-	Thu, 30 Jan 2025 14:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB5B1E522;
+	Thu, 30 Jan 2025 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246817; cv=none; b=pcexwxkGb9Y48hdD9DXjqR8yCSCvRjTP08thDX7aoOUb8MTLrn3kRYZt/qypvz7nJRslAqaAN1ml1Yxz9JuEYjvEFUDrjGwauMdTQLlKMMsD+1zX/JpGwW/AVmtftwHJCBIu6SvPHruAhtflYBkBEk6Fh+EivU9unUjRb9fMmQI=
+	t=1738247086; cv=none; b=dR/Vl4xJuUnnOWTecjGlklb0SDqZlZZ2DTRZbxp77pLJrgxbu719qGndnv44cy8gzDaxz6RYOJSAYSqWh8yjj8uzUvzRnYcJRViG6RUHRsrS1QpPdL2lEU/uAUdiFhw/70QflCEWj/6txxcEam9CIqvSeVf0KuDPfvestvPYff8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246817; c=relaxed/simple;
-	bh=zm+cr5IID31BnPhK1tLgxsAygKLxf7uI5Pc8HA9ZblE=;
+	s=arc-20240116; t=1738247086; c=relaxed/simple;
+	bh=fTliQNZlZsdzDHa8azR0ga98XLePj+rE2oOmB1IX2ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhR5IGhJTD2apwAE3Vberd9nSQTL+tuL/gcM1Ykg7vDoWAMA3bAOHBIpZ/aoFnvJsTQMgkcAgP8kqzZ62Qfvmc1vs4J2OC48/74VUdIUdlvJl6WIN4OsN5kYL4Pvhu/LcjQjlgL22UzW6hj5RexM0eTQVLaY9isCQ9/dNeVRNAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3lKiu3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5188AC4CED2;
-	Thu, 30 Jan 2025 14:20:17 +0000 (UTC)
+	 MIME-Version; b=gjJPKewusJIXBjN6fUHciWoKC7YPKhZjGV9pkUmkSrtJL7oNJP++ZF4AAQVY7Vka4F2KlN7NCFx57UEVqLkLj71v3HJUaQ9V01uCTevlhIpo6KVPrrACrHgzHaWB1I0tXfFEJefacOFqXw53eZNAmB0EIczMbubIhtZY8UnMNu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrCPP/4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C78C4CED2;
+	Thu, 30 Jan 2025 14:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246817;
-	bh=zm+cr5IID31BnPhK1tLgxsAygKLxf7uI5Pc8HA9ZblE=;
+	s=korg; t=1738247086;
+	bh=fTliQNZlZsdzDHa8azR0ga98XLePj+rE2oOmB1IX2ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3lKiu3NkJHmmDP4X5yPAxm58UXZbR+N6Fyx646plJoaUzb2GlLycpfFmyQFwf2R7
-	 yVb/5SzfkXKjRZ9s7Dj5Ik/abCacAEFN3MyPx9Bb0bvzbQc6zi9w0nVn8g1BDs9Hp2
-	 UZtakgHqN5Qco8HpctHzLn2RkYfk53M4CzhhJlJQ=
+	b=vrCPP/4Jyn1YUzfwUx2X7QbrAZOTQnfSStyuFmgLdpBkkZgLrgsoX11G/MA6S2qDa
+	 9/dj+Ht4Iu2CpViAU1fQYx6MEYl3OZr/4qLBYQpYjn0tYMqHculGSoeTj4kxqPrjtn
+	 HepSeR68mXsxbugmrkvQBG9Kk91F6pvUIOwNh4lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Palmer Dabbelt <palmerdabbelt@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 48/91] riscv: remove unused handle_exception symbol
+Subject: [PATCH 5.10 078/133] nfp: bpf: prevent integer overflow in nfp_bpf_event_output()
 Date: Thu, 30 Jan 2025 15:01:07 +0100
-Message-ID: <20250130140135.594803763@linuxfoundation.org>
+Message-ID: <20250130140145.657655426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rouven Czerwinski <rouven@czerwinskis.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit beaf5ae15a13d835a01e30c282c8325ce0f1eb7e ]
+[ Upstream commit 16ebb6f5b6295c9688749862a39a4889c56227f8 ]
 
-Since commit 79b1feba5455 ("RISC-V: Setup exception vector early")
-exception vectors are setup early and the handle_exception symbol from
-the asm files is no longer referenced in traps.c. Remove it.
+The "sizeof(struct cmsg_bpf_event) + pkt_size + data_size" math could
+potentially have an integer wrapping bug on 32bit systems.  Check for
+this and return an error.
 
-Signed-off-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
-Stable-dep-of: 6a97f4118ac0 ("riscv: Fix sleeping in invalid context in die()")
+Fixes: 9816dd35ecec ("nfp: bpf: perf event output helpers support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/6074805b-e78d-4b8a-bf05-e929b5377c28@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/netronome/nfp/bpf/offload.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 030094ac7190..184f7b82c5ae 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -23,8 +23,6 @@
+diff --git a/drivers/net/ethernet/netronome/nfp/bpf/offload.c b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
+index 9d97cd281f18e..c03558adda91e 100644
+--- a/drivers/net/ethernet/netronome/nfp/bpf/offload.c
++++ b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
+@@ -458,7 +458,8 @@ int nfp_bpf_event_output(struct nfp_app_bpf *bpf, const void *data,
+ 	map_id_full = be64_to_cpu(cbe->map_ptr);
+ 	map_id = map_id_full;
  
- int show_unhandled_signals = 1;
- 
--extern asmlinkage void handle_exception(void);
--
- static DEFINE_SPINLOCK(die_lock);
- 
- void die(struct pt_regs *regs, const char *str)
+-	if (len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
++	if (size_add(pkt_size, data_size) > INT_MAX ||
++	    len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
+ 		return -EINVAL;
+ 	if (cbe->hdr.ver != NFP_CCM_ABI_VERSION)
+ 		return -EINVAL;
 -- 
 2.39.5
 
