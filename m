@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-111535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B8FA22F96
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB84FA22F03
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F80C16300C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64427188875A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240911E98E8;
-	Thu, 30 Jan 2025 14:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0B11E7C08;
+	Thu, 30 Jan 2025 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqYkwJ+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zo66+Wjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EE81DDC22;
-	Thu, 30 Jan 2025 14:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA061E3DC8;
+	Thu, 30 Jan 2025 14:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247019; cv=none; b=FUpBzfntwQ47Qbte65WpM/LRSov3v1EBYDeDxNOVs1Rp+ux7AoM08okchC1gcb/dZRVgnHH/qrB7zvHyXvw6+Z+jM7xoZmeEoCHX18pwIXjBrG1mRyqkqDj1hvb1ealSjPWV1C+DUY7uZ7izfA5uHtUdD8kr/GGNr+n2w/eI6IQ=
+	t=1738246660; cv=none; b=Uwbd9V4Wd38AZKgI5QYJnYzGEF6aYqIHqVkyAFb67l0lnPZMRYcyolNmqgQalJnMFpZgwj39KhyMDOhb/hM7ljZahtug+fAHRyg3kGUR7GEFb4bv3ciCm6Uf7p4QSZFoi03TKHRMnb3nntNhgInJOM/RdHibTy4dNXMq1UziR6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247019; c=relaxed/simple;
-	bh=opQkO7I1hobNu7evjEcJoZNzVKIW68a0SwxXLSZMzwQ=;
+	s=arc-20240116; t=1738246660; c=relaxed/simple;
+	bh=6YA6MUrdalOmzQA9qge9ygTNVhhRga7PiuGZ0Kr9jNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6+rEMSprlfCa6CTB9PGUqGOhjwWCsD5jsH8Q6yBSTgyCixmlLeHxrnylr/UpR+U0650K7AxijkXvD6uy17xxEQXKgoXJyQh5BenltXwCdG4urSNuBn5GlVnYmXX01PB85eb9mr6M4sWtfCr4rMu5lhEUOPRJdhNeUvWBoztCWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqYkwJ+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AB1C4CED2;
-	Thu, 30 Jan 2025 14:23:39 +0000 (UTC)
+	 MIME-Version; b=iH14GyntTII+tz0mVLcriW3sdrYd9rO4J76631BW+YqoYHG+ulzxT5iAQir1ZLUGT59s6Jk+CBI9aqQTPsAPwFdZ9aBjQD7pXLetSVDPKQmEV2vEeZjGcMSJk9crX9poeQum8Mxa/2ln3k8b/Yhm5VcOWudwKAPb32jlg1m8YUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zo66+Wjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F56C4CEE0;
+	Thu, 30 Jan 2025 14:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247019;
-	bh=opQkO7I1hobNu7evjEcJoZNzVKIW68a0SwxXLSZMzwQ=;
+	s=korg; t=1738246659;
+	bh=6YA6MUrdalOmzQA9qge9ygTNVhhRga7PiuGZ0Kr9jNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqYkwJ+XfDcYwWQRF8wHRB+b3BtJipWM41E04ZAqVpe5lKTBon7yW/iggDfsbx594
-	 6RfW7e6daQGV6UsjQQFO9hZC7cMfwipS5Mn8pEbEYJmMvJ2vuzuQeRAczk7RY/zGwr
-	 1Yyc6OX0nTMqUjAiz3jlqZrlvA5xONFJC+GFamg4=
+	b=zo66+Wjk9HtAvia7LCHTUXoGO3C4blquS7v3BWyKayYmft+wLEoL5uxyJPU2+XBoV
+	 4kD0v28WnU3ZZgzCHLzNFOXH59owhTvQPmHxYXDSlZeukTX5RBJz7fUSEvZl6+Kqwx
+	 W5vFwoTq31oRlBoySU7L8egzOPZ5AewPk9Co3fck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/133] nvme: let set_capacity_revalidate_and_notify update the bdev size
+	stable <stable@kernel.org>,
+	Lianqin Hu <hulianqin@vivo.com>
+Subject: [PATCH 5.4 24/91] usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null
 Date: Thu, 30 Jan 2025 15:00:43 +0100
-Message-ID: <20250130140144.691864125@linuxfoundation.org>
+Message-ID: <20250130140134.635173399@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit 5dd55749b79cdf471ca0966ad91541daebac3e2f ]
+commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec upstream.
 
-There is no good reason to call revalidate_disk_size separately.
+Considering that in some extreme cases, when performing the
+unbinding operation, gserial_disconnect has cleared gser->ioport,
+which triggers gadget reconfiguration, and then calls gs_read_complete,
+resulting in access to a null pointer. Therefore, ep is disabled before
+gserial_disconnect sets port to null to prevent this from happening.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call trace:
+ gs_read_complete+0x58/0x240
+ usb_gadget_giveback_request+0x40/0x160
+ dwc3_remove_requests+0x170/0x484
+ dwc3_ep0_out_start+0xb0/0x1d4
+ __dwc3_gadget_start+0x25c/0x720
+ kretprobe_trampoline.cfi_jt+0x0/0x8
+ kretprobe_trampoline.cfi_jt+0x0/0x8
+ udc_bind_to_driver+0x1d8/0x300
+ usb_gadget_probe_driver+0xa8/0x1dc
+ gadget_dev_desc_UDC_store+0x13c/0x188
+ configfs_write_iter+0x160/0x1f4
+ vfs_write+0x2d0/0x40c
+ ksys_write+0x7c/0xf0
+ __arm64_sys_write+0x20/0x30
+ invoke_syscall+0x60/0x150
+ el0_svc_common+0x8c/0xf8
+ do_el0_svc+0x28/0xa0
+ el0_svc+0x24/0x84
+
+Fixes: c1dca562be8a ("usb gadget: split out serial core")
+Cc: stable <stable@kernel.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Link: https://lore.kernel.org/r/TYUPR06MB621733B5AC690DBDF80A0DCCD2042@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/gadget/function/u_serial.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index bee55902fe6c..c8e64a1e2fc0 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2132,7 +2132,7 @@ static void nvme_update_disk_info(struct gendisk *disk,
- 			capacity = 0;
+--- a/drivers/usb/gadget/function/u_serial.c
++++ b/drivers/usb/gadget/function/u_serial.c
+@@ -1369,6 +1369,10 @@ void gserial_disconnect(struct gserial *
+ 	/* REVISIT as above: how best to track this? */
+ 	port->port_line_coding = gser->port_line_coding;
+ 
++	/* disable endpoints, aborting down any active I/O */
++	usb_ep_disable(gser->out);
++	usb_ep_disable(gser->in);
++
+ 	port->port_usb = NULL;
+ 	gser->ioport = NULL;
+ 	if (port->port.count > 0 || port->openclose) {
+@@ -1378,10 +1382,6 @@ void gserial_disconnect(struct gserial *
  	}
+ 	spin_unlock_irqrestore(&port->port_lock, flags);
  
--	set_capacity_revalidate_and_notify(disk, capacity, false);
-+	set_capacity_revalidate_and_notify(disk, capacity, true);
- 
- 	nvme_config_discard(disk, ns);
- 	nvme_config_write_zeroes(disk->queue, ns->ctrl);
-@@ -2213,7 +2213,6 @@ static int nvme_update_ns_info(struct nvme_ns *ns, struct nvme_id_ns *id)
- 		blk_stack_limits(&ns->head->disk->queue->limits,
- 				 &ns->queue->limits, 0);
- 		blk_queue_update_readahead(ns->head->disk->queue);
--		nvme_update_bdev_size(ns->head->disk);
- 		blk_mq_unfreeze_queue(ns->head->disk->queue);
- 	}
- #endif
-@@ -4095,8 +4094,6 @@ static void nvme_validate_ns(struct nvme_ns *ns, struct nvme_ns_ids *ids)
- 	 */
- 	if (ret > 0 && (ret & NVME_SC_DNR))
- 		nvme_ns_remove(ns);
--	else
--		revalidate_disk_size(ns->disk, true);
- }
- 
- static void nvme_validate_or_alloc_ns(struct nvme_ctrl *ctrl, unsigned nsid)
--- 
-2.39.5
-
+-	/* disable endpoints, aborting down any active I/O */
+-	usb_ep_disable(gser->out);
+-	usb_ep_disable(gser->in);
+-
+ 	/* finally, free any unused/unusable I/O buffers */
+ 	spin_lock_irqsave(&port->port_lock, flags);
+ 	if (port->port.count == 0 && !port->openclose)
 
 
 
