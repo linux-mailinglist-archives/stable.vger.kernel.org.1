@@ -1,147 +1,105 @@
-Return-Path: <stable+bounces-111709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E3BA2313E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:56:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6269DA2314E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 16:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16FC11883ACB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:56:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45779167B7C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C91E991C;
-	Thu, 30 Jan 2025 15:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60531EE003;
+	Thu, 30 Jan 2025 15:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IJaRPwpF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CrgsGb4O"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E0B1E98F3;
-	Thu, 30 Jan 2025 15:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7701EBA19
+	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 15:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738252604; cv=none; b=qCiUQazwReMtH3Tfs9+0l5d+gajQaCiMxfDJ1yuJqqvxLPNP7IQ6YREw9Euw5lZRUxuZnxmr+wQwbnfGz9IOoaO8H9SREvvjUA769ZF8qrWc+gGD/d4VypZwreZjFp5HKmnbMltZM8pYaxxK5aOk90SGpJBuKXKEYBx3GcadpBo=
+	t=1738252677; cv=none; b=ZZKHIcrXnOx8nibglUOVWZ8hMYEnMOEjW0hNuPygFt7ie9i9HClTogl8vC0aGSW115NfLq4M3updlwAwFp71riGvFXr7RYRG9DvOgNSUfgJUn7LMvmqkcsoYH33pkRJfDeiHPJyN64wMdaYCCD86FhFPvmfsIQUhczmH5QwLsG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738252604; c=relaxed/simple;
-	bh=kyueqhJCMqDvblVFcCdgbr8Ha4b8qWO7dbnUxsJEkrQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F2yjtUIM1Bw/mpu/8PSxcuTrfyocJnwC6PnhA7FPhdLjQTwlgfUE2FF9tVW2Sa3vXXPnhgsizaU+AJ+MXeo5dn4L1+Blogy0PoSRYqgyrrF2BjYkV7nH0yZKSHbLYl42JvBSvhdfuD4SxBeKeZTQdbomyilewYc5jvA2yhFZHRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IJaRPwpF; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=y8WowStiuFjtFiRY/j+QKKzZT9+b6Vju/ceYoKEPRYk=; b=IJaRPwpF4gbIObU8fUTSiyhgEV
-	YzFhvVx5h9DEqE71We2TGaRnvnxdE5eOYMlC9VTAXR2D8jNDz0y/6UhAB9g0+NqouafIrwCk8eeEe
-	lbgAqNWAloEDPV0fpDPqfoLyTiBkzU9WrdIVZO7ItX24my+5om2eKhgnMHFPONTCKAjSJVwXMpM3H
-	9JdXbU8/H002fEFaicIwfZAHtpwPViyeSL/TlvuoJASByGPKOXIoXVp+Pd+wUMqSqhzEfWQqv7Xy4
-	zmLUVLGBedQRamU+BLYl3UjZ8p3kX6e/u+qrdYjfmU1gVTtdZnjA23u9mPIdSTGI6re29MvUObz3T
-	XefyNjTQ==;
-Received: from [189.16.81.54] (helo=[10.154.220.147])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1tdWu1-0015Mv-1g; Thu, 30 Jan 2025 16:56:31 +0100
-Message-ID: <12607ce2-01f3-4fb6-8b50-33a9f7f26381@igalia.com>
-Date: Thu, 30 Jan 2025 12:56:25 -0300
+	s=arc-20240116; t=1738252677; c=relaxed/simple;
+	bh=ZkXlZnXCEZfUvPemo0Bdv/SbSJ+SxapGl1P5igcP9F8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSRrAEqcBZbCB0zrePEVRnF9rufIbLHDJ4yUTYaayqF2GcsDFgUsaMo0oXBGMbfGQyhtzfgcKsLI103QM5i4G85c495dUTgNr70dcXOpjJ7vkvhScKFR5sMBruETdwoFwqyjxYB718N8G0TMvAOyi002jnqNOKcj8uv5boOVfsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CrgsGb4O; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738252675;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZkXlZnXCEZfUvPemo0Bdv/SbSJ+SxapGl1P5igcP9F8=;
+	b=CrgsGb4OW1GUQQjn3H08BhKWBMlY0RKZNfJ7EeFYhn+8e+AQ1PMB2TIG9T9JCKmEuwX06m
+	EQw3vje9VcRMugyeWOndY9YurSk5sdhRkoUX/bix6VgYgIGh2A+tOfWM8NuwTcFIeiPmYy
+	ocnwQsrQVvGbI0dTppl4szsxNziCHFk=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-180-MkvLibgYMx2BoPEK3NL3kA-1; Thu,
+ 30 Jan 2025 10:57:49 -0500
+X-MC-Unique: MkvLibgYMx2BoPEK3NL3kA-1
+X-Mimecast-MFC-AGG-ID: MkvLibgYMx2BoPEK3NL3kA
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C15C21956052;
+	Thu, 30 Jan 2025 15:57:45 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.195])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 96735180094D;
+	Thu, 30 Jan 2025 15:57:36 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Thu, 30 Jan 2025 16:57:19 +0100 (CET)
+Date: Thu, 30 Jan 2025 16:57:09 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Eyal Birger <eyal.birger@gmail.com>
+Cc: Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+	luto@amacapital.net, wad@chromium.org, mhiramat@kernel.org,
+	andrii@kernel.org, alexei.starovoitov@gmail.com, cyphar@cyphar.com,
+	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
+	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
+	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
+	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
+	bpf@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without
+ filtering
+Message-ID: <20250130155708.GD18488@redhat.com>
+References: <20250128145806.1849977-1-eyal.birger@gmail.com>
+ <202501281634.7F398CEA87@keescook>
+ <CAHsH6Gsv3DB0O5oiEDsf2+Go4O1+tnKm-Ab0QPyohKSaroSxxA@mail.gmail.com>
+ <Z5s3S5X8FYJDAHfR@krava>
+ <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 082/133] drm/v3d: Ensure job pointer is set to NULL
- after job completion
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
- Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
- Sasha Levin <sashal@kernel.org>
-References: <20250130140142.491490528@linuxfoundation.org>
- <20250130140145.823285670@linuxfoundation.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-In-Reply-To: <20250130140145.823285670@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Greg,
+On 01/30, Eyal Birger wrote:
+>
+> Personally I'd prefer to limit the scope of this fix to the problem we
+> are aware of, and not possible problems should someone decide to reimplement
+> uretprobes on different archs in a different way. Especially as this fix needs
+> to be backmerged to stable kernels.
 
-This patch introduced a race-condition that was fixed in
-6e64d6b3a3c39655de56682ec83e894978d23412 ("drm/v3d: Assign job pointer
-to NULL before signaling the fence") - already in torvalds/master. Is it
-possible to push the two patches together? This way we wouldn't break
-any devices.
++1
 
-If possible, same thing for 5.4.
-
-Best Regards,
-- Maíra
-
-On 30/01/25 11:01, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Maíra Canal <mcanal@igalia.com>
-> 
-> [ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
-> 
-> After a job completes, the corresponding pointer in the device must
-> be set to NULL. Failing to do so triggers a warning when unloading
-> the driver, as it appears the job is still active. To prevent this,
-> assign the job pointer to NULL after completing the job, indicating
-> the job has finished.
-> 
-> Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-> Signed-off-by: Maíra Canal <mcanal@igalia.com>
-> Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-> index c88686489b888..22aa02d75c5cc 100644
-> --- a/drivers/gpu/drm/v3d/v3d_irq.c
-> +++ b/drivers/gpu/drm/v3d/v3d_irq.c
-> @@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
->   
->   		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
->   		dma_fence_signal(&fence->base);
-> +		v3d->bin_job = NULL;
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
->   
->   		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
->   		dma_fence_signal(&fence->base);
-> +		v3d->render_job = NULL;
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
->   
->   		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
->   		dma_fence_signal(&fence->base);
-> +		v3d->csd_job = NULL;
->   		status = IRQ_HANDLED;
->   	}
->   
-> @@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
->   
->   		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
->   		dma_fence_signal(&fence->base);
-> +		v3d->tfu_job = NULL;
->   		status = IRQ_HANDLED;
->   	}
->   
+Oleg.
 
 
