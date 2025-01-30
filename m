@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-111622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CAAA23005
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D99A23030
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E129A3A5F8F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D883168D6D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1907D1E98E8;
-	Thu, 30 Jan 2025 14:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421751E8855;
+	Thu, 30 Jan 2025 14:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw8/C35L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKUJLD6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CAA1BD9D3;
-	Thu, 30 Jan 2025 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002FD1E522;
+	Thu, 30 Jan 2025 14:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247273; cv=none; b=QKBaislu5TRJ0pYFLIKlD2GLmheJUOjfYxw8ChCdNCIUyOCIpR9XUuxsNn29ptATjRxshCj0vjLREuhkc673qYdEVOexv7j4Zo//N8B+MmP422atH8qg1eM5GHGgsKuh8GZ0gKg5ok76kbJN/tXf/lA0IzZg/XY8EAiG/xj/LAA=
+	t=1738247379; cv=none; b=cIaByLF8ViORfkJyln7JyDZkn12GV2Gva1vAKs1jkoaEGF7O76R+ByGQrPyrCckoMAufmTQ8cdOwU2+w0nIKNZHP0Pg8kF92DIx4vQ2FThe7HJ1NLrJJEkjVpJfQJd5RQha5fxXldRihleMi+1PC+Gogg9pNykrtnWb6j1XgtWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247273; c=relaxed/simple;
-	bh=+jFWLYQeCzyP/M0PZKVYYZqcdBMOPxiLF5boHbtipUA=;
+	s=arc-20240116; t=1738247379; c=relaxed/simple;
+	bh=H7WZCGQ8O29NIKtByRsKSSLOwefeeMJoO5WE/OHvwfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c04OdBlCzkRU7nJBR7tF7cp0n6OpoR2BNIyzaH1xTy5aEF9vnhuDifC2R09z6mwFXHAYtDENMgfK69rkfLII+khoZHSyyrDtFMm8YITwMNUoassHMQiLR/QQLdoDMb4jMwyrJuwjWo3Pg+4DkDT4nnntxWfLZ4Z63TYQXSahvkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw8/C35L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C43C4CED2;
-	Thu, 30 Jan 2025 14:27:53 +0000 (UTC)
+	 MIME-Version; b=Vp2ay813OSfyRZptNjBBEYn5dkmDc9TbJTsfX0hF9Asztd5xqNVRkclx/2KNYrtWNO/YbgWNBRl+kpxuPFKP7nlRfrnKguIhAes4mzU5A9fUhzrHR8/eTyavI4IWVdaDPDSfS1NNpEseWH28fBc8DwMfsNYS4LlfFqMzcq7f0Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKUJLD6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F001C4CED2;
+	Thu, 30 Jan 2025 14:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247273;
-	bh=+jFWLYQeCzyP/M0PZKVYYZqcdBMOPxiLF5boHbtipUA=;
+	s=korg; t=1738247378;
+	bh=H7WZCGQ8O29NIKtByRsKSSLOwefeeMJoO5WE/OHvwfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lw8/C35LMNzB1Wrn/Wv/r1NZfux3pIWAkcCYOGpRsYnyGyWZSAyf1ZddUE/0z3MC6
-	 KiRGevqgBjCPP6mm5/ad+GQqHg+FonuygbELamMVY9INKNau5ky/yFqRLTEMGuKo9i
-	 CCzlKypsNaeLxdo9yvTTqr2G2TbqsbBcOpM6CUQw=
+	b=zKUJLD6zoNVqdhsE2r6O8H8WQK7FTzY6QRmQCQw+0DDtcgpilLl4s5WdaFfjvjsxa
+	 gSVZxhtJF1dkxMJNNyPOEaKmNBVrWrdq2Wl0wgsSg3CP7qMgKRdnMzXCDyKT7BPgME
+	 lrgKZazwfZHIlrN5LVyL8o1eX/hsOFvpIP+FedXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.10 126/133] Bluetooth: RFCOMM: Fix not validating setsockopt user input
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 19/49] xfs: handle nimaps=0 from xfs_bmapi_write in xfs_alloc_file_space
 Date: Thu, 30 Jan 2025 15:01:55 +0100
-Message-ID: <20250130140147.600522150@linuxfoundation.org>
+Message-ID: <20250130140134.611180323@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 upstream.
+[ Upstream commit 35dc55b9e80cb9ec4bcb969302000b002b2ed850 ]
 
-syzbot reported rfcomm_sock_setsockopt_old() is copying data without
-checking user input length.
+If xfs_bmapi_write finds a delalloc extent at the requested range, it
+tries to convert the entire delalloc extent to a real allocation.
 
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
-include/linux/sockptr.h:49 [inline]
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
-include/linux/sockptr.h:55 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
-net/bluetooth/rfcomm/sock.c:632 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
-net/bluetooth/rfcomm/sock.c:673
-Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+But if the allocator cannot find a single free extent large enough to
+cover the start block of the requested range, xfs_bmapi_write will
+return 0 but leave *nimaps set to 0.
 
-Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
-Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+In that case we simply need to keep looping with the same startoffset_fsb
+so that one of the following allocations will eventually reach the
+requested range.
+
+Note that this could affect any caller of xfs_bmapi_write that covers
+an existing delayed allocation.  As far as I can tell we do not have
+any other such caller, though - the regular writeback path uses
+xfs_bmapi_convert_delalloc to convert delayed allocations to real ones,
+and direct I/O invalidates the page cache first.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ fs/xfs/xfs_bmap_util.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -631,7 +631,7 @@ static int rfcomm_sock_setsockopt_old(st
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -780,12 +780,10 @@ xfs_alloc_file_space(
+ {
+ 	xfs_mount_t		*mp = ip->i_mount;
+ 	xfs_off_t		count;
+-	xfs_filblks_t		allocated_fsb;
+ 	xfs_filblks_t		allocatesize_fsb;
+ 	xfs_extlen_t		extsz, temp;
+ 	xfs_fileoff_t		startoffset_fsb;
+ 	xfs_fileoff_t		endoffset_fsb;
+-	int			nimaps;
+ 	int			rt;
+ 	xfs_trans_t		*tp;
+ 	xfs_bmbt_irec_t		imaps[1], *imapp;
+@@ -808,7 +806,6 @@ xfs_alloc_file_space(
  
- 	switch (optname) {
- 	case RFCOMM_LM:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
-+		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
- 			err = -EFAULT;
+ 	count = len;
+ 	imapp = &imaps[0];
+-	nimaps = 1;
+ 	startoffset_fsb	= XFS_B_TO_FSBT(mp, offset);
+ 	endoffset_fsb = XFS_B_TO_FSB(mp, offset + count);
+ 	allocatesize_fsb = endoffset_fsb - startoffset_fsb;
+@@ -819,6 +816,7 @@ xfs_alloc_file_space(
+ 	while (allocatesize_fsb && !error) {
+ 		xfs_fileoff_t	s, e;
+ 		unsigned int	dblocks, rblocks, resblks;
++		int		nimaps = 1;
+ 
+ 		/*
+ 		 * Determine space reservations for data/realtime.
+@@ -884,15 +882,19 @@ xfs_alloc_file_space(
+ 		if (error)
  			break;
+ 
+-		allocated_fsb = imapp->br_blockcount;
+-
+-		if (nimaps == 0) {
+-			error = -ENOSPC;
+-			break;
++		/*
++		 * If the allocator cannot find a single free extent large
++		 * enough to cover the start block of the requested range,
++		 * xfs_bmapi_write will return 0 but leave *nimaps set to 0.
++		 *
++		 * In that case we simply need to keep looping with the same
++		 * startoffset_fsb so that one of the following allocations
++		 * will eventually reach the requested range.
++		 */
++		if (nimaps) {
++			startoffset_fsb += imapp->br_blockcount;
++			allocatesize_fsb -= imapp->br_blockcount;
  		}
-@@ -666,7 +666,6 @@ static int rfcomm_sock_setsockopt(struct
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
- 	int err = 0;
--	size_t len;
- 	u32 opt;
+-
+-		startoffset_fsb += allocated_fsb;
+-		allocatesize_fsb -= allocated_fsb;
+ 	}
  
- 	BT_DBG("sk %p", sk);
-@@ -688,11 +687,9 @@ static int rfcomm_sock_setsockopt(struct
- 
- 		sec.level = BT_SECURITY_LOW;
- 
--		len = min_t(unsigned int, sizeof(sec), optlen);
--		if (copy_from_sockptr(&sec, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (sec.level > BT_SECURITY_HIGH) {
- 			err = -EINVAL;
-@@ -708,10 +705,9 @@ static int rfcomm_sock_setsockopt(struct
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+ 	return error;
 
 
 
