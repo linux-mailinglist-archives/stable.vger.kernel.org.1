@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-111499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E645DA22F71
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8604A22F74
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E48F166538
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BF413A87E3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514771E98E8;
-	Thu, 30 Jan 2025 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7161E8855;
+	Thu, 30 Jan 2025 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTLf7CYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCuxJ8aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8CD1E7C27;
-	Thu, 30 Jan 2025 14:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6661BDA95;
+	Thu, 30 Jan 2025 14:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246914; cv=none; b=f+JX5ws/AjAdnvCDyQ2EpAD8z+8BtHFmQV0e+LVekClM3yuCoTveDcTYA4I3FeTLYgHWb51jrt8H0689Zy5WeqJ38wy81YSzV5h79B1CAVueOOo0PXjwK8SeWFv+kh38B8VnFBajNsSdDy+KIFcqgYXpGkIWc/iVBOe89AsqiZY=
+	t=1738246919; cv=none; b=A9rYMPy+g1xxidATmsBuQNQE6dzZa3zPk9CUkB3yXjN8k+wf0KkWDqhnj8clVW7wM57eltYcqGj1bjW61gno+XhSFAiZWMpEnNsIhrtmCqFJY3oprv3YFenjDLZgC59nmlaEhpNtfzkmJ/z3e1anBwV7NGhkjOs+Q5NGFK4CI+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246914; c=relaxed/simple;
-	bh=ejO7E/3J1GJTKYSjhzCw02/iA6ShxDUvUQw4xuUfDdk=;
+	s=arc-20240116; t=1738246919; c=relaxed/simple;
+	bh=xIZkGa3AeX2K6PH4nR9yio0+JqHQc8iDfqFBI+M1+bI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfQVamj17NyQR9UuLoDVX15PbF0RbTOOvIJ03quzcBKyZw0o8oFmyN9CvXrp1oZSgtmQ1Yzun2CY2+8PS2yHWRtc90k/eU5cjD8yL6EwV93JbmTgf9i304GlKXgHq8jtOVZYX2EWrIyxOp8gYzEfZ+bVwISCuqJZWBeVcubK62A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTLf7CYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AABC4CED2;
-	Thu, 30 Jan 2025 14:21:53 +0000 (UTC)
+	 MIME-Version; b=Yqh0bTA/NmXOGXEC+BC8cs5ML/AQmm9BnyIlFBZza75F9ywQMkvG04dW84YwtJDmOxbKiqNfhqAP/Uy7Zr/8Al9FDTOpH9XT200DczZ1Q8WqOALCV4k2n7ILGM2ZwKB08Ts+4sEzfR6DawR96PdB+8E4tCHFeeLuR+tdMJ73WqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCuxJ8aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59573C4CED2;
+	Thu, 30 Jan 2025 14:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246913;
-	bh=ejO7E/3J1GJTKYSjhzCw02/iA6ShxDUvUQw4xuUfDdk=;
+	s=korg; t=1738246919;
+	bh=xIZkGa3AeX2K6PH4nR9yio0+JqHQc8iDfqFBI+M1+bI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTLf7CYCcYz1TbpRsEHZoMwhxYCMO9T2K6k48zFWfraqoBpCzQDJ/HAvZKhsBk+3i
-	 BONXLlXN3Tj6ijMLL1mw4h4z+oPEivAZTwPKjeX2vV3FkHzhzEIPp7LOr1Nbw1puW3
-	 5pc49hZG4+2+ejTC26zsTcMZ+wLA6U3CKQlcSdhc=
+	b=PCuxJ8aISeuQGwbCh7y+RZlF5w0H/Ax13p1sOTZERHzJY05JuIbOHrKu1efTeKgpD
+	 W0MU+p5mbtV4CWmMMBWcQNt2lb+h+utZkhPpdsQsS4pnpUq/icdDOJ9D/xWTLx5itH
+	 laQbAe/Si0D0vJFQgZDOQqIT7k0k7yEmCXaQzzuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Ming-Hung Tsai <mtsai@redhat.com>,
 	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.10 019/133] dm thin: make get_first_thin use rcu-safe list first function
-Date: Thu, 30 Jan 2025 15:00:08 +0100
-Message-ID: <20250130140143.279255272@linuxfoundation.org>
+Subject: [PATCH 5.10 020/133] dm-ebs: dont set the flag DM_TARGET_PASSES_INTEGRITY
+Date: Thu, 30 Jan 2025 15:00:09 +0100
+Message-ID: <20250130140143.319019519@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -66,65 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 80f130bfad1dab93b95683fc39b87235682b8f72 upstream.
+commit 47f33c27fc9565fb0bc7dfb76be08d445cd3d236 upstream.
 
-The documentation in rculist.h explains the absence of list_empty_rcu()
-and cautions programmers against relying on a list_empty() ->
-list_first() sequence in RCU safe code.  This is because each of these
-functions performs its own READ_ONCE() of the list head.  This can lead
-to a situation where the list_empty() sees a valid list entry, but the
-subsequent list_first() sees a different view of list head state after a
-modification.
+dm-ebs uses dm-bufio to process requests that are not aligned on logical
+sector size. dm-bufio doesn't support passing integrity data (and it is
+unclear how should it do it), so we shouldn't set the
+DM_TARGET_PASSES_INTEGRITY flag.
 
-In the case of dm-thin, this author had a production box crash from a GP
-fault in the process_deferred_bios path.  This function saw a valid list
-head in get_first_thin() but when it subsequently dereferenced that and
-turned it into a thin_c, it got the inside of the struct pool, since the
-list was now empty and referring to itself.  The kernel on which this
-occurred printed both a warning about a refcount_t being saturated, and
-a UBSAN error for an out-of-bounds cpuid access in the queued spinlock,
-prior to the fault itself.  When the resulting kdump was examined, it
-was possible to see another thread patiently waiting in thin_dtr's
-synchronize_rcu.
-
-The thin_dtr call managed to pull the thin_c out of the active thins
-list (and have it be the last entry in the active_thins list) at just
-the wrong moment which lead to this crash.
-
-Fortunately, the fix here is straight forward.  Switch get_first_thin()
-function to use list_first_or_null_rcu() which performs just a single
-READ_ONCE() and returns NULL if the list is already empty.
-
-This was run against the devicemapper test suite's thin-provisioning
-suites for delete and suspend and no regressions were observed.
-
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Fixes: b10ebd34ccca ("dm thin: fix rcu_read_lock being held in code that can sleep")
-Cc: stable@vger.kernel.org
-Acked-by: Ming-Hung Tsai <mtsai@redhat.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: d3c7b35c20d6 ("dm: add emulated block size target")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-thin.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/md/dm-ebs-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-thin.c
-+++ b/drivers/md/dm-thin.c
-@@ -2317,10 +2317,9 @@ static struct thin_c *get_first_thin(str
- 	struct thin_c *tc = NULL;
- 
- 	rcu_read_lock();
--	if (!list_empty(&pool->active_thins)) {
--		tc = list_entry_rcu(pool->active_thins.next, struct thin_c, list);
-+	tc = list_first_or_null_rcu(&pool->active_thins, struct thin_c, list);
-+	if (tc)
- 		thin_get(tc);
--	}
- 	rcu_read_unlock();
- 
- 	return tc;
+--- a/drivers/md/dm-ebs-target.c
++++ b/drivers/md/dm-ebs-target.c
+@@ -437,7 +437,7 @@ static int ebs_iterate_devices(struct dm
+ static struct target_type ebs_target = {
+ 	.name		 = "ebs",
+ 	.version	 = {1, 0, 1},
+-	.features	 = DM_TARGET_PASSES_INTEGRITY,
++	.features	 = 0,
+ 	.module		 = THIS_MODULE,
+ 	.ctr		 = ebs_ctr,
+ 	.dtr		 = ebs_dtr,
 
 
 
