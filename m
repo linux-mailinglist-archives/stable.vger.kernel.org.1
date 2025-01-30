@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-111354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32974A22EA0
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:04:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9891A22E75
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F0031692AA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:04:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3A793A35BE
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81F41E990E;
-	Thu, 30 Jan 2025 14:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6091E3775;
+	Thu, 30 Jan 2025 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNhsWD+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+8prLNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59051E47B4;
-	Thu, 30 Jan 2025 14:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9441C13D;
+	Thu, 30 Jan 2025 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245766; cv=none; b=mOyxsgUGJlUGxu4NFKGw3/N2bzv65YwLb1VnAOX5Q3NYF23LX1y9+js5e8h9xPvKyyLXnmepi5D4wOrMvTYgzQYoLKP/ldyzdmAPiNIkDgtBHKBJYHqD/IKfm9Bs15SJxz8EBIdrpqeuCWl/tRU181/IY3Qa80Vqg+WX18ewRiw=
+	t=1738245670; cv=none; b=iiH7Zbp6FR7jvcSQP4l8OK2XrzgogAjlPULu8oK7AA+3jQrAYKrhCSHOLdNuvew0s2v6qUCEapUvBY6db4vNXeeWggIfq4ceUuSoXqNw8yU3kGX6y55tt/ZTtkhqgjPwTaGXlMLReHXyGODQOSCYkGfONL10ivt816aU9XWbrmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245766; c=relaxed/simple;
-	bh=IP0ruFvqMl7BuVbld4MZ3F/YzBp2XziHT/trF6XKCu0=;
+	s=arc-20240116; t=1738245670; c=relaxed/simple;
+	bh=ucypYNoh6E3IQhQTQJ6DnpL4zhTrmyrisqUkRIQJqOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El63Vuz/NrPHUVZYjlXteryqQG6i37wawF8GRtKfPiH03mPZgz2pPe3A/wZLrB4ITjB8LdAYDoDw/IhhSfwcetUzrGMylpzXtSDwTdNOPVu5x04TwG5xlQWRQ7tK3eR6E46ZqPcP7rVJvGMoq9UWzBWuKVUygaYWGqW+BW3ffSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNhsWD+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D680C4CED2;
-	Thu, 30 Jan 2025 14:02:46 +0000 (UTC)
+	 MIME-Version; b=HwBsMM3tc8AXF7fbe5yMQYSIZcqDzB0jxXE5zwl09mTbeYzihlL0QGMmm+1i0WRU815j+BnCPMgxW47dyWoasooMCRF8mCP5KvFfacyA3wIAEDSV9D5dDCVmW+orRl2Sf1Gjgs8GqK5W5Y8ZecHe64YnHha+hn2c4s1p1mERlEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+8prLNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F04C4CED2;
+	Thu, 30 Jan 2025 14:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245766;
-	bh=IP0ruFvqMl7BuVbld4MZ3F/YzBp2XziHT/trF6XKCu0=;
+	s=korg; t=1738245670;
+	bh=ucypYNoh6E3IQhQTQJ6DnpL4zhTrmyrisqUkRIQJqOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNhsWD+ntH91S1O2q/Kq3R37vp+IuHCMJX+s4S0rHiyP8GFSJCQ2NAuBef4kvyMc6
-	 D7rY7sGQLKgKohCWsyBrU4TdPI8gwYocJ0wXQR4QEmsG2UpYMbWKVmysXhOTWzHSXy
-	 vJ3zFSsmy2xdqijuJwLnn50EoKnNa3HMkOUAKzgs=
+	b=K+8prLNY/HmTfnb+p59s972efq+flmFRbdUFxslJvXpTar5Y+mK6i6TlYmQNtelk8
+	 /eVxzpwSp0h4TaSd/j7O4d2WCIRWpXY5/Q+q4ljOF1iQhntTnHCaIV5A6aZqO2sDOK
+	 k1mrQ7TFMwkNlXsIGHo0sqgerHggFhgvLrQ7wBiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Chandramohan Akula <chandramohan.akula@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 13/43] RDMA/bnxt_re: Avoid CPU lockups due fifo occupancy check loop
+	Yu Kuai <yukuai3@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 20/40] Revert "libfs: fix infinite directory reads for offset dir"
 Date: Thu, 30 Jan 2025 14:59:20 +0100
-Message-ID: <20250130133459.436063588@linuxfoundation.org>
+Message-ID: <20250130133500.522228964@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 8be3e5b0c96beeefe9d5486b96575d104d3e7d17 upstream.
+commit b662d858131da9a8a14e68661656989b14dbf113 upstream.
 
-Driver waits indefinitely for the fifo occupancy to go below a threshold
-as soon as the pacing interrupt is received. This can cause soft lockup on
-one of the processors, if the rate of DB is very high.
+The current directory offset allocator (based on mtree_alloc_cyclic)
+stores the next offset value to return in octx->next_offset. This
+mechanism typically returns values that increase monotonically over
+time. Eventually, though, the newly allocated offset value wraps
+back to a low number (say, 2) which is smaller than other already-
+allocated offset values.
 
-Add a loop count for FPGA and exit the __wait_for_fifo_occupancy_below_th
-if the loop is taking more time. Pacing will be continuing until the
-occupancy is below the threshold. This is ensured by the checks in
-bnxt_re_pacing_timer_exp and further scheduling the work for pacing based
-on the fifo occupancy.
+Yu Kuai <yukuai3@huawei.com> reports that, after commit 64a7ce76fb90
+("libfs: fix infinite directory reads for offset dir"), if a
+directory's offset allocator wraps, existing entries are no longer
+visible via readdir/getdents because offset_readdir() stops listing
+entries once an entry's offset is larger than octx->next_offset.
+These entries vanish persistently -- they can be looked up, but will
+never again appear in readdir(3) output.
 
-Fixes: 2ad4e6303a6d ("RDMA/bnxt_re: Implement doorbell pacing algorithm")
-Link: https://patch.msgid.link/r/1728373302-19530-7-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-[ Add the declaration of variable pacing_data to make it work on 6.6.y ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+The reason for this is that the commit treats directory offsets as
+monotonically increasing integer values rather than opaque cookies,
+and introduces this comparison:
+
+	if (dentry2offset(dentry) >= last_index) {
+
+On 64-bit platforms, the directory offset value upper bound is
+2^63 - 1. Directory offsets will monotonically increase for millions
+of years without wrapping.
+
+On 32-bit platforms, however, LONG_MAX is 2^31 - 1. The allocator
+can wrap after only a few weeks (at worst).
+
+Revert commit 64a7ce76fb90 ("libfs: fix infinite directory reads for
+offset dir") to prepare for a fix that can work properly on 32-bit
+systems and might apply to recent LTS kernels where shmem employs
+the simple_offset mechanism.
+
+Reported-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20241228175522.1854234-4-cel@kernel.org
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/libfs.c |   35 +++++++++++------------------------
+ 1 file changed, 11 insertions(+), 24 deletions(-)
 
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -485,6 +485,8 @@ static void bnxt_re_set_default_pacing_d
- static void __wait_for_fifo_occupancy_below_th(struct bnxt_re_dev *rdev)
- {
- 	u32 read_val, fifo_occup;
-+	struct bnxt_qplib_db_pacing_data *pacing_data = rdev->qplib_res.pacing_data;
-+	u32 retry_fifo_check = 1000;
- 
- 	/* loop shouldn't run infintely as the occupancy usually goes
- 	 * below pacing algo threshold as soon as pacing kicks in.
-@@ -500,6 +502,14 @@ static void __wait_for_fifo_occupancy_be
- 
- 		if (fifo_occup < rdev->qplib_res.pacing_data->pacing_th)
- 			break;
-+		if (!retry_fifo_check--) {
-+			dev_info_once(rdev_to_dev(rdev),
-+				      "%s: fifo_occup = 0x%xfifo_max_depth = 0x%x pacing_th = 0x%x\n",
-+				      __func__, fifo_occup, pacing_data->fifo_max_depth,
-+					pacing_data->pacing_th);
-+			break;
-+		}
-+
- 	}
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -418,14 +418,6 @@ void simple_offset_destroy(struct offset
+ 	mtree_destroy(&octx->mt);
  }
  
+-static int offset_dir_open(struct inode *inode, struct file *file)
+-{
+-	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
+-
+-	file->private_data = (void *)ctx->next_offset;
+-	return 0;
+-}
+-
+ /**
+  * offset_dir_llseek - Advance the read position of a directory descriptor
+  * @file: an open directory whose position is to be updated
+@@ -439,9 +431,6 @@ static int offset_dir_open(struct inode
+  */
+ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
+ {
+-	struct inode *inode = file->f_inode;
+-	struct offset_ctx *ctx = inode->i_op->get_offset_ctx(inode);
+-
+ 	switch (whence) {
+ 	case SEEK_CUR:
+ 		offset += file->f_pos;
+@@ -455,8 +444,7 @@ static loff_t offset_dir_llseek(struct f
+ 	}
+ 
+ 	/* In this case, ->private_data is protected by f_pos_lock */
+-	if (!offset)
+-		file->private_data = (void *)ctx->next_offset;
++	file->private_data = NULL;
+ 	return vfs_setpos(file, offset, LONG_MAX);
+ }
+ 
+@@ -487,7 +475,7 @@ static bool offset_dir_emit(struct dir_c
+ 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
+ }
+ 
+-static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx, long last_index)
++static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+ {
+ 	struct offset_ctx *octx = inode->i_op->get_offset_ctx(inode);
+ 	struct dentry *dentry;
+@@ -495,21 +483,17 @@ static void offset_iterate_dir(struct in
+ 	while (true) {
+ 		dentry = offset_find_next(octx, ctx->pos);
+ 		if (!dentry)
+-			return;
+-
+-		if (dentry2offset(dentry) >= last_index) {
+-			dput(dentry);
+-			return;
+-		}
++			return ERR_PTR(-ENOENT);
+ 
+ 		if (!offset_dir_emit(ctx, dentry)) {
+ 			dput(dentry);
+-			return;
++			break;
+ 		}
+ 
+ 		ctx->pos = dentry2offset(dentry) + 1;
+ 		dput(dentry);
+ 	}
++	return NULL;
+ }
+ 
+ /**
+@@ -536,19 +520,22 @@ static void offset_iterate_dir(struct in
+ static int offset_readdir(struct file *file, struct dir_context *ctx)
+ {
+ 	struct dentry *dir = file->f_path.dentry;
+-	long last_index = (long)file->private_data;
+ 
+ 	lockdep_assert_held(&d_inode(dir)->i_rwsem);
+ 
+ 	if (!dir_emit_dots(file, ctx))
+ 		return 0;
+ 
+-	offset_iterate_dir(d_inode(dir), ctx, last_index);
++	/* In this case, ->private_data is protected by f_pos_lock */
++	if (ctx->pos == DIR_OFFSET_MIN)
++		file->private_data = NULL;
++	else if (file->private_data == ERR_PTR(-ENOENT))
++		return 0;
++	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
+ 	return 0;
+ }
+ 
+ const struct file_operations simple_offset_dir_operations = {
+-	.open		= offset_dir_open,
+ 	.llseek		= offset_dir_llseek,
+ 	.iterate_shared	= offset_readdir,
+ 	.read		= generic_read_dir,
 
 
 
