@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-111401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE57A22EFA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3544EA22FAC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB1751643BA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E8E1889EC7
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C185F1E8824;
-	Thu, 30 Jan 2025 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4811E8855;
+	Thu, 30 Jan 2025 14:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RIHu9Hh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eJtA7f2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735F51E7C27;
-	Thu, 30 Jan 2025 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAD21E7C27;
+	Thu, 30 Jan 2025 14:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246630; cv=none; b=oQdfG5mkvBzvOBbcMZK09YuqhL67RBGAKEZWJIPu0Q2weiU8lOxhUP0HEA6PUhQdOSxEqHSUY7urTqwl9rt3ypS9ugsej5A+txB3mE6c1Ju8f9Ub4oFSteN0YWu2RwJE5ZfYJk3lkzyUuQ7mMHLc/H64bNVJVlOxlLKJ4Qlj6qU=
+	t=1738247055; cv=none; b=u0t4DSWmfN+A8pBWfpjup9ieDVEZz1erlMbwR3SSES2GK3rYytS/RrdOVfwWxwTW95eG+MZsSkEdk9S6F/LIaQ5rT9go15smru3nwnLd3O1T0CfeuVEmo29zM+dH/4G2Zgrv9/FoZH2EtVknkm6QKAhKnH6/PtEuy7d0+yP18n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246630; c=relaxed/simple;
-	bh=n6x1dmNfDTzIopLpXUlF1B869fgQIzrZ2PtTpFtZfPE=;
+	s=arc-20240116; t=1738247055; c=relaxed/simple;
+	bh=UHs4XaAuTEXkM2kVeoO+svMYGTNUw6xjHPmipYQkcuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqBnNqexAvg5aZ979hfgpfgkGFHEjBs5MdTE+AJgE6kgGqf33DzagagYceY+V6CNh4b+ecGNAa4IYmBy5fc2XQAEaEZLXfKLNUIq+EdUuVk9qMnyOM0qD4yalDeL8CM/FiloPbfE7ohKtsZs47fATsXoxZ8pnQu/hR2PgxTPW1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RIHu9Hh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09B8C4CED2;
-	Thu, 30 Jan 2025 14:17:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t3sXRiTXnlgOn5FBGpY24XevjVrm0Z8YT8J4DtWwWkjWO4cYG5JMapsSwoRZg9jagCJIko1OYbT5dBy8p9EGTjiYGZh9qM36fxW7sznr2cYWtbtBv1I0fP27ZKCyvR1uRIIPiKOGdn+hczaRKaXVjCDsLZ70kTB2pNjJRrndTZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eJtA7f2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74514C4CED2;
+	Thu, 30 Jan 2025 14:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246630;
-	bh=n6x1dmNfDTzIopLpXUlF1B869fgQIzrZ2PtTpFtZfPE=;
+	s=korg; t=1738247054;
+	bh=UHs4XaAuTEXkM2kVeoO+svMYGTNUw6xjHPmipYQkcuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RIHu9HhzV4if/36ECU736YEgEcjN4PxlIk2khfHTcoyZAldm3c542bokq+5KDnkc
-	 jqmiQ1OJh6mh0NmzqjHYAWCBcneCotuWL33n0WfMV2dl+50yn7A27mJBgzpc3sYMak
-	 0VIRyDZ6m+plvn+cjgiIPTKdKqhl1VF/6WPtBNKs=
+	b=eJtA7f2auncJ0VNP5FMb+C39ey9x7D/4hM2o1BohC1kx3p8y3YVThE69HnGXhQ3cn
+	 w3U/TuLLnmcsm1nQB/I07FAjkY3CKcQzNiqrAveC9F7B2L59HMnipXbSx3NnI7wTPs
+	 wsTMIlwiBMeyxb2e83OfNlKlYONDvobB3gwc9t8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antonio Pastor <antonio.pastor@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/91] net: 802: LLC+SNAP OID:PID lookup on start of skb data
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 036/133] usb: dwc3: gadget: fix writing NYET threshold
 Date: Thu, 30 Jan 2025 15:00:25 +0100
-Message-ID: <20250130140133.926482003@linuxfoundation.org>
+Message-ID: <20250130140143.960132479@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antonio Pastor <antonio.pastor@gmail.com>
+From: André Draszik <andre.draszik@linaro.org>
 
-[ Upstream commit 1e9b0e1c550c42c13c111d1a31e822057232abc4 ]
+commit 01ea6bf5cb58b20cc1bd159f0cf74a76cf04bb69 upstream.
 
-802.2+LLC+SNAP frames received by napi_complete_done() with GRO and DSA
-have skb->transport_header set two bytes short, or pointing 2 bytes
-before network_header & skb->data. This was an issue as snap_rcv()
-expected offset to point to SNAP header (OID:PID), causing packet to
-be dropped.
+Before writing a new value to the register, the old value needs to be
+masked out for the new value to be programmed as intended, because at
+least in some cases the reset value of that field is 0xf (max value).
 
-A fix at llc_fixup_skb() (a024e377efed) resets transport_header for any
-LLC consumers that may care about it, and stops SNAP packets from being
-dropped, but doesn't fix the problem which is that LLC and SNAP should
-not use transport_header offset.
+At the moment, the dwc3 core initialises the threshold to the maximum
+value (0xf), with the option to override it via a DT. No upstream DTs
+seem to override it, therefore this commit doesn't change behaviour for
+any upstream platform. Nevertheless, the code should be fixed to have
+the desired outcome.
 
-Ths patch eliminates the use of transport_header offset for SNAP lookup
-of OID:PID so that SNAP does not rely on the offset at all.
-The offset is reset after pull for any SNAP packet consumers that may
-(but shouldn't) use it.
+Do so.
 
-Fixes: fda55eca5a33 ("net: introduce skb_transport_header_was_set()")
-Signed-off-by: Antonio Pastor <antonio.pastor@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250103012303.746521-1-antonio.pastor@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 80caf7d21adc ("usb: dwc3: add lpm erratum support")
+Cc: stable@vger.kernel.org # 5.10+ (needs adjustment for 5.4)
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20241209-dwc3-nyet-fix-v2-1-02755683345b@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/802/psnap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/core.h   |    1 +
+ drivers/usb/dwc3/gadget.c |    4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/802/psnap.c b/net/802/psnap.c
-index 40ab2aea7b31..7431ec077273 100644
---- a/net/802/psnap.c
-+++ b/net/802/psnap.c
-@@ -55,11 +55,11 @@ static int snap_rcv(struct sk_buff *skb, struct net_device *dev,
- 		goto drop;
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -422,6 +422,7 @@
+ #define DWC3_DCTL_TRGTULST_SS_INACT	(DWC3_DCTL_TRGTULST(6))
  
- 	rcu_read_lock();
--	proto = find_snap_client(skb_transport_header(skb));
-+	proto = find_snap_client(skb->data);
- 	if (proto) {
- 		/* Pass the frame on. */
--		skb->transport_header += 5;
- 		skb_pull_rcsum(skb, 5);
-+		skb_reset_transport_header(skb);
- 		rc = proto->rcvfunc(skb, dev, &snap_packet_type, orig_dev);
- 	}
- 	rcu_read_unlock();
--- 
-2.39.5
-
+ /* These apply for core versions 1.94a and later */
++#define DWC3_DCTL_NYET_THRES_MASK	(0xf << 20)
+ #define DWC3_DCTL_NYET_THRES(n)		(((n) & 0xf) << 20)
+ 
+ #define DWC3_DCTL_KEEP_CONNECT		BIT(19)
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3519,8 +3519,10 @@ static void dwc3_gadget_conndone_interru
+ 		WARN_ONCE(DWC3_VER_IS_PRIOR(DWC3, 240A) && dwc->has_lpm_erratum,
+ 				"LPM Erratum not available on dwc3 revisions < 2.40a\n");
+ 
+-		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A))
++		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A)) {
++			reg &= ~DWC3_DCTL_NYET_THRES_MASK;
+ 			reg |= DWC3_DCTL_NYET_THRES(dwc->lpm_nyet_threshold);
++		}
+ 
+ 		dwc3_gadget_dctl_write_safe(dwc, reg);
+ 	} else {
 
 
 
