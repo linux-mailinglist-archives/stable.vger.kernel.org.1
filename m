@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE72A23016
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209BDA23048
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9727A166E3B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 921291883AD4
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E423F1E9918;
-	Thu, 30 Jan 2025 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3585E1BB6BC;
+	Thu, 30 Jan 2025 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDDmXRFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAivf8AK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00301E98F3;
-	Thu, 30 Jan 2025 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D867482;
+	Thu, 30 Jan 2025 14:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247317; cv=none; b=X0T7MudY/Kk/XQ2jYDHxIM4EC196TT1PrX3kYuisztp3B6UJvkD/tef3D24GxNbyExPZqkExliF6WEnBE/Ztb+wEcwLPS0iI7c1YuSXquQI7DM0ahQWGyovGIEAzApUUTxT75NOtzKdgmxaxK6PL1po49Gu6KxnCP9y+pKTlmxA=
+	t=1738247444; cv=none; b=Jyr5opoAnVPu8szkpGwVFXgUBcdyUwmSTHIthIaKVcds2E/NV1BGCKQTMCZbaZNclDlcXTssa7VSSgpyNcYl/UNBELuLWxms1GZP8MvXC24ps0bDYpK3UpEHhyOIj1jhCDedHuXwiujPDEJ6tR5a1AtVMm/5Qwl2QPuzp/9PpiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247317; c=relaxed/simple;
-	bh=P1UMMPEYLzp0VvA+BdmCX4t9LKiFw389mxjxsKLBCNE=;
+	s=arc-20240116; t=1738247444; c=relaxed/simple;
+	bh=MMtG3p6BNyubDc2K13ukIUhtVasoaRlQkNnGXsi5rjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqOhwupbv48kbzLRzU6z6x+Bt+2wdhbllwhJOSSJ6hUYCJ7c7fX/+exdg+1Fg+oh97jYWN331DPPNCMLBs1Ly3c026meUIJZritY8UvR9m+g3581COal/BPWlD+1VoI4hf1mGB6IAyRaziAhui1d/IVxEas+cnY1JCGVBpHEoXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDDmXRFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2585BC4CED2;
-	Thu, 30 Jan 2025 14:28:36 +0000 (UTC)
+	 MIME-Version; b=M7y0wpetXGInvHxe50Qp61b7HXbTLG3O/cJrzXWnbiMbpbS/N5w35PeefC0pm1hsFOcQZtOuNldE/UuvWF9f+QHzAUWJoMfFRXyGGvBxZ2/1ce4ddSDCauVanul7seasRJ4YFnHU8VS78nL4QFXV6u4DXeWza/FfXIrLEUg08SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAivf8AK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FADCC4CED2;
+	Thu, 30 Jan 2025 14:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247317;
-	bh=P1UMMPEYLzp0VvA+BdmCX4t9LKiFw389mxjxsKLBCNE=;
+	s=korg; t=1738247443;
+	bh=MMtG3p6BNyubDc2K13ukIUhtVasoaRlQkNnGXsi5rjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDDmXRFwy/VCphzASdmGmIvvLSIwomIrTf5YB/sO7KGLAzVk4pQ2EyCNfDdlKtPTs
-	 kiXhqQ6bIsKVb0YDO9KaBRl/PBdxU3So3GouHW41pAH0a3f6L+YLOsvTtv6rI1NJmj
-	 SrSHwj/eLOKncconkWsaxa567BUTn2gi2ouJG1M0=
+	b=ZAivf8AKBin1Jko0O4PMOeUo26BlRKcdEgzU2FTcwrf12bTL3r/IjOD+vtBSilVh/
+	 pfzG3Xzka+D0OB1EGt4l5OEKNjbFmD0vtS8VB8wmSXARfE7hWyZjk/z2dH96uzyFyi
+	 HEl2jAgLV9HtN+LqmjyZI96XjZrb2c8cQHgCcYIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilton Perim Neto <niltonperimneto@gmail.com>,
-	Pavel Rojtberg <rojtberg@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 23/24] Input: xpad - add unofficial Xbox 360 wireless receiver clone
-Date: Thu, 30 Jan 2025 15:02:15 +0100
-Message-ID: <20250130140128.217546638@linuxfoundation.org>
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 40/49] wifi: iwlwifi: add a few rate index validity checks
+Date: Thu, 30 Jan 2025 15:02:16 +0100
+Message-ID: <20250130140135.437974360@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilton Perim Neto <niltonperimneto@gmail.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-commit e4940fe6322c851659c17852b671c6e7b1aa9f56 upstream.
+commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
 
-Although it mimics the Microsoft's VendorID, it is in fact a clone.
-Taking into account that the original Microsoft Receiver is not being
-manufactured anymore, this drive can solve dpad issues encontered by
-those who still use the original 360 Wireless controller
-but are using a receiver clone.
+Validate index before access iwl_rate_mcs to keep rate->index
+inside the valid boundaries. Use MCS_0_INDEX if index is less
+than MCS_0_INDEX and MCS_9_INDEX if index is greater then
+MCS_9_INDEX.
 
-Signed-off-by: Nilton Perim Neto <niltonperimneto@gmail.com>
-Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
-Link: https://lore.kernel.org/r/20250107192830.414709-12-rojtberg@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/dvm/rs.c |    9 ++++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.c |    9 ++++++---
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -129,6 +129,7 @@ static const struct xpad_device {
- 	{ 0x045e, 0x028e, "Microsoft X-Box 360 pad", 0, XTYPE_XBOX360 },
- 	{ 0x045e, 0x028f, "Microsoft X-Box 360 pad v2", 0, XTYPE_XBOX360 },
- 	{ 0x045e, 0x0291, "Xbox 360 Wireless Receiver (XBOX)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
-+	{ 0x045e, 0x02a9, "Xbox 360 Wireless Receiver (Unofficial)", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360W },
- 	{ 0x045e, 0x02d1, "Microsoft X-Box One pad", 0, XTYPE_XBOXONE },
- 	{ 0x045e, 0x02dd, "Microsoft X-Box One pad (Firmware 2015)", 0, XTYPE_XBOXONE },
- 	{ 0x045e, 0x02e3, "Microsoft X-Box One Elite pad", 0, XTYPE_XBOXONE },
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/rs.c
+@@ -2,7 +2,7 @@
+ /******************************************************************************
+  *
+  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
+- * Copyright (C) 2019 - 2020, 2022 Intel Corporation
++ * Copyright (C) 2019 - 2020, 2022 - 2023 Intel Corporation
+  *****************************************************************************/
+ #include <linux/kernel.h>
+ #include <linux/skbuff.h>
+@@ -125,7 +125,7 @@ static int iwl_hwrate_to_plcp_idx(u32 ra
+ 				return idx;
+ 	}
+ 
+-	return -1;
++	return IWL_RATE_INVALID;
+ }
+ 
+ static void rs_rate_scale_perform(struct iwl_priv *priv,
+@@ -3146,7 +3146,10 @@ static ssize_t rs_sta_dbgfs_scale_table_
+ 	for (i = 0; i < LINK_QUAL_MAX_RETRY_NUM; i++) {
+ 		index = iwl_hwrate_to_plcp_idx(
+ 			le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
+-		if (is_legacy(tbl->lq_type)) {
++		if (index == IWL_RATE_INVALID) {
++			desc += sprintf(buff + desc, " rate[%d] 0x%X invalid rate\n",
++				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags));
++		} else if (is_legacy(tbl->lq_type)) {
+ 			desc += sprintf(buff+desc, " rate[%d] 0x%X %smbps\n",
+ 				i, le32_to_cpu(lq_sta->lq.rs_table[i].rate_n_flags),
+ 				iwl_rate_mcs[index].mbps);
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -1072,10 +1072,13 @@ static void rs_get_lower_rate_down_colum
+ 
+ 		rate->bw = RATE_MCS_CHAN_WIDTH_20;
+ 
+-		WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX ||
+-			     rate->index > IWL_RATE_MCS_9_INDEX);
++		if (WARN_ON_ONCE(rate->index < IWL_RATE_MCS_0_INDEX))
++			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_0_INDEX];
++		else if (WARN_ON_ONCE(rate->index > IWL_RATE_MCS_9_INDEX))
++			rate->index = rs_ht_to_legacy[IWL_RATE_MCS_9_INDEX];
++		else
++			rate->index = rs_ht_to_legacy[rate->index];
+ 
+-		rate->index = rs_ht_to_legacy[rate->index];
+ 		rate->ldpc = false;
+ 	} else {
+ 		/* Downgrade to SISO with same MCS if in MIMO  */
 
 
 
