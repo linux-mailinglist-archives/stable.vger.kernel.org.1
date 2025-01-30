@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-111694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6016A23057
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7ABA23018
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627D01883BDB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEA416355F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336531B87F8;
-	Thu, 30 Jan 2025 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D581E98E8;
+	Thu, 30 Jan 2025 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12O7Vw1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atFaF6in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E588BFF;
-	Thu, 30 Jan 2025 14:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E4F1E6DCF;
+	Thu, 30 Jan 2025 14:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247484; cv=none; b=TZo9KrzhaMnlAjxvp7IZsKQH35Acusmzo2ACfENAbshHpehGEWryfnYItzYTwBjzh8q3CAp8DgGYiSGWv732l+GCMCcfqDsVv79rzlOdJkWjj50s5HptpGCDKX9tc/fzaBqVIuGblSDElX8BrxzFDBEnJHeF/5FJgepf0DDnkeg=
+	t=1738247323; cv=none; b=RHTuX6T6FL8DMwEn4sSidMj62zBDwGEvtIEuvbVcHVYycegr6Mb6RqylWnwSm0ogq6RZ3DNyXL3dJbWIqwfiichBuukouvmdthfxh1w4TFM+tuN63h9uCmzPZrtrCYaYMGJgGIQt5tUYkrI2nB9jOmIysEF923V8AV04HXEkXwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247484; c=relaxed/simple;
-	bh=iSWflRQ7Q8OwwqCSaVFTsFGgO7Rn+ARO7NJlk90MzE4=;
+	s=arc-20240116; t=1738247323; c=relaxed/simple;
+	bh=gcrHXgZTxc6rfvOfymDI4fj0t025jiH83e+583B5lLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3Y5FqL/0z2PXI9nE4doJ8rEwOcFtkGs7CRoHnEX1ufKAz0RIrLKgfYRMbZtPYRa5zjvwJ2cClpe/qvSOIVsl6eYpOfcmovdRUc+S9gXyIviAA6w2rBOOrT+Pqc8NoS5MNP7qGweknowkQk4jq3KjIoRn3z+P3kgnx0aemoxXrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12O7Vw1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFA5C4CED2;
-	Thu, 30 Jan 2025 14:31:23 +0000 (UTC)
+	 MIME-Version; b=Tm5P7Dlcl81peQDOCs0Ibhpch2am25+9G+DwssahN5OuZmQqVjUjEkAzbxpzOI+t1XSRJvroJM7moypteUkE/OLRazCtXQjfsdRdatlnR17KZ35MjvAXaRA3EeXZ54YIeib5xrrMqHqbucZzUI7efuXz1UCCVs29mIZdnAand20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atFaF6in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523A0C4CED2;
+	Thu, 30 Jan 2025 14:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247483;
-	bh=iSWflRQ7Q8OwwqCSaVFTsFGgO7Rn+ARO7NJlk90MzE4=;
+	s=korg; t=1738247323;
+	bh=gcrHXgZTxc6rfvOfymDI4fj0t025jiH83e+583B5lLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12O7Vw1PXm4uitoUBoV0/aDlGEc67cZi6E4H7mOP+J5mYWaBnYTF+U3tWiAHrDCgc
-	 mQjbcS9quxchELL0jyJRak0vLVTk/T9ZMCo9/LoyNDtGhn4jKwwKLgFZ3BY0zTjWlU
-	 twLbiR2RYpAeunXprNO86ZCgJm2qUYV49gseghXs=
+	b=atFaF6inLAUubtBEZvAmRHc6x2xH6CTbi3NxLTUjxEQtBCGgIdu1+1EhQmT0EXh2B
+	 v4ggJX7xnyxEf70ad6Z70Yb1Z4XU8DZyxeQmeRvn33cWHvtMh5aYKrlLYGGu0lcgGV
+	 5tg1beToatOwH3oUPvmuN0HU26E+WVzlNwDCEAA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 27/49] xfs: clean up dqblk extraction
-Date: Thu, 30 Jan 2025 15:02:03 +0100
-Message-ID: <20250130140134.929409829@linuxfoundation.org>
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 5.15 12/24] Bluetooth: SCO: Fix not validating setsockopt user input
+Date: Thu, 30 Jan 2025 15:02:04 +0100
+Message-ID: <20250130140127.790745686@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ed17f7da5f0c8b65b7b5f7c98beb0aadbc0546ee ]
+commit 51eda36d33e43201e7a4fd35232e069b2c850b01 upstream.
 
-Since the introduction of xfs_dqblk in V5, xfs really ought to find the
-dqblk pointer from the dquot buffer, then compute the xfs_disk_dquot
-pointer from the dqblk pointer.  Fix the open-coded xfs_buf_offset calls
-and do the type checking in the correct order.
+syzbot reported sco_sock_setsockopt() is copying data without
+checking user input length.
 
-Note that this has made no practical difference since the start of the
-xfs_disk_dquot is coincident with the start of the xfs_dqblk.
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in sco_sock_setsockopt+0xc0b/0xf90
+net/bluetooth/sco.c:893
+Read of size 4 at addr ffff88805f7b15a3 by task syz-executor.5/12578
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Fixes: ad10b1a48754 ("Bluetooth: Add Bluetooth socket voice option")
+Fixes: b96e9c671b05 ("Bluetooth: Add BT_DEFER_SETUP option to sco socket")
+Fixes: 00398e1d5183 ("Bluetooth: Add support for BT_PKT_STATUS CMSG data for SCO connections")
+Fixes: f6873401a608 ("Bluetooth: Allow setting of codec for HFP offload use case")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot.c              |    5 +++--
- fs/xfs/xfs_dquot_item_recover.c |    7 ++++---
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ include/net/bluetooth/bluetooth.h |    9 +++++++++
+ net/bluetooth/sco.c               |   19 ++++++++-----------
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -562,7 +562,8 @@ xfs_dquot_from_disk(
- 	struct xfs_dquot	*dqp,
- 	struct xfs_buf		*bp)
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -487,6 +487,15 @@ static inline struct sk_buff *bt_skb_sen
+ 	return skb;
+ }
+ 
++static inline int bt_copy_from_sockptr(void *dst, size_t dst_size,
++				       sockptr_t src, size_t src_size)
++{
++	if (dst_size > src_size)
++		return -EINVAL;
++
++	return copy_from_sockptr(dst, src, dst_size);
++}
++
+ int bt_to_errno(u16 code);
+ 
+ void hci_sock_set_flag(struct sock *sk, int nr);
+--- a/net/bluetooth/sco.c
++++ b/net/bluetooth/sco.c
+@@ -829,7 +829,7 @@ static int sco_sock_setsockopt(struct so
+ 			       sockptr_t optval, unsigned int optlen)
  {
--	struct xfs_disk_dquot	*ddqp = bp->b_addr + dqp->q_bufoffset;
-+	struct xfs_dqblk	*dqb = xfs_buf_offset(bp, dqp->q_bufoffset);
-+	struct xfs_disk_dquot	*ddqp = &dqb->dd_diskdq;
+ 	struct sock *sk = sock->sk;
+-	int len, err = 0;
++	int err = 0;
+ 	struct bt_voice voice;
+ 	u32 opt;
  
- 	/*
- 	 * Ensure that we got the type and ID we were looking for.
-@@ -1250,7 +1251,7 @@ xfs_qm_dqflush(
- 	}
+@@ -845,10 +845,9 @@ static int sco_sock_setsockopt(struct so
+ 			break;
+ 		}
  
- 	/* Flush the incore dquot to the ondisk buffer. */
--	dqblk = bp->b_addr + dqp->q_bufoffset;
-+	dqblk = xfs_buf_offset(bp, dqp->q_bufoffset);
- 	xfs_dquot_to_disk(&dqblk->dd_diskdq, dqp);
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
  
- 	/*
---- a/fs/xfs/xfs_dquot_item_recover.c
-+++ b/fs/xfs/xfs_dquot_item_recover.c
-@@ -65,6 +65,7 @@ xlog_recover_dquot_commit_pass2(
- {
- 	struct xfs_mount		*mp = log->l_mp;
- 	struct xfs_buf			*bp;
-+	struct xfs_dqblk		*dqb;
- 	struct xfs_disk_dquot		*ddq, *recddq;
- 	struct xfs_dq_logformat		*dq_f;
- 	xfs_failaddr_t			fa;
-@@ -130,14 +131,14 @@ xlog_recover_dquot_commit_pass2(
- 		return error;
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+@@ -865,11 +864,10 @@ static int sco_sock_setsockopt(struct so
  
- 	ASSERT(bp);
--	ddq = xfs_buf_offset(bp, dq_f->qlf_boffset);
-+	dqb = xfs_buf_offset(bp, dq_f->qlf_boffset);
-+	ddq = &dqb->dd_diskdq;
+ 		voice.setting = sco_pi(sk)->setting;
  
- 	/*
- 	 * If the dquot has an LSN in it, recover the dquot only if it's less
- 	 * than the lsn of the transaction we are replaying.
- 	 */
- 	if (xfs_has_crc(mp)) {
--		struct xfs_dqblk *dqb = (struct xfs_dqblk *)ddq;
- 		xfs_lsn_t	lsn = be64_to_cpu(dqb->dd_lsn);
+-		len = min_t(unsigned int, sizeof(voice), optlen);
+-		if (copy_from_sockptr(&voice, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&voice, sizeof(voice), optval,
++					   optlen);
++		if (err)
+ 			break;
+-		}
  
- 		if (lsn && lsn != -1 && XFS_LSN_CMP(lsn, current_lsn) >= 0) {
-@@ -147,7 +148,7 @@ xlog_recover_dquot_commit_pass2(
+ 		/* Explicitly check for these values */
+ 		if (voice.setting != BT_VOICE_TRANSPARENT &&
+@@ -882,10 +880,9 @@ static int sco_sock_setsockopt(struct so
+ 		break;
  
- 	memcpy(ddq, recddq, item->ri_buf[1].i_len);
- 	if (xfs_has_crc(mp)) {
--		xfs_update_cksum((char *)ddq, sizeof(struct xfs_dqblk),
-+		xfs_update_cksum((char *)dqb, sizeof(struct xfs_dqblk),
- 				 XFS_DQUOT_CRC_OFF);
- 	}
+ 	case BT_PKT_STATUS:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
  
+ 		if (opt)
+ 			sco_pi(sk)->cmsg_mask |= SCO_CMSG_PKT_STATUS;
 
 
 
