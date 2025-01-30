@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF15A22F2E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42AEA22FD0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CEEB166F57
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59203169277
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD9F1E9B02;
-	Thu, 30 Jan 2025 14:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA8F1E98F1;
+	Thu, 30 Jan 2025 14:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLE8efia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWX716sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9091E3772;
-	Thu, 30 Jan 2025 14:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E70E1E6DCF;
+	Thu, 30 Jan 2025 14:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246766; cv=none; b=BWUDrDjqS2/Tnif3QjWzM1ijXbpPh/dD0hY9CD9/xcV7HXIQv4Xxmpd/nK2LCBrwvZ06jU74ZknnLwG7pK06h+3QtMN73TAeVDgLUoLFa2KBBF8gDoe2RfLwYFTNq7QXynFT4HQnSnDfXoUsl/XFfHs7vkftW+iVSyXAgZuBOHs=
+	t=1738247124; cv=none; b=PvTu2i1dKPCdMPoDAQLTgCV+mFflbCnuuq8ZBm8No/aTSxTlSKEOIT9BXx/KdyxkkVCoADNwr8Ft6u9gVB1P1JiaIFvfGQRXLoVFHwZqc/up7lwSCie8skUa7or9fVwWS4ZCaeWwAzscO2T3eKOfQQrYKpcrNpXlnLuh1hi4GJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246766; c=relaxed/simple;
-	bh=1ye3U2HpcEeyubcy2la6UmMS2LK4r/oaGnNiwTnt008=;
+	s=arc-20240116; t=1738247124; c=relaxed/simple;
+	bh=l/EdMW0D0BtjD4hjy0IF3JnuRn/nlnavImiYdqDMkNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZpQ0Rfxtj9L/G9PD2qcQYL9vPxDeXUIxQuCvr1v7eIufb9cb1iCkWOm5IYNGVPdtIaF6yzLQx2uoToaU4GAjAJR+8Ay9063pb4vyQx3wwNokE/+oCOzMUC2p9b6WzS5IC2Bj/p14M+p8XBJ5ZRwGhspwfyQZIbuKVdkGKgUB1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLE8efia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E24C4CEE2;
-	Thu, 30 Jan 2025 14:19:24 +0000 (UTC)
+	 MIME-Version; b=t3lTNIp6NQ/PnGUgsYR90C/jvm3bNbezu1tCke/jghmd8l6XZSz9Kem9W2y8DuQPr3ouxHNGSJvxrQekP1Wz9qNAVIu/r2+3w4xuhTDgd3ZEIC7qqp3FPBEwSgnB5tZZRN/HQz/zc1swqgQdemB+0wlUr40x1kMi+JKcuwSnu9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWX716sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2806DC4CED2;
+	Thu, 30 Jan 2025 14:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246765;
-	bh=1ye3U2HpcEeyubcy2la6UmMS2LK4r/oaGnNiwTnt008=;
+	s=korg; t=1738247124;
+	bh=l/EdMW0D0BtjD4hjy0IF3JnuRn/nlnavImiYdqDMkNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLE8efiaIXsi/oe4WeouuYeFlkPTlj09DjD6f7pIG8ymK6p/ClRkERQzyggI9cBWn
-	 iVMF7CJhuaBGd3/xiE0+APidFvCx0c5Y3p19Yigcoox9xYm1ctnBH2OlGn6Hrs0z6H
-	 wjbEIxD24Wi5FTSEMuHOH38ddveYGNKlKdR2UeEs=
+	b=RWX716sjU45vOpYJkRvkixPNTB24yxV+vcse1NYVxDG+kAfaw2obpxXaM1GgT0tGt
+	 7Os/RRZ0ZjCzmDs/SxgmeQH03Ut1lcl0nNSwWsc9Bi8GcYSNJPIvTvkexqlGyEgvAw
+	 2meqkC7gLRIvg8A7C9Bv/VLdi9hFrMq6r1/hXv7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 60/91] nfp: bpf: prevent integer overflow in nfp_bpf_event_output()
+Subject: [PATCH 5.10 090/133] nvmet: propagate npwg topology
 Date: Thu, 30 Jan 2025 15:01:19 +0100
-Message-ID: <20250130140136.076379228@linuxfoundation.org>
+Message-ID: <20250130140146.143582150@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Luis Chamberlain <mcgrof@kernel.org>
 
-[ Upstream commit 16ebb6f5b6295c9688749862a39a4889c56227f8 ]
+[ Upstream commit b579d6fdc3a9149bb4d2b3133cc0767130ed13e6 ]
 
-The "sizeof(struct cmsg_bpf_event) + pkt_size + data_size" math could
-potentially have an integer wrapping bug on 32bit systems.  Check for
-this and return an error.
+Ensure we propagate npwg to the target as well instead
+of assuming its the same logical blocks per physical block.
 
-Fixes: 9816dd35ecec ("nfp: bpf: perf event output helpers support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/6074805b-e78d-4b8a-bf05-e929b5377c28@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This ensures devices with large IUs information properly
+propagated on the target.
+
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/netronome/nfp/bpf/offload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/io-cmd-bdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/netronome/nfp/bpf/offload.c b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-index 7ff388ecc7e3a..409b636c76474 100644
---- a/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-+++ b/drivers/net/ethernet/netronome/nfp/bpf/offload.c
-@@ -454,7 +454,8 @@ int nfp_bpf_event_output(struct nfp_app_bpf *bpf, const void *data,
- 	map_id_full = be64_to_cpu(cbe->map_ptr);
- 	map_id = map_id_full;
- 
--	if (len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
-+	if (size_add(pkt_size, data_size) > INT_MAX ||
-+	    len < sizeof(struct cmsg_bpf_event) + pkt_size + data_size)
- 		return -EINVAL;
- 	if (cbe->hdr.ver != NFP_CCM_ABI_VERSION)
- 		return -EINVAL;
+diff --git a/drivers/nvme/target/io-cmd-bdev.c b/drivers/nvme/target/io-cmd-bdev.c
+index 6a9626ff07135..58dd91d2d71c8 100644
+--- a/drivers/nvme/target/io-cmd-bdev.c
++++ b/drivers/nvme/target/io-cmd-bdev.c
+@@ -36,7 +36,7 @@ void nvmet_bdev_set_limits(struct block_device *bdev, struct nvme_id_ns *id)
+ 	 */
+ 	id->nsfeat |= 1 << 4;
+ 	/* NPWG = Namespace Preferred Write Granularity. 0's based */
+-	id->npwg = lpp0b;
++	id->npwg = to0based(bdev_io_min(bdev) / bdev_logical_block_size(bdev));
+ 	/* NPWA = Namespace Preferred Write Alignment. 0's based */
+ 	id->npwa = id->npwg;
+ 	/* NPDG = Namespace Preferred Deallocate Granularity. 0's based */
 -- 
 2.39.5
 
