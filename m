@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-111529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4917CA22FB2
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1D0A22FA3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524137A3B0D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97DB188411A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717001E98F9;
-	Thu, 30 Jan 2025 14:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003501E9901;
+	Thu, 30 Jan 2025 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nktj7mHA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyDg+hoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D2B1E522;
-	Thu, 30 Jan 2025 14:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10681E7C25;
+	Thu, 30 Jan 2025 14:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247001; cv=none; b=oSmW/PAVxcxNyVoz4F15LHiKkCgmNSrNGKIkz+lFr4BlQhQvmRe/WxCvO2w6Rdjq1GMB17PstgKlyDVbNDXVfI7enT6ypv3BjFUFCPh80AUVcFG/sm4iWgKPa+CxhwXyqUa23ZEuHADrG+gCWkEQUErX+d9nQTNrjXxtc6xRHDk=
+	t=1738247034; cv=none; b=UqB2SQvNxfrKSX+QAUKYkyvQ2HEAXfNgqHuFidclS7TL0eqmPgoMXTcE8l8OBwOBbVMY3cbqqmOHNExNinD78DTBpiuqzPpQnXVY/75OGXeU928Rurgm/dsIhf+ivrldJLD6R0MYriMVQpSaFlOLUjtWfCtyH4VXOp716sSmDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247001; c=relaxed/simple;
-	bh=K0LeyWn4HxNyeh/is6DfKYA/0CU6LzV6CaQch41i8IA=;
+	s=arc-20240116; t=1738247034; c=relaxed/simple;
+	bh=HQwUUIQB+I5IwVkT4Pd32tSlgxmqejAhnRtndbIfae0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwr+Lqeq1DpyhcW4oLVMCKgG1tDnWV79j+l6HcOQ6vb3A0lrtZyauS1dFsQ9xloeLT+1xqTE7mDKjbYCZUs0WyUsQSLa5Pa9E4hKS5Ieowrz/2KTqp1WFD2ZCXgwr3l2Br03l+PGSdPfpBCHq8X6eEisN+LrlzgdCfsrMUO6VBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nktj7mHA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC31BC4CED2;
-	Thu, 30 Jan 2025 14:23:20 +0000 (UTC)
+	 MIME-Version; b=eioEOnX37PQOvtBJhR1Hu1UY2Q90ns0q4NIqjvSrpBhzhg/l73pi8Dpm4VwXKDUo33SAFqTsv0dokkB0FJ3iuwH5M5/G3K2LKwyadu8b5TF2v08zC1cwwASUd6TK9YtoNX4/Zs+9FWrl4pU7yROzzxhCNrPP1/7aeDGPnHwrMQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kyDg+hoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D91C4CED2;
+	Thu, 30 Jan 2025 14:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247001;
-	bh=K0LeyWn4HxNyeh/is6DfKYA/0CU6LzV6CaQch41i8IA=;
+	s=korg; t=1738247034;
+	bh=HQwUUIQB+I5IwVkT4Pd32tSlgxmqejAhnRtndbIfae0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nktj7mHAZl6UJoZbPSG956Ug2W5l/NG/xqch+CRkKcogUBHEbrtKP/3O6H2NSAtK3
-	 1vkzEBQcpHDFmsT7FsaCarSHs31eaSkLR0g+BJg1rLHKNvamQloZMxlaWym6H5RWC3
-	 KJ1auZ5fGwRjVuUp2ByUGbBz/bI3GjPcfReoTDUA=
+	b=kyDg+hoPcy7ZlXawk+d9DNhZgprJuyG2Xh4mikXvBKh3tfhGBAqP8iw3XoHTa/LC6
+	 pWcw7OF7OZ4TUB+RKcc+eXTPjsNvNMXhVwPOfkHneV/pXkk6bH4+tBa4VJIHeXtK5O
+	 k8mBTOOdoc3vzXE4a87YnV6PBKHUWg8DR1vpkjRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Hrusecky <michal.hrusecky@turris.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 031/133] USB: serial: option: add Neoway N723-EA support
-Date: Thu, 30 Jan 2025 15:00:20 +0100
-Message-ID: <20250130140143.766508407@linuxfoundation.org>
+	Zicheng Qu <quzicheng@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 032/133] staging: iio: ad9834: Correct phase range check
+Date: Thu, 30 Jan 2025 15:00:21 +0100
+Message-ID: <20250130140143.805135671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
 References: <20250130140142.491490528@linuxfoundation.org>
@@ -65,63 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Hrusecky <michal.hrusecky@turris.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-commit f5b435be70cb126866fa92ffc6f89cda9e112c75 upstream.
+commit c0599762f0c7e260b99c6b7bceb8eae69b804c94 upstream.
 
-Update the USB serial option driver to support Neoway N723-EA.
+User Perspective:
+When a user sets the phase value, the ad9834_write_phase() is called.
+The phase register has a 12-bit resolution, so the valid range is 0 to
+4095. If the phase offset value of 4096 is input, it effectively exactly
+equals 0 in the lower 12 bits, meaning no offset.
 
-ID 2949:8700 Marvell Mobile Composite Device Bus
+Reasons for the Change:
+1) Original Condition (phase > BIT(AD9834_PHASE_BITS)):
+This condition allows a phase value equal to 2^12, which is 4096.
+However, this value exceeds the valid 12-bit range, as the maximum valid
+phase value should be 4095.
+2) Modified Condition (phase >= BIT(AD9834_PHASE_BITS)):
+Ensures that the phase value is within the valid range, preventing
+invalid datafrom being written.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2949 ProdID=8700 Rev= 1.00
-S:  Manufacturer=Marvell
-S:  Product=Mobile Composite Device Bus
-S:  SerialNumber=200806006809080000
-C:* #Ifs= 5 Cfg#= 1 Atr=c0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0e(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Impact on Subsequent Logic: st->data = cpu_to_be16(addr | phase):
+If the phase value is 2^12, i.e., 4096 (0001 0000 0000 0000), and addr
+is AD9834_REG_PHASE0 (1100 0000 0000 0000), then addr | phase results in
+1101 0000 0000 0000, occupying DB12. According to the section of WRITING
+TO A PHASE REGISTER in the datasheet, the MSB 12 PHASE0 bits should be
+DB11. The original condition leads to incorrect DB12 usage, which
+contradicts the datasheet and could pose potential issues for future
+updates if DB12 is used in such related cases.
 
-Tested successfully connecting to the Internet via rndis interface after
-dialing via AT commands on If#=4 or If#=6.
-
-Not sure of the purpose of the other serial interface.
-
-Signed-off-by: Michal Hrusecky <michal.hrusecky@turris.com>
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20241107011015.2472600-2-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/iio/frequency/ad9834.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2413,6 +2413,7 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(1) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0640, 0xff),			/* TCL IK512 ECM */
- 	  .driver_info = NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2949, 0x8700, 0xff) },			/* Neoway N723-EA */
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -132,7 +132,7 @@ static int ad9834_write_frequency(struct
+ static int ad9834_write_phase(struct ad9834_state *st,
+ 			      unsigned long addr, unsigned long phase)
+ {
+-	if (phase > BIT(AD9834_PHASE_BITS))
++	if (phase >= BIT(AD9834_PHASE_BITS))
+ 		return -EINVAL;
+ 	st->data = cpu_to_be16(addr | phase);
+ 
 
 
 
