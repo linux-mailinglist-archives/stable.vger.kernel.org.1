@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9CC9A22EAA
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:05:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899AFA22E71
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C51F188428C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 956E23A30E1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666911E633C;
-	Thu, 30 Jan 2025 14:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD171E2853;
+	Thu, 30 Jan 2025 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ3IXFv3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2l42Knz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253FC1E98FF;
-	Thu, 30 Jan 2025 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D876C13D;
+	Thu, 30 Jan 2025 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245761; cv=none; b=Q9XAkHkt7pXgkRiw1rnaptulscThfu+fXrdVSZEJazdeU/eiUO5o9Nd0HMoGHs2IVNHXYNrOVIEukkqAxrA9wr3ZNkstkeXh58qfmd1MGZHZtnXq9FBtpk4BjN81SxBZaOhG8g3BVx70ntOflzZLieqH4yf50A9q6snsMSbHXFU=
+	t=1738245662; cv=none; b=JfSYO7jH1oyAvUtInLtQrRhZq5BJPUcTF4zDZ6w5lnrDGaKt2d+zY8uahPysUrFCQMH7zJPjACCUiGovio+A+zHTEWJJxiyVI/1IACeCKtjlnPOuY0lUQakUO+3LPHuJyIMqYV+h3wHAcpRJLOKf+R1OQ40CqnfixOcwUMlevYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245761; c=relaxed/simple;
-	bh=xCMVdCqKML4t35RYfwH11i4LwqumZzBir3EuwqtsgSc=;
+	s=arc-20240116; t=1738245662; c=relaxed/simple;
+	bh=EIZqEJvoFsQfwDCXFB3Y0IsyT5M+KqI1YFO18rS7ERg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=px+SILt1mIR/rZmc3isMaWPi74i3elxy46PoHJ8r3XMRZnG+MQer27wrtPhljwkG/gspQphD9dj9cz3a8qyDNx6/V0mYkal4gV+31Mfo/IimnqtY5lQ8D5vZH02DJT/tq1impvhuNQsENl1MKyny8keJ+kIFfgfqO9jYvVTpJkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ3IXFv3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9F2C4CED2;
-	Thu, 30 Jan 2025 14:02:40 +0000 (UTC)
+	 MIME-Version; b=sHDslFDVMZVb50HmNyS90j7KW5sVLQ0bpHyH0z3IRCJklWXzETJu/tITw3rdQgPhpbC3SKnqv4s00F5hx7O5AH74+PFhTrIl7bVEwWWl8Vi/Dfur7J+lYH2gtlLL/xGJLfbObw8V99QxJJSJTN5UsAt9wCpen1oJ6nmCqIqrjlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2l42Knz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9C6C4CED2;
+	Thu, 30 Jan 2025 14:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245760;
-	bh=xCMVdCqKML4t35RYfwH11i4LwqumZzBir3EuwqtsgSc=;
+	s=korg; t=1738245662;
+	bh=EIZqEJvoFsQfwDCXFB3Y0IsyT5M+KqI1YFO18rS7ERg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQ3IXFv3nay2ju7HPi5D2aXOxZuMUzbBnljN/Rr3w+iPEYBHY7IDu5ngjFrARKj0Z
-	 SSALxxrpBgtYJ5lPQfNgEhJ2hxy+B+WxxKVliec7YzWR+Plt2pt8CLmOd6vic4Ksxl
-	 op8tz3X8yDy206Tas+wTn17qYotGCAZ4DafS25Zc=
+	b=i2l42KnzkJ4GvlSkE6WKYnOg7JqKXTNeLNdldqCRAH4tznThqrdD512wTeHaD0luZ
+	 yk/nswtPYPsozVVimDirYKZjjY8DWS/M1ASLMg1W1I+jpgXbiyhbtfeyf9wHxl1DOx
+	 n+UX6gzt9c78ULeCks+BG45WpD+y2Rk4/GUlyfAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Rajani Kantha <rajanikantha@engineer.com>
-Subject: [PATCH 6.6 11/43] cpufreq: amd-pstate: add check for cpufreq_cpu_gets return value
+	Jeff Layton <jlayton@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 18/40] libfs: Return ENOSPC when the directory offset range is exhausted
 Date: Thu, 30 Jan 2025 14:59:18 +0100
-Message-ID: <20250130133459.357948757@linuxfoundation.org>
+Message-ID: <20250130133500.441969579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 5493f9714e4cdaf0ee7cec15899a231400cb1a9f upstream.
+commit 903dc9c43a155e0893280c7472d4a9a3a83d75a6 upstream.
 
-cpufreq_cpu_get may return NULL. To avoid NULL-dereference check it
-and return in case of error.
+Testing shows that the EBUSY error return from mtree_alloc_cyclic()
+leaks into user space. The ERRORS section of "man creat(2)" says:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>	EBUSY	O_EXCL was specified in flags and pathname refers
+>		to a block device that is in use by the system
+>		(e.g., it is mounted).
 
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-[ Raj: on 6.6, there don't have function amd_pstate_update_limits()
-  so applied the NULL checking in amd_pstate_adjust_perf() only ]
-Signed-off-by: Rajani Kantha <rajanikantha@engineer.com>
+ENOSPC is closer to what applications expect in this situation.
+
+Note that the normal range of simple directory offset values is
+2..2^63, so hitting this error is going to be rare to impossible.
+
+Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
+Cc: stable@vger.kernel.org # v6.9+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/20241228175522.1854234-2-cel@kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/amd-pstate.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/libfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -579,8 +579,13 @@ static void amd_pstate_adjust_perf(unsig
- 	unsigned long max_perf, min_perf, des_perf,
- 		      cap_perf, lowest_nonlinear_perf, max_freq;
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
--	struct amd_cpudata *cpudata = policy->driver_data;
- 	unsigned int target_freq;
-+	struct amd_cpudata *cpudata;
-+
-+	if (!policy)
-+		return;
-+
-+	cpudata = policy->driver_data;
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -288,8 +288,8 @@ int simple_offset_add(struct offset_ctx
  
- 	if (policy->min != cpudata->min_limit_freq || policy->max != cpudata->max_limit_freq)
- 		amd_pstate_update_min_max_limit(policy);
+ 	ret = mtree_alloc_cyclic(&octx->mt, &offset, dentry, DIR_OFFSET_MIN,
+ 				 LONG_MAX, &octx->next_offset, GFP_KERNEL);
+-	if (ret < 0)
+-		return ret;
++	if (unlikely(ret < 0))
++		return ret == -EBUSY ? -ENOSPC : ret;
+ 
+ 	offset_set(dentry, offset);
+ 	return 0;
 
 
 
