@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9FFA22F91
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1D97A22F1F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDC41885A57
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640CF3A535A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246131DDC22;
-	Thu, 30 Jan 2025 14:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FBD41E8824;
+	Thu, 30 Jan 2025 14:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmubwQn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqtMkC6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D328F1E7C27;
-	Thu, 30 Jan 2025 14:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA51E493C;
+	Thu, 30 Jan 2025 14:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246996; cv=none; b=Xr4GMQzt8n376YmcmpM1fPfN/Fybpwsef6mZjiGygiZDMbF8n52ytngcSxnmX+FZruq6ntVRIbzyosSeLRljbnNpNJ5J8sxNJtzC6X4VODN6YbhS+KcmjyNGJtTN1w62cpTVLHUpGC0np42GQdh9ah/gB60nYClQADnKulZxAp0=
+	t=1738246729; cv=none; b=jGHudeSpgiFjSOwAM5jqQPMn4csXAJKAqFwJ13xBZGUipS6L/PpnfxfHfk/SzB0hVx/fvb+MaH5E8+Ojf56TYj6Ih1+qLFJhwLxXNQ9GvPw3BfU4YPOk/vGe5ndr0HvOXlxP7esKeGHbSpt5yMXNkHi3iNAgTCXJktWgKk7Tio8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246996; c=relaxed/simple;
-	bh=xQR7bAgAvEw8ats7VGflv6QLyd4M2jKPZFeJkBcZmoU=;
+	s=arc-20240116; t=1738246729; c=relaxed/simple;
+	bh=BGl04HCkT/vzgTiSXp30AVo/nmSlBGp6riJZij8tVL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hu/ETL+t8Xj0yM0KTxrDvdx5VJG2nDr9bjjF5BuU9ViZuGH7F5MTV7YNHprXL3oPJsWe6lqLug7WLXwCJMMsIovPugU/jclYo5U23xiefZOZKagaSrLadZC3ncZ6PVSL6HEMUYJv5YNuvWRC+31ZVvDhXUeUlFjo8fS60NsnRbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmubwQn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE09DC4CED2;
-	Thu, 30 Jan 2025 14:23:14 +0000 (UTC)
+	 MIME-Version; b=lc437M3w/s7phZhL/R3Qo0L7KC+iPcfdkHdtapz7d+MYXiZGpvqNg4m8dXKtSTHbKNnTR/BSdZmMJ1HMEEHdm+Co5xtohTWe4bvr7tpOjX0nfN91+V6OTOxY387OGZM/DtmLppgzc1cfEheegSsblWhDzJpOEYKGYnh8Bw2Jzyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqtMkC6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECBAC4CED2;
+	Thu, 30 Jan 2025 14:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246995;
-	bh=xQR7bAgAvEw8ats7VGflv6QLyd4M2jKPZFeJkBcZmoU=;
+	s=korg; t=1738246729;
+	bh=BGl04HCkT/vzgTiSXp30AVo/nmSlBGp6riJZij8tVL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WmubwQn7Nz0doVkAEhGIqfZuuIkCcRKUvgW+7XOy2P8bdHSFnxkuOCzRGv4bDCvLU
-	 6q2fti3UedPKT8yBbnmXLjr0Tc8qGE90E3Fvq8dkJSIl8n8R0lFpNg+0tbFZlbYbd+
-	 mu9//qnSR2c3nHsEF5yYx794Ac/EXHlcWt76TZlk=
+	b=bqtMkC6uBCkfKQabKR5SmnJWDANeSerirpws4h6qQSDueOO7CeUgcXkrmhcFxCqgD
+	 M7Vhpt4+ByhHJjgOybpc90CGfcSBWsAw5bsco51mY5s0MveA4bzTlzr9k5WhH3lkOQ
+	 C/mDseZHynw+izgaFjnJZ+jmnAwkET/0SYh5tUKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 047/133] iio: gyro: fxas21002c: Fix missing data update in trigger handler
+	Melissa Wen <mwen@igalia.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.4 17/91] drm/amd/display: increase MAX_SURFACES to the value supported by hw
 Date: Thu, 30 Jan 2025 15:00:36 +0100
-Message-ID: <20250130140144.415615532@linuxfoundation.org>
+Message-ID: <20250130140134.351774623@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Melissa Wen <mwen@igalia.com>
 
-commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
+commit 21541bc6b44241e3f791f9e552352d8440b2b29e upstream.
 
-The fxas21002c_trigger_handler() may fail to acquire sample data because
-the runtime PM enters the autosuspend state and sensor can not return
-sample data in standby mode..
+As the hw supports up to 4 surfaces, increase the maximum number of
+surfaces to prevent the DC error when trying to use more than three
+planes.
 
-Resume the sensor before reading the sample data into the buffer within the
-trigger handler. After the data is read, place the sensor back into the
-autosuspend state.
+[drm:dc_state_add_plane [amdgpu]] *ERROR* Surface: can not attach plane_state 000000003e2cb82c! Maximum is: 3
 
-Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3693
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b8d6daffc871a42026c3c20bff7b8fa0302298c1)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dc.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -730,14 +730,21 @@ static irqreturn_t fxas21002c_trigger_ha
- 	int ret;
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -41,7 +41,7 @@
  
- 	mutex_lock(&data->lock);
-+	ret = fxas21002c_pm_get(data);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
- 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out_pm_put;
+ #define DC_VER "3.2.48"
  
- 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
- 					   data->timestamp);
- 
-+out_pm_put:
-+	fxas21002c_pm_put(data);
-+
- out_unlock:
- 	mutex_unlock(&data->lock);
- 
+-#define MAX_SURFACES 3
++#define MAX_SURFACES 4
+ #define MAX_PLANES 6
+ #define MAX_STREAMS 6
+ #define MAX_SINKS_PER_LINK 4
 
 
 
