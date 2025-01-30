@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A621A23001
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A779A23054
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74C853A5D52
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3B8D168F96
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5971E98E8;
-	Thu, 30 Jan 2025 14:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CFC1BD9D3;
+	Thu, 30 Jan 2025 14:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="magKraLi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCItqMMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2D21E6DCF;
-	Thu, 30 Jan 2025 14:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D547482;
+	Thu, 30 Jan 2025 14:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247262; cv=none; b=O9ySV5i9RgcH85GsPplyNuCwX25V8o4OfefmhHBWw6tAonA/k0YypSPLd0siPuilJQuP04SxvY4FlhFEBPeFolvdAACbu2ehIDOEd3PcDgj+mbu+ExcwBqZy6rBPDKEBR3fSMQQmwQemoTlb/deoLvingM+MQDQ9Yp+sVmi5r8w=
+	t=1738247472; cv=none; b=ilJA4UkQ/6lhleF25deyTyoW19WkAyWpEo/rpNJh3sGHHUa/A4M9t+zNIx+MTBw+rydciQNFxMs+l5VFu/+Xy67qE60ARXms9sa9FNZbkExVqWyg/bHulbsr/y872OK0Fhumyp5w5Qpz/aZJaDDkxZ/m1d7JsbYd5We9+sxUXqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247262; c=relaxed/simple;
-	bh=rnShHZtUrRSR6DY4tBLADhQTNwVZf49jDRA3D+fgmOg=;
+	s=arc-20240116; t=1738247472; c=relaxed/simple;
+	bh=pdlNiUOS/rVm08pp4PCiKllsxhv7IZAwRF9s2hZfAGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRMHfLfyjhMu/uaQihnV6SNndARwNqoEpJRlFZUK4HtN2CAdycqN8elhEvK0s/5644wA/Ji75rQrYXn/rb5fvqTnNunL1VVadFjknlk+b/Dv7711dUhKT6hJYvlBTpv3jMt2hbtolSq3Nrmax1dlNn3ZYlRFXJdT6sA3xLmtiRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=magKraLi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA7DC4CED2;
-	Thu, 30 Jan 2025 14:27:41 +0000 (UTC)
+	 MIME-Version; b=WLxln8DybYKRTzqGPYubIx/f0k50M2MtaWR9+AjsFS6VkYQDfVVsZXL56Nb9hPJ6n+rQ1tNk0x3d6489lqRVRtmbk8bIuMTqNNvM9O1Xjuv6iy6H48huP1XvEaPvB7V59waY/8GejLcXw3GT6yWlR7UbFGt9+PO5eOP4+ChLVN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCItqMMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0824C4CED2;
+	Thu, 30 Jan 2025 14:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247262;
-	bh=rnShHZtUrRSR6DY4tBLADhQTNwVZf49jDRA3D+fgmOg=;
+	s=korg; t=1738247472;
+	bh=pdlNiUOS/rVm08pp4PCiKllsxhv7IZAwRF9s2hZfAGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=magKraLiTKtksPandRDiv7/bE/PV8A8tPRuICqLkuJ7BiLWci8vuptoA4DHqJocWy
-	 d2sTYiNBupaxOSAoNCWPkbS2P4OKDMt8jsppfVVcY3BBOUpZYM6AFA282Waysksp7J
-	 VS/C2OFzKZAD7oto18isIUrCeX34Gi01qB8D6DxQ=
+	b=RCItqMMpMjTsUTPuHwkqe5uZRH9Oj9vfVkS8iI5dx9vtp94EPW0/jbe8IAHGdC6eX
+	 j1SeM5FCQnVl81XlSg9PzoUF8KGahldHsHlOtMzNwuZqj3ro4BnSvktG+006YS50Nu
+	 F5gqZB1IoeBYSVe0cvMm5ni/B77qT5d1hqtfdVB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	stable <stable@kernel.org>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 5.10 130/133] Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 23/49] xfs: only remap the written blocks in xfs_reflink_end_cow_extent
 Date: Thu, 30 Jan 2025 15:01:59 +0100
-Message-ID: <20250130140147.764128486@linuxfoundation.org>
+Message-ID: <20250130140134.770341691@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 086fd062bc3883ae1ce4166cff5355db315ad879 upstream.
+[ Upstream commit 55f669f34184ecb25b8353f29c7f6f1ae5b313d1 ]
 
-This reverts commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec.
+xfs_reflink_end_cow_extent looks up the COW extent and the data fork
+extent at offset_fsb, and then proceeds to remap the common subset
+between the two.
 
-It is reported to cause crashes on Tegra systems, so revert it for now.
+It does however not limit the remapped extent to the passed in
+[*offset_fsbm end_fsb] range and thus potentially remaps more blocks than
+the one handled by the current I/O completion.  This means that with
+sufficiently large data and COW extents we could be remapping COW fork
+mappings that have not been written to, leading to a stale data exposure
+on a powerfail event.
 
-Link: https://lore.kernel.org/r/1037c1ad-9230-4181-b9c3-167dbaa47644@nvidia.com
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable <stable@kernel.org>
-Cc: Lianqin Hu <hulianqin@vivo.com>
-Link: https://lore.kernel.org/r/2025011711-yippee-fever-a737@gregkh
+We use to have a xfs_trim_range to make the remap fit the I/O completion
+range, but that got (apparently accidentally) removed in commit
+df2fd88f8ac7 ("xfs: rewrite xfs_reflink_end_cow to use intents").
+
+Note that I've only found this by code inspection, and a test case would
+probably require very specific delay and error injection.
+
+Fixes: df2fd88f8ac7 ("xfs: rewrite xfs_reflink_end_cow to use intents")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_reflink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1395,10 +1395,6 @@ void gserial_disconnect(struct gserial *
- 	/* REVISIT as above: how best to track this? */
- 	port->port_line_coding = gser->port_line_coding;
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -783,6 +783,7 @@ xfs_reflink_end_cow_extent(
+ 		}
+ 	}
+ 	del = got;
++	xfs_trim_extent(&del, *offset_fsb, end_fsb - *offset_fsb);
  
--	/* disable endpoints, aborting down any active I/O */
--	usb_ep_disable(gser->out);
--	usb_ep_disable(gser->in);
--
- 	port->port_usb = NULL;
- 	gser->ioport = NULL;
- 	if (port->port.count > 0) {
-@@ -1410,6 +1406,10 @@ void gserial_disconnect(struct gserial *
- 	spin_unlock(&port->port_lock);
- 	spin_unlock_irqrestore(&serial_port_lock, flags);
- 
-+	/* disable endpoints, aborting down any active I/O */
-+	usb_ep_disable(gser->out);
-+	usb_ep_disable(gser->in);
-+
- 	/* finally, free any unused/unusable I/O buffers */
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (port->port.count == 0)
+ 	/* Grab the corresponding mapping in the data fork. */
+ 	nmaps = 1;
 
 
 
