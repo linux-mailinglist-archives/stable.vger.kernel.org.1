@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D81A22FD7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A45DA22F17
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97824168E87
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D056164375
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F3C1E7C27;
-	Thu, 30 Jan 2025 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7C91E7C25;
+	Thu, 30 Jan 2025 14:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY2Wx4/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtJzNWxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A891DDC22;
-	Thu, 30 Jan 2025 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAC01BDA95;
+	Thu, 30 Jan 2025 14:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247148; cv=none; b=hZrI9GPXxOuEPKqeae7L1m97HmZjbB8ZT/0gq30ce3RsqvRBEhwaa+PiLWG1mKR/4RCJ5QlMp29zYZVaVc+dxnMVD+9EjwpIcnkx076hlqThm6ga7c+o12ho3Ih5A9bE2JG2y2mzRTM+9nne7SI8rJ7MlZwJ70eE6yyQQo2j3v4=
+	t=1738246706; cv=none; b=VZO9Gt2ZyKG+bl4x/dtBI3pxNTqiEn1Vzq7fKkkPhtLofhDbWUZeuXAtVq3A+0/+dTcjxxC+Jbz3vzpVbM/qmAptD1zN+IIlpk6LXqpb+iScZ/9JCWxr+3bqii9gmCmlw8hvwbbwqhshuXQAjXslVk6DOMoIQyDqUuBxeL0a5uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247148; c=relaxed/simple;
-	bh=hCggc3UQhTgY7kcUhr8LcZn03K4EkJQUjV+19eMciYE=;
+	s=arc-20240116; t=1738246706; c=relaxed/simple;
+	bh=l5M+9pt/h6egaIbaYOblgEF3sgpv7ATy1j2aCuFe+yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K74HEbxGv3XKg9AqyurEk08s4ARzRYXmcl/Uxze2MN+SRNPzxsxz2QkJD4ah0sdJ5vmYXJ+4NFvZKiuvmYYtWpuR4SFYWyw97dycxfuetUJvgFMWzdRwZG/h2SARano9q34vs5CHd2WnAK6hO54z82MUGnHe+tJ2k2I9bXLoCSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY2Wx4/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1EEC4CED2;
-	Thu, 30 Jan 2025 14:25:47 +0000 (UTC)
+	 MIME-Version; b=ihKzTTF3FzS6XngMCitfYd3YgUIZ80Nr2U/unCbBPkW5l0u99wehXkp6QTaN+DDNHJzhIw1oTJVc4F6Kex9UfQmI2mj/JCgn03W+QYs8KQs+4MFQjFA8lnpZlNpftNc4ZWllqY3aCu2/ap3HfmIN4KmW0dBGB8H2ZXPCJjpGVC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtJzNWxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D32C4CED2;
+	Thu, 30 Jan 2025 14:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247148;
-	bh=hCggc3UQhTgY7kcUhr8LcZn03K4EkJQUjV+19eMciYE=;
+	s=korg; t=1738246705;
+	bh=l5M+9pt/h6egaIbaYOblgEF3sgpv7ATy1j2aCuFe+yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XY2Wx4/Mke5hbJMlx1VzkHx+D/bvNQmX9ZWf7qPKcr6eOY4ZekYg3r2eKQSz29V4W
-	 LRknEG2Uw3Gp+1B+2Xmz6pLXYfWZWbHb7jDUt3BszbG3XR9YuiIa3C3tyom6zU/P8F
-	 GMgN8mgxO0VOXPOpXjmMmroEZBXHUArH1tNyMQnQ=
+	b=YtJzNWxEZqb2riC11dcLY58/lmrrA6foORj3b322rLcqzHsqEkkk5qeGJVGxxHrux
+	 sZ1gy0+La7YVnYsoVmszrLpB37GQdTr5o0K1Lp04jm3FUM0dPWetszpHtl2rk87mag
+	 w9g7ksRfLCUGAK3A9lNqcl+vvjJbhjJdkyjCUuNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justinpopo6@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 069/133] phy: usb: Use slow clock for wake enabled suspend
+	Johan Jonker <jbx6244@gmail.com>,
+	Caesar Wang <wxt@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 39/91] arm64: dts: rockchip: fix pd_tcpc0 and pd_tcpc1 node position on rk3399
 Date: Thu, 30 Jan 2025 15:00:58 +0100
-Message-ID: <20250130140145.296671794@linuxfoundation.org>
+Message-ID: <20250130140135.237193537@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit 700c44b508020a3ea29d297c677f8d4ab14b7e6a upstream.
+[ Upstream commit 2b99e6196663199409540fb95798dba464e34343 ]
 
-The logic was incorrect when switching to slow clock. We want the slow
-clock if wake_enabled is set.
+The pd_tcpc0 and pd_tcpc1 nodes are currently a sub node of pd_vio.
+In the rk3399 TRM figure of the 'Power Domain Partition' and in the
+table of 'Power Domain and Voltage Domain Summary' these power domains
+are positioned directly under VD_LOGIC, so fix that in 'rk3399.dtsi'.
 
-Fixes: ae532b2b7aa5 ("phy: usb: Add "wake on" functionality for newer Synopsis XHCI controllers")
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Link: https://lore.kernel.org/r/1665005418-15807-6-git-send-email-justinpopo6@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Reviewed-by: Caesar Wang <wxt@rock-chips.com>
+Link: https://lore.kernel.org/r/20200428203003.3318-2-jbx6244@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: 3699f2c43ea9 ("arm64: dts: rockchip: add hevc power domain clock to rk3328")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-+++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
-@@ -337,13 +337,12 @@ static void usb_uninit_common_7216(struc
- 
- 	pr_debug("%s\n", __func__);
- 
--	if (!params->wake_enabled) {
--		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
--
-+	if (params->wake_enabled) {
- 		/* Switch to using slower clock during suspend to save power */
- 		USB_CTRL_SET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
--	} else {
- 		usb_wake_enable_7216(params, true);
-+	} else {
-+		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
- 	}
- }
- 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+index dcd989563d27..04ca346b2f28 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+@@ -1057,6 +1057,16 @@
+ 				clocks = <&cru HCLK_SDIO>;
+ 				pm_qos = <&qos_sdioaudio>;
+ 			};
++			pd_tcpc0@RK3399_PD_TCPD0 {
++				reg = <RK3399_PD_TCPD0>;
++				clocks = <&cru SCLK_UPHY0_TCPDCORE>,
++					 <&cru SCLK_UPHY0_TCPDPHY_REF>;
++			};
++			pd_tcpc1@RK3399_PD_TCPD1 {
++				reg = <RK3399_PD_TCPD1>;
++				clocks = <&cru SCLK_UPHY1_TCPDCORE>,
++					 <&cru SCLK_UPHY1_TCPDPHY_REF>;
++			};
+ 			pd_usb3@RK3399_PD_USB3 {
+ 				reg = <RK3399_PD_USB3>;
+ 				clocks = <&cru ACLK_USB3>;
+@@ -1089,16 +1099,6 @@
+ 					pm_qos = <&qos_isp1_m0>,
+ 						 <&qos_isp1_m1>;
+ 				};
+-				pd_tcpc0@RK3399_PD_TCPD0 {
+-					reg = <RK3399_PD_TCPD0>;
+-					clocks = <&cru SCLK_UPHY0_TCPDCORE>,
+-						 <&cru SCLK_UPHY0_TCPDPHY_REF>;
+-				};
+-				pd_tcpc1@RK3399_PD_TCPD1 {
+-					reg = <RK3399_PD_TCPD1>;
+-					clocks = <&cru SCLK_UPHY1_TCPDCORE>,
+-						 <&cru SCLK_UPHY1_TCPDPHY_REF>;
+-				};
+ 				pd_vo@RK3399_PD_VO {
+ 					reg = <RK3399_PD_VO>;
+ 					#address-cells = <1>;
+-- 
+2.39.5
+
 
 
 
