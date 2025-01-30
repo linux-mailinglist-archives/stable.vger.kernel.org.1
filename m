@@ -1,336 +1,176 @@
-Return-Path: <stable+bounces-111255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6860A22902
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 07:59:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C35A22948
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 08:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E6061669D7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 06:59:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 896797A2ADB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 07:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F94199223;
-	Thu, 30 Jan 2025 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307631A4F21;
+	Thu, 30 Jan 2025 07:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EGhMh87J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws446NIH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676FF194089
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 06:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8387C2FB;
+	Thu, 30 Jan 2025 07:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738220363; cv=none; b=BYV3UYiDa5oEahP1/OYtIcguhuf+A+Yqj33pQaP+/hiiXHc4fBD/MQdX8zEK931PmA8yQt6GjMq0YtYq0cL1irDv747FATB2NHIBdxZxfHt3wpmsJCRB4xqwFY6GtgLBbNPhQCNXmddTGYLISX1rUN8R7FRipc3ZK89U0Hv9JOg=
+	t=1738222993; cv=none; b=dF4DNMHi/YIeANwxZz2JYGqXkUtUp/Sy7ZLeKyu7/sMQvf+A0bd8l6KZEt9sM35Oi/PvUqMXyktMUMUWiLQJ2FYreyakR+GmdyLYqNcG6yc6uJTW4vYjfCsYnpFUnxKCJ1E1HnDsNSgQ40YHcjpF5ijNFy8pG5nc0XJGVEqghds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738220363; c=relaxed/simple;
-	bh=3vUZSw8zKtk8bflc7Hn4PYmWr1l5R9zJUD1wFwtUDP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tFKth0kVkO6Cz1HF6MbXq1ljwsagYjkXfEjceZFWV+n8xA00QjTajIColn3n/lKFQJg9yD7gmmKuCEhwvUNNafeDTDJwyzBDyPd+uVJ01lsSkzyytiBlP9JpBJdwLVGY8qcP9rE05/kKQD5ICMk18BfYCy3GWfDbfEi6JR6jrGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EGhMh87J; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385e06af753so191522f8f.2
-        for <stable@vger.kernel.org>; Wed, 29 Jan 2025 22:59:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1738220360; x=1738825160; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3vUZSw8zKtk8bflc7Hn4PYmWr1l5R9zJUD1wFwtUDP4=;
-        b=EGhMh87JxO0YhaQ3AtlZGrRN9kd6ISFPlkrLJt7sz7Lr7KVjanOWJ0/o6ucoRfxzem
-         aiDixitI4uILsrhoHtOmbgoGtxkxxYxPa2Q4CfXPAShtLdWNVyitXA+TgSfdYQ1zTKfT
-         qpqbNS94G9OFUDLLCHxE9agH9HnjqMcOBPC5PyWGfRjFwAsqXa9DqWO7cUzuxd5vAc1i
-         R3UQGSQ1cLrl/vxqu8lk0sFcAAWn/trbqA/RxxC9AUnkUGyZCMbgGWuPvo+8vn43nGB4
-         Xu6iYRmslToZwHePKgga+Ou6B4IU2Yx7OnPeNgZQ8PZ/M0xZA27t+erv/aH5aIa2xVWv
-         EJQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738220360; x=1738825160;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3vUZSw8zKtk8bflc7Hn4PYmWr1l5R9zJUD1wFwtUDP4=;
-        b=svjO1i0AhWGZkBdGltfwaOjHussmGf6sFyNy5bLiuxTtn3Tf8mxwzJrBYKuveJHXjy
-         ZI0AYmv4iUUXQGRSPxd/U+eT1SlPfNOhII6fp3MTifVmwwELhtUdrsLmwITE3FHVR8Cf
-         I5XTWQyiIA0G6lWmOPH+MQ80mRJ0gYAv65fiVBQbDV4JK6FNzzB4Ks+PrEERY3+mZtTa
-         TE+xbbcgCo6tzSC/88gVftIbUfKhQt19kIN/lXiPPpz0V6DZgD2gM6dKTdAazOivjaHm
-         Etw8EaqoIYvYe+Sb3Z9S/Vz+yIwI0Tz2rPegjeVvGz7HTmX74OZDJdygMJjjIXxYxeoF
-         EAUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVkgLGPDqc7khOQ1XUuL+FWay7ioiWb88TTygfU1XtXYmH47tTtYGsFndmUT+8MZACIjl5SccQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDelo3mIhXQxraAJ9oVCAcbfl8SkcUZtRzJskJC/VI/PJnYDi4
-	J4jHnIajj/N5ymeE9BoOuIbifr+cvP1uVtblbRzl5vR/w/0LKTWkAEGdFLnQrfs=
-X-Gm-Gg: ASbGnctlmYpHXpF33CNivqzyDJBvfkaH4NP0PoWBQDlJhmLDSxqLLbhv+yuJOEMrCo8
-	T9HJGxvLlO/VA6on/xVAec04egISlBMxBUA2T3HbyKpiyyvxQu2nomwpz39MS7C74KWkMOOzEua
-	/wSWzk20wYfThcYHabaejwM+TDo7iC3va6gjcFxKBeT2LcO9po9fSTglSstDvCbjAMPTqqxCH2E
-	NJcF1Gh2oAlCs3a6ULFcFGjrH1//JwSH8VIlLJwWihTtXR/vEWJ6KAbgzgbISHuKb5S2dRjw4P8
-	wA91qcEVo+q07jTM6etk/tbnrTCTHyt1CpsqYa07g6OoMDuMi20iDExvI11S1IS/4YZpUVpYVfY
-	l2r50f7bbG0UnEdwkUlMJDwZwaRc17d4I1pLa7lJz
-X-Google-Smtp-Source: AGHT+IHclpz0w0BdhFnnJJQiTZ6ZuPVAz4nSrLm/cqjyr4pJ+MB3dOMhMEDwHs5k3NHTbryrf7ZwIw==
-X-Received: by 2002:a5d:648b:0:b0:38a:5ce8:df51 with SMTP id ffacd0b85a97d-38c51931b2cmr4609634f8f.2.1738220359569;
-        Wed, 29 Jan 2025 22:59:19 -0800 (PST)
-Received: from ?IPV6:2003:e5:8731:2800:842d:42a0:5992:3595? (p200300e587312800842d42a059923595.dip0.t-ipconnect.de. [2003:e5:8731:2800:842d:42a0:5992:3595])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e244ecd6sm12030725e9.28.2025.01.29.22.59.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jan 2025 22:59:19 -0800 (PST)
-Message-ID: <ec1a28a9-cef1-45e3-9b71-30de5bf07d7f@suse.com>
-Date: Thu, 30 Jan 2025 07:59:18 +0100
+	s=arc-20240116; t=1738222993; c=relaxed/simple;
+	bh=5J6jJrnq3XsDB9NlG9FzYa+g3HytaqGWsBfOymeBtSU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ghYIqc8gRvUuFbBcOgKwC9NW8Ngu/kUt8FvotR1B1fpcwxEGgfbWGCPLMOwTm0HbG6PsKLiDcrFWomzVrf2/dzBr9mNCSikdBAcG9Cuk0vdrX9UODZXhJqqL5bR0DngsStoeapeI24DkCkHTVW4cHDuZkZTFM9VtEfL8pKVXhOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws446NIH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02EDC4CED2;
+	Thu, 30 Jan 2025 07:43:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738222992;
+	bh=5J6jJrnq3XsDB9NlG9FzYa+g3HytaqGWsBfOymeBtSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ws446NIHaDfG++kFb3Hc1OTu4MRk+Xgff+axwOLG92mI95W8tFEsPOgivVlLiEZnS
+	 6EuOM6xPO+whBvojZBC5W1SUPE9JmW/HWGfrvBh8KQMVUlNOCvKl1fQQ8g2QaxJZyo
+	 6WbfqYS3nqfBA/ENbcd64t6hrzkpd2q1FsZtJXUI=
+Date: Thu, 30 Jan 2025 08:43:09 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>, Steven Price <steven.price@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Baruch Siach <baruch@tkos.co.il>, Petr Tesarik <ptesarik@suse.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Baoquan He <bhe@redhat.com>, Yang Shi <yang@os.amperecomputing.com>,
+	"moderated list:ARM64 PORT (AARCH64 ARCHITECTURE)" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH stable 5.4] arm64: mm: account for hotplug memory when
+ randomizing the linear region
+Message-ID: <2025013002-discuss-twine-36b1@gregkh>
+References: <20250109165419.1623683-1-florian.fainelli@broadcom.com>
+ <2025011217-swizzle-unusual-dd7b@gregkh>
+ <213f28ff-2034-467e-8269-58b6e6f578df@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: v5.4.289 failed to boot with error megasas_build_io_fusion 3219
- sge_count (-12) is out of range
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Konrad Wilk
- <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org
-References: <7dc143fa-4a48-440b-b624-ac57a361ac74@oracle.com>
- <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
- <2025012919-series-chaps-856e@gregkh>
- <8eb33b38-23e1-4e43-8952-3f2b05660236@oracle.com>
- <2025012936-finalize-ducktail-c524@gregkh>
- <1f017284-1a29-49d8-b0d9-92409561990e@oracle.com>
- <2025012956-jiffy-condone-3137@gregkh>
- <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
- <83bd90c7-8879-4462-9548-bb5b69cac39e@suse.com>
- <b4ab0246-3846-41d1-8e84-64bd7fefc089@oracle.com>
- <de6912ad-3dba-4d66-8ca2-71a0aa09172c@suse.com>
- <alpine.DEB.2.22.394.2501291401290.11632@ubuntu-linux-20-04-desktop>
- <827aceff-28ed-4922-b841-b7dd06c082b1@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <827aceff-28ed-4922-b841-b7dd06c082b1@oracle.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------R9pSUZP1L7Z0s9E5YDFcGXjz"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <213f28ff-2034-467e-8269-58b6e6f578df@broadcom.com>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------R9pSUZP1L7Z0s9E5YDFcGXjz
-Content-Type: multipart/mixed; boundary="------------xDA2CyasAnQcwjbl1oDfweUl";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>,
- Stefano Stabellini <sstabellini@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Konrad Wilk
- <konrad.wilk@oracle.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- stable@vger.kernel.org
-Message-ID: <ec1a28a9-cef1-45e3-9b71-30de5bf07d7f@suse.com>
-Subject: Re: v5.4.289 failed to boot with error megasas_build_io_fusion 3219
- sge_count (-12) is out of range
-References: <7dc143fa-4a48-440b-b624-ac57a361ac74@oracle.com>
- <9dd91f6e-1c66-4961-994e-dbda87d69dad@oracle.com>
- <2025012919-series-chaps-856e@gregkh>
- <8eb33b38-23e1-4e43-8952-3f2b05660236@oracle.com>
- <2025012936-finalize-ducktail-c524@gregkh>
- <1f017284-1a29-49d8-b0d9-92409561990e@oracle.com>
- <2025012956-jiffy-condone-3137@gregkh>
- <1f225b8d-d958-4304-829e-8798884d9b6b@oracle.com>
- <83bd90c7-8879-4462-9548-bb5b69cac39e@suse.com>
- <b4ab0246-3846-41d1-8e84-64bd7fefc089@oracle.com>
- <de6912ad-3dba-4d66-8ca2-71a0aa09172c@suse.com>
- <alpine.DEB.2.22.394.2501291401290.11632@ubuntu-linux-20-04-desktop>
- <827aceff-28ed-4922-b841-b7dd06c082b1@oracle.com>
-In-Reply-To: <827aceff-28ed-4922-b841-b7dd06c082b1@oracle.com>
+On Wed, Jan 29, 2025 at 10:05:29AM -0800, Florian Fainelli wrote:
+> On 1/12/25 03:53, Greg KH wrote:
+> > On Thu, Jan 09, 2025 at 08:54:16AM -0800, Florian Fainelli wrote:
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > > 
+> > > commit 97d6786e0669daa5c2f2d07a057f574e849dfd3e upstream
+> > > 
+> > > As a hardening measure, we currently randomize the placement of
+> > > physical memory inside the linear region when KASLR is in effect.
+> > > Since the random offset at which to place the available physical
+> > > memory inside the linear region is chosen early at boot, it is
+> > > based on the memblock description of memory, which does not cover
+> > > hotplug memory. The consequence of this is that the randomization
+> > > offset may be chosen such that any hotplugged memory located above
+> > > memblock_end_of_DRAM() that appears later is pushed off the end of
+> > > the linear region, where it cannot be accessed.
+> > > 
+> > > So let's limit this randomization of the linear region to ensure
+> > > that this can no longer happen, by using the CPU's addressable PA
+> > > range instead. As it is guaranteed that no hotpluggable memory will
+> > > appear that falls outside of that range, we can safely put this PA
+> > > range sized window anywhere in the linear region.
+> > > 
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Steven Price <steven.price@arm.com>
+> > > Cc: Robin Murphy <robin.murphy@arm.com>
+> > > Link: https://lore.kernel.org/r/20201014081857.3288-1-ardb@kernel.org
+> > > Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> > > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> > > ---
+> > >   arch/arm64/mm/init.c | 13 ++++++++-----
+> > >   1 file changed, 8 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> > > index cbcac03c0e0d..a6034645d6f7 100644
+> > > --- a/arch/arm64/mm/init.c
+> > > +++ b/arch/arm64/mm/init.c
+> > > @@ -392,15 +392,18 @@ void __init arm64_memblock_init(void)
+> > >   	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE)) {
+> > >   		extern u16 memstart_offset_seed;
+> > > -		u64 range = linear_region_size -
+> > > -			    (memblock_end_of_DRAM() - memblock_start_of_DRAM());
+> > > +		u64 mmfr0 = read_cpuid(ID_AA64MMFR0_EL1);
+> > > +		int parange = cpuid_feature_extract_unsigned_field(
+> > > +					mmfr0, ID_AA64MMFR0_PARANGE_SHIFT);
+> > > +		s64 range = linear_region_size -
+> > > +			    BIT(id_aa64mmfr0_parange_to_phys_shift(parange));
+> > >   		/*
+> > >   		 * If the size of the linear region exceeds, by a sufficient
+> > > -		 * margin, the size of the region that the available physical
+> > > -		 * memory spans, randomize the linear region as well.
+> > > +		 * margin, the size of the region that the physical memory can
+> > > +		 * span, randomize the linear region as well.
+> > >   		 */
+> > > -		if (memstart_offset_seed > 0 && range >= ARM64_MEMSTART_ALIGN) {
+> > > +		if (memstart_offset_seed > 0 && range >= (s64)ARM64_MEMSTART_ALIGN) {
+> > >   			range /= ARM64_MEMSTART_ALIGN;
+> > >   			memstart_addr -= ARM64_MEMSTART_ALIGN *
+> > >   					 ((range * memstart_offset_seed) >> 16);
+> > > -- 
+> > > 2.43.0
+> > > 
+> > > 
+> > 
+> > You are not providing any information as to WHY this is needed in stable
+> > kernels at all.  It just looks like an unsolicted backport with no
+> > changes from upstream, yet no hint as to any bug it fixes.
+> 
+> See the response in the other thread.
+> 
+> > 
+> > And you all really have hotpluggable memory on systems that are running
+> > th is old kernel?  Why are they not using newer kernels if they need
+> > this?  Surely lots of other bugs they need are resolved there, right?
+> 
+> Believe it or not, but memory hotplug works really well for us, in a
+> somewhat limited configuration on the 5.4 kernel whereby we simply plug
+> memory, and never unplug it thereafter, but still, we have not had to carry
+> hotplug related patches other than this one.
+> 
+> Trying to be a good citizen here: one of my colleague has identified an
+> upstream fix that works, that we got tested, cherry picked cleanly into both
+> 5.4 and 5.10, so it's not even like there was any fuzz.
+> 
+> I was sort of hoping that giving my history of regularly testing stable
+> kernels for the past years, as well as submitting a fair amount of targeted
+> bug fixes to the stable branches that there would be some level of trust
+> here.
 
---------------xDA2CyasAnQcwjbl1oDfweUl
-Content-Type: multipart/mixed; boundary="------------Kd30efzWJ5zAtpSsZKNw3Zjw"
+Of course your history matters here, I'm not trying to disuade that at
+all.  All I am saying is "this touches core arm64 code, so I would like
+an arm64 maintainer to at least glance at it to say it's ok to do this."
 
---------------Kd30efzWJ5zAtpSsZKNw3Zjw
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+And it looks like it now has happened, and it is good that I asked :)
 
-T24gMzAuMDEuMjUgMDY6MjcsIEhhcnNodmFyZGhhbiBKaGEgd3JvdGU6DQo+IA0KPiBPbiAz
-MC8wMS8yNSAzOjMxIEFNLCBTdGVmYW5vIFN0YWJlbGxpbmkgd3JvdGU6DQo+PiBPbiBXZWQs
-IDI5IEphbiAyMDI1LCBKw7xyZ2VuIEdyb8OfIHdyb3RlOg0KPj4+IE9uIDI5LjAxLjI1IDE5
-OjM1LCBIYXJzaHZhcmRoYW4gSmhhIHdyb3RlOg0KPj4+PiBPbiAyOS8wMS8yNSA0OjUyIFBN
-LCBKdWVyZ2VuIEdyb3NzIHdyb3RlOg0KPj4+Pj4gT24gMjkuMDEuMjUgMTA6MTUsIEhhcnNo
-dmFyZGhhbiBKaGEgd3JvdGU6DQo+Pj4+Pj4gT24gMjkvMDEvMjUgMjozNCBQTSwgR3JlZyBL
-SCB3cm90ZToNCj4+Pj4+Pj4gT24gV2VkLCBKYW4gMjksIDIwMjUgYXQgMDI6Mjk6NDhQTSAr
-MDUzMCwgSGFyc2h2YXJkaGFuIEpoYSB3cm90ZToNCj4+Pj4+Pj4+IEhpIEdyZWcsDQo+Pj4+
-Pj4+Pg0KPj4+Pj4+Pj4gT24gMjkvMDEvMjUgMjoxOCBQTSwgR3JlZyBLSCB3cm90ZToNCj4+
-Pj4+Pj4+PiBPbiBXZWQsIEphbiAyOSwgMjAyNSBhdCAwMjoxMzozNFBNICswNTMwLCBIYXJz
-aHZhcmRoYW4gSmhhIHdyb3RlOg0KPj4+Pj4+Pj4+PiBIaSB0aGVyZSwNCj4+Pj4+Pj4+Pj4N
-Cj4+Pj4+Pj4+Pj4gT24gMjkvMDEvMjUgMjowNSBQTSwgR3JlZyBLSCB3cm90ZToNCj4+Pj4+
-Pj4+Pj4+IE9uIFdlZCwgSmFuIDI5LCAyMDI1IGF0IDAyOjAzOjUxUE0gKzA1MzAsIEhhcnNo
-dmFyZGhhbiBKaGENCj4+Pj4+Pj4+Pj4+IHdyb3RlOg0KPj4+Pj4+Pj4+Pj4+IEhpIEFsbCwN
-Cj4+Pj4+Pj4+Pj4+Pg0KPj4+Pj4+Pj4+Pj4+ICtzdGFibGUNCj4+Pj4+Pj4+Pj4+Pg0KPj4+
-Pj4+Pj4+Pj4+IFRoZXJlIHNlZW1zIHRvIGJlIHNvbWUgZm9ybWF0dGluZyBpc3N1ZXMgaW4g
-bXkgbG9nIG91dHB1dC4gSQ0KPj4+Pj4+Pj4+Pj4+IGhhdmUNCj4+Pj4+Pj4+Pj4+PiBhdHRh
-Y2hlZCBpdCBhcyBhIGZpbGUuDQo+Pj4+Pj4+Pj4+PiBDb25mdXNlZCwgd2hhdCBhcmUgeW91
-IHdhbnRpbmcgdXMgdG8gZG8gaGVyZSBpbiB0aGUgc3RhYmxlDQo+Pj4+Pj4+Pj4+PiB0cmVl
-Pw0KPj4+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+Pj4+IHRoYW5rcywNCj4+Pj4+Pj4+Pj4+DQo+Pj4+
-Pj4+Pj4+PiBncmVnIGstaA0KPj4+Pj4+Pj4+PiBTaW5jZSwgdGhpcyBpcyByZXByb2R1Y2li
-bGUgb24gNS40LnkgSSBoYXZlIGFkZGVkIHN0YWJsZS4gVGhlDQo+Pj4+Pj4+Pj4+IGN1bHBy
-aXQNCj4+Pj4+Pj4+Pj4gY29tbWl0IHdoaWNoIHVwb24gZ2V0dGluZyByZXZlcnRlZCBmaXhl
-cyB0aGlzIGlzc3VlIGlzIGFsc28NCj4+Pj4+Pj4+Pj4gcHJlc2VudCBpbg0KPj4+Pj4+Pj4+
-PiA1LjQueSBzdGFibGUuDQo+Pj4+Pj4+Pj4gV2hhdCBjdWxwcml0IGNvbW1pdD/CoCBJIHNl
-ZSBubyBpbmZvcm1hdGlvbiBoZXJlIDooDQo+Pj4+Pj4+Pj4NCj4+Pj4+Pj4+PiBSZW1lbWJl
-ciwgdG9wLXBvc3RpbmcgaXMgZXZpbC4uLg0KPj4+Pj4+Pj4gTXkgYXBvbG9naWVzLA0KPj4+
-Pj4+Pj4NCj4+Pj4+Pj4+IFRoZSBzdGFibGUgdGFnIHY1LjQuMjg5IHNlZW1zIHRvIGZhaWwg
-dG8gYm9vdCB3aXRoIHRoZSBmb2xsb3dpbmcNCj4+Pj4+Pj4+IHByb21wdCBpbiBhbiBpbmZp
-bml0ZSBsb29wOg0KPj4+Pj4+Pj4gW8KgwqAgMjQuNDI3MjE3XSBtZWdhcmFpZF9zYXMgMDAw
-MDo2NTowMC4wOiBtZWdhc2FzX2J1aWxkX2lvX2Z1c2lvbg0KPj4+Pj4+Pj4gMzI3MyBzZ2Vf
-Y291bnQgKC0xMikgaXMgb3V0IG9mIHJhbmdlLiBSYW5nZSBpczrCoCAwLTI1Ng0KPj4+Pj4+
-Pj4NCj4+Pj4+Pj4+IFJldmVydGluZyB0aGUgZm9sbG93aW5nIHBhdGNoIHNlZW1zIHRvIGZp
-eCB0aGUgaXNzdWU6DQo+Pj4+Pj4+Pg0KPj4+Pj4+Pj4gc3RhYmxlLTUuNMKgwqDCoMKgwqAg
-OiB2NS40LjI4NcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAtIDVkZjI5YTQ0NWYzYSB4ZW4v
-c3dpb3RsYjoNCj4+Pj4+Pj4+IGFkZA0KPj4+Pj4+Pj4gYWxpZ25tZW50IGNoZWNrIGZvciBk
-bWEgYnVmZmVycw0KPj4+Pj4+Pj4NCj4+Pj4+Pj4+IEkgdHJpZWQgY2hhbmdpbmcgc3dpb3Rs
-YiBncnViIGNvbW1hbmQgbGluZSBhcmd1bWVudHMgYnV0IHRoYXQgZGlkbid0DQo+Pj4+Pj4+
-PiBzZWVtIHRvIGhlbHAgbXVjaCB1bmZvcnR1bmF0ZWx5IGFuZCB0aGUgZXJyb3Igd2FzIHNl
-ZW4gYWdhaW4uDQo+Pj4+Pj4+Pg0KPj4+Pj4+PiBPaywgY2FuIHlvdSBzdWJtaXQgdGhpcyBy
-ZXZlcnQgd2l0aCB0aGUgaW5mb3JtYXRpb24gYWJvdXQgd2h5IGl0DQo+Pj4+Pj4+IHNob3Vs
-ZA0KPj4+Pj4+PiBub3QgYmUgaW5jbHVkZWQgaW4gdGhlIDUuNC55IHRyZWUgYW5kIGNjOiBl
-dmVyeW9uZSBpbnZvbHZlZCBhbmQgdGhlbg0KPj4+Pj4+PiB3ZQ0KPj4+Pj4+PiB3aWxsIGJl
-IGdsYWQgdG8gcXVldWUgaXQgdXAuDQo+Pj4+Pj4+DQo+Pj4+Pj4+IHRoYW5rcywNCj4+Pj4+
-Pj4NCj4+Pj4+Pj4gZ3JlZyBrLWgNCj4+Pj4+PiBUaGlzIG1pZ2h0IGJlIHJlcHJvZHVjaWJs
-ZSBvbiBvdGhlciBzdGFibGUgdHJlZXMgYW5kIG1haW5saW5lIGFzIHdlbGwgc28NCj4+Pj4+
-PiB3ZSB3aWxsIGdldCBpdCBmaXhlZCB0aGVyZSBhbmQgSSB3aWxsIHN1Ym1pdCB0aGUgbmVj
-ZXNzYXJ5IGZpeCB0byBzdGFibGUNCj4+Pj4+PiB3aGVuIGV2ZXJ5dGhpbmcgaXMgc29ydGVk
-IG91dCBvbiBtYWlubGluZS4NCj4+Pj4+IFJpZ2h0LiBKdXN0IHJldmVydGluZyBteSBwYXRj
-aCB3aWxsIHRyYWRlIG9uZSBlcnJvciB3aXRoIGFub3RoZXIgb25lICh0aGUNCj4+Pj4+IG9u
-ZSB3aGljaCB0cmlnZ2VyZWQgbWUgdG8gd3JpdGUgdGhlIHBhdGNoKS4NCj4+Pj4+DQo+Pj4+
-PiBUaGVyZSBhcmUgdHdvIHBvc3NpYmxlIHdheXMgdG8gZml4IHRoZSBpc3N1ZToNCj4+Pj4+
-DQo+Pj4+PiAtIGFsbG93IGxhcmdlciBETUEgYnVmZmVycyBpbiB4ZW4vc3dpb3RsYiAodG9k
-YXkgMk1CIGFyZSB0aGUgbWF4Lg0KPj4+Pj4gc3VwcG9ydGVkDQo+Pj4+PiAgIMKgIHNpemUs
-IHRoZSBtZWdhcmFpZF9zYXMgZHJpdmVyIHNlZW1zIHRvIGVmZmVjdGl2ZWx5IHJlcXVlc3Qg
-NE1CKQ0KPj4+PiBUaGlzIHNlZW1zIHJlbGF0aXZlbHkgc2ltcGxlciB0byBpbXBsZW1lbnQg
-YnV0IEknbSBub3Qgc3VyZSB3aGV0aGVyIGl0J3MNCj4+Pj4gdGhlIG1vc3Qgb3B0aW1hbCBh
-cHByb2FjaA0KPj4+IEp1c3QgbWFraW5nIHRoZSBzdGF0aWMgYXJyYXkgbGFyZ2VyIHVzZWQg
-dG8gaG9sZCB0aGUgZnJhbWUgbnVtYmVycyBmb3IgdGhlDQo+Pj4gYnVmZmVyIHNlZW1zIHRv
-IGJlIGEgd2FzdGUgb2YgbWVtb3J5IGZvciBtb3N0IGNvbmZpZ3VyYXRpb25zLg0KPj4+DQo+
-Pj4gSSdtIHRoaW5raW5nIG9mIGFuIGFsbG9jYXRlZCBhcnJheSB1c2luZyB0aGUgbWF4IG5l
-ZWRlZCBzaXplIChyZXBsYWNlIGENCj4+PiBmb3JtZXIgYnVmZmVyIHdpdGggYSBsYXJnZXIg
-b25lIGlmIG5lZWRlZCkuDQo+PiBZb3UgYXJlIHJlZmVycmluZyB0byBkaXNjb250aWdfZnJh
-bWVzIGFuZCBNQVhfQ09OVElHX09SREVSIGluDQo+PiBhcmNoL3g4Ni94ZW4vbW11X3B2LmMs
-IHJpZ2h0PyBJIGFtIG5vdCBzdXBlciBmYW1pbGlhciB3aXRoIHRoYXQgY29kZSBidXQNCj4+
-IGl0IGxvb2tzIGxpa2UgYSBnb29kIHdheSB0byBnby4NCj4gDQo+IFRoaXMgcmVqZWN0ZWQg
-cGF0Y2ggd29ya3Mgb24gTUFYX0NPTlRJR19PUkRFUiBhbmQgZG91YmxlcyB0aGUgYnVmZmVy
-DQo+IHNpemUgYnV0IHRoYXQgaXMgdW5kZXNpcmFibGUgaW4gbW9zdCBzaXR1YXRpb25zOg0K
-PiANCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC8yODk0N2Q0Zi1hYjMyLTRhNTct
-OGRiYi1lMzdmYTQxODNhNjlAc3VzZS5jb20vdC8NCj4gDQo+IFdoYXQgbmVlZHMgdG8gYmUg
-ZG9uZSBpcyB0aGUgYnVmZmVyIHNpemUgd2lsbCBvbmx5IGJlIGRvdWJsZWQgd2hlbiBuZWVk
-ZWQuDQoNCkknbGwgd3JpdGUgYSBwYXRjaC4NCg0KDQpKdWVyZ2VuDQo=
---------------Kd30efzWJ5zAtpSsZKNw3Zjw
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+This is all normal, and good, I'm not singling you out here at all.  We
+push back on backports all the time when we don't understand why they
+are being asked for and ask for a second review.  You want us to do this
+in order to keep these trees working well.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+thanks,
 
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
-
---------------Kd30efzWJ5zAtpSsZKNw3Zjw--
-
---------------xDA2CyasAnQcwjbl1oDfweUl--
-
---------------R9pSUZP1L7Z0s9E5YDFcGXjz
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmebI0YFAwAAAAAACgkQsN6d1ii/Ey9Q
-7Qf+LWTnMYryvXfc4ZSxFaTHA/vVKwR7FlXapp5udMLr+N8+5naPL+r2+ehDFNFZxFTOa4YQJKrB
-1+orHe8yNAeiJa1GxnKzAZCFKWErO4NMKob/u1UVfgktlth5/NU86mXs8tsBVhdgaE5oQpfKhboU
-NFBXY3eFm7if2UZixmDxoMeeWQf8RCL31jGP56LhQx4HkAHx8myIsuW97wenlp1AqOW24WHkVjbq
-u7y8HT+zagviFZ99iufjBc3dlrVz6tca36YwgLXbzzlAz0H8DqSkc5N2iUBnd6UiA+9nFmmINjXc
-GliP7bzEZInw4m1q7ZUtS2oQW/OWYlISQ4gOCwY5rw==
-=GzUk
------END PGP SIGNATURE-----
-
---------------R9pSUZP1L7Z0s9E5YDFcGXjz--
+greg k-h
 
