@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A779A23054
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 165A4A2300C
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3B8D168F96
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82FAA163788
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CFC1BD9D3;
-	Thu, 30 Jan 2025 14:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B5A1E98E8;
+	Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCItqMMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9lMuyNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D547482;
-	Thu, 30 Jan 2025 14:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541AD1E522;
+	Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247472; cv=none; b=ilJA4UkQ/6lhleF25deyTyoW19WkAyWpEo/rpNJh3sGHHUa/A4M9t+zNIx+MTBw+rydciQNFxMs+l5VFu/+Xy67qE60ARXms9sa9FNZbkExVqWyg/bHulbsr/y872OK0Fhumyp5w5Qpz/aZJaDDkxZ/m1d7JsbYd5We9+sxUXqs=
+	t=1738247294; cv=none; b=SJdiSD8xnUJRA27tBg/an++rM9y2XZlcfi/SE9FQqNmmtE9Ibk/EsuCt7Oj36t4ClTDO1Za7o1tYdaRBfeID3oGSK2qdbK0apWndlnM+M+Thytu9xlAkxb2CpwHdwpMjd56CMm+ao86iKAAvpcgBfniTwDPKKwwJJewMpqbhKPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247472; c=relaxed/simple;
-	bh=pdlNiUOS/rVm08pp4PCiKllsxhv7IZAwRF9s2hZfAGw=;
+	s=arc-20240116; t=1738247294; c=relaxed/simple;
+	bh=F69TeJAhEODsZzoqGKVsgaZqdZ+d0VcwJG+hlElDlHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WLxln8DybYKRTzqGPYubIx/f0k50M2MtaWR9+AjsFS6VkYQDfVVsZXL56Nb9hPJ6n+rQ1tNk0x3d6489lqRVRtmbk8bIuMTqNNvM9O1Xjuv6iy6H48huP1XvEaPvB7V59waY/8GejLcXw3GT6yWlR7UbFGt9+PO5eOP4+ChLVN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCItqMMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0824C4CED2;
-	Thu, 30 Jan 2025 14:31:11 +0000 (UTC)
+	 MIME-Version; b=qx4iSLDmOXCdpsH+SlGFnxYjOyCnYFqn3X73JzNV2SOv5dk7SFKFOHMUblXS1yNCkpUaopSA8rdbtRfpxx+5U4rK2mUPprU1F6GWCO7jyTvndCu2yd6ZYR7SMxKAPXrpP8rrE957mM3i62Q+JBkeeawjHzdTZhVQUVlRxCgX/LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9lMuyNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7EC4CED2;
+	Thu, 30 Jan 2025 14:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247472;
-	bh=pdlNiUOS/rVm08pp4PCiKllsxhv7IZAwRF9s2hZfAGw=;
+	s=korg; t=1738247294;
+	bh=F69TeJAhEODsZzoqGKVsgaZqdZ+d0VcwJG+hlElDlHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCItqMMpMjTsUTPuHwkqe5uZRH9Oj9vfVkS8iI5dx9vtp94EPW0/jbe8IAHGdC6eX
-	 j1SeM5FCQnVl81XlSg9PzoUF8KGahldHsHlOtMzNwuZqj3ro4BnSvktG+006YS50Nu
-	 F5gqZB1IoeBYSVe0cvMm5ni/B77qT5d1hqtfdVB4=
+	b=d9lMuyNqNQGum8nbijlejy+m5XBdzSXqma5XqmBGLnwg9ZLoOvIZyDw1SKzGh0Wex
+	 cwkOax7S8LLntdhfNm6vaNQ7FwdpTlJV40hLS7FWdoLbXJuIWESkHGp9MYht9B1IM6
+	 qj84jQeBdlxXYlBSqooVPn42Ms+IS0G5bDhkgeS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 23/49] xfs: only remap the written blocks in xfs_reflink_end_cow_extent
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 5.15 07/24] regmap: detach regmap from dev on regmap_exit
 Date: Thu, 30 Jan 2025 15:01:59 +0100
-Message-ID: <20250130140134.770341691@linuxfoundation.org>
+Message-ID: <20250130140127.591593912@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit 55f669f34184ecb25b8353f29c7f6f1ae5b313d1 ]
+commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
 
-xfs_reflink_end_cow_extent looks up the COW extent and the data fork
-extent at offset_fsb, and then proceeds to remap the common subset
-between the two.
+At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
+is called, which adds a devres reference to the regmap, to be able to
+retrieve a dev's regmap by name using dev_get_regmap().
 
-It does however not limit the remapped extent to the passed in
-[*offset_fsbm end_fsb] range and thus potentially remaps more blocks than
-the one handled by the current I/O completion.  This means that with
-sufficiently large data and COW extents we could be remapping COW fork
-mappings that have not been written to, leading to a stale data exposure
-on a powerfail event.
+When calling regmap_exit, the opposite does not happen, and the
+reference is kept until the dev is detached.
 
-We use to have a xfs_trim_range to make the remap fit the I/O completion
-range, but that got (apparently accidentally) removed in commit
-df2fd88f8ac7 ("xfs: rewrite xfs_reflink_end_cow to use intents").
+Add a regmap_detach_dev() function and call it in regmap_exit() to make
+sure that the devres reference is not kept.
 
-Note that I've only found this by code inspection, and a test case would
-probably require very specific delay and error injection.
-
-Fixes: df2fd88f8ac7 ("xfs: rewrite xfs_reflink_end_cow to use intents")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
+Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
+Rule: add
+Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
+Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20250115033314.2540588-1-tzungbi@kernel.org
+Link: https://lore.kernel.org/r/20250115033244.2540522-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_reflink.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/regmap/regmap.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -783,6 +783,7 @@ xfs_reflink_end_cow_extent(
- 		}
- 	}
- 	del = got;
-+	xfs_trim_extent(&del, *offset_fsb, end_fsb - *offset_fsb);
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -663,6 +663,17 @@ int regmap_attach_dev(struct device *dev
+ }
+ EXPORT_SYMBOL_GPL(regmap_attach_dev);
  
- 	/* Grab the corresponding mapping in the data fork. */
- 	nmaps = 1;
++static int dev_get_regmap_match(struct device *dev, void *res, void *data);
++
++static int regmap_detach_dev(struct device *dev, struct regmap *map)
++{
++	if (!dev)
++		return 0;
++
++	return devres_release(dev, dev_get_regmap_release,
++			      dev_get_regmap_match, (void *)map->name);
++}
++
+ static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
+ 					const struct regmap_config *config)
+ {
+@@ -1531,6 +1542,7 @@ void regmap_exit(struct regmap *map)
+ {
+ 	struct regmap_async *async;
+ 
++	regmap_detach_dev(map->dev, map);
+ 	regcache_exit(map);
+ 	regmap_debugfs_exit(map);
+ 	regmap_range_exit(map);
 
 
 
