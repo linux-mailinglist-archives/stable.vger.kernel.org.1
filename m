@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E8BA22F2F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C15A22FCC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30CDF16503E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6E131886F84
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD561E9901;
-	Thu, 30 Jan 2025 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7D51E9907;
+	Thu, 30 Jan 2025 14:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzXG4xdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGskOXGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598051E98F3;
-	Thu, 30 Jan 2025 14:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D331E522;
+	Thu, 30 Jan 2025 14:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246768; cv=none; b=QoBJCkjgFYnUl6WqZATuvbTPo8Zh1Gznfc4h8M+Ub/ZOwxQVBl+eA023TxNe51a/Kc/lKQ0eUqnzgTKFC4vzmHadPM9jPhoRnYEjJt4LnSeYIgb8UzNbssSiCYeMPwjmXAtehoU1Zavu/q8U3upwluL3XBt4+7ghz8PudcJmJ/I=
+	t=1738247127; cv=none; b=dAmqHHXOsov/19n62DIwj6rPfo42zp74YUAdKYxh96arDJG9OGRPEzFcWulsxS6gS5ZWI7tPw3ZFvErsUxe/ZZHKrwkyFu209adux7kHP/ocKviCDmGmaOJOh/t2Qdv5v3jop4mV06m2rBCx6q1zh836iVS13GZRwfcrOjxBl7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246768; c=relaxed/simple;
-	bh=wcaOjBWqis6DlC5mbWXnJU7tK+QPgamDkIgpUR7m85Q=;
+	s=arc-20240116; t=1738247127; c=relaxed/simple;
+	bh=54LqZMrp3gmwAVzNylxiid1kN9v+S7y/gkFKIq71lxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jNP7204USooG32AJ2rvob/KeC5nUQFgQCgjZLZQzW71AR7RCJUBp+dyBaaCIws9DlZGeBsS2pDW9uVjugPk0iJ9+Rt9rzNSti372rwN/mdThIrb7Tdl+11Jxk0m+uBUgXkk4oce8K9t4HrEsI9UuhNR4ZKyT9FwbdAclOZ7hFYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzXG4xdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0C2C4CED2;
-	Thu, 30 Jan 2025 14:19:27 +0000 (UTC)
+	 MIME-Version; b=PkNbJtYugY2kxVZY+G5zkdImQk8aDx+7tHtrWUFuStoiI+ZEqnzO7TuOHzx0DmG7l9caZVBfg1errUCAN6fNi41xWf+UrlMbyh8zXXKkIhxvjJllwDJK/sn+sq8Sxjp9frnGI9hnQS56Fo/zLUasl9Jo4m8VgTr5hm1IdrWm+8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGskOXGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00815C4CED2;
+	Thu, 30 Jan 2025 14:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246768;
-	bh=wcaOjBWqis6DlC5mbWXnJU7tK+QPgamDkIgpUR7m85Q=;
+	s=korg; t=1738247127;
+	bh=54LqZMrp3gmwAVzNylxiid1kN9v+S7y/gkFKIq71lxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzXG4xdHU3KvmjHLUmVOUGPM0hYFVIH/G4sUguWErfcgUw4gNV/qjnNiAVRIUN+ly
-	 xKkE5t+Rr0kdWwewHuGLoGBALgV/9UPy80jLLO2q4jyMzWpwNn5o3KdnPBHTABDHHl
-	 kqUoWpy7Q2fzE0FhrxoCEjg5Yawp39utDRbQSoKk=
+	b=bGskOXGBqoL+PcgkbYXwaowCqbucSjBTj086Y+p4r3bSTp6BckuEt5li034b+9Bv0
+	 1Wo6yaYk/xPdUjjCjcabJsQ1zvkvvMaNqPF502nPScmXrHxhWmZPfNH+JBU4vXRIOA
+	 +4Gaqiecm3bF1AK25gKCz+tc1f1vcXUnv0PXIbk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Jose Maria Casanova Crespo <jmcasanova@igalia.com>,
+	kernel test robot <lkp@intel.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 61/91] drm/v3d: Ensure job pointer is set to NULL after job completion
+Subject: [PATCH 5.10 091/133] x86/asm: Make serialize() always_inline
 Date: Thu, 30 Jan 2025 15:01:20 +0100
-Message-ID: <20250130140136.123058408@linuxfoundation.org>
+Message-ID: <20250130140146.183115489@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit e4b5ccd392b92300a2b341705cc4805681094e49 ]
+[ Upstream commit ae02ae16b76160f0aeeae2c5fb9b15226d00a4ef ]
 
-After a job completes, the corresponding pointer in the device must
-be set to NULL. Failing to do so triggers a warning when unloading
-the driver, as it appears the job is still active. To prevent this,
-assign the job pointer to NULL after completing the job, indicating
-the job has finished.
+In order to allow serialize() to be used from noinstr code, make it
+__always_inline.
 
-Fixes: 14d1d1908696 ("drm/v3d: Remove the bad signaled() implementation.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250113154741.67520-1-mcanal@igalia.com
+Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
+Closes: https://lore.kernel.org/oe-kbuild-all/202412181756.aJvzih2K-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241218100918.22167-1-jgross@suse.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/include/asm/special_insns.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index 662e67279a7bb..aa27b7654dee5 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -103,6 +103,7 @@ v3d_irq(int irq, void *arg)
+diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
+index 415693f5d909d..ad828c6742d4e 100644
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -236,7 +236,7 @@ static inline void clwb(volatile void *__p)
  
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->bin_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
+ #define nop() asm volatile ("nop")
  
-@@ -112,6 +113,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->render_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -121,6 +123,7 @@ v3d_irq(int irq, void *arg)
- 
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->csd_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -157,6 +160,7 @@ v3d_hub_irq(int irq, void *arg)
- 
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
- 		dma_fence_signal(&fence->base);
-+		v3d->tfu_job = NULL;
- 		status = IRQ_HANDLED;
- 	}
- 
+-static inline void serialize(void)
++static __always_inline void serialize(void)
+ {
+ 	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
+ 	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
 -- 
 2.39.5
 
