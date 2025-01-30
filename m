@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-111654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC65A2302A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBD5A22FEF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97A673A636A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77BB168419
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A21E98F3;
-	Thu, 30 Jan 2025 14:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF76B1E98F3;
+	Thu, 30 Jan 2025 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asjjO6O/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkEgFrpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47661E7C25;
-	Thu, 30 Jan 2025 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF521E522;
+	Thu, 30 Jan 2025 14:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247367; cv=none; b=oHQGl8zxGzR+HWI8dDoB/Kionpotv0z8+vhymr3ZTDOxuGhb9VJxw+/5Q5lFYCmOpEn/yKFwbDcy3gl2QAkbQ06uULvsanSMpnJ2yJqped6rrlBe88sk98eBv6FMzw5Q3QAqWpy4QDM/a+UVUOm+vVvca+HyjfxvdROkSWEOdDs=
+	t=1738247218; cv=none; b=fh3fLvrlRd5gaWIaRQfSQs+9hSsDAuFuZVf+bpk5KkmBmww6tOqJzX4IAbfAXdjS+Z3CsmLsbZiIn2Cq3SJpA923v9+kB8dIqo46/QZngCLAeb1/uqKnDACzKCZY6bnCttQdt7jga7TiEfi74rr7NEnXkrvYsJt5HE0311epsM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247367; c=relaxed/simple;
-	bh=jmTa+mBg+GdIY68vjpw0InxFtykQE7+xshVDSGCMzHg=;
+	s=arc-20240116; t=1738247218; c=relaxed/simple;
+	bh=sBbLabbnXso/URLiaRCnOBDQrkNBcROjxKxXRoPa+Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWXgBY7LLsAojSSsdDUQVjqk5atHpfZmZVrWQBklrFm12WF94CbLm4n3ZE46F3Kbfi8Rw2az2wbg2xwdyOUoiQT+1lZs4ODAZmendINYFUiwlB+G9NhcTdNWQxJQynmA8iM9LSp3nASaho5vOaZJ+cCgmKIOyGTCWU//IjQ2qaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asjjO6O/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9C4C4CED2;
-	Thu, 30 Jan 2025 14:29:26 +0000 (UTC)
+	 MIME-Version; b=vCy6T5AEiLXCAmbZN3z2XLVHJw/GsyCEQdCoCbBtXF2vMEuRqMTzHiHk8GJQHGcYJC2Bl2iycm+3zlQ17f6uPkPDxP0MfQU/FkxMABCE8qZ1db46tdBVOenWZUJlCetCrFV4FfDF5+tEHze/RoppXySH3SsyuHOCemp2x2njKNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkEgFrpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1DFC4CED2;
+	Thu, 30 Jan 2025 14:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247367;
-	bh=jmTa+mBg+GdIY68vjpw0InxFtykQE7+xshVDSGCMzHg=;
+	s=korg; t=1738247218;
+	bh=sBbLabbnXso/URLiaRCnOBDQrkNBcROjxKxXRoPa+Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asjjO6O/vg7PPwC/KyMmbMqOsnKC66DSmH7IJ4V2UxWfoTwYc3pL+eoSgPpCT19Ck
-	 kdtAMfhzlgh28kNxHVKAyfHNAcN1EJlZB7nIG5BAzDwcOvtpe42iyEQrD4vPlIjiKp
-	 BvkUjongpLQUscYi7o7RMRf/+KKxBBvzozjUdMNw=
+	b=hkEgFrpeJXem6nGmyFyHKwOu+VKsKf1gUd4ZgoZv01ZZHk/KK2ptq1BSs2vXS6jOz
+	 611fHfIhLN+nqwhuCO+2Ww/W8kvKsBaK9jaKXf5ctP5t2vqWHLZjR6p0AWnllCZSz4
+	 /drRMs0yXVf7jk6pE0tX1woHDwQ4+k5rvwc8ugy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 15/49] xfs: rt stubs should return negative errnos when rt disabled
+	Haowei Yan <g1042620637@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 122/133] net: sched: fix ets qdisc OOB Indexing
 Date: Thu, 30 Jan 2025 15:01:51 +0100
-Message-ID: <20250130140134.445811278@linuxfoundation.org>
+Message-ID: <20250130140147.444135533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit c2988eb5cff75c02bc57e02c323154aa08f55b78 ]
+commit d62b04fca4340a0d468d7853bd66e511935a18cb upstream.
 
-When realtime support is not compiled into the kernel, these functions
-should return negative errnos, not positive errnos.  While we're at it,
-fix a broken macro declaration.
+Haowei Yan <g1042620637@gmail.com> found that ets_class_from_arg() can
+index an Out-Of-Bound class in ets_class_from_arg() when passed clid of
+0. The overflow may cause local privilege escalation.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+ [   18.852298] ------------[ cut here ]------------
+ [   18.853271] UBSAN: array-index-out-of-bounds in net/sched/sch_ets.c:93:20
+ [   18.853743] index 18446744073709551615 is out of range for type 'ets_class [16]'
+ [   18.854254] CPU: 0 UID: 0 PID: 1275 Comm: poc Not tainted 6.12.6-dirty #17
+ [   18.854821] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+ [   18.856532] Call Trace:
+ [   18.857441]  <TASK>
+ [   18.858227]  dump_stack_lvl+0xc2/0xf0
+ [   18.859607]  dump_stack+0x10/0x20
+ [   18.860908]  __ubsan_handle_out_of_bounds+0xa7/0xf0
+ [   18.864022]  ets_class_change+0x3d6/0x3f0
+ [   18.864322]  tc_ctl_tclass+0x251/0x910
+ [   18.864587]  ? lock_acquire+0x5e/0x140
+ [   18.865113]  ? __mutex_lock+0x9c/0xe70
+ [   18.866009]  ? __mutex_lock+0xa34/0xe70
+ [   18.866401]  rtnetlink_rcv_msg+0x170/0x6f0
+ [   18.866806]  ? __lock_acquire+0x578/0xc10
+ [   18.867184]  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+ [   18.867503]  netlink_rcv_skb+0x59/0x110
+ [   18.867776]  rtnetlink_rcv+0x15/0x30
+ [   18.868159]  netlink_unicast+0x1c3/0x2b0
+ [   18.868440]  netlink_sendmsg+0x239/0x4b0
+ [   18.868721]  ____sys_sendmsg+0x3e2/0x410
+ [   18.869012]  ___sys_sendmsg+0x88/0xe0
+ [   18.869276]  ? rseq_ip_fixup+0x198/0x260
+ [   18.869563]  ? rseq_update_cpu_node_id+0x10a/0x190
+ [   18.869900]  ? trace_hardirqs_off+0x5a/0xd0
+ [   18.870196]  ? syscall_exit_to_user_mode+0xcc/0x220
+ [   18.870547]  ? do_syscall_64+0x93/0x150
+ [   18.870821]  ? __memcg_slab_free_hook+0x69/0x290
+ [   18.871157]  __sys_sendmsg+0x69/0xd0
+ [   18.871416]  __x64_sys_sendmsg+0x1d/0x30
+ [   18.871699]  x64_sys_call+0x9e2/0x2670
+ [   18.871979]  do_syscall_64+0x87/0x150
+ [   18.873280]  ? do_syscall_64+0x93/0x150
+ [   18.874742]  ? lock_release+0x7b/0x160
+ [   18.876157]  ? do_user_addr_fault+0x5ce/0x8f0
+ [   18.877833]  ? irqentry_exit_to_user_mode+0xc2/0x210
+ [   18.879608]  ? irqentry_exit+0x77/0xb0
+ [   18.879808]  ? clear_bhb_loop+0x15/0x70
+ [   18.880023]  ? clear_bhb_loop+0x15/0x70
+ [   18.880223]  ? clear_bhb_loop+0x15/0x70
+ [   18.880426]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ [   18.880683] RIP: 0033:0x44a957
+ [   18.880851] Code: ff ff e8 fc 00 00 00 66 2e 0f 1f 84 00 00 00 00 00 66 90 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 8974 24 10
+ [   18.881766] RSP: 002b:00007ffcdd00fad8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+ [   18.882149] RAX: ffffffffffffffda RBX: 00007ffcdd010db8 RCX: 000000000044a957
+ [   18.882507] RDX: 0000000000000000 RSI: 00007ffcdd00fb70 RDI: 0000000000000003
+ [   18.885037] RBP: 00007ffcdd010bc0 R08: 000000000703c770 R09: 000000000703c7c0
+ [   18.887203] R10: 0000000000000080 R11: 0000000000000246 R12: 0000000000000001
+ [   18.888026] R13: 00007ffcdd010da8 R14: 00000000004ca7d0 R15: 0000000000000001
+ [   18.888395]  </TASK>
+ [   18.888610] ---[ end trace ]---
+
+Fixes: dcc68b4d8084 ("net: sch_ets: Add a new Qdisc")
+Reported-by: Haowei Yan <g1042620637@gmail.com>
+Suggested-by: Haowei Yan <g1042620637@gmail.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/20250111145740.74755-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_rtalloc.h |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ net/sched/sch_ets.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/xfs/xfs_rtalloc.h
-+++ b/fs/xfs/xfs_rtalloc.h
-@@ -141,17 +141,17 @@ int xfs_rtalloc_extent_is_free(struct xf
- 			       bool *is_free);
- int xfs_rtalloc_reinit_frextents(struct xfs_mount *mp);
- #else
--# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)    (ENOSYS)
--# define xfs_rtfree_extent(t,b,l)                       (ENOSYS)
--# define xfs_rtfree_blocks(t,rb,rl)			(ENOSYS)
--# define xfs_rtpick_extent(m,t,l,rb)                    (ENOSYS)
--# define xfs_growfs_rt(mp,in)                           (ENOSYS)
--# define xfs_rtalloc_query_range(t,l,h,f,p)             (ENOSYS)
--# define xfs_rtalloc_query_all(m,t,f,p)                 (ENOSYS)
--# define xfs_rtbuf_get(m,t,b,i,p)                       (ENOSYS)
--# define xfs_verify_rtbno(m, r)			(false)
--# define xfs_rtalloc_extent_is_free(m,t,s,l,i)          (ENOSYS)
--# define xfs_rtalloc_reinit_frextents(m)                (0)
-+# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)	(-ENOSYS)
-+# define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
-+# define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
-+# define xfs_rtpick_extent(m,t,l,rb)			(-ENOSYS)
-+# define xfs_growfs_rt(mp,in)				(-ENOSYS)
-+# define xfs_rtalloc_query_range(m,t,l,h,f,p)		(-ENOSYS)
-+# define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
-+# define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
-+# define xfs_verify_rtbno(m, r)				(false)
-+# define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
-+# define xfs_rtalloc_reinit_frextents(m)		(0)
- static inline int		/* error */
- xfs_rtmount_init(
- 	xfs_mount_t	*mp)	/* file system mount structure */
-@@ -162,7 +162,7 @@ xfs_rtmount_init(
- 	xfs_warn(mp, "Not built with CONFIG_XFS_RT");
- 	return -ENOSYS;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -91,6 +91,8 @@ ets_class_from_arg(struct Qdisc *sch, un
+ {
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 
++	if (arg == 0 || arg > q->nbands)
++		return NULL;
+ 	return &q->classes[arg - 1];
  }
--# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (ENOSYS))
-+# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (-ENOSYS))
- # define xfs_rtunmount_inodes(m)
- #endif	/* CONFIG_XFS_RT */
  
 
 
