@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-111362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFF77A22ECD
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FD4A22E6A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D013A6309
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD771688FA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC001E9B28;
-	Thu, 30 Jan 2025 14:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270531E3DF8;
+	Thu, 30 Jan 2025 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/4gbe75"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QglLPuJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94141E9B25;
-	Thu, 30 Jan 2025 14:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D766D1E3775;
+	Thu, 30 Jan 2025 14:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246516; cv=none; b=cgywedQIrozv4fCCZrlavNF+S7rNsWcCQgmqMQzsmleQ9N4WnGmoGH/qwq0KXbmaQpFwZNGk2tbKApeps1uXj8M89X+9rtqLbJu5kOlVwiqG0u9dozPYh3pJgR/B9yg1UiVCuMMWn4Yj8XMXs9wBZTufpkL8vEQkM/PhM984S8c=
+	t=1738245647; cv=none; b=i+aroD3zmdkpz9ezrBlQ8LV0oBIbXtqltZIbI3R04CiYsHwK1GqIHkxJsp1bskbs9TPH8skTJnDt7g8N2b5nshz14SF1OEnT4siFKTwNmpGiooUZ16KMnYX0P9UPgnYsxgzMPC6ZuVpr6MQWj/Qe2bjqZFBVXjHeqjRElZBanZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246516; c=relaxed/simple;
-	bh=lCJq/YRfkCpF69WiJSiibgylYDDj4xdY76rY0TkTkag=;
+	s=arc-20240116; t=1738245647; c=relaxed/simple;
+	bh=zW7mPTSc0wXYZXreDAnpxrgrmSR8P0R+XEH4gtc+Vso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzGT87amuPsM1T1MFq+RTfaAELHNvx042zPYhfRI2fEPY8v/vHCvmZATyNj4CmC7M4Jtn9xpxvRLwri6bhFQYdtzwwWPD0L477bO/5/pio/oA5AwhzGREaPA4Mf6ukJlfbKJdi8i70aB1zHBLBNwIVGzZjss2kTCALBgg+bD7NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/4gbe75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB9CC4CED2;
-	Thu, 30 Jan 2025 14:15:16 +0000 (UTC)
+	 MIME-Version; b=e5f8kCnkupiNne+4P/UFBjFLtchgC1LRm0degr60zLWT+k6RUmsoPEW/dOeFGcPadiE/hN1z6HlR4AU5yM4bch61OQnXVvwXx9JTBAfiPdqDYh5JPx4WrxC/ckXyOtNRgHQa22MruRimbG5kHe4S7dGuwT0RYwlMZY2l0tAU7mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QglLPuJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605D2C4CED2;
+	Thu, 30 Jan 2025 14:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246516;
-	bh=lCJq/YRfkCpF69WiJSiibgylYDDj4xdY76rY0TkTkag=;
+	s=korg; t=1738245647;
+	bh=zW7mPTSc0wXYZXreDAnpxrgrmSR8P0R+XEH4gtc+Vso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/4gbe7562bJgfVl9Ev9yCmJulRMXKjsy/G02lmGxbgncqIJALkA+XdQ7n7p3E5ru
-	 ck9rL372ynn1exw5NI60GxIr1D4hT4KS6O5iZKqMUBUj66Vti3E8gXmnHL650gBmR6
-	 pun/JtfPWW7oqtCbgwMHkdV+nv3wqQHGILLgfotI=
+	b=QglLPuJ3HrsRL3zVu3JukqkjDVpaXFw8zZIItWyJBl8k/xUfuPKENAJyVKwaCRaJd
+	 0+PoVF9gWGfQRXOfE3TlzZc5MnsODEZy9i9gKOi9x6NJwnvVe0whelpSkwvew0T4Wv
+	 /HbkrRFDdDXuLSrdLMrNpb7VA6yJPEWyHcWXEppc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Russell Harmon <russ@har.mn>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/43] of/unittest: Add test that of_address_to_resource() fails on non-translatable address
+Subject: [PATCH 6.12 13/40] hwmon: (drivetemp) Set scsi command timeout to 10s
 Date: Thu, 30 Jan 2025 14:59:13 +0100
-Message-ID: <20250130133459.157495774@linuxfoundation.org>
+Message-ID: <20250130133500.241310238@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Russell Harmon <russ@har.mn>
 
-[ Upstream commit 44748065ed321041db6e18cdcaa8c2a9554768ac ]
+[ Upstream commit b46ba47d7bb461a0969317be1f2e165c0571d6c5 ]
 
-of_address_to_resource() on a non-translatable address should return an
-error. Additionally, this case also triggers a spurious WARN for
-missing #address-cells/#size-cells.
+There's at least one drive (MaxDigitalData OOS14000G) such that if it
+receives a large amount of I/O while entering an idle power state will
+first exit idle before responding, including causing SMART temperature
+requests to be delayed.
 
-Link: https://lore.kernel.org/r/20250110215030.3637845-1-robh@kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+This causes the drivetemp request to exceed its timeout of 1 second.
+
+Signed-off-by: Russell Harmon <russ@har.mn>
+Link: https://lore.kernel.org/r/20250115131340.3178988-1-russ@har.mn
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest-data/tests-platform.dtsi | 13 +++++++++++++
- drivers/of/unittest.c                        | 14 ++++++++++++++
- 2 files changed, 27 insertions(+)
+ drivers/hwmon/drivetemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
-index fa39611071b32..cd310b26b50c8 100644
---- a/drivers/of/unittest-data/tests-platform.dtsi
-+++ b/drivers/of/unittest-data/tests-platform.dtsi
-@@ -34,5 +34,18 @@ dev@100 {
- 				};
- 			};
- 		};
-+
-+		platform-tests-2 {
-+			// No #address-cells or #size-cells
-+			node {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				test-device@100 {
-+					compatible = "test-sub-device";
-+					reg = <0x100 1>;
-+				};
-+			};
-+		};
- 	};
- };
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 7986113adc7d3..3b22c36bfb0b7 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -1186,6 +1186,7 @@ static void __init of_unittest_bus_3cell_ranges(void)
- static void __init of_unittest_reg(void)
- {
- 	struct device_node *np;
-+	struct resource res;
- 	int ret;
- 	u64 addr, size;
+diff --git a/drivers/hwmon/drivetemp.c b/drivers/hwmon/drivetemp.c
+index 2a4ec55ddb47e..291d91f686467 100644
+--- a/drivers/hwmon/drivetemp.c
++++ b/drivers/hwmon/drivetemp.c
+@@ -194,7 +194,7 @@ static int drivetemp_scsi_command(struct drivetemp_data *st,
+ 	scsi_cmd[14] = ata_command;
  
-@@ -1202,6 +1203,19 @@ static void __init of_unittest_reg(void)
- 		np, addr);
- 
- 	of_node_put(np);
-+
-+	np = of_find_node_by_path("/testcase-data/platform-tests-2/node/test-device@100");
-+	if (!np) {
-+		pr_err("missing testcase data\n");
-+		return;
-+	}
-+
-+	ret = of_address_to_resource(np, 0, &res);
-+	unittest(ret == -EINVAL, "of_address_to_resource(%pOF) expected error on untranslatable address\n",
-+		 np);
-+
-+	of_node_put(np);
-+
- }
- 
- static void __init of_unittest_parse_interrupts(void)
+ 	err = scsi_execute_cmd(st->sdev, scsi_cmd, op, st->smartdata,
+-			       ATA_SECT_SIZE, HZ, 5, NULL);
++			       ATA_SECT_SIZE, 10 * HZ, 5, NULL);
+ 	if (err > 0)
+ 		err = -EIO;
+ 	return err;
 -- 
 2.39.5
 
