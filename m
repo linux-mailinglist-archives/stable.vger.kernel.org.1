@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45234A22F54
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68800A23026
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDCA17A178C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BD2168D63
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A908D1E98F9;
-	Thu, 30 Jan 2025 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166CE1E9907;
+	Thu, 30 Jan 2025 14:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z86uyMrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJNP/pCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671E21E8823;
-	Thu, 30 Jan 2025 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C951E1E98FF;
+	Thu, 30 Jan 2025 14:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246847; cv=none; b=BlkZnws46Jq5MYJAu9+58uGRQ46B2LXQOSBtAq6uNoTmLxVDJCVW1ipkNZSeLaN/BCLHPRvS8J7tGCtiOudQLWfIvwPN+MU4tmE6Kf5kQRH/nAS8P81BT5WKijjc1crhZBIpEJ5Ccfooh6+aFKJbFgEGFn39syq4LSeltK2c5cw=
+	t=1738247355; cv=none; b=BLJeyKGsHBbPpNcPW0H/X8sFFLyOtADKViLYQrGLFFAM03eUcZ4AknA2tizGrKfJE4Ru4HtUmPacYmCbyKM74o37rzm5t4CUtHw8d7VIcp5WrSmGtZ9nSl1KhW8n4GrG0N54GgTR1MEKOTD7s0dqNRGBjvQWhD01RTonM6/ay9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246847; c=relaxed/simple;
-	bh=C+eJW4eAhXsPacRT8YJ2tc4fGYuw43f/Sf+VhAe8rSU=;
+	s=arc-20240116; t=1738247355; c=relaxed/simple;
+	bh=ayR9LveWTujp0d0RB5fYNg84TSvDz5vDeiXa1TmTehQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLiWqxV5MD2XnsMLDnSbrgZ7feG6bsojy8yxBqvUFC+LKLmCgu7RmNOoZrosRPG/57IR4UGWH0bGJUUj33wNVzejRx55lQHqFDKzVd/C/SC01a17iuUjOwGJzxKLD4WYVO9q/qurHF3QuaW6mMUP40Yge8F6mq9qxbWkoGvjaz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z86uyMrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40E2C4CED2;
-	Thu, 30 Jan 2025 14:20:46 +0000 (UTC)
+	 MIME-Version; b=rHa/MF2f4iV4+u8e4+i3ckSnRvcJl43pqrw6ZaDMsP0IGXq/k4ICOIr8gLgB6vyJbiWtGSnfgaqfteeuNzZhnwZFOSKc51a4n/FhoDqoQNSSuwJwlgRVVm+TPiRWKcbeSHcm2/erB4QGDKKtjRBeWB9Uu9XUT4n0Ct+hi0npSSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJNP/pCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51DC6C4CEE0;
+	Thu, 30 Jan 2025 14:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246847;
-	bh=C+eJW4eAhXsPacRT8YJ2tc4fGYuw43f/Sf+VhAe8rSU=;
+	s=korg; t=1738247355;
+	bh=ayR9LveWTujp0d0RB5fYNg84TSvDz5vDeiXa1TmTehQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z86uyMrNHc5YF1mnUPp9eFZry8r9Dg7S6Edu6StyRUpu4Acudwl1PQYDdBpvpMXNQ
-	 imlPbJfreM0wHtKLyZsHJRMEXb5EZCmPYP4b+xKCZt3t+paBIsQQiFA0rvuffE++Ww
-	 y0S8r+gT9bwluRt7UI8IQJsbaqb46cWNJ2snPT/k=
+	b=yJNP/pCx/rPgEx+a7Rfs+CmGna3WZI9GAhkhnfYbISb4HTDSkCMpRLtWljNyA1xWI
+	 /hoIj+pY3OIwANdPyT1qVCSlp/XpUbkBrJUfRcwgdEdrg8EPu5S5IZyFjACRjY7l1M
+	 ux6lhJu0hrFql+wSG4XqHZ0CxystJkB3VyX/aUPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	stable <stable@kernel.org>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 5.4 88/91] Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>
+Subject: [PATCH 6.1 11/49] softirq: Allow raising SCHED_SOFTIRQ from SMP-call-function on RT kernel
 Date: Thu, 30 Jan 2025 15:01:47 +0100
-Message-ID: <20250130140137.224321640@linuxfoundation.org>
+Message-ID: <20250130140134.287151097@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-commit 086fd062bc3883ae1ce4166cff5355db315ad879 upstream.
+commit 6675ce20046d149e1e1ffe7e9577947dee17aad5 upstream.
 
-This reverts commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec.
+do_softirq_post_smp_call_flush() on PREEMPT_RT kernels carries a
+WARN_ON_ONCE() for any SOFTIRQ being raised from an SMP-call-function.
+Since do_softirq_post_smp_call_flush() is called with preempt disabled,
+raising a SOFTIRQ during flush_smp_call_function_queue() can lead to
+longer preempt disabled sections.
 
-It is reported to cause crashes on Tegra systems, so revert it for now.
+Since commit b2a02fc43a1f ("smp: Optimize
+send_call_function_single_ipi()") IPIs to an idle CPU in
+TIF_POLLING_NRFLAG mode can be optimized out by instead setting
+TIF_NEED_RESCHED bit in idle task's thread_info and relying on the
+flush_smp_call_function_queue() in the idle-exit path to run the
+SMP-call-function.
 
-Link: https://lore.kernel.org/r/1037c1ad-9230-4181-b9c3-167dbaa47644@nvidia.com
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable <stable@kernel.org>
-Cc: Lianqin Hu <hulianqin@vivo.com>
-Link: https://lore.kernel.org/r/2025011711-yippee-fever-a737@gregkh
+To trigger an idle load balancing, the scheduler queues
+nohz_csd_function() responsible for triggering an idle load balancing on
+a target nohz idle CPU and sends an IPI. Only now, this IPI is optimized
+out and the SMP-call-function is executed from
+flush_smp_call_function_queue() in do_idle() which can raise a
+SCHED_SOFTIRQ to trigger the balancing.
+
+So far, this went undetected since, the need_resched() check in
+nohz_csd_function() would make it bail out of idle load balancing early
+as the idle thread does not clear TIF_POLLING_NRFLAG before calling
+flush_smp_call_function_queue(). The need_resched() check was added with
+the intent to catch a new task wakeup, however, it has recently
+discovered to be unnecessary and will be removed in the subsequent
+commit after which nohz_csd_function() can raise a SCHED_SOFTIRQ from
+flush_smp_call_function_queue() to trigger an idle load balance on an
+idle target in TIF_POLLING_NRFLAG mode.
+
+nohz_csd_function() bails out early if "idle_cpu()" check for the
+target CPU, and does not lock the target CPU's rq until the very end,
+once it has found tasks to run on the CPU and will not inhibit the
+wakeup of, or running of a newly woken up higher priority task. Account
+for this and prevent a WARN_ON_ONCE() when SCHED_SOFTIRQ is raised from
+flush_smp_call_function_queue().
+
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241119054432.6405-2-kprateek.nayak@amd.com
+Tested-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+Signed-off-by: Florian Bezdeka <florian.bezdeka@siemens.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/softirq.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1369,10 +1369,6 @@ void gserial_disconnect(struct gserial *
- 	/* REVISIT as above: how best to track this? */
- 	port->port_line_coding = gser->port_line_coding;
+--- a/kernel/softirq.c
++++ b/kernel/softirq.c
+@@ -294,17 +294,24 @@ static inline void invoke_softirq(void)
+ 		wakeup_softirqd();
+ }
  
--	/* disable endpoints, aborting down any active I/O */
--	usb_ep_disable(gser->out);
--	usb_ep_disable(gser->in);
--
- 	port->port_usb = NULL;
- 	gser->ioport = NULL;
- 	if (port->port.count > 0 || port->openclose) {
-@@ -1382,6 +1378,10 @@ void gserial_disconnect(struct gserial *
- 	}
- 	spin_unlock_irqrestore(&port->port_lock, flags);
- 
-+	/* disable endpoints, aborting down any active I/O */
-+	usb_ep_disable(gser->out);
-+	usb_ep_disable(gser->in);
++#define SCHED_SOFTIRQ_MASK	BIT(SCHED_SOFTIRQ)
 +
- 	/* finally, free any unused/unusable I/O buffers */
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (port->port.count == 0 && !port->openclose)
+ /*
+  * flush_smp_call_function_queue() can raise a soft interrupt in a function
+- * call. On RT kernels this is undesired and the only known functionality
+- * in the block layer which does this is disabled on RT. If soft interrupts
+- * get raised which haven't been raised before the flush, warn so it can be
++ * call. On RT kernels this is undesired and the only known functionalities
++ * are in the block layer which is disabled on RT, and in the scheduler for
++ * idle load balancing. If soft interrupts get raised which haven't been
++ * raised before the flush, warn if it is not a SCHED_SOFTIRQ so it can be
+  * investigated.
+  */
+ void do_softirq_post_smp_call_flush(unsigned int was_pending)
+ {
+-	if (WARN_ON_ONCE(was_pending != local_softirq_pending()))
++	unsigned int is_pending = local_softirq_pending();
++
++	if (unlikely(was_pending != is_pending)) {
++		WARN_ON_ONCE(was_pending != (is_pending & ~SCHED_SOFTIRQ_MASK));
+ 		invoke_softirq();
++	}
+ }
+ 
+ #else /* CONFIG_PREEMPT_RT */
 
 
 
