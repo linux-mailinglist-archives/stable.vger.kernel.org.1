@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D510A23012
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6016A23057
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F243E165E89
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 627D01883BDB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586A01E9B19;
-	Thu, 30 Jan 2025 14:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336531B87F8;
+	Thu, 30 Jan 2025 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlOVnVqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12O7Vw1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B431E9B0C;
-	Thu, 30 Jan 2025 14:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E588BFF;
+	Thu, 30 Jan 2025 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247306; cv=none; b=FICQBDddt7UUMDYxSE+jgEcBNmoH9rO+610hVT7QdvjPd89YUBazliu8TD//hYGWdZnvAsAMQ2H8I1q9BguvHYI5rqYIJ9bd4AN5xZscUp3H1INPsAZcnO3rrSvrinf0owGWZEIA7cmut8DyG9L1KAOnI72+yioC/+jSJXmMLIM=
+	t=1738247484; cv=none; b=TZo9KrzhaMnlAjxvp7IZsKQH35Acusmzo2ACfENAbshHpehGEWryfnYItzYTwBjzh8q3CAp8DgGYiSGWv732l+GCMCcfqDsVv79rzlOdJkWjj50s5HptpGCDKX9tc/fzaBqVIuGblSDElX8BrxzFDBEnJHeF/5FJgepf0DDnkeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247306; c=relaxed/simple;
-	bh=XB7AlbMSphuVbyq3Z5Mo+8fZ9cL4lMktAzTAoUuGu2U=;
+	s=arc-20240116; t=1738247484; c=relaxed/simple;
+	bh=iSWflRQ7Q8OwwqCSaVFTsFGgO7Rn+ARO7NJlk90MzE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BxI8ea9I6BA6BtUDnKc/jX3zxmUnu8PAhiJ/290wpx3eMNO17m8uRgTDDZIUIUu3LdURovohBgAa39NaQuf1dS4136qa7RRFmHF3VRWN307z7XV8hNhb+2TDNJkChh+6oe1fz70VhX1PMKrL5bG8yJgunrkVBmTrxg2ecJyb/ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlOVnVqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED55C4CEE2;
-	Thu, 30 Jan 2025 14:28:25 +0000 (UTC)
+	 MIME-Version; b=m3Y5FqL/0z2PXI9nE4doJ8rEwOcFtkGs7CRoHnEX1ufKAz0RIrLKgfYRMbZtPYRa5zjvwJ2cClpe/qvSOIVsl6eYpOfcmovdRUc+S9gXyIviAA6w2rBOOrT+Pqc8NoS5MNP7qGweknowkQk4jq3KjIoRn3z+P3kgnx0aemoxXrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12O7Vw1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFA5C4CED2;
+	Thu, 30 Jan 2025 14:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247306;
-	bh=XB7AlbMSphuVbyq3Z5Mo+8fZ9cL4lMktAzTAoUuGu2U=;
+	s=korg; t=1738247483;
+	bh=iSWflRQ7Q8OwwqCSaVFTsFGgO7Rn+ARO7NJlk90MzE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlOVnVqznwTa1+8V59DCASWSsrKPso79SAEZTYtCofSbhLVvPRYF2USVBOoQtXZjY
-	 wH0/e3kTbeb3PMOhcK0MI7NoHg0243YQNyMbAUyhyNBBvyg4kqXb5jUeg6bOzriwQV
-	 4Mj6BV5yzAQt1HD/dS06ft243ly/af5YWAqzyaWY=
+	b=12O7Vw1PXm4uitoUBoV0/aDlGEc67cZi6E4H7mOP+J5mYWaBnYTF+U3tWiAHrDCgc
+	 mQjbcS9quxchELL0jyJRak0vLVTk/T9ZMCo9/LoyNDtGhn4jKwwKLgFZ3BY0zTjWlU
+	 twLbiR2RYpAeunXprNO86ZCgJm2qUYV49gseghXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Alex Williamson <alex.williamson@redhat.com>
-Subject: [PATCH 5.15 11/24] vfio/platform: check the bounds of read/write syscalls
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 27/49] xfs: clean up dqblk extraction
 Date: Thu, 30 Jan 2025 15:02:03 +0100
-Message-ID: <20250130140127.752626307@linuxfoundation.org>
+Message-ID: <20250130140134.929409829@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
+[ Upstream commit ed17f7da5f0c8b65b7b5f7c98beb0aadbc0546ee ]
 
-count and offset are passed from user space and not checked, only
-offset is capped to 40 bits, which can be used to read/write out of
-bounds of the device.
+Since the introduction of xfs_dqblk in V5, xfs really ought to find the
+dqblk pointer from the dquot buffer, then compute the xfs_disk_dquot
+pointer from the dqblk pointer.  Fix the open-coded xfs_buf_offset calls
+and do the type checking in the correct order.
 
-Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
-Cc: stable@vger.kernel.org
-Reported-by: Mostafa Saleh <smostafa@google.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Note that this has made no practical difference since the start of the
+xfs_disk_dquot is coincident with the start of the xfs_dqblk.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/xfs/xfs_dquot.c              |    5 +++--
+ fs/xfs/xfs_dquot_item_recover.c |    7 ++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/vfio/platform/vfio_platform_common.c
-+++ b/drivers/vfio/platform/vfio_platform_common.c
-@@ -388,6 +388,11 @@ static ssize_t vfio_platform_read_mmio(s
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -562,7 +562,8 @@ xfs_dquot_from_disk(
+ 	struct xfs_dquot	*dqp,
+ 	struct xfs_buf		*bp)
  {
- 	unsigned int done = 0;
+-	struct xfs_disk_dquot	*ddqp = bp->b_addr + dqp->q_bufoffset;
++	struct xfs_dqblk	*dqb = xfs_buf_offset(bp, dqp->q_bufoffset);
++	struct xfs_disk_dquot	*ddqp = &dqb->dd_diskdq;
  
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
-@@ -466,6 +471,11 @@ static ssize_t vfio_platform_write_mmio(
+ 	/*
+ 	 * Ensure that we got the type and ID we were looking for.
+@@ -1250,7 +1251,7 @@ xfs_qm_dqflush(
+ 	}
+ 
+ 	/* Flush the incore dquot to the ondisk buffer. */
+-	dqblk = bp->b_addr + dqp->q_bufoffset;
++	dqblk = xfs_buf_offset(bp, dqp->q_bufoffset);
+ 	xfs_dquot_to_disk(&dqblk->dd_diskdq, dqp);
+ 
+ 	/*
+--- a/fs/xfs/xfs_dquot_item_recover.c
++++ b/fs/xfs/xfs_dquot_item_recover.c
+@@ -65,6 +65,7 @@ xlog_recover_dquot_commit_pass2(
  {
- 	unsigned int done = 0;
+ 	struct xfs_mount		*mp = log->l_mp;
+ 	struct xfs_buf			*bp;
++	struct xfs_dqblk		*dqb;
+ 	struct xfs_disk_dquot		*ddq, *recddq;
+ 	struct xfs_dq_logformat		*dq_f;
+ 	xfs_failaddr_t			fa;
+@@ -130,14 +131,14 @@ xlog_recover_dquot_commit_pass2(
+ 		return error;
  
-+	if (off >= reg->size)
-+		return -EINVAL;
-+
-+	count = min_t(size_t, count, reg->size - off);
-+
- 	if (!reg->ioaddr) {
- 		reg->ioaddr =
- 			ioremap(reg->addr, reg->size);
+ 	ASSERT(bp);
+-	ddq = xfs_buf_offset(bp, dq_f->qlf_boffset);
++	dqb = xfs_buf_offset(bp, dq_f->qlf_boffset);
++	ddq = &dqb->dd_diskdq;
+ 
+ 	/*
+ 	 * If the dquot has an LSN in it, recover the dquot only if it's less
+ 	 * than the lsn of the transaction we are replaying.
+ 	 */
+ 	if (xfs_has_crc(mp)) {
+-		struct xfs_dqblk *dqb = (struct xfs_dqblk *)ddq;
+ 		xfs_lsn_t	lsn = be64_to_cpu(dqb->dd_lsn);
+ 
+ 		if (lsn && lsn != -1 && XFS_LSN_CMP(lsn, current_lsn) >= 0) {
+@@ -147,7 +148,7 @@ xlog_recover_dquot_commit_pass2(
+ 
+ 	memcpy(ddq, recddq, item->ri_buf[1].i_len);
+ 	if (xfs_has_crc(mp)) {
+-		xfs_update_cksum((char *)ddq, sizeof(struct xfs_dqblk),
++		xfs_update_cksum((char *)dqb, sizeof(struct xfs_dqblk),
+ 				 XFS_DQUOT_CRC_OFF);
+ 	}
+ 
 
 
 
