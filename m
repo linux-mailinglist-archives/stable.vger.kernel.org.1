@@ -1,233 +1,188 @@
-Return-Path: <stable+bounces-111263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7020FA229E7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:56:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE78A22A50
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD5AE165C3A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 08:56:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95B4E188584B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4E01B3959;
-	Thu, 30 Jan 2025 08:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473531B425F;
+	Thu, 30 Jan 2025 09:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hB7AgakT"
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="c4I4Q9fg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cg4zjQBj"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3E81B3922
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 08:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA7B1AB53A;
+	Thu, 30 Jan 2025 09:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738227390; cv=none; b=pOYdT7FJOL5HT+SYEve2knQv3xhyDUBwoPhmRJUfCba3MW8XFjBTpakNSd6hiBI43/T+1uqtWHWfC/kZSOqL5ZX43wkv1Fwyr5pK/bEodaPML2KpM8svwy0gZdgljd+ramfiYCR46BPZKeQ/3nKPfWRAInyDxIM/jW4EW6qUcag=
+	t=1738229290; cv=none; b=fkrNIbYZZaB/x9pvRvfFNVotGfOHzDXmVZMdg3hBOT1GAgRwyglLhUIbLobmHcePZYO3UOdCdpx6R3AMzPUVX/8Ep/VTTxcRlg+uy4OCfw/sYNkR/Nc3o5+716DLve4fivDedod9RkqkciG5PwEFK5i5mKEU9v+OTW1UhtEUHLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738227390; c=relaxed/simple;
-	bh=+cqJDN/n3eFXwKEUhHpJkwmoydAC9CdWm3maZuA0Ml0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QF/F8J8pzpAzhm6BAZxZdDkqPJmh4+Y/nZpRBB79vS1lcb6OAiyNSQCToeb50uUVY7l8orTZh7tbqSpa8PZx/3oX09MXpUTPKRSKhy0cx96H0Ab/wnm23vux4L5zZ8WAW1lDU/fpY1goIHFUmMTfTWTD+7XfFs4qdYIi0ZNxazA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hB7AgakT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738227387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pnLOL5siwR5BxEAjycoT3uYFK6h+TWN9CY8uLMr9KK4=;
-	b=hB7AgakT4b59h3+waOV9tKlsvJmt6e5xOlmkXKHzM+It6J3Z/gQnFK8kmSzt1M3zB9du8Q
-	+HxcjArcw/tJa6RHr9qboLmmkC2bzSCzsKnyAlGU74ZBeskSX5LzsbHqqsYUHtik2+DOKg
-	8hWRbyCK3CRAphW+RsnzftsYwCNyh7o=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-299-f3CgPmHJOfCyp6XuFGasOg-1; Thu, 30 Jan 2025 03:56:25 -0500
-X-MC-Unique: f3CgPmHJOfCyp6XuFGasOg-1
-X-Mimecast-MFC-AGG-ID: f3CgPmHJOfCyp6XuFGasOg
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-436379713baso2232335e9.2
-        for <stable@vger.kernel.org>; Thu, 30 Jan 2025 00:56:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738227384; x=1738832184;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=pnLOL5siwR5BxEAjycoT3uYFK6h+TWN9CY8uLMr9KK4=;
-        b=vL24SG8hB+gdA7xrDC22pkYdmGowpjr4AEYh3YMMJBtS0WMk/KDjstrYCFvBn06M7L
-         hGItE64aKEoOvxgE7FMUTNJxbzykpuE4WillEVubl3RdBs9s5pO5IU5OEk+zCo0mfOxL
-         +kXjMdU26Wc5gfhQLDvcIlMa/JquHoMknymwyy10iHRe4t5BYaEItPi4nErFzBLdrTmA
-         OT+4S77OjXURMT5Fs3P05XDDIPceqWua9gfJKAQMQXOaxbE7ufdr/GNqwTP2AnIZxAkF
-         YxicEyO52fWTrdcHLHS8ndG8FhVP9tN87/q+UEP8QxwxfRhGBgXv/U1LhdqPgiKn0WLQ
-         gIKA==
-X-Forwarded-Encrypted: i=1; AJvYcCV34GiJn6q5ZAPddtbIZo3LMEdqIb39OzAm3qFU6RXGp65qpnqWO8Ue1k+W9mFuPTTxu/yreTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+jaEBdMEQsiZsteB55lEameCrKWEMR1aX/CiDBr6ud8SWxKdB
-	EkaSSOEh607fkP79cGXMpAg8eCglFbAIaa2giiGq8vmajFBWY3ZtkO2XAl47jN5pB92Wtfn9wEu
-	wI5X6tDV3bfIatYdgrty6FFLYaebGNYrReO7VAIymyV2aCYhg8na1pg==
-X-Gm-Gg: ASbGncvC4gyX8Mj5Ae/Htps4jeQI80StQ2WE+YievGQLHUsQs5cy1FGgJJ/QnNnq5+s
-	75A6/SaqHvWb3zqmn/JdXhWQE37TGzZEn1gV8crEpYFzE+agbhcVcxEx63eZL6cROBEIDo4h6H8
-	PsJJh4FCnsF/3i0yXwm/d1WEcYRKR0xpmd7MEMUvgIS7BjMmU2kIgKPR8shlI9dgzJDPpamvb2Z
-	hhCrn6Ku/mNE7IEbI4FBAQXJrnqDGXq//NKMJsYgVr4M4aWbHK5jevnN44G1kDWy4xgaPX1sug8
-	ZPUDehyij+krWwL6rezPxbnGs6Inu0g45xjBwb7kXrVO
-X-Received: by 2002:a05:600c:212:b0:434:f270:a4f0 with SMTP id 5b1f17b1804b1-438e07cd591mr27629265e9.21.1738227383867;
-        Thu, 30 Jan 2025 00:56:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0itvGVCZG4RumRuf7h8v/horjGNz+EfGmPAGziGyVncpeWB3PI5aSg4IcsH6VSUET2T0htg==
-X-Received: by 2002:a05:600c:212:b0:434:f270:a4f0 with SMTP id 5b1f17b1804b1-438e07cd591mr27628995e9.21.1738227383450;
-        Thu, 30 Jan 2025 00:56:23 -0800 (PST)
-Received: from ?IPV6:2a01:599:904:96e0:a245:aa9f:6c57:eb41? ([2a01:599:904:96e0:a245:aa9f:6c57:eb41])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc6df36sm53447555e9.25.2025.01.30.00.56.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 00:56:22 -0800 (PST)
-Message-ID: <b363847b-a1d6-41f0-9f81-d97923382bb3@redhat.com>
-Date: Thu, 30 Jan 2025 09:56:20 +0100
+	s=arc-20240116; t=1738229290; c=relaxed/simple;
+	bh=6QEEVxeXCV/Eryqb4+2vYLsdLa+714Q+GrQSfN0elNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WRUr1nfvzxa49pEi1H1eozzgShCNQb+4Bq5YTqhEGctwuRP2Xzq8/Imela06DcHS5yCQipR1uCPWTQgiLDuHalyuIcPTcIDQ4D19Znz6p6/JzFR6crPtoMGqO4Z6lPmRSbTWwtVyGBfoklhFFfOYl0OwfosSMRNfYETPWw4f7lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=c4I4Q9fg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=cg4zjQBj; arc=none smtp.client-ip=202.12.124.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A35B72540115;
+	Thu, 30 Jan 2025 04:28:05 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 30 Jan 2025 04:28:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1738229285; x=
+	1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2jtKHEpZA=; b=c
+	4I4Q9fgmE9PKfoX+evVrmj/SMTQjIa0xDK/Dt4eW/gefmrOirVBpzaswWpwJudWq
+	HmlyaV+6d26O9ugiRXB23gZRIP/cBZYxEvkJeFMN1Vy+i+ONivAQjKemHk8Z7PVJ
+	2bKJCZXuCm68SfiZkU87gt+zBUiVL+jmGKAWmCrZBu8QoFAyb+tJjbrBuvmtfXps
+	T6yGO0dIZ5POEEUkVuBC7e7lWJ+yZslUu2j3VAYBTbJX9GPCoRJmRYN1G9iP/aas
+	aeDzWvMq+4KUbvCA351BTi5xyvbSYdoUkP4I7m2uzncPGyRfl7/XVf7tcrHkTSGq
+	nJz7SxlDyL7HWj58zGHnQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1738229285; x=1738315685; bh=t3O8u0KUNKcJVT+PdNptZvz5j4ncE2iGZc2
+	jtKHEpZA=; b=cg4zjQBjrjLB6KNZKNo80Wh+HchynueFbqaBIr+CYP2vyZgB6BR
+	bhsKXyHHjdWR1KNlbG0kszwEl66Z4w5h+XLW1/saKsJciGM9V/zeAHpOBfo51ZG+
+	NnjSOkOlGPFNEOmFiyjI3Z9DyAIUYWpOZF/sYuWzX3dIJHU7tvRiIo5ryh2sVmUX
+	+oPaDgu3yJOGjQ1GO60b9lodMEfPMCzl9N8Ko4maVnC/dVBs0mMgeJ5BdhojuWuU
+	TkykP9qQAViOzbP7IiyKhFYZFZI5g7taNRNaJ9V8WoSkTj3Juji0lWiuHrv1eBkM
+	4uKdq0K9S5jUe76aEE/A8Hbi5FYJoyv2xAQ==
+X-ME-Sender: <xms:JUabZ7waI2wxTDSPmwYRBaPSiT8e3YCzVmQpFa71ZcgYljSy4EniOQ>
+    <xme:JUabZzRmPYq9hclZHzr4147DsLIR02AMYM0awGBWUGan9kl4f9eQK3e4yu9fCTw4B
+    _3TvGS-2hVcZQc2Blg>
+X-ME-Received: <xmr:JUabZ1WUR03_1zi0b_ZSuQiJAbcnAj6QpNs6w4dtRVGzxRVRXq9RjGpy8wts8mpyBg6wqA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehgeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvden
+    ucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlse
+    hshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeeltedugedtgfehuddu
+    hfetleeiuedvtdehieejjedufeejfeegteetuddtgefgudenucffohhmrghinhepkhgvrh
+    hnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhope
+    duiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhgrnhhnrghpuhhrvhgvsehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepshgvrg
+    hnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegvrhguvghmrghkthgrshesghho
+    ohhglhgvrdgtohhmpdhrtghpthhtoheprggtkhgvrhhlvgihthhnghesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtohepjhigghgrohesghhoohhglhgvrdgtohhmpdhrtghpthhtohep
+    shgrghhishesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:JUabZ1jy_e-IpxT5ZSFHKe9Bzu0Wt_Lg0hBLoEjWCdiltsATEx-_Aw>
+    <xmx:JUabZ9ADP0yPihoeZby56FGMKuJGEjPwpaur_dt3Dr9QggsybmVB9Q>
+    <xmx:JUabZ-Ib6HiCGN62p--HuxIq4y986zMLxAVrZDDQ3Dc9q3XLHJq4kg>
+    <xmx:JUabZ8B81ibLoEibSBLpIu3AFhijdAWoVaLyXz_KA9zgX8RVDSRCsw>
+    <xmx:JUabZ_wsvb8L6c7pN6I7c9hH0SPP9A7BbUhKPR1g40OOjcMxMQsipjif>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 30 Jan 2025 04:28:00 -0500 (EST)
+Date: Thu, 30 Jan 2025 11:27:56 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+References: <20250129232525.3519586-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/12] mm/gup: reject FOLL_SPLIT_PMD with hugetlb VMAs
-To: John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org
-Cc: linux-doc@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, nouveau@lists.freedesktop.org,
- Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?=
- <jglisse@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
- Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, Peter Xu <peterx@redhat.com>,
- Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- stable@vger.kernel.org
-References: <20250129115411.2077152-1-david@redhat.com>
- <20250129115411.2077152-2-david@redhat.com>
- <24e88fec-65b5-47ad-8833-67257f86fde5@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <24e88fec-65b5-47ad-8833-67257f86fde5@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250129232525.3519586-1-vannapurve@google.com>
 
-On 29.01.25 22:42, John Hubbard wrote:
-> On 1/29/25 3:53 AM, David Hildenbrand wrote:
->> We only have two FOLL_SPLIT_PMD users. While uprobe refuses hugetlb
->> early, make_device_exclusive_range() can end up getting called on
->> hugetlb VMAs.
->>
->> Right now, this means that with a PMD-sized hugetlb page, we can end
->> up calling split_huge_pmd(), because pmd_trans_huge() also succeeds
->> with hugetlb PMDs.
->>
->> For example, using a modified hmm-test selftest one can trigger:
->>
->> [  207.017134][T14945] ------------[ cut here ]------------
->> [  207.018614][T14945] kernel BUG at mm/page_table_check.c:87!
->> [  207.019716][T14945] Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
->> [  207.021072][T14945] CPU: 3 UID: 0 PID: ...
->> [  207.023036][T14945] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
->> [  207.024834][T14945] RIP: 0010:page_table_check_clear.part.0+0x488/0x510
->> [  207.026128][T14945] Code: ...
->> [  207.029965][T14945] RSP: 0018:ffffc9000cb8f348 EFLAGS: 00010293
->> [  207.031139][T14945] RAX: 0000000000000000 RBX: 00000000ffffffff RCX: ffffffff8249a0cd
->> [  207.032649][T14945] RDX: ffff88811e883c80 RSI: ffffffff8249a357 RDI: ffff88811e883c80
->> [  207.034183][T14945] RBP: ffff888105c0a050 R08: 0000000000000005 R09: 0000000000000000
->> [  207.035688][T14945] R10: 00000000ffffffff R11: 0000000000000003 R12: 0000000000000001
->> [  207.037203][T14945] R13: 0000000000000200 R14: 0000000000000001 R15: dffffc0000000000
->> [  207.038711][T14945] FS:  00007f2783275740(0000) GS:ffff8881f4980000(0000) knlGS:0000000000000000
->> [  207.040407][T14945] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->> [  207.041660][T14945] CR2: 00007f2782c00000 CR3: 0000000132356000 CR4: 0000000000750ef0
->> [  207.043196][T14945] PKRU: 55555554
->> [  207.043880][T14945] Call Trace:
->> [  207.044506][T14945]  <TASK>
->> [  207.045086][T14945]  ? __die+0x51/0x92
->> [  207.045864][T14945]  ? die+0x29/0x50
->> [  207.046596][T14945]  ? do_trap+0x250/0x320
->> [  207.047430][T14945]  ? do_error_trap+0xe7/0x220
->> [  207.048346][T14945]  ? page_table_check_clear.part.0+0x488/0x510
->> [  207.049535][T14945]  ? handle_invalid_op+0x34/0x40
->> [  207.050494][T14945]  ? page_table_check_clear.part.0+0x488/0x510
->> [  207.051681][T14945]  ? exc_invalid_op+0x2e/0x50
->> [  207.052589][T14945]  ? asm_exc_invalid_op+0x1a/0x20
->> [  207.053596][T14945]  ? page_table_check_clear.part.0+0x1fd/0x510
->> [  207.054790][T14945]  ? page_table_check_clear.part.0+0x487/0x510
->> [  207.055993][T14945]  ? page_table_check_clear.part.0+0x488/0x510
->> [  207.057195][T14945]  ? page_table_check_clear.part.0+0x487/0x510
->> [  207.058384][T14945]  __page_table_check_pmd_clear+0x34b/0x5a0
->> [  207.059524][T14945]  ? __pfx___page_table_check_pmd_clear+0x10/0x10
->> [  207.060775][T14945]  ? __pfx___mutex_unlock_slowpath+0x10/0x10
->> [  207.061940][T14945]  ? __pfx___lock_acquire+0x10/0x10
->> [  207.062967][T14945]  pmdp_huge_clear_flush+0x279/0x360
->> [  207.064024][T14945]  split_huge_pmd_locked+0x82b/0x3750
->> ...
->>
->> Before commit 9cb28da54643 ("mm/gup: handle hugetlb in the generic
->> follow_page_mask code"), we would have ignored the flag; instead, let's
+On Wed, Jan 29, 2025 at 11:25:25PM +0000, Vishal Annapurve wrote:
+> Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+> to hypervisor via tdvmcall. This process renders HLT instruction
+> execution inatomic, so any preceding instructions like STI/MOV SS will
+> end up enabling interrupts before the HLT instruction is routed to the
+> hypervisor. This creates scenarios where interrupts could land during
+> HLT instruction emulation without aborting halt operation leading to
+> idefinite halt wait times.
 > 
-> ...and so after that commit (which doesn't touch FOLL_SPLIT_PMD, we no
-> longer ignore the flag? At a first look at that commit, I don't quite
-> understand the connection, can you clarify just a bit for me?
+> Commit bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests") already
+> upgraded x86_idle() to invoke tdvmcall to avoid such scenarios, but
+> it didn't cover pv_native_safe_halt() which can be invoked using
+> raw_safe_halt() from call sites like acpi_safe_halt().
+> 
+> raw_safe_halt() also returns with interrupts enabled so upgrade
+> tdx_safe_halt() to enable interrupts by default and ensure that paravirt
+> safe_halt() executions invoke tdx_safe_halt(). Earlier x86_idle() is now
+> handled via tdx_idle() which simply invokes tdvmcall while preserving
+> irq state.
+> 
+> To avoid future call sites which cause HLT instruction emulation with
+> irqs enabled, add a warn and fail the HLT instruction emulation.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> ---
+> Changes since V1:
+> 1) Addressed comments from Dave H
+>    - Comment regarding adding a check for TDX VMs in halt path is not
+>      resolved in v2, would like feedback around better place to do so,
+>      maybe in pv_native_safe_halt (?).
+> 2) Added a new version of tdx_safe_halt() that will enable interrupts.
+> 3) Previous tdx_safe_halt() implementation is moved to newly introduced
+> tdx_idle().
+> 
+> V1: https://lore.kernel.org/lkml/Z5l6L3Hen9_Y3SGC@google.com/T/
+> 
+>  arch/x86/coco/tdx/tdx.c    | 23 ++++++++++++++++++++++-
+>  arch/x86/include/asm/tdx.h |  2 +-
+>  arch/x86/kernel/process.c  |  2 +-
+>  3 files changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 0d9b090b4880..cc2a637dca15 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -14,6 +14,7 @@
+>  #include <asm/ia32.h>
+>  #include <asm/insn.h>
+>  #include <asm/insn-eval.h>
+> +#include <asm/paravirt_types.h>
+>  #include <asm/pgtable.h>
+>  #include <asm/set_memory.h>
+>  #include <asm/traps.h>
+> @@ -380,13 +381,18 @@ static int handle_halt(struct ve_info *ve)
+>  {
+>  	const bool irq_disabled = irqs_disabled();
+>  
+> +	if (!irq_disabled) {
+> +		WARN_ONCE(1, "HLT instruction emulation unsafe with irqs enabled\n");
+> +		return -EIO;
+> +	}
+> +
 
-Sure! Before that commit we always went via hugetlb_follow_page_mask(), 
-so we never ended up in follow_pmd_mask().
+I think it is worth to putting this into a separate patch and not
+backport. The rest of the patch is bugfix and this doesn't belong.
 
-hugetlb_follow_page_mask() didn't check for the flag ("ignored it"), so 
-we would not have crashed in GUP.
+Otherwise, looks good to me:
 
-Thanks!
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
 
 -- 
-Cheers,
-
-David / dhildenb
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
