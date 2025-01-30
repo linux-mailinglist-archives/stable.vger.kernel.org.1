@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17179A22F0F
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CE6A22FC0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B951888B44
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B6518839ED
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD131E6DCF;
-	Thu, 30 Jan 2025 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D3C1E8855;
+	Thu, 30 Jan 2025 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUYPzHuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/4VQFHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6721DDE9;
-	Thu, 30 Jan 2025 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C281E522;
+	Thu, 30 Jan 2025 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246691; cv=none; b=MAVoRTOXo/bpeucJR2svxUrPvqaY0H9qA+cOZ8eeOQl0jG56QgRA0hzkF5RPrrTuasyCPWhDT/j0AJvfUYVckUCWpbIIlNqQQx9R3UmJhUMEFtzXqAKGX2jIHwWg6ahY6FcqvEu41v5u9i+QXl18RBu5W02ri7aq/LjIvmPA0KI=
+	t=1738247098; cv=none; b=EPE3afEkI3Q+B6egbjU42W+UApfUwiKmqcT4UpcesBb50AtLCIwr1PK3RgtJVY1kJhbwXzucf+2aisKOgTazYDcjPxsAgQQ9hL9HPw+P9eTa9Ki+AtZSf1xbGD4cIi1CY4ICiNUQGUju8s1UdelfzEjBWBpT3+CfuRp5k4DTgRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246691; c=relaxed/simple;
-	bh=yWdKyH0cNQknx3jSzE23xhmKRqbvOdA1u1nTuFBHWjY=;
+	s=arc-20240116; t=1738247098; c=relaxed/simple;
+	bh=mVpKx64Hv7VDivFnXEX4sujzREahTM6d4cd9OUeyt3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQxbZuMFk9v/ruV3dBHRWvo5RdFatsaNJATAKd1wsh61EPUAHsqmNrjptycZtqeMdfb+yCQos9HMau61Vy9uezDuzf9LJmfasDr1Z5Q+KM/pzFQ/AmKZgtIYxERZPeiNeUdSUsgakbvbBoxDYRgzywnYamxgesB+PD6ntE/cUnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUYPzHuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60B5C4CED2;
-	Thu, 30 Jan 2025 14:18:10 +0000 (UTC)
+	 MIME-Version; b=j3GcILqcm9w/kin/HNQVXwmTzeZJvWS82kmdNplx1Vwz8C447EszBrIkKF/+4Driv7wbVhrx8Vbrnfwp4fkWgooMRcBih5EIleovAz+Q1ObIWJEfneNdWGIIQvk+25PgyGPT/J208cB7VBsB3qdc3H7sljGehMHwyVQu/ztpmj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/4VQFHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19F3C4CED2;
+	Thu, 30 Jan 2025 14:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246691;
-	bh=yWdKyH0cNQknx3jSzE23xhmKRqbvOdA1u1nTuFBHWjY=;
+	s=korg; t=1738247098;
+	bh=mVpKx64Hv7VDivFnXEX4sujzREahTM6d4cd9OUeyt3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUYPzHuWs76RS2KoPwnPfH4GCCIEt25uQV0XgtYDi0FdvZPhH7ay92+cDTVME639z
-	 a/AdOJbFzXOE7we8Daa2aQNNcQsSlKlMKv4MTli7Dh+qAHOuLchrpfv2RKN7SxXkrB
-	 OkcjvW019kQgFuNfs761QlX+B+SzHbyD7+NCn2hk=
+	b=S/4VQFHOfdeaqdziHe+w9Wp8wMvpTKGR44vZzfOZiy8i4MOOAknjtO2bVymszJWWl
+	 Ro4QnfioWRygwUwXmxnsjnb4MLG5iR5BfeY+Ymp5KNG/KwgJjzO4ysv5o1Cl7x5nL2
+	 F8z2Sg01F+Hxdk/rHR3z2X9AaS06TYQVXiJ2Yd7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 34/91] iio: gyro: fxas21002c: Fix missing data update in trigger handler
+	Sam Ravnborg <sam@ravnborg.org>,
+	John Stultz <john.stultz@linaro.org>,
+	Maxime Ripard <maxime@cerno.tech>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 064/133] drm/bridge: adv7533: Switch to devm MIPI-DSI helpers
 Date: Thu, 30 Jan 2025 15:00:53 +0100
-Message-ID: <20250130140135.034225011@linuxfoundation.org>
+Message-ID: <20250130140145.095394956@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Song <carlos.song@nxp.com>
+From: Maxime Ripard <maxime@cerno.tech>
 
-commit fa13ac6cdf9b6c358e7d77c29fb60145c7a87965 upstream.
+[ Upstream commit ee9418808bcce77e2c31dbbfc58621ea99a05597 ]
 
-The fxas21002c_trigger_handler() may fail to acquire sample data because
-the runtime PM enters the autosuspend state and sensor can not return
-sample data in standby mode..
+Let's switch to the new devm MIPI-DSI function to register and attach
+our secondary device. This also avoids leaking the device when we detach
+the bridge.
 
-Resume the sensor before reading the sample data into the buffer within the
-trigger handler. After the data is read, place the sensor back into the
-autosuspend state.
-
-Fixes: a0701b6263ae ("iio: gyro: add core driver for fxas21002c")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20241116152945.4006374-1-Frank.Li@nxp.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Tested-by: John Stultz <john.stultz@linaro.org>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://patchwork.freedesktop.org/patch/msgid/20211025151536.1048186-2-maxime@cerno.tech
+Stable-dep-of: 81adbd3ff21c ("drm: adv7511: Fix use-after-free in adv7533_attach_dsi()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/gyro/fxas21002c_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511.h     |  1 -
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c |  2 --
+ drivers/gpu/drm/bridge/adv7511/adv7533.c     | 20 ++++----------------
+ 3 files changed, 4 insertions(+), 19 deletions(-)
 
---- a/drivers/iio/gyro/fxas21002c_core.c
-+++ b/drivers/iio/gyro/fxas21002c_core.c
-@@ -664,14 +664,21 @@ static irqreturn_t fxas21002c_trigger_ha
- 	int ret;
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511.h b/drivers/gpu/drm/bridge/adv7511/adv7511.h
+index e95abeb64b93..dcb792adc62c 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511.h
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511.h
+@@ -399,7 +399,6 @@ enum drm_mode_status adv7533_mode_valid(struct adv7511 *adv,
+ int adv7533_patch_registers(struct adv7511 *adv);
+ int adv7533_patch_cec_registers(struct adv7511 *adv);
+ int adv7533_attach_dsi(struct adv7511 *adv);
+-void adv7533_detach_dsi(struct adv7511 *adv);
+ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv);
  
- 	mutex_lock(&data->lock);
-+	ret = fxas21002c_pm_get(data);
-+	if (ret < 0)
-+		goto out_unlock;
-+
- 	ret = regmap_bulk_read(data->regmap, FXAS21002C_REG_OUT_X_MSB,
- 			       data->buffer, CHANNEL_SCAN_MAX * sizeof(s16));
- 	if (ret < 0)
--		goto out_unlock;
-+		goto out_pm_put;
+ #ifdef CONFIG_DRM_I2C_ADV7511_AUDIO
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index 60400efe1dd3..42d93f314699 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -1339,8 +1339,6 @@ static int adv7511_remove(struct i2c_client *i2c)
+ {
+ 	struct adv7511 *adv7511 = i2c_get_clientdata(i2c);
  
- 	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
- 					   data->timestamp);
+-	if (adv7511->type == ADV7533 || adv7511->type == ADV7535)
+-		adv7533_detach_dsi(adv7511);
+ 	i2c_unregister_device(adv7511->i2c_cec);
+ 	clk_disable_unprepare(adv7511->cec_clk);
  
-+out_pm_put:
-+	fxas21002c_pm_put(data);
-+
- out_unlock:
- 	mutex_unlock(&data->lock);
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7533.c b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+index 2cade7ae0c0d..ec624b9d5077 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7533.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7533.c
+@@ -151,11 +151,10 @@ int adv7533_attach_dsi(struct adv7511 *adv)
+ 		return -EPROBE_DEFER;
+ 	}
  
+-	dsi = mipi_dsi_device_register_full(host, &info);
++	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
+ 	if (IS_ERR(dsi)) {
+ 		dev_err(dev, "failed to create dsi device\n");
+-		ret = PTR_ERR(dsi);
+-		goto err_dsi_device;
++		return PTR_ERR(dsi);
+ 	}
+ 
+ 	adv->dsi = dsi;
+@@ -165,24 +164,13 @@ int adv7533_attach_dsi(struct adv7511 *adv)
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 			  MIPI_DSI_MODE_EOT_PACKET | MIPI_DSI_MODE_VIDEO_HSE;
+ 
+-	ret = mipi_dsi_attach(dsi);
++	ret = devm_mipi_dsi_attach(dev, dsi);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to attach dsi to host\n");
+-		goto err_dsi_attach;
++		return ret;
+ 	}
+ 
+ 	return 0;
+-
+-err_dsi_attach:
+-	mipi_dsi_device_unregister(dsi);
+-err_dsi_device:
+-	return ret;
+-}
+-
+-void adv7533_detach_dsi(struct adv7511 *adv)
+-{
+-	mipi_dsi_detach(adv->dsi);
+-	mipi_dsi_device_unregister(adv->dsi);
+ }
+ 
+ int adv7533_parse_dt(struct device_node *np, struct adv7511 *adv)
+-- 
+2.39.5
+
 
 
 
