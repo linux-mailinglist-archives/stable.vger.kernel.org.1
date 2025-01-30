@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEF6A22FE4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0409A22F3D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 290E03A4374
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F0C188633D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE411E8855;
-	Thu, 30 Jan 2025 14:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A5C1E9B1A;
+	Thu, 30 Jan 2025 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nf2OoBVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxe5sUSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2900C1E522;
-	Thu, 30 Jan 2025 14:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E9D1E9B18;
+	Thu, 30 Jan 2025 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247192; cv=none; b=iED/d6iET4j64wkPslvzqatUW9x5GZaSfZs4MGseqWn1wfYkUwhHCvGlc1qIfbXFwPrCntI/kDZhedci6XEGpdE3kMvY79f5o2MYlPhB/UaGdtOgP2a52oqpjs80USaBYe1zXYYjxssmaH2tUwP+kcHqnq4HM73GfmuepMAqKb8=
+	t=1738246785; cv=none; b=Zxa/Utfem2hypWFQKPQcD9WcvX/WatiK1NlrVFCmS4LPXIf8JQoeThiptwbpWqOKJT7E2mYRhBRtSeeJCJ5gkjGDJOTJegDZvEkFgjaFrrsZQgxwbFUZQKIOGrXcgRVa4ba1cZIFijG7At24warLUl8kqqBsKaoiFfvY5FgnsBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247192; c=relaxed/simple;
-	bh=P9JOufGnYVwfwba3QyNh765ejfMewHcW2532r1eYiBU=;
+	s=arc-20240116; t=1738246785; c=relaxed/simple;
+	bh=Ua7HeK733dA2Nh5OZxzJaZz/sqAGRXzCVO+YovMV76g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eogrC7VEJivyIKTrAMLKV4EAw8bufC0tJ4zuIe7JdtmQj0nDl0vl35Y8AD1edcuK0wv6hxQFkBOsYX3P1IN1zazfWcme4r49iURHWllwZgtJJ/wt7MyDgh15FIguI8gBeQGoj11tGsemtAnS3eGf+fMp29k8Ifc2deFoixU2Ax4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nf2OoBVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D1CCC4CED2;
-	Thu, 30 Jan 2025 14:26:31 +0000 (UTC)
+	 MIME-Version; b=Q5Vw4wF4I42SSBluYp7mF1Cex88MhoZ5JENXORfI2H7/G1vGK2KGxNhRTnYmzucjJ8Bf4Ben8Xq52hbwj9Vu/MWCa0bBhtJ2Bbp2K/WPXwLhRlyUvsocoBYapxeAVcuR5u8Xeh+0TxGzYZomLRA9ku3itlRRj22rNQRma918Gmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxe5sUSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F44BC4CED2;
+	Thu, 30 Jan 2025 14:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247192;
-	bh=P9JOufGnYVwfwba3QyNh765ejfMewHcW2532r1eYiBU=;
+	s=korg; t=1738246785;
+	bh=Ua7HeK733dA2Nh5OZxzJaZz/sqAGRXzCVO+YovMV76g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nf2OoBVlu6t5qKqOclsl4TgRXca18lzNNn8hRVYM2qZ0FNzU6PXffbJbLThX84goV
-	 plsBVA/L0n5FcJi2g5nkKLq9F6IHsbtJIsdrm6ckAcCUbTxqlK/6dfkb2LR3cNrKj2
-	 Vu2PZOLtUWscgKjpqoIOKhB3rqaMctXzCStJh3Cc=
+	b=Gxe5sUSxS7idtfIeutK7BZwWxK2F9APkKK0DkFmG7vw8Y+Xzdx3q6aJUUuyEiEPvG
+	 qOjZQCGTs4PU55bOPeiBhJ8F1LIg/1D2aIaD9OgL1cgINjK6iQ3wGJ5WljZXOBmYkH
+	 dnemhr3LqxC8CEDMK93fiH127M98+HGGCJnuXiKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Bruno VERNAY <bruno.vernay@se.com>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 5.10 096/133] gpiolib: cdev: Fix use after free in lineinfo_changed_notify
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 66/91] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
 Date: Thu, 30 Jan 2025 15:01:25 +0100
-Message-ID: <20250130140146.394623527@linuxfoundation.org>
+Message-ID: <20250130140136.329604530@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 02f6b0e1ec7e0e7d059dddc893645816552039da upstream.
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-The use-after-free issue occurs as follows: when the GPIO chip device file
-is being closed by invoking gpio_chrdev_release(), watched_lines is freed
-by bitmap_free(), but the unregistration of lineinfo_changed_nb notifier
-chain failed due to waiting write rwsem. Additionally, one of the GPIO
-chip's lines is also in the release process and holds the notifier chain's
-read rwsem. Consequently, a race condition leads to the use-after-free of
-watched_lines.
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-Here is the typical stack when issue happened:
+This is not pipe-specific, but let's look at pipe_poll() for example:
 
-[free]
-gpio_chrdev_release()
-  --> bitmap_free(cdev->watched_lines)                  <-- freed
-  --> blocking_notifier_chain_unregister()
-    --> down_write(&nh->rwsem)                          <-- waiting rwsem
-          --> __down_write_common()
-            --> rwsem_down_write_slowpath()
-                  --> schedule_preempt_disabled()
-                    --> schedule()
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
 
-[use]
-st54spi_gpio_dev_release()
-  --> gpio_free()
-    --> gpiod_free()
-      --> gpiod_free_commit()
-        --> gpiod_line_state_notify()
-          --> blocking_notifier_call_chain()
-            --> down_read(&nh->rwsem);                  <-- held rwsem
-            --> notifier_call_chain()
-              --> lineinfo_changed_notify()
-                --> test_bit(xxxx, cdev->watched_lines) <-- use after free
+	LOAD(pipe->head);
+	LOAD(pipe->head);
 
-The side effect of the use-after-free issue is that a GPIO line event is
-being generated for userspace where it shouldn't. However, since the chrdev
-is being closed, userspace won't have the chance to read that event anyway.
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
 
-To fix the issue, call the bitmap_free() function after the unregistration
-of lineinfo_changed_nb notifier chain.
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
 
-Fixes: 51c1064e82e7 ("gpiolib: add new ioctl() for monitoring changes in line info")
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Link: https://lore.kernel.org/r/20240505141156.2944912-1-quic_zhonhan@quicinc.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Bruno VERNAY <bruno.vernay@se.com>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -2352,9 +2352,9 @@ static int gpio_chrdev_release(struct in
- 	struct gpio_chardev_data *cdev = file->private_data;
- 	struct gpio_device *gdev = cdev->gdev;
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index 7e0fdcf905d2e..a4af5e14dffed 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
  
--	bitmap_free(cdev->watched_lines);
- 	blocking_notifier_chain_unregister(&gdev->notifier,
- 					   &cdev->lineinfo_changed_nb);
-+	bitmap_free(cdev->watched_lines);
- 	put_device(&gdev->dev);
- 	kfree(cdev);
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
+ }
  
+ /*
+-- 
+2.39.5
+
 
 
 
