@@ -1,86 +1,166 @@
-Return-Path: <stable+bounces-111267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB5DA22AA2
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:47:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CD5A22B14
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 10:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD831887964
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D0B53A5F48
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 09:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F42B1A8415;
-	Thu, 30 Jan 2025 09:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9FB1BBBD4;
+	Thu, 30 Jan 2025 09:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWAsnHKx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFUEQjKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB04118F2DD
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 09:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D24D1BAEDC
+	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 09:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738230420; cv=none; b=W5VDREGZKKdqe/pO5P8DVJnU7bLx9xQ4w81axqW04a5uhT8UV8kwDOBW5eWZDTjnjx4lOzuUdfkNgsAJeKlZmECf7M75+2N1z2RUPzKQv8UYQLe3suYZWtQL0Ei4NcTg+Vyl1Pd523eFYq+PP49Jfttn4Nj+CknRa9kpLQ2X0os=
+	t=1738231142; cv=none; b=rOXOqZYpjbKtCdGYDLD14eBEpr9KyyRGKp6ZEehEKfQD9v623/ubOjw2Z03GBN3wtiWqX8oXX7mj+YaQCtLTlA5QUsalzaXg0f2SEOA57etDGe1iHLYbi5umkZo3hOBQQxNl7Z+TZiUB4xv4EJHXh+w7erFwlPgOwou4gedPoj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738230420; c=relaxed/simple;
-	bh=GMStrwcL7R1LNP4jJGW9WSvxAScuig1trqKtU8sFqXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fDPQk8PZxFv3SvutqwzZ5TjxOVEbEgjCjfS22+D0b2qTtT6XtreFJMM4Mnmwnlaio91bm0DarwFjOIjX4NEulbOdYJup5lKxg+EFJepa8g4/G+BSQGzYYXN8gfuVgHJhvKbXvSywb5vPywvAzVAJ0MVMvh4jVouIGdy9AAf5M44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWAsnHKx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F46C4CED2;
-	Thu, 30 Jan 2025 09:46:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738230419;
-	bh=GMStrwcL7R1LNP4jJGW9WSvxAScuig1trqKtU8sFqXI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qWAsnHKxUkz8a4OdXAFZn47m3U2dpI053y4ZIOTnI8vAnWhI7FllOfXRuXaH/WrHA
-	 9DGXf+VwF1dte1fM4XeLEZUmezEg0z5nr3CKMFJH+mSgUCY6Cfd+e0NhoeaZWdF6ff
-	 dl7nS6A5xh7vN/idsMQcNTNd67J9wcbj6zHYwhvI=
-Date: Thu, 30 Jan 2025 10:46:56 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: stable@vger.kernel.org, lvc-project@linuxtesting.org,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH v2 6.1] wifi: iwlwifi: add a few rate index validity
- checks
-Message-ID: <2025013031-slit-claw-f9bb@gregkh>
-References: <2025012949-unclasp-probation-a0df@gregkh>
- <20250129143230.2449278-1-dmantipov@yandex.ru>
+	s=arc-20240116; t=1738231142; c=relaxed/simple;
+	bh=X4O8RHC23bDLL4d0U/H61Gdzfi5M7BgXiXGvH6PLJJA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I0pmlTMrR4jo/9TZBIfCsjomTjm1+uhiBqmRTspX/cghr9H4dqQu6KsK42g4H/350ksSehFE8Z0rsCeXu8bmIyquFHubJP6laImbvrzSMqV+jtMLKYT4N4SggshwpfXqRgoYb/3RBb3egshdkFk52ybBvMBbn+C54iFx27MNZrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFUEQjKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD127C4CEE4;
+	Thu, 30 Jan 2025 09:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738231141;
+	bh=X4O8RHC23bDLL4d0U/H61Gdzfi5M7BgXiXGvH6PLJJA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kFUEQjKWgcsfHb+wdCn3LBnTSei0cOXdeLxglggqIwSewERj1TpC9Q4jkextL9SzK
+	 P8YdJ7G5ASCTbEOuN/c4DAFyaVwSPEFfKXEyQkBOOSRMsMhwGfYt1F1F+xHYZErdSy
+	 opZBMqw463Ybf1fMOX/I8UGe9236Ye2cf/7VZQyVyECyfMJfmyssH2N0H2Aglrq7Na
+	 WUfxWoi9oV88b+WjVaRsbyqb0QG30tckJT4UhqhmarRTZrZK8RdQegH+UBxZZnPMug
+	 pFn3PH3rDLo5cbyBIb0sxwm3WEFbjYMXQj8D9q+jUhduQwSdECCwGa6k5DXrc0XyFW
+	 lZhjbp7A99rZA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tdRK7-00GZPZ-AP;
+	Thu, 30 Jan 2025 09:58:59 +0000
+Date: Thu, 30 Jan 2025 09:58:58 +0000
+Message-ID: <86a5b8vd0d.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: chf.fritz@googlemail.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Chen-Yu Tsai
+	 <wens@csie.org>,
+	KeverYang <kever.yang@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	linux-rockchip@lists.infradead.org,
+	stable <stable@vger.kernel.org>,
+	linux-arm-kernel
+ <linux-arm-kernel@lists.infradead.org>
+Subject: Re: rk3399 fails to boot since v6.12.7
+In-Reply-To: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
+References: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250129143230.2449278-1-dmantipov@yandex.ru>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chf.fritz@googlemail.com, mark.rutland@arm.com, wens@csie.org, kever.yang@rock-chips.com, heiko@sntech.de, linux-rockchip@lists.infradead.org, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Jan 29, 2025 at 05:32:30PM +0300, Dmitry Antipov wrote:
-> From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-> 
-> commit efbe8f81952fe469d38655744627d860879dcde8 upstream.
-> 
-> Validate index before access iwl_rate_mcs to keep rate->index
-> inside the valid boundaries. Use MCS_0_INDEX if index is less
-> than MCS_0_INDEX and MCS_9_INDEX if index is greater than
-> MCS_9_INDEX.
-> 
-> Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-> Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-> Link: https://lore.kernel.org/r/20230614123447.79f16b3aef32.If1137f894775d6d07b78cbf3a6163ffce6399507@changeid
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-> v2: (re)adjust copyright notice
+Hi Christoph,
 
-You also fixed the grammer in the changelog!  Ugh, let me just go
-backport these myself, please don't change things that you shouldn't
-need to change...
+Thanks for reporting this.
 
-greg k-h
+On Wed, 29 Jan 2025 21:31:53 +0000,
+Christoph Fritz <chf.fritz@googlemail.com> wrote:
+> 
+> Hello Marc,
+> 
+>  since 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC
+> integrations") landed in stable v6.12.7 as 0bf32f482887, here the
+> rk3399 fails to boot (~4 out of 10 times) because OP-TEE panics (gets a
+> secure interrupt that it cannot handle).
+
+I think it may actually get a *non-secure* interrupt.
+
+> 
+> Setup is:
+>  - BL31 proprietary (since mainline TF-A has no DMA)
+>  - OP-TEE mainline version: 3.20
+>  - Kernel v6.12.7
+> 
+> <snip>
+> [    0.000000] GICv3: Broken GIC integration, security disabled
+> <snip>
+> E/TC:4 0 Panic 'Secure interrupt handler not defined' at core/kernel/interrupt.c:139 <itr_core_handler>
+> E/TC:4 0 TEE load address @ 0x30000000
+> E/TC:4 0 Call stack:
+> E/TC:4 0  0x300091f8
+> E/TC:4 0  0x30016664
+> E/TC:4 0  0x30015710
+> E/TC:4 0  0x30005714
+> [   26.087363] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> [   26.087925] rcu:     (detected by 2, t=21002 jiffies, g=2233, q=2416 ncpus=6)
+> [   26.088530] rcu: All QSes seen, last rcu_preempt kthread activity 21002 (4294693363-4294672361), jiffies_till_next_fqs=3, root ->qsmask 0x0
+> [   26.089623] rcu: rcu_preempt kthread timer wakeup didn't happen for 20999 jiffies! g2233 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200
+> [   26.090617] rcu:     Possible timer handling issue on cpu=4 timer-softirq=293
+> [   26.091218] rcu: rcu_preempt kthread starved for 21002 jiffies! g2233 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x200 ->cpu=4
+> [   26.092131] rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+> [   26.092926] rcu: RCU grace-period kthread stack dump:
+> [   26.093369] task:rcu_preempt     state:R stack:0     pid:16    tgid:16    ppid:2      flags:0x00000008
+> [   26.094192] Call trace:
+> [   26.094409]  __switch_to+0xf0/0x14c
+> [   26.094728]  __schedule+0x264/0xa90
+> [   26.095040]  schedule+0x34/0x104
+> [   26.095329]  schedule_timeout+0x80/0xf4
+> [   26.095672]  rcu_gp_fqs_loop+0x14c/0x4a4
+> [   26.096027]  rcu_gp_kthread+0x138/0x164
+> [   26.096369]  kthread+0x114/0x118
+> [   26.096661]  ret_from_fork+0x10/0x20
+> [   26.096982] rcu: Stack dump where RCU GP kthread last ran:
+> [   26.097463] Sending NMI from CPU 2 to CPUs 4:
+> [   46.276364] sched: DL replenish lagged too much
+> 
+> Is it too late for the kernel to disable the "security" since OP-TEE
+> assumes it is enabled?
+
+Well, it was never effective security the first place, but clearly
+this effect is not expected (my own machine doesn't have anything
+running on the secure side).
+
+> Any ideas?
+
+I think this calls for a revert of this patch, potentially at the
+expense if NMI support on this machine. Could you show how SCR_EL3.FIQ
+is configured on this machine? Mine shows:
+
+[    0.000000] GICv3: GICD_CTRL.DS=0, SCR_EL3.FIQ=0
+
+and I suspect yours has FIQ=1. If that's the case, we could use that
+as the discriminant.
+
+However, this machine has a much bigger issues. For things to work as
+expected, the GIC driver must preserve all the secure configuration,
+and nothing does that today.
+
+So even before this patch, your secure payload won't get any
+interrupt, as we blindly configure everything to be Group-1NS.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
