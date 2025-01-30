@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-111609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E502BA22FF7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA28EA22F44
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C9C31884EA8
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 845827A3240
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349621E8855;
-	Thu, 30 Jan 2025 14:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630EF1E9906;
+	Thu, 30 Jan 2025 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZQzYoFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0pgzDgf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62F31E522;
-	Thu, 30 Jan 2025 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D71E8824;
+	Thu, 30 Jan 2025 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247236; cv=none; b=I8ZKEZvoNy++5dx5O4cew77tGEK+T8CCorPX/aKTgEcf68Pemmi+MnzH698m7AQk/QI7HtrcN2pPkoFGK4wPdo8CSVbCThIWr7BJA5I1zBZhjURge80dvA1mDhIDOQdJubvp2ZIyDH1QmoqfUJGF8uuWhTHcNj5tE1sKQSBl66w=
+	t=1738246797; cv=none; b=ddVgSgI+bIFUQJ97WrmUbzxUJ09yKuhZBT9hqRKWBP1i7JETlO/qTLl1pAZr3T+YzAXyQgFdKXKU85cpeusODlbPPdAQYkwiUXxbS4E8NZ2GiAHVxZbPc2Dh2kYvhipMQ0WH8tbRenVUl2IVpOz0kPSu/2PVwl/4tUJkA168BKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247236; c=relaxed/simple;
-	bh=D5mSuqxdK+vyi49Ww1+I7DMzuXmV9hoba5atpKYK2wI=;
+	s=arc-20240116; t=1738246797; c=relaxed/simple;
+	bh=qBG190h32KFK4iwueHmbce2Mn3TULEIzwsT9IcEQ3dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkLqfcUBrVhHnrUkE95VLxIz5EvXSlel54X+xPyqP5QayVtYdz0N/wiXc1imgvH681usbHBAeT+FuHUTOv7gEVByja12hg+EJuqzcM21tS8YCZbgBoYS76IbPxQXL6KoZusypbnKKyQSPAGvkiLhjDMFbmZhF5eWLWokRGeNjWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZQzYoFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F3BC4CED2;
-	Thu, 30 Jan 2025 14:27:15 +0000 (UTC)
+	 MIME-Version; b=H9umUdjSwUQ/0y6LxVYBTU+KdLrGYWGT0zrWRz6uD4Os8Edh4LsYULRyte9wSRBkObIHbY9xggn47sG9oOKmexpuyv9a4rFKQfw13uQvlIOc6MXUlP2dhIZqKtAbAMveXk9XGtXz/vfs/P+Vv15mdgH80GTn5lTphwnCPBcRgTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0pgzDgf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC50C4CED2;
+	Thu, 30 Jan 2025 14:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247235;
-	bh=D5mSuqxdK+vyi49Ww1+I7DMzuXmV9hoba5atpKYK2wI=;
+	s=korg; t=1738246797;
+	bh=qBG190h32KFK4iwueHmbce2Mn3TULEIzwsT9IcEQ3dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZQzYoFBY+vdJAz+H3Fn4i7fNGxEpA3EyCuybWKu0zx13H61/qJQyOSvrlwZJ2kQ+
-	 cPqvqsiHa3So5AVG3ocBa5xkfrjGdYnPAvUxh+RTdA6TMLqNfCnRVUSt4aJvkP9eCE
-	 QL7b5iZTBvG/jJqGyKaDIVp9Kb7qwnPn1SIlAxpY=
+	b=F0pgzDgfsI1c0BPjMpOxjApP15/uqRAxXIZHAoQsKHBmQE7Cfq5zTwaJz674jk3sf
+	 Goov3OkYxnlHSM4HMKGVY3D4wZ0zeh3yART7Y8McfRu9QWRjibju3LZAdgEHhQU8nX
+	 tUHu9cM9ZoJt2TrpCozX1fJiVolNKew2H4ZyQCss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Terry Tritton <terry.tritton@linaro.org>
-Subject: [PATCH 5.10 099/133] Revert "PCI: Use preserve_config in place of pci_flags"
-Date: Thu, 30 Jan 2025 15:01:28 +0100
-Message-ID: <20250130140146.517696293@linuxfoundation.org>
+	Yogesh Lal <quic_ylal@quicinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.4 70/91] irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
+Date: Thu, 30 Jan 2025 15:01:29 +0100
+Message-ID: <20250130140136.493146788@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Tritton <terry.tritton@linaro.org>
+From: Yogesh Lal <quic_ylal@quicinc.com>
 
-This reverts commit 0dde3ae52a0dcc5cdfe2185ec58ec52b43fda22e which is
-commit 7246a4520b4bf1494d7d030166a11b5226f6d508 upstream.
+commit 0d62a49ab55c99e8deb4593b8d9f923de1ab5c18 upstream.
 
-This patch causes a regression in cuttlefish/crossvm boot on arm64.
+When a CPU attempts to enter low power mode, it disables the redistributor
+and Group 1 interrupts and reinitializes the system registers upon wakeup.
 
-The patch was part of a series that when applied will not cause a regression
-but this patch was backported to the 5.10 branch by itself.
+If the transition into low power mode fails, then the CPU_PM framework
+invokes the PM notifier callback with CPU_PM_ENTER_FAILED to allow the
+drivers to undo the state changes.
 
-The other patches do not apply cleanly to the 5.10 branch.
+The GIC V3 driver ignores CPU_PM_ENTER_FAILED, which leaves the GIC in
+disabled state.
 
-Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Handle CPU_PM_ENTER_FAILED in the same way as CPU_PM_EXIT to restore normal
+operation.
+
+[ tglx: Massage change log, add Fixes tag ]
+
+Fixes: 3708d52fc6bb ("irqchip: gic-v3: Implement CPU PM notifier")
+Signed-off-by: Yogesh Lal <quic_ylal@quicinc.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241220093907.2747601-1-quic_ylal@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-host-common.c |    4 ++++
- drivers/pci/probe.c                      |   20 +++++++++++---------
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-gic-v3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pci-host-common.c
-+++ b/drivers/pci/controller/pci-host-common.c
-@@ -71,6 +71,10 @@ int pci_host_common_probe(struct platfor
- 	if (IS_ERR(cfg))
- 		return PTR_ERR(cfg);
- 
-+	/* Do not reassign resources if probe only */
-+	if (!pci_has_flag(PCI_PROBE_ONLY))
-+		pci_add_flags(PCI_REASSIGN_ALL_BUS);
-+
- 	bridge->sysdata = cfg;
- 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
- 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -3018,18 +3018,20 @@ int pci_host_probe(struct pci_host_bridg
- 
- 	bus = bridge->bus;
- 
--	/* If we must preserve the resource configuration, claim now */
--	if (bridge->preserve_config)
--		pci_bus_claim_resources(bus);
--
- 	/*
--	 * Assign whatever was left unassigned. If we didn't claim above,
--	 * this will reassign everything.
-+	 * We insert PCI resources into the iomem_resource and
-+	 * ioport_resource trees in either pci_bus_claim_resources()
-+	 * or pci_bus_assign_resources().
- 	 */
--	pci_assign_unassigned_root_bus_resources(bus);
-+	if (pci_has_flag(PCI_PROBE_ONLY)) {
-+		pci_bus_claim_resources(bus);
-+	} else {
-+		pci_bus_size_bridges(bus);
-+		pci_bus_assign_resources(bus);
- 
--	list_for_each_entry(child, &bus->children, node)
--		pcie_bus_configure_settings(child);
-+		list_for_each_entry(child, &bus->children, node)
-+			pcie_bus_configure_settings(child);
-+	}
- 
- 	pci_bus_add_devices(bus);
- 	return 0;
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1185,7 +1185,7 @@ static int gic_set_affinity(struct irq_d
+ static int gic_cpu_pm_notifier(struct notifier_block *self,
+ 			       unsigned long cmd, void *v)
+ {
+-	if (cmd == CPU_PM_EXIT) {
++	if (cmd == CPU_PM_EXIT || cmd == CPU_PM_ENTER_FAILED) {
+ 		if (gic_dist_security_disabled())
+ 			gic_enable_redist(true);
+ 		gic_cpu_sys_reg_init();
 
 
 
