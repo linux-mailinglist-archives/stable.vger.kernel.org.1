@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4E3A22E65
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2571A22ECE
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEEF018872E1
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E21777A2F74
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE571E2853;
-	Thu, 30 Jan 2025 14:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322C1E98FF;
+	Thu, 30 Jan 2025 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITNOIWgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+MJvlrw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680C4C13D;
-	Thu, 30 Jan 2025 14:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF6F1E7C3B;
+	Thu, 30 Jan 2025 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245629; cv=none; b=Aqod4daR4ZXfGLK5geKQO5LKIKs0QH0fSsxlEOp3869vxQr4G25HQNkFvxZlwZB/op0+8+Lx9NqCwfxRaQQ7PnLKIdhVBE6BYSbqjTJhJDsjhuKS9qWmXM3YOBSyqNtVAk3V47h7Gbill+eiV0HMJ32p3mXOMN2Fq7QQB/FVfbI=
+	t=1738246510; cv=none; b=uDsITQTBZx2h2kEIKJHCiRxBbYy3/IurVPsRtLAExluxDSG1TwVbt7sA61pFGPYxCvAYhUaR2j9TmC/e6Ss/hSZdrk57lVf8o+PTflzgMzUQfMRiMXxQgadkZnSa0n61lVIOR9BMBEYesKdyb745wkZ/PllgU+nVJHqwwrX7XiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245629; c=relaxed/simple;
-	bh=rYPZENzQvAQcR5VfI//Je0u+vEasMx3pfdcIgLVRuq0=;
+	s=arc-20240116; t=1738246510; c=relaxed/simple;
+	bh=o/YH8s83uUK+vFoe2c0XEtOgUwQqkTRuhEaJN8FXalk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7gmqL29PYRsLqqjeUQMc35ERsGTk76Be81ZaZCq6es9g0FKAEb9OqPhSsvNYM2uFwfWJRYbRG3gUOSvvy8Du+qgGIO7wBZe4Iec5hYuwCaOOH1LJz/cWajrb8lj3lOWx9/hvmpr3GvrsLRjMRc8ICS6LmqyhpHiWAVMCTvAyX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITNOIWgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E756BC4CED2;
-	Thu, 30 Jan 2025 14:00:28 +0000 (UTC)
+	 MIME-Version; b=oPPJtY0Nh40Pr/sK4la+iBcF0ty4zYs32pK7nzsFqIR0faCYbDZKKltUqkgY0k8zNROgDizTKG2vQ6jxfT79QjOEZ01xHTBtGkxp/ETcPrw6iNxZGvp1i06IcBL3mrLo1vNweAkxQkD5kuR9lf9zvMZl6tMtRy3ZCp+hfVvsj5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+MJvlrw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A95C4CED2;
+	Thu, 30 Jan 2025 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738245629;
-	bh=rYPZENzQvAQcR5VfI//Je0u+vEasMx3pfdcIgLVRuq0=;
+	s=korg; t=1738246510;
+	bh=o/YH8s83uUK+vFoe2c0XEtOgUwQqkTRuhEaJN8FXalk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ITNOIWgSmECN8smwDg5PPc64L08544c1ThjDHk3fDvgmceSo37eib2mpLppZzm0fw
-	 WohH3rmlpFXuD+b17rCbVf51n6FlgRcxCR/goqggyZa0Lv1wqiMuZKYYd47CbjFj0J
-	 HdoOEL/qGiymorqDNqzi4O1EwVSs2kzCTZeph+kE=
+	b=t+MJvlrwdKgFJCpYOndWqam6B4utVqDH7y+XkQk5AhTyjRNhO+vqYSu4VXLcf28Wp
+	 g1+YHiBPvkeKNj+JtZhXODVJbeXpQH7mK/4gJi86azwgNNSRJxw2qRwYyb0Cy/SAU+
+	 di86fPz/mZK+fqL8feFnosyJM4sztwoM0Ue8jphc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Greiner <jack@emoss.org>,
-	Pavel Rojtberg <rojtberg@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.13 25/25] Input: xpad - add support for wooting two he (arm)
+	Xiang Zhang <hawkxiang.cpp@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 04/43] scsi: iscsi: Fix redundant response for ISCSI_UEVENT_GET_HOST_STATS request
 Date: Thu, 30 Jan 2025 14:59:11 +0100
-Message-ID: <20250130133457.939321284@linuxfoundation.org>
+Message-ID: <20250130133459.079304384@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133456.914329400@linuxfoundation.org>
-References: <20250130133456.914329400@linuxfoundation.org>
+In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
+References: <20250130133458.903274626@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Greiner <jack@emoss.org>
+From: Xiang Zhang <hawkxiang.cpp@gmail.com>
 
-commit 222f3390c15c4452a9f7e26f5b7d9138e75d00d5 upstream.
+[ Upstream commit 63ca02221cc5aa0731fe2b0cc28158aaa4b84982 ]
 
-Add Wooting Two HE (ARM) to the list of supported devices.
+The ISCSI_UEVENT_GET_HOST_STATS request is already handled in
+iscsi_get_host_stats(). This fix ensures that redundant responses are
+skipped in iscsi_if_rx().
 
-Signed-off-by: Jack Greiner <jack@emoss.org>
-Signed-off-by: Pavel Rojtberg <rojtberg@gmail.com>
-Link: https://lore.kernel.org/r/20250107192830.414709-3-rojtberg@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ - On success: send reply and stats from iscsi_get_host_stats()
+   within if_recv_msg().
+
+ - On error: fall through.
+
+Signed-off-by: Xiang Zhang <hawkxiang.cpp@gmail.com>
+Link: https://lore.kernel.org/r/20250107022432.65390-1-hawkxiang.cpp@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/scsi_transport_iscsi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -382,6 +382,7 @@ static const struct xpad_device {
- 	{ 0x31e3, 0x1200, "Wooting Two", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1210, "Wooting Lekker", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1220, "Wooting Two HE", 0, XTYPE_XBOX360 },
-+	{ 0x31e3, 0x1230, "Wooting Two HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1300, "Wooting 60HE (AVR)", 0, XTYPE_XBOX360 },
- 	{ 0x31e3, 0x1310, "Wooting 60HE (ARM)", 0, XTYPE_XBOX360 },
- 	{ 0x3285, 0x0607, "Nacon GC-100", 0, XTYPE_XBOX360 },
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 3075b2ddf7a69..deeb657981a69 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -4103,7 +4103,7 @@ iscsi_if_rx(struct sk_buff *skb)
+ 		}
+ 		do {
+ 			/*
+-			 * special case for GET_STATS:
++			 * special case for GET_STATS, GET_CHAP and GET_HOST_STATS:
+ 			 * on success - sending reply and stats from
+ 			 * inside of if_recv_msg(),
+ 			 * on error - fall through.
+@@ -4112,6 +4112,8 @@ iscsi_if_rx(struct sk_buff *skb)
+ 				break;
+ 			if (ev->type == ISCSI_UEVENT_GET_CHAP && !err)
+ 				break;
++			if (ev->type == ISCSI_UEVENT_GET_HOST_STATS && !err)
++				break;
+ 			err = iscsi_if_send_reply(portid, nlh->nlmsg_type,
+ 						  ev, sizeof(*ev));
+ 			if (err == -EAGAIN && --retries < 0) {
+-- 
+2.39.5
+
 
 
 
