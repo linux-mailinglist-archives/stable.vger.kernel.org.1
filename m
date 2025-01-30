@@ -1,181 +1,97 @@
-Return-Path: <stable+bounces-111698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98409A2305D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C5BA2305F
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390B63A3C95
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B927C1887B04
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E58C1E32C5;
-	Thu, 30 Jan 2025 14:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F253C13B7A3;
+	Thu, 30 Jan 2025 14:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/jzFBUs"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="ot7SORaC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA267482;
-	Thu, 30 Jan 2025 14:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544A31E9916;
+	Thu, 30 Jan 2025 14:32:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247495; cv=none; b=hCG8obyCqfAntGa85YZB0oRimnibphmQBdCja5xRwtdYQ+hn8lLAO/zkO2CVmKrogfp5sq2L9kB8CrTviVXD4GnyLIZC0MWnCqU6gtP7CnDMvNgGJhCyLdB97Tv7OGC6oMHBDEZ3MIi7n6yLlhOZZqJMGtG68BVzqJEaTqZDBxI=
+	t=1738247545; cv=none; b=rgxLvAd0/2AXIEnaWnurnTr2C0WiZUdUdJH05/KdPDAV6N6DKe6Vy9bi29FjQdT6+ewUiNOdn992WrWQKhy5XDdRCiEdMmQG3FHrV2Bv8GP8rGbhQzSWLbjnKZ6ovwZzsbWsIOK8EIuYZ7TWfMtTp5M6eNeRGdhzB3XFr6f4OtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247495; c=relaxed/simple;
-	bh=etcyA+MObeejoRPD9H+52sDwKfNZPrVKp5km4MTO7ow=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAwxk5WTH0JcwNBfaTqIjkeyhOUOiDHSzZbtjTGf5wnLlSz2wzxJjsEVpYPqOq+4KKAHqoJpcqmpTPDCdV/VopY/zqCV0q5Lsly7uZSLRBbgpHyzKiQxVBgkCQAXnev2sUm/2Y3qUlhn3ipSix6WGT47GNZUmoMPuQP/Zpuq6b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/jzFBUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D45C4CED2;
-	Thu, 30 Jan 2025 14:31:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247495;
-	bh=etcyA+MObeejoRPD9H+52sDwKfNZPrVKp5km4MTO7ow=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N/jzFBUsX9PtQ3HsJNsQXv2HdftgVCkmCXSIztHmRnWMueLBJdZ0iZUt2jhnTcY8H
-	 nhNeS9MQWrZHv3BSsR2Ng60LAdlpjqNsXPQlhbq7GE9XkAUviVqLurZXOsyRpT/h1d
-	 GFdzeXfthuK4wfgNkG2MmcsNvEszVLGiqLo6mkpo=
-Date: Thu, 30 Jan 2025 15:24:30 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Chuck Lever <chuck.lever@oracle.com>
-Cc: Hugh Dickins <hughd@google.com>,
-	Andrew Morten <akpm@linux-foundation.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-	linux-mm@kvack.org, yukuai3@huawei.com, yangerkun@huawei.com
-Subject: Re: [RFC PATCH v6.6 00/10] Address CVE-2024-46701
-Message-ID: <2025013056-rejoin-number-8641@gregkh>
-References: <20250124191946.22308-1-cel@kernel.org>
- <50585d23-a0c1-4810-9e94-09506245f413@oracle.com>
- <2025012937-unsaddle-movable-4dae@gregkh>
- <69d8e9dd-59d1-4eb2-be93-1402dba12f34@oracle.com>
- <2025012924-shelter-disk-2fe1@gregkh>
- <9130c4f0-ad6b-4b6f-a395-33c7a6b21cbe@oracle.com>
- <2025013057-lagged-anointer-8b77@gregkh>
- <0a6b6602-3052-40c7-9727-abe69bd85a06@oracle.com>
+	s=arc-20240116; t=1738247545; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=UYmdsOjb5vlN5KOF8YwCspbIlCqJ4I4qLmobbxx/mUTtmBNVCyYKkPkstaahvM2Xsg5NXRJ1zrjVya3r/edcfz7mR5iEklUSTfr8OfXLJB3C4YwOTGgb3kP+RnF1tfs/2oAuWA+ybXwtNhwrvBMiGLBJe+lh4AiGX20ddRMSbN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=ot7SORaC; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1738247540; x=1738852340; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ot7SORaCNOGdC/HDo+R/rdoGnWyFpuRXMBUxHj8of+AeE6atChqvnMlMAdCMFO9B
+	 tqwc4FyfkMegac/yzc78vw2yTqVYAougpXN9gzJ2mfZ6WpBSChhafy4dfFenBZAwi
+	 hUlkksUQ9EyQZbOXeO+yb/ZGcJZmyZgeyG534G/CLdbpy1jXA3GHhfrFexWDL677r
+	 KB6lTO9DRq4tlqf62KeeU3b6NxGM+w/uvwi40ZtbBADb/tHkxbviGoql4hINXy1AI
+	 3/oL4wSGzUFJJSos6m2V7fCDzmAxgStNKw1Io85Z5/dBRGPFxdstrvRGvJUc89oEJ
+	 5UyH0h0uxmTJKqFBnA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.199]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfYLa-1sxaCC3LUO-00pRHF; Thu, 30
+ Jan 2025 15:32:20 +0100
+Message-ID: <09ddd9ca-4b3f-4f42-9d44-67ff0b5467d5@gmx.de>
+Date: Thu, 30 Jan 2025 15:32:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a6b6602-3052-40c7-9727-abe69bd85a06@oracle.com>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.13 00/25] 6.13.1-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:w/UvebSVJhUFe/jMaL8hLmWysYMmrY0t1qlyvh/j69pz/yfasGz
+ uTrxUPtvkxHGlwy3sspqsQxxnuBgZ3pOnt7kH5fdmI9VrTCgUZsGA5XgIKRSsznhCJQD3FY
+ gRkUior+YNRt4jcgjIkoDtsQZ714xYplsDMdajtoWUoG56lwB5kzR7ssih6YvOMSuGRUk3s
+ 9laVj4Uq1D3xusik8Fiqw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:+4/GsMXmssQ=;wN8pOPwVLi75bXzhukJR+Hnx8bl
+ LTBbj1rmDghJxXdpTAZYHwdpVzjNID42qBYLn5iI1XOboBLrJ8fXzJtfnZUbW1gIyLmIxBE/I
+ T0QE4v5ZcDXYhSKxBrYJvGZaB8R9gbmDFA1PZcm5sq8KQYW6ldukt42lg6ULNBOyaNsBAmpbV
+ i1UnQgtbXrhhOE0OcLDuWtQoXU+XdY7YtBkdTX0b4+UyvZ8FcWsd66Xkzwrj9xo7JsOKaAZ4Y
+ qtu+mZVBKTvKieZkMMxi/tj8uxw5/RU4SnnzGKIVUV0aEcQV2NDBCpT7a9idjQfwqq0K7sYJh
+ q/EdyeBhr8p3P1BH85w6VgkEQqhTht8XVsIpFMPd4NxHw1qGJlxrsnKWM1fA9H/NpoKPRv2ue
+ 89BrCXPj0ov0jzKlC8SsQn3B1fIdKK1dq/9l63iZuzXmXUrIoPHwIwUsDC+qM2Ub31LKFqUvb
+ 3ZtjJpZ2Pf/Lzu4A2LG5cu8tkh5rLc5sbz0YxAGy0O9XjBvOLmOpP7yXQ5zZfIoDTVm2HMiVe
+ rn9TxS79Y/Cj69stbHyKHiuMl8tmpGACvOntzZ/5aPfuORgCsf0Q2pzk4sUrwkxyAVZLvGUqv
+ DIyB2L6aHP4WRdb7l8ScuilK+Xjr92RxthBN6zkMRabI2hzXTosXFYk5AvXGva71qFjAmV4sJ
+ GUgrJmPsvBDn7lxSZKIoUuBpZqQKsNonoFO4QVUlEtB27/h+Y76EELe0FWi580uT3ZY6/4R95
+ 3ILWDBnmGhtTUcmnFBAGyfV8yryC+n/snasempMi/lmUxYnNPg3/5nyVu9Kcvf8+b/MxRu5M1
+ bP8f/Ybezw2C9h7FdDhqW7dmarNJnm+5fcJmILPRGr+RMc5d6hz6+v45wulA3/LEMr9YJvz+l
+ dIHGuPvQO5tFWWiwbSQjpkjgZ5rDaU29h5rdh8snA9yNnnBLRmIeqAClKAUSlKXwojp6OUd1w
+ XRUepsa5d/aFpA8o6elzxrIK/tWIq1Ag07YSNZhEFVcXJ5vBRm8OBUszU8XWeUICIDzyPWYvr
+ ez7BLFjvo49XkrKvAc411y5FZznC5+TOkWQdH9ThNaGlLwrADtthutg5/yishP9Px7Wo2+EGX
+ VhOGvRzqso3oRVfut7BXejsgflVo3IGGIICOPnK7wNZtO53bFDfL6mBy3xZkOXEzsFPL9h40p
+ 5iIA0wgP7m4CFfYwwWpQkzoSn4r3C8G30Es36TZCwKQ==
 
-On Thu, Jan 30, 2025 at 09:02:41AM -0500, Chuck Lever wrote:
-> On 1/30/25 3:45 AM, Greg Kroah-Hartman wrote:
-> > On Wed, Jan 29, 2025 at 11:37:51AM -0500, Chuck Lever wrote:
-> >> On 1/29/25 10:21 AM, Greg Kroah-Hartman wrote:
-> >>> On Wed, Jan 29, 2025 at 10:06:49AM -0500, Chuck Lever wrote:
-> >>>> On 1/29/25 9:50 AM, Greg Kroah-Hartman wrote:
-> >>>>> On Wed, Jan 29, 2025 at 08:55:15AM -0500, Chuck Lever wrote:
-> >>>>>> On 1/24/25 2:19 PM, cel@kernel.org wrote:
-> >>>>>>> From: Chuck Lever <chuck.lever@oracle.com>
-> >>>>>>>
-> >>>>>>> This series backports several upstream fixes to origin/linux-6.6.y
-> >>>>>>> in order to address CVE-2024-46701:
-> >>>>>>>
-> >>>>>>>      https://nvd.nist.gov/vuln/detail/CVE-2024-46701
-> >>>>>>>
-> >>>>>>> As applied to origin/linux-6.6.y, this series passes fstests and the
-> >>>>>>> git regression suite.
-> >>>>>>>
-> >>>>>>> Before officially requesting that stable@ merge this series, I'd
-> >>>>>>> like to provide an opportunity for community review of the backport
-> >>>>>>> patches.
-> >>>>>>>
-> >>>>>>> You can also find them them in the "nfsd-6.6.y" branch in
-> >>>>>>>
-> >>>>>>>      https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git
-> >>>>>>>
-> >>>>>>> Chuck Lever (10):
-> >>>>>>>      libfs: Re-arrange locking in offset_iterate_dir()
-> >>>>>>>      libfs: Define a minimum directory offset
-> >>>>>>>      libfs: Add simple_offset_empty()
-> >>>>>>>      libfs: Fix simple_offset_rename_exchange()
-> >>>>>>>      libfs: Add simple_offset_rename() API
-> >>>>>>>      shmem: Fix shmem_rename2()
-> >>>>>>>      libfs: Return ENOSPC when the directory offset range is exhausted
-> >>>>>>>      Revert "libfs: Add simple_offset_empty()"
-> >>>>>>>      libfs: Replace simple_offset end-of-directory detection
-> >>>>>>>      libfs: Use d_children list to iterate simple_offset directories
-> >>>>>>>
-> >>>>>>>     fs/libfs.c         | 177 +++++++++++++++++++++++++++++++++------------
-> >>>>>>>     include/linux/fs.h |   2 +
-> >>>>>>>     mm/shmem.c         |   3 +-
-> >>>>>>>     3 files changed, 134 insertions(+), 48 deletions(-)
-> >>>>>>>
-> >>>>>>
-> >>>>>> I've heard no objections or other comments. Greg, Sasha, shall we
-> >>>>>> proceed with merging this patch series into v6.6 ?
-> >>>>>
-> >>>>> Um, but not all of these are in a released kernel yet, so we can't take
-> >>>>> them all yet.
-> >>>>
-> >>>> Hi Greg -
-> >>>>
-> >>>> The new patches are in v6.14 now. I'm asking stable to take these
-> >>>> whenever you are ready. Would that be v6.14-rc1? I can send a reminder
-> >>>> if you like.
-> >>>
-> >>> Yes, we have to wait until changes are in a -rc release unless there are
-> >>> "real reasons to take it now" :)
-> >>>
-> >>>>> Also what about 6.12.y and 6.13.y for those commits that
-> >>>>> will be showing up in 6.14-rc1?  We can't have regressions for people
-> >>>>> moving to those releases from 6.6.y, right?
-> >>>>
-> >>>> The upstream commits have Fixes tags. I assumed that your automation
-> >>>> will find those and apply them to those kernels -- the upstream versions
-> >>>> of these patches I expect will apply cleanly to recent LTS.
-> >>>
-> >>> "Fixes:" are never guaranteed to show up in stable kernels, they are
-> >>> only a "maybe when we get some spare cycles and get around to it we
-> >>> might do a simple pass to see what works or doesn't."
-> >>>
-> >>> If you KNOW a change is a bugfix for stable kernels, please mark it as
-> >>> such!  "Fixes:" is NOT how to do that, and never has been.  It's only
-> >>> additional meta-data that helps us out.
-> >>>
-> >>> So please send us a list of the commits that need to go to 6.12.y and
-> >>> 6.13.y, we have to have that before we could take the 6.6.y changes.
-> >>
-> >> 903dc9c43a15 ("libfs: Return ENOSPC when the directory offset range is
-> >> exhausted")
-> >> d7bde4f27cee ("Revert "libfs: Add simple_offset_empty()"")
-> >> b662d858131d ("Revert "libfs: fix infinite directory reads for offset dir"")
-> >> 68a3a6500314 ("libfs: Replace simple_offset end-of-directory detection")
-> >> b9b588f22a0c ("libfs: Use d_children list to iterate simple_offset
-> >> directories")
-> > 
-> > Cool, thanks for the list (and not all were marked with fixes, i.e.
-> > those reverts, I guess we need to start checking for reverts better.  I
-> > have tooling set up for that but not integrated yet...)
-> > 
-> > I'll just queue them all up now.
-> 
-> My thinking was the patches marked "Fixes:" would show an obvious need
-> for applying the unmarked patches as pre-requisites first.
+Hi Greg
 
-For when you send us a patch series for inclusion, sure, all is fine.  I
-mean for when you merge stuff to Linus and expect us to pick them up.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> I promise to do better marking patches with "Cc: stable". But also let
-> me know if there's a way to label pre-req patches more clearly. Maybe
-> "Cc: stable" without "Fixes:" is the way to go there.
+Thanks
 
-Both is best, that way if you have a Fixes: tag in it, and a patch does
-not apply properly, you will get a "FAILED" email sent to you.  If you
-only have the cc: stable then we just do a best-effort attempt and stop
-backporting when it doesn't apply and don't notify you at all about any
-failures.
-
-thanks,
-
-greg k-h
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
