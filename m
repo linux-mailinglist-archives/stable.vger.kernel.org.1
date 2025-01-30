@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-111438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33948A22F22
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20E3A22F00
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3347164A89
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:18:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2D53A42B9
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0E41E8835;
-	Thu, 30 Jan 2025 14:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D161E9907;
+	Thu, 30 Jan 2025 14:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UchU6tpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+BH0Fhm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2661E7C08;
-	Thu, 30 Jan 2025 14:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013C41E7C25;
+	Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246738; cv=none; b=Qwq5/97V2iWQ4ZEW9TK/06AAraCJqi7Wa0pY+DEVRhh3CmwM2NgFI36L6n8sJWj+wI4tUDBQ0egrueXxjD3JLM6KTtV8jkJBvA7aS8erGiQduEoCANHDPsQ3PKeGkWoVqQ6SkNPczB51h0Vw4bbogZU9BzCt7F6jZf/pVQLoJcc=
+	t=1738246645; cv=none; b=o8F43fWdDcd8xJFbR1bkKAxmgmBJ3PYo/4WsCXibVkP8x4HAfdev+QTGCx/rjpwIRxA+9Wh7UQigXKbPZ2ivODQfgHVXsClbu8OA/lkeynsuhRp0XJgznc6mEYhbqDaojAYtHs43+t7rK0t5p6YWdeK1qaDVVqMYPd3GDeqleY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246738; c=relaxed/simple;
-	bh=PiFVp/AUjgRmVD2Ex9RmJbhgpUUVxUU33tMEp45RVns=;
+	s=arc-20240116; t=1738246645; c=relaxed/simple;
+	bh=UJ+aj+mXbfMQDVGaNKlNDXjJ/FZ5mN5+Ka38Fd1QYzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoVXQWUQzckU1fQKhCPxa774fz/XGjDrABCL4cQne0QxIFnOqEne4bjlSx+bGMROGaO2HOi1ULu3+AaDBdMFYStuQLVOg2+6lf6X1kSoZqbEC4gGmMcqXrRNurBVTMbosq3mf3g3FwVlug2QIw0wUR4LX8xqiYuw5MEw1Q7bL9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UchU6tpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18DAC4CED2;
-	Thu, 30 Jan 2025 14:18:57 +0000 (UTC)
+	 MIME-Version; b=Fp2ZW5jHFpapXnb1K9SJoe33QC6CjWH903jxMTLkCVApsdfe1XnMwJQYCK9RbQZ5S6ZJdBs1PCBi6947UJ2SNmvBd7lF9CMxqJjIp8xY0ZFetbwH0hEVKefqdR9gquOSSMf04xS2gUCaAom0zEtXd5sk7BJXoU8KvkzlD3uW++Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+BH0Fhm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81483C4CED2;
+	Thu, 30 Jan 2025 14:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246738;
-	bh=PiFVp/AUjgRmVD2Ex9RmJbhgpUUVxUU33tMEp45RVns=;
+	s=korg; t=1738246644;
+	bh=UJ+aj+mXbfMQDVGaNKlNDXjJ/FZ5mN5+Ka38Fd1QYzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UchU6tpOFlj0Ks1yCdlIC8oaNQY48Fmpr/IiCQW2pgroZb4vfxILsr4MQFA4bSNSa
-	 Gqhnpn+oz0bU56zZtyZcOSzo9/pay/IiGAMmyvijbxnz3tmvKOChsSluuL4VZ0u4eP
-	 aXTpKM4Z1a0DbuexhnoKazbUzs62VYPNFeQ2HAiU=
+	b=Y+BH0FhmQ4t6Frk25OMndaXRYfi2zvznkpPV8kBb17kjWzxjgH+zXQCV23OZfEunz
+	 tMJPY5SpKyP2Cpg/cRoB/rsDsmWrzu22uK/v1YX3o2v7PbPPONlXsLxCyDxBnULQdt
+	 nUF15FZ8pq++R3OudcNaGSdXYEksliuAotBjwZOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/91] tls: Fix tls_sw_sendmsg error handling
-Date: Thu, 30 Jan 2025 15:00:29 +0100
-Message-ID: <20250130140134.081481749@linuxfoundation.org>
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.4 11/91] dm thin: make get_first_thin use rcu-safe list first function
+Date: Thu, 30 Jan 2025 15:00:30 +0100
+Message-ID: <20250130140134.120699220@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
 References: <20250130140133.662535583@linuxfoundation.org>
@@ -66,47 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-[ Upstream commit b341ca51d2679829d26a3f6a4aa9aee9abd94f92 ]
+commit 80f130bfad1dab93b95683fc39b87235682b8f72 upstream.
 
-We've noticed that NFS can hang when using RPC over TLS on an unstable
-connection, and investigation shows that the RPC layer is stuck in a tight
-loop attempting to transmit, but forever getting -EBADMSG back from the
-underlying network.  The loop begins when tcp_sendmsg_locked() returns
--EPIPE to tls_tx_records(), but that error is converted to -EBADMSG when
-calling the socket's error reporting handler.
+The documentation in rculist.h explains the absence of list_empty_rcu()
+and cautions programmers against relying on a list_empty() ->
+list_first() sequence in RCU safe code.  This is because each of these
+functions performs its own READ_ONCE() of the list head.  This can lead
+to a situation where the list_empty() sees a valid list entry, but the
+subsequent list_first() sees a different view of list head state after a
+modification.
 
-Instead of converting errors from tcp_sendmsg_locked(), let's pass them
-along in this path.  The RPC layer handles -EPIPE by reconnecting the
-transport, which prevents the endless attempts to transmit on a broken
-connection.
+In the case of dm-thin, this author had a production box crash from a GP
+fault in the process_deferred_bios path.  This function saw a valid list
+head in get_first_thin() but when it subsequently dereferenced that and
+turned it into a thin_c, it got the inside of the struct pool, since the
+list was now empty and referring to itself.  The kernel on which this
+occurred printed both a warning about a refcount_t being saturated, and
+a UBSAN error for an out-of-bounds cpuid access in the queued spinlock,
+prior to the fault itself.  When the resulting kdump was examined, it
+was possible to see another thread patiently waiting in thin_dtr's
+synchronize_rcu.
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
-Link: https://patch.msgid.link/9594185559881679d81f071b181a10eb07cd079f.1736004079.git.bcodding@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The thin_dtr call managed to pull the thin_c out of the active thins
+list (and have it be the last entry in the active_thins list) at just
+the wrong moment which lead to this crash.
+
+Fortunately, the fix here is straight forward.  Switch get_first_thin()
+function to use list_first_or_null_rcu() which performs just a single
+READ_ONCE() and returns NULL if the list is already empty.
+
+This was run against the devicemapper test suite's thin-provisioning
+suites for delete and suspend and no regressions were observed.
+
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Fixes: b10ebd34ccca ("dm thin: fix rcu_read_lock being held in code that can sleep")
+Cc: stable@vger.kernel.org
+Acked-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-thin.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 910da98d6bfb..03f608da594e 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -425,7 +425,7 @@ int tls_tx_records(struct sock *sk, int flags)
+--- a/drivers/md/dm-thin.c
++++ b/drivers/md/dm-thin.c
+@@ -2325,10 +2325,9 @@ static struct thin_c *get_first_thin(str
+ 	struct thin_c *tc = NULL;
  
- tx_err:
- 	if (rc < 0 && rc != -EAGAIN)
--		tls_err_abort(sk, -EBADMSG);
-+		tls_err_abort(sk, rc);
+ 	rcu_read_lock();
+-	if (!list_empty(&pool->active_thins)) {
+-		tc = list_entry_rcu(pool->active_thins.next, struct thin_c, list);
++	tc = list_first_or_null_rcu(&pool->active_thins, struct thin_c, list);
++	if (tc)
+ 		thin_get(tc);
+-	}
+ 	rcu_read_unlock();
  
- 	return rc;
- }
--- 
-2.39.5
-
+ 	return tc;
 
 
 
