@@ -1,158 +1,110 @@
-Return-Path: <stable+bounces-111746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82172A2365B
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 22:11:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0305A236AA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 22:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B35127A1738
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:10:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3F663A73FB
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 21:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750BA1F0E5E;
-	Thu, 30 Jan 2025 21:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9Hymzly"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395941F0E4A;
+	Thu, 30 Jan 2025 21:27:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68C01482E1;
-	Thu, 30 Jan 2025 21:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CF01EE7C6
+	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 21:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738271493; cv=none; b=WLrOXGcoAcaqqJQuVC0SRbg+fnxbvo+rQhFsSjONZ01IA/EEcP2Vg7r/vjirgM+z4JkydyBCcZiJA6GAjNWv80myYKXYH1hEBPKkqoX3ntcXIPhUcrVE3vKG0otu/N4QbpThCFekQ7vgylmkrj7hP77wLvo+Q5lRtm2+coHR7LI=
+	t=1738272431; cv=none; b=GY28HBwPwdbGEqwN0ujlB2ntpjWmMVCPDsOF2Gqxx1XQr8Gj65WcOVWg+6jHmrg7tnQC1JTlmWS026xuztFY5WC3HQN0pnu1JWns9r3jv/G/8uYVr6uRBVkMbtyVYescClVBl8vD+KU5EV4LVd47oLl43l9rpqwlUtM3rp+mjMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738271493; c=relaxed/simple;
-	bh=IJ6fzV5t/Err4DKXH2EkjkKQTSF4qSpO2IdN+SraNWo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ubHGFv1KWMGz3f2JCERVOyqB11DPMZhNX1fKDEoW4wrcz8gyEpsSn9ko7b2DBYop3qfn+XntVwkHmT+sozgED44qKxDXvc8Jog7aHDNDxG5MFCEsNNvuaimlSr13ZUXYlzZPQxepWhYFm1JdLJ5YlVtNSgHDq6+S8Wt+0T26pUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9Hymzly; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5fa2685c5c0so598776eaf.3;
-        Thu, 30 Jan 2025 13:11:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738271491; x=1738876291; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zrozKZhUsf0BYF6M/RZ+jLUhYLZg8n+tyBNJQipgXl4=;
-        b=T9HymzlyUgIMXHozME3OxV0ioE8o+W2qiw0dy1sLOji3jW1phPTk9p/NB8su7su2DV
-         o6B83XSclyt0GwhUtOWbG+MSgXn0H3zWQtNeoqYKAaDsoh+FnhjaqwpgDt3HEdqGzOxR
-         mVo3+Zj8eEUctlewZ0TL8NVxGhYeSvZO72E9tnveBKlhKgpPxYstep3Ua62M8TTtRQhd
-         Q8gu4EXrOqIV9BtDADoAOzmV/2K455/UrN9XSrDzLuo/scQsMakhT+FpaZGLqEdDK+H9
-         Se9QT3G/Uku64eg0CfHh9e+amhDYBcp09BlVhZkQ+nBX5eA0Myy+yzHasyDp7nIcEUrR
-         UAAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738271491; x=1738876291;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zrozKZhUsf0BYF6M/RZ+jLUhYLZg8n+tyBNJQipgXl4=;
-        b=P8EYHT6IiCHxsBhPQbVnF0XeCG9iu0tD+CL3xbVpBADxzzx7MtmhCmHxOFS/OJ95Sr
-         xDiatmuwTk44UIZnU+zchN6JM0hh8oMs3wTxKjnbLJ+LBEAlRfVjp5TrrldU+fMiGDLp
-         VkEOCaVN5r1ZgDZ6khmUZI6igT+IR4ylOCsns2UcDRKVGUFSs2RXbgtJP3NZ+7f59FTW
-         w7OiE2vNPS6edPxo/CW9wP0IKTiD5J0Bly4vfHMYfDyhMi+I3FecYcKlk/1R8UEisJ9b
-         8FRzmeGrFKRmCPHNTNIVWiN5+GSSEezy/KbjdRJhiycQ8yU3jFnGg22KRyRvKTWGIGIo
-         G/Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXtDIO1k/I0QI3UtmnMeHo7qfu3TJeNte2/yWDTh/w386PSFyDIhMyEoPfZCau2EMcOHYSaULe@vger.kernel.org, AJvYcCVIXedKEZhdY/QFjE7iSatIFcPwa7Vq8cPsonfbs+sOtMdj8eiFu4WiKPGqAt3YDK58HpQ8s5hK6haEvqw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6rZq7cqMkENOkhHGL+XOrLHL6lXUOmEjMCuF76waGyTfgS/Ci
-	StmjvX0UUthdO9/KIhqpqjsLrpOxXf+3tObAWDa19QQrETHz1xpY
-X-Gm-Gg: ASbGncvtAenKx6F7mtJb0C0uheRiU93W7rgbT8q9K3b4/9sSPkjPXJhNMQgJ9mkeNNl
-	EfyPe3TGulnzfaa9V6eu0+hjs13SA3+RiZr9opoYt4i1dOCrVZewzpBXfg6iJHxbETnzw7CJeWm
-	u9tfcpN18L6KYTdRfBImCmuox7bEiO9fy8kRNw9HCbqj8t9iNjMKS6gT7Ij7fV8dLrnCD202cZA
-	R6qJnRNp75aQqJ7XXWXt1HA/VkISEuv649g2bwiJo9CdwoBFhRLkmeiPIK5DpUVOAZvAnim+6n+
-	9ofvwPmVuorykJWN4hv355dcSj84w/Xp7imvIf2i39E=
-X-Google-Smtp-Source: AGHT+IFj1l7gMmlp1b021UFXOKqvtrROOkTwStsq4sQZ8D5840chGoARIZF5cP4ECTA+XUsVsDzK7g==
-X-Received: by 2002:a05:6870:e0d0:b0:27b:61df:2160 with SMTP id 586e51a60fabf-2b32f2806c7mr6358267fac.31.1738271490772;
-        Thu, 30 Jan 2025 13:11:30 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b3565b4d43sm631689fac.38.2025.01.30.13.11.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 13:11:29 -0800 (PST)
-Message-ID: <51782a25-3bb1-4b49-89d3-25721ad9c3cc@gmail.com>
-Date: Thu, 30 Jan 2025 13:11:26 -0800
+	s=arc-20240116; t=1738272431; c=relaxed/simple;
+	bh=y2KHYycjVfI35WupMgvrrSn2I1xNSG20tvGqyZUm0+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=gVf2/AP7ENrD3aPqxmJy2Av5IphGheL5hdiLitFqV+nWMDSLE6JSrbJNTpXLsDzroncpodPE8dvxbrpi5j8yGX9c4aTZ1sp0bFT9Q9e9CWtBzbnRjABsEjHKNWae6r40kg6Twoy43JXhspYMZllt99F528iN+exhoISbuy/2vMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from [192.168.0.103] (unknown [178.76.204.78])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 81C29233D1;
+	Fri, 31 Jan 2025 00:26:58 +0300 (MSK)
+Message-ID: <dd882e87-c08e-bc78-0b3b-09b097d08c94@basealt.ru>
+Date: Fri, 31 Jan 2025 00:26:57 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/24] 5.15.178-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250130140127.295114276@linuxfoundation.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2 5.10.y 0/3] scsi: Backport fixes for CVE-2021-47182
 Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20241209170330.113179-1-kovalev@altlinux.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+In-Reply-To: <20241209170330.113179-1-kovalev@altlinux.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 1/30/25 06:01, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.178 release.
-> There are 24 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 01 Feb 2025 14:01:15 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.178-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi Greg,
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+09.12.2024 20:03, Vasiliy Kovalev wrote:
+> The patch titled "scsi: core: Fix scsi_mode_sense() buffer length handling"
+> addresses CVE-2021-47182, fixing the following issues in `scsi_mode_sense()`
+> buffer length handling:
+> 
+> 1. Incorrect handling of the allocation length field in the MODE SENSE(10)
+>     command, causing truncation of buffer lengths larger than 255 bytes.
+> 
+> 2. Memory corruption when handling small buffer lengths due to lack of proper
+>     validation.
+> 
+> CVE announcement in linux-cve-announce:
+> https://lore.kernel.org/linux-cve-announce/2024041032-CVE-2021-47182-377e@gregkh/
+> Fixed versions:
+> - Fixed in 5.15.5 with commit e15de347faf4
+> - Fixed in 5.16 with commit 17b49bcbf835
+> 
+> Official CVE entry:
+> https://cve.org/CVERecord/?id=CVE-2021-47182
+> 
+> ---
+> v2: To ensure consistency and completeness of the fixes, this backport
+> includes all 3 patches from the series [1].
+> In addition to the first patch that addresses the CVE, the second and
+> third patches are included, which prevent further regressions and align
+> with the fixes already backported and proposed for backporting [2] to
+> the stable 5.15 kernel.
+> 
+> [1] https://lore.kernel.org/all/20210820070255.682775-1-damien.lemoal@wdc.com/
+> [2] https://lore.kernel.org/all/20241209165340.112862-1-kovalev@altlinux.org/
+> 
+> [PATCH 5.10.y 1/3] scsi: core: Fix scsi_mode_sense() buffer length handling
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Please add this [1] missing commit from this series to queue 5.10.y.
+
+[1] 
+https://lore.kernel.org/all/20241209170330.113179-2-kovalev@altlinux.org/
+
+The other two have already been added in 5.10.231:
+
+> [PATCH 5.10.y 2/3] scsi: core: Fix scsi_mode_select() buffer length handling
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.15.y&id=154cf95664de63382a397205ea6254ed5b769ec2
+
+> [PATCH 5.10.y 3/3] scsi: sd: Fix sd_do_mode_sense() buffer length handling
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-5.10.y&id=a0777b45095f5ec3c220f074cfc9cc9721a455b0
+
+> 
+
 -- 
-Florian
+--
+Thanks,
+Vasiliy
 
