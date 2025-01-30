@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-111546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF862A22FA4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6380FA22EF9
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDFFD1666ED
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1923A22FF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2B51E8835;
-	Thu, 30 Jan 2025 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30961E7C08;
+	Thu, 30 Jan 2025 14:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImycYRpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiejFLsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D351DDC22;
-	Thu, 30 Jan 2025 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D064383;
+	Thu, 30 Jan 2025 14:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247052; cv=none; b=Rtghkc0IgJ15KPg9uGsrWHSRu70qy4xCVwGn/vHr051UuMSMfN6q9eC/hI1y1JvcYhcBUnmPTk7P4UhXRu5q60ZNwUqhFE59g2KFt5/nar+Ro+Zd15FyiukjXeGK53JynJr0iexX9eH1hVKqn+z8jX6UwXQm9WEd9QtXbBc40sA=
+	t=1738246627; cv=none; b=GYF/Yh0SzUop6umaqsHGfo54JTie0FPbm2QRFM1DH5jYJccJJa8tXiGIfEDkTJlptfKbB+JMi142KSn/pQ/U82x9UXjhKZZRfahhQ7rwwMqdDJavNeo0kcw/ICe9z4wwM0o8SqNBQ4yvyqQANDp/gVuHaY4DnXrt1ecwQFeRvRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247052; c=relaxed/simple;
-	bh=eul9ppfpRHxfZYj+MdviQNm9kfbvP89GvT+OrA5un+Q=;
+	s=arc-20240116; t=1738246627; c=relaxed/simple;
+	bh=KRQZTuoVNO61zkQ4R9XEYgJaf+Y/DlHNmpaLJBZ+N3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcwTxlEuSkg0ad7r0akSWx3tlQRe7OImiDO7dvzcnvWDAjsjtXnD9UZ7R352LUy3RZ9cbZ4//eLEg6C3UP7BuhHWsA2Rf/8HqB8igxTxLdlY5zChF137zMm/F0mR9a0k5bZgUMe0SLCpQ/p5M2NzpGWzxRmnqVrQQ2WOluVsTx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImycYRpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C83C4CED2;
-	Thu, 30 Jan 2025 14:24:11 +0000 (UTC)
+	 MIME-Version; b=iYtdqOLv9rlX8lhyknD1KhFOvci502JhAdCvhvOHkhsMJSLE2or0MeoFMungy/O3v2yVVW3dD4dJQhQ/shJrKW2DHoOCO52UteO8vLj6EqzVYmcltbq2/cIIBHfmasoCvcglMu8nHBD4wzFGZfE1HbtG3FzgQa5R84s/ybTQzc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiejFLsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE2AC4CEE2;
+	Thu, 30 Jan 2025 14:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247051;
-	bh=eul9ppfpRHxfZYj+MdviQNm9kfbvP89GvT+OrA5un+Q=;
+	s=korg; t=1738246627;
+	bh=KRQZTuoVNO61zkQ4R9XEYgJaf+Y/DlHNmpaLJBZ+N3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImycYRpVGiG+dpRKgb3EykLq2AKAO/mfuPwemiJVkN8mHOCWq0wo4yuLQBukubpjn
-	 F1xLJuajteNsXXog9ylWCqJ73u9CR8Y0BoyquFLc1e8aOjDjto/LqpV/SVyjeP6p/L
-	 xo09aAjkxkVbzbjTU/IxkBNfYAnvzr1pSZOSlJvM=
+	b=hiejFLsSC8nEP13L6PgJr5gIdl6FeHUDZ974woFmjy6tPafZFw4qdtd9tNM+3PmhG
+	 9ODiEOatyWor0citvXADXk1eJzH2Da+nYA/aktM7lC9gMGz/8QCTES9TSGZaQ7wATK
+	 LJcxUklNWmVJBtoKMuLlgZT+4v2dIfbokQOBedQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 035/133] USB: serial: cp210x: add Phoenix Contact UPS Device
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Simon Horman <horms@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 05/91] ieee802154: ca8210: Add missing check for kfifo_alloc() in ca8210_probe()
 Date: Thu, 30 Jan 2025 15:00:24 +0100
-Message-ID: <20250130140143.920276912@linuxfoundation.org>
+Message-ID: <20250130140133.888154125@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-commit 854eee93bd6e3dca619d47087af4d65b2045828e upstream.
+[ Upstream commit 2c87309ea741341c6722efdf1fb3f50dd427c823 ]
 
-Phoenix Contact sells UPS Quint devices [1] with a custom datacable [2]
-that embeds a Silicon Labs converter:
+ca8210_test_interface_init() returns the result of kfifo_alloc(),
+which can be non-zero in case of an error. The caller, ca8210_probe(),
+should check the return value and do error-handling if it fails.
 
-Bus 001 Device 003: ID 1b93:1013 Silicon Labs Phoenix Contact UPS Device
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass            0
-  bDeviceSubClass         0
-  bDeviceProtocol         0
-  bMaxPacketSize0        64
-  idVendor           0x1b93
-  idProduct          0x1013
-  bcdDevice            1.00
-  iManufacturer           1 Silicon Labs
-  iProduct                2 Phoenix Contact UPS Device
-  iSerial                 3 <redacted>
-  bNumConfigurations	 1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x0020
-    bNumInterfaces          1
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0x80
-      (Bus Powered)
-    MaxPower              100mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       255 Vendor Specific Class
-      bInterfaceSubClass      0
-      bInterfaceProtocol      0
-      iInterface              2 Phoenix Contact UPS Device
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x01  EP 1 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-
-[1] https://www.phoenixcontact.com/en-pc/products/power-supply-unit-quint-ps-1ac-24dc-10-2866763
-[2] https://www.phoenixcontact.com/en-il/products/data-cable-preassembled-ifs-usb-datacable-2320500
-
-Reported-by: Giuseppe Corbelli <giuseppe.corbelli@antaresvision.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/20241029182712.318271-1-keisuke.nishimura@inria.fr
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/cp210x.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ieee802154/ca8210.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/cp210x.c
-+++ b/drivers/usb/serial/cp210x.c
-@@ -227,6 +227,7 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(0x19CF, 0x3000) }, /* Parrot NMEA GPS Flight Recorder */
- 	{ USB_DEVICE(0x1ADB, 0x0001) }, /* Schweitzer Engineering C662 Cable */
- 	{ USB_DEVICE(0x1B1C, 0x1C00) }, /* Corsair USB Dongle */
-+	{ USB_DEVICE(0x1B93, 0x1013) }, /* Phoenix Contact UPS Device */
- 	{ USB_DEVICE(0x1BA4, 0x0002) },	/* Silicon Labs 358x factory default */
- 	{ USB_DEVICE(0x1BE3, 0x07A6) }, /* WAGO 750-923 USB Service Cable */
- 	{ USB_DEVICE(0x1D6F, 0x0010) }, /* Seluxit ApS RF Dongle */
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index fdbdc22fe4e5..d394e2b65054 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -3124,7 +3124,11 @@ static int ca8210_probe(struct spi_device *spi_device)
+ 	spi_set_drvdata(priv->spi, priv);
+ 	if (IS_ENABLED(CONFIG_IEEE802154_CA8210_DEBUGFS)) {
+ 		cascoda_api_upstream = ca8210_test_int_driver_write;
+-		ca8210_test_interface_init(priv);
++		ret = ca8210_test_interface_init(priv);
++		if (ret) {
++			dev_crit(&spi_device->dev, "ca8210_test_interface_init failed\n");
++			goto error;
++		}
+ 	} else {
+ 		cascoda_api_upstream = NULL;
+ 	}
+-- 
+2.39.5
+
 
 
 
