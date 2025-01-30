@@ -1,99 +1,208 @@
-Return-Path: <stable+bounces-111282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09F9A22D62
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:11:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F731A22E4B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8848A3A7DC4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3B1C1887D55
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873501E501C;
-	Thu, 30 Jan 2025 13:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371221E47B4;
+	Thu, 30 Jan 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="na/IuZnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ0mvW4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0801E47BA;
-	Thu, 30 Jan 2025 13:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49D62BB15;
+	Thu, 30 Jan 2025 13:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738242605; cv=none; b=DAwnp/5v92FUwh6gKy3xZuqY+vUxelj3/gA7K22S9yZy+LfLGLreFoha+Xi/Fr9HrGIQ7+cfsvC5dqc7XYXlzn4c931c/ZR3f7dip4u2zF8o6NwoqpeUfPHk3CP0dNzjXtPKqsoYjX6iTL0oOI5gQE01E8/aKoUln4Uo/Dy8d8s=
+	t=1738245560; cv=none; b=r5NKHPz6gnUMUAKclqbhE+FdJff/6aBoAPl37/Qxai6uhur8tQq8oyUi/PPixkqDe66mOE5K/Opl0U+l6ed0WZ+ToyK936cwviRv2idGLlUol3nE73rxs/TxN806ot8aEw+m3MEDc+Gz6Q9epKtjgEOBk0NSmSdpf0r6miXbsS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738242605; c=relaxed/simple;
-	bh=cBceCA/xS8yHpbhHipp+y3e2MOgF35l21oMstBDuqKQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=lz3j4Puo/pPaci+DlCy68tXpjqpgF9cfU0goJGewGt1tUmJWZyXxCegX6KTTKfar3Rn98igtAG4FmKHyiJum/YvB8ky9n6lovgMG/xwTd3Wb868Gh+8yyHhxD3k8h4AsWmdFpnWvYTgMSaM/H117EOm0ajm5euvVeadFED2oKX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=na/IuZnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85735C4CED2;
-	Thu, 30 Jan 2025 13:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738242604;
-	bh=cBceCA/xS8yHpbhHipp+y3e2MOgF35l21oMstBDuqKQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=na/IuZnzG6iLaHJ0ekFF7NXxYd3Mq3AK2vtaFRQffsjwpd2kp5ISHfKa02MHazQ1J
-	 J2H1jl3OiqyjDUbgmzPHxo0LK3Ag1YpVGy8Budp5G1VgfMUgOXmQ5ddaV0G4sU30/+
-	 DLoAU8RuGuSfAniQp9oyD/rLB7QuRogjxE13xmNFJxcKKG8TGAQegPS164m9x4PYoE
-	 ahO2/JydR0bfnmfr4+XN976VqAuynPc2DDCh27WAA9PZr/lbwI8OJxiugWGq3oFcK5
-	 uMvhj/MQxPnWIWRMxMTITU3cTpOwnUfr+xEZlo8qui1sY8vBoTQfrBrsoz9/or9qda
-	 VW6bj7IJFZqdQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB7EC380AA66;
-	Thu, 30 Jan 2025 13:10:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1738245560; c=relaxed/simple;
+	bh=lmNrBa/Hppu71b0Ym3PaKoW0EoP6tAtGudaU5PsXPRA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QFJuIApZZ4uK38/cBG0pIWB2CUvEI4NgK03gP1tE5HJrG9pANXuAjAi2Y87mOh+F/vLQyx6AgGJcXHIJibnb7oWVduGv2tLCq9nBar0OJXrDwMdNhd3sKfcZAxxeL+Gi7crfSywKBVv+ndf8KXmeplEWahO7AsBu2Q25egzoOk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ0mvW4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7C2C4CED2;
+	Thu, 30 Jan 2025 13:59:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738245559;
+	bh=lmNrBa/Hppu71b0Ym3PaKoW0EoP6tAtGudaU5PsXPRA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FJ0mvW4kMwXoYiMj+HrcC+f/mr6eip2og9lXNUJS+mI85jNmHLlVLolNH9tdW083H
+	 TGTy9z5psa4pT9aA3e/irVm1/Ow/eT9KXgXRmYrIzUY1Waa1rCyYSaxxNejl8idOGO
+	 Wl8bwgFUkcYGXYg8eJVc9fCVpmp8hyxL5D/rhn6M=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.13 00/25] 6.13.1-rc1 review
+Date: Thu, 30 Jan 2025 14:58:46 +0100
+Message-ID: <20250130133456.914329400@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.13.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.13.1-rc1
+X-KernelTest-Deadline: 2025-02-01T13:34+00:00
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] mptcp: blackhole only if 1st SYN retrans w/o MPC
- is accepted
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173824263075.953543.6219182517471965649.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Jan 2025 13:10:30 +0000
-References: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
-In-Reply-To: <20250129-net-mptcp-blackhole-fix-v1-0-afe88e5a6d2c@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, corbet@lwn.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- stable@vger.kernel.org
 
-Hello:
+This is the start of the stable review cycle for the 6.13.1 release.
+There are 25 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Responses should be made by Sat, 01 Feb 2025 13:34:42 +0000.
+Anything received after that time might be too late.
 
-On Wed, 29 Jan 2025 13:24:31 +0100 you wrote:
-> Here are two small fixes for issues introduced in v6.12.
-> 
-> - Patch 1: reset the mpc_drop mark for other SYN retransmits, to only
->   consider an MPTCP blackhole when the first SYN retransmitted without
->   the MPTCP options is accepted, as initially intended.
-> 
-> - Patch 2: also mention in the doc that the blackhole_timeout sysctl
->   knob is per-netns, like all the others.
-> 
-> [...]
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
+and the diffstat can be found below.
 
-Here is the summary with links:
-  - [net,1/2] mptcp: blackhole only if 1st SYN retrans w/o MPC is accepted
-    https://git.kernel.org/netdev/net/c/e598d8981fd3
-  - [net,2/2] doc: mptcp: sysctl: blackhole_timeout is per-netns
-    https://git.kernel.org/netdev/net/c/18da4b5d1232
+thanks,
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.13.1-rc1
+
+Jack Greiner <jack@emoss.org>
+    Input: xpad - add support for wooting two he (arm)
+
+Matheos Mattsson <matheos.mattsson@gmail.com>
+    Input: xpad - add support for Nacon Evol-X Xbox One Controller
+
+Leonardo Brondani Schenkel <leonardo@schenkel.net>
+    Input: xpad - improve name of 8BitDo controller 2dc8:3106
+
+Pierre-Loup A. Griffais <pgriffais@valvesoftware.com>
+    Input: xpad - add QH Electronics VID/PID
+
+Nilton Perim Neto <niltonperimneto@gmail.com>
+    Input: xpad - add unofficial Xbox 360 wireless receiver clone
+
+Mark Pearson <mpearson-lenovo@squebb.ca>
+    Input: atkbd - map F23 key to support default copilot shortcut
+
+Nicolas Nobelis <nicolas@nobelis.eu>
+    Input: xpad - add support for Nacon Pro Compact
+
+Jann Horn <jannh@google.com>
+    io_uring/rsrc: require cloned buffers to share accounting contexts
+
+Jason Gerecke <jason.gerecke@wacom.com>
+    HID: wacom: Initialize brightness of LED trigger
+
+Hans de Goede <hdegoede@redhat.com>
+    wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+
+Lianqin Hu <hulianqin@vivo.com>
+    ALSA: usb-audio: Add delay quirk for USB Audio Device
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
+
+Qasim Ijaz <qasdev00@gmail.com>
+    USB: serial: quatech2: fix null-ptr-deref in qt2_process_read_urb()
+
+Easwar Hariharan <eahariha@linux.microsoft.com>
+    scsi: storvsc: Ratelimit warning logs to prevent VM denial of service
+
+Alex Williamson <alex.williamson@redhat.com>
+    vfio/platform: check the bounds of read/write syscalls
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    cachestat: fix page cache statistics permission checking
+
+Jiri Kosina <jikos@kernel.org>
+    Revert "HID: multitouch: Add support for lenovo Y9000P Touchpad"
+
+Jamal Hadi Salim <jhs@mojatatu.com>
+    net: sched: fix ets qdisc OOB Indexing
+
+Paulo Alcantara <pc@manguebit.com>
+    smb: client: handle lack of EA support in smb2_query_path_info()
+
+Chuck Lever <chuck.lever@oracle.com>
+    libfs: Use d_children list to iterate simple_offset directories
+
+Chuck Lever <chuck.lever@oracle.com>
+    libfs: Replace simple_offset end-of-directory detection
+
+Chuck Lever <chuck.lever@oracle.com>
+    Revert "libfs: fix infinite directory reads for offset dir"
+
+Chuck Lever <chuck.lever@oracle.com>
+    Revert "libfs: Add simple_offset_empty()"
+
+Chuck Lever <chuck.lever@oracle.com>
+    libfs: Return ENOSPC when the directory offset range is exhausted
+
+Andreas Gruenbacher <agruenba@redhat.com>
+    gfs2: Truncate address space when flipping GFS2_DIF_JDATA flag
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                     |   4 +-
+ drivers/hid/hid-ids.h                        |   1 -
+ drivers/hid/hid-multitouch.c                 |   8 +-
+ drivers/hid/wacom_sys.c                      |  24 ++--
+ drivers/input/joystick/xpad.c                |   9 +-
+ drivers/input/keyboard/atkbd.c               |   2 +-
+ drivers/net/wireless/realtek/rtl8xxxu/core.c |  20 ++++
+ drivers/scsi/storvsc_drv.c                   |   8 +-
+ drivers/usb/gadget/function/u_serial.c       |   8 +-
+ drivers/usb/serial/quatech2.c                |   2 +-
+ drivers/vfio/platform/vfio_platform_common.c |  10 ++
+ fs/gfs2/file.c                               |   1 +
+ fs/libfs.c                                   | 162 +++++++++++++--------------
+ fs/smb/client/smb2inode.c                    | 104 ++++++++++++-----
+ include/linux/fs.h                           |   1 -
+ io_uring/rsrc.c                              |   7 ++
+ mm/filemap.c                                 |  17 +++
+ mm/shmem.c                                   |   4 +-
+ net/sched/sch_ets.c                          |   2 +
+ sound/usb/quirks.c                           |   2 +
+ 20 files changed, 251 insertions(+), 145 deletions(-)
 
 
 
