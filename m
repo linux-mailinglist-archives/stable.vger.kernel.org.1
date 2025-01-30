@@ -1,165 +1,181 @@
-Return-Path: <stable+bounces-111477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD641A22F5A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98409A2305D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10F873A5F4D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390B63A3C95
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C78D1E98FF;
-	Thu, 30 Jan 2025 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E58C1E32C5;
+	Thu, 30 Jan 2025 14:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="l0W1FgTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/jzFBUs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75701E991B
-	for <stable@vger.kernel.org>; Thu, 30 Jan 2025 14:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA267482;
+	Thu, 30 Jan 2025 14:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246853; cv=none; b=PXmiADKt3M8a4MZ4OxVfr6egd1hy74njqVf1jmIOAM+s0n1uxH/W7e8T0eO+0V0CDasEM9tdLUDwZk+MhLd+V0Nuy0HN47P1SfKOA3BTc9a6hHIz66pt0CU3ks/G13C4AhLDLDsAUYpcQoJescVeXqzGUc5nxA86dqZYbG7SYjM=
+	t=1738247495; cv=none; b=hCG8obyCqfAntGa85YZB0oRimnibphmQBdCja5xRwtdYQ+hn8lLAO/zkO2CVmKrogfp5sq2L9kB8CrTviVXD4GnyLIZC0MWnCqU6gtP7CnDMvNgGJhCyLdB97Tv7OGC6oMHBDEZ3MIi7n6yLlhOZZqJMGtG68BVzqJEaTqZDBxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246853; c=relaxed/simple;
-	bh=8R6c3B6fJVC4f1MoepFzs6F6sPdpJ73p0PBa6d+jM4M=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=Zg3hNr902hOCuYBs5sc0rdrQgL6zmGq0XOJF16CQkCJAcmVMVgLnAIy57Qhb48EIgVkWhx6H83odygyz1SPuviMASKsqyK+w+HJZ/e1Pde5q8OkgvbI9/jVNY2vVHOH+TJAPJzMnymimg2Y/VNiWubTr4EQfl2kyiHRgwt3axU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=l0W1FgTw; arc=none smtp.client-ip=209.85.166.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3cfc1ff581dso2575155ab.3
-        for <stable@vger.kernel.org>; Thu, 30 Jan 2025 06:20:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1738246848; x=1738851648; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vU06OwhztTH8QC4/s2rK/LcOpYXEj78/h5xWEGAayg4=;
-        b=l0W1FgTwrvTQV/6FQ9GibxzTrryELKyZQPWeatjG6Ni2wdqaX1HTulcPi3cIhiI7nZ
-         Txokt1JK9dC+60mJ5m94wKw5lQTMcoaBVssPov1tH2rAPeHqWVr3Q6wFqzVmEH/o5QeX
-         j0wRw9cRbTT/UiMOKdLJFWrqCyopCG9odp/AQJJQnSgE141X/46PX6US6u///euNsd/v
-         jto+5QGFLKUqZMYwCkmbFpIVx+MqK4anhwZujIlwabqvfr/6cXBenl/Xm62I3iZdw5Sx
-         p+ArCVEnZ8GEFfAMWCeffe5W+F2z5jD9d84s67W5wDL0mRZfK+NA2fSFcDaRu/2D0mkq
-         pvSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738246848; x=1738851648;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vU06OwhztTH8QC4/s2rK/LcOpYXEj78/h5xWEGAayg4=;
-        b=MSVyg9cp1zWo/P9L4DFmAW0LExz9shn41byO76muIcauTzj5C8HkNTZkmNupBJdxSq
-         phtgaVYZUWgQgubtPmlhCqkGGS9UZ7oVizp5pJZJq0PqV6r7RXwx2ZFixbJzXVCA+OyK
-         Nyrebye3EaIJdYFKhXvwQbNoDVKaUzIemX7q0W8l1OIA3RW/jqYEWPDcYq8dekYPXUNE
-         tuYrvhrCa56EPxitkwffMAFXvmrPTnK/BM8e4hb4Oh0cq1Ff8wCLA79lRI+q44W13Al+
-         9QhDytMSGfMu0CTGPnfkIUeJhy0/7E23JmoN+sP9T6Y0x1L+NkJA2+DlXKCP+aD4R5u8
-         lQRg==
-X-Gm-Message-State: AOJu0YzUfe8xhne15NPyN93nl99hvEPiWNobwplaWhjMb8h6bTOkW3hQ
-	5OOShrcKChA1NIZ3P/H+3OUamK/XPF1E6OMaUnQ4PGVizutz0fRA68X0bhj6eMo1iSXCt1eIktj
-	b
-X-Gm-Gg: ASbGncuOLFIKxUOMHWSj0IftvgKjNuQfsr7rvbRKXfVOVl9wd1kcfQ+PQxvHsekxIIt
-	//mvVDbNro/Xwhfq2WOvinPWCCuPoNJq8ojFb5PK6GdOCyTGy4e62dmXz37Nm6CvV2RLYSTvoIv
-	XUWDdSERBnihetKb2l/46Zw1Lv11psmYTYNizWd5HgSSehWEPMKQDb/F6urThM97Kf//u5YiAch
-	RCFLi/jnW5KHiPdO58ajjPDMOfq1ZRgWlW8HZxVkV/aLG+L45NXEkGyQRFWIwdcIIgfLybhAhLe
-	tlGQOTw+okI=
-X-Google-Smtp-Source: AGHT+IGyIs26z5ihY20TkniVwT+/JIQuczE2jV8rJIjpd0g39ZV6LZdQcg7caRVvztB9ldWORW7/0Q==
-X-Received: by 2002:a92:cda7:0:b0:3ce:8b1b:2f with SMTP id e9e14a558f8ab-3cffe4b2c16mr58803805ab.17.1738246847821;
-        Thu, 30 Jan 2025 06:20:47 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ec7469f4f9sm357033173.78.2025.01.30.06.20.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 06:20:46 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------cykoxp8vyPWNWzR0jDxpHNTh"
-Message-ID: <84e2f49c-47d4-402c-977d-654b4cdd3cbd@kernel.dk>
-Date: Thu, 30 Jan 2025 07:20:46 -0700
+	s=arc-20240116; t=1738247495; c=relaxed/simple;
+	bh=etcyA+MObeejoRPD9H+52sDwKfNZPrVKp5km4MTO7ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EAwxk5WTH0JcwNBfaTqIjkeyhOUOiDHSzZbtjTGf5wnLlSz2wzxJjsEVpYPqOq+4KKAHqoJpcqmpTPDCdV/VopY/zqCV0q5Lsly7uZSLRBbgpHyzKiQxVBgkCQAXnev2sUm/2Y3qUlhn3ipSix6WGT47GNZUmoMPuQP/Zpuq6b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/jzFBUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D45C4CED2;
+	Thu, 30 Jan 2025 14:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738247495;
+	bh=etcyA+MObeejoRPD9H+52sDwKfNZPrVKp5km4MTO7ow=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N/jzFBUsX9PtQ3HsJNsQXv2HdftgVCkmCXSIztHmRnWMueLBJdZ0iZUt2jhnTcY8H
+	 nhNeS9MQWrZHv3BSsR2Ng60LAdlpjqNsXPQlhbq7GE9XkAUviVqLurZXOsyRpT/h1d
+	 GFdzeXfthuK4wfgNkG2MmcsNvEszVLGiqLo6mkpo=
+Date: Thu, 30 Jan 2025 15:24:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: Hugh Dickins <hughd@google.com>,
+	Andrew Morten <akpm@linux-foundation.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>, Sasha Levin <sashal@kernel.org>,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+	linux-mm@kvack.org, yukuai3@huawei.com, yangerkun@huawei.com
+Subject: Re: [RFC PATCH v6.6 00/10] Address CVE-2024-46701
+Message-ID: <2025013056-rejoin-number-8641@gregkh>
+References: <20250124191946.22308-1-cel@kernel.org>
+ <50585d23-a0c1-4810-9e94-09506245f413@oracle.com>
+ <2025012937-unsaddle-movable-4dae@gregkh>
+ <69d8e9dd-59d1-4eb2-be93-1402dba12f34@oracle.com>
+ <2025012924-shelter-disk-2fe1@gregkh>
+ <9130c4f0-ad6b-4b6f-a395-33c7a6b21cbe@oracle.com>
+ <2025013057-lagged-anointer-8b77@gregkh>
+ <0a6b6602-3052-40c7-9727-abe69bd85a06@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/rsrc: require cloned buffers to
- share accounting" failed to apply to 6.12-stable tree
-To: gregkh@linuxfoundation.org, jannh@google.com
-Cc: stable@vger.kernel.org
-References: <2025013011-scenic-crazed-e3c8@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025013011-scenic-crazed-e3c8@gregkh>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a6b6602-3052-40c7-9727-abe69bd85a06@oracle.com>
 
-This is a multi-part message in MIME format.
---------------cykoxp8vyPWNWzR0jDxpHNTh
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 1/30/25 4:38 AM, gregkh@linuxfoundation.org wrote:
+On Thu, Jan 30, 2025 at 09:02:41AM -0500, Chuck Lever wrote:
+> On 1/30/25 3:45 AM, Greg Kroah-Hartman wrote:
+> > On Wed, Jan 29, 2025 at 11:37:51AM -0500, Chuck Lever wrote:
+> >> On 1/29/25 10:21 AM, Greg Kroah-Hartman wrote:
+> >>> On Wed, Jan 29, 2025 at 10:06:49AM -0500, Chuck Lever wrote:
+> >>>> On 1/29/25 9:50 AM, Greg Kroah-Hartman wrote:
+> >>>>> On Wed, Jan 29, 2025 at 08:55:15AM -0500, Chuck Lever wrote:
+> >>>>>> On 1/24/25 2:19 PM, cel@kernel.org wrote:
+> >>>>>>> From: Chuck Lever <chuck.lever@oracle.com>
+> >>>>>>>
+> >>>>>>> This series backports several upstream fixes to origin/linux-6.6.y
+> >>>>>>> in order to address CVE-2024-46701:
+> >>>>>>>
+> >>>>>>>      https://nvd.nist.gov/vuln/detail/CVE-2024-46701
+> >>>>>>>
+> >>>>>>> As applied to origin/linux-6.6.y, this series passes fstests and the
+> >>>>>>> git regression suite.
+> >>>>>>>
+> >>>>>>> Before officially requesting that stable@ merge this series, I'd
+> >>>>>>> like to provide an opportunity for community review of the backport
+> >>>>>>> patches.
+> >>>>>>>
+> >>>>>>> You can also find them them in the "nfsd-6.6.y" branch in
+> >>>>>>>
+> >>>>>>>      https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git
+> >>>>>>>
+> >>>>>>> Chuck Lever (10):
+> >>>>>>>      libfs: Re-arrange locking in offset_iterate_dir()
+> >>>>>>>      libfs: Define a minimum directory offset
+> >>>>>>>      libfs: Add simple_offset_empty()
+> >>>>>>>      libfs: Fix simple_offset_rename_exchange()
+> >>>>>>>      libfs: Add simple_offset_rename() API
+> >>>>>>>      shmem: Fix shmem_rename2()
+> >>>>>>>      libfs: Return ENOSPC when the directory offset range is exhausted
+> >>>>>>>      Revert "libfs: Add simple_offset_empty()"
+> >>>>>>>      libfs: Replace simple_offset end-of-directory detection
+> >>>>>>>      libfs: Use d_children list to iterate simple_offset directories
+> >>>>>>>
+> >>>>>>>     fs/libfs.c         | 177 +++++++++++++++++++++++++++++++++------------
+> >>>>>>>     include/linux/fs.h |   2 +
+> >>>>>>>     mm/shmem.c         |   3 +-
+> >>>>>>>     3 files changed, 134 insertions(+), 48 deletions(-)
+> >>>>>>>
+> >>>>>>
+> >>>>>> I've heard no objections or other comments. Greg, Sasha, shall we
+> >>>>>> proceed with merging this patch series into v6.6 ?
+> >>>>>
+> >>>>> Um, but not all of these are in a released kernel yet, so we can't take
+> >>>>> them all yet.
+> >>>>
+> >>>> Hi Greg -
+> >>>>
+> >>>> The new patches are in v6.14 now. I'm asking stable to take these
+> >>>> whenever you are ready. Would that be v6.14-rc1? I can send a reminder
+> >>>> if you like.
+> >>>
+> >>> Yes, we have to wait until changes are in a -rc release unless there are
+> >>> "real reasons to take it now" :)
+> >>>
+> >>>>> Also what about 6.12.y and 6.13.y for those commits that
+> >>>>> will be showing up in 6.14-rc1?  We can't have regressions for people
+> >>>>> moving to those releases from 6.6.y, right?
+> >>>>
+> >>>> The upstream commits have Fixes tags. I assumed that your automation
+> >>>> will find those and apply them to those kernels -- the upstream versions
+> >>>> of these patches I expect will apply cleanly to recent LTS.
+> >>>
+> >>> "Fixes:" are never guaranteed to show up in stable kernels, they are
+> >>> only a "maybe when we get some spare cycles and get around to it we
+> >>> might do a simple pass to see what works or doesn't."
+> >>>
+> >>> If you KNOW a change is a bugfix for stable kernels, please mark it as
+> >>> such!  "Fixes:" is NOT how to do that, and never has been.  It's only
+> >>> additional meta-data that helps us out.
+> >>>
+> >>> So please send us a list of the commits that need to go to 6.12.y and
+> >>> 6.13.y, we have to have that before we could take the 6.6.y changes.
+> >>
+> >> 903dc9c43a15 ("libfs: Return ENOSPC when the directory offset range is
+> >> exhausted")
+> >> d7bde4f27cee ("Revert "libfs: Add simple_offset_empty()"")
+> >> b662d858131d ("Revert "libfs: fix infinite directory reads for offset dir"")
+> >> 68a3a6500314 ("libfs: Replace simple_offset end-of-directory detection")
+> >> b9b588f22a0c ("libfs: Use d_children list to iterate simple_offset
+> >> directories")
+> > 
+> > Cool, thanks for the list (and not all were marked with fixes, i.e.
+> > those reverts, I guess we need to start checking for reverts better.  I
+> > have tooling set up for that but not integrated yet...)
+> > 
+> > I'll just queue them all up now.
 > 
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 19d340a2988d4f3e673cded9dde405d727d7e248
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025013011-scenic-crazed-e3c8@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+> My thinking was the patches marked "Fixes:" would show an obvious need
+> for applying the unmarked patches as pre-requisites first.
 
-Here's a 6.12-stable version of this patch.
+For when you send us a patch series for inclusion, sure, all is fine.  I
+mean for when you merge stuff to Linus and expect us to pick them up.
 
--- 
-Jens Axboe
+> I promise to do better marking patches with "Cc: stable". But also let
+> me know if there's a way to label pre-req patches more clearly. Maybe
+> "Cc: stable" without "Fixes:" is the way to go there.
 
---------------cykoxp8vyPWNWzR0jDxpHNTh
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-rsrc-require-cloned-buffers-to-share-accoun.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-rsrc-require-cloned-buffers-to-share-accoun.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
+Both is best, that way if you have a Fixes: tag in it, and a patch does
+not apply properly, you will get a "FAILED" email sent to you.  If you
+only have the cc: stable then we just do a best-effort attempt and stop
+backporting when it doesn't apply and don't notify you at all about any
+failures.
 
-RnJvbSA2MDVkYzMyMTUyMmY0MzM0ODQ5NzU5ZDk1ODViZWY1NGRjNjA5OTRmIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKYW5uIEhvcm4gPGphbm5oQGdvb2dsZS5jb20+CkRh
-dGU6IFR1ZSwgMTQgSmFuIDIwMjUgMTg6NDk6MDAgKzAxMDAKU3ViamVjdDogW1BBVENIXSBp
-b191cmluZy9yc3JjOiByZXF1aXJlIGNsb25lZCBidWZmZXJzIHRvIHNoYXJlIGFjY291bnRp
-bmcKIGNvbnRleHRzCgpDb21taXQgMTlkMzQwYTI5ODhkNGYzZTY3M2NkZWQ5ZGRlNDA1ZDcy
-N2Q3ZTI0OCB1cHN0cmVhbS4KCldoZW4gSU9SSU5HX1JFR0lTVEVSX0NMT05FX0JVRkZFUlMg
-aXMgdXNlZCB0byBjbG9uZSBidWZmZXJzIGZyb20gdXJpbmcKaW5zdGFuY2UgQSB0byB1cmlu
-ZyBpbnN0YW5jZSBCLCB3aGVyZSBBIGFuZCBCIHVzZSBkaWZmZXJlbnQgTU1zIGZvcgphY2Nv
-dW50aW5nLCB0aGUgYWNjb3VudGluZyBjYW4gZ28gd3Jvbmc6CklmIHVyaW5nIGluc3RhbmNl
-IEEgaXMgY2xvc2VkIGJlZm9yZSB1cmluZyBpbnN0YW5jZSBCLCB0aGUgcGlubmVkIG1lbW9y
-eQpjb3VudGVycyBmb3IgdXJpbmcgaW5zdGFuY2UgQiB3aWxsIGJlIGRlY3JlbWVudGVkLCBl
-dmVuIHRob3VnaCB0aGUgcGlubmVkCm1lbW9yeSB3YXMgb3JpZ2luYWxseSBhY2NvdW50ZWQg
-dGhyb3VnaCB1cmluZyBpbnN0YW5jZSBBOyBzbyB0aGUgTU0gb2YKdXJpbmcgaW5zdGFuY2Ug
-QiBjYW4gZW5kIHVwIHdpdGggbmVnYXRpdmUgbG9ja2VkIG1lbW9yeS4KCkNjOiBzdGFibGVA
-dmdlci5rZXJuZWwub3JnCkNsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci9DQUc0
-OGV6MXplejRiZGhtZUdMRUZ4dGJGQURZNEN6bjNDVjB1OWRfVE1jYnZSQTAxYmdAbWFpbC5n
-bWFpbC5jb20KRml4ZXM6IDdjYzJhNmVhZGNkNyAoImlvX3VyaW5nOiBhZGQgSU9SSU5HX1JF
-R0lTVEVSX0NPUFlfQlVGRkVSUyBtZXRob2QiKQpTaWduZWQtb2ZmLWJ5OiBKYW5uIEhvcm4g
-PGphbm5oQGdvb2dsZS5jb20+Ckxpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAy
-NTAxMTQtdXJpbmctY2hlY2stYWNjb3VudGluZy12MS0xLTQyZTQxNDVhYTc0M0Bnb29nbGUu
-Y29tClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz4KLS0tCiBp
-b191cmluZy9yc3JjLmMgfCA3ICsrKysrKysKIDEgZmlsZSBjaGFuZ2VkLCA3IGluc2VydGlv
-bnMoKykKCmRpZmYgLS1naXQgYS9pb191cmluZy9yc3JjLmMgYi9pb191cmluZy9yc3JjLmMK
-aW5kZXggNmYzYjZkZTIzMGJkLi5hNjdiYWUzNTA0MTYgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5n
-L3JzcmMuYworKysgYi9pb191cmluZy9yc3JjLmMKQEAgLTExNTMsNiArMTE1MywxMyBAQCBz
-dGF0aWMgaW50IGlvX2Nsb25lX2J1ZmZlcnMoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsIHN0
-cnVjdCBpb19yaW5nX2N0eCAqc3JjX2N0eAogCXN0cnVjdCBpb19yc3JjX2RhdGEgKmRhdGE7
-CiAJaW50IGksIHJldCwgbmJ1ZnM7CiAKKwkvKgorCSAqIEFjY291bnRpbmcgc3RhdGUgaXMg
-c2hhcmVkIGJldHdlZW4gdGhlIHR3byByaW5nczsgdGhhdCBvbmx5IHdvcmtzIGlmCisJICog
-Ym90aCByaW5ncyBhcmUgYWNjb3VudGVkIHRvd2FyZHMgdGhlIHNhbWUgY291bnRlcnMuCisJ
-ICovCisJaWYgKGN0eC0+dXNlciAhPSBzcmNfY3R4LT51c2VyIHx8IGN0eC0+bW1fYWNjb3Vu
-dCAhPSBzcmNfY3R4LT5tbV9hY2NvdW50KQorCQlyZXR1cm4gLUVJTlZBTDsKKwogCS8qCiAJ
-ICogRHJvcCBvdXIgb3duIGxvY2sgaGVyZS4gV2UnbGwgc2V0dXAgdGhlIGRhdGEgd2UgbmVl
-ZCBhbmQgcmVmZXJlbmNlCiAJICogdGhlIHNvdXJjZSBidWZmZXJzLCB0aGVuIHJlLWdyYWIs
-IGNoZWNrLCBhbmQgYXNzaWduIGF0IHRoZSBlbmQuCi0tIAoyLjQ3LjIKCg==
+thanks,
 
---------------cykoxp8vyPWNWzR0jDxpHNTh--
+greg k-h
 
