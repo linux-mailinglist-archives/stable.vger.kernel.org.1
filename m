@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-111536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148D2A22F97
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15216A22F07
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA943A42F8
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D6C63A3DDC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0D61E6DCF;
-	Thu, 30 Jan 2025 14:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D61E7C08;
+	Thu, 30 Jan 2025 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBYywJ5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKEc23SH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075131E522;
-	Thu, 30 Jan 2025 14:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C221DDE9;
+	Thu, 30 Jan 2025 14:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247023; cv=none; b=kYr5CLJLNirxUXG/UU+MbsI1xtpWeaPCXIfgfagYocK8pN+npVJ/PGQle4jvl4eNMirCzp4xY5SIdENg21evZmQ4lJ+BuUiWln6Ss7VahnitoHBtIv0IpholeHNIDWOi5YzegZ3zgiP8NhTPRjE5TYVaZQFFB2pF3WCOWzCS568=
+	t=1738246665; cv=none; b=ZPwOgccJs/vjEa+k+Ip+9jgTTNuzQy5G2QtaRKIQ8L/T5+lOjx72BWjKW+GxQLvuNd8U4ytYxWopz9+Uq9MkreSBNugvXvwcMG6051uomZRPFMXqWGcmYQSk8rFBRWnNz30rn5tl0dPpkjYCdgsr9MsbrFtmBxDMj1ttVJ/5Hzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247023; c=relaxed/simple;
-	bh=nrlP7m5FLc71ZfOjw3W2CIdW7bxB/4iA3Rn9UiSngO8=;
+	s=arc-20240116; t=1738246665; c=relaxed/simple;
+	bh=nNOCzqR/mfSNdNSv07j/avyHBNwsAb6WrIs0ti+Rh4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgfyaFFmeChgyJ2vo8dkfSrjcqDKbY+e5rDgYQlynIexVNiylaTwpBO/+rYsOqNLtE71UnwZDmJil4V6D/TdPABp8P3Gs43WmpYMiWfn36zm0VLp2qNS1jYk6Hh/e9Opk1NEpieE8Td1onft2+j/rgwqoXL/7mS8ojrcfm3oy6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BBYywJ5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF8AC4CEE0;
-	Thu, 30 Jan 2025 14:23:42 +0000 (UTC)
+	 MIME-Version; b=GKWtdQyHG7InliSTiq9tIfPR/kC3w5Q011e4f5iBwsN2uci/DJ4Hqo0DLZZuvvP+w39bfUAtcGfGEBNBmlGFajUxA8r7GJIoohSstsSrjSLBYFjTuI3vKjtLnxX/K51hUbKQCkhKw6d6NRn7vScqbmV+CWvDVbqfRHZboj8hYmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKEc23SH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA92BC4CED2;
+	Thu, 30 Jan 2025 14:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247022;
-	bh=nrlP7m5FLc71ZfOjw3W2CIdW7bxB/4iA3Rn9UiSngO8=;
+	s=korg; t=1738246665;
+	bh=nNOCzqR/mfSNdNSv07j/avyHBNwsAb6WrIs0ti+Rh4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BBYywJ5O6CJ6/7DloCIPQzcwXuFGKR93S8HGCjt8rW2vzyvgB34NCmRsea/8CxFwS
-	 8+08m/BQRkJsK2XB9u8tdHlyJW7v0+bnncAT9ZQ566pk9i41W80g85jyzLXOboEKhc
-	 qOKncKUPDrmRtI28rEcqfGHGfB9xa+OTnVQqDwGU=
+	b=nKEc23SHupOA+RePO4c6llXpbWkLP0M0w/VrwJcQZJwI8+KGSCzuG3BTljSj3/jbD
+	 g6FoO1JqozA83E38/TbSCZ5+g2BMHgWmXP5GYmJphibXDyFNvyFeqOA3iH4BVFbR2+
+	 sOoTjslsKUCJfRSRXne93GAhkZ/ldVTsTpjaNSGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/133] sd: update the bdev size in sd_revalidate_disk
-Date: Thu, 30 Jan 2025 15:00:44 +0100
-Message-ID: <20250130140144.729793315@linuxfoundation.org>
+	Wayne Chang <waynec@nvidia.com>,
+	stable <stable@kernel.org>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 5.4 26/91] USB: core: Disable LPM only for non-suspended ports
+Date: Thu, 30 Jan 2025 15:00:45 +0100
+Message-ID: <20250130140134.718094999@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Kai-Heng Feng <kaihengf@nvidia.com>
 
-[ Upstream commit b200e38c493b2a5acff4f86d40a3e45d546c664c ]
+commit 59bfeaf5454b7e764288d84802577f4a99bf0819 upstream.
 
-This avoids the extra call to revalidate_disk_size in sd_rescan and
-is otherwise a no-op because the size did not change, or we are in
-the probe path.
+There's USB error when tegra board is shutting down:
+[  180.919315] usb 2-3: Failed to set U1 timeout to 0x0,error code -113
+[  180.919995] usb 2-3: Failed to set U1 timeout to 0xa,error code -113
+[  180.920512] usb 2-3: Failed to set U2 timeout to 0x4,error code -113
+[  186.157172] tegra-xusb 3610000.usb: xHCI host controller not responding, assume dead
+[  186.157858] tegra-xusb 3610000.usb: HC died; cleaning up
+[  186.317280] tegra-xusb 3610000.usb: Timeout while waiting for evaluate context command
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 74363ec674cb ("zram: fix uninitialized ZRAM not releasing backing device")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue is caused by disabling LPM on already suspended ports.
+
+For USB2 LPM, the LPM is already disabled during port suspend. For USB3
+LPM, port won't transit to U1/U2 when it's already suspended in U3,
+hence disabling LPM is only needed for ports that are not suspended.
+
+Cc: Wayne Chang <waynec@nvidia.com>
+Cc: stable <stable@kernel.org>
+Fixes: d920a2ed8620 ("usb: Disable USB3 LPM at shutdown")
+Signed-off-by: Kai-Heng Feng <kaihengf@nvidia.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20241206074817.89189-1-kaihengf@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/usb/core/port.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 2f2ca2878876..355d38cab862 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -1767,10 +1767,8 @@ static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
- static void sd_rescan(struct device *dev)
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -294,10 +294,11 @@ static int usb_port_runtime_suspend(stru
+ static void usb_port_shutdown(struct device *dev)
  {
- 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
--	int ret;
+ 	struct usb_port *port_dev = to_usb_port(dev);
++	struct usb_device *udev = port_dev->child;
  
--	ret = sd_revalidate_disk(sdkp->disk);
--	revalidate_disk_size(sdkp->disk, ret == 0);
-+	sd_revalidate_disk(sdkp->disk);
+-	if (port_dev->child) {
+-		usb_disable_usb2_hardware_lpm(port_dev->child);
+-		usb_unlocked_disable_lpm(port_dev->child);
++	if (udev && !udev->port_is_suspended) {
++		usb_disable_usb2_hardware_lpm(udev);
++		usb_unlocked_disable_lpm(udev);
+ 	}
  }
  
- static int sd_ioctl(struct block_device *bdev, fmode_t mode,
-@@ -3295,7 +3293,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	sdkp->first_scan = 0;
- 
- 	set_capacity_revalidate_and_notify(disk,
--		logical_to_sectors(sdp, sdkp->capacity), false);
-+		logical_to_sectors(sdp, sdkp->capacity), true);
- 	sd_config_write_same(sdkp);
- 	kfree(buffer);
- 
-@@ -3305,7 +3303,7 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	 * capacity to 0.
- 	 */
- 	if (sd_zbc_revalidate_zones(sdkp))
--		set_capacity_revalidate_and_notify(disk, 0, false);
-+		set_capacity_revalidate_and_notify(disk, 0, true);
- 
-  out:
- 	return 0;
--- 
-2.39.5
-
 
 
 
