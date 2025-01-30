@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFB5A22FF3
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2ABA2302D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B779167C55
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55CE6168EDF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8781E8835;
-	Thu, 30 Jan 2025 14:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEF81E7C25;
+	Thu, 30 Jan 2025 14:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv4FnvIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9iWf4Oo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE211E522;
-	Thu, 30 Jan 2025 14:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381DE1BD9D3;
+	Thu, 30 Jan 2025 14:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247227; cv=none; b=tf43GEXHkcexshW+PuGLBaV4gN0WfUkgvYEgD+q/SMewOK27EgfSbFir2n2QbCzSN/XG7lI9uYjOhuj6g0dQoNIRC6gdNr0ls5qkB02XfBE35/RJRmENsrgC/xDveJL2o18+jrDuDw7PJbBX0oUtPp1hwNSdKXXxESxRd18V8mE=
+	t=1738247373; cv=none; b=G2LPqr7Zgdf4mREksDN9AF1/0usy2g6cBOfg6jBLLAKQYGd9QssEVyZYztSJVQRyPhFtx3PxpO+7wR011RlfIJ8bf1HNJQwDGJnuHM+Dqk22061+tn2vZR0dSjxh0CkBJ28DcjmB5dan1wHMYFpXwPKtrAZPvGiRMXiSXI38xWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247227; c=relaxed/simple;
-	bh=RfWQp6YgY5T580jFRwarzy1iQjNsAixE5YSab8Pw/QM=;
+	s=arc-20240116; t=1738247373; c=relaxed/simple;
+	bh=5phRQkuLmWGOOhy93WrcpDB0wLNJByfWSr9mrjCXqTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZqGpBZmBfwutl2OTl14aw3lzZxNt4T++mjIPj5RYgmbRSttdByCVXHorg2HBH4gmkYV+HO04bveg4Bxv7FJQpF8hdzEBSyS44+xaVQfU9I/Lv9jCHnfCT+7WYlh2ZftEDVm6395N9DBMQyv2PU9KBlllx9DhDIhdVicKP9n2uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv4FnvIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D79AC4CED2;
-	Thu, 30 Jan 2025 14:27:06 +0000 (UTC)
+	 MIME-Version; b=OPE1jUbe58Q2lyaVFMeNjOERVDb0Ca0WjiTpVL/FCdMo3qzDjp+/FGYxU22mKHJXVnx11bK/lDRDGBJd2JXN9+1Jq7BDrdSlHmbgmFXnDkviLkryTqrPMZuRRSZE7H2+2nZE2Ds3iZMIXr9CvAADkf9C0BQOSmjZL2LGObodCQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9iWf4Oo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6271C4CED2;
+	Thu, 30 Jan 2025 14:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247227;
-	bh=RfWQp6YgY5T580jFRwarzy1iQjNsAixE5YSab8Pw/QM=;
+	s=korg; t=1738247373;
+	bh=5phRQkuLmWGOOhy93WrcpDB0wLNJByfWSr9mrjCXqTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sv4FnvIlTI8V5UrQIrM/2wnXvBCC96+kHTacpMBqwfD/mbOF9tbCt82dQYUWaKXAO
-	 ebnvHeVjANTqpG7xvCiXmu6+bIpX/jgG5zz2mpYU3ukjZyTpstpW7QkiJufsFhpKRd
-	 juebON8yuH89paYeArqXS2XkDxU0K27wY4teOOOo=
+	b=h9iWf4OoI3pJrD8ZHNokTu828CyzDcbBzfNXmj+vgFVwYeDHMKCCGOJ7E/8WFwmd9
+	 0CcI2IFIQ/eyo1B0K+SYpYlZBrDRiKZLYltIdp5XjyMCYfvA5oZGtbi4DA1zHVqgEW
+	 l2P+dS+XgQ/3a/M+xe7kikkbTlb1/bNkY9xtvPXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH 5.10 124/133] signal/m68k: Use force_sigsegv(SIGSEGV) in fpsp040_die
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 17/49] xfs: make sure maxlen is still congruent with prod when rounding down
 Date: Thu, 30 Jan 2025 15:01:53 +0100
-Message-ID: <20250130140147.523499298@linuxfoundation.org>
+Message-ID: <20250130140134.532771892@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric W. Biederman <ebiederm@xmission.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit a3616a3c02722d1edb95acc7fceade242f6553ba upstream.
+[ Upstream commit f6a2dae2a1f52ea23f649c02615d073beba4cc35 ]
 
-In the fpsp040 code when copyin or copyout fails call
-force_sigsegv(SIGSEGV) instead of do_exit(SIGSEGV).
+In commit 2a6ca4baed62, we tried to fix an overflow problem in the
+realtime allocator that was caused by an overly large maxlen value
+causing xfs_rtcheck_range to run off the end of the realtime bitmap.
+Unfortunately, there is a subtle bug here -- maxlen (and minlen) both
+have to be aligned with @prod, but @prod can be larger than 1 if the
+user has set an extent size hint on the file, and that extent size hint
+is larger than the realtime extent size.
 
-This solves a couple of problems.  Because do_exit embeds the ptrace
-stop PTRACE_EVENT_EXIT a complete stack frame needs to be present for
-that to work correctly.  There is always the information needed for a
-ptrace stop where get_signal is called.  So exiting with a signal
-solves the ptrace issue.
+If the rt free space extents are not aligned to this file's extszhint
+because other files without extent size hints allocated space (or the
+number of rt extents is similarly not aligned), then it's possible that
+maxlen after clamping to sb_rextents will no longer be aligned to prod.
+The allocation will succeed just fine, but we still trip the assertion.
 
-Further exiting with a signal ensures that all of the threads in a
-process are killed not just the thread that malfunctioned.  Which
-avoids confusing userspace.
+Fix the problem by reducing maxlen by any misalignment with prod.  While
+we're at it, split the assertions into two so that we can tell which
+value had the bad alignment.
 
-To make force_sigsegv(SIGSEGV) work in fpsp040_die modify the code to
-save all of the registers and jump to ret_from_exception (which
-ultimately calls get_signal) after fpsp040_die returns.
-
-v2: Updated the branches to use gas's pseudo ops that automatically
-    calculate the best branch instruction to use for the purpose.
-
-v1: https://lkml.kernel.org/r/87a6m8kgtx.fsf_-_@disp2133
-Link: https://lkml.kernel.org/r/87tukghjfs.fsf_-_@disp2133
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Fixes: 2a6ca4baed62 ("xfs: make sure the rt allocator doesn't run off the end")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/m68k/fpsp040/skeleton.S |    3 ++-
- arch/m68k/kernel/traps.c     |    2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_rtalloc.c |   31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
 
---- a/arch/m68k/fpsp040/skeleton.S
-+++ b/arch/m68k/fpsp040/skeleton.S
-@@ -502,7 +502,8 @@ in_ea:
- 	.section .fixup,"ax"
- 	.even
- 1:
--	jbra	fpsp040_die
-+	jbsr	fpsp040_die
-+	jbra	.Lnotkern
- 
- 	.section __ex_table,"a"
- 	.align	4
---- a/arch/m68k/kernel/traps.c
-+++ b/arch/m68k/kernel/traps.c
-@@ -1152,7 +1152,7 @@ asmlinkage void set_esp0(unsigned long s
-  */
- asmlinkage void fpsp040_die(void)
- {
--	do_exit(SIGSEGV);
-+	force_sigsegv(SIGSEGV);
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -212,6 +212,23 @@ xfs_rtallocate_range(
  }
  
- #ifdef CONFIG_M68KFPU_EMU
+ /*
++ * Make sure we don't run off the end of the rt volume.  Be careful that
++ * adjusting maxlen downwards doesn't cause us to fail the alignment checks.
++ */
++static inline xfs_extlen_t
++xfs_rtallocate_clamp_len(
++	struct xfs_mount	*mp,
++	xfs_rtblock_t		startrtx,
++	xfs_extlen_t		rtxlen,
++	xfs_extlen_t		prod)
++{
++	xfs_extlen_t		ret;
++
++	ret = min(mp->m_sb.sb_rextents, startrtx + rtxlen) - startrtx;
++	return rounddown(ret, prod);
++}
++
++/*
+  * Attempt to allocate an extent minlen<=len<=maxlen starting from
+  * bitmap block bbno.  If we don't get maxlen then use prod to trim
+  * the length, if given.  Returns error; returns starting block in *rtblock.
+@@ -248,7 +265,7 @@ xfs_rtallocate_extent_block(
+ 	     i <= end;
+ 	     i++) {
+ 		/* Make sure we don't scan off the end of the rt volume. */
+-		maxlen = min(mp->m_sb.sb_rextents, i + maxlen) - i;
++		maxlen = xfs_rtallocate_clamp_len(mp, i, maxlen, prod);
+ 
+ 		/*
+ 		 * See if there's a free extent of maxlen starting at i.
+@@ -355,7 +372,8 @@ xfs_rtallocate_extent_exact(
+ 	int		isfree;		/* extent is free */
+ 	xfs_rtblock_t	next;		/* next block to try (dummy) */
+ 
+-	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
++	ASSERT(minlen % prod == 0);
++	ASSERT(maxlen % prod == 0);
+ 	/*
+ 	 * Check if the range in question (for maxlen) is free.
+ 	 */
+@@ -438,7 +456,9 @@ xfs_rtallocate_extent_near(
+ 	xfs_rtblock_t	n;		/* next block to try */
+ 	xfs_rtblock_t	r;		/* result block */
+ 
+-	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
++	ASSERT(minlen % prod == 0);
++	ASSERT(maxlen % prod == 0);
++
+ 	/*
+ 	 * If the block number given is off the end, silently set it to
+ 	 * the last block.
+@@ -447,7 +467,7 @@ xfs_rtallocate_extent_near(
+ 		bno = mp->m_sb.sb_rextents - 1;
+ 
+ 	/* Make sure we don't run off the end of the rt volume. */
+-	maxlen = min(mp->m_sb.sb_rextents, bno + maxlen) - bno;
++	maxlen = xfs_rtallocate_clamp_len(mp, bno, maxlen, prod);
+ 	if (maxlen < minlen) {
+ 		*rtblock = NULLRTBLOCK;
+ 		return 0;
+@@ -638,7 +658,8 @@ xfs_rtallocate_extent_size(
+ 	xfs_rtblock_t	r;		/* result block number */
+ 	xfs_suminfo_t	sum;		/* summary information for extents */
+ 
+-	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
++	ASSERT(minlen % prod == 0);
++	ASSERT(maxlen % prod == 0);
+ 	ASSERT(maxlen != 0);
+ 
+ 	/*
 
 
 
