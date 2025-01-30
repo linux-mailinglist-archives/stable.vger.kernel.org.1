@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-111641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0099FA2301A
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D48F4A2303D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BEDA1886634
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082DD168EDA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463271E7C25;
-	Thu, 30 Jan 2025 14:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B007482;
+	Thu, 30 Jan 2025 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Di4RPOMq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urZ9bSvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A941BD9D3;
-	Thu, 30 Jan 2025 14:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A072F1E5020;
+	Thu, 30 Jan 2025 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247330; cv=none; b=iMyp0GyhWkXNfPji6CyTzhSfOmbo4CGtoIITRCKSsLnqVFgWuqdA+0WtzsQVWsWN+V1ghn7kiQ3jxLbEyaPnzV+/Ak4uHY8SmNTxoSH+b9eJv48tRwOyDe7E9UZwT0K2t7m96Pwlk7ZhMLfgiYNAPQoX0+X0E6ywwmsr3XXujTY=
+	t=1738247411; cv=none; b=ETDh46ZqsiuEPh2ra/f+Ff1dngMoY33313L/206ogGZN+7L3/G+orqPW6cCWzbCJTm21PEuGzWyU7Vs0ni6j5J7rxvBnSgkOczwabodynOIe4ZqCkW+xqh7gzKBdAc48AbMoFN6+Tq0s/jlZaYAV1eVyL14fAz3QEz9I3a3dpdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247330; c=relaxed/simple;
-	bh=wO7f8FuIlveU/gNbtZoFkccswLHg9OZfTDuHHbdKsKI=;
+	s=arc-20240116; t=1738247411; c=relaxed/simple;
+	bh=oSYPb7YAzlGluMW+4A0UggJun5y/7/jQIhWx6Gf/a24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpW4F1/HncUN00x7AeyDV6AVmH1W1PPz6gmtBvGyaYtgEFKMnDeVSHRBSHFdHJjEw5JS54+bmjy0QSSpw6qvOOBEWlXqr5bMk+MEGv4T+9rlSRz7k9KpAJ5VNpbOiy3LlQKHrUyK2oSgC3A0ciSB7Oq8a0Hh69bNmJQzzXaRQRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Di4RPOMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22750C4CED2;
-	Thu, 30 Jan 2025 14:28:48 +0000 (UTC)
+	 MIME-Version; b=RRdj5uGuoHP53HTniMSQ/Br+z/eGM36uG9+rvdtc93+rqGph3LEgNS6mG2TevzXTwV+pAlcw7CSVPl0ooHs2fMeWVXl7caW5hYIYaB2Sqf6C3o+ot/MqEznL2bJE0PU96edS4XE0rE6ROXqzOMmqctLGtj+SFR5iv3gcl4Z6d5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urZ9bSvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACE3C4CEE0;
+	Thu, 30 Jan 2025 14:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247329;
-	bh=wO7f8FuIlveU/gNbtZoFkccswLHg9OZfTDuHHbdKsKI=;
+	s=korg; t=1738247411;
+	bh=oSYPb7YAzlGluMW+4A0UggJun5y/7/jQIhWx6Gf/a24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Di4RPOMquTg/FKXLYSWw+/gC+YPezHy+eCkMjiN1uWIku9BzAvm9e/qxUQY5V249c
-	 g3vJWc9nY2BADZH53DviE4gkZWtj2Py7OX7MD+fbCIXu4MzoqG2BuTaEZbxLPxBlDl
-	 Cice8QPpAFAttVtpi7l9hdwNaJfkc8FXDwwYFCHs=
+	b=urZ9bSvY5XgRXR2c1AdKs/h1PCd4IqSP1QAW0+gaLQq6mHLd7kwndDCcj7h4qvJ5d
+	 Y6ClWH3v0T8ATNYNRvzZNY5+CdiTl4FPcsmgYUsCGxg6wWDtF5U25GzNxu9mb2mjY8
+	 h6su11yHIVhZWD8eHNJSUtoRklQzkU2y62ne50Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH 5.15 14/24] fs/ntfs3: Additional check in ntfs_file_release
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 30/49] xfs: respect the stable writes flag on the RT device
 Date: Thu, 30 Jan 2025 15:02:06 +0100
-Message-ID: <20250130140127.866809923@linuxfoundation.org>
+Message-ID: <20250130140135.047392030@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 031d6f608290c847ba6378322d0986d08d1a645a upstream.
+[ Upstream commit 9c04138414c00ae61421f36ada002712c4bac94a ]
 
-Reported-by: syzbot+8c652f14a0fde76ff11d@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Update the per-folio stable writes flag dependening on which device an
+inode resides on.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231025141020.192413-5-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/file.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_inode.h |    8 ++++++++
+ fs/xfs/xfs_ioctl.c |    8 ++++++++
+ fs/xfs/xfs_iops.c  |    7 +++++++
+ 3 files changed, 23 insertions(+)
 
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -1192,8 +1192,16 @@ static int ntfs_file_release(struct inod
- 	int err = 0;
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -569,6 +569,14 @@ extern void xfs_setup_inode(struct xfs_i
+ extern void xfs_setup_iops(struct xfs_inode *ip);
+ extern void xfs_diflags_to_iflags(struct xfs_inode *ip, bool init);
  
- 	/* If we are last writer on the inode, drop the block reservation. */
--	if (sbi->options->prealloc && ((file->f_mode & FMODE_WRITE) &&
--				      atomic_read(&inode->i_writecount) == 1)) {
-+	if (sbi->options->prealloc &&
-+	    ((file->f_mode & FMODE_WRITE) &&
-+	     atomic_read(&inode->i_writecount) == 1)
-+	   /*
-+	    * The only file when inode->i_fop = &ntfs_file_operations and
-+	    * init_rwsem(&ni->file.run_lock) is not called explicitly is MFT.
-+	    *
-+	    * Add additional check here.
-+	    */
-+	    && inode->i_ino != MFT_REC_MFT) {
- 		ni_lock(ni);
- 		down_write(&ni->file.run_lock);
++static inline void xfs_update_stable_writes(struct xfs_inode *ip)
++{
++	if (bdev_stable_writes(xfs_inode_buftarg(ip)->bt_bdev))
++		mapping_set_stable_writes(VFS_I(ip)->i_mapping);
++	else
++		mapping_clear_stable_writes(VFS_I(ip)->i_mapping);
++}
++
+ /*
+  * When setting up a newly allocated inode, we need to call
+  * xfs_finish_inode_setup() once the inode is fully instantiated at
+--- a/fs/xfs/xfs_ioctl.c
++++ b/fs/xfs/xfs_ioctl.c
+@@ -1153,6 +1153,14 @@ xfs_ioctl_setattr_xflags(
+ 	ip->i_diflags2 = i_flags2;
  
+ 	xfs_diflags_to_iflags(ip, false);
++
++	/*
++	 * Make the stable writes flag match that of the device the inode
++	 * resides on when flipping the RT flag.
++	 */
++	if (rtflag != XFS_IS_REALTIME_INODE(ip) && S_ISREG(VFS_I(ip)->i_mode))
++		xfs_update_stable_writes(ip);
++
+ 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
+ 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
+ 	XFS_STATS_INC(mp, xs_ig_attrchg);
+--- a/fs/xfs/xfs_iops.c
++++ b/fs/xfs/xfs_iops.c
+@@ -1292,6 +1292,13 @@ xfs_setup_inode(
+ 	mapping_set_gfp_mask(inode->i_mapping, (gfp_mask & ~(__GFP_FS)));
+ 
+ 	/*
++	 * For real-time inodes update the stable write flags to that of the RT
++	 * device instead of the data device.
++	 */
++	if (S_ISREG(inode->i_mode) && XFS_IS_REALTIME_INODE(ip))
++		xfs_update_stable_writes(ip);
++
++	/*
+ 	 * If there is no attribute fork no ACL can exist on this inode,
+ 	 * and it can't have any file capabilities attached to it either.
+ 	 */
 
 
 
