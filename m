@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D77BA23013
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC43CA23043
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E857164AA9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11296168B8B
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947FD1E8835;
-	Thu, 30 Jan 2025 14:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A0A1E5018;
+	Thu, 30 Jan 2025 14:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuIx4MuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuE+5m8U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522E01E522;
-	Thu, 30 Jan 2025 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8731DE88B;
+	Thu, 30 Jan 2025 14:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247309; cv=none; b=H9MNGI2sv7Kd3Tb+ROTGprd209f8WSO3EUqBa+RUJ5ZYvvY6gDrWQKQU5Y9jfVuihP3pIDMAA+igzakvzw0LqGh5uzvZuShbwq5K99q7H+O4Cv38EpCSZ8Xta9FIfp56VBhM0vw2tZsnq45BOkq3925qzJpdmWUqOMJ9pMap4d8=
+	t=1738247429; cv=none; b=lSt3MkOKi1sDlFZQsetJSTkEShjs6lZgqTDVBcP8+Cx+8/V5lhji7CZdbfTnklhwYJU48MZ8R4dM+mLZ3VmAA+CM3B5rwQ6SjnpYMyGz5okASvtbhh83Fw0qvqMg2VT2ASBbh4svRB3GNEI/OWKFid7lu01yRJVBXEFLqPL0Uco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247309; c=relaxed/simple;
-	bh=WqBfrs2em131HZd06/Gy6JH6B1xAilPebxrC8kUWLYk=;
+	s=arc-20240116; t=1738247429; c=relaxed/simple;
+	bh=iJcl9dFhpT4MCBSOcytkpQmwRcndYyMrt3tyfH9M588=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBAP5u38/0Jc6MTZ19uCi7YVJ+t/4GCxW+G1he0LuittvHpbaCC4mPEbkHWHPVwgw3DwqO2xz8UjDo/cxDSYEUmWKaZR3K2litlwg6tGZCcT4EOmMyBNRitEx1DE1sPD4qoh15b6QlVHoXF4CyUwvnmBvHwSpUlU1USan2vGJs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuIx4MuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789CFC4CED2;
-	Thu, 30 Jan 2025 14:28:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sK+Q8OKOZ/Gq6VsFnesqbJzLE6+Ai/8mg1yUhy0gv/i9zaPx8KEGRh482wE04VTzdF5Cmq/1qipObHJE96M1TnUJ1oDMYJC/kLrfBAyg9azA6Xb6JY67OuhJ4uQBSU4iLgJmb+BvmpOdzzAwvYeHkLnc4p2XiaY9eQwOTk5/0sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuE+5m8U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90966C4CED2;
+	Thu, 30 Jan 2025 14:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247308;
-	bh=WqBfrs2em131HZd06/Gy6JH6B1xAilPebxrC8kUWLYk=;
+	s=korg; t=1738247429;
+	bh=iJcl9dFhpT4MCBSOcytkpQmwRcndYyMrt3tyfH9M588=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WuIx4MuJy0GsUnxKSxthQwpqPJjkfR+DIOZ/LHzRhvQsQyRbgenE7JgfH5i31mO3O
-	 Bp2+cprySyeVo8qlyzSCbHI3Qq+eKW/ydmkezWVpxj4tpJRINZKm0l6lUsv0ltmH78
-	 K44CiyzSkdpiXx9KI/4z4YRtbogMm0iYoL68EYvc=
+	b=VuE+5m8UUlEDAJIIRGYnur5UWMfiAv2Jbg+uuafWx1VrsfPWMlR7/bvpCgPsx1IDi
+	 nEaS6kz7LGUp4htzn7tdqb0OwhLsNC7svZXv8t+pehAe08ZwgVdMnMlRLADP9QQ8ip
+	 A7H/yapoD6y90Jv2VTAAfIMn263V5fbSD9G+C7OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	stable <stable@kernel.org>,
-	Lianqin Hu <hulianqin@vivo.com>
-Subject: [PATCH 5.15 20/24] Revert "usb: gadget: u_serial: Disable ep before setting port to null to fix the crash caused by port being null"
+	Mostafa Saleh <smostafa@google.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Alex Williamson <alex.williamson@redhat.com>
+Subject: [PATCH 6.1 36/49] vfio/platform: check the bounds of read/write syscalls
 Date: Thu, 30 Jan 2025 15:02:12 +0100
-Message-ID: <20250130140128.099353578@linuxfoundation.org>
+Message-ID: <20250130140135.283703118@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
+References: <20250130140133.825446496@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit 086fd062bc3883ae1ce4166cff5355db315ad879 upstream.
+commit ce9ff21ea89d191e477a02ad7eabf4f996b80a69 upstream.
 
-This reverts commit 13014969cbf07f18d62ceea40bd8ca8ec9d36cec.
+count and offset are passed from user space and not checked, only
+offset is capped to 40 bits, which can be used to read/write out of
+bounds of the device.
 
-It is reported to cause crashes on Tegra systems, so revert it for now.
-
-Link: https://lore.kernel.org/r/1037c1ad-9230-4181-b9c3-167dbaa47644@nvidia.com
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Cc: stable <stable@kernel.org>
-Cc: Lianqin Hu <hulianqin@vivo.com>
-Link: https://lore.kernel.org/r/2025011711-yippee-fever-a737@gregkh
+Fixes: 6e3f26456009 (“vfio/platform: read and write support for the device fd”)
+Cc: stable@vger.kernel.org
+Reported-by: Mostafa Saleh <smostafa@google.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mostafa Saleh <smostafa@google.com>
+Tested-by: Mostafa Saleh <smostafa@google.com>
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/u_serial.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/vfio/platform/vfio_platform_common.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1393,10 +1393,6 @@ void gserial_disconnect(struct gserial *
- 	/* REVISIT as above: how best to track this? */
- 	port->port_line_coding = gser->port_line_coding;
+--- a/drivers/vfio/platform/vfio_platform_common.c
++++ b/drivers/vfio/platform/vfio_platform_common.c
+@@ -391,6 +391,11 @@ static ssize_t vfio_platform_read_mmio(s
+ {
+ 	unsigned int done = 0;
  
--	/* disable endpoints, aborting down any active I/O */
--	usb_ep_disable(gser->out);
--	usb_ep_disable(gser->in);
--
- 	port->port_usb = NULL;
- 	gser->ioport = NULL;
- 	if (port->port.count > 0) {
-@@ -1408,6 +1404,10 @@ void gserial_disconnect(struct gserial *
- 	spin_unlock(&port->port_lock);
- 	spin_unlock_irqrestore(&serial_port_lock, flags);
- 
-+	/* disable endpoints, aborting down any active I/O */
-+	usb_ep_disable(gser->out);
-+	usb_ep_disable(gser->in);
++	if (off >= reg->size)
++		return -EINVAL;
 +
- 	/* finally, free any unused/unusable I/O buffers */
- 	spin_lock_irqsave(&port->port_lock, flags);
- 	if (port->port.count == 0)
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
+@@ -470,6 +475,11 @@ static ssize_t vfio_platform_write_mmio(
+ {
+ 	unsigned int done = 0;
+ 
++	if (off >= reg->size)
++		return -EINVAL;
++
++	count = min_t(size_t, count, reg->size - off);
++
+ 	if (!reg->ioaddr) {
+ 		reg->ioaddr =
+ 			ioremap(reg->addr, reg->size);
 
 
 
