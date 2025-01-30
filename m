@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-111402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B38A22EFB
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6736A22FAF
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7251816418C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98E4C188338A
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E24C1E7C08;
-	Thu, 30 Jan 2025 14:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C441E98F1;
+	Thu, 30 Jan 2025 14:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA2QKibj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAtAlHiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4721DDE9;
-	Thu, 30 Jan 2025 14:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D42D1E8835;
+	Thu, 30 Jan 2025 14:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246633; cv=none; b=NkQDPLSiaoSKOFKNqdI9QSAM5cBPsug9z3eg9Vm5jTDVfJTzucHe6NkwDtuWpLclxdOf1YLCVvp62ucekpnxiOxlBIPi7d5yJPDv7DbVqaEjZwfX61AXzYNCRT7AQ9U4yP7x5MNbv6rLUxQ2N6yRZTnA8Zz81kUs247IIE0kxD0=
+	t=1738247061; cv=none; b=XyvtpXYPXCwtoJ8b9uJqxID0dJ0MbgWMRjw7cNBBtotEwaM4u9mRvpZBY5m80aMw9OxoKeLfwR8nD9Oj0SWuzHSVPfMLuplL80/l4NDDWw+obRihNvuq+wePxYraMlVcY7yrMNqaZrEOusBPS+Wslh2U2oBjZGv+/bwnKTlcs5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246633; c=relaxed/simple;
-	bh=5vCsNbS/cDwM7t8qflC3tn/BjIaWi5C7ZcXcKwy0iMM=;
+	s=arc-20240116; t=1738247061; c=relaxed/simple;
+	bh=+HZeLU+lWUGZ4S/920k/bu+phODLK8qoaSZ4/7vrqFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0bbMazRR7j6i6UFyBKMGjBrWfbTdfZE0LP1+RssF6co3Ph24wxmXkVA/T2Hg3xDe3DyKXqiAqtCd2ug3f4njyZdyMWgd/nFvCuXCb7N2tgx+7GR4ZO0a2J8nmTFLBZGvhDG+/mRYjSiHGwyQr6Tz7WhfeZ1dC59Nwvy5yrPnJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA2QKibj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85FAC4CED2;
-	Thu, 30 Jan 2025 14:17:12 +0000 (UTC)
+	 MIME-Version; b=G0ZdQvqAO0TTD8kzJzozphglmeS0JEA4gm4IgfwyLZA6URRd1aWkSGPZPJxtgrrdVFYPkS62dt8sQN6sZ/PNVw/tcHPgBju1vHZAsWxDwJEkTBM8fz1VhkFHbCTS/w/3BymlvtfMTixnzVeO1jtZbXRlGtTSnZmzosqBEg6LZlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAtAlHiW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375AEC4CED2;
+	Thu, 30 Jan 2025 14:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246633;
-	bh=5vCsNbS/cDwM7t8qflC3tn/BjIaWi5C7ZcXcKwy0iMM=;
+	s=korg; t=1738247060;
+	bh=+HZeLU+lWUGZ4S/920k/bu+phODLK8qoaSZ4/7vrqFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EA2QKibjrqtxK7xTHoynwXyWyRbACUNhPPZWKV4FbUX13UH0hxGd2nijBw0cNb/S7
-	 SKnXDKMkE/9KsmHnsoau1+AJuvWepuk5aYkiiXWL6Tyy8DkcMXRihaUf1gLGTEOnd+
-	 k1mLropI36ZKDXxZGNT4HGRGhgLNHl2yrI/qFwco=
+	b=sAtAlHiWS9owP31PcfBsNoVui9xUcSFAm1F1yYV11KsBwsTKsuKPeFAi2+o2R0nxy
+	 ewXjIkq6phIeWE2z8Y56H8IHQLQ/VHjY9Mz6GnNHFci2ocaGFcgmlJCtjI8piUzPbU
+	 xZbfUXGlYFNIKaJ4FJiSbF1GASvLhkU0JubNgQzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/91] tcp/dccp: complete lockless accesses to sk->sk_max_ack_backlog
-Date: Thu, 30 Jan 2025 15:00:26 +0100
-Message-ID: <20250130140133.965144277@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jun Yan <jerrysteve1101@gmail.com>
+Subject: [PATCH 5.10 038/133] USB: usblp: return error when setting unsupported protocol
+Date: Thu, 30 Jan 2025 15:00:27 +0100
+Message-ID: <20250130140144.043518426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Jun Yan <jerrysteve1101@gmail.com>
 
-[ Upstream commit 9a79c65f00e2b036e17af3a3a607d7d732b7affb ]
+commit 7a3d76a0b60b3f6fc3375e4de2174bab43f64545 upstream.
 
-Since commit 099ecf59f05b ("net: annotate lockless accesses to
-sk->sk_max_ack_backlog") decided to handle the sk_max_ack_backlog
-locklessly, there is one more function mostly called in TCP/DCCP
-cases. So this patch completes it:)
+Fix the regression introduced by commit d8c6edfa3f4e ("USB:
+usblp: don't call usb_set_interface if there's a single alt"),
+which causes that unsupported protocols can also be set via
+ioctl when the num_altsetting of the device is 1.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240331090521.71965-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 3479c7549fb1 ("tcp/dccp: allow a connection when sk_max_ack_backlog is zero")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the check for protocol support to the earlier stage.
+
+Fixes: d8c6edfa3f4e ("USB: usblp: don't call usb_set_interface if there's a single alt")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Link: https://lore.kernel.org/r/20241212143852.671889-1-jerrysteve1101@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/inet_connection_sock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/usblp.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 180ff3ca823a..c81bbfc5f4df 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -285,7 +285,7 @@ static inline int inet_csk_reqsk_queue_len(const struct sock *sk)
+--- a/drivers/usb/class/usblp.c
++++ b/drivers/usb/class/usblp.c
+@@ -1337,11 +1337,12 @@ static int usblp_set_protocol(struct usb
+ 	if (protocol < USBLP_FIRST_PROTOCOL || protocol > USBLP_LAST_PROTOCOL)
+ 		return -EINVAL;
  
- static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
- {
--	return inet_csk_reqsk_queue_len(sk) >= sk->sk_max_ack_backlog;
-+	return inet_csk_reqsk_queue_len(sk) >= READ_ONCE(sk->sk_max_ack_backlog);
- }
- 
- bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
--- 
-2.39.5
-
++	alts = usblp->protocol[protocol].alt_setting;
++	if (alts < 0)
++		return -EINVAL;
++
+ 	/* Don't unnecessarily set the interface if there's a single alt. */
+ 	if (usblp->intf->num_altsetting > 1) {
+-		alts = usblp->protocol[protocol].alt_setting;
+-		if (alts < 0)
+-			return -EINVAL;
+ 		r = usb_set_interface(usblp->dev, usblp->ifnum, alts);
+ 		if (r < 0) {
+ 			printk(KERN_ERR "usblp: can't set desired altsetting %d on interface %d\n",
 
 
 
