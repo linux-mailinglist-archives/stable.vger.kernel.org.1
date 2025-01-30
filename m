@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-111445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07F3A22F2C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A02A22FCE
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BA31625C2
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B73E16924D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123AE1E7C25;
-	Thu, 30 Jan 2025 14:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9531E8855;
+	Thu, 30 Jan 2025 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxbvOVwp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjGutgr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49811E3772;
-	Thu, 30 Jan 2025 14:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92BF1E6DCF;
+	Thu, 30 Jan 2025 14:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246760; cv=none; b=pAEGxHNw/BzY1h17EJVFGst/aQCw6F5+Rfeg05Y86WL+/3l8fGEwYmAhCu9Vr1upQ18/7Xqksxtp0chb2wVsdrgquZ8SbvU/GpMU/nX6Q8xmlg8s83UHbqWH5wHxnlZd91OAC1VeDoHdI7d0gpwouW8pw92oGT105SJQNE0Mucg=
+	t=1738247121; cv=none; b=l86yR1xJZKBUMXZnkXBXU1bkZG9c6uAim5jvdkWH9uWOziVBelDw/Lfr3vhJ9Wnk0Z8VwEeDdj66sT7O+XKUVZ+4xqV8wl4wjoTXIXDuW9r2xbmfjIszTM4+zinXVPw/0OC8DVfOYL6S4vmi4sBwAfHpK0D2b9OlQ1f1Pp5wvhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246760; c=relaxed/simple;
-	bh=64Nhb1pccEf9A4rkCM2tUaX9IEicu2STuR/ysapRXK4=;
+	s=arc-20240116; t=1738247121; c=relaxed/simple;
+	bh=CDmMfYJKusMkHZHzsc5wFa3WvCIzoA7m7IsG2LMls4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=coCgVWzW1+53DRxXDfSV5/AdN/MPTd7/lzoW4GHteAFRK+LGFcvUA6ok17R0zzgI1DhmtoLudharT1zlxwC2DoRWyYRJBAEK7Vu4iTb5S5v8S+zbWjPg8E3gUW3us1UrGC2trt8UAEfEg5LbbO+5gBTOO/8kyCwoaF5yD9Fe3dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxbvOVwp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD34C4CED2;
-	Thu, 30 Jan 2025 14:19:18 +0000 (UTC)
+	 MIME-Version; b=dFZfMT53Mo823cnY21TW7xWEUltGebv8o7+c916E5S56ccXBA8fghJJGM8RnaNl+yt3R+xD9mDxRt7jnu4lyDX5AjZNzXK5ag2mP8tt6rHR7tV+xiznCscqp2eXYDsFzrVDRZPyiR/T/O3VshIbOnogpieu4wxQ5aDWw70xrC2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjGutgr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6121EC4CEE2;
+	Thu, 30 Jan 2025 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246759;
-	bh=64Nhb1pccEf9A4rkCM2tUaX9IEicu2STuR/ysapRXK4=;
+	s=korg; t=1738247121;
+	bh=CDmMfYJKusMkHZHzsc5wFa3WvCIzoA7m7IsG2LMls4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxbvOVwp4T5Bd3skXeMiKNa9Yipd3VR9+P/abUa+P7Y+ZNASWCc3L5ZBrHYTSsxgp
-	 m41uiX9b4FAyr3NziDAngtx/B3uE+ek7viRT+o9SsMHSL441xLoNLG2iDKOEnTFkbU
-	 kWSa3IUTq1OmNPtKwuAZT6ba0h3Nl8XGcGu/PZhA=
+	b=BjGutgr2XL19GTHz9jt8AcZda7gh/Wz8npoBK0m5aCDFXK9IHqPuX4GcMQyYvO2kc
+	 BO45UP2zmeQX+xo4dPPqAqUA0YnH76T5vCuc/8Upub6E+2HUuANF417tHuVMBFcx59
+	 FdOw8LMR5vJ6AsRxokcKASHOb5kBFU1eMCe/mhdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Liang <shaw.leon@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 58/91] gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().
-Date: Thu, 30 Jan 2025 15:01:17 +0100
-Message-ID: <20250130140135.996463167@linuxfoundation.org>
+Subject: [PATCH 5.10 089/133] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
+Date: Thu, 30 Jan 2025 15:01:18 +0100
+Message-ID: <20250130140146.103141268@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 46841c7053e6d25fb33e0534ef023833bf03e382 ]
+[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
 
-gtp_newlink() links the gtp device to a list in dev_net(dev).
+As the comment above waitqueue_active() explains, it can only be used
+if both waker and waiter have mb()'s that pair with each other. However
+__pollwait() is broken in this respect.
 
-However, even after the gtp device is moved to another netns,
-it stays on the list but should be invisible.
+This is not pipe-specific, but let's look at pipe_poll() for example:
 
-Let's use for_each_netdev_rcu() for netdev traversal in
-gtp_genl_dump_pdp().
+	poll_wait(...); // -> __pollwait() -> add_wait_queue()
 
-Note that gtp_dev_list is no longer used under RCU, so list
-helpers are converted to the non-RCU variant.
+	LOAD(pipe->head);
+	LOAD(pipe->head);
 
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Reported-by: Xiao Liang <shaw.leon@gmail.com>
-Closes: https://lore.kernel.org/netdev/CABAhCOQdBL6h9M2C+kd+bGivRJ9Q72JUxW+-gur0nub_=PmFPA@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+In theory these LOAD()'s can leak into the critical section inside
+add_wait_queue() and can happen before list_add(entry, wq_head), in this
+case pipe_poll() can race with wakeup_pipe_readers/writers which do
+
+	smp_mb();
+	if (waitqueue_active(wq_head))
+		wake_up_interruptible(wq_head);
+
+There are more __pollwait()-like functions (grep init_poll_funcptr), and
+it seems that at least ep_ptable_queue_proc() has the same problem, so the
+patch adds smp_mb() into poll_wait().
+
+Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ include/linux/poll.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-index fd5d3f58b5c10..e08cd4b1be6c1 100644
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -691,7 +691,7 @@ static int gtp_newlink(struct net *src_net, struct net_device *dev,
- 	}
+diff --git a/include/linux/poll.h b/include/linux/poll.h
+index 7e0fdcf905d2e..a4af5e14dffed 100644
+--- a/include/linux/poll.h
++++ b/include/linux/poll.h
+@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
  
- 	gn = net_generic(dev_net(dev), gtp_net_id);
--	list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-+	list_add(&gtp->list, &gn->gtp_dev_list);
- 	dev->priv_destructor = gtp_destructor;
- 
- 	netdev_dbg(dev, "registered new GTP interface\n");
-@@ -717,7 +717,7 @@ static void gtp_dellink(struct net_device *dev, struct list_head *head)
- 		hlist_for_each_entry_safe(pctx, next, &gtp->tid_hash[i], hlist_tid)
- 			pdp_context_delete(pctx);
- 
--	list_del_rcu(&gtp->list);
-+	list_del(&gtp->list);
- 	unregister_netdevice_queue(dev, head);
+ static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+ {
+-	if (p && p->_qproc && wait_address)
++	if (p && p->_qproc && wait_address) {
+ 		p->_qproc(filp, wait_address, p);
++		/*
++		 * This memory barrier is paired in the wq_has_sleeper().
++		 * See the comment above prepare_to_wait(), we need to
++		 * ensure that subsequent tests in this thread can't be
++		 * reordered with __add_wait_queue() in _qproc() paths.
++		 */
++		smp_mb();
++	}
  }
  
-@@ -1259,16 +1259,19 @@ static int gtp_genl_dump_pdp(struct sk_buff *skb,
- 	struct gtp_dev *last_gtp = (struct gtp_dev *)cb->args[2], *gtp;
- 	int i, j, bucket = cb->args[0], skip = cb->args[1];
- 	struct net *net = sock_net(skb->sk);
-+	struct net_device *dev;
- 	struct pdp_ctx *pctx;
--	struct gtp_net *gn;
--
--	gn = net_generic(net, gtp_net_id);
- 
- 	if (cb->args[4])
- 		return 0;
- 
- 	rcu_read_lock();
--	list_for_each_entry_rcu(gtp, &gn->gtp_dev_list, list) {
-+	for_each_netdev_rcu(net, dev) {
-+		if (dev->rtnl_link_ops != &gtp_link_ops)
-+			continue;
-+
-+		gtp = netdev_priv(dev);
-+
- 		if (last_gtp && last_gtp != gtp)
- 			continue;
- 		else
-@@ -1362,9 +1365,9 @@ static void __net_exit gtp_net_exit_batch_rtnl(struct list_head *net_list,
- 
- 	list_for_each_entry(net, net_list, exit_list) {
- 		struct gtp_net *gn = net_generic(net, gtp_net_id);
--		struct gtp_dev *gtp;
-+		struct gtp_dev *gtp, *gtp_next;
- 
--		list_for_each_entry(gtp, &gn->gtp_dev_list, list)
-+		list_for_each_entry_safe(gtp, gtp_next, &gn->gtp_dev_list, list)
- 			gtp_dellink(gtp->dev, dev_to_kill);
- 	}
- }
+ /*
 -- 
 2.39.5
 
