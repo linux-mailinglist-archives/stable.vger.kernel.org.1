@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-111572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C15A22FCC
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 248BCA22F34
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6E131886F84
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61E41884041
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7D51E9907;
-	Thu, 30 Jan 2025 14:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8992E1E8824;
+	Thu, 30 Jan 2025 14:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGskOXGB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hX68eTOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D331E522;
-	Thu, 30 Jan 2025 14:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A341BDA95;
+	Thu, 30 Jan 2025 14:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247127; cv=none; b=dAmqHHXOsov/19n62DIwj6rPfo42zp74YUAdKYxh96arDJG9OGRPEzFcWulsxS6gS5ZWI7tPw3ZFvErsUxe/ZZHKrwkyFu209adux7kHP/ocKviCDmGmaOJOh/t2Qdv5v3jop4mV06m2rBCx6q1zh836iVS13GZRwfcrOjxBl7k=
+	t=1738246771; cv=none; b=PchyF2i3NM35900J4y4dm9jpusJO+tPb3nKP8YGzsx7lheiOdOfFZfG2P6ALRbnSNyJadUE7TNiGqEo71Z7OsTlBl6YSKERvj7wYcXRpkPxrlk8Wy0a1ShDCaKcwLquZTFRPwHLWQsTsciaUaxMKslh2oqrilcjRHttLoiK4Ek8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247127; c=relaxed/simple;
-	bh=54LqZMrp3gmwAVzNylxiid1kN9v+S7y/gkFKIq71lxI=;
+	s=arc-20240116; t=1738246771; c=relaxed/simple;
+	bh=m50uJK3Y06UYw3i+KEiTOIJd1nFLAuSRrzyhPHt8pLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkNbJtYugY2kxVZY+G5zkdImQk8aDx+7tHtrWUFuStoiI+ZEqnzO7TuOHzx0DmG7l9caZVBfg1errUCAN6fNi41xWf+UrlMbyh8zXXKkIhxvjJllwDJK/sn+sq8Sxjp9frnGI9hnQS56Fo/zLUasl9Jo4m8VgTr5hm1IdrWm+8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGskOXGB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00815C4CED2;
-	Thu, 30 Jan 2025 14:25:26 +0000 (UTC)
+	 MIME-Version; b=dl2tuMVgwiIv+x0kMVzkh/3dbREIq0413+fjVYFw4z1oq3j7lRFJ8ODYu8kFbYZBW92AEQOTTuq1WDxEPNiF+vdsshTnCqrbTuoI35ES9m1BdbgtXB4kO+ExMYB6B+/exE7aH6cfC+rUoSW+/OJ2Kf76qcQEBVqJcLXDtcmzrhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hX68eTOW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C303CC4CED2;
+	Thu, 30 Jan 2025 14:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247127;
-	bh=54LqZMrp3gmwAVzNylxiid1kN9v+S7y/gkFKIq71lxI=;
+	s=korg; t=1738246771;
+	bh=m50uJK3Y06UYw3i+KEiTOIJd1nFLAuSRrzyhPHt8pLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGskOXGBqoL+PcgkbYXwaowCqbucSjBTj086Y+p4r3bSTp6BckuEt5li034b+9Bv0
-	 1Wo6yaYk/xPdUjjCjcabJsQ1zvkvvMaNqPF502nPScmXrHxhWmZPfNH+JBU4vXRIOA
-	 +4Gaqiecm3bF1AK25gKCz+tc1f1vcXUnv0PXIbk4=
+	b=hX68eTOW8/ZnwuZAXa8y1aHQ5T9Op6ywj/ZaBVE9/28E4XZ8zsA+D5LyWw1BweRQ5
+	 8xUA/W1YdUCrcWa0dhmyEeiVskBEA/zHsbhs2V0NaIHffaFYTjDzB8Vz1h9Cmupe+F
+	 qvJVmvwCcdvpwaPuh2TdJPxTY9HwZg5kFe+9SnL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Juergen Gross <jgross@suse.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/133] x86/asm: Make serialize() always_inline
-Date: Thu, 30 Jan 2025 15:01:20 +0100
-Message-ID: <20250130140146.183115489@linuxfoundation.org>
+Subject: [PATCH 5.4 62/91] i2c: mux: demux-pinctrl: check initial mux selection, too
+Date: Thu, 30 Jan 2025 15:01:21 +0100
+Message-ID: <20250130140136.170091205@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit ae02ae16b76160f0aeeae2c5fb9b15226d00a4ef ]
+[ Upstream commit ca89f73394daf92779ddaa37b42956f4953f3941 ]
 
-In order to allow serialize() to be used from noinstr code, make it
-__always_inline.
+When misconfigured, the initial setup of the current mux channel can
+fail, too. It must be checked as well.
 
-Fixes: 0ef8047b737d ("x86/static-call: provide a way to do very early static-call updates")
-Closes: https://lore.kernel.org/oe-kbuild-all/202412181756.aJvzih2K-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241218100918.22167-1-jgross@suse.com
+Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/special_insns.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 415693f5d909d..ad828c6742d4e 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -236,7 +236,7 @@ static inline void clwb(volatile void *__p)
+diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+index 45a3f7e7b3f68..cea057704c00c 100644
+--- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
++++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+@@ -261,7 +261,9 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
+ 	pm_runtime_no_callbacks(&pdev->dev);
  
- #define nop() asm volatile ("nop")
+ 	/* switch to first parent as active master */
+-	i2c_demux_activate_master(priv, 0);
++	err = i2c_demux_activate_master(priv, 0);
++	if (err)
++		goto err_rollback;
  
--static inline void serialize(void)
-+static __always_inline void serialize(void)
- {
- 	/* Instruction opcode for SERIALIZE; supported in binutils >= 2.35. */
- 	asm volatile(".byte 0xf, 0x1, 0xe8" ::: "memory");
+ 	err = device_create_file(&pdev->dev, &dev_attr_available_masters);
+ 	if (err)
 -- 
 2.39.5
 
