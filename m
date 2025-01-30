@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191E8A22EC9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1657DA22E68
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D027163E12
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D22B7A213E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 13:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F511E9B19;
-	Thu, 30 Jan 2025 14:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE831E2853;
+	Thu, 30 Jan 2025 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hA4LnEjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkAIxP7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77501E5738;
-	Thu, 30 Jan 2025 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88398C13D;
+	Thu, 30 Jan 2025 14:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246507; cv=none; b=Zi7hW84tVg0HnPf3idjWnr95Fhm8Nlty3TZ7FJdtNi73ORPRjjeOcu4buVQl4y2wSQ7PCVhtZ7d0/duNlp80LnOB1SljntSeaUcfxIA4HGPaaWUmrVakoJ3IplRYnLlOmnN8DOv2nCUzHOuON+azcfchlJbeG30fYH8UPmRMJOI=
+	t=1738245639; cv=none; b=diBGpBG8+k7Mm30emcpbGsjvgrCx/RKmWirUm1tgVrQY3nlVEM1J838ByDAKEoCyX3V3VanP4Ky8omi1yIfvR11k2Iihv6U+9DTWks/EKN06zxZYHMnVQUpfajw+cVasHCjue7dKzLsVGBsc0Y7WeJXTdQ/IB9WWhEP7fYs2Pgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246507; c=relaxed/simple;
-	bh=1/WUzDwTzeIGcTLrxv6r4jn5++8cbE3RLFGzdexet3w=;
+	s=arc-20240116; t=1738245639; c=relaxed/simple;
+	bh=PV1ekjZx1T7hH3REmmPLemaUcRL5Ny4hoI6tmValFkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOdixU/NyzhdAKfKuYMDUbdNKfujQbuh+pL1zcyJ3HApwS+2D4vJpF+odhMtsJ72h5ExwMSb4e5Po/Re8VlCdq76RbkjIT+zKkME2pYAef5zRhPKPJhvo2MYAOmWtejMiXdcGCDpzzLiplNnrIpf1lWD3p1SxI91/j6gRnS/wyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hA4LnEjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C1AC4CED2;
-	Thu, 30 Jan 2025 14:15:06 +0000 (UTC)
+	 MIME-Version; b=Nfq05L3UNnFq13icvlMtWYdDYMAA9kGGvqv3ulC/kHLxTMhFjKQFns/g5K1m/xuIJk7jfxN6Ejr0iKDk361s/uDKyZSQf/9TM5Q3wMzrD8bjY5F91y4UGngXqYwmLgoUuRucgJ9xNaf7NOvWfLiKn6/zCCmjkB9MYSHYINcmCQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkAIxP7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941B7C4CED2;
+	Thu, 30 Jan 2025 14:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246507;
-	bh=1/WUzDwTzeIGcTLrxv6r4jn5++8cbE3RLFGzdexet3w=;
+	s=korg; t=1738245639;
+	bh=PV1ekjZx1T7hH3REmmPLemaUcRL5Ny4hoI6tmValFkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hA4LnEjowAWDVzXIayB3U6dUgNjPYp78AoiEvsv16zM3aGh5FuDvE3jL5q3esC3j/
-	 Ok7nELZ4tB0Cwm9mluMyqAiisKBtq3K3xVbAGoqi3xL2cg0Vb23EqPIxri+KHCyo/G
-	 71Yv6yyDbrkGzCcthIbk1k+XLynv5tEKPps7sf1Y=
+	b=SkAIxP7bCjsw6SXIhODiigDUFSgJUFWqT8T4wR+q/e3mUuatwGb7hMsFrUrv1WmYj
+	 u6rqpC22gusJakL2sDoIC6U5LaY3FWiHt1g3AremjoKFtGYu70RGom9duF/Z79AuBJ
+	 zRZNbEuQ8ZWqMgXJHsGcVijfTjIYqb4e9gkAdpO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Kees Cook <kees@kernel.org>,
+	Yage Geng <icoderdev@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/43] seccomp: Stub for !CONFIG_SECCOMP
+Subject: [PATCH 6.12 10/40] ALSA: hda/realtek: Fix volume adjustment issue on Lenovo ThinkBook 16P Gen5
 Date: Thu, 30 Jan 2025 14:59:10 +0100
-Message-ID: <20250130133459.040357953@linuxfoundation.org>
+Message-ID: <20250130133500.123290733@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Yage Geng <icoderdev@gmail.com>
 
-[ Upstream commit f90877dd7fb5085dd9abd6399daf63dd2969fc90 ]
+[ Upstream commit 34c8e74cd6667ef5da90d448a1af702c4b873bd3 ]
 
-When using !CONFIG_SECCOMP with CONFIG_GENERIC_ENTRY, the
-randconfig bots found the following snag:
+This patch fixes the volume adjustment issue on the Lenovo ThinkBook 16P Gen5
+by applying the necessary quirk configuration for the Realtek ALC287 codec.
 
-   kernel/entry/common.c: In function 'syscall_trace_enter':
->> kernel/entry/common.c:52:23: error: implicit declaration
-   of function '__secure_computing' [-Wimplicit-function-declaration]
-      52 |                 ret = __secure_computing(NULL);
-         |                       ^~~~~~~~~~~~~~~~~~
+The issue was caused by incorrect configuration in the driver,
+which prevented proper volume control on certain systems.
 
-Since generic entry calls __secure_computing() unconditionally,
-fix this by moving the stub out of the ifdef clause for
-CONFIG_HAVE_ARCH_SECCOMP_FILTER so it's always available.
-
-Link: https://lore.kernel.org/oe-kbuild-all/202501061240.Fzk9qiFZ-lkp@intel.com/
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250108-seccomp-stub-2-v2-1-74523d49420f@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Yage Geng <icoderdev@gmail.com>
+Link: https://patch.msgid.link/20250113085208.15351-1-icoderdev@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seccomp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 175079552f68d..8cf31bb887198 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -70,10 +70,10 @@ struct seccomp_data;
- 
- #ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
- static inline int secure_computing(void) { return 0; }
--static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
- #else
- static inline void secure_computing_strict(int this_syscall) { return; }
- #endif
-+static inline int __secure_computing(const struct seccomp_data *sd) { return 0; }
- 
- static inline long prctl_get_seccomp(void)
- {
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index a9f6138b59b0c..8c4de5a253add 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10916,8 +10916,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x38e0, "Yoga Y990 Intel VECO Dual", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38f8, "Yoga Book 9i", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38df, "Y990 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+-	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
+-	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x17aa, 0x38f9, "Thinkbook 16P Gen5", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
++	SND_PCI_QUIRK(0x17aa, 0x38fa, "Thinkbook 16P Gen5", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x38fd, "ThinkBook plus Gen5 Hybrid", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
 -- 
 2.39.5
 
