@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E4AA22F08
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:17:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A13FA22FBC
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:24:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4AB11888529
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72B5F7A299E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1D71E8823;
-	Thu, 30 Jan 2025 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144141E9906;
+	Thu, 30 Jan 2025 14:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSBMbqqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU0jq36/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279F219DFAB;
-	Thu, 30 Jan 2025 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67081E98F1;
+	Thu, 30 Jan 2025 14:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246668; cv=none; b=aWLQ8jwTd0eXs5wM12sIF46bhrUYxz8yj1YsC+22zLN+mXw0mDdWhUwQzFvARSXpnJTA5yDVjFY1GJEqGOWXTAflhPRI2aM168S6RmJLqLA1VSAKV99Hfe+MrTbjuqd2i2+SL9qScNTpIL2ILFxm3opsjbKFmKPTFLAB5NT5iPs=
+	t=1738247028; cv=none; b=ZfojbCXC4TPTcHqWBlUt0dpTFl0VVil0kpDIgUMwVjPLdh/TjgZjr9vf/MAfZ5mnF88EN35rdEdi9E1gkdD/TRk1jsJFKJxySB+SfmJ22GuTtu8Z5/2JDjp4OFjxM8PNaEnQghp5IffYcAk+2oa5zKPfcRgx2ogj0NkUMPshdBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246668; c=relaxed/simple;
-	bh=k6PNCexuCTAE23O0zZoXXQxVZkF0VJ3hmJ1krEBVhwk=;
+	s=arc-20240116; t=1738247028; c=relaxed/simple;
+	bh=vcqM8/ZiXLgs3q21ADpRcy+5tCoxo+UtqinHuCSpF4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XvhYcJ0DrpIX13VYSxW8EZ0xIlw0EB+nbeVtz9FQepEKrmj2LCJmrySzwvcDBWZ0u6aFyezpEdVE12SHB3cxZ91DszSO9qMV4DxGVeXIpU9RPiRrAAkJCKBvHJt0FR0R+CNMjObq6qqVbEwWns1Sx/7J9xkcYll6ewbUNVzjrU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OSBMbqqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA779C4CED2;
-	Thu, 30 Jan 2025 14:17:47 +0000 (UTC)
+	 MIME-Version; b=BN7w20bPkkTT0goN5yuJJIwTyQh1Bn9FFkFqGgc/T+TRewpx2FOeuI5hb5Gm6x7fM3TuXIcWB4wAumzXPEA8q1QMhdRVOLEcUahef6xdmKI3k6JHSqZ2ahPLKawPqJZL+Zm+Jo1CfRSm0Ne56xrkgjLKgsO+VFZIgC6CYFer6Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZU0jq36/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52810C4CED2;
+	Thu, 30 Jan 2025 14:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246668;
-	bh=k6PNCexuCTAE23O0zZoXXQxVZkF0VJ3hmJ1krEBVhwk=;
+	s=korg; t=1738247028;
+	bh=vcqM8/ZiXLgs3q21ADpRcy+5tCoxo+UtqinHuCSpF4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSBMbqqAGwuxzfN8nRqLDxofl7BoK0MIyGpzFU/1PGH2xBkV32yNyLhqsTn52H0Nd
-	 /tjI4jSPVm8nkPNhSPTOYlNHKWBe9oaRQhgjyhiuMVRc2K5u8ZqMipfHHLZKDzi3qx
-	 HKcNexa0BqbTh1duFkscI8LC1iI7GVJ+R7OpueAE=
+	b=ZU0jq36/Axa5lw3AoZq8Vn0s0aAnAv1WO0F2Fubet9FCSdLWMZv88hc3DDtEWlUEd
+	 i5OdVCDBq9coRcDHZaCBEzf2GSYew3t8c6kHPte7sWLI6oLfmpRBF4wuedwov/Ys6s
+	 a1fKsBDGllAwbGIPtHUuxaykF2AEC6gXGVBDTQ8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make_ruc2021@163.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 27/91] usb: fix reference leak in usb_new_device()
+	Al Cooper <alcooperx@gmail.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 057/133] phy: usb: Add "wake on" functionality for newer Synopsis XHCI controllers
 Date: Thu, 30 Jan 2025 15:00:46 +0100
-Message-ID: <20250130140134.757390990@linuxfoundation.org>
+Message-ID: <20250130140144.814734853@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Al Cooper <alcooperx@gmail.com>
 
-commit 0df11fa8cee5a9cf8753d4e2672bb3667138c652 upstream.
+[ Upstream commit ae532b2b7aa5a3dad036aef4e0b177607172d276 ]
 
-When device_add(&udev->dev) succeeds and a later call fails,
-usb_new_device() does not properly call device_del(). As comment of
-device_add() says, 'if device_add() succeeds, you should call
-device_del() when you want to get rid of it. If device_add() has not
-succeeded, use only put_device() to drop the reference count'.
+Add "wake on" support for the newer Synopsis based XHCI only controller.
+This works on the 72165 and 72164 and newer chips and does not work
+on 7216 based systems. Also switch the USB sysclk to a slower clock
+on suspend to save additional power in S2. The clock switch will only
+save power on the 72165b0 and newer chips and is a nop on older chips.
 
-Found by code review.
-
-Cc: stable <stable@kernel.org>
-Fixes: 9f8b17e643fe ("USB: make usbdevices export their device nodes instead of using a separate class")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20241218071346.2973980-1-make_ruc2021@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Cooper <alcooperx@gmail.com>
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://lore.kernel.org/r/20220215032422.5179-1-f.fainelli@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 0a92ea87bdd6 ("phy: usb: Toggle the PHY power during init")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../phy/broadcom/phy-brcm-usb-init-synopsys.c | 46 +++++++++++++++----
+ 1 file changed, 38 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2592,13 +2592,13 @@ int usb_new_device(struct usb_device *ud
- 		err = sysfs_create_link(&udev->dev.kobj,
- 				&port_dev->dev.kobj, "port");
- 		if (err)
--			goto fail;
-+			goto out_del_dev;
+diff --git a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
+index e63457e145c7..d2524b70ea16 100644
+--- a/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
++++ b/drivers/phy/broadcom/phy-brcm-usb-init-synopsys.c
+@@ -47,6 +47,8 @@
+ #define   USB_CTRL_USB_PM_SOFT_RESET_MASK		0x40000000
+ #define   USB_CTRL_USB_PM_BDC_SOFT_RESETB_MASK		0x00800000
+ #define   USB_CTRL_USB_PM_XHC_SOFT_RESETB_MASK		0x00400000
++#define   USB_CTRL_USB_PM_XHC_PME_EN_MASK		0x00000010
++#define   USB_CTRL_USB_PM_XHC_S2_CLK_SWITCH_EN_MASK	0x00000008
+ #define USB_CTRL_USB_PM_STATUS		0x08
+ #define USB_CTRL_USB_DEVICE_CTL1	0x10
+ #define   USB_CTRL_USB_DEVICE_CTL1_PORT_MODE_MASK	0x00000003
+@@ -190,10 +192,6 @@ static void usb_init_common(struct brcm_usb_init_params *params)
  
- 		err = sysfs_create_link(&port_dev->dev.kobj,
- 				&udev->dev.kobj, "device");
- 		if (err) {
- 			sysfs_remove_link(&udev->dev.kobj, "port");
--			goto fail;
-+			goto out_del_dev;
- 		}
+ 	pr_debug("%s\n", __func__);
  
- 		if (!test_and_set_bit(port1, hub->child_usage_bits))
-@@ -2610,6 +2610,8 @@ int usb_new_device(struct usb_device *ud
- 	pm_runtime_put_sync_autosuspend(&udev->dev);
- 	return err;
+-	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
+-	/* 1 millisecond - for USB clocks to settle down */
+-	usleep_range(1000, 2000);
+-
+ 	if (USB_CTRL_MASK(USB_DEVICE_CTL1, PORT_MODE)) {
+ 		reg = brcm_usb_readl(USB_CTRL_REG(ctrl, USB_DEVICE_CTL1));
+ 		reg &= ~USB_CTRL_MASK(USB_DEVICE_CTL1, PORT_MODE);
+@@ -222,6 +220,17 @@ static void usb_wake_enable_7211b0(struct brcm_usb_init_params *params,
+ 		USB_CTRL_UNSET(ctrl, CTLR_CSHCR, ctl_pme_en);
+ }
  
-+out_del_dev:
-+	device_del(&udev->dev);
- fail:
- 	usb_set_device_state(udev, USB_STATE_NOTATTACHED);
- 	pm_runtime_disable(&udev->dev);
++static void usb_wake_enable_7216(struct brcm_usb_init_params *params,
++				 bool enable)
++{
++	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
++
++	if (enable)
++		USB_CTRL_SET(ctrl, USB_PM, XHC_PME_EN);
++	else
++		USB_CTRL_UNSET(ctrl, USB_PM, XHC_PME_EN);
++}
++
+ static void usb_init_common_7211b0(struct brcm_usb_init_params *params)
+ {
+ 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
+@@ -295,6 +304,20 @@ static void usb_init_common_7211b0(struct brcm_usb_init_params *params)
+ 	usb2_eye_fix_7211b0(params);
+ }
+ 
++static void usb_init_common_7216(struct brcm_usb_init_params *params)
++{
++	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
++
++	USB_CTRL_UNSET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
++	USB_CTRL_UNSET(ctrl, USB_PM, USB_PWRDN);
++
++	/* 1 millisecond - for USB clocks to settle down */
++	usleep_range(1000, 2000);
++
++	usb_wake_enable_7216(params, false);
++	usb_init_common(params);
++}
++
+ static void usb_init_xhci(struct brcm_usb_init_params *params)
+ {
+ 	pr_debug("%s\n", __func__);
+@@ -302,14 +325,20 @@ static void usb_init_xhci(struct brcm_usb_init_params *params)
+ 	xhci_soft_reset(params, 0);
+ }
+ 
+-static void usb_uninit_common(struct brcm_usb_init_params *params)
++static void usb_uninit_common_7216(struct brcm_usb_init_params *params)
+ {
+ 	void __iomem *ctrl = params->regs[BRCM_REGS_CTRL];
+ 
+ 	pr_debug("%s\n", __func__);
+ 
+-	USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
++	if (!params->wake_enabled) {
++		USB_CTRL_SET(ctrl, USB_PM, USB_PWRDN);
+ 
++		/* Switch to using slower clock during suspend to save power */
++		USB_CTRL_SET(ctrl, USB_PM, XHC_S2_CLK_SWITCH_EN);
++	} else {
++		usb_wake_enable_7216(params, true);
++	}
+ }
+ 
+ static void usb_uninit_common_7211b0(struct brcm_usb_init_params *params)
+@@ -371,9 +400,9 @@ static void usb_set_dual_select(struct brcm_usb_init_params *params, int mode)
+ 
+ static const struct brcm_usb_init_ops bcm7216_ops = {
+ 	.init_ipp = usb_init_ipp,
+-	.init_common = usb_init_common,
++	.init_common = usb_init_common_7216,
+ 	.init_xhci = usb_init_xhci,
+-	.uninit_common = usb_uninit_common,
++	.uninit_common = usb_uninit_common_7216,
+ 	.uninit_xhci = usb_uninit_xhci,
+ 	.get_dual_select = usb_get_dual_select,
+ 	.set_dual_select = usb_set_dual_select,
+@@ -396,6 +425,7 @@ void brcm_usb_dvr_init_7216(struct brcm_usb_init_params *params)
+ 
+ 	params->family_name = "7216";
+ 	params->ops = &bcm7216_ops;
++	params->suspend_with_clocks = true;
+ }
+ 
+ void brcm_usb_dvr_init_7211b0(struct brcm_usb_init_params *params)
+-- 
+2.39.5
+
 
 
 
