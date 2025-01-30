@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF38A2302E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:29:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7313CA22FF0
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF2EE1889FA4
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C7EB3A2AEE
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0E31E522;
-	Thu, 30 Jan 2025 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94F21E8835;
+	Thu, 30 Jan 2025 14:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtH0PeVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z66pknyp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1AB1BD9D3;
-	Thu, 30 Jan 2025 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A01E522;
+	Thu, 30 Jan 2025 14:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247370; cv=none; b=P5E7Htx1queBkqdpEFOxSigzkvzGJ6SH4pbT/gNLnohF+xM7gV7gRqmxCVPJAhkE5Qa8xqNhknExw8xG/0lQMS1gU8Pj+lcKf56JGf40ZByPt7WFcDQu0esPbZB2Tmi5alk1wQ8wGp4orT+60UuUXkgFDWOQxG3xo3/iNZg3/R0=
+	t=1738247221; cv=none; b=NkPudA3lo6EL1cDehrNW30TUfs6sJetQqLswdZB+3J+bVP+V3Ysk2UKffXjEBy9ENeMDM14lTmZO/oAM1ZYqvfWebBN0rYgZVUlBVEfMrir4zZCeGzb1UZa44yCMKtBunRX5cC9USYPgxn+neboiuNqjjy6a6ppkuqQLH9ATuUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247370; c=relaxed/simple;
-	bh=cneMccY0a2cLwh7L7UmisHWi9QAsIImji/KzIRJKoKI=;
+	s=arc-20240116; t=1738247221; c=relaxed/simple;
+	bh=AonuH7t9rRb/xcLVyTl6gSeINaZV5Z6ov8IXj0821UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7HRtMcQL+6aulUBJv98l31Js5d5d8DhJ0+1OMfCcVkf6vp1tqYT3nckNrzcdIFbEIOThUkEFoINZ2AzBmMBKprRovXhNFFobYOt6wIY3aNx3pUlFXqR7paQXa1yK79wDglXFao9Ldq/ERWXz7ZLCvdquNPQjTtMlAnmLD7rK6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtH0PeVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC3FC4CEE5;
-	Thu, 30 Jan 2025 14:29:29 +0000 (UTC)
+	 MIME-Version; b=VazkvmIB9W+iiUYuKC2cy6fCmOOFPGNcW3c3gss5NpYGAd2D0QoIuFq/5F+p440Dgsnmx86inN/K6SRbReGje3BvLZ8M9+puyccweaxeKImcuJxcgftorRC8CO3dudJ8EcRFrcbVgKQAWptDVcxZkqg4SyDpYVQ8bu1rP4JMmbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z66pknyp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD022C4CED2;
+	Thu, 30 Jan 2025 14:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247370;
-	bh=cneMccY0a2cLwh7L7UmisHWi9QAsIImji/KzIRJKoKI=;
+	s=korg; t=1738247221;
+	bh=AonuH7t9rRb/xcLVyTl6gSeINaZV5Z6ov8IXj0821UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AtH0PeVxkcQ8ci9BvhcSid3TzggP29pSTeYC7L3Wx5yELIizQlGR0pp+UjX0cko8z
-	 D/RZt4u7Y0tQrAlF2X01HWOGiepLn0pCyWoxDwcV8HeW22wicP0K+ZeHyulRWqnCYI
-	 qdB+7gWYpTAmhIS/BXbI89vIzixylvxMP6Q30Qyk=
+	b=z66pknyp7C4gE220wbk+D1LYQWV62rQvyevJSopzpSQo2oIfXqm3wtz1F7Zk0elZ5
+	 xkbcAS+rp5czatxWgMA9GdDH4/dxPDCAMFTsovk5EP7/XWrbQDq2/ndm2yOouiEjej
+	 ilCmLw64ZrCnbvk//cvzQqgFQsFGYy6KQpGSgKbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 16/49] xfs: fix units conversion error in xfs_bmap_del_extent_delay
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 5.10 123/133] m68k: Update ->thread.esp0 before calling syscall_trace() in ret_from_signal
 Date: Thu, 30 Jan 2025 15:01:52 +0100
-Message-ID: <20250130140134.492596228@linuxfoundation.org>
+Message-ID: <20250130140147.484112328@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit ddd98076d5c075c8a6c49d9e6e8ee12844137f23 ]
+commit 50e43a57334400668952f8e551c9d87d3ed2dfef upstream.
 
-The unit conversions in this function do not make sense.  First we
-convert a block count to bytes, then divide that bytes value by
-rextsize, which is in blocks, to get an rt extent count.  You can't
-divide bytes by blocks to get a (possibly multiblock) extent value.
+We get there when sigreturn has performed obscene acts on kernel stack;
+in particular, the location of pt_regs has shifted.  We are about to call
+syscall_trace(), which might stop for tracer.  If that happens, we'd better
+have task_pt_regs() returning correct result...
 
-Fortunately nobody uses delalloc on the rt volume so this hasn't
-mattered.
-
-Fixes: fa5c836ca8eb5 ("xfs: refactor xfs_bunmapi_cow")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Fucked-up-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: bd6f56a75bb2 ("m68k: Missing syscall_trace() on sigreturn")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Tested-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/YP2dMWeV1LkHiOpr@zeniv-ca.linux.org.uk
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/m68k/kernel/entry.S |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4807,7 +4807,7 @@ xfs_bmap_del_extent_delay(
- 	ASSERT(got_endoff >= del_endoff);
- 
- 	if (isrt) {
--		uint64_t rtexts = XFS_FSB_TO_B(mp, del->br_blockcount);
-+		uint64_t	rtexts = del->br_blockcount;
- 
- 		do_div(rtexts, mp->m_sb.sb_rextsize);
- 		xfs_mod_frextents(mp, rtexts);
+--- a/arch/m68k/kernel/entry.S
++++ b/arch/m68k/kernel/entry.S
+@@ -189,6 +189,8 @@ ENTRY(ret_from_signal)
+ 	movel	%curptr@(TASK_STACK),%a1
+ 	tstb	%a1@(TINFO_FLAGS+2)
+ 	jge	1f
++	lea	%sp@(SWITCH_STACK_SIZE),%a1
++	movel	%a1,%curptr@(TASK_THREAD+THREAD_ESP0)
+ 	jbsr	syscall_trace
+ 1:	RESTORE_SWITCH_STACK
+ 	addql	#4,%sp
 
 
 
