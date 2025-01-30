@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-111454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0409A22F3D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2AA22FF1
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F0C188633D
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:20:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDF5F1886B7D
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A5C1E9B1A;
-	Thu, 30 Jan 2025 14:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FBA1E7C25;
+	Thu, 30 Jan 2025 14:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gxe5sUSx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvc6AOvR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E9D1E9B18;
-	Thu, 30 Jan 2025 14:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7C81E522;
+	Thu, 30 Jan 2025 14:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246785; cv=none; b=Zxa/Utfem2hypWFQKPQcD9WcvX/WatiK1NlrVFCmS4LPXIf8JQoeThiptwbpWqOKJT7E2mYRhBRtSeeJCJ5gkjGDJOTJegDZvEkFgjaFrrsZQgxwbFUZQKIOGrXcgRVa4ba1cZIFijG7At24warLUl8kqqBsKaoiFfvY5FgnsBc=
+	t=1738247224; cv=none; b=DX5q8MCMK+DSnzJ21zn6oweqL+k/4PG9HIxkioBy+sPWOY3hQjAFdsbuv2FGjdDIh345gJ2nukbAyU28Au6MmtvmaphNd5X4g+XQi5l7s6aiXxFVzs4NZG3mz68IxDqg/4Y6pvQY3ku4s7v4nrg+GrZlhq57aqqJjF1671woKkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246785; c=relaxed/simple;
-	bh=Ua7HeK733dA2Nh5OZxzJaZz/sqAGRXzCVO+YovMV76g=;
+	s=arc-20240116; t=1738247224; c=relaxed/simple;
+	bh=iRtI6m5YMliFpIkoRxEpnQzZEoMZ9Vp2JwzPWn4MWdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5Vw4wF4I42SSBluYp7mF1Cex88MhoZ5JENXORfI2H7/G1vGK2KGxNhRTnYmzucjJ8Bf4Ben8Xq52hbwj9Vu/MWCa0bBhtJ2Bbp2K/WPXwLhRlyUvsocoBYapxeAVcuR5u8Xeh+0TxGzYZomLRA9ku3itlRRj22rNQRma918Gmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gxe5sUSx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F44BC4CED2;
-	Thu, 30 Jan 2025 14:19:44 +0000 (UTC)
+	 MIME-Version; b=LDlxVnnApYiun4JXE96kbwW6fGdkfMh5gdT/xGI7DKjgg4SNlFOMXxDAFeQxgPLYgOJ9X4Wkuzv8gJF1tBxMY51SMg5ju4G9jhWUrL9YYYFdOPxmSsgvvyaTkmFbEtUjAEm4AvE7hb65zxbRKTB3mpVbGPIXAIEXvHCOuFnHloI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvc6AOvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD721C4CED2;
+	Thu, 30 Jan 2025 14:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246785;
-	bh=Ua7HeK733dA2Nh5OZxzJaZz/sqAGRXzCVO+YovMV76g=;
+	s=korg; t=1738247224;
+	bh=iRtI6m5YMliFpIkoRxEpnQzZEoMZ9Vp2JwzPWn4MWdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gxe5sUSxS7idtfIeutK7BZwWxK2F9APkKK0DkFmG7vw8Y+Xzdx3q6aJUUuyEiEPvG
-	 qOjZQCGTs4PU55bOPeiBhJ8F1LIg/1D2aIaD9OgL1cgINjK6iQ3wGJ5WljZXOBmYkH
-	 dnemhr3LqxC8CEDMK93fiH127M98+HGGCJnuXiKc=
+	b=yvc6AOvR8ixw2QYA7bHqvihTAwJBT1AjdwPPlmdK8RnWZmJmVuALmsKO96ImG/K5J
+	 5KJwJazDq3aAHB3gGxUfm+Dsk441I//jkt5crYcBY2Exi5jeZc1bQgOdFsc6LL0tl1
+	 gTIAbp4AOXG9vQaAcNRrDKdoKVpvUbtUHWlMM+bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 66/91] poll_wait: add mb() to fix theoretical race between waitqueue_active() and .poll()
-Date: Thu, 30 Jan 2025 15:01:25 +0100
-Message-ID: <20250130140136.329604530@linuxfoundation.org>
+	Yogesh Lal <quic_ylal@quicinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 097/133] irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
+Date: Thu, 30 Jan 2025 15:01:26 +0100
+Message-ID: <20250130140146.436691109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
-References: <20250130140133.662535583@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Yogesh Lal <quic_ylal@quicinc.com>
 
-[ Upstream commit cacd9ae4bf801ff4125d8961bb9a3ba955e51680 ]
+commit 0d62a49ab55c99e8deb4593b8d9f923de1ab5c18 upstream.
 
-As the comment above waitqueue_active() explains, it can only be used
-if both waker and waiter have mb()'s that pair with each other. However
-__pollwait() is broken in this respect.
+When a CPU attempts to enter low power mode, it disables the redistributor
+and Group 1 interrupts and reinitializes the system registers upon wakeup.
 
-This is not pipe-specific, but let's look at pipe_poll() for example:
+If the transition into low power mode fails, then the CPU_PM framework
+invokes the PM notifier callback with CPU_PM_ENTER_FAILED to allow the
+drivers to undo the state changes.
 
-	poll_wait(...); // -> __pollwait() -> add_wait_queue()
+The GIC V3 driver ignores CPU_PM_ENTER_FAILED, which leaves the GIC in
+disabled state.
 
-	LOAD(pipe->head);
-	LOAD(pipe->head);
+Handle CPU_PM_ENTER_FAILED in the same way as CPU_PM_EXIT to restore normal
+operation.
 
-In theory these LOAD()'s can leak into the critical section inside
-add_wait_queue() and can happen before list_add(entry, wq_head), in this
-case pipe_poll() can race with wakeup_pipe_readers/writers which do
+[ tglx: Massage change log, add Fixes tag ]
 
-	smp_mb();
-	if (waitqueue_active(wq_head))
-		wake_up_interruptible(wq_head);
-
-There are more __pollwait()-like functions (grep init_poll_funcptr), and
-it seems that at least ep_ptable_queue_proc() has the same problem, so the
-patch adds smp_mb() into poll_wait().
-
-Link: https://lore.kernel.org/all/20250102163320.GA17691@redhat.com/
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250107162717.GA18922@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3708d52fc6bb ("irqchip: gic-v3: Implement CPU PM notifier")
+Signed-off-by: Yogesh Lal <quic_ylal@quicinc.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241220093907.2747601-1-quic_ylal@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/poll.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/poll.h b/include/linux/poll.h
-index 7e0fdcf905d2e..a4af5e14dffed 100644
---- a/include/linux/poll.h
-+++ b/include/linux/poll.h
-@@ -43,8 +43,16 @@ typedef struct poll_table_struct {
- 
- static inline void poll_wait(struct file * filp, wait_queue_head_t * wait_address, poll_table *p)
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1309,7 +1309,7 @@ static int gic_retrigger(struct irq_data
+ static int gic_cpu_pm_notifier(struct notifier_block *self,
+ 			       unsigned long cmd, void *v)
  {
--	if (p && p->_qproc && wait_address)
-+	if (p && p->_qproc && wait_address) {
- 		p->_qproc(filp, wait_address, p);
-+		/*
-+		 * This memory barrier is paired in the wq_has_sleeper().
-+		 * See the comment above prepare_to_wait(), we need to
-+		 * ensure that subsequent tests in this thread can't be
-+		 * reordered with __add_wait_queue() in _qproc() paths.
-+		 */
-+		smp_mb();
-+	}
- }
- 
- /*
--- 
-2.39.5
-
+-	if (cmd == CPU_PM_EXIT) {
++	if (cmd == CPU_PM_EXIT || cmd == CPU_PM_ENTER_FAILED) {
+ 		if (gic_dist_security_disabled())
+ 			gic_enable_redist(true);
+ 		gic_cpu_sys_reg_init();
 
 
 
