@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-111629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165A4A2300C
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C6CA23002
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82FAA163788
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD6C37A3391
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B5A1E98E8;
-	Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CBD01E7C25;
+	Thu, 30 Jan 2025 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9lMuyNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIYpxnXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541AD1E522;
-	Thu, 30 Jan 2025 14:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9001E6DCF;
+	Thu, 30 Jan 2025 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247294; cv=none; b=SJdiSD8xnUJRA27tBg/an++rM9y2XZlcfi/SE9FQqNmmtE9Ibk/EsuCt7Oj36t4ClTDO1Za7o1tYdaRBfeID3oGSK2qdbK0apWndlnM+M+Thytu9xlAkxb2CpwHdwpMjd56CMm+ao86iKAAvpcgBfniTwDPKKwwJJewMpqbhKPI=
+	t=1738247265; cv=none; b=cElAwCSd2NR6XVxSe9I9x4J+a0b65I4swFvJp8PSl1wwwGrtlFmy2h78fW36EjAOgxSAnlfdOQHqnlAh1COOrXCy9PcSnL2ytcttdH6gsCvxryxleGE8OOx/tAGNHkSdm4f8r3JWm9ePJX42fUaA0I+nkJYKLBjp7aDy4lpuaPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247294; c=relaxed/simple;
-	bh=F69TeJAhEODsZzoqGKVsgaZqdZ+d0VcwJG+hlElDlHE=;
+	s=arc-20240116; t=1738247265; c=relaxed/simple;
+	bh=xOn24Caz58MOdsrI4DUkXdwc3jqXMiQPD7BeMv6JK7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qx4iSLDmOXCdpsH+SlGFnxYjOyCnYFqn3X73JzNV2SOv5dk7SFKFOHMUblXS1yNCkpUaopSA8rdbtRfpxx+5U4rK2mUPprU1F6GWCO7jyTvndCu2yd6ZYR7SMxKAPXrpP8rrE957mM3i62Q+JBkeeawjHzdTZhVQUVlRxCgX/LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9lMuyNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7EC4CED2;
-	Thu, 30 Jan 2025 14:28:13 +0000 (UTC)
+	 MIME-Version; b=vBmEMV1yqDFJSUsX6cbFRN1u+g9EyPuI+2wyzW4Ip3KgwT9XW9qTmtzZwFMoHaxCFOGdB3nFu9PQ/1tY8nldDs+mh8iQGtZn+/rVyc2OJbwS44mjpKLbRTDZoTvrP7kINEksW0fsBjDNdpzRUuehyGwzOhb6Vo/iFoVJQSEq9cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIYpxnXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E49C4CED2;
+	Thu, 30 Jan 2025 14:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247294;
-	bh=F69TeJAhEODsZzoqGKVsgaZqdZ+d0VcwJG+hlElDlHE=;
+	s=korg; t=1738247264;
+	bh=xOn24Caz58MOdsrI4DUkXdwc3jqXMiQPD7BeMv6JK7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9lMuyNqNQGum8nbijlejy+m5XBdzSXqma5XqmBGLnwg9ZLoOvIZyDw1SKzGh0Wex
-	 cwkOax7S8LLntdhfNm6vaNQ7FwdpTlJV40hLS7FWdoLbXJuIWESkHGp9MYht9B1IM6
-	 qj84jQeBdlxXYlBSqooVPn42Ms+IS0G5bDhkgeS4=
+	b=aIYpxnXfr/R0wXxpCXJ66WtgLToLAJINWYA9U2ZKHe4sJtXOz81OqoD4BxJylg67o
+	 qElkmbRm4nCbn+RbQTDIB9Vn05/4w6YGkfZDUDPaw7ZEAGUr26ZyL9YWXlNjDm+N56
+	 VG6qkuwFygxT4L801CfaT02ryUBwlfIcg2LhuQbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 5.15 07/24] regmap: detach regmap from dev on regmap_exit
-Date: Thu, 30 Jan 2025 15:01:59 +0100
-Message-ID: <20250130140127.591593912@linuxfoundation.org>
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 131/133] Input: atkbd - map F23 key to support default copilot shortcut
+Date: Thu, 30 Jan 2025 15:02:00 +0100
+Message-ID: <20250130140147.802593602@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
-References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
+References: <20250130140142.491490528@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
+commit 907bc9268a5a9f823ffa751957a5c1dd59f83f42 upstream.
 
-At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
-is called, which adds a devres reference to the regmap, to be able to
-retrieve a dev's regmap by name using dev_get_regmap().
+Microsoft defined Meta+Shift+F23 as the Copilot shortcut instead of a
+dedicated keycode, and multiple vendors have their keyboards emit this
+sequence in response to users pressing a dedicated "Copilot" key.
+Unfortunately the default keymap table in atkbd does not map scancode
+0x6e (F23) and so the key combination does not work even if userspace
+is ready to handle it.
 
-When calling regmap_exit, the opposite does not happen, and the
-reference is kept until the dev is detached.
+Because this behavior is common between multiple vendors and the
+scancode is currently unused map 0x6e to keycode 193 (KEY_F23) so that
+key sequence is generated properly.
 
-Add a regmap_detach_dev() function and call it in regmap_exit() to make
-sure that the devres reference is not kept.
+MS documentation for the scan code:
+https://learn.microsoft.com/en-us/windows/win32/inputdev/about-keyboard-input#scan-codes
+Confirmed on Lenovo, HP and Dell machines by Canonical.
+Tested on Lenovo T14s G6 AMD.
 
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/20250107034554.25843-1-mpearson-lenovo@squebb.ca
 Cc: stable@vger.kernel.org
-Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
-Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20250115033314.2540588-1-tzungbi@kernel.org
-Link: https://lore.kernel.org/r/20250115033244.2540522-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/input/keyboard/atkbd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -663,6 +663,17 @@ int regmap_attach_dev(struct device *dev
- }
- EXPORT_SYMBOL_GPL(regmap_attach_dev);
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -90,7 +90,7 @@ static const unsigned short atkbd_set2_k
+ 	  0, 46, 45, 32, 18,  5,  4, 95,  0, 57, 47, 33, 20, 19,  6,183,
+ 	  0, 49, 48, 35, 34, 21,  7,184,  0,  0, 50, 36, 22,  8,  9,185,
+ 	  0, 51, 37, 23, 24, 11, 10,  0,  0, 52, 53, 38, 39, 25, 12,  0,
+-	  0, 89, 40,  0, 26, 13,  0,  0, 58, 54, 28, 27,  0, 43,  0, 85,
++	  0, 89, 40,  0, 26, 13,  0,193, 58, 54, 28, 27,  0, 43,  0, 85,
+ 	  0, 86, 91, 90, 92,  0, 14, 94,  0, 79,124, 75, 71,121,  0,  0,
+ 	 82, 83, 80, 76, 77, 72,  1, 69, 87, 78, 81, 74, 55, 73, 70, 99,
  
-+static int dev_get_regmap_match(struct device *dev, void *res, void *data);
-+
-+static int regmap_detach_dev(struct device *dev, struct regmap *map)
-+{
-+	if (!dev)
-+		return 0;
-+
-+	return devres_release(dev, dev_get_regmap_release,
-+			      dev_get_regmap_match, (void *)map->name);
-+}
-+
- static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
- 					const struct regmap_config *config)
- {
-@@ -1531,6 +1542,7 @@ void regmap_exit(struct regmap *map)
- {
- 	struct regmap_async *async;
- 
-+	regmap_detach_dev(map->dev, map);
- 	regcache_exit(map);
- 	regmap_debugfs_exit(map);
- 	regmap_range_exit(map);
 
 
 
