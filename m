@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2571A22ECE
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:15:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3DCA22E69
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:00:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E21777A2F74
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:14:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 266563A37E3
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322C1E98FF;
-	Thu, 30 Jan 2025 14:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA541DFDA5;
+	Thu, 30 Jan 2025 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+MJvlrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWCvSzB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF6F1E7C3B;
-	Thu, 30 Jan 2025 14:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02F3C13D;
+	Thu, 30 Jan 2025 14:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738246510; cv=none; b=uDsITQTBZx2h2kEIKJHCiRxBbYy3/IurVPsRtLAExluxDSG1TwVbt7sA61pFGPYxCvAYhUaR2j9TmC/e6Ss/hSZdrk57lVf8o+PTflzgMzUQfMRiMXxQgadkZnSa0n61lVIOR9BMBEYesKdyb745wkZ/PllgU+nVJHqwwrX7XiA=
+	t=1738245642; cv=none; b=Q6fFz4kuxC5E8FgO6ip85NflFgN+1Nuuz2tdLyI7hrCuAxh5IRccxEa8qwinXjU5IrkunJWW+5bcFplG8GgLgOOKjoPZ2Dh56Ch7hlp68Bu7+LrUdwItY5gq4fVTU34eY49Cq2vW1pLUXHtwUX2R2DnZJ8qP7hJG56IwNZjGgJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738246510; c=relaxed/simple;
-	bh=o/YH8s83uUK+vFoe2c0XEtOgUwQqkTRuhEaJN8FXalk=;
+	s=arc-20240116; t=1738245642; c=relaxed/simple;
+	bh=tE+RuztCcSnsQT/2+KrW64cfShqAoYbpkgdrV6khcmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPPJtY0Nh40Pr/sK4la+iBcF0ty4zYs32pK7nzsFqIR0faCYbDZKKltUqkgY0k8zNROgDizTKG2vQ6jxfT79QjOEZ01xHTBtGkxp/ETcPrw6iNxZGvp1i06IcBL3mrLo1vNweAkxQkD5kuR9lf9zvMZl6tMtRy3ZCp+hfVvsj5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+MJvlrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A95C4CED2;
-	Thu, 30 Jan 2025 14:15:09 +0000 (UTC)
+	 MIME-Version; b=K+xGNRwzUWP20RGJNKWsYkWQ/WvxKI/g6tUFWoAFf7aJao7tWJUu2Mk75xxGlZcXxkA+O/7/eBVEumthTJHxYGUolPB6434VfV0kDeoekkViSTMgMpGcRdtL/pCSpZGaM3EUCz9bOhE+PvccywqQPhj3zphakuFiIF5o1ttzzsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWCvSzB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB89C4CED2;
+	Thu, 30 Jan 2025 14:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738246510;
-	bh=o/YH8s83uUK+vFoe2c0XEtOgUwQqkTRuhEaJN8FXalk=;
+	s=korg; t=1738245641;
+	bh=tE+RuztCcSnsQT/2+KrW64cfShqAoYbpkgdrV6khcmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+MJvlrwdKgFJCpYOndWqam6B4utVqDH7y+XkQk5AhTyjRNhO+vqYSu4VXLcf28Wp
-	 g1+YHiBPvkeKNj+JtZhXODVJbeXpQH7mK/4gJi86azwgNNSRJxw2qRwYyb0Cy/SAU+
-	 di86fPz/mZK+fqL8feFnosyJM4sztwoM0Ue8jphc=
+	b=fWCvSzB6fvp+C+z3Gx2S9CwRovwJbx3aCY/zEc9gqcjQrfDdHJij6WDz52ud08cqZ
+	 Qacs8hNtCNFe679GtFHr6njiBgdRHIm9eYcof1JEazR/k72Oy2JuYOO4ew2LBpNV2i
+	 TKwYWy9xyvqyUyp/XVM+p2BRsAp0tHpnDiqsJPuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Zhang <hawkxiang.cpp@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/43] scsi: iscsi: Fix redundant response for ISCSI_UEVENT_GET_HOST_STATS request
+Subject: [PATCH 6.12 11/40] drm/connector: hdmi: Validate supported_formats matches ycbcr_420_allowed
 Date: Thu, 30 Jan 2025 14:59:11 +0100
-Message-ID: <20250130133459.079304384@linuxfoundation.org>
+Message-ID: <20250130133500.163136557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130133458.903274626@linuxfoundation.org>
-References: <20250130133458.903274626@linuxfoundation.org>
+In-Reply-To: <20250130133459.700273275@linuxfoundation.org>
+References: <20250130133459.700273275@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Zhang <hawkxiang.cpp@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 63ca02221cc5aa0731fe2b0cc28158aaa4b84982 ]
+[ Upstream commit f2f96619590f944f74f3c2b0b57a6dcc5d13cd9f ]
 
-The ISCSI_UEVENT_GET_HOST_STATS request is already handled in
-iscsi_get_host_stats(). This fix ensures that redundant responses are
-skipped in iscsi_if_rx().
+Ensure HDMI connector initialization fails when the presence of
+HDMI_COLORSPACE_YUV420 in the given supported_formats bitmask doesn't
+match the value of drm_connector->ycbcr_420_allowed.
 
- - On success: send reply and stats from iscsi_get_host_stats()
-   within if_recv_msg().
-
- - On error: fall through.
-
-Signed-off-by: Xiang Zhang <hawkxiang.cpp@gmail.com>
-Link: https://lore.kernel.org/r/20250107022432.65390-1-hawkxiang.cpp@gmail.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241224-bridge-conn-fmt-prio-v4-3-a9ceb5671379@collabora.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_connector.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 3075b2ddf7a69..deeb657981a69 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -4103,7 +4103,7 @@ iscsi_if_rx(struct sk_buff *skb)
- 		}
- 		do {
- 			/*
--			 * special case for GET_STATS:
-+			 * special case for GET_STATS, GET_CHAP and GET_HOST_STATS:
- 			 * on success - sending reply and stats from
- 			 * inside of if_recv_msg(),
- 			 * on error - fall through.
-@@ -4112,6 +4112,8 @@ iscsi_if_rx(struct sk_buff *skb)
- 				break;
- 			if (ev->type == ISCSI_UEVENT_GET_CHAP && !err)
- 				break;
-+			if (ev->type == ISCSI_UEVENT_GET_HOST_STATS && !err)
-+				break;
- 			err = iscsi_if_send_reply(portid, nlh->nlmsg_type,
- 						  ev, sizeof(*ev));
- 			if (err == -EAGAIN && --retries < 0) {
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index fc35f47e2849e..ca7f43c8d6f1b 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -507,6 +507,9 @@ int drmm_connector_hdmi_init(struct drm_device *dev,
+ 	if (!supported_formats || !(supported_formats & BIT(HDMI_COLORSPACE_RGB)))
+ 		return -EINVAL;
+ 
++	if (connector->ycbcr_420_allowed != !!(supported_formats & BIT(HDMI_COLORSPACE_YUV420)))
++		return -EINVAL;
++
+ 	if (!(max_bpc == 8 || max_bpc == 10 || max_bpc == 12))
+ 		return -EINVAL;
+ 
 -- 
 2.39.5
 
