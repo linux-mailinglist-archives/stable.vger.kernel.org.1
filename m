@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-111567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF782A22FC5
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59AEEA22F29
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0A893A49F7
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D645C3A5F38
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED611E98F9;
-	Thu, 30 Jan 2025 14:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F15E1E8823;
+	Thu, 30 Jan 2025 14:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW5oRbZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHgdFEQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7681E7C25;
-	Thu, 30 Jan 2025 14:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C28D1E6DCF;
+	Thu, 30 Jan 2025 14:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247112; cv=none; b=qqn0ZQdOjcwRvvxQic97hWYoElrn7mb8tKGeSgIjTrUZcK1kTV4u2rvQqBpDq4f36LtO4Hu32kO5xg6+ul9idNch2YG2THgzDhyjLWwlK3ZkBmqhxJrsGmkk/f8Zcv44mfnWn9QjnMv89HosnaIJV+mPMrW589THbgY/lsC5u9o=
+	t=1738246753; cv=none; b=CGNulSSQj0vP1WLWVdmsV/TfKRNktgZeRHqXk8lquLFICvJBelZLkCsfnovCp7Y92acFwR4Lf0tNhS3IKQhpgp9zIf/TSePdEga/V/6QoK95nzovYy5wPjXufc+6S8jFN1/Qe01Kpc7k+61MB4ZPVFdEpLjpjVcfaaldWjFgVrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247112; c=relaxed/simple;
-	bh=1K2/jNzSG+jN3JEDYPLbVuLAqZXRoLnsxphhRntlU7o=;
+	s=arc-20240116; t=1738246753; c=relaxed/simple;
+	bh=HS2X6U+qfpdCyhYlTu10pdMjlZjyF8YhIhMstQkJKCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pS+MapGH8A05XCL5wzVZSEzW9+Gtwcj1bcwxpHkCX0CvfdOndXjSE0GL0j1H+ls7MiC1EzUleRC2RnV6jVPJeV3I7Mfo3xIT3eNsjYFxYtv/jjv1WjH59yqYZPnnMDFX3NVH4w149LSAFzjVta1yj4pYZ0SubK7V5GiVAwI8CBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW5oRbZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5601BC4CED2;
-	Thu, 30 Jan 2025 14:25:12 +0000 (UTC)
+	 MIME-Version; b=bvICHY9Cu5jUNrzbrcq9NT4s/Tj+U3stlORbhI64BNVRpkvyIayuz689N47bBdCLl9qX3Ivh89YgJWKUtQQSSJe+gOe/G6p9Oed3ehXYXsmbyos/m/wzfWJXEQdijQluF07BHxWEFi/v/E9C8R2UPTGjS8oto6hZlXcbMBTu6/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHgdFEQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA22C4CED2;
+	Thu, 30 Jan 2025 14:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247112;
-	bh=1K2/jNzSG+jN3JEDYPLbVuLAqZXRoLnsxphhRntlU7o=;
+	s=korg; t=1738246752;
+	bh=HS2X6U+qfpdCyhYlTu10pdMjlZjyF8YhIhMstQkJKCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LW5oRbZa7QPLZcNZcp/oI/I4U7P8t0Hhq0wdz+sur9OqpBx5KQ9+NVtbanw7DC3Kc
-	 OGhUryjpmecbj52hHmMA3NjkSijC665T53gi0qqvAMRfkUfA3FNijirGyT4fMtM6pK
-	 KOWY1+jg7tqyZugPFpB3O20oMYoPN9ejfAhZYdKI=
+	b=fHgdFEQ26uqZi10czaA6ZjqSeDhJa8OQGOI3mnVfilBPJwg56IXBjdQF46vJTdGCK
+	 8C6u2cZ6Ai79HOk6pCWiMxv6pnG3gTtDtN8oDGRFR8BWPLM2B/YKaASm3XzdMapuKE
+	 /umj6YZCRdKYFEIZuLfGzaBRBPoJIKf7esvWfj/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com,
-	Leo Stone <leocstone@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 086/133] hfs: Sanity check the root record
+Subject: [PATCH 5.4 56/91] net: add exit_batch_rtnl() method
 Date: Thu, 30 Jan 2025 15:01:15 +0100
-Message-ID: <20250130140145.983540179@linuxfoundation.org>
+Message-ID: <20250130140135.912017826@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Stone <leocstone@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b905bafdea21a75d75a96855edd9e0b6051eee30 ]
+[ Upstream commit fd4f101edbd9f99567ab2adb1f2169579ede7c13 ]
 
-In the syzbot reproducer, the hfs_cat_rec for the root dir has type
-HFS_CDR_FIL after being read with hfs_bnode_read() in hfs_super_fill().
-This indicates it should be used as an hfs_cat_file, which is 102 bytes.
-Only the first 70 bytes of that struct are initialized, however,
-because the entrylength passed into hfs_bnode_read() is still the length of
-a directory record. This causes uninitialized values to be used later on,
-when the hfs_cat_rec union is treated as the larger hfs_cat_file struct.
+Many (struct pernet_operations)->exit_batch() methods have
+to acquire rtnl.
 
-Add a check to make sure the retrieved record has the correct type
-for the root directory (HFS_CDR_DIR), and make sure we load the correct
-number of bytes for a directory record.
+In presence of rtnl mutex pressure, this makes cleanup_net()
+very slow.
 
-Reported-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2db3c7526ba68f4ea776
-Tested-by: syzbot+2db3c7526ba68f4ea776@syzkaller.appspotmail.com
-Tested-by: Leo Stone <leocstone@gmail.com>
-Signed-off-by: Leo Stone <leocstone@gmail.com>
-Link: https://lore.kernel.org/r/20241201051420.77858-1-leocstone@gmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+This patch adds a new exit_batch_rtnl() method to reduce
+number of rtnl acquisitions from cleanup_net().
+
+exit_batch_rtnl() handlers are called while rtnl is locked,
+and devices to be killed can be queued in a list provided
+as their second argument.
+
+A single unregister_netdevice_many() is called right
+before rtnl is released.
+
+exit_batch_rtnl() handlers are called before ->exit() and
+->exit_batch() handlers.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Link: https://lore.kernel.org/r/20240206144313.2050392-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 46841c7053e6 ("gtp: Use for_each_netdev_rcu() in gtp_genl_dump_pdp().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/net/net_namespace.h |  3 +++
+ net/core/net_namespace.c    | 31 ++++++++++++++++++++++++++++++-
+ 2 files changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfs/super.c b/fs/hfs/super.c
-index 12d9bae393631..699dd94b1a864 100644
---- a/fs/hfs/super.c
-+++ b/fs/hfs/super.c
-@@ -418,11 +418,13 @@ static int hfs_fill_super(struct super_block *sb, void *data, int silent)
- 		goto bail_no_root;
- 	res = hfs_cat_find_brec(sb, HFS_ROOT_CNID, &fd);
- 	if (!res) {
--		if (fd.entrylength > sizeof(rec) || fd.entrylength < 0) {
-+		if (fd.entrylength != sizeof(rec.dir)) {
- 			res =  -EIO;
- 			goto bail_hfs_find;
- 		}
- 		hfs_bnode_read(fd.bnode, &rec, fd.entryoffset, fd.entrylength);
-+		if (rec.type != HFS_CDR_DIR)
-+			res = -EIO;
- 	}
- 	if (res)
- 		goto bail_hfs_find;
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 167e390ac9d4e..0d61b452b9082 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -382,6 +382,9 @@ struct pernet_operations {
+ 	void (*pre_exit)(struct net *net);
+ 	void (*exit)(struct net *net);
+ 	void (*exit_batch)(struct list_head *net_exit_list);
++	/* Following method is called with RTNL held. */
++	void (*exit_batch_rtnl)(struct list_head *net_exit_list,
++				struct list_head *dev_kill_list);
+ 	unsigned int *id;
+ 	size_t size;
+ };
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index c4bcedc06822b..e6585a758edd4 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -325,8 +325,9 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
+ {
+ 	/* Must be called with pernet_ops_rwsem held */
+ 	const struct pernet_operations *ops, *saved_ops;
+-	int error = 0;
+ 	LIST_HEAD(net_exit_list);
++	LIST_HEAD(dev_kill_list);
++	int error = 0;
+ 
+ 	refcount_set(&net->count, 1);
+ 	refcount_set(&net->passive, 1);
+@@ -359,6 +360,15 @@ static __net_init int setup_net(struct net *net, struct user_namespace *user_ns)
+ 
+ 	synchronize_rcu();
+ 
++	ops = saved_ops;
++	rtnl_lock();
++	list_for_each_entry_continue_reverse(ops, &pernet_list, list) {
++		if (ops->exit_batch_rtnl)
++			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
++	}
++	unregister_netdevice_many(&dev_kill_list);
++	rtnl_unlock();
++
+ 	ops = saved_ops;
+ 	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
+ 		ops_exit_list(ops, &net_exit_list);
+@@ -563,6 +573,7 @@ static void cleanup_net(struct work_struct *work)
+ 	struct net *net, *tmp, *last;
+ 	struct llist_node *net_kill_list;
+ 	LIST_HEAD(net_exit_list);
++	LIST_HEAD(dev_kill_list);
+ 
+ 	/* Atomically snapshot the list of namespaces to cleanup */
+ 	net_kill_list = llist_del_all(&cleanup_list);
+@@ -603,6 +614,14 @@ static void cleanup_net(struct work_struct *work)
+ 	 */
+ 	synchronize_rcu();
+ 
++	rtnl_lock();
++	list_for_each_entry_reverse(ops, &pernet_list, list) {
++		if (ops->exit_batch_rtnl)
++			ops->exit_batch_rtnl(&net_exit_list, &dev_kill_list);
++	}
++	unregister_netdevice_many(&dev_kill_list);
++	rtnl_unlock();
++
+ 	/* Run all of the network namespace exit methods */
+ 	list_for_each_entry_reverse(ops, &pernet_list, list)
+ 		ops_exit_list(ops, &net_exit_list);
+@@ -1150,7 +1169,17 @@ static void free_exit_list(struct pernet_operations *ops, struct list_head *net_
+ {
+ 	ops_pre_exit_list(ops, net_exit_list);
+ 	synchronize_rcu();
++
++	if (ops->exit_batch_rtnl) {
++		LIST_HEAD(dev_kill_list);
++
++		rtnl_lock();
++		ops->exit_batch_rtnl(net_exit_list, &dev_kill_list);
++		unregister_netdevice_many(&dev_kill_list);
++		rtnl_unlock();
++	}
+ 	ops_exit_list(ops, net_exit_list);
++
+ 	ops_free_list(ops, net_exit_list);
+ }
+ 
 -- 
 2.39.5
 
