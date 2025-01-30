@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-111691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEBEA23053
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:31:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED570A2300E
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D30168F52
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:31:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 651421621DA
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDE21B87FD;
-	Thu, 30 Jan 2025 14:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCDE1E8835;
+	Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBukvkNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4wq7kzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB447482;
-	Thu, 30 Jan 2025 14:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B351E522;
+	Thu, 30 Jan 2025 14:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247475; cv=none; b=UNTFBCXnVQoHr8qJqYCp9O506JQOk5pwWcipVuMoSw2rbToWknKwEZ0ph2aCrS4ZbY5SYBho4FSX+MImPUxKcOVE2rtAixYDf2b7bTBHGtH35AaHx0E/iiNG/3XOWQyUGDP+chjaBMuiRudSgmmMcwZlx49nlglsYBY0kk6g1Q0=
+	t=1738247297; cv=none; b=SPItvrfSWAQYjobWIvW+Fm79cSofV+7+K9b8TuRDcOJ4KtNX2UdlKS2wFMBh4V2EdINpA/qUitMfDhdaBSHkyprPPSkPD86ZsTAhVvVwMTaGkQLlhLU24rMPOWPr4gN07yK4cSUyrD0xyyqMP/zN79OqZLjrz5CSruAv5z4lQLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247475; c=relaxed/simple;
-	bh=jOdOYXUXc5CFtS6kcyJ8oyge/M99kyjLgvv2Z8WZLi8=;
+	s=arc-20240116; t=1738247297; c=relaxed/simple;
+	bh=A/KZO45pPPXc33zgC/gjKvAIULTh+cBWXE8OVUaNjGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pPSoSERu6o3UbtjXgaYI7hUOTP8GQ2XSPOMDPODEGNpXW6LFGLrcI5YqUaMCUSPoDrO3pO88/GPMhHp/nPfAUI9GhwEvDCPsr5m9RuJJhl4DAaGzDXQCUDOfuFwZTSyVAGx3ShoLM/3/EdOwT9ALvTuv5BG5uWFqvYIVDEA6Ez8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBukvkNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAA6C4CED2;
-	Thu, 30 Jan 2025 14:31:14 +0000 (UTC)
+	 MIME-Version; b=H/pePh20JYxEiFqOGAyWcsnfiPvReosx5ZahTJvBKMlhR4LzJ68k17231dkALrjlyLWj6rmQSBYF+2ANRT4SQhPuj4wu5JJGIueSLOnB//v9KjPsSfww1150fpde3nQ/Te2TccJDT4Tb1yYTQKyyIW8NWDqbWLxqIz4QE+jo+uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4wq7kzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D35C4CED2;
+	Thu, 30 Jan 2025 14:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247475;
-	bh=jOdOYXUXc5CFtS6kcyJ8oyge/M99kyjLgvv2Z8WZLi8=;
+	s=korg; t=1738247297;
+	bh=A/KZO45pPPXc33zgC/gjKvAIULTh+cBWXE8OVUaNjGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBukvkNwHOp1Q38E+zfOPFYcedAJCbtAovM7jThvqKPVHJ9TDEgaBiAez8s0DAWJ+
-	 DcwtMrTQ/525QbzWhz8Epn5m8kPy3UOajlEgaa9pbuCBgaNk5+p4sqsdXrvI5Lx6Gy
-	 TqGofuZeS4KW9bLP8Sx7RwAUGSxzabKtTwV+9LRk=
+	b=X4wq7kzGTGyt70uBaxYCyjNEeQq+GDkLzVbggkdrSrzfp6CFCXlB1uc3a4Iehga71
+	 fLsdpO7w3DJfVKNdKQxXK/A5NXWQFWlYJEjgplP3SNzTqcxT2o1eHCProRQXawPC6W
+	 wMiDzG22aTLjN/sYjIVR5I+YLQF6CaSiTLC66QgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 24/49] xfs: up(ic_sema) if flushing data device fails
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 08/24] mptcp: dont always assume copied data in mptcp_cleanup_rbuf()
 Date: Thu, 30 Jan 2025 15:02:00 +0100
-Message-ID: <20250130140134.808902517@linuxfoundation.org>
+Message-ID: <20250130140127.632501332@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140133.825446496@linuxfoundation.org>
-References: <20250130140133.825446496@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+References: <20250130140127.295114276@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leah Rumancik <leah.rumancik@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 471de20303dda0b67981e06d59cc6c4a83fd2a3c ]
+commit 551844f26da2a9f76c0a698baaffa631d1178645 upstream.
 
-We flush the data device cache before we issue external log IO. If
-the flush fails, we shut down the log immediately and return. However,
-the iclog->ic_sema is left in a decremented state so let's add an up().
-Prior to this patch, xfs/438 would fail consistently when running with
-an external log device:
+Under some corner cases the MPTCP protocol can end-up invoking
+mptcp_cleanup_rbuf() when no data has been copied, but such helper
+assumes the opposite condition.
 
-sync
-  -> xfs_log_force
-  -> xlog_write_iclog
-      -> down(&iclog->ic_sema)
-      -> blkdev_issue_flush (fail causes us to intiate shutdown)
-          -> xlog_force_shutdown
-          -> return
+Explicitly drop such assumption and performs the costly call only
+when strictly needed - before releasing the msk socket lock.
 
-unmount
-  -> xfs_log_umount
-      -> xlog_wait_iclog_completion
-          -> down(&iclog->ic_sema) --------> HANG
-
-There is a second early return / shutdown. Make sure the up() happens
-for it as well. Also make sure we cleanup the iclog state,
-xlog_state_done_syncing, before dropping the iclog lock.
-
-Fixes: b5d721eaae47 ("xfs: external logs need to flush data device")
-Fixes: 842a42d126b4 ("xfs: shutdown on failure to add page to log bio")
-Fixes: 7d839e325af2 ("xfs: check return codes when flushing block devices")
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Fixes: fd8976790a6c ("mptcp: be careful on MPTCP-level ack.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20241230-net-mptcp-rbuf-fixes-v1-2-8608af434ceb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in this version, because commit 581302298524 ("mptcp: error
+  out earlier on disconnect") has not been backported to this version,
+  and there was no need to do so. The only conflict was in protocol.c,
+  and easy to resolve: the context was different, but the same addition
+  can still be made at the same spot in mptcp_recvmsg(). ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ net/mptcp/protocol.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1891,9 +1891,7 @@ xlog_write_iclog(
- 		 * the buffer manually, the code needs to be kept in sync
- 		 * with the I/O completion path.
- 		 */
--		xlog_state_done_syncing(iclog);
--		up(&iclog->ic_sema);
--		return;
-+		goto sync;
- 	}
- 
- 	/*
-@@ -1923,20 +1921,17 @@ xlog_write_iclog(
- 		 * avoid shutdown re-entering this path and erroring out again.
- 		 */
- 		if (log->l_targ != log->l_mp->m_ddev_targp &&
--		    blkdev_issue_flush(log->l_mp->m_ddev_targp->bt_bdev)) {
--			xlog_force_shutdown(log, SHUTDOWN_LOG_IO_ERROR);
--			return;
--		}
-+		    blkdev_issue_flush(log->l_mp->m_ddev_targp->bt_bdev))
-+			goto shutdown;
- 	}
- 	if (iclog->ic_flags & XLOG_ICL_NEED_FUA)
- 		iclog->ic_bio.bi_opf |= REQ_FUA;
- 
- 	iclog->ic_flags &= ~(XLOG_ICL_NEED_FLUSH | XLOG_ICL_NEED_FUA);
- 
--	if (xlog_map_iclog_data(&iclog->ic_bio, iclog->ic_data, count)) {
--		xlog_force_shutdown(log, SHUTDOWN_LOG_IO_ERROR);
--		return;
--	}
-+	if (xlog_map_iclog_data(&iclog->ic_bio, iclog->ic_data, count))
-+		goto shutdown;
-+
- 	if (is_vmalloc_addr(iclog->ic_data))
- 		flush_kernel_vmap_range(iclog->ic_data, count);
- 
-@@ -1957,6 +1952,12 @@ xlog_write_iclog(
- 	}
- 
- 	submit_bio(&iclog->ic_bio);
-+	return;
-+shutdown:
-+	xlog_force_shutdown(log, SHUTDOWN_LOG_IO_ERROR);
-+sync:
-+	xlog_state_done_syncing(iclog);
-+	up(&iclog->ic_sema);
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -462,13 +462,13 @@ static void mptcp_send_ack(struct mptcp_
+ 		mptcp_subflow_send_ack(mptcp_subflow_tcp_sock(subflow));
  }
  
- /*
+-static void mptcp_subflow_cleanup_rbuf(struct sock *ssk)
++static void mptcp_subflow_cleanup_rbuf(struct sock *ssk, int copied)
+ {
+ 	bool slow;
+ 
+ 	slow = lock_sock_fast(ssk);
+ 	if (tcp_can_send_ack(ssk))
+-		tcp_cleanup_rbuf(ssk, 1);
++		tcp_cleanup_rbuf(ssk, copied);
+ 	unlock_sock_fast(ssk, slow);
+ }
+ 
+@@ -485,7 +485,7 @@ static bool mptcp_subflow_could_cleanup(
+ 			      (ICSK_ACK_PUSHED2 | ICSK_ACK_PUSHED)));
+ }
+ 
+-static void mptcp_cleanup_rbuf(struct mptcp_sock *msk)
++static void mptcp_cleanup_rbuf(struct mptcp_sock *msk, int copied)
+ {
+ 	int old_space = READ_ONCE(msk->old_wspace);
+ 	struct mptcp_subflow_context *subflow;
+@@ -493,14 +493,14 @@ static void mptcp_cleanup_rbuf(struct mp
+ 	int space =  __mptcp_space(sk);
+ 	bool cleanup, rx_empty;
+ 
+-	cleanup = (space > 0) && (space >= (old_space << 1));
+-	rx_empty = !__mptcp_rmem(sk);
++	cleanup = (space > 0) && (space >= (old_space << 1)) && copied;
++	rx_empty = !__mptcp_rmem(sk) && copied;
+ 
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 
+ 		if (cleanup || mptcp_subflow_could_cleanup(ssk, rx_empty))
+-			mptcp_subflow_cleanup_rbuf(ssk);
++			mptcp_subflow_cleanup_rbuf(ssk, copied);
+ 	}
+ }
+ 
+@@ -2098,9 +2098,6 @@ static int mptcp_recvmsg(struct sock *sk
+ 
+ 		copied += bytes_read;
+ 
+-		/* be sure to advertise window change */
+-		mptcp_cleanup_rbuf(msk);
+-
+ 		if (skb_queue_empty(&msk->receive_queue) && __mptcp_move_skbs(msk))
+ 			continue;
+ 
+@@ -2152,9 +2149,12 @@ static int mptcp_recvmsg(struct sock *sk
+ 		}
+ 
+ 		pr_debug("block timeout %ld\n", timeo);
++		mptcp_cleanup_rbuf(msk, copied);
+ 		sk_wait_data(sk, &timeo, NULL);
+ 	}
+ 
++	mptcp_cleanup_rbuf(msk, copied);
++
+ out_err:
+ 	if (cmsg_flags && copied >= 0) {
+ 		if (cmsg_flags & MPTCP_CMSG_TS)
 
 
 
