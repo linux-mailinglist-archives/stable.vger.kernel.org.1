@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-111581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D47A22FD9
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:26:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 581EBA22F19
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 15:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21E3168E0E
-	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:25:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51917A1524
+	for <lists+stable@lfdr.de>; Thu, 30 Jan 2025 14:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EC61E7C27;
-	Thu, 30 Jan 2025 14:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB411E7C25;
+	Thu, 30 Jan 2025 14:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNSi7Gct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wZ1oBM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F31DDC22;
-	Thu, 30 Jan 2025 14:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25681E3772;
+	Thu, 30 Jan 2025 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247154; cv=none; b=DOma67baFhHgSZN14iLQbsU4D01MxBBvG2HXyLw/2KuwZo2RecVj5tU/3bqg8sCpxd/+9rcZzxIDxahOJPKiQEsxmd0NXaJnh7HJgLxiVANKJguc/PsIfkrdnBZGKJZVaq6iKq3+VGeBzBxuR07bIjLAQ13Q+OAcTSG+gJvKEYg=
+	t=1738246714; cv=none; b=tU0QzoLSJs+bY/0GXh/I8d2TLW8Exonkh+MQFT5bxPMTrW9v5zy09gBAGA2RzwYdBaIDvAZLU6boJbfxEMWogZIfAwYpG+vD3J0YIO63uMGTrnU8HZl/uf9giYhfvIodvNL9V02ue9HHaVzI3gDU8ZTjFPMtk4kap9eo6wn11BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247154; c=relaxed/simple;
-	bh=ZSdQMKo2LvL/kJUYSuMAJYwZdmieqYnw6d1MPsBHogc=;
+	s=arc-20240116; t=1738246714; c=relaxed/simple;
+	bh=d1T66AvRSsGcK2FhoIlEAnJC3vh8WuQ+PeQKthAKukE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLIszM3mIXLHenKbyLdx4THfvGmbtm4bmuUP4vC1IbxrRt3mzqI2gy8hg4/38K0ccJai5QCYgxpjZwZMWU94OK6ExFJs49qrk4k8EnpQabDQ6Mn2l9yzoBqngVWvENe+Eql3WO0AN9xOZJdvUtgXfTv2C1HfbWcJYgcDJXzEYng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNSi7Gct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8F1C4CED2;
-	Thu, 30 Jan 2025 14:25:53 +0000 (UTC)
+	 MIME-Version; b=At6JcMQJH7Th1Fd5QsFQFiHmo3NRp1H4essmmR97PX/We0j4/X3FzdkkOh8WOfXdFwn4aMG94NuBKog1a/GfvlTqYyB3GPF7qWs3ZZhSCPUyzO5lBcPJUXy1MV1vp/DN/ig0QEsg6kFVZ6KeX/7oKapceg3zClamk4c/t465cho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wZ1oBM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B239C4CED2;
+	Thu, 30 Jan 2025 14:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738247153;
-	bh=ZSdQMKo2LvL/kJUYSuMAJYwZdmieqYnw6d1MPsBHogc=;
+	s=korg; t=1738246714;
+	bh=d1T66AvRSsGcK2FhoIlEAnJC3vh8WuQ+PeQKthAKukE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNSi7GctiVoZsrAlzJ6rM7Zz3nkNAtpQj1fTMsw7yuJWXMXvI/fSmI+ETofaDa5M0
-	 f9qtH20RXWKtHSJ655D/ur+5CQciTW77ZjTTyUhllflXMbcm0gXXXkDx9VcMsv8m2P
-	 bVzG3T27JU2j+e8qP32qDp+X0X+j7bj+FDOx80iA=
+	b=0wZ1oBM5yHSvuAinz++aJrFoKdPg15ajQh+HpUpwT7kFEr+Wxs+xQFAooaqZrR6Xy
+	 9GwbuqV9NoS2W3lmyp9jiOScKgSfsyPGbIiE4z0zosaZeiB87Icblj+JlrZ1BMYhbH
+	 uI8EYzM6TncmlThXIeq6ARh4LFLu/2j0Pbr07NFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheer Kumar Doredla <s-doredla@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Roger Quadros <rogerq@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peter Geis <pgwipeout@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/133] net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()
+Subject: [PATCH 5.4 41/91] arm64: dts: rockchip: add hevc power domain clock to rk3328
 Date: Thu, 30 Jan 2025 15:01:00 +0100
-Message-ID: <20250130140145.377728568@linuxfoundation.org>
+Message-ID: <20250130140135.316424533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250130140142.491490528@linuxfoundation.org>
-References: <20250130140142.491490528@linuxfoundation.org>
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Kumar Doredla <s-doredla@ti.com>
+From: Peter Geis <pgwipeout@gmail.com>
 
-[ Upstream commit 03d120f27d050336f7e7d21879891542c4741f81 ]
+[ Upstream commit 3699f2c43ea9984e00d70463f8c29baaf260ea97 ]
 
-CPSW ALE has 75-bit ALE entries stored across three 32-bit words.
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions support
-ALE field entries spanning up to two words at the most.
+There is a race condition at startup between disabling power domains not
+used and disabling clocks not used on the rk3328. When the clocks are
+disabled first, the hevc power domain fails to shut off leading to a
+splat of failures. Add the hevc core clock to the rk3328 power domain
+node to prevent this condition.
 
-The cpsw_ale_get_field() and cpsw_ale_set_field() functions work as
-expected when ALE field spanned across word1 and word2, but fails when
-ALE field spanned across word2 and word3.
+rcu: INFO: rcu_sched detected expedited stalls on CPUs/tasks: { 3-.... }
+1087 jiffies s: 89 root: 0x8/.
+rcu: blocking rcu_node structures (internal RCU debug):
+Sending NMI from CPU 0 to CPUs 3:
+NMI backtrace for cpu 3
+CPU: 3 UID: 0 PID: 86 Comm: kworker/3:3 Not tainted 6.12.0-rc5+ #53
+Hardware name: Firefly ROC-RK3328-CC (DT)
+Workqueue: pm genpd_power_off_work_fn
+pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : regmap_unlock_spinlock+0x18/0x30
+lr : regmap_read+0x60/0x88
+sp : ffff800081123c00
+x29: ffff800081123c00 x28: ffff2fa4c62cad80 x27: 0000000000000000
+x26: ffffd74e6e660eb8 x25: ffff2fa4c62cae00 x24: 0000000000000040
+x23: ffffd74e6d2f3ab8 x22: 0000000000000001 x21: ffff800081123c74
+x20: 0000000000000000 x19: ffff2fa4c0412000 x18: 0000000000000000
+x17: 77202c31203d2065 x16: 6c6469203a72656c x15: 6c6f72746e6f632d
+x14: 7265776f703a6e6f x13: 2063766568206e69 x12: 616d6f64202c3431
+x11: 347830206f742030 x10: 3430303034783020 x9 : ffffd74e6c7369e0
+x8 : 3030316666206e69 x7 : 205d383738353733 x6 : 332e31202020205b
+x5 : ffffd74e6c73fc88 x4 : ffffd74e6c73fcd4 x3 : ffffd74e6c740b40
+x2 : ffff800080015484 x1 : 0000000000000000 x0 : ffff2fa4c0412000
+Call trace:
+regmap_unlock_spinlock+0x18/0x30
+rockchip_pmu_set_idle_request+0xac/0x2c0
+rockchip_pd_power+0x144/0x5f8
+rockchip_pd_power_off+0x1c/0x30
+_genpd_power_off+0x9c/0x180
+genpd_power_off.part.0.isra.0+0x130/0x2a8
+genpd_power_off_work_fn+0x6c/0x98
+process_one_work+0x170/0x3f0
+worker_thread+0x290/0x4a8
+kthread+0xec/0xf8
+ret_from_fork+0x10/0x20
+rockchip-pm-domain ff100000.syscon:power-controller: failed to get ack on domain 'hevc', val=0x88220
 
-For example, while reading the ALE field spanned across word2 and word3
-(i.e. bits 62 to 64), the word3 data shifted to an incorrect position
-due to the index becoming zero while flipping.
-The same issue occurred when setting an ALE entry.
-
-This issue has not been seen in practice but will be an issue in the future
-if the driver supports accessing ALE fields spanning word2 and word3
-
-Fix the methods to handle getting/setting fields spanning up to two words.
-
-Fixes: b685f1a58956 ("net: ethernet: ti: cpsw_ale: Fix cpsw_ale_get_field()/cpsw_ale_set_field()")
-Signed-off-by: Sudheer Kumar Doredla <s-doredla@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://patch.msgid.link/20250108172433.311694-1-s-doredla@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
+Signed-off-by: Peter Geis <pgwipeout@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20241214224339.24674-1-pgwipeout@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/cpsw_ale.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 73efc8b453643..bec6a68a973c4 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -104,15 +104,15 @@ struct cpsw_ale_dev_id {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index d8af608752e3..f6f5a64fef09 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -272,6 +272,7 @@
  
- static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
- 	u32 hi_val = 0;
- 
- 	idx    = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be fetched exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		hi_val = ale_entry[idx2] << ((idx2 * 32) - start);
-+		index = 2 - idx2; /* flip */
-+		hi_val = ale_entry[index] << ((idx2 * 32) - start);
- 	}
- 	start -= idx * 32;
- 	idx    = 2 - idx; /* flip */
-@@ -122,16 +122,16 @@ static inline int cpsw_ale_get_field(u32 *ale_entry, u32 start, u32 bits)
- static inline void cpsw_ale_set_field(u32 *ale_entry, u32 start, u32 bits,
- 				      u32 value)
- {
--	int idx, idx2;
-+	int idx, idx2, index;
- 
- 	value &= BITMASK(bits);
- 	idx = start / 32;
- 	idx2 = (start + bits - 1) / 32;
- 	/* Check if bits to be set exceed a word */
- 	if (idx != idx2) {
--		idx2 = 2 - idx2; /* flip */
--		ale_entry[idx2] &= ~(BITMASK(bits + start - (idx2 * 32)));
--		ale_entry[idx2] |= (value >> ((idx2 * 32) - start));
-+		index = 2 - idx2; /* flip */
-+		ale_entry[index] &= ~(BITMASK(bits + start - (idx2 * 32)));
-+		ale_entry[index] |= (value >> ((idx2 * 32) - start));
- 	}
- 	start -= idx * 32;
- 	idx = 2 - idx; /* flip */
+ 			power-domain@RK3328_PD_HEVC {
+ 				reg = <RK3328_PD_HEVC>;
++				clocks = <&cru SCLK_VENC_CORE>;
+ 				#power-domain-cells = <0>;
+ 			};
+ 			power-domain@RK3328_PD_VIDEO {
 -- 
 2.39.5
 
