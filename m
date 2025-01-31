@@ -1,177 +1,127 @@
-Return-Path: <stable+bounces-111780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4455CA23AAF
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 09:33:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B547FA23AD7
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 09:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA793A9C13
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 08:32:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40CEF1889E6B
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 08:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D581898FB;
-	Fri, 31 Jan 2025 08:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27565146D6A;
+	Fri, 31 Jan 2025 08:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="caORf6kk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1S440gCn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+ehd+SHv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE7116F271;
-	Fri, 31 Jan 2025 08:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E06632;
+	Fri, 31 Jan 2025 08:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738312313; cv=none; b=b/MJmekcazh3hMmTIOvK2LF2Ct4cnH9abCLhXLaXd6MmtnZWbu3+SMNjYDNy3aY6bhxqubs+YieHNR24QrKSBAz9QEecrVnergXD2u2Crq3bhjXvLIUAZkqSioN8gCUnxfl/fjFYovkYxvgSwhn7WJ3WhhE2VS1OJTT1NsqnoMQ=
+	t=1738312999; cv=none; b=Ts2FWlYnHRLskfkMB2l6CWuaGElH5tGuoBJXmzgKcrnwWAGsH2rwBaSQ5nP7hWJeoIZn4d27q5rqXHfIwKJiBf3QXRYFZ5/bzURK14jD+EgDoKEEZhgV+b2Tic90PGlJgHH2nt3RjWK4kJf4J9XEyAuZtKsZmC8+W1xYz/vknfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738312313; c=relaxed/simple;
-	bh=xchRIW1eUY/yAMi/gmRW7+GFWbW0I+i78YtWFUkL+tA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hO0B+ohwk0OM1buDVtw0jS65eKeeh7KRagPuacHgPa2uQh5lh6kpbdTZiG7m03Y+hPFqebyRCK0VMVZ79O0mViIs4zILoYKveIrCtjNg423ztF9AWLGjBx8aVon2F9R2o5Om5hAKcXnhaMfMtfh4ZJfW4T0pDeHNb1EghzBODFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=caORf6kk; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1738312308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BMZR7EBilYf15P4LgXGO3rdBEyqkDdi2+Bs83Fslgg0=;
-	b=caORf6kkDEbOaCMRQw5haOE11RNSsKryd21QEEKEO4UTd0LVFLSaiUidZQfWRtUkVe5RSU
-	L7CkIfR9HFeThZqlgAIIbkZRSk5D4wFy4UaspIqnXOuP/srZs3Y3OW+wiyokPjZbkibLwu
-	RIawHTjvJi+Tsjn0nUlmT00ExF6BwEI=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Willem de Bruijn <willemb@google.com>,
-	virtualization@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 5/5] net: test for not too small csum_start in virtio_net_hdr_to_skb()
-Date: Fri, 31 Jan 2025 11:31:47 +0300
-Message-ID: <20250131083148.4238-1-arefev@swemel.ru>
+	s=arc-20240116; t=1738312999; c=relaxed/simple;
+	bh=PHyCaQdJAV7gjkBmpAF+bCcvjIXNcMl++HrfUECgM3A=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=M9kbu1r232d5i9/mUwthoEW4BlEgQJyVXAwUeC8BYmc/pMrswTwBA6OKdf5JIwUfMXSIqtf71F8C7lMko/EV3wG4VOAacMZyL5dsryHI+TXLE6gJNaegsx1BuziQ7laegD5INDmaEOVG8iL8a6OMZm8DjylCgzj63pvLycemPmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1S440gCn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+ehd+SHv; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 31 Jan 2025 08:43:12 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738312996;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4j6x8LLvtxLd0fB8/jKqD5ksDv3uRGpB8xaSRDei5SA=;
+	b=1S440gCnNPha5lwA5udbAsb6rwzUT0cHFHXeT0gg/VJYWfvZylOy9BC5S9n7AYifX+HWKr
+	01fppJwn9Hx2gZ5wcNS8hpuMUQnLUU5db5s6nHJnVIqi+KqG1aYGCDEKZpGh93I/5ZOJnM
+	sJnsWbOO9p7qrcDWE0hvriOyBdkA2tFSpPTaU/ORzyGp2yBYxXfv3fhC7S/iV4s1ZrjtZZ
+	6H9BQLILuRG+x8LNitfAvbncrz/7EF8e74NDy3bpRsYJTPelQ8eC8py1xM8zYPdNac1ByF
+	kG5s05vIZ0Ir5MFZ83w/3okTRP9NeDLqrU32NHV0J5By5vZ8KPjAbc4PoxZx3Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738312996;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4j6x8LLvtxLd0fB8/jKqD5ksDv3uRGpB8xaSRDei5SA=;
+	b=+ehd+SHveTFMO/X8F+goiApklUlTfS4Ev4FS/cueiMFyyWXZ9b3WuEiZ8JkiLiyz+BOSIn
+	c4iNONhEXpGKHfCQ==
+From: "tip-bot2 for Easwar Hariharan" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] jiffies: Cast to unsigned long in
+ secs_to_jiffies() conversion
+Cc: kernel test robot <lkp@intel.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250130192701.99626-1-eahariha@linux.microsoft.com>
+References: <20250130192701.99626-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <173831299312.31546.8797889985487965830.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Eric Dumazet <edumazet@google.com>
+The following commit has been merged into the timers/urgent branch of tip:
 
-commit 49d14b54a527289d09a9480f214b8c586322310a upstream.
+Commit-ID:     bb2784d9ab49587ba4fbff37a319fff2924db289
+Gitweb:        https://git.kernel.org/tip/bb2784d9ab49587ba4fbff37a319fff2924db289
+Author:        Easwar Hariharan <eahariha@linux.microsoft.com>
+AuthorDate:    Thu, 30 Jan 2025 19:26:58 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 31 Jan 2025 09:30:49 +01:00
 
-syzbot was able to trigger this warning [1], after injecting a
-malicious packet through af_packet, setting skb->csum_start and thus
-the transport header to an incorrect value.
+jiffies: Cast to unsigned long in secs_to_jiffies() conversion
 
-We can at least make sure the transport header is after
-the end of the network header (with a estimated minimal size).
+While converting users of msecs_to_jiffies(), lkp reported that some range
+checks would always be true because of the mismatch between the implied int
+value of secs_to_jiffies() vs the unsigned long return value of the
+msecs_to_jiffies() calls it was replacing.
 
-[1]
-[   67.873027] skb len=4096 headroom=16 headlen=14 tailroom=0
-mac=(-1,-1) mac_len=0 net=(16,-6) trans=10
-shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-csum(0xa start=10 offset=0 ip_summed=3 complete_sw=0 valid=0 level=0)
-hash(0x0 sw=0 l4=0) proto=0x0800 pkttype=0 iif=0
-priority=0x0 mark=0x0 alloc_cpu=10 vlan_all=0x0
-encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-[   67.877172] dev name=veth0_vlan feat=0x000061164fdd09e9
-[   67.877764] sk family=17 type=3 proto=0
-[   67.878279] skb linear:   00000000: 00 00 10 00 00 00 00 00 0f 00 00 00 08 00
-[   67.879128] skb frag:     00000000: 0e 00 07 00 00 00 28 00 08 80 1c 00 04 00 00 02
-[   67.879877] skb frag:     00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.880647] skb frag:     00000020: 00 00 02 00 00 00 08 00 1b 00 00 00 00 00 00 00
-[   67.881156] skb frag:     00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.881753] skb frag:     00000040: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.882173] skb frag:     00000050: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.882790] skb frag:     00000060: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.883171] skb frag:     00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.883733] skb frag:     00000080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.884206] skb frag:     00000090: 00 00 00 00 00 00 00 00 00 00 69 70 76 6c 61 6e
-[   67.884704] skb frag:     000000a0: 31 00 00 00 00 00 00 00 00 00 2b 00 00 00 00 00
-[   67.885139] skb frag:     000000b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.885677] skb frag:     000000c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.886042] skb frag:     000000d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.886408] skb frag:     000000e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.887020] skb frag:     000000f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   67.887384] skb frag:     00000100: 00 00
-[   67.887878] ------------[ cut here ]------------
-[   67.887908] offset (-6) >= skb_headlen() (14)
-[   67.888445] WARNING: CPU: 10 PID: 2088 at net/core/dev.c:3332 skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.889353] Modules linked in: macsec macvtap macvlan hsr wireguard curve25519_x86_64 libcurve25519_generic libchacha20poly1305 chacha_x86_64 libchacha poly1305_x86_64 dummy bridge sr_mod cdrom evdev pcspkr i2c_piix4 9pnet_virtio 9p 9pnet netfs
-[   67.890111] CPU: 10 UID: 0 PID: 2088 Comm: b363492833 Not tainted 6.11.0-virtme #1011
-[   67.890183] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   67.890309] RIP: 0010:skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891043] Call Trace:
-[   67.891173]  <TASK>
-[   67.891274] ? __warn (kernel/panic.c:741)
-[   67.891320] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891333] ? report_bug (lib/bug.c:180 lib/bug.c:219)
-[   67.891348] ? handle_bug (arch/x86/kernel/traps.c:239)
-[   67.891363] ? exc_invalid_op (arch/x86/kernel/traps.c:260 (discriminator 1))
-[   67.891372] ? asm_exc_invalid_op (./arch/x86/include/asm/idtentry.h:621)
-[   67.891388] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891399] ? skb_checksum_help (net/core/dev.c:3332 (discriminator 2))
-[   67.891416] ip_do_fragment (net/ipv4/ip_output.c:777 (discriminator 1))
-[   67.891448] ? __ip_local_out (./include/linux/skbuff.h:1146 ./include/net/l3mdev.h:196 ./include/net/l3mdev.h:213 net/ipv4/ip_output.c:113)
-[   67.891459] ? __pfx_ip_finish_output2 (net/ipv4/ip_output.c:200)
-[   67.891470] ? ip_route_output_flow (./arch/x86/include/asm/preempt.h:84 (discriminator 13) ./include/linux/rcupdate.h:96 (discriminator 13) ./include/linux/rcupdate.h:871 (discriminator 13) net/ipv4/route.c:2625 (discriminator 13) ./include/net/route.h:141 (discriminator 13) net/ipv4/route.c:2852 (discriminator 13))
-[   67.891484] ipvlan_process_v4_outbound (drivers/net/ipvlan/ipvlan_core.c:445 (discriminator 1))
-[   67.891581] ipvlan_queue_xmit (drivers/net/ipvlan/ipvlan_core.c:542 drivers/net/ipvlan/ipvlan_core.c:604 drivers/net/ipvlan/ipvlan_core.c:670)
-[   67.891596] ipvlan_start_xmit (drivers/net/ipvlan/ipvlan_main.c:227)
-[   67.891607] dev_hard_start_xmit (./include/linux/netdevice.h:4916 ./include/linux/netdevice.h:4925 net/core/dev.c:3588 net/core/dev.c:3604)
-[   67.891620] __dev_queue_xmit (net/core/dev.h:168 (discriminator 25) net/core/dev.c:4425 (discriminator 25))
-[   67.891630] ? skb_copy_bits (./include/linux/uaccess.h:233 (discriminator 1) ./include/linux/uaccess.h:260 (discriminator 1) ./include/linux/highmem-internal.h:230 (discriminator 1) net/core/skbuff.c:3018 (discriminator 1))
-[   67.891645] ? __pskb_pull_tail (net/core/skbuff.c:2848 (discriminator 4))
-[   67.891655] ? skb_partial_csum_set (net/core/skbuff.c:5657)
-[   67.891666] ? virtio_net_hdr_to_skb.constprop.0 (./include/linux/skbuff.h:2791 (discriminator 3) ./include/linux/skbuff.h:2799 (discriminator 3) ./include/linux/virtio_net.h:109 (discriminator 3))
-[   67.891684] packet_sendmsg (net/packet/af_packet.c:3145 (discriminator 1) net/packet/af_packet.c:3177 (discriminator 1))
-[   67.891700] ? _raw_spin_lock_bh (./arch/x86/include/asm/atomic.h:107 (discriminator 4) ./include/linux/atomic/atomic-arch-fallback.h:2170 (discriminator 4) ./include/linux/atomic/atomic-instrumented.h:1302 (discriminator 4) ./include/asm-generic/qspinlock.h:111 (discriminator 4) ./include/linux/spinlock.h:187 (discriminator 4) ./include/linux/spinlock_api_smp.h:127 (discriminator 4) kernel/locking/spinlock.c:178 (discriminator 4))
-[   67.891716] __sys_sendto (net/socket.c:730 (discriminator 1) net/socket.c:745 (discriminator 1) net/socket.c:2210 (discriminator 1))
-[   67.891734] ? do_sock_setsockopt (net/socket.c:2335)
-[   67.891747] ? __sys_setsockopt (./include/linux/file.h:34 net/socket.c:2355)
-[   67.891761] __x64_sys_sendto (net/socket.c:2222 (discriminator 1) net/socket.c:2218 (discriminator 1) net/socket.c:2218 (discriminator 1))
-[   67.891772] do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-[   67.891785] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+Fix this by casting the secs_to_jiffies() input value to unsigned long.
 
-Fixes: 9181d6f8a2bb ("net: add more sanity check in virtio_net_hdr_to_skb()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240926165836.3797406-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Denis: minor fix to resolve merge conflict.]                                           
-Signed-off-by: Denis Arefev <arefev@swemel.ru>                                    
+Fixes: b35108a51cf7ba ("jiffies: Define secs_to_jiffies()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250130192701.99626-1-eahariha@linux.microsoft.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202501301334.NB6NszQR-lkp@intel.com/
 ---
-Backport fix for CVE-2024-43817
-Link: https://nvd.nist.gov/vuln/detail/cve-2024-43817
----
- include/linux/virtio_net.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/jiffies.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index e9e681fab607..b56f032de16a 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -96,8 +96,10 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index ed945f4..0ea8c98 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -537,7 +537,7 @@ static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
+  *
+  * Return: jiffies value
+  */
+-#define secs_to_jiffies(_secs) ((_secs) * HZ)
++#define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
  
- 		if (!skb_partial_csum_set(skb, start, off))
- 			return -EINVAL;
-+		if (skb_transport_offset(skb) < nh_min_len)
-+			return -EINVAL;
- 
--		nh_min_len = max_t(u32, nh_min_len, skb_transport_offset(skb));
-+		nh_min_len = skb_transport_offset(skb);
- 		p_off = nh_min_len + thlen;
- 		if (!pskb_may_pull(skb, p_off))
- 			return -EINVAL;
--- 
-2.43.0
-
+ extern unsigned long __usecs_to_jiffies(const unsigned int u);
+ #if !(USEC_PER_SEC % HZ)
 
