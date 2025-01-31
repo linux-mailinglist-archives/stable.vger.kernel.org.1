@@ -1,135 +1,233 @@
-Return-Path: <stable+bounces-111852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56588A242E2
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 19:44:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3B8A242F7
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 19:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4323A88EF
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:44:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15595188A99D
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2731F2379;
-	Fri, 31 Jan 2025 18:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A89E1EE7D8;
+	Fri, 31 Jan 2025 18:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hHsBg40O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBLXrva5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5463B7081F
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 18:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFB884E1C
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 18:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738349058; cv=none; b=jrlVBBdoKpRY6KaiYqhgAC4eLO0jy3/IR8dmmXpkVJLZ5Jum3UvyWjgHjl1H+6YSaDALmkIXAPdGJB7Nuk0O5RvhWCc8C1MarmBklJPk9gCWqQKTG8mh6Ad4W2QfjuNOIPc87iMjdtJchqejgn7zxe0KrJ3rXSrdhRQNcpXjWuU=
+	t=1738349663; cv=none; b=Nv2S8xM20JIkdFMORH9Bfe5T2KL80tI/C20i1ENA+ieQSd8TLg9h0Mb46ecp+lDmi3yvcwiLK1ha/gp976HWAU2n5LO7AM7whtaSy4Ti2wprImLHSvyhouvITR67M3dm40rBbADLSb4TNHYMb+N36m8kbprPBRoP0JdKAhhMl78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738349058; c=relaxed/simple;
-	bh=YSwnjXOnBcp4QJLJEzKW9oTdc+d1XGO2LhWgVtjnxzQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tTnF4BE8IafZRbUe1PNg672heppZmg6Kkd+ASBvezxJMtWQ8v+QK6cKswJJ/P2/mfHoCVo0YyuCeno17DlgBAsxuNHy0trBHp2/tonCPG9XXdCrhzXro/eYaQEEVoCinuAos8f2kAQjC0KwnardyoOgV8626mmBmDhRtUnHLuMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hHsBg40O; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef114d8346so4519742a91.0
-        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 10:44:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738349056; x=1738953856; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ljqvdoe66PsV0ko9USqCX1cFitPJRiLzefenHrRR1Us=;
-        b=hHsBg40OnBcvhRpw6GmUU2m/tgxZ0AxlMmbxDfH6So23Rd9yAqdXF8M7lCtrqs0ymt
-         ERa21kxdm3SMfgjYrFV3oFtiAAZ4FDJhb/rI+CmPWd0kaYYnT4niR/iapr5fchLipjh2
-         LtwoBqogISIa73Me9LGb0rn/z2AMpdqh6r6HHfSbkyiVXR3dgRUHOKSpPTVAruy1IgpR
-         PLFXDBfrxaMV775N+ZmlWUqCxbbUJrnwbcpRCYuPP74Rzt65W9fojNEl6hUkfcQKRQHS
-         7qhL5ZV4QudWa1jwQWuquO9YFykstGjWL83v25DnuYuwXcG3Uf9alkqaqlyAGT5XmHGH
-         RAww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738349056; x=1738953856;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ljqvdoe66PsV0ko9USqCX1cFitPJRiLzefenHrRR1Us=;
-        b=NHKQBEXud1URlqNk5upLLMTVJJhle+9X54Lb/o2nc703zawlz9HFGgCMS3v9dtq7Cq
-         B7SMKxXyXXRt8Atza+7gatzCB0b2lzE964cnTG8XOEZNN5PIBMtMdg5tfF9yyznbz/No
-         Cw5wP8KsaUGtUutCI5q71Qc3tf0KyVR3WSnXS00bnXC0sHW3U4HfE7XdFuMdzBH+i3ms
-         hyUhfoxpysb8rHXdTeg0doWhJ1W0l5wkgJ4EpbzTUxpcoDzVQ3SxfYnYAHgBJ5B0Mf3R
-         yvARfBHx4gqt8rK1X/eCw9RH+nYjvPR/8esR2CBDz83Q2H83J3eR7xI3f/Z1+fm4YuOl
-         3HMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWU5frzocaWyX/G990joR/OUNZSlEUPJeRGNfA1/q1H4j9f1LarApZ7qA2f1P1HHmFPBqJhoJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgDWj9TzQ1VXuxoNJzASuEKXT4Zf/9/LBrxP9XtEbMkW+NqfOo
-	DP12lsAZmcYL5UBbHtO79kW33ExOAbkPAV485TfLoKqK4clfkjFoPPyljibkN2zFTvCH6VzOOU6
-	+oC/gcf+cqw==
-X-Google-Smtp-Source: AGHT+IF+uYFJf6336pW4NcaKvfIFPem3UA+dJK9i/dockjZWIM7szv9chSDIgoK3n6FFScQsadqVvG+86ZmScw==
-X-Received: from pjbsy8.prod.google.com ([2002:a17:90b:2d08:b0:2f5:5240:4f0f])
- (user=ipylypiv job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:37ce:b0:2ee:ba0c:1726 with SMTP id 98e67ed59e1d1-2f83acb10e5mr15208961a91.34.1738349056642;
- Fri, 31 Jan 2025 10:44:16 -0800 (PST)
-Date: Fri, 31 Jan 2025 10:44:07 -0800
+	s=arc-20240116; t=1738349663; c=relaxed/simple;
+	bh=OC+LkHxqhasdvNF26CcNsdV74Q96hpWJ47A/VEZG9wI=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jGEwWY2i/2PDTcF5zJ145z1z89+BTLAo8W4geY2P5WFa5+n74ofn2SCVyvUoLhsuOye9xsonyVzKtPkcRhOWtHMDCADlITXHRmQsPn0LE+yQfvTVSJ7g65QNBFzakxCTSohBrtwlfxBIoqU+0tDWJqOU9ExlQJIjUYNaGGtlLhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBLXrva5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F7FC4CED1;
+	Fri, 31 Jan 2025 18:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738349663;
+	bh=OC+LkHxqhasdvNF26CcNsdV74Q96hpWJ47A/VEZG9wI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JBLXrva5oGkptnRA/+6GkqHZ6kW3FKz96Scfv5h5muBI5rpoMboIKJxABNy27l8vS
+	 Wtvf3ln8mP9K0kfmnRDyKL75WoT7P5lCfYEfiQKyigoUO2N6dlH5DdDAyK2P7wrQGO
+	 6SEax3JzqKM+GYgs8bhwMOP9VzivBkoTfeQT8n13HhfqweaHijJd9PUOSoL6JpIEv2
+	 Uikq57HFLL6XjpONcmupNUsW2MC4d1yuRf6tKfPhQrocbasvV7X85LdgNPF+VZqjK/
+	 EgSMyrRb4H26pLI/d9LGdqpEgV4nn9rE/Dkl93UuZcJ2nPwo8T7PzdOws8zq2QEAv1
+	 mqsItYnOser5w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tdw9k-00GxME-RP;
+	Fri, 31 Jan 2025 18:54:21 +0000
+Date: Fri, 31 Jan 2025 18:54:19 +0000
+Message-ID: <865xluvmp0.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: chf.fritz@googlemail.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	KeverYang <kever.yang@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	linux-rockchip@lists.infradead.org,
+	stable <stable@vger.kernel.org>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Subject: Re: rk3399 fails to boot since v6.12.7
+In-Reply-To: <fc0b65020f3376e5245a8f599a060fdca10ab61c.camel@googlemail.com>
+References: <b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com>
+	<86a5b8vd0d.wl-maz@kernel.org>
+	<fc0b65020f3376e5245a8f599a060fdca10ab61c.camel@googlemail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
-Message-ID: <20250131184408.859579-1-ipylypiv@google.com>
-Subject: [PATCH v2] scsi: core: Do not retry I/Os during depopulation
-From: Igor Pylypiv <ipylypiv@google.com>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Douglas Gilbert <dgilbert@interlog.com>
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: chf.fritz@googlemail.com, mark.rutland@arm.com, wens@csie.org, kever.yang@rock-chips.com, heiko@sntech.de, linux-rockchip@lists.infradead.org, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Fail I/Os instead of retry to prevent user space processes from being
-blocked on the I/O completion for several minutes.
+On Thu, 30 Jan 2025 18:14:50 +0000,
+Christoph Fritz <chf.fritz@googlemail.com> wrote:
+> 
+> > 
+> > 
+> > > Any ideas?
+> > 
+> > I think this calls for a revert of this patch, potentially at the
+> > expense if NMI support on this machine. Could you show how SCR_EL3.FIQ
+> > is configured on this machine? Mine shows:
+> > 
+> > [    0.000000] GICv3: GICD_CTRL.DS=0, SCR_EL3.FIQ=0
+> > 
+> > and I suspect yours has FIQ=1.
+> 
+> yes it's 1:
+> 
+> [    0.000000] GICv3: GICv3 features: 16 PPIs
+> [    0.000000] GICv3: Broken GIC integration, security disabled
+> [    0.000000] GICv3: GICD_CTRL.DS=1, SCR_EL3.FIQ=1
+> [    0.000000] GICv3: CPU0: found redistributor 0 region 0:0x00000000fef00000
+> 
+> The device is not closed (there is no docu) and OP-TEE is actually here
+> not used for anything. But I think I had the OP-TEE xtests running
+> successfully before.
 
-Retrying I/Os during "depopulation in progress" or "depopulation restore
-in progress" results in a continuous retry loop until the depopulation
-completes or until the I/O retry loop is aborted due to a timeout by
-the scsi_cmd_runtime_exceeced().
+I don't think OP-TEE *really* works, as it cannot take any interrupt
+after the kernel has booted. We blindly reconfigure everything to be
+non-secure, so unless you solely rely on services that do not interact
+with devices, it is absolutely dead.
 
-Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
-Most I/Os in the depopulation retry loop end up taking several minutes
-before returning the failure to user space.
+Anyway, can you try the hack below? it works on my own rk3399, but I
+don't have anything on the secure side. Please also try it by passing
+"irqchip.gicv3_pseudo_nmi=1" on the command-line.
 
-Cc: <stable@vger.kernel.org> # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
-Cc: <stable@vger.kernel.org> # 4.18.x
-Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
----
+Thanks,
 
-Changes in v2:
-- Added Fixes: and Cc: stable tags.
+	M.
 
- drivers/scsi/scsi_lib.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 79d8cc80693c3..f60d4d7e87639 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -44,6 +44,7 @@ static u8 dist_prio_nmi __ro_after_init = GICV3_PRIO_NMI;
+ #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
+ #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
+ #define FLAGS_WORKAROUND_ASR_ERRATUM_8601001	(1ULL << 2)
++#define FLAGS_WORKAROUND_INSECURE		(1ULL << 3)
+ 
+ #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+ 
+@@ -83,6 +84,8 @@ static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
+ #define GIC_LINE_NR	min(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
+ #define GIC_ESPI_NR	GICD_TYPER_ESPIS(gic_data.rdists.gicd_typer)
+ 
++static bool nmi_support_forbidden;
++
+ /*
+  * There are 16 SGIs, though we only actually use 8 in Linux. The other 8 SGIs
+  * are potentially stolen by the secure side. Some code, especially code dealing
+@@ -163,21 +166,27 @@ static void __init gic_prio_init(void)
+ {
+ 	bool ds;
+ 
+-	ds = gic_dist_security_disabled();
+-	if (!ds) {
+-		u32 val;
+-
+-		val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
+-		val |= GICD_CTLR_DS;
+-		writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++	cpus_have_group0 = gic_has_group0();
+ 
+-		ds = gic_dist_security_disabled();
+-		if (ds)
+-			pr_warn("Broken GIC integration, security disabled");
++	ds = gic_dist_security_disabled();
++	if ((gic_data.flags & FLAGS_WORKAROUND_INSECURE) && !ds) {
++		if (cpus_have_group0) {
++			u32 val;
++
++			val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
++			val |= GICD_CTLR_DS;
++			writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++
++			ds = gic_dist_security_disabled();
++			if (ds)
++				pr_warn("Broken GIC integration, security disabled\n");
++		} else {
++			pr_warn("Broken GIC integration, pNMI forbidden\n");
++			nmi_support_forbidden = true;
++		}
+ 	}
+ 
+ 	cpus_have_security_disabled = ds;
+-	cpus_have_group0 = gic_has_group0();
+ 
+ 	/*
+ 	 * How priority values are used by the GIC depends on two things:
+@@ -209,7 +218,7 @@ static void __init gic_prio_init(void)
+ 	 * be in the non-secure range, we program the non-secure values into
+ 	 * the distributor to match the PMR values we want.
+ 	 */
+-	if (cpus_have_group0 & !cpus_have_security_disabled) {
++	if (cpus_have_group0 && !cpus_have_security_disabled) {
+ 		dist_prio_irq = __gicv3_prio_to_ns(dist_prio_irq);
+ 		dist_prio_nmi = __gicv3_prio_to_ns(dist_prio_nmi);
+ 	}
+@@ -1922,6 +1931,18 @@ static bool gic_enable_quirk_arm64_2941627(void *data)
+ 	return true;
+ }
+ 
++static bool gic_enable_quirk_rk3399(void *data)
++{
++	struct gic_chip_data *d = data;
++
++	if (of_machine_is_compatible("rockchip,rk3399")) {
++		d->flags |= FLAGS_WORKAROUND_INSECURE;
++		return true;
++	}
++
++	return false;
++}
++
+ static bool rd_set_non_coherent(void *data)
+ {
+ 	struct gic_chip_data *d = data;
+@@ -1996,6 +2017,12 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.property = "dma-noncoherent",
+ 		.init   = rd_set_non_coherent,
+ 	},
++	{
++		.desc	= "GICv3: Insecure RK3399 integration",
++		.iidr	= 0x0000043b,
++		.mask	= 0xff000fff,
++		.init	= gic_enable_quirk_rk3399,
++	},
+ 	{
+ 	}
+ };
+@@ -2004,7 +2031,7 @@ static void gic_enable_nmi_support(void)
+ {
+ 	int i;
+ 
+-	if (!gic_prio_masking_enabled())
++	if (!gic_prio_masking_enabled() || nmi_support_forbidden)
+ 		return;
+ 
+ 	rdist_nmi_refs = kcalloc(gic_data.ppi_nr + SGI_NR,
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index e7ea1f04164a..3ab4c958da45 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -872,13 +872,18 @@ static void scsi_io_completion_action(struct scsi_cmnd *cmd, int result)
- 				case 0x1a: /* start stop unit in progress */
- 				case 0x1b: /* sanitize in progress */
- 				case 0x1d: /* configuration in progress */
--				case 0x24: /* depopulation in progress */
--				case 0x25: /* depopulation restore in progress */
- 					action = ACTION_DELAYED_RETRY;
- 					break;
- 				case 0x0a: /* ALUA state transition */
- 					action = ACTION_DELAYED_REPREP;
- 					break;
-+				/*
-+				 * Depopulation might take many hours,
-+				 * thus it is not worthwhile to retry.
-+				 */
-+				case 0x24: /* depopulation in progress */
-+				case 0x25: /* depopulation restore in progress */
-+					fallthrough;
- 				default:
- 					action = ACTION_FAIL;
- 					break;
 -- 
-2.48.1.362.g079036d154-goog
-
+Without deviation from the norm, progress is not possible.
 
