@@ -1,180 +1,199 @@
-Return-Path: <stable+bounces-111759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC0EA238A9
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 02:44:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877EFA23953
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 06:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 886897A0F8F
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 01:43:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4E171889698
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 05:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662EE38DD3;
-	Fri, 31 Jan 2025 01:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEC313AD26;
+	Fri, 31 Jan 2025 05:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="l8y8jHkE"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GYotuykc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2061.outbound.protection.outlook.com [40.107.223.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FC523A9;
-	Fri, 31 Jan 2025 01:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738287876; cv=none; b=csZnHu/PUvXfYaI6oJWQl76LOnEpXRi/uhG0LEbUe8kFichLPusH/VrnAkM8JQJpLl4qTZZ1ytMbQXjPpJcWJ5SJ5ceKEXbll4usL6C2A8SrksAqC0sNpiYNYwwPYLi6LEYgsUmmN7GMnsw1hhLXSWTUxiOzku81AJEEhX3Wp40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738287876; c=relaxed/simple;
-	bh=V5XXWtC72CVWnAF75ZdXH3wBassW4aNhCpFJtKue878=;
-	h=Date:To:From:Subject:Message-Id; b=ngFw/wUGUzUm1FJWKZyPStVzKEsPWxw56oz71fYA/Y8k8NihY+Qa4xaxf5lWqf1+GUMB/QWCVma4IG8otsV8+F5Ea8xfhiEwpFEBmF+fKhXT5O4oHKrcnxCTm7HCno/jJU3sjjikXReka4Mrd3oWIXDkDiGHJMKBAKPYNuPz95Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=l8y8jHkE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617DBC4CED2;
-	Fri, 31 Jan 2025 01:44:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1738287875;
-	bh=V5XXWtC72CVWnAF75ZdXH3wBassW4aNhCpFJtKue878=;
-	h=Date:To:From:Subject:From;
-	b=l8y8jHkE0XAy1aZdTe0ZurWFn0UcwgYRko4uRKjoTwYlvgMESYgcwlcEggVSFuEKX
-	 DhLP8gC+22WY31lI+YaRqixlU03wywZrehIPuj8YjyLMKoQTzMoiY253ek4LqsIYiX
-	 gLG85vGKM0b/6e6i6UzYe2RU0RjQl0Vs7oc3zZVs=
-Date: Thu, 30 Jan 2025 17:44:34 -0800
-To: mm-commits@vger.kernel.org,yosry.ahmed@linux.dev,stable@vger.kernel.org,nphamcs@gmail.com,kanchana.p.sridhar@intel.com,hannes@cmpxchg.org,chengming.zhou@linux.dev,42.hyeyoo@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zswap-fix-inconsistency-when-zswap_store_page-fails.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250131014435.617DBC4CED2@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E4718C31;
+	Fri, 31 Jan 2025 05:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738301929; cv=fail; b=O1Qh8Ws1/TKMZAZMnwbPZKiWwT5LImxJ/TvN6WzLonoqNIBTzyROSpXb7DzZ5kXjjjfE+/yr/D3yd1UChfZY0UIQFdOyIozDW2bw4NWFH3ejez+HXF8hyJg3/dmUjjt5JiSbZyLc7JbCV09fdBeNHOwn0SXi5fvoi/nLBpt08yc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738301929; c=relaxed/simple;
+	bh=DO4ORYnVYbrLG+jSygx9fJ98T6xN//l4lxDUXfF+HnI=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=M72XDLAWLw4TdyYr5xO+OsVphq+lU+y3bKt8Fg1SIAh8QJpdxEr+TVfmdJrjfFroIrquj5JWRa/wmsMIdGxmRGe1YhTqSrsW/9CEdb+ot/KXDtOnfCHYlGz3BULFNHIacRB0Jvvo+H0+RRnFo7ptZjcGSKEW87mgfpDCMzZdwco=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GYotuykc; arc=fail smtp.client-ip=40.107.223.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZwqWq1M4GyE0dfewQPleUqpIpfwYJ902dZPRMOVeMEq8GNdX2dOlEkPHLvr5xo8vj2M8HyIUVQ3vFopfUE1IoQqKW12M9Mhcp9gy2TshUiuT0QQRrO2/sNyBS8rIsueTacPg41VX84UpoL+yQU7g65qK/gaDkDV8sYsfYga2+10V2/lNjWRtq3FTr6m04KOg0SVG6uNy+0nVsf+uEJvuI2kQk/DRo+DZio53bZ4/MJwqgo+ETfMyDGzbPo7TaOA0QopITq50dWuyWOwJiSWuUovv+r74XUKsCiXbcdXCS4g5kiaDDoy8z/Krz/TLrvGc3O3pDjqwV9Icxrl/jRZNBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gxWnxic5QkakBew7c8+fYnzdgmDgsMyKp39dVFxlc0k=;
+ b=aWkBpCZvwEDNKVS2LKMOgZW42bUSuIDBZPY/gpMi4Tvk3XsD4sXQmt5m6ViCsmYgWGMg0C2X/6z1t4oIu9RWqKZyw5VHJCi6ru+/8cSDPF0vdlONU14a/dB3M/yL5idsrVJjdfPlNenH3ZWtC6eIDtbStE8D8DpNmyaDFNMrY257UZffVPKYb+P5QCr8f43iv/ZH1+EMIY43AkAtcSFau4cOcfa65gU/mKkKrPQOdXTqQHniNlb0Tq+TvhreoqzKSDKbUVW7AwDTk//NyGNVEVuIuVtIOPPPqKqrb1+eVLYIa38tEhPY4OhmI28SvYCscWGSOsulc4CH7OWQFNWx9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gxWnxic5QkakBew7c8+fYnzdgmDgsMyKp39dVFxlc0k=;
+ b=GYotuykcOPCE2PGEXBpk7D78Kw5CQqRWeDHwWzYKs8MeIUGEOugx2abHb+RjiTLxfSs5uWmhhVZGEv9GowgH3i6wbUjXKn4t+9Z06Si3Ng2iWrx+gExVvI9Tlefb66RlXZfmDlTuviqb/IUTSGWICXjIfz8R1xeQzQ55bUA6Qdbb5/vCCjuAdVLF2mpLVURQr7i+hkkcNTB6n3KaFgA/QyA5o4rMtQlVwP+NJ0QM1y/59/dJebqsA9kNBJlbOicuwTShkdEtwP7werpLKGaFzEjDRKyLfdYG98gg9HhMSg4/qQtTxiALdc2xIYkvAqTHN8cbpXYPEan4AmtigoxWtg==
+Received: from SN7PR04CA0050.namprd04.prod.outlook.com (2603:10b6:806:120::25)
+ by DM4PR12MB5844.namprd12.prod.outlook.com (2603:10b6:8:67::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.18; Fri, 31 Jan
+ 2025 05:38:44 +0000
+Received: from SA2PEPF00001506.namprd04.prod.outlook.com
+ (2603:10b6:806:120:cafe::fe) by SN7PR04CA0050.outlook.office365.com
+ (2603:10b6:806:120::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.17 via Frontend Transport; Fri,
+ 31 Jan 2025 05:38:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SA2PEPF00001506.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8398.14 via Frontend Transport; Fri, 31 Jan 2025 05:38:43 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 30 Jan
+ 2025 21:38:35 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Thu, 30 Jan 2025 21:38:35 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14 via Frontend
+ Transport; Thu, 30 Jan 2025 21:38:35 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 00/91] 5.4.290-rc1 review
+In-Reply-To: <20250130140133.662535583@linuxfoundation.org>
+References: <20250130140133.662535583@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <d4080d4d-581c-4c50-af91-0108bbf145c4@drhqmail203.nvidia.com>
+Date: Thu, 30 Jan 2025 21:38:35 -0800
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001506:EE_|DM4PR12MB5844:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad2e2ed9-7777-42f3-0ca6-08dd41b9866f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Z1pJSzlJa0FGME52UXJaM24zWkY5QVZydzlxdWlwQ1Y5VGc0RkFzdlJiV3R4?=
+ =?utf-8?B?L0NtdW5sM1JhWnpwb2JidDR3Q0N3NWtBODZHMCtnVFVxVTVkKzc4Vmp0RlRD?=
+ =?utf-8?B?NXdGUkE5a1l5aktSait2bFlJRXk0RENOZWtRalFlZC9jZHIyRFdPLzBIUmd6?=
+ =?utf-8?B?bTB6SnVjMTR3QVlybnl4dXZQZlFXaG1pNWo3R1lLOEMrTWRZYWJEQ1JrZG5y?=
+ =?utf-8?B?Sk1qVE82MmtVa20wdm5vb0xoTWw2eldHNHVUbkQ0TmRPOTIwcXcyTUlWOUNR?=
+ =?utf-8?B?a3RwNXJKTHgyUjJBNml1U2tuUzhjem1YQjRiQXZFVFpvN3BaWm1LL2R4WFBu?=
+ =?utf-8?B?eHdFOXZCZTg3MEtFWSs3alluNVF1ZlIxb05keW9NRDJ4YThtL3RaS3Nhc280?=
+ =?utf-8?B?T25TMFhrVUE0eWdxUWNVTEdTRFZJUDdRVEg5TnZIWWFiUXN4cllyc0VjRXVM?=
+ =?utf-8?B?SkYwSlJJY3g1UHZvTWJQVUNpME9RWkh0Z3daaHZJa04zVnU0WXdBYnhzbEl4?=
+ =?utf-8?B?UGZzNCtUcld2SUdyNEVqYnhXZFpDZU9PYWhpcjN4TnEyaUowcUZvZWwwSzFs?=
+ =?utf-8?B?UHhIM3VhWmx5L2RGc2VHZ2hZbkZrMmY0akJpdjg5aGJrOXdoZDYyaSttbDVH?=
+ =?utf-8?B?Q002RjZxZVprSFR6L0Q4a0FxYnV6bWdISXZJcFlVMmpvWXZ2TnQxTDM2cXBL?=
+ =?utf-8?B?UGFjYm1peUZTaXhUMGVhaytEelduZWJMVDZteTFwNTlVdnNFSEJEcURGVFkv?=
+ =?utf-8?B?RmQxbDNrWWxqaTltU3dqci8yUFIyNWE2RVd5M0hoNENlRnV4cUVNSnhzZHFp?=
+ =?utf-8?B?a1MrbzI4dmFLRzB0QkJTVUVoUFJmREZMN29kY0FISy93TmJlbWhUTzZxTVhO?=
+ =?utf-8?B?WXVVRTNXS2hDSXZJY0FxbEpQdVJHQUVaY1NrZFRHdnpKZTJ2TXJibHE5V1dS?=
+ =?utf-8?B?UTNpeEhTemo0SzBzQWVOUERKemdkaTNLdlVrQUFPNjYwbngwSGtjQktqaTJu?=
+ =?utf-8?B?UEdybzVXSHlWaFBMckRodHYrV3FmNWlhM2tZSkFDQjZQRlNtSFp5eHdWM2t5?=
+ =?utf-8?B?SndBS0orNkZFTG45dE1qS215SnFONU5zOW1xMFY0bnpseDZERkxUeUJoeFMv?=
+ =?utf-8?B?Ty8vWW1xNlhHcm9oc3c0NnptVzQ0Nk5SdVRvZGtvc29xdUwzdytIcFlwM0c4?=
+ =?utf-8?B?aThXdCtjT3RwZU5jVFM5a25zMUQ0YnBxdWw1VnpHWVJ1Z2hudXlxdGxEWEJC?=
+ =?utf-8?B?WUJpSUhCU3FYcm9aQ0VDcm1wa0JFVVV3Q09pbnJ4eDFveDdvRDBaUCtkMkVr?=
+ =?utf-8?B?Q05RZkI2QXRoSlkxdVdzWXIxMjE4L2FjMnU5ZGJ2UnExOFhqZ3VaamNHMUIx?=
+ =?utf-8?B?MUZYVUhKZysrRENPRGJVRmIwUnFJKzFZK3ZySllJRlJxOWMrS3N3am92RXkr?=
+ =?utf-8?B?Y0w4WC9xZ3BrRDgzT3RIVFlKSnBTY1lPTXBxcCtBa3Y0WjNlYUVBUE5rM3Zt?=
+ =?utf-8?B?YzIvaG5BTyt2YmFDT3dPY1V2ZWk5c1BGUHhoVFhIaGY3N05yNjFrd3V4RGpP?=
+ =?utf-8?B?NG9ldGdKWU1lZVVuZ21wYUkzMUlBaFROQ2FwUnpuWGc0Qjg5Wko4ekdNYVZz?=
+ =?utf-8?B?emdTY3JVblh6bUJGUmtjaUZpdU8ybys2SWN0OThEZ01XR3k4eUFKY3Vydjg2?=
+ =?utf-8?B?ekxpN25BaFowZHRZQ1VwSXRWS1Z2eVVjMVNVbStZNnhDT2NZa0dXOXgzUE9i?=
+ =?utf-8?B?dUZBcmM1RUdqaHhBcG52V3F0eFpIYmFBOTAwa0FsQ3AwWEJLSXEwMDNFa2kr?=
+ =?utf-8?B?OXVGTzFvV0tuNW5uNFhpd2J6VzFWZW4xeTljSUZaSy9Jam41T2t2RCtQam9a?=
+ =?utf-8?B?Q1hOZGhyQXRmNHlSZktuMWIwMEp3eVNabmlXazdyRTFWMmU2ZG9qZzBmZjhl?=
+ =?utf-8?B?V1RiMVd2S243KzBoa3FUbDZLVy9ZSTlwTG85QjgwRHMzdW0wWEZoS2tzbjJw?=
+ =?utf-8?Q?wihXRI5yEFlrxWG+JhC7G2Q5eKtmBU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2025 05:38:43.5408
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad2e2ed9-7777-42f3-0ca6-08dd41b9866f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001506.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5844
 
+On Thu, 30 Jan 2025 15:00:19 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.290 release.
+> There are 91 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 01 Feb 2025 14:01:13 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.290-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: mm/zswap: fix inconsistency when zswap_store_page() fails
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-zswap-fix-inconsistency-when-zswap_store_page-fails.patch
+All tests passing for Tegra ...
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-fix-inconsistency-when-zswap_store_page-fails.patch
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Linux version:	5.4.290-rc1-gd06b29df5286
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Subject: mm/zswap: fix inconsistency when zswap_store_page() fails
-Date: Wed, 29 Jan 2025 19:08:44 +0900
-
-Commit b7c0ccdfbafd ("mm: zswap: support large folios in zswap_store()")
-skips charging any zswap entries when it failed to zswap the entire folio.
-
-However, when some base pages are zswapped but it failed to zswap the
-entire folio, the zswap operation is rolled back.  When freeing zswap
-entries for those pages, zswap_entry_free() uncharges the zswap entries
-that were not previously charged, causing zswap charging to become
-inconsistent.
-
-This inconsistency triggers two warnings with following steps:
-  # On a machine with 64GiB of RAM and 36GiB of zswap
-  $ stress-ng --bigheap 2 # wait until the OOM-killer kills stress-ng
-  $ sudo reboot
-
-  The two warnings are:
-    in mm/memcontrol.c:163, function obj_cgroup_release():
-      WARN_ON_ONCE(nr_bytes & (PAGE_SIZE - 1));
-
-    in mm/page_counter.c:60, function page_counter_cancel():
-      if (WARN_ONCE(new < 0, "page_counter underflow: %ld nr_pages=%lu\n",
-	  new, nr_pages))
-
-zswap_stored_pages also becomes inconsistent in the same way.
-
-As suggested by Kanchana, increment zswap_stored_pages and charge zswap
-entries within zswap_store_page() when it succeeds.  This way,
-zswap_entry_free() will decrement the counter and uncharge the entries
-when it failed to zswap the entire folio.
-
-While this could potentially be optimized by batching objcg charging and
-incrementing the counter, let's focus on fixing the bug this time and
-leave the optimization for later after some evaluation.
-
-After resolving the inconsistency, the warnings disappear.
-
-Link: https://lkml.kernel.org/r/20250129100844.2935-1-42.hyeyoo@gmail.com
-Fixes: b7c0ccdfbafd ("mm: zswap: support large folios in zswap_store()")
-Co-developed-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/zswap.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
---- a/mm/zswap.c~mm-zswap-fix-inconsistency-when-zswap_store_page-fails
-+++ a/mm/zswap.c
-@@ -1504,11 +1504,14 @@ static ssize_t zswap_store_page(struct p
- 	entry->pool = pool;
- 	entry->swpentry = page_swpentry;
- 	entry->objcg = objcg;
-+	if (objcg)
-+		obj_cgroup_charge_zswap(objcg, entry->length);
- 	entry->referenced = true;
- 	if (entry->length) {
- 		INIT_LIST_HEAD(&entry->lru);
- 		zswap_lru_add(&zswap_list_lru, entry);
- 	}
-+	atomic_long_inc(&zswap_stored_pages);
- 
- 	return entry->length;
- 
-@@ -1526,7 +1529,6 @@ bool zswap_store(struct folio *folio)
- 	struct obj_cgroup *objcg = NULL;
- 	struct mem_cgroup *memcg = NULL;
- 	struct zswap_pool *pool;
--	size_t compressed_bytes = 0;
- 	bool ret = false;
- 	long index;
- 
-@@ -1569,15 +1571,11 @@ bool zswap_store(struct folio *folio)
- 		bytes = zswap_store_page(page, objcg, pool);
- 		if (bytes < 0)
- 			goto put_pool;
--		compressed_bytes += bytes;
- 	}
- 
--	if (objcg) {
--		obj_cgroup_charge_zswap(objcg, compressed_bytes);
-+	if (objcg)
- 		count_objcg_events(objcg, ZSWPOUT, nr_pages);
--	}
- 
--	atomic_long_add(nr_pages, &zswap_stored_pages);
- 	count_vm_events(ZSWPOUT, nr_pages);
- 
- 	ret = true;
-_
-
-Patches currently in -mm which might be from 42.hyeyoo@gmail.com are
-
-mm-zsmalloc-add-__maybe_unused-attribute-for-is_first_zpdesc.patch
-mm-zswap-fix-inconsistency-when-zswap_store_page-fails.patch
-
+Jon
 
