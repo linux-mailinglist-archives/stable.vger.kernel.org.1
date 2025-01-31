@@ -1,317 +1,121 @@
-Return-Path: <stable+bounces-111826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2114A23F51
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:59:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF62A23F85
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 16:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876C83A3DD4
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:58:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB8D188285A
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659441C5F1E;
-	Fri, 31 Jan 2025 14:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28D41E3DF8;
+	Fri, 31 Jan 2025 15:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="osGqXY5Y"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="i1ed482P"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3F31C4A16
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 14:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EDE1DE88B
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 15:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738335542; cv=none; b=fGLVZmq41LW5FsD1YWg92Q/ep+tXC6wmKMk96k9+1Lr1aTfi7bJGSZriOs05kcJgtMWg4CplORE46xQeF46Ue9YDuIDW618V/3WZAgXJR3mVHztMCVRh+pyhkChAa/rTc42lDqEmnWWQZ7VKKoaZwhaNrsSM5gGyymCpQTgYHRs=
+	t=1738336652; cv=none; b=ltVOkUp+YuXXNEqUfS53p381jNZUdnsNGVBRsmhMfn3aXsWa3CSDex6uZQ8BC8ysRUwEoLd3fUyuDy6LPGtJ8k6athPDomKQc+nXgdUM79D7vJEKzXKP2R59+oJoefiz+UU77Q7J/5TaPfNfbK9ccV6nO5yq/YW3ZDYMUn11SM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738335542; c=relaxed/simple;
-	bh=XBNNuBszWPZRuBRnhjhNXFM71rGXO2E6hrl38UKQQzs=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
-	 Content-Type; b=Ff+80mU+Z2Wtm/mCAt6QN7k88Ofl72Xjllsvg/ceX3YQfG6zFYIPaN4UKvDB8NQAal6IB9FXqANWyAAhVLnnXWGSBSPBOQp6CSKAhoPJJ1wjQaLlJYyCypukIUCnZps0mmhhMtkYKugb1lkRf3xWycK9pRNgtnGVan9QBj+mC74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=osGqXY5Y; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Type:MIME-Version:Message-ID:Date:In-Reply-To:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Zwu5Hitv4/1a67lggN6GEML6nle7odGui4zBbtRSaLw=; b=osGqXY5Yhp/3betjjQN3iGpsKK
-	+BsShqKY1BFhdk7dAKvK3MaS6MnyJbxgg/nBDMmQABeBpztuZahifhG6AMCMxcvqJGnm+/YZGYNTd
-	LC0T64ebtuusrtKoXlcP15qgcoJM81W3suyvyEBR/n8N/goQ2XqSKi0PHvuycbp0XkE81BitWU60v
-	OEmYoQO2den62GFoXca39stFfhZnyf6LawyrWj4Oo2cZWvpf3R3InGh0XraiT+l52L82wyhf2UVej
-	GXA4desNZ9E/+lWm2RLFJI7fb1+/mBN0McNxTbmYx6uj78Sv3tsMLlT0k3+f4OzwdrmlQ1EAWFhdi
-	KZz95xmA==;
-Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tdsTi-001WLc-67; Fri, 31 Jan 2025 15:58:48 +0100
-From: =?utf-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= <rcn@igalia.com>
-To: Ricardo =?utf-8?Q?Ca=C3=B1uelo?= Navarro <rcn@igalia.com>
-Cc: akpm@linux-foundation.org,
-	riel@surriel.com, linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	kernel-dev@igalia.com,
-	revest@google.com
-Subject: Re: [PATCH] mm,madvise,hugetlb: check for 0-length range after end
- address adjustment
-In-Reply-To: <20250131143749.1435006-1-rcn@igalia.com> (message from Ricardo
- =?utf-8?Q?Ca=C3=B1uelo?= Navarro on Fri, 31 Jan 2025 15:37:49 +0100)
-Date: Fri, 31 Jan 2025 15:58:41 +0100
-Message-ID: <87plk3xc66.fsf@igalia.com>
+	s=arc-20240116; t=1738336652; c=relaxed/simple;
+	bh=uQ/9IEjaOOi9bt2Huyu7kFUZuFsn6ln8/341Mo7GpPc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tiyox4Ulhzy+Y5VTHvBZhc8DT/MSxQOys8ad+ldi7QMIrI6R3tzQXF1C2N2Mort/r8WxstcX0qywDRiQyRiu0tum2R2fzrHpFwbQJvPENwPaWKd8PwErKaoKNfRNA2mGE8/ASqa+bKus/J0Szs0bEXUwBGVQZbry/gOfXt2TugU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=i1ed482P; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7b6e5c74cb7so164115785a.2
+        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 07:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1738336650; x=1738941450; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jcEEocSKT7Gd6kGv+VCs9uUhX/1xF75iIgl8liyYjE8=;
+        b=i1ed482POyLBa4BrwxIf/YOJIj4YBDDSOafy1rT7Y2Sw5sgnB4C0+Q74JeDnPtO3gX
+         I/Z6Fx7QinRA9KFwedJLwj0lwh575c6FBq3NQtjQvCZ9dvchod3GscX/v+zbIaHmL+wd
+         kL0hGCZNxwg7+kV03OpA84qD38fXOFAI4tXRuYdGYWYr0HlvrF38KfbxF5c5UQGz6o0l
+         4ok5g1gBv9C89BRl8PROThQ0uAhWi60yLupnCq00PFYigGxRMjCZACzBVBLaFzdEaEed
+         QqhggT5Mpgci90rfhxVkur7BMa6Kc2MT3aFNEhrzk7MRPZKO4nplDEPI9sG+FGYpw6ND
+         krmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738336650; x=1738941450;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jcEEocSKT7Gd6kGv+VCs9uUhX/1xF75iIgl8liyYjE8=;
+        b=pKRBCR4/ySLS1lpOVfJPVRhE1kjMrg7cVY//7efC6qIvPSb2RATdkShPfjeksKYCNa
+         4neiGCvimxw7weJOqA8byIeHzFcsBAabUntlY70378kbvq8RmKXHdUMUtrkD847EY+St
+         fLowZhA3w565AhhejxMzAqXzCxGJW6HmXl6ddVTIAUWXjkzwmtFLxGU/epctwC6n/ytA
+         DFfefcPSUc4NLoyXZbkgEq22QwMIhcSfbMTT7Pqz0g5OKjqdUvIKxTeMRjbgPp9DSipc
+         t7vs36V1tqdJtnHPd7lbLH5iBFcnY+QTZGBdeQTFcxWPWWmrXHmH5RQZK8mZaEdy71f6
+         bkfg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4/0FHfjrNK5KYHhit5fcq8uha/s/px6YhrwyUSLnINBI64MtEv9oKCnIlrRCfstdWv2sKRF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvR1RMRc3TR2zF/Oie59D4BH84Uw/pf/kHgHUMHDZNJ0X12cic
+	atNIpVYrw6bIbB/CNnbTiifNRdPCcm5ekAOIP0OvE9keMfLlvu/nC4FgvjFlSw==
+X-Gm-Gg: ASbGncvife2FA2KnAHh96PgwNzaV66NAj2eqNXbkqS7IBTvvbK87KmHNGi8U1RHRd0e
+	sULQB3W27bNz4bvhzBvr1X5g7Jpu962O/MXZmNd58lU1vtLDFZf0JLYfY9JKH6jj6NGrfy7hilU
+	oT3XnW5gl83izmGVk2ieO+QM64LTVKVjjJRZQC0+KlDlY/pDNiVEjbB8/Pn9WTANXbLRf4Npv5/
+	XoMr1yZQhiYl9PE/vDr8HBC2ELicifDH4Rlnci0t3uAc2HJZ+9jpkabRjsuotxKMoWWm33Uo+G5
+	IKd8Z5vTAeBERHTf8X5qQ2ZKtLsnWRBgNfWPEu9MzQUGK1TvSbYrvepoeGMMwVmtwaHiNtVVj3d
+	LcBddSgNP
+X-Google-Smtp-Source: AGHT+IHCqeXY+BV6FmNr1viS1b1OcZ/KZ49eMjdJC93WpkWiESpRQgu6Oeebv49ThIzoVKtVGiv4aA==
+X-Received: by 2002:a05:620a:4399:b0:7b6:e510:1de8 with SMTP id af79cd13be357-7bffcd1470emr1764968385a.33.1738336649944;
+        Fri, 31 Jan 2025 07:17:29 -0800 (PST)
+Received: from rowland.harvard.edu (nat-65-112-8-51.harvard-secure.wrls.harvard.edu. [65.112.8.51])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8d97c2sm203541685a.64.2025.01.31.07.17.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2025 07:17:29 -0800 (PST)
+Date: Fri, 31 Jan 2025 10:17:27 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
+ sources
+Message-ID: <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
+References: <20250131100630.342995-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250131100630.342995-1-chenhuacai@loongson.cn>
 
-Hi all,
+On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
+> Now we only enable the remote wakeup function for the USB wakeup source
+> itself at usb_port_suspend(). But on pre-XHCI controllers this is not
+> enough to enable the S3 wakeup function for USB keyboards,
 
-Some more context about the patch. The issue (WARNING in
-madvise_vma_behavior) was found by a private syzbot instance, so I can't
-share the link, but it can be triggered by an unprivileged user with
-this reproducer:
+Why do you say this?  It was enough on my system with an EHCI/UHCI 
+controller when I wrote that code.  What hardware do you have that isn't 
+working?
 
---8<------------------------------------------------------------------
+>  so we also
+> enable the root_hub's remote wakeup (and disable it on error). Frankly
+> this is unnecessary for XHCI, but enable it unconditionally make code
+> simple and seems harmless.
 
-#define _GNU_SOURCE
+This does not make sense.  For hubs (including root hubs), enabling 
+remote wakeup means that the hub will generate a wakeup request when 
+there is a connect, disconnect, or over-current change.  That's not what 
+you want to do, is it?  And it has nothing to do with how the hub 
+handles wakeup requests received from downstream devices.
 
-#include <endian.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <pthread.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/mount.h>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <sys/types.h>
-#include <time.h>
-#include <unistd.h>
+You need to explain what's going on here in much more detail.  What 
+exactly is going wrong, and why?  What is the hardware actually doing, 
+as compared to what we expect it to do?
 
-#include <linux/futex.h>
-
-#ifndef __NR_userfaultfd
-#define __NR_userfaultfd 323
-#endif
-
-static void sleep_ms(uint64_t ms)
-{
-  usleep(ms * 1000);
-}
-
-static uint64_t current_time_ms(void)
-{
-  struct timespec ts;
-  if (clock_gettime(CLOCK_MONOTONIC, &ts))
-    exit(1);
-  return (uint64_t)ts.tv_sec * 1000 + (uint64_t)ts.tv_nsec / 1000000;
-}
-
-static void thread_start(void* (*fn)(void*), void* arg)
-{
-  pthread_t th;
-  pthread_attr_t attr;
-  pthread_attr_init(&attr);
-  pthread_attr_setstacksize(&attr, 128 << 10);
-  int i = 0;
-  for (; i < 100; i++) {
-    if (pthread_create(&th, &attr, fn, arg) == 0) {
-      pthread_attr_destroy(&attr);
-      return;
-    }
-    if (errno == EAGAIN) {
-      usleep(50);
-      continue;
-    }
-    break;
-  }
-  exit(1);
-}
-
-typedef struct {
-  int state;
-} event_t;
-
-static void event_init(event_t* ev)
-{
-  ev->state = 0;
-}
-
-static void event_reset(event_t* ev)
-{
-  ev->state = 0;
-}
-
-static void event_set(event_t* ev)
-{
-  if (ev->state)
-    exit(1);
-  __atomic_store_n(&ev->state, 1, __ATOMIC_RELEASE);
-  syscall(SYS_futex, &ev->state, FUTEX_WAKE | FUTEX_PRIVATE_FLAG, 1000000);
-}
-
-static void event_wait(event_t* ev)
-{
-  while (!__atomic_load_n(&ev->state, __ATOMIC_ACQUIRE))
-    syscall(SYS_futex, &ev->state, FUTEX_WAIT | FUTEX_PRIVATE_FLAG, 0, 0);
-}
-
-static int event_isset(event_t* ev)
-{
-  return __atomic_load_n(&ev->state, __ATOMIC_ACQUIRE);
-}
-
-static int event_timedwait(event_t* ev, uint64_t timeout)
-{
-  uint64_t start = current_time_ms();
-  uint64_t now = start;
-  for (;;) {
-    uint64_t remain = timeout - (now - start);
-    struct timespec ts;
-    ts.tv_sec = remain / 1000;
-    ts.tv_nsec = (remain % 1000) * 1000 * 1000;
-    syscall(SYS_futex, &ev->state, FUTEX_WAIT | FUTEX_PRIVATE_FLAG, 0, &ts);
-    if (__atomic_load_n(&ev->state, __ATOMIC_ACQUIRE))
-      return 1;
-    now = current_time_ms();
-    if (now - start > timeout)
-      return 0;
-  }
-}
-
-struct thread_t {
-  int created, call;
-  event_t ready, done;
-};
-
-static struct thread_t threads[16];
-static void execute_call(int call);
-static int running;
-
-static void* thr(void* arg)
-{
-  struct thread_t* th = (struct thread_t*)arg;
-  for (;;) {
-    event_wait(&th->ready);
-    event_reset(&th->ready);
-    execute_call(th->call);
-    __atomic_fetch_sub(&running, 1, __ATOMIC_RELAXED);
-    event_set(&th->done);
-  }
-  return 0;
-}
-
-static void loop(void)
-{
-  if (write(1, "executing program\n", sizeof("executing program\n") - 1)) {
-  }
-  int i, call, thread;
-  for (call = 0; call < 8; call++) {
-	  for (thread = 0; thread < (int)(sizeof(threads) / sizeof(threads[0]));
-	       thread++) {
-		  struct thread_t* th = &threads[thread];
-		  if (!th->created) {
-			  th->created = 1;
-			  event_init(&th->ready);
-			  event_init(&th->done);
-			  event_set(&th->done);
-			  thread_start(thr, th);
-		  }
-		  if (!event_isset(&th->done))
-			  continue;
-		  event_reset(&th->done);
-		  th->call = call;
-		  __atomic_fetch_add(&running, 1, __ATOMIC_RELAXED);
-		  event_set(&th->ready);
-		  event_timedwait(&th->done, 50);
-		  break;
-	  }
-  }
-  for (i = 0; i < 100 && __atomic_load_n(&running, __ATOMIC_RELAXED); i++)
-    sleep_ms(1);
-}
-
-uint64_t r[1] = {0xffffffffffffffff};
-
-void execute_call(int call)
-{
-  intptr_t res = 0;
-  switch (call) {
-  case 0:
-    *(uint64_t*)0x20000040 = 0x20000004;
-    *(uint32_t*)0x20000048 = 4;
-    *(uint32_t*)0x2000004c = 2;
-    *(uint32_t*)0x20000050 = 0;
-    syscall(__NR_mq_notify, /*mqd=*/-1, /*notif=*/0x20000040ul);
-    break;
-  case 1:
-    syscall(__NR_mremap, /*addr=*/0x20002000ul, /*len=*/0x3000ul,
-            /*newlen=*/0x4000ul, /*flags=MREMAP_FIXED|MREMAP_MAYMOVE*/ 3ul,
-            /*newaddr=*/0x20422000ul);
-    break;
-  case 2:
-    res = syscall(__NR_userfaultfd,
-                  /*flags=UFFD_USER_MODE_ONLY|O_CLOEXEC*/ 0x80001ul);
-    if (res != -1)
-      r[0] = res;
-    break;
-  case 3:
-    *(uint64_t*)0x200000c0 = 0xaa;
-    *(uint64_t*)0x200000c8 = 0xc;
-    *(uint64_t*)0x200000d0 = 0;
-    syscall(__NR_ioctl, /*fd=*/r[0], /*cmd=*/0xc018aa3f, /*arg=*/0x200000c0ul);
-    break;
-  case 4:
-    *(uint64_t*)0x20000140 = 0x200e2000;
-    *(uint64_t*)0x20000148 = 0xc00000;
-    *(uint64_t*)0x20000150 = 1;
-    *(uint64_t*)0x20000158 = 0;
-    syscall(__NR_ioctl, /*fd=*/r[0], /*cmd=*/0xc020aa00, /*arg=*/0x20000140ul);
-    break;
-  case 5:
-    syscall(
-        __NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x400000ul,
-        /*prot=PROT_GROWSUP|PROT_SEM|PROT_WRITE|PROT_READ|PROT_EXEC*/
-        0x200000ful,
-        /*flags=MAP_SYNC|MAP_NONBLOCK|MAP_HUGETLB|MAP_FIXED|MAP_ANONYMOUS|0x2*/
-        0xd0032ul, /*fd=*/-1, /*offset=*/0ul);
-    break;
-  case 6:
-    syscall(__NR_madvise, /*addr=*/0x20000000ul, /*len=*/0x600003ul,
-            /*advice=MADV_DONTNEED*/ 4ul);
-    break;
-  case 7:
-    syscall(
-        __NR_mmap, /*addr=*/0x20000000ul, /*len=*/0xff5000ul, /*prot=*/0ul,
-        /*flags=MAP_POPULATE|MAP_NORESERVE|MAP_NONBLOCK|MAP_HUGETLB|MAP_FIXED|0x2000000000821*/
-        0x200000005c831ul, /*fd=*/-1, /*offset=*/0ul);
-    break;
-  }
-}
-int main(void)
-{
-  syscall(__NR_mmap, /*addr=*/0x1ffff000ul, /*len=*/0x1000ul, /*prot=*/0ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  syscall(__NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x1000000ul,
-          /*prot=PROT_WRITE|PROT_READ|PROT_EXEC*/ 7ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  syscall(__NR_mmap, /*addr=*/0x21000000ul, /*len=*/0x1000ul, /*prot=*/0ul,
-          /*flags=MAP_FIXED|MAP_ANONYMOUS|MAP_PRIVATE*/ 0x32ul, /*fd=*/-1,
-          /*offset=*/0ul);
-  loop();
-  return 0;
-}
-
---8<------------------------------------------------------------------
-
-Cheers,
-Ricardo
+Alan Stern
 
