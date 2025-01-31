@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-111827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF62A23F85
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 16:17:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33232A23F88
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 16:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FB8D188285A
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198C33A9E0D
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28D41E3DF8;
-	Fri, 31 Jan 2025 15:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876D61DEFDD;
+	Fri, 31 Jan 2025 15:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="i1ed482P"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ZGXNxBYD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EDE1DE88B
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 15:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEA614A099
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 15:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738336652; cv=none; b=ltVOkUp+YuXXNEqUfS53p381jNZUdnsNGVBRsmhMfn3aXsWa3CSDex6uZQ8BC8ysRUwEoLd3fUyuDy6LPGtJ8k6athPDomKQc+nXgdUM79D7vJEKzXKP2R59+oJoefiz+UU77Q7J/5TaPfNfbK9ccV6nO5yq/YW3ZDYMUn11SM0=
+	t=1738336719; cv=none; b=DJsWqnW+CIR/FplBgDg5BhB3Bq6/qO2o2B6jC9iuDb+oStCdnCRQKninUY85r0vXRj7WeGMsqS0GnowHgV0SCU29cya1iQ46NW+UIVADZGkPE8naOWhm13Blw5RUOP6W/Qlk5ZWfk9cSrcPuUy6pKkB7817tpSx4ySUO3fyd9F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738336652; c=relaxed/simple;
-	bh=uQ/9IEjaOOi9bt2Huyu7kFUZuFsn6ln8/341Mo7GpPc=;
+	s=arc-20240116; t=1738336719; c=relaxed/simple;
+	bh=Yh5e9pbZP2iUSKUl6lXSpqBSTfy6QZ+CAV1PK4bL86w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tiyox4Ulhzy+Y5VTHvBZhc8DT/MSxQOys8ad+ldi7QMIrI6R3tzQXF1C2N2Mort/r8WxstcX0qywDRiQyRiu0tum2R2fzrHpFwbQJvPENwPaWKd8PwErKaoKNfRNA2mGE8/ASqa+bKus/J0Szs0bEXUwBGVQZbry/gOfXt2TugU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=i1ed482P; arc=none smtp.client-ip=209.85.222.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=mZzugICn46ufXoDn1uZJePhvWcsLEZFZPDNmeQqwA4UNYMC7qqAx3Ow5UDR1agOWocssH7wlgUGUZdkZLBM0Enac2dkxwyi7oLadUjHSjkb8Rt+UbC9inilMecgDDnxxh72d0gNf1I+LSUqTHew7i4KflsnF45+F05S70xMQKso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ZGXNxBYD; arc=none smtp.client-ip=209.85.219.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7b6e5c74cb7so164115785a.2
-        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 07:17:30 -0800 (PST)
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6d8f65ef5abso14836816d6.3
+        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 07:18:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1738336650; x=1738941450; darn=vger.kernel.org;
+        d=rowland.harvard.edu; s=google; t=1738336716; x=1738941516; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jcEEocSKT7Gd6kGv+VCs9uUhX/1xF75iIgl8liyYjE8=;
-        b=i1ed482POyLBa4BrwxIf/YOJIj4YBDDSOafy1rT7Y2Sw5sgnB4C0+Q74JeDnPtO3gX
-         I/Z6Fx7QinRA9KFwedJLwj0lwh575c6FBq3NQtjQvCZ9dvchod3GscX/v+zbIaHmL+wd
-         kL0hGCZNxwg7+kV03OpA84qD38fXOFAI4tXRuYdGYWYr0HlvrF38KfbxF5c5UQGz6o0l
-         4ok5g1gBv9C89BRl8PROThQ0uAhWi60yLupnCq00PFYigGxRMjCZACzBVBLaFzdEaEed
-         QqhggT5Mpgci90rfhxVkur7BMa6Kc2MT3aFNEhrzk7MRPZKO4nplDEPI9sG+FGYpw6ND
-         krmA==
+        bh=HmcAvYq6Plh35o86lvrX1/5xKi/MyFR+UUUELwg5ZtQ=;
+        b=ZGXNxBYD5FVqegfYExCp5yMZ1Ytdg8CWzNicdlQMO7rlkl5ikF3XHpbRNFSDtf/UQ2
+         iF3z4IiFCHYed9NsjDdOHFMRknhdJX56+AH4lmQHVoKedwgaQcKDD37ixRVtYLLa9k9o
+         A3I3PTiisvK6dxIdGj8tEChDr3FAEjNagLajq11MmPRQqSNg75eZlNhoEK2sfR/Zodtw
+         Xd8itCQRw1l4TdwPvqnSUtuap3foo6P70Asv6cv788spHg6Ca1ykuo8OTDwEKxQ+wlRx
+         lmJNYo4QXfML0h/JDF82r8+rPuggQsN3AOjAq5IlAFHQdqifya9vaLO8bHNtrbuiOjYi
+         YHVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738336650; x=1738941450;
+        d=1e100.net; s=20230601; t=1738336716; x=1738941516;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jcEEocSKT7Gd6kGv+VCs9uUhX/1xF75iIgl8liyYjE8=;
-        b=pKRBCR4/ySLS1lpOVfJPVRhE1kjMrg7cVY//7efC6qIvPSb2RATdkShPfjeksKYCNa
-         4neiGCvimxw7weJOqA8byIeHzFcsBAabUntlY70378kbvq8RmKXHdUMUtrkD847EY+St
-         fLowZhA3w565AhhejxMzAqXzCxGJW6HmXl6ddVTIAUWXjkzwmtFLxGU/epctwC6n/ytA
-         DFfefcPSUc4NLoyXZbkgEq22QwMIhcSfbMTT7Pqz0g5OKjqdUvIKxTeMRjbgPp9DSipc
-         t7vs36V1tqdJtnHPd7lbLH5iBFcnY+QTZGBdeQTFcxWPWWmrXHmH5RQZK8mZaEdy71f6
-         bkfg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4/0FHfjrNK5KYHhit5fcq8uha/s/px6YhrwyUSLnINBI64MtEv9oKCnIlrRCfstdWv2sKRF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvR1RMRc3TR2zF/Oie59D4BH84Uw/pf/kHgHUMHDZNJ0X12cic
-	atNIpVYrw6bIbB/CNnbTiifNRdPCcm5ekAOIP0OvE9keMfLlvu/nC4FgvjFlSw==
-X-Gm-Gg: ASbGncvife2FA2KnAHh96PgwNzaV66NAj2eqNXbkqS7IBTvvbK87KmHNGi8U1RHRd0e
-	sULQB3W27bNz4bvhzBvr1X5g7Jpu962O/MXZmNd58lU1vtLDFZf0JLYfY9JKH6jj6NGrfy7hilU
-	oT3XnW5gl83izmGVk2ieO+QM64LTVKVjjJRZQC0+KlDlY/pDNiVEjbB8/Pn9WTANXbLRf4Npv5/
-	XoMr1yZQhiYl9PE/vDr8HBC2ELicifDH4Rlnci0t3uAc2HJZ+9jpkabRjsuotxKMoWWm33Uo+G5
-	IKd8Z5vTAeBERHTf8X5qQ2ZKtLsnWRBgNfWPEu9MzQUGK1TvSbYrvepoeGMMwVmtwaHiNtVVj3d
-	LcBddSgNP
-X-Google-Smtp-Source: AGHT+IHCqeXY+BV6FmNr1viS1b1OcZ/KZ49eMjdJC93WpkWiESpRQgu6Oeebv49ThIzoVKtVGiv4aA==
-X-Received: by 2002:a05:620a:4399:b0:7b6:e510:1de8 with SMTP id af79cd13be357-7bffcd1470emr1764968385a.33.1738336649944;
-        Fri, 31 Jan 2025 07:17:29 -0800 (PST)
+        bh=HmcAvYq6Plh35o86lvrX1/5xKi/MyFR+UUUELwg5ZtQ=;
+        b=jqDefI1j9JhUDgSMhEhqQdUepYEvGwYSzvtw2A3SMpe9KuAp9D1TdAVxifBJYRsN0T
+         tteQbiSCQxjQ2axecZ4ll6z0DWq6C9r59qDlbvdA+4WuPY7ssRA8MRj+pjiV8k9z9ty0
+         GZrpbxkmUlHymRWm+U3B2iEFIetI6o51UpmdPVg78jq/GKGWUFRylT1evT2jSL/px+lS
+         N1ldXHGHsHNAg/Q8MGNrGcA8ue/jdkXUj2g5Y5XiUdEhU+PZauVv9hlZZncTkgXRKltO
+         FlicX0IZsOvTZykzUuB1/fPyeg3LFiWDJ0tg65yLaPSENNDk7eI2dXMyYvgiG++u4IvM
+         SzUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqBpXrLrLtNazrux6Pp6Zxze/GydLeLSdi5BMxjLriWBJoZr2KhfM8X4UBJ7oVVqO7xj/UJXM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQFuVpj6pyPbtAHxqR2fjgDkbtpSSDGgsrvoZ6w3R4P3hwq5DU
+	Qr00G7NMRDPQsvZeZblol8sgEKOBZyiaOIpNjMjdRJ6hQ7C62oxhoer54D7CVQ==
+X-Gm-Gg: ASbGncuhH7NDFMDxkHqv0DPALdFfXlx82GuNJViTlQODg1qRUrLRWwB6cZviVDPL1BB
+	+94+VEOXpscho6RjiqeyC21r5lQYe8zZG5EpzOjLlOE3CsZa4ax5aSmlIdi4BG9T+S35od6tFr1
+	wsZjmTGtnfrDy7+xg/pZJjwjtwQuv3DFtagT0KDrsQDDLhhWXI7UAni0iSuuKyf362pKw5hv3r+
+	lRlI62r7WgYuK8Qg/2JlFb1VlHZund0v66L2y/OYHOiNyL9H/Kt6hTqyowoQ0JVGYPdzYBYKfMq
+	SnhRfxdSUSyntMZQiFtLpOQzTbE8YMRbYLCNoo/S2bh6NH9AmRbidnMNNWT3lVYroWyIxbKJLmO
+	wPYWag1DP
+X-Google-Smtp-Source: AGHT+IG8wug4eUsfhl7wm5KfInzfu9XEQSA/gmnsobwKMmAHW07VMT0SCDK4Yklh8p3e2g3kXNnO6A==
+X-Received: by 2002:a05:6214:3112:b0:6da:dc79:a3cd with SMTP id 6a1803df08f44-6e243a7f135mr158297156d6.0.1738336716566;
+        Fri, 31 Jan 2025 07:18:36 -0800 (PST)
 Received: from rowland.harvard.edu (nat-65-112-8-51.harvard-secure.wrls.harvard.edu. [65.112.8.51])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8d97c2sm203541685a.64.2025.01.31.07.17.29
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2547f3e17sm19028426d6.22.2025.01.31.07.18.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 07:17:29 -0800 (PST)
-Date: Fri, 31 Jan 2025 10:17:27 -0500
+        Fri, 31 Jan 2025 07:18:36 -0800 (PST)
+Date: Fri, 31 Jan 2025 10:18:34 -0500
 From: Alan Stern <stern@rowland.harvard.edu>
 To: Huacai Chen <chenhuacai@loongson.cn>
 Cc: Huacai Chen <chenhuacai@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-Message-ID: <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
+	stable@vger.kernel.org, Baoqi Zhang <zhangbaoqi@loongson.cn>
+Subject: Re: [PATCH] USB: pci-quirks: Fix HCCPARAMS register error for LS7A
+ EHCI
+Message-ID: <b6a18bab-b412-443a-b39a-2194596ec79d@rowland.harvard.edu>
+References: <20250131100651.343015-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,31 +91,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250131100630.342995-1-chenhuacai@loongson.cn>
+In-Reply-To: <20250131100651.343015-1-chenhuacai@loongson.cn>
 
-On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
-> Now we only enable the remote wakeup function for the USB wakeup source
-> itself at usb_port_suspend(). But on pre-XHCI controllers this is not
-> enough to enable the S3 wakeup function for USB keyboards,
+On Fri, Jan 31, 2025 at 06:06:51PM +0800, Huacai Chen wrote:
+> LS7A EHCI controller doesn't have extended capabilities, so the EECP
+> (EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+> be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+> fixed in future, now just clear the EECP field to avoid error messages
+> on boot:
+> 
+> ......
+> [    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> ......
+> [    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> ......
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  drivers/usb/host/pci-quirks.c | 4 ++++
+>  include/linux/pci_ids.h       | 1 +
+>  2 files changed, 5 insertions(+)
+> 
+> diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+> index 1f9c1b1435d8..7e3151400a5e 100644
+> --- a/drivers/usb/host/pci-quirks.c
+> +++ b/drivers/usb/host/pci-quirks.c
+> @@ -958,6 +958,10 @@ static void quirk_usb_disable_ehci(struct pci_dev *pdev)
+>  	 * booting from USB disk or using a usb keyboard
+>  	 */
+>  	hcc_params = readl(base + EHCI_HCC_PARAMS);
+> +	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON &&
+> +	    pdev->device == PCI_DEVICE_ID_LOONGSON_EHCI)
+> +		hcc_params &= ~(0xffL << 8);
 
-Why do you say this?  It was enough on my system with an EHCI/UHCI 
-controller when I wrote that code.  What hardware do you have that isn't 
-working?
-
->  so we also
-> enable the root_hub's remote wakeup (and disable it on error). Frankly
-> this is unnecessary for XHCI, but enable it unconditionally make code
-> simple and seems harmless.
-
-This does not make sense.  For hubs (including root hubs), enabling 
-remote wakeup means that the hub will generate a wakeup request when 
-there is a connect, disconnect, or over-current change.  That's not what 
-you want to do, is it?  And it has nothing to do with how the hub 
-handles wakeup requests received from downstream devices.
-
-You need to explain what's going on here in much more detail.  What 
-exactly is going wrong, and why?  What is the hardware actually doing, 
-as compared to what we expect it to do?
+Can you please add a comment before this "if" statement explaining why 
+it is necessary?
 
 Alan Stern
+
+> +
+>  	offset = (hcc_params >> 8) & 0xff;
+>  	while (offset && --count) {
+>  		pci_read_config_dword(pdev, offset, &cap);
+> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> index de5deb1a0118..74a84834d9eb 100644
+> --- a/include/linux/pci_ids.h
+> +++ b/include/linux/pci_ids.h
+> @@ -162,6 +162,7 @@
+>  
+>  #define PCI_VENDOR_ID_LOONGSON		0x0014
+>  
+> +#define PCI_DEVICE_ID_LOONGSON_EHCI     0x7a14
+>  #define PCI_DEVICE_ID_LOONGSON_HDA      0x7a07
+>  #define PCI_DEVICE_ID_LOONGSON_HDMI     0x7a37
+>  
+> -- 
+> 2.47.1
+> 
 
