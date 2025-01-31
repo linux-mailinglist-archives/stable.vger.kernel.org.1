@@ -1,157 +1,169 @@
-Return-Path: <stable+bounces-111772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E57FA23A79
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 09:10:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D01CA23A7F
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 09:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB77B7A1251
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 08:09:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A007F1886493
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 08:13:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A6D158874;
-	Fri, 31 Jan 2025 08:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBC9158874;
+	Fri, 31 Jan 2025 08:13:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="fbnskUI8";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dmE1psfQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7406632;
-	Fri, 31 Jan 2025 08:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7DC1531C2;
+	Fri, 31 Jan 2025 08:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738311041; cv=none; b=S1yMmKKLqUXWC6M3MtFfGYNodr9oQkBmk8F13PS28QjWr2spc9IeUjnvem94/OKXxRIm0jXTr19fnv0bPrJM03bG/08Pz740hPA9qJJiWyo2ftA+ZmJYgKRvxjgWel+2FODOn7MK63pSyJr/g8VqnZTD1SRVvJqxitCxMmKP5a4=
+	t=1738311216; cv=none; b=cQW/nT1fmL3J3lU+ni1H48qyD/YJnj/Fn2pLCHXB5e9kyobAPr/QcIZTkDcJ9tpYHgeBfKwAq9zc5WmTSAdkagm6nvzM7AqOHUy4WLW1oxvhdXpsmQnBMrsScmF1q/dUj/lY9orsGkvoheeADxnCJdY1P1s2BLjGxrPxoueWxWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738311041; c=relaxed/simple;
-	bh=azq4241KBIoteF/dlzxdcQE0ndXrUM97e5MNEw+dTgw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H27MI2BL6uiZG6hRqep88kwnu9kIzwJIARvaglCVg5PJWGfhLnqiLroM2bsqF/tqhX6AIonHMFWdota70RDplz3okRkAHrACZ6eZVxvYoUgtugnkjuseWtD5nAiCoEJ7gEIZimx0zXKtNbBYqLrfhPGLaFDywWUKGigiyUaBDao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5189105c5f5so1083299e0c.0;
-        Fri, 31 Jan 2025 00:10:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738311038; x=1738915838;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RkkmP4DS+2e9gLiuNJWw+nBuoXMD1/OBDb6T5snhw8g=;
-        b=aRAyw7HdZXi64fXEMpvZs7pNqwlsHu7VWXcPiCu1qmMOiGzVTFl01LsJJMmJCtawN8
-         LykCU2dAhba2wgwFd2UM2ym556u+l46K+4EfjxiU4dJBPi75h67UDbuewXCu7zEpWBjH
-         Yc4JZ2iCP1Q15uI2UoAqVcrrIL43MFiGfnMC0ZpABF5GEyXE2XYPj966ySbfHMQiVy+Q
-         wn3f88VzYTgduni4UFKOUCs3LgKQHZyRCSz7DYxP1G+tcGtV50NTuRSF6nWYUEDVFzdM
-         y8el90KpErW/yjdodnhCFXhyDY+jL1t3mm6qAhmk8JdFnv2SIGsQs9lvO9Z9P1NU3yZb
-         xa0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUG9FnDIVcvIxr0f/O11jXRGQ7VFg8NqiAHeKpry4afP/mIf7ozUjSweD1dND17oRjbhHAJpSX6MNj/@vger.kernel.org, AJvYcCWnHiDFxaeXftqTds5oMrVmfHK9PbAIue6U+w1yp0C2isvNo292vonUupmmRMYaOTnb6At77HwNc+iu6mg=@vger.kernel.org, AJvYcCXP3Fp/En5sufPwAgSxjk5jvciW93hqbj2iDluAUVeRDjoQHZkDdgYNo1G0aLrjjRTK4T0tnYLN@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXqxse061SwKIFh3da7BOq3N7GcGwPNnpMczyDc7zjnCePX/v4
-	h81+Zy+zYDUd2ooAmcpW/pJTqvYu4eKpdUKMtG7IcxBFdYd+9ss44da2QidzPZU=
-X-Gm-Gg: ASbGnctHNN5OH7w/NLxVCSz9LRtlcernHHnbI+xTm/gwWmmv9v7M7k6fYuQZtUecyaE
-	vOHGPYRGCWbaT42kUGSQZzJDYrBj4Vs+yZxp4jmr3Pznda3KSMogR1pQ7x73OR5YmpLGzNDGZ+y
-	S8sgj1uwCH4V5boHops0GOBt/4H5skzIv+WrpB46Rs4wvdWR5iIrlMcVTt+vPTTys+d6j1+KtyR
-	lpd+dD6n750HUNXfk9vSV/3HY+KD5OsdCZBqzXjrkNyHQIvkNYhfoXU3HTFIBs6ZYD7SgfVJf+T
-	JEtfol0OPSSX4f3LhnUsqW1P2Feku68ITLHEEv9nK4XwnXC3xeNOKA==
-X-Google-Smtp-Source: AGHT+IFMZCxCdyeODfF2pSSnn44P6r7PsL7s8v/YCMrMP5AVrRyqrwQjVcKiAaXGjo91fUKWtMqRGw==
-X-Received: by 2002:a05:6122:54b:b0:518:91b3:5e37 with SMTP id 71dfb90a1353d-51e9e43e687mr9303547e0c.5.1738311037901;
-        Fri, 31 Jan 2025 00:10:37 -0800 (PST)
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51eb1c3ca03sm448209e0c.24.2025.01.31.00.10.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Jan 2025 00:10:37 -0800 (PST)
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4b2c0a7ef74so1002723137.2;
-        Fri, 31 Jan 2025 00:10:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVTHtbP/FU3qSJBYnhwFb7Dm2zm9xq4ndvQJDSXLAd5HCQfw/yk8rLQrrlrFLsOAnGqUAtBYclWU0r/@vger.kernel.org, AJvYcCXLOJOy9SdeKbeEHry2DziPNCYvgS2ovzQ/ai2362DQ1Uhx+T07cEH8KIrP4nDADccJVKF0qpjX@vger.kernel.org, AJvYcCXNmoYxGirwpenDyOl4drn9nPS3Yp6gDOgb3E5S9lugO9yVhnuU8YSfkq0j7aP+wjPCW+5ytmLFJQPIGgA=@vger.kernel.org
-X-Received: by 2002:a05:6102:4bc7:b0:4b1:1eb5:8ee5 with SMTP id
- ada2fe7eead31-4b9a5300df8mr8729115137.25.1738311037486; Fri, 31 Jan 2025
- 00:10:37 -0800 (PST)
+	s=arc-20240116; t=1738311216; c=relaxed/simple;
+	bh=SNxN+ZGOBw0Qz1nYWxe6v5L2vLBX9SJQRv5wkaYcHkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tLeVcEQXgcwuIMGFpUim445PqU4D3s8JGi2H2unLZWY7B3LmJeM7GL+O3TBPrMMFMILi+58/uVhw4pymgykhXUpRwiPHaIcvvPR5y3g9wrzgAE8wYhZAA0nkpRPsxIK/gYWqlBb7fzCsqyVg2lXDlV+vEY09pVhdHAHCVyZ1mX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=fbnskUI8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dmE1psfQ; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id C13651140154;
+	Fri, 31 Jan 2025 03:13:33 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-12.internal (MEProxy); Fri, 31 Jan 2025 03:13:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1738311213; x=1738397613; bh=4jNxJH8MCi0+Pv9zAGCRWJW5yDuSYCSC
+	uGhsFDemDZI=; b=fbnskUI897W5qqJl4oqk3ijAZn4iw9tZUFV31cpfWiTEKGRe
+	EjreOQwww9Wn59r29EKDr2uO+cyUVRwGs5CoAhg4c+XSwNrgCtTIIVLn+N2kLo43
+	79xvU0zZ03ouatHrrM0UMi0ilcAOOITIHzUvFGQgDdvyOj6EEsVdke/E11KuPI59
+	/72XYeSy4DbQleuSWujVh8QIKBZQYbUkx74GpCvZTFC6gWWSCU2cSjdAPXNU1Ha/
+	B/MBV3noCccvuZ9AhAAKOO3YCjsbxHHh6mVmctY9V4+7WUu7qbX+0XexGss61XRx
+	dX07/uJgWJZyc3B/M1Sl9l6x+MpwgzkX8PJzLw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738311213; x=
+	1738397613; bh=4jNxJH8MCi0+Pv9zAGCRWJW5yDuSYCSCuGhsFDemDZI=; b=d
+	mE1psfQezO2/GUpwkW5PXjaMkbLz3VSSnz0u0fzetszkR+z1bX48ZzXfXgJM1tzg
+	+FI6baLBXX66EjBXikXQmwMZpBYQjUbvloTwi9qzlIHuBQnu6ZvABHaFeaLR5e1A
+	kenZAUNg7CzKEPFsffcUP+XHTSRKt+RfvR/FPH8K5jEfnjmbu+aEvbVxtl2nEiUl
+	Jly3+qVeV4XPPqe1wlQ/KaKGBRyNKNYLtqt1xC+iukFJob7C84nGMniC5qctdYUl
+	PLkNMfCcNkbt31jOkFtboVTvYJa2//dbwNRyxxLvIkRYPnWQBi8zquvsSWS8eO8M
+	tSRD1s0bX0br8NKFzD3+A==
+X-ME-Sender: <xms:LYacZxWbNp1TYZ70UjM-69i0828YayL09ffr2cBQbfZY_sHxzsFWWw>
+    <xme:LYacZxkC53T7BE3vuYLhDrpuGi-5ubIHTTdIqK_J48wSpfiPej5ZHW9zn7e2b74IE
+    0jIf40p5jnIky64G0A>
+X-ME-Received: <xmr:LYacZ9ayqubIikc5Gq1BwrPHAnOcO5-jdG97CqPvSWflCbH1JaHDZ1PWeXFtsXD1Jk6yvA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekvdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkefstddttdej
+    necuhfhrohhmpedfmfhirhhilhhlucetrdcuufhhuhhtvghmohhvfdcuoehkihhrihhllh
+    esshhhuhhtvghmohhvrdhnrghmvgeqnecuggftrfgrthhtvghrnheptddvfeeuteehieeg
+    gfektdehteejuddvvddthfetleegkedtveevtddtvdfhtdefnecuffhomhgrihhnpehkvg
+    hrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
+    fhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgdpnhgspghrtghpthhtoh
+    epudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehvrghnnhgrphhurhhvvges
+    ghhoohhglhgvrdgtohhmpdhrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgsohhniihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvg
+    grnhhjtgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvghruggvmhgrkhhtrghssehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopegrtghkvghrlhgvhihtnhhgsehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehjgihgrghosehgohhoghhlvgdrtghomhdprhgtphhtthho
+    pehsrghgihhssehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:LYacZ0XVhUl1FBqTTuhvlmOaZKw5xdH5IGZPqcaSZCmmixl0MP3FWg>
+    <xmx:LYacZ7mQdzn3R2OV3G93scW6NdOPLtNNqWHB23vA27NggaNdNZczyw>
+    <xmx:LYacZxdxYT3eRfe54QuxldJhEIMtP1Cmu1ymry0gUZcihVnlu3BEcA>
+    <xmx:LYacZ1Fi6VOx6afjfZ6R84vJafhVoby0Pl1SX__sj9deycZtTmz96A>
+    <xmx:LYacZ93krT3wfHYvxZxUGWTSVDmFYO--AgshRT8yLBFUqLjTvqGrKfJZ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 31 Jan 2025 03:13:27 -0500 (EST)
+Date: Fri, 31 Jan 2025 10:13:24 +0200
+From: "Kirill A. Shutemov" <kirill@shutemov.name>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
+	sagis@google.com, oupton@google.com, pgonda@google.com, 
+	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
+	isaku.yamahata@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+Message-ID: <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
+References: <20250129232525.3519586-1-vannapurve@google.com>
+ <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+ <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
+ <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
+ <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250130184320.69553-1-eahariha@linux.microsoft.com>
- <20250130201417.32b0a86f@pumpkin> <9ae171e2-1a36-4fe1-8a9f-b2b776e427a0@kernel.org>
-In-Reply-To: <9ae171e2-1a36-4fe1-8a9f-b2b776e427a0@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 31 Jan 2025 09:10:25 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUNjKJ0CFw+i1qgVsHO2LU6uOqkAq5iGL0EZyCtrfzM=A@mail.gmail.com>
-X-Gm-Features: AWEUYZnzRpnttETHOvwV06xiq0h3GhjNbcJkQ7hh1AEarCDsz4Oe4dyjuIMFsLU
-Message-ID: <CAMuHMdUNjKJ0CFw+i1qgVsHO2LU6uOqkAq5iGL0EZyCtrfzM=A@mail.gmail.com>
-Subject: Re: [PATCH] jiffies: Cast to unsigned long for secs_to_jiffies() conversion
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	Easwar Hariharan <eahariha@linux.microsoft.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, kernel test robot <lkp@intel.com>, 
-	linux-xfs <linux-xfs@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
 
-Hi Jiri,
-
-CC linux-xfs
-
-On Fri, 31 Jan 2025 at 08:05, Jiri Slaby <jirislaby@kernel.org> wrote:
-> On 30. 01. 25, 21:14, David Laight wrote:
-> > On Thu, 30 Jan 2025 18:43:17 +0000
-> > Easwar Hariharan <eahariha@linux.microsoft.com> wrote:
+On Thu, Jan 30, 2025 at 11:45:01AM -0800, Vishal Annapurve wrote:
+> On Thu, Jan 30, 2025 at 10:48 AM Kirill A. Shutemov
+> <kirill@shutemov.name> wrote:
+> > ...
+> > > >
+> > > > I think it is worth to putting this into a separate patch and not
+> > > > backport. The rest of the patch is bugfix and this doesn't belong.
+> > > >
+> > > > Otherwise, looks good to me:
+> > > >
+> > > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
+> > > >
+> > > > --
+> > > >   Kiryl Shutsemau / Kirill A. Shutemov
+> > >
+> > > Thanks Kirill for the review.
+> > >
+> > > Thinking more about this fix, now I am wondering why the efforts [1]
+> > > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Currently
+> > > proposed fix is incomplete as it would not handle scenarios where
+> > > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] and
+> > > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
+> > >
+> > > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.kuppuswamy@linux.intel.com/
 > >
-> >> While converting users of msecs_to_jiffies(), lkp reported that some
-> >> range checks would always be true because of the mismatch between the
-> >> implied int value of secs_to_jiffies() vs the unsigned long
-> >> return value of the msecs_to_jiffies() calls it was replacing. Fix this
-> >> by casting secs_to_jiffies() values as unsigned long.
+> > Many people dislike paravirt callbacks. We tried to avoid relying on them
+> > for core TDX enabling.
 > >
-> > Surely 'unsigned long' can't be the right type ?
-> > It changes between 32bit and 64bit systems.
-> > Either it is allowed to wrap - so should be 32bit on both,
-> > or wrapping is unexpected and it needs to be 64bit on both.
->
-> But jiffies are really ulong.
+> > Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disabled?
+> > I don't think I follow.
+> 
+> Relevant callers of *_safe_halt() are:
+> 1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
 
-That's a good reason to make the change.
-E.g. msecs_to_jiffies() does return unsigned long.
+Okay, I didn't realized that CONFIG_PARAVIRT_SPINLOCKS doesn't depend on
+CONFIG_PARAVIRT_XXL.
 
-Note that this change may cause fall-out, e.g.
+It would be interesting to check if paravirtualized spinlocks make sense
+for TDX given the cost of TD exit.
 
-    int val = 5.
+Maybe we should avoid advertising KVM_FEATURE_PV_UNHALT to the TDX guests?
 
-    pr_debug("timeout = %u jiffies\n", secs_to_jiffies(val));
-                        ^^
-                        must be changed to %lu
+> 2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
 
-More importantly, I doubt this change is guaranteed to fix the
-reported issue.  The code[*] in retry_timeout_seconds_store() does:
-
-    int val;
-    ...
-    if (val < -1 || val > 86400)
-            return -EINVAL;
-    ...
-    if (val != -1)
-            ASSERT(secs_to_jiffies(val) < LONG_MAX);
-
-As HZ is a known (rather small) constant, and val is range-checked
-before, the compiler can still devise that the condition is always true.
-So I think that assertion should just be removed.
-
-[*] Before commit b524e0335da22473 ("xfs: convert timeouts to
-    secs_to_jiffies()"), which was applied to the MM tree only 3
-    days ago, the code used msecs_to_jiffies() * MSEC_PER_SEC,
-    which is more complex than a simple multiplication, and harder for
-    the compiler to analyze statically, thus not triggering the warning
-    that easily...
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Have you checked why you get there? I don't see a reason for TDX guest to
+get into ACPI idle stuff. We don't have C-states to manage.
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+  Kiryl Shutsemau / Kirill A. Shutemov
 
