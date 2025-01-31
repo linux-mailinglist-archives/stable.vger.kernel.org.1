@@ -1,201 +1,120 @@
-Return-Path: <stable+bounces-111793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBFEA23C66
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C81CCA23C7A
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B06DA160C4E
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:41:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43CD81633F9
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694891B6D15;
-	Fri, 31 Jan 2025 10:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364751B4F09;
+	Fri, 31 Jan 2025 10:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="mvIAz6yH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS6idcDf"
 X-Original-To: stable@vger.kernel.org
-Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344D9169397;
-	Fri, 31 Jan 2025 10:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14801CA81;
+	Fri, 31 Jan 2025 10:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738320106; cv=none; b=QTaTHD0HgsPPeFw8ggd6UOHUGX81oQb5laO4n/GI8FhU647MDKNEtzy6BEOuBd0fd6adefhhOQFV1LCDPV5hWcvXOuEu3cfUpFNZu6CGMcT1a2E+Q5APyH0Riv0nSwMmgJpZXheAzJSqGneqrMgIygEuI3GbCcE+h5e7I3kPR0M=
+	t=1738320510; cv=none; b=LfL56rxMDvCKKIOawYiN22qVBHufC37iDAex2wAhHcoyoenQJUIWC3b2Lw7DdLzJo0rj9lK2ZZvj96IGHk6CvgmNMm0P73wtkDvA8j8IrOZm9hzZgEWVeeFfAmoATVt7V3lvNVm8FahQ9VMww/oPChAG8itDm9UJ6X/x/rWUmh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738320106; c=relaxed/simple;
-	bh=UmkogZvigA1LG9ifwuDFidnqTNx1Ze4OAqXxiu0DjmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=l+Mzl2ODm7uoWwsug/9vibMfJyRHSR0OjLKROm/aQGrvWsUIcBagO+YEJuukJiyevxtigOJqASjeenxfET5tJyqh5miaikya/IvifKxGaTNMkX9e3N0HzGIuJXNs8tnoQqoG3iGOdZNj41iS9naw3az3oDJU0PU8g5hliMMAn60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=mvIAz6yH; arc=none smtp.client-ip=139.162.151.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CVklSc7jRXRCj1OD8jzeeoWSSLGdwqxyPk1kaSQ2dQs=; b=mvIAz6yHZ17hpW9qKMABSP81i3
-	xvC6ONYVRMytXYdLtBUquARBa7e8TBVPMn7F/B1+n1VA/QMFSX5qhehoezjIkyuy9tW1+mrKSrZl5
-	R1Qx27kc+u5et8JtdV4l5z0xBXpbDhyT3h/dJOsgLzse4bXFADLG16xjMHxHC4XiHbDmRxHqP5SLR
-	bw94Hw855L+N1RGRTTPZ1xCVU6IYl46f8mND0R4FFp4bSmnMPhLxdlcjjBUVDnBrkmTxkyedp2Zew
-	aXrlA5NO0VKJBQ7RT9XOesZg+V+MkMFcLMtmw3RkOBIil9L7WnqybOZrHHgZjwylm0hGSO/1JMTNB
-	GykKYWaw==;
-Received: from ink by minute.unseen.parts with local (Exim 4.96)
-	(envelope-from <ink@unseen.parts>)
-	id 1tdoSo-0002sh-16;
-	Fri, 31 Jan 2025 11:41:30 +0100
-From: Ivan Kokshaysky <ink@unseen.parts>
-To: Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/4] alpha: align stack for page fault and user unaligned trap handlers
-Date: Fri, 31 Jan 2025 11:41:29 +0100
-Message-Id: <20250131104129.11052-5-ink@unseen.parts>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250131104129.11052-1-ink@unseen.parts>
-References: <20250131104129.11052-1-ink@unseen.parts>
+	s=arc-20240116; t=1738320510; c=relaxed/simple;
+	bh=mbcVU4/KYOCDqVBfV1Wmm4rFmFhpD+8bSrlKxn6+4W4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h7XTXn4LbLBdFF3CzRLMExfgYMmMGbnQ4cFlRxlR3tCpNhvmlEzUlqEYDn/Uib3cBwnZlgvZtYKJki2ZEpesNflNIa0vcU38DhEkv2XJkBdtjvp5HMj8QIsTeSySxMwidiYl+NySfCYXpZT/L7wbgQC4SxsflAPv2lvSNNsoZoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS6idcDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB62C4CED1;
+	Fri, 31 Jan 2025 10:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738320510;
+	bh=mbcVU4/KYOCDqVBfV1Wmm4rFmFhpD+8bSrlKxn6+4W4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iS6idcDf46+1ZF0QPrJ+mG6y2lhOW6+egN5YwY6JjbkD7H9br1Gbfwrm3ePhfjBnL
+	 tGRSEtp5FumQLHq+0ucmY79PH0w2/Ps8t5qIhkEOPLL/HxrJzZEsLc4BqDgyrU3B66
+	 9NpuGRVrVvIrXAJFzgHFyTSEXY9SNtrLBNhzqvF4=
+Date: Fri, 31 Jan 2025 11:48:27 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Baoqi Zhang <zhangbaoqi@loongson.cn>
+Subject: Re: [PATCH] USB: pci-quirks: Fix HCCPARAMS register error for LS7A
+ EHCI
+Message-ID: <2025013107-droplet-reset-127e@gregkh>
+References: <20250131100651.343015-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250131100651.343015-1-chenhuacai@loongson.cn>
 
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
+On Fri, Jan 31, 2025 at 06:06:51PM +0800, Huacai Chen wrote:
+> LS7A EHCI controller doesn't have extended capabilities, so the EECP
+> (EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+> be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+> fixed in future, now just clear the EECP field to avoid error messages
+> on boot:
+> 
+> ......
+> [    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> [    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> ......
+> [    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> [    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> ......
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>  drivers/usb/host/pci-quirks.c | 4 ++++
+>  include/linux/pci_ids.h       | 1 +
+>  2 files changed, 5 insertions(+)
+> 
+> diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+> index 1f9c1b1435d8..7e3151400a5e 100644
+> --- a/drivers/usb/host/pci-quirks.c
+> +++ b/drivers/usb/host/pci-quirks.c
+> @@ -958,6 +958,10 @@ static void quirk_usb_disable_ehci(struct pci_dev *pdev)
+>  	 * booting from USB disk or using a usb keyboard
+>  	 */
+>  	hcc_params = readl(base + EHCI_HCC_PARAMS);
+> +	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON &&
+> +	    pdev->device == PCI_DEVICE_ID_LOONGSON_EHCI)
+> +		hcc_params &= ~(0xffL << 8);
+> +
+>  	offset = (hcc_params >> 8) & 0xff;
+>  	while (offset && --count) {
+>  		pci_read_config_dword(pdev, offset, &cap);
+> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> index de5deb1a0118..74a84834d9eb 100644
+> --- a/include/linux/pci_ids.h
+> +++ b/include/linux/pci_ids.h
+> @@ -162,6 +162,7 @@
+>  
+>  #define PCI_VENDOR_ID_LOONGSON		0x0014
+>  
+> +#define PCI_DEVICE_ID_LOONGSON_EHCI     0x7a14
 
-Cc: stable@vger.kernel.org
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Suggested-by: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
----
- arch/alpha/kernel/entry.S | 20 ++++++++++----------
- arch/alpha/kernel/traps.c |  2 +-
- arch/alpha/mm/fault.c     |  4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+If you read the top of this file, does this patch meet the requirement
+to add this entry here to this file?
 
-diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
-index 6fb38365539d..f4d41b4538c2 100644
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -194,8 +194,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -210,7 +210,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -223,7 +223,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -231,7 +231,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -378,8 +378,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -395,7 +395,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -405,7 +405,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -413,7 +413,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
- 
-diff --git a/arch/alpha/kernel/traps.c b/arch/alpha/kernel/traps.c
-index a9a38c80c4a7..7004397937cf 100644
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -649,7 +649,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
-diff --git a/arch/alpha/mm/fault.c b/arch/alpha/mm/fault.c
-index 8c9850437e67..a9816bbc9f34 100644
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *next_mm)
- 
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
- 
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
--- 
-2.39.5
+thanks,
 
+greg k-h
 
