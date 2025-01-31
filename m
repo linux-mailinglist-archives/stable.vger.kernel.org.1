@@ -1,109 +1,135 @@
-Return-Path: <stable+bounces-111851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8580EA24291
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 19:29:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56588A242E2
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 19:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA7F3A87B9
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4323A88EF
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402101F0E28;
-	Fri, 31 Jan 2025 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2731F2379;
+	Fri, 31 Jan 2025 18:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q5lpvZwy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hHsBg40O"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859971386C9
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 18:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5463B7081F
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 18:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738348176; cv=none; b=GW+iG+LHvnsngrkhwDaRG2TirUZlyv8llxLREgRbpidCgBFeChnHHvQU3ew9R2c1FKeVEGapzqIE4UWOHPJj0Jk0693Bmp4qf+KGMmJyjlROCXGjO3VogSBu+ra/ZBVAovd1zYuAq7VGn5biRe+837BIjLlkKfeEhGBU59i9a78=
+	t=1738349058; cv=none; b=jrlVBBdoKpRY6KaiYqhgAC4eLO0jy3/IR8dmmXpkVJLZ5Jum3UvyWjgHjl1H+6YSaDALmkIXAPdGJB7Nuk0O5RvhWCc8C1MarmBklJPk9gCWqQKTG8mh6Ad4W2QfjuNOIPc87iMjdtJchqejgn7zxe0KrJ3rXSrdhRQNcpXjWuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738348176; c=relaxed/simple;
-	bh=Myjpc/f5VLRtAoF6lJlarZq9skZkYdc4867s2znz8ks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CM9g2JM9HerJ+vGI+/qWjZBqTCZqYKxsX6/PCkIxXTOUxMkDaGmnOtFozy+xZnvZ+fWrL/9GFIQxjWUTNr61jwfzYehR2vEqaOBko/FQrl/9y7Ol9Hz4+R8IPPaAqlmYWdtv8D8wP2O33wkPthh+9ekti5pxQS3qCIIdiMtIetA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q5lpvZwy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50VDL5Xd020683;
-	Fri, 31 Jan 2025 18:29:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BmQfPCtsiPiVdQMaiDQ54r+5hhpCU2+hgfWKN7wcXgE=; b=Q5lpvZwyaI8dQTBo
-	vWCoee3EdyTamymI0/o2Em6QXH/6bbxROy6auNdzDoQmR9IiwMFJvry7rv0HLNbN
-	V/YDN+HKR248H6pi+0u9B/r5ZLRuQorPm1cOnVnqaWyFa4svvHpGP2SNuQHML7ls
-	KI38M9xbS3B2ICB/zOjQD/HedFCY905MXJkJar/pnAS3W28cHAQApBy/el9ykzE4
-	zD4mWZZ3w8iiZo0mbkgghB+7O0vzwsOLsPTcMLvIxKUX6PyhMKR0Eb4C7SI4NpCz
-	wrX6eXMNcTH78dmfkad1pkULpbCjFIQ5unR0Op+AuyRBP5TumWRI7SNY4qqQogy7
-	mY9B8Q==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44gyapgqa0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jan 2025 18:29:32 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50VITVQd013735
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 Jan 2025 18:29:31 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 31 Jan
- 2025 10:29:31 -0800
-Message-ID: <4b7b91f0-29b1-d406-f25a-bd63e27f4a2a@quicinc.com>
-Date: Fri, 31 Jan 2025 11:29:30 -0700
+	s=arc-20240116; t=1738349058; c=relaxed/simple;
+	bh=YSwnjXOnBcp4QJLJEzKW9oTdc+d1XGO2LhWgVtjnxzQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=tTnF4BE8IafZRbUe1PNg672heppZmg6Kkd+ASBvezxJMtWQ8v+QK6cKswJJ/P2/mfHoCVo0YyuCeno17DlgBAsxuNHy0trBHp2/tonCPG9XXdCrhzXro/eYaQEEVoCinuAos8f2kAQjC0KwnardyoOgV8626mmBmDhRtUnHLuMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hHsBg40O; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ef114d8346so4519742a91.0
+        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 10:44:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738349056; x=1738953856; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ljqvdoe66PsV0ko9USqCX1cFitPJRiLzefenHrRR1Us=;
+        b=hHsBg40OnBcvhRpw6GmUU2m/tgxZ0AxlMmbxDfH6So23Rd9yAqdXF8M7lCtrqs0ymt
+         ERa21kxdm3SMfgjYrFV3oFtiAAZ4FDJhb/rI+CmPWd0kaYYnT4niR/iapr5fchLipjh2
+         LtwoBqogISIa73Me9LGb0rn/z2AMpdqh6r6HHfSbkyiVXR3dgRUHOKSpPTVAruy1IgpR
+         PLFXDBfrxaMV775N+ZmlWUqCxbbUJrnwbcpRCYuPP74Rzt65W9fojNEl6hUkfcQKRQHS
+         7qhL5ZV4QudWa1jwQWuquO9YFykstGjWL83v25DnuYuwXcG3Uf9alkqaqlyAGT5XmHGH
+         RAww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738349056; x=1738953856;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ljqvdoe66PsV0ko9USqCX1cFitPJRiLzefenHrRR1Us=;
+        b=NHKQBEXud1URlqNk5upLLMTVJJhle+9X54Lb/o2nc703zawlz9HFGgCMS3v9dtq7Cq
+         B7SMKxXyXXRt8Atza+7gatzCB0b2lzE964cnTG8XOEZNN5PIBMtMdg5tfF9yyznbz/No
+         Cw5wP8KsaUGtUutCI5q71Qc3tf0KyVR3WSnXS00bnXC0sHW3U4HfE7XdFuMdzBH+i3ms
+         hyUhfoxpysb8rHXdTeg0doWhJ1W0l5wkgJ4EpbzTUxpcoDzVQ3SxfYnYAHgBJ5B0Mf3R
+         yvARfBHx4gqt8rK1X/eCw9RH+nYjvPR/8esR2CBDz83Q2H83J3eR7xI3f/Z1+fm4YuOl
+         3HMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU5frzocaWyX/G990joR/OUNZSlEUPJeRGNfA1/q1H4j9f1LarApZ7qA2f1P1HHmFPBqJhoJY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgDWj9TzQ1VXuxoNJzASuEKXT4Zf/9/LBrxP9XtEbMkW+NqfOo
+	DP12lsAZmcYL5UBbHtO79kW33ExOAbkPAV485TfLoKqK4clfkjFoPPyljibkN2zFTvCH6VzOOU6
+	+oC/gcf+cqw==
+X-Google-Smtp-Source: AGHT+IF+uYFJf6336pW4NcaKvfIFPem3UA+dJK9i/dockjZWIM7szv9chSDIgoK3n6FFScQsadqVvG+86ZmScw==
+X-Received: from pjbsy8.prod.google.com ([2002:a17:90b:2d08:b0:2f5:5240:4f0f])
+ (user=ipylypiv job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:37ce:b0:2ee:ba0c:1726 with SMTP id 98e67ed59e1d1-2f83acb10e5mr15208961a91.34.1738349056642;
+ Fri, 31 Jan 2025 10:44:16 -0800 (PST)
+Date: Fri, 31 Jan 2025 10:44:07 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH 3/3] accel/ivpu: Fix error handling in recovery/reset
-Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        <dri-devel@lists.freedesktop.org>
-CC: <oded.gabbay@gmail.com>, <maciej.falkowski@linux.intel.com>,
-        <stable@vger.kernel.org>
-References: <20250129124009.1039982-1-jacek.lawrynowicz@linux.intel.com>
- <20250129124009.1039982-4-jacek.lawrynowicz@linux.intel.com>
-From: Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20250129124009.1039982-4-jacek.lawrynowicz@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: wZdFQTeZ43r0fURrR2q2CrRuUmhFLn40
-X-Proofpoint-ORIG-GUID: wZdFQTeZ43r0fURrR2q2CrRuUmhFLn40
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-31_06,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=890 bulkscore=0
- spamscore=0 mlxscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- phishscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2501310139
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
+Message-ID: <20250131184408.859579-1-ipylypiv@google.com>
+Subject: [PATCH v2] scsi: core: Do not retry I/Os during depopulation
+From: Igor Pylypiv <ipylypiv@google.com>
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Douglas Gilbert <dgilbert@interlog.com>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/29/2025 5:40 AM, Jacek Lawrynowicz wrote:
-> Disable runtime PM for the duration of reset/recovery so it is possible
-> to set the correct runtime PM state depending on the outcome of the
-> `ivpu_resume()`. Don’t suspend or reset the HW if the NPU is suspended
-> when the reset/recovery is requested. Also, move common reset/recovery
-> code to separate functions for better code readability.
-> 
-> Fixes: 27d19268cf39 ("accel/ivpu: Improve recovery and reset support")
-> Cc: <stable@vger.kernel.org> # v6.8+
-> Reviewed-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Fail I/Os instead of retry to prevent user space processes from being
+blocked on the I/O completion for several minutes.
 
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Retrying I/Os during "depopulation in progress" or "depopulation restore
+in progress" results in a continuous retry loop until the depopulation
+completes or until the I/O retry loop is aborted due to a timeout by
+the scsi_cmd_runtime_exceeced().
+
+Depopulation is slow and can take 24+ hours to complete on 20+ TB HDDs.
+Most I/Os in the depopulation retry loop end up taking several minutes
+before returning the failure to user space.
+
+Cc: <stable@vger.kernel.org> # 4.18.x: 2bbeb8d scsi: core: Handle depopulation and restoration in progress
+Cc: <stable@vger.kernel.org> # 4.18.x
+Fixes: e37c7d9a0341 ("scsi: core: sanitize++ in progress")
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+---
+
+Changes in v2:
+- Added Fixes: and Cc: stable tags.
+
+ drivers/scsi/scsi_lib.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index e7ea1f04164a..3ab4c958da45 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -872,13 +872,18 @@ static void scsi_io_completion_action(struct scsi_cmnd *cmd, int result)
+ 				case 0x1a: /* start stop unit in progress */
+ 				case 0x1b: /* sanitize in progress */
+ 				case 0x1d: /* configuration in progress */
+-				case 0x24: /* depopulation in progress */
+-				case 0x25: /* depopulation restore in progress */
+ 					action = ACTION_DELAYED_RETRY;
+ 					break;
+ 				case 0x0a: /* ALUA state transition */
+ 					action = ACTION_DELAYED_REPREP;
+ 					break;
++				/*
++				 * Depopulation might take many hours,
++				 * thus it is not worthwhile to retry.
++				 */
++				case 0x24: /* depopulation in progress */
++				case 0x25: /* depopulation restore in progress */
++					fallthrough;
+ 				default:
+ 					action = ACTION_FAIL;
+ 					break;
+-- 
+2.48.1.362.g079036d154-goog
+
 
