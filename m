@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-111792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA87A23C64
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:41:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FF1A23C60
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B1C41885F5D
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:42:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F05C1885B4F
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8181B6CFA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AFC11B414B;
 	Fri, 31 Jan 2025 10:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="tK1KFcJK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="sdQu1rAt"
 X-Original-To: stable@vger.kernel.org
 Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345D91A841F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3462D1ADC6E;
 	Fri, 31 Jan 2025 10:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738320106; cv=none; b=c6DXQpHtFaUhoTJhPZvjwEfZNQtjhMjtzSc4Pw+dKiVSu05azqmJ8SMwi1UbWIxVqveKNrPTCNGf5FkuIN6Hegg6dkOHplAmUIxwCtK+TRQYsmTRukJz2qUoKwpc3yhfJ9v7HV7WR6GCZcd8nzEmSSufxK2BOxCjH2xWGAgW1AQ=
+	t=1738320105; cv=none; b=L87tdYOmGQ5XO6CkcgZENPpVfJMbf9bzdBdjOHZF3K1+YqjbEToTCoHihDASah5IsM7ZOjJxyHDVgBi17j7n/zV55g3OST+IAjvmflYFzw5ydxg6LoBEpeObUZQZfgNKPjAbg/h8u4dVD0W6otu0BMqeqDPiMh+zGhV2WLwQ/Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738320106; c=relaxed/simple;
-	bh=2smcxiM5XxvdBYtmUPSHoVVdF7QRv39VYQIaMXNvlQw=;
+	s=arc-20240116; t=1738320105; c=relaxed/simple;
+	bh=/3GSmpoCAJhdUHcsH0C4nkKAgmCmf7SvRKRvXj901CA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eZEpdS48/NxBexZMqqx5Bn9r7JSjs3BN049TXLaX9zhSsf3KsIOPb8RiM4bdFWm22mtsMgpcoOjisKVT36ZGkRbH0Az6NC55z7TurcnNkhx0XsB1N7cUAMQl/5liz9pgJ25u9wQHAIlayt2QuDIt45a/uRdDGlfHvHi6gy8CfOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=tK1KFcJK; arc=none smtp.client-ip=139.162.151.61
+	 MIME-Version; b=FUMjYBCa1PQ6RqzkiGilgOLU7vOuxYWPvFJRVlPNndWOVJRXdFsQzHZVpDOgARb/qLGcQtCbP5Ff4dwSIaz1z2SMiMRIJzChCGkE1rZQ+YQEW+qgNMNSdwhx4r3Du1p5HR1d3CWHHJqwJqIiP/72L05KE6STu4tlwnIX/p7VqPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=sdQu1rAt; arc=none smtp.client-ip=139.162.151.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -37,15 +37,15 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=w9J9KG9gtYSXkPS4T/DDE4Wq8DI7ifOopO6LJW54POY=; b=tK1KFcJKIm0EeRPu8gwy6D67N0
-	FM/hLWvKySDnvfiE1hi8n9pC6KQ0Itczn0SUpeKwvboQ3ftMPsVuwjLABM1hTLsqe5o9ahJJKOZGO
-	ywb2QorCbUhps8R3J0Z87+8cW3ta8VYC0eh0HYieFFEixM5+wqy9/AV6+Q18BhBdH/KZVS2cZ/TfN
-	AH04rDbRsf3biIJqBVYW5/ZNs1BnYAKn1muF075JwQaa+LeFbSuAPzMQlnWikv5f+DSX7PCaaCOvc
-	ZdI46NqGAHlfaecgRyZ+JCccJhAWv7EhNR6pYHqxFNVWOYmooG/UXOdSu5CIoX1KEvgdcjYomYYX4
-	Wew0Ztyw==;
+	bh=MAGc3C782RcuVPqtgCHWbk9Msj4KMIw5qLn2RNcmO7Q=; b=sdQu1rAtDXIA23nZh/MXfGQVH2
+	iebOwnwEv1eUX+oiO5uKHUoTMJjtnLDcvYlwH9CzhYQYoeoPjTNktLc7wk3pKjC7ehCdtO9e69rTY
+	Hu6zV/LVhjbCZUsUkSHjvLs/1MAQ6X4q8s+IUGic8F1ZPLYWVPVRWgIPAPZtRINURkW/gpLlNHHt/
+	BSKEe6vvCMJM44GZLvn6VPn3tNpocnMR+JcL7G5C3rM4pdN3dn3O0CfDIEEnfGTB8F2Qn15SLDz65
+	ReBkAqp3JTVfIrHEXvx8qN+aEocYh4mijmmqKKfMCmVXkxFVkg+D0/VjrT0ad4BH1ElpIEoESAYZj
+	8/tiKwKw==;
 Received: from ink by minute.unseen.parts with local (Exim 4.96)
 	(envelope-from <ink@unseen.parts>)
-	id 1tdoSo-0002sX-0L;
+	id 1tdoSo-0002sc-0k;
 	Fri, 31 Jan 2025 11:41:30 +0100
 From: Ivan Kokshaysky <ink@unseen.parts>
 To: Richard Henderson <richard.henderson@linaro.org>,
@@ -60,9 +60,9 @@ Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
 	linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/4] alpha: replace hardcoded stack offsets with autogenerated ones
-Date: Fri, 31 Jan 2025 11:41:27 +0100
-Message-Id: <20250131104129.11052-3-ink@unseen.parts>
+Subject: [PATCH v2 3/4] alpha: make stack 16-byte aligned (most cases)
+Date: Fri, 31 Jan 2025 11:41:28 +0100
+Message-Id: <20250131104129.11052-4-ink@unseen.parts>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250131104129.11052-1-ink@unseen.parts>
 References: <20250131104129.11052-1-ink@unseen.parts>
@@ -74,46 +74,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+Add padding between the PAL-saved and kernel-saved registers
+so that 'struct pt_regs' have an even number of 64-bit words.
+This makes the stack properly aligned for most of the kernel
+code, except two handlers which need special threatment.
+
 Cc: stable@vger.kernel.org
+Tested-by: Magnus Lindholm <linmag7@gmail.com>
 Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
 ---
- arch/alpha/kernel/asm-offsets.c | 4 ++++
- arch/alpha/kernel/entry.S       | 4 ----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/alpha/include/asm/ptrace.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
-index 4cfeae42c79a..e9dad60b147f 100644
---- a/arch/alpha/kernel/asm-offsets.c
-+++ b/arch/alpha/kernel/asm-offsets.c
-@@ -19,9 +19,13 @@ static void __used foo(void)
- 	DEFINE(TI_STATUS, offsetof(struct thread_info, status));
- 	BLANK();
- 
-+	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
- 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
- 	BLANK();
- 
-+	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
-+	BLANK();
-+
- 	DEFINE(HAE_CACHE, offsetof(struct alpha_machine_vector, hae_cache));
- 	DEFINE(HAE_REG, offsetof(struct alpha_machine_vector, hae_register));
- }
-diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
-index dd26062d75b3..6fb38365539d 100644
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -15,10 +15,6 @@
- 	.set noat
- 	.cfi_sections	.debug_frame
- 
--/* Stack offsets.  */
--#define SP_OFF			184
--#define SWITCH_STACK_SIZE	64
--
- .macro	CFI_START_OSF_FRAME	func
- 	.align	4
- 	.globl	\func
+diff --git a/arch/alpha/include/asm/ptrace.h b/arch/alpha/include/asm/ptrace.h
+index 693d4c5b4dc7..694b82ca62f3 100644
+--- a/arch/alpha/include/asm/ptrace.h
++++ b/arch/alpha/include/asm/ptrace.h
+@@ -41,6 +41,8 @@ struct pt_regs {
+ 	unsigned long trap_a0;
+ 	unsigned long trap_a1;
+ 	unsigned long trap_a2;
++/* This makes the stack 16-byte aligned as GCC expects */
++	unsigned long __pad0;
+ /* These are saved by PAL-code: */
+ 	unsigned long ps;
+ 	unsigned long pc;
 -- 
 2.39.5
 
