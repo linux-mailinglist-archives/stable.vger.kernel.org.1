@@ -1,127 +1,137 @@
-Return-Path: <stable+bounces-111822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1FFA23F35
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:38:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C99A23F3F
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C271885931
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:38:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6EF93AA511
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EEF1C549F;
-	Fri, 31 Jan 2025 14:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825591DDC3A;
+	Fri, 31 Jan 2025 14:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JEo5BeXZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwpm/ieK"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313494502A
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 14:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357541B6CE0;
+	Fri, 31 Jan 2025 14:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738334300; cv=none; b=jKLg8F3SelAaY2RmuFwqybEneuGUlr9jldF8ajHeQbEalTCYWU/CtMPF2hAZw7e/OyGiKizsy1WeENv+LVAIICwxqSEnScQNh4rZeCUGUMS2CaTnQ01zr2mVWNeAYo8V/Kzi9RQueZCT4gsqCzJ2wRnKKRyoTvf2YHfXegwHx8U=
+	t=1738334807; cv=none; b=HckLbITvDAHX6Y76tiIE2a8QNWhkdG0OMNny7AK1lnAjPJTFfe3e6ChopHPAuUSVkLzOw3w4n7XKbYmIr5qy24Foqj+FGE4xQAmt7Hf8wDDs4dYFGiUcd0pICCU0F/WXuJgKcqezT+1gk7VFjGHg37dNCFAywPNk74moRVbRjB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738334300; c=relaxed/simple;
-	bh=aWXR7SjUdOrYT9zvnhuoOV9+hqMZB+lUnEJH3a/AVDQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XTUxJ6iOOzbumcp+9GubrAsCCdcvOPklYZ4RrwS6KdyiqXJe0FZgz+wBqr5sh1en3ZyW2zEsHBbM5QnfVpgdRC99qJRMtZTmJ/oSJ6xWRhD81GNJvKjzSeYR1jla6ZMmvGWAIy3bqsdsovYtiYrSdfGvxtYJ4vljvQn3bat0pco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JEo5BeXZ; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=z44wbJoCgpaFpfxyIjE4KNNRI0pn+AfD1gje/+p6F2o=; b=JEo5BeXZqpdQGxy9hwQkAuE9f/
-	yTThSUqea1g5hM03dajYu3wWCDdRYmePf53OFxSdBX8o3cZYy0o6WpjtM1zo0SL51ZBSGJaW288lL
-	YcXE9XG/Y3XhgwObsq5bKGmXNAz58wymRFUYCqfCw0tGSiUMMplf6axjc20euEUs1pLoocFen39PS
-	fO3aLnb2MrY3wMB189IC7vJ1QpskXfmUJS4hwjOToJN7obZadVHwK4xyny2YnPVmaTq44itfLXM+q
-	y7HuOtiZsCqmAmdn7kBmxmrmuOosWhWmqHHVJ1A7qkWZ35ih66WhJxeZuVKMjlxS8S8lscBChTE+P
-	KEDeLqyw==;
-Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tds9f-001W0H-9s; Fri, 31 Jan 2025 15:38:05 +0100
-From: =?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>
-To: akpm@linux-foundation.org,
-	riel@surriel.com
-Cc: linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	kernel-dev@igalia.com,
-	revest@google.com
-Subject: [PATCH] mm,madvise,hugetlb: check for 0-length range after end address adjustment
-Date: Fri, 31 Jan 2025 15:37:49 +0100
-Message-ID: <20250131143749.1435006-1-rcn@igalia.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1738334807; c=relaxed/simple;
+	bh=+C8b+XWdcnnMzbneWIM03ZUgjtV2rOh+jarlxZxFwJM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YN2LSsAH7EJswHB5fr3uyZPv495Z9VE0hIzwrwoFU4cQIF3ODcazUsOmRQ7SWyKBT5i/EWRV5qXpK1N92DP3qomZjSKym/npKcaEqO2CeTnjPoWImRZWRg/T6fzIFkfDLD/VkJ98758QhFD6Wuswt9zOZkytlRU1QedP0Bt8FbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwpm/ieK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07FBC4CEE4;
+	Fri, 31 Jan 2025 14:46:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738334805;
+	bh=+C8b+XWdcnnMzbneWIM03ZUgjtV2rOh+jarlxZxFwJM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bwpm/ieKS65IVF2RVvG4tQmoDiv2lfHUuo/5ZFWCOginQInWjyirEjIlLJKUxyvWk
+	 3fn6xkFYcQ77KbxNU3W19F6xB3H0l3WRwlNLDJdoRREHQ9hAqT6vGl08btDTrkugyo
+	 TFDK5lr0BpwkMyE5I1ogJm9FWwHn3nMDsOtdLg7dWOxxKdr3mEBxv8CKOIQJH0yD2z
+	 T84/uCYLaBofhpG9GsdpFaVGjcwD2H2fgGhiQOKhaa6ukmF6p8aBUNJw7kQ0JDYPR7
+	 oGg1lU8BXFgYep/7/VRb+cBT2MOr/7j4TAkxOZix8+oIp0YKJL/8RZ393o0QQuETpQ
+	 68GGGJR68KxXQ==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d3d143376dso2568007a12.3;
+        Fri, 31 Jan 2025 06:46:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUUNwRdh2uBvSpAGeFPRPD0fwnQVOgSnc3qRYCMspAhBkQz9ysGHWp+9wwM5xuP4mCrTv1dJCPm1uNc@vger.kernel.org, AJvYcCUmLkOaDGb7wxJMW6Os2o25cFJ6l38YwY0ieUNley8BwLstBxLh6/BfJHoqS7nFsheZ50JS3r3f@vger.kernel.org, AJvYcCWz//NV8thVd+OgR9WXB4DKWczhqqJy1X5yhEzOZdPXYdfkH/5fM0rOkj49zgKlIdFcPQIElgkYwK41Og0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwipCdMQ1sfQP99QfpdhP+QEAR+NUQV0IuJJBDG82m8peVW3Nzl
+	1ZrgyczIea8EzCHVoTeoNxiVSv1VTndEdE5lP9xU1sNHGGAmGO/Eye2u8L/hWQb47WhrCu+oU1n
+	Vv1MdQOuq881YSYJr+uRRMgRJoZQ=
+X-Google-Smtp-Source: AGHT+IHeD+XZIEIcDS6hEieGNSfg8VINqJhcEkeIkEJOgCdQFBtKYL/Ih4R5Ovr6H/BOoh6QqbcHfYYXJ9clDUv7sPk=
+X-Received: by 2002:a05:6402:51c9:b0:5db:e91a:6ba4 with SMTP id
+ 4fb4d7f45d1cf-5dc5efc67fdmr11961819a12.19.1738334804211; Fri, 31 Jan 2025
+ 06:46:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250131100630.342995-1-chenhuacai@loongson.cn> <2025013133-saddled-reptilian-63c3@gregkh>
+In-Reply-To: <2025013133-saddled-reptilian-63c3@gregkh>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 31 Jan 2025 22:46:33 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7PXUd6BaoKqgJ-3g=+m9wLnXqEzya8++c5RM3c6Kafhg@mail.gmail.com>
+X-Gm-Features: AWEUYZnpeBAkX4DkxJerhYwHbZ4fZdPhlfQ5DbZbzFuHGz2k9uj3j3JRqL9a8xQ
+Message-ID: <CAAhV-H7PXUd6BaoKqgJ-3g=+m9wLnXqEzya8++c5RM3c6Kafhg@mail.gmail.com>
+Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup sources
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Alan Stern <stern@rowland.harvard.edu>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a sanity check to madvise_dontneed_free() to address a corner case
-in madvise where a race condition causes the current vma being processed
-to be backed by a different page size.
+Hi, Greg,
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with
-a userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event. During this time, the vma covering the
-current address range may change due to an explicit mmap done
-concurrently by another thread.
+On Fri, Jan 31, 2025 at 6:49=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
+> > Now we only enable the remote wakeup function for the USB wakeup source
+> > itself at usb_port_suspend(). But on pre-XHCI controllers this is not
+> > enough to enable the S3 wakeup function for USB keyboards, so we also
+> > enable the root_hub's remote wakeup (and disable it on error). Frankly
+> > this is unnecessary for XHCI, but enable it unconditionally make code
+> > simple and seems harmless.
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>
+> What commit id does this fix?
+It seems this problem exist from the first place (at least >=3D4.19).
 
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down
-to a hugepage boundary to avoid data loss (see "Fixes" below). This
-rounding may cause the end address to be truncated to the same address
-as the start.
+>
+> > ---
+> >  drivers/usb/core/hub.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> > index c3f839637cb5..efd6374ccd1d 100644
+> > --- a/drivers/usb/core/hub.c
+> > +++ b/drivers/usb/core/hub.c
+> > @@ -3480,6 +3480,7 @@ int usb_port_suspend(struct usb_device *udev, pm_=
+message_t msg)
+> >                       if (PMSG_IS_AUTO(msg))
+> >                               goto err_wakeup;
+> >               }
+> > +             usb_enable_remote_wakeup(udev->bus->root_hub);
+> >       }
+> >
+> >       /* disable USB2 hardware LPM */
+> > @@ -3543,8 +3544,10 @@ int usb_port_suspend(struct usb_device *udev, pm=
+_message_t msg)
+> >               /* Try to enable USB2 hardware LPM again */
+> >               usb_enable_usb2_hardware_lpm(udev);
+> >
+> > -             if (udev->do_remote_wakeup)
+> > +             if (udev->do_remote_wakeup) {
+> >                       (void) usb_disable_remote_wakeup(udev);
+> > +                     (void) usb_disable_remote_wakeup(udev->bus->root_=
+hub);
+>
+> This feels wrong, what about all of the devices inbetween this device
+> and the root hub?
+Yes, if there are other hubs between the root hub and keyboard, this
+patch still cannot fix the wakeup problem. I have tried to enable
+every hub in the link, but failed. Because I found many hubs lost
+power during suspend. So this patch can only fixes the most usual
+cases.
 
-Make this corner case follow the same semantics as in other similar
-cases where the requested region has zero length (ie. return 0).
+Huacai
 
-This will make madvise_walk_vmas() continue to the next vma in the
-range (this time holding the process mm lock) which, due to the prev
-pointer becoming stale because of the vma change, will be the same
-hugepage-backed vma that was just checked before. The next time
-madvise_dontneed_free() runs for this vma, if the start address isn't
-aligned to a hugepage boundary, it'll return -EINVAL, which is also in
-line with the madvise api.
-
-From userspace perspective, madvise() will return EINVAL because the
-start address isn't aligned according to the new vma alignment
-requirements (hugepage), even though it was correctly page-aligned when
-the call was issued.
-
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
----
- mm/madvise.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 49f3a75046f6..c8e28d51978a 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -933,7 +933,9 @@ static long madvise_dontneed_free(struct vm_area_struct *vma,
- 			 */
- 			end = vma->vm_end;
- 		}
--		VM_WARN_ON(start >= end);
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
- 	}
- 
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
--- 
-2.48.1
-
+>
+> thanks,
+>
+> greg k-h
 
