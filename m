@@ -1,89 +1,113 @@
-Return-Path: <stable+bounces-111855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12430A244FD
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 22:49:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C25EA24531
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 23:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3501884506
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 21:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 859DE3A65D4
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 22:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF2A1F2C25;
-	Fri, 31 Jan 2025 21:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AE1192D7E;
+	Fri, 31 Jan 2025 22:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qfT/gm9y"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wGgC/Haw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1041F9FE
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 21:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD43217B402
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 22:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738360172; cv=none; b=gGXVheZYM9XNNO3PdJjpSvDze77f6OgNVpgFAf2TWEk7wVXFkShEwRj8DEGloPwBteYjsA3qSWJLwCeB/6q22l+uLXfyDJVrTXltylf4c/trqkhNIvH24Tx3zRDH//hIeGYQZo0IxcLPI3NQqUrS7muceZ/nXRQKL03p2gI0/+0=
+	t=1738362202; cv=none; b=EGrfJMmmlsSmNuM3P/1XR36837Y7ztGXMLb6XeWdWPYhTIvOiMQmlgA5bWLBmCrXMHuz6QQPnqh8m7ISNMkPIB7op9tiQDF3ijWzfDxsDvUxaVUSrWxG+Quknw9vtIF+j5g7H1eLuS1O91+FZaoFj3Ac+l5vs0lyrJyrwVDxvNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738360172; c=relaxed/simple;
-	bh=H+idgXkKGw197QkF+ZzXn5zv5vDEpQwyOivec+67Anc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=e7piuib0/rOmgrUZqnWweA/VncB5KreVaTwQR7pDpjhLHcz+/DLGYf4V2oimGPTYvitzUL8YjIDrPkV9uZL5HVRjtFiKUClUycHPTP0mWH8LjvL8yIb+aYi1HAUIIqXjmzI9iyYWClD+w7cMPDTABApTfvSF7+4vPeWR62TQ3tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qfT/gm9y; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53e384e3481so2163390e87.2
-        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 13:49:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738360168; x=1738964968; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=H+idgXkKGw197QkF+ZzXn5zv5vDEpQwyOivec+67Anc=;
-        b=qfT/gm9y0bBh8P3sgiMU4Z5ewI9Q/Nmdgzifq3uduCnyqCz2CduB5pwtZy/5NgcSZ7
-         5f4ZIkgdgmcXJafSLp81lBFoNGM25kg/41K1blFELWl4QhR/B6e4hBTVEtZIAjF6nrFm
-         p5n/7fr4KvCfPtLOdp9317fB9SKtRfXmlN7WMTklpYERuzTP+NNDQ+c+9KgiNsLDVK5s
-         DvEdDazst79iV3hjReHAQzQfgo9u/aH0VhYfbEdeBUmsKy61S2pjycCHC6gSXBJ9X5MN
-         kDqecLWoJ3JK43A9etobf2EDlm9XuVh6IPqbh7n3Jt79DFrnALemG8JfsmVE109rPXnR
-         LDZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738360168; x=1738964968;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=H+idgXkKGw197QkF+ZzXn5zv5vDEpQwyOivec+67Anc=;
-        b=VBM7yxq8allkDPeIxUI1Cb+cm+cyifvQTjgp70+/8EXqFfr8hRvwJZ0Ax+pnEZHcR/
-         /YTCeRTJRf3vRMr1hz/zvqlMJzEETzkWv/w15hP/mDcrJbB4gA8fQVpyJI67kzosmKYF
-         ja4f6I3xMTSe3QTKRW8FeWR3zd2ttObQympPYASoc18N2E++JK1ho8xrnV5a7V92tD8C
-         aRxyLcwU8xib49oM8NKyAr4/C/d1L4K/NHb1NF+UeRwwQPfzOq6nmBPsbveCj13hj9zw
-         9tMXVZiAQVneBMXW+j+0vYf0u8B/mz/tldyIUWcF7E/IIkwCXrqrCC7HVtOuNesbmkXp
-         vOSg==
-X-Gm-Message-State: AOJu0Yzbk74jX3bkXqHodb0DoRi4JgxwszrzDfEa/bXCJvTdjPfU7Vqt
-	J3wIeVQ6R2xLxwwkDfCye6/etM2/p9ook9KzWy4iIH25/JO2dfO/GWqs85scfMcJErx5RvBnNBO
-	LcMlh6MpfDdBY5YVoT21ME2ICXGG2YKnL6JbfhoZRGaSXKwOJj43n
-X-Gm-Gg: ASbGncvdz/YGVSm1zWthZhERJyCFkT8iK+MmGjej2NW0c5tJlvjNP/2YL3VLW6pH6FR
-	ZbC2hUPbTTJ12V9Y+FTss22t7rOFTeFkFl2MKfonWqkRFERqZEQ/4vjObTvPdoFL+Ek4RhpbLRj
-	q+g1DZRN9QysWvY/zKDHHMpW4/Fg==
-X-Google-Smtp-Source: AGHT+IGQNpCOOYqb4gQCEfoVkpPqHUGgSzIqEfsH8Z/4kX7qrbCWBRLAhKgveqnjtYy3OM+cMcvM0SYviKNcjZ1cJuw=
-X-Received: by 2002:a05:6512:3d13:b0:540:3561:8897 with SMTP id
- 2adb3069b0e04-543e4c3258bmr4347511e87.39.1738360167864; Fri, 31 Jan 2025
- 13:49:27 -0800 (PST)
+	s=arc-20240116; t=1738362202; c=relaxed/simple;
+	bh=nwVyP9nU/ce1tJmLE7dt7p5zzWeMULcBJL+nkofQ2cQ=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Tp7GwO7FfoMRbmEIV/ma38/ijquAKPRCBQOoVemmrWXI1lF9FJxbVl2W8JuqSW99288y3EJGRCcTQvob+7s110P4lCpyKoIhNLDc1ZB5FSlyWPUTQjZUOxwfSRsFzmnL8JPFeJgoj3Fhdo3O2MiHXQ2uDWvIT7l8DzzXcOoMMfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wGgC/Haw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DBDC4CED1;
+	Fri, 31 Jan 2025 22:23:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1738362202;
+	bh=nwVyP9nU/ce1tJmLE7dt7p5zzWeMULcBJL+nkofQ2cQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wGgC/Hawd4WptjG9VZ4SzzazWExRopVK70tnpkWsIOPy3TfzMIqVX6OpDYjVbnN5K
+	 fHgU4BzcwA7ElEyyORyuA3WSsSt7usDd1R6nrn3GWkaSAPZxK1orp3DhBfJ94Q3qbk
+	 1LU/7de324XWVLCkllzSDdIzioLdcNOWUMu8bYks=
+Date: Fri, 31 Jan 2025 14:23:21 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Ricardo =?ISO-8859-1?Q?Ca=F1uelo?= Navarro <rcn@igalia.com>
+Cc: riel@surriel.com, linux-mm@kvack.org, stable@vger.kernel.org,
+ kernel-dev@igalia.com, revest@google.com
+Subject: Re: [PATCH] mm,madvise,hugetlb: check for 0-length range after end
+ address adjustment
+Message-Id: <20250131142321.632a9468529d3267abe641af@linux-foundation.org>
+In-Reply-To: <20250131143749.1435006-1-rcn@igalia.com>
+References: <20250131143749.1435006-1-rcn@igalia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Daniel Rosenberg <drosen@google.com>
-Date: Fri, 31 Jan 2025 13:49:16 -0800
-X-Gm-Features: AWEUYZmEdlgeHOtbJpUaQHFiGmj6x5H7_BeDEv1Z3-OHOcNWNOTLcLldoKtEcPA
-Message-ID: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
-Subject: f2fs: Introduce linear search for dentries
-To: stable <stable@vger.kernel.org>
-Cc: Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Commit 91b587ba79e1 ("f2fs: Introduce linear search for dentries")
-This is a follow up to a patch that previously merged in stable to restore
-access to files created with emojis under a different hashing scheme.
+On Fri, 31 Jan 2025 15:37:49 +0100 Ricardo Ca=F1uelo Navarro <rcn@igalia.co=
+m> wrote:
 
-I believe it's relevant for all currently supported stable branches.
+> Add a sanity check to madvise_dontneed_free() to address a corner case
+> in madvise where a race condition causes the current vma being processed
+> to be backed by a different page size.
+>=20
+> During a madvise(MADV_DONTNEED) call on a memory region registered with
+> a userfaultfd, there's a period of time where the process mm lock is
+> temporarily released in order to send a UFFD_EVENT_REMOVE and let
+> userspace handle the event. During this time, the vma covering the
+> current address range may change due to an explicit mmap done
+> concurrently by another thread.
+>=20
+> If, after that change, the memory region, which was originally backed by
+> 4KB pages, is now backed by hugepages, the end address is rounded down
+> to a hugepage boundary to avoid data loss (see "Fixes" below). This
+> rounding may cause the end address to be truncated to the same address
+> as the start.
+>=20
+> Make this corner case follow the same semantics as in other similar
+> cases where the requested region has zero length (ie. return 0).
+>=20
+> This will make madvise_walk_vmas() continue to the next vma in the
+> range (this time holding the process mm lock) which, due to the prev
+> pointer becoming stale because of the vma change, will be the same
+> hugepage-backed vma that was just checked before. The next time
+> madvise_dontneed_free() runs for this vma, if the start address isn't
+> aligned to a hugepage boundary, it'll return -EINVAL, which is also in
+> line with the madvise api.
+>=20
+> >From userspace perspective, madvise() will return EINVAL because the
+> start address isn't aligned according to the new vma alignment
+> requirements (hugepage), even though it was correctly page-aligned when
+> the call was issued.
+>=20
+> ...
+>
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -933,7 +933,9 @@ static long madvise_dontneed_free(struct vm_area_stru=
+ct *vma,
+>  			 */
+>  			end =3D vma->vm_end;
+>  		}
+> -		VM_WARN_ON(start >=3D end);
+> +		if (start =3D=3D end)
+> +			return 0;
+> +		VM_WARN_ON(start > end);
+>  	}
 
--Daniel
+Perhaps add a comment telling the user how this situation can come about?
 
