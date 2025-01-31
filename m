@@ -1,137 +1,118 @@
-Return-Path: <stable+bounces-111823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C99A23F3F
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:46:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE0DA23F43
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6EF93AA511
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A6616903B
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825591DDC3A;
-	Fri, 31 Jan 2025 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD761DE88E;
+	Fri, 31 Jan 2025 14:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwpm/ieK"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Bpwtm482"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357541B6CE0;
-	Fri, 31 Jan 2025 14:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB74219FC
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 14:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738334807; cv=none; b=HckLbITvDAHX6Y76tiIE2a8QNWhkdG0OMNny7AK1lnAjPJTFfe3e6ChopHPAuUSVkLzOw3w4n7XKbYmIr5qy24Foqj+FGE4xQAmt7Hf8wDDs4dYFGiUcd0pICCU0F/WXuJgKcqezT+1gk7VFjGHg37dNCFAywPNk74moRVbRjB0=
+	t=1738334854; cv=none; b=ka9XN+PBIi8ySgBlM++mo+ehJtjlOnGIUs6372Kl6Ze9/X3UIUGlOpvZ3kIMvYrkHFeUvc4sQtXG0H4MXH6r85aZYlvynBGLDCiAdKAvjDXuuitUEui3R8KrjWg9QWVyUlkgfyS4oasA+NDOv2ov5fPeyP8opS3pCVngdmfUWf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738334807; c=relaxed/simple;
-	bh=+C8b+XWdcnnMzbneWIM03ZUgjtV2rOh+jarlxZxFwJM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YN2LSsAH7EJswHB5fr3uyZPv495Z9VE0hIzwrwoFU4cQIF3ODcazUsOmRQ7SWyKBT5i/EWRV5qXpK1N92DP3qomZjSKym/npKcaEqO2CeTnjPoWImRZWRg/T6fzIFkfDLD/VkJ98758QhFD6Wuswt9zOZkytlRU1QedP0Bt8FbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwpm/ieK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07FBC4CEE4;
-	Fri, 31 Jan 2025 14:46:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738334805;
-	bh=+C8b+XWdcnnMzbneWIM03ZUgjtV2rOh+jarlxZxFwJM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bwpm/ieKS65IVF2RVvG4tQmoDiv2lfHUuo/5ZFWCOginQInWjyirEjIlLJKUxyvWk
-	 3fn6xkFYcQ77KbxNU3W19F6xB3H0l3WRwlNLDJdoRREHQ9hAqT6vGl08btDTrkugyo
-	 TFDK5lr0BpwkMyE5I1ogJm9FWwHn3nMDsOtdLg7dWOxxKdr3mEBxv8CKOIQJH0yD2z
-	 T84/uCYLaBofhpG9GsdpFaVGjcwD2H2fgGhiQOKhaa6ukmF6p8aBUNJw7kQ0JDYPR7
-	 oGg1lU8BXFgYep/7/VRb+cBT2MOr/7j4TAkxOZix8+oIp0YKJL/8RZ393o0QQuETpQ
-	 68GGGJR68KxXQ==
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d3d143376dso2568007a12.3;
-        Fri, 31 Jan 2025 06:46:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUNwRdh2uBvSpAGeFPRPD0fwnQVOgSnc3qRYCMspAhBkQz9ysGHWp+9wwM5xuP4mCrTv1dJCPm1uNc@vger.kernel.org, AJvYcCUmLkOaDGb7wxJMW6Os2o25cFJ6l38YwY0ieUNley8BwLstBxLh6/BfJHoqS7nFsheZ50JS3r3f@vger.kernel.org, AJvYcCWz//NV8thVd+OgR9WXB4DKWczhqqJy1X5yhEzOZdPXYdfkH/5fM0rOkj49zgKlIdFcPQIElgkYwK41Og0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwipCdMQ1sfQP99QfpdhP+QEAR+NUQV0IuJJBDG82m8peVW3Nzl
-	1ZrgyczIea8EzCHVoTeoNxiVSv1VTndEdE5lP9xU1sNHGGAmGO/Eye2u8L/hWQb47WhrCu+oU1n
-	Vv1MdQOuq881YSYJr+uRRMgRJoZQ=
-X-Google-Smtp-Source: AGHT+IHeD+XZIEIcDS6hEieGNSfg8VINqJhcEkeIkEJOgCdQFBtKYL/Ih4R5Ovr6H/BOoh6QqbcHfYYXJ9clDUv7sPk=
-X-Received: by 2002:a05:6402:51c9:b0:5db:e91a:6ba4 with SMTP id
- 4fb4d7f45d1cf-5dc5efc67fdmr11961819a12.19.1738334804211; Fri, 31 Jan 2025
- 06:46:44 -0800 (PST)
+	s=arc-20240116; t=1738334854; c=relaxed/simple;
+	bh=3OkWV1e6WZQ/dF5Yn5YAx99NLIo/IUO/RUBaemGuqFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hVyt69C6sJGbd4QLdajrsdxdlILU2ngcMPR1LstTf7/kSx/C1GbK6tf97ltIpentV3UfUsfgGpjUfeBkdLmgvpz0M28qX6h2zN9rpU8lMh6n/P7Glq5kCk8S5VMQ6j9aci08Jq0+4pNMZ1muWrnt0/bY8Mqo4Cbxhvfc05T2Ct0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Bpwtm482; arc=none smtp.client-ip=209.85.166.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-844e61f3902so142480939f.0
+        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 06:47:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1738334850; x=1738939650; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J0i8jARHM9o2vH9POVudqrpVADfjg+0Wl6rXBt3YUB4=;
+        b=Bpwtm482IQoMIrZQpnRwieu+SnUVL9t5aQjahUcr1cXz+dDUGtr8CwvZAlQ7O4wixC
+         rB53EVCnz/QSrT3Do3I3qXXKKFLmAv3583lN9EC6c+kA5JGM3Ksbj+tuireEVaue9/yk
+         uPx2UI5CpRv1lK0GWysV3N61UE/wly+9X/stI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738334850; x=1738939650;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J0i8jARHM9o2vH9POVudqrpVADfjg+0Wl6rXBt3YUB4=;
+        b=J1N/yv+XNCL/yOAFZyTWH1FrUcAx4Dd011da7VYvRJ67513Ihe9uuluy7lAW6jTQGU
+         8W3rnjZACAm8z2gd0In2+83YnEbHaxSGtZ9+hlvX9hPdPepYwDhwOCZVKPAjTsWYEEp3
+         3FYRrsztlR0AfPgWwLdtzAKbTcDuUwWHbqF2BFwPnLH9IlNWRKWxoXrJdbMUNrdma3L1
+         Qa45oMay8qjiMPaODUN9mziFIDLcnNVKF2J45T9gx86X8U2zdgZZExKU57nmEqeNnAV1
+         ciYG63NULfV2DrSPUF5XAx+3lmYe4jFtDaoDQFzLQSdNKtUSwxWoMT+L1wZrizoMZulS
+         Ir/w==
+X-Gm-Message-State: AOJu0YzpHevfWcoqUVKjTg55OLZ4Rpd4GNDPcuCPdlERO5lbCBXUL714
+	ELY69UQ1DQN85yrKHKCkDWFE40hMKe5paed6MpLdX6qf2Ehhki/skNduTWwCPQ==
+X-Gm-Gg: ASbGncvX/5cUQEPBHcJpg2DalUGQzGhsfSb5gqaNNeFqvJlUF9GZuTkIvKUKgGdLzSS
+	IjcOnOzU2dA1b335v0YRyckcur6InTv9O8Blkq1OOFdGmEx9O7i+uSgTBN2x8+vvpbMZg2KNoZp
+	54Rrj01fCj9kGUdaT9IVH5iDG9q2WVjqfYtj0Y2XBIAqAL7vHUj6EAj/t/kGxfVqoYje58VTSYr
+	tJizS00/puPxalugP4ZBjLqgkWkSppcwlKjsb2Mb97bAcPPjcWycmuggFWXzbWa5aFDB1GeMaH0
+	+rS0+uEeLzn11H6cByp496U/M71FqOpY
+X-Google-Smtp-Source: AGHT+IH6BGQGzWRpGFP2/mx32I7TRFgh3qostrn98Keogfw3HieRqTGh4nJPUiH2IEzE1d6C0ug7kQ==
+X-Received: by 2002:a05:6602:36cc:b0:83e:418c:8a28 with SMTP id ca18e2360f4ac-85427d799cfmr1096773139f.7.1738334850633;
+        Fri, 31 Jan 2025 06:47:30 -0800 (PST)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ec7458ee70sm841402173.18.2025.01.31.06.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2025 06:47:30 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Fri, 31 Jan 2025 07:47:28 -0700
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.12 00/41] 6.12.12-rc2 review
+Message-ID: <Z5zigMpU7NyKYGyh@fedora64.linuxtx.org>
+References: <20250130144136.126780286@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250131100630.342995-1-chenhuacai@loongson.cn> <2025013133-saddled-reptilian-63c3@gregkh>
-In-Reply-To: <2025013133-saddled-reptilian-63c3@gregkh>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 31 Jan 2025 22:46:33 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7PXUd6BaoKqgJ-3g=+m9wLnXqEzya8++c5RM3c6Kafhg@mail.gmail.com>
-X-Gm-Features: AWEUYZnpeBAkX4DkxJerhYwHbZ4fZdPhlfQ5DbZbzFuHGz2k9uj3j3JRqL9a8xQ
-Message-ID: <CAAhV-H7PXUd6BaoKqgJ-3g=+m9wLnXqEzya8++c5RM3c6Kafhg@mail.gmail.com>
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup sources
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Alan Stern <stern@rowland.harvard.edu>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250130144136.126780286@linuxfoundation.org>
 
-Hi, Greg,
-
-On Fri, Jan 31, 2025 at 6:49=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
-> > Now we only enable the remote wakeup function for the USB wakeup source
-> > itself at usb_port_suspend(). But on pre-XHCI controllers this is not
-> > enough to enable the S3 wakeup function for USB keyboards, so we also
-> > enable the root_hub's remote wakeup (and disable it on error). Frankly
-> > this is unnecessary for XHCI, but enable it unconditionally make code
-> > simple and seems harmless.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->
-> What commit id does this fix?
-It seems this problem exist from the first place (at least >=3D4.19).
-
->
-> > ---
-> >  drivers/usb/core/hub.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> > index c3f839637cb5..efd6374ccd1d 100644
-> > --- a/drivers/usb/core/hub.c
-> > +++ b/drivers/usb/core/hub.c
-> > @@ -3480,6 +3480,7 @@ int usb_port_suspend(struct usb_device *udev, pm_=
-message_t msg)
-> >                       if (PMSG_IS_AUTO(msg))
-> >                               goto err_wakeup;
-> >               }
-> > +             usb_enable_remote_wakeup(udev->bus->root_hub);
-> >       }
-> >
-> >       /* disable USB2 hardware LPM */
-> > @@ -3543,8 +3544,10 @@ int usb_port_suspend(struct usb_device *udev, pm=
-_message_t msg)
-> >               /* Try to enable USB2 hardware LPM again */
-> >               usb_enable_usb2_hardware_lpm(udev);
-> >
-> > -             if (udev->do_remote_wakeup)
-> > +             if (udev->do_remote_wakeup) {
-> >                       (void) usb_disable_remote_wakeup(udev);
-> > +                     (void) usb_disable_remote_wakeup(udev->bus->root_=
-hub);
->
-> This feels wrong, what about all of the devices inbetween this device
-> and the root hub?
-Yes, if there are other hubs between the root hub and keyboard, this
-patch still cannot fix the wakeup problem. I have tried to enable
-every hub in the link, but failed. Because I found many hubs lost
-power during suspend. So this patch can only fixes the most usual
-cases.
-
-Huacai
-
->
+On Thu, Jan 30, 2025 at 03:41:57PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.12 release.
+> There are 41 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 01 Feb 2025 14:41:19 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.12-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
 > thanks,
->
+> 
 > greg k-h
+
+Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
+
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
