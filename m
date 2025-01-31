@@ -1,123 +1,116 @@
-Return-Path: <stable+bounces-111807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88824A23DE5
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 13:50:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFDBA23DFE
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 13:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2125162B56
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 12:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50039188539D
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 12:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A3619DF99;
-	Fri, 31 Jan 2025 12:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79821C07FC;
+	Fri, 31 Jan 2025 12:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ScmNmAXM"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="KNfG/PNx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A9D1DFF0
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 12:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C4B19D06E;
+	Fri, 31 Jan 2025 12:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738327825; cv=none; b=JsIhkqHW6vL2c+OFUeV7DDBhZABLXzV6SYpEHHPQVFUza5GPHstBspaE8BJs4Nh0dPdYsDTMjKD3fLToVldvvKuMIL1mTo1orNw8hYvFt7qcqKcYYPGCE77Cdw+dWYWFTTtHevK9zr+KcRRuuA5Ys9EqzDKHDTr7Y42Jyk+4Gqw=
+	t=1738328073; cv=none; b=W8IkUvbE8xIFYC1nh+nZjqZ11oMNcwJi+e/WdfKpejmFaEX+SBqtQHYRkBRTgu77gchYTqBSKXjZl3tbi1zGuG2AZ01hpbEbb9qqShNAkgjj0G9H2TDbw9tupcTp7RrHMh3Ro81DOjjHBclQoJqQA2fd0SHt28bJo4IDfwH5KCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738327825; c=relaxed/simple;
-	bh=BGET/UU/2bV5Re6ziqCj4p0mZbhPAXcfyFDC0FmfJTA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KrMQ7i0tAWO4+GBHT+jVUGvQ2U+uHva9Kqd8SiovwrrYm7g4/XClHAZyZRWC55fXRPVPCCVb831Hc67J9G4DVWYlnaVJkLAVTEVCxaVQyb7U8nQv8yX+Y5pD7Yv84KxpdrkjuThCeUhTYWMm6Srv/BVjpNuW2xQ9kPTgd0yv3zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ScmNmAXM; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738327823; x=1769863823;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BGET/UU/2bV5Re6ziqCj4p0mZbhPAXcfyFDC0FmfJTA=;
-  b=ScmNmAXM+frcFaCE7PMgz2PfchyHi5EnED0JFNZbzdcI1YWWzIsvKjOV
-   +rKhqfFJ/JpIfMdGRCATaibhxU5pe97gs1wqME7rl3LgXtzMaLAbX9m7D
-   22paNeNir7/VjxsHPdt+GQ+7FZUYL2drsb/ecYK2NVWooodMJ0WeALgBZ
-   m/H4etb8P25hQBGmV3unDO9uAp4weiqcI/HLY7fdSo+dDN+/ztJ1N3FTI
-   jmzIHNX04oAPq9+a9B1RByuL2V2GjeVqfYz/ArB7iu4HnwsXBU88z7bVI
-   tODZg6tcoWprI7wBidZKzl2GZPQ7cSWAGX2Q7YMnIz7jJ6PTt4LFZp9iA
-   g==;
-X-CSE-ConnectionGUID: 0G15qDW8Tz6ZB/diBJZlzw==
-X-CSE-MsgGUID: 4HnaOg2OSU2CAGjgoHiLug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11332"; a="38798436"
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="38798436"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 04:50:22 -0800
-X-CSE-ConnectionGUID: zlk9dCfuRNSr/+XeEPvKNA==
-X-CSE-MsgGUID: h4Zkr3+dTomk03TDK+2HBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,248,1732608000"; 
-   d="scan'208";a="110203309"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost) ([10.245.246.174])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2025 04:50:20 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: imre.deak@intel.com,
-	jani.nikula@intel.com,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 01/14] drm/i915/dp: Iterate DSC BPP from high to low on all platforms
-Date: Fri, 31 Jan 2025 14:49:54 +0200
-Message-Id: <3bba67923cbcd13a59d26ef5fa4bb042b13c8a9b.1738327620.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <cover.1738327620.git.jani.nikula@intel.com>
-References: <cover.1738327620.git.jani.nikula@intel.com>
+	s=arc-20240116; t=1738328073; c=relaxed/simple;
+	bh=qRE2ICPOuZEeY8yVZ7vexR8N9Ixk1jRpPdENg4r2e3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nG2qg9woOxZRG0uyumHd939GhZFutkHsswybD3BjyHnexptBw028bGyxY5YfqSrbaLWZn1IobnktAdNJHZ5h5RsusYdoOGF+N6rPHznFpHy3Tf96ySRCj0Z1mOk4daJ8EVkQ+sBhWiFoahS6tG1//YlQvEI6AvxrD1KpKrv6Qp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=KNfG/PNx; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 50D9D10382D08;
+	Fri, 31 Jan 2025 13:54:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1738328067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YiZso4P4ndJxEbddsdYHN3O4DXbAYma0UXhySd6OoUY=;
+	b=KNfG/PNxWew7LE4VrK7BklCty0mspRirKqMTonAZtAsuxuzsStQAZUO9oToNTYPiNajfG8
+	3yfYt8gFQjtjC0fgUTx+HqqzVuEjQURSeEdrEQEPPiEFR2k1RoHfFC8Cn0m4zaUpv5915Z
+	Td8p12f5DHMbNgirnljR0rvlAhZz7NwR4ytKb4hKRwuEsP6siBWYb9UWTaPcjKrJgN/Iw1
+	UM2LkxkPKzE1Hty2VE0wtKN5MalDot8iyCYk5QOLnDcuunQZotjyJi7pjvjJ83YY7v9BpC
+	Geo3onftB51+xYsNQBcGkbAJ6FaHU8tdnruCH/dgCNXo4PdNtsu1RI7JaOlPNg==
+Date: Fri, 31 Jan 2025 13:54:20 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/136] 5.10.234-rc2 review
+Message-ID: <Z5zH/P5+j8uBklOS@duo.ucw.cz>
+References: <20250131112129.273288063@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sJ2Py1zRnvgTz6uD"
+Content-Disposition: inline
+In-Reply-To: <20250131112129.273288063@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Commit 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
-compressed bpp") tries to find the best compressed bpp for the
-link. However, it iterates from max to min bpp on display 13+, and from
-min to max on other platforms. This presumably leads to minimum
-compressed bpp always being chosen on display 11-12.
 
-Iterate from high to low on all platforms to actually use the best
-possible compressed bpp.
+--sJ2Py1zRnvgTz6uD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/i915/display/intel_dp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Hi!
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index d1b4fd542a1f..ecf192262eb9 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2073,11 +2073,10 @@ icl_dsc_compute_link_config(struct intel_dp *intel_dp,
- 	/* Compressed BPP should be less than the Input DSC bpp */
- 	dsc_max_bpp = min(dsc_max_bpp, output_bpp - 1);
- 
--	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
--		if (valid_dsc_bpp[i] < dsc_min_bpp)
-+	for (i = ARRAY_SIZE(valid_dsc_bpp) - 1; i >= 0; i--) {
-+		if (valid_dsc_bpp[i] < dsc_min_bpp ||
-+		    valid_dsc_bpp[i] > dsc_max_bpp)
- 			continue;
--		if (valid_dsc_bpp[i] > dsc_max_bpp)
--			break;
- 
- 		ret = dsc_compute_link_config(intel_dp,
- 					      pipe_config,
--- 
-2.39.5
+> This is the start of the stable review cycle for the 5.10.234 release.
+> There are 136 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
+CIP testing did not find any problems here: (obsvx2 target is down)        =
+           =20
+                                                                           =
+           =20
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y     =20
+                                                                           =
+           =20
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>                              =
+           =20
+                                                                           =
+           =20
+Best regards,                                                              =
+           =20
+                                                                Pavel      =
+           =20
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--sJ2Py1zRnvgTz6uD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ5zH/AAKCRAw5/Bqldv6
+8pyaAKC1lSVjSZXVrO8eGIFwc/7TPOth7wCgmetOpBclsed2wwbIvAaYiejoSS4=
+=1gjB
+-----END PGP SIGNATURE-----
+
+--sJ2Py1zRnvgTz6uD--
 
