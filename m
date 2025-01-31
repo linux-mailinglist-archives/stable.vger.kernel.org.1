@@ -1,159 +1,239 @@
-Return-Path: <stable+bounces-111828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33232A23F88
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 16:18:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EF7A23F92
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 16:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198C33A9E0D
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA39E164387
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876D61DEFDD;
-	Fri, 31 Jan 2025 15:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2F71E2847;
+	Fri, 31 Jan 2025 15:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ZGXNxBYD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ggMOjec8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEA614A099
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 15:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13A11DE88E
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 15:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738336719; cv=none; b=DJsWqnW+CIR/FplBgDg5BhB3Bq6/qO2o2B6jC9iuDb+oStCdnCRQKninUY85r0vXRj7WeGMsqS0GnowHgV0SCU29cya1iQ46NW+UIVADZGkPE8naOWhm13Blw5RUOP6W/Qlk5ZWfk9cSrcPuUy6pKkB7817tpSx4ySUO3fyd9F0=
+	t=1738337044; cv=none; b=XsdfXEiEikHw3ebW1bxmPqjYCIjsMH5ObTethXV6n+XQdDMbmsOIWfxXYWh8ilLwz64NEECy5PSFSkMWidkkmGcbf+1WeIXkY1rTxOwO8ixozGaaA6U5FlfTfApjvWPSUuUFtPWEU9sKS59IwUQbDE66xT5ONZ2/8ndLt0v1BGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738336719; c=relaxed/simple;
-	bh=Yh5e9pbZP2iUSKUl6lXSpqBSTfy6QZ+CAV1PK4bL86w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZzugICn46ufXoDn1uZJePhvWcsLEZFZPDNmeQqwA4UNYMC7qqAx3Ow5UDR1agOWocssH7wlgUGUZdkZLBM0Enac2dkxwyi7oLadUjHSjkb8Rt+UbC9inilMecgDDnxxh72d0gNf1I+LSUqTHew7i4KflsnF45+F05S70xMQKso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ZGXNxBYD; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6d8f65ef5abso14836816d6.3
-        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 07:18:37 -0800 (PST)
+	s=arc-20240116; t=1738337044; c=relaxed/simple;
+	bh=TgBVuZbqmONVp2cBCwO+GazV6gt3oAzqH+Qi4bWhabc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mu2KX/hccj+Xv4zsGIyonMNBfTFJfQxDX6/6Jew0uV5X+Fln3SSODCcOh45v2xb0z3PSbjghdkA/pf+D5v09QLgQHtdGGw+LIOvaNCpqYwK023jB14w3nDFqZOpvD1aa9vuTJpD2E4/of4gYQ4QoYKwuic9Yx+kti8RCCNiGEuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ggMOjec8; arc=none smtp.client-ip=209.85.222.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-85bafa89d73so447516241.2
+        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 07:24:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1738336716; x=1738941516; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HmcAvYq6Plh35o86lvrX1/5xKi/MyFR+UUUELwg5ZtQ=;
-        b=ZGXNxBYD5FVqegfYExCp5yMZ1Ytdg8CWzNicdlQMO7rlkl5ikF3XHpbRNFSDtf/UQ2
-         iF3z4IiFCHYed9NsjDdOHFMRknhdJX56+AH4lmQHVoKedwgaQcKDD37ixRVtYLLa9k9o
-         A3I3PTiisvK6dxIdGj8tEChDr3FAEjNagLajq11MmPRQqSNg75eZlNhoEK2sfR/Zodtw
-         Xd8itCQRw1l4TdwPvqnSUtuap3foo6P70Asv6cv788spHg6Ca1ykuo8OTDwEKxQ+wlRx
-         lmJNYo4QXfML0h/JDF82r8+rPuggQsN3AOjAq5IlAFHQdqifya9vaLO8bHNtrbuiOjYi
-         YHVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738336716; x=1738941516;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1738337041; x=1738941841; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HmcAvYq6Plh35o86lvrX1/5xKi/MyFR+UUUELwg5ZtQ=;
-        b=jqDefI1j9JhUDgSMhEhqQdUepYEvGwYSzvtw2A3SMpe9KuAp9D1TdAVxifBJYRsN0T
-         tteQbiSCQxjQ2axecZ4ll6z0DWq6C9r59qDlbvdA+4WuPY7ssRA8MRj+pjiV8k9z9ty0
-         GZrpbxkmUlHymRWm+U3B2iEFIetI6o51UpmdPVg78jq/GKGWUFRylT1evT2jSL/px+lS
-         N1ldXHGHsHNAg/Q8MGNrGcA8ue/jdkXUj2g5Y5XiUdEhU+PZauVv9hlZZncTkgXRKltO
-         FlicX0IZsOvTZykzUuB1/fPyeg3LFiWDJ0tg65yLaPSENNDk7eI2dXMyYvgiG++u4IvM
-         SzUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWqBpXrLrLtNazrux6Pp6Zxze/GydLeLSdi5BMxjLriWBJoZr2KhfM8X4UBJ7oVVqO7xj/UJXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQFuVpj6pyPbtAHxqR2fjgDkbtpSSDGgsrvoZ6w3R4P3hwq5DU
-	Qr00G7NMRDPQsvZeZblol8sgEKOBZyiaOIpNjMjdRJ6hQ7C62oxhoer54D7CVQ==
-X-Gm-Gg: ASbGncuhH7NDFMDxkHqv0DPALdFfXlx82GuNJViTlQODg1qRUrLRWwB6cZviVDPL1BB
-	+94+VEOXpscho6RjiqeyC21r5lQYe8zZG5EpzOjLlOE3CsZa4ax5aSmlIdi4BG9T+S35od6tFr1
-	wsZjmTGtnfrDy7+xg/pZJjwjtwQuv3DFtagT0KDrsQDDLhhWXI7UAni0iSuuKyf362pKw5hv3r+
-	lRlI62r7WgYuK8Qg/2JlFb1VlHZund0v66L2y/OYHOiNyL9H/Kt6hTqyowoQ0JVGYPdzYBYKfMq
-	SnhRfxdSUSyntMZQiFtLpOQzTbE8YMRbYLCNoo/S2bh6NH9AmRbidnMNNWT3lVYroWyIxbKJLmO
-	wPYWag1DP
-X-Google-Smtp-Source: AGHT+IG8wug4eUsfhl7wm5KfInzfu9XEQSA/gmnsobwKMmAHW07VMT0SCDK4Yklh8p3e2g3kXNnO6A==
-X-Received: by 2002:a05:6214:3112:b0:6da:dc79:a3cd with SMTP id 6a1803df08f44-6e243a7f135mr158297156d6.0.1738336716566;
-        Fri, 31 Jan 2025 07:18:36 -0800 (PST)
-Received: from rowland.harvard.edu (nat-65-112-8-51.harvard-secure.wrls.harvard.edu. [65.112.8.51])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2547f3e17sm19028426d6.22.2025.01.31.07.18.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 07:18:36 -0800 (PST)
-Date: Fri, 31 Jan 2025 10:18:34 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Baoqi Zhang <zhangbaoqi@loongson.cn>
-Subject: Re: [PATCH] USB: pci-quirks: Fix HCCPARAMS register error for LS7A
- EHCI
-Message-ID: <b6a18bab-b412-443a-b39a-2194596ec79d@rowland.harvard.edu>
-References: <20250131100651.343015-1-chenhuacai@loongson.cn>
+        bh=5MmB80dNlZ/Z5Y29wc6E85ls0e6J9rncIwWF25L4zaU=;
+        b=ggMOjec8QemDBXmsU1cxmhRgWsRkluDKuQIUjjeYCiPhJo/hAQG1/rNb+E7DwpBHBO
+         EWZUfmA60uE0UkRPoz+k4nY9Mbeb3bFCL5Oh2saoIrapYN0pIQ0SeTjtqfdymGZ+yF6e
+         Bj3XacQ9yCSKGXrBkwNAiJVNng87Pcu9xT8Vwa/Z3IiQH5iaZ0CTFBGZZBj6pShmzgCA
+         CfCPvARLZow0mSvxTl05ZBfxLu3Gql/hcJUFrYaJwq5q9iwXf4u5ABtLEj0OhVCPKvEh
+         VhHLcZ16Tw2pwbiVSR4QHxA1yTESSlSr8DFxhDWls8F6tqVT1VkuP6hqYnLDle3bp134
+         br7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738337041; x=1738941841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5MmB80dNlZ/Z5Y29wc6E85ls0e6J9rncIwWF25L4zaU=;
+        b=PAdtzGhz/D7fFBSIBAdkkF3W887rW3QEtkCfSly5z8ZkSqxEIGNJj2WAQ9lwGhxMX+
+         OXGRyqa4bwhP1iyX22WRXbVkZcqJrkJYRWJ8wjDxdwyB330Y+o2Fap8YWtGUrjnLpoMR
+         9vtvrDmqjPIv7IqqOpdqmv8jww8dOx1tzYv/PZ3VTxVKvnVtox5mlmm/4RRQbT8OU0FA
+         JgowzZ1UoW3mPk74RmZTCzAMv76yiK4JiqfhIzFlLElesMvPPBMSjCJN9djl8/9dSXyW
+         3NSQ/ZYh2XHKxu5rGIMkxLjbrCo+bT9uHqmR+DmBlzO+sMAmHBRirfvp0kxxEeuspiOD
+         4phw==
+X-Gm-Message-State: AOJu0Yx7DdZR5na+75FYONg6Q1o2b0pO81bUeO1lwdI4WPqMBY1yPAsx
+	+35zmvMWx+s2AiSV3/c983T+qW6G1iLeI8exm+aREVO/UyUlpEbLgcaKFeMu+XLJ7sFwkkrYDDw
+	soaRFBiGkRHS+8a+7kZioU98rfqgxHL6Jn1FCTg==
+X-Gm-Gg: ASbGncvj6meW227Bo4BP7ljSXy3dhmIjE0995ukec5qw5MzzGqZ6CHsF2jt7feGagqi
+	hzNsHxdYnlb/9vBloqhCp+a4GtyONv5LNy7CNGOmSELo1GfwnxPKWv2oX8QGmAefTyhHxzazppE
+	AyWqaZgf731NNhOQJYWxeVZxOatlZSfQ==
+X-Google-Smtp-Source: AGHT+IF7h0wUp9yKsdp71mMvKTkAx8g2V0RVMq3BeCI0OtZi8JKdX/kz++4pwR/QvuGJZGjFqCuH08TtA+D2g9xEv+4=
+X-Received: by 2002:a05:6122:8c2:b0:518:965c:34a with SMTP id
+ 71dfb90a1353d-51e9e3d2831mr10218805e0c.2.1738337041648; Fri, 31 Jan 2025
+ 07:24:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250131100651.343015-1-chenhuacai@loongson.cn>
+References: <20250130140127.295114276@linuxfoundation.org>
+In-Reply-To: <20250130140127.295114276@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 31 Jan 2025 20:53:50 +0530
+X-Gm-Features: AWEUYZmodaflHy0FpLJdmZ8d6jjAWwVYtcU0AZZUKH1TGmHeKkGEWQYQ4fvFlbU
+Message-ID: <CA+G9fYsi1EFDWOM-7Si5PV2HOi7ShcPtyM218jiWFkL64uZyJg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/24] 5.15.178-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2025 at 06:06:51PM +0800, Huacai Chen wrote:
-> LS7A EHCI controller doesn't have extended capabilities, so the EECP
-> (EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-> be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-> fixed in future, now just clear the EECP field to avoid error messages
-> on boot:
-> 
-> ......
-> [    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> [    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> [    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> [    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> ......
-> [    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> [    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> [    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> [    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> ......
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->  drivers/usb/host/pci-quirks.c | 4 ++++
->  include/linux/pci_ids.h       | 1 +
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
-> index 1f9c1b1435d8..7e3151400a5e 100644
-> --- a/drivers/usb/host/pci-quirks.c
-> +++ b/drivers/usb/host/pci-quirks.c
-> @@ -958,6 +958,10 @@ static void quirk_usb_disable_ehci(struct pci_dev *pdev)
->  	 * booting from USB disk or using a usb keyboard
->  	 */
->  	hcc_params = readl(base + EHCI_HCC_PARAMS);
-> +	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON &&
-> +	    pdev->device == PCI_DEVICE_ID_LOONGSON_EHCI)
-> +		hcc_params &= ~(0xffL << 8);
+On Thu, 30 Jan 2025 at 19:58, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.178 release.
+> There are 24 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 01 Feb 2025 14:01:15 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.178-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Can you please add a comment before this "if" statement explaining why 
-it is necessary?
 
-Alan Stern
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-> +
->  	offset = (hcc_params >> 8) & 0xff;
->  	while (offset && --count) {
->  		pci_read_config_dword(pdev, offset, &cap);
-> diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> index de5deb1a0118..74a84834d9eb 100644
-> --- a/include/linux/pci_ids.h
-> +++ b/include/linux/pci_ids.h
-> @@ -162,6 +162,7 @@
->  
->  #define PCI_VENDOR_ID_LOONGSON		0x0014
->  
-> +#define PCI_DEVICE_ID_LOONGSON_EHCI     0x7a14
->  #define PCI_DEVICE_ID_LOONGSON_HDA      0x7a07
->  #define PCI_DEVICE_ID_LOONGSON_HDMI     0x7a37
->  
-> -- 
-> 2.47.1
-> 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 5.15.178-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: cd260dae49a375098c2120ff1618e6bdf874791d
+* git describe: v5.15.177-25-gcd260dae49a3
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.177-25-gcd260dae49a3
+
+## Test Regressions (compared to v5.15.174-52-g11de5dde6ebe)
+
+## Metric Regressions (compared to v5.15.174-52-g11de5dde6ebe)
+
+## Test Fixes (compared to v5.15.174-52-g11de5dde6ebe)
+
+## Metric Fixes (compared to v5.15.174-52-g11de5dde6ebe)
+
+## Test result summary
+total: 61427, pass: 41406, fail: 6650, skip: 12892, xfail: 479
+
+## Build Summary
+* arc: 6 total, 5 passed, 1 failed
+* arm: 105 total, 105 passed, 0 failed
+* arm64: 32 total, 32 passed, 0 failed
+* i386: 25 total, 24 passed, 1 failed
+* mips: 25 total, 22 passed, 3 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 25 total, 24 passed, 1 failed
+* riscv: 10 total, 10 passed, 0 failed
+* s390: 12 total, 11 passed, 1 failed
+* sh: 12 total, 10 passed, 2 failed
+* sparc: 8 total, 7 passed, 1 failed
+* x86_64: 28 total, 28 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-build-clang
+* log-parser-build-gcc
+* log-parser-test
+* ltp-capability
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
