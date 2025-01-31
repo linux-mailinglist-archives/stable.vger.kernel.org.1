@@ -1,146 +1,127 @@
-Return-Path: <stable+bounces-111821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F5DA23F21
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:28:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1FFA23F35
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 15:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313ED168E91
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C271885931
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 14:38:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54E51CF284;
-	Fri, 31 Jan 2025 14:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EEF1C549F;
+	Fri, 31 Jan 2025 14:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9+wSyXw"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JEo5BeXZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1F81C5D4C;
-	Fri, 31 Jan 2025 14:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313494502A
+	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 14:38:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738333733; cv=none; b=Is5Nf4EkoL8Koojrv+E9vi7/Zea4AbIUMcP2NHSGtJrCh5eeb4yrv0xDqOc1dSNMDF+3hgsz1cAvr5+JVGqn0pjVRo6byOuf67GC85bpwFTFDYYq7klvZzyVc1iCHjAVIgHwHAlMQHbWfaEDMmeJIOaD8UZyKIsTGo3W2Igh/g4=
+	t=1738334300; cv=none; b=jKLg8F3SelAaY2RmuFwqybEneuGUlr9jldF8ajHeQbEalTCYWU/CtMPF2hAZw7e/OyGiKizsy1WeENv+LVAIICwxqSEnScQNh4rZeCUGUMS2CaTnQ01zr2mVWNeAYo8V/Kzi9RQueZCT4gsqCzJ2wRnKKRyoTvf2YHfXegwHx8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738333733; c=relaxed/simple;
-	bh=A9muo+en6T68s7TNl988exsaw5hAsdSDQpNNPFl10qM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r9DDau0ndgDDJDp6qHMCQFYrsWTJb6B6JHw0wwGGJlhMUNUiFWIrNfTkl9d7eqsjMX9I6JepP7rBMdZtZwArVziW2uB1rdWM5pj0B7LWUxIycccbW99mGbO6lUe3VaEywERYusdtCtktYPdq6KmA9iMWS0ywaPpFR7UoPwMPdDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9+wSyXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD556C4CEE3;
-	Fri, 31 Jan 2025 14:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738333732;
-	bh=A9muo+en6T68s7TNl988exsaw5hAsdSDQpNNPFl10qM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=n9+wSyXwDlsjNIEC6UIthBDz//Yl85KzqQ+bK9GGL7jqcEyqcINSskkdysBO0XQbl
-	 MnbxPdP43bx2hXYWiSrqRtSXpXfhdPNV9Yk4US6S4VbIiPcoC48kePGem8maeeft9s
-	 xm1vNBpZ3/RbIfEfmFgCZszqcH6eLZw1SZe4y8Rm/lzzUC/MLwn/lQ3yamD2Pi9YgG
-	 XZ6Te8qAigWJBuHMOsMZhZU35TLPPYFvIgmaq+uue48kxYq1LEfPb+DGvOia4Hd0jA
-	 uzlencmoC5xlPqFnYQiNH0mWY1/DiQlcsxiubuhvSubtSiJ3MfkN9l9etdx4tuL5W/
-	 ga23B2BHTxT7A==
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5dc10fe4e62so3884862a12.1;
-        Fri, 31 Jan 2025 06:28:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVcclQAJwtotPmZ1iNbIuAT3wQwWaMP6Wiwu/7KS6KDLOzWa4yIdq9d7uR67UQ3uJwK461M5Vnd@vger.kernel.org, AJvYcCWzDvkqBeKx3dm+VUQOr1lIXjPD/Z0J6G7CZBjZaIQI+NOURK69NXip08SUgKN+ThzNOM05ETxNYIQy@vger.kernel.org, AJvYcCX3UXLEvghD4UnclzPiKMYTuuWPdMgxi+ByZgqG8VGetO1EiyXY8ZGURyOMq5ewqYmn4h9pUko8PbHw0Jo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF6IV2u3zpYjWBYlbHX4vJhMVNVAA0oLYS8EYT4YhahgznOwbl
-	VSRUCPaTyLHXCEvkMcEPPB3FrtXxJ/nCUykVzk1+wnktHA6fwHQs5VJ4Ej2V6hNXZkSnbwmoFgI
-	WN2goLdlxSVtfG3VILS3U5pnrWd0=
-X-Google-Smtp-Source: AGHT+IEUQQntaQTqJSLkFPH0tGJX/gR+KgBuOx+Lx2taIdYSwdqfNiv9Yak3PI3h35yIGKbORAZ2/iVlRL1+6RkGiuo=
-X-Received: by 2002:a05:6402:84d:b0:5d0:bdc1:75df with SMTP id
- 4fb4d7f45d1cf-5dc5efebbb2mr10651841a12.24.1738333731438; Fri, 31 Jan 2025
- 06:28:51 -0800 (PST)
+	s=arc-20240116; t=1738334300; c=relaxed/simple;
+	bh=aWXR7SjUdOrYT9zvnhuoOV9+hqMZB+lUnEJH3a/AVDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XTUxJ6iOOzbumcp+9GubrAsCCdcvOPklYZ4RrwS6KdyiqXJe0FZgz+wBqr5sh1en3ZyW2zEsHBbM5QnfVpgdRC99qJRMtZTmJ/oSJ6xWRhD81GNJvKjzSeYR1jla6ZMmvGWAIy3bqsdsovYtiYrSdfGvxtYJ4vljvQn3bat0pco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=JEo5BeXZ; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=z44wbJoCgpaFpfxyIjE4KNNRI0pn+AfD1gje/+p6F2o=; b=JEo5BeXZqpdQGxy9hwQkAuE9f/
+	yTThSUqea1g5hM03dajYu3wWCDdRYmePf53OFxSdBX8o3cZYy0o6WpjtM1zo0SL51ZBSGJaW288lL
+	YcXE9XG/Y3XhgwObsq5bKGmXNAz58wymRFUYCqfCw0tGSiUMMplf6axjc20euEUs1pLoocFen39PS
+	fO3aLnb2MrY3wMB189IC7vJ1QpskXfmUJS4hwjOToJN7obZadVHwK4xyny2YnPVmaTq44itfLXM+q
+	y7HuOtiZsCqmAmdn7kBmxmrmuOosWhWmqHHVJ1A7qkWZ35ih66WhJxeZuVKMjlxS8S8lscBChTE+P
+	KEDeLqyw==;
+Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost.localdomain)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tds9f-001W0H-9s; Fri, 31 Jan 2025 15:38:05 +0100
+From: =?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>
+To: akpm@linux-foundation.org,
+	riel@surriel.com
+Cc: linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	kernel-dev@igalia.com,
+	revest@google.com
+Subject: [PATCH] mm,madvise,hugetlb: check for 0-length range after end address adjustment
+Date: Fri, 31 Jan 2025 15:37:49 +0100
+Message-ID: <20250131143749.1435006-1-rcn@igalia.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250131100651.343015-1-chenhuacai@loongson.cn> <2025013107-droplet-reset-127e@gregkh>
-In-Reply-To: <2025013107-droplet-reset-127e@gregkh>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 31 Jan 2025 22:28:41 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6DS=Vne9O-pLdfUki7tfJPdwB3CWbCDH5ejypWCnsM5A@mail.gmail.com>
-X-Gm-Features: AWEUYZmfIXd5UQSR65fYRELf4Z4SYd6T1UR_-wZsgCtcjWU2irrd7qCjQcPLu1Y
-Message-ID: <CAAhV-H6DS=Vne9O-pLdfUki7tfJPdwB3CWbCDH5ejypWCnsM5A@mail.gmail.com>
-Subject: Re: [PATCH] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Alan Stern <stern@rowland.harvard.edu>, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Baoqi Zhang <zhangbaoqi@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi, Greg,
+Add a sanity check to madvise_dontneed_free() to address a corner case
+in madvise where a race condition causes the current vma being processed
+to be backed by a different page size.
 
-On Fri, Jan 31, 2025 at 6:48=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Fri, Jan 31, 2025 at 06:06:51PM +0800, Huacai Chen wrote:
-> > LS7A EHCI controller doesn't have extended capabilities, so the EECP
-> > (EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
-> > be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
-> > fixed in future, now just clear the EECP field to avoid error messages
-> > on boot:
-> >
-> > ......
-> > [    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> > [    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> > [    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> > [    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
-> > ......
-> > [    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> > [    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> > [    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> > [    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
-> > ......
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
-> >  drivers/usb/host/pci-quirks.c | 4 ++++
-> >  include/linux/pci_ids.h       | 1 +
-> >  2 files changed, 5 insertions(+)
-> >
-> > diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirk=
-s.c
-> > index 1f9c1b1435d8..7e3151400a5e 100644
-> > --- a/drivers/usb/host/pci-quirks.c
-> > +++ b/drivers/usb/host/pci-quirks.c
-> > @@ -958,6 +958,10 @@ static void quirk_usb_disable_ehci(struct pci_dev =
-*pdev)
-> >        * booting from USB disk or using a usb keyboard
-> >        */
-> >       hcc_params =3D readl(base + EHCI_HCC_PARAMS);
-> > +     if (pdev->vendor =3D=3D PCI_VENDOR_ID_LOONGSON &&
-> > +         pdev->device =3D=3D PCI_DEVICE_ID_LOONGSON_EHCI)
-> > +             hcc_params &=3D ~(0xffL << 8);
-> > +
-> >       offset =3D (hcc_params >> 8) & 0xff;
-> >       while (offset && --count) {
-> >               pci_read_config_dword(pdev, offset, &cap);
-> > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-> > index de5deb1a0118..74a84834d9eb 100644
-> > --- a/include/linux/pci_ids.h
-> > +++ b/include/linux/pci_ids.h
-> > @@ -162,6 +162,7 @@
-> >
-> >  #define PCI_VENDOR_ID_LOONGSON               0x0014
-> >
-> > +#define PCI_DEVICE_ID_LOONGSON_EHCI     0x7a14
->
-> If you read the top of this file, does this patch meet the requirement
-> to add this entry here to this file?
-Emmm, the device id is also used in
-drivers/pci/controller/pci-loongson.c, but uses another code style so
-it is not suitable to share the definition. Maybe the best solution is
-use 0x7a14 directly.
+During a madvise(MADV_DONTNEED) call on a memory region registered with
+a userfaultfd, there's a period of time where the process mm lock is
+temporarily released in order to send a UFFD_EVENT_REMOVE and let
+userspace handle the event. During this time, the vma covering the
+current address range may change due to an explicit mmap done
+concurrently by another thread.
 
-Huacai
->
-> thanks,
->
-> greg k-h
+If, after that change, the memory region, which was originally backed by
+4KB pages, is now backed by hugepages, the end address is rounded down
+to a hugepage boundary to avoid data loss (see "Fixes" below). This
+rounding may cause the end address to be truncated to the same address
+as the start.
+
+Make this corner case follow the same semantics as in other similar
+cases where the requested region has zero length (ie. return 0).
+
+This will make madvise_walk_vmas() continue to the next vma in the
+range (this time holding the process mm lock) which, due to the prev
+pointer becoming stale because of the vma change, will be the same
+hugepage-backed vma that was just checked before. The next time
+madvise_dontneed_free() runs for this vma, if the start address isn't
+aligned to a hugepage boundary, it'll return -EINVAL, which is also in
+line with the madvise api.
+
+From userspace perspective, madvise() will return EINVAL because the
+start address isn't aligned according to the new vma alignment
+requirements (hugepage), even though it was correctly page-aligned when
+the call was issued.
+
+Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+---
+ mm/madvise.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 49f3a75046f6..c8e28d51978a 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -933,7 +933,9 @@ static long madvise_dontneed_free(struct vm_area_struct *vma,
+ 			 */
+ 			end = vma->vm_end;
+ 		}
+-		VM_WARN_ON(start >= end);
++		if (start == end)
++			return 0;
++		VM_WARN_ON(start > end);
+ 	}
+ 
+ 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
+-- 
+2.48.1
+
 
