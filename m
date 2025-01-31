@@ -1,174 +1,136 @@
-Return-Path: <stable+bounces-111789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7069A23C0A
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:17:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86105A23C61
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FA11188A309
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:17:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6B51616FB
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFC11A08A8;
-	Fri, 31 Jan 2025 10:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7201B415D;
+	Fri, 31 Jan 2025 10:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="vZKua7aF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DD9EED8;
-	Fri, 31 Jan 2025 10:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
+Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345221779B8;
+	Fri, 31 Jan 2025 10:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738318625; cv=none; b=jyMI1AL8ck4QVhnJHnHC7n4daNoPDFDgLQlFzp3Sadj88UCOVeBs86y8X6iP0rVZm6fial8G7PBES/+SGcplP7uZpThY7Ye4j9FyiyHeeLroThDXYAt3gmnoxzZI1xsH8j4IhEyOcH4O+8cX5rj2hQXFwY5qyMBnRiaTsm+69iM=
+	t=1738320105; cv=none; b=pmumBA3/0TE35wzieA3hyOXb4SFkempbb61DO0yRwd93yOktoryVNAVwIqhofGFxlIM7pMCsLxHgxeDJDh3lJs1j5fBCjHxrJVGE+7gdf0C+hpuCxoaOimwHRUmoYbJTPlRZG64dsAUrtYrVZKggiQZhBHekLsfRQ7c4EyjJRf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738318625; c=relaxed/simple;
-	bh=HW5NlCZ6hpmmzwD/UeYkcnBJqeWue6YDR/Pb1Fco2yw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W4fsMZigmDz/frUJhS00aiXS/TY12mgkJX2XCK8M5Cd9ZnPLRu8vJrqx3XfeXvnT38kpgJPnr3D3fr1lEZWdG7Isnb2WI5FH50h5T4Ct2GOxdP76/JHccLjS6oCVLVleZexzvduL6uFXwzpG6JqXtkqGhJroaQEfiTy1Swf147Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO iyokan2-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 31 Jan 2025 19:16:55 +0900
-Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
-	by iyokan2-ex.css.socionext.com (Postfix) with ESMTP id 5D64F20090BC;
-	Fri, 31 Jan 2025 19:16:55 +0900 (JST)
-Received: from iyokan2.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Fri, 31 Jan 2025 19:16:55 +0900
-Received: from [10.212.246.222] (unknown [10.212.246.222])
-	by iyokan2.css.socionext.com (Postfix) with ESMTP id 9C7C4AB186;
-	Fri, 31 Jan 2025 19:16:54 +0900 (JST)
-Message-ID: <fe8c2233-fa2a-4356-8005-6cbabf6a0e96@socionext.com>
-Date: Fri, 31 Jan 2025 19:16:54 +0900
+	s=arc-20240116; t=1738320105; c=relaxed/simple;
+	bh=KVvvmT6srlE5+YlgqATQtQdAp90368UR5QrugMJeqwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WzNQafxxLJdaCT+Shp1FiZ5zwEfdCABnry4TpEsRA/PQRfzBV4gyM7qVldrxAo9g7ecQfyCHfVAWlt+hddSGzc8yGz+2l3tq69/m8BEZOuCq7czZYaYvvwf0V/TFqvuWXXhKFDtWizjRVWFVXBq9uaazk1Aeo4Bo3QW19fy0clk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=vZKua7aF; arc=none smtp.client-ip=139.162.151.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:Message-Id:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=z9vWniiq01s0S9UtaVEgmaVgdztvwEOlANaQmWgdsqk=; b=vZKua7aFpP4Wpztv5zzp33XqkV
+	3VyT/wpn8D1ni11HzMvqLXhiQaR8TS09dZ9ImtEFi6Z5K2jKWVJAeIdFQ2Fha+nqi0ZoI+M5HtrGw
+	j9b2RsUs6dOZ8QgfzCidydm04CIQ0xjXI6hVnD6e9jmLngYinKRWxZR1Z2nui105Fx//RyTeP7Lo2
+	jZIUZVDQ8EVb0KcSwpVT6TpybpSQ4gfUDPUjm5sLf7YULjDlk+E8ISquqgAA4tpWOIibSxjf54290
+	B00DR8w/YVanjfr9E8oXgP9JvBIw5qcB+rrX3mtye3pTu2PAh80nMDNAh6dApGb1EqBwwb8NzHoRt
+	llGQGWhw==;
+Received: from ink by minute.unseen.parts with local (Exim 4.96)
+	(envelope-from <ink@unseen.parts>)
+	id 1tdoSn-0002sO-2b;
+	Fri, 31 Jan 2025 11:41:29 +0100
+From: Ivan Kokshaysky <ink@unseen.parts>
+To: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 0/4] alpha: stack fixes
+Date: Fri, 31 Jan 2025 11:41:25 +0100
+Message-Id: <20250131104129.11052-1-ink@unseen.parts>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] misc: pci_endpoint_test: Fix irq_type to convey
- the correct type
-To: Niklas Cassel <cassel@kernel.org>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Kishon Vijay Abraham I <kishon@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Gustavo Pimentel <gustavo.pimentel@synopsys.com>,
- Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250122022446.2898248-1-hayashi.kunihiko@socionext.com>
- <20250122022446.2898248-4-hayashi.kunihiko@socionext.com>
- <20250128143231.ondpjpugft37qwo5@thinkpad> <Z5oX5Fe5FY2Pym0u@ryzen>
-Content-Language: en-US
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <Z5oX5Fe5FY2Pym0u@ryzen>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Niklas,
+This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
+Thanks to Magnus Lindholm for identifying that remarkably longstanding
+bug.
 
-On 2025/01/29 20:58, Niklas Cassel wrote:
-> On Tue, Jan 28, 2025 at 08:02:31PM +0530, Manivannan Sadhasivam wrote:
->> On Wed, Jan 22, 2025 at 11:24:46AM +0900, Kunihiko Hayashi wrote:
->>> There are two variables that indicate the interrupt type to be used
->>> in the next test execution, "irq_type" as global and test->irq_type.
->>>
->>> The global is referenced from pci_endpoint_test_get_irq() to preserve
->>> the current type for ioctl(PCITEST_GET_IRQTYPE).
->>>
->>> The type set in this function isn't reflected in the global "irq_type",
->>> so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
->>> As a result, the wrong type will be displayed in "pcitest" as follows:
->>>
->>>      # pcitest -i 0
->>>      SET IRQ TYPE TO LEGACY:         OKAY
->>>      # pcitest -I
->>>      GET IRQ TYPE:           MSI
->>>
->>> Fix this issue by propagating the current type to the global "irq_type".
->>>
->>
->> This is becoming a nuisance. I think we should get rid of the global
->> 'irq_type'
->> and just stick to the one that is configurable using IOCTL command. Even
->> if the
->> user has configured the global 'irq_type' it is bound to change with IOCTL
->> command.
-> 
-> +1
+The problem is that GCC expects 16-byte alignment of the incoming stack
+since early 2004, as Maciej found out [2]:
+  Having actually dug speculatively I can see that the psABI was changed in
+ GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
+ improperly aligned)") back in Mar 2004, when the stack pointer alignment
+ was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
+ various suspicious stack pointer adjustments, starting with SP_OFF which
+ is not a whole multiple of 16.
 
-After fixing the issue described in this patch,
-we can replace with a new member of 'struct pci_endpoint_test' instead.
+Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
+ D.3.1 Stack Alignment
+  This standard requires that stacks be octaword aligned at the time a
+  new procedure is invoked.
 
-> But I also don't like how since we migrated to selftests:
-> READ_TEST / WRITE_TEST / COPY_TEST unconditionally call
-> ioctl(PCITEST_SET_IRQTYPE, MSI) before doing their thing.
+However:
+- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
+  the odd number of 64-bit words in 'struct pt_regs', which is the very
+  first thing pushed onto the kernel thread stack;
+- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
+  stack depending on numerous factors.
 
-I think that it's better to prepare new patch series.
+Somehow we got away with it until recently, when we ended up with
+a stack corruption in kernel/smp.c:smp_call_function_single() due to
+its use of 32-byte aligned local data and the compiler doing clever
+things allocating it on the stack.
 
-> Will this cause the test case to fail for platforms that only support MSI-X?
-> (See e.g. dwc/pci-layerscape-ep.c where this could be the case.)
-> 
-> 
-> Sure, before, in pcitest.sh, we would do:
-> 
-> 
-> pcitest -i 2
->          pcitest -x $msix
-> 
-> 
-> pcitest -i 1
-> 
-> pcitest -r -s 1
-> pcitest -r -s 1024
-> pcitest -r -s 1025
-> pcitest -r -s 1024000
-> pcitest -r -s 1024001
-> 
-> 
-> Which would probably print an error if:
-> pcitest -i 1
-> failed.
-> 
-> but the READ_TEST / WRITE_TEST / COPY_TEST tests themselves
-> would not fail.
-> 
-> 
-> Perhaps we should rethink this, and introduce a new
-> PCITEST_SET_IRQTYPE, AUTO
-> 
-> I would be fine if
-> READ_TEST / WRITE_TEST / COPY_TEST
-> called PCITEST_SET_IRQTYPE, AUTO
-> before doing their thing.
-> 
-> 
-> 
-> How I suggest PCITEST_SET_IRQTYPE, AUTO
-> would work:
-> 
-> Since we now have capabilties merged:
-> https://lore.kernel.org/linux-pci/20241203063851.695733-4-cassel@kernel.org/
-> 
-> Add epc_features->msi_capable and epc->features->msix_capable
-> as two new bits in the PCI_ENDPOINT_TEST_CAPS register.
-> 
-> If PCITEST_SET_IRQTYPE, AUTO:
-> if EP CAP has msi_capable set: set IRQ type MSI
-> else if EP CAP has msix_capable set: set IRQ type MSI-X
-> else: set legacy/INTx
+Patches 1-2 are preparatory; 3 - the main fix; 4 - fixes remaining
+special cases.
 
-There is something ambiguous about the behavior for me.
+Ivan.
 
-The test->irq_type has a state "UNDEFINED".
-After issueing "Clear IRQ", test->irq_type becomes "UNDEFINED" currently,
-and all tests with IRQs will fail until new test->irq_type is set.
-
-If SET_IRQTYPE is AUTO, how will test->irq_type be set?
-
-Thank you,
-
+[1] https://lore.kernel.org/rcu/CA+=Fv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=Ei90G98ukRcRJA@mail.gmail.com/#r
+[2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/
+[3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf
 ---
-Best Regards
-Kunihiko Hayashi
+Changes in v2:
+- patch #1: provide empty 'struct pt_regs' to fix compile failure in libbpf,
+  reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
+  update comment and commit message accordingly;
+- cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as well.
+---
+Ivan Kokshaysky (4):
+  alpha/uapi: do not expose kernel-only stack frame structures
+  alpha: replace hardcoded stack offsets with autogenerated ones
+  alpha: make stack 16-byte aligned (most cases)
+  alpha: align stack for page fault and user unaligned trap handlers
+
+ arch/alpha/include/asm/ptrace.h      | 64 ++++++++++++++++++++++++++-
+ arch/alpha/include/uapi/asm/ptrace.h | 65 ++--------------------------
+ arch/alpha/kernel/asm-offsets.c      |  4 ++
+ arch/alpha/kernel/entry.S            | 24 +++++-----
+ arch/alpha/kernel/traps.c            |  2 +-
+ arch/alpha/mm/fault.c                |  4 +-
+ 6 files changed, 83 insertions(+), 80 deletions(-)
+
+-- 
+2.39.5
+
 
