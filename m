@@ -1,116 +1,132 @@
-Return-Path: <stable+bounces-111842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC77A2417D
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:04:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D1DA241B7
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 18:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89352188455F
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 17:04:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D57E166D26
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 17:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C4C1E9B38;
-	Fri, 31 Jan 2025 17:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6484A1EE7D9;
+	Fri, 31 Jan 2025 17:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="t/sZRENV"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="LeftFOaa"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6715538DF9
-	for <stable@vger.kernel.org>; Fri, 31 Jan 2025 17:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738343039; cv=none; b=pN8YFdXAowHIT3QflhokT3abw3e363/K8T2eSFrC+/G3BOT6ebCEvm/eV99foEB++yt/dB/+Fm6dv15el+VahSIvBygCSKWb8GBLH0cjdnvIYFiyL7LsRnPu+u7LXNJzmpsoVpu0dsvr4h4Rd4/3wF7g4418R9FjhmhAHc9maac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738343039; c=relaxed/simple;
-	bh=0P55tX36YnjGgxuXV9fClqYoPcCvp8mJT2Y6nq0OCDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nBLYDqA5zZHtvJHN2gyEIzpVwLHojrMFhBUsYz6bUXBDEpguHki+HwF6tYQVHuFki5hc1D/0OMvj8nOWmMvlSHzy6ynyL0obplEaWC27AXOteUcGaLxE4KqWuUZD/nLVmQh9A+zOGSauQVG32Uk3zy28HQpnyOC4BcXB2/4PkOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t/sZRENV; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 31 Jan 2025 09:03:49 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738343035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qaQGPp6ddTyuXw6qY9SjSQ+H3AysFRGJVYo1Wy3tqJA=;
-	b=t/sZRENVwTvWil5d24XUhkvpKGoPUPv/03wBQSZg/Zc8YrEat9ZeJaejIGEWsrBLcUvTPi
-	/+2FfOVpGS9vEWzsSz1+dzYfpnEIQxVOTuEjE07OOld72tJFkVRZFmxf8XCEzvZhRhqPX3
-	5ZP7K/EnyYq4Dl55xinMqsGh5ADM9+0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>, James Morse <james.morse@arm.com>,
-	stable@vger.kernel.org, Moritz Fischer <moritzf@google.com>,
-	Pedro Martelletto <martelletto@google.com>,
-	Jon Masters <jonmasters@google.com>
-Subject: Re: [PATCH] arm64: Move storage of idreg overrides into mmuoff
- section
-Message-ID: <Z50CdVT8fPof-_Zc@linux.dev>
-References: <20250130204614.64621-1-oliver.upton@linux.dev>
- <Z5yseC1kCyTcwlMy@J2N7QTR9R3>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D091EC00C;
+	Fri, 31 Jan 2025 17:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738343726; cv=pass; b=Sw4RyFb64D5H7CDoLqzSgYB2gsWYb3Y+LQ4hA2sH3VDgVjY6FMBOjlybZCo3Ce/kjvZkbCbMd7f39CgUmYSqmDR3LG7ojH+LSgZUeodGmfVCEQSruhwVghgcWdfng8OCjboVD8yeddlie5+HZQ0ZpK/bsZxnjx5+jpCyi429Sw0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738343726; c=relaxed/simple;
+	bh=oK1k3rEWrJmRR4OPtJz4C1rlVLLBu1Vzh9ut0mr4Kbk=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=thGTtZCO5/z8BOLX+qT05t6LMigUAk4is+mp+XbD5QpK2dWyjyMPSW3i2AU2oBRK6CCAUjrTpsQ4KsYJVbMTP7jFD2s2mjt1EANwiZjxaahq9dwPXOLM6EhJQ7Y4Q1DTZVyyUDKMg0EeKD74MucCOy1He30XMyTPJWBzVIHht14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=LeftFOaa; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1738343691; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=oBfFf7YS+9DM1wSuZx46qHBPGEteeuSNFmKktsL/9vZJiEjo/EeP4go+8a9Z1HryUfRAxvTSgjLupFrM5VVRYeGx1rVmJzVq/U3eW7fcJ2nE+xoyOOvcosnCCjtdhRRIRhtna8IibGllWAU2SRIsHEHJa9MIwbXxbHuXN50Ls+g=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1738343691; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=wMwHeEjetWELU3ewH8V8bdOBFfw6fj+ETIzH3dhS8Pw=; 
+	b=JG5MbuRDvch7lXvIdp5PinwUVikMuX76d/o+Yoth6n6jvY0bEy6cNZyPXuiZ9W7OCz8xBHR1k5WmZTDGWnzZne24QV7ER/Egsp7oO57EbbPeTVCq9QS9YcsVeJJKrRHmsWOabiBx0KghWDfjyBesY3cbVgOtJqucGkKJwD66hdM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1738343691;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=wMwHeEjetWELU3ewH8V8bdOBFfw6fj+ETIzH3dhS8Pw=;
+	b=LeftFOaaedobAJnZeKpDrYsv2CxSy03WhoQnpk5bA8n2EF3G4vf2Sei4ldA9evVv
+	6kSacW4yCzJrjRcQjDzbRvnmjcy+AcQbpXVnP71Kxsd3A1vYlRc/YGmYA/iFW6cNaml
+	pn1cle5WNif/0HbS4LihylkK/GL7ZBJYSdx9os7Y=
+Received: by mx.zohomail.com with SMTPS id 1738343685182938.1558923456199;
+	Fri, 31 Jan 2025 09:14:45 -0800 (PST)
+Message-ID: <d6717b2e-4138-425b-b8b1-daa40d30bbf3@collabora.com>
+Date: Fri, 31 Jan 2025 22:15:01 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5yseC1kCyTcwlMy@J2N7QTR9R3>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+ akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.10 000/136] 5.10.234-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20250131112129.273288063@linuxfoundation.org>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20250131112129.273288063@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-On Fri, Jan 31, 2025 at 10:56:56AM +0000, Mark Rutland wrote:
-> On Thu, Jan 30, 2025 at 12:46:15PM -0800, Oliver Upton wrote:
-> > There are a few places where the idreg overrides are read w/ the MMU
-> > off, for example the VHE and hVHE checks in __finalise_el2. And while
-> > the infrastructure gets this _mostly_ right (i.e. does the appropriate
-> > cache maintenance), the placement of the data itself is problematic and
-> > could share a cache line with something else.
-> > 
-> > Depending on how unforgiving an implementation's handling of mismatched
-> > attributes is, this could lead to data corruption. In one observed case,
-> > the system_cpucaps shared a line with arm64_sw_feature_override and the
-> > cpucaps got nuked after entering the hyp stub...
+On 1/31/25 4:21 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.234 release.
+> There are 136 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> This doesn't sound right. Non-cacheable/Device reads should not lead to
-> corruption of a cached copy regardless of whether that cached copy is
-> clean or dirty.
+> Responses should be made by Sun, 02 Feb 2025 11:21:01 +0000.
+> Anything received after that time might be too late.
 > 
-> The corruption suggests that either we're performing a *write* with
-> mismatched attributes (in which case the use of .mmuoff.data.read below
-> isn't quite right), or we have a plan invalidate somewhere without a
-> clean (and e.g. something else might need to be moved into
-> .mmuoff.data.write).
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.234-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
-> Seconding Ard's point, I think we need to understand this scenario
-> better.
+> thanks,
+> 
+> greg k-h
+OVERVIEW
 
-Of course. So the write to the idreg override is fine and gets written
-back after cache maintenance.
+        Builds: 31 passed, 0 failed
 
-What's happening afterwards is CPU0 pulls in the line to write to
-system_cpucaps which also happens to contain arm64_sw_feature_override.
-That line is in UD state when CPU0 calls HVC_FINALISE_EL2 and goes to
-EL2 with the MMU off.
+    Boot tests: 420 passed, 0 failed
 
-__finalise_el2() does a load on arm64_sw_feature_override which goes out
-as a ReadNoSnp. I is the only cache state for this request (IHI 0050G
-B4.2.1.2) and the SF stops tracking the line, so writeback never
-actually goes anywhere.
+    CI systems: broonie, maestro
 
-This patch might have been a touch premature, let me double check a few
-things on our side.
+REVISION
 
--- 
+    Commit
+        name: v5.10.233-137-g99689d3bdd980
+        hash: 99689d3bdd980ed74fed764babc35d90522391ac
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+
+
+BUILDS
+
+    No build failures found
+
+BOOT TESTS
+
+    No boot failures found
+
+See complete and up-to-date report at:
+
+    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=99689d3bdd980ed74fed764babc35d90522391ac&var-patchset_hash=
+
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
 Thanks,
-Oliver
+KernelCI team
 
