@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-111797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533A8A23C7F
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:49:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C92A23C8D
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 11:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA86E165100
-	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:49:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78CAC3A911F
+	for <lists+stable@lfdr.de>; Fri, 31 Jan 2025 10:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960401B6D11;
-	Fri, 31 Jan 2025 10:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyUYTVGp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FAD1B6D1F;
+	Fri, 31 Jan 2025 10:57:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5911990CD;
-	Fri, 31 Jan 2025 10:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17E91B6CE9;
+	Fri, 31 Jan 2025 10:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738320584; cv=none; b=RQSKyDCMcZnm4AAR5KlYygWDHMpB4dBBnuiPAcW4Hj4kjzbBdJK/NwqesUJl131up7eFyiKnLeybkM7DplEP75UP7K2Hy8nm/Bv+QFJo9wvZeE1GREwIG/bfG66MaW6eJTpwhjSgW+jTEfRPLaufUFG4XaezHOdNhNV1onlakG0=
+	t=1738321024; cv=none; b=Oq1ikV7Dne44GsIN2sVTVJPcNbyGjPGJQP9XK7w4JskQLy8vUBQUx2Tec7CF6j1UrKMeF8NQGSPTWTQ2AOG5Oz6K6RziS+IABgn11oXZV67y+4wLF+3K3ZcowQANlum697jjCrvFc1xNI5r+Rr8SqiG1Axgc926lysNwDiLz6ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738320584; c=relaxed/simple;
-	bh=XmiqwnwNqml1SVhskavNlk9Jl8XcEgxJ7vjStzv5Wm8=;
+	s=arc-20240116; t=1738321024; c=relaxed/simple;
+	bh=Ju62Gi05ZY1w2Y4MQ+7vJS2qhOAzNeduVZhHxWSdkoQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aFQZGPdwA5jnEhgnnVaLJpkCgdjkeShjB+udQ8EuUIPLJyuwZTnomwgJVIeLDga+xtuFU7Vln7cItX+TnoMdE5JpFQM+YGJMPJGz2C0H+g7iLQ3h6pzLkiTpgsPE3C0dofd+NlVfDhsuAMGD5eBf/jTopOXfrtb65koFCamTaTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyUYTVGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E64C4CED1;
-	Fri, 31 Jan 2025 10:49:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738320583;
-	bh=XmiqwnwNqml1SVhskavNlk9Jl8XcEgxJ7vjStzv5Wm8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zyUYTVGpiY0jcDR0Q7MlvooaFdG9gfYMLYioKWsc+K9gqcsR4DdcJzofH7CTLevqe
-	 MJ5sv/lkt+mmWEzfsICfBYOe2rZ44pUyg+jPXQUryiNK/XOXaHYZ4mikLfYFHXlooT
-	 2yuyuKE/BazZ7y3mCBqm2NzzRe6oU038Xw+C3+bQ=
-Date: Fri, 31 Jan 2025 11:49:35 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-Message-ID: <2025013133-saddled-reptilian-63c3@gregkh>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fgULTJ9HUFj+wDEt2gGEzxZS1a2N3vJTk/zvFgrRd3cNpiKENn4o8rYKOucNsYl+sTLxdsBbZHKKnkgsRjsnedkAD1tWywWFFMpyUSrYNbbEmqqQNDhdJKHIGUSlTvcW6joqN23QbZAM35k9jOVUERKYhQdmewl444Cosm8LyBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8EEE1497;
+	Fri, 31 Jan 2025 02:57:26 -0800 (PST)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B79BC3F63F;
+	Fri, 31 Jan 2025 02:56:58 -0800 (PST)
+Date: Fri, 31 Jan 2025 10:56:56 +0000
+From: Mark Rutland <mark.rutland@arm.com>
+To: Oliver Upton <oliver.upton@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Brown <broonie@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>, James Morse <james.morse@arm.com>,
+	stable@vger.kernel.org, Moritz Fischer <moritzf@google.com>,
+	Pedro Martelletto <martelletto@google.com>,
+	Jon Masters <jonmasters@google.com>
+Subject: Re: [PATCH] arm64: Move storage of idreg overrides into mmuoff
+ section
+Message-ID: <Z5yseC1kCyTcwlMy@J2N7QTR9R3>
+References: <20250130204614.64621-1-oliver.upton@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,50 +56,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250131100630.342995-1-chenhuacai@loongson.cn>
+In-Reply-To: <20250130204614.64621-1-oliver.upton@linux.dev>
 
-On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
-> Now we only enable the remote wakeup function for the USB wakeup source
-> itself at usb_port_suspend(). But on pre-XHCI controllers this is not
-> enough to enable the S3 wakeup function for USB keyboards, so we also
-> enable the root_hub's remote wakeup (and disable it on error). Frankly
-> this is unnecessary for XHCI, but enable it unconditionally make code
-> simple and seems harmless.
+Hi Oliver,
+
+On Thu, Jan 30, 2025 at 12:46:15PM -0800, Oliver Upton wrote:
+> There are a few places where the idreg overrides are read w/ the MMU
+> off, for example the VHE and hVHE checks in __finalise_el2. And while
+> the infrastructure gets this _mostly_ right (i.e. does the appropriate
+> cache maintenance), the placement of the data itself is problematic and
+> could share a cache line with something else.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> Depending on how unforgiving an implementation's handling of mismatched
+> attributes is, this could lead to data corruption. In one observed case,
+> the system_cpucaps shared a line with arm64_sw_feature_override and the
+> cpucaps got nuked after entering the hyp stub...
 
-What commit id does this fix?
+This doesn't sound right. Non-cacheable/Device reads should not lead to
+corruption of a cached copy regardless of whether that cached copy is
+clean or dirty.
 
+The corruption suggests that either we're performing a *write* with
+mismatched attributes (in which case the use of .mmuoff.data.read below
+isn't quite right), or we have a plan invalidate somewhere without a
+clean (and e.g. something else might need to be moved into
+.mmuoff.data.write).
+
+Seconding Ard's point, I think we need to understand this scenario
+better.
+
+To be clear, I think moving all the overrides into .mmuoff.data.read
+makes sense, but it doesn't explain the problem above, and it seems like
+there must be a latent issue (which this might only mask rather than
+solve).
+
+Mark.
+
+> Even though only a few overrides are read without the MMU on, just throw
+> the whole lot into the mmuoff section and be done with it.
+> 
+> Cc: stable@vger.kernel.org # v5.15+
+> Tested-by: Moritz Fischer <moritzf@google.com>
+> Tested-by: Pedro Martelletto <martelletto@google.com>
+> Reported-by: Jon Masters <jonmasters@google.com>
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 > ---
->  drivers/usb/core/hub.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  arch/arm64/kernel/cpufeature.c | 25 ++++++++++++++-----------
+>  1 file changed, 14 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index c3f839637cb5..efd6374ccd1d 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -3480,6 +3480,7 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
->  			if (PMSG_IS_AUTO(msg))
->  				goto err_wakeup;
->  		}
-> +		usb_enable_remote_wakeup(udev->bus->root_hub);
->  	}
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index d41128e37701..92506d9f90db 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -755,17 +755,20 @@ static const struct arm64_ftr_bits ftr_raz[] = {
+>  #define ARM64_FTR_REG(id, table)		\
+>  	__ARM64_FTR_REG_OVERRIDE(#id, id, table, &no_override)
 >  
->  	/* disable USB2 hardware LPM */
-> @@ -3543,8 +3544,10 @@ int usb_port_suspend(struct usb_device *udev, pm_message_t msg)
->  		/* Try to enable USB2 hardware LPM again */
->  		usb_enable_usb2_hardware_lpm(udev);
+> -struct arm64_ftr_override id_aa64mmfr0_override;
+> -struct arm64_ftr_override id_aa64mmfr1_override;
+> -struct arm64_ftr_override id_aa64mmfr2_override;
+> -struct arm64_ftr_override id_aa64pfr0_override;
+> -struct arm64_ftr_override id_aa64pfr1_override;
+> -struct arm64_ftr_override id_aa64zfr0_override;
+> -struct arm64_ftr_override id_aa64smfr0_override;
+> -struct arm64_ftr_override id_aa64isar1_override;
+> -struct arm64_ftr_override id_aa64isar2_override;
+> -
+> -struct arm64_ftr_override arm64_sw_feature_override;
+> +#define DEFINE_FTR_OVERRIDE(name)					\
+> +	struct arm64_ftr_override __section(".mmuoff.data.read") name
+> +
+> +DEFINE_FTR_OVERRIDE(id_aa64mmfr0_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64mmfr1_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64mmfr2_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64pfr0_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64pfr1_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64zfr0_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64smfr0_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64isar1_override);
+> +DEFINE_FTR_OVERRIDE(id_aa64isar2_override);
+> +
+> +DEFINE_FTR_OVERRIDE(arm64_sw_feature_override);
 >  
-> -		if (udev->do_remote_wakeup)
-> +		if (udev->do_remote_wakeup) {
->  			(void) usb_disable_remote_wakeup(udev);
-> +			(void) usb_disable_remote_wakeup(udev->bus->root_hub);
-
-This feels wrong, what about all of the devices inbetween this device
-and the root hub?
-
-thanks,
-
-greg k-h
+>  static const struct __ftr_reg_entry {
+>  	u32			sys_id;
+> 
+> base-commit: 1dd3393696efba1598aa7692939bba99d0cffae3
+> -- 
+> 2.39.5
+> 
+> 
 
