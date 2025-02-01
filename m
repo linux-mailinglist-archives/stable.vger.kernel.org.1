@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-111875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D711FA248CA
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 12:54:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82802A248CB
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 12:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FF67A3354
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 11:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2073A7DFD
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 11:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60FC192D7E;
-	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64364189B8F;
+	Sat,  1 Feb 2025 11:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QgjQNuQ8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TnyJhMXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635C1153565;
-	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22553153565;
+	Sat,  1 Feb 2025 11:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738410847; cv=none; b=YPGjz729HlKg0fWZaGexs/TT/B604DibkSEtXSUSSVC2hr4cSE9vWfsURJdYJHeaJeWUsIe2wjp1VBD6BwRtf4KzEvGUv8kgNkUrTxZfNlvKJcBSUQN+ov6bwjV3husXzQtlgxV5kR23ZABCcyMvGAkgnj1Ja12xyq4uPkgDJNI=
+	t=1738410852; cv=none; b=MnFeD64CkbCc9KT7B2dpUCvaDdfkjUpY68ErZOz8ZgQPYva3x57MiC8XVcQJYCaYiKwAdq1SUj/RFxy+mmpjWCDlY1Z1epgQJewJF1fCe5e6pBxtfXKxrZcLbkJxE7Wci07EFTC/Uwv5S0AQdVB/QceP9sYispFaMVq5HtqcEps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738410847; c=relaxed/simple;
-	bh=Ow77vYOMhXg4eXD8x5P+Ct2kmrxc7uX5svMd3Lkx0lw=;
-	h=Date:To:From:Subject:Message-Id; b=bpyzASTbiiAp9ptaFfXpAbZYsGXzA5NP/FYcFomEXEl6pVHE/YgOoRqJmeOUyM2z6l4rUWHDVPOQ9Q5ul+I8PwKSLj0X8nuuW+Wxn6MT9fBJVAAx01mVwxzZbXAfT8I/TP679w8vW1Tg0vAwOMNN0hh1aagO61gwsCn78FPcUn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QgjQNuQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35512C4CED3;
-	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
+	s=arc-20240116; t=1738410852; c=relaxed/simple;
+	bh=78hzdtyjlOkhhhM/MpG6ZbrRfnzj6otwvb7Fow+WeOA=;
+	h=Date:To:From:Subject:Message-Id; b=iJ5J1mjDpormJpw4cVnAu5c9HKjC4QZzgW0FX9rrfJdwVQrYMKVayrbP1oAHmgT1buAK2z9/fxBhw+7fvQj6Ixd7QDEUHJDSarN9YQUHzH3BiXy2y+YPyjc4YtDai3eIR2pAPqQe+/VydniylT9ba0Mh1ztLnCretA9LOtdEpL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TnyJhMXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC835C4CEE3;
+	Sat,  1 Feb 2025 11:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1738410847;
-	bh=Ow77vYOMhXg4eXD8x5P+Ct2kmrxc7uX5svMd3Lkx0lw=;
+	s=korg; t=1738410852;
+	bh=78hzdtyjlOkhhhM/MpG6ZbrRfnzj6otwvb7Fow+WeOA=;
 	h=Date:To:From:Subject:From;
-	b=QgjQNuQ8NkEDkv9JMwCIMTXBoW0IFeU+hnRb32myaoG3bQ6Mk8pfBP98oUdOaU0tK
-	 ptUPB9S1XGZkYOuYvGTLXGd4iZxaBFEJCWoSzVeqQPMT5uRCrUKHOw7Yz4ySJkbBW1
-	 UjkxiCN+lNtIrJKI/F3DHIMt+9kfYf4MWyC76a+M=
-Date: Sat, 01 Feb 2025 03:54:06 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,patrick.wang.shcn@gmail.com,matttbe@kernel.org,kuba@kernel.org,catalin.marinas@arm.com,akpm@linux-foundation.org
+	b=TnyJhMXcRXh/2wE0LCmNUdJlMkEBnWurOlZPwGdvnv+vDbaOmuvjBK4PaSUF1rG5Z
+	 Eo5l5b/xUpaL9enNTImXuLtNGDY8PU3TzCnCRr+YmwY6dgiwA1p5DiMkliGcecOTaU
+	 W8N9aQoqNYE5r4ow8bbWXMrIMsvwwf8R/1UNwzXs=
+Date: Sat, 01 Feb 2025 03:54:11 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,n.zhandarovich@fintech.ru,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects.patch removed from -mm tree
-Message-Id: <20250201115407.35512C4CED3@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch removed from -mm tree
+Message-Id: <20250201115411.EC835C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,63 +50,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: kmemleak: fix upper boundary check for physical address objects
+     Subject: nilfs2: fix possible int overflows in nilfs_fiemap()
 has been removed from the -mm tree.  Its filename was
-     mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects.patch
+     nilfs2-fix-possible-int-overflows-in-nilfs_fiemap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Catalin Marinas <catalin.marinas@arm.com>
-Subject: mm: kmemleak: fix upper boundary check for physical address objects
-Date: Mon, 27 Jan 2025 18:42:33 +0000
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Subject: nilfs2: fix possible int overflows in nilfs_fiemap()
+Date: Sat, 25 Jan 2025 07:20:53 +0900
 
-Memblock allocations are registered by kmemleak separately, based on their
-physical address.  During the scanning stage, it checks whether an object
-is within the min_low_pfn and max_low_pfn boundaries and ignores it
-otherwise.
+Since nilfs_bmap_lookup_contig() in nilfs_fiemap() calculates its result
+by being prepared to go through potentially maxblocks == INT_MAX blocks,
+the value in n may experience an overflow caused by left shift of blkbits.
 
-With the recent addition of __percpu pointer leak detection (commit
-6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
-started reporting leaks in setup_zone_pageset() and
-setup_per_cpu_pageset().  These were caused by the node_data[0] object
-(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
-boundary.  The non-strict upper boundary check introduced by commit
-84c326299191 ("mm: kmemleak: check physical address when scan") causes the
-pg_data_t object to be ignored (not scanned) and the __percpu pointers it
-contains to be reported as leaks.
+While it is extremely unlikely to occur, play it safe and cast right hand
+expression to wider type to mitigate the issue.
 
-Make the max_low_pfn upper boundary check strict when deciding whether to
-ignore a physical address object and not scan it.
+Found by Linux Verification Center (linuxtesting.org) with static analysis
+tool SVACE.
 
-Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
-Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
-Cc: <stable@vger.kernel.org>	[6.0.x]
+Link: https://lkml.kernel.org/r/20250124222133.5323-1-konishi.ryusuke@gmail.com
+Fixes: 622daaff0a89 ("nilfs2: fiemap support")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/kmemleak.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/inode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/mm/kmemleak.c~mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects
-+++ a/mm/kmemleak.c
-@@ -1689,7 +1689,7 @@ static void kmemleak_scan(void)
- 			unsigned long phys = object->pointer;
- 
- 			if (PHYS_PFN(phys) < min_low_pfn ||
--			    PHYS_PFN(phys + object->size) >= max_low_pfn)
-+			    PHYS_PFN(phys + object->size) > max_low_pfn)
- 				__paint_it(object, KMEMLEAK_BLACK);
+--- a/fs/nilfs2/inode.c~nilfs2-fix-possible-int-overflows-in-nilfs_fiemap
++++ a/fs/nilfs2/inode.c
+@@ -1186,7 +1186,7 @@ int nilfs_fiemap(struct inode *inode, st
+ 			if (size) {
+ 				if (phys && blkphy << blkbits == phys + size) {
+ 					/* The current extent goes on */
+-					size += n << blkbits;
++					size += (u64)n << blkbits;
+ 				} else {
+ 					/* Terminate the current extent */
+ 					ret = fiemap_fill_next_extent(
+@@ -1199,14 +1199,14 @@ int nilfs_fiemap(struct inode *inode, st
+ 					flags = FIEMAP_EXTENT_MERGED;
+ 					logical = blkoff << blkbits;
+ 					phys = blkphy << blkbits;
+-					size = n << blkbits;
++					size = (u64)n << blkbits;
+ 				}
+ 			} else {
+ 				/* Start a new extent */
+ 				flags = FIEMAP_EXTENT_MERGED;
+ 				logical = blkoff << blkbits;
+ 				phys = blkphy << blkbits;
+-				size = n << blkbits;
++				size = (u64)n << blkbits;
+ 			}
+ 			blkoff += n;
  		}
- 
 _
 
-Patches currently in -mm which might be from catalin.marinas@arm.com are
+Patches currently in -mm which might be from n.zhandarovich@fintech.ru are
 
 
 
