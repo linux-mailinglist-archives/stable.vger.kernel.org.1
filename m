@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-111874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C82BA248C9
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 12:54:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D711FA248CA
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 12:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EFB13A77CC
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 11:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FF67A3354
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 11:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ECD1922FB;
-	Sat,  1 Feb 2025 11:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60FC192D7E;
+	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ztFpVMJM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="QgjQNuQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F237153565;
-	Sat,  1 Feb 2025 11:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635C1153565;
+	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738410844; cv=none; b=gyw9AYn219xk0lZNy4O2X2ELJTtRETNwzQE4KOBkxQvU145u3HYlV6s48rTHeUoyM8dZnlMaqcYulEg132rNsslI3O6KM3B0n34siTURXi4hPq9qUtFFf65Vy6LorQJTLs0oFR83fEX9LF1afN5fjTdtXFMzvxXhKg8qruwUwS8=
+	t=1738410847; cv=none; b=YPGjz729HlKg0fWZaGexs/TT/B604DibkSEtXSUSSVC2hr4cSE9vWfsURJdYJHeaJeWUsIe2wjp1VBD6BwRtf4KzEvGUv8kgNkUrTxZfNlvKJcBSUQN+ov6bwjV3husXzQtlgxV5kR23ZABCcyMvGAkgnj1Ja12xyq4uPkgDJNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738410844; c=relaxed/simple;
-	bh=98BZOki32toT1tf6uxmK12RprrZPSDsrvPQxRW7Zorg=;
-	h=Date:To:From:Subject:Message-Id; b=NVGxaLklL9Pu6Vf3aNDXhRgLFgQaHg/MDrdbpofkm/q8DRqqyoCMYB3A2RYG0phMPWQxM9IcD7xci7NgXp1XxUK65LOpeDdWbXZMSeDes8aMLQNUPpcMJpVcPD/TxtHkubwdrA7krLQ1Vf9HZHcEO7ZbqB41zFZqJGOFDn4GD74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ztFpVMJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC910C4CED3;
-	Sat,  1 Feb 2025 11:54:03 +0000 (UTC)
+	s=arc-20240116; t=1738410847; c=relaxed/simple;
+	bh=Ow77vYOMhXg4eXD8x5P+Ct2kmrxc7uX5svMd3Lkx0lw=;
+	h=Date:To:From:Subject:Message-Id; b=bpyzASTbiiAp9ptaFfXpAbZYsGXzA5NP/FYcFomEXEl6pVHE/YgOoRqJmeOUyM2z6l4rUWHDVPOQ9Q5ul+I8PwKSLj0X8nuuW+Wxn6MT9fBJVAAx01mVwxzZbXAfT8I/TP679w8vW1Tg0vAwOMNN0hh1aagO61gwsCn78FPcUn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=QgjQNuQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35512C4CED3;
+	Sat,  1 Feb 2025 11:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1738410843;
-	bh=98BZOki32toT1tf6uxmK12RprrZPSDsrvPQxRW7Zorg=;
+	s=korg; t=1738410847;
+	bh=Ow77vYOMhXg4eXD8x5P+Ct2kmrxc7uX5svMd3Lkx0lw=;
 	h=Date:To:From:Subject:From;
-	b=ztFpVMJMQSvjMwP6RJ9TC4ktmsCVKSOjnxEBaX1y8xerAZV72Gy0sfkQ/T0vaEqRn
-	 O6LoI0kTU+5s8mgTiJoaXPuXjJgoyZSlqjiNbjsNUL+kILguUg8cwo4Rlb6WsL1ci+
-	 jly3We4zaBQB2vTWKsmr2HGrFFtQ9wdt9LIZm+dg=
-Date: Sat, 01 Feb 2025 03:54:03 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kbingham@kernel.org,baohua@kernel.org,jan.kiszka@siemens.com,akpm@linux-foundation.org
+	b=QgjQNuQ8NkEDkv9JMwCIMTXBoW0IFeU+hnRb32myaoG3bQ6Mk8pfBP98oUdOaU0tK
+	 ptUPB9S1XGZkYOuYvGTLXGd4iZxaBFEJCWoSzVeqQPMT5uRCrUKHOw7Yz4ySJkbBW1
+	 UjkxiCN+lNtIrJKI/F3DHIMt+9kfYf4MWyC76a+M=
+Date: Sat, 01 Feb 2025 03:54:06 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,patrick.wang.shcn@gmail.com,matttbe@kernel.org,kuba@kernel.org,catalin.marinas@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] scripts-gdb-fix-aarch64-userspace-detection-in-get_current_task.patch removed from -mm tree
-Message-Id: <20250201115403.BC910C4CED3@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects.patch removed from -mm tree
+Message-Id: <20250201115407.35512C4CED3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,46 +50,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: scripts/gdb: fix aarch64 userspace detection in get_current_task
+     Subject: mm: kmemleak: fix upper boundary check for physical address objects
 has been removed from the -mm tree.  Its filename was
-     scripts-gdb-fix-aarch64-userspace-detection-in-get_current_task.patch
+     mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Subject: scripts/gdb: fix aarch64 userspace detection in get_current_task
-Date: Fri, 10 Jan 2025 11:36:33 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+Subject: mm: kmemleak: fix upper boundary check for physical address objects
+Date: Mon, 27 Jan 2025 18:42:33 +0000
 
-At least recent gdb releases (seen with 14.2) return SP_EL0 as signed long
-which lets the right-shift always return 0.
+Memblock allocations are registered by kmemleak separately, based on their
+physical address.  During the scanning stage, it checks whether an object
+is within the min_low_pfn and max_low_pfn boundaries and ignores it
+otherwise.
 
-Link: https://lkml.kernel.org/r/dcd2fabc-9131-4b48-8419-6444e2d67454@siemens.com
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: <stable@vger.kernel.org>
+With the recent addition of __percpu pointer leak detection (commit
+6c99d4eb7c5e ("kmemleak: enable tracking for percpu pointers")), kmemleak
+started reporting leaks in setup_zone_pageset() and
+setup_per_cpu_pageset().  These were caused by the node_data[0] object
+(initialised in alloc_node_data()) ending on the PFN_PHYS(max_low_pfn)
+boundary.  The non-strict upper boundary check introduced by commit
+84c326299191 ("mm: kmemleak: check physical address when scan") causes the
+pg_data_t object to be ignored (not scanned) and the __percpu pointers it
+contains to be reported as leaks.
+
+Make the max_low_pfn upper boundary check strict when deciding whether to
+ignore a physical address object and not scan it.
+
+Link: https://lkml.kernel.org/r/20250127184233.2974311-1-catalin.marinas@arm.com
+Fixes: 84c326299191 ("mm: kmemleak: check physical address when scan")
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: Patrick Wang <patrick.wang.shcn@gmail.com>
+Cc: <stable@vger.kernel.org>	[6.0.x]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/gdb/linux/cpus.py |    2 +-
+ mm/kmemleak.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/gdb/linux/cpus.py~scripts-gdb-fix-aarch64-userspace-detection-in-get_current_task
-+++ a/scripts/gdb/linux/cpus.py
-@@ -167,7 +167,7 @@ def get_current_task(cpu):
-             var_ptr = gdb.parse_and_eval("&pcpu_hot.current_task")
-             return per_cpu(var_ptr, cpu).dereference()
-     elif utils.is_target_arch("aarch64"):
--        current_task_addr = gdb.parse_and_eval("$SP_EL0")
-+        current_task_addr = gdb.parse_and_eval("(unsigned long)$SP_EL0")
-         if (current_task_addr >> 63) != 0:
-             current_task = current_task_addr.cast(task_ptr_type)
-             return current_task.dereference()
+--- a/mm/kmemleak.c~mm-kmemleak-fix-upper-boundary-check-for-physical-address-objects
++++ a/mm/kmemleak.c
+@@ -1689,7 +1689,7 @@ static void kmemleak_scan(void)
+ 			unsigned long phys = object->pointer;
+ 
+ 			if (PHYS_PFN(phys) < min_low_pfn ||
+-			    PHYS_PFN(phys + object->size) >= max_low_pfn)
++			    PHYS_PFN(phys + object->size) > max_low_pfn)
+ 				__paint_it(object, KMEMLEAK_BLACK);
+ 		}
+ 
 _
 
-Patches currently in -mm which might be from jan.kiszka@siemens.com are
+Patches currently in -mm which might be from catalin.marinas@arm.com are
 
 
 
