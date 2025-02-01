@@ -1,103 +1,135 @@
-Return-Path: <stable+bounces-111916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD66A24C2F
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:50:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A30A24C31
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D60DF188510A
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 264F01884C20
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0AA1CAA8B;
-	Sat,  1 Feb 2025 23:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACCE155393;
+	Sat,  1 Feb 2025 23:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YggKKsqj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-2.orcon.net.nz (smtp-2.orcon.net.nz [60.234.4.43])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94E1126F1E;
-	Sat,  1 Feb 2025 23:50:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.234.4.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06664126F1E
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738453826; cv=none; b=cjP20+M/OtkNJQzPCDBt6vBKqyLrQ9ASEHj++9vlTEp2v7UfigmCgqkc+4uH1xOOrysFVkvlMyhKaSG8S87ay4YSHsUa63Wlvkn3MRk45iwisOFKOro01TlmyXiTRx/BUuk//5Hw6kXiJbdPCRWyL4g2LLZHJfvE7PCXo781PL4=
+	t=1738454015; cv=none; b=jT9VAz/08h/v3CFYN67aCGLDBtQsB2IppruHJ0/k2pXADJfVEw5pVceOQG4VHxE7EJBPTyQrXBM3aR/2gykyOHkGQZvhhw8R9PZZwaGWP66jabX5U4/fnKlHQEU/fd4+KD46cogKE8V/JHsbScGX61OVYmmXNrTj6QYcuuurHpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738453826; c=relaxed/simple;
-	bh=wklMM8is99qSEnIVgcDmnRoJKKRYWnNkYLttOyzBgaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W3QQ1zGZT7IjtpgXu9fDpOi5aaqPCst9K+3A27GIappvb2TrwmttfW/2M6qtBmiT8if8qk7Td8Z+m1Z4/cNHdYQ4bcgLpvPM2GlP5ZgjQd8z0UqP38tALvDop9CfxpgYAiQxgMXG3Ev+22n+1YZ0zyifUpICY6LYbp3PAv3Rw78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=orcon.net.nz; spf=pass smtp.mailfrom=orcon.net.nz; arc=none smtp.client-ip=60.234.4.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=orcon.net.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=orcon.net.nz
-Received: from [121.99.247.178] (port=6860 helo=creeky)
-	by smtp-2.orcon.net.nz with esmtpa (Exim 4.90_1)
-	(envelope-from <mcree@orcon.net.nz>)
-	id 1teMf9-0004nN-Ej; Sun, 02 Feb 2025 12:12:31 +1300
-Date: Sun, 2 Feb 2025 12:12:26 +1300
-From: Michael Cree <mcree@orcon.net.nz>
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Ivan Kokshaysky <ink@unseen.parts>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] alpha: stack fixes
-Message-ID: <Z56qWp9GGuewJr1K@creeky>
-Mail-Followup-To: Michael Cree <mcree@orcon.net.nz>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Ivan Kokshaysky <ink@unseen.parts>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250131104129.11052-1-ink@unseen.parts>
- <6cb712c1c338d3ce5313e05a054ea9de21025ff0.camel@physik.fu-berlin.de>
+	s=arc-20240116; t=1738454015; c=relaxed/simple;
+	bh=woqIwfYOj9w5zsoAsrtn6j3weAUTpXYBf37YSsZ/fMM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ET7j01/yjzUyc3TnTm7XuK/yWOifAiKc9SEcjuN9Ds8UGO+OprOQYPjvhf3MJCuy1Y0qUlTE2hINLXTr17LZje7J39Fas+70VPlACmvdR2SBWKpO9svVz3iEtI+rFW9UTEQ18IfEsdkxkP0/+nX9O7cnC/D/NT0Nsu8s76wFMwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YggKKsqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE80CC4CED3;
+	Sat,  1 Feb 2025 23:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738454013;
+	bh=woqIwfYOj9w5zsoAsrtn6j3weAUTpXYBf37YSsZ/fMM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YggKKsqjXsyYFWvamjw4ki42Oz2vCHpErSWHe3T452H77gwkZREDEohS6avTlhquo
+	 pE+ScMSK+N5edZA7j/WNv8OcOfd0unSbtqsB7yeCEIawDVITxTCQ+tAq7Fi1iiJxgA
+	 ffBXCNfXbF9IARaqMW4lMfKquyRaaeTgkeyxa2ptPD4jj48dCGnxv5GG33kc524+Yr
+	 PMWjV5np5z6gBTmUdpzuR73Rur08+bqQEoxAXW6g5OrdhaUe+GEq0c9o0PwUHt5pzb
+	 bz9Z9wMRNHVT6MvMPz8EbfGCxH8Hka7lOxS/YVOgqjWraqwj4NJQoLFFSGAgDywzEp
+	 DCXtV32zPmmRQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 09/19] xfs: allow read IO and FICLONE to run concurrently
+Date: Sat,  1 Feb 2025 18:53:31 -0500
+Message-Id: <20250201140700-c14215d740f61fce@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250129184717.80816-10-leah.rumancik@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6cb712c1c338d3ce5313e05a054ea9de21025ff0.camel@physik.fu-berlin.de>
-X-GeoIP: NZ
-X-Spam_score: -2.9
-X-Spam_score_int: -28
-X-Spam_bar: --
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 01, 2025 at 10:46:43AM +0100, John Paul Adrian Glaubitz wrote:
-> Hi Ivan,
-> 
-> On Fri, 2025-01-31 at 11:41 +0100, Ivan Kokshaysky wrote:
-> > This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
-> > Thanks to Magnus Lindholm for identifying that remarkably longstanding
-> > bug.
-> > 
-> 
-> Thanks, I'm testing the v2 series of the patches now.
-> 
-> Adrian
+[ Sasha's backport helper bot ]
 
-I've been running the patches on the 6.12.11 kernel for over 24 hours
-now.  Going very well and, in particular, I would like to note that:
+Hi,
 
-The thread-test in the pixman package which has been failing for over
-year 10 years on real Alpha hardware now passes!
+The upstream commit SHA1 provided is correct: 14a537983b228cb050ceca3a5b743d01315dc4aa
 
-I have now successfully built guile-3.0 with threading support!
-Previously guile would lock up on Alpha if threading support was
-enabled.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Leah Rumancik<leah.rumancik@gmail.com>
+Commit author: Catherine Hoang<catherine.hoang@oracle.com>
 
-So there are some very long-standing bugs seen in user space that are
-fixed by this patch series.
 
-Cheers,
-Michael.
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: d7d84772c3f0)
+6.1.y | Present (different SHA1: 9e20b44a856b)
+
+Note: The patch differs from the upstream commit:
+---
+1:  14a537983b228 ! 1:  a0286e9750934 xfs: allow read IO and FICLONE to run concurrently
+    @@ Metadata
+      ## Commit message ##
+         xfs: allow read IO and FICLONE to run concurrently
+     
+    +    [ Upstream commit 14a537983b228cb050ceca3a5b743d01315dc4aa ]
+    +
+         One of our VM cluster management products needs to snapshot KVM image
+         files so that they can be restored in case of failure. Snapshotting is
+         done by redirecting VM disk writes to a sidecar file and using reflink
+    @@ Commit message
+         Reviewed-by: Dave Chinner <dchinner@redhat.com>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+    +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+     
+      ## fs/xfs/xfs_file.c ##
+     @@ fs/xfs/xfs_file.c: xfs_ilock_iocb(
+    @@ fs/xfs/xfs_file.c: xfs_file_remap_range(
+     +	xfs_iunlock2_remapping(src, dest);
+      	if (ret)
+      		trace_xfs_reflink_remap_range_error(dest, ret, _RET_IP_);
+    - 	return remapped > 0 ? remapped : ret;
+    + 	/*
+     @@ fs/xfs/xfs_file.c: __xfs_filemap_fault(
+      	struct inode		*inode = file_inode(vmf->vma->vm_file);
+      	struct xfs_inode	*ip = XFS_I(inode);
+      	vm_fault_t		ret;
+     +	unsigned int		lock_mode = 0;
+      
+    - 	trace_xfs_filemap_fault(ip, order, write_fault);
+    + 	trace_xfs_filemap_fault(ip, pe_size, write_fault);
+      
+     @@ fs/xfs/xfs_file.c: __xfs_filemap_fault(
+      		file_update_time(vmf->vma->vm_file);
+    @@ fs/xfs/xfs_file.c: __xfs_filemap_fault(
+      		pfn_t pfn;
+      
+     -		xfs_ilock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+    - 		ret = xfs_dax_fault(vmf, order, write_fault, &pfn);
+    + 		ret = xfs_dax_fault(vmf, pe_size, write_fault, &pfn);
+      		if (ret & VM_FAULT_NEEDDSYNC)
+    - 			ret = dax_finish_sync_fault(vmf, order, pfn);
+    + 			ret = dax_finish_sync_fault(vmf, pe_size, pfn);
+     -		xfs_iunlock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+     +	} else if (write_fault) {
+     +		ret = iomap_page_mkwrite(vmf, &xfs_page_mkwrite_iomap_ops);
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
