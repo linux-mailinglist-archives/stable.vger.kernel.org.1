@@ -1,172 +1,148 @@
-Return-Path: <stable+bounces-111860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7591A246D4
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 03:32:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F239A2474F
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 07:18:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68297A24C0
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 02:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 488A23A8688
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 06:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156CB28371;
-	Sat,  1 Feb 2025 02:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC21D7081F;
+	Sat,  1 Feb 2025 06:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4H574ytS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcO44HCz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0434819BBC
-	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 02:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CAE191;
+	Sat,  1 Feb 2025 06:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738377139; cv=none; b=aJZX3JN6qubHrrXSNcWGYP/qCfkGEjRMLXxwZm17xGryNtL0p3o1vAX/Nz1LnLFbUuu7d4C4/KrsohecXnknf1Vs7DzlnTzPrfvhyKMPJWgtYegXoj/kxtAfCSEJ3xksgQXQyAeQdWK7KeGNNOtWpCi+2R2RYsgqPdb5uijWOxE=
+	t=1738390717; cv=none; b=hljmhLAuY7uRHldIlA74QGl8pUsrV3tAA7348xSVy/RHsXMXR+wLErFppizP87xjtAYLi4WRwTTsHJAyml4wmeJxHs4F+AX6rYkOLV2dvM/NO+tPr3l2eM7YaOna4rKNA8R/9nfo9vb28zTI6jyrEJg8+PzfTNlWyKCRjPsfLMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738377139; c=relaxed/simple;
-	bh=YvUJr1IlpMallDUUXqLZIE2yKMx495vfCWgRkrRQMXg=;
+	s=arc-20240116; t=1738390717; c=relaxed/simple;
+	bh=yjtAijXbmoLFe0I5SwZNxph0SsQj7Ue/lV58vZxk7UI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V4IO8PeeUt3yj1tl81/zWg/Vhys88htzpQh91b3+bu7kO6B3jbtR+msknhSUhmckr675rcyy6CTo/mor9kOYnMa95VJjsTQ2tjrjAu+pfhWKi3fMvpDLd2m4rz/yk5Jwjkhttd6BwKXINMhm0xda7GR9IAoJvcjUHmoNWmjSdP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4H574ytS; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5401af8544bso1362e87.1
-        for <stable@vger.kernel.org>; Fri, 31 Jan 2025 18:32:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738377136; x=1738981936; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pG4VfCSV2vZRH8VFu+tXkb/1AcO1THW/axuTYVw/Lrc=;
-        b=4H574ytSsuT3cVotvtpy1/OQWQM25WHhDwfjFjpY0Uznz7wdG0b0/XXqVHs6y556A2
-         zxJLHVcGvehKVdAw2nRGnWl0tcsjiYYYLfIIUXQsgaLoP63+Pol4tDUjaZuRlczNZCcT
-         vMPumzgbPI33a7sQbCq31gTA6wGF4OAqc51hmjyMzfz3Mg4BKhMZcyZr1/pJfEbWXK/K
-         mSt+ZaNT5MKaaaQJAAM0vmA7/DBxbYziu+1XC3Z4bdzBDPb1hat8whW+C8sZigsrLmpL
-         QOx3y6/H7oLoilfAx7snKpSxtG2ZtXnqggqooQ1BADtrwLZQd+Q1jsMvf7biY/7WZHL3
-         bWdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738377136; x=1738981936;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pG4VfCSV2vZRH8VFu+tXkb/1AcO1THW/axuTYVw/Lrc=;
-        b=YmetYj2Oi5xQThLTAqbg4toaRqJ0MY9s2QOxehKTMRFshpDTxtyOSUdtJtfSzNd+Oy
-         2d8O7M1qAKfojrglizR+SsQHj6pwjaZ0gBTDQgGWdtcT1pBGr+JzIeF7WTvgDKk7Bycz
-         73Y7EncOwGmfbcOpQdD3XUtaXh0Crd62We3GNI7CZVuckoDLk7mw2ET6T+hBUJ7E++FK
-         UT0ocKhr/5JsXKadFbFMwrP2CK8ZbnfFLay1k9LRmbwSgG17V1KdBJokx5EPf9FYKfO4
-         kV1ufUrvXK9WJNWP1bEpwmMnNESA5zQdYBrc5WYP8hZSB6Kwd2Amg9Fc6L6wr6Dpv2IM
-         72rA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyABWmrxclxQBSkclAyp9N/PsGH5APFmJPbpotsRRqbu2+PxE8XPOKWh8AXNmcAv+YpIEcTd0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyAKmQ2T6gn3l8RzXyWCTjteKE9Um5r7LDHbjPaMGcJRZ90Al7
-	qhE7rUgoiy/06tdiOuCT5M5Ykomx/zSq8nYWK1vqzfZkox9699rSFRmH9Zy5b8z5ikVGnMwPiV+
-	INoyxnDR+lGngXlkzS0nGDl0oxm4dlnu6AoeT
-X-Gm-Gg: ASbGncuhfLw7KHGx93eJWPNniiYbleKXaD4IKgBYiSGayqOnwNGIJhINmhYJydzOlA3
-	nygl3Whpu2evSYDp3+SWoumfBlQI6YRAGJPcqPpzjeipG0OmeTBMo2LLTkN7XeEyc6QcDEdE5Te
-	YvAaZgJ8Dyjk/7b692X4cMBQ==
-X-Google-Smtp-Source: AGHT+IGDm9JPvGLHbtjFN5gsiaTc6QnwCtkwno/1ZV6/IPpxaNeuuM5xrnBDIsxDQcK/xH+cQ2IfrP7ilTJxIVl7kD8=
-X-Received: by 2002:a05:6512:220a:b0:53d:dcde:395a with SMTP id
- 2adb3069b0e04-543f6160274mr132911e87.2.1738377135702; Fri, 31 Jan 2025
- 18:32:15 -0800 (PST)
+	 To:Cc:Content-Type; b=jfi8bJn89y/hMrR2SxlxjO3u5pj3SluWFt/yn5kTLRvWc9rz4veZmvFDJ2M6MFacvVWpiykM93b5z/c9Hc6UUJsr6BpQ+QggzsZ4mwwi+tXlZIEs4aY6UlbNbDKqp4QGEWkDU5wQ0FM3wSml8JWUJofI1+DNXuJw6h2qo3tSy+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcO44HCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2362C4CED3;
+	Sat,  1 Feb 2025 06:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738390717;
+	bh=yjtAijXbmoLFe0I5SwZNxph0SsQj7Ue/lV58vZxk7UI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VcO44HCzOKhCLqdkBpx4uLyusvwKtBe+3zbBzdaeQo1CET1g87HI99ty2YaqEsqOu
+	 Qq5sdrTJO2boe85rMU3J7o9Xm1mvtRxTLPagb9mNR8xfUgZxOB8E1WlQy1yOLCHR6T
+	 SBAUYEt8hyaQ1YsLP6GJFOH8SqFHT1lSRqMsPxI7Zr5Y+7ba2O/O+fnd7mcluEnZsz
+	 n1jrX/yiJtM3cxToF9QxQYffpvn7h2E+XlZGMzwVcBGSGwrCsAoQcx0bSDfd+Fp+Mi
+	 69kty+kdx2da8TJI3Q/nqePRH5QL43+/b75mi/m/ST/6viYI9b4CFv2IQ3CaLhFi0h
+	 3DmjhZDSDsXIQ==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d0ac27b412so3200317a12.1;
+        Fri, 31 Jan 2025 22:18:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUwPavv7AYWm5BNJFbt8DZTtMEtLCx7hIyR6ZoPlyCAfxWnpzxzvm/AOcM6sOJ79T7gwn/Prj95iAnx@vger.kernel.org, AJvYcCVr4jzzXG5nxUXsxU32gW4s9FEAqu+fZqhk1CuvXoF8J3ma5BwGO32VIIUsd+xf+CtfRFeh+WWF8tCBdG4=@vger.kernel.org, AJvYcCWDLaatCmXKSnp/ETmS0D7WskWB67FuqrJv70qsbojDI4YXBWy2X2SLcZFZj1Pzcr48GNHUB+2s@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTlqosvvL0aDaQw2OUrJlOgRIxuvXtikP698+C8jT7oAWBivzS
+	SZGpRA7Xbugcr8f7QOYChxI3Q71lQz6W9AqLCaiaNwF0j/4nRkZKVpgBnmyZrC3kgIk3FHVxRhV
+	Bseo7DEPgacvBAnCmeuX8TSDSBRM=
+X-Google-Smtp-Source: AGHT+IH/+Isujf7AoFj4Pd4Nf+NNmjAsI2oXk9D4/G5oGPGn6NUxSU1mxzzJfdburMy0CXZrzHhO3R5pFapg1hk1wMc=
+X-Received: by 2002:a05:6402:3217:b0:5db:da94:6e7e with SMTP id
+ 4fb4d7f45d1cf-5dc5efebfa2mr16143644a12.24.1738390715476; Fri, 31 Jan 2025
+ 22:18:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com> <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
-In-Reply-To: <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Fri, 31 Jan 2025 18:32:04 -0800
-X-Gm-Features: AWEUYZmeERapyJbLH5q17LnS9dbTKeBXAlIs3Ezuwk-Df4kRvcx2vhlD0t9pkOs
-Message-ID: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, 
-	jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
+References: <20250131100651.343015-1-chenhuacai@loongson.cn> <b6a18bab-b412-443a-b39a-2194596ec79d@rowland.harvard.edu>
+In-Reply-To: <b6a18bab-b412-443a-b39a-2194596ec79d@rowland.harvard.edu>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 1 Feb 2025 14:18:25 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5F5zujP+=c9k7=Ce7-8+5fMS4NKuE2UqCx2SFk=g3nRA@mail.gmail.com>
+X-Gm-Features: AWEUYZlp9uFXy8wQZ66kjksDaLvyIFFcyTFb-teq1-nkUk4v_0-f_38tjVg8XlE
+Message-ID: <CAAhV-H5F5zujP+=c9k7=Ce7-8+5fMS4NKuE2UqCx2SFk=g3nRA@mail.gmail.com>
+Subject: Re: [PATCH] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Baoqi Zhang <zhangbaoqi@loongson.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2025 at 12:13=E2=80=AFAM Kirill A. Shutemov
-<kirill@shutemov.name> wrote:
+Hi, Alan,
+
+On Fri, Jan 31, 2025 at 11:18=E2=80=AFPM Alan Stern <stern@rowland.harvard.=
+edu> wrote:
 >
-> On Thu, Jan 30, 2025 at 11:45:01AM -0800, Vishal Annapurve wrote:
-> > On Thu, Jan 30, 2025 at 10:48=E2=80=AFAM Kirill A. Shutemov
-> > <kirill@shutemov.name> wrote:
-> > > ...
-> > > > >
-> > > > > I think it is worth to putting this into a separate patch and not
-> > > > > backport. The rest of the patch is bugfix and this doesn't belong=
-.
-> > > > >
-> > > > > Otherwise, looks good to me:
-> > > > >
-> > > > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>=
-@linux.intel.com>
-> > > > >
-> > > > > --
-> > > > >   Kiryl Shutsemau / Kirill A. Shutemov
-> > > >
-> > > > Thanks Kirill for the review.
-> > > >
-> > > > Thinking more about this fix, now I am wondering why the efforts [1=
-]
-> > > > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Curren=
-tly
-> > > > proposed fix is incomplete as it would not handle scenarios where
-> > > > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] =
-and
-> > > > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
-> > > >
-> > > > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanara=
-yanan.kuppuswamy@linux.intel.com/
-> > >
-> > > Many people dislike paravirt callbacks. We tried to avoid relying on =
-them
-> > > for core TDX enabling.
-> > >
-> > > Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disa=
-bled?
-> > > I don't think I follow.
+> On Fri, Jan 31, 2025 at 06:06:51PM +0800, Huacai Chen wrote:
+> > LS7A EHCI controller doesn't have extended capabilities, so the EECP
+> > (EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+> > be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+> > fixed in future, now just clear the EECP field to avoid error messages
+> > on boot:
 > >
-> > Relevant callers of *_safe_halt() are:
-> > 1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
+> > ......
+> > [    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> > [    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> > [    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> > [    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+> > ......
+> > [    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> > [    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> > [    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> > [    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+> > ......
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > ---
+> >  drivers/usb/host/pci-quirks.c | 4 ++++
+> >  include/linux/pci_ids.h       | 1 +
+> >  2 files changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirk=
+s.c
+> > index 1f9c1b1435d8..7e3151400a5e 100644
+> > --- a/drivers/usb/host/pci-quirks.c
+> > +++ b/drivers/usb/host/pci-quirks.c
+> > @@ -958,6 +958,10 @@ static void quirk_usb_disable_ehci(struct pci_dev =
+*pdev)
+> >        * booting from USB disk or using a usb keyboard
+> >        */
+> >       hcc_params =3D readl(base + EHCI_HCC_PARAMS);
+> > +     if (pdev->vendor =3D=3D PCI_VENDOR_ID_LOONGSON &&
+> > +         pdev->device =3D=3D PCI_DEVICE_ID_LOONGSON_EHCI)
+> > +             hcc_params &=3D ~(0xffL << 8);
 >
-> Okay, I didn't realized that CONFIG_PARAVIRT_SPINLOCKS doesn't depend on
-> CONFIG_PARAVIRT_XXL.
->
-> It would be interesting to check if paravirtualized spinlocks make sense
-> for TDX given the cost of TD exit.
->
-> Maybe we should avoid advertising KVM_FEATURE_PV_UNHALT to the TDX guests=
-?
->
+> Can you please add a comment before this "if" statement explaining why
+> it is necessary?
+OK, will do in next version.
 
-Are you hinting towards a model where TDX guest prohibits such call
-sites from being configured? I am not sure if it's a sustainable model
-if we just rely on the host not advertising these features as the
-guest kernel can still add new paths that are not controlled by the
-host that lead to *_safe_halt().
-
-> > 2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt=
-()
+Huacai
 >
-> Have you checked why you get there? I don't see a reason for TDX guest to
-> get into ACPI idle stuff. We don't have C-states to manage.
-
-Apparently userspace VMM is advertising pblock_address through SSDT
-tables in my configuration which causes guests to enable ACPI cpuidle
-drivers. Do you know if future generations of TDX hardware will not
-support different c-states for TDX VMs?
-
+> Alan Stern
 >
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+> > +
+> >       offset =3D (hcc_params >> 8) & 0xff;
+> >       while (offset && --count) {
+> >               pci_read_config_dword(pdev, offset, &cap);
+> > diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+> > index de5deb1a0118..74a84834d9eb 100644
+> > --- a/include/linux/pci_ids.h
+> > +++ b/include/linux/pci_ids.h
+> > @@ -162,6 +162,7 @@
+> >
+> >  #define PCI_VENDOR_ID_LOONGSON               0x0014
+> >
+> > +#define PCI_DEVICE_ID_LOONGSON_EHCI     0x7a14
+> >  #define PCI_DEVICE_ID_LOONGSON_HDA      0x7a07
+> >  #define PCI_DEVICE_ID_LOONGSON_HDMI     0x7a37
+> >
+> > --
+> > 2.47.1
+> >
 
