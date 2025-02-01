@@ -1,163 +1,131 @@
-Return-Path: <stable+bounces-111870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCE6A24801
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 10:47:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D30A248C3
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 12:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29783A8321
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 09:46:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FEC11887628
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 11:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EAD1474A2;
-	Sat,  1 Feb 2025 09:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AD4165F1D;
+	Sat,  1 Feb 2025 11:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="abSGzcQq"
+	dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="SmvaAuZl";
+	dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b="aM6IE2jV"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9086A2B9A9;
-	Sat,  1 Feb 2025 09:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738403220; cv=none; b=kp2qXb3IA/oIrfwKnHxOxyheo5tBG1zWPGDgzJiJ9ZLQkfIbkEkOTSj4Rc4bZWMh0qCmIOf84lejqOCJu7f9sKR0QJKJ6+ZsjXaaEtEjmKIq6Cbx/FT4NJyVKMUzUim/qO0Ysrc7Tzw4zBFrpaJwMOi83PxIsh/3jTUCzk8G5Ic=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738403220; c=relaxed/simple;
-	bh=wfax+lSmFiE6bZtjfNXjyj28adDok+Vk7tISnKd5ys4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jftbT24HkjxqdZtQzixxyNplTn/zD/JEIYorDqH0SvzQ198obMmR3gVi9M44+/yJng++tiZ7l4aYeHv1/UBLZwhbLTrjUungKwK1N8sFbQ8JwK2gPiRwQqKBEq44oPkMyD6FZVwlW8l3I3lYY3py/pKABUoX2rpRb4ETYMZdTbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=abSGzcQq; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HJfXHZ/A+sz+crqL6J+AkJgO1M7+g8HZDeac0KQl+5w=; t=1738403216; x=1739008016; 
-	b=abSGzcQqVNUyih8GSyQphGJE7149RiSJhrR+peK3ezcdcv9dchLQ6jI2cxs1wFdQ2jdrnBeccOr
-	q97hn6AjFv65heKKnG/YqQ8FIVVU8l7v3Kbn5u7cDzLT+SDrY2vMwpmk6KQ6wbawkRPcm99cLT/Sn
-	Jpo3tOEDEyUb9eTFkg+udWBMSnMIv2JTOlcnDH4wkjxAvnXlB93aYJPcbf1aOGSdyCzzvMLDScatO
-	DRLOfgVQOT8I3cc+TOToYb1SIPsg+dxRVujxNBxROh/IgGHNRZSRZ8nz6O5YzEe7mkQC/OmETi9UZ
-	0lbPyBTkSt5K2vBwuWcMWRqconYY3QoBmR4A==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1teA5N-00000003lAb-0Pcg; Sat, 01 Feb 2025 10:46:45 +0100
-Received: from [164.15.244.49] (helo=[10.93.216.17])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1teA5M-00000000ews-3fpJ; Sat, 01 Feb 2025 10:46:45 +0100
-Message-ID: <6cb712c1c338d3ce5313e05a054ea9de21025ff0.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v2 0/4] alpha: stack fixes
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Ivan Kokshaysky <ink@unseen.parts>, Richard Henderson	
- <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Oleg
- Nesterov	 <oleg@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>, Arnd
- Bergmann	 <arnd@arndb.de>, "Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>, Magnus Lindholm
- <linmag7@gmail.com>, 	linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	stable@vger.kernel.org
-Date: Sat, 01 Feb 2025 10:46:43 +0100
-In-Reply-To: <20250131104129.11052-1-ink@unseen.parts>
-References: <20250131104129.11052-1-ink@unseen.parts>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB9FEC5;
+	Sat,  1 Feb 2025 11:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738410231; cv=pass; b=q/YH+R4XOU2GP02k8AORruM80iWvrexUdqvXMMK9gRmuSTbaUD2zmDyOPadgckp7/jniGVcg4Jw1MPoyG1NohSCPKUJc61UvaZ++jvdHkmZ+Ej+gJsT/yoKRj4npKSsXo8KDRLl4IucNhxjAgBFHAiqcKa9WnDmifbJQzxFSbWE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738410231; c=relaxed/simple;
+	bh=R5iYuhin7mnI7s+ZFLSYDefbLQC4LM90aSkkIMtochk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bDx1cCxtGXrxzOs5ON9qCXAkPsAZFqtNdG6CySC6VKRH74ZNCordKLzlwMRK+cVf5K6QSRtfLlIu6zeyBhblOR2Iv39+Rw8BuAWHm+33IfW8yjkmrl7rZVQrdQ6JYG1m2eAB0FJDew9oG6ruz2XGCewCRtH8Xn+6ZQ+cFy0NE5M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com; spf=pass smtp.mailfrom=goldelico.com; dkim=pass (2048-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=SmvaAuZl; dkim=permerror (0-bit key) header.d=goldelico.com header.i=@goldelico.com header.b=aM6IE2jV; arc=pass smtp.client-ip=85.215.255.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=goldelico.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goldelico.com
+ARC-Seal: i=1; a=rsa-sha256; t=1738410211; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=ESXdnj+V8KnGK/paZT8+0Zh8NV92oxIY2LJyD7rB0u1XopQeYSITA+LsfuhA9cqTsd
+    dwb5LpftI+7J2/6ru/KCStLvYCzmvf8pzA/bUGe0wLUqCZjlE5JsX3jm3t4W9DKUCrvp
+    TDVz/8E1mQm1GlNtdMbeF5GXmr/uUIeL75/xNH68nK7F6EFy87Dkxd4w8+TQtkRj45Sq
+    Rmeyn6aM1m0PKLeDn7W6v+hsGIHlY5TISQQnltt5nBafp12aytrm1YSOcWTvkYsEmPyg
+    Pkdmg3GNTY/8s6Z9VOviEtaCgpNqz6VNanwVu9RYhREu1tB044ox+WhCvR2T+GN52J9I
+    qslQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1738410211;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0prJYhYnQTL/LGkgoUJgytbfGVTjzoxrZKJjyjqhFCA=;
+    b=Fr9jEq+emXXNPmGdIAzsA2KVhgm/FYfGloXoKzPr7zhSZR5zsqQxZXFpvJh2KbbZL9
+    kMgUqmZDUT2wIS1n/L9jpjlXuZWWvjBcIiUhUS06g3pQQwq8NlvCtedC7A3mPbWNOndF
+    vMg1BIR4fe9tMntiuD83d9NgkElt/GeKKX1qlDs5Akx5/5QjTjvIgUXbiMOAR5RbHagj
+    X+gjVnMPi8+izAQdJWYRwrWS0E0U8IGMPAhDgOHBut5JXfoou6oA/FZ072n1LKh/3yFw
+    DyyxxubdcxFBWqwu6KIBbCxkMXoFaqOdaOSdfsLdL97azW09VlYokFUNHHhB1eFX6Yuw
+    HVHg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1738410211;
+    s=strato-dkim-0002; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0prJYhYnQTL/LGkgoUJgytbfGVTjzoxrZKJjyjqhFCA=;
+    b=SmvaAuZll5rKZEkyoglMIRudJjAiHDALHjeuzlcj/RF5LNB4sPSkKUSU/dVf4UC6/W
+    X/EAsD7jTCulxc0zTy8b7fHyMXg1x63n5dhAhFQ515+vB5zdK0ZtSD09ShVHa0K43JBY
+    wqjYB7jaEJ2orehcXObbBjLBdbQVQcXpfk1twUJs7YhXt+BsMst/ciD+rTJ6tw3N3dXb
+    9NeF2NTw115ld42jwjKUt+WY8/n2fMRv8ad0UbodfeXxmIvmf6wg90ap4npf0lGLOul3
+    lVarI5dBU9e991M+boNYb1MniPjI7rq/NP6LZp2dgwxoOCjUenysUbQvIKb1wDn/5Aey
+    CDkw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1738410211;
+    s=strato-dkim-0003; d=goldelico.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0prJYhYnQTL/LGkgoUJgytbfGVTjzoxrZKJjyjqhFCA=;
+    b=aM6IE2jVaf3pey33aKRM0FaOBoCe7wLaUXEnk1M6M6nTA0k05lvqWhft6Jtl0vYZkl
+    kLMD1yLVVC85QBvHabBw==
+X-RZG-AUTH: ":JGIXVUS7cutRB/49FwqZ7WcJeFKiMhflhwDubTJ9o12DNOsPj0lFzL1yfzEZ"
+Received: from localhost.localdomain
+    by smtp.strato.de (RZmta 51.2.21 DYNA|AUTH)
+    with ESMTPSA id Qeb5b1111BhUCTd
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 1 Feb 2025 12:43:30 +0100 (CET)
+From: "H. Nikolaus Schaller" <hns@goldelico.com>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Marek Vasut <marex@denx.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Cc: linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	letux-kernel@openphoenux.org,
+	stable@vger.kernel.org
+Subject: [PATCH] Input: ads7846 - fix gpiod allocation
+Date: Sat,  1 Feb 2025 12:43:24 +0100
+Message-ID: <6e9b143f19cdfda835711a8a7a3966e5a2494cff.1738410204.git.hns@goldelico.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Ivan,
+commit 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
 
-On Fri, 2025-01-31 at 11:41 +0100, Ivan Kokshaysky wrote:
-> This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
-> Thanks to Magnus Lindholm for identifying that remarkably longstanding
-> bug.
->=20
-> The problem is that GCC expects 16-byte alignment of the incoming stack
-> since early 2004, as Maciej found out [2]:
->   Having actually dug speculatively I can see that the psABI was changed =
-in
->  GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long doub=
-le
->  improperly aligned)") back in Mar 2004, when the stack pointer alignment
->  was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S ha=
-s
->  various suspicious stack pointer adjustments, starting with SP_OFF which
->  is not a whole multiple of 16.
->=20
-> Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
->  D.3.1 Stack Alignment
->   This standard requires that stacks be octaword aligned at the time a
->   new procedure is invoked.
->=20
-> However:
-> - the "normal" kernel stack is always misaligned by 8 bytes, thanks to
->   the odd number of 64-bit words in 'struct pt_regs', which is the very
->   first thing pushed onto the kernel thread stack;
-> - syscall, fault, interrupt etc. handlers may, or may not, receive aligne=
-d
->   stack depending on numerous factors.
->=20
-> Somehow we got away with it until recently, when we ended up with
-> a stack corruption in kernel/smp.c:smp_call_function_single() due to
-> its use of 32-byte aligned local data and the compiler doing clever
-> things allocating it on the stack.
->=20
-> Patches 1-2 are preparatory; 3 - the main fix; 4 - fixes remaining
-> special cases.
->=20
-> Ivan.
->=20
-> [1] https://lore.kernel.org/rcu/CA+=3DFv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=3D=
-Ei90G98ukRcRJA@mail.gmail.com/#r
-> [2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie=
-.orcam.me.uk/
-> [3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19=
-900427.pdf
-> ---
-> Changes in v2:
-> - patch #1: provide empty 'struct pt_regs' to fix compile failure in libb=
-pf,
->   reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
->   update comment and commit message accordingly;
-> - cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as we=
-ll.
-> ---
-> Ivan Kokshaysky (4):
->   alpha/uapi: do not expose kernel-only stack frame structures
->   alpha: replace hardcoded stack offsets with autogenerated ones
->   alpha: make stack 16-byte aligned (most cases)
->   alpha: align stack for page fault and user unaligned trap handlers
->=20
->  arch/alpha/include/asm/ptrace.h      | 64 ++++++++++++++++++++++++++-
->  arch/alpha/include/uapi/asm/ptrace.h | 65 ++--------------------------
->  arch/alpha/kernel/asm-offsets.c      |  4 ++
->  arch/alpha/kernel/entry.S            | 24 +++++-----
->  arch/alpha/kernel/traps.c            |  2 +-
->  arch/alpha/mm/fault.c                |  4 +-
->  6 files changed, 83 insertions(+), 80 deletions(-)
+has simplified the code but accidentially converted a devm_gpiod_get()
+to gpiod_get(). This leaves the gpio reserved on module remove and the
+driver can no longer be loaded again.
 
-Thanks, I'm testing the v2 series of the patches now.
+Fixes: 767d83361aaa ("Input: ads7846 - Convert to use software nodes")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: H. Nikolaus Schaller <hns@goldelico.com>
+---
+ drivers/input/touchscreen/ads7846.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Adrian
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index 066dc04003fa8..67264c5b49cb4 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1021,7 +1021,7 @@ static int ads7846_setup_pendown(struct spi_device *spi,
+ 	if (pdata->get_pendown_state) {
+ 		ts->get_pendown_state = pdata->get_pendown_state;
+ 	} else {
+-		ts->gpio_pendown = gpiod_get(&spi->dev, "pendown", GPIOD_IN);
++		ts->gpio_pendown = devm_gpiod_get(&spi->dev, "pendown", GPIOD_IN);
+ 		if (IS_ERR(ts->gpio_pendown)) {
+ 			dev_err(&spi->dev, "failed to request pendown GPIO\n");
+ 			return PTR_ERR(ts->gpio_pendown);
+-- 
+2.47.0
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
