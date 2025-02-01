@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D94A24C42
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CA4A24C43
 	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C03DC1885196
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:54:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 075DA163AE2
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C11155393;
-	Sat,  1 Feb 2025 23:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4A91CC881;
+	Sat,  1 Feb 2025 23:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0udw2MK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxWv8LCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4A126F1E
-	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4985C126F1E
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738454048; cv=none; b=lDF/98rQWJL2RI80olmLTavB1JC2dRs4IeQ+pW/ahssdCtcVF0hplf9WGVjoPjW0iRVOVoWJe+eBUYlkSMZFH1Y9qm0yJCklVezuQLMRjr0Q0acBFxN3hjRi8rh57yoUhF3iMGuQ0i1W4p7iXVT/5zG40aE4oXGBjD5oK8Umkhk=
+	t=1738454050; cv=none; b=i3V6fhW3d9UUCdJWRfw2p11f7FKsJ7PHNxCCq8ulIvCn6noLGqt1nLLxdhCZWGGRWlUZphl9CTXVW5kNCFeg4sxIfzhYFJqfskk0sqIutY2RKcmyFrPWihLtrEEIWRzNzElQClEF+eefAQUTPScbycrISqiF7E6YxKrWKKI+SJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738454048; c=relaxed/simple;
-	bh=7YM/eyDEdTgXM3X4iL2AOxcbB7PXfk+C9yqkF5ODm98=;
+	s=arc-20240116; t=1738454050; c=relaxed/simple;
+	bh=q1yR1cxZguDyp5pQf6aLQC3wR4U/ZOqGD9PnGBgTuZk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ugPj4DXYg5teP0YsPF3zL7WsPmkDGEIIuq6jESe5ax48Dibxuxy+uIsK7+tCwvqEKGY6gHhbxkNNeeOcoFF/cjtK51wok3MMtjShJMrSkAAEHF/XV9rkh/O8aRLqb6g0/XNDAR2I8c5NvMAn+diopMY16dG8+e2mErlHi6aznFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0udw2MK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EE4C4CED3;
-	Sat,  1 Feb 2025 23:54:07 +0000 (UTC)
+	 MIME-Version; b=lgJ8JH0WMtJtOkIV3Q3NFyNL4Jz9zKl/T0nf5vCs5iZDiP2O/3isoWV5uvBcF5aSL0u+Pi/2k1uBrcq33iyjrLadfvJpR+cdCPJHK4/a3YXve97I6y2a9xMIf2WzEhNIGRs++dc+N/bWYn50T7Rqu8wAJcu5oTT1lPVxMDW1U3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxWv8LCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A7DC4CED3;
+	Sat,  1 Feb 2025 23:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738454048;
-	bh=7YM/eyDEdTgXM3X4iL2AOxcbB7PXfk+C9yqkF5ODm98=;
+	s=k20201202; t=1738454050;
+	bh=q1yR1cxZguDyp5pQf6aLQC3wR4U/ZOqGD9PnGBgTuZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0udw2MK9mdrfcTkZXmc2g8iWvneKQbhoRd8sgFilrhTlhIRUGTaxv/IvP2RMy27l
-	 f+XWiaB07chTTXd5x/CSGMXHeg4a9AjBgFP2AMb3otazniXAQiYoDitBXpr9znNbL3
-	 H00YzJHmWM8JE5lXhZibjIzzwPRsapST9s7PyzKcGMx0mcWn9up2Qz8Io+9LopQsjC
-	 WCq8MdkOFlBHt5KvjmNRh4MO+WBmd7Xvf7mag8BzpNSrUY8gG8KxYV/UYQVxjIjltt
-	 TJ1hj9XE/xbGN5x+H6uJSeoEcNXTQlrmhquNdCisT4zs+BbIACTBTCEIiJDnewTCJe
-	 LzVv31hDg+Zag==
+	b=bxWv8LCcm41XnWZEhrhwG+htRsx4EiW8PoDrM+c5Puvh9+6gd4XMCWMlShcom5Ik2
+	 hay2rHWKT55bXj/goqgbVj0bOb0fNsEHnwKuR67OcJ2ukQX06EqEhxnO9fVde7x65D
+	 siE3nPftW7XkeGDupTsy9guSTNvpdAq2k3gMFw4yakwhIz4DynJpDt3bTg5Mj5MznK
+	 CcVbtYmjjvWX7o/x8sw7CeizSi6yOftfTSLQfSJLfb5cGT/7jAz+JrXii5cV7hwb4R
+	 7N3eRv9xPZesYnnH2S/FtSlfm0AN8JVQvnYo4OG+J8kuOT5CY1B6o4b/fv+DXQlhJ/
+	 baCa5QrL9gF+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 06/19] xfs: make sure maxlen is still congruent with prod when rounding down
-Date: Sat,  1 Feb 2025 18:54:06 -0500
-Message-Id: <20250201134309-f4de91ffc3776e9e@stable.kernel.org>
+Subject: Re: [PATCH 6.1 13/19] xfs: up(ic_sema) if flushing data device fails
+Date: Sat,  1 Feb 2025 18:54:08 -0500
+Message-Id: <20250201143638-beeba297671f2964@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129184717.80816-7-leah.rumancik@gmail.com>
+In-Reply-To:  <20250129184717.80816-14-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,39 +63,35 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f6a2dae2a1f52ea23f649c02615d073beba4cc35
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Darrick J. Wong<djwong@kernel.org>
+The upstream commit SHA1 provided is correct: 471de20303dda0b67981e06d59cc6c4a83fd2a3c
 
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 0fbbfe5fbfbe)
-6.1.y | Present (different SHA1: 5d1a85efae8f)
+6.6.y | Present (different SHA1: c86562e6918a)
+6.1.y | Present (different SHA1: b8a7d6e7d0bb)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f6a2dae2a1f52 ! 1:  ce863045e9922 xfs: make sure maxlen is still congruent with prod when rounding down
+1:  471de20303dda ! 1:  9a80b1e4b9f8a xfs: up(ic_sema) if flushing data device fails
     @@ Metadata
       ## Commit message ##
-         xfs: make sure maxlen is still congruent with prod when rounding down
+         xfs: up(ic_sema) if flushing data device fails
      
-    +    [ Upstream commit f6a2dae2a1f52ea23f649c02615d073beba4cc35 ]
+    +    [ Upstream commit 471de20303dda0b67981e06d59cc6c4a83fd2a3c ]
     +
-         In commit 2a6ca4baed62, we tried to fix an overflow problem in the
-         realtime allocator that was caused by an overly large maxlen value
-         causing xfs_rtcheck_range to run off the end of the realtime bitmap.
+         We flush the data device cache before we issue external log IO. If
+         the flush fails, we shut down the log immediately and return. However,
+         the iclog->ic_sema is left in a decremented state so let's add an up().
     @@ Commit message
-         Fixes: 2a6ca4baed62 ("xfs: make sure the rt allocator doesn't run off the end")
-         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+         Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
      
-      ## fs/xfs/xfs_rtalloc.c ##
-     @@ fs/xfs/xfs_rtalloc.c: xfs_rtallocate_range(
+      ## fs/xfs/xfs_log.c ##
+     @@ fs/xfs/xfs_log.c: xlog_write_iclog(
 ---
 
 Results of testing on various branches:
