@@ -1,82 +1,73 @@
-Return-Path: <stable+bounces-111868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5C2A247B3
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 09:16:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF79A247C1
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 09:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CA431887D58
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 08:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A1216701A
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 08:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5937281724;
-	Sat,  1 Feb 2025 08:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8528D13BAEE;
+	Sat,  1 Feb 2025 08:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="XCDgHQSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9kqs/Mz"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED20417BA5;
-	Sat,  1 Feb 2025 08:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EAA2F41
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 08:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738397806; cv=none; b=oXDJAWl5C5xaJWgCgzwg02krBq0HA3m+vIQN95TKCv/JeBDBJWgR3Ru9ZjidhAGUpDM/rO+iDLR1BJ6pTsCOg/s4dk6LzNWVSr0HCKZ6txaBzWeafooZY4YIOv1qDpJuUBQ+mXpdS8G6UEZGj8vBUX/10b9UpuSp5GsPUlcX2GA=
+	t=1738398590; cv=none; b=fdtzUqFPjlQo4D+/0g+lOqtad3wcJCTB0EblDs9+6yDOWOGF7eovUF8xNG9rIJWM5bmgmDX/etronoSjwGfNTjjPVdroOVUY/x1xGEgStIDFWHg6UglGdo08MILRLnBf0AK3aakKp9SzJOKBtHPP2H2XFo2rIeuYxQv5PFNy5uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738397806; c=relaxed/simple;
-	bh=Um6Sc958hRNWXV+ReXdNi2blKRTvVE8ndQGHksosRE4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=EWC4iMHCGK4P8tiEeFm5xRpXAPAuYVBh2lm2AS9i7hnCYAXgntNJ43SJsPeVRQm+Ud+9SQtF4GZXXF3MPyzv926htaHWWOP89ku7G9ItiQsg7oT2/WqajOLHPJSs1kDSXam2BJEoqSPKsi3rIbGDXrJkrjUrkLwJzVH7Q3j58ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=XCDgHQSU; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id C45DB210C333; Sat,  1 Feb 2025 00:16:44 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C45DB210C333
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738397804;
-	bh=Um6Sc958hRNWXV+ReXdNi2blKRTvVE8ndQGHksosRE4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCDgHQSUm4Uwe6kdNFO7iOAn1NwhlSVQSrxAF9uwJD3wKC14rjinFlv10LkLviM7J
-	 YKzuFk50Y1sqEUFk2Dt4HIoPhEGin/J9BMSlv/Adlx+vzPjLrrlOO//wNqZVLqXe3X
-	 4NEZtRnfAkP63scLHZRXVdjr/tQTfcj8zO4of7Zc=
-From: Hardik Garg <hargar@linux.microsoft.com>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: [PATCH 6.12] 6.12.12-rc2 review
-Date: Sat,  1 Feb 2025 00:16:44 -0800
-Message-Id: <1738397804-7673-1-git-send-email-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <20250130144136.126780286@linuxfoundation.org>
-References: <20250130144136.126780286@linuxfoundation.org>
+	s=arc-20240116; t=1738398590; c=relaxed/simple;
+	bh=65kO7QPd9U9LzEc99fr1oBn5JCwg1smBGhKRsTZq9rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFbFWiSnKdK2i9vvaxDwi8VGzMsWhNVQcJaQq8ysozedJ2y/oA4ipCokxkh2PwBSmf2yjJ93D0O8c8vHuSf+TNvqgrIvpGx7SjHrjba0/BiG2j3z+dudUJUohYIfaT1UgZKDxlTCBVSWPH7nSgzD70bxFLrXpkNIMFwFBTeAGfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9kqs/Mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509A8C4CED3;
+	Sat,  1 Feb 2025 08:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738398589;
+	bh=65kO7QPd9U9LzEc99fr1oBn5JCwg1smBGhKRsTZq9rk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D9kqs/MzxCtMVepYqxFrVtlIwXQAST5Zm/jj7gRfj3+F+NCDO3pnc1XQ7LUE6iNi1
+	 wdSZxKU4uScVKioBuPHRbRSu6fTIjbVGjKQ5inrF3TvRQy6k+J1PXiFGRs5pCoG1Ou
+	 dpf5gyUAmajbjUx9lqlHdSKyqiFcFbhcXZ17OmK4=
+Date: Sat, 1 Feb 2025 09:28:49 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Daniel Rosenberg <drosen@google.com>
+Cc: stable <stable@vger.kernel.org>,
+	Android Kernel Team <kernel-team@android.com>
+Subject: Re: f2fs: Introduce linear search for dentries
+Message-ID: <2025020118-flap-sandblast-6a48@gregkh>
+References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for v6.12.12-rc2 on x86 and arm64 Azure VM.
+On Fri, Jan 31, 2025 at 01:49:16PM -0800, Daniel Rosenberg wrote:
+> Commit 91b587ba79e1 ("f2fs: Introduce linear search for dentries")
+> This is a follow up to a patch that previously merged in stable to restore
+> access to files created with emojis under a different hashing scheme.
+> 
+> I believe it's relevant for all currently supported stable branches.
 
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+As the original commit that this says it fixes was reverted, should that
+also be brought back everywhere also?  Or did that happen already and I
+missed that?
 
+thanks,
 
-
-
-Thanks,
-Hardik
+greg k-h
 
