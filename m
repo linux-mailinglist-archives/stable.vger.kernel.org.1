@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8492DA24C41
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:54:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D94A24C42
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9403F3A4955
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:54:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C03DC1885196
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897291CD21E;
-	Sat,  1 Feb 2025 23:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C11155393;
+	Sat,  1 Feb 2025 23:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzmKdLLj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0udw2MK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4776F126F1E
-	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B4A126F1E
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738454046; cv=none; b=khTNq45g3SYSLicFn85JcSHWXC/bCnQykgxjUnl2PugzY1HLP8MnNxI83DMIoNC51j7nVl4M29Cm86h3gf+k+owTNpxr4MPfAQ0aDYrlVvi8hj9bHRrLQGPWQ8GW7ao0/7JZTGNpjSnVHuB+KuullJmkrr+zk552/6xu+CseF38=
+	t=1738454048; cv=none; b=lDF/98rQWJL2RI80olmLTavB1JC2dRs4IeQ+pW/ahssdCtcVF0hplf9WGVjoPjW0iRVOVoWJe+eBUYlkSMZFH1Y9qm0yJCklVezuQLMRjr0Q0acBFxN3hjRi8rh57yoUhF3iMGuQ0i1W4p7iXVT/5zG40aE4oXGBjD5oK8Umkhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738454046; c=relaxed/simple;
-	bh=AtbRpxITq2+2QEo66yryQdl1+6uQu4AGam4tKN6H4NI=;
+	s=arc-20240116; t=1738454048; c=relaxed/simple;
+	bh=7YM/eyDEdTgXM3X4iL2AOxcbB7PXfk+C9yqkF5ODm98=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UUWBobacI9LgkA3grWlfGEU3AE+D+Vo6dH6pzrr03utskdo0W68+a66zFsoHMk5Oh54c76r1P/RuUEaCHe8E5moZw3oFg7mstAJp6G2TutE+3PsLbzr8Nm8knwdzbZ7g7z7fhBQljxaH8OedfrqbLu/bRf7VJTB2RFW/ZSEAykU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzmKdLLj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E1C4CED3;
-	Sat,  1 Feb 2025 23:54:05 +0000 (UTC)
+	 MIME-Version; b=ugPj4DXYg5teP0YsPF3zL7WsPmkDGEIIuq6jESe5ax48Dibxuxy+uIsK7+tCwvqEKGY6gHhbxkNNeeOcoFF/cjtK51wok3MMtjShJMrSkAAEHF/XV9rkh/O8aRLqb6g0/XNDAR2I8c5NvMAn+diopMY16dG8+e2mErlHi6aznFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0udw2MK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EE4C4CED3;
+	Sat,  1 Feb 2025 23:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738454046;
-	bh=AtbRpxITq2+2QEo66yryQdl1+6uQu4AGam4tKN6H4NI=;
+	s=k20201202; t=1738454048;
+	bh=7YM/eyDEdTgXM3X4iL2AOxcbB7PXfk+C9yqkF5ODm98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzmKdLLjmGfnU8Xuirq4JURpz0U3VzZu2hJsPYgXQIVGPE23pq7Tz9mmYNIih2qzK
-	 hiXkM3ydgcXnwhW233BSWfdRPv9HzcZ/IvD4u0rdizWjVQygv8jRn8pJuOQKk+f3V4
-	 r/IigPg8K/q6Fy+nucOjteOa1bf1fOiUgNjPfDF2wu1gJg+jUPN2J0lAYbASlbqlCf
-	 VMli3gQ7svxw6JoDIRLwHOvrOjg/ethgJaFs9PjJrX2eXzGiR5dKHO+whzF1VD2HAU
-	 S6awk+GGngczLsp9pCabIowQBg+4PWPJ5F3vz7PW/vRf2c+HmOk7iIsbCIH003FgYC
-	 LgeheD8K3ZEYQ==
+	b=p0udw2MK9mdrfcTkZXmc2g8iWvneKQbhoRd8sgFilrhTlhIRUGTaxv/IvP2RMy27l
+	 f+XWiaB07chTTXd5x/CSGMXHeg4a9AjBgFP2AMb3otazniXAQiYoDitBXpr9znNbL3
+	 H00YzJHmWM8JE5lXhZibjIzzwPRsapST9s7PyzKcGMx0mcWn9up2Qz8Io+9LopQsjC
+	 WCq8MdkOFlBHt5KvjmNRh4MO+WBmd7Xvf7mag8BzpNSrUY8gG8KxYV/UYQVxjIjltt
+	 TJ1hj9XE/xbGN5x+H6uJSeoEcNXTQlrmhquNdCisT4zs+BbIACTBTCEIiJDnewTCJe
+	 LzVv31hDg+Zag==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 10/19] xfs: factor out xfs_defer_pending_abort
-Date: Sat,  1 Feb 2025 18:54:04 -0500
-Message-Id: <20250201141452-88574661d0d68d95@stable.kernel.org>
+Subject: Re: [PATCH 6.1 06/19] xfs: make sure maxlen is still congruent with prod when rounding down
+Date: Sat,  1 Feb 2025 18:54:06 -0500
+Message-Id: <20250201134309-f4de91ffc3776e9e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129184717.80816-11-leah.rumancik@gmail.com>
+In-Reply-To:  <20250129184717.80816-7-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,39 +63,39 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 2a5db859c6825b5d50377dda9c3cc729c20cad43
+The upstream commit SHA1 provided is correct: f6a2dae2a1f52ea23f649c02615d073beba4cc35
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Long Li<leo.lilong@huawei.com>
+Commit author: Darrick J. Wong<djwong@kernel.org>
 
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 23f3d79fc983)
-6.1.y | Present (different SHA1: d28caa7f7c3b)
+6.6.y | Present (different SHA1: 0fbbfe5fbfbe)
+6.1.y | Present (different SHA1: 5d1a85efae8f)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2a5db859c6825 ! 1:  79526dfb16ec1 xfs: factor out xfs_defer_pending_abort
+1:  f6a2dae2a1f52 ! 1:  ce863045e9922 xfs: make sure maxlen is still congruent with prod when rounding down
     @@ Metadata
       ## Commit message ##
-         xfs: factor out xfs_defer_pending_abort
+         xfs: make sure maxlen is still congruent with prod when rounding down
      
-    +    [ Upstream commit 2a5db859c6825b5d50377dda9c3cc729c20cad43 ]
+    +    [ Upstream commit f6a2dae2a1f52ea23f649c02615d073beba4cc35 ]
     +
-         Factor out xfs_defer_pending_abort() from xfs_defer_trans_abort(), which
-         not use transaction parameter, so it can be used after the transaction
-         life cycle.
+         In commit 2a6ca4baed62, we tried to fix an overflow problem in the
+         realtime allocator that was caused by an overly large maxlen value
+         causing xfs_rtcheck_range to run off the end of the realtime bitmap.
     @@ Commit message
-         Signed-off-by: Long Li <leo.lilong@huawei.com>
-         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+         Fixes: 2a6ca4baed62 ("xfs: make sure the rt allocator doesn't run off the end")
+         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
      
-      ## fs/xfs/libxfs/xfs_defer.c ##
-     @@ fs/xfs/libxfs/xfs_defer.c: xfs_defer_create_intents(
+      ## fs/xfs/xfs_rtalloc.c ##
+     @@ fs/xfs/xfs_rtalloc.c: xfs_rtallocate_range(
 ---
 
 Results of testing on various branches:
