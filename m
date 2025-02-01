@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2645A24C34
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0600FA24C33
 	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E7FF7A28CB
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E61F16475E
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAC31CEADC;
-	Sat,  1 Feb 2025 23:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638BC155393;
+	Sat,  1 Feb 2025 23:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/IcjXcI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CoIYQT2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176311CDFBE
-	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228C9126F1E
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738454018; cv=none; b=QWl/CbukoP/hBS6YCF1TwP5S9SjoFmXIHKhTTklqRbgDL2u0Bt8oKSWTyU9qhS0txueyRgRmEZ+yiE/Uvb0YI71huHNd/a1hLfHwoJQRVGosz5p4vopRjpzwM/z9C+b3zhkscRrDbhGFeS/x0QS7of7HfhSpW/wGhMVANj9vvrc=
+	t=1738454021; cv=none; b=rPnsPK5wxHNoZFZu+XH+wfbV4tTaZTqLvYFyAQ63KoKRgzuxF3pILlzwG+X3sZL8my3EUDXBe84ovmT3iFrwECxi+rJkodsN8W/lBIaVhARBGgLVxKfHAui6qOzesOQ8zLcQJ+Cg28o20atehN+sBa6BRrBMLU3ml0Z3MVwGBg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738454018; c=relaxed/simple;
-	bh=7NAgSLxzxBkBVBwUzfdS/buX0wnX2Qa8GFuf4FIwq7A=;
+	s=arc-20240116; t=1738454021; c=relaxed/simple;
+	bh=VwjrMFRpAr+FS0jQxJBMujECVLcqxCtxSgHx/RdFbWw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Vvy58TZMlVYqBeuCMpcqALM1ntbLnMwAMKoyEQ6HoG4izJ3rd3eOeRINnkNxN2XyQLETMAsbaT8HwD7QxTDtc7S3+IqRPHYp9Wf+jU13Ho8TsfxMYjyp4lKfhtTdeigMBZVlnJFWTVA47YG7DqHGokfrMh4Z/+Hs+cy7U5Fi3IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/IcjXcI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CC8C4CED3;
-	Sat,  1 Feb 2025 23:53:37 +0000 (UTC)
+	 MIME-Version; b=jthoDhNX2V+/juHTw1weqcRNqnbPtQ3QAgeaqHAEEWrp8ifODyFqfvvjC9j3ukYrSYjAQZRQoT8URAtkdc/dz4/ZrBa6pzZGHAlLWpOCaq9Gs1pw2HD3fnqkoFvLD3TIVxxjK2PUJS79Yx/cYCGQng4l0gITVSNMF34LnL3N+kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CoIYQT2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333BEC4CED3;
+	Sat,  1 Feb 2025 23:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738454017;
-	bh=7NAgSLxzxBkBVBwUzfdS/buX0wnX2Qa8GFuf4FIwq7A=;
+	s=k20201202; t=1738454019;
+	bh=VwjrMFRpAr+FS0jQxJBMujECVLcqxCtxSgHx/RdFbWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/IcjXcIhKwkZIJ3xIO9qoUAyQ1VGEk4H1gri5YYXu38ObuoGATRTLEvcgVhd627c
-	 qqFFlr+xvoYk2bUnijgOQq2iFzWPf020muPl0L1i2QTzpFoP53HrVQaBssMyBApCO5
-	 fsbJ6a3/cSIdmpEQwZmURLLar2NgetRzBu3kShmXhO0ft5HNJTj2C0Y+C2q7Ek0Ci1
-	 NKX2yrVaeGzNH/+e9owVyRsiRPZq2Isyp3hlkHNvdtYkHIXGp9L01Q2ZTT389hg5TH
-	 DfmjDLuv+Hx1Qi0+4D3XJz1SXY/WftpDqZJ5n6rdA7TU5aGpO/VYm0x0/A+qiefqIk
-	 f0EgMfa7pFRYg==
+	b=CoIYQT2/2q6+QRmvjOf46QpItmCT5OBz7bhLdeeQAV1Jj65CCIqHVkT3U0LNH7377
+	 ygKe9eu8iMYZF3dQ/b4kHjUD9ih+vi+dX4AcbwOua+xetmF0ahGjz1//ZT14cVmB2J
+	 tBlwjqgkeV33ozVloOO/r94K6bVVNMtzHDlMzdElLKHc2sSH1MiHFPFORcDGR0yoOQ
+	 5eq2xSTeSJSkmXB1J+TEzSKrEXSTBr7cfrErP8y92FIp9P+d7atqLautSelZDnMn06
+	 /6MHqSCuJec0+2XlwrtJ/2ALzEga4Qje8CwXwcYJBNl9hDebpNV1XHcj3r2rE+slSB
+	 Z4SHZPCgpZ6fA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 12/19] xfs: only remap the written blocks in xfs_reflink_end_cow_extent
-Date: Sat,  1 Feb 2025 18:53:35 -0500
-Message-Id: <20250201143046-7b7e5ae2078161ef@stable.kernel.org>
+Subject: Re: [PATCH 6.1 18/19] xfs: clean up FS_XFLAG_REALTIME handling in xfs_ioctl_setattr_xflags
+Date: Sat,  1 Feb 2025 18:53:37 -0500
+Message-Id: <20250201151146-d45d58468b17a185@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129184717.80816-13-leah.rumancik@gmail.com>
+In-Reply-To:  <20250129184717.80816-19-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 55f669f34184ecb25b8353f29c7f6f1ae5b313d1
+The upstream commit SHA1 provided is correct: c421df0b19430417a04f68919fc3d1943d20ac04
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Leah Rumancik<leah.rumancik@gmail.com>
@@ -73,29 +73,46 @@ Commit author: Christoph Hellwig<hch@lst.de>
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 767a94d81616)
-6.1.y | Present (different SHA1: 09e751cf562d)
+6.6.y | Present (different SHA1: d7d5ed65364c)
+6.1.y | Present (different SHA1: a426d90bf5d7)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  55f669f34184e ! 1:  7f296145cb8e6 xfs: only remap the written blocks in xfs_reflink_end_cow_extent
+1:  c421df0b19430 ! 1:  3bbebf3ef4d3f xfs: clean up FS_XFLAG_REALTIME handling in xfs_ioctl_setattr_xflags
     @@ Metadata
       ## Commit message ##
-         xfs: only remap the written blocks in xfs_reflink_end_cow_extent
+         xfs: clean up FS_XFLAG_REALTIME handling in xfs_ioctl_setattr_xflags
      
-    +    [ Upstream commit 55f669f34184ecb25b8353f29c7f6f1ae5b313d1 ]
+    +    [ Upstream commit c421df0b19430417a04f68919fc3d1943d20ac04 ]
     +
-         xfs_reflink_end_cow_extent looks up the COW extent and the data fork
-         extent at offset_fsb, and then proceeds to remap the common subset
-         between the two.
+         Introduce a local boolean variable if FS_XFLAG_REALTIME to make the
+         checks for it more obvious, and de-densify a few of the conditionals
+         using it to make them more readable while at it.
     @@ Commit message
-         Signed-off-by: Christoph Hellwig <hch@lst.de>
-         Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+         Link: https://lore.kernel.org/r/20231025141020.192413-4-hch@lst.de
+         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+         Signed-off-by: Christian Brauner <brauner@kernel.org>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
      
-      ## fs/xfs/xfs_reflink.c ##
-     @@ fs/xfs/xfs_reflink.c: xfs_reflink_end_cow_extent(
+      ## fs/xfs/xfs_ioctl.c ##
+     @@ fs/xfs/xfs_ioctl.c: xfs_ioctl_setattr_xflags(
+    @@ fs/xfs/xfs_ioctl.c: xfs_ioctl_setattr_xflags(
+     +	if (rtflag) {
+     +		/* If realtime flag is set then must have realtime device */
+      		if (mp->m_sb.sb_rblocks == 0 || mp->m_sb.sb_rextsize == 0 ||
+    - 		    xfs_extlen_to_rtxmod(mp, ip->i_extsize))
+    + 		    (ip->i_extsize % mp->m_sb.sb_rextsize))
+      			return -EINVAL;
+     -	}
+      
+    @@ fs/xfs/xfs_ioctl.c: xfs_ioctl_setattr_xflags(
+     +			ip->i_diflags2 &= ~XFS_DIFLAG2_REFLINK;
+     +	}
+      
+    - 	/* diflags2 only valid for v3 inodes. */
+    - 	i_flags2 = xfs_flags2diflags2(ip, fa->fsx_xflags);
+    + 	/* Don't allow us to set DAX mode for a reflinked file for now. */
+    + 	if ((fa->fsx_xflags & FS_XFLAG_DAX) && xfs_is_reflink_inode(ip))
 ---
 
 Results of testing on various branches:
