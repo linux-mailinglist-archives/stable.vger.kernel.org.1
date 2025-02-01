@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-111925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9841EA24C39
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E003EA24C3A
 	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 00:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82D4C3A4917
-	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8193F1884D59
+	for <lists+stable@lfdr.de>; Sat,  1 Feb 2025 23:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596C61CDA09;
-	Sat,  1 Feb 2025 23:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EBD155393;
+	Sat,  1 Feb 2025 23:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hMw95Ns1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmB74imE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B841534FB
-	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19126126F1E
+	for <stable@vger.kernel.org>; Sat,  1 Feb 2025 23:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738454030; cv=none; b=DfJvuVeKWyPhuLUZpQ0bPaENiKrNetjUFar91sQx66Nhr3+klQeKGRsZHFy9iQCaqkaqj5VGtAn4QgVLxBiuX+1BMRT7YGEJXw8ejO70ACGmGYtE4WnGMP13x2TtlvqE7GMrL3fxeR3QAD/qQVqo0LREfyATEJSr8jSH6fPQIkU=
+	t=1738454032; cv=none; b=HbkmMp+UAAkJkp1lrVxC4feMSqet99wfFjYtLxuzcQzIk6C2pcgC9JDtyhBQdUn5p4WZujRorg1nMfwv1Sj1GT9BqbRpHOaSjqBVyqGwERwxzWYsiitUqwnFETrPal6NOiFFAjtAgixTaqPIqC+b0eTs3TiveHoOJ5wnv3VTuII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738454030; c=relaxed/simple;
-	bh=iqiwXhJNbeNj4TzyDMtd2GTBR3mes5MMeuJPuWiiwLY=;
+	s=arc-20240116; t=1738454032; c=relaxed/simple;
+	bh=tQwl2kO8Hb0rOUBl+s6zhMADbzYUe2kCdc2oFSqQlAo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uPXe5Hi0Cdx+eQO2L5WHv7qG8ygWXEUpv0LUpGM8D8i+/rSU3L8TGup6N+37WvU55SF7dJBwgemKT9aZZateQO6zLZcCzv0rb9WmDzDzUu6AwSYlXEcxMprYwxFuaIfKxBjMDUxqZUSDPb93tz5E0elM3TwM/I+EI2JEi3nfeBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hMw95Ns1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B70C4CED3;
-	Sat,  1 Feb 2025 23:53:49 +0000 (UTC)
+	 MIME-Version; b=tFj4BpduneGLE5NuFyaTWL9h01kHX9UEAsjV533i990PnnwoeCHO/XoV5CAAWs033uHgOy4Nkh4QK/6vQlYMTUKI40bEMSD8ZWmGN11k/MrRq3IBhUt5VJW3To/2hgN/qT/CDnsCZsCKKueVtptOuEhY20p2jARJGnXdovw5tOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmB74imE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A5FC4CED3;
+	Sat,  1 Feb 2025 23:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738454029;
-	bh=iqiwXhJNbeNj4TzyDMtd2GTBR3mes5MMeuJPuWiiwLY=;
+	s=k20201202; t=1738454032;
+	bh=tQwl2kO8Hb0rOUBl+s6zhMADbzYUe2kCdc2oFSqQlAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMw95Ns1cTJInGal8JIAktcuY7PMtBzj6fiEVMukmWwzDm5rcrExU1/3546n5IBmZ
-	 Sqz+biboLRIoPLIG5/5AxJCWqkcu0Y1U1uwNZRmf4pctevvxPHbmEwxyEOcYyixQV9
-	 w4lK7LCIS5oNsUgWY08w/FafLHsFEY+XdG+0kv9fJLapVbVetladESWrDesBtIrC9d
-	 A20m2AaBERBCNabVO5yis61KYk0OvQW6LFKhPI/mkEL0oASMV3ybt+HKbUkJDp6SVT
-	 ha2ZNZ1ZO+fIWxPpt++6t5irR6d4rNvM5X6mkImfQrWCL2ud/y6dCLXO/TeMvOs1+C
-	 UcdTDYf82Fsmw==
+	b=RmB74imEDdZOGb5AhZ/7Irh/lGeP4RsDeLeUbh7KO5lpTVyclDIIPZWN52upCArpT
+	 t2LToCw5WjDrfyiyJE/UlmAhxe0ZzKKZaCGH8WxLaAY4T0vdVEgrDKmgJj4ud82BMp
+	 CWji5lhoKlcTYTi8FBkWsDc4vQRHEavgRHv5W27T1TqJauKyFY9Bw9kedolfeynr6v
+	 Xh0c8Da3oFhf4TtarBwHNRHrzMbfxO74nQtgyOaJrmMNIEFWXo6P4QUlvEi9kX4+Wx
+	 Ues685QiHyuKMQkq3+HwJjjZJePrYVVYoKCAZ7W7vUHkAB50cZeoHTIgBlfucSd0X8
+	 Hmh/0bPni+bFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 03/19] xfs: prevent rt growfs when quota is enabled
-Date: Sat,  1 Feb 2025 18:53:48 -0500
-Message-Id: <20250201132136-18723c9df774f647@stable.kernel.org>
+Subject: Re: [PATCH 6.1 11/19] xfs: abort intent items when recovery intents fail
+Date: Sat,  1 Feb 2025 18:53:50 -0500
+Message-Id: <20250201142300-0efffe3154bfd67e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250129184717.80816-4-leah.rumancik@gmail.com>
+In-Reply-To:  <20250129184717.80816-12-leah.rumancik@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,39 +63,39 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: b73494fa9a304ab95b59f07845e8d7d36e4d23e0
+The upstream commit SHA1 provided is correct: f8f9d952e42dd49ae534f61f2fa7ca0876cb9848
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Leah Rumancik<leah.rumancik@gmail.com>
-Commit author: Darrick J. Wong<djwong@kernel.org>
+Commit author: Long Li<leo.lilong@huawei.com>
 
 
 Status in newer kernel trees:
 6.13.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 6a6bb41b31df)
-6.1.y | Present (different SHA1: a68e3ff6bba2)
+6.6.y | Present (different SHA1: 005be6684225)
+6.1.y | Present (different SHA1: 6beaebf68934)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  b73494fa9a304 ! 1:  e2ad9605027dd xfs: prevent rt growfs when quota is enabled
+1:  f8f9d952e42dd ! 1:  7e1e53b9da92c xfs: abort intent items when recovery intents fail
     @@ Metadata
       ## Commit message ##
-         xfs: prevent rt growfs when quota is enabled
+         xfs: abort intent items when recovery intents fail
      
-    +    [ Upstream commit b73494fa9a304ab95b59f07845e8d7d36e4d23e0 ]
+    +    [ Upstream commit f8f9d952e42dd49ae534f61f2fa7ca0876cb9848 ]
     +
-         Quotas aren't (yet) supported with realtime, so we shouldn't allow
-         userspace to set up a realtime section when quotas are enabled, even if
-         they attached one via mount options.  IOWS, you shouldn't be able to do:
+         When recovering intents, we capture newly created intent items as part of
+         committing recovered intent items.  If intent recovery fails at a later
+         point, we forget to remove those newly created intent items from the AIL
     @@ Commit message
-     
-         Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Signed-off-by: Long Li <leo.lilong@huawei.com>
+         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
     +    Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
      
-      ## fs/xfs/xfs_rtalloc.c ##
-     @@ fs/xfs/xfs_rtalloc.c: xfs_growfs_rt(
+      ## fs/xfs/libxfs/xfs_defer.c ##
+     @@ fs/xfs/libxfs/xfs_defer.c: xfs_defer_ops_capture(
 ---
 
 Results of testing on various branches:
