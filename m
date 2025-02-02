@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-111970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894ECA24F4B
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 18:37:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D251BA24F4E
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 18:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C693188364C
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 17:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE88D7A2459
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 17:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEF91FA851;
-	Sun,  2 Feb 2025 17:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFB51FBCAD;
+	Sun,  2 Feb 2025 17:39:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37582BA34;
-	Sun,  2 Feb 2025 17:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F76EBA34;
+	Sun,  2 Feb 2025 17:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738517868; cv=none; b=NXWFvLqx6PCCTvyz1xn8RHEiJAlrfUNVaEKfNvD90Cs2Fll6YR0tH6GSOZ1pMeOuniivWVBhcgFBmd2RiCyInbIZyYQ90rgJabv+YlKcWHNQ1fj2KBkULZk+JPhvmd1jJkr/8Y199qgbNsy+RV3pPhomhV+m367/+qS18xdItzA=
+	t=1738517996; cv=none; b=pqJJhw2GFh3btU23oFvutlLvGC63ZGItUSzg/hfdXcsm5ZDdayRUo0KtQNQXEDW80B37i5IXQZJqwDyKmCf9KcvTMcHqtUjHa9gglx4prDlPWwXcsPZJ+G05jFQ89farZW70UpoG09IXn49XapiaDfY8p5C1+47FHm/BQczPRjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738517868; c=relaxed/simple;
-	bh=7RB6OJs9fX5mQCGXnF75AXjtMuZjAUnaksxQrKu4dl0=;
+	s=arc-20240116; t=1738517996; c=relaxed/simple;
+	bh=5RqB0QDeFhHfYjER3VWKrW8nhieCjt06QxBNN0mNfSg=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=DViJT1ucD17WP/HnCjN8CyKGwWAroMuh4wQBjRcHq1tKGrkJ28fP74x+GJjS+XE0z5tJgW05AnXdpxYBy/+avmDMp8nt8a25BNC/fUMo0ssC2npllaO5+PoWvIQR6Wp8QGsIiw7Mve+b9UDYAqr4D9hHYMJBavBpvaLGc6nf4mc=
+	 MIME-Version:Content-Type; b=Jt4pj1787V32SnIErG1jB3suRBUiEcUqzhOfUFU+6doFreNylDdLiovzNL0DKp5h5bKel9kHznbPZTEHqK7ZvsQtzZWRFaHCq1kN5pjZ3EN71PBriy9o6fdPbq7M/DTgs1h701uS4VcJLzH2nltL1tZAnCS3GpmmEZ7Fui1B1BQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
 Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id F0C8F92009C; Sun,  2 Feb 2025 18:37:36 +0100 (CET)
+	id 7C0C292009C; Sun,  2 Feb 2025 18:39:52 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id EB66992009B;
-	Sun,  2 Feb 2025 17:37:36 +0000 (GMT)
-Date: Sun, 2 Feb 2025 17:37:36 +0000 (GMT)
+	by angie.orcam.me.uk (Postfix) with ESMTP id 70FA292009B;
+	Sun,  2 Feb 2025 17:39:52 +0000 (GMT)
+Date: Sun, 2 Feb 2025 17:39:52 +0000 (GMT)
 From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: Ivan Kokshaysky <ink@unseen.parts>
 cc: Richard Henderson <richard.henderson@linaro.org>, 
@@ -43,10 +43,11 @@ cc: Richard Henderson <richard.henderson@linaro.org>,
     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
     stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] alpha: stack fixes
-In-Reply-To: <20250131104129.11052-1-ink@unseen.parts>
-Message-ID: <alpine.DEB.2.21.2502021652360.41663@angie.orcam.me.uk>
-References: <20250131104129.11052-1-ink@unseen.parts>
+Subject: Re: [PATCH v2 1/4] alpha/uapi: do not expose kernel-only stack frame
+ structures
+In-Reply-To: <20250131104129.11052-2-ink@unseen.parts>
+Message-ID: <alpine.DEB.2.21.2502020051280.41663@angie.orcam.me.uk>
+References: <20250131104129.11052-1-ink@unseen.parts> <20250131104129.11052-2-ink@unseen.parts>
 User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,41 +59,34 @@ Content-Type: text/plain; charset=US-ASCII
 
 On Fri, 31 Jan 2025, Ivan Kokshaysky wrote:
 
-> This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
-> Thanks to Magnus Lindholm for identifying that remarkably longstanding
-> bug.
+> Parts of asm/ptrace.h went into UAPI with commit 96433f6ee490
+> ("UAPI: (Scripted) Disintegrate arch/alpha/include/asm") back in 2012.
+> At first glance it looked correct, as many other architectures expose
+> 'struct pt_regs' for ptrace(2) PTRACE_GETREGS/PTRACE_SETREGS requests
+> and bpf(2) BPF_PROG_TYPE_KPROBE/BPF_PROG_TYPE_PERF_EVENT program
+> types.
 > 
-> The problem is that GCC expects 16-byte alignment of the incoming stack
-> since early 2004, as Maciej found out [2]:
->   Having actually dug speculatively I can see that the psABI was changed in
->  GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
->  improperly aligned)") back in Mar 2004, when the stack pointer alignment
->  was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
->  various suspicious stack pointer adjustments, starting with SP_OFF which
->  is not a whole multiple of 16.
-> 
-> Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
->  D.3.1 Stack Alignment
->   This standard requires that stacks be octaword aligned at the time a
->   new procedure is invoked.
-> 
-> However:
-> - the "normal" kernel stack is always misaligned by 8 bytes, thanks to
->   the odd number of 64-bit words in 'struct pt_regs', which is the very
->   first thing pushed onto the kernel thread stack;
-> - syscall, fault, interrupt etc. handlers may, or may not, receive aligned
->   stack depending on numerous factors.
+> On Alpha, however, these requests have never been implemented;
+> 'struct pt_regs' describes internal kernel stack frame which has
+> nothing to do with userspace. Same applies to 'struct switch_stack',
+> as PTRACE_GETFPREG/PTRACE_SETFPREG are not implemented either.
 
- Would you please put this analysis into the commit description of 3/4?  
-It gives a good justification for the change, so it seems appropriate to 
-me to get it recorded along with the commit for posterity.
+ I note that we, unusually, neither save nor even have room for statics in 
+`struct pt_regs', so this structure by itself is unsuitable to pass the 
+register file around with tracing calls and the like.  So it seems to me 
+there's no point in exporting `struct pt_regs' in any way to the userland.
 
- NB I've been feeling a little bit unwell over the last couple of days and 
-consequently I only started my GCC/glibc verification yesterday.  Current 
-ETC is this coming Tue.  Perheps it's worth noting that I run this against 
-6.3.0-rc5 with a couple of backports on top to resolve conflicts, as the 
-current master does not support EV45 hardware anymore.  I'll let you know 
-of the outcome.
+ What do you think about providing arch/alpha/include/asm/bpf_perf_event.h 
+instead with either a dummy definition of `bpf_user_pt_regs_t', or perhaps 
+one typedef'd to `struct sigcontext' (as it seems to provide all that's 
+needed), and then reverting to v1 of arch/alpha/include/uapi/asm/ptrace.h 
+(and then just copying the contents of arch/alpha/include/asm/ftrace.h 
+over rather than leaving all the useless CPP stuff in) so that we don't 
+have useless `struct pt_regs' exported at all?
+
+> Move this stuff back into internal asm, where we can ajust it
+
+s/ajust/adjust/ (NB scripts/checkpatch.pl does complain about it).
 
   Maciej
 
