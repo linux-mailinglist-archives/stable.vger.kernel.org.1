@@ -1,288 +1,124 @@
-Return-Path: <stable+bounces-111961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6557A24DA8
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 12:08:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDD7A24E10
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 13:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1266D7A25D6
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 11:07:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326D37A2085
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 12:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1511D63DF;
-	Sun,  2 Feb 2025 11:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImTSyQRV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83CC1D86C3;
+	Sun,  2 Feb 2025 12:50:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFBC1F5E6;
-	Sun,  2 Feb 2025 11:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0E71D6DB6;
+	Sun,  2 Feb 2025 12:50:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738494502; cv=none; b=blwXkL3qtMLCS0EU8pGveSR16cIkcDp+sLp5HB+5f5Z4IC4OKNb8kiNqorR/d1NBMjKRxJjpjqKMTvput0E5sPR+pgpS+y2ttg3jd/VVuqpOyBweUKq1aHT4bACNiW4QlFZO2OffpPkjdn/ADJBlFeOSF3iLiKXNUqOUXYfImKU=
+	t=1738500612; cv=none; b=L1Cm6pM8nWVkZ3p0l7ncxjmLzIglwkTTLPGVO10tmrZFJO66r1V5yQwSr1CojPemkD3uqoQwXofsZ3fL0XYtPmMFPMGPHoSuD6BoWMo/mKca43/RQZyqWDSB9eHViyba6L1e2PR6diXyy5AU5GM3LoSUEcGul4JzfNokLshaJxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738494502; c=relaxed/simple;
-	bh=7Ti7bLf/nUZeZLYb1OPmcuwU/6UuzijbSYfVPN/jWBc=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fx8ezHVupCH2rOBkpGCphVX2d3pLjdPvedI0OPmhoAQQxb9707ZR5hmn4k/m02xyEllbTpmFC5wArhQp7kMr3982+1lCgkB4iH1seutH4cr0BQeVxqO1BGfAnyGUBff7Sfw52vYuk5rL4KANZZXhgc3ZMWhSeBA9N0rrcP2DDN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImTSyQRV; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaf60d85238so538182766b.0;
-        Sun, 02 Feb 2025 03:08:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738494499; x=1739099299; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5JzXeM0bk8T85dqhtElwChalRxMx7DtA9IYgnOT7SBY=;
-        b=ImTSyQRVuM6DuRicCm3tKx4dQ34B93Od+ZuqhKzj12FNRuhCvuuAHuTSFmFCxb/j6O
-         M39hKtlKm5zQ/TNT0xulWkZg4oKoOXIz3iDC245LVCCh9FBO1rfkmTHlbDH4reiXkJ2a
-         oEJzvze3hhPS2ZAsaWZUa/lcFH9NnjJ5J4f+5zGIO6UGUSkEMH6KaMGs0DEiawkHUX2R
-         F0n2lg3lsPEMvGw4SXMkS1c7L7grmkuFHArU4HfI3N78gijpKYnz15ylTCInHfkUep2l
-         jvj3PrxQtPEy/h45bGmo2tdON2TSN5tFFlLv6g4AIWeBnm14DLyNkpvNHTopXue5kJWV
-         TxvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738494499; x=1739099299;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5JzXeM0bk8T85dqhtElwChalRxMx7DtA9IYgnOT7SBY=;
-        b=j57O8DCd1QA/bQhEQFnH5pxLJ07XUaG8OzLlfiqIp7b1LLOcFSsvO820YnAnNYqz9t
-         W4+jM5P7bUvhLa1pRiO41KSD22YI9gT8+D+eDjRAbCJ8GyRcMz3YH5i3Ara//BbHYhCU
-         2betiN3dMPsU4vUs1GxV5PJ7e78eGwETHrnCaO0PdXw3vTUnWaD0QrMtcAf5/x1HBd4o
-         CNfQr8lpVoXV8MOpFoV6KYvmQW1rHU6ove7Lp2Y42/fYXefE9Aszs5SC3mh08aANDFHR
-         +roh3KsoveoDvV1lbvTXz0ZRWU2uf0Xl/Nd6YJF7aNzSfr6d+lF+E7+5EGs7uLmvaZE6
-         IWGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6urfQX1LT0gjb0gk21+EfcEy7NRoJ3zZ9osS8nPZNdoGuNkihhJAmTxec5HO3R5n95Yj1D4xR@vger.kernel.org, AJvYcCUok04yXz8O1smOOdTFp3IHWf+YenPPFd8nlBFcKmQ0clCa3NmjdwYrVwkAIUTBTwb6//KuLbmONh5lTf7v@vger.kernel.org, AJvYcCUwQwP9fQX7ihrw2ZpSl4Z+HRSqGNEr9j6W8jSsm8cCWHqW7NHdWPxpRCcBI4GPAd18kRIsN+z0UxZS@vger.kernel.org, AJvYcCVFDYm+X5Jz2+5nJ9CBrFxUmcogZC6jWdGpXd+bMT+wm0Dl5PB7hiDUGvj56aI9zZp1Z78=@vger.kernel.org, AJvYcCWbXBs/nHA8L9HX6/Bmtitv3D1RZx75Tu3rSihj/DzHcgMOEs4/u5jO78SePRIiakL3nD/OaiH7AvEzJ20kta5pypPL@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYZnCMQvOpKNUO4sqVsYDAqj1LNc60PxgQHiJxPEFXK2QNfb7y
-	7xAiAskSe60gsb7nh1QX8H+13eGZWAb419AZhihM6I8BNGbZho8p
-X-Gm-Gg: ASbGnctFrFU/rox5FdzvP17JeJKpALkoDmMFc4eUVXpFQD/61UHhzAAD6x0l6emkIHa
-	269bW9WuO5FYQroe9JETxIfX80H8BZmspOf1eEl3P2XR+mVvJ7S4FMF0LsjNQBgouWf5vM/yrO3
-	UQUaDDRSFQuN+0QxX8bd7UG38Gh3c1w3BjxOHSklYF+ByjBLjqXUz99lTt1gd2bH93LmjFxVwmu
-	M3J19ZzQTnge/T0FLeEl1EeQ+AvFZGP59qAWjK23AkwuRQTYn2U4U10nojgQrU9rRypqrVi9c+L
-	qKzQP2nPp+T74zjrzHm8Bg==
-X-Google-Smtp-Source: AGHT+IF3QIxVqstzt7kbzFsj1mb+uFadRK07ZMT0XR0Azfv46RHBNEKzufNoK/M/YIlBMZMJljlxsQ==
-X-Received: by 2002:a17:906:c113:b0:aab:eefc:92e5 with SMTP id a640c23a62f3a-ab6cfcde0f6mr1843984766b.14.1738494498690;
-        Sun, 02 Feb 2025 03:08:18 -0800 (PST)
-Received: from krava (37-188-150-0.red.o2.cz. [37.188.150.0])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e49ff2c6sm571736366b.96.2025.02.02.03.08.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Feb 2025 03:08:18 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Sun, 2 Feb 2025 12:08:13 +0100
-To: Eyal Birger <eyal.birger@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, Jiri Olsa <olsajiri@gmail.com>,
-	luto@amacapital.net, wad@chromium.org, oleg@redhat.com,
-	mhiramat@kernel.org, andrii@kernel.org,
-	alexei.starovoitov@gmail.com, cyphar@cyphar.com,
-	songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-	peterz@infradead.org, tglx@linutronix.de, bp@alien8.de,
-	daniel@iogearbox.net, ast@kernel.org, andrii.nakryiko@gmail.com,
-	rostedt@goodmis.org, rafi@rbk.io, shmulik.ladkani@gmail.com,
-	bpf@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] seccomp: passthrough uretprobe systemcall without
- filtering
-Message-ID: <Z59SHdsme3qlx8UZ@krava>
-References: <20250128145806.1849977-1-eyal.birger@gmail.com>
- <202501281634.7F398CEA87@keescook>
- <CAHsH6Gsv3DB0O5oiEDsf2+Go4O1+tnKm-Ab0QPyohKSaroSxxA@mail.gmail.com>
- <Z5s3S5X8FYJDAHfR@krava>
- <CAHsH6GvsGbZ4a=-oSpD1j8jx11T=Y4SysAtkzAu+H4_Gh7v3Qg@mail.gmail.com>
- <Z5v063xNVJfXCnKV@krava>
+	s=arc-20240116; t=1738500612; c=relaxed/simple;
+	bh=MTPFZBIfxOy8uT4qbzHSUJuG3ni2D5k94aaoqIc3bXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fycIMvu8R2zPFXZW4OxNlfOXOR9nXXcwJTdsUKis5aVX2l3/3PtmRcYwedNCGZGZ939pys4sLeHkjtDynefpBYCqXvGinjwv3Tjg29G3Tl1p9/z+D3wg38vU/fMLyqkRGezCU5CA1XDIxKP+Rbqb/D+H0vsv4hbr8uh6pO9ttJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.38])
+	by gateway (Coremail) with SMTP id _____8BxrOL2aZ9nmkRrAA--.17132S3;
+	Sun, 02 Feb 2025 20:49:58 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.38])
+	by front1 (Coremail) with SMTP id qMiowMBxUMbxaZ9nJ5Y0AA--.24704S2;
+	Sun, 02 Feb 2025 20:49:57 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Baoqi Zhang <zhangbaoqi@loongson.cn>
+Subject: [PATCH V2] USB: pci-quirks: Fix HCCPARAMS register error for LS7A EHCI
+Date: Sun,  2 Feb 2025 20:49:35 +0800
+Message-ID: <20250202124935.480500-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5v063xNVJfXCnKV@krava>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMBxUMbxaZ9nJ5Y0AA--.24704S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7urWrJF1DZrW7Wr47GrWrCrX_yoW8ZrWkpa
+	1UC3sruF1rJr4Svw4DK3W5XFy5uF1kCFyUtay7K3s8JFsxGa18JrykWryS9Fy2yF4fuF4j
+	qr47t34xK3W7JagCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+	1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
+	67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41l42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1YL9UUUUU=
 
-On Thu, Jan 30, 2025 at 10:53:47PM +0100, Jiri Olsa wrote:
+LS7A EHCI controller doesn't have extended capabilities, so the EECP
+(EHCI Extended Capabilities Pointer) field of HCCPARAMS register should
+be 0x0, but it reads as 0xa0 now. This is a hardware flaw and will be
+fixed in future, now just clear the EECP field to avoid error messages
+on boot:
 
-SNIP
+......
+[    0.581675] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581699] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581716] pci 0000:00:04.1: EHCI: unrecognized capability ff
+[    0.581851] pci 0000:00:04.1: EHCI: unrecognized capability ff
+......
+[    0.581916] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.581951] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582704] pci 0000:00:05.1: EHCI: unrecognized capability ff
+[    0.582799] pci 0000:00:05.1: EHCI: unrecognized capability ff
+......
 
-> > > > I think this would mean that this test suite would need to run as
-> > > > privileged. Is that Ok? or maybe it'd be better to have a new suite?
-> > > >
-> > > > > With at least these cases combinations below. Check each of:
-> > > > >
-> > > > >         - not using uretprobe passes
-> > > > >         - using uretprobe passes (and validates that uretprobe did work)
-> > > > >
-> > > > > in each of the following conditions:
-> > > > >
-> > > > >         - default-allow filter
-> > > > >         - default-block filter
-> > > > >         - filter explicitly blocking __NR_uretprobe and nothing else
-> > > > >         - filter explicitly allowing __NR_uretprobe (and only other
-> > > > >           required syscalls)
-> > > >
-> > > > Ok.
-> > >
-> > > please let me know if I can help in any way with tests
-> > 
-> > Thanks! Is there a way to partition this work? I'd appreciate the help
-> > if we can find some way of doing so.
-> 
-> sure, I'll check the seccomp selftests and let you know
-
-hi,
-if it's any help, feel free to use the code below that creates uretprobe,
-it could be bit simpler if we use libbpf, but I think that's not an option
-
-jirka
-
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Baoqi Zhang <zhangbaoqi@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 8c3a73461475..1f99d31d05a1 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -47,6 +47,7 @@
- #include <linux/kcmp.h>
- #include <sys/resource.h>
- #include <sys/capability.h>
-+#include <linux/perf_event.h>
- 
- #include <unistd.h>
- #include <sys/syscall.h>
-@@ -4888,6 +4889,130 @@ TEST(tsync_vs_dead_thread_leader)
- 	EXPECT_EQ(0, status);
- }
- 
-+__attribute__((noinline)) int probed(void)
-+{
-+        return 1;
-+}
+V2: Add a comment and don't touch pci_ids.h.
+
+ drivers/usb/host/pci-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/usb/host/pci-quirks.c b/drivers/usb/host/pci-quirks.c
+index 1f9c1b1435d8..0404489c2f6a 100644
+--- a/drivers/usb/host/pci-quirks.c
++++ b/drivers/usb/host/pci-quirks.c
+@@ -958,6 +958,15 @@ static void quirk_usb_disable_ehci(struct pci_dev *pdev)
+ 	 * booting from USB disk or using a usb keyboard
+ 	 */
+ 	hcc_params = readl(base + EHCI_HCC_PARAMS);
 +
-+static int parse_uint_from_file(const char *file, const char *fmt)
-+{
-+	int err = -1, ret;
-+	FILE *f;
++	/* LS7A EHCI controller doesn't have extended capabilities, the
++	 * EECP (EHCI Extended Capabilities Pointer) field of HCCPARAMS
++	 * register should be 0x0 but it reads as 0xa0.  So clear it to
++	 * avoid error messages on boot.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_LOONGSON && pdev->device == 0x7a14)
++		hcc_params &= ~(0xffL << 8);
 +
-+	f = fopen(file, "re");
-+	if (f) {
-+		err = fscanf(f, fmt, &ret);
-+		fclose(f);
-+	}
-+	return err == 1 ? ret : err;
-+}
-+
-+static int determine_uprobe_perf_type(void)
-+{
-+	const char *file = "/sys/bus/event_source/devices/uprobe/type";
-+
-+	return parse_uint_from_file(file, "%d\n");
-+}
-+
-+static int determine_uprobe_retprobe_bit(void)
-+{
-+	const char *file = "/sys/bus/event_source/devices/uprobe/format/retprobe";
-+
-+	return parse_uint_from_file(file, "config:%d\n");
-+}
-+
-+static ssize_t get_uprobe_offset(const void *addr)
-+{
-+	size_t start, base, end;
-+	bool found = false;
-+	char buf[256];
-+	FILE *f;
-+
-+	f = fopen("/proc/self/maps", "r");
-+	if (!f)
-+		return -1;
-+
-+	while (fscanf(f, "%zx-%zx %s %zx %*[^\n]\n", &start, &end, buf, &base) == 4) {
-+		if (buf[2] == 'x' && (uintptr_t)addr >= start && (uintptr_t)addr < end) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	fclose(f);
-+	return found ? (uintptr_t)addr - start + base : -1;
-+}
-+
-+static int create_uretprobe(void *addr)
-+{
-+	const size_t attr_sz = sizeof(struct perf_event_attr);
-+	struct perf_event_attr attr;
-+	ssize_t offset;
-+	int type, bit;
-+
-+	memset(&attr, 0, attr_sz);
-+
-+	type = determine_uprobe_perf_type();
-+	if (type < 0)
-+		return -1;
-+	bit = determine_uprobe_retprobe_bit();
-+	if (bit < 0)
-+		return -1;
-+	offset = get_uprobe_offset(probed);
-+	if (offset < 0)
-+		return -1;
-+
-+	attr.config |= 1 << bit;
-+	attr.size = attr_sz;
-+	attr.type = type;
-+	attr.config1 = ptr_to_u64("/proc/self/exe");
-+	attr.config2 = offset;
-+
-+	return syscall(__NR_perf_event_open, &attr,
-+			getpid() /* pid */, -1 /* cpu */, -1 /* group_fd */,
-+			PERF_FLAG_FD_CLOEXEC);
-+}
-+
-+TEST(uretprobe)
-+{
-+	struct sock_filter filter[] = {
-+		BPF_STMT(BPF_LD|BPF_W|BPF_ABS,
-+			offsetof(struct seccomp_data, nr)),
-+		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __NR_exit_group, 1, 0),
-+		BPF_STMT(BPF_RET|BPF_K, SECCOMP_RET_KILL),
-+		BPF_STMT(BPF_RET|BPF_K, SECCOMP_RET_ALLOW),
-+	};
-+	struct sock_fprog prog = {
-+		.len = (unsigned short)ARRAY_SIZE(filter),
-+		.filter = filter,
-+	};
-+	long ret;
-+	int fd;
-+
-+	fd = create_uretprobe(probed);
-+	ASSERT_GE(fd, 0) {
-+		TH_LOG("Failed to create uretprobe!!");
-+	}
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, NULL, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	ret = seccomp(SECCOMP_SET_MODE_FILTER, 0, &prog);
-+	ASSERT_NE(ENOSYS, errno) {
-+		TH_LOG("Kernel does not support seccomp syscall!");
-+	}
-+	EXPECT_EQ(0, ret) {
-+		TH_LOG("Could not install filter!");
-+	}
-+
-+	/* should not explode */
-+	probed();
-+
-+	/* we could call close(fd), but we'd need extra filter for
-+	 * that and since we we are calling _exit right away.. */
-+}
-+
- /*
-  * TODO:
-  * - expand NNP testing
+ 	offset = (hcc_params >> 8) & 0xff;
+ 	while (offset && --count) {
+ 		pci_read_config_dword(pdev, offset, &cap);
+-- 
+2.47.1
+
 
