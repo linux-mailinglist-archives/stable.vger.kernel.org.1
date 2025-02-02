@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF19A24CFD
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:53:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5713FA24D0A
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A801681AB
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:53:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A10C7A48E1
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F051D63D2;
-	Sun,  2 Feb 2025 07:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A87C1E3DCC;
+	Sun,  2 Feb 2025 07:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="PN3mnr/T"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="lnW4E4jz"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97121DB943
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12A01DDC1B
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738482657; cv=none; b=R//QpEKjVXTkrETzXyzaRvWc6jWsp0+wK8gTv3LG9U3ZbV0On4h4+moLE0BOrJXB2/LsxwljgTx+vdLUWdRO6y5hzd4O8u5t9BtS5Vo4RRLLIBv91y2yP+Rwhm+Yxe/PvG80LYfIZiVekp9VojA0QnN1/t0ltsWG7cxLTw4jcJM=
+	t=1738482659; cv=none; b=cyTXyQ0hkLHrGHVl26IIZ9VnqE4bm7A4MAX4gcz+1DSywlNWknaCVP6Q3tt4r2rCb1Gx/hRTbpGGF3qjTkdHqcCxsJaI8PRimzUbFE+MSAwAfMmtEHQxgbxpvVtqMOneEXY0T1v0ot3BPXj9y9xr2zMNeVjhTCIZsnNHe2JqeQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738482657; c=relaxed/simple;
-	bh=Wt9pUzg6U+FNdrm1QfxI36mH26Q8U2BFaUxwgTPu0LE=;
+	s=arc-20240116; t=1738482659; c=relaxed/simple;
+	bh=kyQ9akgwVX8wxCsx2V+xoWQH+koRQPP7eyCpSK9HL0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQdMiAIcEn9YVLPsE3YGnXdn8IRFkYW9iVCzoEVZY8KcwuFtkng63d+zlVev0AMCyEVkp6/F6jAISHOrb2+fVXq0AKHQcHuVR28We7z12HxlqMLw1mNj/MvYEHXLUdabphItGGlXEyytwdQtrXUSYcGGoKHQt5QXFGs1O317ZHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=PN3mnr/T; arc=none smtp.client-ip=195.133.245.4
+	 MIME-Version:Content-Type; b=UsSGa3LPIXJJrymrFmhqm1ROTVcymh3ob+F3BHwR5deeZe7xX4gWIAfbbTypbkWn1Zbsyo1hQGdZ07ivnIK/Cj3vfOmXtjgy9MjLWv6z0jy8Z7V476O5GXT+eeNpFtRk0t+K0vwUs2IWw3j71cjm2PtteH08vR4KBzFzna7y0rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=lnW4E4jz; arc=none smtp.client-ip=195.133.245.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id C92891C2441
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:53 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTP id 717A11C2439
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:56 +0300 (MSK)
 Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
 	reason="pass (just generated, assumed good)" header.d=nppct.ru
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:to:from:from; s=
-	dkim; t=1738482653; x=1739346654; bh=Wt9pUzg6U+FNdrm1QfxI36mH26Q
-	8U2BFaUxwgTPu0LE=; b=PN3mnr/TbbmsiNoXBQ13IL2uaAaCu4bZPOUGV6/3kqe
-	XAl4bHQBzHWE7fcgnlH98uJYPI9V4LMVl1qrbWJh9VfAw+nZ2XrU3Ru5oizaQaSj
-	Ue4Xd8LihrEK+EugvVsyEwiCnWhEhYa0lkSwfnqGlALCh7bj++lmG3+5v3MsFxeo
-	=
+	content-transfer-encoding:content-type:content-type:mime-version
+	:references:in-reply-to:x-mailer:message-id:date:date:subject
+	:subject:to:from:from; s=dkim; t=1738482656; x=1739346657; bh=ky
+	Q9akgwVX8wxCsx2V+xoWQH+koRQPP7eyCpSK9HL0k=; b=lnW4E4jz0X7Q/iwaou
+	t3J/3CMf7jOj5Gw48Loxfe9i6Uo/ZzL1l+wuvHYZ5l1Ww2gWDP6nbyA9uQi6yLOl
+	T2fBW5fwkzSCuETOwiTmt1xyG4w87ZnTVVr4tBjA/JWGu2YBtBirlOYoEKkS0a/F
+	pQ7XTPUp5NpqUUQH9IrzbIcIA=
 X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
 Received: from mail.nppct.ru ([127.0.0.1])
 	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id W4S1C5xqjWVm for <stable@vger.kernel.org>;
-	Sun,  2 Feb 2025 10:50:53 +0300 (MSK)
+	with ESMTP id hlt4yjTJ_iIQ for <stable@vger.kernel.org>;
+	Sun,  2 Feb 2025 10:50:56 +0300 (MSK)
 Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id B7A831C244F;
-	Sun,  2 Feb 2025 10:50:24 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTPSA id 8D0761C19B7;
+	Sun,  2 Feb 2025 10:50:25 +0300 (MSK)
 From: Alexey Nepomnyashih <sdl@nppct.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -78,10 +78,12 @@ Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
 	Joel Fernandes <joel@joelfernandes.org>,
 	rcu@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 6.1 14/16] rcu: Export rcu_request_urgent_qs_task()
-Date: Sun,  2 Feb 2025 07:46:51 +0000
-Message-ID: <20250202074709.932174-15-sdl@nppct.ru>
+	lvc-project@linuxtesting.org,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Hou Tao <houtao1@huawei.com>
+Subject: [PATCH 6.1 15/16] bpf: Remove unnecessary check when updating LPM trie
+Date: Sun,  2 Feb 2025 07:46:52 +0000
+Message-ID: <20250202074709.932174-16-sdl@nppct.ru>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250202074709.932174-1-sdl@nppct.ru>
 References: <20250202074709.932174-1-sdl@nppct.ru>
@@ -91,80 +93,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 43a89baecfe200cb4530f42b9fcf904925d6d14a upstream.
+commit 156c977c539e87e173f505b23989d7b0ec0bc7d8 upstream.
 
-If a CPU is executing a long series of non-sleeping system calls,
-RCU grace periods can be delayed for on the order of a couple hundred
-milliseconds.  This is normally not a problem, but if each system call
-does a call_rcu(), those callbacks can stack up.  RCU will eventually
-notice this callback storm, but use of rcu_request_urgent_qs_task()
-allows the code invoking call_rcu() to give RCU a heads up.
+When "node->prefixlen == matchlen" is true, it means that the node is
+fully matched. If "node->prefixlen == key->prefixlen" is false, it means
+the prefix length of key is greater than the prefix length of node,
+otherwise, matchlen will not be equal with node->prefixlen. However, it
+also implies that the prefix length of node must be less than
+max_prefixlen.
 
-This function is not for general use, not yet, anyway.
+Therefore, "node->prefixlen == trie->max_prefixlen" will always be false
+when the check of "node->prefixlen == key->prefixlen" returns false.
+Remove this unnecessary comparison.
 
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-2-houtao@huaweicloud.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230706033447.54696-11-alexei.starovoitov@gmail.com
 Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- include/linux/rcutiny.h | 2 ++
- include/linux/rcutree.h | 1 +
- kernel/rcu/rcu.h        | 4 ++--
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ kernel/bpf/lpm_trie.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/rcutiny.h b/include/linux/rcutiny.h
-index 768196a5f39d..68ebe147e45d 100644
---- a/include/linux/rcutiny.h
-+++ b/include/linux/rcutiny.h
-@@ -138,6 +138,8 @@ static inline int rcu_needs_cpu(void)
- 	return 0;
- }
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index fd6e31e72290..6c96241f49a4 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -358,8 +358,7 @@ static int trie_update_elem(struct bpf_map *map,
+ 		matchlen = longest_prefix_match(trie, node, key);
  
-+static inline void rcu_request_urgent_qs_task(struct task_struct *t) { }
-+
- /*
-  * Take advantage of the fact that there is only one CPU, which
-  * allows us to ignore virtualization-based context switches.
-diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
-index 5efb51486e8a..8d0cecced199 100644
---- a/include/linux/rcutree.h
-+++ b/include/linux/rcutree.h
-@@ -21,6 +21,7 @@ void rcu_softirq_qs(void);
- void rcu_note_context_switch(bool preempt);
- int rcu_needs_cpu(void);
- void rcu_cpu_stall_reset(void);
-+void rcu_request_urgent_qs_task(struct task_struct *t);
+ 		if (node->prefixlen != matchlen ||
+-		    node->prefixlen == key->prefixlen ||
+-		    node->prefixlen == trie->max_prefixlen)
++		    node->prefixlen == key->prefixlen)
+ 			break;
  
- /*
-  * Note a virtualization-based context switch.  This is simply a
-diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
-index af6a06b86298..edff841a1a69 100644
---- a/kernel/rcu/rcu.h
-+++ b/kernel/rcu/rcu.h
-@@ -452,7 +452,8 @@ static inline bool rcu_gp_is_normal(void) { return true; }
- static inline bool rcu_gp_is_expedited(void) { return false; }
- static inline void rcu_expedite_gp(void) { }
- static inline void rcu_unexpedite_gp(void) { }
--static inline void rcu_request_urgent_qs_task(struct task_struct *t) { }
-+static inline void rcu_async_hurry(void) { }
-+static inline void rcu_async_relax(void) { }
- #else /* #ifdef CONFIG_TINY_RCU */
- bool rcu_gp_is_normal(void);     /* Internal RCU use. */
- bool rcu_gp_is_expedited(void);  /* Internal RCU use. */
-@@ -464,7 +465,6 @@ void show_rcu_tasks_gp_kthreads(void);
- #else /* #ifdef CONFIG_TASKS_RCU_GENERIC */
- static inline void show_rcu_tasks_gp_kthreads(void) {}
- #endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
--void rcu_request_urgent_qs_task(struct task_struct *t);
- #endif /* #else #ifdef CONFIG_TINY_RCU */
- 
- #define RCU_SCHEDULER_INACTIVE	0
+ 		next_bit = extract_bit(key->data, node->prefixlen);
 -- 
 2.43.0
 
