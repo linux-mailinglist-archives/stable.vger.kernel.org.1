@@ -1,72 +1,115 @@
-Return-Path: <stable+bounces-111937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205F9A24C66
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 02:14:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A83A24CB7
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E407E7A28BE
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 01:13:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD407A29A4
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 06:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA154C8DF;
-	Sun,  2 Feb 2025 01:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KirhkOVr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3474817ADF7;
+	Sun,  2 Feb 2025 06:24:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA8E4C91;
-	Sun,  2 Feb 2025 01:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87DEE573;
+	Sun,  2 Feb 2025 06:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738458883; cv=none; b=kkE1ZGFTO43FHet8TzPMlXOSG92Q6RY3XAkVfp5+yHRhwrJnX13C1fGkQJFMYIl+D/1W2sK4OYcXElhwMRlMzVzcCmoX7/xT8bIuVnM8mjedmT41qcbkBOZpAYc4ss8oP9TE1GK7LzGVjegmhBei3b21TVqWAlnpTte1QNa5lpE=
+	t=1738477466; cv=none; b=WmdaxhagM5hyJhwrk8CTfimt4PysfKYZSOZ3dDdjmMuJaps2q4Q1WsHFO+xyICzuEjZm7LKG+q5TBJfjAaShrsS8V3QbR6MhOoruNdZI6yMvM+SDzTW3bNrvynOlJr0tb0AFzdlKDMKF+QRWK90W4rGsdbb9UJmCCwZS1ZRmBU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738458883; c=relaxed/simple;
-	bh=npX90+DiMFvMCTdtgmlUJPmHOKmJN19J0iy4bpHnpVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GlTvc9ojD8mEfjPgBbfTfux86QdnOQGHODHA6sbeN+fsFlMhPNSdqRWhqMqnQiWh5/rFLqHg1gdh+hgzMiQBx0YFzZPI/Q1GQDHlktftY4fqy55lx9mC6kTzAv7MZ1rXyBicZrg6FxF2Es6wn6VR1w5CwygkKsWeWPcY5YpsDbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KirhkOVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697B2C4CED3;
-	Sun,  2 Feb 2025 01:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738458882;
-	bh=npX90+DiMFvMCTdtgmlUJPmHOKmJN19J0iy4bpHnpVY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KirhkOVrNzpSq3yTbOlpSaCm9/puC/RQmJarziVj5EEgiPGqh999juWMIpBFgyUFu
-	 A4rbopY7RYybK0vP4lyHjgOtUpyR0zOTAnbR6eoP4PecG0u0uiKmVgUkmvn7ax2AOc
-	 I1RjiXDTbhgiRFXlsGEmQVMpxoIX6zEJCIYf0sIVgtIlXRniAytLf+MWdctMGTPf1w
-	 4udhRIqbdPFmneP3Mf3xh4rEN/YhA2Ktpr5azr/6CLZlntEuoN2kLzxmVo0vUk4Y2D
-	 AW6h6ByCJet9+gPhMDTezksZ6NGAzInQ7RY5Sy08+EsGzj/s4/Tuj4zqHhlhJdZNA+
-	 5A7IDtzPvMwUg==
-Date: Sat, 1 Feb 2025 17:14:41 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: <vkoul@kernel.org>
-Cc: Mohan Kumar D <mkumard@nvidia.com>, <thierry.reding@gmail.com>,
- <jonathanh@nvidia.com>, <dmaengine@vger.kernel.org>,
- <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-Subject: Re: [PATCH v3 0/2] Tegra ADMA fixes
-Message-ID: <20250201171441.407b91cb@kernel.org>
-In-Reply-To: <20250116162033.3922252-1-mkumard@nvidia.com>
-References: <20250116162033.3922252-1-mkumard@nvidia.com>
+	s=arc-20240116; t=1738477466; c=relaxed/simple;
+	bh=l3kfPrN9XiWFm/I7IsTWoZhsvRgKtXYUos4XXP6YSUg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G2bPBM89qBvjG+B+zB+t34g+g511z49cuEYz0ovD/TdzZJv1e2wMe+Xtgecy6W/u74I6qGsCFWodcJhZ+szju2aGG7pkrNERyQMKYxd6ds++Dh1V+wkf7CMPe74/XtVfXEkxFgbDseQrkroexrdlYntmsNNORJMKCJRJLpkpj58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowABHTlp+D59nwltaCg--.15816S2;
+	Sun, 02 Feb 2025 14:24:08 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: bhelgaas@google.com,
+	rafael.j.wysocki@intel.com,
+	yinghai@kernel.org
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] PCI: fix reference leak in pci_alloc_child_bus()
+Date: Sun,  2 Feb 2025 14:23:57 +0800
+Message-Id: <20250202062357.872971-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABHTlp+D59nwltaCg--.15816S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cr13CrykKFykXw4DtrW8WFg_yoW8JF47pa
+	s7Ga909rZ5JwnF9w48ZF18ZFyFkanFya4rurWrG347ua95CryxtFWakFy5Ww1kJFZ2yF1Y
+	q3ZrJa45KF4UAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbsYFJUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Thu, 16 Jan 2025 21:50:31 +0530 Mohan Kumar D wrote:
-> - Fix build error due to 64-by-32 division
-> - Additional check for adma max page
+When device_register(&child->dev) failed, we should call put_device()
+to explicitly release child->dev.
 
-Hi!
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
-What's happening with this series? The buggy commit reached Linus's
-tree and broke 32b builds for everybody. The patches look 2 weeks old.
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v3:
+- modified the description as suggestions.
+Changes in v2:
+- added the bug description about the comment of device_add();
+- fixed the patch as suggestions;
+- added Cc and Fixes table.
+---
+ drivers/pci/probe.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 2e81ab0f5a25..51b78fcda4eb 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
+ add_dev:
+ 	pci_set_bus_msi_domain(child);
+ 	ret = device_register(&child->dev);
+-	WARN_ON(ret < 0);
++	if (WARN_ON(ret < 0)) {
++		put_device(&child->dev);
++		return NULL;
++	}
+ 
+ 	pcibios_add_bus(child);
+ 
+-- 
+2.25.1
+
 
