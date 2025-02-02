@@ -1,182 +1,149 @@
-Return-Path: <stable+bounces-111958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77814A24D48
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 10:27:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F638A24D57
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 10:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F81B3A2802
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 09:27:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06E697A19C7
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 09:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3FA1C3BEA;
-	Sun,  2 Feb 2025 09:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F531D54F2;
+	Sun,  2 Feb 2025 09:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="g62jND9n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PBxM4cah"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BC18528E
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 09:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BCA17580;
+	Sun,  2 Feb 2025 09:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738488426; cv=none; b=KdnrSzxe2diyhLBD20aks4Mh/g10yhsl2Mca5Ryv9a4GDP5hYQIIsopeS4RM6y7wi5PvgOitBiRB2nk+55ZWwORhVcqGF8Dc5ZFYOwJgjIJwmvbn/2o4EPz5pZa8HXj/OD1iGSHLsnOvPkTLdB+/2XcPETtaru5xZGxF4gjICCc=
+	t=1738489454; cv=none; b=QuRfWRFNcKNFKfsOclKAqtYOruhzbLhvd2KOzRRWXLzoCixtbhrE/BmZQ7l//qCYfkNEOu7goCwvpe4XXUkSzkRtcd0Y6hn7OxpJ2PnTQfIV7Vd6tq5zbMEsWSCZX/E/IzpgQ8B6+grfds5LsrybW094sgKs25yEbD7zp9B4uHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738488426; c=relaxed/simple;
-	bh=inNoeeya3Z3kNOhz2JZ01m6Wk60ZO4TuWq8wITeqdT4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gVejv8wqyPXG9m03yR/oli2TqCDwI7ZDtTzX7KsgJKrK6DlHy2pjxhTfofW4irEXMV0Cl8JZxIH9s7JBzOquJHYZf5kowdfCfKySLEES8MXXGegvcDAqSrHqlud6u7ljs6CZ/bk0VXpM0JUnLhzy3eKzN3u+QNHFsLRrIIN+YFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=g62jND9n; arc=none smtp.client-ip=212.227.126.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1738488411; x=1739093211; i=christian@heusel.eu;
-	bh=inNoeeya3Z3kNOhz2JZ01m6Wk60ZO4TuWq8wITeqdT4=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=g62jND9nC7Yu8hLy9FDAGWU3UpNPNJEWys/HgEtlujwsB6+g2QsBGFXXtkKm3xZC
-	 iYu4QW239XythK0Ee+SLYH2joK0xjyYmCxKyiNwjznP1/7WrqmEVpZmUfY3icFmYN
-	 eoez00M18JBUsfsPhn+Xl3a6saYc0wv5i+tMyeCqmgopSankkWmG6psY2Dp+iu4V/
-	 zOmL9pYrjMrczFjo0VY+yClbiOit9OXp8DCWiN7DqAc9qYnMk0izvkLoZh4bZVbJW
-	 8hS1+TlBS9eAhJL3YXuj2fCGmYm0n45d1i0Im9aagB9mWkVwTC28XfREP2qpNv/xc
-	 /gFDl4UP7DvN//g7JQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([85.201.80.150]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MTiDV-1u1NEV3Dx7-00OzKw; Sun, 02 Feb 2025 10:26:50 +0100
-Date: Sun, 2 Feb 2025 10:26:49 +0100
-From: Christian Heusel <christian@heusel.eu>
-To: "Ahmed, Shehab Sarar" <shehaba2@illinois.edu>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: TCP Fast Retransmission Issue
-Message-ID: <fa131e75-7398-4add-8665-333b92bb500b@heusel.eu>
-References: <DS0PR11MB77682EBD149E7965F1D8E8F1FDEB2@DS0PR11MB7768.namprd11.prod.outlook.com>
- <DS0PR11MB7768A5B80C9BF2366CFEC89BFDEB2@DS0PR11MB7768.namprd11.prod.outlook.com>
- <f86dd0f6-6a2e-40f3-b0be-d9816ccb20cc@heusel.eu>
+	s=arc-20240116; t=1738489454; c=relaxed/simple;
+	bh=phTz817HIJFDlVQMxotl+fC1ygoVGjm+Cl6fWK6evsE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=VB+H3ruIow4vrQhTFy4isaW+Oklz5xKeWVgTBfFLM8+lY9ovKR+xs7Nw7skcelDGwSUWEKHKcD6jnwQXkVc7S7BTMxIzsJlE+wBU29zMJxARMKPY5gSqwp93dY6XYxf4VWVNgaNyanGKEXm8+i0lvYUicxkfQOUlYE4/hdrT5S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PBxM4cah; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d9837f201aso8384078a12.0;
+        Sun, 02 Feb 2025 01:44:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738489451; x=1739094251; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VdhVL6OAiuXkzODg3j/ldO0Z/8xWE8YWbcHrQvSsto4=;
+        b=PBxM4cahYTHccgIvfVqRGFwj6qss+Nm+0G17jOi6Q+GhP1YMB0TV+K5P6+R4/oBsQ7
+         OhUceaQmMZAl7fUvI2Kg/DJsGkY0icYw6byoXj4oYHh6QEEa15rjPw3ih8MbAMdISnA5
+         3pShiDSDch4lateMT02s18BJHsymlcxr0UCU/dED9DRqDgHwcJji3C+gTb+uMVljr7rX
+         0w7rdKdLD1u0OcEN/OlhQi4zEEzVY+r9Epo/Iv/XRcIkoxgAzEk4GR2jdcIfhm0lsWBk
+         1yrm26i+rfrQe2D5nRKf2W/JGAleCNlvuRewnqy4xyw1b4wXMKWrsG7MA+qhKSKLPBA0
+         dIxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738489451; x=1739094251;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VdhVL6OAiuXkzODg3j/ldO0Z/8xWE8YWbcHrQvSsto4=;
+        b=tC90v6H4JIu7AgHwWOWDqVi+u/X3Kl+lgMOzBt0sARKnVwjb+7EQGFVpMqxaFqO+XW
+         G6Zmj3b9sXBya+J3CHsmQmZBo4qpbLSQ9gZ6FJAQ6Vhb7UH5NkqUkFXtSXC4asUJq3Z9
+         zlvkQGeqVtQ78CgwtzW/ueNdwZyHM/PIN5wy3bxJCU/mTxquSdeCfsY/EwO4I0XQivgF
+         vf+PaU5ABDNV4SucTBg0NSmWbEO4H6xAcZJ+wUe7j2BB1kaDVQYLbm5UrtxztP5sRxoE
+         vfcKnUOimnA9IZiSc+YpU2Uh7joYN1kDMfVPeTkie6itHRv+81yTN+sK4OOWVK8WMM/+
+         cDww==
+X-Forwarded-Encrypted: i=1; AJvYcCUtYBvnRxv+K7reQ8RKY+s3uYjIv0LQ78ZGMVHLbPoicGZesqXUfm8WhmBpKk/oKPYcOf7rvqEHybrDqtv0@vger.kernel.org, AJvYcCV9X0zd9If7gtWFBVewl2SMZw4oWM4OE1opqUPKMCGk3HijQ5kaYxK8KQclznwAvNE0BW75W9NMz/x8Xw==@vger.kernel.org, AJvYcCVuAtDE+Cz/4NMI0kpEqMlqvOEafYng9gazJFyf4HILPDC6vyUqo+tpVXtjiFgI/3rtXWgMUaLS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrVOPd7DFhUf+I+YxqyOw+kZ5wTmcCHQ9TlzMX9lk+JuemXuyc
+	A4nfg0jMMfGuFIdxD+zmhk1R5rfeaIU1L5IuvoyrTDQPZ1U3zEMWQ0CvrkZoNh53PuqfLBKJgJ3
+	RBcRM3zkQaTL+6NkuUbGHmKKZdE4=
+X-Gm-Gg: ASbGnctkXQnMHgQEwX7aWGCaN26Qg+K4stTwzRZP7+rMiltwokJ0jq065pCM8sOikQe
+	zkcHK9oHxkihqB10xBIpOf1MFAhgsMKtBpVVtba4zoCcQUaJUgfhMwEjXDpbJJ5CQiQJ5GBPaBw
+	==
+X-Google-Smtp-Source: AGHT+IHNbGgo8vKUq54BhAMWJKgRdhTRrOwX7rnSY2Wa3qoKnk7FPQerC1qmn+llgOv5xMAbbdaWb/pC7FCjWl+rH2s=
+X-Received: by 2002:a05:6402:2706:b0:5d4:1c66:d783 with SMTP id
+ 4fb4d7f45d1cf-5dc6f3bc813mr15751885a12.0.1738489450963; Sun, 02 Feb 2025
+ 01:44:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pdou3xkbdw3rclph"
-Content-Disposition: inline
-In-Reply-To: <f86dd0f6-6a2e-40f3-b0be-d9816ccb20cc@heusel.eu>
-X-Provags-ID: V03:K1:YD1GHiD6TWjPs+5ut6u4eYdRLry6OGktT764oaLQwhVFihoNKMT
- Y+odj/wmWIxR0wC2l6Rb/efJHyAKX2NhKxP2C+J3I/GDu6YE5sfeLp3uP85THBz/2aebrKm
- EAnqJZsToqUjT4Tno6IK0hOIoa4IUzZU/toBo9glmJIF5SDmexgwWnUC6P4azXkOVIIX4Ia
- 0b0IvPGl41Abrq5hSG1pQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FlJoDDHhkiU=;1cOjWEAYL48s22JEW51Pa4+m6Oi
- DYj5lvLs6r1aRK/zllA4lE+69IbKsorQCU3Sh9B7b0gW2SSXrYFSTFZzxkHylt4Tkl6CNNwcN
- XN+dC0abi/I/r/ZcpsquCrtptY5eWhKvRKS9QkjnyE82immBTSibBQKjarDOx85ZCIiyBZcH8
- rmVmA9Zt9nklKDg/uo/klvZjRK9tzlwu5EUjB9E8xq1KTXupHIuEH9JzIOPCp0kepJB/Hnk0o
- uFO+info/vpdLqZ7AHoCjfvJ/RhuMxipOgUcS3Jk0ePql7FnafVtZQ5mkB70sR3oEWJCzKvva
- LEOzvu3jA6S+i8vdfsBDAJLcJInj/N+PjIY5EFyRhAWFyRC9D+CCKGAwS27OqQCP6F8+KDT0y
- h7sbmrtPpQGwfWk2of4uvaqPLQZcVW1UrTYiM37LflCq3bhJqxzO/KElx8O7MthjcXOieSBgU
- RxHjE0d/76Bsf8p/F4Hd+5C7ERkiNwkdsZJrIEN7plm2lmzMbbOOxTFM6+M4Q3gUtQpaMdgNy
- 3WYyE2bDTS08zhavaoOgjDtZj+PurpsVU83CSkvmi/EKJOkbyv0qVIUdKt0vi0lfCKRUq/q+5
- m6p+spWz3Dsp2z26Hoedm9HH5qfcM3o3Jyz+vIJK+CZCEBh9ghImN7r7ezGJ8uLxEgy+afzA1
- JOFya9UMyH+28BGXenZIzBzycNdEhCvTEcjeRcfV80f8TSnDYxpbMuxRURqErUHMAOF1q1fVh
- L3X/h+QXyhjSwIkFJivy5p1Jm5fZCnSX9GD1KchZ/u/m6wTQFw3sfASbyW79GNRL6AvmdWeuv
- gHmsbjKo2r8R1fwoNojgebk18A8sdx8LZDMGh+Rw70NCXfdGVsLR6HarwnC8uSRU3FRAxlRb9
- au+eU5jXkq+3doUDoy8V8dS+SwpvYkHCTreT8+lkMViLAzHW3E7tg6J/9Tm7QAfSXVSQFcAQH
- bSYWEaFTwKQswHpZwRIxbZIaO9Z6IWT7ZqzvErZLJiHJuTHBUpA6qPB/IvPN/rFMsFOAPWamk
- cOYtR3bFW4t9KqXhFAD2TPdZK6kVSIcO02qtXvC9zP1N2pjMxSw9Q2Qd9oHx+6RutMi8nHW9U
- QlHmFXirKBxjSW4CgKM825ZGiDqR+rOTs12XmENbwsUzG2Z0HrMsGPqGt75gM5xaFQjuxkdRx
- YR5NM/kOFBRyqUl3+NaaBB8gKucUfW3XyK0dE/FqxeO/eyw4qY7lKz5RYrCLTVw9EboGYiC07
- 570ufMN8lxHfAQKIxvHj/iSaUPRzZUeR2w==
-
-
---pdou3xkbdw3rclph
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20250131104129.11052-1-ink@unseen.parts> <6cb712c1c338d3ce5313e05a054ea9de21025ff0.camel@physik.fu-berlin.de>
+ <Z56qWp9GGuewJr1K@creeky>
+In-Reply-To: <Z56qWp9GGuewJr1K@creeky>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Sun, 2 Feb 2025 10:43:59 +0100
+X-Gm-Features: AWEUYZlXO60BUra0ObFm51YCCxFxArnZLlfEKc_6tVZCUZhZGiT12UxkACwzdzM
+Message-ID: <CA+=Fv5Sd8hwJN5uxoNEB0MttZ-EvkBRJsK9LDp9H-srJaa_y1g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] alpha: stack fixes
+To: Michael Cree <mcree@orcon.net.nz>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Ivan Kokshaysky <ink@unseen.parts>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Oleg Nesterov <oleg@redhat.com>, Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>, 
+	Magnus Lindholm <linmag7@gmail.com>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: TCP Fast Retransmission Issue
-MIME-Version: 1.0
 
-On 25/02/02 10:26AM, Christian Heusel wrote:
-> On 25/02/01 07:09PM, Ahmed, Shehab Sarar wrote:
-> > Hello,
->=20
-> Hello,
->=20
-> > While experimenting with bbr protocol, I manipulated the network condit=
-ions by maintaining a high RTT for about one second before abruptly reducin=
-g it. Some packets sent during the high RTT phase experienced long delays i=
-n reaching the destination, while later packets, benefiting from the lower =
-RTT, arrived earlier. This out-of-order arrival triggered the receiver to g=
-enerate duplicate acknowledgments (dup ACKs). Due to the low RTT, these dup=
- ACKs quickly reached the sender. Upon receiving three dup ACKs, the sender=
- initiated a fast retransmission for an earlier packet that was not lost bu=
-t was simply taking longer to arrive. Interestingly, despite the fast-retra=
-nsmitted packet experienced a lower RTT, the original delayed packet still =
-arrived first. When the receiver received this packet, it sent an ACK for t=
-he next packet in sequence. However, upon later receiving the fast-retransm=
-itted packet, an issue arose in its logic for updating the acknowledgment n=
-umber. As a result, even after the next expected packet was received, the a=
-cknowledgment number was not updated correctly. The receiver continued send=
-ing dup ACKs, ultimately forcing bbr into the retransmission timeout (RTO) =
-phase.
-> >=20
-> > I generated this issue in linux kernel version 5.15.0-117-generic with =
-Ubuntu 20.04. I attempted to confirm whether the issue persists with the la=
-test Linux kernel. However, I discovered that the behavior of bbr has chang=
-ed in the most recent kernel version, where it now sends chunks of packets =
-instead of sending them one by one over time. As a result, I was unable to =
-reproduce the specific sequence of events that triggered the bug we identif=
-ied. Consequently, I could not confirm whether the bug still exists in the =
-latest kernel.
-> >=20
-> > I believe that the issue (if still exists) will have to be resolved in =
-the location net/ipv4/tcp_input.c or something like that. There are so many=
- authors here that I do not know who to CC here. So, sending this email to =
-you. Sorry if this is not the best way to report this issue.
->=20
-> does this cause problems for real applications? To me it sounds a bit
-> like a constructed issue, but I'm also not really proficient about the
-> stack mentioned about :p
->=20
-> I'm asking because this is important for how we treat this report, see
-> the "Reporting Regression"[0] document for more details on what we
-> consider to be an regression.
->=20
-> > Thanks
-> > Shehab
->=20
+Hi,
+
+I've applied the patches to git 6.13.0-09954-g590a41bebc8c and the
+system has been running for more than 24 hours without any problems,
+I've generated some system load with building kernels and unpacking
+large tar.xz files. The patch series seems to have fixed the
+rcu-related issues with network interface renaming as well as the
+kernel module unload. I'm now also running tests with memory
+compaction enabled (CONFIG_COMPACTION). This used to cause seemingly
+random segmentation faults when enabled on alpha. So far, memory
+compaction seems to work with the patched kernel. With a little luck
+the issues seen with memory compaction on alpha were related to stack
+alignment problems as well.
+
+In any case, very impressive work with putting together these patches,
+this bodes well for the future for linux on alpha!
+
+Regards
+
+Magnus Lindholm
+
+On Sun, Feb 2, 2025 at 12:13=E2=80=AFAM Michael Cree <mcree@orcon.net.nz> w=
+rote:
+>
+> On Sat, Feb 01, 2025 at 10:46:43AM +0100, John Paul Adrian Glaubitz wrote=
+:
+> > Hi Ivan,
+> >
+> > On Fri, 2025-01-31 at 11:41 +0100, Ivan Kokshaysky wrote:
+> > > This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
+> > > Thanks to Magnus Lindholm for identifying that remarkably longstandin=
+g
+> > > bug.
+> > >
+> >
+> > Thanks, I'm testing the v2 series of the patches now.
+> >
+> > Adrian
+>
+> I've been running the patches on the 6.12.11 kernel for over 24 hours
+> now.  Going very well and, in particular, I would like to note that:
+>
+> The thread-test in the pixman package which has been failing for over
+> year 10 years on real Alpha hardware now passes!
+>
+> I have now successfully built guile-3.0 with threading support!
+> Previously guile would lock up on Alpha if threading support was
+> enabled.
+>
+> So there are some very long-standing bugs seen in user space that are
+> fixed by this patch series.
+>
 > Cheers,
-> Christian
-
-(forgot the link)
-
-[0]: https://docs.kernel.org/admin-guide/reporting-regressions.html#what-is=
--a-regression-and-what-is-the-no-regressions-rule
-
---pdou3xkbdw3rclph
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmefOlkACgkQwEfU8yi1
-JYWsWQ//enVk+r09f42STqtlW1PW3P73k7s5d84+MBgIpzGQElQW2b6ZIcla3AhZ
-0DVunS34Eereg+NbEbrQupzv2qOGMeukaAst6VSs+grnXguUYWBTwTKg5oPXlrp9
-gQ3Cw4Bs75FC66qg/8PxQG08PKwrbGW0foPMxECO2Mw5GkM0jvaoidCHVgVnly6+
-wl6+ms5cgeB5l8dpEtCid29V01OlZsYHdOOsatb2t++l8alYECXe3oplgaexARmW
-TgIOGcMJAMFhzXMNNfqGsDSZ8USPV4Nal4anCsIhlI5peoXs+MmfJWblj4CCj8P6
-aAs3hvFTWhaaEGNDpe6TLRwK7XMfnTUHCvTiiLbwxP2DhNp1bql35UBcPyqNc6pM
-onJrTxB3+yjo4vUhgX0Kn/0k2hjhKXa9gxqLt1q8oroN47UbyDOhXC5hy0P1kTXz
-aPTzFg4uKw/e1ZFL6GK4Rb1NCmJ41lQOLrNSyIIV3QTzOMTYNK9xHM8EY19ZP7ZF
-kFfHhzsm8MNk9sAFLgGbaibpnXWOEW3JVV5QIGIL3JA1gFIq8ZZqHlyHTbELW7vs
-BRGRriat0s6Ti1verOY4CDcKuA+VYlyWsrXqWjshh2fbNeePKwM4ApJ1OyDHWR79
-zGA9D1stv7mbkzmY+FiTI/utme1VrHRkUR6cp3bLzA8Ze/2Wn/A=
-=ZYSx
------END PGP SIGNATURE-----
-
---pdou3xkbdw3rclph--
+> Michael.
 
