@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9D6A24CF8
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:52:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC01DA24CFB
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:53:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F72A7A3C48
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:51:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773617A3ED3
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80BF1D9A70;
-	Sun,  2 Feb 2025 07:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6FC1DAC8E;
+	Sun,  2 Feb 2025 07:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="l6J6yGXu"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="GpI2mkVI"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9751D90AC
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1C1D8E16
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738482638; cv=none; b=HL2F2F8FOX7PyXOxiIVrMHdmJBWls4IBd6fh+0C8DvGlv/BK+pyu1sbZLo3NDSsiAqDRn7WLVhzkhEVRpUunJPbAWqJUe9kuY50P+IkkEL5hPrb4sA+WMFZ+tzlsmkDsPTavD4ETiuN+r5d4SiijhUQnROKkIhoTSWRGdpnSVr0=
+	t=1738482643; cv=none; b=EqLo8qhSW2EUUEecddPuxSFyCIx3AsBT7pFaKWphIF/1voUZPqCEY3PntIqe3Ou7ZcQURrgJFZDChVP07RnxqaUwKITEYsm3YrwLxzWQV+okwj5bv/auK1CAehOHwg323XuiQTplEvrHSjTi9YRikG01BhCCnPXmRFdSt/eyECA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738482638; c=relaxed/simple;
-	bh=iS5FENTRHCeErs805y4F7W7cpBpY4MI+F+t9xDGefGA=;
+	s=arc-20240116; t=1738482643; c=relaxed/simple;
+	bh=WDmPhbPjaBOyb4n4TIkxcM+XtXL4YuLClhkf3C21BIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYHyof5C1YnTz5q3wrGPlKIp3XIBsjkL5Bbbj5LNa46o9OFiclK1Aqp4rHq9+0JHbzvUeMLQ8fAtFclgTkh9/QvcqtTlCYCqOdkf3h1zv3T1/yeL6eL89su3aRNRxd8T/oxq3JSRhtabCGIZ9ivrTwsF17lmfUXKF+WwRLRGR6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=l6J6yGXu; arc=none smtp.client-ip=195.133.245.4
+	 MIME-Version; b=Q1ZIHZ0w5O/Op9GPyZxeJ5vvxxVuINC6xWywgjp6P9CTfqeOFe37wa+JqWLeASLiZ0KCcmu5QEHgxLCnFWsvShWM2V0+IAlLS/hTn9DOcP8a4v1CXFeyyRDhL/X7l5VFdARNt13FwgCs+rdGKBRtUBPFBW7YqXHY6tR/2RFDDLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=GpI2mkVI; arc=none smtp.client-ip=195.133.245.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 943661C2434
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:34 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTP id D0B4C1C2411
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:39 +0300 (MSK)
 Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
 	reason="pass (just generated, assumed good)" header.d=nppct.ru
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
 	content-transfer-encoding:mime-version:references:in-reply-to
 	:x-mailer:message-id:date:date:subject:subject:to:from:from; s=
-	dkim; t=1738482634; x=1739346635; bh=iS5FENTRHCeErs805y4F7W7cpBp
-	Y4MI+F+t9xDGefGA=; b=l6J6yGXu6JNqeEBCkvjjk2vaxzbDxxT5Vv5a+1P062H
-	TdNBm48jB6LtEN1lE3bDDMx/5WiB+BUdpKsBZIHHMBTZ5h4fKr7YXVzCD5OglaJY
-	CNEAfLRKkb9hFdgwUAJtKkP7k2/M7/YTx0TbGpg6NYMRJgxahm5sRBJZN+TMAdIA
+	dkim; t=1738482639; x=1739346640; bh=WDmPhbPjaBOyb4n4TIkxcM+XtXL
+	4YuLClhkf3C21BIM=; b=GpI2mkVILij7y1jHlkhf8FtEpvKBaV5Qzl0IzTDhahL
+	t4UrV6zUH//cHHmzXnzrscXZaaD6lS3VAuC9oRrTZSm/cWjd3TYQywe2VDsPDn/k
+	hgMxmLWM93hmfsLOjkLFHE+TifYhtZXf0YiWJ6i8p577sb2RhRT6i52kqt8VZqC4
 	=
 X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
 Received: from mail.nppct.ru ([127.0.0.1])
 	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id JKBhD3FQ1Ehb for <stable@vger.kernel.org>;
-	Sun,  2 Feb 2025 10:50:34 +0300 (MSK)
+	with ESMTP id C_6OwzNK9ILv for <stable@vger.kernel.org>;
+	Sun,  2 Feb 2025 10:50:39 +0300 (MSK)
 Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 6048B1C2418;
-	Sun,  2 Feb 2025 10:50:20 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTPSA id 68D931C241F;
+	Sun,  2 Feb 2025 10:50:21 +0300 (MSK)
 From: Alexey Nepomnyashih <sdl@nppct.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -80,9 +80,9 @@ Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	Hou Tao <houtao1@huawei.com>
-Subject: [PATCH 6.1 09/16] bpf: Change bpf_mem_cache draining process.
-Date: Sun,  2 Feb 2025 07:46:46 +0000
-Message-ID: <20250202074709.932174-10-sdl@nppct.ru>
+Subject: [PATCH 6.1 10/16] bpf: Add a hint to allocated objects.
+Date: Sun,  2 Feb 2025 07:46:47 +0000
+Message-ID: <20250202074709.932174-11-sdl@nppct.ru>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250202074709.932174-1-sdl@nppct.ru>
 References: <20250202074709.932174-1-sdl@nppct.ru>
@@ -96,79 +96,169 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-commit d114dde245f9115b73756203b03a633a6fc1b36a upstream.
+commit 822fb26bdb55932d0635f43cc418d2004b19e358 upstream.
 
-The next patch will introduce cross-cpu llist access and existing
-irq_work_sync() + drain_mem_cache() + rcu_barrier_tasks_trace() mechanism will
-not be enough, since irq_work_sync() + drain_mem_cache() on cpu A won't
-guarantee that llist on cpu A are empty. The free_bulk() on cpu B might add
-objects back to llist of cpu A. Add 'bool draining' flag.
-The modified sequence looks like:
-for_each_cpu:
-  WRITE_ONCE(c->draining, true); // do_call_rcu_ttrace() won't be doing call_rcu() any more
-  irq_work_sync(); // wait for irq_work callback (free_bulk) to finish
-  drain_mem_cache(); // free all objects
-rcu_barrier_tasks_trace(); // wait for RCU callbacks to execute
+To address OOM issue when one cpu is allocating and another cpu is freeing add
+a target bpf_mem_cache hint to allocated objects and when local cpu free_llist
+overflows free to that bpf_mem_cache. The hint addresses the OOM while
+maintaining the same performance for common case when alloc/free are done on the
+same cpu.
+
+Note that do_call_rcu_ttrace() now has to check 'draining' flag in one more case,
+since do_call_rcu_ttrace() is called not only for current cpu.
 
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20230706033447.54696-8-alexei.starovoitov@gmail.com
+Link: https://lore.kernel.org/bpf/20230706033447.54696-9-alexei.starovoitov@gmail.com
 Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- kernel/bpf/memalloc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/bpf/memalloc.c | 50 +++++++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 19 deletions(-)
 
 diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
-index bbd3fa2bf119..16a57cc4992c 100644
+index 16a57cc4992c..fb390dcdbdaa 100644
 --- a/kernel/bpf/memalloc.c
 +++ b/kernel/bpf/memalloc.c
-@@ -98,6 +98,7 @@ struct bpf_mem_cache {
- 	int free_cnt;
+@@ -99,6 +99,7 @@ struct bpf_mem_cache {
  	int low_watermark, high_watermark, batch;
  	int percpu_size;
-+	bool draining;
+ 	bool draining;
++	struct bpf_mem_cache *tgt;
  
  	/* list of objects to be freed after RCU tasks trace GP */
  	struct llist_head free_by_rcu_ttrace;
-@@ -301,6 +302,12 @@ static void do_call_rcu_ttrace(struct bpf_mem_cache *c)
- 		 * from __free_rcu() and from drain_mem_cache().
+@@ -199,18 +200,11 @@ static void alloc_bulk(struct bpf_mem_cache *c, int cnt, int node)
+ 
+ 	for (i = 0; i < cnt; i++) {
+ 		/*
+-		 * free_by_rcu_ttrace is only manipulated by irq work refill_work().
+-		 * IRQ works on the same CPU are called sequentially, so it is
+-		 * safe to use __llist_del_first() here. If alloc_bulk() is
+-		 * invoked by the initial prefill, there will be no running
+-		 * refill_work(), so __llist_del_first() is fine as well.
+-		 *
+-		 * In most cases, objects on free_by_rcu_ttrace are from the same CPU.
+-		 * If some objects come from other CPUs, it doesn't incur any
+-		 * harm because NUMA_NO_NODE means the preference for current
+-		 * numa node and it is not a guarantee.
++		 * For every 'c' llist_del_first(&c->free_by_rcu_ttrace); is
++		 * done only by one CPU == current CPU. Other CPUs might
++		 * llist_add() and llist_del_all() in parallel.
  		 */
- 		__llist_add(llnode, &c->waiting_for_gp_ttrace);
-+
-+	if (unlikely(READ_ONCE(c->draining))) {
-+		__free_rcu(&c->rcu_ttrace);
-+		return;
+-		obj = __llist_del_first(&c->free_by_rcu_ttrace);
++		obj = llist_del_first(&c->free_by_rcu_ttrace);
+ 		if (!obj)
+ 			break;
+ 		add_obj_to_free_list(c, obj);
+@@ -284,18 +278,23 @@ static void enque_to_free(struct bpf_mem_cache *c, void *obj)
+ 	/* bpf_mem_cache is a per-cpu object. Freeing happens in irq_work.
+ 	 * Nothing races to add to free_by_rcu_ttrace list.
+ 	 */
+-	__llist_add(llnode, &c->free_by_rcu_ttrace);
++	llist_add(llnode, &c->free_by_rcu_ttrace);
+ }
+ 
+ static void do_call_rcu_ttrace(struct bpf_mem_cache *c)
+ {
+ 	struct llist_node *llnode, *t;
+ 
+-	if (atomic_xchg(&c->call_rcu_ttrace_in_progress, 1))
++	if (atomic_xchg(&c->call_rcu_ttrace_in_progress, 1)) {
++		if (unlikely(READ_ONCE(c->draining))) {
++			llnode = llist_del_all(&c->free_by_rcu_ttrace);
++			free_all(llnode, !!c->percpu_size);
++		}
+ 		return;
 +	}
+ 
+ 	WARN_ON_ONCE(!llist_empty(&c->waiting_for_gp_ttrace));
+-	llist_for_each_safe(llnode, t, __llist_del_all(&c->free_by_rcu_ttrace))
++	llist_for_each_safe(llnode, t, llist_del_all(&c->free_by_rcu_ttrace))
+ 		/* There is no concurrent __llist_add(waiting_for_gp_ttrace) access.
+ 		 * It doesn't race with llist_del_all either.
+ 		 * But there could be two concurrent llist_del_all(waiting_for_gp_ttrace):
+@@ -318,10 +317,13 @@ static void do_call_rcu_ttrace(struct bpf_mem_cache *c)
+ 
+ static void free_bulk(struct bpf_mem_cache *c)
+ {
++	struct bpf_mem_cache *tgt = c->tgt;
+ 	struct llist_node *llnode, *t;
+ 	unsigned long flags;
+ 	int cnt;
+ 
++	WARN_ON_ONCE(tgt->unit_size != c->unit_size);
 +
- 	/* Use call_rcu_tasks_trace() to wait for sleepable progs to finish.
- 	 * If RCU Tasks Trace grace period implies RCU grace period, free
- 	 * these elements directly, else use call_rcu() to wait for normal
-@@ -538,15 +545,7 @@ void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma)
- 		rcu_in_progress = 0;
- 		for_each_possible_cpu(cpu) {
- 			c = per_cpu_ptr(ma->cache, cpu);
--			/*
--			 * refill_work may be unfinished for PREEMPT_RT kernel
--			 * in which irq work is invoked in a per-CPU RT thread.
--			 * It is also possible for kernel with
--			 * arch_irq_work_has_interrupt() being false and irq
--			 * work is invoked in timer interrupt. So waiting for
--			 * the completion of irq work to ease the handling of
--			 * concurrency.
--			 */
-+			WRITE_ONCE(c->draining, true);
- 			irq_work_sync(&c->refill_work);
- 			drain_mem_cache(c);
- 			rcu_in_progress += atomic_read(&c->call_rcu_ttrace_in_progress);
-@@ -562,6 +561,7 @@ void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma)
- 			cc = per_cpu_ptr(ma->caches, cpu);
- 			for (i = 0; i < NUM_CACHES; i++) {
- 				c = &cc->cache[i];
-+				WRITE_ONCE(c->draining, true);
- 				irq_work_sync(&c->refill_work);
- 				drain_mem_cache(c);
- 				rcu_in_progress += atomic_read(&c->call_rcu_ttrace_in_progress);
+ 	do {
+ 		inc_active(c, &flags);
+ 		llnode = __llist_del_first(&c->free_llist);
+@@ -331,13 +333,13 @@ static void free_bulk(struct bpf_mem_cache *c)
+ 			cnt = 0;
+ 		dec_active(c, flags);
+ 		if (llnode)
+-			enque_to_free(c, llnode);
++			enque_to_free(tgt, llnode);
+ 	} while (cnt > (c->high_watermark + c->low_watermark) / 2);
+ 
+ 	/* and drain free_llist_extra */
+ 	llist_for_each_safe(llnode, t, llist_del_all(&c->free_llist_extra))
+-		enque_to_free(c, llnode);
+-	do_call_rcu_ttrace(c);
++		enque_to_free(tgt, llnode);
++	do_call_rcu_ttrace(tgt);
+ }
+ 
+ static void bpf_mem_refill(struct irq_work *work)
+@@ -435,6 +437,7 @@ int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
+ 			c->unit_size = unit_size;
+ 			c->objcg = objcg;
+ 			c->percpu_size = percpu_size;
++			c->tgt = c;
+ 			prefill_mem_cache(c, cpu);
+ 		}
+ 		ma->cache = pc;
+@@ -457,6 +460,7 @@ int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
+ 			c = &cc->cache[i];
+ 			c->unit_size = sizes[i];
+ 			c->objcg = objcg;
++			c->tgt = c;
+ 			prefill_mem_cache(c, cpu);
+ 		}
+ 	}
+@@ -475,7 +479,7 @@ static void drain_mem_cache(struct bpf_mem_cache *c)
+ 	 * Except for waiting_for_gp_ttrace list, there are no concurrent operations
+ 	 * on these lists, so it is safe to use __llist_del_all().
+ 	 */
+-	free_all(__llist_del_all(&c->free_by_rcu_ttrace), percpu);
++	free_all(llist_del_all(&c->free_by_rcu_ttrace), percpu);
+ 	free_all(llist_del_all(&c->waiting_for_gp_ttrace), percpu);
+ 	free_all(__llist_del_all(&c->free_llist), percpu);
+ 	free_all(__llist_del_all(&c->free_llist_extra), percpu);
+@@ -595,8 +599,10 @@ static void notrace *unit_alloc(struct bpf_mem_cache *c)
+ 	local_irq_save(flags);
+ 	if (local_inc_return(&c->active) == 1) {
+ 		llnode = __llist_del_first(&c->free_llist);
+-		if (llnode)
++		if (llnode) {
+ 			cnt = --c->free_cnt;
++			*(struct bpf_mem_cache **)llnode = c;
++		}
+ 	}
+ 	local_dec(&c->active);
+ 	local_irq_restore(flags);
+@@ -620,6 +626,12 @@ static void notrace unit_free(struct bpf_mem_cache *c, void *ptr)
+ 
+ 	BUILD_BUG_ON(LLIST_NODE_SZ > 8);
+ 
++	/*
++	 * Remember bpf_mem_cache that allocated this object.
++	 * The hint is not accurate.
++	 */
++	c->tgt = *(struct bpf_mem_cache **)llnode;
++
+ 	local_irq_save(flags);
+ 	if (local_inc_return(&c->active) == 1) {
+ 		__llist_add(llnode, &c->free_llist);
 -- 
 2.43.0
 
