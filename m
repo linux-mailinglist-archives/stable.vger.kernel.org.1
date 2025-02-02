@@ -1,48 +1,86 @@
-Return-Path: <stable+bounces-111938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A83A24CB7
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:24:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 082A7A24CD8
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD407A29A4
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 06:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD1083A5A5B
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3474817ADF7;
-	Sun,  2 Feb 2025 06:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD951D5162;
+	Sun,  2 Feb 2025 07:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="fwxG3Bvr"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87DEE573;
-	Sun,  2 Feb 2025 06:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3EA130A73
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738477466; cv=none; b=WmdaxhagM5hyJhwrk8CTfimt4PysfKYZSOZ3dDdjmMuJaps2q4Q1WsHFO+xyICzuEjZm7LKG+q5TBJfjAaShrsS8V3QbR6MhOoruNdZI6yMvM+SDzTW3bNrvynOlJr0tb0AFzdlKDMKF+QRWK90W4rGsdbb9UJmCCwZS1ZRmBU0=
+	t=1738482511; cv=none; b=iZOjo8FMAGH4rH/9M8EwZw2BfxwTRDCLX9LcGISgCHZvMfK4WIr+hu+0ABLkWOnOFNSKpUC5lf7b9UJH8ZV7atsflc4k6aeTmMtDP6dzma/DPkU0LkYvLLT+8+2F9elLfl+OynVJl+9eodKD8Gqu/QDwsL7fN3EtVHDXwbmh5DY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738477466; c=relaxed/simple;
-	bh=l3kfPrN9XiWFm/I7IsTWoZhsvRgKtXYUos4XXP6YSUg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G2bPBM89qBvjG+B+zB+t34g+g511z49cuEYz0ovD/TdzZJv1e2wMe+Xtgecy6W/u74I6qGsCFWodcJhZ+szju2aGG7pkrNERyQMKYxd6ds++Dh1V+wkf7CMPe74/XtVfXEkxFgbDseQrkroexrdlYntmsNNORJMKCJRJLpkpj58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowABHTlp+D59nwltaCg--.15816S2;
-	Sun, 02 Feb 2025 14:24:08 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: bhelgaas@google.com,
-	rafael.j.wysocki@intel.com,
-	yinghai@kernel.org
-Cc: linux-pci@vger.kernel.org,
+	s=arc-20240116; t=1738482511; c=relaxed/simple;
+	bh=jBKl9aWHVPRunedWDfDLmp8zjxlO43EB/Sdp/YzUCJk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ti1GAEuXQarQHfr9rY97gUva6myCRZ4TCrrNfbQqd2AJY1YXOCLmGR3eZ4OxJcSTBlqT9ziSE7UXOU9cWQw7JEuF3uNiJh/O42/ZiU7KFFS79ThcE//yxuPdfHuwEoIld5zneeKDh4zxJZnafsCc/ClJCMHP4jiBxS89cZZasco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=fwxG3Bvr; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id BB7411C2437
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:48:18 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1738482498; x=
+	1739346499; bh=jBKl9aWHVPRunedWDfDLmp8zjxlO43EB/Sdp/YzUCJk=; b=f
+	wxG3BvrNe3dCXunsasnWaLG0qmQWbTGKjVXETveWJTOcVQMbF2bpRkwSbj9Dwn/i
+	1bPcjLPmUqQ7uVLmD1rC5wY6BygLrxvXCk+JoHz+qT78AVSkN8Tu6nmd1zKxhqw9
+	qkHuJguHpfiWQ0OtvdnfTW1RNY24bHCWQaVtogeOQc=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id PO1saaZ7PBeQ for <stable@vger.kernel.org>;
+	Sun,  2 Feb 2025 10:48:18 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 642871C19DD;
+	Sun,  2 Feb 2025 10:48:13 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	bpf@vger.kernel.org,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	rcu@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] PCI: fix reference leak in pci_alloc_child_bus()
-Date: Sun,  2 Feb 2025 14:23:57 +0800
-Message-Id: <20250202062357.872971-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	lvc-project@linuxtesting.org
+Subject: [PATCH 6.1 00/16] Fixes bpf and rcu
+Date: Sun,  2 Feb 2025 07:46:37 +0000
+Message-ID: <20250202074709.932174-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,66 +88,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowABHTlp+D59nwltaCg--.15816S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr13CrykKFykXw4DtrW8WFg_yoW8JF47pa
-	s7Ga909rZ5JwnF9w48ZF18ZFyFkanFya4rurWrG347ua95CryxtFWakFy5Ww1kJFZ2yF1Y
-	q3ZrJa45KF4UAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
-	6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUbsYFJUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-When device_register(&child->dev) failed, we should call put_device()
-to explicitly release child->dev.
+Hi, this series backports fix https://syzkaller.appspot.com/bug?id=d4d4abdb121f42913b3a149f2d846a7dd7eeb7e2 linux-6.1.y
 
-As comment of device_register() says, 'NOTE: _Never_ directly free
-@dev after calling this function, even if it returned an error! Always
-use put_device() to give up the reference initialized in this function
-instead.'
+Here is the summary with links:
+  - [6.1 01/16] bpf: Add a few bpf mem allocator functions.
+    https://git.kernel.org/bpf/bpf/c/e65a5c6edbc6
 
-Found by code review.
+  - [6.1 02/16] bpf: Factor out a common helper free_all().
+    https://git.kernel.org/bpf/bpf/c/aa7881fcfe9d
 
-Cc: stable@vger.kernel.org
-Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v3:
-- modified the description as suggestions.
-Changes in v2:
-- added the bug description about the comment of device_add();
-- fixed the patch as suggestions;
-- added Cc and Fixes table.
----
- drivers/pci/probe.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+  - [6.1 03/16] bpf: Rename few bpf_mem_alloc fields.
+    https://git.kernel.org/bpf/bpf/c/12c8d0f4c870
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 2e81ab0f5a25..51b78fcda4eb 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct pci_bus *parent,
- add_dev:
- 	pci_set_bus_msi_domain(child);
- 	ret = device_register(&child->dev);
--	WARN_ON(ret < 0);
-+	if (WARN_ON(ret < 0)) {
-+		put_device(&child->dev);
-+		return NULL;
-+	}
- 
- 	pcibios_add_bus(child);
- 
--- 
-2.25.1
+  - [6.1 04/16] bpf: Let free_all() return the number of freed elements.
+    https://git.kernel.org/bpf/bpf/c/9de3e81521b4
 
+  - [6.1 05/16] bpf: Refactor alloc_bulk().
+    https://git.kernel.org/bpf/bpf/c/05ae68656a8e
+
+  - [6.1 07/16] bpf: Use rcu_trace_implies_rcu_gp() in bpf memory allocator.
+    https://git.kernel.org/bpf/bpf/c/59be91e5e70a
+
+  - [6.1 08/16] bpf: Further refactor alloc_bulk().
+    https://git.kernel.org/bpf/bpf/c/7468048237b8
+
+  - [6.1 09/16] bpf: Change bpf_mem_cache draining process.
+    https://git.kernel.org/bpf/bpf/c/d114dde245f9
+
+  - [6.1 10/16] bpf: Add a hint to allocated objects.
+    https://git.kernel.org/bpf/bpf/c/822fb26bdb55
+
+  - [6.1 11/16] bpf: Introduce bpf_mem_free_rcu() similar to kfree_rcu().
+    https://git.kernel.org/bpf/bpf/c/5af6807bdb10
+
+  - [6.1 12/16] rcu: Fix missing nocb gp wake on rcu_barrier()
+    https://git.kernel.org/bpf/bpf/c/b8f7aca3f0e0
+
+  - [6.1 13/16] rcu: Make call_rcu() lazy to save power
+    https://git.kernel.org/bpf/bpf/c/3cb278e73be5
+
+  - [6.1 14/16] rcu: Export rcu_request_urgent_qs_task()
+    https://git.kernel.org/bpf/bpf/c/43a89baecfe2
+
+  - [6.1 15/16] bpf: Remove unnecessary check when updating LPM trie
+    https://git.kernel.org/bpf/bpf/c/156c977c539e
+
+  - [6.1 16/16] bpf: Switch to bpf mem allocator for LPM trie
+    https://git.kernel.org/bpf/bpf/c/3d8dc43eb2a3
 
