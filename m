@@ -1,413 +1,202 @@
-Return-Path: <stable+bounces-111955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3108BA24D06
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:53:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEC3A24D3E
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 10:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD4D168CBE
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:53:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 639A01884F58
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 09:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5FD1E3DFF;
-	Sun,  2 Feb 2025 07:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731981D515A;
+	Sun,  2 Feb 2025 09:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="V6eOvkMm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQThwvw1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988F81D63D5
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4B9442F;
+	Sun,  2 Feb 2025 09:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738482663; cv=none; b=Jw/9/rctpli/93S0NrCNOhK0ge+Iqve5mJr6ZMl8TobHmzpgu0bpNqgU0WnZWILuhjEg8qAmSIsRVvCMEy90Ld3bNQU/Z9bsnK7PQ4dgmtoLeZhY+S9brqqctoz8MrBBWnClQkCn/Lqe1n0e+LqxBfKq2fINqhbQvRwzudzQLlw=
+	t=1738486836; cv=none; b=WbarRHBSFEpIAS3fu+uvM+1e5pMy401nH1WovNva+ejvAzpJjUU5r4+Ub9gyKIELao9dOWabZCFy7YrTh2YdgjcL4sXKzmqQpB/xBYvR/HgHP5NVkFUY+YKY1Mv9rP4IvvcESCGDHciDNZC3W3TbO7mFGAv4bLWRKWROsCOW8qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738482663; c=relaxed/simple;
-	bh=nrEUDb2yI4y1BzlEM575yaU6iQwiTJdDE458/YxHbuY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cBMYNJLRksJG2xTF/AWihzMj0QSH4MrPZ3lS3zdHsjLBczFmqhXzgq0/efh10kRAjOqavdhwtPUjzt7w8NoN3YWPdhkenRNrRypNFz05wz3LwTABi1Jdpztu2ifGM/Cqe0MdPVcJe0oUfNzBKlsoJXXyvNBkoqI9HnGn0zAnMuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=V6eOvkMm; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 218101C2434
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:51:00 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:content-type:content-type:mime-version
-	:references:in-reply-to:x-mailer:message-id:date:date:subject
-	:subject:to:from:from; s=dkim; t=1738482659; x=1739346660; bh=nr
-	EUDb2yI4y1BzlEM575yaU6iQwiTJdDE458/YxHbuY=; b=V6eOvkMmGmGLSzbGrg
-	GPjL4vbeTvcLx+CS8hRfAalAQJTE1NsVDAqvHx1cCys+13I4KFHwFlFAmOpAxtF3
-	OEXhBYbWZq08NKWUPWI4nlxbn5HHfOofXFEl99JFXKgNI0+I2sMTOkwQh4dMj/vj
-	rSpZUbCyT9yWKKtnFdtSN5920=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7CekvygaCpQU for <stable@vger.kernel.org>;
-	Sun,  2 Feb 2025 10:50:59 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id E9D281C2424;
-	Sun,  2 Feb 2025 10:50:26 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yhs@fb.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	bpf@vger.kernel.org,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	rcu@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Hou Tao <houtao1@huawei.com>
-Subject: [PATCH 6.1 16/16] bpf: Switch to bpf mem allocator for LPM trie
-Date: Sun,  2 Feb 2025 07:46:53 +0000
-Message-ID: <20250202074709.932174-17-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250202074709.932174-1-sdl@nppct.ru>
-References: <20250202074709.932174-1-sdl@nppct.ru>
+	s=arc-20240116; t=1738486836; c=relaxed/simple;
+	bh=MpBjjylq1twhBWS4Y9mUkqelCZSN+3Z7Uiu/p1UY8f8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NhUwYuAfOct6FmTCOq1ke4f4c8JHuThgho28FC9Nu09AbWZXAmb/BKGA7iKldLkRJLYLHlyDx1UYkpZ1f/t8IwMv5IPPBe0pCqLOKeksUCAXbQroKLJRk6x9Il4j0NsXX1KFUoRXAEKByCTdeGML0drRyRWG69ZRfxrh1P6IJTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQThwvw1; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aaee0b309adso598990166b.3;
+        Sun, 02 Feb 2025 01:00:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738486832; x=1739091632; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DXWTm8HHzZWwuEhi+D2fW66OnMGZstu3WmHxOhUtx8c=;
+        b=MQThwvw1zP52/hIfuAiGY06tBvRMzS3W34KZCWjl7Ekes6bikWDYXZDyaqWxxpbola
+         nSfTysrCC5EHveW0h5xp0qzIZyDJ5nu9hElFpBqypgS9KHOzSO0TsQdmFHnAFW+WFE4T
+         cUmWgpHsiaD3Cq5nYMPMnk1TRwzTwWp3gDlAw49Xjy1z2fQuUOrOFM8ERQAw00HyE/8E
+         vb2Um5ENVw8str9Hs2hgLAOxiiE9GP5NZxkkTuouUV4rK1w95dpJlK8NVTCohYfHCgVG
+         7yEfMysvjwzgHy9m+wZhSUBaVEWjPx7niYdvDaeeM7CZR0dt7VBYB3B3GKVoR5tNllBy
+         eFPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738486832; x=1739091632;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DXWTm8HHzZWwuEhi+D2fW66OnMGZstu3WmHxOhUtx8c=;
+        b=d0MdrKU1/Qu6dkyoteFi8hnqFexa0L7bKKv2jlhkSdJazb108p810tmEXKkoHzsVlv
+         i0qdrE5WZLKdZPLUATUXzzGPe3LhSBEuF4Ck+PQbGvR/Lwc6cS5fdio52yi7LO946/O9
+         cSZ8x2rSPAMqpoBwLSc0u93V0OADcJXUeogfYIT5tqPMbV8JgE4vsDpAcvt2d60ItahK
+         p1tmQNKue+0e6JT0JXdnkYXOj/GUfl095uFGcNq/9lYK5YeYq9+aseVm/AC+QeosnzhS
+         otCr5jLmQEmKLPe9G046XcnauqWFuNzfS8aVp38Sr/JtC3k1KPsjwxljP3GH+m55Y535
+         Ju/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVbSF1G+UmNlzJkKk43o31wSQzxrG0vYV6qhSBeauubyS8nt+lIB/k669rmvCqv4wpMDKDzCpEM1HWsLGo=@vger.kernel.org, AJvYcCVtt6M5yGcIRt9RPFaaOM+cCcixtJ6wUDWwp7ADdjDvGh6z8hy1M0/CgheM332bPwCfw+fS+6yCvofcxmZI@vger.kernel.org, AJvYcCWylOHjit3T+VcteRUr+9YBBAoSzfvQCnUx4AcZ/lqjBdwrGexmBBtOK6q4aAzgu943U6Kq7s8K@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0nOdgzhe+VbgAZG21e47JSKUseNimZg1DhZ79bSYBVZreaZfL
+	cWtemz1csxZcDuU/SzO/JISs1Nxm2DCiR81m+mQ6pDYbU0Q8dJsW
+X-Gm-Gg: ASbGncvSQZWraCJ89PgXQ6Bi0uIz3gHSrnGBBi01ah1jveh8K3Y/7v5OGgz1/O8RetE
+	sX0YUPXLgwo0kAbfk9U04WZL5UyIr3UZxSQcDCi3zDAGx67ABsROEfxvQWyzJxBV454uil5xX+f
+	6NefFR2u0vhgKScn3iVYD0qRMR+kTYciFiLcu7L+0+eAGvK8y4I4sz8iIEoHx4SM/n8BL3lZySX
+	OfCvmCVEttdJfsBvcfQdZCvXKuB+2a+5sLuFZTmSuQ61tkAx71ruGJ+ZdoGV3xGQGPJ3b/rQ/Ye
+	bS0XvjyeE+5nJiLTKodqeDF32YLZ0ccND6+yfpfQnPWJ3VDu
+X-Google-Smtp-Source: AGHT+IHPfSEDZtHmIR0Im0QbSh1xu/QDKhIXuIbHW/Bd7eoZ00Axi2+6FYXSIB68wTZDMVavs6lt4A==
+X-Received: by 2002:a17:907:94cd:b0:ab2:fefe:7156 with SMTP id a640c23a62f3a-ab6cfdbc4f5mr2091243066b.43.1738486832028;
+        Sun, 02 Feb 2025 01:00:32 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47cf8bfsm543879266b.40.2025.02.02.01.00.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Feb 2025 01:00:30 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 9AA0DBE2EE7; Sun, 02 Feb 2025 10:00:29 +0100 (CET)
+Date: Sun, 2 Feb 2025 10:00:29 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Masahiro Yamada <masahiroy@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Parth Pancholi <parth105105@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2] kbuild: switch from lz4c to lz4 for compression
+Message-ID: <Z580LZIi2iXGzSv5@eldamar.lan>
+References: <20241114145645.563356-1-parth105105@gmail.com>
+ <2024111442-yeast-flail-fcea@gregkh>
+ <20241115083940.GA3971@francesco-nb>
+ <2024111541-antiquity-footpath-e221@gregkh>
+ <ZzcYLAFqTSlFm2uF@gaggiata.pivistrello.it>
+ <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com>
 
-From: Hou Tao <houtao1@huawei.com>
+Hi Greg, hi Yamada,
 
-commit 3d8dc43eb2a3d179809f5fc27c88c93a57ea123d upstream.
+On Sat, Nov 16, 2024 at 04:51:48PM +0900, Masahiro Yamada wrote:
+> On Fri, Nov 15, 2024 at 6:45 PM Francesco Dolcini <francesco@dolcini.it> wrote:
+> >
+> > On Fri, Nov 15, 2024 at 10:22:13AM +0100, Greg KH wrote:
+> > > On Fri, Nov 15, 2024 at 09:39:40AM +0100, Francesco Dolcini wrote:
+> > > > On Thu, Nov 14, 2024 at 05:02:01PM +0100, Greg KH wrote:
+> > > > > On Thu, Nov 14, 2024 at 03:56:44PM +0100, Parth Pancholi wrote:
+> > > > > > From: Parth Pancholi <parth.pancholi@toradex.com>
+> > > > > >
+> > > > > > Replace lz4c with lz4 for kernel image compression.
+> > > > > > Although lz4 and lz4c are functionally similar, lz4c has been deprecated
+> > > > > > upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
+> > > > > > and lz4c have been packaged together, making it safe to update the
+> > > > > > requirement from lz4c to lz4.
+> > > > > >
+> > > > > > Consequently, some distributions and build systems, such as OpenEmbedded,
+> > > > > > have fully transitioned to using lz4. OpenEmbedded core adopted this
+> > > > > > change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
+> > > > > > lz4c"), causing compatibility issues when building the mainline kernel
+> > > > > > in the latest OpenEmbedded environment, as seen in the errors below.
+> > > > > >
+> > > > > > This change also updates the LZ4 compression commands to make it backward
+> > > > > > compatible by replacing stdin and stdout with the '-' option, due to some
+> > > > > > unclear reason, the stdout keyword does not work for lz4 and '-' works for
+> > > > > > both. In addition, this modifies the legacy '-c1' with '-9' which is also
+> > > > > > compatible with both. This fixes the mainline kernel build failures with
+> > > > > > the latest master OpenEmbedded builds associated with the mentioned
+> > > > > > compatibility issues.
+> > > > > >
+> > > > > > LZ4     arch/arm/boot/compressed/piggy_data
+> > > > > > /bin/sh: 1: lz4c: not found
+> > > > > > ...
+> > > > > > ...
+> > > > > > ERROR: oe_runmake failed
+> > > > > >
+> > > > > > Cc: stable@vger.kernel.org
+> > > > >
+> > > > > What bug does this resolve that it needs to be backported to stable
+> > > > > kernels?
+> > > >
+> > > > This is not solving any existing actual bug, and therefore there is no
+> > > > fixes tag.
+> > > >
+> > > > The issue here is that the kernel build system is using lz4c, that is
+> > > > deprecated since 2018, and now distributions are actively moving away from it.
+> > > >
+> > > > openSUSE Tumbleweed and OE already removed it, so you would not be able
+> > > > to compile a stable kernel on such distribution when using lz4 unless we
+> > > > backport such a patch.
+> > > >
+> > > > Everything should be properly documented in the commit message already.
+> > > >
+> > > > My understanding is that something like that would be a reason for
+> > > > backporting to stable, if my understanding is not correct we'll remove
+> > > > the cc:stable and send a v3.
+> > >
+> > > Please read:
+> > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > > for what meets stable kernel requirements.  I don't think that this
+> > > patch is that.
+> >
+> > Greg, ack.
+> >
+> > Masahiro, can you please let me know if we should send a v3 with the stable
+> > tag removed or you can remove it yourself when applying?
+> >
+> 
+> I applied this with the stable tag removed.
+> Thanks.
+> 
+> (I guess someone may want to backport this eventually,
+> as such distros cannot build stable kernels with ld4 compression.)
 
-Multiple syzbot warnings have been reported. These warnings are mainly
-about the lock order between trie->lock and kmalloc()'s internal lock.
-See report [1] as an example:
+Yes please :)
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.10.0-rc7-syzkaller-00003-g4376e966ecb7 #0 Not tainted
-------------------------------------------------------
-syz.3.2069/15008 is trying to acquire lock:
-ffff88801544e6d8 (&n->list_lock){-.-.}-{2:2}, at: get_partial_node ...
+Greg, are you willing to reconsider this and pick e397a603e49c
+("kbuild: switch from lz4c to lz4 for compression") for inclusion to
+at least the more recent stable series (in particular 6.12.y).
 
-but task is already holding lock:
-ffff88802dcc89f8 (&trie->lock){-.-.}-{2:2}, at: trie_update_elem ...
+For instance Debian trixie will ship with at least lz4/1.10.0 which
+does not include anymore lz4c.
 
-which lock already depends on the new lock.
+In consequence our build fails now with the updated lz4 which "just"
+entered Debian unstable (for the kernel aimed to be used for the
+upcoming Debian trixie).
 
-the existing dependency chain (in reverse order) is:
+Regards:
+https://salsa.debian.org/carnil/linux/-/jobs/7022458/raw
 
--> #1 (&trie->lock){-.-.}-{2:2}:
-       __raw_spin_lock_irqsave
-       _raw_spin_lock_irqsave+0x3a/0x60
-       trie_delete_elem+0xb0/0x820
-       ___bpf_prog_run+0x3e51/0xabd0
-       __bpf_prog_run32+0xc1/0x100
-       bpf_dispatcher_nop_func
-       ......
-       bpf_trace_run2+0x231/0x590
-       __bpf_trace_contention_end+0xca/0x110
-       trace_contention_end.constprop.0+0xea/0x170
-       __pv_queued_spin_lock_slowpath+0x28e/0xcc0
-       pv_queued_spin_lock_slowpath
-       queued_spin_lock_slowpath
-       queued_spin_lock
-       do_raw_spin_lock+0x210/0x2c0
-       __raw_spin_lock_irqsave
-       _raw_spin_lock_irqsave+0x42/0x60
-       __put_partials+0xc3/0x170
-       qlink_free
-       qlist_free_all+0x4e/0x140
-       kasan_quarantine_reduce+0x192/0x1e0
-       __kasan_slab_alloc+0x69/0x90
-       kasan_slab_alloc
-       slab_post_alloc_hook
-       slab_alloc_node
-       kmem_cache_alloc_node_noprof+0x153/0x310
-       __alloc_skb+0x2b1/0x380
-       ......
-
--> #0 (&n->list_lock){-.-.}-{2:2}:
-       check_prev_add
-       check_prevs_add
-       validate_chain
-       __lock_acquire+0x2478/0x3b30
-       lock_acquire
-       lock_acquire+0x1b1/0x560
-       __raw_spin_lock_irqsave
-       _raw_spin_lock_irqsave+0x3a/0x60
-       get_partial_node.part.0+0x20/0x350
-       get_partial_node
-       get_partial
-       ___slab_alloc+0x65b/0x1870
-       __slab_alloc.constprop.0+0x56/0xb0
-       __slab_alloc_node
-       slab_alloc_node
-       __do_kmalloc_node
-       __kmalloc_node_noprof+0x35c/0x440
-       kmalloc_node_noprof
-       bpf_map_kmalloc_node+0x98/0x4a0
-       lpm_trie_node_alloc
-       trie_update_elem+0x1ef/0xe00
-       bpf_map_update_value+0x2c1/0x6c0
-       map_update_elem+0x623/0x910
-       __sys_bpf+0x90c/0x49a0
-       ...
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&trie->lock);
-                               lock(&n->list_lock);
-                               lock(&trie->lock);
-  lock(&n->list_lock);
-
- *** DEADLOCK ***
-
-[1]: https://syzkaller.appspot.com/bug?extid=9045c0a3d5a7f1b119f7
-
-A bpf program attached to trace_contention_end() triggers after
-acquiring &n->list_lock. The program invokes trie_delete_elem(), which
-then acquires trie->lock. However, it is possible that another
-process is invoking trie_update_elem(). trie_update_elem() will acquire
-trie->lock first, then invoke kmalloc_node(). kmalloc_node() may invoke
-get_partial_node() and try to acquire &n->list_lock (not necessarily the
-same lock object). Therefore, lockdep warns about the circular locking
-dependency.
-
-Invoking kmalloc() before acquiring trie->lock could fix the warning.
-However, since BPF programs call be invoked from any context (e.g.,
-through kprobe/tracepoint/fentry), there may still be lock ordering
-problems for internal locks in kmalloc() or trie->lock itself.
-
-To eliminate these potential lock ordering problems with kmalloc()'s
-internal locks, replacing kmalloc()/kfree()/kfree_rcu() with equivalent
-BPF memory allocator APIs that can be invoked in any context. The lock
-ordering problems with trie->lock (e.g., reentrance) will be handled
-separately.
-
-Three aspects of this change require explanation:
-
-1. Intermediate and leaf nodes are allocated from the same allocator.
-Since the value size of LPM trie is usually small, using a single
-alocator reduces the memory overhead of the BPF memory allocator.
-
-2. Leaf nodes are allocated before disabling IRQs. This handles cases
-where leaf_size is large (e.g., > 4KB - 8) and updates require
-intermediate node allocation. If leaf nodes were allocated in
-IRQ-disabled region, the free objects in BPF memory allocator would not
-be refilled timely and the intermediate node allocation may fail.
-
-3. Paired migrate_{disable|enable}() calls for node alloc and free. The
-BPF memory allocator uses per-CPU struct internally, these paired calls
-are necessary to guarantee correctness.
-
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-7-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- kernel/bpf/lpm_trie.c | 71 +++++++++++++++++++++++++++++--------------
- 1 file changed, 48 insertions(+), 23 deletions(-)
-
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 6c96241f49a4..12078b832132 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -15,6 +15,7 @@
- #include <net/ipv6.h>
- #include <uapi/linux/btf.h>
- #include <linux/btf_ids.h>
-+#include <linux/bpf_mem_alloc.h>
- 
- /* Intermediate node */
- #define LPM_TREE_NODE_FLAG_IM BIT(0)
-@@ -22,7 +23,6 @@
- struct lpm_trie_node;
- 
- struct lpm_trie_node {
--	struct rcu_head rcu;
- 	struct lpm_trie_node __rcu	*child[2];
- 	u32				prefixlen;
- 	u32				flags;
-@@ -32,6 +32,7 @@ struct lpm_trie_node {
- struct lpm_trie {
- 	struct bpf_map			map;
- 	struct lpm_trie_node __rcu	*root;
-+	struct bpf_mem_alloc		ma;
- 	size_t				n_entries;
- 	size_t				max_prefixlen;
- 	size_t				data_size;
-@@ -279,17 +280,18 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
- 	return found->data + trie->data_size;
- }
- 
--static struct lpm_trie_node *lpm_trie_node_alloc(const struct lpm_trie *trie,
--						 const void *value)
-+static struct lpm_trie_node *lpm_trie_node_alloc(struct lpm_trie *trie,
-+						 const void *value,
-+						 bool disable_migration)
- {
- 	struct lpm_trie_node *node;
--	size_t size = sizeof(struct lpm_trie_node) + trie->data_size;
- 
--	if (value)
--		size += trie->map.value_size;
-+	if (disable_migration)
-+		migrate_disable();
-+	node = bpf_mem_cache_alloc(&trie->ma);
-+	if (disable_migration)
-+		migrate_enable();
- 
--	node = bpf_map_kmalloc_node(&trie->map, size, GFP_NOWAIT | __GFP_NOWARN,
--				    trie->map.numa_node);
- 	if (!node)
- 		return NULL;
- 
-@@ -317,7 +319,7 @@ static int trie_update_elem(struct bpf_map *map,
- 			    void *_key, void *value, u64 flags)
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
--	struct lpm_trie_node *node, *im_node, *new_node = NULL;
-+	struct lpm_trie_node *node, *im_node, *new_node;
- 	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
-@@ -332,14 +334,14 @@ static int trie_update_elem(struct bpf_map *map,
- 	if (key->prefixlen > trie->max_prefixlen)
- 		return -EINVAL;
- 
--	spin_lock_irqsave(&trie->lock, irq_flags);
-+	/* Allocate and fill a new node. Need to disable migration before
-+	 * invoking bpf_mem_cache_alloc().
-+	 */
-+	new_node = lpm_trie_node_alloc(trie, value, true);
-+	if (!new_node)
-+		return -ENOMEM;
- 
--	/* Allocate and fill a new node */
--	new_node = lpm_trie_node_alloc(trie, value);
--	if (!new_node) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	spin_lock_irqsave(&trie->lock, irq_flags);
- 
- 	new_node->prefixlen = key->prefixlen;
- 	RCU_INIT_POINTER(new_node->child[0], NULL);
-@@ -415,7 +417,8 @@ static int trie_update_elem(struct bpf_map *map,
- 		goto out;
- 	}
- 
--	im_node = lpm_trie_node_alloc(trie, NULL);
-+	/* migration is disabled within the locked scope */
-+	im_node = lpm_trie_node_alloc(trie, NULL, false);
- 	if (!im_node) {
- 		trie->n_entries--;
- 		ret = -ENOMEM;
-@@ -439,10 +442,13 @@ static int trie_update_elem(struct bpf_map *map,
- 	rcu_assign_pointer(*slot, im_node);
- 
- out:
--	if (ret)
--		kfree(new_node);
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
--	kfree_rcu(free_node, rcu);
-+
-+	migrate_disable();
-+	if (ret)
-+		bpf_mem_cache_free(&trie->ma, new_node);
-+	bpf_mem_cache_free_rcu(&trie->ma, free_node);
-+	migrate_enable();
- 
- 	return ret;
- }
-@@ -540,8 +546,11 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
- 
- out:
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
--	kfree_rcu(free_parent, rcu);
--	kfree_rcu(free_node, rcu);
-+
-+	migrate_disable();
-+	bpf_mem_cache_free_rcu(&trie->ma, free_parent);
-+	bpf_mem_cache_free_rcu(&trie->ma, free_node);
-+	migrate_enable();
- 
- 	return ret;
- }
-@@ -563,6 +572,8 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
- static struct bpf_map *trie_alloc(union bpf_attr *attr)
- {
- 	struct lpm_trie *trie;
-+	size_t leaf_size;
-+	int err;
- 
- 	if (!bpf_capable())
- 		return ERR_PTR(-EPERM);
-@@ -590,7 +601,17 @@ static struct bpf_map *trie_alloc(union bpf_attr *attr)
- 
- 	spin_lock_init(&trie->lock);
- 
-+	/* Allocate intermediate and leaf nodes from the same allocator */
-+	leaf_size = sizeof(struct lpm_trie_node) + trie->data_size +
-+		    trie->map.value_size;
-+	err = bpf_mem_alloc_init(&trie->ma, leaf_size, false);
-+	if (err)
-+		goto free_out;
- 	return &trie->map;
-+
-+free_out:
-+	bpf_map_area_free(trie);
-+	return ERR_PTR(err);
- }
- 
- static void trie_free(struct bpf_map *map)
-@@ -622,13 +643,17 @@ static void trie_free(struct bpf_map *map)
- 				continue;
- 			}
- 
--			kfree(node);
-+			/* No bpf program may access the map, so freeing the
-+			 * node without waiting for the extra RCU GP.
-+			 */
-+			bpf_mem_cache_raw_free(node);
- 			RCU_INIT_POINTER(*slot, NULL);
- 			break;
- 		}
- 	}
- 
- out:
-+	bpf_mem_alloc_destroy(&trie->ma);
- 	bpf_map_area_free(trie);
- }
- 
--- 
-2.43.0
-
+Regards,
+Salvatore
 
