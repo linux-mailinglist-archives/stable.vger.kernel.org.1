@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-111947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151D5A24CF5
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:52:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9D6A24CF8
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 08:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2B13A772B
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:51:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F72A7A3C48
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 07:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1761D90B3;
-	Sun,  2 Feb 2025 07:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80BF1D9A70;
+	Sun,  2 Feb 2025 07:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="MX8nFQDU"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="l6J6yGXu"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB811D89EC
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9751D90AC
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 07:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738482636; cv=none; b=QbESAZiB2TKCjxc0pvmmh2jppE5oAv7duVPKsMQ9BWtnuioLXbPWSOank7aYZadiLlEAciZqVphglMif7NsXFurAnNJZKGnXsnBhJ5ySwf/bF0rPRjb/swKVgSX3kmYrK3eaJ1d4w9nXyescbHVZG4ZEFcwgE/z591JSb7As1Hc=
+	t=1738482638; cv=none; b=HL2F2F8FOX7PyXOxiIVrMHdmJBWls4IBd6fh+0C8DvGlv/BK+pyu1sbZLo3NDSsiAqDRn7WLVhzkhEVRpUunJPbAWqJUe9kuY50P+IkkEL5hPrb4sA+WMFZ+tzlsmkDsPTavD4ETiuN+r5d4SiijhUQnROKkIhoTSWRGdpnSVr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738482636; c=relaxed/simple;
-	bh=Ldo/Ykq4wKZ/UskHvq7gtWqHWtFrRYbBgy/43Zu43LU=;
+	s=arc-20240116; t=1738482638; c=relaxed/simple;
+	bh=iS5FENTRHCeErs805y4F7W7cpBpY4MI+F+t9xDGefGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E83NIShGp3vyEvzrz0OFcjdGafwYLUs9FV/4X9I2k3nODCoQmI/CTnCswRaU+WzgeH5rwEjcR12Ru94W6SyCVWr3Oaj18pO7UEqHsi2jCHg9zjWYMIJAx0beIi4Jbsmq0Zznb83MthpIWzkVHqjSGYjAA48Sa8sMTVvzbfahTEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=MX8nFQDU; arc=none smtp.client-ip=195.133.245.4
+	 MIME-Version; b=bYHyof5C1YnTz5q3wrGPlKIp3XIBsjkL5Bbbj5LNa46o9OFiclK1Aqp4rHq9+0JHbzvUeMLQ8fAtFclgTkh9/QvcqtTlCYCqOdkf3h1zv3T1/yeL6eL89su3aRNRxd8T/oxq3JSRhtabCGIZ9ivrTwsF17lmfUXKF+WwRLRGR6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=l6J6yGXu; arc=none smtp.client-ip=195.133.245.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
 Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id E2ECF1C2436
-	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:32 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTP id 943661C2434
+	for <stable@vger.kernel.org>; Sun,  2 Feb 2025 10:50:34 +0300 (MSK)
 Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
 	reason="pass (just generated, assumed good)" header.d=nppct.ru
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
 	content-transfer-encoding:mime-version:references:in-reply-to
 	:x-mailer:message-id:date:date:subject:subject:to:from:from; s=
-	dkim; t=1738482632; x=1739346633; bh=Ldo/Ykq4wKZ/UskHvq7gtWqHWtF
-	rRYbBgy/43Zu43LU=; b=MX8nFQDUfPi1jvKXJ0AiMCa8SdGcK/eEfSuVQD7316b
-	9veW8n84SaAZnTVF6VjCn4rNbrZmr2+5OJu9vCQnGYlCK2KfS36xzSCRWuej5wxR
-	twr6FgCdAyWKZm5jBzx7Yw9Aqk+Zqf6km81CbKlvO42vglbVYBs5B5EelbI8worY
+	dkim; t=1738482634; x=1739346635; bh=iS5FENTRHCeErs805y4F7W7cpBp
+	Y4MI+F+t9xDGefGA=; b=l6J6yGXu6JNqeEBCkvjjk2vaxzbDxxT5Vv5a+1P062H
+	TdNBm48jB6LtEN1lE3bDDMx/5WiB+BUdpKsBZIHHMBTZ5h4fKr7YXVzCD5OglaJY
+	CNEAfLRKkb9hFdgwUAJtKkP7k2/M7/YTx0TbGpg6NYMRJgxahm5sRBJZN+TMAdIA
 	=
 X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
 Received: from mail.nppct.ru ([127.0.0.1])
 	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 5L3QXcxlcMfU for <stable@vger.kernel.org>;
-	Sun,  2 Feb 2025 10:50:32 +0300 (MSK)
+	with ESMTP id JKBhD3FQ1Ehb for <stable@vger.kernel.org>;
+	Sun,  2 Feb 2025 10:50:34 +0300 (MSK)
 Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 74D741C242C;
-	Sun,  2 Feb 2025 10:50:19 +0300 (MSK)
+	by mail.nppct.ru (Postfix) with ESMTPSA id 6048B1C2418;
+	Sun,  2 Feb 2025 10:50:20 +0300 (MSK)
 From: Alexey Nepomnyashih <sdl@nppct.ru>
 To: stable@vger.kernel.org,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -80,9 +80,9 @@ Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
 	linux-kernel@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	Hou Tao <houtao1@huawei.com>
-Subject: [PATCH 6.1 08/16] bpf: Further refactor alloc_bulk().
-Date: Sun,  2 Feb 2025 07:46:45 +0000
-Message-ID: <20250202074709.932174-9-sdl@nppct.ru>
+Subject: [PATCH 6.1 09/16] bpf: Change bpf_mem_cache draining process.
+Date: Sun,  2 Feb 2025 07:46:46 +0000
+Message-ID: <20250202074709.932174-10-sdl@nppct.ru>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250202074709.932174-1-sdl@nppct.ru>
 References: <20250202074709.932174-1-sdl@nppct.ru>
@@ -96,71 +96,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexei Starovoitov <ast@kernel.org>
 
-commit 7468048237b8a99c03e1325b11373f9b29ef4139 upstream.
+commit d114dde245f9115b73756203b03a633a6fc1b36a upstream.
 
-In certain scenarios alloc_bulk() might be taking free objects mainly from
-free_by_rcu_ttrace list. In such case get_memcg() and set_active_memcg() are
-redundant, but they show up in perf profile. Split the loop and only set memcg
-when allocating from slab. No performance difference in this patch alone, but
-it helps in combination with further patches.
+The next patch will introduce cross-cpu llist access and existing
+irq_work_sync() + drain_mem_cache() + rcu_barrier_tasks_trace() mechanism will
+not be enough, since irq_work_sync() + drain_mem_cache() on cpu A won't
+guarantee that llist on cpu A are empty. The free_bulk() on cpu B might add
+objects back to llist of cpu A. Add 'bool draining' flag.
+The modified sequence looks like:
+for_each_cpu:
+  WRITE_ONCE(c->draining, true); // do_call_rcu_ttrace() won't be doing call_rcu() any more
+  irq_work_sync(); // wait for irq_work callback (free_bulk) to finish
+  drain_mem_cache(); // free all objects
+rcu_barrier_tasks_trace(); // wait for RCU callbacks to execute
 
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Acked-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20230706033447.54696-7-alexei.starovoitov@gmail.com
+Link: https://lore.kernel.org/bpf/20230706033447.54696-8-alexei.starovoitov@gmail.com
 Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
 ---
- kernel/bpf/memalloc.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ kernel/bpf/memalloc.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
-index 9a4fb4ea73ef..bbd3fa2bf119 100644
+index bbd3fa2bf119..16a57cc4992c 100644
 --- a/kernel/bpf/memalloc.c
 +++ b/kernel/bpf/memalloc.c
-@@ -196,8 +196,6 @@ static void alloc_bulk(struct bpf_mem_cache *c, int cnt, int node)
- 	void *obj;
- 	int i;
+@@ -98,6 +98,7 @@ struct bpf_mem_cache {
+ 	int free_cnt;
+ 	int low_watermark, high_watermark, batch;
+ 	int percpu_size;
++	bool draining;
  
--	memcg = get_memcg(c);
--	old_memcg = set_active_memcg(memcg);
- 	for (i = 0; i < cnt; i++) {
- 		/*
- 		 * free_by_rcu_ttrace is only manipulated by irq work refill_work().
-@@ -212,16 +210,24 @@ static void alloc_bulk(struct bpf_mem_cache *c, int cnt, int node)
- 		 * numa node and it is not a guarantee.
+ 	/* list of objects to be freed after RCU tasks trace GP */
+ 	struct llist_head free_by_rcu_ttrace;
+@@ -301,6 +302,12 @@ static void do_call_rcu_ttrace(struct bpf_mem_cache *c)
+ 		 * from __free_rcu() and from drain_mem_cache().
  		 */
- 		obj = __llist_del_first(&c->free_by_rcu_ttrace);
--		if (!obj) {
--			/* Allocate, but don't deplete atomic reserves that typical
--			 * GFP_ATOMIC would do. irq_work runs on this cpu and kmalloc
--			 * will allocate from the current numa node which is what we
--			 * want here.
--			 */
--			obj = __alloc(c, node, GFP_NOWAIT | __GFP_NOWARN | __GFP_ACCOUNT);
--			if (!obj)
--				break;
--		}
-+		if (!obj)
-+			break;
-+		add_obj_to_free_list(c, obj);
-+	}
-+	if (i >= cnt)
-+		return;
+ 		__llist_add(llnode, &c->waiting_for_gp_ttrace);
 +
-+	memcg = get_memcg(c);
-+	old_memcg = set_active_memcg(memcg);
-+	for (; i < cnt; i++) {
-+		/* Allocate, but don't deplete atomic reserves that typical
-+		 * GFP_ATOMIC would do. irq_work runs on this cpu and kmalloc
-+		 * will allocate from the current numa node which is what we
-+		 * want here.
-+		 */
-+		obj = __alloc(c, node, GFP_NOWAIT | __GFP_NOWARN | __GFP_ACCOUNT);
-+		if (!obj)
-+			break;
- 		add_obj_to_free_list(c, obj);
- 	}
- 	set_active_memcg(old_memcg);
++	if (unlikely(READ_ONCE(c->draining))) {
++		__free_rcu(&c->rcu_ttrace);
++		return;
++	}
++
+ 	/* Use call_rcu_tasks_trace() to wait for sleepable progs to finish.
+ 	 * If RCU Tasks Trace grace period implies RCU grace period, free
+ 	 * these elements directly, else use call_rcu() to wait for normal
+@@ -538,15 +545,7 @@ void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma)
+ 		rcu_in_progress = 0;
+ 		for_each_possible_cpu(cpu) {
+ 			c = per_cpu_ptr(ma->cache, cpu);
+-			/*
+-			 * refill_work may be unfinished for PREEMPT_RT kernel
+-			 * in which irq work is invoked in a per-CPU RT thread.
+-			 * It is also possible for kernel with
+-			 * arch_irq_work_has_interrupt() being false and irq
+-			 * work is invoked in timer interrupt. So waiting for
+-			 * the completion of irq work to ease the handling of
+-			 * concurrency.
+-			 */
++			WRITE_ONCE(c->draining, true);
+ 			irq_work_sync(&c->refill_work);
+ 			drain_mem_cache(c);
+ 			rcu_in_progress += atomic_read(&c->call_rcu_ttrace_in_progress);
+@@ -562,6 +561,7 @@ void bpf_mem_alloc_destroy(struct bpf_mem_alloc *ma)
+ 			cc = per_cpu_ptr(ma->caches, cpu);
+ 			for (i = 0; i < NUM_CACHES; i++) {
+ 				c = &cc->cache[i];
++				WRITE_ONCE(c->draining, true);
+ 				irq_work_sync(&c->refill_work);
+ 				drain_mem_cache(c);
+ 				rcu_in_progress += atomic_read(&c->call_rcu_ttrace_in_progress);
 -- 
 2.43.0
 
