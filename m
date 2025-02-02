@@ -1,153 +1,119 @@
-Return-Path: <stable+bounces-111976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA78DA24FDB
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 20:45:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75C4A24FE0
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 21:05:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E481884139
-	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 19:45:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 723FA3A4B67
+	for <lists+stable@lfdr.de>; Sun,  2 Feb 2025 20:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA00A1FE44D;
-	Sun,  2 Feb 2025 19:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77D1FAC48;
+	Sun,  2 Feb 2025 20:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9Ievev6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kT6lqjRl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48A51D79B8;
-	Sun,  2 Feb 2025 19:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25441D5CC7;
+	Sun,  2 Feb 2025 20:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738525519; cv=none; b=jFsccnsk+Ai4ofSOoKIP8pLwwI4FfO8Rm1OH+AKmu21tXH6NUHQLXIlMw4XJ3FpT0X+C8XKqD4zGMOfLOURWFA0G5HOjJ9LAStlqg+v5eo2X+BJDhk9Jb1sjSJpFUqA+i+oJrp43VkXvXkBrXsrTAFUPpj9EVR5Mo2KDw9UBCLw=
+	t=1738526721; cv=none; b=I5g1T75VR17MaZLYwjQ0k6rvwCYnDiJNp/WRCthJzRAntZ2La3M5Cf21R7z3JLY8XCqfnJeKArxaNEDOXzaS8mXyq449nP5w4sPUoHa/8eiGymRQumef3BAOdRPkD2815Z/WaJKCJ6WOjle3Khgp/yVzJinJ+XHM+nXtpXsVEDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738525519; c=relaxed/simple;
-	bh=9gF5mrBBicqlUvK3W8npHtv9jCS2cEgKII/yTMOkhVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uGI2Wejd/5hY8+qTcRnsUpP3PmXGiKf4qB3hoE+SQPdNbApq+ByBUq0BzGJxD5/RWJ3uaqxTU95f2Pr/jEEH78qGCInRFOsvamYPPztW1o9/JRMcBlJHwWkruPkTIxVdZqQulJI+bTrrXeJT5DBGKRJA5MzH35oBbrqFKmwZ0Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9Ievev6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9F0C4CED1;
-	Sun,  2 Feb 2025 19:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738525518;
-	bh=9gF5mrBBicqlUvK3W8npHtv9jCS2cEgKII/yTMOkhVU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Y9Ievev6TJxYOhvMTlDaKYtqHLPcrI8pVgoABAKVep0+ckqKTNR5H2PdMZtxNmzvQ
-	 53Qhx9IF+xY9u8982w3GkjfoexuiTkFX2eCp4B+IM0g9U4MlfbcIdDIr1KJoNprvrk
-	 kGVr+62LRd1cZVGqgnCgczfd4Ge3ztW7nFoid1ODx60Pd/Vzxit9bz4FZnJ8kYsIxr
-	 la02xOdnp5dnkvCB0mg8tbT2jWNQOXG8I/FCNRz8i1fFTx2aRdzJNl5YwRldWK2KZt
-	 XSFfJK391QAG1sqkS8DifpcLK4W3H2wPqEiXlD84tnswq1KLb63Nl0F/69ZE9Wyaqj
-	 TxeueMuX3APNg==
-Message-ID: <ca53ac34-a872-45bf-a744-1d69c797b8ee@kernel.org>
-Date: Sun, 2 Feb 2025 20:45:12 +0100
+	s=arc-20240116; t=1738526721; c=relaxed/simple;
+	bh=Kz4P9bcELSNfrbBeQNUDNzTAesztJwA4wKJufJxM4q4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KOJxnmKrfDDlrQe0QtMpQuOFjji2TEEjJv4iS9yCjyTTNsBDftOMOT8v7EiDADakNMi6Tu/VhQI0WWP7NDWJ0saVTfcccrKvUAQ70j81+GhMn5b8zrnPHSivJkQrj9jfYC1HAKyDUpjsAlWdSn2GAbzdrjKUxnuAMt3/Kys+GdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kT6lqjRl; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4679eacf25cso24632331cf.3;
+        Sun, 02 Feb 2025 12:05:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738526718; x=1739131518; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+10CD82lxWzunsGoUMRKvd8+UQ83WZ0ZHPFgD8iXDBU=;
+        b=kT6lqjRly7OSGW9UuCb63jNWh33r4xY3qSMA3JQ/ZnjMVNj/7zwxkPx7JnbfAFD9Nw
+         44if0UZltcpfdfa8gXUru1tP30PcripG7HRLoDNneXNgoDh03z5H7BHGQi29pRAKbv4Q
+         VKKOzHR6Q+xI9X/505gs/1aix0MnoRS7Zr/c+OvE+XeGbdmzeS6fu0mOXSaOcnwJ81BT
+         DBhvFcIgf6P7DdBpsyT9XjY+HXe64pzBwHiXS1h/QbzsPyYxsnXAk12/8Rd3CGptKOe5
+         qVfyO99DIErK5n+EGcULwAlfdOy9sbsFeceD1gJ4d3oh1lrBNcQQ69JFStlKkOCPXQoh
+         5+fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738526718; x=1739131518;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+10CD82lxWzunsGoUMRKvd8+UQ83WZ0ZHPFgD8iXDBU=;
+        b=GdJOhJn5VW6pTwTOT4jMEbs93B6wlVxwsz2Q5Z1v6nlidALky4wxiCugFZXkuVdR2Q
+         gS8AbjBNuJfDaqBKnqYQgbKE8aAers1VSatMqobYPL5l56mLzPDkUY7Kpl/qJwOYYByt
+         Xe3lIyffylYIc2eV9inOQvT/mtRec3WuvsLAj1LtwCOOf9V6URWFVc6XiyTu5OsqqJbA
+         6dOrNzSBUmMAB6INZhc/BGiVs/Txvi/gds2OjqWi+KyVnPkZ4k9iKu4M9djpTjPmmwrc
+         9QsqDxkEkBt2x77hezWzypve6jz4/noGu2YWBQby2X5X9YINnTTmAlcOCPS+tUGm6AUl
+         Q8eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWo/IrZfG00KHyW9WwC35os3EJjWvqKzi8mc6QnUrW+QuluWpEdqa2gtSJXz50cyhBYkeoiQto=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZGin+r1NBocjqUjocX72hOzf+yyrR9e3iKUh0RG3IXVLJNu4N
+	f/LfggBF4Xs+cDHecvpU6EAlofURU7pGNJMTsevl4vWxtUeNDdsQ
+X-Gm-Gg: ASbGncu2UZNV9Q+oObX0cE3PyJDr945ybcV1Yn85EueHmzmFVqSN1wnjNR2t1yLx+l+
+	cuM7+SBaVfBboFql9lAk3TPwwujE1b9wWT6z0bTKhG+eyu/y6FFaU89h1lxaySt1FHiGM0+sKgH
+	pJ0Ig6/8uK9DYAKMgDPzvMr+uGv86EhTPKqoxYqy1Tt0cgl5frELcjUjFygPHKmuCUqoBCAEIh4
+	UvhU2Z+gL++NiEWg2h5Ltx5BGkMFFtdsryEGOOar5vK1hRZENBeRGk2aCPNSBIlPK2XQSjFWajy
+	SzxJMGI8cbiPm/gB3W039inJeq9Ps/aA8yhVmA==
+X-Google-Smtp-Source: AGHT+IE1tSnv3JRhHS44+18cqNsa7mhNjsQ3k95O/VU43tiehcgoNfBXuNZWB2tmD3DDekK+CvFioQ==
+X-Received: by 2002:a05:622a:1a0d:b0:46e:548f:ab8d with SMTP id d75a77b69052e-46fd0b68d36mr263530411cf.37.1738526718323;
+        Sun, 02 Feb 2025 12:05:18 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46fdf0c90d2sm40708951cf.28.2025.02.02.12.05.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Feb 2025 12:05:18 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: broonie@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	mazziesaccount@gmail.com
+Cc: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: [PATCH] regmap-irq: Add missing kfree()
+Date: Sun,  2 Feb 2025 20:05:12 +0000
+Message-Id: <20250202200512.24490-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ARM: dts: aspeed: yosemite4: correct the compatible string
- for max31790" has been added to the 6.13-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- ricky.cx.wu.wiwynn@gmail.com
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>
-References: <20250202042320.1904328-1-sashal@kernel.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250202042320.1904328-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 02/02/2025 05:23, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     ARM: dts: aspeed: yosemite4: correct the compatible string for max31790
-> 
-> to the 6.13-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      arm-dts-aspeed-yosemite4-correct-the-compatible-stri.patch
-> and it can be found in the queue-6.13 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 64b29da76fb21bbb955e262461996d37865d4ae9
-> Author: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
-> Date:   Thu Oct 3 15:42:46 2024 +0800
-> 
->     ARM: dts: aspeed: yosemite4: correct the compatible string for max31790
->     
->     [ Upstream commit b1a1ecb669bfa763ee5e86a038d7c9363eee7548 ]
->     
->     Fix the compatible string for max31790 to match the binding document.
->     
->     Fixes: 2b8d94f4b4a4 ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
->     Signed-off-by: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
->     Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
->     Link: https://patch.msgid.link/20241003074251.3818101-6-Delphine_CC_Chiu@wiwynn.com
->     Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add kfree() for "d->main_status_buf" in the error-handling path to prevent
+a memory leak.
 
+Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+ drivers/base/regmap/regmap-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Sasha, something got broken in your scripts.
+diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+index 0bcd81389a29..b73ab3cda781 100644
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -906,6 +906,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 	kfree(d->wake_buf);
+ 	kfree(d->mask_buf_def);
+ 	kfree(d->mask_buf);
++	kfree(d->main_status_buf);
+ 	kfree(d->status_buf);
+ 	kfree(d->status_reg_buf);
+ 	if (d->config_buf) {
+-- 
+2.25.1
 
-I received today huge flood (100? 200?) of such stable confirmations,
-but I am not listed above at all. No tags came here from me, so why I am
-Cc-ed on all this?
-
-Best regards,
-Krzysztof
 
