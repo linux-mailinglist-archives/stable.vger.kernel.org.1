@@ -1,138 +1,183 @@
-Return-Path: <stable+bounces-111984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8621A25339
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:52:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC2EA25372
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513981627B6
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 07:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29E6D18847E3
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014B1E7C24;
-	Mon,  3 Feb 2025 07:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527CB1FAC5A;
+	Mon,  3 Feb 2025 08:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="EZJPwN+e"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VOZCFPIP"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98841C695
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 07:52:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC53594E
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 08:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738569163; cv=none; b=vGl6kzr5I74saYvKFlFGTFIklTdigP8gKaD2Wa5Ne97DtiQ6zyvUpiDIx84fjqkC6xNML9+BulYH9H4euguq6ry4NG4xtKzfyF2ezboZ8DZWWUcatUsht+vitqhGO4u0U7McHviwqhTN8y28xN7q8KqvGg4iqjxOy/1c8rhmvPU=
+	t=1738569642; cv=none; b=uxVZqDY6GHJDnG79YYA6KT7OvGt5ouj41TsZX1KLefnqZHvLxB9Xz7bV7u/5LgcKn045NWLbOmDsmCWe3v0Hz+Fc74C5ATR6hhmYiQ/zsw1zqCdWbXz9rs0bZxnHzTX5tts5kEKO1vKIUjoZv2MsF/YrMte+lBXJFjcjGDgd3tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738569163; c=relaxed/simple;
-	bh=2DtCr5V9H5bpO+P3uBjhXMXBDz+0px58KncF9jMtM2Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LQ5J36C6NQWoyhvPR2zO/sFi31f2gDcm2+9PdGU+WXltuTiL5w7ZzZj1MzGaHSHTQhYO9DYJqv3omBHMrvhOyiMa3ALcnnrjOi5DEH1XzChkrKZY5Q9XnKr1JJasu4Unoyv4Ohp7jKK7DBf6MUwOwey8dRBMWv9kOQuFQcWSDVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=EZJPwN+e; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=OwE47YQ82DfnXYCXvF2rfYbD60DN/+HjtdW+a/PgLP4=; b=EZJPwN+eWLS6Mct7gMUuCnS5a+
-	1khC3RdHoprFb3O/CmJZHHaTE2hDxCBZ9u37YPfpnmpWQqwIcNUhzHnOklC77DxFkuVQt82CcF6hd
-	bksqgUK02TXZ4+MCqRBom1h8JT8/L73IViPqR1XPyKLrX8JZJSK61d2t4NFi3tj4Y5p5LtbglV5uA
-	uAuKKYJmbxorKONp3J+OIzkJEy8V3nRaHIqLAfV9MgrhzNuwu4d3fomfi33KMLYJpYDimtUWsOrxQ
-	wj6B6HwuyevO2KJn3bR+59QYbmecYCmsYx7efhVDRF/0R2h96tFinzU8lEGUPHomAtoRJW/EbwP5y
-	OH8600CQ==;
-Received: from 253.red-79-144-234.dynamicip.rima-tde.net ([79.144.234.253] helo=localhost.localdomain)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1terFq-002w7Q-8X; Mon, 03 Feb 2025 08:52:32 +0100
-From: =?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>
-To: akpm@linux-foundation.org,
-	riel@surriel.com
-Cc: linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	kernel-dev@igalia.com,
-	revest@google.com
-Subject: [PATCH v2] mm,madvise,hugetlb: check for 0-length range after end address adjustment
-Date: Mon,  3 Feb 2025 08:52:06 +0100
-Message-ID: <20250203075206.1452208-1-rcn@igalia.com>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1738569642; c=relaxed/simple;
+	bh=jaKiohpGb5GRdH2MM0NHY0F9IMzao8bMivRAcK7K9P8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a0cxIcBQwaLkd/UKgplBwPhaM4K2Z5Ge430+hzsEfUWY+Rtm/cB3Hca1aupdyHsLA4wehGITBZa4/Z6EDoXhBaWu/VCEsOBNXWGgILSw+7tbSWgsZIAYJ4fNSU+a78N0qUBNq974XOl3UBo+Dcn2ccvE/YaJE4EoluS20tY89lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VOZCFPIP; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-218c8aca5f1so78747945ad.0
+        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 00:00:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738569639; x=1739174439; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xEhIHxdD7NA+wb7AGZrBPq/eWZXsbGs0lajgHFDORFY=;
+        b=VOZCFPIPJBsFnPu+4rYTCOdUOmVhs1EhTyShILZyxefa0G9uF1IyO8VRHv1ZiKzJNH
+         ZvQExOt0TpzVq4Jkj4M1KfyoX5jI+uyocCv2C1afuQIqBARvfIu85X7FmqbikqmPSZTE
+         AuIBqDMM6xfqLaKg20GEYWDhGVhkDfkFvqr19J5VDAH1rkcXpdB7Einds4Vwg2aPXrHp
+         ivgzTJqyO+CTiDbeKmBp8rcONn7jV7QNODlyvTutrRmvaExJT6v5sB76lfRy+AjHRE7E
+         gmSTtlt6xkLLyJyGuoRPd1pQmI7/PGRQ9R/UKJ0vS/bGrk6pjg1R9dlZBJPIiM8aVzYa
+         KKOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738569639; x=1739174439;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xEhIHxdD7NA+wb7AGZrBPq/eWZXsbGs0lajgHFDORFY=;
+        b=v/nVZ8jgiZTcSQINwkpqgI+eTzd1fUrCYgBcmB9T8lyvfKQyP/KwAFFVkPEK/BW8F0
+         hFtt/7Elk6VU8nnE4Q2icHiY2GkehGXIjUqMt8KSUrB/Ov9TrEKteS6ntlOFbFDqMSu4
+         DQTHmtgvU4qILCBrPPQnTNb2GcPo+6yHsOt/4Hl2LbPf2jFI4hndRNnNI4ghy7McOV3V
+         YHtmGklrF8a4+taDZ6WAN8a/Yd7/PyN4qBiNt2cRI3BN3Uap/mnL9N7rzFycfEs7zCsa
+         rxloBfeqBbBkiq3diyJIlcnSqbBFfJD25fpBqOZfRIzQ4xPZD7hhROfuYrWcgmDQqUVE
+         tDJA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1JHBbp+TdnnYt85aJwu1o9NkMMa+vb03VJ8Dwbyhk7kufBuHTBCuLgGkmGjbSFHTY25AOOvI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP00DhPQp0XyksRhj12Ia442AhBy5Ee+hOxk6AxtTHzbs1Edng
+	SmNghQaPm4cqHZlFAmbZc/AbREnzXyaM9OXOcEDf7afS1cRGDCoz5WqMWk2I3Vo=
+X-Gm-Gg: ASbGncv+lI1ViqB4WZCDaBOj1KyYePYYIOVgkahh268gRglXudD4AYtyIVmrT8K20J7
+	9wLKqI5FSOfsQUQ30OVwtt/iZTJeqXO4JOuBTVYvHrWtGUpene+EuGKL15ZZzxhcARUKRhXW20E
+	nmJWHvm+GVUaTxcqORobfF7CE+Zxjd8wvr3URFGk/NBOGDJyr2C0bQ4YAmZCYFKswiiV6r63dS3
+	JAiGgOek01KR7yaRqBebWbBw4vDooBnGTuxBFz6WpZdgYsdmIO1Nj0QGWmcy3OaaqmPcmIXVhQP
+	HGKyEBxwt2VuJOgM
+X-Google-Smtp-Source: AGHT+IFygNmOrpVihmSPJ5OWge6wX18dOo3mm00DI8j33PuGPe0wQOTVelVmoTclLlggQpQiNOjbbg==
+X-Received: by 2002:a17:902:d4c3:b0:216:6ef9:621 with SMTP id d9443c01a7336-21dd7d96eb8mr319257395ad.31.1738569639585;
+        Mon, 03 Feb 2025 00:00:39 -0800 (PST)
+Received: from sumit-X1.. ([223.178.212.16])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de31f71b9sm70236425ad.84.2025.02.03.00.00.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 00:00:39 -0800 (PST)
+From: Sumit Garg <sumit.garg@linaro.org>
+To: jens.wiklander@linaro.org,
+	arnd@arndb.de
+Cc: op-tee@lists.trustedfirmware.org,
+	jerome.forissier@linaro.org,
+	dannenberg@ti.com,
+	javier@javigon.com,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] tee: optee: Fix supplicant wait loop
+Date: Mon,  3 Feb 2025 13:30:30 +0530
+Message-ID: <20250203080030.384929-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add a sanity check to madvise_dontneed_free() to address a corner case
-in madvise where a race condition causes the current vma being processed
-to be backed by a different page size.
+OP-TEE supplicant is a user-space daemon and it's possible for it
+being hung or crashed or killed in the middle of processing an OP-TEE
+RPC call. It becomes more complicated when there is incorrect shutdown
+ordering of the supplicant process vs the OP-TEE client application which
+can eventually lead to system hang-up waiting for the closure of the
+client application.
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with
-a userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event. During this time, the vma covering the
-current address range may change due to an explicit mmap done
-concurrently by another thread.
+Allow the client process waiting in kernel for supplicant response to
+be killed rather than indefinitetly waiting in an unkillable state. This
+fixes issues observed during system reboot/shutdown when supplicant got
+hung for some reason or gets crashed/killed which lead to client getting
+hung in an unkillable state. It in turn lead to system being in hung up
+state requiring hard power off/on to recover.
 
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down
-to a hugepage boundary to avoid data loss (see "Fixes" below). This
-rounding may cause the end address to be truncated to the same address
-as the start.
-
-Make this corner case follow the same semantics as in other similar
-cases where the requested region has zero length (ie. return 0).
-
-This will make madvise_walk_vmas() continue to the next vma in the
-range (this time holding the process mm lock) which, due to the prev
-pointer becoming stale because of the vma change, will be the same
-hugepage-backed vma that was just checked before. The next time
-madvise_dontneed_free() runs for this vma, if the start address isn't
-aligned to a hugepage boundary, it'll return -EINVAL, which is also in
-line with the madvise api.
-
-From userspace perspective, madvise() will return EINVAL because the
-start address isn't aligned according to the new vma alignment
-requirements (hugepage), even though it was correctly page-aligned when
-the call was issued.
-
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 ---
+
 Changes in v2:
-- Added documentation in the code to tell the user how this situation
-  can happen. (Andrew)
----
- mm/madvise.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+- Switch to killable wait instead as suggested by Arnd instead
+  of supplicant timeout. It atleast allow the client to wait for
+  supplicant in killable state which in turn allows system to reboot
+  or shutdown gracefully.
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 49f3a75046f6..08b207f8e61e 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -933,7 +933,16 @@ static long madvise_dontneed_free(struct vm_area_struct *vma,
- 			 */
- 			end = vma->vm_end;
+ drivers/tee/optee/supp.c | 32 +++++++-------------------------
+ 1 file changed, 7 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/tee/optee/supp.c b/drivers/tee/optee/supp.c
+index 322a543b8c27..3fbfa9751931 100644
+--- a/drivers/tee/optee/supp.c
++++ b/drivers/tee/optee/supp.c
+@@ -80,7 +80,6 @@ u32 optee_supp_thrd_req(struct tee_context *ctx, u32 func, size_t num_params,
+ 	struct optee *optee = tee_get_drvdata(ctx->teedev);
+ 	struct optee_supp *supp = &optee->supp;
+ 	struct optee_supp_req *req;
+-	bool interruptable;
+ 	u32 ret;
+ 
+ 	/*
+@@ -111,36 +110,19 @@ u32 optee_supp_thrd_req(struct tee_context *ctx, u32 func, size_t num_params,
+ 	/*
+ 	 * Wait for supplicant to process and return result, once we've
+ 	 * returned from wait_for_completion(&req->c) successfully we have
+-	 * exclusive access again.
++	 * exclusive access again. Allow the wait to be killable such that
++	 * the wait doesn't turn into an indefinite state if the supplicant
++	 * gets hung for some reason.
+ 	 */
+-	while (wait_for_completion_interruptible(&req->c)) {
+-		mutex_lock(&supp->mutex);
+-		interruptable = !supp->ctx;
+-		if (interruptable) {
+-			/*
+-			 * There's no supplicant available and since the
+-			 * supp->mutex currently is held none can
+-			 * become available until the mutex released
+-			 * again.
+-			 *
+-			 * Interrupting an RPC to supplicant is only
+-			 * allowed as a way of slightly improving the user
+-			 * experience in case the supplicant hasn't been
+-			 * started yet. During normal operation the supplicant
+-			 * will serve all requests in a timely manner and
+-			 * interrupting then wouldn't make sense.
+-			 */
++	if (wait_for_completion_killable(&req->c)) {
++		if (!mutex_lock_killable(&supp->mutex))	{
+ 			if (req->in_queue) {
+ 				list_del(&req->link);
+ 				req->in_queue = false;
+ 			}
++			mutex_unlock(&supp->mutex);
  		}
--		VM_WARN_ON(start >= end);
-+		/*
-+		 * If the memory region between start and end was
-+		 * originally backed by 4kB pages and then remapped to
-+		 * be backed by hugepages while mmap_lock was dropped,
-+		 * the adjustment for hugetlb vma above may have rounded
-+		 * end down to the start address.
-+		 */
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
+-		mutex_unlock(&supp->mutex);
+-
+-		if (interruptable) {
+-			req->ret = TEEC_ERROR_COMMUNICATION;
+-			break;
+-		}
++		req->ret = TEEC_ERROR_COMMUNICATION;
  	}
  
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
+ 	ret = req->ret;
 -- 
-2.48.1
+2.43.0
 
 
