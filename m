@@ -1,76 +1,94 @@
-Return-Path: <stable+bounces-112050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AD2A26360
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 20:13:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D710A26388
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 20:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F02E43A0436
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 19:13:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AC683A5553
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 19:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1ED1D5CC4;
-	Mon,  3 Feb 2025 19:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FDCC2116EA;
+	Mon,  3 Feb 2025 19:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCivfkLX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IA6wl1kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1431D516A
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 19:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4714021149C;
+	Mon,  3 Feb 2025 19:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738610007; cv=none; b=A3634gq05HmRUknAfaCfZI5eTomEOqlV+SkRJHaRU4vni7rPVM1dUDHYDUUivcqOYvCJCQBXcHWt6EWuhGu6+rTreJEvyoIUTC5U3lx2n+Sb69nGnqDGK8rWIgfA9jTcpMk1ILYs3OWzRKe0agoz7Ynq/zH/O1olWe62yYtekQs=
+	t=1738610130; cv=none; b=EoYiQJLFOfMsWMt6lAtE0lNZmwwqdduFKrHa0ii2P9R1TBCvmlFM+uueaSZl1MVScydm1bITPs7QS32h92wVtRh0E1IbykdA22RPktyxA2Vot6jrSBymfPWqIJUls58xSG/whvY5orbgFCDh+hY1YxhTkF+pY9UEI2U19w8qBZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738610007; c=relaxed/simple;
-	bh=S1QsEQbF0ofCgIF3XQQ6sVB/qDGdcscPk9LERjUf714=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wg9FA60hE5XRheQxVwdo984pbuvtcEkXeI9Bld448pLc5y+3R7+fNf1fI/u4vdyA3IAKpv12C6YgcQnCUP0A7Yq2Gz9Hm0Fw/wrd6SUBPrhxHPavS7eLO/hwFgm1iEVkyXGu5shivK3XnTvVdxa6TxmQ9WMR88cZycyRNLSp6Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCivfkLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993C8C4CED2;
-	Mon,  3 Feb 2025 19:13:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738610007;
-	bh=S1QsEQbF0ofCgIF3XQQ6sVB/qDGdcscPk9LERjUf714=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QCivfkLX9w6rB7f1tOK+kWn4k8TPWPnA+rVgylrMW9M9/8n/YuhfImIZof9adVe+q
-	 C1jxDCoaC8pry3NpU82jVy7Vzd5S5uUfrsbp/Vq05S4ciLuX8kEJjBPzPsouNjmzcU
-	 5ZzeR9DkYtLTOoufW1kU55mqqOsmsW7YK7BjCaCM=
-Date: Mon, 3 Feb 2025 20:13:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Shubham Pushpkar -X (spushpka - E INFOCHIPS PRIVATE LIMITED at Cisco)" <spushpka@cisco.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [Fix CVE-2024-50217 in v6.6.y] [PATCH] btrfs: fix use-after-free
- of block device file in __btrfs_free_extra_devids()
-Message-ID: <2025020348-reacquire-filtrate-6299@gregkh>
-References: <20250203104254.4146544-1-spushpka@cisco.com>
- <2025020310-daydream-crop-4269@gregkh>
- <SA0PR11MB4701319AF5E422D47C4365C0D7F52@SA0PR11MB4701.namprd11.prod.outlook.com>
- <2025020300-operate-tag-f3d6@gregkh>
- <SA0PR11MB470126EB89552EDF95B010C8D7F52@SA0PR11MB4701.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1738610130; c=relaxed/simple;
+	bh=DNa/v4L4GNkBFQVY6p5fPmrvgQMyAR2FediJooOHzq8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bUl9smtCwnSYg3EJTRqeVblSVJsGo3cm0NxvUhrUa7Dni7KABTM0M3HI9ABOp6ZKlr8A+RmtHhwy31pdklyld3dJ2p4t21dey86NOFDiiq2yyToaL3uY78BC+ApbGF6Go0iu59OiAIkf7kXbz7XFwhPJQJUYZTgFs+AViLkA9qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IA6wl1kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268D0C4CED2;
+	Mon,  3 Feb 2025 19:15:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738610130;
+	bh=DNa/v4L4GNkBFQVY6p5fPmrvgQMyAR2FediJooOHzq8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=IA6wl1kD76UaA590vQjC8DR1CxUfDIk/wXotpFrZMhwfiIHpu4XETt1RNAgo7S9qZ
+	 lVLQOJu21i2CVWA+BqV0mnF3y6EV4mcsaOXCBha9CcL1XG/sHlsZ16oVfZBay9LSd+
+	 /4OSY7xiAEnSp67jxsmUGmOrjJ0w8RSvjaM++jzAVVNNugicDQOaAETQwJUwdOiEgB
+	 RvrmH3rdOg0RTni1PpklIpJf0ELAlaoq0FWqNmKj7SQkQILXjTqQ9Ry5BbiYHkS+Id
+	 yISPT3zKVcUp+/9ptx3WeWzRv3ZMnhjZ7YRZvtXWgG5tFSP9F8P3+iFerrAmNCzchK
+	 vEsIxFrxEdW2g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70D61380AA67;
+	Mon,  3 Feb 2025 19:15:58 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA0PR11MB470126EB89552EDF95B010C8D7F52@SA0PR11MB4701.namprd11.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v1] pwm: microchip-core: fix incorrect comparison with max
+ period
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <173861015701.3409359.18144530519616995351.git-patchwork-notify@kernel.org>
+Date: Mon, 03 Feb 2025 19:15:57 +0000
+References: <20250122-pastor-fancied-0b993da2d2d2@spud>
+In-Reply-To: <20250122-pastor-fancied-0b993da2d2d2@spud>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-pwm@vger.kernel.org,
+ conor.dooley@microchip.com, stable@vger.kernel.org,
+ daire.mcnamara@microchip.com, ukleinek@kernel.org, thierry.reding@gmail.com,
+ linux-kernel@vger.kernel.org
 
-On Mon, Feb 03, 2025 at 06:45:55PM +0000, Shubham Pushpkar -X (spushpka - E INFOCHIPS PRIVATE LIMITED at Cisco) wrote:
-> Thank you, Greg, for your feedback and for highlighting the importance
-> of thorough testing. I apologize for any oversight in my previous
-> submission. I will ensure that all future patches are rigorously
-> tested before submission.
+Hello:
 
-Again, they must be tested AND have a second signed-off-by from someone
-else in your company when you resend them as proof of this testing by
-both of you.
+This patch was applied to riscv/linux.git (fixes)
+by Uwe Kleine-König <ukleinek@kernel.org>:
 
-thanks,
+On Wed, 22 Jan 2025 14:42:56 +0000 you wrote:
+> From: Conor Dooley <conor.dooley@microchip.com>
+> 
+> In mchp_core_pwm_apply_locked(), if hw_period_steps is equal to its max,
+> an error is reported and .apply fails. The max value is actually a
+> permitted value however, and so this check can fail where multiple
+> channels are enabled.
+> 
+> [...]
 
-greg k-h
+Here is the summary with links:
+  - [v1] pwm: microchip-core: fix incorrect comparison with max period
+    https://git.kernel.org/riscv/c/752b6e3af374
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
