@@ -1,92 +1,55 @@
-Return-Path: <stable+bounces-112035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3E4A25E67
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:20:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B966A25E9F
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A0BD3AB92B
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:14:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C8F160AE4
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE3D209678;
-	Mon,  3 Feb 2025 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F343A20967A;
+	Mon,  3 Feb 2025 15:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Wr+bly4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvM/Es2i"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED89E205AA3
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 15:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C9A204C04;
+	Mon,  3 Feb 2025 15:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738595548; cv=none; b=HfWtejZ3BM+n0PUL21e4mr43VeUDIOQDMLtE6bxEA5yi6T/q/Od8Go7Pv53ceKmKAt4JL6wgueJf5K06twtq26Sv2h8Vpkp3bYaunmokGeUQszEaJgi/5a/xWukyNfWJrlrIq1zgqRp42btJ0QbGEejquprOb50PD978x5Ycoqk=
+	t=1738596362; cv=none; b=QQGgqSCFQFxVw7qMeqzC4I2DhghYETExUATEjrtVb3ylsME7bsKZAj7iMz+NuyGb5NLV5dYadotDsT4XfTzfe6Zm9Ubge6cBJw0thoLCBgaGmdGC1AGZZ7cJJzbVWSIREGdneo3fR3Ixpe85FxCJClFRLYrX715IrH+q02IhlUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738595548; c=relaxed/simple;
-	bh=De3tZJ+i6RyFMLShSETS1a0kwp/lElizeBd6vf1Kk1k=;
+	s=arc-20240116; t=1738596362; c=relaxed/simple;
+	bh=I9J//zaTMkgQl1PQBe/KCkPtbJtu1NQ1QIDIsizyG4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=efwwVNYpNPyGB/dMYSOKTConDzQ7+o7XbL6LR6ZI7ec3wk4Z8cIuh/Ky7FdCpbCD6/DaellJeYLWF/Kj+Mbjza+0N4TQL2T+frWpEHWdGByAmC93Ugfx83srh1o1OBDdn2pyU1fbF8EkEBtYYwyXZMZHpGBPw9T0r7dSd3hKXbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Wr+bly4O; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4678cd314b6so42347071cf.3
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 07:12:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1738595546; x=1739200346; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0uRjRCoiTmQxPaUbLc8rVKhXS5CF+EA4SHG9IAe/UnA=;
-        b=Wr+bly4OQKwdMoHg9Y0qe9L40TIko1GsFSUrkq2tX3li1sVXyzTNUvoF2QRYp1oqYU
-         N4yt/UwTmaiSY+6i5iE6ScjQG/r3rkvhRHLnQ8d2yH3sewm8gMtsP86dRLbjnHus+H0/
-         qDOq57vh3wFkq2TC0S+Zb6ySrOGUpP1lpNIqFv1bIkBpZeyqvFVfVjnAq/OXtj/8Khjy
-         9txacgMhzIoRZDgSoWu/jDv3TI0k8aCJUd8ZdJnXkKk4mYYyx6iW51LBSYYcNYtFrg7F
-         GkOOdzxsDnhXenaIrRA3Vt2o/sPyXzNqoq0rvRLtVdCB1TZLv7J1ysGZarggReTvDp6H
-         TGbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738595546; x=1739200346;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0uRjRCoiTmQxPaUbLc8rVKhXS5CF+EA4SHG9IAe/UnA=;
-        b=XJyvOU21DFWzmvSTEgRV8alMUotdN6DP57vHb/mfF1JC2FW90P6DdHp8fhHyZwVRrE
-         8meWn9MGXKL29n/GZ3C1T7rd62nmTrrzeezS0A9ixvQ/nQycx9Ch4KBDgtNnJlltaIgK
-         iQtRQuIPVXOq/p78w84rEP0DdF5+8ATcaOnJ4y0FBhZR5YkBiCV0UYwxhKl1B+20o5OU
-         7TTGjXYIJLWlc7F4JrngWGmyIROvzceUE8JIfV5AaLDHdooUK0caeApDDZ8GZEEKfsDI
-         evd8Vicghqod6aF18tX6cNN0buUQ6dAWfBY1aAMoFNOhRbIK6q9G3XrAWnWbbchCsYtR
-         309g==
-X-Forwarded-Encrypted: i=1; AJvYcCXzkFzc0BMqap2lWoubUZKVz60/WBFZP5xTVn9cUrvt8/COGdsNYHDpeqOyS7yr0YryzaUZSSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfbWjzP65jwj8z+wg8ZHBfIsgdyvcnGAGNprX1ACljOmi9eQk1
-	Rg68q7wwy0+/8ixC66VTgSgzAXtOVxTeqzj/7lnmRzLFPqLSTWd1UUZ89KydLT3AUWqbBG1xYEo
-	=
-X-Gm-Gg: ASbGnctgH6DowIPEmfXMwjZDoLbU1tU7xAwPkv4LjQMIR+1Z8SXRJSQ4Cv6rQgmmzcp
-	/mAFHtZwhdQw8qtSy5Mc/ZyeY+FMZjNZb5biMsEinshj2tdVN34JgBXsv0+5+MfGMoNfo0FS78N
-	cObpYP7+s3PYDtIaGNZwFvAyimexUjYokb5IAvThhLg40vnmDa+IBSzsPDTTporeTrD2t5IY02W
-	rD83Lzl088X7yv6OPyyZlUCe1KROGUeplFhTzuLXXHuiVuhIR4+ct+lTi2zplwupGOq+ox7CXmo
-	Wa0zn04txBFo3yVzFyf9WZjsTlNSmSqntQ==
-X-Google-Smtp-Source: AGHT+IHyUL2x0qBbG+DgG0G3rjDNRAFJ94tx2vEQWzKX0Qbs1ZMr7OqI1ExwtF+LFOaQezc0ZvX8xA==
-X-Received: by 2002:a05:622a:13d4:b0:467:57c8:ca31 with SMTP id d75a77b69052e-46fd0ba39dfmr318463241cf.46.1738595545561;
-        Mon, 03 Feb 2025 07:12:25 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46ff30fc6fesm33943751cf.27.2025.02.03.07.12.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 07:12:25 -0800 (PST)
-Date: Mon, 3 Feb 2025 10:12:23 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-Message-ID: <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
- <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
- <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
- <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sLRnk6exoMo8gboq693+qTSm+xng+s5vvQSeka9BonhfbqS5XHxyxPKai0JrDSKSL21g0aXjrJCb24iM79Z+sgv9UMQgA6zZNyNSJKV0XYL7xAWPOjdO/neZe1DJIXNYCHxNgx9y40bo4sxTNK9xlEYawe1oRzvvUfOL3inNHZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvM/Es2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E43C4CED2;
+	Mon,  3 Feb 2025 15:26:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738596362;
+	bh=I9J//zaTMkgQl1PQBe/KCkPtbJtu1NQ1QIDIsizyG4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CvM/Es2it1v/17q9LLvh68nzNiPbCVMRmTysEhmn0dX2k7mNK2bYm5NVUU4ci1O+f
+	 W3fLl4KhpBcmgYnVRr7uIXnS4gpaYSc8hmYON1rfJJBU5wMlcxW3H13huTsIWuRbzC
+	 rvrn+kDt0/8Tem/q66caiehlv+VTivDojFw/5xtw=
+Date: Mon, 3 Feb 2025 16:25:58 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: nb@tipi-net.de
+Cc: Mathias Nyman <mathias.nyman@intel.com>,
+	Ben Hutchings <ben@decadent.org.uk>, n.buchwitz@kunbus.com,
+	l.sanfilippo@kunbus.com, stable@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] usb: xhci: Restore Renesas uPD72020x support in xhci-pci
+Message-ID: <2025020336-filled-hardiness-e9f2@gregkh>
+References: <20250203120026.2010567-1-nb@tipi-net.de>
+ <2025020307-charity-snowfield-c975@gregkh>
+ <5965e4219781df26f733a2e93bed9f37@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,76 +59,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+In-Reply-To: <5965e4219781df26f733a2e93bed9f37@tipi-net.de>
 
-On Sat, Feb 01, 2025 at 11:55:03AM -0500, Alan Stern wrote:
-> On Sat, Feb 01, 2025 at 02:42:43PM +0800, Huacai Chen wrote:
-> > Hi, Alan,
+On Mon, Feb 03, 2025 at 02:00:55PM +0100, nb@tipi-net.de wrote:
+> On 3.2.2025 13:46, Greg Kroah-Hartman wrote:
+> > On Mon, Feb 03, 2025 at 01:00:26PM +0100, nb@tipi-net.de wrote:
+> > > From: Nicolai Buchwitz <nb@tipi-net.de>
+> > > 
+> > > Before commit 25f51b76f90f1 ("xhci-pci: Make xhci-pci-renesas a proper
+> > > modular driver"), the xhci-pci driver handled the Renesas uPD72020x
+> > > USB3
+> > > PHY and only utilized features of xhci-pci-renesas when no external
+> > > firmware EEPROM was attached. This allowed devices with a valid
+> > > firmware
+> > > stored in EEPROM to function without requiring xhci-pci-renesas.
+> > > 
+> > > That commit changed the behavior, making xhci-pci-renesas
+> > > responsible for
+> > > handling these devices entirely, even when firmware was already
+> > > present
+> > > in EEPROM. As a result, unnecessary warnings about missing firmware
+> > > files
+> > > appeared, and more critically, USB functionality broke whens
+> > > CONFIG_USB_XHCI_PCI_RENESAS was not enabled—despite previously
+> > > workings
+> > > without it.
+> > > 
+> > > Fix this by ensuring that devices are only handed over to
+> > > xhci-pci-renesas
+> > > if the config option is enabled. Otherwise, restore the original
+> > > behavior
+> > > and handle them as standard xhci-pci devices.
+> > > 
+> > > Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> > > Fixes: 25f51b76f90f ("xhci-pci: Make xhci-pci-renesas a proper
+> > > modular driver")
+> > > ---
+> > >  drivers/usb/host/xhci-pci.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+> > > index 2d1e205c14c60..4ce80d8ac603e 100644
+> > > --- a/drivers/usb/host/xhci-pci.c
+> > > +++ b/drivers/usb/host/xhci-pci.c
+> > > @@ -654,9 +654,11 @@ int xhci_pci_common_probe(struct pci_dev *dev,
+> > > const struct pci_device_id *id)
+> > >  EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, "xhci");
+> > > 
+> > >  static const struct pci_device_id pci_ids_reject[] = {
+> > > +#if IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS)
+> > >  	/* handled by xhci-pci-renesas */
+> > >  	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
+> > >  	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
+> > > +#endif
+> > >  	{ /* end: all zeroes */ }
+> > >  };
 > > 
-> > On Fri, Jan 31, 2025 at 11:17 PM Alan Stern <stern@rowland.harvard.edu> wrote:
-> > >
-> > > On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
-> > > > Now we only enable the remote wakeup function for the USB wakeup source
-> > > > itself at usb_port_suspend(). But on pre-XHCI controllers this is not
-> > > > enough to enable the S3 wakeup function for USB keyboards,
-> > >
-> > > Why do you say this?  It was enough on my system with an EHCI/UHCI
-> > > controller when I wrote that code.  What hardware do you have that isn't
-> > > working?
-> > >
-> > > >  so we also
-> > > > enable the root_hub's remote wakeup (and disable it on error). Frankly
-> > > > this is unnecessary for XHCI, but enable it unconditionally make code
-> > > > simple and seems harmless.
-> > >
-> > > This does not make sense.  For hubs (including root hubs), enabling
-> > > remote wakeup means that the hub will generate a wakeup request when
-> > > there is a connect, disconnect, or over-current change.  That's not what
-> > > you want to do, is it?  And it has nothing to do with how the hub
-> > > handles wakeup requests received from downstream devices.
-> > >
-> > > You need to explain what's going on here in much more detail.  What
-> > > exactly is going wrong, and why?  What is the hardware actually doing,
-> > > as compared to what we expect it to do?
-> > OK, let me tell a long story:
-> > 
-> > At first, someone reported that on Loongson platform we cannot wake up
-> > S3 with a USB keyboard, but no problem on x86. At that time we thought
-> > this was a platform-specific problem.
-> > 
-> > After that we have done many experiments, then we found that if the
-> > keyboard is connected to a XHCI controller, it can wake up, but cannot
-> > wake up if it is connected to a non-XHCI controller, no matter on x86
-> > or on Loongson. We are not familiar with USB protocol, this is just
-> > observed from experiments.
-> > 
-> > You are probably right that enabling remote wakeup on a hub means it
-> > can generate wakeup requests rather than forward downstream devices'
-> > requests. But from experiments we found that if we enable the "wakeup"
-> > knob of the root_hub via sysfs, then a keyboard becomes able to wake
-> > up S3 (for non-XHCI controllers). So we guess that the enablement also
-> > enables forwarding. So maybe this is an implementation-specific
-> > problem (but most implementations have problems)?
-> > 
-> > This patch itself just emulates the enablement of root_hub's remote
-> > wakeup automatically (then we needn't operate on sysfs).
+> > Have you seen:
+> > 	https://lore.kernel.org/r/20250128104529.58a79bfc@foxbook
+> > ?
+> Hi Greg.
 > 
-> I'll run some experiments on my system.  Maybe you're right about the 
-> problem, but your proposed solution looks wrong.
+> Thanks, I must have overlooked Michal's patch when I initially stumbled over
+> the issue.
+> > 
+> > Which one is correct?
+> 
+> I guess both, as Michal is implementing the same slightly different.
+> 
+> My approach was to to keep the changes less invasive as possible and thus
+> make it possible to use pci_ids_reject[] for further exceptions in the
+> xhci-pci driver. In Michael's patch the list is specifically used for
+> blacklisting the Renesas devices and cannot easily be expanded for other
+> controllers. Either approach is fine with me, so lets move the discussion to
+> the patch which came first.
 
-I just tried running the experiment on my system.  I enabled wakeup for 
-the mouse device, made sure it was disabled for the intermediate hub and 
-the root hub, and made sure it was enabled for the host controller.  
-(Those last three are the default settings.)  Then I put the system in 
-S3 suspend by writing "mem" to /sys/power/state, and when the system was 
-asleep I pressed one of the mouse buttons -- and the system woke up.  
-This was done under a 6.12.10 kernel, with an EHCI host controller, not 
-xHCI.
+Ok, can you test Michael's patch and respond with a tested-by if it
+works for you?
 
-So it seems like something is wrong with your system in particular, not 
-the core USB code in general.  What type of host controller is your 
-mouse attached to?  Have you tested whether the mouse is able to wake up 
-from runtime suspend, as opposed to S3 suspend?
+thanks,
 
-Alan Stern
+greg k-h
 
