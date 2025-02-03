@@ -1,280 +1,211 @@
-Return-Path: <stable+bounces-111979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E6FA250DA
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 01:13:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6388DA25110
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 02:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F451884AFA
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 00:13:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA813A4A73
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 01:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAF11367;
-	Mon,  3 Feb 2025 00:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52694FC0E;
+	Mon,  3 Feb 2025 01:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=illinois.edu header.i=@illinois.edu header.b="qq1601FT"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="WcJKnUHW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00007101.pphosted.com (mx0a-00007101.pphosted.com [148.163.135.28])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C990A31;
-	Mon,  3 Feb 2025 00:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738541597; cv=fail; b=EzwBSZHH+FCfXMUdb+qzE09KL7uRPPcfT6gpJ2tlYq1D+pHQWwPC+49y/l7bAp57r7fGltlWyouEsVtvzg5dDwdoX/TbWsTrisLpRH1t/RzutYUmRpKs+HFDQH1Ne0BKF1qGmnw/Jy5lN6mqUWHOkZabE7wh3QbAyddtxFIelrU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738541597; c=relaxed/simple;
-	bh=CN2IA2zl59aMTSRLxiLeSkXqoH9WV+1i6+HGeVor48A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=O08J0DXGfFM4vknX4cZUcyWokTph5avvVFIKR0zfNvSrfvckhJKS0o3bJG8u+ZVp9IGOIvysLhNhXMf2uPSI6IBZYUdB3rRU+WA9g3i7TfeTe3sWlGuQaVHpUVB0M6YGj5eK0ujYk7m2wTyN1IEtdffqB6WY+OCxYEhwpg2wM44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=illinois.edu; spf=pass smtp.mailfrom=illinois.edu; dkim=pass (2048-bit key) header.d=illinois.edu header.i=@illinois.edu header.b=qq1601FT; arc=fail smtp.client-ip=148.163.135.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=illinois.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=illinois.edu
-Received: from pps.filterd (m0272704.ppops.net [127.0.0.1])
-	by mx0b-00007101.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51305eRp028852;
-	Mon, 3 Feb 2025 00:13:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=illinois.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=campusrelays;
-	 bh=CN2IA2zl59aMTSRLxiLeSkXqoH9WV+1i6+HGeVor48A=; b=qq1601FTssfk
-	sv+y5xscHmAwQWzTTDPlM+mZLb1r0FyJ0kojtQob2AO45QxM4oR6OFEL4UAR4pMa
-	ojMpefgXsFebGYp2i/AmFY7NddENiNvNJ/cUpWikfw4H08PUaPkc2gOu0i/qi3QK
-	e9xi0+/1x5uY1bVCMS8uHUiy1sMI7TSj6cv/aJ4khFGWiGIKbvYUXLPi3xUbwrWT
-	+ILDkegx2s8gKHJSRIiQl0TsHrhK6j3P+D6GXiQk+qkkrDa2BA60nC2r6eEmJcQj
-	+P9U1dGWcMQjVNoBrSk2s9iu2XVRx+7agWEKgcTmsuCxO8iimQPKOcYSiKETpw3H
-	fCQJWk5VtQ==
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2048.outbound.protection.outlook.com [104.47.70.48])
-	by mx0b-00007101.pphosted.com (PPS) with ESMTPS id 44jjy401px-1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655213C2F;
+	Mon,  3 Feb 2025 01:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738546315; cv=none; b=Vw3pGhHG1SG8jrFX+qYYXGRIBaH/apo3TQNHgAaz6XmFGX3uBVvpwu5J3LHXO+edgnxiFh8PE3f10QeLZ6Pyj/Rvu8NfjKzh81IGXrDLarHDGaQswlp5XauDpKf18YJB3ybuwyQReGuWI0/nx+awQEC4lNXxcJSjFnuhpJlheJo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738546315; c=relaxed/simple;
+	bh=TGDXhA9VFUOBW0nUR/5s5rwPA+aY4v4jgiKejMQ3o/w=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MKtQIlhutZ9EgwiM7EL/mGUcaE2RTVEFItpr4rd85D0DFf+EMSN3FNrZDqSAPwik1Blb1NImgaE5fwJSNO+g8c5s2TCgmY6O4nFxl7SJPKTwPnj6q5Z1z1vAnZvDJ9u9s2bq4n9P3QvrGjmKp9W/B9jUInA4uC8Ektz0PIHVcOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=WcJKnUHW; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 512Bt595015380;
+	Mon, 3 Feb 2025 01:31:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kjxtf4
+	7CKNtSchjNhx+lVCQZ7est2gEQwyCLkceGQhQ=; b=WcJKnUHWyMsH86R3gehVOc
+	3YwRh0hayDnxFdDGo1bRMPfL4nveP9Er5tzc0TC426W+ypv4q4LiGkQDePQDEVsU
+	6QQHB+SjFu3upkC9I8si3ioTuAh+9KbWhJWsrre/v/hQHw5mShyJZ+mMXjuukYhA
+	bjKHBm1L0ZcnQXuH4m9NaNg66jHVsVtAEDxKhMfl+JUY6lIn7O48mXSo5WxWbm99
+	HbHPuUD2BVLt8k2wZOaYRbW/vuLn7ZrjTQtPocqHCGWG5xYzyXoKpvmP2wpCO/zM
+	yjF5GDugKHXfksFtbQUtnjmTqhzlm3asMIudYLDy22Spz50qH2yReV/N9siSoTJw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44j2h7b2nn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 00:13:11 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=slptAQthQx1WjYtg4XKdoyg3M7MRLKIij1eYPAJLaVnACNeIRttCLsUO8gmusbO8cKWjQEiOqLYuAvbheC9KQszGFI5tG7nlZ7fOW9lY8NpDyyF26saDSyhe0cJf+Xb/c4w4PuxdzMCKHId7xA3RhYkHuI6tdDzNZqy8uwD/sLkgm4rib2Z+9qLszOd9O8BuvSKM1ORObKXIlJKMKars8aYMffZdiEmvLmrumuYI6SjiviWTIsKQDiKjB/zuKyn2zbjoPw8u9kwfvZLWN2n7YgO1E16L393hb0ldgQDp843Rz5OtzlPyu+v9rb2OfWbuojSrkhUieX0kDSA7AukB0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CN2IA2zl59aMTSRLxiLeSkXqoH9WV+1i6+HGeVor48A=;
- b=KmCQcmZlMlqWEPb2kGgIk2sGzvkQY6NYEWNRnqMFvcqPnj68mDzM5l73ur3K+O5prPnObrfcf5k/xGCtKuRWWhEiCHugOBTC1SIPD4s3TqAVy1FZpjZYtnXD2AYfW18tJ6/5nLehI4963/Ld/ejS9p+PKXY9VDCKxQsjnbpTeWaTu/tVA0OQ5mawS8FNwEGl82QQLO+rFT94GcPZiQ1OyvoR65U7l9baCW0P8HmaxSp8QvDlXI/9f8H/tR7/MajBWQ3com0ZCrvUxb7PqIiRhmQADzW2ne34PydHIIT0HYHytrFRxc8gZdjMKdClLto/RyHdhQX9/nolZQL2pbgE6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=illinois.edu; dmarc=pass action=none header.from=illinois.edu;
- dkim=pass header.d=illinois.edu; arc=none
-Received: from DS0PR11MB7768.namprd11.prod.outlook.com (2603:10b6:8:138::17)
- by SA2PR11MB5210.namprd11.prod.outlook.com (2603:10b6:806:fa::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
- 2025 00:13:08 +0000
-Received: from DS0PR11MB7768.namprd11.prod.outlook.com
- ([fe80::3232:c728:db3c:3211]) by DS0PR11MB7768.namprd11.prod.outlook.com
- ([fe80::3232:c728:db3c:3211%5]) with mapi id 15.20.8398.021; Mon, 3 Feb 2025
- 00:13:08 +0000
-From: "Ahmed, Shehab Sarar" <shehaba2@illinois.edu>
-To: Christian Heusel <christian@heusel.eu>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: TCP Fast Retransmission Issue
-Thread-Topic: TCP Fast Retransmission Issue
-Thread-Index: AQHbdNmMOPBwnc+jzUGeEqbVDLvXU7Myz9WDgADvdoCAAAAtgIAA8aFCgAAF6mo=
-Date: Mon, 3 Feb 2025 00:13:08 +0000
-Message-ID:
- <DS0PR11MB7768E5D66FF32A5703333EA4FDF52@DS0PR11MB7768.namprd11.prod.outlook.com>
-References:
- <DS0PR11MB77682EBD149E7965F1D8E8F1FDEB2@DS0PR11MB7768.namprd11.prod.outlook.com>
- <DS0PR11MB7768A5B80C9BF2366CFEC89BFDEB2@DS0PR11MB7768.namprd11.prod.outlook.com>
- <f86dd0f6-6a2e-40f3-b0be-d9816ccb20cc@heusel.eu>
- <fa131e75-7398-4add-8665-333b92bb500b@heusel.eu>
- <DS0PR11MB7768CE00F0A4663EB0D7DF63FDEA2@DS0PR11MB7768.namprd11.prod.outlook.com>
-In-Reply-To:
- <DS0PR11MB7768CE00F0A4663EB0D7DF63FDEA2@DS0PR11MB7768.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB7768:EE_|SA2PR11MB5210:EE_
-x-ms-office365-filtering-correlation-id: f77c5e34-0333-4a3d-01e8-08dd43e789ec
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|38070700018|7053199007;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?XKF1DEeeZxf8aTNsEGJOhELZOtyi1nWweXiPxnXVWLVXcXK3QlxUUusInoDn?=
- =?us-ascii?Q?A+O91zTNM5U3r1BVi0DPZynjeh/FfyqwpgnQsjYk6dkKtMYHeI3kZscH3UT6?=
- =?us-ascii?Q?Tp62AGuKdpWZukyZYEy2RH7dFNgzUUkJ+PQvVT1wgMrp1nfZatk24hPKAW2Q?=
- =?us-ascii?Q?XDXlEVUCwehivF5OjIcLOTBDTAqQ6MqWQWGEsiqKe49x3yL7G2JCoZuHG9U8?=
- =?us-ascii?Q?kAgQFkNByIbZGnIhjp4fcmD2oUNQRSBy5QNHB82eJJiIadm4J9CH7GqYkl/R?=
- =?us-ascii?Q?/DHSFJ3yvJrqxJyBx5jSNvHZQBS46ueytHiOlyucJ7XJs/obwwXoTPCzwWtd?=
- =?us-ascii?Q?kOIF/WD6SWfFz8/RspeVV/52KsKTd1qQFusSpOkI3/QRwl0tDeaV8OwnFhVZ?=
- =?us-ascii?Q?4Vs/xdtrVAGnyGF6/23WW3DtTF72wIqVcTtUTrxmVmzRF/Bud3/8OdhwSQ6U?=
- =?us-ascii?Q?z9d/GEcb2hZ7s8C5Dbh7TZsfSyfbfldGN7sqStvqDD9rq4jhzMEFQKC31PWp?=
- =?us-ascii?Q?NQbWkpBHm5orHf5KrJ6H1ZKFJCuQKctB7uXxI6l3WFCsK82W/qVEAxpd8Wv9?=
- =?us-ascii?Q?Z/9zxgaNPTU+LnAH+D5hDW2l0Jmm4mEqBnE+6ddaL/L9nCUngt3BHKcG1YVw?=
- =?us-ascii?Q?eWpeBa/c4tWHzgUz/pnBLTZna+IUyIzTvc3XRVezp0t7wO9W/Nwg2ScgtTKs?=
- =?us-ascii?Q?IPqsCg3vxyfyLhUQPVvc4LonzwIcIVwIuDMJT+cB/lgNVwOMoceMQDl4guTT?=
- =?us-ascii?Q?aghKM/MigRq8npSWR/luAyKpvrSIcXrWbIhzNfItIUT2YulZZ8CohNvlRggQ?=
- =?us-ascii?Q?ygPU3VYGosMyFa3T5+6yR+QGBKeEQO+bTC+8Ac03578rBOdokJ2bkHhGq3rX?=
- =?us-ascii?Q?UbkLWL5NRH1bjJ+WiwOUlD7N6iikGqpnpEhWD6jIbm2QNM4hczqKJ5pKUapv?=
- =?us-ascii?Q?jR6nJItBw/WNaXNc+fqTumkvoa0qhgLRrKoIqNhndP+YlTHg6/eIBlVQLW1g?=
- =?us-ascii?Q?11s6fy5iC4BpGvZgiJip0sPtuwYXKDPWIwleF6VtFQLFVd4jaFBOV+NdmhlM?=
- =?us-ascii?Q?OsHBiYRge8SE5QAs/SE/j3Y3HVr6UlSQlOzyMpevE2TH9+E9E6dg0FZpnqts?=
- =?us-ascii?Q?o8g0asCruEA7Q9i6tGBAVZEMslplmQha+gDft2Vw5dHEm7eey3QOspmunofR?=
- =?us-ascii?Q?DlTrVQ0r/Gm2gr5O92zF71ok5Uxq5WNQ9UdFLvXE3q6sCU66ZMqvzpWg6nrS?=
- =?us-ascii?Q?ynh/FvKCQk2OUHr1FQUytfvmVxzudeHBbDwadCzDM97+USWJbF/PmE1wr90t?=
- =?us-ascii?Q?gbWT90Qnmz66QnCeiIVNUgK+CD9/cwNxHdl4WcmjmZyfXja/dSpX+EX8DP4T?=
- =?us-ascii?Q?wr7rQe4pKAKOKafZvy+QYxdfonQv?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7768.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018)(7053199007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?F7YWg3z6rOdOe+B5YuBlmeJQo/FcTKJ8meRA8CI2ln6RkEroT/BGlMAxCmzJ?=
- =?us-ascii?Q?EDlmIUpcDWbQVWC8jRVWiogWClNlpVvrDjpnvk61dm+GmFKlAnYvNdqrOs/6?=
- =?us-ascii?Q?Fuvjulex1n6jRLIGYQnrdz/O4yddG1i7JkpccdR9R6+LyEuXAKxTY0u8uF0y?=
- =?us-ascii?Q?MtWWyL4eCs/XJ2YBURZu8KkJ1BBXs764DRYT+N2m4Cn0bwArFoIoMuuHlp5n?=
- =?us-ascii?Q?4Ck3rjbrNvtiFJVr52Z8FH3JMvPPVEA0XC4bPf1cwuxEabaot20hccFGa/+V?=
- =?us-ascii?Q?mxOC7Nq0LW3uatD+ArLZl8ElOBBP8FTtPTQvRWpSiATF4QZF9w1DXsGJbpUL?=
- =?us-ascii?Q?vuyxqSBQYXeDysixlkOIwoWMOPjDmghNYqP+CSzU+36ESFQtl5U5rhpnE+Ov?=
- =?us-ascii?Q?RuTv3tro6sBCdEqlt8z5ePFgDc3vhNDF+yZ44WXsDkq288eEof9wj0FZtI8K?=
- =?us-ascii?Q?K1a+X/+ody+S/K+jYsy7quoFTp1IAjXpCU8rGyCkRyfSuJDPCOZvIt2ud9wo?=
- =?us-ascii?Q?PRsZAWl4POh8maDPATyx6KaNy+DRF82jIVUyISr9f+fO8dSxWdpy1+YyMyl0?=
- =?us-ascii?Q?JSdBnCSRRJTiWRT/KtyOYZ/SB55/qxtVDZiFIcqP5Xgk2fYtqMcO9atjN7qf?=
- =?us-ascii?Q?xMsUj205x18uL+BtVM4TTE6yUsH1AvYeOvG9Y36Y6fkRPSMkgAfC1fAtRx5H?=
- =?us-ascii?Q?m4KIsyCrbPU+lA96WFabrmCaSrpOc/swNPxFFkoIu55yz8A6l3omhvcKblvN?=
- =?us-ascii?Q?exLRuA9xryJ0Qs4to7Z82dGH/87JK3RLsX2aRnZwODNz3ryZ/BoJOI2x5CsW?=
- =?us-ascii?Q?1rl2dy1rF/kdpSzd02pFQMJlR70ufk6VkoUWx40IRkWi5FQUA1tvwyiqyilO?=
- =?us-ascii?Q?RxreUcc/ga2EOB7DIB2DXaMx7wldoFbO8aHSNT116ks4N0MNYZpl6IzDBrTL?=
- =?us-ascii?Q?MLx6pFUjA4OE03GBl1/HeIZFhAl/LEuT2vsGIKVxfjzYEmYSSEdnZnOu1kbK?=
- =?us-ascii?Q?6F6RgYsFFPf2dY4c1lPLz8jOju4yZTEdkoI9n4SHl0FCw9M8y/EVtWSoudzF?=
- =?us-ascii?Q?jw5vUISRJ7z2ncCtuNylsNZ4HHnY7cyhksK3pa8jUh1AaOixL9D3ujcL38OV?=
- =?us-ascii?Q?hxGGe5kyy9OHNESiIfKgPE75o0zFC5K32H8rYeZQMFD7e8r5SO7NlNzKSCe1?=
- =?us-ascii?Q?39T2ouey4+u0p2wllGdt5V+DV/Ls93NMu4foVaShYnqu9AQdXHEiPRInQ08V?=
- =?us-ascii?Q?cPSVB/RJXg08s1FBtyK6ZKXHSy9fFIo7q48kBSS79cyJYjbAE0j7jnTap1nz?=
- =?us-ascii?Q?IMi1rTDWnGZafrQd773ULps3ITGrwqoAbgW705kpWPUlR8ggj5bnHIwf90Rh?=
- =?us-ascii?Q?rYDD8bO2d1JSnF9POyLUb6KWVAbrYPbifByDLsh+vaXpSQcI9UVJ2aibDO4+?=
- =?us-ascii?Q?DPNxs1sRCLo4immPEPPpWzxQvsZ4yY6KmjpWNxln2gepv+qkzO162QVLO/xb?=
- =?us-ascii?Q?YRdjUS0M9D3u3SD9mubQBssQxYIHlvpFlQjcwMRYkoPwdbH8PIvd7JopJvi5?=
- =?us-ascii?Q?t+ERik2MEr5Q+zRddBd5DM+6edQkqrEsVW+CtL6r?=
-Content-Type: text/plain; charset="us-ascii"
+	Mon, 03 Feb 2025 01:31:13 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5131VCk6026537;
+	Mon, 3 Feb 2025 01:31:12 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44j2h7b2nj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 01:31:12 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51305aci005258;
+	Mon, 3 Feb 2025 01:31:11 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j05jktxk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 01:31:11 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5131VAKY21889644
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Feb 2025 01:31:10 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC1E15804B;
+	Mon,  3 Feb 2025 01:31:10 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 22A3E58063;
+	Mon,  3 Feb 2025 01:31:09 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.68.214])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Feb 2025 01:31:09 +0000 (GMT)
+Message-ID: <e93596a3f7696bfe4912f6ec91152e8969bb1192.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 6/6] ima: Reset IMA_NONACTION_RULE_FLAGS after
+ post_setattr
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, corbet@lwn.net,
+        viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+        dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Roberto Sassu
+ <roberto.sassu@huawei.com>, stable@vger.kernel.org
+Date: Sun, 02 Feb 2025 20:31:08 -0500
+In-Reply-To: <20250122172432.3074180-7-roberto.sassu@huaweicloud.com>
+References: <20250122172432.3074180-1-roberto.sassu@huaweicloud.com>
+	 <20250122172432.3074180-7-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: illinois.edu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7768.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f77c5e34-0333-4a3d-01e8-08dd43e789ec
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2025 00:13:08.6273
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 44467e6f-462c-4ea2-823f-7800de5434e3
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NyeG/pXQ4VomicwxmzwFEbyTHOV7g0H8Z0d1/qXCxznyRMdsUSCOK1h4BDpOgnNSfk25dfqgPc6VbsTQMTyUxA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5210
-X-Proofpoint-ORIG-GUID: 8_OeqRRqERSCBhnASjkAklLNu6WZZpCA
-X-Proofpoint-GUID: 8_OeqRRqERSCBhnASjkAklLNu6WZZpCA
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: t7kdbocf0x0rsMPmREaRiai9DjIdcEvh
+X-Proofpoint-GUID: WIU-qrlO92XxGySXJmSX2cnXAh44zW33
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-02_10,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=cautious_plus_nq_notspam policy=cautious_plus_nq score=0 clxscore=1011
- mlxlogscore=999 spamscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502020212
-X-Spam-Score: 0
-X-Spam-OrigSender: shehaba2@illinois.edu
-X-Spam-Bar: 
+ definitions=2025-02-02_11,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 phishscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 adultscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030011
 
-Hello Christian,
+On Wed, 2025-01-22 at 18:24 +0100, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>=20
+> Commit 11c60f23ed13 ("integrity: Remove unused macro
+> IMA_ACTION_RULE_FLAGS") removed the IMA_ACTION_RULE_FLAGS mask, due to it
+> not being used after commit 0d73a55208e9 ("ima: re-introduce own integrit=
+y
+> cache lock").
+>=20
+> However, it seems that the latter commit mistakenly used the wrong mask
+> when moving the code from ima_inode_post_setattr() to process_measurement=
+(). There
+> is no mention in the commit message about this
+> change and it looks quite important, since changing from IMA_ACTIONS_FLAG=
+S
+> (later renamed to IMA_NONACTION_FLAGS) to IMA_ACTION_RULE_FLAGS was done =
+by
+> commit 42a4c603198f0 ("ima: fix ima_inode_post_setattr").
 
-It will cause problems for real applications if the specific event happens,=
- but that happens with a very low probability. It's more an issue that can =
-be resolved at the author's convenience, but I would be comfortable if the =
-issue I discovered is acknowledged at least, if not addressed.
+Roberto, thank you for the detailed explanation.  Could we summarize the pr=
+oblem as:=20
 
-Thanks
-Shehab
+Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock") mistaken=
+ly
+reverted the performance improvement introduced in commit 42a4c603198f0 ("i=
+ma: fix
+ima_inode_post_setattr").  The unused bit mask was subsequently removed by =
+commit
+11c60f23ed13 ("integrity: Remove unused macro IMA_ACTION_RULE_FLAGS").
 
-________________________________________
-From: Ahmed, Shehab Sarar <shehaba2@illinois.edu>
-Sent: Sunday, February 2, 2025 6:10 PM
-To: Christian Heusel
-Cc: stable@vger.kernel.org; regressions@lists.linux.dev
-Subject: Re: TCP Fast Retransmission Issue
+>=20
+> Restore the original change of resetting only the policy-specific flags a=
+nd
+> not the new file status, but with new mask 0xfb000000 since the
+> policy-specific flags changed meanwhile. Also rename IMA_ACTION_RULE_FLAG=
+S
+> to IMA_NONACTION_RULE_FLAGS, to be consistent with IMA_NONACTION_FLAGS.
 
-Hello Christian,
+Instead of restoring the bit mask that is used only once, consider inlining=
+ the
+correct bit mask (e.g. IMA_NONACTION_FLAGS & ~IMA_NEW_FILE) and expanding t=
+he
+existing comment.
 
-It will cause problems for real applications if the specific event happens,=
- but that happens with a very low probability. It's more an issue that can =
-be resolved at the author's convenience, but I would be comfortable if the =
-issue I discovered is acknowledged at least, if not addressed.
+>=20
+> Cc: stable@vger.kernel.org=C2=A0# v4.16.x
+> Fixes: 11c60f23ed13 ("integrity: Remove unused macro IMA_ACTION_RULE_FLAG=
+S")
 
-Thanks
-Shehab
+Please update the Fixes tag to refer to commit 0d73a55208e9.
 
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 
-________________________________
-From: Christian Heusel
-Sent: Sunday, February 2, 2025 3:26 AM
-To: Ahmed, Shehab Sarar
-Cc: stable@vger.kernel.org; regressions@lists.linux.dev
-Subject: Re: TCP Fast Retransmission Issue
+> ---
+> =C2=A0security/integrity/ima/ima.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1 +
+> =C2=A0security/integrity/ima/ima_main.c | 2 +-
+> =C2=A02 files changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+> index e1a3d1239bee..615900d4150d 100644
+> --- a/security/integrity/ima/ima.h
+> +++ b/security/integrity/ima/ima.h
+> @@ -141,6 +141,7 @@ struct ima_kexec_hdr {
+> =C2=A0
+> =C2=A0/* IMA iint policy rule cache flags */
+> =C2=A0#define IMA_NONACTION_FLAGS	0xff000000
+> +#define IMA_NONACTION_RULE_FLAGS	0xfb000000
+> =C2=A0#define IMA_DIGSIG_REQUIRED	0x01000000
+> =C2=A0#define IMA_PERMIT_DIRECTIO	0x02000000
+> =C2=A0#define IMA_NEW_FILE		0x04000000
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
+ma_main.c
+> index 46adfd524dd8..7173dca20c23 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -275,7 +275,7 @@ static int process_measurement(struct file *file, con=
+st struct
+> cred *cred,
+> =C2=A0		/* reset appraisal flags if ima_inode_post_setattr was called */
 
-On 25/02/02 10:26AM, Christian Heusel wrote:
-> On 25/02/01 07:09PM, Ahmed, Shehab Sarar wrote:
-> > Hello,
->
-> Hello,
->
-> > While experimenting with bbr protocol, I manipulated the network condit=
-ions by maintaining a high RTT for about one second before abruptly reducin=
-g it. Some packets sent during the high RTT phase experienced long delays i=
-n reaching the destination, while later packets, benefiting from the lower =
-RTT, arrived earlier. This out-of-order arrival triggered the receiver to g=
-enerate duplicate acknowledgments (dup ACKs). Due to the low RTT, these dup=
- ACKs quickly reached the sender. Upon receiving three dup ACKs, the sender=
- initiated a fast retransmission for an earlier packet that was not lost bu=
-t was simply taking longer to arrive. Interestingly, despite the fast-retra=
-nsmitted packet experienced a lower RTT, the original delayed packet still =
-arrived first. When the receiver received this packet, it sent an ACK for t=
-he next packet in sequence. However, upon later receiving the fast-retransm=
-itted packet, an issue arose in its logic for updating the acknowledgment n=
-umber. As a result, even after the next expected packet was received, the a=
-cknowledgment number was not updated correctly. The receiver continued send=
-ing dup ACKs, ultimately forcing bbr into the retransmission timeout (RTO) =
-phase.
-> >
-> > I generated this issue in linux kernel version 5.15.0-117-generic with =
-Ubuntu 20.04. I attempted to confirm whether the issue persists with the la=
-test Linux kernel. However, I discovered that the behavior of bbr has chang=
-ed in the most recent kernel version, where it now sends chunks of packets =
-instead of sending them one by one over time. As a result, I was unable to =
-reproduce the specific sequence of events that triggered the bug we identif=
-ied. Consequently, I could not confirm whether the bug still exists in the =
-latest kernel.
-> >
-> > I believe that the issue (if still exists) will have to be resolved in =
-the location net/ipv4/tcp_input.c or something like that. There are so many=
- authors here that I do not know who to CC here. So, sending this email to =
-you. Sorry if this is not the best way to report this issue.
->
-> does this cause problems for real applications? To me it sounds a bit
-> like a constructed issue, but I'm also not really proficient about the
-> stack mentioned about :p
->
-> I'm asking because this is important for how we treat this report, see
-> the "Reporting Regression"[0] document for more details on what we
-> consider to be an regression.
->
-> > Thanks
-> > Shehab
->
-> Cheers,
-> Christian
+Update the comment based on the original commit 42a4c603198f ("ima: fix
+ima_inode_post_setattr") patch description.
 
-(forgot the link)
+thanks,
 
-[0]: https://docs.kernel.org/admin-guide/reporting-regressions.html#what-is=
--a-regression-and-what-is-the-no-regressions-rule
+Mimi
+
+> =C2=A0		iint->flags &=3D ~(IMA_APPRAISE | IMA_APPRAISED |
+> =C2=A0				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
+> -				 IMA_NONACTION_FLAGS);
+> +				 IMA_NONACTION_RULE_FLAGS);
+> =C2=A0	/*
+> =C2=A0	 * Re-evaulate the file if either the xattr has changed or the
+
 
