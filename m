@@ -1,164 +1,90 @@
-Return-Path: <stable+bounces-112037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC0FA25EDF
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:34:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDB1A25F04
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57AA63A9EC7
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CD13161508
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC0C2080E6;
-	Mon,  3 Feb 2025 15:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89093209F58;
+	Mon,  3 Feb 2025 15:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AopHi5Ak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3XnTynn"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF920433A4
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 15:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38091209F4A;
+	Mon,  3 Feb 2025 15:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738596798; cv=none; b=A/IzMV8NunfFMYudWWCoynkwqSVKX9GAoF2gpUtNbG/D79WLa3P80q69lFBlhtnqk93c6+6QVnelBmBsgCXIau3TBfiG1hB6mS63r/saURqJPvH6TWZP04t7/udJGzKCRHjvkvuBYJ+3QjNWmosAGiWx2fyVibBl+UIe7+wt/zQ=
+	t=1738597267; cv=none; b=kIVz1A5mKnqvtw99x85KpVx6ylm2lc/HKbJY+cgxtuvEe7L5QwkE35uJ2wnwmIC6AcNtGxMbZwdAlQQ8ntBidmjkI9Ax3diAvQtHihVklJ7oAGoKsrVSLYl/C0y0Y5r0SicbEqBdeQ1PuFkTJRdOFuzhclZpEkrzmVmdVfvFJnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738596798; c=relaxed/simple;
-	bh=1wk7VQ/UfvndU+hVk2NOLBV3egwP6bVh8LnWFhTLgEQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EVfBjn6IrIUnLl7hgzo1O49ocwBInDdX8BlbVe7dhwLazNRo9QZPawrL9bDcu2/97VvwGnLo08N0zxVgGT/JjkQ2MuukyStdcMX1GfdVSGceuv2vlzF5LFKe0Kw01a5SrLcEl7TUH0Z4yTmEn+jjoaYfAhjtUDBdd2G2Q/uZ+r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AopHi5Ak; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <b0dba75c-e26d-40eb-8d1e-b6bbd00884f4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1738596780;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O9Soud69r86LZMQrHNANoqb5glSogcgwSct8l59C6GQ=;
-	b=AopHi5Akm/j+5jPwsaRhyv/poqwM6tYwzS3yV9XGQ5Gg+JW4NGfxteHyG098MiUhRuoP92
-	WGbd3lSKvj+x/xASb84i163GB1GX0mOjjVDk5dm6zJz0mogBQ61h41nLDdkkw2culgQJDz
-	mALX8U3NHMKAd0czWtfEQgV0fO/elKc=
-Date: Mon, 3 Feb 2025 23:32:54 +0800
+	s=arc-20240116; t=1738597267; c=relaxed/simple;
+	bh=t+e9M1T7gZCHqn15b4A9fYXOSiUPiS6xvK01k5AQCmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KZZkl5krBndcERWwFLIQwb0wNCBih4vtGfh/lsrimX/bOJEkOjnLckpjm/YCpkT/YokX9H25vj2qCwk0PMYbhi3QGJQLydsxhmsSKXapcWmR/ThAzHPeCTbG5KnAaEinVBYFd0TfSL6lzsILLLXsJAjfmPf7i9TgIJ4XcvaLu4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3XnTynn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0F4C4CED2;
+	Mon,  3 Feb 2025 15:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738597266;
+	bh=t+e9M1T7gZCHqn15b4A9fYXOSiUPiS6xvK01k5AQCmg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=r3XnTynnOTgsMtTNZO+Y1s25XmD2mIHCFryVo7nwyZI3zyudiqt6et+qxVlGT1B3r
+	 pLYigZcxI3ih+eNjJ8EpjVzU1RPmO/yjtmjv1XJcDcwKrbHtRWX9ZZcA8Bc0LZhyeO
+	 WZUUX39QMbBMfXqpEs6rdmznsK9cTbI85PX26Ma0=
+Date: Mon, 3 Feb 2025 16:41:03 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: guoren@kernel.org
+Cc: palmer@dabbelt.com, conor@kernel.org, geert+renesas@glider.be,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	yoshihiro.shimoda.uh@renesas.com, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	Guo Ren <guoren@linux.alibaba.com>, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH V2] usb: gadget: udc: renesas_usb3: Fix compiler warning
+Message-ID: <2025020324-siding-custodian-b21d@gregkh>
+References: <20250122081231.47594-1-guoren@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Patch "drm/etnaviv: Drop the offset in page manipulation" has
- been added to the 6.12-stable tree
-To: Lucas Stach <l.stach@pengutronix.de>, stable@vger.kernel.org,
- stable-commits@vger.kernel.org
-Cc: Russell King <linux+etnaviv@armlinux.org.uk>,
- Christian Gmeiner <christian.gmeiner@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-References: <20250202043355.1913248-1-sashal@kernel.org>
- <d8b6c3b4eda513277f19640c8f792c6d70b03f06.camel@pengutronix.de>
- <2dfb1991-3030-4143-890b-83508d1b77e0@linux.dev>
- <ece27be6f18b700140eb338c018e291efd19f271.camel@pengutronix.de>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
-In-Reply-To: <ece27be6f18b700140eb338c018e291efd19f271.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250122081231.47594-1-guoren@kernel.org>
 
-Hi,
+On Wed, Jan 22, 2025 at 03:12:31AM -0500, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+> 
+> drivers/usb/gadget/udc/renesas_usb3.c: In function 'renesas_usb3_probe':
+> drivers/usb/gadget/udc/renesas_usb3.c:2638:73: warning: '%d'
+> directive output may be truncated writing between 1 and 11 bytes into a
+> region of size 6 [-Wformat-truncation=]
+> 2638 |   snprintf(usb3_ep->ep_name, sizeof(usb3_ep->ep_name), "ep%d", i);
+>                                     ^~~~~~~~~~~~~~~~~~~~~~~~     ^~   ^
+> 
+> Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas
+> USB3.0 peripheral controller")
 
-On 2025/2/3 19:14, Lucas Stach wrote:
-> Hi Sui,
->
-> Am Montag, dem 03.02.2025 um 18:53 +0800 schrieb Sui Jingfeng:
->> Hi,
->>
->> On 2025/2/3 16:59, Lucas Stach wrote:
->>> Hi Sasha,
->>>
->>> Am Samstag, dem 01.02.2025 um 23:33 -0500 schrieb Sasha Levin:
->>>> This is a note to let you know that I've just added the patch titled
->>>>
->>>>       drm/etnaviv: Drop the offset in page manipulation
->>>>
->>>> to the 6.12-stable tree which can be found at:
->>>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>>
->>>> The filename of the patch is:
->>>>        drm-etnaviv-drop-the-offset-in-page-manipulation.patch
->>>> and it can be found in the queue-6.12 subdirectory.
->>>>
->>>> If you, or anyone else, feels it should not be added to the stable tree,
->>>> please let <stable@vger.kernel.org> know about it.
->>>>
->>> please drop this patch and all its dependencies from all stable queues.
->>>
->>> While the code makes certain assumptions that are corrected in this
->>> patch, those assumptions are always true in all use-cases today.
->> Those patches are harmless even we apply them, and after apply my pitch,
->> it requires less CPU computation, right?
->>
->>
->>> I don't see a reason
->> I think, if 'sg->offset != 0' could happen  or not is really matters here.
->> My argument was that the real data is stored at 'sg_dma_address(sg)', NOT
->> the 'sg_dma_address(sg) - sg->offset'.
->>
->>
->> As we can create a test that we store some kind of data at the middle of
->> a BO by the CPU, then map this BO with the MMU and ask the GPU fetch the
->> data.  Do we really have a way tell the GPU to skip the leading garbage
->> data?
->>
->>
->>> to introduce this kind of churn to the stable trees
->>
->> If I'm wrong or miss something, we can get them back, possibly with new
->> features, additional description, and comments for use-cases. My argument
->> just that we don't have good reasons to take the'sg->offset' into account
->> for now.
->>    
->>
->>> to fix a theoretical issue.
->>
->> The start PA of a buffer segment has been altered, but the corresponding
->> VA is not.
->>
->> Maybe a approach has to guarantee correct in the theory first.
-> I'm aware that one could construct cases where things fall over with
-> the previous code. However, there is no such case in practice. I fully
-> agree that this issue should be fixed, which is obviously why I merged
-> the patch.
->
-> I do not agree to introduce churn into the stable trees and burden
-> myself and others to check the correctness of the backports (just
-> because patches do apply to the stable tree does not mean all their
-> prerequisites and underlying assumptions are met),
+Please don't wrap lines here.
 
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202501201409.BIQPtkeB-lkp@intel.com/
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
 
-The core problem still is, whether 'sg->offset != 0' will happen or not.
-Without answering this fundamental question I don't think the rest murmurs
-make technical sense.
+No need to sign off twice on a commit, I'll just drop the last one as
+that doesn't match the From: line here.
 
+thanks,
 
-The patch is about to stop touching unreasonable part, if stable branches
-has raised any problem because of this single patch, I think I could help
-to resolve.
-
-
-> to fix a theoretical issue.
-
-
-This is concept, not theoretical.
-
-> Regards,
-> Lucas
-
--- 
-Best regards,
-Sui
-
+greg k-h
 
