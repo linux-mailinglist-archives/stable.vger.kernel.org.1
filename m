@@ -1,117 +1,135 @@
-Return-Path: <stable+bounces-112009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681BBA2582C
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:29:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CE0A25878
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B8F07A25B1
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 11:29:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5151636EB
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 11:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598DD202F97;
-	Mon,  3 Feb 2025 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277822036FD;
+	Mon,  3 Feb 2025 11:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ng8D+xf"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Hglon55v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18120202F93
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 11:29:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3B5202C43;
+	Mon,  3 Feb 2025 11:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738582162; cv=none; b=SCPDlwsNZO+a23r4k1EZ12FfH9yvVixI/7LVgPuDGjmghCijjisUuw7boCBuJbehqnV1bpsraYh7I6MFI77zLHdwrFGE6GSo7EeH59JgIFtlwuoIHBi98divXeE7uaPupOJZQylMsCofBpWOiaMCxgoEw0BEl/qp0yfLVRNbG2I=
+	t=1738583272; cv=none; b=Ymbq2qzw1ZsPF4FREGMW329ZcFwXW1QVU9bytA8B4jsh0weqrTHKEVgIY+Z5PX1vPmfuXI9WYEL9tmelyxU2xiJ8cjYsmG7t3gRO1EcJjMqmNFPul80fgub12Qnn5IEMWlUCOvczAfQbTbE8JyrT3fCyo15D+Vn2F7L6xA2MVy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738582162; c=relaxed/simple;
-	bh=GTJX8jjH2ChOwfEl5V8O3H45tU8nYOpkKXDTQxiaHgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jM1v2njvpdZaL33ZcTBXyneumF1r5OrUg8MKeQE2CfNw4FMC7/Pk7600jxSWyOIRZa+bOXRaLfsPr30cUjSt/cNFLDrj95CJOzSMDJEJD0KcesqiYX9FsTj30i1PqKxh2yHWYp+W4AzaydktLx2b/wuuMSzdZJUWRrms8vHcbso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ng8D+xf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7B6C4CED2;
-	Mon,  3 Feb 2025 11:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738582161;
-	bh=GTJX8jjH2ChOwfEl5V8O3H45tU8nYOpkKXDTQxiaHgE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0ng8D+xfBTybdpORKFfWAhuSz5QULhHwMtJY2+LGnawNKcICR6QWWvcMsCKRmhNja
-	 3cPE6P6UeJ5hP+z6dBSHl37IXNpBDxopSVLEMunxgATSJN9umhOT8odjqB2ksBBjUf
-	 yJ+YJ/dVwTJ19k0bQuFMVG4YscfFvYJAJPtAVRmk=
-Date: Mon, 3 Feb 2025 12:29:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shubham Pushpkar <spushpka@cisco.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [Fix CVE-2024-50217 in v6.6.y] [PATCH] btrfs: fix use-after-free
- of block device file in __btrfs_free_extra_devids()
-Message-ID: <2025020310-daydream-crop-4269@gregkh>
-References: <20250203104254.4146544-1-spushpka@cisco.com>
+	s=arc-20240116; t=1738583272; c=relaxed/simple;
+	bh=9UvIGGD/jqqbe+DZrf2fVRPgQKDmnE3Wxm6sJHjgxCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m0sTnOxvxLtxCZOgDWBGkGgj6HTRe/shlsqJSrsrn8VCQdRiPhKOwQWHdXOnHM+e0YkcTj2fwuXM5TJ6mRBOYtY7Jtn0cSLyEKE7h/siW4n+xuF+oMmhoQV5rO/qiMHUETIjtXt6EzaqGr/GLivVJPy2spI3dUzNTq7zXgLyMd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Hglon55v; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from namjain-hibernation.4uyjgaamrtuunfhsycmekme4ua.xx.internal.cloudapp.net (unknown [20.94.232.156])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4BA6A205490F;
+	Mon,  3 Feb 2025 03:47:45 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BA6A205490F
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1738583265;
+	bh=GhqWLe0XM7FRu82St3cvIHyrsf62zaHk0HvKjWJ+gHU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Hglon55vlI0pU/3vD9QRXL9khphoVCtwVz91oeMlH1Vsp6xhub02TKB6iQuVNSdtA
+	 uYqmAvUsitxrNvURFdgu3CW97xZGro8xIZDunIUIP24Z0DXzrT2QNySogFlatIumpH
+	 p0sozNy+AbmoFGfQ3Hx2uVMDIXGQi5p4S7RIpOnA=
+From: Naman Jain <namjain@linux.microsoft.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Steve Wahl <steve.wahl@hpe.com>,
+	Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+	srivatsa@csail.mit.edu,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Naman Jain <namjain@linux.microsoft.com>
+Subject: [PATCH v3] sched/topology: Enable topology_span_sane check only for debug builds
+Date: Mon,  3 Feb 2025 11:47:38 +0000
+Message-ID: <20250203114738.3109-1-namjain@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250203104254.4146544-1-spushpka@cisco.com>
 
-On Mon, Feb 03, 2025 at 02:42:54AM -0800, Shubham Pushpkar wrote:
-> From: Zhihao Cheng <chengzhihao1@huawei.com>
-> 
-> commit aec8e6bf839101784f3ef037dcdb9432c3f32343 ("btrfs:
-> fix use-after-free of block device file in __btrfs_free_extra_devids()")
-> 
-> Mounting btrfs from two images (which have the same one fsid and two
-> different dev_uuids) in certain executing order may trigger an UAF for
-> variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
-> following are the details:
-> 
-> 1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
->    devices by ioctl(BTRFS_IOC_SCAN_DEV):
-> 
->              /  btrfs_device_1 → loop0
->    fs_device
->              \  btrfs_device_2 → loop1
-> 2. mount /dev/loop0 /mnt
->    btrfs_open_devices
->     btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
->     btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
->    btrfs_fill_super
->     open_ctree
->      fail: btrfs_close_devices // -ENOMEM
-> 	    btrfs_close_bdev(btrfs_device_1)
->              fput(btrfs_device_1->bdev_file)
-> 	      // btrfs_device_1->bdev_file is freed
-> 	    btrfs_close_bdev(btrfs_device_2)
->              fput(btrfs_device_2->bdev_file)
-> 
-> 3. mount /dev/loop1 /mnt
->    btrfs_open_devices
->     btrfs_get_bdev_and_sb(&bdev_file)
->      // EIO, btrfs_device_1->bdev_file is not assigned,
->      // which points to a freed memory area
->     btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
->    btrfs_fill_super
->     open_ctree
->      btrfs_free_extra_devids
->       if (btrfs_device_1->bdev_file)
->        fput(btrfs_device_1->bdev_file) // UAF !
-> 
-> Fix it by setting 'device->bdev_file' as 'NULL' after closing the
-> btrfs_device in btrfs_close_one_device().
-> 
-> Fixes: CVE-2024-50217
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-Nit, as we assign CVEs _after_ a commit happens, there's no need to add
-this to a commit here as it is implied by the assignment database of
-cves-to-commits.
+On a x86 system under test with 1780 CPUs, topology_span_sane() takes
+around 8 seconds cumulatively for all the iterations. It is an expensive
+operation which does the sanity of non-NUMA topology masks.
 
-Also, any specific reason you didn't cc: everyone involved in this
-commit for your backport as well?
+CPU topology is not something which changes very frequently hence make
+this check optional for the systems where the topology is trusted and
+need faster bootup.
 
-thanks,
+Restrict this to sched_verbose kernel cmdline option so that this penalty
+can be avoided for the systems who want to avoid it.
 
-greg k-h
+Cc: stable@vger.kernel.org
+Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Co-developed-by: Naman Jain <namjain@linux.microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+---
+
+Changes since v2:
+https://lore.kernel.org/all/1731922777-7121-1-git-send-email-ssengar@linux.microsoft.com/
+	- Use sched_debug() instead of using sched_debug_verbose
+	  variable directly (addressing Prateek's comment)
+
+Changes since v1:
+https://lore.kernel.org/all/1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com/
+	- Use kernel cmdline param instead of compile time flag.
+
+Adding a link to the other patch which is under review.
+https://lore.kernel.org/lkml/20241031200431.182443-1-steve.wahl@hpe.com/
+Above patch tries to optimize the topology sanity check, whereas this
+patch makes it optional. We believe both patches can coexist, as even
+with optimization, there will still be some performance overhead for
+this check.
+
+---
+ kernel/sched/topology.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index c49aea8c1025..b030c1a2121f 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
+ {
+ 	int i = cpu + 1;
+ 
++	/* Skip the topology sanity check for non-debug, as it is a time-consuming operatin */
++	if (!sched_debug()) {
++		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
++			     __func__);
++		return true;
++	}
++
+ 	/* NUMA levels are allowed to overlap */
+ 	if (tl->flags & SDTL_OVERLAP)
+ 		return true;
+
+base-commit: 00f3246adeeacbda0bd0b303604e46eb59c32e6e
+-- 
+2.43.0
+
 
