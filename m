@@ -1,173 +1,128 @@
-Return-Path: <stable+bounces-112000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D572A25732
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 11:44:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F205A25767
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 11:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4FC11883E38
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 10:44:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B871885890
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 10:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F9F20102E;
-	Mon,  3 Feb 2025 10:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34459201100;
+	Mon,  3 Feb 2025 10:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="jR3rUWX3"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kWIHqiqL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hAsLZRYb"
 X-Original-To: stable@vger.kernel.org
-Received: from rcdn-iport-9.cisco.com (rcdn-iport-9.cisco.com [173.37.86.80])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79259201009
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 10:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B9D2010E1;
+	Mon,  3 Feb 2025 10:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738579446; cv=none; b=fahuGLZ2cc4OHiRL0Y8rLk/F1b1TwpqJ5TQZ1BKUziyUv2llD3ZtFj5Z5p0WLgRWDnVPmvlRayaBD6SKf8+URNbV521H1hH5CdYKy66NeCNZoHTOTqZEKq6YkJ5qfOw48RYxFsquOx5JdBXqYOkuWrRr0vZ4iYVhOyaZfw4CncU=
+	t=1738580017; cv=none; b=uw9SGcI/SkXCPhMAwOB8g5WiXqHwvtVycT10mcMHthTeI00fe00OUVri3htQWnOI9NWv62bagt4L+zudgW4SoGQCoMQK5Ge0LMxJcuy4d/mG+4jT0+t5FxXY8vsS2RpmvYHNIVysN33kNeMZJLJ9gv+Ob9mPBszTfQFENscd0rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738579446; c=relaxed/simple;
-	bh=RrFQ3aiu7p8FdCgtZ24NAWcI608oc+9FqIZSsKDaHFU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=m8kW5P4URgR8x5URhO+MKi5MhRos4v7OS2Tz/84ndDj/ebtLgdZwWuxGB2nq5FwhM6cmXCdeaImMWAWsZ5QwIdosPlk03rIguwPFQsaUsRbLC2s/KAuuf0Xpn6m29ZoCMKb9VBLAgwapstLNZ4vaLDS/9JKAd3rFVYxsEHWPzMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=jR3rUWX3; arc=none smtp.client-ip=173.37.86.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=2474; q=dns/txt; s=iport;
-  t=1738579444; x=1739789044;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=oRGxoKt8rjpieXph/y9GqL7UGmEVAGyzjb2VfxbcC28=;
-  b=jR3rUWX3EjCfEQukMAsQqfQrzSOSHlpWFZm1dERrirfm6+VFET6MSDRk
-   INjaHdJbUGFHRfkdE32yDn3tJnT+2FVndHGEiBHsNhiInOGWz3ADS6/k/
-   sDN0aYHHQ9GirR66x1rmUfi/gz1L+sE0MfAG7PIqhe6ChqOVMAfdeDBon
-   0=;
-X-CSE-ConnectionGUID: 4fsEOs2FRLmQo4eFTKaU/Q==
-X-CSE-MsgGUID: q7JaN9j4SdiZH680x1qA2A==
-X-IPAS-Result: =?us-ascii?q?A0A5AABonaBn/43/Ja1aHAEBAQEBAQcBARIBAQQEAQFAg?=
- =?us-ascii?q?T8HAQELAQGCSXZaQkiEVYgdhzKCIYt2jEeFXIElA1YPAQEBDzkLBAEBkAUCJ?=
- =?us-ascii?q?jQJDgECBAEBAQEDAgMBAQEBAQEBAQEBAQsBAQUBAQECAQcFgQ4ThXsNSQEMA?=
- =?us-ascii?q?YYtBAsBdgUCHwcCLUSDAgGCZAIBEbEaen8zgQHeM4FoBoEaLgGITQGEe3CEd?=
- =?us-ascii?q?ycbgUlEgRWBO4ItgQWBXAQYghODDoJHIgSEIYM/olBIgQUcA1ksAVUTDQoLB?=
- =?us-ascii?q?wWBcQM1DAswFTKBF0Q3gkdpSToCDQI1gh58giuEXIRDXy8DAwMDgzaFXYISg?=
- =?us-ascii?q?guHcB1AAwsYDUgRLDcUGwY9AW4HnTQBPINIJiCBDhQYUIFEkziSO6EEhCWMG?=
- =?us-ascii?q?JUuGjOqUy6HWwmPcXmOBJZEhGaBZzyBWU0jFYMiUhkPji0LCxaIVcJ3IjUCO?=
- =?us-ascii?q?gIHAQoBAQMJjUCEOgEB?=
-IronPort-Data: A9a23:NZUb5KmaW+06tHyMK+zIsZTo5gzGJ0RdPkR7XQ2eYbSJt1+Wr1Gzt
- xIZWW3UP/+OMzSjKdoib4+w9h8F6JTSyIAyHgJr+3xmHltH+JHPbTi7wugcHM8zwunrFh8PA
- xA2M4GYRCwMZiaC4E/rav658CEUOZigHtLUEPTDNj16WThqQSIgjQMLs+Mii+aEu/Dha++2k
- Y20+pa31GONgWYubzpOs/nb8XuDgdyr0N8mlg1mDRx0lAe2e0k9VPo3Oay3Jn3kdYhYdsbSb
- /rD1ryw4lTC9B4rDN6/+p6jGqHdauePVeQmoiM+t5mK2nCulARrukoIHKZ0hXNsttm8t4sZJ
- OOhGnCHYVxB0qXkwIzxWvTDes10FfUuFLTveRBTvSEPpqHLWyOE/hlgMK05FdEW4ctQGjtgz
- 9gdETdRYz6/pOuLh4vuH4GAhux7RCXqFJkUtnclyXTSCuwrBMifBa7L/tRfmjw3g6iiH96HO
- JFfMmUpNkmdJUQTYz/7C7pm9AusrmLnbiZYsFGcjaE2+GPUigd21dABNfKOI4fRH5wKwBfwS
- mTu5jvbCzdLNoCkxTu30iz83v+WhAqhcddHfFG/3rsw6LGJ/UQIFBQcUVaTv/a0kAi9VshZJ
- khS/TAhxZXe72SxRdX7Ghn9q3mes1tEB5xbEvYx70eGza+8DxulO1XohwVpMLQO3PLajxRwv
- rNVt7sF3QBSjYA=
-IronPort-HdrOrdr: A9a23:SH7x+qitX0Hi62gMvnEgGePBBHBQXtEji2hC6mlwRA09TyX+rb
- HKoB17726XtN9/Yh8dcLy7VZVoIkmslqKdn7NxAV7KZmCP0wGVxepZgrcKrQeNJ8SHzI5gPW
- MKSdkYNDU2ZmIK6frH3A==
-X-Talos-CUID: 9a23:MDr8Pm7Z6L2wd7NUEtssqEAPN+c+KFPn6HLpJBO1J1pKQYDScArF
-X-Talos-MUID: =?us-ascii?q?9a23=3ADM39bQ4K6Al9Vwy7icxp0VqOxoxxvIanLhEPza4?=
- =?us-ascii?q?Kuvuka3woK26EpW6eF9o=3D?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.13,255,1732579200"; 
-   d="scan'208";a="313321769"
-Received: from rcdn-l-core-04.cisco.com ([173.37.255.141])
-  by rcdn-iport-9.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 03 Feb 2025 10:42:55 +0000
-Received: from sjc-ads-1396.cisco.com (sjc-ads-1396.cisco.com [171.70.59.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-04.cisco.com (Postfix) with ESMTPS id 6A1AA1800019E
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 10:42:55 +0000 (GMT)
-Received: by sjc-ads-1396.cisco.com (Postfix, from userid 1839047)
-	id E47D2CC128E; Mon,  3 Feb 2025 02:42:54 -0800 (PST)
-From: Shubham Pushpkar <spushpka@cisco.com>
-To: stable@vger.kernel.org
-Subject: [Fix CVE-2024-50217 in v6.6.y] [PATCH] btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
-Date: Mon,  3 Feb 2025 02:42:54 -0800
-Message-Id: <20250203104254.4146544-1-spushpka@cisco.com>
-X-Mailer: git-send-email 2.35.6
+	s=arc-20240116; t=1738580017; c=relaxed/simple;
+	bh=YjfaQMuiotSBYmqR39Ih2PixqmJpdkXko6xcc2Vc3S4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Zc57W9grGwuk4zn4V7PwBRZ732fPc3kGXisO+7Zv6sy4iDKf7iELMt1qJiFi0kRkcpO67BPYgKAgU1NO1GsJPiKj6wzYytaTHg4DVlZSMozU+Sc6Ki/C9byQkh1VHmDFd6pNqqpuX3GYBcg3nl/kve0NS3rcqsA+6FNm/H5Sc2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kWIHqiqL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hAsLZRYb; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id CBCF411400B9;
+	Mon,  3 Feb 2025 05:53:32 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Mon, 03 Feb 2025 05:53:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1738580012;
+	 x=1738666412; bh=fno2d7xBQTHyGEag7JukI6+jFsxK1yZ6n1t7uINgMOE=; b=
+	kWIHqiqLhQ95YW0+xYY7duHqkRQfUW/mPbwBrI0bTJWV70k28squMgziHVg8BGgA
+	jL7ILlKS0nj5LmOL0ucGPzgLYrpcYcnMTkon05jmZbZciQgXkA4xJuqz6dmKIGX6
+	BntrbQzCqYGx3jiY/RXYHRCuHPjAN62nt5sEL3GIn79MjUU1r0VykR71r+8QiRPe
+	UE1WVmaVtifubM19L75sj9MfgXXrW9FY2/XtXu0akRQfxNEj/GCpz80yT2bLOBGn
+	+dPqAKJt7w7zj9vFNuqUljjk1tlWvdydGvbeg2hkxZzjU9vWz18KwuxxBRStZAjy
+	YZ1oMasaepRBL6PBZ2hdIw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738580012; x=
+	1738666412; bh=fno2d7xBQTHyGEag7JukI6+jFsxK1yZ6n1t7uINgMOE=; b=h
+	AsLZRYb3BgDEBRC2xuZ54cxzGG9lkf91hXIXSq5s/oOGcMaaIf8DrpoDAAvBy1g9
+	lEhZ9dVUXReMT2hEoUjALrtBASkjunUw0MVS8zbratMjFi+ZhmiDPQFlCTXXQdXJ
+	EjWnrahJMmfE56pHf1asCJF1UvHK67hJdpgqgBDi+qtiLWqJ6RzCqi2MsUJC1ThO
+	uGJ/B45SloGMmTmJB8No8iUF7x2knVc8/JsudpxnJvn1+/M1nTvHX6Fwd0h7Qvo+
+	4diIucAqLGWwbbMc1wBb4dVbEG3qSS7mssPwOJIr0WzB3BVefsdZErGXNAaY2vOR
+	v6xTPzNH8At7Y6OkCLVlg==
+X-ME-Sender: <xms:LKCgZ_L3WuG86QFyCfwl02Lv7wdc7hrd3HW2VOnIucAeJ7DLOay6Ag>
+    <xme:LKCgZzIajWV2P1Bew85XCDP_kTU5K9tIn9SN9gUFrfvQE4n04c7lSkIdR6NLXC8EZ
+    gVQnnMlrFw4HBS6-p0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujeegtdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
+    jeenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpedvhfdvkeeuudevfffftefgvdevfedvleehvddv
+    geejvdefhedtgeegveehfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeek
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjrghvihgvrhesjhgrvhhighhonh
+    drtghomhdprhgtphhtthhopehjvghnshdrfihikhhlrghnuggvrheslhhinhgrrhhordho
+    rhhgpdhrtghpthhtohepjhgvrhhomhgvrdhfohhrihhsshhivghrsehlihhnrghrohdroh
+    hrghdprhgtphhtthhopehsuhhmihhtrdhgrghrgheslhhinhgrrhhordhorhhgpdhrtghp
+    thhtohepohhpqdhtvggvsehlihhsthhsrdhtrhhushhtvggufhhirhhmfigrrhgvrdhorh
+    hgpdhrtghpthhtohepuggrnhhnvghnsggvrhhgsehtihdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:LKCgZ3trFXzDywekajzC6KSJCUk5rpoxjVZBD1i-0kI-cMyxISItwQ>
+    <xmx:LKCgZ4ax9hdu8fcBLGtUAr7ERouQWDKogy2G3rwpygzG288R4I7_7Q>
+    <xmx:LKCgZ2a-U-9DyMwx03q56FLZNPfrxJ0VruxeE07i1mYqojTLJT4W-A>
+    <xmx:LKCgZ8BRpp5xKu-uFLW5kYOhWofzM84b8h-hn_plNmulhnx3C3zSww>
+    <xmx:LKCgZ-6UGXQqN8lFXJry4VN8p24F0IRu5TMgmrqLdHFCgQXupc2ImbLA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 6AE2F2220072; Mon,  3 Feb 2025 05:53:32 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Outbound-SMTP-Client: 171.70.59.88, sjc-ads-1396.cisco.com
-X-Outbound-Node: rcdn-l-core-04.cisco.com
+Date: Mon, 03 Feb 2025 11:53:11 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Jens Wiklander" <jens.wiklander@linaro.org>,
+ "Sumit Garg" <sumit.garg@linaro.org>
+Cc: op-tee@lists.trustedfirmware.org,
+ "Jerome Forissier" <jerome.forissier@linaro.org>, dannenberg@ti.com,
+ javier@javigon.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <65aedfdf-0a13-445d-956c-6945f1b49681@app.fastmail.com>
+In-Reply-To: 
+ <CAHUa44FXzL-MZ5y7x6qrsn3GJR=1oR8bbRVCv6ZTvDRoQmENEg@mail.gmail.com>
+References: <20250203080030.384929-1-sumit.garg@linaro.org>
+ <CAHUa44FXzL-MZ5y7x6qrsn3GJR=1oR8bbRVCv6ZTvDRoQmENEg@mail.gmail.com>
+Subject: Re: [PATCH v2] tee: optee: Fix supplicant wait loop
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+On Mon, Feb 3, 2025, at 10:31, Jens Wiklander wrote:
+> On Mon, Feb 3, 2025 at 9:00=E2=80=AFAM Sumit Garg <sumit.garg@linaro.o=
+rg> wrote:
 
-commit aec8e6bf839101784f3ef037dcdb9432c3f32343 ("btrfs:
-fix use-after-free of block device file in __btrfs_free_extra_devids()")
+> Why not mutex_lock()? If we fail to acquire the mutex here, we will
+> quite likely free the req list item below at the end of this function
+> while it remains in the list.
 
-Mounting btrfs from two images (which have the same one fsid and two
-different dev_uuids) in certain executing order may trigger an UAF for
-variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
-following are the details:
+Right, I had mentioned mutex_lock_killable in an earlier reply,
+as I didn't know exactly where it hang. If we know that the
+wait_event_interruptible() was causing the hang, then the
+normal mutex_lock should be fine.
 
-1. Attach image_1 to loop0, attach image_2 to loop1, and scan btrfs
-   devices by ioctl(BTRFS_IOC_SCAN_DEV):
-
-             /  btrfs_device_1 → loop0
-   fs_device
-             \  btrfs_device_2 → loop1
-2. mount /dev/loop0 /mnt
-   btrfs_open_devices
-    btrfs_device_1->bdev_file = btrfs_get_bdev_and_sb(loop0)
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     fail: btrfs_close_devices // -ENOMEM
-	    btrfs_close_bdev(btrfs_device_1)
-             fput(btrfs_device_1->bdev_file)
-	      // btrfs_device_1->bdev_file is freed
-	    btrfs_close_bdev(btrfs_device_2)
-             fput(btrfs_device_2->bdev_file)
-
-3. mount /dev/loop1 /mnt
-   btrfs_open_devices
-    btrfs_get_bdev_and_sb(&bdev_file)
-     // EIO, btrfs_device_1->bdev_file is not assigned,
-     // which points to a freed memory area
-    btrfs_device_2->bdev_file = btrfs_get_bdev_and_sb(loop1)
-   btrfs_fill_super
-    open_ctree
-     btrfs_free_extra_devids
-      if (btrfs_device_1->bdev_file)
-       fput(btrfs_device_1->bdev_file) // UAF !
-
-Fix it by setting 'device->bdev_file' as 'NULL' after closing the
-btrfs_device in btrfs_close_one_device().
-
-Fixes: CVE-2024-50217
-Fixes: 142388194191 ("btrfs: do not background blkdev_put()")
-CC: stable@vger.kernel.org # 4.19+
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219408
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-(cherry picked from commit aec8e6bf839101784f3ef037dcdb9432c3f32343)
-Signed-off-by: Shubham Pushpkar <spushpka@cisco.com>
----
- fs/btrfs/volumes.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index b9a0b26d08e1..ab2412542ce5 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -1176,6 +1176,7 @@ static void btrfs_close_one_device(struct btrfs_device *device)
- 	if (device->bdev) {
- 		fs_devices->open_devices--;
- 		device->bdev = NULL;
-+		device->bdev_file = NULL;
- 	}
- 	clear_bit(BTRFS_DEV_STATE_WRITEABLE, &device->dev_state);
- 	btrfs_destroy_dev_zone_info(device);
--- 
-2.35.6
-
+     Arnd
 
