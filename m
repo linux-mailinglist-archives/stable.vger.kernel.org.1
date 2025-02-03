@@ -1,101 +1,141 @@
-Return-Path: <stable+bounces-111988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC753A2543C
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:20:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D34A2543D
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 210783A4A04
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1C51649FF
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43412207DE2;
-	Mon,  3 Feb 2025 08:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB14520ADE4;
+	Mon,  3 Feb 2025 08:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="wVtWgjgt"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="xCgwH2us";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="tDqUNebF"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBCD1FBE88;
-	Mon,  3 Feb 2025 08:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D102F206F3A;
+	Mon,  3 Feb 2025 08:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738570581; cv=none; b=MavOaKNi8fPWobALBcB5VS5pz5Ojv3uipN0uYinQo0pUbtekRxJU+4aZhiIWYhaivH0ZslxliX4LMgbw09E6sN30Tzst8DtzDfpfD7DBXUH/u9yzAkT4XUNvJRvu/UgpI4AyPlLPO9j/cV2IwZdfNlfqeOXKtqxGeUZeN8fLDoY=
+	t=1738570588; cv=none; b=NbbAEVcK1p7iYPqjIwJuIOq6yFQYPe5npA1LVUFot4BrFECCIeG66jjh9psyjxSl3HCG78GBvfBBS6JntKb0hYP2BjXUJFH943Izh/hjeh+Zh8DSL32QOPD9OBPSbGDLQq6uVv/Do2+KA9wjECa3t1YZQsJPSgXxFm09Em6hlz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738570581; c=relaxed/simple;
-	bh=BnLa6i9uHTei5BUGODcN7bebF1kVtW6DZS3sGD/Lx6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j2Hqoyr3+yFolyugDNBISbMQkUejwJWN4GwK5tvaa4HMEhlnmtkKNpTrmxhSazWvbHNPrvK74rNZXDztXAaWEnt4/dYDxTnguWj5ePpJAludi99pBZLvKhfOnfZ/LjoTLF8fFXBTPSG07vhyYUVD5baIiRhQUom6Xgj/ZilOGpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wVtWgjgt; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=W4nx1cYB2XMya5dsknAcGEuuSmOAaTjn1xFWh2exy+4=; b=wVtWgjgtbp2wxfGovdDNbeIw0E
-	EK1DVFc4xJIWIQwM8SK8cRKLncxvRuaFsv9BkE3sExkoDVmzBORvBTcZ8MUJp/gB1iJvtHVsJjDFK
-	k82QPc9SoMUbcfmK/QGYscdGDZXhnG/YUZ2DdZwVj/rDK0WTJzo9j7YcUDtJVt3WFo6Por+nohmVZ
-	k4avGC5VXYb04RXQC1opmK6BIqwJ3eUz36D6yuVo+S8XaFxCsIQBQJ98Hya2Hkq/5PXm0per0zxko
-	vCNA3LIqDtzGYtLgOIkqOASfCFfATZ25mEDLuW3r7KJXpFijwVeGLLZ0r1NrfzlDtUFyxZTbuIpyy
-	07QCjOgQ==;
-Received: from i53875b5c.versanet.de ([83.135.91.92] helo=phil..)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1tercl-0005Vr-GX; Mon, 03 Feb 2025 09:16:07 +0100
-From: Heiko Stuebner <heiko@sntech.de>
-To: linux-rockchip@lists.infradead.org,
-	Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Alexey Charkov <alchark@gmail.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Fix broken tsadc pinctrl names for rk3588
-Date: Mon,  3 Feb 2025 09:15:57 +0100
-Message-ID: <173857053617.78657.9000996460900671824.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250130053849.4902-1-eagle.alexander923@gmail.com>
-References: <20250130053849.4902-1-eagle.alexander923@gmail.com>
+	s=arc-20240116; t=1738570588; c=relaxed/simple;
+	bh=2Im47tyY0OLAFV2dGWEPhjsciAHY/8qN3psUBo9yMzE=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=scfLq4njJW9AKQRinKY/9C7+Zt9y1sCR6H3ljQHa9LvtBV7deIH29UIWjVWCXWW79+5LIonGXKrh19v6JmLqMOyEoyMh+gGByHrHL288OiQztAXK7LvrRCzpU+cy/tmRofYxqyc/rG8ii9/70vkoXBYB64eGktNRmG7LQBfSx4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=xCgwH2us; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=tDqUNebF; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id DCA0211400DF;
+	Mon,  3 Feb 2025 03:16:25 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Mon, 03 Feb 2025 03:16:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1738570585;
+	 x=1738656985; bh=pwRQ96cNN5emwssiv0Lkx4BzFl1xLvexcr5FtbOIjYs=; b=
+	xCgwH2usz4ouH3lCrMO27HOLXKTjRrIXcnPqUVap9feYikvK3kHtmrlCzh/R+T7/
+	hwIqxjrmBpCrrAnUvjij10EIwrETG79oDYJvfI9XQDrlW+WqrfZf5dqc0eGu0QkT
+	GjwFz4HDv8xlRIX7cCGAGas1QTTylf0sJz+dj3i23bSB0VXVNIIRM/AnZmSVqW3x
+	YWZG+bCj+dc1MRUqCIBEW7QBg7MBJF121n+1YK2OWWlxi5p76LUxboxPD/JUD6dk
+	k+NeofxlEJih9dAggWW1eSaM3foj76pTnA8WkSRp8Jhsw+IAkDFATIwwy44PibA0
+	LzQwD6cgmvjXg7eGFGVNzQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738570585; x=
+	1738656985; bh=pwRQ96cNN5emwssiv0Lkx4BzFl1xLvexcr5FtbOIjYs=; b=t
+	DqUNebFEzH8bT/DnnXANpxQIxVxEVq6RP/8Iaj2KLP8vK8SRB3DojtOE92lQQnem
+	Bau2qQU8apkomEcyO06mWazfOlobwfp9N+/xrgD9k9zSJYJDHx9muUlR4d4i5+vR
+	4YtTgEzI7c5mMow9X0Js5b0ifW/mhtg9G2MRZIlpZcsiMvaToG9K3aKSUDIHoX2U
+	LRAmUTx0iLThU8f8GB9G2ifkZn9pmksleg5lYU31mh1fBOgkQ4wX4F9TnKCUh0Sk
+	0Z8lwP0YaAOu5uoP2NTQvdsjP1iS6cYfLMGXYSSwwCBv+pusTX3QEoz8WPGx+tpK
+	7uso7JTVWgojtDKqxxt2Q==
+X-ME-Sender: <xms:WXugZzuDYQrEGpmqMnoPbXxxrU8flg0hRl6BkQINPCQqYyySZ-GAUQ>
+    <xme:WXugZ0f-xXNFASz2ekBD4IYAB-KPwL-vOPc0_YPRBd7cRv2eN2aajUchrQtWJD0t9
+    wl1RoolwskI5AwTpic>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedtkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeek
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjrghvihgvrhesjhgrvhhighhonh
+    drtghomhdprhgtphhtthhopehjvghnshdrfihikhhlrghnuggvrheslhhinhgrrhhordho
+    rhhgpdhrtghpthhtohepjhgvrhhomhgvrdhfohhrihhsshhivghrsehlihhnrghrohdroh
+    hrghdprhgtphhtthhopehsuhhmihhtrdhgrghrgheslhhinhgrrhhordhorhhgpdhrtghp
+    thhtohepohhpqdhtvggvsehlihhsthhsrdhtrhhushhtvggufhhirhhmfigrrhgvrdhorh
+    hgpdhrtghpthhtohepuggrnhhnvghnsggvrhhgsehtihdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:WXugZ2xmlSBKHSbM6g9vL9WlFBKhliO7DWtuGZHP-qkRcfS_vgBlFw>
+    <xmx:WXugZyMQFXI8f_6BJeL6Mwi01eLCDGrg29VIA5YA8w-p3znCVkjXyQ>
+    <xmx:WXugZz8V__UOYyRl9xDPWllTnRW162zo1TG5z3i4i_E0Ii2DoS_jsA>
+    <xmx:WXugZyVCraOMR1hvr06kkjjo3gRboH-1BmFRui0jSgy2DnWotEm5nA>
+    <xmx:WXugZ0Oo17sI6OA6kCX0vOfDRm3QDSAnjLqsB0Me4ioWHlWdflr-A-7y>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 7DD9D2220072; Mon,  3 Feb 2025 03:16:25 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Date: Mon, 03 Feb 2025 09:16:05 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Sumit Garg" <sumit.garg@linaro.org>,
+ "Jens Wiklander" <jens.wiklander@linaro.org>
+Cc: op-tee@lists.trustedfirmware.org,
+ "Jerome Forissier" <jerome.forissier@linaro.org>, dannenberg@ti.com,
+ javier@javigon.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Message-Id: <15a801d6-2274-4772-bbe3-5d2083b91b64@app.fastmail.com>
+In-Reply-To: <20250203080030.384929-1-sumit.garg@linaro.org>
+References: <20250203080030.384929-1-sumit.garg@linaro.org>
+Subject: Re: [PATCH v2] tee: optee: Fix supplicant wait loop
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
+On Mon, Feb 3, 2025, at 09:00, Sumit Garg wrote:
+> OP-TEE supplicant is a user-space daemon and it's possible for it
+> being hung or crashed or killed in the middle of processing an OP-TEE
+> RPC call. It becomes more complicated when there is incorrect shutdown
+> ordering of the supplicant process vs the OP-TEE client application which
+> can eventually lead to system hang-up waiting for the closure of the
+> client application.
+>
+> Allow the client process waiting in kernel for supplicant response to
+> be killed rather than indefinitetly waiting in an unkillable state.
 
-On Thu, 30 Jan 2025 08:38:49 +0300, Alexander Shiyan wrote:
-> The tsadc driver does not handle pinctrl "gpio" and "otpout".
-> Let's use the correct pinctrl names "default" and "sleep".
-> Additionally, Alexey Charkov's testing [1] has established that
-> it is necessary for pinctrl state to reference the &tsadc_shut_org
-> configuration rather than &tsadc_shut for the driver to function correctly.
-> 
-> [1] https://lkml.org/lkml/2025/1/24/966
-> 
-> [...]
+It would be good to mention that the existing version ends up in
+a busy-loop here because of the broken wait_for_completion_interruptible()
+loop.
 
-Applied, thanks!
+A normal uninterruptible wait should not have resulted in the hung-task
+watchdog getting triggered, but the endless loop would.
 
-[1/1] arm64: dts: rockchip: Fix broken tsadc pinctrl names for rk3588
-      commit: 5c8f9a05336cf5cadbd57ad461621b386aadb762
+> +	if (wait_for_completion_killable(&req->c)) {
+> +		if (!mutex_lock_killable(&supp->mutex))	{
+>  			if (req->in_queue) {
 
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+Using mutex_trylock() here is probably clearer than
+mutex_lock_killable(), since a task that is already in the
+process of getting killed won't ever wait for the mutex.
+mutex_lock_killable() does try to get the lock first though
+if nobody else holds it already, which is the same as trylock.
+
+     Arnd
 
