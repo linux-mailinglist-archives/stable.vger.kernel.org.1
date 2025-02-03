@@ -1,197 +1,115 @@
-Return-Path: <stable+bounces-111981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD68FA25170
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 03:47:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 051D2A2528B
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 07:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A61737A2A53
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 02:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CB7E3A475B
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 06:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4ED70803;
-	Mon,  3 Feb 2025 02:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0F01D86DC;
+	Mon,  3 Feb 2025 06:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="go7x2/Wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkNGtS3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DD62A1CF;
-	Mon,  3 Feb 2025 02:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4728F4502F;
+	Mon,  3 Feb 2025 06:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738550728; cv=none; b=O1DeM4uQ2D5N6pPwrnC8hd1xVJRfUCVvKLV+mJvwtqs1VWwOv92606bWHekh54XstMoi66c+PB3Q9OG794IQR2V+zhszvyPd203CD+ahvUkD5eegNePSgh/7+K03JLU2vBP3sbNOWwyjou44gomsRAvxpBwiUqssOJ7TucxaY3M=
+	t=1738564689; cv=none; b=ZVU7vUCmqjkLWHL9rn3/+7RPYGnLa431+rQukCDURbqB6kEWbL1/eyHQkZT5tKepFu06JrBHxfLoF4axixMO65egiTmhJxIJlkKpUnlYl/5t40watls0gWy0gzTPJvk2kzoE9nrApnvqxxiYNFdBAqEtTrjLavB36bUJ0LhzxNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738550728; c=relaxed/simple;
-	bh=XG0mbk49V0NegpRPkM/klHrf0dbF+cSTFHmpA1Udj3k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z+oLTsA46HOvb4QKZafFMZ3sj7F8TFY8OS0I8jiNIqrgQtPfdTnxWhwgQGzlK6dOZc8tzqi8Vukgu7gUODoEyd9u8mHplTIvTdbJUvkjS79kVMU1VnTbKATuFsjXIFViZ9BapctRCv3n7hWgdiMOkLKYFqB+7aZ+z+NJMa/VgnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=go7x2/Wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D4FC4CED1;
-	Mon,  3 Feb 2025 02:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738550728;
-	bh=XG0mbk49V0NegpRPkM/klHrf0dbF+cSTFHmpA1Udj3k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=go7x2/WtXYy0hLH6pqkLK2jH/711U2X2oMk9dT1Z8HVFpotT2Or4QLGsBtfsChE+g
-	 hroh2pPDSwAsxkXTU9RyZzhy40edDypULqoxfjIShLGiqP7xfzT6Nv7UCjyubFoTaN
-	 /4hKoc9577HbNgho5r7M1JZouZvEeUwa0vnRK+fntdwpqLKKpZGrfGqoYDI+52N99F
-	 RtDIe/6qhEjXT0JcqHTK6cGMLjeCSIlMP5gmKtRUo6G6tq7+MtlrmcV0YLLa/Tbw4V
-	 qEUd5DWFLoAcCOAG7cVoU/ewlCTlNL06QELTGFv36rLR3IFldwmKeAGNkaDj6Sy9Qz
-	 zzASm9T3lzqCA==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5401ab97206so3745469e87.3;
-        Sun, 02 Feb 2025 18:45:28 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUWQxKgaIS1C/8fR2GGAHXvZv2EcJPin5cVOtDbno+er2rTuutzdMyOa9NUeAWZ7Bti0CInWrf1@vger.kernel.org, AJvYcCUgUNF8KI6eGBpFX43o5YpXWXquiqnOwz3pUsUYsZyaSVjCAzvn6eTwjDZ5Ak5LRahTQvAt9qs3HxF4wRQA@vger.kernel.org, AJvYcCXdtwJXC+bpP0CCC/rhEv4Kfu0yazGhsKVcfiW2DmpipDwv85aUB41HPaLu/DAkee9rJ8WUALhjlsZqgyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMJec9mtVokbVo0+cWQCaxa5iZehe5vtm05pQyqze4KSNafMQZ
-	LtsMEyJ6Z1Y9jyzfV2oGBTMM+nUvXHWeP/I7bQ1jWCgsHyybRMlKxnGijDzP8I6krnjSEguJwoq
-	2RgIUIlj8fay7m2+kC57BbnXJKeg=
-X-Google-Smtp-Source: AGHT+IF19tgvw1mISx/p0V+qRrWjG/6aPn50rV6owggCPM3zdZ5zMVnvGZCfSqZJQIyAy+OpQLR1IKKpsG5KU1fPEMQ=
-X-Received: by 2002:a05:6512:1249:b0:542:250d:eef2 with SMTP id
- 2adb3069b0e04-543e4bea4b0mr5980225e87.20.1738550726692; Sun, 02 Feb 2025
- 18:45:26 -0800 (PST)
+	s=arc-20240116; t=1738564689; c=relaxed/simple;
+	bh=4ZAGAaI9Vpn3TPg4K2QrvEklxrVNZBoiXZohN6WtLQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NcTXEenLrH3c+3t1CIR/iHzPqvl7ijfQ50Cmr6Gv4MeXrlH/AzFH2ZULWi/JUfBd5LgKNmE0eUngI6p3FqcvZzqM3ZwP1/7nEaMvZjID/B9XhIZcWs2vvvu54lEoB5NP9mUaC1YrejELU3itGJGL9GXqgDaBTG6Lw/djs5dlBBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkNGtS3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCBBC4CEE2;
+	Mon,  3 Feb 2025 06:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738564688;
+	bh=4ZAGAaI9Vpn3TPg4K2QrvEklxrVNZBoiXZohN6WtLQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DkNGtS3QZHpyMACWuq6EfWWUCl66GD3eyZJXyD/78av3l/dHqp7YiUBBznGpsmA10
+	 pOuuBb+OXmXgg7sZhF30TScA+nD2+TgTgNMXDH8a2OhQwaOkeJ+Tw2AGDm+fZa55Pg
+	 RnGEa70bMbqNYFWFqRyH0q1rCvfbaipv/bX7BW1c=
+Date: Mon, 3 Feb 2025 07:37:08 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: broonie@kernel.org, rafael@kernel.org, dakr@kernel.org,
+	mazziesaccount@gmail.com, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] regmap-irq: Add missing kfree()
+Message-ID: <2025020351-cornfield-affix-8cf4@gregkh>
+References: <20250202200512.24490-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241114145645.563356-1-parth105105@gmail.com>
- <2024111442-yeast-flail-fcea@gregkh> <20241115083940.GA3971@francesco-nb>
- <2024111541-antiquity-footpath-e221@gregkh> <ZzcYLAFqTSlFm2uF@gaggiata.pivistrello.it>
- <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com> <Z580LZIi2iXGzSv5@eldamar.lan>
-In-Reply-To: <Z580LZIi2iXGzSv5@eldamar.lan>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 3 Feb 2025 11:44:50 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARFfUexOjoBsr385ECC61k-oNzefRZtTtNhdGV01r-iXg@mail.gmail.com>
-X-Gm-Features: AWEUYZmdMaCVBGU-SkjDQ6frrwUMLHsMGxpEaxqc-tBhI4EQgCXDmMgjchDjdvI
-Message-ID: <CAK7LNARFfUexOjoBsr385ECC61k-oNzefRZtTtNhdGV01r-iXg@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: switch from lz4c to lz4 for compression
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Parth Pancholi <parth105105@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Parth Pancholi <parth.pancholi@toradex.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250202200512.24490-1-jiashengjiangcool@gmail.com>
 
-On Sun, Feb 2, 2025 at 6:00=E2=80=AFPM Salvatore Bonaccorso <carnil@debian.=
-org> wrote:
->
-> Hi Greg, hi Yamada,
->
-> On Sat, Nov 16, 2024 at 04:51:48PM +0900, Masahiro Yamada wrote:
-> > On Fri, Nov 15, 2024 at 6:45=E2=80=AFPM Francesco Dolcini <francesco@do=
-lcini.it> wrote:
-> > >
-> > > On Fri, Nov 15, 2024 at 10:22:13AM +0100, Greg KH wrote:
-> > > > On Fri, Nov 15, 2024 at 09:39:40AM +0100, Francesco Dolcini wrote:
-> > > > > On Thu, Nov 14, 2024 at 05:02:01PM +0100, Greg KH wrote:
-> > > > > > On Thu, Nov 14, 2024 at 03:56:44PM +0100, Parth Pancholi wrote:
-> > > > > > > From: Parth Pancholi <parth.pancholi@toradex.com>
-> > > > > > >
-> > > > > > > Replace lz4c with lz4 for kernel image compression.
-> > > > > > > Although lz4 and lz4c are functionally similar, lz4c has been=
- deprecated
-> > > > > > > upstream since 2018. Since as early as Ubuntu 16.04 and Fedor=
-a 25, lz4
-> > > > > > > and lz4c have been packaged together, making it safe to updat=
-e the
-> > > > > > > requirement from lz4c to lz4.
-> > > > > > >
-> > > > > > > Consequently, some distributions and build systems, such as O=
-penEmbedded,
-> > > > > > > have fully transitioned to using lz4. OpenEmbedded core adopt=
-ed this
-> > > > > > > change in commit fe167e082cbd ("bitbake.conf: require lz4 ins=
-tead of
-> > > > > > > lz4c"), causing compatibility issues when building the mainli=
-ne kernel
-> > > > > > > in the latest OpenEmbedded environment, as seen in the errors=
- below.
-> > > > > > >
-> > > > > > > This change also updates the LZ4 compression commands to make=
- it backward
-> > > > > > > compatible by replacing stdin and stdout with the '-' option,=
- due to some
-> > > > > > > unclear reason, the stdout keyword does not work for lz4 and =
-'-' works for
-> > > > > > > both. In addition, this modifies the legacy '-c1' with '-9' w=
-hich is also
-> > > > > > > compatible with both. This fixes the mainline kernel build fa=
-ilures with
-> > > > > > > the latest master OpenEmbedded builds associated with the men=
-tioned
-> > > > > > > compatibility issues.
-> > > > > > >
-> > > > > > > LZ4     arch/arm/boot/compressed/piggy_data
-> > > > > > > /bin/sh: 1: lz4c: not found
-> > > > > > > ...
-> > > > > > > ...
-> > > > > > > ERROR: oe_runmake failed
-> > > > > > >
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > >
-> > > > > > What bug does this resolve that it needs to be backported to st=
-able
-> > > > > > kernels?
-> > > > >
-> > > > > This is not solving any existing actual bug, and therefore there =
-is no
-> > > > > fixes tag.
-> > > > >
-> > > > > The issue here is that the kernel build system is using lz4c, tha=
-t is
-> > > > > deprecated since 2018, and now distributions are actively moving =
-away from it.
-> > > > >
-> > > > > openSUSE Tumbleweed and OE already removed it, so you would not b=
-e able
-> > > > > to compile a stable kernel on such distribution when using lz4 un=
-less we
-> > > > > backport such a patch.
-> > > > >
-> > > > > Everything should be properly documented in the commit message al=
-ready.
-> > > > >
-> > > > > My understanding is that something like that would be a reason fo=
-r
-> > > > > backporting to stable, if my understanding is not correct we'll r=
-emove
-> > > > > the cc:stable and send a v3.
-> > > >
-> > > > Please read:
-> > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-ru=
-les.html
-> > > > for what meets stable kernel requirements.  I don't think that this
-> > > > patch is that.
-> > >
-> > > Greg, ack.
-> > >
-> > > Masahiro, can you please let me know if we should send a v3 with the =
-stable
-> > > tag removed or you can remove it yourself when applying?
-> > >
-> >
-> > I applied this with the stable tag removed.
-> > Thanks.
-> >
-> > (I guess someone may want to backport this eventually,
-> > as such distros cannot build stable kernels with ld4 compression.)
->
-> Yes please :)
+On Sun, Feb 02, 2025 at 08:05:12PM +0000, Jiasheng Jiang wrote:
+> Add kfree() for "d->main_status_buf" in the error-handling path to prevent
+> a memory leak.
+> 
+> Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+> ---
+>  drivers/base/regmap/regmap-irq.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+> index 0bcd81389a29..b73ab3cda781 100644
+> --- a/drivers/base/regmap/regmap-irq.c
+> +++ b/drivers/base/regmap/regmap-irq.c
+> @@ -906,6 +906,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+>  	kfree(d->wake_buf);
+>  	kfree(d->mask_buf_def);
+>  	kfree(d->mask_buf);
+> +	kfree(d->main_status_buf);
+>  	kfree(d->status_buf);
+>  	kfree(d->status_reg_buf);
+>  	if (d->config_buf) {
+> -- 
+> 2.25.1
+> 
+> 
 
-Agree.
-This should be back-ported.
+Hi,
 
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
 
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
+thanks,
 
---=20
-Best Regards
-Masahiro Yamada
+greg k-h's patch email bot
 
