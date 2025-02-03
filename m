@@ -1,156 +1,125 @@
-Return-Path: <stable+bounces-112042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2C3A25F93
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 17:15:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A70EA25FD4
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 17:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E67C1885E03
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22A83A8959
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5377120A5F5;
-	Mon,  3 Feb 2025 16:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B1720A5ED;
+	Mon,  3 Feb 2025 16:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="AwjQ66gC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3klhSfA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC7B205E0B
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 16:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E385DC139
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 16:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738599314; cv=none; b=tcKIFF8XHVIYerj8o6hZ2TxVLm11FqudFI07CQE1nvkTo7ZK6ckQAqmXRGTh2BFptRLEpebp76ksJagD4/I4ThfiX2LvY9pyd2s6cOui1K6yqU41O9rDW0MdHLla2VcmhRZb25CgIMkQ+dep31dFnaVOajnWnNlmmulXBxiN40A=
+	t=1738599900; cv=none; b=ZziTnz4SGsjtkH04YMCkIE9+IPQTtj0StkPC8tMQ3Q2H4OB3IwBzZsAfROGO/5ZYkl5WKNq1Q4HjJPAjExzeFvX/l2ssGCEZrNaogFdFbOFZd3XFW53YDW618JvVHS+CUK7I6xBPCQIpdjF1LWLcBlo0p9y5lPIt6KbA2hglyTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738599314; c=relaxed/simple;
-	bh=zDVsGVRJipMVFnd7EMQBF3dnIplT6UT0+jGAW0VZjmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gjwn7vcFBkooxlaUPHHpgL353zFO+aclvDSqO8ZdnSESr+HkjHv0g0pbL+BOSUuCfdBduodREZFAJrR/iM6yo+MOJ+zRwuEbAoaElLP2JOgWsrp8FvJ0s/jHYQ3QAnt0XkYrvZ1tHP8QN8tLY6Pa9hvyQvSutul2cOmY1s40/gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=AwjQ66gC; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6e1a41935c3so63066246d6.3
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 08:15:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1738599311; x=1739204111; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bPasqTS0flnHE5VF++CqhxrbQnr9GQuOM0i0z93o3tA=;
-        b=AwjQ66gCXkFkol+eUMjbsM/c/a3SYR4iYCtV7u1tjbS+yXOePRvLKbLmdFlYUe2aQQ
-         TgO5EPttdVzuILmLbsXZhoO/C7VL+54owXnWgwJW8yoYG1snJcPRnRsNHOp57UEQ+TqT
-         AAmSWZgZUCYO2Ek4qbuw3c7XZJeykpU15pURs2ZSfCxaqC6r+Da6o4quG/h/F6cqdH5S
-         gbTwILb97BDKlbPCxB+NBnUvu0r2OrEvIrraXxiH6lxx5J7TCn4WIQBWhe28ZeHIk0ms
-         OgXg1ESR/dZ4roh4tL1DFpJlb0OnlfxXD6RRkD3Da6P/8qtvmmETTYa6501aF7AxBeqS
-         vEpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738599311; x=1739204111;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bPasqTS0flnHE5VF++CqhxrbQnr9GQuOM0i0z93o3tA=;
-        b=bGl5676vhA5MTaJMkLx6mbcv2lq1P/UYDTBnDQP0nfFKa/habqWFlT3LH8d7iJnb+l
-         IWwMUynYfYr7bgKKFPZsSizGycJoaPbPz9OHRvW4sp9haikjfp74M230hYwDiDfB0A1l
-         z+uDWVOuDkzq228ngVm7I/nlZ0tZwx526vmAI34cfbYZBOphqwfatGoiuQuBPIOzy4+x
-         IUAiOI0z+DQIYYaH24/FI1SV3pLESXGa2BIjAmfbYqOsaV/FGVJz/QL/of57lcOLk98S
-         A8o55xNfNCEQDYV4sxcLsjbNbB4WTZP897xOG6LcyH5qiKzV53Cu4+WDbUZ/u1aWvDeo
-         0BSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvTzjqOmnEBUINxng+aGSaZBYLcXcQ1k9UPXspgpDMRqcLBRQN/+cRADPj9OcK2NByGRTTsKQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz3fI2xOiYSq1A/5NHHM7GqrRvRTZz6VlxqDPTS29Xu7hz0Spf
-	o4y0jNAA9g994xU7HAO+ANqDKDxZXFDjHEwnunWh9ke9qsqfNRGB+CElRte4dg==
-X-Gm-Gg: ASbGncv/xjKHepBo6bNRtC4BeugIBTYwzBnyJgz/hYWroDdkE+AaWuLnlB2+/9U3hZ2
-	PuD+PfEODqdhu13GhGh86PThUzIG8g7wZjzH1Evw05KzDeSVDdBhKqktmcn4gse+4bezGThVWEF
-	WulR3VA2F1MkQfgP0KZAfjEUWtj+sqjfRVcyIoh6KUWV8XMXiy69ReiTzhcBxBI3cuumZbjBMpx
-	jAGKEFcvsRvz6no641gsbukY936LlkI6rGxkBszCiWKNocbApABsWSrm8J7EhwSmlI8RcdFYWtT
-	HWw8ZouYzr2tgykwxQcWGwaGr3/HH79O3g==
-X-Google-Smtp-Source: AGHT+IGwPouMQe5+kqUqm04OghExTDFTU7rKqXnjTVa9WJRHHomAQ9IalFm3FMWHWpAOMj/baL4wEQ==
-X-Received: by 2002:a05:6214:dcb:b0:6e0:f451:2e22 with SMTP id 6a1803df08f44-6e243c7fa66mr379958426d6.38.1738599311210;
-        Mon, 03 Feb 2025 08:15:11 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e2547f0e5asm51736096d6.7.2025.02.03.08.15.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 08:15:10 -0800 (PST)
-Date: Mon, 3 Feb 2025 11:15:08 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Mingcong Bai <jeffbai@aosc.io>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-Message-ID: <06c81c97-7e5f-412b-b6af-04368dd644c9@rowland.harvard.edu>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
- <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
- <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
- <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
- <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
- <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
+	s=arc-20240116; t=1738599900; c=relaxed/simple;
+	bh=i81LAFq6Pgd51jrkZnwSNmAsa4pQbq+8Gg0E7E3go2U=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=BKLvr9dkoI0wDuuJ97eTYisB0WLZR1cWiY1+i3QvTfIAHFNzoWh5hOcB0HAIo5Xs6lq7xurypBXQV5JdLRKdHVUN0o9M4ZkJc/rAn+mRx3qREm52nDKtgyFYo0ZeWpu3mmGdIbXn/MFgrM0ZjdYL1oOO8bGzVb98vnl2RcLfkv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3klhSfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50E8C4CED2;
+	Mon,  3 Feb 2025 16:24:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738599899;
+	bh=i81LAFq6Pgd51jrkZnwSNmAsa4pQbq+8Gg0E7E3go2U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A3klhSfAzqmYvx5vIiF68v4/lXC/xESjxJYrJS/tuXeYUeziAeOZx74XBJANteJSQ
+	 lQs9lybmBNFv73yj0ZBIKgrB0pcGMN1Vla8mRfphojbx4YEshSAXTgxcBrjU2sXzLc
+	 p5BMn5AvqFt9tQfC/jVOs8tzUIMQm/kxGs8vAGyiLd1N3lAGwB78tr+VsYh7VWOfGk
+	 PDNdSt9YoOMiGwsqwzRelazb4ivujzDHb4bqdoUzq+0UimJj+g4clAbLq+7tyNZRle
+	 0MdkfrK91uPZ4JmT2cqaQ3AJ56MyOYeYJeUJ1kOJgIJtRuwWNrgDZ9nr6dJ0JoSC2F
+	 RiNXBAZQ2gDOw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Shubham Pushpkar <spushpka@cisco.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [Fix CVE-2024-50217 in v6.6.y] [PATCH] btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
+Date: Mon,  3 Feb 2025 11:24:57 -0500
+Message-Id: <20250203104236-79c0781f6bba7d6e@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250203123719.52811-1-spushpka@cisco.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 04, 2025 at 12:01:37AM +0800, Mingcong Bai wrote:
-> Hi Alan, Huacai,
-> 
-> <snip>
-> 
-> > I just tried running the experiment on my system.  I enabled wakeup for
-> > the mouse device, made sure it was disabled for the intermediate hub and
-> > the root hub, and made sure it was enabled for the host controller.
-> > (Those last three are the default settings.)  Then I put the system in
-> > S3 suspend by writing "mem" to /sys/power/state, and when the system was
-> > asleep I pressed one of the mouse buttons -- and the system woke up.
-> > This was done under a 6.12.10 kernel, with an EHCI host controller, not
-> > xHCI.
-> > 
-> > So it seems like something is wrong with your system in particular, not
-> > the core USB code in general.  What type of host controller is your
-> > mouse attached to?  Have you tested whether the mouse is able to wake up
-> > from runtime suspend, as opposed to S3 suspend?
-> > 
-> 
-> Just to chime in with my own test results. I was looking at this with Huacai
-> a few days back and we suspected that this had something to do with
-> particular systems, as you have found; we also suspected that if a keyboard
-> was connected to a non-xHCI controller, it would fail to wake up the system.
-> 
-> I conducted a simple experiment on my Lenovo ThinkPad X200s, which does not
-> come with any USB 3.0 port. Here are my findings:
+[ Sasha's backport helper bot ]
 
-What sort of USB controller does the X200s have?  Is the controller 
-enabled for wakeup?
+Hi,
 
-What happens with runtime suspend rather than S3 suspend?
+Found matching upstream commit: aec8e6bf839101784f3ef037dcdb9432c3f32343
 
-> 1. With upstream code, the system would not wake up with neither the
-> internal nor the external keyboards. One exception being the Fn key on the
-> internal keyboard, which would wake up the system (but I suspect that this
-> is EC behaviour). This behaviour is consistent across any USB port on the
-> laptop and, regardless if the external keyboard was connected to the laptop
-> itself or via a hub.
-> 
-> 2. With Huacai's code, I was able to wake up the laptop with an external
-> keyboard in all the scenarios listed in (1). The internal keyboard still
-> failed to wake up the system unless I strike the Fn key.
-> 
-> I should note, however, that the internal keyboard is not connected via USB
-> so it's probably irrelevant information anyway.
-> 
-> As for mice, it seems that the kernel disables wake-up via USB mice and
-> enables wake-up via USB keyboards. This is also consistent with your
-> findings.
+WARNING: Author mismatch between patch and found commit:
+Backport author: Shubham Pushpkar<spushpka@cisco.com>
+Commit author: Zhihao Cheng<chengzhihao1@huawei.com>
 
-Yes, and of course you can manually change the default wakeup settings 
-whenever you want.
 
-Alan Stern
+Status in newer kernel trees:
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  aec8e6bf83910 ! 1:  afbc8c0c36536 btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
+    @@ Metadata
+      ## Commit message ##
+         btrfs: fix use-after-free of block device file in __btrfs_free_extra_devids()
+     
+    +    commit aec8e6bf839101784f3ef037dcdb9432c3f32343 ("btrfs:
+    +    fix use-after-free of block device file in __btrfs_free_extra_devids()")
+    +
+         Mounting btrfs from two images (which have the same one fsid and two
+         different dev_uuids) in certain executing order may trigger an UAF for
+         variable 'device->bdev_file' in __btrfs_free_extra_devids(). And
+    @@ Commit message
+         Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+         Reviewed-by: David Sterba <dsterba@suse.com>
+         Signed-off-by: David Sterba <dsterba@suse.com>
+    +    (cherry picked from commit aec8e6bf839101784f3ef037dcdb9432c3f32343)
+    +    Signed-off-by: Shubham Pushpkar <spushpka@cisco.com>
+     
+      ## fs/btrfs/volumes.c ##
+     @@ fs/btrfs/volumes.c: static void btrfs_close_one_device(struct btrfs_device *device)
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-6.6.y:
+    lib/test_dhry.o: warning: objtool: dhry() falls through to next function dhry_run_set.cold()
+    fs/btrfs/volumes.c: In function 'btrfs_close_one_device':
+    fs/btrfs/volumes.c:1179:23: error: 'struct btrfs_device' has no member named 'bdev_file'
+     1179 |                 device->bdev_file = NULL;
+          |                       ^~
+    make[4]: *** [scripts/Makefile.build:243: fs/btrfs/volumes.o] Error 1
+    make[4]: Target 'fs/btrfs/' not remade because of errors.
+    make[3]: *** [scripts/Makefile.build:480: fs/btrfs] Error 2
+    make[3]: Target 'fs/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:480: fs] Error 2
+    make[2]: Target './' not remade because of errors.
+    make[1]: *** [/home/sasha/build/linus-next/Makefile:1921: .] Error 2
+    make[1]: Target '__all' not remade because of errors.
+    make: *** [Makefile:234: __sub-make] Error 2
+    make: Target '__all' not remade because of errors.
 
