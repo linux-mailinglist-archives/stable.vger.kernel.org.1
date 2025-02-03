@@ -1,165 +1,172 @@
-Return-Path: <stable+bounces-112047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0463A261C6
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 18:55:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B24A261F0
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 19:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43973165D17
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 17:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B7C3A0597
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 18:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E886220CCC5;
-	Mon,  3 Feb 2025 17:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C793120B1FB;
+	Mon,  3 Feb 2025 18:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="iOKn1vFm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DubSls1N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f193.google.com (mail-yb1-f193.google.com [209.85.219.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF3620C472
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 17:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68E71D5176;
+	Mon,  3 Feb 2025 18:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738605331; cv=none; b=UooNZLlfWaQJTKLQ6anPYR9iVAps4JxwkZ8Fg10205huawUZxZuiAyKso3cx+C7ETRBnM6abmJILSV01PDSgHVbbCPBzCoBKtUgiZR7olbKiiZe6jZKMm4rKTKqolbc/o2s5JnjeiZdiBCf8dAAcjKTHlJ2WYIWZ7VcO5+CeIuQ=
+	t=1738605989; cv=none; b=QaGxX/pNg6Uo7NCjwV7bzwLuGC38SCn0gdU5UW2nryCVlNI+bRXPhlGR3F5ZN9BsKvfOtFCaGfjOA3au3KwOCbwUcal5T9vGQFNL2R4ePLt/iIu9Ix4yswoghjLBGWags+vnGByd150n1IyoMCjCjod/O5axZlggwuQ5cPHbEqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738605331; c=relaxed/simple;
-	bh=gnotMF2SpzmsZYETbwi0AsYz9YG4hl0Pw8Go0qSIJLc=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=mUiFVlRNa/q8YAz/x27oklDAbbnr4PmwKKqGeF0/HzVYeWStGW4a8XIIDI3otykazz2WHutE/HPhw2a9VxYlcuF7OwSFBgnO3+3hT5vlQNojFTfdip+oNR8lCpuisQhTCtCjDXzm6/OuyUeBdJCksXNND8Hb09xy3YHdqw2INac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=iOKn1vFm; arc=none smtp.client-ip=209.85.219.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f193.google.com with SMTP id 3f1490d57ef6-e53a5ff2233so4883287276.3
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 09:55:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1738605328; x=1739210128; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lej/HjnRoGIiHgGyLejhy9XNlZOqOHJpylIZ8d4evSY=;
-        b=iOKn1vFmtG1qim3DyQPXrA4qHmTzagc3M14dtbAguBoJkbKQUY6JUBvBvimYG82Ov7
-         eHGsPGa9cvwjS9m3RZ7urI89wOT+dkSc0W6ZVtBeTjL77sGcNuNZDpZ0AeYbIzWOL+El
-         ZULcNRKQm/WoVxwp2fu21sXlckwn/vxhDtwVwdFBXnJOwaKGnj5/I9bEy84+pfge2/Rk
-         iDswt3lD4qnhG1DYcIxl30cJPjkoaVb8GJlOq79AbgNDOA4jJSCj/K7mA9yugK1cnnv2
-         oe3WyDHeiTlyg6QcWT76TMU5Mk8iGk9dHOTrqyw59PekZusC1o1v6ZEhv01h5Cpv5cfd
-         bBsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738605328; x=1739210128;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lej/HjnRoGIiHgGyLejhy9XNlZOqOHJpylIZ8d4evSY=;
-        b=vxuehcZW6JkMcJ3SsMvRNay/UsRXirXZFdHRv0FV3bPdvaBomFnZMRiZP/Fic7C513
-         2N0inBF3ipmi1HBd1+NVpARoP/3lp5Tk2PpOSRRyCJmDPMVzfezOP27WlGHtQ+31NgXX
-         Za3yIwsDuWIQd3sGQzuuLQ4XwVTXoEJv4MuVUbT+JsU7BHj3sralVlycETyBQwgCzVG3
-         AwXo/g99ku7qaqntfRk2/3jkP6RZv6dj5sP47yiLr9c1x01nhSLMLy0gsuAnDh9VmXbq
-         bs1MBDJFfRrbOCxQ/U85R67v6OXO3GlIBRgra+SfVfsVSJCGG87mgpUfvKzUYIewBXZ/
-         MS7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXqsrl5lQvTuoZJ5w3Qo113+JaY2CulgmatalrphsG87yD0kupQ/L5jx2pUoo32KuRXQGBT1a4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8GaIYrHkKRVp+XS8nAw5vlF3RQX5SCblgIL3HnI9nuC+8FDxU
-	k/ApgzZl34F6sYE1MzFReA3Dh0w/bjQM4lF3aj1KG096hfsdhPTQiqORYe3vbjecZAzHW5EI1mj
-	9DVHgwxh/OuPZf7+Z+cGexGJWRSzZCIgEAVMZAQ==
-X-Gm-Gg: ASbGncvCUp+6U4djNbA3ty1fYMOvMTUSkErCTdDfeaQWPCfLjh3syMuZOahxiEZVUvV
-	tWcRMpKDroUOWInRCBSTS0Qcgzgd+FCTLhgcMXdBbi9U8EWMT3lTMPbUH+pztTRFPkOC5vSkhTB
-	9/yGfYXnwUOrO+EbYnNFYRo6ELylTLEQ==
-X-Google-Smtp-Source: AGHT+IFn2rDWVryLxBS9cPZKfPHcC5cHN/DsbioActnxO0XAGsRzt8U7fOaetI1I/VSC20sv5CGcxZc3ITTc/xVzH/c=
-X-Received: by 2002:a05:690c:6d07:b0:6ef:4a1f:36b7 with SMTP id
- 00721157ae682-6f7a84246a8mr177591927b3.25.1738605328578; Mon, 03 Feb 2025
- 09:55:28 -0800 (PST)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 3 Feb 2025 09:55:27 -0800
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 3 Feb 2025 09:55:27 -0800
+	s=arc-20240116; t=1738605989; c=relaxed/simple;
+	bh=GQiOb6LmzQfAY7kEhJVmceIVTmix9XGEdZkaf5lDTRk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gnshw1ml+3EurCm7irh16m3orkkLMWMCzGWFBq19/lprQhWJbksIzHvpT5EsRM5Afi311Aws77Iw74qdiH8ICeNNyPQGG7DYQZU1oFfegyz56uu1mgX6kMsRN8d1B6czizUgsSu+y7xjaPUwKkyWAH4UDxnLI8Ib43mXB3Z3IIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DubSls1N; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738605988; x=1770141988;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GQiOb6LmzQfAY7kEhJVmceIVTmix9XGEdZkaf5lDTRk=;
+  b=DubSls1NiTubu2BJrruHYLafsIFAHQ79tyZ792GvMQSzIgOALV63Shbx
+   KmG0RYC/wVogIJy3oKpPY2PkjwGTHfZD4LNsJjpcrKxOW3qg6qNSq1UmU
+   XR70Hx3szcyORhaIsW4qgufKmzLAFA/cYFKiQuEqLpPErX4ijV0QpQFtf
+   +mLSPX4R52nEng1zkb9a1QHUwFKvI6PN8Uh4jclwOFLNKtWSCXfA+gdKI
+   GUke72fBlBJCKhDcldU8SXIln2YgH1MI1p+E7UglZwCHuqEO2LtKU8f8T
+   cBva1SFMm5Nifc3YhMeVl43qM7ycnU+xejvHCgGFa7uSRTk8uoPrm4kEp
+   w==;
+X-CSE-ConnectionGUID: 8P+d2aYvRT2jEHyMgwPpxA==
+X-CSE-MsgGUID: U72iV0e2RuS8ydJ4YaGhbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38817622"
+X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
+   d="scan'208";a="38817622"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 10:06:27 -0800
+X-CSE-ConnectionGUID: YF6ccGTwRPuYquESvLM2eg==
+X-CSE-MsgGUID: 1ex1y/iyR3aT5OIbAPA1Vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114392657"
+Received: from inaky-mobl1.amr.corp.intel.com (HELO [10.125.109.238]) ([10.125.109.238])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 10:06:26 -0800
+Message-ID: <40418980-6e5b-48eb-bc35-7ffaf3221fd9@intel.com>
+Date: Mon, 3 Feb 2025 10:06:28 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Date: Mon, 3 Feb 2025 09:55:27 -0800
-X-Gm-Features: AWEUYZly_aGAiwPXWtNkVzky8FF79JfpTHOSFjCzWR4ySuCU8vg1xL5m3eedcHk
-Message-ID: <CACo-S-3ne3ECDg5fTacS8ZfcpJ=WnhDF-gHTo6hUUgN4AeP6hg@mail.gmail.com>
-Subject: stable/linux-6.13.y: new boot regression: WARNING at
- lib/refcount.c:25 refcount_warn_saturate+0xc8...
-To: kernelci-results@groups.io
-Cc: gus@padovan.org, linux-mediatek@lists.infradead.org, 
-	angelogioacchino.delregno@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
+ tdx_safe_halt()
+To: Vishal Annapurve <vannapurve@google.com>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+ seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com,
+ jxgao@google.com, sagis@google.com, oupton@google.com, pgonda@google.com,
+ dave.hansen@linux.intel.com, linux-coco@lists.linux.dev,
+ chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
+References: <20250129232525.3519586-1-vannapurve@google.com>
+ <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
+ <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
+ <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
+ <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
+ <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
+ <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On 1/31/25 18:32, Vishal Annapurve wrote:
+...
+> Are you hinting towards a model where TDX guest prohibits such call
+> sites from being configured? I am not sure if it's a sustainable model
+> if we just rely on the host not advertising these features as the
+> guest kernel can still add new paths that are not controlled by the
+> host that lead to *_safe_halt().
 
-New boot regression found on stable/linux-6.13.y:
+Let's say we required PARAVIRT_XXL for TDX guests and had TDX setup do:
 
- WARNING at lib/refcount.c:25 refcount_warn_saturate+0xc8/0x148
-[logspec:generic_linux_boot,linux.kernel.warning]
+static const typeof(pv_ops) tdx_irq_ops __initconst = {
+        .irq = {
+		.safe_halt = tdx_safe_halt,
+	},
+};
 
-- Dashboard: https://staging.dashboard.kernelci.org:9000/issue/maestro:9027cb3b2181d813ac566c16982a6748748d7ae7
-- Grafana: https://grafana.kernelci.org/d/issue/issue?var-id=maestro:9027cb3b2181d813ac566c16982a6748748d7ae7
+We could get rid of a _bit_ of what TDX is doing now, like:
 
+        } else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
+                pr_info("using TDX aware idle routine\n");
+                static_call_update(x86_idle, tdx_safe_halt);
 
-Log excerpt:
-[    4.653252] refcount_t: addition on 0; use-after-free.
-[    4.653261] WARNING: CPU: 5 PID: 187 at lib/refcount.c:25
-refcount_warn_saturate+0xc8/0x148
-[    4.653271] Modules linked in: v4l2_mem2mem pcie_mediatek_gen3(+)
-mt6359_auxadc mtk_rpmsg joydev videobuf2_dma_contig rpmsg_core
-elan_i2c lvts_thermal(+) mt6577_auxadc snd_soc_mt8195_afe(+) mtk_svs
-mtk_scp_ipi snd_sof_utils mtk_wdt btusb btintel btbcm btmtk btrtl
-uvcvideo videobuf2_vmalloc uvc videobuf2_v4l2 mt8195_mt6359 bluetooth
-ecdh_generic videobuf2_memops ecc videobuf2_common
-[    4.653293] CPU: 5 UID: 0 PID: 187 Comm: (udev-worker) Not tainted
-6.13.0 #1 c0bd9fe43a50105c5d4fe2d8da4d493a3771f650
-[    4.653296] Hardware name: Acer Tomato (rev2) board (DT)
-[    4.653297] pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.653298] pc : refcount_warn_saturate+0xc8/0x148
-[    4.653301] lr : refcount_warn_saturate+0xc8/0x148
-[    4.653303] sp : ffff800080c23620
-[    4.653304] x29: ffff800080c23620 x28: ffffda629c274b18 x27: 0000000000000001
-[    4.653306] x26: ffff800080c23930 x25: ffffda62d3588f10 x24: ffff07808558e7f8
-[    4.653308] x23: 0000000000000000 x22: ffff078081075478 x21: ffff800080c236a8
-[    4.653309] x20: 0000000000000000 x19: ffff078081074078 x18: 00000000ffffffff
-[    4.653311] x17: 00000000ffffb060 x16: ffffda62d111f5f8 x15: 612d35393138746d
-[    4.653313] x14: ffffda62d37fd750 x13: 0a2e656572662d72 x12: ffffda62d3551950
-[    4.653315] x11: 0000000000000001 x10: 0000000000000001 x9 : ffffda62d0943280
-[    4.653316] x8 : c0000000ffffdfff x7 : ffffda62d34a18b0 x6 : 00000000000affa8
-[    4.653318] x5 : ffffda62d35518f8 x4 : 0000000000000000 x3 : 00000000ffffffff
-[    4.653320] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff078088140000
-[    4.653322] Call trace:
-[    4.653323]  refcount_warn_saturate+0xc8/0x148 (P)
-[    4.653326]  klist_next+0x180/0x1a8
-[    4.653329]  bus_for_each_dev+0x6c/0xe8
-[    4.653334]  driver_attach+0x2c/0x40
-[    4.653336]  bus_add_driver+0xec/0x218
-[    4.653337]  driver_register+0x68/0x138
-[    4.653339]  __platform_driver_register+0x2c/0x40
-[    4.653341]  mt8195_afe_pcm_driver_init+0x28/0xff8
-[snd_soc_mt8195_afe 41f903257dcc6a1560bfbd0ddb4cf7a5b6deb9f1]
-[    4.653350]  do_one_initcall+0x60/0x320
-[    4.653354]  do_init_module+0x68/0x258
-[    4.653357]  load_module+0x1cf8/0x1de8
-[    4.653359]  init_module_from_file+0x8c/0xd8
-[    4.653361]  __arm64_sys_finit_module+0x150/0x338
-[    4.653363]  invoke_syscall+0x70/0x100
-[    4.653367]  el0_svc_common.constprop.0+0x48/0xf0
-[    4.653370]  do_el0_svc+0x24/0x38
-[    4.653372]  el0_svc+0x34/0xf0
-[    4.653375]  el0t_64_sync_handler+0x10c/0x138
-[    4.653377]  el0t_64_sync+0x1b0/0x1b8
+and it would also fix this issue. Right?
 
+This commit:
 
+	bfe6ed0c6727 ("x86/tdx: Add HLT support for TDX guests")
 
-# Hardware platforms affected:
+Makes it seem totally possible:
 
-## mt8195-cherry-tomato-r2
-- Compatibles: google,tomato-rev2 | google,tomato | mediatek,mt8195
-- Dashboard: https://staging.dashboard.kernelci.org:9000/test/maestro:67a0b86a661a7bc874890490
+>     Alternative choices like PV ops have been considered for adding
+>     safe_halt() support. But it was rejected because HLT paravirt calls
+>     only exist under PARAVIRT_XXL, and enabling it in TDX guest just for
+>     safe_halt() use case is not worth the cost.
 
-#kernelci issue maestro:9027cb3b2181d813ac566c16982a6748748d7ae7
-
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kerneci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+and honestly it's seeming more "worth the cost" now since that partial
+approach has a bug and might have more bugs in the future.
 
