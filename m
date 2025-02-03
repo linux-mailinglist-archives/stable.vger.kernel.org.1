@@ -1,151 +1,95 @@
-Return-Path: <stable+bounces-112032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9612BA25E14
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:13:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E838EA25E0F
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073533A3AD7
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A0073AA678
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CD72080F2;
-	Mon,  3 Feb 2025 15:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="Im7x7fAh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16EA208969;
+	Mon,  3 Feb 2025 15:05:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1193A2045A1
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 15:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFC12080F2;
+	Mon,  3 Feb 2025 15:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738595040; cv=none; b=D44IWvpX/VaP4wIO+DDvCSOixwyN8rIMiM/Fdon6RKirun7mvEU/vjwi7eDSvUq6OmvWV0RjIq64/whx24/VnV8n/+pFP1zSHqstRbMKTkg+E0qu+9cYSh6XgxaGF+wQheiAHcKaXDzmQdmm6Q+xUvAid88rX/Tr7asz+UMhncA=
+	t=1738595130; cv=none; b=FJxHqZG7vFNjatzCLyQfGwqYfAv5yFRa6CMAjuQ5ATW/qkt5ZvPpBWaLW1BJjHiuZm7LaZj/BmaFD8H1fcDsJZgsUd2f1wm7jHzK02r3M5xhDvaLLQMWVdJPtHuQzp+iyh+bArb0x+m6BgRZgKkjX8wpuQ0sXg518nAv+Uz/4+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738595040; c=relaxed/simple;
-	bh=RQjGAj1IWyaNTRzxKQHHBrEelrAVESw3rl3VydV04Js=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XuEoAPhLrqNDUet/mR/sZL1IUXHh5WsHQP5YxeTB7UmwwzsFehBjYkfjLRQK1OeYOXl8DrLg6EGmKDOeYKYo6jE2HMxA4XIm3VCW9980CdoY4sKXc1rcgZeIXJ+2V4DMr617exWlIwmT2ISOWzjFbTgGWfOKCuPROyhzZIk08qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=Im7x7fAh; arc=none smtp.client-ip=195.133.245.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
-Received: from mail.nppct.ru (localhost [127.0.0.1])
-	by mail.nppct.ru (Postfix) with ESMTP id 881061C2411
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 18:03:45 +0300 (MSK)
-Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
-	reason="pass (just generated, assumed good)" header.d=nppct.ru
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
-	content-transfer-encoding:mime-version:x-mailer:message-id:date
-	:date:subject:subject:to:from:from; s=dkim; t=1738595024; x=
-	1739459025; bh=RQjGAj1IWyaNTRzxKQHHBrEelrAVESw3rl3VydV04Js=; b=I
-	m7x7fAhrG1fuLBZUihpWl2IfKvk9lAZyxCPK0r+XNiYPdvX7UYZFi2I0PcMjD9v7
-	rxDJylmJNcOPa9u6rE/vNvx7iHCwBYzAff0b4wVlW5QGKbtc4eNlrF1xkfNP4PK0
-	NrXkpdO8m1407Y4sv31RgT9hefJXGeIXypi30qaTr4=
-X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
-Received: from mail.nppct.ru ([127.0.0.1])
-	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id v1Elp9KvZIl7 for <stable@vger.kernel.org>;
-	Mon,  3 Feb 2025 18:03:44 +0300 (MSK)
-Received: from localhost.localdomain (unknown [87.249.24.51])
-	by mail.nppct.ru (Postfix) with ESMTPSA id 19AE21C0E7A;
-	Mon,  3 Feb 2025 18:03:43 +0300 (MSK)
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-To: Jeremy Kerr <jk@ozlabs.org>
-Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.1] efivars: Fix "BUG: corrupted list in efivar_entry_remove"
-Date: Mon,  3 Feb 2025 15:03:26 +0000
-Message-ID: <20250203150336.2694569-1-sdl@nppct.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1738595130; c=relaxed/simple;
+	bh=PJ6AuVOLEIGjuqdYnsyCxOl+tSLFzCB5bAbySdg5Abc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m2c2roFoWG7SbVOjr3HOfr7hzmv2iMC1rfuy2GpZuYExacpM52VTz7VqBuKgbSD3l99OrCihxMXSD01OTSYWIbrZufEt0arQZfsyeKqmRYrWIykBdtPPi+jWnUaMg9d5PGlkQUemOROXnLvbSWBHTVEAlQQUqxOlKRYr+Q0wJmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A32BC4CED2;
+	Mon,  3 Feb 2025 15:05:29 +0000 (UTC)
+Date: Mon, 3 Feb 2025 10:06:03 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Wen
+ Yang <wenyang@linux.alibaba.com>, Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] ftrace: Avoid potential division by zero in
+ function_stat_show()
+Message-ID: <20250203100603.5c00df0f@gandalf.local.home>
+In-Reply-To: <20250131155346.1313580-1-kniv@yandex-team.ru>
+References: <20250131155346.1313580-1-kniv@yandex-team.ru>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Prevent list corruption in efivar_entry_remove() and efivar_entry_list_del_unlock() 
-by verifying that an entry is still in the list (list_empty() == false) before calling 
-list_del(). Also reset the list pointers with INIT_LIST_HEAD() to avoid potential double-removal issues. 
-Ensure robust handling of entries and prevent the kernel BUG observed when list_del() was called on an 
-already-removed entry.
-Fix https://syzkaller.appspot.com/bug?extid=246ea4feed277471958a
+On Fri, 31 Jan 2025 18:53:46 +0300
+Nikolay Kuratov <kniv@yandex-team.ru> wrote:
 
-Syzkaller report:
-list_del corruption. prev->next should be ffff0000d86d6828, but was ffff800016216e60. (prev=ffff800016216e60)
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:61!
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 4299 Comm: syz-executor237 Not tainted 6.1.119-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
-lr : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
-Call trace:
- __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
- __list_del_entry include/linux/list.h:134 [inline]
- list_del include/linux/list.h:148 [inline]
- efivar_entry_remove+0x38/0x110 fs/efivarfs/vars.c:493
- efivarfs_destroy+0x20/0x3c fs/efivarfs/super.c:184
- efivar_entry_iter+0x94/0xdc fs/efivarfs/vars.c:720
- efivarfs_kill_sb+0x58/0x70 fs/efivarfs/super.c:258
- deactivate_locked_super+0xac/0x124 fs/super.c:332
- deactivate_super+0xf0/0x110 fs/super.c:363
- cleanup_mnt+0x394/0x41c fs/namespace.c:1186
- __cleanup_mnt+0x20/0x30 fs/namespace.c:1193
- task_work_run+0x240/0x2f0 kernel/task_work.c:203
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- do_notify_resume+0x2080/0x2cb8 arch/arm64/kernel/signal.c:1132
- prepare_exit_to_user_mode arch/arm64/kernel/entry-common.c:137 [inline]
- exit_to_user_mode arch/arm64/kernel/entry-common.c:142 [inline]
- el0_svc+0x9c/0x168 arch/arm64/kernel/entry-common.c:638
- el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:655
- el0t_64_sync+0x18c/0x190 arch/arm64/kernel/entry.S:585
+> --- a/kernel/trace/ftrace.c
+> +++ b/kernel/trace/ftrace.c
+> @@ -570,12 +570,12 @@ static int function_stat_show(struct seq_file *m, void *v)
+>  		stddev = rec->counter * rec->time_squared -
+>  			 rec->time * rec->time;
+>  
+> +		stddev = div64_ul(stddev, rec->counter * (rec->counter - 1));
+>  		/*
+>  		 * Divide only 1000 for ns^2 -> us^2 conversion.
+>  		 * trace_print_graph_duration will divide 1000 again.
+>  		 */
+> -		stddev = div64_ul(stddev,
+> -				  rec->counter * (rec->counter - 1) * 1000);
+> +		stddev = div64_ul(stddev, 1000);
+>  	}
+>  
 
-Reported-by: syzbot+75dc11...@syzkaller.appspotmail.com
-Fixes: 2d82e6227ea1 ("efi: vars: Move efivar caching layer into efivarfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
----
- fs/efivarfs/vars.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Why make it more complex than it needs to be? We can simply have:
 
-diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
-index 13bc60698955..42977138e30b 100644
---- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -490,7 +490,10 @@ void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
-  */
- void efivar_entry_remove(struct efivar_entry *entry)
- {
--	list_del(&entry->list);
-+	if (!list_empty(&entry->list)) {
-+        list_del(&entry->list);
-+        INIT_LIST_HEAD(&entry->list);
-+	}
- }
- 
- /*
-@@ -506,7 +509,10 @@ void efivar_entry_remove(struct efivar_entry *entry)
-  */
- static void efivar_entry_list_del_unlock(struct efivar_entry *entry)
- {
--	list_del(&entry->list);
-+	if (!list_empty(&entry->list)) {
-+        list_del(&entry->list);
-+        INIT_LIST_HEAD(&entry->list);
-+    }
- 	efivar_unlock();
- }
- 
--- 
-2.43.0
+	if (rec->counter <= 1) {
+		stddev = 0;
+	} else {
+		unsigned long counter = rec->counter * (rec->counter - 1) * 1000;
+
+		stddev = rec->counter * rec->time_squared -
+			 rec->time * rec->time;
+
+		/* Check for overflow */
+		stddev = counter > rec->counter ? div64_ul(stddev, counter) : 0;
+	}
+
+And be done with it.
+
+I'll make the change and give you a "Reported-by".
+
+Thanks,
+
+-- Steve
 
 
