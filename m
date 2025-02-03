@@ -1,136 +1,151 @@
-Return-Path: <stable+bounces-112031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3660DA25DAB
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:00:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9612BA25E14
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D4616AC5C
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 14:53:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 073533A3AD7
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E867209669;
-	Mon,  3 Feb 2025 14:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CD72080F2;
+	Mon,  3 Feb 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iGrxU8yF"
+	dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b="Im7x7fAh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mail.nppct.ru (mail.nppct.ru [195.133.245.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE47D1D63C4
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 14:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1193A2045A1
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 15:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.245.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738593996; cv=none; b=GuXYlzSez2sxy7wdUH5aKXSnMkAFZUxs3OgXAxJpAlmDVU38kIbuuM62Es8qcDSWk6hILArQKyRxu3jAf4/FYO5NFK+O4kjtvCjpIAaQvV4PeiEgWets35wVkjBPJ1E6F2g2heirguSAZbB10xPeGp4zk9U0hYEwegaRSy66uVI=
+	t=1738595040; cv=none; b=D44IWvpX/VaP4wIO+DDvCSOixwyN8rIMiM/Fdon6RKirun7mvEU/vjwi7eDSvUq6OmvWV0RjIq64/whx24/VnV8n/+pFP1zSHqstRbMKTkg+E0qu+9cYSh6XgxaGF+wQheiAHcKaXDzmQdmm6Q+xUvAid88rX/Tr7asz+UMhncA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738593996; c=relaxed/simple;
-	bh=YpO1v529RKKL3vHoxGSx62bSIEbYwmYgE0YlW2dyMV4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kHpXH0maodBN+U4ALmhWOlKTWD7exFozCFHm4tMJ7Qx4fFaFS2lvECc33XXbBimkLi4jIpRR/A8uXefN7IrOStDeo3XUATNPfF2+DmWw8GccCl1NuoV50HQtvV9iBxV2+Y0em8QePrXdpBh4eAaSMWFJSr2ST/arCqLoit7M5zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iGrxU8yF; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738593994; x=1770129994;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=YpO1v529RKKL3vHoxGSx62bSIEbYwmYgE0YlW2dyMV4=;
-  b=iGrxU8yFRVG1wwJXgy7R/2tX7X2meKjHreQ27kncxORr28SLk3utxOVr
-   4eHZZha+pIR3qUm5miXrWbwq5oW1Fat2oO8RjtaObXUjw8TvNTSd7efTH
-   ePztsGrg1ZCASuQoJc0j7H8/gwYnotndaYLbWM/VXe3yVXpABuUrsplXj
-   7wpOzWubCTeyZijyGZLumNXM8nDBIfw4ICpEZmw2BFPf7gJsC7lxYGU32
-   EOTe4NuI85uLL8iFpuZFI8TE9Pdo0PduTNGWCerDOQjDIOnNz0vgqZaYs
-   7KW9uqsp27b1ilB+sLhomGToZIS3Q8VkWt5ywdvRVZxxFSxY5shtGhyE6
-   A==;
-X-CSE-ConnectionGUID: NS8+dhEPQQmHZVxLCIEZmQ==
-X-CSE-MsgGUID: xfjhmUcVTziNtLtnwQ0mtg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="49742702"
-X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
-   d="scan'208";a="49742702"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 06:46:33 -0800
-X-CSE-ConnectionGUID: T9qOx0TzRWW25SZjUc4I5A==
-X-CSE-MsgGUID: iUVBEVtMRBq7tzZArjaNIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
-   d="scan'208";a="115302792"
-Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost) ([10.245.246.71])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 06:46:31 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: imre.deak@intel.com
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Ankit
- Nautiyal <ankit.k.nautiyal@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/14] drm/i915/dp: Iterate DSC BPP from high to low on
- all platforms
-In-Reply-To: <Z5zQ9BjEkA_PN9Ns@ideak-desk.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1738327620.git.jani.nikula@intel.com>
- <3bba67923cbcd13a59d26ef5fa4bb042b13c8a9b.1738327620.git.jani.nikula@intel.com>
- <Z5zQ9BjEkA_PN9Ns@ideak-desk.fi.intel.com>
-Date: Mon, 03 Feb 2025 16:46:28 +0200
-Message-ID: <87ikpr6q7v.fsf@intel.com>
+	s=arc-20240116; t=1738595040; c=relaxed/simple;
+	bh=RQjGAj1IWyaNTRzxKQHHBrEelrAVESw3rl3VydV04Js=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XuEoAPhLrqNDUet/mR/sZL1IUXHh5WsHQP5YxeTB7UmwwzsFehBjYkfjLRQK1OeYOXl8DrLg6EGmKDOeYKYo6jE2HMxA4XIm3VCW9980CdoY4sKXc1rcgZeIXJ+2V4DMr617exWlIwmT2ISOWzjFbTgGWfOKCuPROyhzZIk08qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru; spf=pass smtp.mailfrom=nppct.ru; dkim=pass (1024-bit key) header.d=nppct.ru header.i=@nppct.ru header.b=Im7x7fAh; arc=none smtp.client-ip=195.133.245.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nppct.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nppct.ru
+Received: from mail.nppct.ru (localhost [127.0.0.1])
+	by mail.nppct.ru (Postfix) with ESMTP id 881061C2411
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 18:03:45 +0300 (MSK)
+Authentication-Results: mail.nppct.ru (amavisd-new); dkim=pass (1024-bit key)
+	reason="pass (just generated, assumed good)" header.d=nppct.ru
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nppct.ru; h=
+	content-transfer-encoding:mime-version:x-mailer:message-id:date
+	:date:subject:subject:to:from:from; s=dkim; t=1738595024; x=
+	1739459025; bh=RQjGAj1IWyaNTRzxKQHHBrEelrAVESw3rl3VydV04Js=; b=I
+	m7x7fAhrG1fuLBZUihpWl2IfKvk9lAZyxCPK0r+XNiYPdvX7UYZFi2I0PcMjD9v7
+	rxDJylmJNcOPa9u6rE/vNvx7iHCwBYzAff0b4wVlW5QGKbtc4eNlrF1xkfNP4PK0
+	NrXkpdO8m1407Y4sv31RgT9hefJXGeIXypi30qaTr4=
+X-Virus-Scanned: Debian amavisd-new at mail.nppct.ru
+Received: from mail.nppct.ru ([127.0.0.1])
+	by mail.nppct.ru (mail.nppct.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id v1Elp9KvZIl7 for <stable@vger.kernel.org>;
+	Mon,  3 Feb 2025 18:03:44 +0300 (MSK)
+Received: from localhost.localdomain (unknown [87.249.24.51])
+	by mail.nppct.ru (Postfix) with ESMTPSA id 19AE21C0E7A;
+	Mon,  3 Feb 2025 18:03:43 +0300 (MSK)
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+To: Jeremy Kerr <jk@ozlabs.org>
+Cc: Alexey Nepomnyashih <sdl@nppct.ru>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH 6.1] efivars: Fix "BUG: corrupted list in efivar_entry_remove"
+Date: Mon,  3 Feb 2025 15:03:26 +0000
+Message-ID: <20250203150336.2694569-1-sdl@nppct.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Fri, 31 Jan 2025, Imre Deak <imre.deak@intel.com> wrote:
-> On Fri, Jan 31, 2025 at 02:49:54PM +0200, Jani Nikula wrote:
->> Commit 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best
->> compressed bpp") tries to find the best compressed bpp for the
->> link. However, it iterates from max to min bpp on display 13+, and from
->> min to max on other platforms. This presumably leads to minimum
->> compressed bpp always being chosen on display 11-12.
->> 
->> Iterate from high to low on all platforms to actually use the best
->> possible compressed bpp.
->> 
->> Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
->> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
->> Cc: Imre Deak <imre.deak@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.7+
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
-> Reviewed-by: Imre Deak <imre.deak@intel.com>
+Prevent list corruption in efivar_entry_remove() and efivar_entry_list_del_unlock() 
+by verifying that an entry is still in the list (list_empty() == false) before calling 
+list_del(). Also reset the list pointers with INIT_LIST_HEAD() to avoid potential double-removal issues. 
+Ensure robust handling of entries and prevent the kernel BUG observed when list_del() was called on an 
+already-removed entry.
+Fix https://syzkaller.appspot.com/bug?extid=246ea4feed277471958a
 
-Thanks for the swift reviews! Pushed the lot to drm-intel-next.
+Syzkaller report:
+list_del corruption. prev->next should be ffff0000d86d6828, but was ffff800016216e60. (prev=ffff800016216e60)
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:61!
+Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 4299 Comm: syz-executor237 Not tainted 6.1.119-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
+lr : __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
+Call trace:
+ __list_del_entry_valid+0x13c/0x158 lib/list_debug.c:59
+ __list_del_entry include/linux/list.h:134 [inline]
+ list_del include/linux/list.h:148 [inline]
+ efivar_entry_remove+0x38/0x110 fs/efivarfs/vars.c:493
+ efivarfs_destroy+0x20/0x3c fs/efivarfs/super.c:184
+ efivar_entry_iter+0x94/0xdc fs/efivarfs/vars.c:720
+ efivarfs_kill_sb+0x58/0x70 fs/efivarfs/super.c:258
+ deactivate_locked_super+0xac/0x124 fs/super.c:332
+ deactivate_super+0xf0/0x110 fs/super.c:363
+ cleanup_mnt+0x394/0x41c fs/namespace.c:1186
+ __cleanup_mnt+0x20/0x30 fs/namespace.c:1193
+ task_work_run+0x240/0x2f0 kernel/task_work.c:203
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ do_notify_resume+0x2080/0x2cb8 arch/arm64/kernel/signal.c:1132
+ prepare_exit_to_user_mode arch/arm64/kernel/entry-common.c:137 [inline]
+ exit_to_user_mode arch/arm64/kernel/entry-common.c:142 [inline]
+ el0_svc+0x9c/0x168 arch/arm64/kernel/entry-common.c:638
+ el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:655
+ el0t_64_sync+0x18c/0x190 arch/arm64/kernel/entry.S:585
 
-BR,
-Jani.
+Reported-by: syzbot+75dc11...@syzkaller.appspotmail.com
+Fixes: 2d82e6227ea1 ("efi: vars: Move efivar caching layer into efivarfs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+---
+ fs/efivarfs/vars.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
->
->> ---
->>  drivers/gpu/drm/i915/display/intel_dp.c | 7 +++----
->>  1 file changed, 3 insertions(+), 4 deletions(-)
->> 
->> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
->> index d1b4fd542a1f..ecf192262eb9 100644
->> --- a/drivers/gpu/drm/i915/display/intel_dp.c
->> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
->> @@ -2073,11 +2073,10 @@ icl_dsc_compute_link_config(struct intel_dp *intel_dp,
->>  	/* Compressed BPP should be less than the Input DSC bpp */
->>  	dsc_max_bpp = min(dsc_max_bpp, output_bpp - 1);
->>  
->> -	for (i = 0; i < ARRAY_SIZE(valid_dsc_bpp); i++) {
->> -		if (valid_dsc_bpp[i] < dsc_min_bpp)
->> +	for (i = ARRAY_SIZE(valid_dsc_bpp) - 1; i >= 0; i--) {
->> +		if (valid_dsc_bpp[i] < dsc_min_bpp ||
->> +		    valid_dsc_bpp[i] > dsc_max_bpp)
->>  			continue;
->> -		if (valid_dsc_bpp[i] > dsc_max_bpp)
->> -			break;
->>  
->>  		ret = dsc_compute_link_config(intel_dp,
->>  					      pipe_config,
->> -- 
->> 2.39.5
->> 
-
+diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+index 13bc60698955..42977138e30b 100644
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -490,7 +490,10 @@ void __efivar_entry_add(struct efivar_entry *entry, struct list_head *head)
+  */
+ void efivar_entry_remove(struct efivar_entry *entry)
+ {
+-	list_del(&entry->list);
++	if (!list_empty(&entry->list)) {
++        list_del(&entry->list);
++        INIT_LIST_HEAD(&entry->list);
++	}
+ }
+ 
+ /*
+@@ -506,7 +509,10 @@ void efivar_entry_remove(struct efivar_entry *entry)
+  */
+ static void efivar_entry_list_del_unlock(struct efivar_entry *entry)
+ {
+-	list_del(&entry->list);
++	if (!list_empty(&entry->list)) {
++        list_del(&entry->list);
++        INIT_LIST_HEAD(&entry->list);
++    }
+ 	efivar_unlock();
+ }
+ 
 -- 
-Jani Nikula, Intel
+2.43.0
+
 
