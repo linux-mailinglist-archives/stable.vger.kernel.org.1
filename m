@@ -1,138 +1,147 @@
-Return-Path: <stable+bounces-112029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F14FA25D48
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:49:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D60A25D79
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 15:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69A818860CA
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 14:45:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C4416C4A9
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 14:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628C520B1ED;
-	Mon,  3 Feb 2025 14:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114482AE96;
+	Mon,  3 Feb 2025 14:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c8UWC+OS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K6jDgMnD"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9E820AF86;
-	Mon,  3 Feb 2025 14:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF64A12E7F;
+	Mon,  3 Feb 2025 14:44:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738593612; cv=none; b=NtQuEzYK7TKR8dutAm80HDI5Rk3uMuqQF9OWfO6ZbCPf1WZABbdSpf0wMcQ4B15yiSo6u1hZcWMEMXC1xDs7WrJoXx4jDcBT2BaMV11U4+4PVM9UxHLtVyFKHLB4FTpM2ruVpd1tuPI9iPV7fqBT/q0fgKXx5AA7YC+ZtQcYh/k=
+	t=1738593851; cv=none; b=bVEUw1nV6mXDil2s/9lj4fO5eSsriOQ4vLPuYZtkBFXnQgsTbxMbgyP5z3UD2fgHsBFGBOpjM2mKNjiFbNuKrWDmcH/NLBOsKgbXGMadrXAnOYExEfkgkT7ao4fB8ZxwvoKmLcSeJf6rQYUG/Yk1rP5b5nU+klKplDOsbxW0oF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738593612; c=relaxed/simple;
-	bh=sKH1aXnuxEee7MJVvCT5D3JVKBFIsXQD/A+depRFcNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k3SpKxcX6Xb+wU8sAfc+6+rQX2wCpRKe/cDZb3xb4+fvWg7INxm1fOYuhcGxl5ESOyDE8rcIYVGCBs/TN9I+FFV+BTzsRLmPxSuQNMVlkwHTyiWiQIzmrtpiniIRADpPRy9FzbbDpEe9rnRYfrmJV8/YV0kbyNcsD2VdwEc1pSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c8UWC+OS; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738593611; x=1770129611;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sKH1aXnuxEee7MJVvCT5D3JVKBFIsXQD/A+depRFcNQ=;
-  b=c8UWC+OSSpMlmvxpbswY3PAGjBScSWR9m+tmUoIJEtWyiGz1KMh7BlgD
-   9Qxll5zkhsBXr4IGXEZAbucHHJhg1DTsivYeG7LRhjzNl5V5JV8A0a+3C
-   5nWigJb31KIFFnh63PQbQVnAUDRLUPHTK4rthzuJxKaOVYQ4bTFw+3L5f
-   JTXLLu00H8hv9Py/SwBtBVDTdns8LYD/FJ95TaPDbLHoCwMLStHL3okAI
-   T3R3XBE9tnXJO+HpGEXKeZ80+oPnkQOTIbl/dGiDAAmo3THtjKKFJUzCI
-   4IRPznCuFD2et3smuh1wiuB/NtoHO/hBXHgVY1wYST58oEG8BXYhOUV8J
-   Q==;
-X-CSE-ConnectionGUID: QxluUkdhS+6NN2LX1fdnzw==
-X-CSE-MsgGUID: RAVX1RunR1KYC/IM2fZFfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="38975367"
-X-IronPort-AV: E=Sophos;i="6.13,256,1732608000"; 
-   d="scan'208";a="38975367"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 06:40:09 -0800
-X-CSE-ConnectionGUID: mg8IU7pXTkag/HqWfpmahw==
-X-CSE-MsgGUID: zSJ92AH8RA2NhIW4rUAh3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="133549091"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa002.fm.intel.com with SMTP; 03 Feb 2025 06:40:06 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 03 Feb 2025 16:40:05 +0200
-Date: Mon, 3 Feb 2025 16:40:05 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Elson Roy Serrao <quic_eserrao@quicinc.com>
-Cc: gregkh@linuxfoundation.org, xu.yang_2@nxp.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: roles: cache usb roles received during switch
- registration
-Message-ID: <Z6DVRbmwB859RlCt@kuha.fi.intel.com>
-References: <20250127230715.6142-1-quic_eserrao@quicinc.com>
+	s=arc-20240116; t=1738593851; c=relaxed/simple;
+	bh=Bfgflru5YVUFZ7ASMuqZW3PVCjyXOqc2p/+ZP2Dkh60=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bJc6E11HDwiaEhUoPRN8WegJEEZCxE3pna/GDuxniFwnFeqdPrOax6i8mMYoktQ9uR8Cui8HImOPakkFOkSDoMeDua8JqphV+ZlaNtRC7xrKbNrco+HV6MvdTJjdBro6tDyr3SKaOnFuDPBdozkeR9nMh+94Nos5HLJTI4jiPTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K6jDgMnD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B1FC4AF0B;
+	Mon,  3 Feb 2025 14:44:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738593851;
+	bh=Bfgflru5YVUFZ7ASMuqZW3PVCjyXOqc2p/+ZP2Dkh60=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=K6jDgMnDq0dFQ53xBeJlxHnrJ8I1u9KJ8+uPMaNhaTJItahic44qJacdAAURpIvBx
+	 dKvXbjXpnLur7f8DxhsAKpeMOCLaBs+4CTc1zvVC9nFKAzRNLBRjo9vGPja+IegMen
+	 lfyJgQq8NZvoyzUw53VwORArNMQ80/U4rMFp5L4qPh3R3xWeFlcKK+biLHezLdS5kH
+	 h59emgOgacqSw4rUwe33U60IZFnjBInzGShlo3K4w0O6h2SYKr2l+w5pZQi5rAv9cL
+	 WvdwuJnJP7QjNJillek3Gq3n3QGvirefve2DclQfDPXQ9JwsdxtX1GL+AUHchFBYwy
+	 ZtkBz6uS6I8XQ==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ab2aea81cd8so804746366b.2;
+        Mon, 03 Feb 2025 06:44:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWc+LsTIwhipO8sqEQ5q/2lu1GoSW7ABN7AgHe/uAzNYWq5LZXIan5x3Wz5sJHIPVyrmSXGpbf4Teg6dSM=@vger.kernel.org, AJvYcCXWLF83PIjhcZFxUQHfdRoftzRdImNJx4NAfjqrlAdyV9zkPyykM8cp8plHb6Tq7KOSWTpS74yLrNhF@vger.kernel.org, AJvYcCXx7DQLEIVZ+qlJ0GMj993YM3HS/wvN0UHUX4O+6F23xp5VP472IbdRKNAt0T1wGP821+Xe3uzK@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/fMIoNlJRH1L0Tu8g31g32G9Giza3e7KfSeHLP/2uPzPzIx3m
+	g9Tfcb35sIXi31OCax1t21Skw1PtqrdipssSRiCTQ6DvpSPi/tGcEJrlu4Yg6pST4lziHye1uN3
+	lSVL9KfHJpr0E4NSd6NJFNt5ZGE8=
+X-Google-Smtp-Source: AGHT+IHzBb16zo7Eqvl8nv+wE/dsWdiP4hvDhKPVsonuM8YRvFst+h9o+ztWSsOT/uRCJ18WfZUbNAZWihtZC0ExQa0=
+X-Received: by 2002:a17:907:1ca7:b0:aa6:becf:b26a with SMTP id
+ a640c23a62f3a-ab6cfcc67f1mr2458273266b.9.1738593849864; Mon, 03 Feb 2025
+ 06:44:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250127230715.6142-1-quic_eserrao@quicinc.com>
+References: <20250131100630.342995-1-chenhuacai@loongson.cn>
+ <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
+ <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com> <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+In-Reply-To: <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 3 Feb 2025 22:44:01 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5PQk5aSu13kuqZqXWvusyqKD7a6G7f56CN3F5HjcD0DA@mail.gmail.com>
+X-Gm-Features: AWEUYZm0ERHSNnk-fYYYeWeEs86P_PnoJUYPR3CfzB8zjQkVZu_hzakqePnVLMo
+Message-ID: <CAAhV-H5PQk5aSu13kuqZqXWvusyqKD7a6G7f56CN3F5HjcD0DA@mail.gmail.com>
+Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup sources
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 27, 2025 at 03:07:15PM -0800, Elson Roy Serrao wrote:
-> The role switch registration and set_role() can happen in parallel as they
-> are invoked independent of each other. There is a possibility that a driver
-> might spend significant amount of time in usb_role_switch_register() API
-> due to the presence of time intensive operations like component_add()
-> which operate under common mutex. This leads to a time window after
-> allocating the switch and before setting the registered flag where the set
-> role notifications are dropped. Below timeline summarizes this behavior
-> 
-> Thread1				|	Thread2
-> usb_role_switch_register()	|
-> 	|			|
-> 	---> allocate switch	|
-> 	|			|
-> 	---> component_add()	|	usb_role_switch_set_role()
-> 	|			|	|
-> 	|			|	--> Drop role notifications
-> 	|			|	    since sw->registered
-> 	|			|	    flag is not set.
-> 	|			|
-> 	--->Set registered flag.|
-> 
-> To avoid this, cache the last role received and set it once the switch
-> registration is complete. Since we are now caching the roles based on
-> registered flag, protect this flag with the switch mutex.
+On Sun, Feb 2, 2025 at 12:55=E2=80=AFAM Alan Stern <stern@rowland.harvard.e=
+du> wrote:
+>
+> On Sat, Feb 01, 2025 at 02:42:43PM +0800, Huacai Chen wrote:
+> > Hi, Alan,
+> >
+> > On Fri, Jan 31, 2025 at 11:17=E2=80=AFPM Alan Stern <stern@rowland.harv=
+ard.edu> wrote:
+> > >
+> > > On Fri, Jan 31, 2025 at 06:06:30PM +0800, Huacai Chen wrote:
+> > > > Now we only enable the remote wakeup function for the USB wakeup so=
+urce
+> > > > itself at usb_port_suspend(). But on pre-XHCI controllers this is n=
+ot
+> > > > enough to enable the S3 wakeup function for USB keyboards,
+> > >
+> > > Why do you say this?  It was enough on my system with an EHCI/UHCI
+> > > controller when I wrote that code.  What hardware do you have that is=
+n't
+> > > working?
+> > >
+> > > >  so we also
+> > > > enable the root_hub's remote wakeup (and disable it on error). Fran=
+kly
+> > > > this is unnecessary for XHCI, but enable it unconditionally make co=
+de
+> > > > simple and seems harmless.
+> > >
+> > > This does not make sense.  For hubs (including root hubs), enabling
+> > > remote wakeup means that the hub will generate a wakeup request when
+> > > there is a connect, disconnect, or over-current change.  That's not w=
+hat
+> > > you want to do, is it?  And it has nothing to do with how the hub
+> > > handles wakeup requests received from downstream devices.
+> > >
+> > > You need to explain what's going on here in much more detail.  What
+> > > exactly is going wrong, and why?  What is the hardware actually doing=
+,
+> > > as compared to what we expect it to do?
+> > OK, let me tell a long story:
+> >
+> > At first, someone reported that on Loongson platform we cannot wake up
+> > S3 with a USB keyboard, but no problem on x86. At that time we thought
+> > this was a platform-specific problem.
+> >
+> > After that we have done many experiments, then we found that if the
+> > keyboard is connected to a XHCI controller, it can wake up, but cannot
+> > wake up if it is connected to a non-XHCI controller, no matter on x86
+> > or on Loongson. We are not familiar with USB protocol, this is just
+> > observed from experiments.
+> >
+> > You are probably right that enabling remote wakeup on a hub means it
+> > can generate wakeup requests rather than forward downstream devices'
+> > requests. But from experiments we found that if we enable the "wakeup"
+> > knob of the root_hub via sysfs, then a keyboard becomes able to wake
+> > up S3 (for non-XHCI controllers). So we guess that the enablement also
+> > enables forwarding. So maybe this is an implementation-specific
+> > problem (but most implementations have problems)?
+> >
+> > This patch itself just emulates the enablement of root_hub's remote
+> > wakeup automatically (then we needn't operate on sysfs).
+>
+> I'll run some experiments on my system.  Maybe you're right about the
+> problem, but your proposed solution looks wrong.
+OK, I'm glad to see a better solution. :)
 
-Instead, why not just mark the switch registered from the get-go?
+Huacai
 
-diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index c58a12c147f4..cf38be82d397 100644
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -387,6 +387,8 @@ usb_role_switch_register(struct device *parent,
-        dev_set_name(&sw->dev, "%s-role-switch",
-                     desc->name ? desc->name : dev_name(parent));
- 
-+       sw->registered = true;
-+
-        ret = device_register(&sw->dev);
-        if (ret) {
-                put_device(&sw->dev);
-@@ -399,8 +401,6 @@ usb_role_switch_register(struct device *parent,
-                        dev_warn(&sw->dev, "failed to add component\n");
-        }
- 
--       sw->registered = true;
--
-        /* TODO: Symlinks for the host port and the device controller. */
- 
-        return sw;
-
-
-thanks,
-
--- 
-heikki
+>
+> Alan Stern
 
