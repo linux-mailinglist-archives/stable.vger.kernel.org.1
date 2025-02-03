@@ -1,136 +1,117 @@
-Return-Path: <stable+bounces-112057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4D9A26663
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 23:09:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2651EA267B6
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 00:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CB1A1885B13
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 22:09:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6B197A2239
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 23:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F5320FA99;
-	Mon,  3 Feb 2025 22:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A22211A24;
+	Mon,  3 Feb 2025 23:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U/mFp8K6"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C2dHGHRn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA4B1FF7B8
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 22:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68252211A22
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 23:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738620536; cv=none; b=XtZJfduehGGfAcWML/0FgrpYwU3kyIo+wG/8LUtOyLiu9g9H2P6ATNWjUsIwLl9aKDXc0OSlt2l4gpSq1Mhb6eAzkNXRc6XTaHJHvreWX9YRTO3HNXcZcgsEgjaJntyLwA9S1GF7kDSG0U4VWDYwnAvJU7eA2xImiLnWDj/BULc=
+	t=1738624046; cv=none; b=UtNm/eWbt9UIAK2sSY/LvloJX1zD/pfKskwTuZ/ILUuNwYOXV3rEzfHXmXohCUw9t3Tue/TJUqpXBSHwhQgxy7rWwdxIVv+DoOi/WaGk2Ta0j267fkKDPomxa6yrjS5OakzLSUsZRuEpxOdT7GefujaTmOsf0ACXn9hu63VOfkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738620536; c=relaxed/simple;
-	bh=5RAtnqgSsJW3L/OucE/O3ftfhIA9MkIbq8HBQmwo9mM=;
+	s=arc-20240116; t=1738624046; c=relaxed/simple;
+	bh=M2w3XqBI1LFOu055TZezIq2s0keVbs0nkiw3h616fv8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NPXtf6Icq3guT6+HeG3l/S9MvGF7iL0Oiy0FqPkWQlIsOPff8j2NgnePyDaJsrJxlmzZ6gQ9AG0T2t1lwieUg8PfEPragQIllDgQQ5YUNknDrxeHR2zYf/CE3RjLXtv9p4aoDASIR8TkM625kO5xFwr1ITAu25pjrAyOjJ+OWnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U/mFp8K6; arc=none smtp.client-ip=209.85.167.46
+	 To:Cc:Content-Type; b=Oa2eTaLPYRgvECOviCQHEUKChBOrYsrtKFu3XLspac0OFnBJz7jX3EqvmpnNWKegihLvxuMTL8M2nIlaiAa3yG23q4z7OAnPUefkdXa3rzW6ENQOK3ThSz4+WLxekPI6AQla8SFJuARtNnKWJ/Nr6xkJpaWgISEP0khNUqwvpdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C2dHGHRn; arc=none smtp.client-ip=209.85.167.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53e3a2264e1so2395e87.0
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 14:08:54 -0800 (PST)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-543d8badc30so5270962e87.0
+        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 15:07:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738620533; x=1739225333; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1738624042; x=1739228842; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YSoo65ANk1ACUgD5CEe1MmfBfCx6K8V18L1pZv5jKUg=;
-        b=U/mFp8K6kOjCQUGiq16ftHdAizOEbwDtF9bX6JgYYEGcB4azgC7vabPNLgPgp7jtek
-         e90myPCj9lWjYJEOK/B0TaRn5Gp3wsMyq4xG5wCv46IkAQRHCC4NKSzC2yaAm8OsX9IR
-         zJih8KUdou5DJNFsOP2tbHcPc/vl6IpAeANflVFesYVWSr1JUGBrsGTMCNNwNN+GFLrH
-         jruNnmI5rj688tjLcN2HnM+qaRtBfH9greqjaHkUfAGMJqxefld0uAjZyZcHjn8kALgL
-         PE8VBKF6uOhXyaCDqlVC6DrqcnwFwqRogcwPdP00eDyajK6yYkR/As9Zg2gjtNcT/MeX
-         HQgg==
+        bh=svwUaY/AgsImk8F87XWjzee+6GgygrVf3xyaZxTAuqE=;
+        b=C2dHGHRnFqkUE7kbHLgpzRVxeH0Gnkqv2YyM/LmN58YBexXlxnVShEoC/6fKLGuVUK
+         3FrziZVSjRMN/Y70qBAyA4I3pq9QLGCS+HYE3bL76GUI3sXGH9b3zPO800t/AlCrIA9j
+         aVBmkcTQ1ApOlHYhIMqFhi2DhsfjzjJDeQQuaEzj3mIaBOaIBCUB1owJpcxrzY8vImV5
+         o6ebHPswH1DQ4NV4sJl/HEp57DLOsY/uE0aVpYKEcbC9y8rl2jX39GY2tYRQ17Tyr06U
+         /i/JPhy2T26Vm+wMJRcXCrVOUcVXi3pyeqcmq1tKLfVam/BwCbHlhAVeUtM1+c6y5Ir1
+         jN8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738620533; x=1739225333;
+        d=1e100.net; s=20230601; t=1738624042; x=1739228842;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YSoo65ANk1ACUgD5CEe1MmfBfCx6K8V18L1pZv5jKUg=;
-        b=H5Ni4zr3sPWRJ+KCiYIuePRjOOlLa/ghp/xFwrC1QfsTTfsXMOYNZBVke5qXh65flN
-         ebsvwz4GP+N1Ob1DCm8Yv62PAWEESV+cT/BsYUl+ffIdWbOsAogZVvfjT+94Rpqh/AOh
-         +GtMdYREWpoltxwE+Kj6tAcNwMKS9x2SyjwG7UfdxHo/kjtwVa8jrgbiLH05/LeJ60Ad
-         ovstjyCGGQpQSyLcgX972xqKcHpsceOfWJnijezogfiZDIhSl7odg70aUCjMNVP87i29
-         5eq/JNlfDVKlhstGlNcImQNingYNTVQXls1wWbH4ANbsgmV8sMn2RpBHGV2GBw/3egG1
-         Ijww==
-X-Forwarded-Encrypted: i=1; AJvYcCX19LtOUWa6pvE9D5WjzOeZqubrcNahITGQ+O0NXYLMYF1uZ/M0z6+FsjNbhHDSsrqQ0usyBdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTO8Pq6v6RnRo1mlaK1iuVXd68wlBBrsWWqEj8aKdqguqEKybs
-	+dHRB/fBBabzGZ7z7Yf0V8UYXqaMb3rN/L7Mi+pMACbKbv4ydVSgEi4T5pgOpD6RzR+seEabtUv
-	IZi8G7QbPVaFr5A+DScER5g6gXiLLEWez7PjL
-X-Gm-Gg: ASbGncuFciRidk4W/50h9Kqx3dRQBGLky7V0UBKtoZ02ZI4nWZWzd0l8u1s+CW5j4QX
-	+UHD0cIaIllwophl99I9vgyend5kPi9+RVZ4nJWJR+URwQyTDKsZBonqcW55hEjGzabiezi+oYY
-	R7WYUnZe4AsBBBASDMPwvCXy/bF5VWig==
-X-Google-Smtp-Source: AGHT+IHtm70vTgHPrrcUuJwFAa+5zFIj4hqVrwA8yzRqmy3Y13vzkDTGy11M0PhuNPkDVSVa0ZHRUqRBsdcAg8i1d2U=
-X-Received: by 2002:a05:6512:3b2a:b0:542:92ba:a08c with SMTP id
- 2adb3069b0e04-54400bd712cmr17275e87.1.1738620532535; Mon, 03 Feb 2025
- 14:08:52 -0800 (PST)
+        bh=svwUaY/AgsImk8F87XWjzee+6GgygrVf3xyaZxTAuqE=;
+        b=M9IXcA2HdWs1z/S43J3nrP6hJ0v1EBu+hxlCJ1WeccwBd+egth//hHc8rvHvFb+ilM
+         z0hgbz2IATzXLrgDZR7eRS2hDTERstVbpj/MXb+D6MgxPSw5YZdXdVEuATDlzZmouZ87
+         /KaVWKrFMq3C+1v1AcRtLuoTptSdgYvqEXcr45ryhOG9X7+/W0429S41K1Eb1qzMgkXP
+         TzYwqYL1eHU7tCdGZSmNG2lQxF1pWpEGq8fzPatTvrhd6fgzWj2skK9b5pxWIex48Ily
+         GvWwHoiB8EAi3o88EHiyEnMgA+XVAPysIOHlslc2XCBc4B3hB9wMT43G5jao7rfT/ujf
+         EjNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdD4owe9B6kp/WxMLtMLAXdNOI+7Lxa23o+BZsS+MGNUXf9exiyllI2e13E55MAYfIoA5PXIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrUBwtqKgFfwUOJViQQsDuyrE9r8Hc/UoMt5nt+3KPIkvDuuZG
+	ZDIW4f1siKvd0Jirk2XNTNfbLMc6ii+Z47BjajundUYvmiEZkeY9RktX4NlZkhMLAm1GMlHTFXF
+	WXowQ02i0eHDfUKjO8zdowzVpbQxNi8+8/SiA
+X-Gm-Gg: ASbGnctmMKW5uJsMqNqmlxklL1IdKDy4RWRY3JREL8kDSQhuw+mHi2Rt6NsoTxeEeQ+
+	TAX8fe6Whg47GFc/0VdcKsp7zzsNn+cC2Q2hLM4aUP/PCZcB+QvoHkel+bLiINNP8T1eM8fELvi
+	FVsqCLDbPzX7AAIfBBup7dpX8ukg==
+X-Google-Smtp-Source: AGHT+IHTU25ruxLMbTA/rNlNPHkgunVRLhjwLYjYm77haSUFAnmqEMkV93UqqfMOyTez8ElyhJZjOUul3shM8Bzf2fY=
+X-Received: by 2002:a05:6512:118b:b0:542:28b4:2732 with SMTP id
+ 2adb3069b0e04-543e4be947emr8761617e87.19.1738624042144; Mon, 03 Feb 2025
+ 15:07:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
- <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
- <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
- <40418980-6e5b-48eb-bc35-7ffaf3221fd9@intel.com> <qzl5vkhykj4anuvjrhfco5qoeuib3oskffnxnqbcszotttnnqa@up5b4xl5l55g>
- <702c5acb-6bab-4940-a8f1-c346373167bd@intel.com>
-In-Reply-To: <702c5acb-6bab-4940-a8f1-c346373167bd@intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Mon, 3 Feb 2025 14:08:41 -0800
-X-Gm-Features: AWEUYZn4lp_A5AbUjUHimrHcFYW36fbGNYwCsxNdJcmy9mUWfgPSBJE-b3l4FDY
-Message-ID: <CAGtprH-grdiE2AaagnYNUQC4ytSMxErYoh_Xyg2Nwmto33Yyyw@mail.gmail.com>
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via tdx_safe_halt()
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Kirill A. Shutemov" <kirill@shutemov.name>, x86@kernel.org, linux-kernel@vger.kernel.org, 
-	pbonzini@redhat.com, seanjc@google.com, erdemaktas@google.com, 
-	ackerleytng@google.com, jxgao@google.com, sagis@google.com, oupton@google.com, 
-	pgonda@google.com, dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, 
-	chao.p.peng@linux.intel.com, isaku.yamahata@gmail.com, stable@vger.kernel.org
+References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
+ <2025020118-flap-sandblast-6a48@gregkh> <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
+In-Reply-To: <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
+From: Daniel Rosenberg <drosen@google.com>
+Date: Mon, 3 Feb 2025 15:07:10 -0800
+X-Gm-Features: AWEUYZmsRqc6CfAaad0GqfvJKZlnCJwcK-6nF3wr3xkSVGNuChY132-7z7wPn7w
+Message-ID: <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
+Subject: Re: f2fs: Introduce linear search for dentries
+To: Todd Kjos <tkjos@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>, 
+	Android Kernel Team <kernel-team@android.com>, "Theodore Ts'o" <tytso@mit.edu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 3, 2025 at 1:19=E2=80=AFPM Dave Hansen <dave.hansen@intel.com> =
-wrote:
+On Sat, Feb 1, 2025 at 12:29=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 >
-> On 2/3/25 12:09, Kirill A. Shutemov wrote:
-> ...
-> > But Sean's proposal with HLT check before enabling interrupts looks bet=
-ter
-> > to me.
+> As the original commit that this says it fixes was reverted, should that
+> also be brought back everywhere also?  Or did that happen already and I
+> missed that?
 >
-> "Sean's proposal" being this:
+> thanks,
 >
->         https://lore.kernel.org/all/Z5l6L3Hen9_Y3SGC@google.com/
->
-> ?
-Yes.
+> greg k-h
 
->
-> Is that just intended to quietly fix up a hlt-induced #VE? I'm not sure
-> that's a good idea. The TDVMCALL is slow, but the #VE is also presumably
-> quite slow. This is (presumably) getting called in an idle path which is
-> actually one of the most performance-sensitive things we have in the kern=
-el.
->
-> Or am I missing the point of Sean's proposal?
+The revert of the unicode patch is in all of the stable branches
+already. That f2fs patch is technically a fix for the revert as well,
+since the existence of either of those is a problem for the same
+reason :/
 
-I think you have captured the intent correctly.
-
+On Sat, Feb 1, 2025 at 9:06=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
 >
-> I don't mind having the #VE handler warn about the situation if we end
-> up there accidentally.
+> Before we can bring back the reverted patch, we need the same fix for
+> ext4. Daniel, is there progress on that?
 >
-> I'd much rather have a kernel configured in a way that we are pretty
-> sure there's no path to even call hlt.
+Last I knew, Ted had a prototype patch for that, not sure what the
+current status of it is. I'm also not sure whether the unicode patch
+is being relanded, or if there's a different fix in the works there.
 
-+1.
+-Daniel
 
