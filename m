@@ -1,172 +1,219 @@
-Return-Path: <stable+bounces-111991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D8FA254A7
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39063A25537
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 10:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD6731886FC4
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:42:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205AB18861A0
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF351FC7DC;
-	Mon,  3 Feb 2025 08:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ENa2pt1V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01EE207DF6;
+	Mon,  3 Feb 2025 09:00:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B111FBCB9
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 08:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026B1207DEF
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 08:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738572072; cv=none; b=co15q3cyBSH88HUDH86ToVTAeh6iTo4q6PiGg7b4Eg+T09c2H6ZOEaIfMyBLkqRY/nf+++DCDHirFdgfL4h0L4bpvCStqP0juyqeTZHUkUFSkvyuWpp1ynXghhRVqCFcHmYMpBaIuFKL02EjbQ4mE6MHbQMyJlZu/ZjnM2hQjoU=
+	t=1738573200; cv=none; b=SZ6anQoyJZK3E4QyRf0ZY0lCUte4JePD8WY0RS1iXvTIaytlnutT1a73AIXp0dwP5GDxNS9UxhkBOga42dQ3OOY8ET5n6c2XsUWsDN2kjbyErObySJp77W3Uk9fOVUYrhMJgOr8fpvdh9G1P852asDti00PCAXAf+wiI9RdA17w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738572072; c=relaxed/simple;
-	bh=77gwvmMi/WmTmBIVTvybK9+anHR4PuaeyO7yxM3i/As=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IbRcMHHqQcaxzsOjV7px/jzrPDXUX+zgMQZrxQEVtGKFdi7YbMBLZuto+erQ8VfteJ3vGXV2IbYi+tMKStd8h/LzXR/X+cKzlj+nt1EualRE1XrN2bX71Ou28FODRnEnUfYwlYkQ1pNBbVPHVASTHYQCMFigIZUkuujIBbusne8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ENa2pt1V; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-5d3d2cccbe4so4320992a12.3
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 00:41:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738572068; x=1739176868; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Mk6V2a1OKehUwhksSUOJsYXjthaAUvB8G0tqW4qNGVk=;
-        b=ENa2pt1VCBLqjMXjj7JEbDlrpc7PGs4XoBtxk7z57UZcxLghPiOO2pLoggfYEg2u7p
-         CwONrvDtHMDTfWh3KMpi4oqzOuWRpp9nezY0Jm/vB3sbco4adxbQrlM7OoOC19eFCykT
-         yvK58eRhy0RHNCBgy4cVMdqx0trZgm5yVIzRgD5ZoMxAdw5l+Vtj5FRETIifUxwUrj6d
-         yj8E3vOYrVAfsADrLbvnAvn4uWuScxZLzF41i31a3YKe+lAYVPBNa6fyNbAa+xLa/9B8
-         vNBZfx/lmhyR3Qfov+aV9FP5BJ/nrVNwuGffpcbwkDumOZYqJf1HLVfSyslN0upmzOMF
-         UF/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738572068; x=1739176868;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mk6V2a1OKehUwhksSUOJsYXjthaAUvB8G0tqW4qNGVk=;
-        b=SFURB3mSNijgU5+ffAUwNQQlz0LkLvmZlJLQWe9op7dtbQQBniTFHIoppsiIRhsqQi
-         uRHqNPs7+VlRjgWpUunNk0alSly5ok3UGoL/L0JtdjuDyKbNuhKOqdKMgmwK8SG44ssu
-         e/dMJ95p1iPSkDcB81hORNylaNBGb/ooHBDSsgmRN0MOfHWzyK5x1pemCUtoDFVwJ1a3
-         diexWPBk2isYGaoLaYg8uPEe/WwLev+TsZtYQqhxIHEV5Hx/VCIO0SWhNTzRtmWoan6Z
-         ovfYbhgu+jRgLrJj43AD8G9TVVzArX6OWpn/tUePc2yZC2L5YhXkasjj5Ad+URl2YYel
-         OdWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWiTzs9KkGyUEYirJlZ+bma2FRTZjnLbmSsxs7Voaaluh6Iawogx4sMm4pZJo/VxdybVHsecXo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHGr5TVe7Ji0pevJ8VCoNZolmnFxWsggOh71C5Gf0pofSafqk4
-	hxmk4bE24bNnYoOyhctfomkeqK1pbfr5lUfIc+sIuyec1qOcaj2lV18A1blMZFxGvHj7b3WoS3X
-	xlLmTQuaX8+MdOA==
-X-Google-Smtp-Source: AGHT+IFgfRdiETtZBMuEEeQV1/e16m9nbwfES9yKMQDXNq+I0fbO181QnlPznYn6q52iu9mDVagMFJqy6rI6XJU=
-X-Received: from edat28.prod.google.com ([2002:a05:6402:241c:b0:5d6:6918:bd9d])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:51d1:b0:5db:f52c:806c with SMTP id 4fb4d7f45d1cf-5dc5efebd64mr20562017a12.20.1738572068190;
- Mon, 03 Feb 2025 00:41:08 -0800 (PST)
-Date: Mon, 03 Feb 2025 08:40:57 +0000
+	s=arc-20240116; t=1738573200; c=relaxed/simple;
+	bh=SB5hAFZ26iw6wEf+BpzUKhisAwZI70P/N7z0aAbxzL0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LaIFFgh+heR47IYf6h2MS31j68RxGXyjUPZa12gMTK2/HFzwTRNSiPHvUxkw/S0U5GhROrkmtv/StCFTdhR0bdtgzjOuCIufDWuIChmQLCnwYwHsla5kgs0RN6+Ksn7WE+5Pz8XNa13GHeTyR1MK0TWk+hbRr9aWTZyoLeVK710=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1tesJB-0006l4-HK; Mon, 03 Feb 2025 09:59:57 +0100
+Message-ID: <d8b6c3b4eda513277f19640c8f792c6d70b03f06.camel@pengutronix.de>
+Subject: Re: Patch "drm/etnaviv: Drop the offset in page manipulation" has
+ been added to the 6.12-stable tree
+From: Lucas Stach <l.stach@pengutronix.de>
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
+	sui.jingfeng@linux.dev
+Cc: Russell King <linux+etnaviv@armlinux.org.uk>, Christian Gmeiner
+ <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>
+Date: Mon, 03 Feb 2025 09:59:56 +0100
+In-Reply-To: <20250202043355.1913248-1-sashal@kernel.org>
+References: <20250202043355.1913248-1-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABiBoGcC/x2MywqEMAwAf0VyNhDr21+RPWg31YBYaaoI4r9v2
- cMc5jDzgHIQVhiyBwJfouL3JEWegV2nfWGUb3IwZGoyVGI4NVossGvwTqh30W1+ikhz35ZUV7a aLaT8COzk/q/Hz/v+AG0FjRBqAAAA
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2479; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=77gwvmMi/WmTmBIVTvybK9+anHR4PuaeyO7yxM3i/As=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBnoIEhvIO6g0w1Cm4GRlTNlZ0bc66QxjR1smp/t
- b0Iu2NyHymJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZ6CBIQAKCRAEWL7uWMY5
- RgkgEACztrFdagGYWFuJsQ1ltsSEumNssm25/HC2foapuWKTd7jDzagC0pC/1Oq0Uy0/77/1PMO
- Ej6ZgrtH2SF9rYP00+JadJEoLpm/WVrzpzPaixK7YMqDYYoIxse5dFa7ZR+1VEom9oOIdm1H6xl
- cDv+9KVZkbcEZN0+ROPUN2bfN2Ba8Unz/7mUOGCD44ilBfdtVIDk47NQOMSFItqJlV8Y0LxbU+s
- SHRR2pGNZ9IX9icdFqMLUOJ7Mq42GA1ivndSP5YAZLkoeiDKFyFUhbo0ddewSKvC3huM8njSnGn
- nV+5FHcpZdsAm+y9ZzhUxxwFWOfFFfmR/c8vOc3qCO6sjrRaAMQUvFmiFkj1kKhMNXjw4F8w2wr
- iIVJ9SIt6DGbh6EpBuRqSUEvUwagz5nA9G7xAv4+lqvRTYYa4nobW/JGhmtdV6+7Vz66tyXrq2f
- 2JCSC/EvK3fJcPBGtRe5erbdswWwsN9YY6zHbZNbh1x97Z0I4T6azL92ES3GpqsYcmukvCTSBdt
- 814Uy4GBkJJcIDbU1w1RnUiEdpmUY8A1UXbX7vzOpApH7v3/VCP0v+1VkcQbsskuWzPn0v1DplK
- RKEL2ThIpSFGcXe2iyr1xwxIc/Lli2bEljSekIJADoJ00IrgaP5uhCSBbqBnuZ9LkSAfOiGZXh6 a2FMTP6pu8qxHLQ==
-X-Mailer: b4 0.13.0
-Message-ID: <20250203-rustc-1-86-x86-softfloat-v1-1-220a72a5003e@google.com>
-Subject: [PATCH] x86: rust: set rustc-abi=x86-softfloat on rustc>=1.86.0
-From: Alice Ryhl <aliceryhl@google.com>
-To: x86@kernel.org, rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-When using Rust on the x86 architecture, we are currently using the
-unstable target.json feature to specify the compilation target. Rustc is
-going to change how softfloat is specified in the target.json file on
-x86, thus update generate_rust_target.rs to specify softfloat using the
-new option.
+Hi Sasha,
 
-Note that if you enable this parameter with a compiler that does not
-recognize it, then that triggers a warning but it does not break the
-build.
+Am Samstag, dem 01.02.2025 um 23:33 -0500 schrieb Sasha Levin:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     drm/etnaviv: Drop the offset in page manipulation
+>=20
+> to the 6.12-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      drm-etnaviv-drop-the-offset-in-page-manipulation.patch
+> and it can be found in the queue-6.12 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>=20
+please drop this patch and all its dependencies from all stable queues.
 
-Cc: stable@vger.kernel.org # for 6.12.y
-Link: https://github.com/rust-lang/rust/pull/136146
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- scripts/generate_rust_target.rs | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+While the code makes certain assumptions that are corrected in this
+patch, those assumptions are always true in all use-cases today. I
+don't see a reason to introduce this kind of churn to the stable trees
+to fix a theoretical issue.
 
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 0d00ac3723b5..4fd6b6ab3e32 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -165,6 +165,18 @@ fn has(&self, option: &str) -> bool {
-         let option = "CONFIG_".to_owned() + option;
-         self.0.contains_key(&option)
-     }
-+
-+    /// Is the rustc version at least `major.minor.patch`?
-+    fn rustc_version_atleast(&self, major: u32, minor: u32, patch: u32) -> bool {
-+        let check_version = 100000 * major + 100 * minor + patch;
-+        let actual_version = self
-+            .0
-+            .get("CONFIG_RUSTC_VERSION")
-+            .unwrap()
-+            .parse::<u32>()
-+            .unwrap();
-+        check_version <= actual_version
-+    }
- }
- 
- fn main() {
-@@ -182,6 +194,9 @@ fn main() {
-         }
-     } else if cfg.has("X86_64") {
-         ts.push("arch", "x86_64");
-+        if cfg.rustc_version_atleast(1, 86, 0) {
-+            ts.push("rustc-abi", "x86-softfloat");
-+        }
-         ts.push(
-             "data-layout",
-             "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
-@@ -215,6 +230,9 @@ fn main() {
-             panic!("32-bit x86 only works under UML");
-         }
-         ts.push("arch", "x86");
-+        if cfg.rustc_version_atleast(1, 86, 0) {
-+            ts.push("rustc-abi", "x86-softfloat");
-+        }
-         ts.push(
-             "data-layout",
-             "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
+Regards,
+Lucas
 
----
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-change-id: 20250203-rustc-1-86-x86-softfloat-0b973054c4bc
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+>=20
+>=20
+> commit cc5b6c4868e20f34d46e359930f0ca45a1cab9e3
+> Author: Sui Jingfeng <sui.jingfeng@linux.dev>
+> Date:   Fri Nov 15 20:32:44 2024 +0800
+>=20
+>     drm/etnaviv: Drop the offset in page manipulation
+>    =20
+>     [ Upstream commit 9aad03e7f5db7944d5ee96cd5c595c54be2236e6 ]
+>    =20
+>     The etnaviv driver, both kernel space and user space, assumes that GP=
+U page
+>     size is 4KiB. Its IOMMU map/unmap 4KiB physical address range once a =
+time.
+>     If 'sg->offset !=3D 0' is true, then the current implementation will =
+map the
+>     IOVA to a wrong area, which may lead to coherency problem. Picture 0 =
+and 1
+>     give the illustration, see below.
+>    =20
+>       PA start drifted
+>       |
+>       |<--- 'sg_dma_address(sg) - sg->offset'
+>       |               .------ sg_dma_address(sg)
+>       |              |  .---- sg_dma_len(sg)
+>       |<-sg->offset->|  |
+>       V              |<-->|    Another one cpu page
+>       +----+----+----+----+   +----+----+----+----+
+>       |xxxx|         ||||||   |||||||||||||||||||||
+>       +----+----+----+----+   +----+----+----+----+
+>       ^                   ^   ^                   ^
+>       |<---   da_len  --->|   |                   |
+>       |                   |   |                   |
+>       |    .--------------'   |                   |
+>       |    | .----------------'                   |
+>       |    | |                   .----------------'
+>       |    | |                   |
+>       |    | +----+----+----+----+
+>       |    | |||||||||||||||||||||
+>       |    | +----+----+----+----+
+>       |    |
+>       |    '--------------.  da_len =3D sg_dma_len(sg) + sg->offset, usin=
+g
+>       |                   |  'sg_dma_len(sg) + sg->offset' will lead to G=
+PUVA
+>       +----+ ~~~~~~~~~~~~~+  collision, but min_t(unsigned int, da_len, v=
+a_len)
+>       |xxxx|              |  will clamp it to correct size. But the IOVA =
+will
+>       +----+ ~~~~~~~~~~~~~+  be redirect to wrong area.
+>       ^
+>       |             Picture 0: Possibly wrong implementation.
+>     GPUVA (IOVA)
+>    =20
+>     ---------------------------------------------------------------------=
+-----
+>    =20
+>                      .------- sg_dma_address(sg)
+>                      |  .---- sg_dma_len(sg)
+>       |<-sg->offset->|  |
+>       |              |<-->|    another one cpu page
+>       +----+----+----+----+   +----+----+----+----+
+>       |              ||||||   |||||||||||||||||||||
+>       +----+----+----+----+   +----+----+----+----+
+>                      ^    ^   ^                   ^
+>                      |    |   |                   |
+>       .--------------'    |   |                   |
+>       |                   |   |                   |
+>       |    .--------------'   |                   |
+>       |    | .----------------'                   |
+>       |    | |                   .----------------'
+>       |    | |                   |
+>       +----+ +----+----+----+----+
+>       |||||| ||||||||||||||||||||| The first one is SZ_4K, the second is =
+SZ_16K
+>       +----+ +----+----+----+----+
+>       ^
+>       |           Picture 1: Perfectly correct implementation.
+>     GPUVA (IOVA)
+>    =20
+>     If sg->offset !=3D 0 is true, IOVA will be mapped to wrong physical a=
+ddress.
+>     Either because there doesn't contain the data or there contains wrong=
+ data.
+>     Strictly speaking, the memory area that before sg_dma_address(sg) doe=
+sn't
+>     belong to us, and it's likely that the area is being used by other pr=
+ocess.
+>    =20
+>     Because we don't want to introduce confusions about which part is vis=
+ible
+>     to the GPU, we assumes that the size of GPUVA is always 4KiB aligned.=
+ This
+>     is very relaxed requirement, since we already made the decision that =
+GPU
+>     page size is 4KiB (as a canonical decision). And softpin feature is l=
+anded,
+>     Mesa's util_vma_heap_alloc() will certainly report correct length of =
+GPUVA
+>     to kernel with desired alignment ensured.
+>    =20
+>     With above statements agreed, drop the "offset in page" manipulation =
+will
+>     return us a correct implementation at any case.
+>    =20
+>     Fixes: a8c21a5451d8 ("drm/etnaviv: add initial etnaviv DRM driver")
+>     Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+>     Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>=20
+> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_mmu.c b/drivers/gpu/drm/etna=
+viv/etnaviv_mmu.c
+> index a382920ae2be0..b7c09fc86a2cc 100644
+> --- a/drivers/gpu/drm/etnaviv/etnaviv_mmu.c
+> +++ b/drivers/gpu/drm/etnaviv/etnaviv_mmu.c
+> @@ -82,8 +82,8 @@ static int etnaviv_iommu_map(struct etnaviv_iommu_conte=
+xt *context,
+>  		return -EINVAL;
+> =20
+>  	for_each_sgtable_dma_sg(sgt, sg, i) {
+> -		phys_addr_t pa =3D sg_dma_address(sg) - sg->offset;
+> -		unsigned int da_len =3D sg_dma_len(sg) + sg->offset;
+> +		phys_addr_t pa =3D sg_dma_address(sg);
+> +		unsigned int da_len =3D sg_dma_len(sg);
+>  		unsigned int bytes =3D min_t(unsigned int, da_len, va_len);
+> =20
+>  		VERB("map[%d]: %08x %pap(%x)", i, iova, &pa, bytes);
 
 
