@@ -1,135 +1,114 @@
-Return-Path: <stable+bounces-112010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CE0A25878
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:47:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8366DA258F7
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 13:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E5151636EB
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 11:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BAE11882804
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277822036FD;
-	Mon,  3 Feb 2025 11:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E181320409D;
+	Mon,  3 Feb 2025 12:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Hglon55v"
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="LW6Oofeb"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3B5202C43;
-	Mon,  3 Feb 2025 11:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13352040B5;
+	Mon,  3 Feb 2025 12:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738583272; cv=none; b=Ymbq2qzw1ZsPF4FREGMW329ZcFwXW1QVU9bytA8B4jsh0weqrTHKEVgIY+Z5PX1vPmfuXI9WYEL9tmelyxU2xiJ8cjYsmG7t3gRO1EcJjMqmNFPul80fgub12Qnn5IEMWlUCOvczAfQbTbE8JyrT3fCyo15D+Vn2F7L6xA2MVy8=
+	t=1738584392; cv=none; b=E63FaMKnClrbI5QzHN03HmAuM+IXmwke3ZAtp3izA8+RHUMnAAgJTARr8f5uC0lvFXVaQxokX1+EidwkKZjBRqsRl2+hBFuknUJND7gO2fYhs2vE6Cmiq9+nhIin2KGNp7A5bLphxxo5epwXHnWHky8Qyf9LXTEiPd2aX9Nn9Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738583272; c=relaxed/simple;
-	bh=9UvIGGD/jqqbe+DZrf2fVRPgQKDmnE3Wxm6sJHjgxCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m0sTnOxvxLtxCZOgDWBGkGgj6HTRe/shlsqJSrsrn8VCQdRiPhKOwQWHdXOnHM+e0YkcTj2fwuXM5TJ6mRBOYtY7Jtn0cSLyEKE7h/siW4n+xuF+oMmhoQV5rO/qiMHUETIjtXt6EzaqGr/GLivVJPy2spI3dUzNTq7zXgLyMd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Hglon55v; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-hibernation.4uyjgaamrtuunfhsycmekme4ua.xx.internal.cloudapp.net (unknown [20.94.232.156])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4BA6A205490F;
-	Mon,  3 Feb 2025 03:47:45 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BA6A205490F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738583265;
-	bh=GhqWLe0XM7FRu82St3cvIHyrsf62zaHk0HvKjWJ+gHU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Hglon55vlI0pU/3vD9QRXL9khphoVCtwVz91oeMlH1Vsp6xhub02TKB6iQuVNSdtA
-	 uYqmAvUsitxrNvURFdgu3CW97xZGro8xIZDunIUIP24Z0DXzrT2QNySogFlatIumpH
-	 p0sozNy+AbmoFGfQ3Hx2uVMDIXGQi5p4S7RIpOnA=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
-	srivatsa@csail.mit.edu,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Naman Jain <namjain@linux.microsoft.com>
-Subject: [PATCH v3] sched/topology: Enable topology_span_sane check only for debug builds
-Date: Mon,  3 Feb 2025 11:47:38 +0000
-Message-ID: <20250203114738.3109-1-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1738584392; c=relaxed/simple;
+	bh=zYaLG6IJSpDlxxMTZJxY5ECMfjeDQ32tSMkMD4Z02+Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bAKlIWcytiDvZs2O62ywfi9qpufvIThS6RhaeLvZI4bGtts2YZOFWTd1GZEJeTbat3pA0mDKAt8FUuX7clX1y+RcKYvBnXtBCQY732K3T+w2ZAlN8jbbZV+MYEgFevVMlYjH5Mw0BU2MG20CivVZ1OPzaX2sobtOIpNgqvgDZpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=LW6Oofeb; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55BFBA0CC1;
+	Mon,  3 Feb 2025 13:00:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1738584054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=N0MRwPWFmgCZmVobKqV4wnfrvyJ/Wr2AIibpxTZfaYA=;
+	b=LW6OofebfTlfjMJSzvcsU57zOYpgt0o51xBqRgNb8V7lYksc7UMnDLha6EHb5t9AGoyp7O
+	czWtQEDXDDaWr0xDF0ZVnvvCqQwl8QBLqLbOmJlFPYjPlAFIyJexHE46T+YmHjy6f1qbNE
+	P2eyPM38PN/GYGFPXQAfnPnG0krJVXhZ0eVs+kxQ2orr4O18w9WwN+Qxp5IcZ2jJsy9u3F
+	JKU50sPs4qZrpNFN0T7FlZ2M29pssFv7uOgnNmDvW+bq8og/sFlPAmTeCmEuLvJGazRGky
+	I51Vo4HrbS1WyLpqHEz3EKbESqfwj7g6BGQuwLgHdykADW0awbSR7WTJJ6BN+w==
+From: nb@tipi-net.de
+To: Mathias Nyman <mathias.nyman@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>
+Cc: n.buchwitz@kunbus.com,
+	l.sanfilippo@kunbus.com,
+	stable@vger.kernel.org,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: xhci: Restore Renesas uPD72020x support in xhci-pci
+Date: Mon,  3 Feb 2025 13:00:26 +0100
+Message-Id: <20250203120026.2010567-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Nicolai Buchwitz <nb@tipi-net.de>
 
-On a x86 system under test with 1780 CPUs, topology_span_sane() takes
-around 8 seconds cumulatively for all the iterations. It is an expensive
-operation which does the sanity of non-NUMA topology masks.
+Before commit 25f51b76f90f1 ("xhci-pci: Make xhci-pci-renesas a proper
+modular driver"), the xhci-pci driver handled the Renesas uPD72020x USB3
+PHY and only utilized features of xhci-pci-renesas when no external
+firmware EEPROM was attached. This allowed devices with a valid firmware
+stored in EEPROM to function without requiring xhci-pci-renesas.
 
-CPU topology is not something which changes very frequently hence make
-this check optional for the systems where the topology is trusted and
-need faster bootup.
+That commit changed the behavior, making xhci-pci-renesas responsible for
+handling these devices entirely, even when firmware was already present
+in EEPROM. As a result, unnecessary warnings about missing firmware files
+appeared, and more critically, USB functionality broke whens
+CONFIG_USB_XHCI_PCI_RENESAS was not enabled—despite previously workings
+without it.
 
-Restrict this to sched_verbose kernel cmdline option so that this penalty
-can be avoided for the systems who want to avoid it.
+Fix this by ensuring that devices are only handed over to xhci-pci-renesas
+if the config option is enabled. Otherwise, restore the original behavior
+and handle them as standard xhci-pci devices.
 
-Cc: stable@vger.kernel.org
-Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Co-developed-by: Naman Jain <namjain@linux.microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Fixes: 25f51b76f90f ("xhci-pci: Make xhci-pci-renesas a proper modular driver")
 ---
+ drivers/usb/host/xhci-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Changes since v2:
-https://lore.kernel.org/all/1731922777-7121-1-git-send-email-ssengar@linux.microsoft.com/
-	- Use sched_debug() instead of using sched_debug_verbose
-	  variable directly (addressing Prateek's comment)
-
-Changes since v1:
-https://lore.kernel.org/all/1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com/
-	- Use kernel cmdline param instead of compile time flag.
-
-Adding a link to the other patch which is under review.
-https://lore.kernel.org/lkml/20241031200431.182443-1-steve.wahl@hpe.com/
-Above patch tries to optimize the topology sanity check, whereas this
-patch makes it optional. We believe both patches can coexist, as even
-with optimization, there will still be some performance overhead for
-this check.
-
----
- kernel/sched/topology.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index c49aea8c1025..b030c1a2121f 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
- {
- 	int i = cpu + 1;
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 2d1e205c14c60..4ce80d8ac603e 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -654,9 +654,11 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, "xhci");
  
-+	/* Skip the topology sanity check for non-debug, as it is a time-consuming operatin */
-+	if (!sched_debug()) {
-+		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
-+			     __func__);
-+		return true;
-+	}
-+
- 	/* NUMA levels are allowed to overlap */
- 	if (tl->flags & SDTL_OVERLAP)
- 		return true;
-
-base-commit: 00f3246adeeacbda0bd0b303604e46eb59c32e6e
+ static const struct pci_device_id pci_ids_reject[] = {
++#if IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS)
+ 	/* handled by xhci-pci-renesas */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
++#endif
+ 	{ /* end: all zeroes */ }
+ };
+ 
 -- 
-2.43.0
+2.39.5
 
 
