@@ -1,201 +1,152 @@
-Return-Path: <stable+bounces-112039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E395A25F61
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 17:00:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C34A25F6F
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 17:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A4E3A40C9
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:00:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33CFC165614
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 16:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E87720A5EF;
-	Mon,  3 Feb 2025 16:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F02020A5EA;
+	Mon,  3 Feb 2025 16:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="A5eBwkvy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iQTBmrkA"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="llkPPiKM"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4D520A5FA;
-	Mon,  3 Feb 2025 16:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0498CF9D6;
+	Mon,  3 Feb 2025 16:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738598411; cv=none; b=gyL3If6d/pCQsOexR7NdgREzykoy41X60pHRcKcaqv2IgBLE1bbIfpI1Z9S37MPPUFDK8Cu0y6eYmz9bQ0ir1m4Zo0hubZ///WphW8LcD0ect+EBHb9RH1hwbmviuZtbKe0EWZtUTCRHM/1T8KoQUKVCkXDxy8weHS/ilVoXy6c=
+	t=1738598526; cv=none; b=TY6x8kzcdmeHbpsMp5OaT1qMx8ccHWLa9/Ve51hHhftfXh9TEUHXoFuq14iSMmGSMUk7sBDu3Cr0HEufd/yG45WXBe/VkAYqi+mjbkM40UTutVFRta93m42gagYWLl5YPxb/QHGOC7O1QSu34sbbHSvHgryCeVkYtYdnrtVhHo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738598411; c=relaxed/simple;
-	bh=HHpIuLxVdDey+3rQYAd0ieQOJFjAUhHlZWuznmLX3Qg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HR7vpnxwpJyNc+Sn9Sa0GJmQonzbrGsQPxmmL34lwEZI6l0FkQqwrnCvLB/zzcivnswizdMc4T8GKHxAXlCQB7NxKXGe2MFbOigSvpZwoToUGJWGU+K2T9yLiZnns0SDjnITnVmVXZwDi0uNJZl87WaoyGwOqiYwvCdULLf7LMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=A5eBwkvy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iQTBmrkA; arc=none smtp.client-ip=202.12.124.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 70428254015B;
-	Mon,  3 Feb 2025 11:00:07 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 03 Feb 2025 11:00:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
-	 t=1738598407; x=1738684807; bh=b1TGdaW+/VY1wKwJa980bXl/HdO+YGMF
-	E8U9uk/NliE=; b=A5eBwkvyvWUsSlVFAYoPx6DgEZiIP3e7d+S0GIU8y+f7xooq
-	o4f963CuwgcCFtmGkvIx54I0pr2HZaG+D5dIbt5M7357f+n1OtNhfX9iakbSfQWf
-	tf+6CNPSE0o2DTJOJrExlQi1o7lMIJlzPICUHwt+a/5ocuo/kxxd1KPYHEypCX6S
-	c38JwU3KgKwPtCyIOwXX1qkDO8NwlN58ILGl5t9RvWdDOzfjLq6VLttdiELj0W9s
-	Q9hZwXaQMDeDpjyWOGElfjxw/4ziNS6dl7kYjPtv/T2ubywYK3oJM+AoX4JIPDSR
-	PRebLKQx1kCxH5q432/jd21k7VussLfGPPVasw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738598407; x=
-	1738684807; bh=b1TGdaW+/VY1wKwJa980bXl/HdO+YGMFE8U9uk/NliE=; b=i
-	QTBmrkAdBpVRMMtn+QbbB+Cy+Px3uDvcO9FHdcluRiA4gl0ZmMh0/U5Wv+Nuumh7
-	yuNi6LkMvOshe3N/F5hJ7ag9tNL9vx3fGD8YHOS5zHnjQWb0a2d//HKpbXJd/0rK
-	AtG+tXehXtxHrmvmzYPMvA+LppRDBI8sh08yrzQhr8hBLqiJrimDRj16UTZr9cNx
-	798tKv5BFCt6jAzkyx3S7Bxz39G6PFQcSzC5eg3J3KhBGomiAvrXdBU+VPeQ55/q
-	JSQB9n/nuKeYRCmmLnGQrlaYD1l5/bqfmvNKtwOK2J5SAnu6wckMFndQ/E3y2aVO
-	tHnmXqD2p3tOdbyD1cNow==
-X-ME-Sender: <xms:BuigZ7PhnrwzScCOT8JHUEm38ytNppzjnVa-IgaPTNjCz-AXlkV7iA>
-    <xme:BuigZ18HZ6HYyA28FvGY_4cER1vFxiERbEO1b-biWgRxFjznIwHOXQ-DMahJ5ECtf
-    8MSFoxyBG-5TbBnW2w>
-X-ME-Received: <xmr:BuigZ6TVcW5LCsgu6plJckSlhamVVKDvhTyJAVjQrkQBRlCO568Bsa4FUXLPV35NIR58jg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddukedtfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtugfgjgestheksfdttddt
-    jeenucfhrhhomhepfdfmihhrihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilh
-    hlsehshhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpedtvdefueetheei
-    gefgkedtheetjeduvddvtdfhteelgeektdevvedttddvhfdtfeenucffohhmrghinhepkh
-    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtth
-    hopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhgrnhhnrghpuhhrvhgv
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepsh
-    gvrghnjhgtsehgohhoghhlvgdrtghomhdprhgtphhtthhopegvrhguvghmrghkthgrshes
-    ghhoohhglhgvrdgtohhmpdhrtghpthhtoheprggtkhgvrhhlvgihthhnghesghhoohhglh
-    gvrdgtohhmpdhrtghpthhtohepjhigghgrohesghhoohhglhgvrdgtohhmpdhrtghpthht
-    ohepshgrghhishesghhoohhglhgvrdgtohhm
-X-ME-Proxy: <xmx:B-igZ_u6fLyRvAx_v06d0HwyF4Oe7G0hAz3blzcs4E2-WJ-meyWFEQ>
-    <xmx:B-igZzfjwJa__g6T9LIZ65-CI_kK-swUWRT9Q_HtGZBaEynqBmYeJw>
-    <xmx:B-igZ73E3iXifhgNQ6_nTSWK4y6RDdYsY9evYR5x5PX1TrrZofZN_A>
-    <xmx:B-igZ_8jdfs5LhXu56Y85qnw4m5ACbziSKIVDHSWxMKmf1ECFpluEw>
-    <xmx:B-igZ-sSziHMoXbaR-6MO7PjFs--OxKfDqVpQJYVZYBu1qnqerdDvq5k>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Feb 2025 11:00:01 -0500 (EST)
-Date: Mon, 3 Feb 2025 17:59:57 +0200
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	seanjc@google.com, erdemaktas@google.com, ackerleytng@google.com, jxgao@google.com, 
-	sagis@google.com, oupton@google.com, pgonda@google.com, 
-	dave.hansen@linux.intel.com, linux-coco@lists.linux.dev, chao.p.peng@linux.intel.com, 
-	isaku.yamahata@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH V2 1/1] x86/tdx: Route safe halt execution via
- tdx_safe_halt()
-Message-ID: <baiv6tl2lkr25i2ry2q2jaylu5y6hhioqfwhc4yafk2uwqbgf5@sqxlpg2r6kcc>
-References: <20250129232525.3519586-1-vannapurve@google.com>
- <p6sbwtdmvwcbr55a4fmiirabkvp3f542nawdgxoyq22cdhnu33@ffbmyh2zuj2z>
- <CAGtprH8pJ3Zj_umygzxp8=4sJTdwY5v2bFDhoBdX=-3KQaDnCw@mail.gmail.com>
- <wmdg54v56uizuifhaufllnjtecmvhllv35jyrvdilf4ty4pfs5@y4zppjm2sthr>
- <CAGtprH82OjizyORJ91d6f6VAn_E9LY7WptN-DsoxwLT4VwOccg@mail.gmail.com>
- <2wooixyr7ekw3ebi4oytuolk5wtyi2gqhsiveshfcfixlz3kuq@d5h6gniewqzk>
- <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
+	s=arc-20240116; t=1738598526; c=relaxed/simple;
+	bh=0BO6nTPiaF2yJwm7N18DYBlR9j/wUMubC5MhYK//OIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iI99w1H4teYLxsRSqca1s8c7biPCim8wQrRHFRkj8gOi3Sl6Q679m8EUYgMCusXXKLnTrYiqjji7pABZlWZjmHNMRmoZ0juCLNZeL5CTLg0maXKvZ4IKH/u2qJqfBJ2bT8JDJ9Wuue9uavG68TXDnXMitBlopXEctN4fAOPaHbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=llkPPiKM; arc=none smtp.client-ip=159.100.241.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id E0E3E20063;
+	Mon,  3 Feb 2025 16:01:55 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id A3795203E1;
+	Mon,  3 Feb 2025 16:01:47 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 32777400CC;
+	Mon,  3 Feb 2025 16:01:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1738598507; bh=0BO6nTPiaF2yJwm7N18DYBlR9j/wUMubC5MhYK//OIQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=llkPPiKMfS3N8Y6Bi1Iv2LuyXupvhf2JT+QDJMVVO9Us0/sPYC6ShmvT2qQ/cIGW7
+	 VRSE+GbN3Zy5GstMCy0KzCfKqED63RfPiKXDe75cWhAhl6TID3AZ1iLu4LRuSVwTZS
+	 jEMrtYJ6wLEu/ki6K6M8+6Ck2LOVi33VhdMF9QLI=
+Received: from [172.29.0.1] (unknown [203.175.14.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id A7AB140515;
+	Mon,  3 Feb 2025 16:01:42 +0000 (UTC)
+Message-ID: <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
+Date: Tue, 4 Feb 2025 00:01:37 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGtprH-n=cfH_BJAmiNMoRbqq0XdGCf3RE67TYW8z7RARnsCiQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
+ sources
+To: Alan Stern <stern@rowland.harvard.edu>,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Kexy Biscuit <kexybiscuit@aosc.io>
+References: <20250131100630.342995-1-chenhuacai@loongson.cn>
+ <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
+ <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
+ <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
+ <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: 32777400CC
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-0.10 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TO_DN_SOME(0.00)[]
 
-On Fri, Jan 31, 2025 at 06:32:04PM -0800, Vishal Annapurve wrote:
-> On Fri, Jan 31, 2025 at 12:13 AM Kirill A. Shutemov
-> <kirill@shutemov.name> wrote:
-> >
-> > On Thu, Jan 30, 2025 at 11:45:01AM -0800, Vishal Annapurve wrote:
-> > > On Thu, Jan 30, 2025 at 10:48 AM Kirill A. Shutemov
-> > > <kirill@shutemov.name> wrote:
-> > > > ...
-> > > > > >
-> > > > > > I think it is worth to putting this into a separate patch and not
-> > > > > > backport. The rest of the patch is bugfix and this doesn't belong.
-> > > > > >
-> > > > > > Otherwise, looks good to me:
-> > > > > >
-> > > > > > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>@linux.intel.com>
-> > > > > >
-> > > > > > --
-> > > > > >   Kiryl Shutsemau / Kirill A. Shutemov
-> > > > >
-> > > > > Thanks Kirill for the review.
-> > > > >
-> > > > > Thinking more about this fix, now I am wondering why the efforts [1]
-> > > > > to move halt/safe_halt under CONFIG_PARAVIRT were abandoned. Currently
-> > > > > proposed fix is incomplete as it would not handle scenarios where
-> > > > > CONFIG_PARAVIRT_XXL is disabled. I am tilting towards reviving [1] and
-> > > > > requiring CONFIG_PARAVIRT for TDX VMs. WDYT?
-> > > > >
-> > > > > [1] https://lore.kernel.org/lkml/20210517235008.257241-1-sathyanarayanan.kuppuswamy@linux.intel.com/
-> > > >
-> > > > Many people dislike paravirt callbacks. We tried to avoid relying on them
-> > > > for core TDX enabling.
-> > > >
-> > > > Can you explain the issue you see with CONFIG_PARAVIRT_XXL being disabled?
-> > > > I don't think I follow.
-> > >
-> > > Relevant callers of *_safe_halt() are:
-> > > 1) kvm_wait() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
-> >
-> > Okay, I didn't realized that CONFIG_PARAVIRT_SPINLOCKS doesn't depend on
-> > CONFIG_PARAVIRT_XXL.
-> >
-> > It would be interesting to check if paravirtualized spinlocks make sense
-> > for TDX given the cost of TD exit.
-> >
-> > Maybe we should avoid advertising KVM_FEATURE_PV_UNHALT to the TDX guests?
-> >
+Hi Alan, Huacai,
+
+<snip>
+
+> I just tried running the experiment on my system.  I enabled wakeup for
+> the mouse device, made sure it was disabled for the intermediate hub and
+> the root hub, and made sure it was enabled for the host controller.
+> (Those last three are the default settings.)  Then I put the system in
+> S3 suspend by writing "mem" to /sys/power/state, and when the system was
+> asleep I pressed one of the mouse buttons -- and the system woke up.
+> This was done under a 6.12.10 kernel, with an EHCI host controller, not
+> xHCI.
 > 
-> Are you hinting towards a model where TDX guest prohibits such call
-> sites from being configured? I am not sure if it's a sustainable model
-> if we just rely on the host not advertising these features as the
-> guest kernel can still add new paths that are not controlled by the
-> host that lead to *_safe_halt().
-
-I've asked TDX module folks to provide additional information in ve_info
-to help handle STI shadow correctly. They will implement it, but it will
-take some time.
-
-So we need some kind of stopgap until we have it.
-
-I am reluctant to commit to paravirt calls for this workaround. They will
-likely stick forever. It is possible, I would like to avoid them. If not,
-oh well.
-
-> > > 2) acpi_safe_halt() -> safe_halt() -> raw_safe_halt() -> arch_safe_halt()
-> >
-> > Have you checked why you get there? I don't see a reason for TDX guest to
-> > get into ACPI idle stuff. We don't have C-states to manage.
+> So it seems like something is wrong with your system in particular, not
+> the core USB code in general.  What type of host controller is your
+> mouse attached to?  Have you tested whether the mouse is able to wake up
+> from runtime suspend, as opposed to S3 suspend?
 > 
-> Apparently userspace VMM is advertising pblock_address through SSDT
-> tables in my configuration which causes guests to enable ACPI cpuidle
-> drivers. Do you know if future generations of TDX hardware will not
-> support different c-states for TDX VMs?
 
-I have very limited understanding of power management, but I don't see how
-C-states can be meaningfully supported by any virtualized environment.
-To me, C-states only make sense for baremetal.
+Just to chime in with my own test results. I was looking at this with 
+Huacai a few days back and we suspected that this had something to do 
+with particular systems, as you have found; we also suspected that if a 
+keyboard was connected to a non-xHCI controller, it would fail to wake 
+up the system.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I conducted a simple experiment on my Lenovo ThinkPad X200s, which does 
+not come with any USB 3.0 port. Here are my findings:
+
+1. With upstream code, the system would not wake up with neither the 
+internal nor the external keyboards. One exception being the Fn key on 
+the internal keyboard, which would wake up the system (but I suspect 
+that this is EC behaviour). This behaviour is consistent across any USB 
+port on the laptop and, regardless if the external keyboard was 
+connected to the laptop itself or via a hub.
+
+2. With Huacai's code, I was able to wake up the laptop with an external 
+keyboard in all the scenarios listed in (1). The internal keyboard still 
+failed to wake up the system unless I strike the Fn key.
+
+I should note, however, that the internal keyboard is not connected via 
+USB so it's probably irrelevant information anyway.
+
+As for mice, it seems that the kernel disables wake-up via USB mice and 
+enables wake-up via USB keyboards. This is also consistent with your 
+findings.
+
+Best Regards,
+Mingcong Bai
+
+> Alan Stern
+> 
 
