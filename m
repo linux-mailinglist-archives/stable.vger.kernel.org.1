@@ -1,117 +1,141 @@
-Return-Path: <stable+bounces-112058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2651EA267B6
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 00:17:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F080A267EF
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 00:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6B197A2239
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 23:16:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3C118852F9
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 23:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A22211A24;
-	Mon,  3 Feb 2025 23:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79991FFC7D;
+	Mon,  3 Feb 2025 23:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C2dHGHRn"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="FEVVgcM4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68252211A22
-	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 23:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13221E7C19;
+	Mon,  3 Feb 2025 23:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738624046; cv=none; b=UtNm/eWbt9UIAK2sSY/LvloJX1zD/pfKskwTuZ/ILUuNwYOXV3rEzfHXmXohCUw9t3Tue/TJUqpXBSHwhQgxy7rWwdxIVv+DoOi/WaGk2Ta0j267fkKDPomxa6yrjS5OakzLSUsZRuEpxOdT7GefujaTmOsf0ACXn9hu63VOfkE=
+	t=1738625699; cv=none; b=t+P3wKEsEm031zO9s4LUFNIBAQ8J5hiwFFmCwji0CMdBK+dqgBx2CnqovUBmckG3MxTDIaZ0szR7RcLu1Bo/2L3i8fDLk1OZm2O9KTrKgDub8BZEwBqFitVpivf1x/bWrADtvD0HGaByBxWO1vQju5qF9ICdfg/GynjNKjHEdxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738624046; c=relaxed/simple;
-	bh=M2w3XqBI1LFOu055TZezIq2s0keVbs0nkiw3h616fv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oa2eTaLPYRgvECOviCQHEUKChBOrYsrtKFu3XLspac0OFnBJz7jX3EqvmpnNWKegihLvxuMTL8M2nIlaiAa3yG23q4z7OAnPUefkdXa3rzW6ENQOK3ThSz4+WLxekPI6AQla8SFJuARtNnKWJ/Nr6xkJpaWgISEP0khNUqwvpdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C2dHGHRn; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-543d8badc30so5270962e87.0
-        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 15:07:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1738624042; x=1739228842; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=svwUaY/AgsImk8F87XWjzee+6GgygrVf3xyaZxTAuqE=;
-        b=C2dHGHRnFqkUE7kbHLgpzRVxeH0Gnkqv2YyM/LmN58YBexXlxnVShEoC/6fKLGuVUK
-         3FrziZVSjRMN/Y70qBAyA4I3pq9QLGCS+HYE3bL76GUI3sXGH9b3zPO800t/AlCrIA9j
-         aVBmkcTQ1ApOlHYhIMqFhi2DhsfjzjJDeQQuaEzj3mIaBOaIBCUB1owJpcxrzY8vImV5
-         o6ebHPswH1DQ4NV4sJl/HEp57DLOsY/uE0aVpYKEcbC9y8rl2jX39GY2tYRQ17Tyr06U
-         /i/JPhy2T26Vm+wMJRcXCrVOUcVXi3pyeqcmq1tKLfVam/BwCbHlhAVeUtM1+c6y5Ir1
-         jN8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738624042; x=1739228842;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=svwUaY/AgsImk8F87XWjzee+6GgygrVf3xyaZxTAuqE=;
-        b=M9IXcA2HdWs1z/S43J3nrP6hJ0v1EBu+hxlCJ1WeccwBd+egth//hHc8rvHvFb+ilM
-         z0hgbz2IATzXLrgDZR7eRS2hDTERstVbpj/MXb+D6MgxPSw5YZdXdVEuATDlzZmouZ87
-         /KaVWKrFMq3C+1v1AcRtLuoTptSdgYvqEXcr45ryhOG9X7+/W0429S41K1Eb1qzMgkXP
-         TzYwqYL1eHU7tCdGZSmNG2lQxF1pWpEGq8fzPatTvrhd6fgzWj2skK9b5pxWIex48Ily
-         GvWwHoiB8EAi3o88EHiyEnMgA+XVAPysIOHlslc2XCBc4B3hB9wMT43G5jao7rfT/ujf
-         EjNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdD4owe9B6kp/WxMLtMLAXdNOI+7Lxa23o+BZsS+MGNUXf9exiyllI2e13E55MAYfIoA5PXIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrUBwtqKgFfwUOJViQQsDuyrE9r8Hc/UoMt5nt+3KPIkvDuuZG
-	ZDIW4f1siKvd0Jirk2XNTNfbLMc6ii+Z47BjajundUYvmiEZkeY9RktX4NlZkhMLAm1GMlHTFXF
-	WXowQ02i0eHDfUKjO8zdowzVpbQxNi8+8/SiA
-X-Gm-Gg: ASbGnctmMKW5uJsMqNqmlxklL1IdKDy4RWRY3JREL8kDSQhuw+mHi2Rt6NsoTxeEeQ+
-	TAX8fe6Whg47GFc/0VdcKsp7zzsNn+cC2Q2hLM4aUP/PCZcB+QvoHkel+bLiINNP8T1eM8fELvi
-	FVsqCLDbPzX7AAIfBBup7dpX8ukg==
-X-Google-Smtp-Source: AGHT+IHTU25ruxLMbTA/rNlNPHkgunVRLhjwLYjYm77haSUFAnmqEMkV93UqqfMOyTez8ElyhJZjOUul3shM8Bzf2fY=
-X-Received: by 2002:a05:6512:118b:b0:542:28b4:2732 with SMTP id
- 2adb3069b0e04-543e4be947emr8761617e87.19.1738624042144; Mon, 03 Feb 2025
- 15:07:22 -0800 (PST)
+	s=arc-20240116; t=1738625699; c=relaxed/simple;
+	bh=Vg73nH8RurlRZHXDRzWEAZt1britzIMXAQ9pdHhGnvw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o/xJfVGngSgtZT4tCqA5MBMyQnnd0rGX+UArXT6v26/NECcyPfqDFp632Y4AbeDjguzviSdUXeHATEWg81RFXcQWojvbin4Ve2luUliMelVcKzdKjY4wVSOYNBlJ1a/ACbqeF8ND6l9/HyrhodpOc9np2XRferVBZ6AHN5hIRoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=FEVVgcM4; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513JMsMO001589;
+	Mon, 3 Feb 2025 23:34:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=2QBCebSBE+pFbANYL47TiwglN3Emj
+	NdNI3873/la3KQ=; b=FEVVgcM4SJIDNKZhvrG4IDZ4+p7KPosG+3wEqJG55epAx
+	mmuGVyyH0MUywwlF18g0rPjpXLD8EkSCTqySqpBpag1goAjGtZg9qFWXl+ynHUxT
+	iirAsC3TB7U6kD4HAd9JYBeEOK+XYzxO24T9N1W5HzSE1AY8BVbrumaXNWPDVK+e
+	OwfhzzADFssS3mHJvMkm4pr3E9b7gi1hB2kD07AzAuKLH9CHdWMkQX1NqOHr721y
+	ZQtBlOspkGPO/5igfEfyzIlVIhWeoXiYkfdv5ALRxBXk4EayGa0Gcdhq8OcJ8PHk
+	i4uIrAzztEkyQESYuThZ6iutqLSmFyMc+AID191HQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hfcguwwt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Feb 2025 23:34:52 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 513NWEeW036229;
+	Mon, 3 Feb 2025 23:34:51 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44j8fkhay7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Feb 2025 23:34:51 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 513NYo8O016962;
+	Mon, 3 Feb 2025 23:34:50 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44j8fkhay1-1;
+	Mon, 03 Feb 2025 23:34:50 +0000
+From: Yifei Liu <yifei.l.liu@oracle.com>
+To: kpm@linux-foundation.org, shuah@kernel.org, kevin.brodsky@arm.com
+Cc: yifei.l.liu@oracle.com, stable@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: [PATCH Linux-6.12.y 1/1] selftests/mm: build with -O2
+Date: Mon,  3 Feb 2025 15:33:42 -0800
+Message-ID: <20250203233342.51041-1-yifei.l.liu@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
- <2025020118-flap-sandblast-6a48@gregkh> <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
-In-Reply-To: <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
-From: Daniel Rosenberg <drosen@google.com>
-Date: Mon, 3 Feb 2025 15:07:10 -0800
-X-Gm-Features: AWEUYZmsRqc6CfAaad0GqfvJKZlnCJwcK-6nF3wr3xkSVGNuChY132-7z7wPn7w
-Message-ID: <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
-Subject: Re: f2fs: Introduce linear search for dentries
-To: Todd Kjos <tkjos@google.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>, 
-	Android Kernel Team <kernel-team@android.com>, "Theodore Ts'o" <tytso@mit.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-03_10,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
+ definitions=main-2502030172
+X-Proofpoint-GUID: 3eg4j6BaGbnZJQxRao_hCbNYEfxUuHpj
+X-Proofpoint-ORIG-GUID: 3eg4j6BaGbnZJQxRao_hCbNYEfxUuHpj
 
-On Sat, Feb 1, 2025 at 12:29=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> As the original commit that this says it fixes was reverted, should that
-> also be brought back everywhere also?  Or did that happen already and I
-> missed that?
->
-> thanks,
->
-> greg k-h
+From: Kevin Brodsky <kevin.brodsky@arm.com>
 
-The revert of the unicode patch is in all of the stable branches
-already. That f2fs patch is technically a fix for the revert as well,
-since the existence of either of those is a problem for the same
-reason :/
+[ Upstream commit 46036188ea1f5266df23a6149dea0df1c77cd1c7 ]
 
-On Sat, Feb 1, 2025 at 9:06=E2=80=AFAM Todd Kjos <tkjos@google.com> wrote:
->
-> Before we can bring back the reverted patch, we need the same fix for
-> ext4. Daniel, is there progress on that?
->
-Last I knew, Ted had a prototype patch for that, not sure what the
-current status of it is. I'm also not sure whether the unicode patch
-is being relanded, or if there's a different fix in the works there.
+The mm kselftests are currently built with no optimisation (-O0).  It's
+unclear why, and besides being obviously suboptimal, this also prevents
+the pkeys tests from working as intended.  Let's build all the tests with
+-O2.
 
--Daniel
+[kevin.brodsky@arm.com: silence unused-result warnings]
+  Link: https://lkml.kernel.org/r/20250107170110.2819685-1-kevin.brodsky@arm.com
+Link: https://lkml.kernel.org/r/20241209095019.1732120-6-kevin.brodsky@arm.com
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Keith Lucas <keith.lucas@oracle.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 46036188ea1f5266df23a6149dea0df1c77cd1c7)
+[Yifei: This commit also fix the failure of pkey_sighandler_tests_64,
+which is also in linux-6.12.y, thus backport this commit]
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+---
+ tools/testing/selftests/mm/Makefile | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 02e1204971b0..c0138cb19705 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -33,9 +33,16 @@ endif
+ # LDLIBS.
+ MAKEFLAGS += --no-builtin-rules
+ 
+-CFLAGS = -Wall -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
++CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
+ LDLIBS = -lrt -lpthread -lm
+ 
++# Some distributions (such as Ubuntu) configure GCC so that _FORTIFY_SOURCE is
++# automatically enabled at -O1 or above. This triggers various unused-result
++# warnings where functions such as read() or write() are called and their
++# return value is not checked. Disable _FORTIFY_SOURCE to silence those
++# warnings.
++CFLAGS += -U_FORTIFY_SOURCE
++
+ TEST_GEN_FILES = cow
+ TEST_GEN_FILES += compaction_test
+ TEST_GEN_FILES += gup_longterm
+-- 
+2.46.0
+
 
