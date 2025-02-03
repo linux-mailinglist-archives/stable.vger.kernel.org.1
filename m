@@ -1,114 +1,99 @@
-Return-Path: <stable+bounces-112011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8366DA258F7
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 13:06:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC01A258FE
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 13:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BAE11882804
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:06:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B928E18827F7
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 12:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E181320409D;
-	Mon,  3 Feb 2025 12:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B9920409A;
+	Mon,  3 Feb 2025 12:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="LW6Oofeb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MkFFi2OZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13352040B5;
-	Mon,  3 Feb 2025 12:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F3A200115
+	for <stable@vger.kernel.org>; Mon,  3 Feb 2025 12:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738584392; cv=none; b=E63FaMKnClrbI5QzHN03HmAuM+IXmwke3ZAtp3izA8+RHUMnAAgJTARr8f5uC0lvFXVaQxokX1+EidwkKZjBRqsRl2+hBFuknUJND7gO2fYhs2vE6Cmiq9+nhIin2KGNp7A5bLphxxo5epwXHnWHky8Qyf9LXTEiPd2aX9Nn9Kc=
+	t=1738584498; cv=none; b=qqpMKTrpBgGWlFGA31phb+aY9mt4bIYurWkNI8bpBZtTEaP1xkDU6JUBNt37MZ+R53yStU176gGXUt+fwiVCP20uMgZQ0KGNPpRvhex8RPanGaVI6WRE1e1FNH0EgnsbJXYm9aQChl9bANNJzxTaoi30iYZMrqiRZv9SZbwpkH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738584392; c=relaxed/simple;
-	bh=zYaLG6IJSpDlxxMTZJxY5ECMfjeDQ32tSMkMD4Z02+Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=bAKlIWcytiDvZs2O62ywfi9qpufvIThS6RhaeLvZI4bGtts2YZOFWTd1GZEJeTbat3pA0mDKAt8FUuX7clX1y+RcKYvBnXtBCQY732K3T+w2ZAlN8jbbZV+MYEgFevVMlYjH5Mw0BU2MG20CivVZ1OPzaX2sobtOIpNgqvgDZpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=LW6Oofeb; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55BFBA0CC1;
-	Mon,  3 Feb 2025 13:00:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1738584054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=N0MRwPWFmgCZmVobKqV4wnfrvyJ/Wr2AIibpxTZfaYA=;
-	b=LW6OofebfTlfjMJSzvcsU57zOYpgt0o51xBqRgNb8V7lYksc7UMnDLha6EHb5t9AGoyp7O
-	czWtQEDXDDaWr0xDF0ZVnvvCqQwl8QBLqLbOmJlFPYjPlAFIyJexHE46T+YmHjy6f1qbNE
-	P2eyPM38PN/GYGFPXQAfnPnG0krJVXhZ0eVs+kxQ2orr4O18w9WwN+Qxp5IcZ2jJsy9u3F
-	JKU50sPs4qZrpNFN0T7FlZ2M29pssFv7uOgnNmDvW+bq8og/sFlPAmTeCmEuLvJGazRGky
-	I51Vo4HrbS1WyLpqHEz3EKbESqfwj7g6BGQuwLgHdykADW0awbSR7WTJJ6BN+w==
-From: nb@tipi-net.de
-To: Mathias Nyman <mathias.nyman@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Cc: n.buchwitz@kunbus.com,
-	l.sanfilippo@kunbus.com,
-	stable@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: xhci: Restore Renesas uPD72020x support in xhci-pci
-Date: Mon,  3 Feb 2025 13:00:26 +0100
-Message-Id: <20250203120026.2010567-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1738584498; c=relaxed/simple;
+	bh=Jq+Ko1RPKlrDwtKFvVOTAACALwTV26Kr1joQfpRL7EA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rqp0ffkj8rtoHSWkwk3CryHWkO4BxyQrUWrJLQ1RNeaaLAo61pz1jBLriCpw0T3do21dHvGAKRykoCei0FFg6LyKksd3kO91enCjbL5E1IpcG7nD9G2DsHFhe8QNXiwSwmNbLiVvv+lvKQwCPDFUsPlB/60gMz9Zn/9UMhvWfew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MkFFi2OZ; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738584497; x=1770120497;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Jq+Ko1RPKlrDwtKFvVOTAACALwTV26Kr1joQfpRL7EA=;
+  b=MkFFi2OZkFmdPA86kkGsbIGyo9eevf0nq5ZWQwpCGKn9nkIwNlVuDadY
+   u17Lrk3WQT7tEkeMdDVQkqE5KPhMLHI2tVuC0JrcESLQtg7vF8+BHa5Yl
+   y2wAMYS9LrI2AWz6qtxuuAYNNskDfJ3PxtsA7BQqs6IcaR/PLMjMBwLCj
+   wHVVlb02nP1m+R+bO+6vsbvCcKeniwP8FtnwVnH37QPoRQoReQnzZQeij
+   3ALfl49dVBaBQ1sx7pFuF7ofmUoY/k2H5T9Q2FTjYoFrYPyd9eyvJKfHl
+   apzpVJpFAiixC3W5tbOGURMzvCniA7yvdZcNCkMDuneTGdwLoU2jId2mX
+   Q==;
+X-CSE-ConnectionGUID: gWHjqjv+QkqPSkD0alKYzQ==
+X-CSE-MsgGUID: uRtHzUFTQmqU3gXzSpLBnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="56609830"
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
+   d="scan'208";a="56609830"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 04:08:17 -0800
+X-CSE-ConnectionGUID: chMNEhk3TpSeu4ytM7/bnw==
+X-CSE-MsgGUID: 5UhwIlo0RG2aJA98cFc9Xg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
+   d="scan'208";a="110099785"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Feb 2025 04:08:16 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tevFN-000qtH-2m;
+	Mon, 03 Feb 2025 12:08:13 +0000
+Date: Mon, 3 Feb 2025 20:07:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: nb@tipi-net.de
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] usb: xhci: Restore Renesas uPD72020x support in xhci-pci
+Message-ID: <Z6Cxjv7b88r59ITi@f9d63055f2c6>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250203120026.2010567-1-nb@tipi-net.de>
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+Hi,
 
-Before commit 25f51b76f90f1 ("xhci-pci: Make xhci-pci-renesas a proper
-modular driver"), the xhci-pci driver handled the Renesas uPD72020x USB3
-PHY and only utilized features of xhci-pci-renesas when no external
-firmware EEPROM was attached. This allowed devices with a valid firmware
-stored in EEPROM to function without requiring xhci-pci-renesas.
+Thanks for your patch.
 
-That commit changed the behavior, making xhci-pci-renesas responsible for
-handling these devices entirely, even when firmware was already present
-in EEPROM. As a result, unnecessary warnings about missing firmware files
-appeared, and more critically, USB functionality broke whens
-CONFIG_USB_XHCI_PCI_RENESAS was not enabled—despite previously workings
-without it.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fix this by ensuring that devices are only handed over to xhci-pci-renesas
-if the config option is enabled. Otherwise, restore the original behavior
-and handle them as standard xhci-pci devices.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Fixes: 25f51b76f90f ("xhci-pci: Make xhci-pci-renesas a proper modular driver")
----
- drivers/usb/host/xhci-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] usb: xhci: Restore Renesas uPD72020x support in xhci-pci
+Link: https://lore.kernel.org/stable/20250203120026.2010567-1-nb%40tipi-net.de
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 2d1e205c14c60..4ce80d8ac603e 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -654,9 +654,11 @@ int xhci_pci_common_probe(struct pci_dev *dev, const struct pci_device_id *id)
- EXPORT_SYMBOL_NS_GPL(xhci_pci_common_probe, "xhci");
- 
- static const struct pci_device_id pci_ids_reject[] = {
-+#if IS_ENABLED(CONFIG_USB_XHCI_PCI_RENESAS)
- 	/* handled by xhci-pci-renesas */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0014) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, 0x0015) },
-+#endif
- 	{ /* end: all zeroes */ }
- };
- 
 -- 
-2.39.5
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
