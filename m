@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-111987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-111988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2680BA25431
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:18:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC753A2543C
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 09:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E0F164FC2
-	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:18:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 210783A4A04
+	for <lists+stable@lfdr.de>; Mon,  3 Feb 2025 08:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FDD204C3F;
-	Mon,  3 Feb 2025 08:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43412207DE2;
+	Mon,  3 Feb 2025 08:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="oHHYGW0s"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="wVtWgjgt"
 X-Original-To: stable@vger.kernel.org
 Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B01FCF44;
-	Mon,  3 Feb 2025 08:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBCD1FBE88;
+	Mon,  3 Feb 2025 08:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738570579; cv=none; b=gfakWs89+gxNerD5kzDAWLUPZRKV5mXAfvnh3nXhCDJ8Ts02391FRTizG19fxeEJ6yWW8/MoW+bXIRnEy+qFOoYz0BSlE3njXgh5WXAxZ2f9gM6m9SQp2zw696R2CV3qH5v6Dkql6xqGBCfxupYhJC5tBMf38Ts03YGynt3aw50=
+	t=1738570581; cv=none; b=MavOaKNi8fPWobALBcB5VS5pz5Ojv3uipN0uYinQo0pUbtekRxJU+4aZhiIWYhaivH0ZslxliX4LMgbw09E6sN30Tzst8DtzDfpfD7DBXUH/u9yzAkT4XUNvJRvu/UgpI4AyPlLPO9j/cV2IwZdfNlfqeOXKtqxGeUZeN8fLDoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738570579; c=relaxed/simple;
-	bh=ASk+1EUFh/3yGcug6P+8aM8sBlqnk8vvU6roFzb5m7o=;
+	s=arc-20240116; t=1738570581; c=relaxed/simple;
+	bh=BnLa6i9uHTei5BUGODcN7bebF1kVtW6DZS3sGD/Lx6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dxX5X/0x2Shw5zDFfoWdSPD5IYrxXsP0fdBPFNh0tlaO078EQqJot040myvp+YOfMezz39CxK+BKzOKXsJM1ct2pCP7TqFfqi/Xuje+COfHsnhBTXvJNiL5tIfhZtHbfVZ9/bsIc+8iyFt/o845S2dvRfP2GEgOHUqkUd+IOiTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=oHHYGW0s; arc=none smtp.client-ip=185.11.138.130
+	 MIME-Version:Content-Type; b=j2Hqoyr3+yFolyugDNBISbMQkUejwJWN4GwK5tvaa4HMEhlnmtkKNpTrmxhSazWvbHNPrvK74rNZXDztXAaWEnt4/dYDxTnguWj5ePpJAludi99pBZLvKhfOnfZ/LjoTLF8fFXBTPSG07vhyYUVD5baIiRhQUom6Xgj/ZilOGpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wVtWgjgt; arc=none smtp.client-ip=185.11.138.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
@@ -37,36 +37,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sSvbgIR7n2lPQ5jF97vs92quNf19M7v9euIe9lcmFwk=; b=oHHYGW0srNc2mV8G6aLmA1buct
-	V8f4DpO36yp8tLTIeAGHhb54c+7wmfDW/I/bCmQp7VCoXcmW5nXb8n7gNS3ehsq03b5xXK7wIJ9+e
-	DgOpi/oFxnyo44sqzI0ZoM5TiBxuMazHdLwMCTbMKJRiQt7JMqKsJR7eiFhVSsl9WyU3XP7eDZVKc
-	9CcBReE2wPzCFtUcPa7s+F0bYJGvQQRVoxtzy/+G+uXckao2GA7ZM0fThUwoUu0dX7uOKkDvXn9G+
-	Nvn6KQMd5lShd583hS83SJZXfiOd+qKaOHT5Rym7ga+qBoF1835ZVhzTyGJ+PxlZ0D1dHLPsEO4sV
-	taC4MJYw==;
+	bh=W4nx1cYB2XMya5dsknAcGEuuSmOAaTjn1xFWh2exy+4=; b=wVtWgjgtbp2wxfGovdDNbeIw0E
+	EK1DVFc4xJIWIQwM8SK8cRKLncxvRuaFsv9BkE3sExkoDVmzBORvBTcZ8MUJp/gB1iJvtHVsJjDFK
+	k82QPc9SoMUbcfmK/QGYscdGDZXhnG/YUZ2DdZwVj/rDK0WTJzo9j7YcUDtJVt3WFo6Por+nohmVZ
+	k4avGC5VXYb04RXQC1opmK6BIqwJ3eUz36D6yuVo+S8XaFxCsIQBQJ98Hya2Hkq/5PXm0per0zxko
+	vCNA3LIqDtzGYtLgOIkqOASfCFfATZ25mEDLuW3r7KJXpFijwVeGLLZ0r1NrfzlDtUFyxZTbuIpyy
+	07QCjOgQ==;
 Received: from i53875b5c.versanet.de ([83.135.91.92] helo=phil..)
 	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <heiko@sntech.de>)
-	id 1tercj-0005Vr-Ug; Mon, 03 Feb 2025 09:16:06 +0100
+	id 1tercl-0005Vr-GX; Mon, 03 Feb 2025 09:16:07 +0100
 From: Heiko Stuebner <heiko@sntech.de>
-To: Rob Herring <robh@kernel.org>,
+To: linux-rockchip@lists.infradead.org,
+	Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Alexey Charkov <alchark@gmail.com>,
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
 	Dragan Simic <dsimic@manjaro.org>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Tianling Shen <cnsztl@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
 	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
-Date: Mon,  3 Feb 2025 09:15:54 +0100
-Message-ID: <173857053620.78657.17789947285666303605.b4-ty@sntech.de>
+Subject: Re: [PATCH v2] arm64: dts: rockchip: Fix broken tsadc pinctrl names for rk3588
+Date: Mon,  3 Feb 2025 09:15:57 +0100
+Message-ID: <173857053617.78657.9000996460900671824.b4-ty@sntech.de>
 X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250119091154.1110762-1-cnsztl@gmail.com>
-References: <20250119091154.1110762-1-cnsztl@gmail.com>
+In-Reply-To: <20250130053849.4902-1-eagle.alexander923@gmail.com>
+References: <20250130053849.4902-1-eagle.alexander923@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,17 +79,21 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Sun, 19 Jan 2025 17:11:54 +0800, Tianling Shen wrote:
-> In general the delay should be added by the PHY instead of the MAC,
-> and this improves network stability on some boards which seem to
-> need different delay.
+On Thu, 30 Jan 2025 08:38:49 +0300, Alexander Shiyan wrote:
+> The tsadc driver does not handle pinctrl "gpio" and "otpout".
+> Let's use the correct pinctrl names "default" and "sleep".
+> Additionally, Alexey Charkov's testing [1] has established that
+> it is necessary for pinctrl state to reference the &tsadc_shut_org
+> configuration rather than &tsadc_shut for the driver to function correctly.
 > 
+> [1] https://lkml.org/lkml/2025/1/24/966
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: rockchip: change eth phy mode to rgmii-id for orangepi r1 plus lts
-      commit: a6a7cba17c544fb95d5a29ab9d9ed4503029cb29
+[1/1] arm64: dts: rockchip: Fix broken tsadc pinctrl names for rk3588
+      commit: 5c8f9a05336cf5cadbd57ad461621b386aadb762
 
 Best regards,
 -- 
