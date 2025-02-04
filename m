@@ -1,147 +1,160 @@
-Return-Path: <stable+bounces-112151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DB7A273DF
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:04:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FC3A273E9
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B03A7F7D
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:02:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 426A31888BC9
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107D7212F86;
-	Tue,  4 Feb 2025 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105B8213E78;
+	Tue,  4 Feb 2025 13:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KJjw5MUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqQYMe2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09D3212D95;
-	Tue,  4 Feb 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD56320F082;
+	Tue,  4 Feb 2025 13:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738677090; cv=none; b=Rg0hCFc1atNeGEdK/Ve26jx/HfdrNKsbfL+8jKvVa0q/qCQKZ0rb8Pu6t3goESXe+gwI7ypcg67n3Fn68cQCw8RfcmGodWWsvAFj/HRKQ5I6qUOxJ5pG5zYsL9u/INIHG8gzphpIhyJL5RX6mwGLTIgSWPEdYc1N7wkeAT3G1UI=
+	t=1738677127; cv=none; b=hJnhYdQrp41xsAYR78vyjwAbAbUpB0qeG134IJUrLWYxmVQLQa7oRoNQ+e1TVj6nAyIUrfetT322HHExF8wFrNs1JAqIVn0TkQ7sOJB7Dcb+uhnnBVdcaG8zx2DeIymVJ11frJAdHZz8auLiBvMALqwIX/hZDdjw3rvTurFcSPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738677090; c=relaxed/simple;
-	bh=9P5kRjjp0wC19JDx1SirQIsNArHoZ48MbzvMnzlAk34=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LhfsZytGQjv93dX8K6sQLLE0bSl1w7R4Y0Yi0ghmYf0VgoT/YLIVmsSQfi+dcE3D5ZyC2D224xZPVr83n5Hs7KiaqaSSWv4BH4BdMF8kVHJmF06UIQ9NYlAyj1XOZzGoV/Pvk6J2w+3G5qfDRWPnlMLVWw4ABOzIPC9nTkZ+fHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KJjw5MUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D87C4CEDF;
-	Tue,  4 Feb 2025 13:51:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738677090;
-	bh=9P5kRjjp0wC19JDx1SirQIsNArHoZ48MbzvMnzlAk34=;
-	h=From:Date:Subject:To:Cc:From;
-	b=KJjw5MUlXH/vejQM2FOZZbQ5DImUPybQJQziK8JLH8rtAs0JKeviaTBRQdCZPC5Kw
-	 tBb//wwbR40DKqWJtSdNvqxNWi+ZEG/WwlJs0WjGT3j4csQK5EUYrprBzBCRMFtjfA
-	 ekCPPmHvsR0B0litGqVLBJIWdlMmScJFf1kdTOt48jduyKtpyq3mLXjrOrRrcucMW3
-	 ioNk3cnV95XVkN2HJEobHeYI5OP1PQF4S66KRLJLi0qt1CrX+xb03Py40104bmDa6m
-	 NjN77wccHmTlX4v1AyWt6Cy/2++rqbf5CMCgFmuj9+3aoTUDgam3p874CjrRhPLrb5
-	 LX8HacnuaOfZw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 04 Feb 2025 14:51:20 +0100
-Subject: [PATCH] pidfs: improve ioctl handling
+	s=arc-20240116; t=1738677127; c=relaxed/simple;
+	bh=hID8WMBLMfeNex2lw7neHRzziXNYlPbmFHtmRj1zX70=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JALvq2dC2q24wlSzONqPIrWsUrDGG/kY4l+/awsj9dJjfDH8KSYoIXCiBvg/RN2U/R3HjcCu5cX4hPhDrWahL0eAfN3EDBeAEd+/fQTy8MLy7bX33eBBUqgW92zlP00AagjHIWSkE4s5+FLRKBxIud/RPcxJOaBJ+uohG4ABa4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqQYMe2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDCEC4CEDF;
+	Tue,  4 Feb 2025 13:52:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738677127;
+	bh=hID8WMBLMfeNex2lw7neHRzziXNYlPbmFHtmRj1zX70=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lqQYMe2x4S93kKMyeDC03NhIRPdTRFlbjLLX0Vt17LSbNyFtgRnvshtBKfQZsZ4NE
+	 OQ90Lg3wmqW4tW4L2vKKkomygLljUlF8aepxko24d+sGmh9EE4mx6Wj9zNKJGdz52T
+	 tY6ZxzavNh1ugt+XMmd9kPmWl2DUaDurUIMVjlts=
+Date: Tue, 4 Feb 2025 14:52:03 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Parth Pancholi <parth105105@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2] kbuild: switch from lz4c to lz4 for compression
+Message-ID: <2025020457-nanny-reward-06bd@gregkh>
+References: <20241114145645.563356-1-parth105105@gmail.com>
+ <2024111442-yeast-flail-fcea@gregkh>
+ <20241115083940.GA3971@francesco-nb>
+ <2024111541-antiquity-footpath-e221@gregkh>
+ <ZzcYLAFqTSlFm2uF@gaggiata.pivistrello.it>
+ <CAK7LNAS0VzqcKDz_1ds5qJcASqxVizE3kkdRk1Yiidch9KMxEQ@mail.gmail.com>
+ <Z580LZIi2iXGzSv5@eldamar.lan>
+ <CAK7LNARFfUexOjoBsr385ECC61k-oNzefRZtTtNhdGV01r-iXg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250204-work-pidfs-ioctl-v1-1-04987d239575@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFcbomcC/yXMQQrCMBCF4auUWTslRhvRq4iLJJ20g5KUGalC6
- d0b6/Lj8f4FlIRJ4dYsIDSzcskVx0MDcfR5IOS+GqyxnbHmjJ8iT5y4T4pc4vuFjtLl6l1HJxe
- g3iahxN89eX9UB6+EQXyO4y80J23/+7pupLmrbH4AAAA=
-X-Change-ID: 20250204-work-pidfs-ioctl-6ef79a65e36b
-To: Jann Horn <jannh@google.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Luca Boccassi <luca.boccassi@gmail.com>, linux-fsdevel@vger.kernel.org, 
- stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>
-X-Mailer: b4 0.15-dev-d23a9
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2570; i=brauner@kernel.org;
- h=from:subject:message-id; bh=9P5kRjjp0wC19JDx1SirQIsNArHoZ48MbzvMnzlAk34=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQvkk5Yefffsec+zXuuX178wbVfu6798z5FmwXKyWk7j
- /CsOPP7ckcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBESg4wMrTMOOl2TKl8Z6Pv
- MyaeQ5p3uW39CjMYQ5sVXnmJJ1gXCDIy3PadfdGxWVbh8VxJdh9VY1P/FOXKW0eSJv669jhpOq8
- uJwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK7LNARFfUexOjoBsr385ECC61k-oNzefRZtTtNhdGV01r-iXg@mail.gmail.com>
 
-Pidfs supports extensible and non-extensible ioctls. The extensible
-ioctls need to check for the ioctl number itself not just the ioctl
-command otherwise both backward- and forward compatibility are broken.
+On Mon, Feb 03, 2025 at 11:44:50AM +0900, Masahiro Yamada wrote:
+> On Sun, Feb 2, 2025 at 6:00 PM Salvatore Bonaccorso <carnil@debian.org> wrote:
+> >
+> > Hi Greg, hi Yamada,
+> >
+> > On Sat, Nov 16, 2024 at 04:51:48PM +0900, Masahiro Yamada wrote:
+> > > On Fri, Nov 15, 2024 at 6:45 PM Francesco Dolcini <francesco@dolcini.it> wrote:
+> > > >
+> > > > On Fri, Nov 15, 2024 at 10:22:13AM +0100, Greg KH wrote:
+> > > > > On Fri, Nov 15, 2024 at 09:39:40AM +0100, Francesco Dolcini wrote:
+> > > > > > On Thu, Nov 14, 2024 at 05:02:01PM +0100, Greg KH wrote:
+> > > > > > > On Thu, Nov 14, 2024 at 03:56:44PM +0100, Parth Pancholi wrote:
+> > > > > > > > From: Parth Pancholi <parth.pancholi@toradex.com>
+> > > > > > > >
+> > > > > > > > Replace lz4c with lz4 for kernel image compression.
+> > > > > > > > Although lz4 and lz4c are functionally similar, lz4c has been deprecated
+> > > > > > > > upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
+> > > > > > > > and lz4c have been packaged together, making it safe to update the
+> > > > > > > > requirement from lz4c to lz4.
+> > > > > > > >
+> > > > > > > > Consequently, some distributions and build systems, such as OpenEmbedded,
+> > > > > > > > have fully transitioned to using lz4. OpenEmbedded core adopted this
+> > > > > > > > change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
+> > > > > > > > lz4c"), causing compatibility issues when building the mainline kernel
+> > > > > > > > in the latest OpenEmbedded environment, as seen in the errors below.
+> > > > > > > >
+> > > > > > > > This change also updates the LZ4 compression commands to make it backward
+> > > > > > > > compatible by replacing stdin and stdout with the '-' option, due to some
+> > > > > > > > unclear reason, the stdout keyword does not work for lz4 and '-' works for
+> > > > > > > > both. In addition, this modifies the legacy '-c1' with '-9' which is also
+> > > > > > > > compatible with both. This fixes the mainline kernel build failures with
+> > > > > > > > the latest master OpenEmbedded builds associated with the mentioned
+> > > > > > > > compatibility issues.
+> > > > > > > >
+> > > > > > > > LZ4     arch/arm/boot/compressed/piggy_data
+> > > > > > > > /bin/sh: 1: lz4c: not found
+> > > > > > > > ...
+> > > > > > > > ...
+> > > > > > > > ERROR: oe_runmake failed
+> > > > > > > >
+> > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > >
+> > > > > > > What bug does this resolve that it needs to be backported to stable
+> > > > > > > kernels?
+> > > > > >
+> > > > > > This is not solving any existing actual bug, and therefore there is no
+> > > > > > fixes tag.
+> > > > > >
+> > > > > > The issue here is that the kernel build system is using lz4c, that is
+> > > > > > deprecated since 2018, and now distributions are actively moving away from it.
+> > > > > >
+> > > > > > openSUSE Tumbleweed and OE already removed it, so you would not be able
+> > > > > > to compile a stable kernel on such distribution when using lz4 unless we
+> > > > > > backport such a patch.
+> > > > > >
+> > > > > > Everything should be properly documented in the commit message already.
+> > > > > >
+> > > > > > My understanding is that something like that would be a reason for
+> > > > > > backporting to stable, if my understanding is not correct we'll remove
+> > > > > > the cc:stable and send a v3.
+> > > > >
+> > > > > Please read:
+> > > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > > > > for what meets stable kernel requirements.  I don't think that this
+> > > > > patch is that.
+> > > >
+> > > > Greg, ack.
+> > > >
+> > > > Masahiro, can you please let me know if we should send a v3 with the stable
+> > > > tag removed or you can remove it yourself when applying?
+> > > >
+> > >
+> > > I applied this with the stable tag removed.
+> > > Thanks.
+> > >
+> > > (I guess someone may want to backport this eventually,
+> > > as such distros cannot build stable kernels with ld4 compression.)
+> >
+> > Yes please :)
+> 
+> Agree.
+> This should be back-ported.
 
-The pidfs ioctl handler also needs to look at the type of the ioctl
-command to guard against cases where "[...] a daemon receives some
-random file descriptor from a (potentially less privileged) client and
-expects the FD to be of some specific type, it might call ioctl() on
-this FD with some type-specific command and expect the call to fail if
-the FD is of the wrong type; but due to the missing type check, the
-kernel instead performs some action that userspace didn't expect."
-(cf. [1]]
+Ok, now queued up, thanks.
 
-Reported-by: Jann Horn <jannh@google.com>
-Cc: stable@vger.kernel.org # v6.13
-Fixes: https://lore.kernel.org/r/CAG48ez2K9A5GwtgqO31u9ZL292we8ZwAA=TJwwEv7wRuJ3j4Lw@mail.gmail.com [1]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
----
-Hey,
-
-Jann reported that the pidfs extensible ioctl checking has two issues:
-
-(1) We check for the ioctl command, not the number breaking forward and
-    backward compatibility.
-
-(2) We don't verify the type encoded in the ioctl to guard against
-    ioctl number collisions.
-
-This adresses both.
-
-Greg, when this patch (or a version thereof) lands upstream then it
-needs to please be backported to v6.13 together with the already
-upstream commit 8ce352818820 ("pidfs: check for valid ioctl commands").
-
-Christian
----
- fs/pidfs.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/fs/pidfs.c b/fs/pidfs.c
-index 049352f973de..63f9699ebac3 100644
---- a/fs/pidfs.c
-+++ b/fs/pidfs.c
-@@ -287,7 +287,6 @@ static bool pidfs_ioctl_valid(unsigned int cmd)
- 	switch (cmd) {
- 	case FS_IOC_GETVERSION:
- 	case PIDFD_GET_CGROUP_NAMESPACE:
--	case PIDFD_GET_INFO:
- 	case PIDFD_GET_IPC_NAMESPACE:
- 	case PIDFD_GET_MNT_NAMESPACE:
- 	case PIDFD_GET_NET_NAMESPACE:
-@@ -300,6 +299,17 @@ static bool pidfs_ioctl_valid(unsigned int cmd)
- 		return true;
- 	}
- 
-+	/* Extensible ioctls require some more careful checks. */
-+	switch (_IOC_NR(cmd)) {
-+	case _IOC_NR(PIDFD_GET_INFO):
-+		/*
-+		 * Try to prevent performing a pidfd ioctl when someone
-+		 * erronously mistook the file descriptor for a pidfd.
-+		 * This is not perfect but will catch most cases.
-+		 */
-+		return (_IOC_TYPE(cmd) == _IOC_TYPE(PIDFD_GET_INFO));
-+	}
-+
- 	return false;
- }
- 
-
----
-base-commit: 6470d2c6d4233a781c67f842d3c066bf1cfa4fdc
-change-id: 20250204-work-pidfs-ioctl-6ef79a65e36b
-
+greg k-h
 
