@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4412DA26C26
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 07:32:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E65A26C2E
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 07:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B519916803E
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 06:32:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 608C11888972
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 06:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4ACB20010B;
-	Tue,  4 Feb 2025 06:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4EA200BB4;
+	Tue,  4 Feb 2025 06:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6zskoaO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmesWUIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D04913B29B;
-	Tue,  4 Feb 2025 06:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8558013212A;
+	Tue,  4 Feb 2025 06:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738650727; cv=none; b=FA7/g05wQ6HTm4r4Q/kpWw6uYRn2gbdZ9DlG9SNcZspwof/nwym0iV1a09p19EG5dzvs1lk1e/TSCp4JiZaIPVv7hrnerHoO+an/ZquIouXSZJ3QYRsRcnBemHVts+lMR+op40rJVpTKPt9pl72iQIg6cdu5kOq2f8U8NBlaas0=
+	t=1738650978; cv=none; b=F1ozsssUsrhd0AlWuJwwAzhrIJJo687PV1E0TReEC/mSqL2LU14glzR0SN/yovCc3zFlwpOJZ+ZAjGbyhzoT3Pf4xefcW7MMcJxpqsVVMvWwbmGesCj3d3pgTqCo9MPO9OVkHQu3bAK7QCZkaPA5ZCaf552hHCMzXDyxRVkrLZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738650727; c=relaxed/simple;
-	bh=0tIXBDruVfmh73EZENZUCflgMLVdRl0gwnOofOd2CuE=;
+	s=arc-20240116; t=1738650978; c=relaxed/simple;
+	bh=AoPZffDxKXgAYnlcQCovRARbXMgktVy5zIEqbFmvgqE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sGhGDYwFWT/6ITprKAiMbTCdKaKEMZjb3/scBabBAD6QqrKdmlEtUcLLWe+87eTaLVwH8j0P4YRml1+Wija5JKta3AblmlNZGT1zxxhKqLpaNScSCJxdy58Y4AZMwm7SpkuqF7bCDd+pMf3ErjorM4oGAniU+P1Gjp/z1WFlxio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6zskoaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8344C4CEDF;
-	Tue,  4 Feb 2025 06:32:04 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=c6ZGpVWEplh1mx/1y/LH8yidkh3W0YcOU3c3o76OHlb3bIT3DTm6Pa4hm/mpqeBrR7QzIZXPjKa+pB37IdvoPuBYjPC/kiKT0skHSCDApfQjgbLzn6ihSzR0L3zcrtaQmjAekw01j38WXF4VruOu/Cug5UbOTDlJNdsAOU4qs3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmesWUIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FC5C4CEDF;
+	Tue,  4 Feb 2025 06:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738650726;
-	bh=0tIXBDruVfmh73EZENZUCflgMLVdRl0gwnOofOd2CuE=;
+	s=k20201202; t=1738650978;
+	bh=AoPZffDxKXgAYnlcQCovRARbXMgktVy5zIEqbFmvgqE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e6zskoaO9xYfDgISpyEpntGf1/iqH7gsOmqupnPzI8tKSO8JUJCTkjnpcgyLKgBJv
-	 2lXx1cEAQ5jA3jsLOQBAXWFS7jfyk0DNJ2QtKvjlBYjfn3W88EqssRLkjBm3T5fvmb
-	 cmtabgn0TegOuW2RPNZhSp3OinRuFl8R4N4ZFnjllVM+9oPbmDB45daktrVibKI0XH
-	 m6/g2e7ZhuJLfNh+K1xgcoUieEOaCyavxyplSVw7j83dDoj4cDst79DlK/dtv+K3JH
-	 Ig3WjBaMUZuPDuBbh+7Md1HpE/zeYs5SMlveUCrJjMFA4Yhuvw8PTgEb/VWt/XYvKS
-	 Vg17KVxQXwikA==
-Message-ID: <73a5e3f3-3a39-4ca5-87a0-5f67c25281f0@kernel.org>
-Date: Tue, 4 Feb 2025 07:32:02 +0100
+	b=FmesWUIztCVgHs01aJq5nV1qSuwJawTsW6KqDSdGxfhEfhrSDS+f32SAjxB4SA3pz
+	 EynFBJLOf6fT+9BHnEKjMmi/DNPNokAjM0EXvTDgDicLkZrSjyBF1YAwyS5ttJAsBP
+	 AKs59S9TuYQ8COtxg6DSTYrpKrtcrdaGKDiPDHO9LSuCRFn6nelAswD6mGzF3/mNSd
+	 a9CV/naIamDgeaVtS9AKe9a9F6sd1TnQSWVD2LMbKtSMfLfSFjEIdGtEwuk3GywutA
+	 HXD13HJ46aHitKCeEW/O4oQlKHYIjvP2f08qDmi5KNJGveTTF+JBenRHTHkQZqmEdZ
+	 eaCADCY1zKDlQ==
+Message-ID: <48ad8f05-a90b-499d-9e73-8e5ff032824a@kernel.org>
+Date: Tue, 4 Feb 2025 07:36:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,13 +51,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] mtd: Add check and kfree() for kcalloc()
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>,
- christophe.jaillet@wanadoo.fr
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Jiasheng Jiang <jiashengjiangcool@gmail.com>
 Cc: gmpy.liaowx@gmail.com, kees@kernel.org, linux-kernel@vger.kernel.org,
  linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com, richard@nod.at,
  vigneshr@ti.com, stable@vger.kernel.org
 References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
  <20250204023323.14213-1-jiashengjiangcool@gmail.com>
+ <e41d9378-e5e5-478d-bead-aa50a9f79d4d@wanadoo.fr>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -102,78 +103,89 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20250204023323.14213-1-jiashengjiangcool@gmail.com>
+In-Reply-To: <e41d9378-e5e5-478d-bead-aa50a9f79d4d@wanadoo.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 04. 02. 25, 3:33, Jiasheng Jiang wrote:
-> Add a check for kcalloc() to ensure successful allocation.
-> Moreover, add kfree() in the error-handling path to prevent memory leaks.
+On 04. 02. 25, 7:17, Christophe JAILLET wrote:
+> Le 04/02/2025 à 03:33, Jiasheng Jiang a écrit :
+>> Add a check for kcalloc() to ensure successful allocation.
+>> Moreover, add kfree() in the error-handling path to prevent memory leaks.
+>>
+>> Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+>> Cc: <stable@vger.kernel.org> # v5.10+
+>> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+>> ---
+>> Changelog:
+>>
+>> v1 -> v2:
+>>
+>> 1. Remove redundant logging.
+>> 2. Add kfree() in the error-handling path.
+>> ---
+>>   drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
+>>   1 file changed, 18 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
+>> index 7ac8ac901306..2d8e330dd215 100644
+>> --- a/drivers/mtd/mtdpstore.c
+>> +++ b/drivers/mtd/mtdpstore.c
+>> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct mtd_info 
+>> *mtd)
+>>       longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+>>       cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+>> +    if (!cxt->rmmap)
+>> +        goto end;
 > 
-> Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-> Cc: <stable@vger.kernel.org> # v5.10+
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-> ---
-> Changelog:
+> Nitpick: Could be a direct return.
 > 
-> v1 -> v2:
+>> +
+>>       cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+>> +    if (!cxt->usedmap)
+>> +        goto free_rmmap;
+>>       longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+>>       cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+>> +    if (!cxt->badmap)
+>> +        goto free_usedmap;
+>>       /* just support dmesg right now */
+>>       cxt->dev.flags = PSTORE_FLAGS_DMESG;
+>> @@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct mtd_info 
+>> *mtd)
+>>       if (ret) {
+>>           dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
+>>                   mtd->index);
+>> -        return;
+>> +        goto free_badmap;
+>>       }
+>>       cxt->mtd = mtd;
+>>       dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
+>> +    goto end;
 > 
-> 1. Remove redundant logging.
-> 2. Add kfree() in the error-handling path.
-> ---
->   drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
->   1 file changed, 18 insertions(+), 1 deletion(-)
+> Mater of taste, but I think that having an explicit return here would be 
+> clearer that a goto end;
+
+Yes, drop the whole end.
+
+>> +free_badmap:
+>> +    kfree(cxt->badmap);
+>> +free_usedmap:
+>> +    kfree(cxt->usedmap);
+>> +free_rmmap:
+>> +    kfree(cxt->rmmap);
 > 
-> diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
-> index 7ac8ac901306..2d8e330dd215 100644
-> --- a/drivers/mtd/mtdpstore.c
-> +++ b/drivers/mtd/mtdpstore.c
-> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
->   
->   	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
->   	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> +	if (!cxt->rmmap)
-> +		goto end;
-> +
->   	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> +	if (!cxt->usedmap)
-> +		goto free_rmmap;
->   
->   	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
->   	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> +	if (!cxt->badmap)
-> +		goto free_usedmap;
+> I think that in all these paths, you should also have
+>      cxt->XXXmap = NULL;
+> after the kfree().
+> 
+> otherwise when mtdpstore_notify_remove() is called, you could have a 
+> double free.
 
-Could you add a single 'if' for all of them here instead? And goto 
-single free.
+Right, and this is already a problem for failing 
+register_pstore_device() in _add() -- there is unconditional 
+unregister_pstore_device() in _remove(). Should _remove() check cxt->mtd 
+first?
 
->   	/* just support dmesg right now */
->   	cxt->dev.flags = PSTORE_FLAGS_DMESG;
-> @@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
->   	if (ret) {
->   		dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
->   				mtd->index);
-> -		return;
-> +		goto free_badmap;
->   	}
->   	cxt->mtd = mtd;
->   	dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
-> +	goto end;
-> +
-
-And:
-
-free:
-> +	kfree(cxt->badmap);
-> +	kfree(cxt->usedmap);
-> +	kfree(cxt->rmmap);
-
-And NULL them as Christophe suggests.
-
->   }
->   
->   static int mtdpstore_flush_removed_do(struct mtdpstore_context *cxt,
-
+thanks,
 -- 
 js
 suse labs
