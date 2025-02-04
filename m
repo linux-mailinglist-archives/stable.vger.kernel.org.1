@@ -1,72 +1,67 @@
-Return-Path: <stable+bounces-112252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AE9A27E49
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:29:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8818A27E54
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:35:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5773A50A2
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:29:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BF63A5A3F
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771D721B180;
-	Tue,  4 Feb 2025 22:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A0221B91F;
+	Tue,  4 Feb 2025 22:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="LpOpmC6D"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="n/w14soR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333411FAC5C
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 22:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE12163BA;
+	Tue,  4 Feb 2025 22:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738708194; cv=none; b=tBQGwS3hMOJy+C410/Fz/F1aXoiVw+dMwXYqJA0yYmHYtT70qOB+H9fb6c7WPLuv/Olsgr8/5XpeTJ9ul/+E1OcI9ZfoIw7hnYalWpo7fUI9A7itthPu6buMSH10FwOBbFS/IzUnwo7T7Ia8qmjU+/+eCM3M5aUy+9u61dRXTy8=
+	t=1738708548; cv=none; b=dmoDvNKsOZtiX8RMrd6BsEcAYfFM2dMX9ksbHdCnBsSFKzQWuTVu+crD6hGRBR7/bY/WTbGM2dKzOoEIwoZZQq4ZauA2YH9BSOD8K2LDZRJigW2/nP12A8hSmH16mXGUAEITfGNjbMoimGN2zrbZqH+yqL37N7jnhnG1R0Rtd3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738708194; c=relaxed/simple;
-	bh=ibKRu8Fe/H2IX+AavqxSC9RZVA6Qn9lLjdh7002GA3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AO6MniGtuXvOjPiQgZR43QFLbWonHBP0m8GAN9zQqAu9KdX0z1Ig54s8OrWtKPpFxV0xoeQXjMzrhkFNb2Te6vet1KkfFHaGkDVQ/O7ew62qEVF6NRY1UF+dAdCCpylJaoyoz4Xt12tsqVRPqq2wb1fqM+x/gO38RxKG+xqfG6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=LpOpmC6D; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514MShSD001025;
-	Tue, 4 Feb 2025 22:29:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2023-11-20; bh=EquOAttVh16Z4kZtgokF8o1uopRds
-	Gp5w0OZpb6rxlw=; b=LpOpmC6DVrI21yjOyHNInVQVYG1LV8M9lW60MPtxRoqnJ
-	ptcltlYi77CyBR9kRmsZ3CXTK5kJAI6DMIPGhxAoSFBoiA3OrvaMcuSxtzwI43FG
-	A76P2sW2qCeJz0ane1Vg3vYIMXIGxhp4RF28BSlwYn1JJ7gl2SVC5lWsCtI2+Dc2
-	z5Woa2If8iZ2S/fnaAmDu8NwuR6DTcax1l9HN5i/0SKOSIyxgc6E5h2id6rlIILX
-	+3Bkjd9zaOb82F7wmT3tqHcKIN0edYFJOCmzLpOa2RKR/NvmhGoibPOXUG0aFXZk
-	I/xdSwWVZe32Z8W73FKAISWogxJJGXfFB2t+yhSwQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hfy85u1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Feb 2025 22:29:39 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 514MJet5036238;
-	Tue, 4 Feb 2025 22:29:38 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44j8fmu69x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Feb 2025 22:29:38 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 514MTc3I028511;
-	Tue, 4 Feb 2025 22:29:38 GMT
-Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44j8fmu69n-1;
-	Tue, 04 Feb 2025 22:29:38 +0000
-From: Yifei Liu <yifei.l.liu@oracle.com>
-To: leon.hwang@linux.dev
-Cc: yifei.l.liu@oracle.com, eddyz87@gmail.com, ast@kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH Linux-6.12.y 1/1] selftests/bpf: Add test to verify tailcall and freplace restrictions
-Date: Tue,  4 Feb 2025 14:28:50 -0800
-Message-ID: <20250204222850.1993819-1-yifei.l.liu@oracle.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1738708548; c=relaxed/simple;
+	bh=ENohXiMoG6J67UfAWY/pbJxgusEggTfD0/yv1wiqIps=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cm8NOQi369pzvppGg0Pn8L3Z0+5zcEnEE1idGu25r0E3ryK3fsB8ZyI5Y8QT8Cny28x21F5VqpGaH+OD/YcLikSxrHhKaBYKFunRBVZuOvwHhaulll97EY1w9+iOUCNpw121qMgtIAJqfLZuj2S+XEZ7tQoMhsGTXUSisMZCtXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=n/w14soR; arc=none smtp.client-ip=139.162.151.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:Message-Id:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bwrfKNDJU5sKU0Sm5a58jIBrW0E/LkYTnQP8GVVLfcQ=; b=n/w14soRtVHimHYm45UttRdCBG
+	9MKRWgQv/8Sp1SFMtiD4e5SUWYScRRi7nh1ypwjZRJ7VBejM+tbuK48mLb9S0eeVC0/zEJztk+mhZ
+	O7U808+9EfnYXXib4hqLw1ZiNx6TAFMFT+NPYrgAY84iM2twcPxL+E6er76Dtl9IEaOmOwwjAzJpZ
+	7znQR1PF5HsNBs0+L0xZqII4d+pfBQWU06KbJcA9tVJrizY31sWx/V+2IS4sbOtTKmgPvDOjXFHj6
+	oBLcIURafRQOkimh6zL7a8HKMf8Hix4KLSiNSaxdbSHsRdKYnuJBQ4T4xR//flS9pQYUmIV+fKoDn
+	7yy1B54g==;
+Received: from ink by minute.unseen.parts with local (Exim 4.96)
+	(envelope-from <ink@unseen.parts>)
+	id 1tfRVs-0001cF-1F;
+	Tue, 04 Feb 2025 23:35:24 +0100
+From: Ivan Kokshaysky <ink@unseen.parts>
+To: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 0/3] alpha: stack fixes
+Date: Tue,  4 Feb 2025 23:35:21 +0100
+Message-Id: <20250204223524.6207-1-ink@unseen.parts>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,247 +69,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_09,2025-02-04_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
- suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
- definitions=main-2502040167
-X-Proofpoint-GUID: GQOO6071ygibsIVM72beWonfab_TRPdV
-X-Proofpoint-ORIG-GUID: GQOO6071ygibsIVM72beWonfab_TRPdV
 
-From: Leon Hwang <leon.hwang@linux.dev>
+This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
+Thanks to Magnus Lindholm for identifying that remarkably longstanding
+bug.
 
-[ Upstream commit 021611d33e78694f4bd54573093c6fc70a812644 ]
+The problem is that GCC expects 16-byte alignment of the incoming stack
+since early 2004, as Maciej found out [2]:
+  Having actually dug speculatively I can see that the psABI was changed in
+ GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
+ improperly aligned)") back in Mar 2004, when the stack pointer alignment
+ was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
+ various suspicious stack pointer adjustments, starting with SP_OFF which
+ is not a whole multiple of 16.
 
-Add a test case to ensure that attaching a tail callee program with an
-freplace program fails, and that updating an extended program to a
-prog_array map is also prohibited.
+Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
+ D.3.1 Stack Alignment
+  This standard requires that stacks be octaword aligned at the time a
+  new procedure is invoked.
 
-This test is designed to prevent the potential infinite loop issue caused
-by the combination of tail calls and freplace, ensuring the correct
-behavior and stability of the system.
+However:
+- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
+  the odd number of 64-bit words in 'struct pt_regs', which is the very
+  first thing pushed onto the kernel thread stack;
+- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
+  stack depending on numerous factors.
 
-Additionally, fix the broken tailcalls/tailcall_freplace selftest
-because an extension prog should not be tailcalled.
+Somehow we got away with it until recently, when we ended up with
+a stack corruption in kernel/smp.c:smp_call_function_single() due to
+its use of 32-byte aligned local data and the compiler doing clever
+things allocating it on the stack.
 
-cd tools/testing/selftests/bpf; ./test_progs -t tailcalls
-337/25  tailcalls/tailcall_freplace:OK
-337/26  tailcalls/tailcall_bpf2bpf_freplace:OK
-337     tailcalls:OK
-Summary: 1/26 PASSED, 0 SKIPPED, 0 FAILED
+Patche 1 is preparatory; 2 - the main fix; 3 - fixes remaining
+special cases.
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20241015150207.70264-3-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-(cherry picked from commit 021611d33e78694f4bd54573093c6fc70a812644)
-[Yifei: bpf freplace update is backported to linux-6.12 by commit 987aa730bad3 ("bpf: Prevent tailcall infinite
-loop caused by freplace"). It will cause selftest #336/25 failed. Then backport this commit]
-Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
+Ivan.
+
+[1] https://lore.kernel.org/rcu/CA+=Fv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=Ei90G98ukRcRJA@mail.gmail.com/#r
+[2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/
+[3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf
 ---
- .../selftests/bpf/prog_tests/tailcalls.c      | 120 ++++++++++++++++--
- .../testing/selftests/bpf/progs/tc_bpf2bpf.c  |   5 +-
- 2 files changed, 109 insertions(+), 16 deletions(-)
+Changes in v2:
+- patch #1: provide empty 'struct pt_regs' to fix compile failure in libbpf,
+  reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
+  update comment and commit message accordingly;
+- cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as well.
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-index 21c5a37846ad..40f22454cf05 100644
---- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-@@ -1496,8 +1496,8 @@ static void test_tailcall_bpf2bpf_hierarchy_3(void)
- 	RUN_TESTS(tailcall_bpf2bpf_hierarchy3);
- }
- 
--/* test_tailcall_freplace checks that the attached freplace prog is OK to
-- * update the prog_array map.
-+/* test_tailcall_freplace checks that the freplace prog fails to update the
-+ * prog_array map, no matter whether the freplace prog attaches to its target.
-  */
- static void test_tailcall_freplace(void)
- {
-@@ -1505,7 +1505,7 @@ static void test_tailcall_freplace(void)
- 	struct bpf_link *freplace_link = NULL;
- 	struct bpf_program *freplace_prog;
- 	struct tc_bpf2bpf *tc_skel = NULL;
--	int prog_fd, map_fd;
-+	int prog_fd, tc_prog_fd, map_fd;
- 	char buff[128] = {};
- 	int err, key;
- 
-@@ -1523,9 +1523,10 @@ static void test_tailcall_freplace(void)
- 	if (!ASSERT_OK_PTR(tc_skel, "tc_bpf2bpf__open_and_load"))
- 		goto out;
- 
--	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
-+	tc_prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
- 	freplace_prog = freplace_skel->progs.entry_freplace;
--	err = bpf_program__set_attach_target(freplace_prog, prog_fd, "subprog");
-+	err = bpf_program__set_attach_target(freplace_prog, tc_prog_fd,
-+					     "subprog_tc");
- 	if (!ASSERT_OK(err, "set_attach_target"))
- 		goto out;
- 
-@@ -1533,27 +1534,116 @@ static void test_tailcall_freplace(void)
- 	if (!ASSERT_OK(err, "tailcall_freplace__load"))
- 		goto out;
- 
--	freplace_link = bpf_program__attach_freplace(freplace_prog, prog_fd,
--						     "subprog");
-+	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
-+	prog_fd = bpf_program__fd(freplace_prog);
-+	key = 0;
-+	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
-+	ASSERT_ERR(err, "update jmp_table failure");
-+
-+	freplace_link = bpf_program__attach_freplace(freplace_prog, tc_prog_fd,
-+						     "subprog_tc");
- 	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
- 		goto out;
- 
--	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
--	prog_fd = bpf_program__fd(freplace_prog);
-+	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
-+	ASSERT_ERR(err, "update jmp_table failure");
-+
-+out:
-+	bpf_link__destroy(freplace_link);
-+	tailcall_freplace__destroy(freplace_skel);
-+	tc_bpf2bpf__destroy(tc_skel);
-+}
-+
-+/* test_tailcall_bpf2bpf_freplace checks the failure that fails to attach a tail
-+ * callee prog with freplace prog or fails to update an extended prog to
-+ * prog_array map.
-+ */
-+static void test_tailcall_bpf2bpf_freplace(void)
-+{
-+	struct tailcall_freplace *freplace_skel = NULL;
-+	struct bpf_link *freplace_link = NULL;
-+	struct tc_bpf2bpf *tc_skel = NULL;
-+	char buff[128] = {};
-+	int prog_fd, map_fd;
-+	int err, key;
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, topts,
-+		    .data_in = buff,
-+		    .data_size_in = sizeof(buff),
-+		    .repeat = 1,
-+	);
-+
-+	tc_skel = tc_bpf2bpf__open_and_load();
-+	if (!ASSERT_OK_PTR(tc_skel, "tc_bpf2bpf__open_and_load"))
-+		goto out;
-+
-+	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
-+	freplace_skel = tailcall_freplace__open();
-+	if (!ASSERT_OK_PTR(freplace_skel, "tailcall_freplace__open"))
-+		goto out;
-+
-+	err = bpf_program__set_attach_target(freplace_skel->progs.entry_freplace,
-+					     prog_fd, "subprog_tc");
-+	if (!ASSERT_OK(err, "set_attach_target"))
-+		goto out;
-+
-+	err = tailcall_freplace__load(freplace_skel);
-+	if (!ASSERT_OK(err, "tailcall_freplace__load"))
-+		goto out;
-+
-+	/* OK to attach then detach freplace prog. */
-+
-+	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
-+						     prog_fd, "subprog_tc");
-+	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
-+		goto out;
-+
-+	err = bpf_link__destroy(freplace_link);
-+	if (!ASSERT_OK(err, "destroy link"))
-+		goto out;
-+
-+	/* OK to update prog_array map then delete element from the map. */
-+
- 	key = 0;
-+	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
- 	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
- 	if (!ASSERT_OK(err, "update jmp_table"))
- 		goto out;
- 
--	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
--	err = bpf_prog_test_run_opts(prog_fd, &topts);
--	ASSERT_OK(err, "test_run");
--	ASSERT_EQ(topts.retval, 34, "test_run retval");
-+	err = bpf_map_delete_elem(map_fd, &key);
-+	if (!ASSERT_OK(err, "delete_elem from jmp_table"))
-+		goto out;
-+
-+	/* Fail to attach a tail callee prog with freplace prog. */
-+
-+	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
-+	if (!ASSERT_OK(err, "update jmp_table"))
-+		goto out;
-+
-+	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
-+						     prog_fd, "subprog_tc");
-+	if (!ASSERT_ERR_PTR(freplace_link, "attach_freplace failure"))
-+		goto out;
-+
-+	err = bpf_map_delete_elem(map_fd, &key);
-+	if (!ASSERT_OK(err, "delete_elem from jmp_table"))
-+		goto out;
-+
-+	/* Fail to update an extended prog to prog_array map. */
-+
-+	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
-+						     prog_fd, "subprog_tc");
-+	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
-+		goto out;
-+
-+	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
-+	if (!ASSERT_ERR(err, "update jmp_table failure"))
-+		goto out;
- 
- out:
- 	bpf_link__destroy(freplace_link);
--	tc_bpf2bpf__destroy(tc_skel);
- 	tailcall_freplace__destroy(freplace_skel);
-+	tc_bpf2bpf__destroy(tc_skel);
- }
- 
- void test_tailcalls(void)
-@@ -1606,4 +1696,6 @@ void test_tailcalls(void)
- 	test_tailcall_bpf2bpf_hierarchy_3();
- 	if (test__start_subtest("tailcall_freplace"))
- 		test_tailcall_freplace();
-+	if (test__start_subtest("tailcall_bpf2bpf_freplace"))
-+		test_tailcall_bpf2bpf_freplace();
- }
-diff --git a/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c b/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
-index 79f5087dade2..fe6249d99b31 100644
---- a/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
-+++ b/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
-@@ -5,10 +5,11 @@
- #include "bpf_misc.h"
- 
- __noinline
--int subprog(struct __sk_buff *skb)
-+int subprog_tc(struct __sk_buff *skb)
- {
- 	int ret = 1;
- 
-+	__sink(skb);
- 	__sink(ret);
- 	/* let verifier know that 'subprog_tc' can change pointers to skb->data */
- 	bpf_skb_change_proto(skb, 0, 0);
-@@ -18,7 +19,7 @@ int subprog(struct __sk_buff *skb)
- SEC("tc")
- int entry_tc(struct __sk_buff *skb)
- {
--	return subprog(skb);
-+	return subprog_tc(skb);
- }
- 
- char __license[] SEC("license") = "GPL";
+Changes in v3:
+- patch #1 dropped for the time being;
+- updated commit messages as Maciej suggested.
+---
+Ivan Kokshaysky (3):
+  alpha: replace hardcoded stack offsets with autogenerated ones
+  alpha: make stack 16-byte aligned (most cases)
+  alpha: align stack for page fault and user unaligned trap handlers
+
+ arch/alpha/include/uapi/asm/ptrace.h |  2 ++
+ arch/alpha/kernel/asm-offsets.c      |  4 ++++
+ arch/alpha/kernel/entry.S            | 24 ++++++++++--------------
+ arch/alpha/kernel/traps.c            |  2 +-
+ arch/alpha/mm/fault.c                |  4 ++--
+ 5 files changed, 19 insertions(+), 17 deletions(-)
+
 -- 
-2.46.0
+2.47.2
 
 
