@@ -1,151 +1,162 @@
-Return-Path: <stable+bounces-112062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053ACA2682A
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:10:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D060FA26882
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E00E1631F9
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 00:10:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BD7916460E
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 00:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345671372;
-	Tue,  4 Feb 2025 00:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885A5B663;
+	Tue,  4 Feb 2025 00:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qCLSMt0H"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="zjgCb1Jb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f194.google.com (mail-yw1-f194.google.com [209.85.128.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FDDEC4;
-	Tue,  4 Feb 2025 00:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2209476
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 00:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738627812; cv=none; b=WcmqGYVtSoQ7iBGACsCSMBGQWpsPmN0S6fOKaeFR06b2EfPjjeiJ8T8i0YofOzkhlwXpE0aTx3oSJwmJfvBiGwX5P7myfPSgwswsdbTJ9HxBDmN24hQEgrL9TKufl3mmCIP1TGLmOge3E0G4PGuQlMwaWIqvp9sFqz5XTyz0TTM=
+	t=1738628761; cv=none; b=OQCV+ljgl2O6tnUCOSu7sRY3wA53buCWd4vJxlMYqbUcGUCF2N2qatdDQVGCjJWaVzte372CtbzjGDBBhyIsSDy9Cl1vSFwZ/n6Tpre+UbShMwl5W3mModj4dcGrn0uh2IfG9g4M0fyYwHLGjEm+IzT8S6FrACWdFCLmAx6nz2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738627812; c=relaxed/simple;
-	bh=xBaElG02xERNC8mCCsfk4hDl/oPxekjIo/PskY7ZRT8=;
-	h=Date:To:From:Subject:Message-Id; b=kSO5jGKV07cTMlD5ZWJa8BF1dKa09fmWus4e7yDNuyedngR1gS3vx6AzSFGyXxbB+QEbLAQ/+gURIOdM3ZjLwhiqfqhXga4/xxRjCD7jHGEnVLJKL0kIepv8CQRWE2xHKKrMbzWhEzI0K3oTC/MzObfGkV1b3iQzDKDq+DIY6+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qCLSMt0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2177AC4CEE0;
-	Tue,  4 Feb 2025 00:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1738627811;
-	bh=xBaElG02xERNC8mCCsfk4hDl/oPxekjIo/PskY7ZRT8=;
-	h=Date:To:From:Subject:From;
-	b=qCLSMt0HiK9YZi+zO7Scn+YNkYDdA8bbsJxMir5ZI5seYKgF3MEJ+0I/f8zP8Jmta
-	 2AHFc+vHRryyLoVuFLBJJMXqiyRme6KGPjfirURb0Cxs9CiQ10xL0dclG3jVv1v8/t
-	 ubIgZt5HX+tXyJcXWTw7UoK1QLavspHB9CmJogLo=
-Date: Mon, 03 Feb 2025 16:10:10 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,revest@google.com,rcn@igalia.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mmmadvisehugetlb-check-for-0-length-range-after-end-address-adjustment.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250204001011.2177AC4CEE0@smtp.kernel.org>
+	s=arc-20240116; t=1738628761; c=relaxed/simple;
+	bh=//lsOYc9i/opDSxbdTzmef2sHYW9x2UzcTbmF6o6q90=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=QKSVVuuXbeoOX+bpYn7KM39dYnGa0qtB2baEf2ISLN6z3vBqDwfh/AXAJMXoGf2ql9s3IXHgkJ5mvqxN1TkskICXydwau14CIGdnt13+HeZjap9B+a6jeDJtySYpPM8/bQQZgKP9SlE7L3wQwcPbL+bUyM3SkDgNy30QYmcJe6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=zjgCb1Jb; arc=none smtp.client-ip=209.85.128.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f194.google.com with SMTP id 00721157ae682-6ef7c9e9592so34660557b3.1
+        for <stable@vger.kernel.org>; Mon, 03 Feb 2025 16:25:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1738628758; x=1739233558; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=x1ZJUs8qNGZtg+pLTUvEqUEgZvWpUmqIhrobsNZ2rjA=;
+        b=zjgCb1JbTx//GIj0k9uRDMuZIBH66a1fr9cgRFfERwHvlOv0hOt3sneJu6aJpexfpE
+         ueCAQHENes4k2AJaA17rUD9LyHtRIY2Epow+3rSA17AEnY9o6YwnbCvo0EWLpVLV64c6
+         TIqveaWJ9Zxb26s2TIVdVfpXk5fdr7fq/E/aIx+sB8e7cY3axEaY01+8mDlcK8WwtdZL
+         VD2TqQEEgaeM2EHu2qTScx31974yDgls3GeIK+WgteC52qdFDKDsPlXZ5LgQHuB5ik+D
+         yo40kgzHIOCAwSNseG0+jn7ujFQnk6OCHz0ZPLeSQ4h4hWcCM62hllPhVvnkRGF8qddq
+         lJ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738628758; x=1739233558;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x1ZJUs8qNGZtg+pLTUvEqUEgZvWpUmqIhrobsNZ2rjA=;
+        b=EuIu5MpXT+n8JkwN8ngvTY9A+bOvfZtcFedJJZA2RV+hxAWKZ+0D9JZ8VDWtFBavZ8
+         zZ88KK0uozM1UFciBaklC49qgW3S4pV3jEDfQ0FRIDE3Eb1EsNf/mqzzfUdmGEisCPyh
+         Kn1hGwIGJybTN1djyWPGcW/zf5U47643nB8hmKD0VjATHctAXJC/vUwq0Z73anSqm9qS
+         i4MOGV5zXjYXgHvwBQ2nInNWqsKr6pLSuaSOUb2fX1oS3hfuDh1MR8xWShxx5+5wvTnE
+         1mhBeYB2mnV+9vTUxFRm7izgtX4qyjQ/ZzwTNCH6I2t60nXrldgULgufdGap4PolA38J
+         sdBw==
+X-Gm-Message-State: AOJu0Yw3D6rbHpqJXg+yujl1FgshfNhxI948AZjFZ0ZMyoHtspUJk22J
+	bSb9lu4Z/ivEa4kTtg6CVcRAS+ONeuwQI6w0sLKwvEgg5QzCDni6kJH8DXS+GdsLJasoRhDN55V
+	JP/S3NC6uGqd67GDlFyLJW31XM5A6bPj/zqTg+iCz8S2DsGhjmVs2oN63
+X-Gm-Gg: ASbGncuEyC8HrMLIiZxPPVNpw2KvniJ6m6WxkfhdyBnITWcSTCwfQe/ClwY0GVAY6Ck
+	NFwBQ0y7CeqtNks0QwquNhDd63dv3HumaZJyMM8HJc8ZKrEUHGF76glxpAOF8gbFoTMzvWH2GUf
+	oHtcsFOnTw/2D06zyOTg4v23IThGMGUw==
+X-Google-Smtp-Source: AGHT+IF50WKuaHyNY207tFh9LJ01OdUtL0qyegWl8YWhjo4RiCeesTZRmEJB/Z6Lm5aLB0Dw21X7wigLnGNoPWB/b2k=
+X-Received: by 2002:a05:690c:4d84:b0:6f9:79b2:ce02 with SMTP id
+ 00721157ae682-6f979b2f0f9mr4928717b3.35.1738628757929; Mon, 03 Feb 2025
+ 16:25:57 -0800 (PST)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 3 Feb 2025 16:25:57 -0800
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 3 Feb 2025 16:25:57 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+from: KernelCI bot <bot@kernelci.org>
+Date: Mon, 3 Feb 2025 16:25:57 -0800
+X-Gm-Features: AWEUYZlztjSxtVY9BOaYH5jq001PosEFnuQoO746iWrxj9lqzP0BGcE0yAOoXvM
+Message-ID: <CACo-S-3bdqOv5poCcm-9z=aGGODTPp77+A8st=9-LDjtps5xZg@mail.gmail.com>
+Subject: =?UTF-8?B?c3RhYmxlLXJjL2xpbnV4LTUuMTAueTogbmV3IGJ1aWxkIHJlZ3Jlc3Npb246IGV4cGVjdA==?=
+	=?UTF-8?B?ZWQg4oCYPeKAmSwg4oCYLOKAmSwg4oCYO+KAmSwg4oCYYXNt4oCZIG9yIOKAmF9fYXR0cmlidXRlX18=?=
+	=?UTF-8?B?4oCZIGJlZm9yZSAuLi4=?=
+To: kernelci-results@groups.io
+Cc: stable@vger.kernel.org, gus@collabora.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+New build issue found on stable-rc/linux-5.10.y:
+
+ expected =E2=80=98=3D=E2=80=99, =E2=80=98,=E2=80=99, =E2=80=98;=E2=80=99, =
+=E2=80=98asm=E2=80=99 or =E2=80=98__attribute__=E2=80=99 before =E2=80=98__=
+free=E2=80=99 in
+drivers/soc/atmel/soc.o (drivers/soc/atmel/soc.c)
+[logspec:kbuild,kbuild.compiler.error]
+
+- Dashboard: https://staging.dashboard.kernelci.org:9000/issue/maestro:066c=
+374be95fc6671e95a97b08ffc502a95454b6
+- Grafana: https://grafana.kernelci.org/d/issue/issue?var-id=3Dmaestro:066c=
+374be95fc6671e95a97b08ffc502a95454b6
 
 
-The patch titled
-     Subject: mm,madvise,hugetlb: check for 0-length range after end address adjustment
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mmmadvisehugetlb-check-for-0-length-range-after-end-address-adjustment.patch
+Log excerpt:
+drivers/soc/atmel/soc.c:278:32: error: expected =E2=80=98=3D=E2=80=99, =E2=
+=80=98,=E2=80=99, =E2=80=98;=E2=80=99, =E2=80=98asm=E2=80=99
+or =E2=80=98__attribute__=E2=80=99 before =E2=80=98__free=E2=80=99
+  278 |         struct device_node *np __free(device_node) =3D
+of_find_node_by_path("/");
+      |                                ^~~~~~
+drivers/soc/atmel/soc.c:278:32: error: implicit declaration of
+function =E2=80=98__free=E2=80=99; did you mean =E2=80=98kfree=E2=80=99?
+[-Werror=3Dimplicit-function-declaration]
+  278 |         struct device_node *np __free(device_node) =3D
+of_find_node_by_path("/");
+      |                                ^~~~~~
+      |                                kfree
+drivers/soc/atmel/soc.c:278:39: error: =E2=80=98device_node=E2=80=99 undecl=
+ared (first
+use in this function)
+  278 |         struct device_node *np __free(device_node) =3D
+of_find_node_by_path("/");
+      |                                       ^~~~~~~~~~~
+drivers/soc/atmel/soc.c:278:39: note: each undeclared identifier is
+reported only once for each function it appears in
+drivers/soc/atmel/soc.c:280:51: error: =E2=80=98np=E2=80=99 undeclared (fir=
+st use in
+this function); did you mean =E2=80=98nop=E2=80=99?
+  280 |         if (!of_match_node(at91_soc_allowed_list, np))
+      |                                                   ^~
+      |                                                   nop
+cc1: some warnings being treated as errors
+  CC      drivers/virtio/virtio.o
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mmmadvisehugetlb-check-for-0-length-range-after-end-address-adjustment.patch
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+# Builds where the incident occurred:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+## multi_v7_defconfig(gcc-12):
+- Dashboard: https://staging.dashboard.kernelci.org:9000/build/maestro:67a1=
+1a51661a7bc87489b7be
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+## multi_v5_defconfig(gcc-12):
+- Dashboard: https://staging.dashboard.kernelci.org:9000/build/maestro:67a1=
+1a4d661a7bc87489b7bb
 
-------------------------------------------------------
-From: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Subject: mm,madvise,hugetlb: check for 0-length range after end address adjustment
-Date: Mon, 3 Feb 2025 08:52:06 +0100
+## multi_v7_defconfig(gcc-12):
+- Dashboard: https://staging.dashboard.kernelci.org:9000/build/maestro:67a1=
+1a45661a7bc87489b7b5
 
-Add a sanity check to madvise_dontneed_free() to address a corner case in
-madvise where a race condition causes the current vma being processed to
-be backed by a different page size.
 
-During a madvise(MADV_DONTNEED) call on a memory region registered with a
-userfaultfd, there's a period of time where the process mm lock is
-temporarily released in order to send a UFFD_EVENT_REMOVE and let
-userspace handle the event.  During this time, the vma covering the
-current address range may change due to an explicit mmap done concurrently
-by another thread.
+#kernelci issue maestro:066c374be95fc6671e95a97b08ffc502a95454b6
 
-If, after that change, the memory region, which was originally backed by
-4KB pages, is now backed by hugepages, the end address is rounded down to
-a hugepage boundary to avoid data loss (see "Fixes" below).  This rounding
-may cause the end address to be truncated to the same address as the
-start.
 
-Make this corner case follow the same semantics as in other similar cases
-where the requested region has zero length (ie.  return 0).
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kerneci@lists.linux.dev
 
-This will make madvise_walk_vmas() continue to the next vma in the range
-(this time holding the process mm lock) which, due to the prev pointer
-becoming stale because of the vma change, will be the same hugepage-backed
-vma that was just checked before.  The next time madvise_dontneed_free()
-runs for this vma, if the start address isn't aligned to a hugepage
-boundary, it'll return -EINVAL, which is also in line with the madvise
-api.
-
-From userspace perspective, madvise() will return EINVAL because the start
-address isn't aligned according to the new vma alignment requirements
-(hugepage), even though it was correctly page-aligned when the call was
-issued.
-
-Link: https://lkml.kernel.org/r/20250203075206.1452208-1-rcn@igalia.com
-Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/madvise.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
---- a/mm/madvise.c~mmmadvisehugetlb-check-for-0-length-range-after-end-address-adjustment
-+++ a/mm/madvise.c
-@@ -933,7 +933,16 @@ static long madvise_dontneed_free(struct
- 			 */
- 			end = vma->vm_end;
- 		}
--		VM_WARN_ON(start >= end);
-+		/*
-+		 * If the memory region between start and end was
-+		 * originally backed by 4kB pages and then remapped to
-+		 * be backed by hugepages while mmap_lock was dropped,
-+		 * the adjustment for hugetlb vma above may have rounded
-+		 * end down to the start address.
-+		 */
-+		if (start == end)
-+			return 0;
-+		VM_WARN_ON(start > end);
- 	}
- 
- 	if (behavior == MADV_DONTNEED || behavior == MADV_DONTNEED_LOCKED)
-_
-
-Patches currently in -mm which might be from rcn@igalia.com are
-
-mmmadvisehugetlb-check-for-0-length-range-after-end-address-adjustment.patch
-
+Made with love by the KernelCI team - https://kernelci.org
 
