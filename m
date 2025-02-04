@@ -1,70 +1,59 @@
-Return-Path: <stable+bounces-112091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B07A2699B
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EC1A269A0
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9C357A1D50
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF1C3A60E9
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260FD15853B;
-	Tue,  4 Feb 2025 01:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648511662F1;
+	Tue,  4 Feb 2025 01:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMpZKOUa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYKrOUCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6817156F5E;
-	Tue,  4 Feb 2025 01:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392B15DBBA;
+	Tue,  4 Feb 2025 01:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631883; cv=none; b=hbm1JNecrbKjX3BvizfK408a4p8k4Ta1pLNmYUXuvoHcCyXDfNf1kIWgcgwO1SHGvCXOml2T4AFKSUF9MyVt5bKgQRf7gaiFkMIxtJJLVwTT4W6N7i3yqPBSc0EPD5t5Y6YsIPi4Q221732AR6n1qKAZEi3dXNiNmSGNp/TOMa4=
+	t=1738631885; cv=none; b=QOzOxNEJ9xdG71T7/8f1JNbNFtkAZ98a2DV2oBXgA6xwXWE0RQSoDAFWt6/fSbmSf4lyNpBeSk9Q1xj045pnf9b/1Rvy/Mb5aebqvMzvnbOE0FOEx2fnuYemhaLrYLp7jvI4rqWcxp1E2cGvNVg7wKiFqHBbjKAyCBxNQEkbsNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631883; c=relaxed/simple;
-	bh=JpqTSZw3LTRdPdovu0QB50XsHuqF6x2bhPJuyCpxNzE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XWtcKNkquduA8CAD4GoYbRnEHYYGFXHpkLbFHZt1Kd19eGPBG4cTsYMroWiy13LRREcEfKnG5uQEfG1Z52iQCdUxT4GogLkC2d184jdAoUOu7qYutz0vafgY4jhMyAZl9ZPWTdc0GKk9J8FwwwN3eZEGsNLBUr0c44p8HHCQWAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMpZKOUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C314C4CEE0;
-	Tue,  4 Feb 2025 01:18:01 +0000 (UTC)
+	s=arc-20240116; t=1738631885; c=relaxed/simple;
+	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NluS8UeFGVAE22wf7ZF/+j8S2HfROiWChN7t9pBZkY2Bfp+0kc34vV7EWpDddlvwMD1zic+XKu/2UF8YMIQ9lcY6J90k4QAbQqaCOAEB5kuPIXy7ux2PPN6qKKTzi+BXDKlxXYmaFbr17bSAgTv1H3GltiWIbU0gRgHikh5GhxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYKrOUCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16A4C4CEE6;
+	Tue,  4 Feb 2025 01:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631883;
-	bh=JpqTSZw3LTRdPdovu0QB50XsHuqF6x2bhPJuyCpxNzE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SMpZKOUaiE0QFJeA9ALYjHE4AmjMJ/WiRD+i34jx42fclOFZWix2ocgBQhbO7JQ5r
-	 H8jQFluGOnn/iRhbT5LjWRcaFxyABIYYail38X+nD0kS+MVkH4WxACTnXp8X5tGDil
-	 POtI8OZlpLQ+sTheQRlnmtrEA52OX52LW1RLS761jV5hJc++ohsMNhqZkWveAU8VrH
-	 sfosmb8jOIJ8DBnJ2SlMiHbGhtlFvcbOR09oY506SxpR0hUKf6ZLI2Whw+h1zyjshd
-	 5msKU6+0fU4KE5sjS3Bq3jBbU2U0dsSFCCzUlEsHYGIiVUD/ja3GC90MvrM/l50kwP
-	 KnGjwVycbwlXQ==
+	s=k20201202; t=1738631884;
+	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nYKrOUCDVYD95f04s3e1Ixw+5RFBi+P00MI+bByS65jVsijnaN5oucBHeNaLtTqAS
+	 YYPCWqQz+OKQlVFGb1ynsSLfH1RSWdV8E65DhgHgmlHjz8Fmbcy34zqURyjnGnB8P+
+	 iTX5KOl4TvYJUolI68fpov+z25e5d9waA5Xx/NuMKvEXlWUVpRG5mcjgtaPFVOpgM/
+	 e1a2x0quRXNl5+J9ZmPlDT2rNEFJVHgbvH9HG88CR/EFlxL8r+fVAN1ROjBu9jKfF+
+	 yimScW9Mf7Ti5gsTeChU0aGiHOxQaV4fnUo9vrhBwz74ZtNloRK+LbMX/OO97Z2/3d
+	 ak7uIyK6C2s4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rik van Riel <riel@fb.com>,
-	kernel test roboto <oliver.sang@intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Mike Marshall <hubcap@omnibond.com>,
+	syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	yosry.ahmed@linux.dev,
-	akpm@linux-foundation.org,
-	kirill.shutemov@linux.intel.com,
-	mpe@ellerman.id.au
-Subject: [PATCH AUTOSEL 6.12 1/5] x86/mm/tlb: Only trim the mm_cpumask once a second
-Date: Mon,  3 Feb 2025 20:17:49 -0500
-Message-Id: <20250204011757.2206869-1-sashal@kernel.org>
+	devel@lists.orangefs.org
+Subject: [PATCH AUTOSEL 6.12 2/5] orangefs: fix a oob in orangefs_debug_write
+Date: Mon,  3 Feb 2025 20:17:50 -0500
+Message-Id: <20250204011757.2206869-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250204011757.2206869-1-sashal@kernel.org>
+References: <20250204011757.2206869-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,150 +65,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.12
 Content-Transfer-Encoding: 8bit
 
-From: Rik van Riel <riel@fb.com>
+From: Mike Marshall <hubcap@omnibond.com>
 
-[ Upstream commit 6db2526c1d694c91c6e05e2f186c085e9460f202 ]
+[ Upstream commit f7c848431632598ff9bce57a659db6af60d75b39 ]
 
-Setting and clearing CPU bits in the mm_cpumask is only ever done
-by the CPU itself, from the context switch code or the TLB flush
-code.
+I got a syzbot report: slab-out-of-bounds Read in
+orangefs_debug_write... several people suggested fixes,
+I tested Al Viro's suggestion and made this patch.
 
-Synchronization is handled by switch_mm_irqs_off() blocking interrupts.
-
-Sending TLB flush IPIs to CPUs that are in the mm_cpumask, but no
-longer running the program causes a regression in the will-it-scale
-tlbflush2 test. This test is contrived, but a large regression here
-might cause a small regression in some real world workload.
-
-Instead of always sending IPIs to CPUs that are in the mm_cpumask,
-but no longer running the program, send these IPIs only once a second.
-
-The rest of the time we can skip over CPUs where the loaded_mm is
-different from the target mm.
-
-Reported-by: kernel test roboto <oliver.sang@intel.com>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241204210316.612ee573@fangorn
-Closes: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/
+Signed-off-by: Mike Marshall <hubcap@omnibond.com>
+Reported-by: syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/mmu.h         |  2 ++
- arch/x86/include/asm/mmu_context.h |  1 +
- arch/x86/include/asm/tlbflush.h    |  1 +
- arch/x86/mm/tlb.c                  | 35 +++++++++++++++++++++++++++---
- 4 files changed, 36 insertions(+), 3 deletions(-)
+ fs/orangefs/orangefs-debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
-index ce4677b8b7356..3b496cdcb74b3 100644
---- a/arch/x86/include/asm/mmu.h
-+++ b/arch/x86/include/asm/mmu.h
-@@ -37,6 +37,8 @@ typedef struct {
+diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
+index 1b508f5433846..fa41db0884880 100644
+--- a/fs/orangefs/orangefs-debugfs.c
++++ b/fs/orangefs/orangefs-debugfs.c
+@@ -393,9 +393,9 @@ static ssize_t orangefs_debug_write(struct file *file,
+ 	 * Thwart users who try to jamb a ridiculous number
+ 	 * of bytes into the debug file...
  	 */
- 	atomic64_t tlb_gen;
+-	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN + 1) {
++	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN) {
+ 		silly = count;
+-		count = ORANGEFS_MAX_DEBUG_STRING_LEN + 1;
++		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
+ 	}
  
-+	unsigned long next_trim_cpumask;
-+
- #ifdef CONFIG_MODIFY_LDT_SYSCALL
- 	struct rw_semaphore	ldt_usr_sem;
- 	struct ldt_struct	*ldt;
-diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
-index 2886cb668d7fa..795fdd53bd0a6 100644
---- a/arch/x86/include/asm/mmu_context.h
-+++ b/arch/x86/include/asm/mmu_context.h
-@@ -151,6 +151,7 @@ static inline int init_new_context(struct task_struct *tsk,
- 
- 	mm->context.ctx_id = atomic64_inc_return(&last_mm_ctx_id);
- 	atomic64_set(&mm->context.tlb_gen, 0);
-+	mm->context.next_trim_cpumask = jiffies + HZ;
- 
- #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
- 	if (cpu_feature_enabled(X86_FEATURE_OSPKE)) {
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 69e79fff41b80..02fc2aa06e9e0 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -222,6 +222,7 @@ struct flush_tlb_info {
- 	unsigned int		initiating_cpu;
- 	u8			stride_shift;
- 	u8			freed_tables;
-+	u8			trim_cpumask;
- };
- 
- void flush_tlb_local(void);
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index b0678d59ebdb4..00ffa74d0dd0b 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -893,9 +893,36 @@ static void flush_tlb_func(void *info)
- 			nr_invalidate);
- }
- 
--static bool tlb_is_not_lazy(int cpu, void *data)
-+static bool should_flush_tlb(int cpu, void *data)
- {
--	return !per_cpu(cpu_tlbstate_shared.is_lazy, cpu);
-+	struct flush_tlb_info *info = data;
-+
-+	/* Lazy TLB will get flushed at the next context switch. */
-+	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
-+		return false;
-+
-+	/* No mm means kernel memory flush. */
-+	if (!info->mm)
-+		return true;
-+
-+	/* The target mm is loaded, and the CPU is not lazy. */
-+	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
-+		return true;
-+
-+	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
-+	if (info->trim_cpumask)
-+		return true;
-+
-+	return false;
-+}
-+
-+static bool should_trim_cpumask(struct mm_struct *mm)
-+{
-+	if (time_after(jiffies, READ_ONCE(mm->context.next_trim_cpumask))) {
-+		WRITE_ONCE(mm->context.next_trim_cpumask, jiffies + HZ);
-+		return true;
-+	}
-+	return false;
- }
- 
- DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
-@@ -929,7 +956,7 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
- 	if (info->freed_tables)
- 		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
- 	else
--		on_each_cpu_cond_mask(tlb_is_not_lazy, flush_tlb_func,
-+		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
- 				(void *)info, 1, cpumask);
- }
- 
-@@ -980,6 +1007,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
- 	info->freed_tables	= freed_tables;
- 	info->new_tlb_gen	= new_tlb_gen;
- 	info->initiating_cpu	= smp_processor_id();
-+	info->trim_cpumask	= 0;
- 
- 	return info;
- }
-@@ -1022,6 +1050,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
- 	 * flush_tlb_func_local() directly in this case.
- 	 */
- 	if (cpumask_any_but(mm_cpumask(mm), cpu) < nr_cpu_ids) {
-+		info->trim_cpumask = should_trim_cpumask(mm);
- 		flush_tlb_multi(mm_cpumask(mm), info);
- 	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
- 		lockdep_assert_irqs_enabled();
+ 	buf = kzalloc(ORANGEFS_MAX_DEBUG_STRING_LEN, GFP_KERNEL);
 -- 
 2.39.5
 
