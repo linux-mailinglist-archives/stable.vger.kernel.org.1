@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-112220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151A3A2790E
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:54:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 836D3A27915
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF421887DF5
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C995164CD1
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45E92163AC;
-	Tue,  4 Feb 2025 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54311216E06;
+	Tue,  4 Feb 2025 17:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTxS2Vj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2zCTnDN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73858215F5A
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1117A21661F
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691696; cv=none; b=CyfoL2l7NeDdqAeAEGF0qwzkK5gwmWejwxTSvd6sWPzS98B217slIyAWkk2rpa2qbbmTMzgnH2gB08igzFh1U5jnS07bhxXHUHmGJKiVIAGowbcywh/p5srQ4AK+1mPGfX5B6RvtARzFMWOswpkJCZckZWXnKUiQbe6B8sETueg=
+	t=1738691722; cv=none; b=owZxxiK+qg8UQded7YX0jm5jzBj9jACXqb+txyH7wcxMWGHP40da9gJxdavpVXkEg9y8q6sAcaA0uyDAtP3zpyv1wUu7193Xi/0GeHVvB2j8QxXwlL2YjUCJ0wy0FI7Mmh+tMpNYweKS1H25YhjRSHku2eiXxxbdkDqKKx7k78w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691696; c=relaxed/simple;
-	bh=5UlQCuZAMnj8b3t4rESr+hxg9XJxILn7bzMSUAHF9ls=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=imSM6uWbLJrUxBKpAbL7QCbqjv7dBHC2oXHymiz5Bgwj4Fw9qckXmudozq/TTajnNttbqOL4R+ThrO9/8SacEmPSMxhRIEEH48zBJcr0cYAYUKT6xpbTT2KclACh2cMzKY7gjcY3fOwc8UGRL4FLY03penoDLmAXXBg24fYMogo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTxS2Vj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E002C4CEE3;
-	Tue,  4 Feb 2025 17:54:55 +0000 (UTC)
+	s=arc-20240116; t=1738691722; c=relaxed/simple;
+	bh=62/9Yzrdlp+F1egpqSxmL1UghcPhBOessMlgNSJS5sg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=efcFBi6IMtUTEnDZhNzgG/62lBzLYlfq+Xy0j6sEKmCamgICKbSKuorI3PIldJH0Dd65KFiT77v9qMjyGxdZfPx38Yo7oK9AUQcHvZ9Cew1z4ECB5YRmBvasIH0c1/RxdPZmhZzWNuS5IeETT3s4H8sSYM2LSSwQmtD8hfQBq+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2zCTnDN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85352C4CEDF;
+	Tue,  4 Feb 2025 17:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691695;
-	bh=5UlQCuZAMnj8b3t4rESr+hxg9XJxILn7bzMSUAHF9ls=;
+	s=korg; t=1738691721;
+	bh=62/9Yzrdlp+F1egpqSxmL1UghcPhBOessMlgNSJS5sg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FTxS2Vj6BQUXguw6C2B7UZq4TNaWpay81XArRp9l7i0hYMqnyyIrzuNU8ASqEY2K4
-	 cX16EIiJNQJynT91HoBy3ZzPJi1FIXM/J0btfF9D05ZyJoMXpRzij+Udd2wRN/EBb1
-	 s9j0D0aUeNsiDgBIbmBl4979cmitxtTOAfnkcrhQ=
-Subject: FAILED: patch "[PATCH] drm/v3d: Assign job pointer to NULL before signaling the" failed to apply to 5.4-stable tree
-To: mcanal@igalia.com,itoral@igalia.com,jmcasanova@igalia.com,phil@raspberrypi.com
+	b=Y2zCTnDNL4TzwTRK6h+2offHpVojtmsufu4S+/5RYsOIcldR/sf4jNdHD4O+FbrRv
+	 0sOpXa6YaCPsdZlI+h3E6BUx6HmDX+mIH0l9B3H3/3XSbjtE6Isc4MielLOdZl4xun
+	 3rC7OASGQ1ngJcjnABWsLZ165rG8ZLuPNqFGqYKI=
+Subject: FAILED: patch "[PATCH] media: imx-jpeg: Fix potential error pointer dereference in" failed to apply to 5.15-stable tree
+To: dan.carpenter@linaro.org,hverkuil@xs4all.nl,ming.qian@nxp.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:54:49 +0100
-Message-ID: <2025020449-angular-extortion-0889@gregkh>
+Date: Tue, 04 Feb 2025 18:54:58 +0100
+Message-ID: <2025020458-egotism-espresso-bb20@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6e64d6b3a3c39655de56682ec83e894978d23412
+git cherry-pick -x 1378ffec30367233152b7dbf4fa6a25ee98585d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020449-angular-extortion-0889@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020458-egotism-espresso-bb20@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,150 +77,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6e64d6b3a3c39655de56682ec83e894978d23412 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Date: Wed, 22 Jan 2025 22:24:03 -0300
-Subject: [PATCH] drm/v3d: Assign job pointer to NULL before signaling the
- fence
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 1378ffec30367233152b7dbf4fa6a25ee98585d1 Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Thu, 17 Oct 2024 23:34:16 +0300
+Subject: [PATCH] media: imx-jpeg: Fix potential error pointer dereference in
+ detach_pm()
 
-In commit e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
-after job completion"), we introduced a change to assign the job pointer
-to NULL after completing a job, indicating job completion.
+The proble is on the first line:
 
-However, this approach created a race condition between the DRM
-scheduler workqueue and the IRQ execution thread. As soon as the fence is
-signaled in the IRQ execution thread, a new job starts to be executed.
-This results in a race condition where the IRQ execution thread sets the
-job pointer to NULL simultaneously as the `run_job()` function assigns
-a new job to the pointer.
+	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
 
-This race condition can lead to a NULL pointer dereference if the IRQ
-execution thread sets the job pointer to NULL after `run_job()` assigns
-it to the new job. When the new job completes and the GPU emits an
-interrupt, `v3d_irq()` is triggered, potentially causing a crash.
+If jpeg->pd_dev[i] is an error pointer, then passing it to
+pm_runtime_suspended() will lead to an Oops.  The other conditions
+check for both error pointers and NULL, but it would be more clear to
+use the IS_ERR_OR_NULL() check for that.
 
-[  466.310099] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
-[  466.318928] Mem abort info:
-[  466.321723]   ESR = 0x0000000096000005
-[  466.325479]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  466.330807]   SET = 0, FnV = 0
-[  466.333864]   EA = 0, S1PTW = 0
-[  466.337010]   FSC = 0x05: level 1 translation fault
-[  466.341900] Data abort info:
-[  466.344783]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[  466.350285]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  466.355350]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  466.360677] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000089772000
-[  466.367140] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
-[  466.375875] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[  466.382163] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device algif_hash algif_skcipher af_alg bnep binfmt_misc vc4 snd_soc_hdmi_codec drm_display_helper cec brcmfmac_wcc spidev rpivid_hevc(C) drm_client_lib brcmfmac hci_uart drm_dma_helper pisp_be btbcm brcmutil snd_soc_core aes_ce_blk v4l2_mem2mem bluetooth aes_ce_cipher snd_compress videobuf2_dma_contig ghash_ce cfg80211 gf128mul snd_pcm_dmaengine videobuf2_memops ecdh_generic sha2_ce ecc videobuf2_v4l2 snd_pcm v3d sha256_arm64 rfkill videodev snd_timer sha1_ce libaes gpu_sched snd videobuf2_common sha1_generic drm_shmem_helper mc rp1_pio drm_kms_helper raspberrypi_hwmon spi_bcm2835 gpio_keys i2c_brcmstb rp1 raspberrypi_gpiomem rp1_mailbox rp1_adc nvmem_rmem uio_pdrv_genirq uio i2c_dev drm ledtrig_pattern drm_panel_orientation_quirks backlight fuse dm_mod ip_tables x_tables ipv6
-[  466.458429] CPU: 0 UID: 1000 PID: 2008 Comm: chromium Tainted: G         C         6.13.0-v8+ #18
-[  466.467336] Tainted: [C]=CRAP
-[  466.470306] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
-[  466.476157] pstate: 404000c9 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  466.483143] pc : v3d_irq+0x118/0x2e0 [v3d]
-[  466.487258] lr : __handle_irq_event_percpu+0x60/0x228
-[  466.492327] sp : ffffffc080003ea0
-[  466.495646] x29: ffffffc080003ea0 x28: ffffff80c0c94200 x27: 0000000000000000
-[  466.502807] x26: ffffffd08dd81d7b x25: ffffff80c0c94200 x24: ffffff8003bdc200
-[  466.509969] x23: 0000000000000001 x22: 00000000000000a7 x21: 0000000000000000
-[  466.517130] x20: ffffff8041bb0000 x19: 0000000000000001 x18: 0000000000000000
-[  466.524291] x17: ffffffafadfb0000 x16: ffffffc080000000 x15: 0000000000000000
-[  466.531452] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[  466.538613] x11: 0000000000000000 x10: 0000000000000000 x9 : ffffffd08c527eb0
-[  466.545777] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-[  466.552941] x5 : ffffffd08c4100d0 x4 : ffffffafadfb0000 x3 : ffffffc080003f70
-[  466.560102] x2 : ffffffc0829e8058 x1 : 0000000000000001 x0 : 0000000000000000
-[  466.567263] Call trace:
-[  466.569711]  v3d_irq+0x118/0x2e0 [v3d] (P)
-[  466.573826]  __handle_irq_event_percpu+0x60/0x228
-[  466.578546]  handle_irq_event+0x54/0xb8
-[  466.582391]  handle_fasteoi_irq+0xac/0x240
-[  466.586498]  generic_handle_domain_irq+0x34/0x58
-[  466.591128]  gic_handle_irq+0x48/0xd8
-[  466.594798]  call_on_irq_stack+0x24/0x58
-[  466.598730]  do_interrupt_handler+0x88/0x98
-[  466.602923]  el0_interrupt+0x44/0xc0
-[  466.606508]  __el0_irq_handler_common+0x18/0x28
-[  466.611050]  el0t_64_irq_handler+0x10/0x20
-[  466.615156]  el0t_64_irq+0x198/0x1a0
-[  466.618740] Code: 52800035 3607faf3 f9442e80 52800021 (f9406018)
-[  466.624853] ---[ end trace 0000000000000000 ]---
-[  466.629483] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-[  466.636384] SMP: stopping secondary CPUs
-[  466.640320] Kernel Offset: 0x100c400000 from 0xffffffc080000000
-[  466.646259] PHYS_OFFSET: 0x0
-[  466.649141] CPU features: 0x100,00000170,00901250,0200720b
-[  466.654644] Memory Limit: none
-[  466.657706] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
+Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 
-Fix the crash by assigning the job pointer to NULL before signaling the
-fence. This ensures that the job pointer is cleared before any new job
-starts execution, preventing the race condition and the NULL pointer
-dereference crash.
-
-Cc: stable@vger.kernel.org
-Fixes: e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL after job completion")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Tested-by: Phil Elwell <phil@raspberrypi.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250123012403.20447-1-mcanal@igalia.com
-
-diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
-index da203045df9b..72b6a119412f 100644
---- a/drivers/gpu/drm/v3d/v3d_irq.c
-+++ b/drivers/gpu/drm/v3d/v3d_irq.c
-@@ -107,8 +107,10 @@ v3d_irq(int irq, void *arg)
+diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+index 7f5fe551179b..1221b309a916 100644
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -2677,11 +2677,12 @@ static void mxc_jpeg_detach_pm_domains(struct mxc_jpeg_dev *jpeg)
+ 	int i;
  
- 		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
- 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->bin_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -118,8 +120,10 @@ v3d_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
- 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->render_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -129,8 +133,10 @@ v3d_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
- 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->csd_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
-@@ -167,8 +173,10 @@ v3d_hub_irq(int irq, void *arg)
- 
- 		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
- 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
--		dma_fence_signal(&fence->base);
-+
- 		v3d->tfu_job = NULL;
-+		dma_fence_signal(&fence->base);
-+
- 		status = IRQ_HANDLED;
- 	}
- 
+ 	for (i = 0; i < jpeg->num_domains; i++) {
+-		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
++		    !pm_runtime_suspended(jpeg->pd_dev[i]))
+ 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
+-		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
+ 			device_link_del(jpeg->pd_link[i]);
+-		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
+ 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
+ 		jpeg->pd_dev[i] = NULL;
+ 		jpeg->pd_link[i] = NULL;
 
 
