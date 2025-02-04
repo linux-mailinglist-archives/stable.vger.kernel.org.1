@@ -1,138 +1,182 @@
-Return-Path: <stable+bounces-112203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08C8A278F2
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:49:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD32A278F9
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC6B1887669
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:49:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB43B167108
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7B32144CA;
-	Tue,  4 Feb 2025 17:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AD821638A;
+	Tue,  4 Feb 2025 17:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHtnS5Kt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quBfUeju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CB018A6D4;
-	Tue,  4 Feb 2025 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16ADF216384
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691351; cv=none; b=m9yIz34yBF1I0faHJkcqn/drglsr5oK+x2d+vQv6IIKdSj2QlNaf8JsncHOp74t8E6l1WT20YPFvEH2ho3m/x7+7gW7nfIjCEHD8xNu5IwoVZVFJJINuCjyBUj5wfvrvC7JUfSF1faVKA017LUPps/vPO7y7WVIy108fvvqSs/s=
+	t=1738691498; cv=none; b=XVlROzVUgD9JyodRI6b7vEz3RVZUaEAwEDz8Ny8h0genhG43oW/M/vfLZkQ2RdCP/Wz2ooiThSpA5YtuGQhYmR7cbE/Yry6ZCJCeH081EEt8u0s5n/AJOT55uVNizrZ3M0p9aqoIFTP2BQNEzDQymFMh/E0jdnR4Gf5XAX6VgPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691351; c=relaxed/simple;
-	bh=rXAK34OphyEItP6/+639hQrb7zlf+ZgtdRAQ99Mc1xA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jbil56Qpa7lm5WI5VC8XceXzYoanEF55L51EtDFH27KgcKEnxO5GsP636RyrG8yvsnhThu3U8inzjDXvGKkZtQf6YCA6AKHdYJT+unlpvGirSVPOlmOQRw/CKctfPueKUc7r/uTbEx0NyAYO6jDzqYMZXMD36IKdKEgaYMN42aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHtnS5Kt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5820C4CEDF;
-	Tue,  4 Feb 2025 17:49:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738691351;
-	bh=rXAK34OphyEItP6/+639hQrb7zlf+ZgtdRAQ99Mc1xA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=SHtnS5KtsZ/GOENUm5oQLadqfIxf887yWaCuZngDsiv7/CyDO9QC34fijUzxSRrVQ
-	 kngZDnCH3unbXVxFTR1GxMquyEiACyFsVKrPj4yeLVPUlnNETP0mXxW7iswjxU3KlW
-	 /McoIFOGzYDLIuIXTUiRu4dlzQ7HXgW8WB1z+iTtn18pR6AMMLGsxZzC/x9kHfcIOh
-	 T3da3wf/qvYrWehDk8r5wVS0UMofLrV8hFynf+w7TTf+PY99/jrik4Y1hsfVmA6kxR
-	 tytim7CxgxFzQeV/FTL/cQmo6RQkZsCG7Olaw14EdKN/pSFujkGTkWP4PuNtNbF9jn
-	 0fogOD/mQ/kAQ==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 04 Feb 2025 10:48:55 -0700
-Subject: [PATCH v2] arm64: Handle .ARM.attributes section in linker scripts
+	s=arc-20240116; t=1738691498; c=relaxed/simple;
+	bh=iqNgRAQWKXwUqQh+I1LPSqEu8Mdq97+xtWTEzOV/3EE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s8E+PMIARmYj7DxbdPU0woagUJmK/sNUZltI8TTsKrqXCs9ZSiR6zyRqsOO2sFwOWVLCqtOgKiKbsyBiWL49fUjIik3MlyInAn9AceRGscv1S7+f1M20HicMPY3tg5ETXzC5gVIXSdaZt6x15s8AwAVwVRWxAqaPVrCLsgbYKLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quBfUeju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F59C4CEDF;
+	Tue,  4 Feb 2025 17:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738691498;
+	bh=iqNgRAQWKXwUqQh+I1LPSqEu8Mdq97+xtWTEzOV/3EE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=quBfUejuqWo84T5Y+OvOI3gWE7LJMjzRfC4kdn0Dx5V+mQA/3vlW+RrsbrmSfzxx8
+	 Q7QdvWnSduuo0hsvPRYs8o8LMqBPgiMZNbcNT/obkEOsq1GHtCqD26/QZ77pi1pHEK
+	 nXO1H8p2Vs/bq8DdMXXyyDOqacqqE7XJmO8XmQro=
+Subject: FAILED: patch "[PATCH] mptcp: pm: only set fullmesh for subflow endp" failed to apply to 6.6-stable tree
+To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 04 Feb 2025 18:51:28 +0100
+Message-ID: <2025020428-unashamed-delicate-248c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250204-arm64-handle-arm-attributes-in-linker-script-v2-1-d684097f5554@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAZTomcC/5WNyw6CMBBFf4V07Rj6AB8r/8OwKGWAiVjItBIN4
- d8tJH6Ay3NPcs8iAjJhENdsEYwzBRp9AnXIhOut7xCoSSxUropcKg2Wn6WBpJoBNwAbI1P9ihi
- APAzkH8gQHNMU4awsoiq01NaJdDkxtvTec/cqcU8hjvzZ67Pc1l/I/BeaJUg4GamLunStNpdbk
- h6H48idqNZ1/QLKQtx56QAAAA==
-X-Change-ID: 20250123-arm64-handle-arm-attributes-in-linker-script-82aee25313ac
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2567; i=nathan@kernel.org;
- h=from:subject:message-id; bh=rXAK34OphyEItP6/+639hQrb7zlf+ZgtdRAQ99Mc1xA=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDOmLgkVPWnK9OzmvIvdskY3O/JnndpzanxPoV98gZS8Uo
- c038eCCjlIWBjEuBlkxRZbqx6rHDQ3nnGW8cWoSzBxWJpAhDFycAjARhamMDB0LlsU8eMydZMf/
- Jz9cUGOBxqbSa3cXLD0levu1rdbunX8ZGTa3exwvDM59N3HSnji5A3vPGxt9M9++e3fGg5o/iss
- j7dkA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-A recent LLVM commit [1] started generating an .ARM.attributes section
-similar to the one that exists for 32-bit, which results in orphan
-section warnings (or errors if CONFIG_WERROR is enabled) from the linker
-because it is not handled in the arm64 linker scripts.
 
-  ld.lld: error: arch/arm64/kernel/vdso/vgettimeofday.o:(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: arch/arm64/kernel/vdso/vgetrandom.o:(.ARM.attributes) is being placed in '.ARM.attributes'
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-  ld.lld: error: vmlinux.a(lib/vsprintf.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: vmlinux.a(lib/win_minmax.o):(.ARM.attributes) is being placed in '.ARM.attributes'
-  ld.lld: error: vmlinux.a(lib/xarray.o):(.ARM.attributes) is being placed in '.ARM.attributes'
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Discard the new sections in the necessary linker scripts to resolve the
-warnings, as the kernel and vDSO do not need to retain it, similar to
-the .note.gnu.property section.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 1bb0d1348546ad059f55c93def34e67cb2a034a6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020428-unashamed-delicate-248c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 1bb0d1348546ad059f55c93def34e67cb2a034a6 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Thu, 23 Jan 2025 19:05:55 +0100
+Subject: [PATCH] mptcp: pm: only set fullmesh for subflow endp
+
+With the in-kernel path-manager, it is possible to change the 'fullmesh'
+flag. The code in mptcp_pm_nl_fullmesh() expects to change it only on
+'subflow' endpoints, to recreate more or less subflows using the linked
+address.
+
+Unfortunately, the set_flags() hook was a bit more permissive, and
+allowed 'implicit' endpoints to get the 'fullmesh' flag while it is not
+allowed before.
+
+That's what syzbot found, triggering the following warning:
+
+  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 __mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
+  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
+  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
+  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 6499 Comm: syz.1.413 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
+  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
+  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
+  RIP: 0010:mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
+  Code: 01 00 00 49 89 c5 e8 fb 45 e8 f5 e9 b8 fc ff ff e8 f1 45 e8 f5 4c 89 f7 be 03 00 00 00 e8 44 1d 0b f9 eb a0 e8 dd 45 e8 f5 90 <0f> 0b 90 e9 17 ff ff ff 89 d9 80 e1 07 38 c1 0f 8c c9 fc ff ff 48
+  RSP: 0018:ffffc9000d307240 EFLAGS: 00010293
+  RAX: ffffffff8bb72e03 RBX: 0000000000000000 RCX: ffff88807da88000
+  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: ffffc9000d307430 R08: ffffffff8bb72cf0 R09: 1ffff1100b842a5e
+  R10: dffffc0000000000 R11: ffffed100b842a5f R12: ffff88801e2e5ac0
+  R13: ffff88805c214800 R14: ffff88805c2152e8 R15: 1ffff1100b842a5d
+  FS:  00005555619f6500(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000020002840 CR3: 00000000247e6000 CR4: 00000000003526f0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   <TASK>
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2542
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x221/0x270 net/socket.c:726
+   ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
+   ___sys_sendmsg net/socket.c:2637 [inline]
+   __sys_sendmsg+0x269/0x350 net/socket.c:2669
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f5fe8785d29
+  Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007fff571f5558 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007f5fe8975fa0 RCX: 00007f5fe8785d29
+  RDX: 0000000000000000 RSI: 0000000020000480 RDI: 0000000000000007
+  RBP: 00007f5fe8801b08 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 00007f5fe8975fa0 R14: 00007f5fe8975fa0 R15: 00000000000011f4
+   </TASK>
+
+Here, syzbot managed to set the 'fullmesh' flag on an 'implicit' and
+used -- according to 'id_avail_bitmap' -- endpoint, causing the PM to
+try decrement the local_addr_used counter which is only incremented for
+the 'subflow' endpoint.
+
+Note that 'no type' endpoints -- not 'subflow', 'signal', 'implicit' --
+are fine, because their ID will not be marked as used in the 'id_avail'
+bitmap, and setting 'fullmesh' can help forcing the creation of subflow
+when receiving an ADD_ADDR.
+
+Fixes: 73c762c1f07d ("mptcp: set fullmesh flag in pm_netlink")
 Cc: stable@vger.kernel.org
-Fixes: b3e5d80d0c48 ("arm64/build: Warn on orphan section placement")
-Link: https://github.com/llvm/llvm-project/commit/ee99c4d4845db66c4daa2373352133f4b237c942 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-Changes in v2:
-- Discard the section instead of adding it to the final artifacts to
-  mirror the .note.gnu.property section handling (Will).
-- Link to v1: https://lore.kernel.org/r/20250124-arm64-handle-arm-attributes-in-linker-script-v1-1-74135b6cf349@kernel.org
----
- arch/arm64/kernel/vdso/vdso.lds.S | 1 +
- arch/arm64/kernel/vmlinux.lds.S   | 1 +
- 2 files changed, 2 insertions(+)
+Reported-by: syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/6786ac51.050a0220.216c54.00a6.GAE@google.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/540
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250123-net-mptcp-syzbot-issues-v1-2-af73258a726f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/arch/arm64/kernel/vdso/vdso.lds.S b/arch/arm64/kernel/vdso/vdso.lds.S
-index 4ec32e86a8da..8095fef66209 100644
---- a/arch/arm64/kernel/vdso/vdso.lds.S
-+++ b/arch/arm64/kernel/vdso/vdso.lds.S
-@@ -80,6 +80,7 @@ SECTIONS
- 		*(.data .data.* .gnu.linkonce.d.* .sdata*)
- 		*(.bss .sbss .dynbss .dynsbss)
- 		*(.eh_frame .eh_frame_hdr)
-+		*(.ARM.attributes)
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 98ac73938bd8..572d160edca3 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -2020,7 +2020,8 @@ int mptcp_pm_nl_set_flags(struct sk_buff *skb, struct genl_info *info)
+ 		return -EINVAL;
  	}
- }
- 
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index f84c71f04d9e..e73326bd3ff7 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -162,6 +162,7 @@ SECTIONS
- 	/DISCARD/ : {
- 		*(.interp .dynamic)
- 		*(.dynsym .dynstr .hash .gnu.hash)
-+		*(.ARM.attributes)
- 	}
- 
- 	. = KIMAGE_VADDR;
-
----
-base-commit: 1dd3393696efba1598aa7692939bba99d0cffae3
-change-id: 20250123-arm64-handle-arm-attributes-in-linker-script-82aee25313ac
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+ 	if ((addr.flags & MPTCP_PM_ADDR_FLAG_FULLMESH) &&
+-	    (entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
++	    (entry->flags & (MPTCP_PM_ADDR_FLAG_SIGNAL |
++			     MPTCP_PM_ADDR_FLAG_IMPLICIT))) {
+ 		spin_unlock_bh(&pernet->lock);
+ 		GENL_SET_ERR_MSG(info, "invalid addr flags");
+ 		return -EINVAL;
 
 
