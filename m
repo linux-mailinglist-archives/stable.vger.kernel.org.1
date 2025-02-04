@@ -1,135 +1,164 @@
-Return-Path: <stable+bounces-112108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A15A269C3
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:28:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3474BA26A0B
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 03:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B654A3A4C83
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D30E165A58
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D062036F0;
-	Tue,  4 Feb 2025 01:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06DF78F5B;
+	Tue,  4 Feb 2025 02:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvlsdXIX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iCGDDInF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED7D2153E1;
-	Tue,  4 Feb 2025 01:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A4B200CB;
+	Tue,  4 Feb 2025 02:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631951; cv=none; b=OPXkueRIhMu31PM9GGLPe0b16T7/bKevMmEJ3QdnqocRruI0GWocuwmPEAEIvtbyHD+ahyxu39pcCfm8nLLgO37DYXXUpn8/uSkCV4Uwd1N0ysw5+Tr1G3oAJ/YMIlSiMSgyHE2P7dMbjF8ksvT6Y0DSbSdASlVtytcgZ39u7yM=
+	t=1738636409; cv=none; b=iVlefOWfI8Wv7O6BDhd0idg8gWoIhpizICH8kZlxsIAHtLv6oILOYIan8+eiJQXnuXDQB5JKVYs5PhT7nehOXCPnd2sO94m6SCcAbm8rgSPWovM11I0mPQEPpdcMPQWD257HKSf7qLIcwueJQbkOj/Vea5/drk9re1LuKCPh89k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631951; c=relaxed/simple;
-	bh=sIJjQoXB0X0nAlVrs1CeW3KMNI7NBFyzFGqhYj1SHpE=;
+	s=arc-20240116; t=1738636409; c=relaxed/simple;
+	bh=ml73UtkO8cs4Pij7jB00Z18O7UxmGQTOthJwQKKKSSk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=msG9luttQveMQJEjwf9KSpViUhE+0RG/weK261CZKtPkybBqJdK3t0eiSdRlL9jo80xL7jjmUhF0SHcCn4hcMkMyUTfEZCidsTKv7yO5V6vEovCuXfqfZyhXQUsfBXIJ4R6ophqt8qh8dDSzEy5tJ9HgZfx7DencvHpD2k2OoUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvlsdXIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A50FC4CEE0;
-	Tue,  4 Feb 2025 01:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631950;
-	bh=sIJjQoXB0X0nAlVrs1CeW3KMNI7NBFyzFGqhYj1SHpE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvlsdXIXByafPXT2LIeiCDBnFQWgXPiu/Db0nHLKl569t0TeFT0XYLUopktOuJWr+
-	 0O6N3/mcagCJvIdjjWULui4xBes7ghK1sSlLdvT1xJT1IEC/CH0cCkkKlkZcpj19hM
-	 9ip4yUFU8NBFNPORoT2iKWbsnL84//iqTR4sSguEHKUXHs9a4d2v2U12j3sIYAQEBQ
-	 6QWkwd+OaQbp3ULQEOOXSncx8PivnBnJLNW1ccx4qAC6y1p5d/8xk7Pw+a/hoEmxIF
-	 OrWOSVEqNW96a62h5ltZjJd8yh+tqP+Xvf+5GmYrrAIDZLcr8dVIDa7XZ2vZ+XMy82
-	 0t/YJsKU4YGaA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
+	 MIME-Version; b=I8Y1AJL+j0857GU9huLa6RyhP/x/5LUinwa2lkKbrIzOysJhkrz+A7QexixU83cYaf3dA76qbRZVGdVW+qxSnLBaKGP0N+4PjH8hwsaFGLMPZt2bB2qWsrjAWIZ6LQNUOjBEgoPGPndpQxDm28LEjXpAaIRAFZSwCnjfcv+BOG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iCGDDInF; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b6edb82f85so755017685a.3;
+        Mon, 03 Feb 2025 18:33:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738636407; x=1739241207; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cH7H0PH3nCsAonZFaIiiXIpDDBfA5/nUJG90X2bZFn8=;
+        b=iCGDDInF5Y6lKbu4e+FW6Kkwr6CXyKB+tHmo5r6/E4vW5opeYHY8V6pc7Ga9UKCcCU
+         hlHJnOMmnH/lAOUDGKj0FTMOwHEjAA5Ll8UBDkpNAPxPQb8sXxHY70lYVAdqL488HVy5
+         DE9kdN1WAXH5zRp34E4cLRnIEaKyfELMuUHBSjDPTSYC/xH5Um6VfG2yhnk30h+op3x6
+         LObZU989JSlmqU9n8op4tzaOQp+HdSuJncj98NZkXkUpwGMlpZnifof6HjknS5Dn2R0n
+         th6AhXebqR01UBPNleWwM3j5Gcbl8inesiwa97LtQRqh1geqM1Ypk3QhwR+b63vldktQ
+         kJmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738636407; x=1739241207;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cH7H0PH3nCsAonZFaIiiXIpDDBfA5/nUJG90X2bZFn8=;
+        b=hbWupxjmk4t+ckOa4xNxnbCdHUcelXlSTTBsPqwiDpYRiRllYpb5hE5L8n86aw9cxS
+         2sLxV+x9XiMbTuOIsFk3XwDDgpROV1kxYxsK3GaI5O2GKz7GqLZHn4syowCiwpWLZB/F
+         tPHAHRtEf8W8LVO2vkBvx/jytL/SANXFncYyXtyP1G94V1IQhVjoTHwRPcnynDddjuZQ
+         TjE3B0yAYKfS1h/sM7aFdcwA9b6Ul5htfA9j98OTDySRH1sz5g0jy9YTSHNjZ/T9kRmc
+         RyBsJ2020c/EpxdmMVLvomHL/A3uW87e7738IF6aUIovxSPnTtgQC8H3Lu/o/RJrz+go
+         C0+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXKv0TaSP4adDpBUWSu1vYqvykoIMeAze8sdLGr5fU3cLypmcOIsM4WVKYkE9GqGVacEwuT/JFGoxoor2A=@vger.kernel.org, AJvYcCXkBbEoTDGecrywoSRXwxxbq4jkbREWrpcmQ3NyECKMbP4HQIqXe9YIp9BGNKiQKt2dL9yud26R@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP6aKdvjFMiZoZvtxQsCKTLwpUA6U/oFJQa93YAwjURQ3U7sk/
+	gIo04HOzTHTdw8vgVmS+ZjR3oAyBq6Ut8SCI2YeqPvrE04ZTS2uM
+X-Gm-Gg: ASbGncuoMcsmfyC+ZcR4PRXypGRlGw7I2BoiaMSsUNQS0uMo3kWX04U8BHlPRAjBxen
+	5mLFCjDUO7tZj8nO5MxLVZlM9EWpZIeiPaeHrdUIFNXAOPYgUOZ0uCTI3SOqFJyPZRI8b2fSD4B
+	NH34xpsUzu/XxKg+YRy0KfOcmo5UibqhDXoYPTYN2qhfVkPuM0fcmrSlfgorOUC9zUHj52tSAdb
+	OUVEkxurM62B3LPC98mUo8UMNz6BTqi6XTYfHBov+Qek5NtbW3rkI0ISW/yswANlN1jK9YxgKhr
+	1dhwYPDsJf/prYregsSZECsSksjUXlbMZ0PpvA==
+X-Google-Smtp-Source: AGHT+IFkU0QnpYEf727d4vGDJg7962NUWX2M0s4YoN/ETYbpRFdzQ54W40zKw1w4f5qr3g91DhlqwA==
+X-Received: by 2002:a05:620a:8394:b0:7b6:ce6e:229c with SMTP id af79cd13be357-7bffcd9b5ecmr4006496785a.55.1738636406808;
+        Mon, 03 Feb 2025 18:33:26 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a90ccd0sm588688485a.99.2025.02.03.18.33.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 18:33:26 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: christophe.jaillet@wanadoo.fr
+Cc: gmpy.liaowx@gmail.com,
+	jiashengjiangcool@gmail.com,
+	kees@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	miquel.raynal@bootlin.com,
+	richard@nod.at,
+	vigneshr@ti.com,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	alban.boye@protonmail.com,
-	tomlohave@gmail.com,
-	kuninori.morimoto.gx@renesas.com,
-	u.kleine-koenig@baylibre.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/2] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
-Date: Mon,  3 Feb 2025 20:19:02 -0500
-Message-Id: <20250204011902.2207294-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204011902.2207294-1-sashal@kernel.org>
-References: <20250204011902.2207294-1-sashal@kernel.org>
+Subject: [PATCH v2] mtd: Add check and kfree() for kcalloc()
+Date: Tue,  4 Feb 2025 02:33:23 +0000
+Message-Id: <20250204023323.14213-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
+References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.290
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+Add a check for kcalloc() to ensure successful allocation.
+Moreover, add kfree() in the error-handling path to prevent memory leaks.
 
-[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
-
-The Vexia EDU ATLA 10 tablet comes in 2 different versions with
-significantly different mainboards. The only outward difference is that
-the charging barrel on one is marked 5V and the other is marked 9V.
-
-The 5V version mostly works with the BYTCR defaults, except that it is
-missing a CHAN package in its ACPI tables and the default of using
-SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
-detect signal is not inverted as it usually is.
-
-Add a DMI quirk for the 5V version to fix sound not working.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: <stable@vger.kernel.org> # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+Changelog:
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 53a15be38b56f..104cfb56d225f 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -909,7 +909,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
--	{	/* Vexia Edu Atla 10 tablet */
-+	{
-+		/* Vexia Edu Atla 10 tablet 5V version */
-+		.matches = {
-+			/* Having all 3 of these not set is somewhat unique */
-+			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
-+	{	/* Vexia Edu Atla 10 tablet 9V version */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+v1 -> v2:
+
+1. Remove redundant logging.
+2. Add kfree() in the error-handling path.
+---
+ drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
+index 7ac8ac901306..2d8e330dd215 100644
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+ 	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	if (!cxt->rmmap)
++		goto end;
++
+ 	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	if (!cxt->usedmap)
++		goto free_rmmap;
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+ 	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	if (!cxt->badmap)
++		goto free_usedmap;
+ 
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+@@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+ 	if (ret) {
+ 		dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
+ 				mtd->index);
+-		return;
++		goto free_badmap;
+ 	}
+ 	cxt->mtd = mtd;
+ 	dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
++	goto end;
++
++free_badmap:
++	kfree(cxt->badmap);
++free_usedmap:
++	kfree(cxt->usedmap);
++free_rmmap:
++	kfree(cxt->rmmap);
++end:
++	return;
+ }
+ 
+ static int mtdpstore_flush_removed_do(struct mtdpstore_context *cxt,
 -- 
-2.39.5
+2.25.1
 
 
