@@ -1,201 +1,124 @@
-Return-Path: <stable+bounces-112253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B18EA27E51
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:35:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B632BA27FB6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 00:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23B7816471A
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:35:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41A61166B83
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED69D21B19F;
-	Tue,  4 Feb 2025 22:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2A820C00D;
+	Tue,  4 Feb 2025 23:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="GuLlVvIp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3AixAuJx"
 X-Original-To: stable@vger.kernel.org
-Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f74.google.com (mail-ua1-f74.google.com [209.85.222.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBE914AD2B;
-	Tue,  4 Feb 2025 22:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AEB21B1A7
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 23:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738708547; cv=none; b=sN2ox9ifI1BHAXWhig/6p9+1vUXFWdVDkr3bPCWgIfBcfmCr/EFUI8msTtcQk/mOF9f/GSq6ouoY4QZph3y6XBjXp6Lic8myaTrGW+sTSGijn+dVcf1+1/J3cqhk/wkF5OHSFeUv2N7PsUq4G08Q3dja6s5BhFPk+BMBBER1Kcc=
+	t=1738712211; cv=none; b=kq7qte+JZZ2QFnjgRCT2tIRfFINSy0mnxEZMTXODqnrQZL8BFHHpKZzFteophwEonoFBHozH0FkQ3+FMtWTLylOWpd/OY0pw+jdIhJVBsuGc6EzWxAOUkDhY41aWXSDT25ejgFXeKfUasXQIE3NJCDM7nTF3TRy/11foocA5PkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738708547; c=relaxed/simple;
-	bh=Tbu+XRno/u/g1c/g++qeRZlFVrqJuvN/hVBnJ0xt64k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aL2VuNYi4MNjLBO7QZOy+rXc+fQ8lhaBobAN7rdiMNxLLenmYsSvJMYP6wIIybyiQhD5VRjjHN0K2mJg9CYgvy6cZuS0eSQCZVgG8Wq5RkgfXXF//3uimX+fN8y6IUUBN3N9ibQWXL/1EpmRIcrFx9sF7M/Xl9eFNq1cVnNnDWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=GuLlVvIp; arc=none smtp.client-ip=139.162.151.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=eu0uinCL9OMvaWq1Gs/7fRYGHoqa6F3Rj2exh5B37II=; b=GuLlVvIpQdKIiSi/2g1IZRavf+
-	XkzWIQOFkDhIaFBcpUw8amudSkCgyOXW29+LYHSpVvswk/aKwbzNT7HFfDJ9c4kLCUTDtqQec7Pbz
-	ursqosVy9YBrj+OF7lM4JZ2QgdZTfmj8ZSWap8HsCMNvfylNczh/vV7sG6bGKqU+lBGePfPX1NGpJ
-	wzuqpbKQ48RGGnfrye7LBGvEVStssDtHPOSkOs1vnZ09qYs93n73ZybmR3PPM2qpeK01e/ZiQB8CF
-	cglSS6qr0QYdx4teAIu0ReZTwViSpyT4I5R0SkcOq3ME2+n1yqmHWa7EYME/pJyh4tNGtCbjr4BN3
-	ZUPNwhTg==;
-Received: from ink by minute.unseen.parts with local (Exim 4.96)
-	(envelope-from <ink@unseen.parts>)
-	id 1tfRVs-0001cT-1p;
-	Tue, 04 Feb 2025 23:35:24 +0100
-From: Ivan Kokshaysky <ink@unseen.parts>
-To: Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/3] alpha: align stack for page fault and user unaligned trap handlers
-Date: Tue,  4 Feb 2025 23:35:24 +0100
-Message-Id: <20250204223524.6207-4-ink@unseen.parts>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204223524.6207-1-ink@unseen.parts>
-References: <20250204223524.6207-1-ink@unseen.parts>
+	s=arc-20240116; t=1738712211; c=relaxed/simple;
+	bh=qpfQTDheYUA9fYCH8Nr2dmrMbuSUIH8GoGeahli4TyA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=WCOasiQcWzvEH33LuX+ouCjzwUKaiQADraApZHudCFjh/qbS2p5govDOu5Xk98Qw/EBXNyZPmWhdYDpN1NV/jC41wIlSJBNfV0Q3Lsf7gqeCiNjB67mVEMSKbATUlPLptLpAMEc98p+P+nU9Pq1yRjDQFeR7/SLbbykmIsRBat4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3AixAuJx; arc=none smtp.client-ip=209.85.222.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com
+Received: by mail-ua1-f74.google.com with SMTP id a1e0cc1a2514c-85c69f4718fso936321241.0
+        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 15:36:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738712207; x=1739317007; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EgtkKatdG0S9Pe613E3mNyAnYsjwJSKIyXvHCOEHLD8=;
+        b=3AixAuJxD34h4yxa5q/NFruN2WwfMVfgXo+h5XYaTBhM1/yQpNTIx4IvdPedAJzgRA
+         6A9To8r1a2kmKDBsk+xzE10/u+NmabNKM87MUNjBFEq7TzrP/B/avp5/P3plOa+yg2yU
+         JTHeSr9dVJ1s1LyI5gx2XJ0VhLgqULEKbDTFaMGkiMnYUjMfmrem2cr/Tyr/8yTHAY9L
+         h/2IIN4Mkd5s26PT7xBlagzKpQZht9+WzMMwQ2F4cabKIeYh7tf4bvmESV73yzR9kiUZ
+         fomqJIEfortX0djyD8B7MI2UC/pbQZAxNHWVwQRgfgKM6Oq/I4MAT7QoqmuvOGvB8QTj
+         74xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738712207; x=1739317007;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EgtkKatdG0S9Pe613E3mNyAnYsjwJSKIyXvHCOEHLD8=;
+        b=XM2CoyLUupvCZz75JRxpkcx+8znoQpuj1CdUdIiUVZ+GLNe5YU6MJTw0BFjsZNFedF
+         DgUW+oaenPuGEmS2px5TMXZt8XsrhtT6saGfZ6c+jEX685HZi9BoFTDmJ+F8LPQjh1ep
+         z7+02A63snA9t0ALyQ+ItKEGIVWlsEgRY3c02fVrtlBKlDgLjsv9bndzYS2OlbnFXW0c
+         r3HNIgZOBzPLnmyQcKhnKYaneZ+QlvJAgHCQ88oQ5vOgfQdidWu/FdxHY1QVNszqBc3a
+         NvraURpSrQFpl/ULv1Z+tNrBJJUu1lEaigw7YukGAqnV+BL3t8IuqSPDGWXvTao3Kbhb
+         f4Wg==
+X-Gm-Message-State: AOJu0YyfP2SE9YxrAFOwvZD/dY+Bo4ESC6JcpBrrv0QVyIZOj0OEZUsz
+	G6mUEJ9Wbhb3TK/xpkRRRiKeYDh7qB2Skm0i3PZgrH4JcodwGiScEgTaUEfVsKTnnRH3mrN97SV
+	Hzg==
+X-Google-Smtp-Source: AGHT+IHLmJQMOHisVnRtKMgv2ybXEZeJENK07fK0AuOA8MPyXUxQYl+xPhHPKdpsSt0+Iplrr5S2y+x6ejs=
+X-Received: from vsae9.prod.google.com ([2002:a05:6102:349:b0:4af:e39b:2b2])
+ (user=royluo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6102:2b8d:b0:4af:ed5a:b697
+ with SMTP id ada2fe7eead31-4ba478e696cmr962885137.13.1738712206734; Tue, 04
+ Feb 2025 15:36:46 -0800 (PST)
+Date: Tue,  4 Feb 2025 23:36:42 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-do_page_fault() and do_entUna() are special because they use
-non-standard stack frame layout. Fix them manually.
-
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
+Message-ID: <20250204233642.666991-1-royluo@google.com>
+Subject: [PATCH v2] usb: gadget: core: flush gadget workqueue after device removal
+From: Roy Luo <royluo@google.com>
+To: royluo@google.com, Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	andre.draszik@linaro.org, elder@kernel.org, stern@rowland.harvard.edu, 
+	crwulff@gmail.com, paul@crapouillou.net, jkeeping@inmusicbrands.com, 
+	yuanlinyu@hihonor.com, sumit.garg@linaro.org, balbi@ti.com
 Cc: stable@vger.kernel.org
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Magnus Lindholm <linmag7@gmail.com>
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
----
- arch/alpha/kernel/entry.S | 20 ++++++++++----------
- arch/alpha/kernel/traps.c |  2 +-
- arch/alpha/mm/fault.c     |  4 ++--
- 3 files changed, 13 insertions(+), 13 deletions(-)
+Content-Type: text/plain; charset="UTF-8"
 
-diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
-index 6fb38365539d..f4d41b4538c2 100644
---- a/arch/alpha/kernel/entry.S
-+++ b/arch/alpha/kernel/entry.S
-@@ -194,8 +194,8 @@ CFI_END_OSF_FRAME entArith
- CFI_START_OSF_FRAME entMM
- 	SAVE_ALL
- /* save $9 - $15 so the inline exception code can manipulate them.  */
--	subq	$sp, 56, $sp
--	.cfi_adjust_cfa_offset	56
-+	subq	$sp, 64, $sp
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -210,7 +210,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_rel_offset	$13, 32
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- /* handle the fault */
- 	lda	$8, 0x3fff
- 	bic	$sp, $8, $8
-@@ -223,7 +223,7 @@ CFI_START_OSF_FRAME entMM
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	addq	$sp, 56, $sp
-+	addq	$sp, 64, $sp
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -231,7 +231,7 @@ CFI_START_OSF_FRAME entMM
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- /* finish up the syscall as normal.  */
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entMM
-@@ -378,8 +378,8 @@ entUnaUser:
- 	.cfi_restore	$0
- 	.cfi_adjust_cfa_offset	-256
- 	SAVE_ALL		/* setup normal kernel stack */
--	lda	$sp, -56($sp)
--	.cfi_adjust_cfa_offset	56
-+	lda	$sp, -64($sp)
-+	.cfi_adjust_cfa_offset	64
- 	stq	$9, 0($sp)
- 	stq	$10, 8($sp)
- 	stq	$11, 16($sp)
-@@ -395,7 +395,7 @@ entUnaUser:
- 	.cfi_rel_offset	$14, 40
- 	.cfi_rel_offset	$15, 48
- 	lda	$8, 0x3fff
--	addq	$sp, 56, $19
-+	addq	$sp, 64, $19
- 	bic	$sp, $8, $8
- 	jsr	$26, do_entUnaUser
- 	ldq	$9, 0($sp)
-@@ -405,7 +405,7 @@ entUnaUser:
- 	ldq	$13, 32($sp)
- 	ldq	$14, 40($sp)
- 	ldq	$15, 48($sp)
--	lda	$sp, 56($sp)
-+	lda	$sp, 64($sp)
- 	.cfi_restore	$9
- 	.cfi_restore	$10
- 	.cfi_restore	$11
-@@ -413,7 +413,7 @@ entUnaUser:
- 	.cfi_restore	$13
- 	.cfi_restore	$14
- 	.cfi_restore	$15
--	.cfi_adjust_cfa_offset	-56
-+	.cfi_adjust_cfa_offset	-64
- 	br	ret_from_sys_call
- CFI_END_OSF_FRAME entUna
+device_del() can lead to new work being scheduled in gadget->work
+workqueue. This is observed, for example, with the dwc3 driver with the
+following call stack:
+  device_del()
+    gadget_unbind_driver()
+      usb_gadget_disconnect_locked()
+        dwc3_gadget_pullup()
+	  dwc3_gadget_soft_disconnect()
+	    usb_gadget_set_state()
+	      schedule_work(&gadget->work)
+
+Move flush_work() after device_del() to ensure the workqueue is cleaned
+up.
+
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Roy Luo <royluo@google.com>
+---
+ drivers/usb/gadget/udc/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index a6f46364be65..4b3d5075621a 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1543,8 +1543,8 @@ void usb_del_gadget(struct usb_gadget *gadget)
  
-diff --git a/arch/alpha/kernel/traps.c b/arch/alpha/kernel/traps.c
-index a9a38c80c4a7..7004397937cf 100644
---- a/arch/alpha/kernel/traps.c
-+++ b/arch/alpha/kernel/traps.c
-@@ -649,7 +649,7 @@ s_reg_to_mem (unsigned long s_reg)
- static int unauser_reg_offsets[32] = {
- 	R(r0), R(r1), R(r2), R(r3), R(r4), R(r5), R(r6), R(r7), R(r8),
- 	/* r9 ... r15 are stored in front of regs.  */
--	-56, -48, -40, -32, -24, -16, -8,
-+	-64, -56, -48, -40, -32, -24, -16,	/* padding at -8 */
- 	R(r16), R(r17), R(r18),
- 	R(r19), R(r20), R(r21), R(r22), R(r23), R(r24), R(r25), R(r26),
- 	R(r27), R(r28), R(gp),
-diff --git a/arch/alpha/mm/fault.c b/arch/alpha/mm/fault.c
-index 8c9850437e67..a9816bbc9f34 100644
---- a/arch/alpha/mm/fault.c
-+++ b/arch/alpha/mm/fault.c
-@@ -78,8 +78,8 @@ __load_new_mm_context(struct mm_struct *next_mm)
- 
- /* Macro for exception fixup code to access integer registers.  */
- #define dpf_reg(r)							\
--	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-16 :	\
--				 (r) <= 18 ? (r)+10 : (r)-10])
-+	(((unsigned long *)regs)[(r) <= 8 ? (r) : (r) <= 15 ? (r)-17 :	\
-+				 (r) <= 18 ? (r)+11 : (r)-10])
- 
- asmlinkage void
- do_page_fault(unsigned long address, unsigned long mmcsr,
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
+ 	sysfs_remove_link(&udc->dev.kobj, "gadget");
+-	flush_work(&gadget->work);
+ 	device_del(&gadget->dev);
++	flush_work(&gadget->work);
+ 	ida_free(&gadget_id_numbers, gadget->id_number);
+ 	cancel_work_sync(&udc->vbus_work);
+ 	device_unregister(&udc->dev);
+
+base-commit: f286757b644c226b6b31779da95a4fa7ab245ef5
 -- 
-2.47.2
+2.48.1.362.g079036d154-goog
 
 
