@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-112254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8818A27E54
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:35:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B0BA27E56
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BF63A5A3F
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:35:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A21716469C
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A0221B91F;
-	Tue,  4 Feb 2025 22:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C9221C170;
+	Tue,  4 Feb 2025 22:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="n/w14soR"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b="EVMfy9VF"
 X-Original-To: stable@vger.kernel.org
 Received: from minute.unseen.parts (minute.unseen.parts [139.162.151.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AE12163BA;
-	Tue,  4 Feb 2025 22:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC532080CD;
+	Tue,  4 Feb 2025 22:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.162.151.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738708548; cv=none; b=dmoDvNKsOZtiX8RMrd6BsEcAYfFM2dMX9ksbHdCnBsSFKzQWuTVu+crD6hGRBR7/bY/WTbGM2dKzOoEIwoZZQq4ZauA2YH9BSOD8K2LDZRJigW2/nP12A8hSmH16mXGUAEITfGNjbMoimGN2zrbZqH+yqL37N7jnhnG1R0Rtd3U=
+	t=1738708548; cv=none; b=hkJK0BLdvpe78TMWSOXjoSgchjdmDNn4OjJ9nLuLILB0NzzuOq4WREIYvGWZkv5oBSNWwKpq939qtQ5C0yK+EI0TzTnB9LU7/sKLAeg4vRkkxCNdOek0kXWQULCCid8u0Pb5TTlmFa6TRVfh5S/0it8b+OEDV69IrwOE7l1q8k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738708548; c=relaxed/simple;
-	bh=ENohXiMoG6J67UfAWY/pbJxgusEggTfD0/yv1wiqIps=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cm8NOQi369pzvppGg0Pn8L3Z0+5zcEnEE1idGu25r0E3ryK3fsB8ZyI5Y8QT8Cny28x21F5VqpGaH+OD/YcLikSxrHhKaBYKFunRBVZuOvwHhaulll97EY1w9+iOUCNpw121qMgtIAJqfLZuj2S+XEZ7tQoMhsGTXUSisMZCtXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=n/w14soR; arc=none smtp.client-ip=139.162.151.61
+	bh=CQ4qzfWsPMaEEGfGXT1JB4gjxvLkrvrp2t4Hv8GNe4Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JUK8m2LTEtSMTYhsgmgQMOxBMtWfkush5AOS3/jMzew3JIYoABHRPXXS6KORDRd+74jqCLx+U+Qgzrugebe+IHW4Im9sopG0ssiTQKsk/srS5MxnqRXG24ljc3Bukr26F2XGeR0d36Pg1na7ViSAjUbWGw/fBjXlESos7GP5g30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts; spf=pass smtp.mailfrom=unseen.parts; dkim=pass (2048-bit key) header.d=unseen.parts header.i=@unseen.parts header.b=EVMfy9VF; arc=none smtp.client-ip=139.162.151.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unseen.parts
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unseen.parts
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:Message-Id:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	d=unseen.parts; s=sig; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bwrfKNDJU5sKU0Sm5a58jIBrW0E/LkYTnQP8GVVLfcQ=; b=n/w14soRtVHimHYm45UttRdCBG
-	9MKRWgQv/8Sp1SFMtiD4e5SUWYScRRi7nh1ypwjZRJ7VBejM+tbuK48mLb9S0eeVC0/zEJztk+mhZ
-	O7U808+9EfnYXXib4hqLw1ZiNx6TAFMFT+NPYrgAY84iM2twcPxL+E6er76Dtl9IEaOmOwwjAzJpZ
-	7znQR1PF5HsNBs0+L0xZqII4d+pfBQWU06KbJcA9tVJrizY31sWx/V+2IS4sbOtTKmgPvDOjXFHj6
-	oBLcIURafRQOkimh6zL7a8HKMf8Hix4KLSiNSaxdbSHsRdKYnuJBQ4T4xR//flS9pQYUmIV+fKoDn
-	7yy1B54g==;
+	bh=vc975O5bKoOjSLhU3jjysrQsyU95kH6Hm7RGxzT4vCo=; b=EVMfy9VFUrvrstEn65nm4xnK34
+	zjpKG4OwTaEQhu6Iy9WWSjrYeK8FW2CVu/CqyviiDBMXcSBhPCoqWlPJX61h4GaO/6Pv6knE5Hag/
+	/1fcPzVDm9ZwDau7/OOV97y1cg6kgmHbw5s1xs0rwrOeL5gQgikQj3JrRU1QxS/HC22nfnaK5Yx1L
+	rP7C9/GbFvCw2y9AGPwm8PySZG92V5bonqxAYLw37zgicubWMK9FSmWyJur454RjsTWatSMNdx1HA
+	V3IC7Fm3a7kPc5ewE43MLiCakj4YS2zuxMak31JHv1sEMZvjgtgiiHGlaXUU6oI1f4zULXk0RxKap
+	3xwHvcZg==;
 Received: from ink by minute.unseen.parts with local (Exim 4.96)
 	(envelope-from <ink@unseen.parts>)
-	id 1tfRVs-0001cF-1F;
+	id 1tfRVs-0001cJ-1U;
 	Tue, 04 Feb 2025 23:35:24 +0100
 From: Ivan Kokshaysky <ink@unseen.parts>
 To: Richard Henderson <richard.henderson@linaro.org>,
@@ -58,10 +59,12 @@ Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>,
 	linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v3 0/3] alpha: stack fixes
-Date: Tue,  4 Feb 2025 23:35:21 +0100
-Message-Id: <20250204223524.6207-1-ink@unseen.parts>
+Subject: [PATCH v3 1/3] alpha: replace hardcoded stack offsets with autogenerated ones
+Date: Tue,  4 Feb 2025 23:35:22 +0100
+Message-Id: <20250204223524.6207-2-ink@unseen.parts>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250204223524.6207-1-ink@unseen.parts>
+References: <20250204223524.6207-1-ink@unseen.parts>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,67 +73,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series fixes oopses on Alpha/SMP observed since kernel v6.9. [1]
-Thanks to Magnus Lindholm for identifying that remarkably longstanding
-bug.
+This allows the assembly in entry.S to automatically keep in sync with
+changes in the stack layout (struct pt_regs and struct switch_stack).
 
-The problem is that GCC expects 16-byte alignment of the incoming stack
-since early 2004, as Maciej found out [2]:
-  Having actually dug speculatively I can see that the psABI was changed in
- GCC 3.5 with commit e5e10fb4a350 ("re PR target/14539 (128-bit long double
- improperly aligned)") back in Mar 2004, when the stack pointer alignment
- was increased from 8 bytes to 16 bytes, and arch/alpha/kernel/entry.S has
- various suspicious stack pointer adjustments, starting with SP_OFF which
- is not a whole multiple of 16.
-
-Also, as Magnus noted, "ALPHA Calling Standard" [3] required the same:
- D.3.1 Stack Alignment
-  This standard requires that stacks be octaword aligned at the time a
-  new procedure is invoked.
-
-However:
-- the "normal" kernel stack is always misaligned by 8 bytes, thanks to
-  the odd number of 64-bit words in 'struct pt_regs', which is the very
-  first thing pushed onto the kernel thread stack;
-- syscall, fault, interrupt etc. handlers may, or may not, receive aligned
-  stack depending on numerous factors.
-
-Somehow we got away with it until recently, when we ended up with
-a stack corruption in kernel/smp.c:smp_call_function_single() due to
-its use of 32-byte aligned local data and the compiler doing clever
-things allocating it on the stack.
-
-Patche 1 is preparatory; 2 - the main fix; 3 - fixes remaining
-special cases.
-
-Ivan.
-
-[1] https://lore.kernel.org/rcu/CA+=Fv5R9NG+1SHU9QV9hjmavycHKpnNyerQ=Ei90G98ukRcRJA@mail.gmail.com/#r
-[2] https://lore.kernel.org/rcu/alpine.DEB.2.21.2501130248010.18889@angie.orcam.me.uk/
-[3] https://bitsavers.org/pdf/dec/alpha/Alpha_Calling_Standard_Rev_2.0_19900427.pdf
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Ivan Kokshaysky <ink@unseen.parts>
 ---
-Changes in v2:
-- patch #1: provide empty 'struct pt_regs' to fix compile failure in libbpf,
-  reported by John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>;
-  update comment and commit message accordingly;
-- cc'ed <stable@vger.kernel.org> as older kernels ought to be fixed as well.
+ arch/alpha/kernel/asm-offsets.c | 4 ++++
+ arch/alpha/kernel/entry.S       | 4 ----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Changes in v3:
-- patch #1 dropped for the time being;
-- updated commit messages as Maciej suggested.
----
-Ivan Kokshaysky (3):
-  alpha: replace hardcoded stack offsets with autogenerated ones
-  alpha: make stack 16-byte aligned (most cases)
-  alpha: align stack for page fault and user unaligned trap handlers
-
- arch/alpha/include/uapi/asm/ptrace.h |  2 ++
- arch/alpha/kernel/asm-offsets.c      |  4 ++++
- arch/alpha/kernel/entry.S            | 24 ++++++++++--------------
- arch/alpha/kernel/traps.c            |  2 +-
- arch/alpha/mm/fault.c                |  4 ++--
- 5 files changed, 19 insertions(+), 17 deletions(-)
-
+diff --git a/arch/alpha/kernel/asm-offsets.c b/arch/alpha/kernel/asm-offsets.c
+index 4cfeae42c79a..e9dad60b147f 100644
+--- a/arch/alpha/kernel/asm-offsets.c
++++ b/arch/alpha/kernel/asm-offsets.c
+@@ -19,9 +19,13 @@ static void __used foo(void)
+ 	DEFINE(TI_STATUS, offsetof(struct thread_info, status));
+ 	BLANK();
+ 
++	DEFINE(SP_OFF, offsetof(struct pt_regs, ps));
+ 	DEFINE(SIZEOF_PT_REGS, sizeof(struct pt_regs));
+ 	BLANK();
+ 
++	DEFINE(SWITCH_STACK_SIZE, sizeof(struct switch_stack));
++	BLANK();
++
+ 	DEFINE(HAE_CACHE, offsetof(struct alpha_machine_vector, hae_cache));
+ 	DEFINE(HAE_REG, offsetof(struct alpha_machine_vector, hae_register));
+ }
+diff --git a/arch/alpha/kernel/entry.S b/arch/alpha/kernel/entry.S
+index dd26062d75b3..6fb38365539d 100644
+--- a/arch/alpha/kernel/entry.S
++++ b/arch/alpha/kernel/entry.S
+@@ -15,10 +15,6 @@
+ 	.set noat
+ 	.cfi_sections	.debug_frame
+ 
+-/* Stack offsets.  */
+-#define SP_OFF			184
+-#define SWITCH_STACK_SIZE	64
+-
+ .macro	CFI_START_OSF_FRAME	func
+ 	.align	4
+ 	.globl	\func
 -- 
 2.47.2
 
