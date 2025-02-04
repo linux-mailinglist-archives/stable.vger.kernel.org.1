@@ -1,127 +1,141 @@
-Return-Path: <stable+bounces-112121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DC8A26D5A
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:34:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420DAA26D7B
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 578863A3F33
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 08:34:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1920818846CF
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 08:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B63206F34;
-	Tue,  4 Feb 2025 08:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB304206F1B;
+	Tue,  4 Feb 2025 08:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XP+LwwB7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JLwTp8tv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73974206F1B;
-	Tue,  4 Feb 2025 08:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8091213D8A4;
+	Tue,  4 Feb 2025 08:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738658046; cv=none; b=BfL3BCfsPP5nTZRh6oprxmXGFZH3qq9PBf6Ad3gys9iOEkQnvlwdfDflq8zCObttN1jA0NrgNs0zEf3ZkcqKF5ZBaoSiEonxy77b43mo4OnV0x5nQ3Pri3PEs30kHjSuPU+kH78niBochZU3HelviIgDXxNsd5JBoESAejn0IOc=
+	t=1738658735; cv=none; b=ToIVBylwHOlSuR9GQjhJHf5qb4UroI5phPhUKr1edWjn5pjUweB1n+5osqWYh7rZNHYfw0fU5kD50InKbtMWw7C+DOFxQTFKnuRnGumdJa+obSU0PpogVuRMAQNcy0Gx+giWgDD5JxSl4suCYkz65DUteWNcq9t1dnsoOByQUNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738658046; c=relaxed/simple;
-	bh=VHICTY0v/P/XRcN3ZQD+U1TexkYgFSnnw9shFLZHYKE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U/GPn99rIDUlZqVrHwCQNkEh0lc+efd6Un+VATXZiSF+VU25LpMEd6Zgx43Peps58g55kPQbBn3INJQZnlFDbwfYqh87aZqulr6V4HrfSNWM6DIA0tho/rUgOAtz5A7GH+P1N3gtfDy1sKciQCXRc5N00uRjT1a0fGcm3KmTLsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XP+LwwB7; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5401c52000fso5158266e87.2;
-        Tue, 04 Feb 2025 00:34:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738658042; x=1739262842; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OUOy5y0yxsgKWiNWydVbfINSfu/t0HuZpyd/npoH3XQ=;
-        b=XP+LwwB7r6a85IUi4Wio6nPHs1Pv8qfNAoF4gErqWzAmmz25Dtl0Y9B3tTv/UBN9M8
-         /yMFko2Esx18JmWzQCV6g7/UVdTOVaw++rNyxKjwNRVH6apHwQg3e6n7nBCgfUbhMsRt
-         3c8rZ/5X5iJDR+aElPQk+MOXY3N4y5VSdsT6Sr4ZQipu90ByjM8FGEIAxs5y10VRgsFT
-         wVqfpOM3LvPUEmpRIOQ8UGGejQtf5ByhuZrCUgcfSId6Rd/JluHAW12/kFNwzFXOkOjB
-         Wo06YOhtylSb1cCka94Akn87MpzWe6NLfVJcXjZY1XGQXkFJVnQXHMn1Lmh5MpW3gGSd
-         EYHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738658042; x=1739262842;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OUOy5y0yxsgKWiNWydVbfINSfu/t0HuZpyd/npoH3XQ=;
-        b=UHJxuVBUh6kYdsfJC9cH1Eb+MHdHsqasS+hg7IykEtEcUlxhP3ZaqhSB34sa7BFsgq
-         TSUF//Q1AIHm8yp3xlbWzTokh0ZuKvj1/dfJvy2r8a2qsnEuMW5mCGU0jCpTPZmhWIvK
-         ITIiUjLBfRguLxoefLLIqBGgWe7ViY5d2f+OxbOTraXNxm1I7SGoageNibst1QAGEjxS
-         XhdTbgNilapFYJn2RK+/7uzUNkdQNV/O9AEQmH7ofAnln8C8jVSzwIIaDCfEl9f6aTHo
-         635jp17I8WU/LRlgJRNorYrcjC39SsyFz6EHZuAkRG7TVKhbSFqLTCleMqazAuRAk9PJ
-         mabQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUddSm3iPKJTs+VnSQQGY/zhHVCRZQ3IqIcAoZo4SADKVElyTR7VXTx2WhWyFVLQV2TvoA2RF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJMves0RWoH2rE6zvm40ntYD7hiHdwYedvhsu61VCn4YMS0LLL
-	no+b4mMksuRXiWnhmHMkCjpy0BJRhpgea/FSR2IbrUpSXAStK4Em3DH8yw==
-X-Gm-Gg: ASbGncvxntnYcJ7hYYH0jGaN0JGIwMofn2Rn8jw0kuZlHnXmVU+15RkZ99hTkun33Dj
-	0CwuZubQD9LrDtbH44rYYk9hBkCwkFzgezlvvlGgMrW55F0FvOTiMJCg3Yg7RkvMSloOsc7yvqw
-	ZuidDb5DNGz974dEAdudEjGstNRASKpY/RduuD6pBl68J9RlJRYYZEBJXVomztmDqd/jql4lB6G
-	C3ThDJHeVOXIiYsovcRa5SPK4MWahTphM427iLIjuF8DkkdYaIkLz8UJOILREOg/gjA7UuYYNw1
-	kN5M67sBX/V8/454W1HvWWa3fJ03
-X-Google-Smtp-Source: AGHT+IHQfaQHoAtZGFzbC8xJD5xe70Eyb7uUAOgyq4UAxOECNyD9eiaAT//DHs+Lrql82V7+Ljb8yw==
-X-Received: by 2002:a19:f712:0:b0:540:3581:5047 with SMTP id 2adb3069b0e04-543e4c415fcmr7555392e87.48.1738658042155;
-        Tue, 04 Feb 2025 00:34:02 -0800 (PST)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebebef1esm1519465e87.253.2025.02.04.00.33.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Feb 2025 00:34:00 -0800 (PST)
-Message-ID: <27dd749e-712f-46eb-9630-660a8f8f490d@gmail.com>
-Date: Tue, 4 Feb 2025 10:33:58 +0200
+	s=arc-20240116; t=1738658735; c=relaxed/simple;
+	bh=SPpXPUpwk/W57k2iVLstC4U5AtSCuka53j4S57VXJHE=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Qm0c35+Upv1KMTDunArDtNoTOmOZTPRBS5W3tWTBrLa+RMGJQjgCa4sZ5iaNIXUGJNg+FTDzGePHGo9c4oH1IfZIWSjcOYpjhvvskXeQsSYrb0bAbA2tEnzRObN14agEsg0ON/PG+eHgR38cqbZDzyTCqwngSjMGEWo0Db7VeVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JLwTp8tv; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738658734; x=1770194734;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=SPpXPUpwk/W57k2iVLstC4U5AtSCuka53j4S57VXJHE=;
+  b=JLwTp8tvYrSjmPn02qPDyUfeqkG3AHo5H3kaj9Y15oyvJWTsGUVV6ICz
+   JLy4Hb4mTL3B8hPHtHe2Cv5Z941cKoSoMFdO8R2nqFZ/IJv+80UK0jEal
+   44aWyrDwUlUrFjAmhU2aYKsE1lrbrQnxMHhV07VB46S8rRFS2Ftg9b6Mb
+   MlWEAFz0514JhXTSqar0CzorR1dsAovvTekzXQdPDkLhu7v1vN228EKYW
+   XIfLTnP1j9uUNy2232VwLyz/TvzLlbcTS+v25GUkbMAwGlm9oNTfjOr8Z
+   2AngqlPNY65kMjoY39AuX6EbJbY6mxQx5InsY9TSOKI4r+bS16T2iD5+G
+   w==;
+X-CSE-ConnectionGUID: fvVKYzzIQLWo67Vh2dXdPA==
+X-CSE-MsgGUID: /GD3MWSURGW4RwI3d5Nq6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="42923798"
+X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
+   d="scan'208";a="42923798"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 00:45:33 -0800
+X-CSE-ConnectionGUID: nziqMhAiRK+uY5idikq9Qw==
+X-CSE-MsgGUID: HdCMd7riT1SMFbw/Ka/uGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="114576159"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.75])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 00:45:31 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 4 Feb 2025 10:45:27 +0200 (EET)
+To: Ma Ke <make24@iscas.ac.cn>
+cc: bhelgaas@google.com, rafael.j.wysocki@intel.com, yinghai@kernel.org, 
+    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH v3] PCI: fix reference leak in pci_alloc_child_bus()
+In-Reply-To: <20250202062357.872971-1-make24@iscas.ac.cn>
+Message-ID: <c34742e8-cc03-49a9-386e-afb4d14a68b1@linux.intel.com>
+References: <20250202062357.872971-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] regmap-irq: Add missing kfree()
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>, broonie@kernel.org,
- gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250202200512.24490-1-jiashengjiangcool@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250202200512.24490-1-jiashengjiangcool@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323328-1449886408-1738658727=:1609"
 
-Thanks Jiang!
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-On 02/02/2025 22:05, Jiasheng Jiang wrote:
-> Add kfree() for "d->main_status_buf" in the error-handling path to prevent
-> a memory leak.
-> 
-> Fixes: a2d21848d921 ("regmap: regmap-irq: Add main status register support")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+--8323328-1449886408-1738658727=:1609
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-This looks valid to me.
+On Sun, 2 Feb 2025, Ma Ke wrote:
 
-I still wonder if you could fix also the missing freeing from the 
-regmap_del_irq_chip()? (AFAICS, the freeing is missing from that as well).
-
+> When device_register(&child->dev) failed, we should call put_device()
+> to explicitly release child->dev.
+>=20
+> As comment of device_register() says, 'NOTE: _Never_ directly free
+> @dev after calling this function, even if it returned an error! Always
+> use put_device() to give up the reference initialized in this function
+> instead.'
+>=20
+> Found by code review.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possibl=
+e")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 > ---
->   drivers/base/regmap/regmap-irq.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
-> index 0bcd81389a29..b73ab3cda781 100644
-> --- a/drivers/base/regmap/regmap-irq.c
-> +++ b/drivers/base/regmap/regmap-irq.c
-> @@ -906,6 +906,7 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
->   	kfree(d->wake_buf);
->   	kfree(d->mask_buf_def);
->   	kfree(d->mask_buf);
-> +	kfree(d->main_status_buf);
->   	kfree(d->status_buf);
->   	kfree(d->status_reg_buf);
->   	if (d->config_buf) {
+> Changes in v3:
+> - modified the description as suggestions.
+> Changes in v2:
+> - added the bug description about the comment of device_add();
+> - fixed the patch as suggestions;
+> - added Cc and Fixes table.
+> ---
+>  drivers/pci/probe.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 2e81ab0f5a25..51b78fcda4eb 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct =
+pci_bus *parent,
+>  add_dev:
+>  =09pci_set_bus_msi_domain(child);
+>  =09ret =3D device_register(&child->dev);
+> -=09WARN_ON(ret < 0);
+> +=09if (WARN_ON(ret < 0)) {
+> +=09=09put_device(&child->dev);
+> +=09=09return NULL;
+> +=09}
+> =20
+>  =09pcibios_add_bus(child);
 
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+
+Unrelated to this fix, IMO that WARN_ON() is overkill and I'm skeptical=20
+that printing a stack trace on a failure in device_register() is helpful.
+IMO, a simple error print would suffice to tell something (unexpectedly)
+went wrong here.
+
+--=20
+ i.
+
+--8323328-1449886408-1738658727=:1609--
 
