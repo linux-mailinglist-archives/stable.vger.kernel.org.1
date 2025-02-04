@@ -1,135 +1,320 @@
-Return-Path: <stable+bounces-112251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAAC4A27E2E
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:20:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AE9A27E49
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 23:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73CE13A3D27
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:20:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5773A50A2
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B794C21C9F3;
-	Tue,  4 Feb 2025 22:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771D721B180;
+	Tue,  4 Feb 2025 22:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o1FNfi3Q"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="LpOpmC6D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAD11FAC5C;
-	Tue,  4 Feb 2025 22:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333411FAC5C
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 22:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738707616; cv=none; b=VmA6iuxAns6hFutlAdYSrOQLnmoWTmBRt9fVkPSjRnm67/M0X07jfjmhPon7kd9PJpXyW+f+0cA3XaVNztJlX6fpIlv3SRWMBUackyt7mLYQeGgj91QPmxCcAKqoToMyxo5g3/vXaciOTYxf+TM4NKIA2aJdXW0XZI65NWqMZGs=
+	t=1738708194; cv=none; b=tBQGwS3hMOJy+C410/Fz/F1aXoiVw+dMwXYqJA0yYmHYtT70qOB+H9fb6c7WPLuv/Olsgr8/5XpeTJ9ul/+E1OcI9ZfoIw7hnYalWpo7fUI9A7itthPu6buMSH10FwOBbFS/IzUnwo7T7Ia8qmjU+/+eCM3M5aUy+9u61dRXTy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738707616; c=relaxed/simple;
-	bh=Ofg3xhSGKHnj2+K7N2sYVNrGu7WKXnhEyI2OiZYqCyc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ic50P48sHlAibuz8bCEL32WaICv6MPXdWsQtCurfZL2eYA1Cs9Z4XBi2x6sKhaG4xBueeuObWCWZkO1TuOYed5v0JBYX583DsiJxf3y18HUeIeM8t8fsVGEZBeLfRvNiiDbBCfxDGdeWxaykv3XtaSzzeUYn4MEXjnpY0Icz0x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o1FNfi3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D374C4CEDF;
-	Tue,  4 Feb 2025 22:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738707615;
-	bh=Ofg3xhSGKHnj2+K7N2sYVNrGu7WKXnhEyI2OiZYqCyc=;
-	h=From:Date:Subject:To:Cc:From;
-	b=o1FNfi3QM3KcNkDfnxZMfJf6s8wyRBoc3vFV5N7u+VdLJj0RQ4shLisPwnGhufeKN
-	 VROKlmxbQ87OvueEbA3MIfFSO9uhJMr/X4999SXIIYqkj6nAlHdK9Ha5vmAXDgiBC0
-	 Chd1cmGMchTnhttGTDnTwM5uchOg3vhm0l4cszz4uiZlM4L9TxvE4ptX78D6wgw1SK
-	 tkcVjDwY1onpNGQAtUqiwXi91q8SM2uOe6OqUwMs3lnohC3FaATXPVAYDuvEYM2q2k
-	 wm1SNcSPmLMR7YFrbf3B4ODGbJONS8FWmrH/gtKzK3L4CJALm9J8GJx+nxkWo1dn9G
-	 rAXb2wSOHM/MA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 04 Feb 2025 23:19:53 +0100
-Subject: [PATCH net] selftests: mptcp: connect: -f: no reconnect
+	s=arc-20240116; t=1738708194; c=relaxed/simple;
+	bh=ibKRu8Fe/H2IX+AavqxSC9RZVA6Qn9lLjdh7002GA3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AO6MniGtuXvOjPiQgZR43QFLbWonHBP0m8GAN9zQqAu9KdX0z1Ig54s8OrWtKPpFxV0xoeQXjMzrhkFNb2Te6vet1KkfFHaGkDVQ/O7ew62qEVF6NRY1UF+dAdCCpylJaoyoz4Xt12tsqVRPqq2wb1fqM+x/gO38RxKG+xqfG6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=LpOpmC6D; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514MShSD001025;
+	Tue, 4 Feb 2025 22:29:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=EquOAttVh16Z4kZtgokF8o1uopRds
+	Gp5w0OZpb6rxlw=; b=LpOpmC6DVrI21yjOyHNInVQVYG1LV8M9lW60MPtxRoqnJ
+	ptcltlYi77CyBR9kRmsZ3CXTK5kJAI6DMIPGhxAoSFBoiA3OrvaMcuSxtzwI43FG
+	A76P2sW2qCeJz0ane1Vg3vYIMXIGxhp4RF28BSlwYn1JJ7gl2SVC5lWsCtI2+Dc2
+	z5Woa2If8iZ2S/fnaAmDu8NwuR6DTcax1l9HN5i/0SKOSIyxgc6E5h2id6rlIILX
+	+3Bkjd9zaOb82F7wmT3tqHcKIN0edYFJOCmzLpOa2RKR/NvmhGoibPOXUG0aFXZk
+	I/xdSwWVZe32Z8W73FKAISWogxJJGXfFB2t+yhSwQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hfy85u1m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 04 Feb 2025 22:29:39 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 514MJet5036238;
+	Tue, 4 Feb 2025 22:29:38 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44j8fmu69x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 04 Feb 2025 22:29:38 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 514MTc3I028511;
+	Tue, 4 Feb 2025 22:29:38 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44j8fmu69n-1;
+	Tue, 04 Feb 2025 22:29:38 +0000
+From: Yifei Liu <yifei.l.liu@oracle.com>
+To: leon.hwang@linux.dev
+Cc: yifei.l.liu@oracle.com, eddyz87@gmail.com, ast@kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH Linux-6.12.y 1/1] selftests/bpf: Add test to verify tailcall and freplace restrictions
+Date: Tue,  4 Feb 2025 14:28:50 -0800
+Message-ID: <20250204222850.1993819-1-yifei.l.liu@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250204-net-mptcp-sft-conn-f-v1-1-6b470c72fffa@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAIiSomcC/x3MQQqAIBBA0avErBtQsYKuEi3KxppFk6hEIN09a
- fkX7xdIFJkSjE2BSDcnvqSGbhtwxyI7IW+1wSjTKaMsCmU8Q3YBk8/oLhH0uGmnrRnsuvQ9VBo
- ieX7+7QRVwPy+H1RNVetrAAAA
-X-Change-ID: 20250204-net-mptcp-sft-conn-f-d1c14274ba66
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2021; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=Ofg3xhSGKHnj2+K7N2sYVNrGu7WKXnhEyI2OiZYqCyc=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBnopKYLQZU4YyKbSKz5pUlq54AT8014h2s72eXB
- o75Fr0Jql6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZ6KSmAAKCRD2t4JPQmmg
- c7JvD/9g08zZZi2rntY2iKHW6N+QUbZgSWYgSl+dIqRo3CjhD1LsKTxoupIfaU6EL+JQj/UBlJD
- 1p7EW6tjd/98J4hsI5vSyt+5NS5VYlMvCrvSez+QxRh/Ne//X2uwXXoA8AOQoFDaq2/o8WOh7F0
- 3Ib9uR6urG/kpRoQ9VxHHIfXl8Z499uRvJWtzX5eopvZU8xLlURVSkxjIHZ9mq0BdQTIOZip0Pt
- ecs88Eh49YksLdi0WrSfKrNEngRcuAuUGNOus0O6MXMKnqtisR35H1Hc2BYxMvZOB3Aghm48OcD
- 2U1pMF6dYGyUh+avYkfsrY8/N3W3gwwC+BYsz7hzDOeMvtTXjvCHNThwxjN0Ge4VLNJI7WyVxAS
- Ra91FDb1JrhJaXC1K27iKdM+9uTht63YDlcU7lGpscc9WnCzaORWSK0rRKRzS3HTH59jOn0XTjA
- 3w5tKK5UH5t90wTQMbfbyAgPkl+lzkaRa/5n8RVeN+r/90QG9xDzDMEyiWbbOLnxl1ICZSiBWLu
- nMd/nlLtRKa47Gv/Qm+0VZrt53Gl8v+ejzGOd5d2PBNlF2cvYRJtozLZRrpzN2szJC+uqzG/Tx6
- N2QRcK9GTjwf2F2OJJCVvRF/gD8sE/qk2Gc9ngMUU+pXPTmG+SQU34yTrw+eSfNxwqmtfyZihBy
- Yzncvbtwc6VSdFQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_09,2025-02-04_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 phishscore=0
+ suspectscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2501170000
+ definitions=main-2502040167
+X-Proofpoint-GUID: GQOO6071ygibsIVM72beWonfab_TRPdV
+X-Proofpoint-ORIG-GUID: GQOO6071ygibsIVM72beWonfab_TRPdV
 
-The '-f' parameter is there to force the kernel to emit MPTCP FASTCLOSE
-by closing the connection with unread bytes in the receive queue.
+From: Leon Hwang <leon.hwang@linux.dev>
 
-The xdisconnect() helper was used to stop the connection, but it does
-more than that: it will shut it down, then wait before reconnecting to
-the same address. This causes the mptcp_join's "fastclose test" to fail
-all the time.
+[ Upstream commit 021611d33e78694f4bd54573093c6fc70a812644 ]
 
-This failure is due to a recent change, with commit 218cc166321f
-("selftests: mptcp: avoid spurious errors on disconnect"), but that went
-unnoticed because the test is currently ignored. The recent modification
-only shown an existing issue: xdisconnect() doesn't need to be used
-here, only the shutdown() part is needed.
+Add a test case to ensure that attaching a tail callee program with an
+freplace program fails, and that updating an extended program to a
+prog_array map is also prohibited.
 
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+This test is designed to prevent the potential infinite loop issue caused
+by the combination of tail calls and freplace, ensuring the correct
+behavior and stability of the system.
+
+Additionally, fix the broken tailcalls/tailcall_freplace selftest
+because an extension prog should not be tailcalled.
+
+cd tools/testing/selftests/bpf; ./test_progs -t tailcalls
+337/25  tailcalls/tailcall_freplace:OK
+337/26  tailcalls/tailcall_bpf2bpf_freplace:OK
+337     tailcalls:OK
+Summary: 1/26 PASSED, 0 SKIPPED, 0 FAILED
+
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20241015150207.70264-3-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+(cherry picked from commit 021611d33e78694f4bd54573093c6fc70a812644)
+[Yifei: bpf freplace update is backported to linux-6.12 by commit 987aa730bad3 ("bpf: Prevent tailcall infinite
+loop caused by freplace"). It will cause selftest #336/25 failed. Then backport this commit]
+Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
 ---
-Notes:
- - The failure was not clearly visible on NIPA, because the results for
-   the two impacted sub-tests are currently ignored (unstable). Still,
-   it looks important to fix that, as this will help when the tests will
-   be improved not to be unstable any more.
----
- tools/testing/selftests/net/mptcp/mptcp_connect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/tailcalls.c      | 120 ++++++++++++++++--
+ .../testing/selftests/bpf/progs/tc_bpf2bpf.c  |   5 +-
+ 2 files changed, 109 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index 414addef9a4514c489ecd09249143fe0ce2af649..d240d02fa443a1cd802f0e705ab36db5c22063a8 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1302,7 +1302,7 @@ int main_loop(void)
- 		return ret;
+diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
+index 21c5a37846ad..40f22454cf05 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
++++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
+@@ -1496,8 +1496,8 @@ static void test_tailcall_bpf2bpf_hierarchy_3(void)
+ 	RUN_TESTS(tailcall_bpf2bpf_hierarchy3);
+ }
  
- 	if (cfg_truncate > 0) {
--		xdisconnect(fd);
-+		shutdown(fd, SHUT_WR);
- 	} else if (--cfg_repeat > 0) {
- 		xdisconnect(fd);
+-/* test_tailcall_freplace checks that the attached freplace prog is OK to
+- * update the prog_array map.
++/* test_tailcall_freplace checks that the freplace prog fails to update the
++ * prog_array map, no matter whether the freplace prog attaches to its target.
+  */
+ static void test_tailcall_freplace(void)
+ {
+@@ -1505,7 +1505,7 @@ static void test_tailcall_freplace(void)
+ 	struct bpf_link *freplace_link = NULL;
+ 	struct bpf_program *freplace_prog;
+ 	struct tc_bpf2bpf *tc_skel = NULL;
+-	int prog_fd, map_fd;
++	int prog_fd, tc_prog_fd, map_fd;
+ 	char buff[128] = {};
+ 	int err, key;
  
-
----
-base-commit: 4241a702e0d0c2ca9364cfac08dbf134264962de
-change-id: 20250204-net-mptcp-sft-conn-f-d1c14274ba66
-
-Best regards,
+@@ -1523,9 +1523,10 @@ static void test_tailcall_freplace(void)
+ 	if (!ASSERT_OK_PTR(tc_skel, "tc_bpf2bpf__open_and_load"))
+ 		goto out;
+ 
+-	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
++	tc_prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
+ 	freplace_prog = freplace_skel->progs.entry_freplace;
+-	err = bpf_program__set_attach_target(freplace_prog, prog_fd, "subprog");
++	err = bpf_program__set_attach_target(freplace_prog, tc_prog_fd,
++					     "subprog_tc");
+ 	if (!ASSERT_OK(err, "set_attach_target"))
+ 		goto out;
+ 
+@@ -1533,27 +1534,116 @@ static void test_tailcall_freplace(void)
+ 	if (!ASSERT_OK(err, "tailcall_freplace__load"))
+ 		goto out;
+ 
+-	freplace_link = bpf_program__attach_freplace(freplace_prog, prog_fd,
+-						     "subprog");
++	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
++	prog_fd = bpf_program__fd(freplace_prog);
++	key = 0;
++	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
++	ASSERT_ERR(err, "update jmp_table failure");
++
++	freplace_link = bpf_program__attach_freplace(freplace_prog, tc_prog_fd,
++						     "subprog_tc");
+ 	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
+ 		goto out;
+ 
+-	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
+-	prog_fd = bpf_program__fd(freplace_prog);
++	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
++	ASSERT_ERR(err, "update jmp_table failure");
++
++out:
++	bpf_link__destroy(freplace_link);
++	tailcall_freplace__destroy(freplace_skel);
++	tc_bpf2bpf__destroy(tc_skel);
++}
++
++/* test_tailcall_bpf2bpf_freplace checks the failure that fails to attach a tail
++ * callee prog with freplace prog or fails to update an extended prog to
++ * prog_array map.
++ */
++static void test_tailcall_bpf2bpf_freplace(void)
++{
++	struct tailcall_freplace *freplace_skel = NULL;
++	struct bpf_link *freplace_link = NULL;
++	struct tc_bpf2bpf *tc_skel = NULL;
++	char buff[128] = {};
++	int prog_fd, map_fd;
++	int err, key;
++
++	LIBBPF_OPTS(bpf_test_run_opts, topts,
++		    .data_in = buff,
++		    .data_size_in = sizeof(buff),
++		    .repeat = 1,
++	);
++
++	tc_skel = tc_bpf2bpf__open_and_load();
++	if (!ASSERT_OK_PTR(tc_skel, "tc_bpf2bpf__open_and_load"))
++		goto out;
++
++	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
++	freplace_skel = tailcall_freplace__open();
++	if (!ASSERT_OK_PTR(freplace_skel, "tailcall_freplace__open"))
++		goto out;
++
++	err = bpf_program__set_attach_target(freplace_skel->progs.entry_freplace,
++					     prog_fd, "subprog_tc");
++	if (!ASSERT_OK(err, "set_attach_target"))
++		goto out;
++
++	err = tailcall_freplace__load(freplace_skel);
++	if (!ASSERT_OK(err, "tailcall_freplace__load"))
++		goto out;
++
++	/* OK to attach then detach freplace prog. */
++
++	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
++						     prog_fd, "subprog_tc");
++	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
++		goto out;
++
++	err = bpf_link__destroy(freplace_link);
++	if (!ASSERT_OK(err, "destroy link"))
++		goto out;
++
++	/* OK to update prog_array map then delete element from the map. */
++
+ 	key = 0;
++	map_fd = bpf_map__fd(freplace_skel->maps.jmp_table);
+ 	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
+ 	if (!ASSERT_OK(err, "update jmp_table"))
+ 		goto out;
+ 
+-	prog_fd = bpf_program__fd(tc_skel->progs.entry_tc);
+-	err = bpf_prog_test_run_opts(prog_fd, &topts);
+-	ASSERT_OK(err, "test_run");
+-	ASSERT_EQ(topts.retval, 34, "test_run retval");
++	err = bpf_map_delete_elem(map_fd, &key);
++	if (!ASSERT_OK(err, "delete_elem from jmp_table"))
++		goto out;
++
++	/* Fail to attach a tail callee prog with freplace prog. */
++
++	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
++	if (!ASSERT_OK(err, "update jmp_table"))
++		goto out;
++
++	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
++						     prog_fd, "subprog_tc");
++	if (!ASSERT_ERR_PTR(freplace_link, "attach_freplace failure"))
++		goto out;
++
++	err = bpf_map_delete_elem(map_fd, &key);
++	if (!ASSERT_OK(err, "delete_elem from jmp_table"))
++		goto out;
++
++	/* Fail to update an extended prog to prog_array map. */
++
++	freplace_link = bpf_program__attach_freplace(freplace_skel->progs.entry_freplace,
++						     prog_fd, "subprog_tc");
++	if (!ASSERT_OK_PTR(freplace_link, "attach_freplace"))
++		goto out;
++
++	err = bpf_map_update_elem(map_fd, &key, &prog_fd, BPF_ANY);
++	if (!ASSERT_ERR(err, "update jmp_table failure"))
++		goto out;
+ 
+ out:
+ 	bpf_link__destroy(freplace_link);
+-	tc_bpf2bpf__destroy(tc_skel);
+ 	tailcall_freplace__destroy(freplace_skel);
++	tc_bpf2bpf__destroy(tc_skel);
+ }
+ 
+ void test_tailcalls(void)
+@@ -1606,4 +1696,6 @@ void test_tailcalls(void)
+ 	test_tailcall_bpf2bpf_hierarchy_3();
+ 	if (test__start_subtest("tailcall_freplace"))
+ 		test_tailcall_freplace();
++	if (test__start_subtest("tailcall_bpf2bpf_freplace"))
++		test_tailcall_bpf2bpf_freplace();
+ }
+diff --git a/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c b/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
+index 79f5087dade2..fe6249d99b31 100644
+--- a/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
++++ b/tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
+@@ -5,10 +5,11 @@
+ #include "bpf_misc.h"
+ 
+ __noinline
+-int subprog(struct __sk_buff *skb)
++int subprog_tc(struct __sk_buff *skb)
+ {
+ 	int ret = 1;
+ 
++	__sink(skb);
+ 	__sink(ret);
+ 	/* let verifier know that 'subprog_tc' can change pointers to skb->data */
+ 	bpf_skb_change_proto(skb, 0, 0);
+@@ -18,7 +19,7 @@ int subprog(struct __sk_buff *skb)
+ SEC("tc")
+ int entry_tc(struct __sk_buff *skb)
+ {
+-	return subprog(skb);
++	return subprog_tc(skb);
+ }
+ 
+ char __license[] SEC("license") = "GPL";
 -- 
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
+2.46.0
 
 
