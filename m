@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EC1A269A0
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72713A2699E
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADF1C3A60E9
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50FF41883144
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648511662F1;
-	Tue,  4 Feb 2025 01:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A51214217;
+	Tue,  4 Feb 2025 01:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYKrOUCD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suEa6m8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392B15DBBA;
-	Tue,  4 Feb 2025 01:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E93421420C;
+	Tue,  4 Feb 2025 01:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631885; cv=none; b=QOzOxNEJ9xdG71T7/8f1JNbNFtkAZ98a2DV2oBXgA6xwXWE0RQSoDAFWt6/fSbmSf4lyNpBeSk9Q1xj045pnf9b/1Rvy/Mb5aebqvMzvnbOE0FOEx2fnuYemhaLrYLp7jvI4rqWcxp1E2cGvNVg7wKiFqHBbjKAyCBxNQEkbsNI=
+	t=1738631886; cv=none; b=GC9C+kAFGllvobjA+pSZMrSxY17fzTiE21cbE/Kp52SENhhHBsDG8FcNUgp1OJn7QcthT5Cc+puFsOKR103cFLpr8fO+kV0DCzYKTvo860HXrtKWGxbwisamDISc+F6XrAUMQsHKVjacAEhOaJ63Dzl7IG66B5F9j/DDxGxF6aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631885; c=relaxed/simple;
-	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	s=arc-20240116; t=1738631886; c=relaxed/simple;
+	bh=rE3MGdpZlRGV8bgwGo6eyO42glJQFq9ze2CSY9FcHSA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NluS8UeFGVAE22wf7ZF/+j8S2HfROiWChN7t9pBZkY2Bfp+0kc34vV7EWpDddlvwMD1zic+XKu/2UF8YMIQ9lcY6J90k4QAbQqaCOAEB5kuPIXy7ux2PPN6qKKTzi+BXDKlxXYmaFbr17bSAgTv1H3GltiWIbU0gRgHikh5GhxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYKrOUCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16A4C4CEE6;
-	Tue,  4 Feb 2025 01:18:03 +0000 (UTC)
+	 MIME-Version; b=opRP4J5jhF9n63Pb0VHhT6RHZP4klKqMKWCYpBltqJX6BBQffEqJaPPnXDfZoqtXLd8wmGjM7iRGFqQ+i13iXHM5sUcydFqxp/69dW+IG6mpYXW1UvfwewJ/MVRkb/7ivjpqOTWIulk+mGGUD/YGlmq7blAaUkX4O8+2/f2Fge8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suEa6m8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1311BC4CEE4;
+	Tue,  4 Feb 2025 01:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631884;
-	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	s=k20201202; t=1738631885;
+	bh=rE3MGdpZlRGV8bgwGo6eyO42glJQFq9ze2CSY9FcHSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYKrOUCDVYD95f04s3e1Ixw+5RFBi+P00MI+bByS65jVsijnaN5oucBHeNaLtTqAS
-	 YYPCWqQz+OKQlVFGb1ynsSLfH1RSWdV8E65DhgHgmlHjz8Fmbcy34zqURyjnGnB8P+
-	 iTX5KOl4TvYJUolI68fpov+z25e5d9waA5Xx/NuMKvEXlWUVpRG5mcjgtaPFVOpgM/
-	 e1a2x0quRXNl5+J9ZmPlDT2rNEFJVHgbvH9HG88CR/EFlxL8r+fVAN1ROjBu9jKfF+
-	 yimScW9Mf7Ti5gsTeChU0aGiHOxQaV4fnUo9vrhBwz74ZtNloRK+LbMX/OO97Z2/3d
-	 ak7uIyK6C2s4A==
+	b=suEa6m8pDCqg0lHDDhfIBwzMNRYNDJ33YqR/wpDtoi9UezYae54Gug1XmR7SKIsLt
+	 spHvnDlWLUe9L9mlWVmwNlcGj0KoHGjKBgcIdPYhFaD1jfxy91DCbG5gbjM2StgQok
+	 ELjOxw3q9SzXv9DzMy7Nazx4BGQTsKdXgkCOjPxHbCALsI2EUsMhXzYqaJ0lukAnhx
+	 62uWpZqvNZbTJ/IOaQgGBawwSI/1tu6FRHe3dVM76rT2y1KoH/g7p1aexlgzDNKZ8g
+	 ogjMgUWfRuJ2bLEswaTDraGf5VHgwnQD9j2uCCQ7nHHcH72zewuB552f7fPL0JWbq4
+	 VgDQFAvB7AdXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Marshall <hubcap@omnibond.com>,
-	syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com,
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	devel@lists.orangefs.org
-Subject: [PATCH AUTOSEL 6.12 2/5] orangefs: fix a oob in orangefs_debug_write
-Date: Mon,  3 Feb 2025 20:17:50 -0500
-Message-Id: <20250204011757.2206869-2-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 3/5] kbuild: suppress stdout from merge_config for silent builds
+Date: Mon,  3 Feb 2025 20:17:51 -0500
+Message-Id: <20250204011757.2206869-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250204011757.2206869-1-sashal@kernel.org>
 References: <20250204011757.2206869-1-sashal@kernel.org>
@@ -65,37 +66,82 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.12
 Content-Transfer-Encoding: 8bit
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f7c848431632598ff9bce57a659db6af60d75b39 ]
+[ Upstream commit 1f937a4bcb0472015818f30f4d3c5546d3f09933 ]
 
-I got a syzbot report: slab-out-of-bounds Read in
-orangefs_debug_write... several people suggested fixes,
-I tested Al Viro's suggestion and made this patch.
+merge_config does not respect the Make's -s (--silent) option.
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Reported-by: syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com
+Let's sink the stdout from merge_config for silent builds.
+
+This commit does not cater to the direct invocation of merge_config.sh
+(e.g. arch/mips/Makefile).
+
+Reported-by: Leon Romanovsky <leon@kernel.org>
+Closes: https://lore.kernel.org/all/e534ce33b0e1060eb85ece8429810f087b034c88.1733234008.git.leonro@nvidia.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/Makefile.defconf | 13 +++++++------
+ scripts/kconfig/Makefile |  4 +++-
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index 1b508f5433846..fa41db0884880 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -393,9 +393,9 @@ static ssize_t orangefs_debug_write(struct file *file,
- 	 * Thwart users who try to jamb a ridiculous number
- 	 * of bytes into the debug file...
- 	 */
--	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN + 1) {
-+	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 		silly = count;
--		count = ORANGEFS_MAX_DEBUG_STRING_LEN + 1;
-+		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
- 	}
+diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
+index 226ea3df3b4b4..a44307f08e9d6 100644
+--- a/scripts/Makefile.defconf
++++ b/scripts/Makefile.defconf
+@@ -1,6 +1,11 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Configuration heplers
  
- 	buf = kzalloc(ORANGEFS_MAX_DEBUG_STRING_LEN, GFP_KERNEL);
++cmd_merge_fragments = \
++	$(srctree)/scripts/kconfig/merge_config.sh \
++	$4 -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$2 \
++	$(foreach config,$3,$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
++
+ # Creates 'merged defconfigs'
+ # ---------------------------------------------------------------------------
+ # Usage:
+@@ -8,9 +13,7 @@
+ #
+ # Input config fragments without '.config' suffix
+ define merge_into_defconfig
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
+-		-m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
+-		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
++	$(call cmd,merge_fragments,$1,$2)
+ 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ endef
+ 
+@@ -22,8 +25,6 @@ endef
+ #
+ # Input config fragments without '.config' suffix
+ define merge_into_defconfig_override
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
+-		-Q -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
+-		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
++	$(call cmd,merge_fragments,$1,$2,-Q)
+ 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ endef
+diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
+index a0a0be38cbdc1..fb50bd4f4103f 100644
+--- a/scripts/kconfig/Makefile
++++ b/scripts/kconfig/Makefile
+@@ -105,9 +105,11 @@ configfiles = $(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARC
+ all-config-fragments = $(call configfiles,*.config)
+ config-fragments = $(call configfiles,$@)
+ 
++cmd_merge_fragments = $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
++
+ %.config: $(obj)/conf
+ 	$(if $(config-fragments),, $(error $@ fragment does not exists on this architecture))
+-	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
++	$(call cmd,merge_fragments)
+ 	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
+ 
+ PHONY += tinyconfig
 -- 
 2.39.5
 
