@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-112130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C658A26F50
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 11:29:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4F0A26F5A
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 11:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96F1A7A067C
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 10:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A1E63A439F
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 10:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884E4209668;
-	Tue,  4 Feb 2025 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2DD208974;
+	Tue,  4 Feb 2025 10:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ept8ne4U"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="kIwoBFqb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f193.google.com (mail-yw1-f193.google.com [209.85.128.193])
+Received: from mail-yw1-f196.google.com (mail-yw1-f196.google.com [209.85.128.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E569B208989
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 10:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD2B201267
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 10:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738664940; cv=none; b=QCGcVs4Z4RN7T3oANf6IgRyNWLvuwe7CeO9Pzv8UpgVCCQqkbM+UPdiU16bMySsD2UejiApZsh1Ltzkc+EZxpK72YiVUkrOTv2KqlH7Imzm3Y06u5saw5kBrwHLqBWbyhpO3KZLv4WglqluGPYE1ytRGFJhVDCpLtHRj38N0xvI=
+	t=1738665159; cv=none; b=NFq7ZzdPJp7vy9bmPvR8Kt3/xCHi1+OZKXabqo5kDq2xuJJl1HL//PvabG/vmir0Y2Yzs+V1GfrRAFXexrEH5T1KdlDUrZKyJfY90tGafbFH3LWYxNKIzdbuUElqfoXrhHvKK1JHMPaC/k/NZUKppBfw3F03IgEneWQL6yRReAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738664940; c=relaxed/simple;
-	bh=2LvEQ0wOTFaWhwa9DPu3nbG0sycZBiQlHMufDNDdkDo=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=b47y+We7oR8ybylDOPUA6e03mx+a/8LAuLWK1LPzWAoXNpgNcw+EhdrCu6l6G7LKf5pQAEWN45UV6ZsHmOrntjBI+Db6aMbtmIg32K1WS6RjEaD6fVjR9LN5J61BS/Uh3MvuncAyWDSphU9mFf/5gkcLAOTcyZ7F++vz8viLCEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=ept8ne4U; arc=none smtp.client-ip=209.85.128.193
+	s=arc-20240116; t=1738665159; c=relaxed/simple;
+	bh=h4bCdJLPPIOUa1CDbt7BqwjsN6eRnUYH+RIoS+X8j7I=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=aVc2igbObrnCxPUHkRxSKnvnsQ9eS5GVbKjv7GXi81qJ5GvhCz1JXOKSXcTefkba1pfgyyBpEAEmpjsbFeGOiPczwNj3iOEauSUV3yuEGVouIeNC+iISSP1wYSrF9ZYfoRUICP1vI7/AlcLCMT852Ynej5NoDfT9Z+gxYMzn5FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=kIwoBFqb; arc=none smtp.client-ip=209.85.128.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f193.google.com with SMTP id 00721157ae682-6f973c0808dso11000237b3.0
-        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 02:28:57 -0800 (PST)
+Received: by mail-yw1-f196.google.com with SMTP id 00721157ae682-6ef60e500d7so35781777b3.0
+        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 02:32:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1738664937; x=1739269737; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1738665156; x=1739269956; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ubwaL7oEStadrLkrpZmo0dMLzr7dWhUY7RZXXJTTuIo=;
-        b=ept8ne4UmQ1b7dteke2OD6I1Qqm0tNidyPXt6PGdk5O2s78sOnZvMDLwiquo+MMbv9
-         EhRWrXuH7tUW+6MwYG+wxh2gH801lFOLb0rRUnuFWgSRFP9R379mvLzb+jIWLoZu8PHV
-         ql7ymPXZ+S+yHid9wE/SVMTY0nORTI3giKTmHTREXtqDgEk6e9okHcV4K2GxaFKylamk
-         x0/2LTgzcuVNJflDYesIn1mFKYIcA061EwSZQhHgDz9c+RNagpn+pyiu5cMWOSOfaGFv
-         5FcpRZnn7XcUSjcNRxKaUZQykJtr0oFKKjOhvPPvI5Vv6ZfW9W3oaqyTbqVsB93BwqHq
-         amtQ==
+        bh=lotn/Z+tZKYm39dIV5cgvmfbrqHW1TEx+L7IZyFCKqU=;
+        b=kIwoBFqbNguWcEoyJN173donsc5taVRX1rqjVxQ7rhodyUEqkf8D5/JVkX2SwE0vdR
+         FBVlKUqzQjwOiSE+EQn/B/avVCQgJlP2fwchO1nrrFwLklr7X6dvAbMUwiD9PBXyrS6E
+         GYZkfKf/UKaL7WMe5MrWAYIFpnCMDFJmjjzmYt/77bmCX8xqZvOiMBLUBgyuu01yyExh
+         q4HEGOubDuYSJ2v2LHMSysI1tMwNwnEuq4SLTtmHft7ERqpjeFtcntfgrFB/TK8qpLpP
+         TQTMjal5PnVOfThr8nXUOmLIgdhh5Sa5DZOs/hB1UIYXUc/z0GI7hWkQgw7QNICjJ+cM
+         6T7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738664937; x=1739269737;
+        d=1e100.net; s=20230601; t=1738665156; x=1739269956;
         h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ubwaL7oEStadrLkrpZmo0dMLzr7dWhUY7RZXXJTTuIo=;
-        b=WRjpP0QNuoGZXu3jeh6NYWCPouPp080qB10FWmIY293GBBuoOIa3bfwVudacB4iTZ7
-         fLMcZj+UmE8L2u+G/CMA7/060mdiDWQZsv3As6+qkYPEiZCiuxOnM++IqCmZb+lJlfh9
-         79fFqhDwc/mTet7NxngJGLVQm7gAwV16t4hKqP9ZfVfnmcGAfEf6y/v3BzscJuKLt0bT
-         QBiSRueLMzWy4wxiNL0wK6Oyw3WU/e4CQzc533pFRjz9G7OVWNN/IpDK3KV9EFLIc24K
-         46PlUGSeMovN2QL4Gd1a2yw4N3qydPP1DotLKTURwjDETnuMLiHb137k3jcnDPRU0r7y
-         4mLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTq/c9kDBsKzIfNlulemFD3UYKLqupcfbDJ+gUci9HZsLu2+MKp+r0plXZZSy03X8WMFQp5i4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAwv7IrRTLGWJctlXGMWgBLZnp1CNHH8cwI8ixz4Jmujifgg7K
-	sYvjOnal8wjQA7UqSZ+mbJLDsGDR4EEZ4onqs/hFqge9fyJPOc0we/1OR/m7ZKeOykmmUBKwc91
-	gM1rVr/rCfPpOwtPilxTCIUX9vrQhDvPRTbdILQ==
-X-Gm-Gg: ASbGnct8E+ZphhnQ1xgTxshGX+EGjmaPExyuz1TJOybAk1BAcL/cenY/TdwUXQl31KS
-	t5o1y2zHoZxVyyqD0yUka8ohduJR4JVjn+fT17C+eWKB1xq+5EKuxzxHHYdSGKiycX69WZDwEew
-	awU6EE313vU22+RhvNUOVBt+7PwX3g2A==
-X-Google-Smtp-Source: AGHT+IE20YsJ9l/I/Vf8+tKL5GPZ0CVAw4b57aNyNHBd9D0mmp7ibwy2keBz/4GBYIQsaECG87U3ZvGIxrQ/H6g/3cA=
-X-Received: by 2002:a05:690c:3581:b0:6f6:7b02:2568 with SMTP id
- 00721157ae682-6f7a8423943mr197974977b3.32.1738664936641; Tue, 04 Feb 2025
- 02:28:56 -0800 (PST)
+        bh=lotn/Z+tZKYm39dIV5cgvmfbrqHW1TEx+L7IZyFCKqU=;
+        b=nPyUdqDIsOSNK0pwJSBLpZcLBIAqkuutJjijG/wFHHJwJSZP3yo3c48igBIE45w9ZK
+         Mg+DLMrH7ikUCu+/jxQq/3SYV/anrJd7iBceXjwMY6lxfWp9HGwgFpVbJ5exAL5VxAjX
+         MGIHN7QY3vb8Z0as1vIKEFGJnteReDpQQkpeG6Hy7jBeArhJiTfziLdFXH8aO0NMgtdI
+         jdD6zLwvLGJzCKCfZ+hhgi5fdA4/BVOjCCGtNQXngGH1i+FPQ+we4kwV+7snkjm0j+dS
+         m+tCSlgGPUjNrL6MEB69/4uLFsvUh3srTv43OGeEOY1nxXRKIvBG3Sb+NZC6xseKVJnm
+         5i6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURLc6pS3Eyjp2ylb7nDDcVQbkK1VfpClNKMAIZQ2Ak1fkryVY6VKqaKMg3/phSfDjoqpN7Efw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzY6Jfv4vfr6UJH33DqugCMFeU+syTNPXeKziqYXcj8CKjZ4Nu
+	nyX2sEVYBheXB53MFnNa/yH43LtxQwmfrJdk77SDDc3v91mceoXHOG4OohrJ1Sbv+Z6DcbKPmGy
+	vL8KimtlCdH1KlKTNT1AvP9twBKt1yvo0VsF8JfPCdZAYdLtOlDRbXwHN
+X-Gm-Gg: ASbGncvCn4m4q2xdtQkW0X969Imvno0zx1sj6F2Fu4LvaFLw76+3QbMwtXYpqJojxJd
+	5hUaRdpZZQshxO6L7yO6YBNCqyXG0kdValzRidRkJntv8WnJa+aNxs9gRoPaFsaFSxff5y8ojez
+	IVwyzyKzGRFdLv2zFmnqgC/minRdv52A==
+X-Google-Smtp-Source: AGHT+IH4wsIgbawr5ZwaHJHRs5m855SEHURgrWDl3dj5SfI948bQWH+QMC5+NTRInBsTl+21FBqAAMefEfAtpvjEVhU=
+X-Received: by 2002:a05:690c:60c9:b0:6f9:447d:d1a6 with SMTP id
+ 00721157ae682-6f9447dd41emr91209777b3.25.1738665154560; Tue, 04 Feb 2025
+ 02:32:34 -0800 (PST)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 4 Feb 2025 02:28:55 -0800
+ HTTPREST; Tue, 4 Feb 2025 02:32:33 -0800
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 4 Feb 2025 02:28:55 -0800
+ HTTPREST; Tue, 4 Feb 2025 02:32:33 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,11 +76,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
-Date: Tue, 4 Feb 2025 02:28:55 -0800
-X-Gm-Features: AWEUYZlpyLHS3qo1FoXH1BvFz0_awCBmCa0lK_RPZeVVemzWUy05-RA8u8yPcD8
-Message-ID: <CACo-S-1tnrMXPP4k=yKJe=nAFCEkd7-7jrUYV_s3nF3NRe92OA@mail.gmail.com>
-Subject: stable-rc/linux-6.6.y: new boot regression: NULL pointer dereference
- at virtual address 000000000000...
+Date: Tue, 4 Feb 2025 02:32:33 -0800
+X-Gm-Features: AWEUYZk-uRbc2gy8W64EHSdbDfPoTyVyRVduHzbcp2iyNRb1CUjPe7IymHmmx9o
+Message-ID: <CACo-S-3_q62Hv_ViTdgB50JwTZr6Z_G=SdK0VoCuJuqszfWT7g@mail.gmail.com>
+Subject: stable-rc/linux-6.6.y: new boot regression: WARNING at
+ drivers/base/core.c:2515 device_release+0x80/...
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, linux-mediatek@lists.infradead.org, 
 	angelogioacchino.delregno@collabora.com, stable@vger.kernel.org
@@ -90,87 +90,99 @@ Hello,
 
 New boot regression found on stable-rc/linux-6.6.y:
 
- NULL pointer dereference at virtual address 0000000000000030
-[logspec:generic_linux_boot,linux.kernel.null_pointer_dereference]
+ WARNING at drivers/base/core.c:2515 device_release+0x80/0x90
+[logspec:generic_linux_boot,linux.kernel.warning]
 
-- Dashboard: https://staging.dashboard.kernelci.org:9000/issue/maestro:295973ea60dd4385ec6b04faa6ddce9707f879a4
-- Grafana: https://grafana.kernelci.org/d/issue/issue?var-id=maestro:295973ea60dd4385ec6b04faa6ddce9707f879a4
+- Dashboard: https://staging.dashboard.kernelci.org:9000/issue/maestro:18a6cd3bd705698b41106eef2a1d7f2e411c7aab
+- Grafana: https://grafana.kernelci.org/d/issue/issue?var-id=maestro:18a6cd3bd705698b41106eef2a1d7f2e411c7aab
 
 
 Log excerpt:
-[    4.896353] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000030
-[    4.896354] Mem abort info:
-[    4.896355]   ESR = 0x0000000096000004
-[    4.896356]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    4.896357]   SET = 0, FnV = 0
-[    4.896358]   EA = 0, S1PTW = 0
-[    4.896358]   FSC = 0x04: level 0 translation fault
-[    4.896360] Data abort info:
-[    4.896366]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[    4.896367]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    4.896368]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    4.896369] user pgtable: 4k pages, 48-bit VAs, pgdp=00000001089d9000
-[    4.896370] [0000000000000030] pgd=0000000000000000, p4d=0000000000000000
-[    4.896374] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[    4.896376] Modules linked in: mtk_mdp3(+) v4l2_mem2mem joydev ecc
-pcie_mediatek_gen3(+) videobuf2_dma_contig elan_i2c mtk_svs
-lvts_thermal r8152(+) mii cros_ec_rpmsg snd_sof_mt8195 mtk_adsp_common
-snd_sof_xtensa_dsp mtk_scp snd_sof_of cros_ec_sensorhub
-cros_kbd_led_backlight mtk_rpmsg snd_sof rpmsg_core mt6359_auxadc
-snd_soc_mt8195_afe mt6577_auxadc snd_sof_utils mtk_scp_ipi mtk_wdt
-mt8195_mt6359 uvcvideo videobuf2_vmalloc uvc videobuf2_v4l2
-videobuf2_memops videobuf2_common
-[    4.896396] CPU: 7 UID: 0 PID: 207 Comm: (udev-worker) Not tainted
-6.13.2-rc1 #1 8f7a24f5cbfa3d4f7c9dce5f7e52657669893a6c
-[    4.896399] Hardware name: Acer Tomato (rev2) board (DT)
-[    4.896400] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    4.896402] pc : klist_put+0x28/0xf0
-[    4.896410] lr : klist_iter_exit+0x24/0x38
-[    4.896412] sp : ffff800080cab810
-[    4.896412] x29: ffff800080cab810 x28: ffffc4e77c077518 x27: 0000000000000001
-[    4.896415] x26: ffff800080cabb10 x25: ffffc4e79fb98a50 x24: ffff1beb48832bb8
-[    4.896417] x23: ffffc4e79dedd540 x22: 0000000000000000 x21: ffffc4e79d6f8f00
-[    4.896418] x20: 0000000000000000 x19: ffff1beb41095178 x18: ffffffffffffffff
-[    4.896420] x17: 656469762f766564 x16: ffffc4e79d6fb3f0 x15: 2d35393138746d2c
-[    4.896422] x14: ffffc4e79fe0e750 x13: 616964656d43746f x12: 0000000000000000
-[    4.896424] x11: 00353639333d4d55 x10: 0000a8fc3b570378 x9 : ffffc4e79dd32458
-[    4.896426] x8 : 0101010101010101 x7 : 7f7f7f7f7f7f7f7f x6 : 5c175b1c0b544003
-[    4.896427] x5 : 0340540b1c5b175c x4 : 0000000000000000 x3 : 0000000014f08001
-[    4.896429] x2 : 00000000dead4ead x1 : 0000000000000000 x0 : 0000000000000000
-[    4.896431] Call trace:
-[    4.896432]  klist_put+0x28/0xf0 (P)
-[    4.896435]  klist_iter_exit+0x24/0x38
-[    4.896436]  bus_for_each_dev+0x90/0xe8
-[    4.896440]  driver_attach+0x2c/0x40
-[    4.896442]  bus_add_driver+0xec/0x218
-[    4.896443]  driver_register+0x68/0x138
-[    4.896445]  __platform_driver_register+0x2c/0x40
-[    4.896447]  mdp_driver_init+0x28/0xff8 [mtk_mdp3
-368282916f4a555c99cbc06147f8cea6ac3d5634]
-[    4.896452]  do_one_initcall+0x60/0x320
-[    4.896455]  do_init_module+0x60/0x238
-[    4.896458]  load_module+0x1cf8/0x1de8
-[    4.896460]  init_module_from_file+0x8c/0xd8
-[    4.896461]  __arm64_sys_finit_module+0x150/0x338
-[    4.896463]  invoke_syscall+0x70/0x100
-[    4.896466]  el0_svc_common.constprop.0+0x48/0xf0
-[    4.896469]  do_el0_svc+0x24/0x38
-[    4.896471]  el0_svc+0x34/0xf0
-[    4.896473]  el0t_64_sync_handler+0x10c/0x138
-[    4.896474]  el0t_64_sync+0x1b0/0x1b8
-[    4.896477] Code: 12001c36 f9400014 927ffa94 aa1403e0 (f9401a95)
+[   10.292722] mtk-wdt 10007000.watchdog: Watchdog enabled (timeout=31
+sec, nowayout=0)
+[   10.300525] Device 'conn' does not have a release() function, it is
+broken and must be fixed. See Documentation/core-api/kobject.rst.
+[   10.300855] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.312539] WARNING: CPU: 4 PID: 76 at drivers/base/core.c:2515
+device_release+0x80/0x90
+[   10.320803] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.328862] Modules linked in: videodev(+)
+[   10.337116] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.337122]  ecdh_generic
+[   10.344606] videodev: Linux video capture interface: v2.00
+[   10.344795] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344808] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344813] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344820] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344825] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344829] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344862] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.344867] OF: graph: no port node found in
+/soc/spi@11012000/cros-ec@0/typec/connector@0
+[   10.349449]  ecc mtk_mutex cfg80211(+) cros_ec_typec(+) pwm_bl
+videobuf2_common mtk_rpmsg mtk_mmsys mc rfkill elan_i2c auxadc_thermal
+sbs_battery mtk_pmic_keys mtk_wdt(+) pwm_mediatek mtk_scp_ipi
+mt6577_auxadc backlight
+[   10.443014] CPU: 4 PID: 76 Comm: kworker/u18:7 Tainted: G        W
+        6.6.76-rc1 #1
+[   10.451183] Hardware name: Google juniper sku16 board (DT)
+[   10.456659] Workqueue: events_unbound deferred_probe_work_func
+[   10.462491] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   10.469443] pc : device_release+0x80/0x90
+[   10.473443] lr : device_release+0x80/0x90
+[   10.477441] sp : ffff8000806a3a80
+[   10.480744] x29: ffff8000806a3a80 x28: 0000000000000000 x27: 0000000000000000
+[   10.487871] x26: 0000000000000000 x25: 0000000000000000 x24: ffffb3a8b7360500
+[   10.494998] x23: 0000000000000000 x22: 0000000000000000 x21: ffffb3a8b735db90
+[   10.502124] x20: 0000000000000000 x19: ffff514146120880 x18: 0000000000000006
+[   10.509250] x17: 61206e656b6f7262 x16: 207369207469202c x15: 6e6f6974636e7566
+[   10.516376] x14: 202928657361656c x13: 2e7473722e746365 x12: 6a626f6b2f697061
+[   10.523502] x11: 2d65726f632f6e6f x10: 697461746e656d75 x9 : 6572206120657661
+[   10.530628] x8 : 6820746f6e207365 x7 : 205d353235303033 x6 : 332e30312020205b
+[   10.537754] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 00000000ffffffff
+[   10.544880] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff514140e28f00
+[   10.552007] Call trace:
+[   10.554442]  device_release+0x80/0x90
+[   10.558095]  kobject_put+0xa4/0x120
+[   10.561577]  put_device+0x14/0x24
+[   10.564881]  genpd_remove+0x118/0x1bc
+[   10.568534]  pm_genpd_remove+0x2c/0x50
+[   10.572274]  scpsys_probe+0x13c/0x218
+[   10.575927]  platform_probe+0x68/0xc4
+[   10.579579]  really_probe+0x148/0x2ac
+[   10.583232]  __driver_probe_device+0x78/0x12c
+[   10.587579]  driver_probe_device+0xd8/0x15c
+[   10.591754]  __device_attach_driver+0xb8/0x134
+[   10.596188]  bus_for_each_drv+0x84/0xe0
+[   10.600015]  __device_attach+0x9c/0x188
+[   10.603841]  device_initial_probe+0x14/0x20
+[   10.608015]  bus_probe_device+0xac/0xb0
+[   10.611841]  deferred_probe_work_func+0x88/0xc0
+[   10.616361]  process_one_work+0x148/0x2a0
+[   10.620364]  worker_thread+0x324/0x43c
+[   10.624104]  kthread+0x114/0x118
+[   10.627323]  ret_from_fork+0x10/0x20
 
 
 
 # Hardware platforms affected:
 
-## mt8195-cherry-tomato-r2
-- Compatibles: google,tomato-rev2 | google,tomato | mediatek,mt8195
-- Dashboard: https://staging.dashboard.kernelci.org:9000/test/maestro:67a12193661a7bc87489fa91
+## mt8183-kukui-jacuzzi-juniper-sku16
+- Compatibles: google,juniper-sku16 | google,juniper | mediatek,mt8183
+- Dashboard: https://staging.dashboard.kernelci.org:9000/test/maestro:67a173d8661a7bc8748b7e53
 
 
-#kernelci issue maestro:295973ea60dd4385ec6b04faa6ddce9707f879a4
+#kernelci issue maestro:18a6cd3bd705698b41106eef2a1d7f2e411c7aab
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
