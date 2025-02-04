@@ -1,62 +1,72 @@
-Return-Path: <stable+bounces-112095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31540A269A4
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF4EA269A8
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9B6161E56
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AE667A221A
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8322144B7;
-	Tue,  4 Feb 2025 01:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE76118B494;
+	Tue,  4 Feb 2025 01:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQhMDeiS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EheBEkG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F106C2144AE;
-	Tue,  4 Feb 2025 01:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E5417CA1B;
+	Tue,  4 Feb 2025 01:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631891; cv=none; b=S+fCu44wRpRJs/y/xBYHkyXwgdZFf+hqEDBxg4uc9tpwGGUTV7GmHpcZA5Fh23U5nXlC1b13AIxSTYd6aXoWcoj7+i38D5EMFdbCI5ePc67KS0egwISHrnpO4pVtJjhg6oDWoj8Ejpz9sayd5Vxk5kq5oR154YXhAWIoMYQd2PQ=
+	t=1738631900; cv=none; b=W9lsgMLmHjmC320QxkixwOy4c0IWDjO4bnx+E+n1erSfVCUHcMQF5Q9wlhGKN+3Cg3vnlyk4ZqRcPuJZAQNWyDI24GK2WTy7tz27ieghInT0JPuqYTmyRnE3/UkgJBG2UNW4Szm6HaUEmRGOEFkGfrQOIIHXsyEe3J9k3+oBRnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631891; c=relaxed/simple;
-	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sU7c3DJtfrj32aOTBzZ5vKdGfRKlp/UPzIYkB+uunR2PV0gWSkHKnhFtIoMjzvvjkGhtY0+nRA4ozYg5SYZUuqJb8gPlnDW8AZuZhXCADVTK2e1ROtYZ2JiSXnfAa8AswbdJMlvIwImjExGHyCLRrL3h9LnkIGbDVxzROMp8zS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQhMDeiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0483C4CEE4;
-	Tue,  4 Feb 2025 01:18:09 +0000 (UTC)
+	s=arc-20240116; t=1738631900; c=relaxed/simple;
+	bh=9scUxnOzVNSByo1WJlMXO/nXQq/wFqWPpXvgknHp0rY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t7hK7RDoOmlv2GBlTez3n1OvC0lkKAu2J4eBbZnC7nebMKGVBK588cE9vfn3vcmcZTE6oaYZGW7dvvyrX3NO5khIl6hRhD0wnCNxZpH4d39SysojDs+7AxBcUHWb0kyKbL/EUNwXoQiYA8Vefvz3DInsAmPaNv3zvoivoNF4e38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EheBEkG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4B7C4CEE4;
+	Tue,  4 Feb 2025 01:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631890;
-	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQhMDeiSIlq/RH/+kmXKP9NaB6dMPsBfnbgSMs+JoYs4KxFPWmuTq4i7XLyTczq3r
-	 8mIKgKdgbhetKse5slphu07IBG5hpDrUZApwpjYz96rh1I2dNJVCK83GhOJMe/dOQ2
-	 zl7SIVGv4aT/ib/Arnnuc5M+Bm2TEtStxo2l4Y29gNpS0exsM4JBSfbtMDnZzS5h3G
-	 NI2OwpcMDltfyjnk03QfzfmiYdQSmDCYSRxvila5+Ggr/TWumpnNX19rXuxfPpvGho
-	 FspKGDhfQpzyy9iVMCQ113hUakPwmCCbYcDTJak3kZ9NuAlkOukyhLA0IQpCFk4GTF
-	 CfsAqHvFs2jWg==
+	s=k20201202; t=1738631900;
+	bh=9scUxnOzVNSByo1WJlMXO/nXQq/wFqWPpXvgknHp0rY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EheBEkG8MTjjcGPi/dLsXO3bQunwqZo8fJHJMsQ21Rm+XM2FsXKpOykGbONovXfuj
+	 DewrpB3xpCwuDxmWcKxg+HJbJ6BUGvxbM3ukkEt6Bs5tKI5yHMaDKFL2bFuIfqVyKV
+	 nJeIEYGGHMnJyXYkhgqheD/PY6cJee9wrAau4l6y6HbVaWsrsg5HpcIZzySoZkp7Gs
+	 27MGDECAv+JB/pK/iWMiXTPbMXrAT2zFMSA2X45z4oa1+lkNLO/VerFbcC+piqgE4/
+	 Zbqh51Je0eLlt+xVsnstlAKKY9OlZtSg8HUtfyMumRWVgVC+svTiW+kuyKGRSbtj8n
+	 CBaehWr2ncCJg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Jakub Jelinek <jakub@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Rik van Riel <riel@fb.com>,
+	kernel test roboto <oliver.sang@intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 5/5] kbuild: Use -fzero-init-padding-bits=all
-Date: Mon,  3 Feb 2025 20:17:53 -0500
-Message-Id: <20250204011757.2206869-5-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	akpm@linux-foundation.org,
+	yosry.ahmed@linux.dev,
+	david@redhat.com,
+	Liam.Howlett@oracle.com,
+	mpe@ellerman.id.au,
+	kirill.shutemov@linux.intel.com
+Subject: [PATCH AUTOSEL 6.6 1/3] x86/mm/tlb: Only trim the mm_cpumask once a second
+Date: Mon,  3 Feb 2025 20:18:09 -0500
+Message-Id: <20250204011814.2207014-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204011757.2206869-1-sashal@kernel.org>
-References: <20250204011757.2206869-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,90 +75,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.12
+X-stable-base: Linux 6.6.75
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Rik van Riel <riel@fb.com>
 
-[ Upstream commit dce4aab8441d285b9a78b33753e0bf583c1320ee ]
+[ Upstream commit 6db2526c1d694c91c6e05e2f186c085e9460f202 ]
 
-GCC 15 introduces a regression in "= { 0 }" style initialization of
-unions that Linux has depended on for eliminating uninitialized variable
-contents. GCC does not seem likely to fix it[1], instead suggesting[2]
-that affected projects start using -fzero-init-padding-bits=unions.
+Setting and clearing CPU bits in the mm_cpumask is only ever done
+by the CPU itself, from the context switch code or the TLB flush
+code.
 
-To avoid future surprises beyond just the current situation with unions,
-enable -fzero-init-padding-bits=all when available (GCC 15+). This will
-correctly zero padding bits in unions and structs that might have been
-left uninitialized, and will make sure there is no immediate regression
-in union initializations. As seen in the stackinit KUnit selftest union
-cases, which were passing before, were failing under GCC 15:
+Synchronization is handled by switch_mm_irqs_off() blocking interrupts.
 
-    not ok 18 test_small_start_old_zero
-    ok 29 test_small_start_dynamic_partial # SKIP XFAIL uninit bytes: 63
-    ok 32 test_small_start_assigned_dynamic_partial # SKIP XFAIL uninit bytes: 63
-    ok 67 test_small_start_static_partial # SKIP XFAIL uninit bytes: 63
-    ok 70 test_small_start_static_all # SKIP XFAIL uninit bytes: 56
-    ok 73 test_small_start_dynamic_all # SKIP XFAIL uninit bytes: 56
-    ok 82 test_small_start_assigned_static_partial # SKIP XFAIL uninit bytes: 63
-    ok 85 test_small_start_assigned_static_all # SKIP XFAIL uninit bytes: 56
-    ok 88 test_small_start_assigned_dynamic_all # SKIP XFAIL uninit bytes: 56
+Sending TLB flush IPIs to CPUs that are in the mm_cpumask, but no
+longer running the program causes a regression in the will-it-scale
+tlbflush2 test. This test is contrived, but a large regression here
+might cause a small regression in some real world workload.
 
-The above all now pass again with -fzero-init-padding-bits=all added.
+Instead of always sending IPIs to CPUs that are in the mm_cpumask,
+but no longer running the program, send these IPIs only once a second.
 
-This also fixes the following cases for struct initialization that had
-been XFAIL until now because there was no compiler support beyond the
-larger "-ftrivial-auto-var-init=zero" option:
+The rest of the time we can skip over CPUs where the loaded_mm is
+different from the target mm.
 
-    ok 38 test_small_hole_static_all # SKIP XFAIL uninit bytes: 3
-    ok 39 test_big_hole_static_all # SKIP XFAIL uninit bytes: 124
-    ok 40 test_trailing_hole_static_all # SKIP XFAIL uninit bytes: 7
-    ok 42 test_small_hole_dynamic_all # SKIP XFAIL uninit bytes: 3
-    ok 43 test_big_hole_dynamic_all # SKIP XFAIL uninit bytes: 124
-    ok 44 test_trailing_hole_dynamic_all # SKIP XFAIL uninit bytes: 7
-    ok 58 test_small_hole_assigned_static_all # SKIP XFAIL uninit bytes: 3
-    ok 59 test_big_hole_assigned_static_all # SKIP XFAIL uninit bytes: 124
-    ok 60 test_trailing_hole_assigned_static_all # SKIP XFAIL uninit bytes: 7
-    ok 62 test_small_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 3
-    ok 63 test_big_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 124
-    ok 64 test_trailing_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 7
-
-All of the above now pass when built under GCC 15. Tests can be seen
-with:
-
-    ./tools/testing/kunit/kunit.py run stackinit --arch=x86_64 \
-        --make_option CC=gcc-15
-
-Clang continues to fully initialize these kinds of variables[3] without
-additional flags.
-
-Suggested-by: Jakub Jelinek <jakub@redhat.com>
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=118403 [1]
-Link: https://lore.kernel.org/linux-toolchains/Z0hRrrNU3Q+ro2T7@tucnak/ [2]
-Link: https://github.com/llvm/llvm-project/commit/7a086e1b2dc05f54afae3591614feede727601fa [3]
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20250127191031.245214-3-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reported-by: kernel test roboto <oliver.sang@intel.com>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241204210316.612ee573@fangorn
+Closes: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.extrawarn | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/mmu.h         |  2 ++
+ arch/x86/include/asm/mmu_context.h |  1 +
+ arch/x86/include/asm/tlbflush.h    |  1 +
+ arch/x86/mm/tlb.c                  | 35 +++++++++++++++++++++++++++---
+ 4 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 1d13cecc7cc78..eb719f6d8d536 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -77,6 +77,9 @@ KBUILD_CFLAGS += $(call cc-option,-Werror=designated-init)
- # Warn if there is an enum types mismatch
- KBUILD_CFLAGS += $(call cc-option,-Wenum-conversion)
+diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
+index 0da5c227f490c..53763cf192777 100644
+--- a/arch/x86/include/asm/mmu.h
++++ b/arch/x86/include/asm/mmu.h
+@@ -37,6 +37,8 @@ typedef struct {
+ 	 */
+ 	atomic64_t tlb_gen;
  
-+# Explicitly clear padding bits during variable initialization
-+KBUILD_CFLAGS += $(call cc-option,-fzero-init-padding-bits=all)
++	unsigned long next_trim_cpumask;
 +
- KBUILD_CFLAGS += -Wextra
- KBUILD_CFLAGS += -Wunused
+ #ifdef CONFIG_MODIFY_LDT_SYSCALL
+ 	struct rw_semaphore	ldt_usr_sem;
+ 	struct ldt_struct	*ldt;
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index 8dac45a2c7fcf..f5afd956d5e50 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -145,6 +145,7 @@ static inline int init_new_context(struct task_struct *tsk,
  
+ 	mm->context.ctx_id = atomic64_inc_return(&last_mm_ctx_id);
+ 	atomic64_set(&mm->context.tlb_gen, 0);
++	mm->context.next_trim_cpumask = jiffies + HZ;
+ 
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+ 	if (cpu_feature_enabled(X86_FEATURE_OSPKE)) {
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 25726893c6f4d..5d61adc6e892e 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -222,6 +222,7 @@ struct flush_tlb_info {
+ 	unsigned int		initiating_cpu;
+ 	u8			stride_shift;
+ 	u8			freed_tables;
++	u8			trim_cpumask;
+ };
+ 
+ void flush_tlb_local(void);
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index 64f594826a282..df1794a5e38a5 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -898,9 +898,36 @@ static void flush_tlb_func(void *info)
+ 			nr_invalidate);
+ }
+ 
+-static bool tlb_is_not_lazy(int cpu, void *data)
++static bool should_flush_tlb(int cpu, void *data)
+ {
+-	return !per_cpu(cpu_tlbstate_shared.is_lazy, cpu);
++	struct flush_tlb_info *info = data;
++
++	/* Lazy TLB will get flushed at the next context switch. */
++	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
++		return false;
++
++	/* No mm means kernel memory flush. */
++	if (!info->mm)
++		return true;
++
++	/* The target mm is loaded, and the CPU is not lazy. */
++	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
++		return true;
++
++	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
++	if (info->trim_cpumask)
++		return true;
++
++	return false;
++}
++
++static bool should_trim_cpumask(struct mm_struct *mm)
++{
++	if (time_after(jiffies, READ_ONCE(mm->context.next_trim_cpumask))) {
++		WRITE_ONCE(mm->context.next_trim_cpumask, jiffies + HZ);
++		return true;
++	}
++	return false;
+ }
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
+@@ -934,7 +961,7 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
+ 	if (info->freed_tables)
+ 		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
+ 	else
+-		on_each_cpu_cond_mask(tlb_is_not_lazy, flush_tlb_func,
++		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
+ 				(void *)info, 1, cpumask);
+ }
+ 
+@@ -985,6 +1012,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+ 	info->freed_tables	= freed_tables;
+ 	info->new_tlb_gen	= new_tlb_gen;
+ 	info->initiating_cpu	= smp_processor_id();
++	info->trim_cpumask	= 0;
+ 
+ 	return info;
+ }
+@@ -1027,6 +1055,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 	 * flush_tlb_func_local() directly in this case.
+ 	 */
+ 	if (cpumask_any_but(mm_cpumask(mm), cpu) < nr_cpu_ids) {
++		info->trim_cpumask = should_trim_cpumask(mm);
+ 		flush_tlb_multi(mm_cpumask(mm), info);
+ 	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
+ 		lockdep_assert_irqs_enabled();
 -- 
 2.39.5
 
