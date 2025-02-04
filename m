@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836D3A27915
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:55:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD542A27916
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C995164CD1
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBB6B3A2FC5
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54311216E06;
-	Tue,  4 Feb 2025 17:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110602165E7;
+	Tue,  4 Feb 2025 17:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2zCTnDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHuAzA2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1117A21661F
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39FE215F5A
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691722; cv=none; b=owZxxiK+qg8UQded7YX0jm5jzBj9jACXqb+txyH7wcxMWGHP40da9gJxdavpVXkEg9y8q6sAcaA0uyDAtP3zpyv1wUu7193Xi/0GeHVvB2j8QxXwlL2YjUCJ0wy0FI7Mmh+tMpNYweKS1H25YhjRSHku2eiXxxbdkDqKKx7k78w=
+	t=1738691726; cv=none; b=k4Z08RAz/frTMNWTFO2WZWJFIIxgknRnT/4VpjBsmvK7CuCstsYULIUpdBBkL8qJ2I9E7OxkCLcQHBhf8jV4AoJl7HctMsNc1sbJARceJlbjZYlX46Tidw4kez35zUUgSLgf4D1HoX/K+3cSTB7KqEkWtOaX/TcOmHVRSfxDAwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691722; c=relaxed/simple;
-	bh=62/9Yzrdlp+F1egpqSxmL1UghcPhBOessMlgNSJS5sg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=efcFBi6IMtUTEnDZhNzgG/62lBzLYlfq+Xy0j6sEKmCamgICKbSKuorI3PIldJH0Dd65KFiT77v9qMjyGxdZfPx38Yo7oK9AUQcHvZ9Cew1z4ECB5YRmBvasIH0c1/RxdPZmhZzWNuS5IeETT3s4H8sSYM2LSSwQmtD8hfQBq+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2zCTnDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85352C4CEDF;
-	Tue,  4 Feb 2025 17:55:21 +0000 (UTC)
+	s=arc-20240116; t=1738691726; c=relaxed/simple;
+	bh=DjMqdLwJ3sXRr9HQlz01L76iq6vfYZIyhJCLePmOw/E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TCm4SY3Zr4UbWMwrsu4moa/MRNUpsn3vCU4oxoV9nCmAOLJ+loSkxmsGLU0nAzjcjBSgxWQ4ltZgpNj29Gun++tN9RByQhw5u+5G3KmnvLIQNF/GIw44aa1Mv/nkxgdnP58/fPju8K+awFW8Y0+2v6YH0K0wc0C0X+eNYpVBAPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHuAzA2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A04C4CEDF;
+	Tue,  4 Feb 2025 17:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691721;
-	bh=62/9Yzrdlp+F1egpqSxmL1UghcPhBOessMlgNSJS5sg=;
+	s=korg; t=1738691726;
+	bh=DjMqdLwJ3sXRr9HQlz01L76iq6vfYZIyhJCLePmOw/E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y2zCTnDNL4TzwTRK6h+2offHpVojtmsufu4S+/5RYsOIcldR/sf4jNdHD4O+FbrRv
-	 0sOpXa6YaCPsdZlI+h3E6BUx6HmDX+mIH0l9B3H3/3XSbjtE6Isc4MielLOdZl4xun
-	 3rC7OASGQ1ngJcjnABWsLZ165rG8ZLuPNqFGqYKI=
-Subject: FAILED: patch "[PATCH] media: imx-jpeg: Fix potential error pointer dereference in" failed to apply to 5.15-stable tree
-To: dan.carpenter@linaro.org,hverkuil@xs4all.nl,ming.qian@nxp.com,stable@vger.kernel.org
+	b=XHuAzA2rI6SkJGzhe7z/2CXqPsqnU75qLucGvarDnaeNh6Pz4Qcx07Gd0XrtCqKtp
+	 vo92Dt5jxflnWtUImUeaw+crRY52NL7/6zjFAdHhS0m7KQOolvhU057aNjShStHzAE
+	 8JNzqzQLjA3zGjVlZdoawttABE+8cREWXtBbIViA=
+Subject: FAILED: patch "[PATCH] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap" failed to apply to 6.6-stable tree
+To: yukuai3@huawei.com,harshit.m.mogalapalli@oracle.com,song@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:54:58 +0100
-Message-ID: <2025020458-egotism-espresso-bb20@gregkh>
+Date: Tue, 04 Feb 2025 18:55:19 +0100
+Message-ID: <2025020419-snippet-epileptic-4280@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1378ffec30367233152b7dbf4fa6a25ee98585d1
+git cherry-pick -x 8d28d0ddb986f56920ac97ae704cc3340a699a30
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020458-egotism-espresso-bb20@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020419-snippet-epileptic-4280@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,46 +77,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1378ffec30367233152b7dbf4fa6a25ee98585d1 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@linaro.org>
-Date: Thu, 17 Oct 2024 23:34:16 +0300
-Subject: [PATCH] media: imx-jpeg: Fix potential error pointer dereference in
- detach_pm()
+From 8d28d0ddb986f56920ac97ae704cc3340a699a30 Mon Sep 17 00:00:00 2001
+From: Yu Kuai <yukuai3@huawei.com>
+Date: Fri, 24 Jan 2025 17:20:55 +0800
+Subject: [PATCH] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap
+ lifetime
 
-The proble is on the first line:
+After commit ec6bb299c7c3 ("md/md-bitmap: add 'sync_size' into struct
+md_bitmap_stats"), following panic is reported:
 
-	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
+Oops: general protection fault, probably for non-canonical address
+RIP: 0010:bitmap_get_stats+0x2b/0xa0
+Call Trace:
+ <TASK>
+ md_seq_show+0x2d2/0x5b0
+ seq_read_iter+0x2b9/0x470
+ seq_read+0x12f/0x180
+ proc_reg_read+0x57/0xb0
+ vfs_read+0xf6/0x380
+ ksys_read+0x6c/0xf0
+ do_syscall_64+0x82/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-If jpeg->pd_dev[i] is an error pointer, then passing it to
-pm_runtime_suspended() will lead to an Oops.  The other conditions
-check for both error pointers and NULL, but it would be more clear to
-use the IS_ERR_OR_NULL() check for that.
+Root cause is that bitmap_get_stats() can be called at anytime if mddev
+is still there, even if bitmap is destroyed, or not fully initialized.
+Deferenceing bitmap in this case can crash the kernel. Meanwhile, the
+above commit start to deferencing bitmap->storage, make the problem
+easier to trigger.
 
-Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fix the problem by protecting bitmap_get_stats() with bitmap_info.mutex.
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index 7f5fe551179b..1221b309a916 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -2677,11 +2677,12 @@ static void mxc_jpeg_detach_pm_domains(struct mxc_jpeg_dev *jpeg)
- 	int i;
+Cc: stable@vger.kernel.org # v6.12+
+Fixes: 32a7627cf3a3 ("[PATCH] md: optimised resync using Bitmap based intent logging")
+Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Closes: https://lore.kernel.org/linux-raid/ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com/T/#m6e5086c95201135e4941fe38f9efa76daf9666c5
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250124092055.4050195-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index ec4ecd96e6b1..23c09d22fcdb 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2355,7 +2355,10 @@ static int bitmap_get_stats(void *data, struct md_bitmap_stats *stats)
  
- 	for (i = 0; i < jpeg->num_domains; i++) {
--		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
-+		    !pm_runtime_suspended(jpeg->pd_dev[i]))
- 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
--		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
- 			device_link_del(jpeg->pd_link[i]);
--		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
- 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
- 		jpeg->pd_dev[i] = NULL;
- 		jpeg->pd_link[i] = NULL;
+ 	if (!bitmap)
+ 		return -ENOENT;
+-
++	if (bitmap->mddev->bitmap_info.external)
++		return -ENOENT;
++	if (!bitmap->storage.sb_page) /* no superblock */
++		return -EINVAL;
+ 	sb = kmap_local_page(bitmap->storage.sb_page);
+ 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ 	kunmap_local(sb);
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 866015b681af..465ca2af1e6e 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8376,6 +8376,10 @@ static int md_seq_show(struct seq_file *seq, void *v)
+ 		return 0;
+ 
+ 	spin_unlock(&all_mddevs_lock);
++
++	/* prevent bitmap to be freed after checking */
++	mutex_lock(&mddev->bitmap_info.mutex);
++
+ 	spin_lock(&mddev->lock);
+ 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
+ 		seq_printf(seq, "%s : ", mdname(mddev));
+@@ -8451,6 +8455,7 @@ static int md_seq_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "\n");
+ 	}
+ 	spin_unlock(&mddev->lock);
++	mutex_unlock(&mddev->bitmap_info.mutex);
+ 	spin_lock(&all_mddevs_lock);
+ 
+ 	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
 
 
