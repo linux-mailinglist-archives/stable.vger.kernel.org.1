@@ -1,195 +1,149 @@
-Return-Path: <stable+bounces-112146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBB42A272BE
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:27:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8570A2730B
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 523121670D3
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 13:27:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 618F57A1188
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 13:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07417212FAC;
-	Tue,  4 Feb 2025 13:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F31215046;
+	Tue,  4 Feb 2025 13:15:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from listy.pwr.edu.pl (listy.pwr.edu.pl [156.17.197.119])
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFF520FA81
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 13:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.17.197.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9321D207DF2;
+	Tue,  4 Feb 2025 13:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738674262; cv=none; b=bdirMupbL5P4g8XBGaZq7AWZCURQlLgh7LUwl7Z7pe++SLC5yYxz5owZ+Z1ZJYPBlNTkvoYZFsGVenVXYMK8vafSjxBOYi04PGatqEwm3OsliAmb5PI1KwrQhAa9KL8CHhZGHVM9tjAwHRXWBB40FdVXVlaWQLx1V74lNyj8x2k=
+	t=1738674917; cv=none; b=ZuVkQ3dRwzMZ+sveZwRiRG0kcO+2U3KSKaj8xBxUjehzhLWVSkauccFgjTjloi/PKrPXxPmAk4LQtJftSy7W2e8LCQE4+O+8j+7NQv2nyjXdd7JbJYqUXGwKhRSK4TVZJjizXjcW8w6iA6Fjmr2DmLUpu+HW/UIZfYhyO59k8Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738674262; c=relaxed/simple;
-	bh=XTy3ZrehLz8ZuJmLLkxVPpMA4xmPDLc3Yh9PbiZCvRM=;
-	h=Content-Type:Message-Id:From:Date:Mime-Version:To:Subject; b=pFuyubDrgyOHG1pgPPPLb33e1fgCzpcwUvzLhYqnYfewt/QWDMA0cRwy9Tl/amVEIi6JPp28efqlQ9PWSjFf2xrRJpAQH8/3eI7/OD35+Te/4/96ShUQJUuyOlGraEFGp+SYUTU5g0LGNxFbdOwDEqQG6p2y8FzuwBBYs6vieXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e-informatyka.pl; spf=pass smtp.mailfrom=e-informatyka.pl; arc=none smtp.client-ip=156.17.197.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e-informatyka.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e-informatyka.pl
-Received: from localhost (156-17-130-43.ii.pwr.edu.pl [156.17.130.43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: e-informatica@listy.pwr.edu.pl)
-	by listy.pwr.edu.pl (Postfix) with UTF8SMTPSA id 8C514404AADC
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 13:56:12 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 listy.pwr.edu.pl 8C514404AADC
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <1738673772575963690.1.5937373815482959928@listmonk.example.com>
-From: "e-Informatica Software Engineering Journal" <e-informatica@e-informatyka.pl>
-Date: Tue, 04 Feb 2025 12:56:12 +0000
+	s=arc-20240116; t=1738674917; c=relaxed/simple;
+	bh=mxUPJ/fzzhcjXmPmx43XAUSru5vQ3irzWnNscz5R+zs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W9HZgeOddX7Ai3mkxAh4olI3mqfJTLAB/XN/Cj6CsUaBhbW5VI23S8WdMeMU9nWKhbaluLCJfBaQJe3lgCSSPO73HATuA/wF+caVHTwsVeO6cusbgJzWtVeDXT9Hc+cQ5ijgWYMwEH9ADPLNBJuQeW/J3A8A2ClW6908jNTWEuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4YnN9w1pBPz9v7NL;
+	Tue,  4 Feb 2025 20:35:16 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 89191140E0D;
+	Tue,  4 Feb 2025 20:57:36 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwCXakm2DqJncdHhAQ--.22048S2;
+	Tue, 04 Feb 2025 13:57:35 +0100 (CET)
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: zohar@linux.ibm.com,
+	dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com
+Cc: linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
+Date: Tue,  4 Feb 2025 13:57:20 +0100
+Message-Id: <20250204125720.1326257-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-To: <stable@vger.kernel.org>
-Subject: Publish Your Research in e-Informatica Software Engineering Journal (IF=1.2, Open Access & Free of Charge)
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-X-Listmonk-Campaign: c3d88966-bba6-42ee-af4c-3eab7d6d221c
-X-Listmonk-Subscriber: 0febfbc1-5610-4c07-8204-e30a97adbdc8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LxC2BwCXakm2DqJncdHhAQ--.22048S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAF15Kw48GFW3Ww18CF4UJwb_yoW5Ary5pa
+	93KFyUKr18XFyxCrZ3J3W3CF4rK3yagry5Wan8A3WkAa1avrn0qFy7tr1akF98WF129F92
+	qrnIq34Yvw1qy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAa
+	w2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
+	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
+	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
+	xUF1v3UUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAJBGehvFQDGwABs4
 
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Dear Prof./Dr. Table,
+Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+mistakenly reverted the performance improvement introduced in commit
+42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask was
+subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
+macro IMA_ACTION_RULE_FLAGS").
 
+Restore the performance improvement by introducing the new mask
+IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
+IMA_NEW_FILE, which is not a rule-specific flag.
 
-e-Informatica Software Engineering Journal (EISEJ) is an established,
-peer-reviewed, ISI JCR-indexed journal with an Impact Factor (IF=3D1.2,=20
-5 Year IF=3D1.3) calculated by Clarivate and a free-of-charge, open-access=
-=20
-publishing model that accepts papers in Software Engineering, including=20
-the intersection of data science (AI/ML) and Software Engineering.=20
+Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
+process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
+file metadata modification).
 
+With this patch, new files for which metadata were modified while they are
+still open, can be reopened before the last file close (when security.ima
+is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwise,
+appraisal fails because security.ima is missing (files with IMA_NEW_FILE
+set are an exception).
 
-Since you have published your research results at premier software=20
-engineering conferences, such as MSR24, we believe that=20
-EISEJ can serve as an excellent platform to share your impactful work furth=
-er,=20
-connecting it with a broad, engaged audience and enhancing your visibility=
-=20
-even more.
-
-
-Why choose EISEJ for your next publication?
-
-- Reputation and Trust: Indexed in ISI Web of Science (IF=3D1.2, 5 Year
-  IF=3D1.3), Scopus (CiteScore'23=3D2.6, CiteScoreTracker'24=3D3.3 and grow=
-ing),
-  DBLP, DOAJ, and Google Scholar, demonstrating our global reach and
-  credibility.
-- No Author Fees: Publish your work under a CC-BY license without any costs=
-,
-  making your research accessible worldwide.
-- Global Reach and Recognition: Internationally renowned Editorial Board:
-  https://www.e-informatyka.pl/index.php/einformatica/editorial-board/ .
-- Efficient Publishing Process: Benefit from continuous, rapid publishing
-  with immediate online availability post-acceptance.
-- No Restrictions on Paper Length: We welcome comprehensive work without
-  word or page limits.
-
-What We Publish:
-
-In addition to regular research papers, EISEJ is an ideal venue for:
-
-- Systematic reviews, mapping studies, and survey research studies,=20
-  and supporting tools, see, e.g.,=20
-  [1] Norsaremah Salleh, Emilia Mendes, Fabiana Mendes, Charitha Dissanayak=
-e
-  Lekamlage and Kai Petersen, "Value-based Software Engineering: A Systemat=
-ic
-  Mapping Study", In e-Informatica Software Engineering Journal, vol. 17, n=
-o.
-  1, pp. 230106, 2023. DOI: 10.37190/e-Inf230106.
-  [2] Chris Marshall, Barbara Kitchenham and Pearl Brereton, "Tool Features=
- to
-  Support Systematic Reviews in Software Engineering =E2=80=93 A Cross Doma=
-in Study",
-  In e-Informatica Software Engineering Journal, vol. 12, no. 1, pp. 79=E2=
-=80=93115,
-  2018. DOI: 10.5277/e-Inf180104.
-
-- Guidelines, see, e.g.,=20
-  [3] Miroslaw Staron, "Guidelines for Conducting Action Research Studies i=
-n
-  Software Engineering", In e-Informatica Software Engineering Journal, vol=
-.
-  19, no. 1, pp. 250105, 2025. DOI: 10.37190/e-Inf250105.
-  [4] Muhammad Usman, Nauman Bin Ali and Claes Wohlin, "A Quality Assessmen=
-t
-  Instrument for Systematic Literature Reviews in Software Engineering", In
-  e-Informatica Software Engineering Journal, vol. 17, no. 1, pp. 230105,
-  2023. DOI: 10.37190/e-Inf230105.
-
-- Research agendas and vision papers, see, e.g.,=20
-  [5] Michael Unterkalmsteiner, Pekka Abrahamsson, XiaoFeng Wang, Anh
-  Nguyen-Duc, Syed Shah, Sohaib Shahid Bajwa, Guido H. Baltes, Kieran Conbo=
-y,
-  Eoin Cullina, Denis Dennehy, Henry Edison, Carlos Fernandez-Sanchez, Juan
-  Garbajosa, Tony Gorschek, Eriks Klotins, Laura Hokkanen, Fabio Kon, Ilari=
-a
-  Lunesu, Michele Marchesi, Lorraine Morgan, Markku Oivo, Christoph Selig,
-  Pertti Sepp=C3=A4nen, Roger Sweetman, Pasi Tyrv=C3=A4inen, Christina Unge=
-rer and
-  Agustin Yag=C3=BCe, "Software Startups =E2=80=93 A Research Agenda", In e=
--Informatica
-  Software Engineering Journal, vol. 10, no. 1, pp. 89=E2=80=93124, 2016. D=
-OI:
-  10.5277/e-Inf160105.
-  [6] Einav Peretz-Andersson and Richard Torkar, "Empirical AI Transformati=
-on
-  Research: A Systematic Mapping Study and Future Agenda", In e-Informatica
-  Software Engineering Journal, vol. 16, no. 1, pp. 220108, 2022. DOI:
-  10.37190/e-Inf220108.
-
-- Interdisciplinary work at the intersection of Software Engineering and
-  AI/ML, see, e.g.,
-  [7] Miros=C5=82aw Ochodek and Miroslaw Staron, "ACoRA =E2=80=93 A Platfor=
-m for Automating
-  Code Review Tasks", In e-Informatica Software Engineering Journal, vol. 1=
-9,
-  no. 1, pp. 250102, 2025. DOI: 10.37190/e-Inf250102.
-
-We are also open to proposals for special sections that reflect the latest
-trends and challenges in the field. If you have ideas for collaboration or
-suggestions on how we can better meet researchers=E2=80=99 needs, we welcom=
-e=20
-your feedback at e-informatica@pwr.edu.pl .
-
-Explore our journal at: https://www.e-informatyka.pl/ , and start your
-submission process at https://mc.manuscriptcentral.com/e-InformaticaSEJ .
-
-We recommend using our latest LaTeX template available at
-https://www.e-informatyka.pl/index.php/einformatica/authors-guide/paper-sub=
-mission/
-
-With best regards,
-
-Lech Madeyski & Miroslaw Ochodek
-Editors-in-Chief, e-Informatica Software Engineering Journal (EISEJ)
-
-
+Cc: stable@vger.kernel.org # v4.16.x
+Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 ---
-EISEJ is indexed by:
+ security/integrity/ima/ima.h      | 3 +++
+ security/integrity/ima/ima_main.c | 7 +++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-- ISI WoS with Impact Factor (IF=3D1.2, 5 Year IF=3D1.3) calculated by Clar=
-ivate:
-  https://jcr.clarivate.com/jcr-jp/journal-profile?journal=3DE-INFORMATICA&=
-year=3DAll%20years=20
-- Scopus (with CiteScore=3D2.6): https://www.scopus.com/sourceid/2110025950=
-9=20
-- DBLP: https://dblp.uni-trier.de/db/journals/eInformatica/index.html
-- Directory of Open Access Journals (DOAJ): https://www.doaj.org/toc/2084-4=
-840
-- Google Scholar: https://scholar.google.pl/citations?user=3D8-uDLDoAAAAJ&h=
-l
+diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+index 24d09ea91b87..a4f284bd846c 100644
+--- a/security/integrity/ima/ima.h
++++ b/security/integrity/ima/ima.h
+@@ -149,6 +149,9 @@ struct ima_kexec_hdr {
+ #define IMA_CHECK_BLACKLIST	0x40000000
+ #define IMA_VERITY_REQUIRED	0x80000000
+ 
++/* Exclude non-action flags which are not rule-specific. */
++#define IMA_NONACTION_RULE_FLAGS	(IMA_NONACTION_FLAGS & ~IMA_NEW_FILE)
++
+ #define IMA_DO_MASK		(IMA_MEASURE | IMA_APPRAISE | IMA_AUDIT | \
+ 				 IMA_HASH | IMA_APPRAISE_SUBMASK)
+ #define IMA_DONE_MASK		(IMA_MEASURED | IMA_APPRAISED | IMA_AUDITED | \
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 9b87556b03a7..b028c501949c 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -269,10 +269,13 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 	mutex_lock(&iint->mutex);
+ 
+ 	if (test_and_clear_bit(IMA_CHANGE_ATTR, &iint->atomic_flags))
+-		/* reset appraisal flags if ima_inode_post_setattr was called */
++		/*
++		 * Reset appraisal flags (action and non-action rule-specific)
++		 * if ima_inode_post_setattr was called.
++		 */
+ 		iint->flags &= ~(IMA_APPRAISE | IMA_APPRAISED |
+ 				 IMA_APPRAISE_SUBMASK | IMA_APPRAISED_SUBMASK |
+-				 IMA_NONACTION_FLAGS);
++				 IMA_NONACTION_RULE_FLAGS);
+ 
+ 	/*
+ 	 * Re-evaulate the file if either the xattr has changed or the
+-- 
+2.34.1
 
----
-Opt out: If you do not want to receive further e-mails from us, please use =
-this link:
-https://listmonk.e-informatyka.pl/subscription/c3d88966-bba6-42ee-af4c-3eab=
-7d6d221c/0febfbc1-5610-4c07-8204-e30a97adbdc8
 
