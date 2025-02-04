@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5182BA27918
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E86AA2791A
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E5D3A17B6
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76CC3A319F
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79F92165F3;
-	Tue,  4 Feb 2025 17:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547432165E4;
+	Tue,  4 Feb 2025 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/z20rOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzhsMUwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A214C2165F4
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:55:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13530211A20
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691733; cv=none; b=NQBIYEug1GOcmlz8hzpz3ulFsm6oWvF0eJnJaPN3FpaPxtE8Lx0nKi6u0H5LWoiYV20nUQPE6Z9lBkM9RZ9T9yB+6t7N5BKKFEjpA8Mgc7VulBS8upcHN92SwERz4RJjW/dMgsRbea91so2qztYtFfFr6vwwzFrMa2JSSz8nBV0=
+	t=1738691740; cv=none; b=V6Zd15PcLZEGQU7r9YJ0GMJN/av408sPwvwZmjyV2ApEGsc4KwcYMD8aekiVMry5l1hm6QBwEZrydf3mzSJK8BBa2gRk43IxdOTHG9eKq81zMb6cYpoxZ2d2ejjHhlJS2fdfsj0uHDX8lm23ZQpixQIjiZx/Qh5oUj417tufMm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691733; c=relaxed/simple;
-	bh=JMzLD//7LRkYgcG5Y8KVDiITfXkkFZACylrOahzY7dw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kwd05e9jkqTFdmhblDYGuC2QjN2IOwul2173flfDiKGVqxnhKOCO08/sFVbg3JMrXt2TUHlGf3DKv22F7VNUc7AleubP8Txlc9MNAGoEzG335j+JC3ihrqlGWOxYI/7kPS/3TbdT+GqnbEYnHCoDPMNAvHt69G27hMd7ixkbTm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/z20rOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9CFC4CEDF;
-	Tue,  4 Feb 2025 17:55:32 +0000 (UTC)
+	s=arc-20240116; t=1738691740; c=relaxed/simple;
+	bh=wgSWMn62JVJ0pEFVUwPWBVW05xVlWSsNor8shPdTSYM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OqJP+SOlmasF/KzzwSC7hSOIYDmkVXYtydHHnt95UNcqDKx1my0kO2BKtDfzIc/JLrMKScUmhTW1af7nSZ8K9WHfK4HCiYHrt7EbZCZgjsbpX76zGJ52sdLzIE02ceah0D0qLpDE4CrQj1ZdwNlZxtK4kjm4Y3Q2o1FwoB6o4es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzhsMUwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8948BC4CEE2;
+	Tue,  4 Feb 2025 17:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691733;
-	bh=JMzLD//7LRkYgcG5Y8KVDiITfXkkFZACylrOahzY7dw=;
+	s=korg; t=1738691739;
+	bh=wgSWMn62JVJ0pEFVUwPWBVW05xVlWSsNor8shPdTSYM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=W/z20rOuaJy7UhUe+NBwLm1eHMIHPrkzbMdNZYlRG+ZE6BHEAWHW+3rSwU+Y90vEL
-	 MUVydND6mxtzPvr7Vbwf4e79s7gUHobhjNgkbjCLvuNOnUvR8UIBXbYzI0ilWk6mB8
-	 qB8qwNKoCVHbRv9ZHaPjHUne7iUGF1E42YIDC1QY=
-Subject: FAILED: patch "[PATCH] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap" failed to apply to 5.10-stable tree
+	b=LzhsMUwP4EkBqM0e48GcmmPyUngfoY/qtkUpYy+ucRPnTlR6M8dUITDOUadHc6bIE
+	 m3lgA24EVhq8xachJBHLsQneFPxEy/znTQvFWQmrVRyJg5AERL4XnQYOk0pzxGBUsa
+	 /4V5jY8Y3O+el+YECpKemj813au6m8I2La2tfrRY=
+Subject: FAILED: patch "[PATCH] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap" failed to apply to 5.4-stable tree
 To: yukuai3@huawei.com,harshit.m.mogalapalli@oracle.com,song@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:55:20 +0100
-Message-ID: <2025020420-dreamlike-desktop-698c@gregkh>
+Date: Tue, 04 Feb 2025 18:55:21 +0100
+Message-ID: <2025020421-exonerate-desecrate-e5ed@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8d28d0ddb986f56920ac97ae704cc3340a699a30
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020420-dreamlike-desktop-698c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020421-exonerate-desecrate-e5ed@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
