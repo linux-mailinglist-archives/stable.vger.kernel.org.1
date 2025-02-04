@@ -1,63 +1,74 @@
-Return-Path: <stable+bounces-112125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C26A26E02
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 10:17:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F33A26E10
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 10:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 853363A815D
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AA16611F
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F5F207E0B;
-	Tue,  4 Feb 2025 09:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A55F207A23;
+	Tue,  4 Feb 2025 09:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JmN3oXND"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lJ41Dndb"
 X-Original-To: stable@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100EE207DF3;
-	Tue,  4 Feb 2025 09:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C323207A14;
+	Tue,  4 Feb 2025 09:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738660632; cv=none; b=cpgHMXWU6CVdfZlUnsCdqUgKmL7Xh6MaNQ4cSSyLqR3bdFbtCZ1dJNb+Up0uuT6E1fScLwLDhhhxUO8drwFxumdavu+cfMHT7eQpBLED4iBkUkx3wf98g5zqfoZkApRGfTr+yYQRAvWKfIP42PO21nf4TK/lgJT2/1b2mWUdADc=
+	t=1738660828; cv=none; b=iIHsPe618EmQABQCr66bJP8TNuNeJT65VBA3V4aEBGNcyPlQcZOFqTPjlgkIN36+zVGnYVT4c3Hw8W+GNvJ2gEwhl5fV41+GqmBEthnApXy53LZlfF5t0ecotTLsu4uC+QPKhydbYxolgJdeUAVaEoISs5+gEY1ZOV1oQFBXx20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738660632; c=relaxed/simple;
-	bh=y9GGHVMrT+wr9M3JQKeJwZtW6ZJrbYAOXJSnkKp+/7g=;
+	s=arc-20240116; t=1738660828; c=relaxed/simple;
+	bh=rauOalsmd53sQxTxWW+uFzWBgqNaCYhWVzouMA54tTg=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bdWBZ3jdfsKSrvXNbbjoY3pyFxKBLAQ1Ap5Xn4xR3FTNwuZgyQn3AV14KgIl0lv6gN9iOcZEjV+jlLuQNDsJ4MXQvvqRnAPMocfc5DjhBuAz/aJSvYrNubAxsT/4kMQ6w0YBccZYaHgw6uF8zK55YO8d+gRJbNixUcJc6loBQlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JmN3oXND; arc=none smtp.client-ip=217.70.183.196
+	 MIME-Version:Content-Type; b=PTs3GNmmTDKxZkSlQYy4JJUXk/2bQ2K8QVk4MIySdmYyykcPso7UrH1yYTBgk68sq+OyGq+6bauTEN+tmH2k2AZsl1Llv936tEuScuviGG3zKPKr9J6+qL5Lgdk+grTb6foHXKzKdqNgT0ArgRQMfF8ACQRy5E6R+xCXf/jsfaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lJ41Dndb; arc=none smtp.client-ip=217.70.183.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7C70A433EE;
-	Tue,  4 Feb 2025 09:17:07 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DF3AD42CCD;
+	Tue,  4 Feb 2025 09:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738660628;
+	t=1738660819;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q2Pf++fNZ1y9QMLFR6ETO34MAg1FfYx4Pu5f8G7fuOM=;
-	b=JmN3oXNDLKbEPH2wPN7l6KyhmKxUJUkMe0agLNer0Od+ffjgyCjaBAQ5InH4bCM6hFNWFT
-	dVJdrad0rCVH53cEkcfrJGcNHAFYM5OKRAzhtrCaegXPMUS2Clq+d2rl5vedUhj9cVzOPz
-	oBY3CMu0sx00S5iZiaLW47YyDfKCGnr4iRBsaSM/hwS0LtMB95uTOUWCY7/oEyEtV1brgs
-	z8vukh291L6GcDbg7vn+LdU3LYLIhNApEcwTgEETh2mguj0QIPlbp1t/L1gzDVkSb+R/k7
-	dgUbsHm4FM4zekKsshDTKf2oQqRl5sB6kIbNU8B2FvMyojalRtHOTd1tTf87WA==
+	bh=rauOalsmd53sQxTxWW+uFzWBgqNaCYhWVzouMA54tTg=;
+	b=lJ41DndbhSwaKVTS9QcQq8lKiruEm45BV3yrs1ZR0Y8qpvjzNkhgbENBF2P6XUUkkW/4Yl
+	maveDONaBpvr4ypfy7kXlHClI+PaLdSNM0l9JmzGwRi3AWiUV0wx/3WYUMI9j/NUdhyFo0
+	LuFxREbXDl8OwRqQ7hhJxA6QmaUL2qD6DzCV21eYDb4qWFEU0BwPPKpUZ1FXD1vu3cAB5C
+	CRPDqWXhrRXauyMPNBAZ1L5JeK3w1iF7IJlt76ZpRxQIxw0O/SeB9FoBn8VgjUe+nAhbgT
+	7OfGPfHBusjszCYT60w2yb0UqQQU5IDbge2GZFKeYi8heAXMok9axBXUK7GjfA==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: christophe.jaillet@wanadoo.fr,  gmpy.liaowx@gmail.com,  kees@kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mtd@lists.infradead.org,
-  richard@nod.at,  vigneshr@ti.com,  stable@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: Add check and kfree() for kcalloc()
-In-Reply-To: <20250204023323.14213-1-jiashengjiangcool@gmail.com> (Jiasheng
-	Jiang's message of "Tue, 4 Feb 2025 02:33:23 +0000")
-References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
-	<20250204023323.14213-1-jiashengjiangcool@gmail.com>
+To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
+Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
+ <vigneshr@ti.com>,  "linux@treblig.org" <linux@treblig.org>,  Shen Lichuan
+ <shenlichuan@vivo.com>,  Jinjie Ruan <ruanjinjie@huawei.com>,
+  "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
+  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob
+ when DMA is not ready
+In-Reply-To: <BL3PR11MB6532451B44E7C5D82F5EC4AFA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
+	(Niravkumar L. Rabara's message of "Tue, 4 Feb 2025 07:48:57 +0000")
+References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
+	<20250116032154.3976447-2-niravkumar.l.rabara@intel.com>
+	<87plkgpk8k.fsf@bootlin.com>
+	<BL3PR11MB653276DFD3339ADAADC70CCFA2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
+	<874j1i0wfq.fsf@bootlin.com>
+	<BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
+	<87msf8z5uu.fsf@bootlin.com>
+	<BL3PR11MB6532451B44E7C5D82F5EC4AFA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
 User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 04 Feb 2025 10:17:07 +0100
-Message-ID: <87wme683xo.fsf@bootlin.com>
+Date: Tue, 04 Feb 2025 10:20:17 +0100
+Message-ID: <87o6zi83se.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,28 +78,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvfevufgjfhgffffkgggtgfesthhqredttderjeenucfhrhhomhepofhiqhhuvghlucftrgihnhgrlhcuoehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgefhjedtfeeigeduudekudejkedtiefhleelueeiueevheekvdeludehiedvfeenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehmihhquhgvlhdrrhgrhihnrghlsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeelpdhrtghpthhtohepjhhirghshhgvnhhgjhhirghnghgtohholhesghhmrghilhdrtghomhdprhgtphhtthhopegthhhrihhsthhophhhvgdrjhgrihhllhgvthesfigrnhgrughoohdrfhhrpdhrtghpthhtohepghhmphihrdhlihgrohifgiesghhmrghilhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhin
- hhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhm
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteehkeelvddvheehtdefkedtjeeutedthfegudekgeefleetkeettdekiefftdeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepnhhirhgrvhhkuhhmrghrrdhlrdhrrggsrghrrgesihhnthgvlhdrtghomhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopehshhgvnhhlihgthhhurghnsehvihhvo
+ hdrtghomhdprhgtphhtthhopehruhgrnhhjihhnjhhivgeshhhurgifvghirdgtohhmpdhrtghpthhtohepuhdrkhhlvghinhgvqdhkohgvnhhighessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
 X-GND-Sasl: miquel.raynal@bootlin.com
 
 Hello,
 
-> --- a/drivers/mtd/mtdpstore.c
-> +++ b/drivers/mtd/mtdpstore.c
-> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct mtd_info *m=
-td)
->=20=20
->  	longcnt =3D BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
->  	cxt->rmmap =3D kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> +	if (!cxt->rmmap)
-> +		goto end;
+> My apologies for the confusion.
+> Slave DMA terminology used in cadence nand controller bindings and
+> driver is indeed confusing.=20=20
+>
+> To answer your question it is,=20
+> 1 - External DMA (Generic DMA controller).
+>
+> Nand controller IP do not have embedded DMA controller (2 - peripheral DM=
+A).=20
+>
+> FYR, how external DMA is used.=20
+> https://elixir.bootlin.com/linux/v6.13.1/source/drivers/mtd/nand/raw/cade=
+nce-nand-controller.c#L1962
 
-We prefer to return immediately in this case.
+In this case we should have a dmas property (and perhaps dma-names), no?
 
-Also, any reasons not to use devm_kcalloc()? This would be the correct
-approach as of today as long as the lifetime of the device is known.
-
-Thanks,
 Miqu=C3=A8l
 
