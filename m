@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-112089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E152CA26999
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:23:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054F7A26997
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BFD3A528B
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8A5161012
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63593213E75;
-	Tue,  4 Feb 2025 01:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C5213E82;
+	Tue,  4 Feb 2025 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PT7wt/Q8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qif+79aI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE2213E6F;
-	Tue,  4 Feb 2025 01:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF9F8633F;
+	Tue,  4 Feb 2025 01:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631872; cv=none; b=W6RkCiV29AjuwUlgv7ge1x7DbHtkbNLOwypJrMz+hDqvc71UtePakWHLjKqbIEVQKlPWo47UUdHbqNO5NAJplzCjdjVV+kizkyzP7mDYCg+JOb6pNrrMXsetKe26Iyjg2/2GiL7DiA3VvLTryeD4JHRjUCXaSPfQsC3wNflHyCw=
+	t=1738631873; cv=none; b=f9uMplSgjwqEquAzH6L/lU+cpALAxvyNxiJbr3Kj8ma2J3wKrsgZunTf6DKeM27JqMhdzty5Q5o1H/Y1xoTh3Pzm+pifTQlP1QaQ84UMg6+DdlIhph1SEi6ulfeTssdZfK1WZccmUThssMFfeEPmUXfqMDqlzyfflxbAP24TljI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631872; c=relaxed/simple;
-	bh=ZzyTehzqwTJGj+rCkkPkOkHYdNKzAV+y6E1BnCDUc7E=;
+	s=arc-20240116; t=1738631873; c=relaxed/simple;
+	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=vFSM/t6jp7TNhwCTObzYjW8kblP6dUhmcXQ/PUWcAOEA36zj2kou2AjGf/TCaCZROnj6SFtvIKtDph4H15Kp6hKgqry2UlJuNuJqSkrUgZs5Jyar5Y9jLfLqAPMAg9dSRKM5bFNYlbOgkqhlsPNui1S/MJNtPHh+3Qo40au95xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PT7wt/Q8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4A0C4CEE0;
-	Tue,  4 Feb 2025 01:17:49 +0000 (UTC)
+	 MIME-Version; b=R9OOePjI9YSj7EuDWgEMohhZ0ZJyIKPjBDIjzMfcns21yw02YJ4FShbTNfpyBYsxI8/kjIVLy65EvyejMVI2sCtGd4MTRejRMyhdrFXFGpOyaT1l7vkTkZornAn/uVn7YwEBluQolJjbYcR19e5oUCKoGiOPGjzPboH/o5CipMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qif+79aI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20A9C4CEE5;
+	Tue,  4 Feb 2025 01:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631871;
-	bh=ZzyTehzqwTJGj+rCkkPkOkHYdNKzAV+y6E1BnCDUc7E=;
+	s=k20201202; t=1738631872;
+	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PT7wt/Q8MJ6g3v4AN+FLfq1We3nCfr5WuNPxB5ckBVzmAAOsrYmC89XjMCS1v8zRB
-	 TnmKaFtGAPC9aHM2sHfUCJpaZHlTfqohRqAQasyV3yrwN2alX38/oDutVxwljHiY89
-	 zynEzwkURLsgK/0E3doNKCWhmXjCpeoFD/2/sifdpvSoZfv3Lm3qw3axCchHm2Wonb
-	 xeoTMj73JPkO4GlaMC7MptJ7Ritau92/jiZ40ly2pI0cbRN/C7eUFRhDJBUc7/sQAC
-	 br0VnB7sanAINtT/ZHH+pGbE1BzLSOTOV593e2uiznYpwxG+r89cpMEIf2DHAZP+2N
-	 BWc7SR2CHOvjg==
+	b=Qif+79aIpPQRgo+bz0nadOFVEX7pujUbx961UVneNRoctaxIM/sqLTsm8fZV/smxU
+	 t/NS0qsNUiiTHY7wHlb+EiYJr5Iryf10OSHQvUhl+bP7VDlCvhs3Q5xzGwNe64KOmP
+	 qHmOGdCkueyJRXNvCM9fSPUOewfYAIJ/8jVm4vLJAVrd5Qolgf8Wii2Q0fqcHsL6Za
+	 wvXcar8O5GAxj3DXmAFTSdDxv/oobOFIa7djTsFYvjVsIzV00TGC/hUYTfB6r1eaGa
+	 gLBCEv0Nf8JkGInp9C9h3eFNZx2SnzJh6E6JIq4Su1hbWt8qVM3qZqq1MnOmpd2Ntc
+	 vZxZcs6OKRdQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	kernel test robot <lkp@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Kees Cook <kees@kernel.org>,
+	Jakub Jelinek <jakub@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kuninori.morimoto.gx@renesas.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.13 5/6] ASoC: renesas: SND_SIU_MIGOR should depend on DMADEVICES
-Date: Mon,  3 Feb 2025 20:17:32 -0500
-Message-Id: <20250204011736.2206691-5-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.13 6/6] kbuild: Use -fzero-init-padding-bits=all
+Date: Mon,  3 Feb 2025 20:17:33 -0500
+Message-Id: <20250204011736.2206691-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250204011736.2206691-1-sashal@kernel.org>
 References: <20250204011736.2206691-1-sashal@kernel.org>
@@ -71,43 +68,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.13.1
 Content-Transfer-Encoding: 8bit
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 2e3c688ddaf2bb8e3696a773b5278711a90ea080 ]
+[ Upstream commit dce4aab8441d285b9a78b33753e0bf583c1320ee ]
 
-If CONFIG_DMADEVICES=n:
+GCC 15 introduces a regression in "= { 0 }" style initialization of
+unions that Linux has depended on for eliminating uninitialized variable
+contents. GCC does not seem likely to fix it[1], instead suggesting[2]
+that affected projects start using -fzero-init-padding-bits=unions.
 
-    WARNING: unmet direct dependencies detected for SND_SOC_SH4_SIU
-      Depends on [n]: SOUND [=y] && SND [=y] && SND_SOC [=y] && (SUPERH [=y] || ARCH_RENESAS || COMPILE_TEST [=n]) && ARCH_SHMOBILE [=y] && HAVE_CLK [=y] && DMADEVICES [=n]
-      Selected by [y]:
-      - SND_SIU_MIGOR [=y] && SOUND [=y] && SND [=y] && SND_SOC [=y] && (SUPERH [=y] || ARCH_RENESAS || COMPILE_TEST [=n]) && SH_MIGOR [=y] && I2C [=y]
+To avoid future surprises beyond just the current situation with unions,
+enable -fzero-init-padding-bits=all when available (GCC 15+). This will
+correctly zero padding bits in unions and structs that might have been
+left uninitialized, and will make sure there is no immediate regression
+in union initializations. As seen in the stackinit KUnit selftest union
+cases, which were passing before, were failing under GCC 15:
 
-SND_SIU_MIGOR selects SND_SOC_SH4_SIU.  As the latter depends on
-DMADEVICES, the former should depend on DMADEVICES, too.
+    not ok 18 test_small_start_old_zero
+    ok 29 test_small_start_dynamic_partial # SKIP XFAIL uninit bytes: 63
+    ok 32 test_small_start_assigned_dynamic_partial # SKIP XFAIL uninit bytes: 63
+    ok 67 test_small_start_static_partial # SKIP XFAIL uninit bytes: 63
+    ok 70 test_small_start_static_all # SKIP XFAIL uninit bytes: 56
+    ok 73 test_small_start_dynamic_all # SKIP XFAIL uninit bytes: 56
+    ok 82 test_small_start_assigned_static_partial # SKIP XFAIL uninit bytes: 63
+    ok 85 test_small_start_assigned_static_all # SKIP XFAIL uninit bytes: 56
+    ok 88 test_small_start_assigned_dynamic_all # SKIP XFAIL uninit bytes: 56
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501241032.oOmsmzvk-lkp@intel.com/
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/8c17ff52584ce824b8b42d08ea1b942ebeb7f4d9.1737708688.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The above all now pass again with -fzero-init-padding-bits=all added.
+
+This also fixes the following cases for struct initialization that had
+been XFAIL until now because there was no compiler support beyond the
+larger "-ftrivial-auto-var-init=zero" option:
+
+    ok 38 test_small_hole_static_all # SKIP XFAIL uninit bytes: 3
+    ok 39 test_big_hole_static_all # SKIP XFAIL uninit bytes: 124
+    ok 40 test_trailing_hole_static_all # SKIP XFAIL uninit bytes: 7
+    ok 42 test_small_hole_dynamic_all # SKIP XFAIL uninit bytes: 3
+    ok 43 test_big_hole_dynamic_all # SKIP XFAIL uninit bytes: 124
+    ok 44 test_trailing_hole_dynamic_all # SKIP XFAIL uninit bytes: 7
+    ok 58 test_small_hole_assigned_static_all # SKIP XFAIL uninit bytes: 3
+    ok 59 test_big_hole_assigned_static_all # SKIP XFAIL uninit bytes: 124
+    ok 60 test_trailing_hole_assigned_static_all # SKIP XFAIL uninit bytes: 7
+    ok 62 test_small_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 3
+    ok 63 test_big_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 124
+    ok 64 test_trailing_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 7
+
+All of the above now pass when built under GCC 15. Tests can be seen
+with:
+
+    ./tools/testing/kunit/kunit.py run stackinit --arch=x86_64 \
+        --make_option CC=gcc-15
+
+Clang continues to fully initialize these kinds of variables[3] without
+additional flags.
+
+Suggested-by: Jakub Jelinek <jakub@redhat.com>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=118403 [1]
+Link: https://lore.kernel.org/linux-toolchains/Z0hRrrNU3Q+ro2T7@tucnak/ [2]
+Link: https://github.com/llvm/llvm-project/commit/7a086e1b2dc05f54afae3591614feede727601fa [3]
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20250127191031.245214-3-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/renesas/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Makefile.extrawarn | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/renesas/Kconfig b/sound/soc/renesas/Kconfig
-index 426632996a0a3..cb01fb36355f0 100644
---- a/sound/soc/renesas/Kconfig
-+++ b/sound/soc/renesas/Kconfig
-@@ -67,7 +67,7 @@ config SND_SH7760_AC97
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 1d13cecc7cc78..eb719f6d8d536 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -77,6 +77,9 @@ KBUILD_CFLAGS += $(call cc-option,-Werror=designated-init)
+ # Warn if there is an enum types mismatch
+ KBUILD_CFLAGS += $(call cc-option,-Wenum-conversion)
  
- config SND_SIU_MIGOR
- 	tristate "SIU sound support on Migo-R"
--	depends on SH_MIGOR && I2C
-+	depends on SH_MIGOR && I2C && DMADEVICES
- 	select SND_SOC_SH4_SIU
- 	select SND_SOC_WM8978
- 	help
++# Explicitly clear padding bits during variable initialization
++KBUILD_CFLAGS += $(call cc-option,-fzero-init-padding-bits=all)
++
+ KBUILD_CFLAGS += -Wextra
+ KBUILD_CFLAGS += -Wunused
+ 
 -- 
 2.39.5
 
