@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382DDA278FA
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:51:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A01A278FB
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEC1C1886D58
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:51:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B1C43A12CD
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B37C21638A;
-	Tue,  4 Feb 2025 17:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8F8216384;
+	Tue,  4 Feb 2025 17:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZEO9VNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVBJnoJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF26216384
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D79014A0B5
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691507; cv=none; b=nLDS4ZgVmuVDhx4TVkC+pWpKZdO7+uTC0dQOpNZpT2ZtgXKWti/wVRC6NpVjRn5NFsuU2LAt/dGo2rXG2mtNyHe42PwlFZdOf+gJ0jcbgiNLcKjR3c1Kxq9uLQhR/XBXw2BBU2FREpEIIJglKBOigFiGelYSo3uPq/qDaAJAqD0=
+	t=1738691533; cv=none; b=T/GFZTMFnbBfyDTaRRSjVnh5zIjFyHQV+Qm4xJeoD1ADVzsP46dsrY7dtN1Tem3SGrw8rG/paTpPg6Ov6dD293FQA1iTYmM7TqKU6Rrk/44j0cIKgqzxUhuXGVNX/+Szrq9UG4WR84HkXXGh3foj9Q2YIQz1M9sDqOMOtP2XeqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691507; c=relaxed/simple;
-	bh=COoZegmOSAJ4R38DXieHX+oRyh95xD0w2xkIrjyWv84=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T/6QKnNTmR4iHrivOQ+eV8cp+chVew4WqhffXCJbLHZe4JC2ZSNMzC49LRaMr3nz01G3x9saz3+r7QBYMMG+3oaXGfm4jETmJXKNtm8T6pjUqhhYtfo6AdkAnv/xXjdclLpuTBAHc++6Paj7D4erm0WjAyVpT53pWrZkR0CIS74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZEO9VNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4548FC4CEDF;
-	Tue,  4 Feb 2025 17:51:46 +0000 (UTC)
+	s=arc-20240116; t=1738691533; c=relaxed/simple;
+	bh=1PUzt6q7tWAAv3Ka/OxukrnFmRazTlSzcQQvyS8NvVw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YufCvl9BZ/6fG5haQ0dSaYO78N00RmQro+7d+T8fAQko+oH5S6W19a3eC/yzYnKMrVEy9bVnboNM/IqaMgT+AdO8HoQXRxbMZaYPd/nwz8KX7ojsMpSCsnY2WD9itBWeV+Tw5OecfZRa5p+UZyDpKeqTXjMtpnAF1mL3IcUBK+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVBJnoJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BF3C4CEDF;
+	Tue,  4 Feb 2025 17:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691506;
-	bh=COoZegmOSAJ4R38DXieHX+oRyh95xD0w2xkIrjyWv84=;
+	s=korg; t=1738691532;
+	bh=1PUzt6q7tWAAv3Ka/OxukrnFmRazTlSzcQQvyS8NvVw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fZEO9VNOxwRkOgy1yNUXq1/wEfgSkleT44WPJhq2r3C4gMmfwifaH16LfppzxoqmC
-	 bJRIeiupjATX62SLKJlT+3X5z5VDtUaLwVX+/WuGq9XllxFNg6TnxkEIMX+5pgs91o
-	 +v4U94a53u8kRrlqU4zvoCQczZAur0AvVeTCLWU8=
-Subject: FAILED: patch "[PATCH] mptcp: pm: only set fullmesh for subflow endp" failed to apply to 6.1-stable tree
-To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
+	b=oVBJnoJryVEMHSzaLw4ZDplBRwec9qbbMNe2ZQGcV7++Qt5RP5EJfdkHbMHHzPgen
+	 cgOA4I8tNeXCSmcw+sbaan+Ev6W8mK7yKQ8iyFBPK8PmtoIkzNby0N3umEtLB77Jh8
+	 I+H/VL3fPzahtryA1+GIw7zrArFZBW5KF28JSRvc=
+Subject: FAILED: patch "[PATCH] RDMA/mlx5: Fix implicit ODP use after free" failed to apply to 6.6-stable tree
+To: phaddad@nvidia.com,jgg@nvidia.com,leonro@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:51:35 +0100
-Message-ID: <2025020435-eagle-precision-e8dd@gregkh>
+Date: Tue, 04 Feb 2025 18:52:09 +0100
+Message-ID: <2025020409-scorpion-stark-a992@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1bb0d1348546ad059f55c93def34e67cb2a034a6
+git cherry-pick -x d3d930411ce390e532470194296658a960887773
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020435-eagle-precision-e8dd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020409-scorpion-stark-a992@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,106 +77,114 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1bb0d1348546ad059f55c93def34e67cb2a034a6 Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 23 Jan 2025 19:05:55 +0100
-Subject: [PATCH] mptcp: pm: only set fullmesh for subflow endp
+From d3d930411ce390e532470194296658a960887773 Mon Sep 17 00:00:00 2001
+From: Patrisious Haddad <phaddad@nvidia.com>
+Date: Sun, 19 Jan 2025 10:21:41 +0200
+Subject: [PATCH] RDMA/mlx5: Fix implicit ODP use after free
 
-With the in-kernel path-manager, it is possible to change the 'fullmesh'
-flag. The code in mptcp_pm_nl_fullmesh() expects to change it only on
-'subflow' endpoints, to recreate more or less subflows using the linked
-address.
+Prevent double queueing of implicit ODP mr destroy work by using
+__xa_cmpxchg() to make sure this is the only time we are destroying this
+specific mr.
 
-Unfortunately, the set_flags() hook was a bit more permissive, and
-allowed 'implicit' endpoints to get the 'fullmesh' flag while it is not
-allowed before.
+Without this change, we could try to invalidate this mr twice, which in
+turn could result in queuing a MR work destroy twice, and eventually the
+second work could execute after the MR was freed due to the first work,
+causing a user after free and trace below.
 
-That's what syzbot found, triggering the following warning:
+   refcount_t: underflow; use-after-free.
+   WARNING: CPU: 2 PID: 12178 at lib/refcount.c:28 refcount_warn_saturate+0x12b/0x130
+   Modules linked in: bonding ib_ipoib vfio_pci ip_gre geneve nf_tables ip6_gre gre ip6_tunnel tunnel6 ipip tunnel4 ib_umad rdma_ucm mlx5_vfio_pci vfio_pci_core vfio_iommu_type1 mlx5_ib vfio ib_uverbs mlx5_core iptable_raw openvswitch nsh rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay zram zsmalloc fuse [last unloaded: ib_uverbs]
+   CPU: 2 PID: 12178 Comm: kworker/u20:5 Not tainted 6.5.0-rc1_net_next_mlx5_58c644e #1
+   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+   Workqueue: events_unbound free_implicit_child_mr_work [mlx5_ib]
+   RIP: 0010:refcount_warn_saturate+0x12b/0x130
+   Code: 48 c7 c7 38 95 2a 82 c6 05 bc c6 fe 00 01 e8 0c 66 aa ff 0f 0b 5b c3 48 c7 c7 e0 94 2a 82 c6 05 a7 c6 fe 00 01 e8 f5 65 aa ff <0f> 0b 5b c3 90 8b 07 3d 00 00 00 c0 74 12 83 f8 01 74 13 8d 50 ff
+   RSP: 0018:ffff8881008e3e40 EFLAGS: 00010286
+   RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
+   RDX: ffff88852c91b5c8 RSI: 0000000000000001 RDI: ffff88852c91b5c0
+   RBP: ffff8881dacd4e00 R08: 00000000ffffffff R09: 0000000000000019
+   R10: 000000000000072e R11: 0000000063666572 R12: ffff88812bfd9e00
+   R13: ffff8881c792d200 R14: ffff88810011c005 R15: ffff8881002099c0
+   FS:  0000000000000000(0000) GS:ffff88852c900000(0000) knlGS:0000000000000000
+   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   CR2: 00007f5694b5e000 CR3: 00000001153f6003 CR4: 0000000000370ea0
+   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+   Call Trace:
+    <TASK>
+    ? refcount_warn_saturate+0x12b/0x130
+    free_implicit_child_mr_work+0x180/0x1b0 [mlx5_ib]
+    process_one_work+0x1cc/0x3c0
+    worker_thread+0x218/0x3c0
+    kthread+0xc6/0xf0
+    ret_from_fork+0x1f/0x30
+    </TASK>
 
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 __mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
-  WARNING: CPU: 0 PID: 6499 at net/mptcp/pm_netlink.c:1496 mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 6499 Comm: syz.1.413 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
-  Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_netlink.c:1496 [inline]
-  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_netlink.c:1980 [inline]
-  RIP: 0010:mptcp_nl_set_flags net/mptcp/pm_netlink.c:2003 [inline]
-  RIP: 0010:mptcp_pm_nl_set_flags+0x974/0xdc0 net/mptcp/pm_netlink.c:2064
-  Code: 01 00 00 49 89 c5 e8 fb 45 e8 f5 e9 b8 fc ff ff e8 f1 45 e8 f5 4c 89 f7 be 03 00 00 00 e8 44 1d 0b f9 eb a0 e8 dd 45 e8 f5 90 <0f> 0b 90 e9 17 ff ff ff 89 d9 80 e1 07 38 c1 0f 8c c9 fc ff ff 48
-  RSP: 0018:ffffc9000d307240 EFLAGS: 00010293
-  RAX: ffffffff8bb72e03 RBX: 0000000000000000 RCX: ffff88807da88000
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffffc9000d307430 R08: ffffffff8bb72cf0 R09: 1ffff1100b842a5e
-  R10: dffffc0000000000 R11: ffffed100b842a5f R12: ffff88801e2e5ac0
-  R13: ffff88805c214800 R14: ffff88805c2152e8 R15: 1ffff1100b842a5d
-  FS:  00005555619f6500(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000020002840 CR3: 00000000247e6000 CR4: 00000000003526f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0xb14/0xec0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2542
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
-   netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1347
-   netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1891
-   sock_sendmsg_nosec net/socket.c:711 [inline]
-   __sock_sendmsg+0x221/0x270 net/socket.c:726
-   ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2583
-   ___sys_sendmsg net/socket.c:2637 [inline]
-   __sys_sendmsg+0x269/0x350 net/socket.c:2669
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f5fe8785d29
-  Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007fff571f5558 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f5fe8975fa0 RCX: 00007f5fe8785d29
-  RDX: 0000000000000000 RSI: 0000000020000480 RDI: 0000000000000007
-  RBP: 00007f5fe8801b08 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007f5fe8975fa0 R14: 00007f5fe8975fa0 R15: 00000000000011f4
-   </TASK>
-
-Here, syzbot managed to set the 'fullmesh' flag on an 'implicit' and
-used -- according to 'id_avail_bitmap' -- endpoint, causing the PM to
-try decrement the local_addr_used counter which is only incremented for
-the 'subflow' endpoint.
-
-Note that 'no type' endpoints -- not 'subflow', 'signal', 'implicit' --
-are fine, because their ID will not be marked as used in the 'id_avail'
-bitmap, and setting 'fullmesh' can help forcing the creation of subflow
-when receiving an ADD_ADDR.
-
-Fixes: 73c762c1f07d ("mptcp: set fullmesh flag in pm_netlink")
+Fixes: 5256edcb98a1 ("RDMA/mlx5: Rework implicit ODP destroy")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+cd16e79c1e45f3fe0377@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/6786ac51.050a0220.216c54.00a6.GAE@google.com
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/540
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250123-net-mptcp-syzbot-issues-v1-2-af73258a726f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/r/c96b8645a81085abff739e6b06e286a350d1283d.1737274283.git.leon@kernel.org
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 98ac73938bd8..572d160edca3 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -2020,7 +2020,8 @@ int mptcp_pm_nl_set_flags(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index f655859eec00..f1e23583e6c0 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -228,13 +228,27 @@ static void destroy_unused_implicit_child_mr(struct mlx5_ib_mr *mr)
+ 	unsigned long idx = ib_umem_start(odp) >> MLX5_IMR_MTT_SHIFT;
+ 	struct mlx5_ib_mr *imr = mr->parent;
+ 
++	/*
++	 * If userspace is racing freeing the parent implicit ODP MR then we can
++	 * loose the race with parent destruction. In this case
++	 * mlx5_ib_free_odp_mr() will free everything in the implicit_children
++	 * xarray so NOP is fine. This child MR cannot be destroyed here because
++	 * we are under its umem_mutex.
++	 */
+ 	if (!refcount_inc_not_zero(&imr->mmkey.usecount))
+ 		return;
+ 
+-	xa_erase(&imr->implicit_children, idx);
++	xa_lock(&imr->implicit_children);
++	if (__xa_cmpxchg(&imr->implicit_children, idx, mr, NULL, GFP_KERNEL) !=
++	    mr) {
++		xa_unlock(&imr->implicit_children);
++		return;
++	}
++
+ 	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
+-		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
+-			 mlx5_base_mkey(mr->mmkey.key));
++		__xa_erase(&mr_to_mdev(mr)->odp_mkeys,
++			   mlx5_base_mkey(mr->mmkey.key));
++	xa_unlock(&imr->implicit_children);
+ 
+ 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
+ 	INIT_WORK(&mr->odp_destroy.work, free_implicit_child_mr_work);
+@@ -502,18 +516,18 @@ static struct mlx5_ib_mr *implicit_get_child_mr(struct mlx5_ib_mr *imr,
+ 		refcount_inc(&ret->mmkey.usecount);
+ 		goto out_lock;
  	}
- 	if ((addr.flags & MPTCP_PM_ADDR_FLAG_FULLMESH) &&
--	    (entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
-+	    (entry->flags & (MPTCP_PM_ADDR_FLAG_SIGNAL |
-+			     MPTCP_PM_ADDR_FLAG_IMPLICIT))) {
- 		spin_unlock_bh(&pernet->lock);
- 		GENL_SET_ERR_MSG(info, "invalid addr flags");
- 		return -EINVAL;
+-	xa_unlock(&imr->implicit_children);
+ 
+ 	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
+-		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
+-			       &mr->mmkey, GFP_KERNEL);
++		ret = __xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
++				 &mr->mmkey, GFP_KERNEL);
+ 		if (xa_is_err(ret)) {
+ 			ret = ERR_PTR(xa_err(ret));
+-			xa_erase(&imr->implicit_children, idx);
+-			goto out_mr;
++			__xa_erase(&imr->implicit_children, idx);
++			goto out_lock;
+ 		}
+ 		mr->mmkey.type = MLX5_MKEY_IMPLICIT_CHILD;
+ 	}
++	xa_unlock(&imr->implicit_children);
+ 	mlx5_ib_dbg(mr_to_mdev(imr), "key %x mr %p\n", mr->mmkey.key, mr);
+ 	return mr;
+ 
 
 
