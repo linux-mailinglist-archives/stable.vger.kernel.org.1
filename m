@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-112083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B600BA26989
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:22:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4C1A2698B
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59C5F1886854
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:22:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7722165872
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D776A14659A;
-	Tue,  4 Feb 2025 01:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871F714B95A;
+	Tue,  4 Feb 2025 01:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tv4iU+zb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7BB8sSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911581487ED;
-	Tue,  4 Feb 2025 01:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A3114A60F;
+	Tue,  4 Feb 2025 01:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631844; cv=none; b=B8oiAFQxQZyUUdg6p+eiWQherPo19FhCGlhuYz47ePsmyJcB1kA86/nA+ZTvE5/GEAkc5jsMdD5pk7199s33DLfjeC6oa49FWMXwpm0q/q2rx55r2Z0WUf3ijgsUxWkeLHKqNaZ9mwHPhZM2MpkRYS+NZ5rZbzJt/C0ffoN+4pc=
+	t=1738631850; cv=none; b=rCWOzB3jqVlRMG3VlrZjfYkHP0LOHzUENncCY1RHkCtnZYB89WbyFucyldFJLc5GbBgCUnbiBuxvmzI+nyAkfzfx9grmZWdkhmdOps/yr14fHFMHKAi69GeRhPUigceAzAE1JYedPJtNo0o+i5SJXhHyNVs9sceaHOXswYsW4zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631844; c=relaxed/simple;
-	bh=WfV0I2XcMcWq6iqVHClcxb6CZ1GUpZumWWMRKQxTWPo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RAZTXbAS7DKIkSjB2j8Cf6hXHZFq2lofu0nkehr2MRjYnArB1sQcSNsP8GtYsiP7HoZMTq39Q5U1Xp16vvL4gbMcC+24OIt0bHfaa1O5RB8WEOXK046oIlI7GqPdvGweEyKF27tA2hz3HtpxBkqk/bW9lnSx7B3+SucRkS1Ml08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tv4iU+zb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3231C4CEE0;
-	Tue,  4 Feb 2025 01:17:22 +0000 (UTC)
+	s=arc-20240116; t=1738631850; c=relaxed/simple;
+	bh=unEW58bxgDp9Tci6Qt8M/HsnkK6vKAqU1o7VDLda/o0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a8ihO6/7F5D57IQg9Ws/7IYM+fXBgI0kW+WOHnPhsVXizJtMfB9m3JBM7o79zYXc+oT7GW/B/RXAEsAU2CMTwyXjcL64yNQ+GgGL7Ov5NBthjFZbyxtGKMR7zAIWiOqzdxaB0RwEO/oeyOPNS3pzwvtxUge5+I0d/ZtSHOoiILk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7BB8sSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6707AC4CEE5;
+	Tue,  4 Feb 2025 01:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631844;
-	bh=WfV0I2XcMcWq6iqVHClcxb6CZ1GUpZumWWMRKQxTWPo=;
+	s=k20201202; t=1738631849;
+	bh=unEW58bxgDp9Tci6Qt8M/HsnkK6vKAqU1o7VDLda/o0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=tv4iU+zbrSlv8yVrjuDbIHRlttiA0Bct6P/BoPU4CUH5gb3FsEL5SPb0OJLaS7YB9
-	 ESTyYmoUI2z+iBJpm//6e+QW8JeoXr3arXWnuihjQ0hh9KUzIp9oAFvuVQjYP0PYAA
-	 gZBAumzd5BWhPcstg8YQyEtSLUdsvWOQ+eXxzkh5qNM4p3m0tF6PbyV5Xyta9LifiA
-	 4a1nGef+fPAUu4m7IRNP7h62oeoJkvK2lX6otR5NP/W0jfZaYA5HtcErV8Wbq7Z205
-	 fwu6fWW3oEaDnlKvR14N7Ea4dZY24Tl3qX7RKBvZ+o5cfJS2t4RKVeSxSuagsZKhHm
-	 UVOE/cBDHI6rQ==
+	b=R7BB8sSC+hnEQvVVaqUk9Vim5oMbEq44ey42AG/ZWGXy/JPLnn8LamLxmZSBkan1H
+	 6bBYjLtJCKTc3jDBMKMn7bg0nfv5jDcziOJGgoQhkBg781ZMQya3qiMvwKA3acwNhb
+	 1abkD5Km+NSicDvrwENyje4Urqo1UVZ+9XogLTFPyQJv2AxoLWKR1oHTacNQL11Obb
+	 Wcw8aNNjmhfDNQGJddOU7GTcTDDMDzDTzdgP+GdUWPbEfvTx4jb3431Lvro5feq4Hg
+	 a1zG5vfiVtUKa2nAjhlguVAiKwIJ1qboz8gYkTQhoyD/b4oDyK9vB/MYTBodZXNf2F
+	 WE6kRvh8CUrMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,9 +52,9 @@ Cc: Maksym Planeta <maksym@exostellar.io>,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH AUTOSEL 5.10] Grab mm lock before grabbing pt lock
-Date: Mon,  3 Feb 2025 20:17:18 -0500
-Message-Id: <20250204011718.2206631-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4] Grab mm lock before grabbing pt lock
+Date: Mon,  3 Feb 2025 20:17:24 -0500
+Message-Id: <20250204011724.2206660-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.234
+X-stable-base: Linux 5.4.290
 Content-Transfer-Encoding: 8bit
 
 From: Maksym Planeta <maksym@exostellar.io>
@@ -180,10 +180,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
-index cf2ade864c302..2fef8ad3f1df9 100644
+index c8dbee62ec2ab..51f8b657ec8a7 100644
 --- a/arch/x86/xen/mmu_pv.c
 +++ b/arch/x86/xen/mmu_pv.c
-@@ -762,6 +762,7 @@ void xen_mm_pin_all(void)
+@@ -842,6 +842,7 @@ void xen_mm_pin_all(void)
  {
  	struct page *page;
  
@@ -191,15 +191,15 @@ index cf2ade864c302..2fef8ad3f1df9 100644
  	spin_lock(&pgd_lock);
  
  	list_for_each_entry(page, &pgd_list, lru) {
-@@ -772,6 +773,7 @@ void xen_mm_pin_all(void)
+@@ -852,6 +853,7 @@ void xen_mm_pin_all(void)
  	}
  
  	spin_unlock(&pgd_lock);
 +	spin_unlock(&init_mm.page_table_lock);
  }
  
- static void __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
-@@ -866,6 +868,7 @@ void xen_mm_unpin_all(void)
+ static int __init xen_mark_pinned(struct mm_struct *mm, struct page *page,
+@@ -961,6 +963,7 @@ void xen_mm_unpin_all(void)
  {
  	struct page *page;
  
@@ -207,7 +207,7 @@ index cf2ade864c302..2fef8ad3f1df9 100644
  	spin_lock(&pgd_lock);
  
  	list_for_each_entry(page, &pgd_list, lru) {
-@@ -877,6 +880,7 @@ void xen_mm_unpin_all(void)
+@@ -972,6 +975,7 @@ void xen_mm_unpin_all(void)
  	}
  
  	spin_unlock(&pgd_lock);
