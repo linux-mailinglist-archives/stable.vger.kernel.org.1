@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-112098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768A8A269AB
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:25:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3335A269AC
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4123E188547B
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692B5161DB8
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E8621480B;
-	Tue,  4 Feb 2025 01:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E9919E83E;
+	Tue,  4 Feb 2025 01:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrF3t+57"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kA46vTEw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408C1214810;
-	Tue,  4 Feb 2025 01:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95081993B7;
+	Tue,  4 Feb 2025 01:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631905; cv=none; b=V6EkyOKew+lQefhgm/5voxibzXCJDmlm1lSy+kQu0uip921bNkqyJg3RatOfmY9wIHeQu19xVW89+Zxc7oiv91PmW76XXj+qv4DWnK453/OLkkXdryjGy+ALgjaZXKWVepvxsvlg2m0pi7F3ocva0uhxg+8r+3BhW0TWT/dRNOc=
+	t=1738631914; cv=none; b=j6UjAG/muKprqzK7Vi/olUlrRKh1LnqfPj6myJoXoTWtDv+FbaackA3gImZP468BbfClNCVW8WDAPN5J0s2HXe9qFLpOoQtjRhJAqdJ3W+zBtYvOXBrSGfnGjncerZoccDFlHdkCwAJMTj25qrJ5intc++NI4Pg7SQizJ8qDJvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631905; c=relaxed/simple;
-	bh=VSB/FRi4u1iCKI/o2sXNvRTbRWT+LmLFztZZGDhMzpA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=biteC6pmpCUybzgvNFbjzmsBuqwLx965QyzTYsu7y8cTpx7bhv9cnRnJ4AdrNPsz4HQgRIai2oGaMJWHG3ErJAQmAegQSU4I57cQWo0PJq8czNRrgasgHW9BFFEkHRFpIGjN4XI/lqnoDfstMy0E7k9h2jVv33nxL26RTrOKspE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrF3t+57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FE5C4CEE0;
-	Tue,  4 Feb 2025 01:18:23 +0000 (UTC)
+	s=arc-20240116; t=1738631914; c=relaxed/simple;
+	bh=mxhC4edHVa6XrvQsYK4JhAzJcV0u+cR3t3YfAjPBDuM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mS0HwNyILjJi3touH0ObnJVtgAs9MLHmhokXXM6JyDFw3NuAQrJGIkZRFtWjuoNI/AHjhNLI9gMUvtaMLJ707XSqwCYeA0fT0/TXcIwsYbUWaM3WtfngXLmG37U4BOx3Bk+bRDHyEDbTpA6n1qDRXXLZ9kzLB++tHF88fwqS+TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kA46vTEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62615C4CEE0;
+	Tue,  4 Feb 2025 01:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631905;
-	bh=VSB/FRi4u1iCKI/o2sXNvRTbRWT+LmLFztZZGDhMzpA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrF3t+57ZjkCaYXJma4rNFZ8sIIc7BLZTls1t/8VV/j5ct9Z3ygJV8TUqV6821g8U
-	 LlAlwXKnUEcT+DP5ct8qE/n3+DMrSyX2MOCUF2O6PBldUrq8UVKS0NFkYV/6QW5xsh
-	 EF8/cyLoulCYFO/AWsEUJHjJXRnT4gpAQqJ0KIPkFHeEYAy0Nc0O0MMEsyx6AuASIX
-	 CTvnOqt8xA4NIUHte8srfn3FHdYmfANACHUVRal/hWie4S2fPI/vsKNrqqGJTCOOLQ
-	 x8tSu0wGhRTZ4pm24xFk5GNsnZuhcBD4d29W1ttXkJySyG0ll6njZjPNuwHUqPEGVx
-	 39vsLxNcZuHCQ==
+	s=k20201202; t=1738631914;
+	bh=mxhC4edHVa6XrvQsYK4JhAzJcV0u+cR3t3YfAjPBDuM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kA46vTEwsqrqQVm37Yy+pppagSG7fRNgjOHOnUTE/4Kx1qT4Qd4E7B/vjDkj7rrzj
+	 aD8QnTORV6gh7q4QGMk+Bd9iNuEnpW11AkNZEMks4psAP81NlxUN2eQBruW6IXsMB3
+	 F6uMaRxdY4mQsH3YkQWVvboaSdjTSi1fY03w+osr/qi6JtEYvXZB4oVtffBRS7Yn9I
+	 5DZCW1+9x3LebPBCQtTh8IeLJ6Jel61io3+m7wOghzJc9qsX/MMMsh4uVePn9zBmVc
+	 Qizjd9BsWDaHNpMDw8TPUgL9tzuCrOpjXS7LuF/SsuD5QCmgNibLDKcYCsUNOmkcd+
+	 uuP3ooyo1TvDw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Rik van Riel <riel@fb.com>,
+	kernel test roboto <oliver.sang@intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	alban.boye@protonmail.com,
-	tomlohave@gmail.com,
-	kuninori.morimoto.gx@renesas.com,
-	u.kleine-koenig@baylibre.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 3/3] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
-Date: Mon,  3 Feb 2025 20:18:11 -0500
-Message-Id: <20250204011814.2207014-3-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	akpm@linux-foundation.org,
+	yosry.ahmed@linux.dev,
+	Liam.Howlett@oracle.com,
+	kirill.shutemov@linux.intel.com,
+	mpe@ellerman.id.au
+Subject: [PATCH AUTOSEL 6.1 1/3] x86/mm/tlb: Only trim the mm_cpumask once a second
+Date: Mon,  3 Feb 2025 20:18:23 -0500
+Message-Id: <20250204011828.2207072-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250204011814.2207014-1-sashal@kernel.org>
-References: <20250204011814.2207014-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,60 +74,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.75
+X-stable-base: Linux 6.1.128
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Rik van Riel <riel@fb.com>
 
-[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
+[ Upstream commit 6db2526c1d694c91c6e05e2f186c085e9460f202 ]
 
-The Vexia EDU ATLA 10 tablet comes in 2 different versions with
-significantly different mainboards. The only outward difference is that
-the charging barrel on one is marked 5V and the other is marked 9V.
+Setting and clearing CPU bits in the mm_cpumask is only ever done
+by the CPU itself, from the context switch code or the TLB flush
+code.
 
-The 5V version mostly works with the BYTCR defaults, except that it is
-missing a CHAN package in its ACPI tables and the default of using
-SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
-detect signal is not inverted as it usually is.
+Synchronization is handled by switch_mm_irqs_off() blocking interrupts.
 
-Add a DMI quirk for the 5V version to fix sound not working.
+Sending TLB flush IPIs to CPUs that are in the mm_cpumask, but no
+longer running the program causes a regression in the will-it-scale
+tlbflush2 test. This test is contrived, but a large regression here
+might cause a small regression in some real world workload.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Instead of always sending IPIs to CPUs that are in the mm_cpumask,
+but no longer running the program, send these IPIs only once a second.
+
+The rest of the time we can skip over CPUs where the loaded_mm is
+different from the target mm.
+
+Reported-by: kernel test roboto <oliver.sang@intel.com>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20241204210316.612ee573@fangorn
+Closes: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/mmu.h         |  2 ++
+ arch/x86/include/asm/mmu_context.h |  1 +
+ arch/x86/include/asm/tlbflush.h    |  1 +
+ arch/x86/mm/tlb.c                  | 35 +++++++++++++++++++++++++++---
+ 4 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index ddf68be0af14a..ce80adc30fe94 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
--	{	/* Vexia Edu Atla 10 tablet */
-+	{
-+		/* Vexia Edu Atla 10 tablet 5V version */
-+		.matches = {
-+			/* Having all 3 of these not set is somewhat unique */
-+			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
-+	{	/* Vexia Edu Atla 10 tablet 9V version */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+diff --git a/arch/x86/include/asm/mmu.h b/arch/x86/include/asm/mmu.h
+index 5d7494631ea95..c07c018a1c139 100644
+--- a/arch/x86/include/asm/mmu.h
++++ b/arch/x86/include/asm/mmu.h
+@@ -33,6 +33,8 @@ typedef struct {
+ 	 */
+ 	atomic64_t tlb_gen;
+ 
++	unsigned long next_trim_cpumask;
++
+ #ifdef CONFIG_MODIFY_LDT_SYSCALL
+ 	struct rw_semaphore	ldt_usr_sem;
+ 	struct ldt_struct	*ldt;
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index b8d40ddeab00f..6f5c7584fe1e3 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -106,6 +106,7 @@ static inline int init_new_context(struct task_struct *tsk,
+ 
+ 	mm->context.ctx_id = atomic64_inc_return(&last_mm_ctx_id);
+ 	atomic64_set(&mm->context.tlb_gen, 0);
++	mm->context.next_trim_cpumask = jiffies + HZ;
+ 
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+ 	if (cpu_feature_enabled(X86_FEATURE_OSPKE)) {
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index cda3118f3b27d..d1eb6bbfd39e3 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -208,6 +208,7 @@ struct flush_tlb_info {
+ 	unsigned int		initiating_cpu;
+ 	u8			stride_shift;
+ 	u8			freed_tables;
++	u8			trim_cpumask;
+ };
+ 
+ void flush_tlb_local(void);
+diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
+index c1e31e9a85d76..b07e2167fcebf 100644
+--- a/arch/x86/mm/tlb.c
++++ b/arch/x86/mm/tlb.c
+@@ -878,9 +878,36 @@ static void flush_tlb_func(void *info)
+ 			nr_invalidate);
+ }
+ 
+-static bool tlb_is_not_lazy(int cpu, void *data)
++static bool should_flush_tlb(int cpu, void *data)
+ {
+-	return !per_cpu(cpu_tlbstate_shared.is_lazy, cpu);
++	struct flush_tlb_info *info = data;
++
++	/* Lazy TLB will get flushed at the next context switch. */
++	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
++		return false;
++
++	/* No mm means kernel memory flush. */
++	if (!info->mm)
++		return true;
++
++	/* The target mm is loaded, and the CPU is not lazy. */
++	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
++		return true;
++
++	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
++	if (info->trim_cpumask)
++		return true;
++
++	return false;
++}
++
++static bool should_trim_cpumask(struct mm_struct *mm)
++{
++	if (time_after(jiffies, READ_ONCE(mm->context.next_trim_cpumask))) {
++		WRITE_ONCE(mm->context.next_trim_cpumask, jiffies + HZ);
++		return true;
++	}
++	return false;
+ }
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state_shared, cpu_tlbstate_shared);
+@@ -914,7 +941,7 @@ STATIC_NOPV void native_flush_tlb_multi(const struct cpumask *cpumask,
+ 	if (info->freed_tables)
+ 		on_each_cpu_mask(cpumask, flush_tlb_func, (void *)info, true);
+ 	else
+-		on_each_cpu_cond_mask(tlb_is_not_lazy, flush_tlb_func,
++		on_each_cpu_cond_mask(should_flush_tlb, flush_tlb_func,
+ 				(void *)info, 1, cpumask);
+ }
+ 
+@@ -965,6 +992,7 @@ static struct flush_tlb_info *get_flush_tlb_info(struct mm_struct *mm,
+ 	info->freed_tables	= freed_tables;
+ 	info->new_tlb_gen	= new_tlb_gen;
+ 	info->initiating_cpu	= smp_processor_id();
++	info->trim_cpumask	= 0;
+ 
+ 	return info;
+ }
+@@ -1007,6 +1035,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
+ 	 * flush_tlb_func_local() directly in this case.
+ 	 */
+ 	if (cpumask_any_but(mm_cpumask(mm), cpu) < nr_cpu_ids) {
++		info->trim_cpumask = should_trim_cpumask(mm);
+ 		flush_tlb_multi(mm_cpumask(mm), info);
+ 	} else if (mm == this_cpu_read(cpu_tlbstate.loaded_mm)) {
+ 		lockdep_assert_irqs_enabled();
 -- 
 2.39.5
 
