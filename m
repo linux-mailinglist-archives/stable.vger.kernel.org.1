@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C581EA2790D
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:54:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151A3A2790E
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A6001887BE5
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF421887DF5
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1217216384;
-	Tue,  4 Feb 2025 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45E92163AC;
+	Tue,  4 Feb 2025 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOnNf8bN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTxS2Vj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F88B215F5A
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73858215F5A
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691692; cv=none; b=dvAEfJ5ucplepJPbYMcCaPd26yGPZVEJyjzybwWM1T++8CdxskDXW/RUnTip+mkRPr80mM5HOd2QyrXNBnfP/BBHifSIddmjOtSnJSBGd5dhFp2i6tFrIT1XCwv+U4Q6Xrw2KbKqxFmmtFM3oRaPK9LtXTn46L3cHoXXA08MdbE=
+	t=1738691696; cv=none; b=CyfoL2l7NeDdqAeAEGF0qwzkK5gwmWejwxTSvd6sWPzS98B217slIyAWkk2rpa2qbbmTMzgnH2gB08igzFh1U5jnS07bhxXHUHmGJKiVIAGowbcywh/p5srQ4AK+1mPGfX5B6RvtARzFMWOswpkJCZckZWXnKUiQbe6B8sETueg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691692; c=relaxed/simple;
-	bh=TRsxYvp4zF8j3RfJHT40ZDAxav24fsX5KCin19TfLkU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q45J6oFN0KogQhXOVbLlvRcfuF7jSyquOFe3JUjbVeKrzIbXRwSFxn8RouKvV1RrsJI0He0zV5hgm59GWdxeIP27lzKTWKKjkKSI1vBxqBYM9E6xVtFDiObGHyx3sejbx1RwB5AZ+VOQ1uB2sIQpx+na9SM2J8M41Uwom3FlgEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOnNf8bN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9A4C4CEDF;
-	Tue,  4 Feb 2025 17:54:51 +0000 (UTC)
+	s=arc-20240116; t=1738691696; c=relaxed/simple;
+	bh=5UlQCuZAMnj8b3t4rESr+hxg9XJxILn7bzMSUAHF9ls=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=imSM6uWbLJrUxBKpAbL7QCbqjv7dBHC2oXHymiz5Bgwj4Fw9qckXmudozq/TTajnNttbqOL4R+ThrO9/8SacEmPSMxhRIEEH48zBJcr0cYAYUKT6xpbTT2KclACh2cMzKY7gjcY3fOwc8UGRL4FLY03penoDLmAXXBg24fYMogo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTxS2Vj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E002C4CEE3;
+	Tue,  4 Feb 2025 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691692;
-	bh=TRsxYvp4zF8j3RfJHT40ZDAxav24fsX5KCin19TfLkU=;
+	s=korg; t=1738691695;
+	bh=5UlQCuZAMnj8b3t4rESr+hxg9XJxILn7bzMSUAHF9ls=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sOnNf8bN7Yul9EYjlNWoBzj5sgONX7bzaYanuyntGv0LpgGSecDKahRk/7AkUtRXt
-	 7Bw/Ynv+aDPQc0VE9XAxAUsgzMcsk1+l1pHprRZYJRepmJFUcpkIFlpu+mDduIbFc7
-	 Ecg3sTibMK1Yb3rO3+r8JRDG9/MP9TCkrh8pSSyA=
-Subject: FAILED: patch "[PATCH] drm/v3d: Assign job pointer to NULL before signaling the" failed to apply to 5.10-stable tree
+	b=FTxS2Vj6BQUXguw6C2B7UZq4TNaWpay81XArRp9l7i0hYMqnyyIrzuNU8ASqEY2K4
+	 cX16EIiJNQJynT91HoBy3ZzPJi1FIXM/J0btfF9D05ZyJoMXpRzij+Udd2wRN/EBb1
+	 s9j0D0aUeNsiDgBIbmBl4979cmitxtTOAfnkcrhQ=
+Subject: FAILED: patch "[PATCH] drm/v3d: Assign job pointer to NULL before signaling the" failed to apply to 5.4-stable tree
 To: mcanal@igalia.com,itoral@igalia.com,jmcasanova@igalia.com,phil@raspberrypi.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:54:42 +0100
-Message-ID: <2025020442-retriever-preflight-5132@gregkh>
+Date: Tue, 04 Feb 2025 18:54:49 +0100
+Message-ID: <2025020449-angular-extortion-0889@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6e64d6b3a3c39655de56682ec83e894978d23412
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020442-retriever-preflight-5132@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020449-angular-extortion-0889@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
