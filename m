@@ -1,138 +1,118 @@
-Return-Path: <stable+bounces-112149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62178A27360
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:53:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111ADA273A4
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E3201882842
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 13:53:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 378C1188476A
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 13:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D6620DD6C;
-	Tue,  4 Feb 2025 13:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Kv4bzN9o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2C7217F3D;
+	Tue,  4 Feb 2025 13:42:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6304529CEB;
-	Tue,  4 Feb 2025 13:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA171DFEF;
+	Tue,  4 Feb 2025 13:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738675985; cv=none; b=d1RtGN3lL002Ypu9wnEsBeGCmLBqdaadFv9H5TxQ/PYx43wHfcpUSxRQ4QJbAT8TDDuwmCPHhIPWwMShF8hwefNT2xOTF6vimkMXD/EkD5sTAaPcJH2R1yiMx/4PLwjgo6yB+l5iUdRcWDlSdyqEE0ibMYVb+h+AZi6X6Y7rnrA=
+	t=1738676579; cv=none; b=EIrb1nIBuqx+Ai1F0bcYXnCpXjiZG8NTftYs/+WIITiLTHhpu90KMCn5iCnneikSuOlm2jFR4LA804QgaHgua6Tcv5QU2vwgWO+TMEjRJDPzM8wiO+zmMO0zVVznZLMZNpGUcuSvI7EY7EPltKca9C5NSw/8EPlF7uGUJuU12GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738675985; c=relaxed/simple;
-	bh=5mH9LB5DunDIjPd1SMurzuCEO+7lGZ04kevPMYpIDU0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iqWiEgdITB6/sWKuwqcnt/+Z876SBMyySUCKHLi5/3N6ivp3amhw+P44XjgIqab02sqjaz2u8p4Po9ZkG+D84iIb4NX+oDYrsNcTL6nTQStMxoMH4hooD6aXI3h8LARZKk9v9a+hONGX/XtFe1jykS/dMMZGGGsPOtOngdnDZLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Kv4bzN9o; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CF0C3204AC;
-	Tue,  4 Feb 2025 13:32:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738675974;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5mH9LB5DunDIjPd1SMurzuCEO+7lGZ04kevPMYpIDU0=;
-	b=Kv4bzN9oj1skiwQaACJfFZSDU+mIMpGXc9ncjJFp1/ku1ZBCY2IINbH7D9roCTDAZuBuGw
-	IUdD8hJ7szkj2i1H5zMLYEgEbYqXY/tYhU3KPf2xrj3cHr26PrXU3r9BPZfS5jI1UplZ1m
-	QN0+Kr+g+ODNjJ3wQ2Xtijw3Ux6v2Oh7S5ley8gwEW5SpNT7TITmGZ0prGtiBxCyK2fEfh
-	G1xNi/Wg/e/Ydns8MZNQ+thHgnXMa8B/aiDlXkQwMBEJHQLhzh/fQTiuUHczKPuZ1eVI2G
-	5XGtPF496+zdNeQedQNsd17w7+oX4bRhkcB0b0qDIVmd6TOXbneAJ5I1eSW89Q==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: "Rabara, Niravkumar L" <niravkumar.l.rabara@intel.com>
-Cc: Richard Weinberger <richard@nod.at>,  Vignesh Raghavendra
- <vigneshr@ti.com>,  "linux@treblig.org" <linux@treblig.org>,  Shen Lichuan
- <shenlichuan@vivo.com>,  Jinjie Ruan <ruanjinjie@huawei.com>,
-  "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
-  "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-  "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob
- when DMA is not ready
-In-Reply-To: <BL3PR11MB6532369D14375CC94AA2714BA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-	(Niravkumar L. Rabara's message of "Tue, 4 Feb 2025 10:43:20 +0000")
-References: <20250116032154.3976447-1-niravkumar.l.rabara@intel.com>
-	<20250116032154.3976447-2-niravkumar.l.rabara@intel.com>
-	<87plkgpk8k.fsf@bootlin.com>
-	<BL3PR11MB653276DFD3339ADAADC70CCFA2EE2@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<874j1i0wfq.fsf@bootlin.com>
-	<BL3PR11MB65321B556C59C995DC05C70AA2E92@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<87msf8z5uu.fsf@bootlin.com>
-	<BL3PR11MB6532451B44E7C5D82F5EC4AFA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-	<87o6zi83se.fsf@bootlin.com>
-	<BL3PR11MB6532369D14375CC94AA2714BA2F42@BL3PR11MB6532.namprd11.prod.outlook.com>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Tue, 04 Feb 2025 14:32:51 +0100
-Message-ID: <87frkt96nw.fsf@bootlin.com>
+	s=arc-20240116; t=1738676579; c=relaxed/simple;
+	bh=+SDsNizAczeZ6vHA1lJOUG7oVI1dH3uCBqrk+kJYvsE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Y4py6LX+dKLoYBQhaR/nd6HpZsknj/0Tgm+hhas8wdOr5UpQ5I4G56N9GOLHjBpYzRo+vpEKour0EKm3ri1PiKMWLfieGxTm3fa7Zss9cm7QO7C9H6yG7NT7HrfGrp2QbccvjDPAniD1rJbzTpZ/G8wtfnVz0bagvG+vh7wonw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 0345F92009C; Tue,  4 Feb 2025 14:42:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id F154892009B;
+	Tue,  4 Feb 2025 13:42:48 +0000 (GMT)
+Date: Tue, 4 Feb 2025 13:42:48 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Ivan Kokshaysky <ink@unseen.parts>
+cc: Richard Henderson <richard.henderson@linaro.org>, 
+    Matt Turner <mattst88@gmail.com>, Oleg Nesterov <oleg@redhat.com>, 
+    Al Viro <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>, 
+    "Paul E. McKenney" <paulmck@kernel.org>, 
+    Magnus Lindholm <linmag7@gmail.com>, 
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] alpha/uapi: do not expose kernel-only stack frame
+ structures
+In-Reply-To: <Z6D5UyV9Z0demt40@minute>
+Message-ID: <alpine.DEB.2.21.2502041233110.41663@angie.orcam.me.uk>
+References: <20250131104129.11052-1-ink@unseen.parts> <20250131104129.11052-2-ink@unseen.parts> <alpine.DEB.2.21.2502020051280.41663@angie.orcam.me.uk> <Z6D5UyV9Z0demt40@minute>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdeihecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepteehkeelvddvheehtdefkedtjeeutedthfegudekgeefleetkeettdekiefftdeinecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepnhhirhgrvhhkuhhmrghrrdhlrdhrrggsrghrrgesihhnthgvlhdrtghomhdprhgtphhtthhopehrihgthhgrrhgusehnohgurdgrthdprhgtphhtthhopehvihhgnhgvshhhrhesthhirdgtohhmpdhrtghpthhtoheplhhinhhugiesthhrvggslhhighdrohhrghdprhgtphhtthhopehshhgvnhhlihgthhhurghnsehvihhvo
- hdrtghomhdprhgtphhtthhopehruhgrnhhjihhnjhhivgeshhhurgifvghirdgtohhmpdhrtghpthhtohepuhdrkhhlvghinhgvqdhkohgvnhhighessggrhihlihgsrhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqmhhtugeslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
 
-On 04/02/2025 at 10:43:20 GMT, "Rabara, Niravkumar L" <niravkumar.l.rabara@=
-intel.com> wrote:
+On Mon, 3 Feb 2025, Ivan Kokshaysky wrote:
 
-> Hi Miquel,
->
->> -----Original Message-----
->> From: Miquel Raynal <miquel.raynal@bootlin.com>
->> Sent: Tuesday, 4 February, 2025 5:20 PM
->> To: Rabara, Niravkumar L <niravkumar.l.rabara@intel.com>
->> Cc: Richard Weinberger <richard@nod.at>; Vignesh Raghavendra
->> <vigneshr@ti.com>; linux@treblig.org; Shen Lichuan <shenlichuan@vivo.com=
->;
->> Jinjie Ruan <ruanjinjie@huawei.com>; u.kleine-koenig@baylibre.com; linux-
->> mtd@lists.infradead.org; linux-kernel@vger.kernel.org; stable@vger.kerne=
-l.org
->> Subject: Re: [PATCH v2 1/3] mtd: rawnand: cadence: support deferred prob=
- when
->> DMA is not ready
->>=20
->> Hello,
->>=20
->> > My apologies for the confusion.
->> > Slave DMA terminology used in cadence nand controller bindings and
->> > driver is indeed confusing.
->> >
->> > To answer your question it is,
->> > 1 - External DMA (Generic DMA controller).
->> >
->> > Nand controller IP do not have embedded DMA controller (2 - peripheral
->> DMA).
->> >
->> > FYR, how external DMA is used.
->> > https://elixir.bootlin.com/linux/v6.13.1/source/drivers/mtd/nand/raw/c
->> > adence-nand-controller.c#L1962
->>=20
->> In this case we should have a dmas property (and perhaps dma-names), no?
->>=20
-> No, I believe.
-> Cadence NAND controller IP do not have dedicated handshake interface to c=
-onnect
-> with DMA controller.
-> My understanding is dmas (and dma-names) are only used for the dedicated =
-handshake
-> interface between peripheral and the DMA controller.
+> >  What do you think about providing arch/alpha/include/asm/bpf_perf_event.h 
+> > instead with either a dummy definition of `bpf_user_pt_regs_t', or perhaps 
+> > one typedef'd to `struct sigcontext' (as it seems to provide all that's 
+> > needed), and then reverting to v1 of arch/alpha/include/uapi/asm/ptrace.h 
+> > (and then just copying the contents of arch/alpha/include/asm/ftrace.h 
+> > over rather than leaving all the useless CPP stuff in) so that we don't 
+> > have useless `struct pt_regs' exported at all?
+> 
+> Probably that's the right thing to do. However, it implies adding
+> 
+> #elif defined(__alpha__)
+> #include "../../arch/alpha/include/uapi/asm/bpf_perf_event.h"
+> 
+> in tools/include/uapi/asm/bpf_perf_event.h. I'm afraid that will
+> result in too many loosely related changes for this patch series.
 
-I don't see well how you can defer if there is no resource to grab. And
-if there is a resource to grab, why is it not described anywhere?
+ This seems to be the way, but...
 
-Thanks,
-Miqu=C3=A8l
+> I'm starting to think that the best way for the time being is to keep
+> uapi/asm/ptrace.h and apply the fix there (i.e. revert to v0 patch
+> posted on linux-alpha). And mention the pt_regs vs uapi issue in the
+> commit message, of course, to deal with it later. Your opinion?
+
+ ... I agree.  I find this a pragmatic path of least resistance approach, 
+which will keep backports to the minimum and prevent Greg from getting 
+rightfully grumpy about it.  We need to get things straight here and BPF 
+is the least of a problem.  Let's go for this minimal variant then.
+
+ This will also buy us time to think what the structure format will be 
+right for `bpf_user_pt_regs_t' and whether `struct sigcontext' is indeed 
+the best fit.  Perhaps we'll want to define an entirely new structure and 
+use it also for regset support, which I suppose would be good having, as 
+it simplifies handling in debug software.  I'm not sure offhand though, 
+which I suppose is a good sign to defer this stuff to a later change.
+
+ NB GCC verification has completed successfully with no regressions (but 
+no progressions either; there've been a couple of changes both ways with 
+intermittent failures, mostly in Fortran and Go, but none related to this 
+patch series), and glibc verification is still running; by the look of the 
+progress current ETC is sadly Fri-Sat only.
+
+ The previous glibc run completed in ~25h, but this time the testsuite 
+includes recently added 576 extra formatted output `printf' tests, which I 
+admit to have committed myself, which owing to their duration I proposed 
+to be a part of the extended set, but the community insisted that they be 
+a part of the regular set, to widen coverage.  This subset has already 
+been running for ~30h and has made it through ~25%.  So there you go.
+
+ For reference the 576 extra test cases complete in ~30m on POWER9 (in a 
+serial run; a parallel run is obviously much faster on this 64-way SMP 
+system, but infeasible with the UP Alpha over the network, so I need to 
+compare apples to apples), which just shows how irrelevant the performance 
+of these legacy systems nowadays is and it's just the matter of keeping 
+them alive with current software that has been my objective all the time.
+
+  Maciej
 
