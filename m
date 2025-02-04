@@ -1,57 +1,69 @@
-Return-Path: <stable+bounces-112093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72713A2699E
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 878CFA269A2
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50FF41883144
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F051882EEF
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A51214217;
-	Tue,  4 Feb 2025 01:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B83521423C;
+	Tue,  4 Feb 2025 01:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suEa6m8p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzC7DiNK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E93421420C;
-	Tue,  4 Feb 2025 01:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47503BBC1;
+	Tue,  4 Feb 2025 01:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631886; cv=none; b=GC9C+kAFGllvobjA+pSZMrSxY17fzTiE21cbE/Kp52SENhhHBsDG8FcNUgp1OJn7QcthT5Cc+puFsOKR103cFLpr8fO+kV0DCzYKTvo860HXrtKWGxbwisamDISc+F6XrAUMQsHKVjacAEhOaJ63Dzl7IG66B5F9j/DDxGxF6aI=
+	t=1738631889; cv=none; b=lB5BCK7hT24c0lew5/igVY68y572y8IxY5CQm0ADlilbzgmG9d/dUIf6JoIq6cMDn1thgcIElgo6g1jK+7pcF2uSnGPurcR3Rye5uKW0jTJTsqIPyQMoQ4XnZwX8uttrPTjuQAhC4u2tFR+vAKYZqCIfcz/0EAJT+8fUpqLPacY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631886; c=relaxed/simple;
-	bh=rE3MGdpZlRGV8bgwGo6eyO42glJQFq9ze2CSY9FcHSA=;
+	s=arc-20240116; t=1738631889; c=relaxed/simple;
+	bh=hRwU2oV9hAAmwJJNweGytqeplpBVxrosn1R6SEVR1to=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=opRP4J5jhF9n63Pb0VHhT6RHZP4klKqMKWCYpBltqJX6BBQffEqJaPPnXDfZoqtXLd8wmGjM7iRGFqQ+i13iXHM5sUcydFqxp/69dW+IG6mpYXW1UvfwewJ/MVRkb/7ivjpqOTWIulk+mGGUD/YGlmq7blAaUkX4O8+2/f2Fge8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suEa6m8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1311BC4CEE4;
-	Tue,  4 Feb 2025 01:18:04 +0000 (UTC)
+	 MIME-Version; b=UX0nrT/EaGkQ+EvLCJJh8RwwxCQG7AvkIZh7cTxW/L2AZS7KVh1KOhSSvwIszZFPpFkuZK3bE0K96bM6DKCuc8ANXmGixebFBJ6QgZ7NZO4airJdJmxaHw/t2EgcAt0EyYM45uIBH2fD/hFEqXuDWLJ5DlLRPCceB+2GP8hNmkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzC7DiNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E25EC4CEE8;
+	Tue,  4 Feb 2025 01:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631885;
-	bh=rE3MGdpZlRGV8bgwGo6eyO42glJQFq9ze2CSY9FcHSA=;
+	s=k20201202; t=1738631889;
+	bh=hRwU2oV9hAAmwJJNweGytqeplpBVxrosn1R6SEVR1to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=suEa6m8pDCqg0lHDDhfIBwzMNRYNDJ33YqR/wpDtoi9UezYae54Gug1XmR7SKIsLt
-	 spHvnDlWLUe9L9mlWVmwNlcGj0KoHGjKBgcIdPYhFaD1jfxy91DCbG5gbjM2StgQok
-	 ELjOxw3q9SzXv9DzMy7Nazx4BGQTsKdXgkCOjPxHbCALsI2EUsMhXzYqaJ0lukAnhx
-	 62uWpZqvNZbTJ/IOaQgGBawwSI/1tu6FRHe3dVM76rT2y1KoH/g7p1aexlgzDNKZ8g
-	 ogjMgUWfRuJ2bLEswaTDraGf5VHgwnQD9j2uCCQ7nHHcH72zewuB552f7fPL0JWbq4
-	 VgDQFAvB7AdXQ==
+	b=UzC7DiNKcOWs9r2a4Z/WVTRtSvX62DUmXDwBgH2rEz+eKb+JAwmwxFDoMXsMH1n8d
+	 qgMvjDBucKf/iPTqbLlOkv6K/NtFCzCWwpFDwGpE29rxDdjIqqmBq6axanNSLVHYZ6
+	 jEUrPwOnZh7yUEv/3WSmc1O5rV65gYVW15scQjQhp2HmbpkB2hw3vxxW/qDbleVNeZ
+	 EZ6WdNinPEmPIc9dLgbDbQ7X6nD7FgYmIR3ol2E67n7lJXvj43cFZprJYCqhmfCNHZ
+	 lDh0NtuY9rrTF1n1FAunC5/qrchcgRxavQdpw3GeXDfJeABO6MA1to7oZHBj3dk4Rm
+	 pfJHki17RiaeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 3/5] kbuild: suppress stdout from merge_config for silent builds
-Date: Mon,  3 Feb 2025 20:17:51 -0500
-Message-Id: <20250204011757.2206869-3-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	u.kleine-koenig@baylibre.com,
+	alban.boye@protonmail.com,
+	tomlohave@gmail.com,
+	kuninori.morimoto.gx@renesas.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 4/5] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
+Date: Mon,  3 Feb 2025 20:17:52 -0500
+Message-Id: <20250204011757.2206869-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250204011757.2206869-1-sashal@kernel.org>
 References: <20250204011757.2206869-1-sashal@kernel.org>
@@ -66,82 +78,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.12
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 1f937a4bcb0472015818f30f4d3c5546d3f09933 ]
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-merge_config does not respect the Make's -s (--silent) option.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-Let's sink the stdout from merge_config for silent builds.
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
 
-This commit does not cater to the direct invocation of merge_config.sh
-(e.g. arch/mips/Makefile).
+Add a DMI quirk for the 5V version to fix sound not working.
 
-Reported-by: Leon Romanovsky <leon@kernel.org>
-Closes: https://lore.kernel.org/all/e534ce33b0e1060eb85ece8429810f087b034c88.1733234008.git.leonro@nvidia.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Tested-by: Leon Romanovsky <leon@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.defconf | 13 +++++++------
- scripts/kconfig/Makefile |  4 +++-
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
-index 226ea3df3b4b4..a44307f08e9d6 100644
---- a/scripts/Makefile.defconf
-+++ b/scripts/Makefile.defconf
-@@ -1,6 +1,11 @@
- # SPDX-License-Identifier: GPL-2.0
- # Configuration heplers
- 
-+cmd_merge_fragments = \
-+	$(srctree)/scripts/kconfig/merge_config.sh \
-+	$4 -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$2 \
-+	$(foreach config,$3,$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+
- # Creates 'merged defconfigs'
- # ---------------------------------------------------------------------------
- # Usage:
-@@ -8,9 +13,7 @@
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
- 
-@@ -22,8 +25,6 @@ endef
- #
- # Input config fragments without '.config' suffix
- define merge_into_defconfig_override
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
--		-Q -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
--		$(foreach config,$(2),$(srctree)/arch/$(SRCARCH)/configs/$(config).config)
-+	$(call cmd,merge_fragments,$1,$2,-Q)
- 	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- endef
-diff --git a/scripts/kconfig/Makefile b/scripts/kconfig/Makefile
-index a0a0be38cbdc1..fb50bd4f4103f 100644
---- a/scripts/kconfig/Makefile
-+++ b/scripts/kconfig/Makefile
-@@ -105,9 +105,11 @@ configfiles = $(wildcard $(srctree)/kernel/configs/$(1) $(srctree)/arch/$(SRCARC
- all-config-fragments = $(call configfiles,*.config)
- config-fragments = $(call configfiles,$@)
- 
-+cmd_merge_fragments = $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+
- %.config: $(obj)/conf
- 	$(if $(config-fragments),, $(error $@ fragment does not exists on this architecture))
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh -m $(KCONFIG_CONFIG) $(config-fragments)
-+	$(call cmd,merge_fragments)
- 	$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
- 
- PHONY += tinyconfig
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index 54f77f57ec8e2..1148e9498d8e8 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
 -- 
 2.39.5
 
