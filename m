@@ -1,113 +1,153 @@
-Return-Path: <stable+bounces-112113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C7FA26AC2
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 04:36:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA85AA26C16
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 07:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1548E18828F8
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 03:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57EED167CAB
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 06:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFB11ACEDC;
-	Tue,  4 Feb 2025 03:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737121FF7B9;
+	Tue,  4 Feb 2025 06:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="gCbcpdLb"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="KNyaa5VZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-81.smtpout.orange.fr [80.12.242.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49937156F3C;
-	Tue,  4 Feb 2025 03:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51D925A655;
+	Tue,  4 Feb 2025 06:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738640169; cv=none; b=W5iLSvX3PqfQTrUHXo8TFf7siplFLekdnOBQ2v/MsJBtoAY1kntWUfJfxwncomuxEB4Hsu3/ui5ZPicGNX/J2H2SC+Nunl2Cn9hm2ow2YS1GOMVDn/YCmBXJ6QH/pqjBjn/8Ka6cyDO0hmagGNvX3AHRyoA9jQgdP2a9ymbL7PM=
+	t=1738649956; cv=none; b=N5A3vMnoJvQNLGmDl3WumpkR+8TlTfmTMqk7JNWp+ywmFwfcABZ66i7yTqTi7FdlrnLLcRNSLhRV4onDmz7FzxULUTCjQoPI7i79Wh3U/285Nzs+nhl94hT6EMhDTErGoylyQ7cQkLE/7oWwe+waZukU1FkGbJT0pz1fVqHMqPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738640169; c=relaxed/simple;
-	bh=Bcu7k0ftf/3hVCFw+FUvkSxFJ5438FIN3AnY1bXbPSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RzPz9gnJ70HGJ9Tpm1+rLpb8kUtlWu7dtgjMxnQ1sOvIm4PBt3M6evzB7ZDteK2o3e2/irOGFUso99XeRXa7DMGFsntI4SoZAjSlgkZrVc+Q5K7w8tJhMfdxtAtHoGJcQXeaQgDKnpxig04Dvv+ssqQufVtVah2w3gleuxcaEcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=gCbcpdLb; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5141NjiZ002916;
-	Tue, 4 Feb 2025 03:35:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2023-11-20; bh=c+UwsxKs9uTq11asQUxnuOBitsERD4GWWt+qzTnd6p0=; b=
-	gCbcpdLbkhRbqI4DuX6t3kILIcr37Ds9A2EXiYftf6//xdQN3TnQpuC5KyPKzuMd
-	MPgiqTJM/Ly75ytnV+fC0YRnkkDy0D3chg7iPnAU9NBnA7Ti2hIR1qyc/hGL8lAA
-	Eds959QoBtm9TGT3EqfadMX7wYYMasxhDrYktxVCH3QFjK8E/xP72IoZSHost/DC
-	q4eCqdz/aUwRmptkSR034iwjli7JsBN/YS0d3RbpKvwVt+/AQyhLyq00Of9ri2XJ
-	H72wN/ceg0JNzJ1rdm0eOAKsEy/6zVKtzyqaWO6HBM6zgDFe0qC34zxVOOQK7rAp
-	hMqPNgPvJkhbSqrH+3pf/w==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 44hj7uuwsd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Feb 2025 03:35:34 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5141jSjA038947;
-	Tue, 4 Feb 2025 03:35:33 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 44j8e76g01-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 04 Feb 2025 03:35:33 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 5143VlxM009625;
-	Tue, 4 Feb 2025 03:35:33 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 44j8e76fxf-4;
-	Tue, 04 Feb 2025 03:35:33 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: quic_cang@quicinc.com, bvanassche@acm.org, avri.altman@wdc.com,
-        peter.wang@mediatek.com, manivannan.sadhasivam@linaro.org,
-        "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-        Bean Huo <beanhuo@micron.com>, Daejun Park <daejun7.park@samsung.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
-Date: Mon,  3 Feb 2025 22:35:09 -0500
-Message-ID: <173864009032.4118838.5080919620979879348.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
-References: <69992b3e3e3434a5c7643be5a64de48be892ca46.1736793068.git.quic_nguyenb@quicinc.com>
+	s=arc-20240116; t=1738649956; c=relaxed/simple;
+	bh=qVxz4qhhEqrScUAsJhIjKbHH5wmCbfE7VN3wRR73N34=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eup/wZwi/SeYbLnmsq9m0hLGvg/7l3vZKP8wHkbPpNq5c7ndkR7x33Cl3sIWmg88b+qKkfE4fdWROiZ3qYbm6llbj9+E6INM/yObHpWKFLZfwIxLX/NuwfeilDhTcLMLZ8HQKD0quDQ8em8IOkl8Iup7G4VcLGoHzHoAFST9gF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=KNyaa5VZ; arc=none smtp.client-ip=80.12.242.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id fCFwtHY03MBalfCFztJres; Tue, 04 Feb 2025 07:18:01 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1738649881;
+	bh=2rigdcBP5Blbnm80a1gcLyNHTyPctzTAtz4Al0/l+0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=KNyaa5VZKs96XELNAwL6YcnuQVGssubBs5PudTymcgJmoHVH6zkCHtJe4PexTDKKH
+	 S0mRkXiSHI5Nmtpcnyq88a0dul6gZUTZ6AGuqm624HCxGd0HGCnrAKt7cK25GTPuGT
+	 Cf/DW4V2nRwe71lDMW64vPy4BLe4Vd/ZOsXkB4LRe3ffwveFlXT1q8REyb4wa3RIr/
+	 fhno6I0wmKBoWv6dJKHI5Z8MI356w2u/ZGHM6hP9phxxeEpfJDuU9R6U4cj4Ilr3X+
+	 oWz6aJtA+i6KL4XE1nrPJydfrGx00oGAlpqXKuAwVgVoGsB72IWK5mTc7eWSObccCC
+	 hayXja0UbhPUA==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Tue, 04 Feb 2025 07:18:01 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <e41d9378-e5e5-478d-bead-aa50a9f79d4d@wanadoo.fr>
+Date: Tue, 4 Feb 2025 07:17:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mtd: Add check and kfree() for kcalloc()
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: gmpy.liaowx@gmail.com, kees@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com, richard@nod.at,
+ vigneshr@ti.com, stable@vger.kernel.org
+References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
+ <20250204023323.14213-1-jiashengjiangcool@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20250204023323.14213-1-jiashengjiangcool@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_02,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=867
- phishscore=0 adultscore=0 malwarescore=0 bulkscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2501170000 definitions=main-2502040026
-X-Proofpoint-ORIG-GUID: -3B6jx8EuJUD6P5fIHNQYLeo1xIHlsmZ
-X-Proofpoint-GUID: -3B6jx8EuJUD6P5fIHNQYLeo1xIHlsmZ
 
-On Mon, 13 Jan 2025 10:32:07 -0800, Bao D. Nguyen wrote:
-
-> According to the UFS Device Specification, the dExtendedUFSFeaturesSupport
-> defines the support for TOO_HIGH_TEMPERATURE as bit[4] and the
-> TOO_LOW_TEMPERATURE as bit[5]. Correct the code to match with
-> the UFS device specification definition.
+Le 04/02/2025 à 03:33, Jiasheng Jiang a écrit :
+> Add a check for kcalloc() to ensure successful allocation.
+> Moreover, add kfree() in the error-handling path to prevent memory leaks.
 > 
+> Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+> Cc: <stable@vger.kernel.org> # v5.10+
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+> ---
+> Changelog:
 > 
+> v1 -> v2:
+> 
+> 1. Remove redundant logging.
+> 2. Add kfree() in the error-handling path.
+> ---
+>   drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
+>   1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
+> index 7ac8ac901306..2d8e330dd215 100644
+> --- a/drivers/mtd/mtdpstore.c
+> +++ b/drivers/mtd/mtdpstore.c
+> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+>   
+>   	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+>   	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+> +	if (!cxt->rmmap)
+> +		goto end;
 
-Applied to 6.14/scsi-fixes, thanks!
+Nitpick: Could be a direct return.
 
-[1/1] scsi: ufs: core: Fix the HIGH/LOW_TEMP Bit Definitions
-      https://git.kernel.org/mkp/scsi/c/1b3e2d4ec0c5
+> +
+>   	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+> +	if (!cxt->usedmap)
+> +		goto free_rmmap;
+>   
+>   	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+>   	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+> +	if (!cxt->badmap)
+> +		goto free_usedmap;
+>   
+>   	/* just support dmesg right now */
+>   	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+> @@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+>   	if (ret) {
+>   		dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
+>   				mtd->index);
+> -		return;
+> +		goto free_badmap;
+>   	}
+>   	cxt->mtd = mtd;
+>   	dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
+> +	goto end;
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Mater of taste, but I think that having an explicit return here would be 
+clearer that a goto end;
+
+> +
+> +free_badmap:
+> +	kfree(cxt->badmap);
+> +free_usedmap:
+> +	kfree(cxt->usedmap);
+> +free_rmmap:
+> +	kfree(cxt->rmmap);
+
+I think that in all these paths, you should also have
+	cxt->XXXmap = NULL;
+after the kfree().
+
+otherwise when mtdpstore_notify_remove() is called, you could have a 
+double free.
+
+CJ
+
+> +end:
+> +	return;
+>   }
+>   
+>   static int mtdpstore_flush_removed_do(struct mtdpstore_context *cxt,
+
 
