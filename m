@@ -1,98 +1,76 @@
-Return-Path: <stable+bounces-112199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53FBA2783B
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:23:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ECA9A27850
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 490E63A34CF
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA1CF165CB3
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D862163A3;
-	Tue,  4 Feb 2025 17:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E9B2163A2;
+	Tue,  4 Feb 2025 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IB17wYsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua1n5HHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C58216399
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6A021638E
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738689796; cv=none; b=Jqv36E/FedpbAXgg2PdBW5dGaFVadnNdgo5T9c0ZCtZv9JV7drtmG4MYVK8zme1NHckfsdtoqzIQLpaZzKE7FQbkhH1IsD1T6h1onkU9+jGN5XnnHyYMOwAvnCKObS7n/sg2H0wGeWsickXm1iwZlCMqfTE9CME8qUkkmcmf/uY=
+	t=1738689963; cv=none; b=Cs6yQhFHfSfPc3hW7BvUi48KPVoXN4MLHysdd3PPF2V8Jjx9W79AUkDKl6O/N0Ayd75AZPR+2oJ0wp6gTKLvRz/GzaI/f4WfidxoD5oFO5ndYl2ks+yTFL9WOpiUC68LQsojOAdIwkSj/DZczfiiI1zGaugp7XXfemd0tZw4KGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738689796; c=relaxed/simple;
-	bh=NNgAUVXXhIdnR++Vsod+JavMfDup78D694pT7zIrODc=;
+	s=arc-20240116; t=1738689963; c=relaxed/simple;
+	bh=ZYvOyibfipNHT3s+QlBt8aiFl9GzxiZgbO/tuONZA3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LKfgYcOVETsD8FqlJCCm2Q6h9g1AHr6cx8VxfkBUOTmMGcpc2jqEyo2qJKMVRUfFCCEh+LEI7598mg5q0DNq6XqSNXoOxAIxzwLWUFOML1JPEBxz1Kz5cEKq9fl4BJ98Flr7XLGhiSeP2QCZxGH2beqqsjVPdGZKvnbXiYddMWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IB17wYsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63064C4CEDF;
-	Tue,  4 Feb 2025 17:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738689795;
-	bh=NNgAUVXXhIdnR++Vsod+JavMfDup78D694pT7zIrODc=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=eeiKvKO/+H96z1odbSdOcHOJVkFftBdo7872Miy2pHXT8NA+afCTRoRXoMz/USaGmImYrL/hsxP8/Bec+Y2VufqANmTO+UzmpjglzAJNZk1FCaSfvGcDJm9s34xFou5WVBD5QvOLCXLba/gZVaSFcysQCTLWLXPPzJyi4B65AOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua1n5HHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072D8C4CEDF;
+	Tue,  4 Feb 2025 17:26:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738689962;
+	bh=ZYvOyibfipNHT3s+QlBt8aiFl9GzxiZgbO/tuONZA3k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IB17wYsZv6+yEre7xIg5FslQ7E2eOLrz5v0yogrmTmtl2JtMSqn8F1I5NjO8OIqI5
-	 Ep5IUordkAWbWkyZ8FkWFVyMUaCzhmyfSc8gUN2aNt6y85jECF763uqJqKcF5sClEx
-	 l60jN167ybBtBbZjZ+SiSVvLeYXSnNH+xLci2d0vwJaOtY/um7+mPcJXGiFs4Dpacy
-	 KzzXLTxTBbc9EPjnIbZaga8Nq5XQbJuAe7eH+HyWc5W9mLKsecjCZwWjuis05d5WM0
-	 N4VRxCUJZ0Bkm1Vko//aZFG5grNWlfUj1C36DL8C6+hCzAsOjeXig7Q+k7xRhMLgfw
-	 HTkUN1v67fILw==
-Date: Tue, 4 Feb 2025 17:23:09 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-	eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com,
-	maz@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
-	stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com,
-	will@kernel.org
-Subject: Re: [PATCH 4/8] KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
-Message-ID: <58e56e6d-2eec-49fb-89e4-1a5c10bfa121@sirena.org.uk>
-References: <20250204152100.705610-1-mark.rutland@arm.com>
- <20250204152100.705610-5-mark.rutland@arm.com>
+	b=Ua1n5HHgGkc1cunRm11DMpNX8ZxOr6zRenm7RHYEwx5Fm29qtLMmSHF1/VUfzfHqX
+	 R1XGWqJcntH4sUaz+C2wPqLa9Run1bEh/97SOgN6eYWjn0Cm50KK+PzNre/8R5tD1f
+	 kdNjmj7cOIOh8cFfc8wFtcezGp9EYJILRKFkvFzA=
+Date: Tue, 4 Feb 2025 18:25:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paul Kramme <kramme@digitalmanufaktur.com>
+Cc: stable@vger.kernel.org, chengming.zhou@linux.dev,
+	Bendix Bartsch <bartsch@digitalmanufaktur.com>
+Subject: Re: v6.12 backport for psi: Fix race when task wakes up before
+ psi_sched_switch() adjusts flags
+Message-ID: <2025020447-coziness-pedigree-3e5b@gregkh>
+References: <CAHcPAXT=6GhKo4CnkveSm_X+EQXSz-GCRtigi5aFRscASSTFXw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qiBGpraq5W+X9KJu"
-Content-Disposition: inline
-In-Reply-To: <20250204152100.705610-5-mark.rutland@arm.com>
-X-Cookie: Spelling is a lossed art.
-
-
---qiBGpraq5W+X9KJu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAHcPAXT=6GhKo4CnkveSm_X+EQXSz-GCRtigi5aFRscASSTFXw@mail.gmail.com>
 
-On Tue, Feb 04, 2025 at 03:20:56PM +0000, Mark Rutland wrote:
-> When KVM is in VHE mode, the host kernel tries to save and restore the
-> configuration of CPACR_EL1.SMEN (i.e. CPTR_EL2.SMEN when HCR_EL2.E2H=1)
-> across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
-> configuration may be clobbered by hyp when running a vCPU. This logic
-> has historically been broken, and is currently redundant.
+On Tue, Feb 04, 2025 at 04:31:44PM +0100, Paul Kramme wrote:
+> Hello,
+> 
+> we are seeing broken CPU PSI metrics across our infrastructure running
+> 6.12, with messages like "psi: inconsistent task state!
+> task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4" in dmesg. I
+> believe commit 7d9da040575b343085287686fa902a5b2d43c7ca might fix this
+> issue.
+> 
+> psi: Fix race when task wakes up before psi_sched_switch() adjusts flags
 
-Reviewed-by: Mark Brown <broonie@kernel.org>
+It is already queued up for the next 6.12.y release.
 
---qiBGpraq5W+X9KJu
-Content-Type: application/pgp-signature; name="signature.asc"
+thanks,
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeiTPwACgkQJNaLcl1U
-h9BIXgf8Cf4mi03nwy2+qlBtq2eohiCV6ypAD6QEzQPa4o4jAOECNyNKPDhpSBv+
-uGqnWIf85+TuIMG4MYEo4bjSLH0WzeDaV14FO22GHwpTMy/W977Z8Zh9aRmKUGe+
-C/EC09lcM8qUEsrEpvBbd3zy1P7qKL939eKvay2M6SktW4XZb6e0gy0hYrkL1X7i
-3UbRvknWwRJd5Ko9ivIQM4Mrpkv7IThCgVLNXZ+ltDxqCEeF3De7zKOxO5fOKIAL
-Y/aGEEbx4n3F8FChNwazv++1BytDkJlxtcn7l4ek6w14+P+o5S+L2kMippZB0NNl
-Mdqu7d2RGfH+JUlA0rqGXr6KfeY/HQ==
-=Ig6n
------END PGP SIGNATURE-----
-
---qiBGpraq5W+X9KJu--
+greg k-h
 
