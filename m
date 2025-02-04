@@ -1,56 +1,69 @@
-Return-Path: <stable+bounces-112100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A8FA269AF
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:25:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1A5A269B1
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:26:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34A84164FE4
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52D64165457
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B985214A69;
-	Tue,  4 Feb 2025 01:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99712214A91;
+	Tue,  4 Feb 2025 01:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6EonZQT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uS8m0ABK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0789B209695;
-	Tue,  4 Feb 2025 01:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E20F1EEA36;
+	Tue,  4 Feb 2025 01:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631916; cv=none; b=oS3ItzGnj0g80YkT5JYTVflQUo5nsKWY8Vf3DiZ372wVi7NpEWg25Kyq6MPRxUFbTqTOfy3Zt6Oir0luw5FWA39yeKUuh6rqbyjtqisy3UeUIOLMekl18qmi/a5w073AOtgEgpnqxRzT3JtFHiS4QV+vw1q0BHXxZ7vtOskdGsQ=
+	t=1738631919; cv=none; b=lAkjRjkiNqByysaLGz83ydsS8yHSdnfyYx6y0H/Vh4tQyyHBj/W/rfEa4+kHu3B3+szV8FX26dKsPhSwpRtSH/jTgr42yLx5KTPCyKSWffe4849bLB3DcW8Jib7tr4i7EnXpgCWkkHltYCxUC9tEzr3COsywXy9f7gVz1EbTYxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631916; c=relaxed/simple;
-	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	s=arc-20240116; t=1738631919; c=relaxed/simple;
+	bh=5t/KhANgQWnGEpJ1ohjUD4iww8xW1oiFoBCbfEor5yE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QjLGxdLmjlkiMDIPfJvGFSCWdMRmwIcoROnP5OYwYqfVZX1SwtPeamt4fYxvD/Yj3QEuhj9Un2kfQ+o/SYasu0IhdL70LCoznvZuAmBb7BbCjGYuOp06T9Iq/Tvc6z0TsWEtZTHwyrUIJ0+Rnt4FDiSV1GKd1Zh/DIZDDXfuw/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g6EonZQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133B5C4CEE7;
-	Tue,  4 Feb 2025 01:18:34 +0000 (UTC)
+	 MIME-Version; b=TJ2PidCyrOwgioGfv860kVX8KoDmaL+gh1EVLQFOkYuhzSzCLnr/Dy0u4t0Il1RCj3MAG0bYXkdZ9xNAZA+8OaUsPz8jDWbOBSuCa8A3GThJMHGZw3X+ksZBktRXyqFWeCb935LDjmLh3AJN3ecIXU7wmkbaZQgJsIYUQxIkL4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uS8m0ABK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE40C4CEE0;
+	Tue,  4 Feb 2025 01:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631915;
-	bh=U5xUI/dJojXi8jaM2KImFDgZC+wj5t9cCLBkF+tjfyk=;
+	s=k20201202; t=1738631919;
+	bh=5t/KhANgQWnGEpJ1ohjUD4iww8xW1oiFoBCbfEor5yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6EonZQTuXITPAVXvz6TBOtZlAj8LGvMZzaqDNtVKzqix1YTe+V4SUmF7WNv0+po6
-	 avaaMmZoT02A5/4OA5lihSDpOfRtw7++ZoMcbUm4PE9A1S8xAdlYg5i97gNQX1/jNb
-	 KpR8xJyiemO94P/xfACgrUF5fo4BkNLAA0BvkCYeKtZ5vFHfoJOcQ4sRdtDz8q27IY
-	 0obTNOA1nzQUpEwYCV4aIKjAni9Gwem4v0xKfckmToRJ+eCIlfkJXYX2B6Tm6qM7Sn
-	 CDDMV+IVYS3D10vd5RSwtUpzMUIuhZEeBh1BN0FhyPQWImBqpjya5BlWAbPrFBJwqC
-	 lQzcjSJiTjsXA==
+	b=uS8m0ABKTmYLERMpGVB3+M7l7GH4jAMhdXa4YTNplFeeAvMp0kdKeBImTJPTTDvw6
+	 +s1HZ8NodErUs9XUQpM3CAI++A0sOs2L3YDfWBNGZnsi/g0qfEzQASi67GD0fBLMjA
+	 /h5ygplFdNfTCKab6QEderl7giytGkWHdq8vRnX28iWP69CRrnJR/FGAU/FmvJzD9j
+	 QJwgWXXf+0AipIhlY7hXF+KkNpLeVml09/Yf6CGlbLXJg0g7WvxwJ4MKtdO2PEAWP+
+	 LFSo4TCZ/IzVTDzGI0u2Hik+y81Lxo4zYLYZy/5zlfHbw28txXgG4Q0ft6m5UEW62T
+	 c8OksRwBoycEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Marshall <hubcap@omnibond.com>,
-	syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	devel@lists.orangefs.org
-Subject: [PATCH AUTOSEL 6.1 2/3] orangefs: fix a oob in orangefs_debug_write
-Date: Mon,  3 Feb 2025 20:18:24 -0500
-Message-Id: <20250204011828.2207072-2-sashal@kernel.org>
+	cezary.rojewski@intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	pierre-louis.bossart@linux.dev,
+	u.kleine-koenig@baylibre.com,
+	kuninori.morimoto.gx@renesas.com,
+	tomlohave@gmail.com,
+	alban.boye@protonmail.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/3] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
+Date: Mon,  3 Feb 2025 20:18:25 -0500
+Message-Id: <20250204011828.2207072-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250204011828.2207072-1-sashal@kernel.org>
 References: <20250204011828.2207072-1-sashal@kernel.org>
@@ -65,37 +78,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.128
 Content-Transfer-Encoding: 8bit
 
-From: Mike Marshall <hubcap@omnibond.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit f7c848431632598ff9bce57a659db6af60d75b39 ]
+[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
 
-I got a syzbot report: slab-out-of-bounds Read in
-orangefs_debug_write... several people suggested fixes,
-I tested Al Viro's suggestion and made this patch.
+The Vexia EDU ATLA 10 tablet comes in 2 different versions with
+significantly different mainboards. The only outward difference is that
+the charging barrel on one is marked 5V and the other is marked 9V.
 
-Signed-off-by: Mike Marshall <hubcap@omnibond.com>
-Reported-by: syzbot+fc519d7875f2d9186c1f@syzkaller.appspotmail.com
+The 5V version mostly works with the BYTCR defaults, except that it is
+missing a CHAN package in its ACPI tables and the default of using
+SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
+detect signal is not inverted as it usually is.
+
+Add a DMI quirk for the 5V version to fix sound not working.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/orangefs/orangefs-debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/orangefs-debugfs.c b/fs/orangefs/orangefs-debugfs.c
-index 1b508f5433846..fa41db0884880 100644
---- a/fs/orangefs/orangefs-debugfs.c
-+++ b/fs/orangefs/orangefs-debugfs.c
-@@ -393,9 +393,9 @@ static ssize_t orangefs_debug_write(struct file *file,
- 	 * Thwart users who try to jamb a ridiculous number
- 	 * of bytes into the debug file...
- 	 */
--	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN + 1) {
-+	if (count > ORANGEFS_MAX_DEBUG_STRING_LEN) {
- 		silly = count;
--		count = ORANGEFS_MAX_DEBUG_STRING_LEN + 1;
-+		count = ORANGEFS_MAX_DEBUG_STRING_LEN;
- 	}
- 
- 	buf = kzalloc(ORANGEFS_MAX_DEBUG_STRING_LEN, GFP_KERNEL);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index e7d20011e2884..67b343632a10d 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1122,7 +1122,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+-	{	/* Vexia Edu Atla 10 tablet */
++	{
++		/* Vexia Edu Atla 10 tablet 5V version */
++		.matches = {
++			/* Having all 3 of these not set is somewhat unique */
++			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
++			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
++		},
++		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_JD_NOT_INV |
++					BYT_RT5640_SSP0_AIF1 |
++					BYT_RT5640_MCLK_EN),
++	},
++	{	/* Vexia Edu Atla 10 tablet 9V version */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
+ 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
 -- 
 2.39.5
 
