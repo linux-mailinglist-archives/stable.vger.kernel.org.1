@@ -1,119 +1,131 @@
-Return-Path: <stable+bounces-112123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD4DA26DAC
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:51:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B99AA26DF5
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 10:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA369164A65
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 08:51:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01334164193
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04394207A27;
-	Tue,  4 Feb 2025 08:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B945D207675;
+	Tue,  4 Feb 2025 09:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G3NVP4Bk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OsugyoNO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CC920765F
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 08:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD67D20371A
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 09:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738659058; cv=none; b=bfL5HAJ7dOMEO1tXDv//q9z70i6fpTt5ZiEBFGK36knHSEPcFai/blDG/sBOiS5OFDRxLRk+iOvPo2IZudpZFwbJhEn+qiMPRhg1GGAnU5eZmM6yFAHqthIoChrHxBDP2aBqHIuRpgdR3zxv0sSaOJ7CxEk1/LWWKCmNCp0WtkY=
+	t=1738660354; cv=none; b=u45Wu/gPrFrxQTJi5NLzGo17RH82RXj8e4gGq7EwWjU+8T8itxRbuh/iaBz3oK/yaHAIiZ9OKwH7ydzxYiWcdNltSAPMUHjbPjXK4HhpRQKB1dvmOW7wwN57IaQJ3g8AdEA3fiDmLYAg+qSnyGvl3vDtJvcQn1F7leECSnB5a8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738659058; c=relaxed/simple;
-	bh=kqmMsjbCNiclb8j5uBxumVvyp3UHeWEC2xIcNL1SHNE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=N1bC72L9NZ7rgt5C2D5tKH3Y444XBSkFDoX1oR+7cDRgSxCKWAAC/1SGVtrWPTHR5MEDVWgUVsJsnZBQhhTrAzkGL5ljXk/KyY45SFtysVeB0sFTe/j7jJ7Q1pLK+uMsL79wZdvtnlhS4VX1kwzNqGAQFBNpD0jDSrgK3nYdBGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G3NVP4Bk; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1738660354; c=relaxed/simple;
+	bh=lOmPfU/eGVZYXYoZjIKS38Xdl1n45B66FHiHc6aVvxk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J01Nc8ESzGwYrD6igCvBAl0/gAPs/1GUcFqdF2RDCAsv3tBr8nqL0INBPEVxxBIqZIqyf8VQzNJvjW5ktAwJ3LjkxdQyU/1pW1LXg4/1wyUOk1WBPkX5QISlLlb04WScjhgSXB2JdBS3NdpOAcoXpkGiyUekFXdszWXoNV8AY+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OsugyoNO; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38da7198064so9537f8f.0
-        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 00:50:56 -0800 (PST)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-71e3f291ad6so3232418a34.0
+        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 01:12:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738659054; x=1739263854; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1738660351; x=1739265151; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9SL4WrTFt01P5kb4nbA+mR/wAIuzdlMsYyVAk52AYWQ=;
-        b=G3NVP4Bk/vFi4d9MZxtyx+0yInbv5O3cVWBtJvGMBI2MhNo6C17PteyJSGezzqNbbi
-         U9YtRzwE8e8ZTjFO6b4mSSDKMbA1wtoJzJ9duJ3QXmaxKfiDICxedOeLp4jfFSycNJ5e
-         kn6bDBH65MSFzP8YZ01i0dBsxtt9dkZIdSnM7HZiWXSCs/QZIsFlOTRmVtE7We7v4xZJ
-         /SzYjbG212KorzFCV1ZHHJUUlBIvQ4sPE42Ie47Px8q1AXkxjNikwwv/oFSpy2NHTITT
-         pAUHKvqgHQ7qnP8XcVH6ggC9tQ3jWFAeBhcmEcsQArMsm4Wju/jZ9dEuxLcxgyLtO7rj
-         gPHA==
+        bh=lOmPfU/eGVZYXYoZjIKS38Xdl1n45B66FHiHc6aVvxk=;
+        b=OsugyoNO8Fa8C+GvUlzxiM7UIIlCQeHx/hlv3dMUbqOaLJISdi7d9VhaGq/WCRaCJx
+         b0lHOpftlfNJkfMYm4LizR/eqZvp3D1BeZglUXIm5Z1aDgZ0d4CBVOsUtt21yg9fHZs9
+         sZUzVaO3sBuIt0/0vz66myMiTA04vVrim56pvvE1ZM+cTOEXaGytasfdiDSoPTxB8JTG
+         4zfSmAMamdTw4hsln8wid4mqM8LCeiJg2rdefzzbVcWhOVrGS0mlA/wMo83n/6XPrxA8
+         ubQhOiNs6wQRk5mQTjr2D+su5lflbEDT0a0GxB9jArBKJYzrzIl9oj+ROfraZsWoLnvc
+         V+iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738659054; x=1739263854;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1738660351; x=1739265151;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9SL4WrTFt01P5kb4nbA+mR/wAIuzdlMsYyVAk52AYWQ=;
-        b=K+edMn1jNMWtctcuz7AQsjqDYDXpKYFr18fO19U4nF5OQdGePWUTXlMKx8Xvz+kwL/
-         RMDPIYri30xCDq/hwCujPFwF6m+RC3qHv33NLjtgtk4xoklfVqtxhhhCkdaQzZe8YOHU
-         unKta6JaDF+DhE7rziQuFcRcTSlUEcjF+OBTIwp+IgMyMyflH0sQJuNX+eacBy2Zw0rI
-         er3CpgR3pu6hw4k+7KIgSiYvBEmsrtyYI6bM9vNQ+MfypmZ/S+BO0nDW/BNYqRt42rK0
-         sNAI5fFkpTzA1yLIbWJyrhqK4SOO3hvQpiH1KBFCAuiEIGVrQfKuQ382vrNt0CjpVN/2
-         fmbg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1v+7/8KcZsUVslOlvesUl0tUcvYrc2aTfiZdOW1l243X2GCs2x/dxMjkjJRemoDqLQnb4Khc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/1hDTCehe/7mCwQcrchUmH4kPoghgq6a7Pp7V2NGmT/WolYnL
-	id9GoVD4dBUe1slyL2QgutiLKMitH0kTlAolWNSDeiRBQk5KLOZshj77iEypNbg=
-X-Gm-Gg: ASbGncuFMPgPUKzV5wkd7Ky0ow/l5rHPhE/GKUjwpavwCzbLfNwggIDJyi0iW2OtCUf
-	RcINTGFchRzkBEun0O3zpJaPKYiSZUiFtquzDTDCvuatBXOa8vh12trw+nMSe1xHApkgtGcUDXw
-	PocL3QNKXTiT75JYy0QNabkr0OifNPa8gKf8oiHstDj1moDr/eS7x8etDdVIaAqLPcL0svjuOAD
-	l/b2x+faIG51zL4oV/a5pSvTa2eoMWfhlSXNyRiu6XBkL5f1O4DFOqbyhiZ9q2XQdpgus5fpE0j
-	y/rbnwS53gEJ9DTakRi7Bl5iRT7StUY=
-X-Google-Smtp-Source: AGHT+IEiM4BEwyj9kJjGaATYMGTVdtTyQJ6Gai0nJrlUHfZWE9a3z3Pca5QvAuf1g0u3xA6mvsDd9A==
-X-Received: by 2002:a05:6000:2a9:b0:38a:69a9:af95 with SMTP id ffacd0b85a97d-38da4e1c7a1mr784380f8f.7.1738659054614;
-        Tue, 04 Feb 2025 00:50:54 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.218.144])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38daf27bbf5sm503066f8f.48.2025.02.04.00.50.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 00:50:54 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Peter Griffin <peter.griffin@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- tudor.ambarus@linaro.org, andre.draszik@linaro.org, kernel-team@android.com, 
- willmcvicker@google.com, stable@vger.kernel.org
-In-Reply-To: <20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org>
-References: <20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org>
-Subject: Re: [PATCH] arm64: dts: exynos: gs101: disable pinctrl_gsacore
- node
-Message-Id: <173865905338.26600.2847324274342938346.b4-ty@linaro.org>
-Date: Tue, 04 Feb 2025 09:50:53 +0100
+        bh=lOmPfU/eGVZYXYoZjIKS38Xdl1n45B66FHiHc6aVvxk=;
+        b=ptbqAlHaRX9eYWS5rkfjrIzfy/rI9Tg49Vhhs6kPnZlm9VvWTbX1/jtsVrXynk98Ua
+         8GSeF0B5JlycZ8XGwvDcIToVWtIJwsowX2ON94MtLuDmaiFskWSzhtnVNxcd5oaGfE2v
+         OGOohfcPAOzbztGgNFQmn1Od0S7PjRlWRQCGLaL+xo4hR4DAMqVeamAJhLt1ERetFnWF
+         FjjFth7yvyeaXz+GYsurK7loz/0iV9I3jUHdrc4LOLMZRLQu7EC7SNIOPnorHGtmRJd2
+         xgFlstYHF0roOSinJUmV7HtAmA5jiBxn0iTh7PPclnmz2z9vWl1OnWe4w3SqIZm/iDus
+         +BSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsNnQLjfn5OQKnueQi7f80xEw697aYCv6Ev9jIro496cF/qk2iCpFpB8dXBJ+BMoI6vLNAAS8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywo8aCjT+Wm+qcmJ9NmVbSo4i92Wgn4S/zarKtVv0sFrs5gtaKG
+	gmUryiXNOjlPyPlYmZ+XX/Ots4kr7VFXSgtceO4cVkAXHyufeo32ggoLdPCmlQ3xsDPosxPlpYC
+	R97/KQXqx3dqe6j7LlEguWEyy+3Glh7XKoBc7Kg==
+X-Gm-Gg: ASbGncstjSTzZRtonRdF+XaZL3euFigciLzGdPmQL1pWIsdXNMell094AGwDpOoDhyv
+	FTa9NcGY8EMdKBXycl4o3uvO37oto2ZVzJG5ChCwTztJEpsc1l2cQr2jOQdiJM4bWNuAhzF6p/w
+	==
+X-Google-Smtp-Source: AGHT+IGaBtWiKIGnTwJFrQeBl34glJPVbOx58PH1j6rhPNeD9c1tAu04EaLX9zcvsa1rWGTAMV8NY2NzowwhK+UlT4A=
+X-Received: by 2002:a05:6830:925:b0:71d:f6d3:9fd2 with SMTP id
+ 46e09a7af769-726568f1915mr14303629a34.24.1738660351634; Tue, 04 Feb 2025
+ 01:12:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+References: <20250204073418.491016-1-sumit.garg@linaro.org> <60cd3fcc-5d21-4b98-9a81-f5fbec2099fc@app.fastmail.com>
+In-Reply-To: <60cd3fcc-5d21-4b98-9a81-f5fbec2099fc@app.fastmail.com>
+From: Jens Wiklander <jens.wiklander@linaro.org>
+Date: Tue, 4 Feb 2025 10:12:20 +0100
+X-Gm-Features: AWEUYZmX7hyL7KTGLrWQk_2I6kQWMPU905QHsNtMHpKEdVFr8ey35q3rQRoHbC4
+Message-ID: <CAHUa44EnCdjEfevuFa4rdTykiD1fjU9+GbVq=TSOPaFz1sZpDA@mail.gmail.com>
+Subject: Re: [PATCH v3] tee: optee: Fix supplicant wait loop
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Sumit Garg <sumit.garg@linaro.org>, op-tee@lists.trustedfirmware.org, 
+	Jerome Forissier <jerome.forissier@linaro.org>, dannenberg@ti.com, javier@javigon.com, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 4, 2025 at 8:45=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, Feb 4, 2025, at 08:34, Sumit Garg wrote:
+> > OP-TEE supplicant is a user-space daemon and it's possible for it
+> > be hung or crashed or killed in the middle of processing an OP-TEE
+> > RPC call. It becomes more complicated when there is incorrect shutdown
+> > ordering of the supplicant process vs the OP-TEE client application whi=
+ch
+> > can eventually lead to system hang-up waiting for the closure of the
+> > client application.
+> >
+> > Allow the client process waiting in kernel for supplicant response to
+> > be killed rather than indefinitely waiting in an unkillable state. Also=
+,
+> > a normal uninterruptible wait should not have resulted in the hung-task
+> > watchdog getting triggered, but the endless loop would.
+> >
+> > This fixes issues observed during system reboot/shutdown when supplican=
+t
+> > got hung for some reason or gets crashed/killed which lead to client
+> > getting hung in an unkillable state. It in turn lead to system being in
+> > hung up state requiring hard power off/on to recover.
+> >
+> > Fixes: 4fb0a5eb364d ("tee: add OP-TEE driver")
+> > Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
-On Mon, 06 Jan 2025 14:57:46 +0000, Peter Griffin wrote:
-> gsacore registers are not accessible from normal world.
-> 
-> Disable this node, so that the suspend/resume callbacks
-> in the pinctrl driver don't cause a Serror attempting to
-> access the registers.
-> 
-> 
-> [...]
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
 
-Applied, thanks!
+>
+> Jens, I assume you'll pick it up and send me a pull request, but
+> I can also pick it up directly if you have nothing else.
 
-[1/1] arm64: dts: exynos: gs101: disable pinctrl_gsacore node
-      https://git.kernel.org/krzk/linux/c/168e24966f10ff635b0ec9728aa71833bf850ee5
+I have nothing else, please pick up this directly.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
+Thanks,
+Jens
 
