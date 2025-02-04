@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-112094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878CFA269A2
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31540A269A4
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 02:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F051882EEF
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9B6161E56
 	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 01:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B83521423C;
-	Tue,  4 Feb 2025 01:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8322144B7;
+	Tue,  4 Feb 2025 01:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzC7DiNK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQhMDeiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47503BBC1;
-	Tue,  4 Feb 2025 01:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F106C2144AE;
+	Tue,  4 Feb 2025 01:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738631889; cv=none; b=lB5BCK7hT24c0lew5/igVY68y572y8IxY5CQm0ADlilbzgmG9d/dUIf6JoIq6cMDn1thgcIElgo6g1jK+7pcF2uSnGPurcR3Rye5uKW0jTJTsqIPyQMoQ4XnZwX8uttrPTjuQAhC4u2tFR+vAKYZqCIfcz/0EAJT+8fUpqLPacY=
+	t=1738631891; cv=none; b=S+fCu44wRpRJs/y/xBYHkyXwgdZFf+hqEDBxg4uc9tpwGGUTV7GmHpcZA5Fh23U5nXlC1b13AIxSTYd6aXoWcoj7+i38D5EMFdbCI5ePc67KS0egwISHrnpO4pVtJjhg6oDWoj8Ejpz9sayd5Vxk5kq5oR154YXhAWIoMYQd2PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738631889; c=relaxed/simple;
-	bh=hRwU2oV9hAAmwJJNweGytqeplpBVxrosn1R6SEVR1to=;
+	s=arc-20240116; t=1738631891; c=relaxed/simple;
+	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UX0nrT/EaGkQ+EvLCJJh8RwwxCQG7AvkIZh7cTxW/L2AZS7KVh1KOhSSvwIszZFPpFkuZK3bE0K96bM6DKCuc8ANXmGixebFBJ6QgZ7NZO4airJdJmxaHw/t2EgcAt0EyYM45uIBH2fD/hFEqXuDWLJ5DlLRPCceB+2GP8hNmkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzC7DiNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E25EC4CEE8;
-	Tue,  4 Feb 2025 01:18:07 +0000 (UTC)
+	 MIME-Version; b=sU7c3DJtfrj32aOTBzZ5vKdGfRKlp/UPzIYkB+uunR2PV0gWSkHKnhFtIoMjzvvjkGhtY0+nRA4ozYg5SYZUuqJb8gPlnDW8AZuZhXCADVTK2e1ROtYZ2JiSXnfAa8AswbdJMlvIwImjExGHyCLRrL3h9LnkIGbDVxzROMp8zS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQhMDeiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0483C4CEE4;
+	Tue,  4 Feb 2025 01:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738631889;
-	bh=hRwU2oV9hAAmwJJNweGytqeplpBVxrosn1R6SEVR1to=;
+	s=k20201202; t=1738631890;
+	bh=yD+9AOlFovD1Y8vvdTcHlDFvH/B+nImFEA72s6sbPUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzC7DiNKcOWs9r2a4Z/WVTRtSvX62DUmXDwBgH2rEz+eKb+JAwmwxFDoMXsMH1n8d
-	 qgMvjDBucKf/iPTqbLlOkv6K/NtFCzCWwpFDwGpE29rxDdjIqqmBq6axanNSLVHYZ6
-	 jEUrPwOnZh7yUEv/3WSmc1O5rV65gYVW15scQjQhp2HmbpkB2hw3vxxW/qDbleVNeZ
-	 EZ6WdNinPEmPIc9dLgbDbQ7X6nD7FgYmIR3ol2E67n7lJXvj43cFZprJYCqhmfCNHZ
-	 lDh0NtuY9rrTF1n1FAunC5/qrchcgRxavQdpw3GeXDfJeABO6MA1to7oZHBj3dk4Rm
-	 pfJHki17RiaeQ==
+	b=YQhMDeiSIlq/RH/+kmXKP9NaB6dMPsBfnbgSMs+JoYs4KxFPWmuTq4i7XLyTczq3r
+	 8mIKgKdgbhetKse5slphu07IBG5hpDrUZApwpjYz96rh1I2dNJVCK83GhOJMe/dOQ2
+	 zl7SIVGv4aT/ib/Arnnuc5M+Bm2TEtStxo2l4Y29gNpS0exsM4JBSfbtMDnZzS5h3G
+	 NI2OwpcMDltfyjnk03QfzfmiYdQSmDCYSRxvila5+Ggr/TWumpnNX19rXuxfPpvGho
+	 FspKGDhfQpzyy9iVMCQ113hUakPwmCCbYcDTJak3kZ9NuAlkOukyhLA0IQpCFk4GTF
+	 CfsAqHvFs2jWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Kees Cook <kees@kernel.org>,
+	Jakub Jelinek <jakub@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	u.kleine-koenig@baylibre.com,
-	alban.boye@protonmail.com,
-	tomlohave@gmail.com,
-	kuninori.morimoto.gx@renesas.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 4/5] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet 5V
-Date: Mon,  3 Feb 2025 20:17:52 -0500
-Message-Id: <20250204011757.2206869-4-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 5/5] kbuild: Use -fzero-init-padding-bits=all
+Date: Mon,  3 Feb 2025 20:17:53 -0500
+Message-Id: <20250204011757.2206869-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250204011757.2206869-1-sashal@kernel.org>
 References: <20250204011757.2206869-1-sashal@kernel.org>
@@ -78,57 +68,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.12
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 6917192378c1ce17ba31df51c4e0d8b1c97a453b ]
+[ Upstream commit dce4aab8441d285b9a78b33753e0bf583c1320ee ]
 
-The Vexia EDU ATLA 10 tablet comes in 2 different versions with
-significantly different mainboards. The only outward difference is that
-the charging barrel on one is marked 5V and the other is marked 9V.
+GCC 15 introduces a regression in "= { 0 }" style initialization of
+unions that Linux has depended on for eliminating uninitialized variable
+contents. GCC does not seem likely to fix it[1], instead suggesting[2]
+that affected projects start using -fzero-init-padding-bits=unions.
 
-The 5V version mostly works with the BYTCR defaults, except that it is
-missing a CHAN package in its ACPI tables and the default of using
-SSP0-AIF2 is wrong, instead SSP0-AIF1 must be used. That and its jack
-detect signal is not inverted as it usually is.
+To avoid future surprises beyond just the current situation with unions,
+enable -fzero-init-padding-bits=all when available (GCC 15+). This will
+correctly zero padding bits in unions and structs that might have been
+left uninitialized, and will make sure there is no immediate regression
+in union initializations. As seen in the stackinit KUnit selftest union
+cases, which were passing before, were failing under GCC 15:
 
-Add a DMI quirk for the 5V version to fix sound not working.
+    not ok 18 test_small_start_old_zero
+    ok 29 test_small_start_dynamic_partial # SKIP XFAIL uninit bytes: 63
+    ok 32 test_small_start_assigned_dynamic_partial # SKIP XFAIL uninit bytes: 63
+    ok 67 test_small_start_static_partial # SKIP XFAIL uninit bytes: 63
+    ok 70 test_small_start_static_all # SKIP XFAIL uninit bytes: 56
+    ok 73 test_small_start_dynamic_all # SKIP XFAIL uninit bytes: 56
+    ok 82 test_small_start_assigned_static_partial # SKIP XFAIL uninit bytes: 63
+    ok 85 test_small_start_assigned_static_all # SKIP XFAIL uninit bytes: 56
+    ok 88 test_small_start_assigned_dynamic_all # SKIP XFAIL uninit bytes: 56
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20250123132507.18434-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The above all now pass again with -fzero-init-padding-bits=all added.
+
+This also fixes the following cases for struct initialization that had
+been XFAIL until now because there was no compiler support beyond the
+larger "-ftrivial-auto-var-init=zero" option:
+
+    ok 38 test_small_hole_static_all # SKIP XFAIL uninit bytes: 3
+    ok 39 test_big_hole_static_all # SKIP XFAIL uninit bytes: 124
+    ok 40 test_trailing_hole_static_all # SKIP XFAIL uninit bytes: 7
+    ok 42 test_small_hole_dynamic_all # SKIP XFAIL uninit bytes: 3
+    ok 43 test_big_hole_dynamic_all # SKIP XFAIL uninit bytes: 124
+    ok 44 test_trailing_hole_dynamic_all # SKIP XFAIL uninit bytes: 7
+    ok 58 test_small_hole_assigned_static_all # SKIP XFAIL uninit bytes: 3
+    ok 59 test_big_hole_assigned_static_all # SKIP XFAIL uninit bytes: 124
+    ok 60 test_trailing_hole_assigned_static_all # SKIP XFAIL uninit bytes: 7
+    ok 62 test_small_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 3
+    ok 63 test_big_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 124
+    ok 64 test_trailing_hole_assigned_dynamic_all # SKIP XFAIL uninit bytes: 7
+
+All of the above now pass when built under GCC 15. Tests can be seen
+with:
+
+    ./tools/testing/kunit/kunit.py run stackinit --arch=x86_64 \
+        --make_option CC=gcc-15
+
+Clang continues to fully initialize these kinds of variables[3] without
+additional flags.
+
+Suggested-by: Jakub Jelinek <jakub@redhat.com>
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=118403 [1]
+Link: https://lore.kernel.org/linux-toolchains/Z0hRrrNU3Q+ro2T7@tucnak/ [2]
+Link: https://github.com/llvm/llvm-project/commit/7a086e1b2dc05f54afae3591614feede727601fa [3]
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20250127191031.245214-3-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ scripts/Makefile.extrawarn | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 54f77f57ec8e2..1148e9498d8e8 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1132,7 +1132,22 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF2 |
- 					BYT_RT5640_MCLK_EN),
- 	},
--	{	/* Vexia Edu Atla 10 tablet */
-+	{
-+		/* Vexia Edu Atla 10 tablet 5V version */
-+		.matches = {
-+			/* Having all 3 of these not set is somewhat unique */
-+			DMI_MATCH(DMI_SYS_VENDOR, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "To be filled by O.E.M."),
-+			DMI_MATCH(DMI_BOARD_NAME, "To be filled by O.E.M."),
-+			/* Above strings are too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "05/14/2015"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_JD_NOT_INV |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
-+	{	/* Vexia Edu Atla 10 tablet 9V version */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
+diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+index 1d13cecc7cc78..eb719f6d8d536 100644
+--- a/scripts/Makefile.extrawarn
++++ b/scripts/Makefile.extrawarn
+@@ -77,6 +77,9 @@ KBUILD_CFLAGS += $(call cc-option,-Werror=designated-init)
+ # Warn if there is an enum types mismatch
+ KBUILD_CFLAGS += $(call cc-option,-Wenum-conversion)
+ 
++# Explicitly clear padding bits during variable initialization
++KBUILD_CFLAGS += $(call cc-option,-fzero-init-padding-bits=all)
++
+ KBUILD_CFLAGS += -Wextra
+ KBUILD_CFLAGS += -Wunused
+ 
 -- 
 2.39.5
 
