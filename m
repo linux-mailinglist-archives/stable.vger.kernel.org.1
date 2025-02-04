@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-112213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED66A27907
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:53:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEEB7A27908
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7FF3A2E4E
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:53:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768441623E7
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 17:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA7D2163BF;
-	Tue,  4 Feb 2025 17:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7204216384;
+	Tue,  4 Feb 2025 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHc+LHEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDj4h6HE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95972163BD
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E3A215F5A
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738691614; cv=none; b=JqXKjyARawyY3u2k4zKWDE5EE6dBtIzTr0Bp/zwnq0Wju8KJR/mTiSuRDs9UgHMAP2B1YTmToHoL3RCHt4K1iPx367aOWsUn4136R/Q6PDIir+Hzo/XLc8vWx8TsCqfpET2kXDAK2F0iTD50hdRkb6+f+VrgWJX5gIgveHLEstY=
+	t=1738691670; cv=none; b=lPbkObLatakbZ8Nlg5zOQvfHJR+C3jbWE6v9Gz6Yfic2WUVW95Xih5paI9Wf9sHUxNNFkiHr14d1v+nmJYfUfGfBI59ldJ9S8/u9sqbwdnJzCPJsc4MzSRCyLOGMtf+Jw5IK13l91Fo/50GImWYgo/SNnyPx8Aq9PobFzqBU4sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738691614; c=relaxed/simple;
-	bh=s0bg6CT05wG33lz0QPFbOicgddjGL7jQvlKDNlTFrxw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NYOj4S5MJcDiKpU0Az+Jj9BLa4BKIsfvK7qC1tP1s/U6R14L/fknu39QvPyR/PJNqZjLWtdFt2XNMPIIFCPSyoKKZTFL6GUneM5Cm0ZtA8WT2Z43Vqk7rx+NEeA6vo3yNvLI5NCy5OnP58jq0S2o/4Zzz5SYHNMoT5+P8ltWylU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHc+LHEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE378C4CEDF;
-	Tue,  4 Feb 2025 17:53:33 +0000 (UTC)
+	s=arc-20240116; t=1738691670; c=relaxed/simple;
+	bh=6ppYovKhafgThYDkG/svL8ck54vI1Vlt7Km3bwNKgok=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=m8+4LHP26CTPbK/0r1tl3K/CfPeklkFKKMG7hfEEueiXdlpMGDzl/lSS9c/lsm4FXvuID6vd2v04J8FEJlmX6VDO7JaRHwA1s56TF/jtqjpXertdk9TyQNMm1Za3OEvG5Z6FQXZjgCkGclPS66CFM/oO6f2SNTA9CBBa4BpkfFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDj4h6HE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07652C4CEE2;
+	Tue,  4 Feb 2025 17:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738691614;
-	bh=s0bg6CT05wG33lz0QPFbOicgddjGL7jQvlKDNlTFrxw=;
+	s=korg; t=1738691670;
+	bh=6ppYovKhafgThYDkG/svL8ck54vI1Vlt7Km3bwNKgok=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KHc+LHEcajNnl/J05bb+2uxrg3lhMO53JCZqpenqQJtb0Xnlak2iAM1YXeNUSl/kZ
-	 4ViVCMP7oiEMEUT2d1m3fSAFhycqFJNgdh6KSHyt1c4kZINqxNcO3CBaldvs/YlyKY
-	 g9IfM+7/Z4vyUcK7w0rezkz6eyTYf/iFdu9+3nFQ=
-Subject: FAILED: patch "[PATCH] pps: Fix a use-after-free" failed to apply to 5.4-stable tree
-To: calvin@wbinvd.org,gregkh@linuxfoundation.org,mschmidt@redhat.com
+	b=jDj4h6HEP5fdmGSZyyjhMHqbem0sBTLvg7LUBGrY5R6FfLG1hH11Wv25zsPL58RDx
+	 PgKh+uQN44nxhlsL5YpaWUFdHduYIz9XPP3FN9qhHV15mMJa4A1DOfyrIzp608g2hi
+	 P+WnUE48TdJjTOhO6uY/ux0y44qG2A1xNIiJlnSg=
+Subject: FAILED: patch "[PATCH] drm/v3d: Assign job pointer to NULL before signaling the" failed to apply to 6.13-stable tree
+To: mcanal@igalia.com,itoral@igalia.com,jmcasanova@igalia.com,phil@raspberrypi.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 04 Feb 2025 18:53:24 +0100
-Message-ID: <2025020424-bloated-undecided-1814@gregkh>
+Date: Tue, 04 Feb 2025 18:54:27 +0100
+Message-ID: <2025020427-navigator-squall-4540@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x c79a39dc8d060b9e64e8b0fa9d245d44befeefbe
+git cherry-pick -x 6e64d6b3a3c39655de56682ec83e894978d23412
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020424-bloated-undecided-1814@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020427-navigator-squall-4540@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,607 +77,150 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c79a39dc8d060b9e64e8b0fa9d245d44befeefbe Mon Sep 17 00:00:00 2001
-From: Calvin Owens <calvin@wbinvd.org>
-Date: Mon, 11 Nov 2024 20:13:29 -0800
-Subject: [PATCH] pps: Fix a use-after-free
+From 6e64d6b3a3c39655de56682ec83e894978d23412 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Date: Wed, 22 Jan 2025 22:24:03 -0300
+Subject: [PATCH] drm/v3d: Assign job pointer to NULL before signaling the
+ fence
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On a board running ntpd and gpsd, I'm seeing a consistent use-after-free
-in sys_exit() from gpsd when rebooting:
+In commit e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL
+after job completion"), we introduced a change to assign the job pointer
+to NULL after completing a job, indicating job completion.
 
-    pps pps1: removed
-    ------------[ cut here ]------------
-    kobject: '(null)' (00000000db4bec24): is not initialized, yet kobject_put() is being called.
-    WARNING: CPU: 2 PID: 440 at lib/kobject.c:734 kobject_put+0x120/0x150
-    CPU: 2 UID: 299 PID: 440 Comm: gpsd Not tainted 6.11.0-rc6-00308-gb31c44928842 #1
-    Hardware name: Raspberry Pi 4 Model B Rev 1.1 (DT)
-    pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-    pc : kobject_put+0x120/0x150
-    lr : kobject_put+0x120/0x150
-    sp : ffffffc0803d3ae0
-    x29: ffffffc0803d3ae0 x28: ffffff8042dc9738 x27: 0000000000000001
-    x26: 0000000000000000 x25: ffffff8042dc9040 x24: ffffff8042dc9440
-    x23: ffffff80402a4620 x22: ffffff8042ef4bd0 x21: ffffff80405cb600
-    x20: 000000000008001b x19: ffffff8040b3b6e0 x18: 0000000000000000
-    x17: 0000000000000000 x16: 0000000000000000 x15: 696e6920746f6e20
-    x14: 7369203a29343263 x13: 205d303434542020 x12: 0000000000000000
-    x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-    x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-    x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-    x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
-    Call trace:
-     kobject_put+0x120/0x150
-     cdev_put+0x20/0x3c
-     __fput+0x2c4/0x2d8
-     ____fput+0x1c/0x38
-     task_work_run+0x70/0xfc
-     do_exit+0x2a0/0x924
-     do_group_exit+0x34/0x90
-     get_signal+0x7fc/0x8c0
-     do_signal+0x128/0x13b4
-     do_notify_resume+0xdc/0x160
-     el0_svc+0xd4/0xf8
-     el0t_64_sync_handler+0x140/0x14c
-     el0t_64_sync+0x190/0x194
-    ---[ end trace 0000000000000000 ]---
+However, this approach created a race condition between the DRM
+scheduler workqueue and the IRQ execution thread. As soon as the fence is
+signaled in the IRQ execution thread, a new job starts to be executed.
+This results in a race condition where the IRQ execution thread sets the
+job pointer to NULL simultaneously as the `run_job()` function assigns
+a new job to the pointer.
 
-...followed by more symptoms of corruption, with similar stacks:
+This race condition can lead to a NULL pointer dereference if the IRQ
+execution thread sets the job pointer to NULL after `run_job()` assigns
+it to the new job. When the new job completes and the GPU emits an
+interrupt, `v3d_irq()` is triggered, potentially causing a crash.
 
-    refcount_t: underflow; use-after-free.
-    kernel BUG at lib/list_debug.c:62!
-    Kernel panic - not syncing: Oops - BUG: Fatal exception
+[  466.310099] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000c0
+[  466.318928] Mem abort info:
+[  466.321723]   ESR = 0x0000000096000005
+[  466.325479]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  466.330807]   SET = 0, FnV = 0
+[  466.333864]   EA = 0, S1PTW = 0
+[  466.337010]   FSC = 0x05: level 1 translation fault
+[  466.341900] Data abort info:
+[  466.344783]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[  466.350285]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  466.355350]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[  466.360677] user pgtable: 4k pages, 39-bit VAs, pgdp=0000000089772000
+[  466.367140] [00000000000000c0] pgd=0000000000000000, p4d=0000000000000000, pud=0000000000000000
+[  466.375875] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+[  466.382163] Modules linked in: rfcomm snd_seq_dummy snd_hrtimer snd_seq snd_seq_device algif_hash algif_skcipher af_alg bnep binfmt_misc vc4 snd_soc_hdmi_codec drm_display_helper cec brcmfmac_wcc spidev rpivid_hevc(C) drm_client_lib brcmfmac hci_uart drm_dma_helper pisp_be btbcm brcmutil snd_soc_core aes_ce_blk v4l2_mem2mem bluetooth aes_ce_cipher snd_compress videobuf2_dma_contig ghash_ce cfg80211 gf128mul snd_pcm_dmaengine videobuf2_memops ecdh_generic sha2_ce ecc videobuf2_v4l2 snd_pcm v3d sha256_arm64 rfkill videodev snd_timer sha1_ce libaes gpu_sched snd videobuf2_common sha1_generic drm_shmem_helper mc rp1_pio drm_kms_helper raspberrypi_hwmon spi_bcm2835 gpio_keys i2c_brcmstb rp1 raspberrypi_gpiomem rp1_mailbox rp1_adc nvmem_rmem uio_pdrv_genirq uio i2c_dev drm ledtrig_pattern drm_panel_orientation_quirks backlight fuse dm_mod ip_tables x_tables ipv6
+[  466.458429] CPU: 0 UID: 1000 PID: 2008 Comm: chromium Tainted: G         C         6.13.0-v8+ #18
+[  466.467336] Tainted: [C]=CRAP
+[  466.470306] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
+[  466.476157] pstate: 404000c9 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  466.483143] pc : v3d_irq+0x118/0x2e0 [v3d]
+[  466.487258] lr : __handle_irq_event_percpu+0x60/0x228
+[  466.492327] sp : ffffffc080003ea0
+[  466.495646] x29: ffffffc080003ea0 x28: ffffff80c0c94200 x27: 0000000000000000
+[  466.502807] x26: ffffffd08dd81d7b x25: ffffff80c0c94200 x24: ffffff8003bdc200
+[  466.509969] x23: 0000000000000001 x22: 00000000000000a7 x21: 0000000000000000
+[  466.517130] x20: ffffff8041bb0000 x19: 0000000000000001 x18: 0000000000000000
+[  466.524291] x17: ffffffafadfb0000 x16: ffffffc080000000 x15: 0000000000000000
+[  466.531452] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[  466.538613] x11: 0000000000000000 x10: 0000000000000000 x9 : ffffffd08c527eb0
+[  466.545777] x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+[  466.552941] x5 : ffffffd08c4100d0 x4 : ffffffafadfb0000 x3 : ffffffc080003f70
+[  466.560102] x2 : ffffffc0829e8058 x1 : 0000000000000001 x0 : 0000000000000000
+[  466.567263] Call trace:
+[  466.569711]  v3d_irq+0x118/0x2e0 [v3d] (P)
+[  466.573826]  __handle_irq_event_percpu+0x60/0x228
+[  466.578546]  handle_irq_event+0x54/0xb8
+[  466.582391]  handle_fasteoi_irq+0xac/0x240
+[  466.586498]  generic_handle_domain_irq+0x34/0x58
+[  466.591128]  gic_handle_irq+0x48/0xd8
+[  466.594798]  call_on_irq_stack+0x24/0x58
+[  466.598730]  do_interrupt_handler+0x88/0x98
+[  466.602923]  el0_interrupt+0x44/0xc0
+[  466.606508]  __el0_irq_handler_common+0x18/0x28
+[  466.611050]  el0t_64_irq_handler+0x10/0x20
+[  466.615156]  el0t_64_irq+0x198/0x1a0
+[  466.618740] Code: 52800035 3607faf3 f9442e80 52800021 (f9406018)
+[  466.624853] ---[ end trace 0000000000000000 ]---
+[  466.629483] Kernel panic - not syncing: Oops: Fatal exception in interrupt
+[  466.636384] SMP: stopping secondary CPUs
+[  466.640320] Kernel Offset: 0x100c400000 from 0xffffffc080000000
+[  466.646259] PHYS_OFFSET: 0x0
+[  466.649141] CPU features: 0x100,00000170,00901250,0200720b
+[  466.654644] Memory Limit: none
+[  466.657706] ---[ end Kernel panic - not syncing: Oops: Fatal exception in interrupt ]---
 
-This happens because pps_device_destruct() frees the pps_device with the
-embedded cdev immediately after calling cdev_del(), but, as the comment
-above cdev_del() notes, fops for previously opened cdevs are still
-callable even after cdev_del() returns. I think this bug has always
-been there: I can't explain why it suddenly started happening every time
-I reboot this particular board.
+Fix the crash by assigning the job pointer to NULL before signaling the
+fence. This ensures that the job pointer is cleared before any new job
+starts execution, preventing the race condition and the NULL pointer
+dereference crash.
 
-In commit d953e0e837e6 ("pps: Fix a use-after free bug when
-unregistering a source."), George Spelvin suggested removing the
-embedded cdev. That seems like the simplest way to fix this, so I've
-implemented his suggestion, using __register_chrdev() with pps_idr
-becoming the source of truth for which minor corresponds to which
-device.
-
-But now that pps_idr defines userspace visibility instead of cdev_add(),
-we need to be sure the pps->dev refcount can't reach zero while
-userspace can still find it again. So, the idr_remove() call moves to
-pps_unregister_cdev(), and pps_idr now holds a reference to pps->dev.
-
-    pps_core: source serial1 got cdev (251:1)
-    <...>
-    pps pps1: removed
-    pps_core: unregistering pps1
-    pps_core: deallocating pps1
-
-Fixes: d953e0e837e6 ("pps: Fix a use-after free bug when unregistering a source.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Link: https://lore.kernel.org/r/a17975fd5ae99385791929e563f72564edbcf28f.1731383727.git.calvin@wbinvd.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e4b5ccd392b9 ("drm/v3d: Ensure job pointer is set to NULL after job completion")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Jose Maria Casanova Crespo <jmcasanova@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Tested-by: Phil Elwell <phil@raspberrypi.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250123012403.20447-1-mcanal@igalia.com
 
-diff --git a/drivers/pps/clients/pps-gpio.c b/drivers/pps/clients/pps-gpio.c
-index 634c3b2f8c26..f77b19884f05 100644
---- a/drivers/pps/clients/pps-gpio.c
-+++ b/drivers/pps/clients/pps-gpio.c
-@@ -214,8 +214,8 @@ static int pps_gpio_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/gpu/drm/v3d/v3d_irq.c b/drivers/gpu/drm/v3d/v3d_irq.c
+index da203045df9b..72b6a119412f 100644
+--- a/drivers/gpu/drm/v3d/v3d_irq.c
++++ b/drivers/gpu/drm/v3d/v3d_irq.c
+@@ -107,8 +107,10 @@ v3d_irq(int irq, void *arg)
  
--	dev_info(data->pps->dev, "Registered IRQ %d as PPS source\n",
--		 data->irq);
-+	dev_dbg(&data->pps->dev, "Registered IRQ %d as PPS source\n",
-+		data->irq);
- 
- 	return 0;
- }
-diff --git a/drivers/pps/clients/pps-ktimer.c b/drivers/pps/clients/pps-ktimer.c
-index d33106bd7a29..2f465549b843 100644
---- a/drivers/pps/clients/pps-ktimer.c
-+++ b/drivers/pps/clients/pps-ktimer.c
-@@ -56,7 +56,7 @@ static struct pps_source_info pps_ktimer_info = {
- 
- static void __exit pps_ktimer_exit(void)
- {
--	dev_info(pps->dev, "ktimer PPS source unregistered\n");
-+	dev_dbg(&pps->dev, "ktimer PPS source unregistered\n");
- 
- 	del_timer_sync(&ktimer);
- 	pps_unregister_source(pps);
-@@ -74,7 +74,7 @@ static int __init pps_ktimer_init(void)
- 	timer_setup(&ktimer, pps_ktimer_event, 0);
- 	mod_timer(&ktimer, jiffies + HZ);
- 
--	dev_info(pps->dev, "ktimer PPS source registered\n");
-+	dev_dbg(&pps->dev, "ktimer PPS source registered\n");
- 
- 	return 0;
- }
-diff --git a/drivers/pps/clients/pps-ldisc.c b/drivers/pps/clients/pps-ldisc.c
-index 443d6bae19d1..fa5660f3c4b7 100644
---- a/drivers/pps/clients/pps-ldisc.c
-+++ b/drivers/pps/clients/pps-ldisc.c
-@@ -32,7 +32,7 @@ static void pps_tty_dcd_change(struct tty_struct *tty, bool active)
- 	pps_event(pps, &ts, active ? PPS_CAPTUREASSERT :
- 			PPS_CAPTURECLEAR, NULL);
- 
--	dev_dbg(pps->dev, "PPS %s at %lu\n",
-+	dev_dbg(&pps->dev, "PPS %s at %lu\n",
- 			active ? "assert" : "clear", jiffies);
- }
- 
-@@ -69,7 +69,7 @@ static int pps_tty_open(struct tty_struct *tty)
- 		goto err_unregister;
- 	}
- 
--	dev_info(pps->dev, "source \"%s\" added\n", info.path);
-+	dev_dbg(&pps->dev, "source \"%s\" added\n", info.path);
- 
- 	return 0;
- 
-@@ -89,7 +89,7 @@ static void pps_tty_close(struct tty_struct *tty)
- 	if (WARN_ON(!pps))
- 		return;
- 
--	dev_info(pps->dev, "removed\n");
-+	dev_info(&pps->dev, "removed\n");
- 	pps_unregister_source(pps);
- }
- 
-diff --git a/drivers/pps/clients/pps_parport.c b/drivers/pps/clients/pps_parport.c
-index abaffb4e1c1c..24db06750297 100644
---- a/drivers/pps/clients/pps_parport.c
-+++ b/drivers/pps/clients/pps_parport.c
-@@ -81,7 +81,7 @@ static void parport_irq(void *handle)
- 	/* check the signal (no signal means the pulse is lost this time) */
- 	if (!signal_is_set(port)) {
- 		local_irq_restore(flags);
--		dev_err(dev->pps->dev, "lost the signal\n");
-+		dev_err(&dev->pps->dev, "lost the signal\n");
- 		goto out_assert;
- 	}
- 
-@@ -98,7 +98,7 @@ static void parport_irq(void *handle)
- 	/* timeout */
- 	dev->cw_err++;
- 	if (dev->cw_err >= CLEAR_WAIT_MAX_ERRORS) {
--		dev_err(dev->pps->dev, "disabled clear edge capture after %d"
-+		dev_err(&dev->pps->dev, "disabled clear edge capture after %d"
- 				" timeouts\n", dev->cw_err);
- 		dev->cw = 0;
- 		dev->cw_err = 0;
-diff --git a/drivers/pps/kapi.c b/drivers/pps/kapi.c
-index d9d566f70ed1..92d1b62ea239 100644
---- a/drivers/pps/kapi.c
-+++ b/drivers/pps/kapi.c
-@@ -41,7 +41,7 @@ static void pps_add_offset(struct pps_ktime *ts, struct pps_ktime *offset)
- static void pps_echo_client_default(struct pps_device *pps, int event,
- 		void *data)
- {
--	dev_info(pps->dev, "echo %s %s\n",
-+	dev_info(&pps->dev, "echo %s %s\n",
- 		event & PPS_CAPTUREASSERT ? "assert" : "",
- 		event & PPS_CAPTURECLEAR ? "clear" : "");
- }
-@@ -112,7 +112,7 @@ struct pps_device *pps_register_source(struct pps_source_info *info,
- 		goto kfree_pps;
- 	}
- 
--	dev_info(pps->dev, "new PPS source %s\n", info->name);
-+	dev_dbg(&pps->dev, "new PPS source %s\n", info->name);
- 
- 	return pps;
- 
-@@ -166,7 +166,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 	/* check event type */
- 	BUG_ON((event & (PPS_CAPTUREASSERT | PPS_CAPTURECLEAR)) == 0);
- 
--	dev_dbg(pps->dev, "PPS event at %lld.%09ld\n",
-+	dev_dbg(&pps->dev, "PPS event at %lld.%09ld\n",
- 			(s64)ts->ts_real.tv_sec, ts->ts_real.tv_nsec);
- 
- 	timespec_to_pps_ktime(&ts_real, ts->ts_real);
-@@ -188,7 +188,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 		/* Save the time stamp */
- 		pps->assert_tu = ts_real;
- 		pps->assert_sequence++;
--		dev_dbg(pps->dev, "capture assert seq #%u\n",
-+		dev_dbg(&pps->dev, "capture assert seq #%u\n",
- 			pps->assert_sequence);
- 
- 		captured = ~0;
-@@ -202,7 +202,7 @@ void pps_event(struct pps_device *pps, struct pps_event_time *ts, int event,
- 		/* Save the time stamp */
- 		pps->clear_tu = ts_real;
- 		pps->clear_sequence++;
--		dev_dbg(pps->dev, "capture clear seq #%u\n",
-+		dev_dbg(&pps->dev, "capture clear seq #%u\n",
- 			pps->clear_sequence);
- 
- 		captured = ~0;
-diff --git a/drivers/pps/kc.c b/drivers/pps/kc.c
-index 50dc59af45be..fbd23295afd7 100644
---- a/drivers/pps/kc.c
-+++ b/drivers/pps/kc.c
-@@ -43,11 +43,11 @@ int pps_kc_bind(struct pps_device *pps, struct pps_bind_args *bind_args)
- 			pps_kc_hardpps_mode = 0;
- 			pps_kc_hardpps_dev = NULL;
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_info(pps->dev, "unbound kernel"
-+			dev_info(&pps->dev, "unbound kernel"
- 					" consumer\n");
- 		} else {
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_err(pps->dev, "selected kernel consumer"
-+			dev_err(&pps->dev, "selected kernel consumer"
- 					" is not bound\n");
- 			return -EINVAL;
- 		}
-@@ -57,11 +57,11 @@ int pps_kc_bind(struct pps_device *pps, struct pps_bind_args *bind_args)
- 			pps_kc_hardpps_mode = bind_args->edge;
- 			pps_kc_hardpps_dev = pps;
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_info(pps->dev, "bound kernel consumer: "
-+			dev_info(&pps->dev, "bound kernel consumer: "
- 				"edge=0x%x\n", bind_args->edge);
- 		} else {
- 			spin_unlock_irq(&pps_kc_hardpps_lock);
--			dev_err(pps->dev, "another kernel consumer"
-+			dev_err(&pps->dev, "another kernel consumer"
- 					" is already bound\n");
- 			return -EINVAL;
- 		}
-@@ -83,7 +83,7 @@ void pps_kc_remove(struct pps_device *pps)
- 		pps_kc_hardpps_mode = 0;
- 		pps_kc_hardpps_dev = NULL;
- 		spin_unlock_irq(&pps_kc_hardpps_lock);
--		dev_info(pps->dev, "unbound kernel consumer"
-+		dev_info(&pps->dev, "unbound kernel consumer"
- 				" on device removal\n");
- 	} else
- 		spin_unlock_irq(&pps_kc_hardpps_lock);
-diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
-index 25d47907db17..6a02245ea35f 100644
---- a/drivers/pps/pps.c
-+++ b/drivers/pps/pps.c
-@@ -25,7 +25,7 @@
-  * Local variables
-  */
- 
--static dev_t pps_devt;
-+static int pps_major;
- static struct class *pps_class;
- 
- static DEFINE_MUTEX(pps_idr_lock);
-@@ -62,7 +62,7 @@ static int pps_cdev_pps_fetch(struct pps_device *pps, struct pps_fdata *fdata)
- 	else {
- 		unsigned long ticks;
- 
--		dev_dbg(pps->dev, "timeout %lld.%09d\n",
-+		dev_dbg(&pps->dev, "timeout %lld.%09d\n",
- 				(long long) fdata->timeout.sec,
- 				fdata->timeout.nsec);
- 		ticks = fdata->timeout.sec * HZ;
-@@ -80,7 +80,7 @@ static int pps_cdev_pps_fetch(struct pps_device *pps, struct pps_fdata *fdata)
- 
- 	/* Check for pending signals */
- 	if (err == -ERESTARTSYS) {
--		dev_dbg(pps->dev, "pending signal caught\n");
-+		dev_dbg(&pps->dev, "pending signal caught\n");
- 		return -EINTR;
- 	}
- 
-@@ -98,7 +98,7 @@ static long pps_cdev_ioctl(struct file *file,
- 
- 	switch (cmd) {
- 	case PPS_GETPARAMS:
--		dev_dbg(pps->dev, "PPS_GETPARAMS\n");
-+		dev_dbg(&pps->dev, "PPS_GETPARAMS\n");
- 
- 		spin_lock_irq(&pps->lock);
- 
-@@ -114,7 +114,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		break;
- 
- 	case PPS_SETPARAMS:
--		dev_dbg(pps->dev, "PPS_SETPARAMS\n");
-+		dev_dbg(&pps->dev, "PPS_SETPARAMS\n");
- 
- 		/* Check the capabilities */
- 		if (!capable(CAP_SYS_TIME))
-@@ -124,14 +124,14 @@ static long pps_cdev_ioctl(struct file *file,
- 		if (err)
- 			return -EFAULT;
- 		if (!(params.mode & (PPS_CAPTUREASSERT | PPS_CAPTURECLEAR))) {
--			dev_dbg(pps->dev, "capture mode unspecified (%x)\n",
-+			dev_dbg(&pps->dev, "capture mode unspecified (%x)\n",
- 								params.mode);
- 			return -EINVAL;
- 		}
- 
- 		/* Check for supported capabilities */
- 		if ((params.mode & ~pps->info.mode) != 0) {
--			dev_dbg(pps->dev, "unsupported capabilities (%x)\n",
-+			dev_dbg(&pps->dev, "unsupported capabilities (%x)\n",
- 								params.mode);
- 			return -EINVAL;
- 		}
-@@ -144,7 +144,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		/* Restore the read only parameters */
- 		if ((params.mode & (PPS_TSFMT_TSPEC | PPS_TSFMT_NTPFP)) == 0) {
- 			/* section 3.3 of RFC 2783 interpreted */
--			dev_dbg(pps->dev, "time format unspecified (%x)\n",
-+			dev_dbg(&pps->dev, "time format unspecified (%x)\n",
- 								params.mode);
- 			pps->params.mode |= PPS_TSFMT_TSPEC;
- 		}
-@@ -165,7 +165,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		break;
- 
- 	case PPS_GETCAP:
--		dev_dbg(pps->dev, "PPS_GETCAP\n");
-+		dev_dbg(&pps->dev, "PPS_GETCAP\n");
- 
- 		err = put_user(pps->info.mode, iuarg);
- 		if (err)
-@@ -176,7 +176,7 @@ static long pps_cdev_ioctl(struct file *file,
- 	case PPS_FETCH: {
- 		struct pps_fdata fdata;
- 
--		dev_dbg(pps->dev, "PPS_FETCH\n");
-+		dev_dbg(&pps->dev, "PPS_FETCH\n");
- 
- 		err = copy_from_user(&fdata, uarg, sizeof(struct pps_fdata));
- 		if (err)
-@@ -206,7 +206,7 @@ static long pps_cdev_ioctl(struct file *file,
- 	case PPS_KC_BIND: {
- 		struct pps_bind_args bind_args;
- 
--		dev_dbg(pps->dev, "PPS_KC_BIND\n");
-+		dev_dbg(&pps->dev, "PPS_KC_BIND\n");
- 
- 		/* Check the capabilities */
- 		if (!capable(CAP_SYS_TIME))
-@@ -218,7 +218,7 @@ static long pps_cdev_ioctl(struct file *file,
- 
- 		/* Check for supported capabilities */
- 		if ((bind_args.edge & ~pps->info.mode) != 0) {
--			dev_err(pps->dev, "unsupported capabilities (%x)\n",
-+			dev_err(&pps->dev, "unsupported capabilities (%x)\n",
- 					bind_args.edge);
- 			return -EINVAL;
- 		}
-@@ -227,7 +227,7 @@ static long pps_cdev_ioctl(struct file *file,
- 		if (bind_args.tsformat != PPS_TSFMT_TSPEC ||
- 				(bind_args.edge & ~PPS_CAPTUREBOTH) != 0 ||
- 				bind_args.consumer != PPS_KC_HARDPPS) {
--			dev_err(pps->dev, "invalid kernel consumer bind"
-+			dev_err(&pps->dev, "invalid kernel consumer bind"
- 					" parameters (%x)\n", bind_args.edge);
- 			return -EINVAL;
- 		}
-@@ -259,7 +259,7 @@ static long pps_cdev_compat_ioctl(struct file *file,
- 		struct pps_fdata fdata;
- 		int err;
- 
--		dev_dbg(pps->dev, "PPS_FETCH\n");
-+		dev_dbg(&pps->dev, "PPS_FETCH\n");
- 
- 		err = copy_from_user(&compat, uarg, sizeof(struct pps_fdata_compat));
- 		if (err)
-@@ -296,20 +296,36 @@ static long pps_cdev_compat_ioctl(struct file *file,
- #define pps_cdev_compat_ioctl	NULL
- #endif
- 
-+static struct pps_device *pps_idr_get(unsigned long id)
-+{
-+	struct pps_device *pps;
+ 		v3d_job_update_stats(&v3d->bin_job->base, V3D_BIN);
+ 		trace_v3d_bcl_irq(&v3d->drm, fence->seqno);
+-		dma_fence_signal(&fence->base);
 +
-+	mutex_lock(&pps_idr_lock);
-+	pps = idr_find(&pps_idr, id);
-+	if (pps)
-+		get_device(&pps->dev);
+ 		v3d->bin_job = NULL;
++		dma_fence_signal(&fence->base);
 +
-+	mutex_unlock(&pps_idr_lock);
-+	return pps;
-+}
-+
- static int pps_cdev_open(struct inode *inode, struct file *file)
- {
--	struct pps_device *pps = container_of(inode->i_cdev,
--						struct pps_device, cdev);
-+	struct pps_device *pps = pps_idr_get(iminor(inode));
-+
-+	if (!pps)
-+		return -ENODEV;
-+
- 	file->private_data = pps;
--	kobject_get(&pps->dev->kobj);
- 	return 0;
- }
- 
- static int pps_cdev_release(struct inode *inode, struct file *file)
- {
--	struct pps_device *pps = container_of(inode->i_cdev,
--						struct pps_device, cdev);
--	kobject_put(&pps->dev->kobj);
-+	struct pps_device *pps = file->private_data;
-+
-+	WARN_ON(pps->id != iminor(inode));
-+	put_device(&pps->dev);
- 	return 0;
- }
- 
-@@ -331,22 +347,13 @@ static void pps_device_destruct(struct device *dev)
- {
- 	struct pps_device *pps = dev_get_drvdata(dev);
- 
--	cdev_del(&pps->cdev);
--
--	/* Now we can release the ID for re-use */
- 	pr_debug("deallocating pps%d\n", pps->id);
--	mutex_lock(&pps_idr_lock);
--	idr_remove(&pps_idr, pps->id);
--	mutex_unlock(&pps_idr_lock);
--
--	kfree(dev);
- 	kfree(pps);
- }
- 
- int pps_register_cdev(struct pps_device *pps)
- {
- 	int err;
--	dev_t devt;
- 
- 	mutex_lock(&pps_idr_lock);
- 	/*
-@@ -363,40 +370,29 @@ int pps_register_cdev(struct pps_device *pps)
- 		goto out_unlock;
+ 		status = IRQ_HANDLED;
  	}
- 	pps->id = err;
--	mutex_unlock(&pps_idr_lock);
  
--	devt = MKDEV(MAJOR(pps_devt), pps->id);
--
--	cdev_init(&pps->cdev, &pps_cdev_fops);
--	pps->cdev.owner = pps->info.owner;
--
--	err = cdev_add(&pps->cdev, devt, 1);
--	if (err) {
--		pr_err("%s: failed to add char device %d:%d\n",
--				pps->info.name, MAJOR(pps_devt), pps->id);
-+	pps->dev.class = pps_class;
-+	pps->dev.parent = pps->info.dev;
-+	pps->dev.devt = MKDEV(pps_major, pps->id);
-+	dev_set_drvdata(&pps->dev, pps);
-+	dev_set_name(&pps->dev, "pps%d", pps->id);
-+	err = device_register(&pps->dev);
-+	if (err)
- 		goto free_idr;
--	}
--	pps->dev = device_create(pps_class, pps->info.dev, devt, pps,
--							"pps%d", pps->id);
--	if (IS_ERR(pps->dev)) {
--		err = PTR_ERR(pps->dev);
--		goto del_cdev;
--	}
+@@ -118,8 +120,10 @@ v3d_irq(int irq, void *arg)
  
- 	/* Override the release function with our own */
--	pps->dev->release = pps_device_destruct;
-+	pps->dev.release = pps_device_destruct;
- 
--	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name,
--			MAJOR(pps_devt), pps->id);
-+	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
-+		 pps->id);
- 
-+	get_device(&pps->dev);
-+	mutex_unlock(&pps_idr_lock);
- 	return 0;
- 
--del_cdev:
--	cdev_del(&pps->cdev);
--
- free_idr:
--	mutex_lock(&pps_idr_lock);
- 	idr_remove(&pps_idr, pps->id);
-+	put_device(&pps->dev);
- out_unlock:
- 	mutex_unlock(&pps_idr_lock);
- 	return err;
-@@ -406,7 +402,13 @@ void pps_unregister_cdev(struct pps_device *pps)
- {
- 	pr_debug("unregistering pps%d\n", pps->id);
- 	pps->lookup_cookie = NULL;
--	device_destroy(pps_class, pps->dev->devt);
-+	device_destroy(pps_class, pps->dev.devt);
+ 		v3d_job_update_stats(&v3d->render_job->base, V3D_RENDER);
+ 		trace_v3d_rcl_irq(&v3d->drm, fence->seqno);
+-		dma_fence_signal(&fence->base);
 +
-+	/* Now we can release the ID for re-use */
-+	mutex_lock(&pps_idr_lock);
-+	idr_remove(&pps_idr, pps->id);
-+	put_device(&pps->dev);
-+	mutex_unlock(&pps_idr_lock);
- }
- 
- /*
-@@ -426,6 +428,11 @@ void pps_unregister_cdev(struct pps_device *pps)
-  * so that it will not be used again, even if the pps device cannot
-  * be removed from the idr due to pending references holding the minor
-  * number in use.
-+ *
-+ * Since pps_idr holds a reference to the device, the returned
-+ * pps_device is guaranteed to be valid until pps_unregister_cdev() is
-+ * called on it. But after calling pps_unregister_cdev(), it may be
-+ * freed at any time.
-  */
- struct pps_device *pps_lookup_dev(void const *cookie)
- {
-@@ -448,13 +455,11 @@ EXPORT_SYMBOL(pps_lookup_dev);
- static void __exit pps_exit(void)
- {
- 	class_destroy(pps_class);
--	unregister_chrdev_region(pps_devt, PPS_MAX_SOURCES);
-+	__unregister_chrdev(pps_major, 0, PPS_MAX_SOURCES, "pps");
- }
- 
- static int __init pps_init(void)
- {
--	int err;
--
- 	pps_class = class_create("pps");
- 	if (IS_ERR(pps_class)) {
- 		pr_err("failed to allocate class\n");
-@@ -462,8 +467,9 @@ static int __init pps_init(void)
+ 		v3d->render_job = NULL;
++		dma_fence_signal(&fence->base);
++
+ 		status = IRQ_HANDLED;
  	}
- 	pps_class->dev_groups = pps_groups;
  
--	err = alloc_chrdev_region(&pps_devt, 0, PPS_MAX_SOURCES, "pps");
--	if (err < 0) {
-+	pps_major = __register_chrdev(0, 0, PPS_MAX_SOURCES, "pps",
-+				      &pps_cdev_fops);
-+	if (pps_major < 0) {
- 		pr_err("failed to allocate char device region\n");
- 		goto remove_class;
+@@ -129,8 +133,10 @@ v3d_irq(int irq, void *arg)
+ 
+ 		v3d_job_update_stats(&v3d->csd_job->base, V3D_CSD);
+ 		trace_v3d_csd_irq(&v3d->drm, fence->seqno);
+-		dma_fence_signal(&fence->base);
++
+ 		v3d->csd_job = NULL;
++		dma_fence_signal(&fence->base);
++
+ 		status = IRQ_HANDLED;
  	}
-@@ -476,8 +482,7 @@ static int __init pps_init(void)
  
- remove_class:
- 	class_destroy(pps_class);
--
--	return err;
-+	return pps_major;
- }
+@@ -167,8 +173,10 @@ v3d_hub_irq(int irq, void *arg)
  
- subsys_initcall(pps_init);
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 5feecaadde8e..120db96d9e95 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -4420,7 +4420,7 @@ ptp_ocp_complete(struct ptp_ocp *bp)
+ 		v3d_job_update_stats(&v3d->tfu_job->base, V3D_TFU);
+ 		trace_v3d_tfu_irq(&v3d->drm, fence->seqno);
+-		dma_fence_signal(&fence->base);
++
+ 		v3d->tfu_job = NULL;
++		dma_fence_signal(&fence->base);
++
+ 		status = IRQ_HANDLED;
+ 	}
  
- 	pps = pps_lookup_dev(bp->ptp);
- 	if (pps)
--		ptp_ocp_symlink(bp, pps->dev, "pps");
-+		ptp_ocp_symlink(bp, &pps->dev, "pps");
- 
- 	ptp_ocp_debugfs_add_device(bp);
- 
-diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
-index 78c8ac4951b5..c7abce28ed29 100644
---- a/include/linux/pps_kernel.h
-+++ b/include/linux/pps_kernel.h
-@@ -56,8 +56,7 @@ struct pps_device {
- 
- 	unsigned int id;			/* PPS source unique ID */
- 	void const *lookup_cookie;		/* For pps_lookup_dev() only */
--	struct cdev cdev;
--	struct device *dev;
-+	struct device dev;
- 	struct fasync_struct *async_queue;	/* fasync method */
- 	spinlock_t lock;
- };
 
 
