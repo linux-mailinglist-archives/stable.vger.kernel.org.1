@@ -1,95 +1,117 @@
-Return-Path: <stable+bounces-112242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3353EA27AA2
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 19:53:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 816FAA27ABB
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 20:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114721885869
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 18:53:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51613A2819
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 19:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002D921884A;
-	Tue,  4 Feb 2025 18:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20167218EB0;
+	Tue,  4 Feb 2025 19:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5wLJjKg"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="hWJOZL20"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7D41509BD;
-	Tue,  4 Feb 2025 18:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A0F2040BE;
+	Tue,  4 Feb 2025 19:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738695223; cv=none; b=H47vbd8YxNGPxnBd7lHUdUFCj2Z2mBkRq8wVzT+//LAyYUS2kewVNqGWDN+0VL0z5De+RYjfn/K6fcEavZL3noLIPZ3AtY2y9GQwxinsicQshdfW5TpUAUpcbSQAzBhymZnL4Wz+eXlMxC110CTHIdicibaGnJQlAKwLoiAIlks=
+	t=1738695673; cv=none; b=sPOk/sIx2nqCI+rGFVZVYUOUY3TQgN0sDapI7Q62LckiO61Fq2N9vV+/KrCWHVyfkKNy0/r7TM0YBZTE69NOgc0NDqLncP0rsY4m9zW6CtHU2EoO5NjwZn5rj+j0qH9JWgsIGJRol0NPbIfpPfHXtlj6UOjrEmsjZoCoA4tQ/+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738695223; c=relaxed/simple;
-	bh=LHb/TuVy3D+/FibKVZy9IjJ6zLxeLpmti7E3Rsil9UI=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IBsrEV2ItvpP2B+gwNNyGhH18vAmif7OuFQouLbmMnwn1YAVVURDAepAvCG6ri0Vk3ZbFDBTDFQNpZTjL7Kl/POtRwld3zfSc0nKPPAm0cwP5uURdN4pY/ZEdKNPL0Xp65/Eiti/4KyNn6RH9Ny09oy6DnMQCAzNnF22w/ssBa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5wLJjKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF312C4CEDF;
-	Tue,  4 Feb 2025 18:53:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738695223;
-	bh=LHb/TuVy3D+/FibKVZy9IjJ6zLxeLpmti7E3Rsil9UI=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=R5wLJjKgNIEoVOWHbfVcImz7DStGyrr4kkbdIIlxQolhdDRRoGxd2h1km9OXOVGqo
-	 3P4+9eXzZgeCct3qvW26UCFZC2snpQlFtayO7XwVxfAJYFeK8slggda3Xs8vBr10o2
-	 uJpLMeoPT8My2QBPOh0l2bTmLP4DWuDPIFvzvSeMIcu8+jtMcAvQpOeyahA6iZxDpF
-	 lC33dkNcMWre/LXA5eoENozNL6qlFH4PSzUwWE92q0L2+Ltbv4axt2v0a7CqVfXIe6
-	 3MY/8roc8WD46lcPyiU4+ezOso+dHNl3BpeaHwaNjEXUrZBjk9OHCWts9520nmCc0F
-	 O8pYIEPVs4QGA==
-Date: Tue, 04 Feb 2025 10:53:42 -0800
-Subject: [PATCH 10/10] xfs: lock dquot buffer before detaching dquot from
- b_li_list
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: djwong@kernel.org, xfs-stable@lists.linux.dev, linux-xfs@vger.kernel.org
-Cc: hch@lst.de, cem@kernel.org, stable@vger.kernel.org
-Message-ID: <173869499505.410229.5000932484028162941.stgit@frogsfrogsfrogs>
-In-Reply-To: <173869499323.410229.9898612619797978336.stgit@frogsfrogsfrogs>
-References: <173869499323.410229.9898612619797978336.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1738695673; c=relaxed/simple;
+	bh=L7vBV1JPoj8vYtTWSak3lwHAxIiQQEbX51Hefc8OtzA=;
+	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=e5KDec1/rMuc0KP9lf+G9yuiuYHITPmACF/uf5xepSHf48cy2QURodCKoMhDBjBghYPGqOXjOI5Tl/ttz7JjovTCKnbEALGUgIb82leb8/aGf3VgCyugo1NyH47N9Z3pwWBxYzQzGRmGgI98G8viSIVx1nMUQrZLi+2mZ5RZbRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=hWJOZL20; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=mielJIRelVHU6ChF+oGw8yNzaNbjHGCOHmtP7wdOr6k=; b=hWJOZL20ZfLye+e+9n2TU/DpU9
+	ea0oUFdebGacU61HA662BCJwMqleM+OhG/c6IS7x4u8MypTaemNgqmDWYzRKKyP8422/mPQG7Pt5a
+	6QeglHa2aWUwOlOnOTsfvVTtoJG/2gxCFDT3G/iZ80Gy4pbLWrP2vhflV6yqvlD8M7Y4=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:33036 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1tfOAQ-000145-Gv; Tue, 04 Feb 2025 14:01:05 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Alistair Francis <alistair@alistair23.me>,
+	Maxime Ripard <mripard@kernel.org>,
+	=?UTF-8?q?Myl=C3=A8ne=20Josserand?= <mylene.josserand@bootlin.com>
+Cc: hugo@hugovil.com,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	stable@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Date: Tue,  4 Feb 2025 14:01:00 -0500
+Message-Id: <20250204190100.2210863-1-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+Subject: [PATCH] Input: cyttsp5 - ensure minimum reset pulse width
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 111d36d6278756128b7d7fab787fdcbf8221cd98 upstream
+The current reset pulse width is measured to be 5us on a
+Renesas RZ/G2L SOM. The manufacturer's minimum reset pulse width is
+specified as 10us.
 
-We have to lock the buffer before we can delete the dquot log item from
-the buffer's log item list.
+Extend reset pulse width to make sure it is long enough on all platforms.
 
-Cc: <stable@vger.kernel.org> # v6.13-rc3
-Fixes: acc8f8628c3737 ("xfs: attach dquot buffer to dquot log item buffer")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Also reword confusing comments about reset pin assertion.
+
+Fixes: 5b0c03e24a06 ("Input: Add driver for Cypress Generation 5 touchscreen")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 ---
- fs/xfs/xfs_dquot.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/touchscreen/cyttsp5.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-
-diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-index d64d454cbe8bca..0d73b59f1c9e57 100644
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -87,8 +87,9 @@ xfs_dquot_detach_buf(
- 	}
- 	spin_unlock(&qlip->qli_lock);
- 	if (bp) {
-+		xfs_buf_lock(bp);
- 		list_del_init(&qlip->qli_item.li_bio_list);
--		xfs_buf_rele(bp);
-+		xfs_buf_relse(bp);
- 	}
- }
+diff --git a/drivers/input/touchscreen/cyttsp5.c b/drivers/input/touchscreen/cyttsp5.c
+index eafe5a9b8964..bb09e84d0e92 100644
+--- a/drivers/input/touchscreen/cyttsp5.c
++++ b/drivers/input/touchscreen/cyttsp5.c
+@@ -870,13 +870,16 @@ static int cyttsp5_probe(struct device *dev, struct regmap *regmap, int irq,
+ 	ts->input->phys = ts->phys;
+ 	input_set_drvdata(ts->input, ts);
  
+-	/* Reset the gpio to be in a reset state */
++	/* Assert gpio to be in a reset state */
+ 	ts->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(ts->reset_gpio)) {
+ 		error = PTR_ERR(ts->reset_gpio);
+ 		dev_err(dev, "Failed to request reset gpio, error %d\n", error);
+ 		return error;
+ 	}
++
++	fsleep(1000); /* Ensure long-enough reset pulse (minimum 10us). */
++
+ 	gpiod_set_value_cansleep(ts->reset_gpio, 0);
+ 
+ 	/* Need a delay to have device up */
+
+base-commit: 0de63bb7d91975e73338300a57c54b93d3cc151c
+-- 
+2.39.5
 
 
