@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-112183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEFFCA275B1
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 16:21:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DC7A275B4
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 16:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7725E1647AC
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D81F63A6338
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F2321421B;
-	Tue,  4 Feb 2025 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BADB213E69;
+	Tue,  4 Feb 2025 15:21:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EBE2139B5
-	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58876214207
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 15:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738682495; cv=none; b=F/5RVFlMyt4Z9Izq4z3bTAqklmWDtFi9G0es/rU2c9mcif2kkjMZ/3SriPJQ6lAVEs3CGe6r8hsanUcGe1BWPhJSweOO26Ead4dIxPJfoIqlHGjGLVYHbnXwi9HVzS+Q5rh3fHvwjl9815f+4UL975DWn7dOGguqfJ+Zyy/D2LY=
+	t=1738682499; cv=none; b=DNCUB2542shn+RlCquPwh3Ei73+iv5LpGA0SM+XNEWBA1zHBgVWk9G7aRCv/MFFFb3n94Wlhcdq1NZb6DYIOpMZPndrKHEPOeY9JUUzPR/SLShDsd+P3Lzd/soSxNqJ51//urMBsj6AaW0wLQyhKgGo9LcRwryK8BGWECHvgIeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738682495; c=relaxed/simple;
-	bh=Zc+3daZXf1HtzTO/FBwnI/b9PvA86J2A60dYTbQVgWU=;
+	s=arc-20240116; t=1738682499; c=relaxed/simple;
+	bh=7kDiKQrEn3BUCEzXGaM0h8l0xQIZhKXX7Vj7e0+5VEw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GYXUA/1eUVL78kpnfhWuRYeyQEOA+GXyepKVh+Une1WqE9sxAGzsdi/M8TxAlSBgZSnP4r098B7xCw6mnIdKPnjoF8PCGgQ04Nk4zOr1wHVmr89/hquTZiuxjG8vYl5hkLf5R9Gse/5uVgizwt4u9gx9jNOey/W3Hbpl/CUkioA=
+	 MIME-Version; b=nCU9RCdlHpuWV51a8GqjQ4fqQrLhgPxWXagEniHp3HoZZLlvikFDytV0ll4t5IikxlKaxFbCZ/soUvUhb8P6RCaGsJYCXZIimusBQ89/WH36kZnEKNmEwXNbjuNDIpPC7FFAuBRmg39BulmhRgyNdKGBdzVVap5wTR95+TeJ3SU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6F58F1515;
-	Tue,  4 Feb 2025 07:21:57 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2D7F11FB;
+	Tue,  4 Feb 2025 07:22:00 -0800 (PST)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 28E113F63F;
-	Tue,  4 Feb 2025 07:21:31 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 549133F63F;
+	Tue,  4 Feb 2025 07:21:34 -0800 (PST)
 From: Mark Rutland <mark.rutland@arm.com>
 To: linux-arm-kernel@lists.infradead.org
 Cc: broonie@kernel.org,
@@ -48,9 +48,9 @@ Cc: broonie@kernel.org,
 	tabba@google.com,
 	wilco.dijkstra@arm.com,
 	will@kernel.org
-Subject: [PATCH 5/8] KVM: arm64: Refactor CPTR trap deactivation
-Date: Tue,  4 Feb 2025 15:20:57 +0000
-Message-Id: <20250204152100.705610-6-mark.rutland@arm.com>
+Subject: [PATCH 6/8] KVM: arm64: Refactor exit handlers
+Date: Tue,  4 Feb 2025 15:20:58 +0000
+Message-Id: <20250204152100.705610-7-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20250204152100.705610-1-mark.rutland@arm.com>
 References: <20250204152100.705610-1-mark.rutland@arm.com>
@@ -62,26 +62,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For historical reasons, the VHE and nVHE/hVHE implementations of
-__activate_cptr_traps() pair with a common implementation of
-__kvm_reset_cptr_el2(), which ideally would be named
-__deactivate_cptr_traps().
+The hyp exit handling logic is largely shared between VHE and nVHE/hVHE,
+with common logic in arch/arm64/kvm/hyp/include/hyp/switch.h. The code
+in the header depends on function definitions provided by
+arch/arm64/kvm/hyp/vhe/switch.c and arch/arm64/kvm/hyp/nvhe/switch.c
+when they include the header.
 
-Rename __kvm_reset_cptr_el2() to __deactivate_cptr_traps(), and split it
-into separate VHE and nVHE/hVHE variants so that each can be paired with
-its corresponding implementation of __activate_cptr_traps().
+This is an unusual header dependency, and prevents the use of
+arch/arm64/kvm/hyp/include/hyp/switch.h in other files as this would
+result in compiler warnings regarding missing definitions, e.g.
 
-At the same time, fold kvm_write_cptr_el2() into its callers. This
-makes it clear in-context whether a write is made to the CPACR_EL1
-encoding or the CPTR_EL2 encoding, and removes the possibility of
-confusion as to whether kvm_write_cptr_el2() reformats the sysreg fields
-as cpacr_clear_set() does.
+| In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:733:31: warning: 'kvm_get_exit_handler_array' used but never defined
+|   733 | static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu);
+|       |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:735:13: warning: 'early_exit_filter' used but never defined
+|   735 | static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code);
+|       |             ^~~~~~~~~~~~~~~~~
 
-In the nVHE/hVHE implementation of __activate_cptr_traps(), placing the
-sysreg writes within the if-else blocks requires that the call to
-__activate_traps_fpsimd32() is moved earlier, but as this was always
-called before writing to CPTR_EL2/CPACR_EL1, this should not result in a
-functional change.
+Refactor the logic such that the header doesn't depend on anything from
+the C files. There should be no functional change as a result of this
+patch.
 
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
@@ -91,164 +92,152 @@ Cc: Mark Brown <broonie@kernel.org>
 Cc: Oliver Upton <oliver.upton@linux.dev>
 Cc: Will Deacon <will@kernel.org>
 ---
- arch/arm64/include/asm/kvm_emulate.h | 42 ----------------------------
- arch/arm64/kvm/hyp/nvhe/switch.c     | 35 ++++++++++++++++++++---
- arch/arm64/kvm/hyp/vhe/switch.c      | 12 +++++++-
- 3 files changed, 42 insertions(+), 47 deletions(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 30 +++++--------------------
+ arch/arm64/kvm/hyp/nvhe/switch.c        | 30 ++++++++++++++-----------
+ arch/arm64/kvm/hyp/vhe/switch.c         |  9 ++++----
+ 3 files changed, 27 insertions(+), 42 deletions(-)
 
-diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-index 47f2cf408eeda..78ec1ef2cfe82 100644
---- a/arch/arm64/include/asm/kvm_emulate.h
-+++ b/arch/arm64/include/asm/kvm_emulate.h
-@@ -605,48 +605,6 @@ static __always_inline void kvm_incr_pc(struct kvm_vcpu *vcpu)
- 					 __cpacr_to_cptr_set(clr, set));\
- 	} while (0)
+diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+index c5b8a11ac4f50..46df5c2eeaf57 100644
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -679,23 +679,16 @@ static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
  
--static __always_inline void kvm_write_cptr_el2(u64 val)
--{
--	if (has_vhe() || has_hvhe())
--		write_sysreg(val, cpacr_el1);
--	else
--		write_sysreg(val, cptr_el2);
--}
+ typedef bool (*exit_handler_fn)(struct kvm_vcpu *, u64 *);
+ 
+-static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu);
 -
--/* Resets the value of cptr_el2 when returning to the host. */
--static __always_inline void __kvm_reset_cptr_el2(struct kvm *kvm)
--{
--	u64 val;
--
--	if (has_vhe()) {
--		val = (CPACR_EL1_FPEN | CPACR_EL1_ZEN_EL1EN);
--		if (cpus_have_final_cap(ARM64_SME))
--			val |= CPACR_EL1_SMEN_EL1EN;
--	} else if (has_hvhe()) {
--		val = CPACR_EL1_FPEN;
--
--		if (!kvm_has_sve(kvm) || !guest_owns_fp_regs())
--			val |= CPACR_EL1_ZEN;
--		if (cpus_have_final_cap(ARM64_SME))
--			val |= CPACR_EL1_SMEN;
--	} else {
--		val = CPTR_NVHE_EL2_RES1;
--
--		if (kvm_has_sve(kvm) && guest_owns_fp_regs())
--			val |= CPTR_EL2_TZ;
--		if (!cpus_have_final_cap(ARM64_SME))
--			val |= CPTR_EL2_TSM;
--	}
--
--	kvm_write_cptr_el2(val);
--}
--
--#ifdef __KVM_NVHE_HYPERVISOR__
--#define kvm_reset_cptr_el2(v)	__kvm_reset_cptr_el2(kern_hyp_va((v)->kvm))
--#else
--#define kvm_reset_cptr_el2(v)	__kvm_reset_cptr_el2((v)->kvm)
--#endif
+-static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code);
 -
  /*
-  * Returns a 'sanitised' view of CPTR_EL2, translating from nVHE to the VHE
-  * format if E2H isn't set.
+  * Allow the hypervisor to handle the exit with an exit handler if it has one.
+  *
+  * Returns true if the hypervisor handled the exit, and control should go back
+  * to the guest, or false if it hasn't.
+  */
+-static inline bool kvm_hyp_handle_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
++				       const exit_handler_fn *handlers)
+ {
+-	const exit_handler_fn *handlers = kvm_get_exit_handler_array(vcpu);
+-	exit_handler_fn fn;
+-
+-	fn = handlers[kvm_vcpu_trap_get_class(vcpu)];
+-
++	exit_handler_fn fn = handlers[kvm_vcpu_trap_get_class(vcpu)];
+ 	if (fn)
+ 		return fn(vcpu, exit_code);
+ 
+@@ -725,20 +718,9 @@ static inline void synchronize_vcpu_pstate(struct kvm_vcpu *vcpu, u64 *exit_code
+  * the guest, false when we should restore the host state and return to the
+  * main run loop.
+  */
+-static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool __fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
++				      const exit_handler_fn *handlers)
+ {
+-	/*
+-	 * Save PSTATE early so that we can evaluate the vcpu mode
+-	 * early on.
+-	 */
+-	synchronize_vcpu_pstate(vcpu, exit_code);
+-
+-	/*
+-	 * Check whether we want to repaint the state one way or
+-	 * another.
+-	 */
+-	early_exit_filter(vcpu, exit_code);
+-
+ 	if (ARM_EXCEPTION_CODE(*exit_code) != ARM_EXCEPTION_IRQ)
+ 		vcpu->arch.fault.esr_el2 = read_sysreg_el2(SYS_ESR);
+ 
+@@ -768,7 +750,7 @@ static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 		goto exit;
+ 
+ 	/* Check if there's an exit handler and allow it to handle the exit. */
+-	if (kvm_hyp_handle_exit(vcpu, exit_code))
++	if (kvm_hyp_handle_exit(vcpu, exit_code, handlers))
+ 		goto guest;
+ exit:
+ 	/* Return to the host kernel and handle the exit */
 diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
-index 7a2d189176249..5d79f63a4f861 100644
+index 5d79f63a4f861..324b62329c10b 100644
 --- a/arch/arm64/kvm/hyp/nvhe/switch.c
 +++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -39,6 +39,9 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
+@@ -250,20 +250,22 @@ static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu)
+ 	return hyp_exit_handlers;
+ }
+ 
+-/*
+- * Some guests (e.g., protected VMs) are not be allowed to run in AArch32.
+- * The ARMv8 architecture does not give the hypervisor a mechanism to prevent a
+- * guest from dropping to AArch32 EL0 if implemented by the CPU. If the
+- * hypervisor spots a guest in such a state ensure it is handled, and don't
+- * trust the host to spot or fix it.  The check below is based on the one in
+- * kvm_arch_vcpu_ioctl_run().
+- *
+- * Returns false if the guest ran in AArch32 when it shouldn't have, and
+- * thus should exit to the host, or true if a the guest run loop can continue.
+- */
+-static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
  {
- 	u64 val = CPTR_EL2_TAM;	/* Same bit irrespective of E2H */
- 
-+	if (!guest_owns_fp_regs())
-+		__activate_traps_fpsimd32(vcpu);
+-	if (unlikely(vcpu_is_protected(vcpu) && vcpu_mode_is_32bit(vcpu))) {
++	const exit_handler_fn *handlers = kvm_get_exit_handler_array(vcpu);
 +
- 	if (has_hvhe()) {
- 		val |= CPACR_EL1_TTA;
- 
-@@ -47,6 +50,8 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
- 			if (vcpu_has_sve(vcpu))
- 				val |= CPACR_EL1_ZEN;
- 		}
++	synchronize_vcpu_pstate(vcpu, exit_code);
 +
-+		write_sysreg(val, cpacr_el1);
- 	} else {
- 		val |= CPTR_EL2_TTA | CPTR_NVHE_EL2_RES1;
- 
-@@ -61,12 +66,34 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
- 
- 		if (!guest_owns_fp_regs())
- 			val |= CPTR_EL2_TFP;
-+
-+		write_sysreg(val, cptr_el2);
++	/*
++	 * Some guests (e.g., protected VMs) are not be allowed to run in
++	 * AArch32.  The ARMv8 architecture does not give the hypervisor a
++	 * mechanism to prevent a guest from dropping to AArch32 EL0 if
++	 * implemented by the CPU. If the hypervisor spots a guest in such a
++	 * state ensure it is handled, and don't trust the host to spot or fix
++	 * it.  The check below is based on the one in
++	 * kvm_arch_vcpu_ioctl_run().
++	 */
++ 	if (unlikely(vcpu_is_protected(vcpu) && vcpu_mode_is_32bit(vcpu))) {
+ 		/*
+ 		 * As we have caught the guest red-handed, decide that it isn't
+ 		 * fit for purpose anymore by making the vcpu invalid. The VMM
+@@ -275,6 +277,8 @@ static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 		*exit_code &= BIT(ARM_EXIT_WITH_SERROR_BIT);
+ 		*exit_code |= ARM_EXCEPTION_IL;
  	}
-+}
- 
--	if (!guest_owns_fp_regs())
--		__activate_traps_fpsimd32(vcpu);
-+static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-+{
-+	struct kvm *kvm = kern_hyp_va(vcpu->kvm);
- 
--	kvm_write_cptr_el2(val);
-+	if (has_hvhe()) {
-+		u64 val = CPACR_EL1_FPEN;
 +
-+		if (!kvm_has_sve(kvm) || !guest_owns_fp_regs())
-+			val |= CPACR_EL1_ZEN;
-+		if (cpus_have_final_cap(ARM64_SME))
-+			val |= CPACR_EL1_SMEN;
-+
-+		write_sysreg(val, cpacr_el1);
-+	} else {
-+		u64 val = CPTR_NVHE_EL2_RES1;
-+
-+		if (kvm_has_sve(kvm) && guest_owns_fp_regs())
-+			val |= CPTR_EL2_TZ;
-+		if (!cpus_have_final_cap(ARM64_SME))
-+			val |= CPTR_EL2_TSM;
-+
-+		write_sysreg(val, cptr_el2);
-+	}
++	return __fixup_guest_exit(vcpu, exit_code, handlers);
  }
  
- static void __activate_traps(struct kvm_vcpu *vcpu)
-@@ -119,7 +146,7 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
- 
- 	write_sysreg(this_cpu_ptr(&kvm_init_params)->hcr_el2, hcr_el2);
- 
--	kvm_reset_cptr_el2(vcpu);
-+	__deactivate_cptr_traps(vcpu);
- 	write_sysreg(__kvm_hyp_host_vector, vbar_el2);
- }
- 
+ /* Switch to the guest for legacy non-VHE systems */
 diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index e8a07d4bb546b..4748b1947ffa0 100644
+index 4748b1947ffa0..c854d84458892 100644
 --- a/arch/arm64/kvm/hyp/vhe/switch.c
 +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -136,6 +136,16 @@ static void __activate_cptr_traps(struct kvm_vcpu *vcpu)
- 	write_sysreg(val, cpacr_el1);
+@@ -540,13 +540,10 @@ static const exit_handler_fn hyp_exit_handlers[] = {
+ 	[ESR_ELx_EC_MOPS]		= kvm_hyp_handle_mops,
+ };
+ 
+-static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu)
++static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+-	return hyp_exit_handlers;
+-}
++	synchronize_vcpu_pstate(vcpu, exit_code);
+ 
+-static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
+-{
+ 	/*
+ 	 * If we were in HYP context on entry, adjust the PSTATE view
+ 	 * so that the usual helpers work correctly.
+@@ -566,6 +563,8 @@ static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
+ 		*vcpu_cpsr(vcpu) &= ~(PSR_MODE_MASK | PSR_MODE32_BIT);
+ 		*vcpu_cpsr(vcpu) |= mode;
+ 	}
++
++	return __fixup_guest_exit(vcpu, exit_code, hyp_exit_handlers);
  }
  
-+static void __deactivate_cptr_traps(struct kvm_vcpu *vcpu)
-+{
-+	u64 val = CPACR_EL1_FPEN | CPACR_EL1_ZEN_EL1EN;
-+
-+	if (cpus_have_final_cap(ARM64_SME))
-+		val |= CPACR_EL1_SMEN_EL1EN;
-+
-+	write_sysreg(val, cpacr_el1);
-+}
-+
- static void __activate_traps(struct kvm_vcpu *vcpu)
- {
- 	u64 val;
-@@ -207,7 +217,7 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
- 	 */
- 	asm(ALTERNATIVE("nop", "isb", ARM64_WORKAROUND_SPECULATIVE_AT));
- 
--	kvm_reset_cptr_el2(vcpu);
-+	__deactivate_cptr_traps(vcpu);
- 
- 	if (!arm64_kernel_unmapped_at_el0())
- 		host_vectors = __this_cpu_read(this_cpu_vector);
+ /* Switch to the guest for VHE systems running in EL2 */
 -- 
 2.30.2
 
