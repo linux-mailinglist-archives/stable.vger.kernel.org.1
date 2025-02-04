@@ -1,110 +1,82 @@
-Return-Path: <stable+bounces-112244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0D0A27BD0
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 20:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB5AA27BF1
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 20:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8FD1886321
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 19:46:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1FF71887327
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 19:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A831F219A8F;
-	Tue,  4 Feb 2025 19:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39444218E81;
+	Tue,  4 Feb 2025 19:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3buDB5fG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ey6pHlNl"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694AD219A72;
-	Tue,  4 Feb 2025 19:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9947204C20
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 19:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738698374; cv=none; b=XlisrkMeFwjQpG6qDBNYz35v5sH3z4LzMt1P9WPNuIeR2mE8z7iWAju+SBC3w4fUZ8bb6QfBFuaEBLicmfQbJY+K4PEBWPqPjlfmxEgjv+L5EmicS/m84VpifwKMNoVGQ8/P7Y7YKEotsm3XM8JIKUUJdFMHotlcla2XOUa5+U0=
+	t=1738698527; cv=none; b=K+wFQBXtq4B+9wm+uU6Y8kBQzEgOfeOlV6DtVUI99bM35gSyIXNnNTFAwbItddL7myXmK9c1J9Qv8Yii3jP4pR0ToN5xeRC4X2C0S2fcnNgHFAtr6FL73Vvz3oV55gS+aVr1tELvyKlCrkoMFVsabjkzWW34v/i+HZ2W+UM2LXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738698374; c=relaxed/simple;
-	bh=r06Ys/KsS4X0Vszu9md9b4R25aJZJCzPxRdr0nQj3y4=;
+	s=arc-20240116; t=1738698527; c=relaxed/simple;
+	bh=+npczuPMPsPyuLEEYFKWeCezOZzWKhX4ilDAi6kvdFw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zk+/qAYjM25ITy4svkh/THwwL41UYLKlX6amnazRQyhvBfNM/BuBwr7pTXGIBRb41MNR2JJy8f9zFjnclyeKWsKDOBMmIao2sM7I4SUbOWa6ZIp0eoNcvg7ndiJxGPnF6Bjc1saq/p8+Gd1KjYfNEq98ngvJsbjQ3tUg/RmwMTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3buDB5fG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ouyIGRoRHutzUz66Y2cHQcMvqZJWhjqRJ8fahRg0FpI=; b=3buDB5fGFmO2PF9Z2zP1t/uh4G
-	hEEbKntHnP7+fUZcZt1zxz1yOjr7WwWBjGaq/sKNZ3hq+keI5t9mh5LkNKu7fN8lO0ebNgldJmmr1
-	7b21bZoJOjYuheY/s2UaY74VMsQjY9rWxUeVbKatxBifYOayRrSN4s/PMbD6q1YeEbng=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tfOrm-00AxD1-Vs; Tue, 04 Feb 2025 20:45:50 +0100
-Date: Tue, 4 Feb 2025 20:45:50 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Chen-Yu Tsai <wens@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Steven Price <steven.price@arm.com>, Chen-Yu Tsai <wens@csie.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH netdev] net: stmmac: dwmac-rk: Provide FIFO sizes for
- DWMAC 1000
-Message-ID: <ed89be56-b616-4a14-aab2-294fddd89dae@lunn.ch>
-References: <20250204161359.3335241-1-wens@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZiNIDj25qWuA8d93xhtGn3ua/YqMCCkb2cL4wkeza7uUToilfHDcOF6pe57OM0rvsddB+P4X1aUj/xoal5XC6pbG0Vytzr4cbPP486ocz20Jz9d6WvgWYMsmdcZHdcIYdJc5jC+5ewaKGX54p7juB6ckByHMQc576bJBxGNmDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ey6pHlNl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226D4C4CEDF;
+	Tue,  4 Feb 2025 19:48:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738698526;
+	bh=+npczuPMPsPyuLEEYFKWeCezOZzWKhX4ilDAi6kvdFw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ey6pHlNlvfnMTYjIs4Wk9FaG0VhZrr2ByhhT5dOzk43ydxnVx0m/e3SjU5tEzurkj
+	 Sx8kriJ0nXcDHthzNw2F3g3gRvqZT2eMyeonAVZFB2UoYLBGhRpxZIvan9kKONYRlX
+	 85NNhVm9KpH2auNz7BJIUfOyBHGY1a457mN/yNYiSXr3ffTzFtFejJJ/2eCIq2GK7/
+	 N1dJzLVc9NaX4LDOc3zhVna0pfG+5904wPaRLe3wOyOyq+J/KEtkOljem/wpujeMzP
+	 5oSAdp94/lZS++vRCxSswy+rFP1TAjisKoBvzT0l5fA75wCT37y1a4FfOgSCkkaXtd
+	 FEXp79ZSL9SFw==
+Date: Tue, 4 Feb 2025 14:48:41 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Paul Kramme <kramme@digitalmanufaktur.com>
+Cc: stable@vger.kernel.org, chengming.zhou@linux.dev,
+	Bendix Bartsch <bartsch@digitalmanufaktur.com>
+Subject: Re: v6.12 backport for psi: Fix race when task wakes up before
+ psi_sched_switch() adjusts flags
+Message-ID: <Z6JvGaA7tB3D9Bhb@lappy>
+References: <CAHcPAXT=6GhKo4CnkveSm_X+EQXSz-GCRtigi5aFRscASSTFXw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250204161359.3335241-1-wens@kernel.org>
+In-Reply-To: <CAHcPAXT=6GhKo4CnkveSm_X+EQXSz-GCRtigi5aFRscASSTFXw@mail.gmail.com>
 
-On Wed, Feb 05, 2025 at 12:13:59AM +0800, Chen-Yu Tsai wrote:
-> From: Chen-Yu Tsai <wens@csie.org>
-> 
-> The DWMAC 1000 DMA capabilities register does not provide actual
-> FIFO sizes, nor does the driver really care. If they are not
-> provided via some other means, the driver will work fine, only
-> disallowing changing the MTU setting.
-> 
-> The recent commit 8865d22656b4 ("net: stmmac: Specify hardware
-> capability value when FIFO size isn't specified") changed this by
-> requiring the FIFO sizes to be provided, breaking devices that were
-> working just fine.
-> 
-> Provide the FIFO sizes through the driver's platform data, to not
-> only fix the breakage, but also enable MTU changes. The FIFO sizes
-> are confirmed to be the same across RK3288, RK3328, RK3399 and PX30,
-> based on their respective manuals. It is likely that Rockchip
-> synthesized their DWMAC 1000 with the same parameters on all their
-> chips that have it.
-> 
-> Fixes: eaf4fac47807 ("net: stmmac: Do not accept invalid MTU values")
-> Fixes: 8865d22656b4 ("net: stmmac: Specify hardware capability value when FIFO size isn't specified")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-> ---
-> The reason for stable inclusion is not to fix the device breakage
-> (which only broke in v6.14-rc1), but to provide the values so that MTU
-> changes can work in older kernels.
+On Tue, Feb 04, 2025 at 04:31:44PM +0100, Paul Kramme wrote:
+>Hello,
+>
+>we are seeing broken CPU PSI metrics across our infrastructure running
+>6.12, with messages like "psi: inconsistent task state!
+>task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4" in dmesg. I
+>believe commit 7d9da040575b343085287686fa902a5b2d43c7ca might fix this
+>issue.
+>
+>psi: Fix race when task wakes up before psi_sched_switch() adjusts flags
 
-Allowing the MTU to be changed is probably classed as a new feature,
-not bug fix.
+Hey Paul,
 
-I _think_ this also allows flow control, which again is a new feature.
+The commit you've mentioned is already queued up, so it should be there
+when the next release happens.
 
-Please submit to net-next.
-
-	Andrew
+-- 
+Thanks,
+Sasha
 
