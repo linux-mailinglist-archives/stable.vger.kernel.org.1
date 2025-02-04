@@ -1,169 +1,108 @@
-Return-Path: <stable+bounces-112247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9746A27CEE
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 21:51:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123F1A27D44
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 22:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63DA0166202
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 20:51:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EBFF164245
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 21:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D08219E99;
-	Tue,  4 Feb 2025 20:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0116A21A453;
+	Tue,  4 Feb 2025 21:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Qe4uvLXe"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t+Sjb0qN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-80.smtpout.orange.fr [80.12.242.80])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D3E19E83E;
-	Tue,  4 Feb 2025 20:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0276725A62C
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 21:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738702261; cv=none; b=aQ4S78/9D8KZlWQNPLHYdfy9WMx97JSbj4rnBaRgogMiB/CTY9mriWgE1+Q4n6zsQjMTmkLcrzyoHiPtQWbf4GQyAReFcvokz0h7Gl7BMtEi/06Js7iUeHAA3wXiM22SzCzuUo/JPtqewJp2MWJccVXD1gKVAsqLRWaOt6WAj84=
+	t=1738704298; cv=none; b=ZRoZQQHWFDpV5sh+PggbGHsS/X75Vy8XDCvdgPqPfrfbYd2X817+fBFWj3aJoE46GPhfjNzLwzVY3GuJ5qfYqSts8/YrT/SyqdutYjqMjJog1Qw6vEFOE4rK9pjHiZPpJqppWQlvrP4BOI9PBDTUtPfVBkj+kOaeNWKGma2D0fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738702261; c=relaxed/simple;
-	bh=U5vN9NaJf/Hh/3ZK/M/vl+ih1hJO4g9FzWxhvyjuyac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qIhdPdbdsv83l82MAWkuelAqzig/b7pHKqGP/65kmc5RyDoZf23CEmxGvBJD9jeMWB/qT1/2YP/YlSacJS9JGoGDVuUydpOax86avf+VB9k/A5r4AxdQj9ykYtMSv+vT2FXIzsNamgiFFgTjZXEucQWXVlyHpOY8RJtBQfeMR5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Qe4uvLXe; arc=none smtp.client-ip=80.12.242.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id fPsbtpZU4inFifPsfthBqw; Tue, 04 Feb 2025 21:50:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1738702250;
-	bh=cEJrjrt2iVAFpYW/0YZX/gP7F3sDEkngN20jzc4pxzM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Qe4uvLXe/cappcqsmC5mjcdHulH1WxgPsw5mlTZSD/zfbLsys0bzGC++t2M1c7mDx
-	 LuDFpqT1XZnALmaGfAeYLbc2W54DayF/x9SCy/yzHI/Tlos79eHLIUmM/JmVehzjrF
-	 JTex7vKvjBN9TvgRfp82uRVoZdb55iBZwJM80cxZFpVJsQ5+99oBYcN/yEqmvROpit
-	 bE0CrkRZ8EQtwAq8rirHrkrwnM0VvUMkItuSoJXCBx95vb2xFAfqO/+Mi/F80lLpcu
-	 SNTY7s5s3E5MG9booYpPPLSKEPy8Jcli/GoVhIDmoygRhbTw4Zweg+6LLeHp4f1u4D
-	 XplwbKpPx2H4w==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Tue, 04 Feb 2025 21:50:50 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
-Date: Tue, 4 Feb 2025 21:50:45 +0100
+	s=arc-20240116; t=1738704298; c=relaxed/simple;
+	bh=2AWpnrYrNHj2sP7cC9h0IfT7AMwOkKkVEyH205HhNSQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AIteaItBzD6IMjT1qTnWmlgLeeFj6M1DS7sWGyIKaniATmJEWzVw4hqkKTZLkiog2o1u5yHrS2jC96/KKu9D71vRvYDxi6OZaKFhpelqxOHI/pEjNJxNEn0nK+Iclx7di6vYHEq1AuMNUFvvIehll442Ur4UHgn2JOSr1n5YeGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t+Sjb0qN; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5401e6efffcso6448738e87.3
+        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 13:24:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738704295; x=1739309095; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2AWpnrYrNHj2sP7cC9h0IfT7AMwOkKkVEyH205HhNSQ=;
+        b=t+Sjb0qN5uBpNHeGjF2wL2uiZ3pldfsPbhq0iN5thd88N9f42Gw6ttUzFDJ9CY6fUj
+         uQnrXqIZFcY3c1XgxtLVfmeckXBDHsAVbsqjSCHS48BZM0/BzaLizdFCIEvVb2ADX10k
+         SqBqY/o1LiQB6wPNZYaNr8TDkflMmbXapNLMd3jTlmxHfcIpy7w6pd27ETnGhWh653Kf
+         wuCm7CPqQNl/9sji9locGZ8aL05hsaUwBM7QxqET7r4JgGSYyns5Euf+mrSvurfcxnMU
+         7pkWYI2DyKGbAQ7fG7gVF5O6mBLsBX3SDKsuA2WuOjCaultaZrQy9s0XtYFCRpoJA3qd
+         5Bvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738704295; x=1739309095;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2AWpnrYrNHj2sP7cC9h0IfT7AMwOkKkVEyH205HhNSQ=;
+        b=TqEhK0RRNvVjVvLGSAyHAX02T1uL7IIC1trFJ+/kXHGgsoQuACfTdWMVknxJRH4iPw
+         Xug7BEdfWihW7Sgh+/JhOpoq1GaZM3sFyDfOku7wiB7INyReLFL4H5bvd8yEmCEtl+qt
+         EMziayfWfuykfhFSUAVuN+a1Uk6P+i4JZlT2qa+5uE49oVQ8VrO9VbjOQwDKrseejWQ2
+         mKCvxN7VcjVsjS8Um6TDMJ9Gt16RKWKoQuNxUoQX1lTiujDTftx9eEyCLlQlvrNgLWHe
+         7FE6SGXpUTHwNpV6FY4j1aTIWhdA3k5Op1l3at3xGRbG05kUJV0Tg2Qi8RCHaqll1a+B
+         g5sA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPRkdD2T4xp+u5OjbmdQqMnUSjsWRS4UB1iltNiskrpj/Mk5gXtXKiwKG1MCIHSruTYWX9nNM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbaZHVkbKGStB9is9nsg4YcJ3gDTFlaNRtZKQReooqzHwSAXGO
+	Gvl8GCJjVfFc8BT5SFgrUu6N3Bs/GaQafb49/giFc9ELNHMGYNbJOvhIXPeRQN2NBo1cjWyXM79
+	JeQRYa6Qd9LLFNTbEOP5LGUT9eI0uVsbLtEfO
+X-Gm-Gg: ASbGncsQnR+8qImXJZ9OcmPPH6KNaTKl2DwnoavPEJZjw1QH75TvLt2FYI5vcoH4V9Q
+	6S+9lY0RZGhxTKHeuOEs1QZVH3cBH6uVkFzCPNMhC6gLl+ykhQ2kOOdiuBH0RrSRnE3nZcgYfhP
+	+PjhXGYlyVDr0oXbrIUb7/ErEj7Q==
+X-Google-Smtp-Source: AGHT+IGd4aAXqz/1BqDq/4Q+rkC64LjvxH1f4R23RO+wjwMcvjRycIEs4NTLvG0m93uM0MeMy+OUKcL2M6QJQUrjNRo=
+X-Received: by 2002:a05:6512:401b:b0:540:2257:22ab with SMTP id
+ 2adb3069b0e04-54405a2e152mr85528e87.27.1738704294770; Tue, 04 Feb 2025
+ 13:24:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mtd: Add check and kfree() for kcalloc()
-To: Jiri Slaby <jirislaby@kernel.org>,
- Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: gmpy.liaowx@gmail.com, kees@kernel.org, linux-kernel@vger.kernel.org,
- linux-mtd@lists.infradead.org, miquel.raynal@bootlin.com, richard@nod.at,
- vigneshr@ti.com, stable@vger.kernel.org
-References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
- <20250204023323.14213-1-jiashengjiangcool@gmail.com>
- <e41d9378-e5e5-478d-bead-aa50a9f79d4d@wanadoo.fr>
- <48ad8f05-a90b-499d-9e73-8e5ff032824a@kernel.org>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <48ad8f05-a90b-499d-9e73-8e5ff032824a@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
+ <2025020118-flap-sandblast-6a48@gregkh> <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
+ <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
+ <2025020432-stiffen-expire-30bd@gregkh> <2025020423-paycheck-strength-75ff@gregkh>
+In-Reply-To: <2025020423-paycheck-strength-75ff@gregkh>
+From: Daniel Rosenberg <drosen@google.com>
+Date: Tue, 4 Feb 2025 13:24:43 -0800
+X-Gm-Features: AWEUYZkc-57RQWkDiyDqyjPM_4WcNvEH9GJRlTVIpP7spqK4QyDnjgw56aZgwQ0
+Message-ID: <CA+PiJmS2tgroaF-BYTzUbSUrwCwSKN4XYgtr-jX99cbF0QveQg@mail.gmail.com>
+Subject: Re: f2fs: Introduce linear search for dentries
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Todd Kjos <tkjos@google.com>, stable <stable@vger.kernel.org>, 
+	Android Kernel Team <kernel-team@android.com>, "Theodore Ts'o" <tytso@mit.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le 04/02/2025 à 07:36, Jiri Slaby a écrit :
-> On 04. 02. 25, 7:17, Christophe JAILLET wrote:
->> Le 04/02/2025 à 03:33, Jiasheng Jiang a écrit :
->>> Add a check for kcalloc() to ensure successful allocation.
->>> Moreover, add kfree() in the error-handling path to prevent memory 
->>> leaks.
->>>
->>> Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
->>> Cc: <stable@vger.kernel.org> # v5.10+
->>> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
->>> ---
->>> Changelog:
->>>
->>> v1 -> v2:
->>>
->>> 1. Remove redundant logging.
->>> 2. Add kfree() in the error-handling path.
->>> ---
->>>   drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
->>>   1 file changed, 18 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
->>> index 7ac8ac901306..2d8e330dd215 100644
->>> --- a/drivers/mtd/mtdpstore.c
->>> +++ b/drivers/mtd/mtdpstore.c
->>> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct 
->>> mtd_info *mtd)
->>>       longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
->>>       cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
->>> +    if (!cxt->rmmap)
->>> +        goto end;
->>
->> Nitpick: Could be a direct return.
->>
->>> +
->>>       cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
->>> +    if (!cxt->usedmap)
->>> +        goto free_rmmap;
->>>       longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
->>>       cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
->>> +    if (!cxt->badmap)
->>> +        goto free_usedmap;
->>>       /* just support dmesg right now */
->>>       cxt->dev.flags = PSTORE_FLAGS_DMESG;
->>> @@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct 
->>> mtd_info *mtd)
->>>       if (ret) {
->>>           dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
->>>                   mtd->index);
->>> -        return;
->>> +        goto free_badmap;
->>>       }
->>>       cxt->mtd = mtd;
->>>       dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
->>> +    goto end;
->>
->> Mater of taste, but I think that having an explicit return here would 
->> be clearer that a goto end;
-> 
-> Yes, drop the whole end.
-> 
->>> +free_badmap:
->>> +    kfree(cxt->badmap);
->>> +free_usedmap:
->>> +    kfree(cxt->usedmap);
->>> +free_rmmap:
->>> +    kfree(cxt->rmmap);
->>
->> I think that in all these paths, you should also have
->>      cxt->XXXmap = NULL;
->> after the kfree().
->>
->> otherwise when mtdpstore_notify_remove() is called, you could have a 
->> double free.
-> 
-> Right, and this is already a problem for failing 
-> register_pstore_device() in _add() -- there is unconditional 
-> unregister_pstore_device() in _remove(). Should _remove() check cxt->mtd 
-> first?
-
-Not sure it is needed.
-IIUC, [1] would not match in this case, because [2] would not have been 
-executed. Agreed?
-
-CJ
-
-
-[1]: https://elixir.bootlin.com/linux/v6.13/source/fs/pstore/blk.c#L169
-[2]: https://elixir.bootlin.com/linux/v6.13/source/fs/pstore/blk.c#L141
-
-> 
+On Tue, Feb 4, 2025 at 3:33=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> It also does not apply cleanly to 5.4.y and 5.10.y so can we get
+> backports for that sent here?
+>
 > thanks,
+>
+> greg k-h
 
+So, looking at that branch, the conflict involves the patch that
+introduces casefolding and encryption, which is the main case that
+breaks this. Without encrypted casefolding, fsck is able to correct
+the issue. So it looks like that patch is not needed on 5.4.y and
+5.10.y
 
