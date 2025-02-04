@@ -1,141 +1,119 @@
-Return-Path: <stable+bounces-112122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420DAA26D7B
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:45:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD4DA26DAC
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 09:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1920818846CF
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 08:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA369164A65
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 08:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB304206F1B;
-	Tue,  4 Feb 2025 08:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04394207A27;
+	Tue,  4 Feb 2025 08:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JLwTp8tv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G3NVP4Bk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8091213D8A4;
-	Tue,  4 Feb 2025 08:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CC920765F
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 08:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738658735; cv=none; b=ToIVBylwHOlSuR9GQjhJHf5qb4UroI5phPhUKr1edWjn5pjUweB1n+5osqWYh7rZNHYfw0fU5kD50InKbtMWw7C+DOFxQTFKnuRnGumdJa+obSU0PpogVuRMAQNcy0Gx+giWgDD5JxSl4suCYkz65DUteWNcq9t1dnsoOByQUNo=
+	t=1738659058; cv=none; b=bfL5HAJ7dOMEO1tXDv//q9z70i6fpTt5ZiEBFGK36knHSEPcFai/blDG/sBOiS5OFDRxLRk+iOvPo2IZudpZFwbJhEn+qiMPRhg1GGAnU5eZmM6yFAHqthIoChrHxBDP2aBqHIuRpgdR3zxv0sSaOJ7CxEk1/LWWKCmNCp0WtkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738658735; c=relaxed/simple;
-	bh=SPpXPUpwk/W57k2iVLstC4U5AtSCuka53j4S57VXJHE=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Qm0c35+Upv1KMTDunArDtNoTOmOZTPRBS5W3tWTBrLa+RMGJQjgCa4sZ5iaNIXUGJNg+FTDzGePHGo9c4oH1IfZIWSjcOYpjhvvskXeQsSYrb0bAbA2tEnzRObN14agEsg0ON/PG+eHgR38cqbZDzyTCqwngSjMGEWo0Db7VeVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JLwTp8tv; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738658734; x=1770194734;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=SPpXPUpwk/W57k2iVLstC4U5AtSCuka53j4S57VXJHE=;
-  b=JLwTp8tvYrSjmPn02qPDyUfeqkG3AHo5H3kaj9Y15oyvJWTsGUVV6ICz
-   JLy4Hb4mTL3B8hPHtHe2Cv5Z941cKoSoMFdO8R2nqFZ/IJv+80UK0jEal
-   44aWyrDwUlUrFjAmhU2aYKsE1lrbrQnxMHhV07VB46S8rRFS2Ftg9b6Mb
-   MlWEAFz0514JhXTSqar0CzorR1dsAovvTekzXQdPDkLhu7v1vN228EKYW
-   XIfLTnP1j9uUNy2232VwLyz/TvzLlbcTS+v25GUkbMAwGlm9oNTfjOr8Z
-   2AngqlPNY65kMjoY39AuX6EbJbY6mxQx5InsY9TSOKI4r+bS16T2iD5+G
-   w==;
-X-CSE-ConnectionGUID: fvVKYzzIQLWo67Vh2dXdPA==
-X-CSE-MsgGUID: /GD3MWSURGW4RwI3d5Nq6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11335"; a="42923798"
-X-IronPort-AV: E=Sophos;i="6.13,258,1732608000"; 
-   d="scan'208";a="42923798"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 00:45:33 -0800
-X-CSE-ConnectionGUID: nziqMhAiRK+uY5idikq9Qw==
-X-CSE-MsgGUID: HdCMd7riT1SMFbw/Ka/uGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="114576159"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.75])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 00:45:31 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 4 Feb 2025 10:45:27 +0200 (EET)
-To: Ma Ke <make24@iscas.ac.cn>
-cc: bhelgaas@google.com, rafael.j.wysocki@intel.com, yinghai@kernel.org, 
-    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v3] PCI: fix reference leak in pci_alloc_child_bus()
-In-Reply-To: <20250202062357.872971-1-make24@iscas.ac.cn>
-Message-ID: <c34742e8-cc03-49a9-386e-afb4d14a68b1@linux.intel.com>
-References: <20250202062357.872971-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1738659058; c=relaxed/simple;
+	bh=kqmMsjbCNiclb8j5uBxumVvyp3UHeWEC2xIcNL1SHNE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=N1bC72L9NZ7rgt5C2D5tKH3Y444XBSkFDoX1oR+7cDRgSxCKWAAC/1SGVtrWPTHR5MEDVWgUVsJsnZBQhhTrAzkGL5ljXk/KyY45SFtysVeB0sFTe/j7jJ7Q1pLK+uMsL79wZdvtnlhS4VX1kwzNqGAQFBNpD0jDSrgK3nYdBGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G3NVP4Bk; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38da7198064so9537f8f.0
+        for <stable@vger.kernel.org>; Tue, 04 Feb 2025 00:50:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738659054; x=1739263854; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9SL4WrTFt01P5kb4nbA+mR/wAIuzdlMsYyVAk52AYWQ=;
+        b=G3NVP4Bk/vFi4d9MZxtyx+0yInbv5O3cVWBtJvGMBI2MhNo6C17PteyJSGezzqNbbi
+         U9YtRzwE8e8ZTjFO6b4mSSDKMbA1wtoJzJ9duJ3QXmaxKfiDICxedOeLp4jfFSycNJ5e
+         kn6bDBH65MSFzP8YZ01i0dBsxtt9dkZIdSnM7HZiWXSCs/QZIsFlOTRmVtE7We7v4xZJ
+         /SzYjbG212KorzFCV1ZHHJUUlBIvQ4sPE42Ie47Px8q1AXkxjNikwwv/oFSpy2NHTITT
+         pAUHKvqgHQ7qnP8XcVH6ggC9tQ3jWFAeBhcmEcsQArMsm4Wju/jZ9dEuxLcxgyLtO7rj
+         gPHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738659054; x=1739263854;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9SL4WrTFt01P5kb4nbA+mR/wAIuzdlMsYyVAk52AYWQ=;
+        b=K+edMn1jNMWtctcuz7AQsjqDYDXpKYFr18fO19U4nF5OQdGePWUTXlMKx8Xvz+kwL/
+         RMDPIYri30xCDq/hwCujPFwF6m+RC3qHv33NLjtgtk4xoklfVqtxhhhCkdaQzZe8YOHU
+         unKta6JaDF+DhE7rziQuFcRcTSlUEcjF+OBTIwp+IgMyMyflH0sQJuNX+eacBy2Zw0rI
+         er3CpgR3pu6hw4k+7KIgSiYvBEmsrtyYI6bM9vNQ+MfypmZ/S+BO0nDW/BNYqRt42rK0
+         sNAI5fFkpTzA1yLIbWJyrhqK4SOO3hvQpiH1KBFCAuiEIGVrQfKuQ382vrNt0CjpVN/2
+         fmbg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1v+7/8KcZsUVslOlvesUl0tUcvYrc2aTfiZdOW1l243X2GCs2x/dxMjkjJRemoDqLQnb4Khc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/1hDTCehe/7mCwQcrchUmH4kPoghgq6a7Pp7V2NGmT/WolYnL
+	id9GoVD4dBUe1slyL2QgutiLKMitH0kTlAolWNSDeiRBQk5KLOZshj77iEypNbg=
+X-Gm-Gg: ASbGncuFMPgPUKzV5wkd7Ky0ow/l5rHPhE/GKUjwpavwCzbLfNwggIDJyi0iW2OtCUf
+	RcINTGFchRzkBEun0O3zpJaPKYiSZUiFtquzDTDCvuatBXOa8vh12trw+nMSe1xHApkgtGcUDXw
+	PocL3QNKXTiT75JYy0QNabkr0OifNPa8gKf8oiHstDj1moDr/eS7x8etDdVIaAqLPcL0svjuOAD
+	l/b2x+faIG51zL4oV/a5pSvTa2eoMWfhlSXNyRiu6XBkL5f1O4DFOqbyhiZ9q2XQdpgus5fpE0j
+	y/rbnwS53gEJ9DTakRi7Bl5iRT7StUY=
+X-Google-Smtp-Source: AGHT+IEiM4BEwyj9kJjGaATYMGTVdtTyQJ6Gai0nJrlUHfZWE9a3z3Pca5QvAuf1g0u3xA6mvsDd9A==
+X-Received: by 2002:a05:6000:2a9:b0:38a:69a9:af95 with SMTP id ffacd0b85a97d-38da4e1c7a1mr784380f8f.7.1738659054614;
+        Tue, 04 Feb 2025 00:50:54 -0800 (PST)
+Received: from [127.0.1.1] ([178.197.218.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38daf27bbf5sm503066f8f.48.2025.02.04.00.50.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 00:50:54 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+ Peter Griffin <peter.griffin@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ tudor.ambarus@linaro.org, andre.draszik@linaro.org, kernel-team@android.com, 
+ willmcvicker@google.com, stable@vger.kernel.org
+In-Reply-To: <20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org>
+References: <20250106-contrib-pg-pinctrl_gsacore_disable-v1-1-d3fc88a48aed@linaro.org>
+Subject: Re: [PATCH] arm64: dts: exynos: gs101: disable pinctrl_gsacore
+ node
+Message-Id: <173865905338.26600.2847324274342938346.b4-ty@linaro.org>
+Date: Tue, 04 Feb 2025 09:50:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1449886408-1738658727=:1609"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-1449886408-1738658727=:1609
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+On Mon, 06 Jan 2025 14:57:46 +0000, Peter Griffin wrote:
+> gsacore registers are not accessible from normal world.
+> 
+> Disable this node, so that the suspend/resume callbacks
+> in the pinctrl driver don't cause a Serror attempting to
+> access the registers.
+> 
+> 
+> [...]
 
-On Sun, 2 Feb 2025, Ma Ke wrote:
+Applied, thanks!
 
-> When device_register(&child->dev) failed, we should call put_device()
-> to explicitly release child->dev.
->=20
-> As comment of device_register() says, 'NOTE: _Never_ directly free
-> @dev after calling this function, even if it returned an error! Always
-> use put_device() to give up the reference initialized in this function
-> instead.'
->=20
-> Found by code review.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possibl=
-e")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
-> Changes in v3:
-> - modified the description as suggestions.
-> Changes in v2:
-> - added the bug description about the comment of device_add();
-> - fixed the patch as suggestions;
-> - added Cc and Fixes table.
-> ---
->  drivers/pci/probe.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 2e81ab0f5a25..51b78fcda4eb 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1174,7 +1174,10 @@ static struct pci_bus *pci_alloc_child_bus(struct =
-pci_bus *parent,
->  add_dev:
->  =09pci_set_bus_msi_domain(child);
->  =09ret =3D device_register(&child->dev);
-> -=09WARN_ON(ret < 0);
-> +=09if (WARN_ON(ret < 0)) {
-> +=09=09put_device(&child->dev);
-> +=09=09return NULL;
-> +=09}
-> =20
->  =09pcibios_add_bus(child);
+[1/1] arm64: dts: exynos: gs101: disable pinctrl_gsacore node
+      https://git.kernel.org/krzk/linux/c/168e24966f10ff635b0ec9728aa71833bf850ee5
 
-Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Unrelated to this fix, IMO that WARN_ON() is overkill and I'm skeptical=20
-that printing a stack trace on a failure in device_register() is helpful.
-IMO, a simple error print would suffice to tell something (unexpectedly)
-went wrong here.
-
---=20
- i.
-
---8323328-1449886408-1738658727=:1609--
 
