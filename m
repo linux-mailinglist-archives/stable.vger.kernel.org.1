@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-112153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC479A273EE
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:05:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A77A273F3
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 15:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 261333A8CB9
-	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:03:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A09F3A9998
+	for <lists+stable@lfdr.de>; Tue,  4 Feb 2025 14:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A6B210187;
-	Tue,  4 Feb 2025 13:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE765212B18;
+	Tue,  4 Feb 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQYuRjk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIw+4xYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFD220E002;
-	Tue,  4 Feb 2025 13:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA6D20E002
+	for <stable@vger.kernel.org>; Tue,  4 Feb 2025 13:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738677309; cv=none; b=HgeSyApQ1Fp2qQr3D6bntV1rIm5ma4LgXxacZRUImoiRjhZ4yNvbR/SiSpVcKk938+UZYlznY/T6TFy0M+y9TsPqQfcAIUpUA/Yk1TmQ92JLPc7ZmEEZwsda8j3Po3iqPyFTNPmJz/Oph9DLE3SXr3zxyGrre1yRZyBcKZfwNwI=
+	t=1738677372; cv=none; b=dL1kW15CpQWNcPaw4h4L0CRBRiUZ73tBOj+gLmro1PeurjecsdkSgOKzWlrJStEYAxYT6B8axEOPgpAORKpALmXWZtgVZ7xrLdTVvqk9oStvXcSJPkTv5zLc/RITrGRpZKOlndN51ADbGeG0waeAL+tPWwSPjyC4lFLeuLw5y1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738677309; c=relaxed/simple;
-	bh=bd7dktu3lwota/rkAuZogPvP7RR/w9nKbHqkhwdTIVI=;
+	s=arc-20240116; t=1738677372; c=relaxed/simple;
+	bh=fK8LLug+ADuSjXiddN9JPwyBh+631yx7nHlXX9YPU4A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PcNBx5d8CyGF2cV2D9m4j23VcGTiA3EwTrKbDeRyXn7n55dlejWpx7y+dsTrzCzGy3I/v7EM5eh0fO5gVA+CZe7DihmipwTf4Jkg33wT0WXq5Cg5LM5uqXAgvPh3sksn21ovpIwMmrH1LVSQjTxtKxexu+tmCXrsymDwfqNVJOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQYuRjk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73AFC4CEDF;
-	Tue,  4 Feb 2025 13:55:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cZNIwiwqSD2itq2GEI9LFB7BGEz936YdNotEaydwUslV8uRO+/Xnylh0/q0R2H5GxFm/8zkY+kLlG7Vy9sJK1/QCLGyXxptucyS+OwOpetyItSpEduquphFV4o0aS7uYeBu8Ib/a/umyMSm0JWoS3w3VmAwbI4TRFPA5flYSCJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIw+4xYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C35C4CEDF;
+	Tue,  4 Feb 2025 13:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738677308;
-	bh=bd7dktu3lwota/rkAuZogPvP7RR/w9nKbHqkhwdTIVI=;
+	s=korg; t=1738677372;
+	bh=fK8LLug+ADuSjXiddN9JPwyBh+631yx7nHlXX9YPU4A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BQYuRjk2BodxaHFV3iv8lnoUrHSHCSFNB6XGuf4rskMVpS9v2de1ySCdeuI/sfA7O
-	 rTCuEHGrK75yhJz+aTnA5HkQqOmRUW5CPUMQm3mYZE4tdUHdX+wtREvPq/TcbWe/Vf
-	 +wtQud+VKks546Noskygdoixsxi9IZFZWGfL0dok=
-Date: Tue, 4 Feb 2025 14:55:05 +0100
+	b=oIw+4xYF7a5aHikECX4OcXammM1MvE9lfWUUDu2oEkRjKvxNgQmoNbnvrLnzNoMHk
+	 lsIz6xAriN4IB1oPmmzNpY5z/od5lc0uc11vEwc1i0puPzh65UbFiZQ4Qk06vJv2f7
+	 MGMx04WpDGDkvN83b78oC71khjBjs7B9J0ZWqJ8o=
+Date: Tue, 4 Feb 2025 14:56:08 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: kpm@linux-foundation.org, shuah@kernel.org, kevin.brodsky@arm.com,
-	stable@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH Linux-6.12.y 1/1] selftests/mm: build with -O2
-Message-ID: <2025020444-usable-facelift-3d78@gregkh>
-References: <20250203233342.51041-1-yifei.l.liu@oracle.com>
+To: Hagar Hemdan <hagarhem@amazon.com>
+Cc: stable@vger.kernel.org, Puranjay Mohan <pjy@amazon.com>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Anuj Gupta <anuj20.g@samsung.com>, Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH 6.1] nvme: fix metadata handling in nvme-passthrough
+Message-ID: <2025020400-henna-diocese-80c7@gregkh>
+References: <20250203082501.28771-1-hagarhem@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,39 +55,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250203233342.51041-1-yifei.l.liu@oracle.com>
+In-Reply-To: <20250203082501.28771-1-hagarhem@amazon.com>
 
-On Mon, Feb 03, 2025 at 03:33:42PM -0800, Yifei Liu wrote:
-> From: Kevin Brodsky <kevin.brodsky@arm.com>
+On Mon, Feb 03, 2025 at 08:24:58AM +0000, Hagar Hemdan wrote:
+> From: Puranjay Mohan <pjy@amazon.com>
 > 
-> [ Upstream commit 46036188ea1f5266df23a6149dea0df1c77cd1c7 ]
+> [ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
 > 
-> The mm kselftests are currently built with no optimisation (-O0).  It's
-> unclear why, and besides being obviously suboptimal, this also prevents
-> the pkeys tests from working as intended.  Let's build all the tests with
-> -O2.
+> On an NVMe namespace that does not support metadata, it is possible to
+> send an IO command with metadata through io-passthru. This allows issues
+> like [1] to trigger in the completion code path.
+> nvme_map_user_request() doesn't check if the namespace supports metadata
+> before sending it forward. It also allows admin commands with metadata to
+> be processed as it ignores metadata when bdev == NULL and may report
+> success.
 > 
-> [kevin.brodsky@arm.com: silence unused-result warnings]
->   Link: https://lkml.kernel.org/r/20250107170110.2819685-1-kevin.brodsky@arm.com
-> Link: https://lkml.kernel.org/r/20241209095019.1732120-6-kevin.brodsky@arm.com
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Joey Gouly <joey.gouly@arm.com>
-> Cc: Keith Lucas <keith.lucas@oracle.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 46036188ea1f5266df23a6149dea0df1c77cd1c7)
-> [Yifei: This commit also fix the failure of pkey_sighandler_tests_64,
-> which is also in linux-6.12.y, thus backport this commit]
+> Reject an IO command with metadata when the NVMe namespace doesn't
+> support it and reject an admin command if it has metadata.
+> 
+> [1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
+> 
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+> Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+> Signed-off-by: Keith Busch <kbusch@kernel.org>
+> [ Minor changes to make it work on 6.1 ]
+> Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+> Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+> ---
+> Resend as all stables contain the fix except 6.1.
 
-You also need to provide a 6.13.y version, right?
-
-Please resend both and we will be glad to queue them up.
-
-thanks,
+Good catch, thanks!
 
 greg k-h
 
