@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0892A28E92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12127A28E05
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB51B3A22E3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46B821885D38
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA36A1494DF;
-	Wed,  5 Feb 2025 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07FFF510;
+	Wed,  5 Feb 2025 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpQplzfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzhZklGM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7736E15198D;
-	Wed,  5 Feb 2025 14:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727091494DF;
+	Wed,  5 Feb 2025 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764879; cv=none; b=lH4Yd/QiRK4j631N0YqiZFChv+uFYiuTGjHtCcFadosJGC9P9KHy4mmDm4HdOt+b7qEcu9293wEgz8Z45o9YVjTlld7YW5Hw3iuqmwj0BtH4kMhLIO8QtvBtyhmgMabi0y4NNUlvQwucS4QhJpreNafcAae0Jv2lZbrCNeujWmM=
+	t=1738764474; cv=none; b=TdWjpT47uxhC0n7WlywitKOvmL9nbRfeX1cIeWZLUuYkGQZh4F66H4G0hLPv3i84ALBdVBhUaPayI7oyPJTkVR+OG9fY141oIY9bLKHey96+CdkAX9ujBrc52DfzAS5LdFRXsUoh/4luN1dUwwGaGqjUyltvsYmbCF1sb7nsdU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764879; c=relaxed/simple;
-	bh=2s8nR0sHuZxATKcZuunNvv6RkAf6QIAOIYH9xM6rR+8=;
+	s=arc-20240116; t=1738764474; c=relaxed/simple;
+	bh=2u7GhkIRR3LSWZfQfSonk1IaNElBz/iaCBsOKxyO2xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PQYmLVOhgPiMxTGpJdf08sjab+G0wLnY+jWVU9/+LcB7OsEdd4olURr8r7rfrernlHOsJuoAEZkx1x1XUCC+5mc/ezRAmC93MoUZs8arL+miggOWNwNGWMbOXtKXLHJqOxij6d3B9WlQuqAuGs/3CEqm0Hz3VCYelRmqOAWjw5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpQplzfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF96AC4CED1;
-	Wed,  5 Feb 2025 14:14:38 +0000 (UTC)
+	 MIME-Version; b=ODK/fU+E/Nvsyl4T6qojXsUVKaL30oFRVvLN18ukjijHmX8+be9iZXalWhERIATHqHwP1sGpK60HOkv7ijac+NTOTZ6S8ws0MUhVAniionvs32WXY1XovGahJ4bXsCOWJrNad1RBcTvzhDGew77h+4/gRngczow+WLb0iBf3UD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzhZklGM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7051C4CED1;
+	Wed,  5 Feb 2025 14:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764879;
-	bh=2s8nR0sHuZxATKcZuunNvv6RkAf6QIAOIYH9xM6rR+8=;
+	s=korg; t=1738764474;
+	bh=2u7GhkIRR3LSWZfQfSonk1IaNElBz/iaCBsOKxyO2xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpQplzfeVONM7OuUNWWSs5HE2EBhn0YUCWMm1ijv6v8aQ1w/jkFFwcc6GFIUeSRA+
-	 joD50/lIBesXgjrjVJvEKTUyX484sZ8PA2TDzCuDi1B5nc74j5mBLI0VeKF+0594he
-	 EP0NiW55+Qrdiuc0AMJsWgIf0MnYSGDwhDvcMwno=
+	b=nzhZklGMCtz6Uv+vcXdyxmvx3aRZCOaer5t4/aH8p4X6W0VV0gFoujUyo00XZS9lF
+	 kqbQoWSwUpA5eQqNJg7mwqAoeOhYtXkuxTZNLD9KQQZbp27Rcq8oHzDSxKv0mmCAx0
+	 BrTJW30l20zxnpUinSudAQ7rVlFBvcL9l6u80H9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 121/623] pwm: stm32-lp: Add check for clk_enable()
+Subject: [PATCH 6.12 108/590] inetpeer: update inetpeer timestamp in inet_getpeer()
 Date: Wed,  5 Feb 2025 14:37:43 +0100
-Message-ID: <20250205134500.850722410@linuxfoundation.org>
+Message-ID: <20250205134459.388995303@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cce16e7f6216227964cda25f5f23634bce2c500f ]
+[ Upstream commit 50b362f21d6c10b0f7939c1482c6a1b43da82f1a ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
-We used APP-Miner to find it.
+inet_putpeer() will be removed in the following patch,
+because we will no longer use refcounts.
 
-Fixes: e70a540b4e02 ("pwm: Add STM32 LPTimer PWM driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241206215318.3402860-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Update inetpeer timestamp (p->dtime) at lookup time.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241215175629.1248773-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a853c609504e ("inetpeer: do not get a refcount in inet_getpeer()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32-lp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv4/inetpeer.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32-lp.c b/drivers/pwm/pwm-stm32-lp.c
-index 989731256f503..5832dce8ed9d5 100644
---- a/drivers/pwm/pwm-stm32-lp.c
-+++ b/drivers/pwm/pwm-stm32-lp.c
-@@ -167,8 +167,12 @@ static int stm32_pwm_lp_get_state(struct pwm_chip *chip,
- 	regmap_read(priv->regmap, STM32_LPTIM_CR, &val);
- 	state->enabled = !!FIELD_GET(STM32_LPTIM_ENABLE, val);
- 	/* Keep PWM counter clock refcount in sync with PWM initial state */
--	if (state->enabled)
--		clk_enable(priv->clk);
-+	if (state->enabled) {
-+		int ret = clk_enable(priv->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
+diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
+index 411a194f9c999..f4cfc10293b85 100644
+--- a/net/ipv4/inetpeer.c
++++ b/net/ipv4/inetpeer.c
+@@ -95,6 +95,7 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
+ {
+ 	struct rb_node **pp, *parent, *next;
+ 	struct inet_peer *p;
++	u32 now;
  
- 	regmap_read(priv->regmap, STM32_LPTIM_CFGR, &val);
- 	presc = FIELD_GET(STM32_LPTIM_PRESC, val);
+ 	pp = &base->rb_root.rb_node;
+ 	parent = NULL;
+@@ -110,6 +111,9 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
+ 		if (cmp == 0) {
+ 			if (!refcount_inc_not_zero(&p->refcnt))
+ 				break;
++			now = jiffies;
++			if (READ_ONCE(p->dtime) != now)
++				WRITE_ONCE(p->dtime, now);
+ 			return p;
+ 		}
+ 		if (gc_stack) {
+@@ -155,9 +159,6 @@ static void inet_peer_gc(struct inet_peer_base *base,
+ 	for (i = 0; i < gc_cnt; i++) {
+ 		p = gc_stack[i];
+ 
+-		/* The READ_ONCE() pairs with the WRITE_ONCE()
+-		 * in inet_putpeer()
+-		 */
+ 		delta = (__u32)jiffies - READ_ONCE(p->dtime);
+ 
+ 		if (delta < ttl || !refcount_dec_if_one(&p->refcnt))
+@@ -229,11 +230,6 @@ EXPORT_SYMBOL_GPL(inet_getpeer);
+ 
+ void inet_putpeer(struct inet_peer *p)
+ {
+-	/* The WRITE_ONCE() pairs with itself (we run lockless)
+-	 * and the READ_ONCE() in inet_peer_gc()
+-	 */
+-	WRITE_ONCE(p->dtime, (__u32)jiffies);
+-
+ 	if (refcount_dec_and_test(&p->refcnt))
+ 		call_rcu(&p->rcu, inetpeer_free_rcu);
+ }
 -- 
 2.39.5
 
