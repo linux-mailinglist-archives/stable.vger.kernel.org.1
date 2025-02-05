@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-113627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE99A2934B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E877A29043
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C083AFAE1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1746169BA8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FFA189905;
-	Wed,  5 Feb 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8548634E;
+	Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtFTnHQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lz6Q/+JQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BCC1519A9;
-	Wed,  5 Feb 2025 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992770825;
+	Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767613; cv=none; b=WIBuzWhK1708Da7vcWh45V6f8S3+7qtd7mg+O0cSeg1e+WUPIJDJ1U345ls1X6d8F/N2CV2AQ7+vomcjoiEtPk+Iu5zmcQnDW0tGGlQ3dnnl22zhix8XhKk7/zdBq6D8EEYLL0JSqUic1CFPyp7n3OFdajwIkLGD9OqN3kCK3Yk=
+	t=1738766000; cv=none; b=Mh2h0yARoi4VZwsA9+t72inT0kHYYoAk984WUxYY1vqNWTzuQUCUddDg9xyt6k4MixvLBTlgyeZ2MmxjAyhiE39vWipTKtJGfKD5cc1iaYKy297N/ZUf1AZer7IqNWg3S/LgAgch7ii7aYhjsoG3EAxNP0V85QESl9Pcr9B42rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767613; c=relaxed/simple;
-	bh=vs43NCl8e1XSi7UXAvaPCsIXbYPiptmhEy8ogMUGLak=;
+	s=arc-20240116; t=1738766000; c=relaxed/simple;
+	bh=/nBCFJa1Bu3RhnJFo8ZYiMy9wO8V5gpR9A5ZnOO1IVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXvvv+nSXoqGDV3EaI5m0A8AY5f5561mmsosjrn4VTr4E1FAjYuzEKmUOySf5F6T3o0KIDZrxO92CvGuKmVdqcDWJQ3eCmAQlKGbAieoZPCgQ7wwQkFV8rqyqv6gffWDiQbNB1lyQ1w8sUuRdRJ5MWB3RpeQVN/YiyTqrcJCWog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtFTnHQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED993C4CED1;
-	Wed,  5 Feb 2025 15:00:12 +0000 (UTC)
+	 MIME-Version; b=n++s3F0cSZMWuNC9eBoOP8fDLdLB3GjQCk4bZE+0+r9e6tj3L+qkTFh2RTXFDQnmE6+ia9bwG8yd/r5QS+2DJwH8kZjPt4QxfE9jm1L+yZs3Q/As39j/Sqc7wSmQVc2SIfRGuh36EFjY08s32OedjIgwNglxK5hO9EJsLJskjrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lz6Q/+JQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A60CC4CED1;
+	Wed,  5 Feb 2025 14:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767613;
-	bh=vs43NCl8e1XSi7UXAvaPCsIXbYPiptmhEy8ogMUGLak=;
+	s=korg; t=1738766000;
+	bh=/nBCFJa1Bu3RhnJFo8ZYiMy9wO8V5gpR9A5ZnOO1IVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtFTnHQnioNUCIYZK+Yb9/bAD71HJOAcB5Gf03TgjBWw1e64sAKx0euI8g8LJj/l1
-	 pimCDC5n6g0uvPuWD66UClaDTSxn4jZJKOf5h7ztKolGct90jpAeXv6R7dLKgjFWDP
-	 c0GPqD4VohAx23tYBQ4GwGoICX++CdgrAxZFfOcM=
+	b=Lz6Q/+JQtAFhHYeuL0VQiEjSnM+vhWdXvFzx/R542uL6L1UZ8TCivbAfX8zI0sHy4
+	 C/pknf4dJ7xSxhvF51IBoDbO7FxLJtylxoMMiBvF6iRsaF2nK4oVbTJ29Q4EMzSgPU
+	 lERR0l+Irwk5ew2BW2w5Xvlj2HrVcNocPczdOnko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Lance Richardson <rlance@google.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 482/590] idpf: add read memory barrier when checking descriptor done bit
-Date: Wed,  5 Feb 2025 14:43:57 +0100
-Message-ID: <20250205134513.702332122@linuxfoundation.org>
+Subject: [PATCH 6.6 319/393] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
+Date: Wed,  5 Feb 2025 14:43:58 +0100
+Message-ID: <20250205134432.518750279@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 396f0165672c6a74d7379027d344b83b5f05948c ]
+[ Upstream commit 3ab8c5ed4f84fa20cd16794fe8dc31f633fbc70c ]
 
-Add read memory barrier to ensure the order of operations when accessing
-control queue descriptors. Specifically, we want to avoid cases where loads
-can be reordered:
+The nvmem interface supports variable buffer sizes, while the regmap
+interface operates with fixed-size storage. If an nvmem client uses a
+buffer size less than 4 bytes, regmap_read will write out of bounds
+as it expects the buffer to point at an unsigned int.
 
-1. Load #1 is dispatched to read descriptor flags.
-2. Load #2 is dispatched to read some other field from the descriptor.
-3. Load #2 completes, accessing memory/cache at a point in time when the DD
-   flag is zero.
-4. NIC DMA overwrites the descriptor, now the DD flag is one.
-5. Any fields loaded before step 4 are now inconsistent with the actual
-   descriptor state.
+Fix this by using an intermediary unsigned int to hold the value.
 
-Add read memory barrier between steps 1 and 2, so that load #2 is not
-executed until load #1 has completed.
-
-Fixes: 8077c727561a ("idpf: add controlq init and reset checks")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-Suggested-by: Lance Richardson <rlance@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: fadfd092ee91 ("rtc: pcf85063: add nvram support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20241218-rtc-pcf85063-stack-corruption-v1-1-12fd0ee0f046@pengutronix.de
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_controlq.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rtc/rtc-pcf85063.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-index 4849590a5591f..b28991dd18703 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
-@@ -376,6 +376,9 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
- 		if (!(le16_to_cpu(desc->flags) & IDPF_CTLQ_FLAG_DD))
- 			break;
- 
-+		/* Ensure no other fields are read until DD flag is checked */
-+		dma_rmb();
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index fdbc07f14036a..905986c616559 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -322,7 +322,16 @@ static const struct rtc_class_ops pcf85063_rtc_ops = {
+ static int pcf85063_nvmem_read(void *priv, unsigned int offset,
+ 			       void *val, size_t bytes)
+ {
+-	return regmap_read(priv, PCF85063_REG_RAM, val);
++	unsigned int tmp;
++	int ret;
 +
- 		/* strip off FW internal code */
- 		desc_err = le16_to_cpu(desc->ret_val) & 0xff;
- 
-@@ -563,6 +566,9 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
- 		if (!(flags & IDPF_CTLQ_FLAG_DD))
- 			break;
- 
-+		/* Ensure no other fields are read until DD flag is checked */
-+		dma_rmb();
++	ret = regmap_read(priv, PCF85063_REG_RAM, &tmp);
++	if (ret < 0)
++		return ret;
 +
- 		q_msg[i].vmvf_type = (flags &
- 				      (IDPF_CTLQ_FLAG_FTYPE_VM |
- 				       IDPF_CTLQ_FLAG_FTYPE_PF)) >>
++	*(u8 *)val = tmp;
++
++	return 0;
+ }
+ 
+ static int pcf85063_nvmem_write(void *priv, unsigned int offset,
 -- 
 2.39.5
 
