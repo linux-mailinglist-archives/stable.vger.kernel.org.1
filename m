@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6540A28F29
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DEAA29286
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2516E3A5FF7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79B6D7A1F3A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303DB14B080;
-	Wed,  5 Feb 2025 14:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14025191F75;
+	Wed,  5 Feb 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4eisRN+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YIcVTy8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF993522A;
-	Wed,  5 Feb 2025 14:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C3013C8E2;
+	Wed,  5 Feb 2025 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765266; cv=none; b=G/t4/fzMZbmBSP1kiKRIZCL6RTJzYfTC2AnF77LZA1Kx3w+vEir4/5bTgQeXEPi2d9tGs1jP98bD6XkoPkOCw6hLQKyIyvcB9xcxtgi4efM6GPhgRv584G8e8wXo4RcNs9bag0ybwFuKinyGX1HPSAGbUDcjXaAqD4PNq2UPde4=
+	t=1738767585; cv=none; b=qPaiZuEV7MB2lmipSMjVqxQzm+OIsuBegJYxgGZGeH7R/ui4TFrkUZOPEbF2Ni12HPPsJ9ZpuVvK0a5RAZyMp0pYa/qLDT3wIMFpTq9ywxjHikRlSKwB6ItB6Ci2DnQn8FYX/FHWWbuf0ZLrwPOnUIyStLy+5QFKbf1tbTECodM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765266; c=relaxed/simple;
-	bh=z6vN4hqLBTm/8VyEJDlf2Boh9+Prnv3VhN0RQH6P+MQ=;
+	s=arc-20240116; t=1738767585; c=relaxed/simple;
+	bh=y50EIaukuFV8n2z+V/VqvnY/2LEEQe0Qki/x3IFN8O8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsBSVlfoIAEyLt1CAaKTSrwnph5kiK7KwoPbUfudTMGmcgGR8AM6VbA6dcZdAOLCNh22MvvdoxA5B4kPS4zHbf6q1/iB3OZrwhZV1cuEJDjTa+Mb1zXqUyEEynnmVApvuqKemKDjCtMgWBDC4JdSsilS3SLsLwzShHOtZ6u5D/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4eisRN+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E781C4CED1;
-	Wed,  5 Feb 2025 14:21:05 +0000 (UTC)
+	 MIME-Version; b=NXX+pdxsCMmbJHiVZoye5zBBwo0dSmicwf0ZWAvnRbE8O2Vk91sCUiUXFhXhI39E/1U0waAOFErzHcEFnxQUNOlRmEHgCtK3KM1BjawcC/PTFXjn9nU11NZs/l5mLFfYZXaGRVa/dLfZDK6RAKWM1GE8/5+sUbTCjF+s40TmCZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YIcVTy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319F8C4CED1;
+	Wed,  5 Feb 2025 14:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765265;
-	bh=z6vN4hqLBTm/8VyEJDlf2Boh9+Prnv3VhN0RQH6P+MQ=;
+	s=korg; t=1738767585;
+	bh=y50EIaukuFV8n2z+V/VqvnY/2LEEQe0Qki/x3IFN8O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4eisRN+LxlQeIQOuethCE1rtmh5/dH5ExAYuAoefii/my++KZMV4dNvupP6Ki44V
-	 d+ymrOBOynhKEvHmnIy6ao6/NrXKnh3AZ6hhBp13offhriB18ovoJe0XZTETH7h0F3
-	 5d3vwqCae3fOyfvnuZYmvs3w0E5AOundIi84hi8g=
+	b=0YIcVTy8gELcMT/KmTjoPGKUlF503aXLam3GXYp9EtmZ/vghCNHA3T3LsomA+8WHN
+	 QX10izac+zD3uEfPDqMKRHhaQ2MzZH7lh8V/V6HCrg1sUyFmznn4wWf/lXZNmIUq8a
+	 mo1HFkoRfSXSVA/8kfmWi8wdpUF5mbwQeq5pgu2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/393] arm64: dts: qcom: sm8450: correct sleep clock frequency
+Subject: [PATCH 6.13 425/623] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
 Date: Wed,  5 Feb 2025 14:42:47 +0100
-Message-ID: <20250205134429.795184974@linuxfoundation.org>
+Message-ID: <20250205134512.483619567@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit c375ff3b887abf376607d4769c1114c5e3b6ea72 ]
+[ Upstream commit de124b61e179e690277116e6be512e4f422b5dd8 ]
 
-The SM8450 platform uses PMK8350 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
+and struct device_node *np is present. Since of_get_next_parent()
+obtains a reference of the returned OF node, call of_node_put() before
+returning NULL.
 
-Fixes: 5188049c9b36 ("arm64: dts: qcom: Add base SM8450 DTSI")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-15-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This was found by an experimental verifier that I am developing, and no
+runtime test was able to be performed due to that lack of actual
+devices.
+
+Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index a34f460240a07..007689d7f4fa2 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -40,7 +40,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 		};
- 	};
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+index c04cbe0ef173d..7c636db798825 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+@@ -36,6 +36,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
+ 		np = of_get_next_parent(np);
+ 	}
+ 
++	of_node_put(np);
+ 	return NULL;
+ }
  
 -- 
 2.39.5
