@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B542AA290AD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB92A28CBF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2461D1887C29
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 063EA7A0828
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C65A16DC3C;
-	Wed,  5 Feb 2025 14:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BB9149C64;
+	Wed,  5 Feb 2025 13:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZvOHOzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iev0efQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE701714D0;
-	Wed,  5 Feb 2025 14:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E54FC0B;
+	Wed,  5 Feb 2025 13:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766327; cv=none; b=rFnch4mtdRLZ8o+MvfuclvgW5GCGJJixVYVhJX184SzQhaMFqvNy4CDzmSJoXTCl8BZoFguh7yW+oRIoNziJkfaEOZ2mtDMY0llTyWcnN2mr2+8d/pfkSg339oXjfqGPBwuy6t0r2/+NB0Va7N5xAiIn3xpvBdG4V3g4zVC0q9s=
+	t=1738763605; cv=none; b=LJdwAfSRRio2hF6dNiwVyl4DS3ftjPYJmohH4XzCISyxBIonv9wpemD5XHl/vNbZluPw1Sn6JOMtZ5AM/dxTIt1lmln3maYfW69Ary8+A5XnVn5uYEdwus0v0iT0hEJpXlwhQTLYEgToK2/a+5jpv93j0ICh5XbI85GPLg8SY2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766327; c=relaxed/simple;
-	bh=C6Sd2qlaZtzlc9O2dG42ji4oo/YzbruzmSIFsk9M9s4=;
+	s=arc-20240116; t=1738763605; c=relaxed/simple;
+	bh=28bxwGJlQvrMecuj7N/fsL2oOA1qg41qm8rB+J1JuPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QmV1k+AhsvQdSTbupmhkdxyVWG/U6RBWhYx2xK9jZ2w2bezwUWyTbNpp1463KXmf92DfEmg/OThDd116YQf647nMSPSXKzw6+RWobX1l+14QoGndONFxZ5lS42eSBfoCcKEEp9MqBDk3ZhAjrazdwQ8qeueBBReI6O7Nwlg3w7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZvOHOzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A1FC4CED1;
-	Wed,  5 Feb 2025 14:38:46 +0000 (UTC)
+	 MIME-Version; b=CUot41hjDE4n4OWA5kungpe/YtkmhshJdKHsLckOcH75jUrQmDqfJ5kFKfIELmUhM0tOVRj2HI2+gzJYLIW3LkxFf2YcWNuDS/wOz+CcrAxr3n0fcTE8zFQDmc7z3ivym4UZpp2y20AK58lHfHWwpBINwJM1+2RnPPJoyG8Wc9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iev0efQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D766DC4CED1;
+	Wed,  5 Feb 2025 13:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766326;
-	bh=C6Sd2qlaZtzlc9O2dG42ji4oo/YzbruzmSIFsk9M9s4=;
+	s=korg; t=1738763605;
+	bh=28bxwGJlQvrMecuj7N/fsL2oOA1qg41qm8rB+J1JuPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZvOHOzh71ONveuAn4x3Ig6a0lXSeafxHIrvkKc4P16g2VOQxUBCJGfxVnrswTFZX
-	 Q8hgY7GeRO++QGCdr/fivEnHrwPRSN5IZXf0xhjx37CuwlMOfjOMzf7hjwAt3AWeyw
-	 bv4JGVYMEpFimuNc4gaB80kk/tsRfiC0oI+5f0+w=
+	b=Iev0efQY1X1mbWB6Fs/AEzMrs9vVstvLQZV971pe+NnJHosajb8UZnO1Y8eOIfnih
+	 jizJ262zrzyvAcPtsxF8amrXu15zvVun0R8ywQVP+UTLMmsPuRB9cVwVwdUpAaysW7
+	 cN1SC0sJVecshfaA8yIbwj3iU+Tq0WxKxsildWA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert.xu@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 263/623] crypto: api - Fix boot-up self-test race
-Date: Wed,  5 Feb 2025 14:40:05 +0100
-Message-ID: <20250205134506.292455278@linuxfoundation.org>
+Subject: [PATCH 6.6 087/393] cpufreq: qcom: Implement clk_ops::determine_rate() for qcom_cpufreq* clocks
+Date: Wed,  5 Feb 2025 14:40:06 +0100
+Message-ID: <20250205134423.621301279@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 8dd458cbc5be9ce4427ffce7a9dcdbff4dfc4ac9 ]
+[ Upstream commit a9ba290d0b829012574b6821ba08815046e60c94 ]
 
-During the boot process self-tests are postponed so that all
-algorithms are registered when the test starts.  In the event
-that algorithms are still being registered during these tests,
-which can occur either because the algorithm is registered at
-late_initcall, or because a self-test itself triggers the creation
-of an instance, some self-tests may never start at all.
+determine_rate() callback is used by the clk_set_rate() API to get the
+closest rate of the target rate supported by the clock. If this callback
+is not implemented (nor round_rate() callback), then the API will assume
+that the clock cannot set the requested rate. And since there is no parent,
+it will return -EINVAL.
 
-Fix this by setting the flag at the start of crypto_start_tests.
+This is not an issue right now as clk_set_rate() mistakenly compares the
+target rate with cached rate and bails out early. But once that is fixed
+to compare the target rate with the actual rate of the clock (returned by
+recalc_rate()), then clk_set_rate() for this clock will start to fail as
+below:
 
-Note that this race is theoretical and has never been observed
-in practice.
+cpu cpu0: _opp_config_clk_single: failed to set clock rate: -22
 
-Fixes: adad556efcdd ("crypto: api - Fix built-in testing dependency failures")
-Signed-off-by: Herbert Xu <herbert.xu@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+So implement the determine_rate() callback that just returns the actual
+rate at which the clock is passed to the CPUs in a domain.
+
+Fixes: 4370232c727b ("cpufreq: qcom-hw: Add CPU clock provider support")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Suggested-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/qcom-cpufreq-hw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index 16f7c7a9d8ab6..7e061d8a1d52d 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -1016,6 +1016,8 @@ static void __init crypto_start_tests(void)
- 	if (IS_ENABLED(CONFIG_CRYPTO_MANAGER_DISABLE_TESTS))
- 		return;
- 
-+	set_crypto_boot_test_finished();
-+
- 	for (;;) {
- 		struct crypto_larval *larval = NULL;
- 		struct crypto_alg *q;
-@@ -1047,8 +1049,6 @@ static void __init crypto_start_tests(void)
- 		if (!larval)
- 			break;
- 	}
--
--	set_crypto_boot_test_finished();
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index 3a4305df5c119..92c0fc4a3cf60 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -627,8 +627,21 @@ static unsigned long qcom_cpufreq_hw_recalc_rate(struct clk_hw *hw, unsigned lon
+ 	return __qcom_cpufreq_hw_get(data->policy) * HZ_PER_KHZ;
  }
  
- static int __init crypto_algapi_init(void)
++/*
++ * Since we cannot determine the closest rate of the target rate, let's just
++ * return the actual rate at which the clock is running at. This is needed to
++ * make clk_set_rate() API work properly.
++ */
++static int qcom_cpufreq_hw_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
++{
++	req->rate = qcom_cpufreq_hw_recalc_rate(hw, 0);
++
++	return 0;
++}
++
+ static const struct clk_ops qcom_cpufreq_hw_clk_ops = {
+ 	.recalc_rate = qcom_cpufreq_hw_recalc_rate,
++	.determine_rate = qcom_cpufreq_hw_determine_rate,
+ };
+ 
+ static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
 -- 
 2.39.5
 
