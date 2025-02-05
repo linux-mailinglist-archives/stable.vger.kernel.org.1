@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-113447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A63A2924E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DD9A29234
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB7C3AD60D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E1416CC5D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9C71FE47E;
-	Wed,  5 Feb 2025 14:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C551FECA3;
+	Wed,  5 Feb 2025 14:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GowLmIni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXm6QeOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43151632D3;
-	Wed,  5 Feb 2025 14:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983371632D3;
+	Wed,  5 Feb 2025 14:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766994; cv=none; b=H5Lgtj1tiKoaiWOBEm/t1rMHWGxV0Fmm+F/J2j1cMhQUL53562J9aofjgmHoHvlwToT/grtGlk/5GnEebbTYGVJqDGAHb+d2MONA46rbzraLRabjOzjHPHP7m+R6fGfBVk7iXkd2BY41Ulf9z2dLcPF2aEH5TeMclh12T7RKTLU=
+	t=1738767000; cv=none; b=WVEYMImXrVrMUX51ap/otewiithAWRRamrnzVpUgeKJk4lZatSi4szvnHTWE350lpnkxRwfADDlFiY90kj8IiDIPdY64ctEBYQp4c2peg7Uls277aaVLGk/Meqry0ORW25V9zKmufgK1vsrHAC4a1b99qnJYoTxxNJqi/KN5Vnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766994; c=relaxed/simple;
-	bh=y384VhmTdKEHghl6uDAIHqFLzndnWSpdQfxA6svspGM=;
+	s=arc-20240116; t=1738767000; c=relaxed/simple;
+	bh=SDq/Sfldx/MjQFZnT8eNH6mrqu3bEwVw/WhQPSDrios=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXiukhl8yHK8lcxv04uEGE6icBCSxaRWoxv+yf/svhbPz8FfVpfUgmknlv3c5PewNmiZgLlNrZBqLpenhxLNOXdDWnIAwiwIUSfJg+aDOlMqt09I/9IXJuVmGgt28r9SEtliCzqNA64eHOnH1iiOis1GakQ3KTwJSK6cnTzQdh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GowLmIni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8DAC4CED1;
-	Wed,  5 Feb 2025 14:49:53 +0000 (UTC)
+	 MIME-Version; b=rd4lmx5Hmv1OGqsT98/8CTgNKQOfDL+E4jh4MQlfO68RVNiILuLXM73k1WyQAmT2ICuCJUaKOyKfD59XTiM4QBdOOpbBFcE3OmtwEzJ+4xriCQTybTAdW8+IUASUOYD9JMlf875NfkhNBaef+vjWNheOrgPVHYkxPWljOigX//o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXm6QeOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28D3C4CED1;
+	Wed,  5 Feb 2025 14:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766993;
-	bh=y384VhmTdKEHghl6uDAIHqFLzndnWSpdQfxA6svspGM=;
+	s=korg; t=1738767000;
+	bh=SDq/Sfldx/MjQFZnT8eNH6mrqu3bEwVw/WhQPSDrios=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GowLmIniiUS8UtRrjckJOlHssRB51v1qFvwJP78X35Vm0xmBlnMj88G2imDhLOXto
-	 EvbmeEHbyjxlkZuJ/ejy4KbbAAyUU2c9XBM3CEOwXieVWUPeuAA7iYjxqSe6JDs1T3
-	 Xb6R2UKO+RXSfRm1RcA+Bu2W2iWxysnH4iUkdra0=
+	b=RXm6QeOi0TTssxOFRo6SP8O2gAvGSE2OYbaY/QSHzHMtqTeSwi3lfhVpM0jDAoDXC
+	 e3QWMzmxVE/KKoI8jrs5T1J2RlS7KzEr3RUC4S/yuPE+Y8IjbH5q/MKwPOCYawCkkK
+	 8qZMuwKuGb2EtOHxWdtdLwPAx9SPuTBkHtwbDwiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Josua Mayer <josua@solid-run.com>,
-	Nishanth Menon <nm@ti.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/590] arm64: dts: ti: k3-am642-hummingboard-t: Convert overlay to board dts
-Date: Wed,  5 Feb 2025 14:42:25 +0100
-Message-ID: <20250205134510.189154785@linuxfoundation.org>
+Subject: [PATCH 6.12 391/590] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
+Date: Wed,  5 Feb 2025 14:42:26 +0100
+Message-ID: <20250205134510.227223509@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,120 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit e2b69180431968250bf3c0c581155f1b37d057c1 ]
+[ Upstream commit de124b61e179e690277116e6be512e4f422b5dd8 ]
 
-SolidRun HummingBoard-T has two options for M.2 connector, supporting
-either PCI-E or USB-3.1 Gen 1 - depending on configuration of a mux
-on the serdes lane.
-The required configurations in device-tree were modeled as overlays.
+dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
+and struct device_node *np is present. Since of_get_next_parent()
+obtains a reference of the returned OF node, call of_node_put() before
+returning NULL.
 
-The USB-3.1 overlay uses /delete-property/ to unset a boolean property
-on the usb controller limiting it to USB-2.0 by default.
-Overlays can not delete a property from the base dtb, therefore this
-overlay is at this time useless.
+This was found by an experimental verifier that I am developing, and no
+runtime test was able to be performed due to that lack of actual
+devices.
 
-Convert both overlays into full dts by including the base board dts.
-While the pcie overlay was functional, both are converted for a
-consistent user experience when selecting between the two mutually
-exclusive configurations.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/linux-devicetree/CAMuHMdXTgpTnJ9U7egC2XjFXXNZ5uiY1O+WxNd6LPJW5Rs5KTw@mail.gmail.com
-Fixes: bbef42084cc1 ("arm64: dts: ti: hummingboard-t: add overlays for m.2 pci-e and usb-3")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20250101-am64-hb-fix-overlay-v2-1-78143f5da28c@solid-run.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/Makefile                    |  4 ----
- ...-pcie.dtso => k3-am642-hummingboard-t-pcie.dts} | 14 ++++++++------
- ...-usb3.dtso => k3-am642-hummingboard-t-usb3.dts} | 13 ++++++++-----
- 3 files changed, 16 insertions(+), 15 deletions(-)
- rename arch/arm64/boot/dts/ti/{k3-am642-hummingboard-t-pcie.dtso => k3-am642-hummingboard-t-pcie.dts} (78%)
- rename arch/arm64/boot/dts/ti/{k3-am642-hummingboard-t-usb3.dtso => k3-am642-hummingboard-t-usb3.dts} (74%)
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index bcd392c3206e5..562e6d57bc991 100644
---- a/arch/arm64/boot/dts/ti/Makefile
-+++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -41,10 +41,6 @@ dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-csi2-imx219.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-hdmi-audio.dtbo
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+index d5a43b3bf45ec..c46108a16a9dd 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+@@ -102,6 +102,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
+ 		np = of_get_next_parent(np);
+ 	}
  
- # Boards with AM64x SoC
--k3-am642-hummingboard-t-pcie-dtbs := \
--	k3-am642-hummingboard-t.dtb k3-am642-hummingboard-t-pcie.dtbo
--k3-am642-hummingboard-t-usb3-dtbs := \
--	k3-am642-hummingboard-t.dtb k3-am642-hummingboard-t-usb3.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm-icssg1-dualemac.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm-icssg1-dualemac-mii.dtbo
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-similarity index 78%
-rename from arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso
-rename to arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-index bd9a5caf20da5..023b2a6aaa566 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-@@ -2,17 +2,19 @@
- /*
-  * Copyright (C) 2023 Josua Mayer <josua@solid-run.com>
-  *
-- * Overlay for SolidRun AM642 HummingBoard-T to enable PCI-E.
-+ * DTS for SolidRun AM642 HummingBoard-T,
-+ * running on Cortex A53, with PCI-E.
-+ *
-  */
++	of_node_put(np);
+ 	return NULL;
+ }
  
--/dts-v1/;
--/plugin/;
--
--#include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/phy/phy.h>
-+#include "k3-am642-hummingboard-t.dts"
- 
- #include "k3-serdes.h"
- 
-+/ {
-+	model = "SolidRun AM642 HummingBoard-T with PCI-E";
-+};
-+
- &pcie0_rc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie0_default_pins>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-similarity index 74%
-rename from arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso
-rename to arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-index ffcc3bd3c7bc5..ee9bd618f3701 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-@@ -2,16 +2,19 @@
- /*
-  * Copyright (C) 2023 Josua Mayer <josua@solid-run.com>
-  *
-- * Overlay for SolidRun AM642 HummingBoard-T to enable USB-3.1.
-+ * DTS for SolidRun AM642 HummingBoard-T,
-+ * running on Cortex A53, with USB-3.1 Gen 1.
-+ *
-  */
- 
--/dts-v1/;
--/plugin/;
--
--#include <dt-bindings/phy/phy.h>
-+#include "k3-am642-hummingboard-t.dts"
- 
- #include "k3-serdes.h"
- 
-+/ {
-+	model = "SolidRun AM642 HummingBoard-T with USB-3.1 Gen 1";
-+};
-+
- &serdes0 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
 -- 
 2.39.5
 
