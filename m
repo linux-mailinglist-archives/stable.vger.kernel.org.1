@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC35AA29092
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759F6A28FBD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC1C816478F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8E81883DD4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0412C15854F;
-	Wed,  5 Feb 2025 14:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28901155CB3;
+	Wed,  5 Feb 2025 14:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICjgsR8C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHhrgzQ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B123D155CB3;
-	Wed,  5 Feb 2025 14:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A28158D96;
+	Wed,  5 Feb 2025 14:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766268; cv=none; b=W7OU1m2k58kHx9vR2AwlrHgKxrsEJZy3f389qFaRYwUtwO4B37HXJUOYhvXH5E0ZitRs5vcL+uKIrvWYRKLO1dQ9rjL0lTHrO0szadjcB7qPL4IU4V2i3Uv438CAAiwOOd53VMUmysFWAnE/SZkn66M9abVw1JZl+kPT/vW4roQ=
+	t=1738765710; cv=none; b=Enb7602eJKiCtbGKZl1/889j4mz46OYSxt7dAwQHZDBld/omacFhAMYm7gZQmHGUxo8dy7ZS9fcrV9wojgmzUSCIylpq52K72c7XhpwVyQD7Zl0OlfFJ1DvzOWZyBYWGzUl3DgQFWq58p1YziAF3JkyTFYtN6ZX2ngEFF31fT1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766268; c=relaxed/simple;
-	bh=LQ89cJmuEK61XmUYekZeONmpxBAVcTWr3j30SV8fOvg=;
+	s=arc-20240116; t=1738765710; c=relaxed/simple;
+	bh=fRR2D4UYg+u22yROjoe9xvnaPvmCZnLfDzkDY7+a7p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpfW/UuSMk3dinuoQbt0nz3Cs1OxHkrn1fho+l2++oudhdHWcHXXRRZEE19MApWBqX3FESLvuA2pXWiX2lAHgR/j6VCvXQ0ykRLt6vOP7REawRwlXiYqQK43Yo7vJ4oZLQQVNKgg/4wVpsTZKGS4ARg2jUBlyB9Bi0rY+AF+wU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICjgsR8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3184EC4CED1;
-	Wed,  5 Feb 2025 14:37:48 +0000 (UTC)
+	 MIME-Version; b=rkzIFnvQzlvTN0FrTZjQR4gqNKnszDjAQwSnF9vSJztPW1SX+HxpgZNDoMzAJRoBMPLU8dtHOf6G3X+2qA7ZX4d9D1CxirnIH4+3G601K1k7kRRIL7cCSGHD/Nv8Yr4gONX77QuXPplfEvQ4mzArv49X7r8wTg6IxDkHA5yeGrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHhrgzQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FDDC4CEE9;
+	Wed,  5 Feb 2025 14:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766268;
-	bh=LQ89cJmuEK61XmUYekZeONmpxBAVcTWr3j30SV8fOvg=;
+	s=korg; t=1738765710;
+	bh=fRR2D4UYg+u22yROjoe9xvnaPvmCZnLfDzkDY7+a7p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICjgsR8Cj9ZWEy+0C/Xu5xTb3vw7MJw3P7Jz/3FblOyVKUHrihqGWIpMKgoZ/yVTS
-	 OZ/tBm/pAni+ymdmaSJJnA5WHONlAg9MGUfUP6vKoguHxh4EgDAlO47WIRymEUl9Ha
-	 6fpptgdxMSHOhh0p9p84euQppqu7ljXdj1KEnfLU=
+	b=LHhrgzQ9tbdDVlUlPStBEN86Tagd5CBPdfogz2qRCU8enTy0X3WrGEBfQGlkZbwiE
+	 AO9W4Thtx1uSfIUGWuZAu5AFSsE/B/0yqbMhoQ9SOYH/Yu+Qeuhchx/JLI6zvMCAWn
+	 h9BZwbOwJpiik3TUjaZERtafUMZy9gJtjLpjrnbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	George Lander <lander@jagmn.com>,
-	Marcus Cooper <codekipper@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 258/623] ASoC: sun4i-spdif: Add clock multiplier settings
+Subject: [PATCH 6.12 245/590] selftests/bpf: Fix fill_link_info selftest on powerpc
 Date: Wed,  5 Feb 2025 14:40:00 +0100
-Message-ID: <20250205134506.101242243@linuxfoundation.org>
+Message-ID: <20250205134504.654644161@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Lander <lander@jagmn.com>
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 
-[ Upstream commit 0a2319308de88b9e819c0b43d0fccd857123eb31 ]
+[ Upstream commit 4d33dc1bc31df80356c49e40dbd3ddff19500bcb ]
 
-There have been intermittent issues with the SPDIF output on H3
-and H2+ devices which has been fixed by setting the s_clk to 4
-times the audio pll.
-Add a quirk for the clock multiplier as not every supported SoC
-requires it. Without the multiplier, the audio at normal sampling
-rates was distorted and did not play at higher sampling rates.
+With CONFIG_KPROBES_ON_FTRACE enabled on powerpc, ftrace_location_range
+returns ftrace location for bpf_fentry_test1 at offset of 4 bytes from
+function entry. This is because branch to _mcount function is at offset
+of 4 bytes in function profile sequence.
 
-Fixes: 1bd92af877ab ("ASoC: sun4i-spdif: Add support for the H3 SoC")
-Signed-off-by: George Lander <lander@jagmn.com>
-Signed-off-by: Marcus Cooper <codekipper@gmail.com>
-Link: https://patch.msgid.link/20241111165600.57219-2-codekipper@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To fix this, add entry_offset of 4 bytes while verifying the address for
+kprobe entry address of bpf_fentry_test1 in verify_perf_link_info in
+selftest, when CONFIG_KPROBES_ON_FTRACE is enabled.
+
+Disassemble of bpf_fentry_test1:
+
+c000000000e4b080 <bpf_fentry_test1>:
+c000000000e4b080:       a6 02 08 7c     mflr    r0
+c000000000e4b084:       b9 e2 22 4b     bl      c00000000007933c <_mcount>
+c000000000e4b088:       01 00 63 38     addi    r3,r3,1
+c000000000e4b08c:       b4 07 63 7c     extsw   r3,r3
+c000000000e4b090:       20 00 80 4e     blr
+
+When CONFIG_PPC_FTRACE_OUT_OF_LINE [1] is enabled, these function profile
+sequence is moved out of line with an unconditional branch at offset 0.
+So, the test works without altering the offset for
+'CONFIG_KPROBES_ON_FTRACE && CONFIG_PPC_FTRACE_OUT_OF_LINE' case.
+
+Disassemble of bpf_fentry_test1:
+
+c000000000f95190 <bpf_fentry_test1>:
+c000000000f95190:       00 00 00 60     nop
+c000000000f95194:       01 00 63 38     addi    r3,r3,1
+c000000000f95198:       b4 07 63 7c     extsw   r3,r3
+c000000000f9519c:       20 00 80 4e     blr
+
+[1] https://lore.kernel.org/all/20241030070850.1361304-13-hbathini@linux.ibm.com/
+
+Fixes: 23cf7aa539dc ("selftests/bpf: Add selftest for fill_link_info")
+Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241209065720.234344-1-skb99@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-spdif.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../selftests/bpf/prog_tests/fill_link_info.c       |  4 ++++
+ .../selftests/bpf/progs/test_fill_link_info.c       | 13 ++++++++++---
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
-index 0aa4164232464..7cf623cbe9ed4 100644
---- a/sound/soc/sunxi/sun4i-spdif.c
-+++ b/sound/soc/sunxi/sun4i-spdif.c
-@@ -176,6 +176,7 @@ struct sun4i_spdif_quirks {
- 	unsigned int reg_dac_txdata;
- 	bool has_reset;
- 	unsigned int val_fctl_ftx;
-+	unsigned int mclk_multiplier;
- };
+diff --git a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+index d50cbd8040d45..e59af2aa66016 100644
+--- a/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
++++ b/tools/testing/selftests/bpf/prog_tests/fill_link_info.c
+@@ -171,6 +171,10 @@ static void test_kprobe_fill_link_info(struct test_fill_link_info *skel,
+ 		/* See also arch_adjust_kprobe_addr(). */
+ 		if (skel->kconfig->CONFIG_X86_KERNEL_IBT)
+ 			entry_offset = 4;
++		if (skel->kconfig->CONFIG_PPC64 &&
++		    skel->kconfig->CONFIG_KPROBES_ON_FTRACE &&
++		    !skel->kconfig->CONFIG_PPC_FTRACE_OUT_OF_LINE)
++			entry_offset = 4;
+ 		err = verify_perf_link_info(link_fd, type, kprobe_addr, 0, entry_offset);
+ 		ASSERT_OK(err, "verify_perf_link_info");
+ 	} else {
+diff --git a/tools/testing/selftests/bpf/progs/test_fill_link_info.c b/tools/testing/selftests/bpf/progs/test_fill_link_info.c
+index 6afa834756e9f..fac33a14f2009 100644
+--- a/tools/testing/selftests/bpf/progs/test_fill_link_info.c
++++ b/tools/testing/selftests/bpf/progs/test_fill_link_info.c
+@@ -6,13 +6,20 @@
+ #include <stdbool.h>
  
- struct sun4i_spdif_dev {
-@@ -313,6 +314,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
- 	default:
- 		return -EINVAL;
- 	}
-+	mclk *= host->quirks->mclk_multiplier;
+ extern bool CONFIG_X86_KERNEL_IBT __kconfig __weak;
++extern bool CONFIG_PPC_FTRACE_OUT_OF_LINE __kconfig __weak;
++extern bool CONFIG_KPROBES_ON_FTRACE __kconfig __weak;
++extern bool CONFIG_PPC64 __kconfig __weak;
  
- 	ret = clk_set_rate(host->spdif_clk, mclk);
- 	if (ret < 0) {
-@@ -347,6 +349,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
- 	default:
- 		return -EINVAL;
- 	}
-+	mclk_div *= host->quirks->mclk_multiplier;
+-/* This function is here to have CONFIG_X86_KERNEL_IBT
+- * used and added to object BTF.
++/* This function is here to have CONFIG_X86_KERNEL_IBT,
++ * CONFIG_PPC_FTRACE_OUT_OF_LINE, CONFIG_KPROBES_ON_FTRACE,
++ * CONFIG_PPC6 used and added to object BTF.
+  */
+ int unused(void)
+ {
+-	return CONFIG_X86_KERNEL_IBT ? 0 : 1;
++	return CONFIG_X86_KERNEL_IBT ||
++			CONFIG_PPC_FTRACE_OUT_OF_LINE ||
++			CONFIG_KPROBES_ON_FTRACE ||
++			CONFIG_PPC64 ? 0 : 1;
+ }
  
- 	reg_val = 0;
- 	reg_val |= SUN4I_SPDIF_TXCFG_ASS;
-@@ -540,24 +543,28 @@ static struct snd_soc_dai_driver sun4i_spdif_dai = {
- static const struct sun4i_spdif_quirks sun4i_a10_spdif_quirks = {
- 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct sun4i_spdif_quirks sun6i_a31_spdif_quirks = {
- 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
- 	.has_reset	= true,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct sun4i_spdif_quirks sun8i_h3_spdif_quirks = {
- 	.reg_dac_txdata	= SUN8I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
- 	.has_reset	= true,
-+	.mclk_multiplier = 4,
- };
- 
- static const struct sun4i_spdif_quirks sun50i_h6_spdif_quirks = {
- 	.reg_dac_txdata = SUN8I_SPDIF_TXFIFO,
- 	.val_fctl_ftx   = SUN50I_H6_SPDIF_FCTL_FTX,
- 	.has_reset      = true,
-+	.mclk_multiplier = 1,
- };
- 
- static const struct of_device_id sun4i_spdif_of_match[] = {
+ SEC("kprobe")
 -- 
 2.39.5
 
