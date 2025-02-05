@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6087A2920C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D1AA292CC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EC393AC89A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C0D188F125
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BD11FCCE6;
-	Wed,  5 Feb 2025 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E71618D649;
+	Wed,  5 Feb 2025 14:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLoogwO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuVniH3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ECC1FC7FE;
-	Wed,  5 Feb 2025 14:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01E133993;
+	Wed,  5 Feb 2025 14:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766827; cv=none; b=BEGfHq/y4h9MgeJL9SxIIXnC45LeJrQvJX8t8N6WjYimTrWMdiaSqXxWGiArWsmLhgzNqvE7E2QBMyeKiq8GToL9xaEvBCMTyV6L83D4QHDnlUnbllYkdwLPp+mtNszu/rztutLMyVr4IWbuOIlIZJ2eqf/2BPiSmvCr2+l3GVU=
+	t=1738767258; cv=none; b=p6edz1OtZcS7JzoBIGXKR9UfzEK0041lQ9/LNVhwIrUijPTWGygsi2HSoFvT1lLXKid9v3xxYgOUM8SSylqtgRv7JDojeYG7WhKeJcLAYMqBkJQ6EpIHb3+gHjGEtZe3fSkTQh8hPdtqV4BfC2h5FXUldu3LHQH+zVBFhEBfpBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766827; c=relaxed/simple;
-	bh=lLGOfprXQ5hUFpA4Fr/fFPCDx7CDmSIU0XewCQggqnU=;
+	s=arc-20240116; t=1738767258; c=relaxed/simple;
+	bh=6D2hJoBvLvUYh0v4QSAHbkRgxFMYpKCw/JYPX/lvn1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfgx7iLi8AavjK20QO1OTfDd8+OwkXSDd/s4AxObY3bBNpVvGR0t2hY9TcxR2zjfNzVr2lIshpAYOeSjkJXxrC8cUKs5Am64UNFOzf7XuP41ZkDPVnituRPXpDG03e2DTFbASuKjHrALvBV6b3YQKdYotAtbrVHvTsgW9ce+ynI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLoogwO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1677C4CED1;
-	Wed,  5 Feb 2025 14:47:06 +0000 (UTC)
+	 MIME-Version; b=tVBzzHszqNlUP5sjR0E5q7cf13U4bCIFpBJzIwBgjBeVrGzhlc3o6cb5TQkyGkZgIo1yDMRbjWt0vc/9NHy6oUqhaTzxwYjXdVlmHwyY1ccrJVQUNWX4msP9vrWpM1/zeMJLVw01h5PHDFQvEKvg/cXaZhKGNsYEHFXx6fOg3C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuVniH3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCBAC4CEDD;
+	Wed,  5 Feb 2025 14:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766827;
-	bh=lLGOfprXQ5hUFpA4Fr/fFPCDx7CDmSIU0XewCQggqnU=;
+	s=korg; t=1738767258;
+	bh=6D2hJoBvLvUYh0v4QSAHbkRgxFMYpKCw/JYPX/lvn1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLoogwO5/xFLqjXeTFyJsXrek+MuGzkgQQoVJz3dIDxHmk8kcIPiuOtcAPv8+BX9N
-	 X+eg669BwnXmiSMVlrUamSOD5jt60vkvQ3/StfJ43rvngi8b8HW6IJtgxz9uGfucJs
-	 JGo6OigZktsYQGhJxBjhfoBuwCDGsMVRMc3oP2DQ=
+	b=cuVniH3YvrGrj3GU5AenGI6xfcSpYB6TrKI+85w7QPUT2T1PuMC3hJyXDsoaZwjAl
+	 LJoPVi0ztHliq/hgJIaph/qQZ+1VhJLu9IBJr9yc9KZe1gaBuvF00tuxF/08N6jPho
+	 QWn+J42bzwlvVF5Nw4xcME2uUBk+KmE6NZfWr01E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank Oltmanns <frank@oltmanns.dev>,
-	Stuart Gathman <stuart@gathman.org>
-Subject: [PATCH 6.12 366/590] arm64: dts: allwinner: a64: explicitly assign clock parent for TCON0
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 379/623] arm64: dts: qcom: qcs404: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:01 +0100
-Message-ID: <20250205134509.273591845@linuxfoundation.org>
+Message-ID: <20250205134510.716921821@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 8715c91a836502929c637c76a26335ede8818acf ]
+[ Upstream commit 1473ff0b69de68b23ce9874548cdabc64d72725e ]
 
-TCON0 seems to need a different clock parent depending on output type.
-For RGB it has to be PLL-VIDEO0-2X, while for DSI it has to be PLL-MIPI,
-so select it explicitly.
+The QCS40x platforms use PMS405 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Video output doesn't work if incorrect clock is assigned.
-
-On my Pinebook I manually configured PLL-VIDEO0-2X and PLL-MIPI to the same
-rate, and while video output works fine with PLL-VIDEO0-2X, it doesn't
-work at all (as in no picture) with PLL-MIPI.
-
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
-Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Link: https://patch.msgid.link/20250104074035.1611136-4-anarsoul@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: 9181bb939984 ("arm64: dts: qcom: Add SDX75 platform and IDP board support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-4-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts | 2 ++
- arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts  | 2 ++
- arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi         | 2 ++
- 3 files changed, 6 insertions(+)
+ arch/arm64/boot/dts/qcom/qcs404.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 379c2c8466f50..86d44349e0951 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-@@ -390,6 +390,8 @@
- &tcon0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&lcd_rgb666_pins>;
-+	assigned-clocks = <&ccu CLK_TCON0>;
-+	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
- 
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-index b407e1dd08a73..ec055510af8b6 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-@@ -369,6 +369,8 @@
- &tcon0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&lcd_rgb666_pins>;
-+	assigned-clocks = <&ccu CLK_TCON0>;
-+	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
- 
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index a5c3920e0f048..0fecf0abb204c 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -445,6 +445,8 @@
- 			clock-names = "ahb", "tcon-ch0";
- 			clock-output-names = "tcon-data-clock";
+diff --git a/arch/arm64/boot/dts/qcom/qcs404.dtsi b/arch/arm64/boot/dts/qcom/qcs404.dtsi
+index 215ba146207af..2862474f33b0e 100644
+--- a/arch/arm64/boot/dts/qcom/qcs404.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs404.dtsi
+@@ -28,7 +28,7 @@
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
  			#clock-cells = <0>;
-+			assigned-clocks = <&ccu CLK_TCON0>;
-+			assigned-clock-parents = <&ccu CLK_PLL_MIPI>;
- 			resets = <&ccu RST_BUS_TCON0>, <&ccu RST_BUS_LVDS>;
- 			reset-names = "lcd", "lvds";
+-			clock-frequency = <32768>;
++			clock-frequency = <32764>;
+ 		};
+ 	};
  
 -- 
 2.39.5
