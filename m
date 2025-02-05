@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA89A2909D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C44C8A28CB8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EBDF3A5A73
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 376523A664C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F3315854F;
-	Wed,  5 Feb 2025 14:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F79314A088;
+	Wed,  5 Feb 2025 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsGafTRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAwR7Zvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E45E151988;
-	Wed,  5 Feb 2025 14:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C16C13C9C4;
+	Wed,  5 Feb 2025 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766303; cv=none; b=qF58ckhDVZ93DiY4aWQqXgMd9h5su/vLUAST7Zir8AEcOsB/c98Uz04R0XucU+qR6WcP6YeT/2dx0wbuJAB7ymaDGYuO+07l7cyN/Ea4HBcEhfA1kpACGvS0MMYSWJMYbtIk356PRBuq1dMYpgIUDrG76m+MKpiPoIZeQrOggGY=
+	t=1738763580; cv=none; b=DjtAxlKvPWqS/Q2Gsiay/OIN4pOWtc5NJcme0HZXEKJrVCwiCKLmL18qQIW+AZwNLKeESZjQS0CGXgMDEjSlFlm1YgkFVyetCHsPDrO/XN+eRGH+ojm/SAF0Pkj+8yuwnpp0qUPciUVBDHUBZZ23I1+BFoixou0T+obN4p7Vk/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766303; c=relaxed/simple;
-	bh=JR2hTv+/8/Rc8yNWuDZYV1d7rl0dOGjdogm13iL0Zgk=;
+	s=arc-20240116; t=1738763580; c=relaxed/simple;
+	bh=ig288cnFNJgYfAXWnxtKX7S12Ip674lqWx7qyXsOja0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxqgr6NFFWAIS9ixApmrD9RuSWj1gZsbisbMqACrf34AIJN20h254J33PMLTPqOc8jd9S3WY9uMhbVbplGH7DcyqBflGFBtJWSUejDdLlwAn/zrInyNylKpYyNo32DwzUXAO17ngVIaW2qqSdok+Q5n9zAtFlyfF+j5FmOpj9VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsGafTRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B01C4CED1;
-	Wed,  5 Feb 2025 14:38:22 +0000 (UTC)
+	 MIME-Version; b=SQ8P2DHt2nTGXDlfVep1H23GvMd0qMmgoizaHkfZ9dh/5UIldpM/1DcvnCFSvjjAEJXqoL9hFUhSdwHtkjOWo9JG7FGljK98xj4+sz4wDVlTRYCN+WB7hZKj1tJ1yk0rwAhW+ZQHS0qURVOP4o3KZbjueUn975cu/inzxggkDqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAwR7Zvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9B8C4CED6;
+	Wed,  5 Feb 2025 13:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766302;
-	bh=JR2hTv+/8/Rc8yNWuDZYV1d7rl0dOGjdogm13iL0Zgk=;
+	s=korg; t=1738763580;
+	bh=ig288cnFNJgYfAXWnxtKX7S12Ip674lqWx7qyXsOja0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tsGafTRVL0YyaQBlutB/tmIMqKzF5PhZBNEdxa2gItYslFtnIKEshuTTNlFIi19Px
-	 dTN4koBix3ZCxJKEvGcOvCyeHZ/n3Zm6CFBA4HvRDzm+MGhotvilJyhEQ6WBuM04DE
-	 UbjkiD/PhlhHF+BajFHDa/ibSxpWTMs/4HfD1YsQ=
+	b=iAwR7Zvj3+4Cl8GM1dvn+/ZQkQLncCSttjM/8Lev/jjpPKKIahyH+yLUYmxImZNGq
+	 9tUIBlDXmZ57ncjfr6SmeuLK79qeB9WoGTfRKUME2SAoLevxyViAdAFZUzazL9O1d5
+	 j2TDM0xfP1asYx24cCC17FKQXAmPxF4oPBrZWL9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 261/623] iommu/arm-smmuv3: Update comments about ATS and bypass
+Subject: [PATCH 6.6 084/393] gpio: pca953x: Fully convert to device managed resources
 Date: Wed,  5 Feb 2025 14:40:03 +0100
-Message-ID: <20250205134506.216465919@linuxfoundation.org>
+Message-ID: <20250205134423.507964842@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9b640ae7fbba13d45a8b9712dff2911a0c2b5ff4 ]
+[ Upstream commit 53c59d66c44c5eb98b34da9967f937e5387f8624 ]
 
-The SMMUv3 spec has a note that BYPASS and ATS don't work together under
-the STE EATS field definition. However there is another section "13.6.4
-Full ATS skipping stage 1" that explains under certain conditions BYPASS
-and ATS do work together if the STE is using S1DSS to select BYPASS and
-the CD table has the possibility for a substream.
+Curtrently the error path is unsynchronised with removal due to
+regulator being disabled before other device managed resources
+are handled. Correct that by wrapping regulator enablement in
+the respective call.
 
-When these comments were written the understanding was that all forms of
-BYPASS just didn't work and this was to be a future problem to solve.
-
-It turns out that ATS and IDENTITY will always work just fine:
-
- - If STE.Config = BYPASS then the PCI ATS is disabled
-
- - If a PASID domain is attached then S1DSS = BYPASS and ATS will be
-   enabled. This meets the requirements of 13.6.4 to automatically
-   generate 1:1 ATS replies on the RID.
-
-Update the comments to reflect this.
-
-Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-f27174f44f39+27a33-smmuv3_ats_note_jgg@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 7cef813a91c4 ("gpio: pca953x: log an error when failing to get the reset GPIO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 68 +++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index a5c7002ff75bb..6d15405f0ea3e 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2745,9 +2745,14 @@ int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
- 		 * Translation Requests and Translated transactions are denied
- 		 * as though ATS is disabled for the stream (STE.EATS == 0b00),
- 		 * causing F_BAD_ATS_TREQ and F_TRANSL_FORBIDDEN events
--		 * (IHI0070Ea 5.2 Stream Table Entry). Thus ATS can only be
--		 * enabled if we have arm_smmu_domain, those always have page
--		 * tables.
-+		 * (IHI0070Ea 5.2 Stream Table Entry).
-+		 *
-+		 * However, if we have installed a CD table and are using S1DSS
-+		 * then ATS will work in S1DSS bypass. See "13.6.4 Full ATS
-+		 * skipping stage 1".
-+		 *
-+		 * Disable ATS if we are going to create a normal 0b100 bypass
-+		 * STE.
- 		 */
- 		state->ats_enabled = !state->disable_ats &&
- 				     arm_smmu_ats_supported(master);
-@@ -3070,8 +3075,10 @@ static void arm_smmu_attach_dev_ste(struct iommu_domain *domain,
- 	if (arm_smmu_ssids_in_use(&master->cd_table)) {
- 		/*
- 		 * If a CD table has to be present then we need to run with ATS
--		 * on even though the RID will fail ATS queries with UR. This is
--		 * because we have no idea what the PASID's need.
-+		 * on because we have to assume a PASID is using ATS. For
-+		 * IDENTITY this will setup things so that S1DSS=bypass which
-+		 * follows the explanation in "13.6.4 Full ATS skipping stage 1"
-+		 * and allows for ATS on the RID to work.
- 		 */
- 		state.cd_needs_ats = true;
- 		arm_smmu_attach_prepare(&state, domain);
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index b52548822ecc3..cf5d85c6c8925 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1047,13 +1047,40 @@ static int device_pca957x_init(struct pca953x_chip *chip)
+ 	return ret;
+ }
+ 
++static void pca953x_disable_regulator(void *reg)
++{
++	regulator_disable(reg);
++}
++
++static int pca953x_get_and_enable_regulator(struct pca953x_chip *chip)
++{
++	struct device *dev = &chip->client->dev;
++	struct regulator *reg = chip->regulator;
++	int ret;
++
++	reg = devm_regulator_get(dev, "vcc");
++	if (IS_ERR(reg))
++		return dev_err_probe(dev, PTR_ERR(reg), "reg get err\n");
++
++	ret = regulator_enable(reg);
++	if (ret)
++	        return dev_err_probe(dev, ret, "reg en err\n");
++
++	ret = devm_add_action_or_reset(dev, pca953x_disable_regulator, reg);
++	if (ret)
++		return ret;
++
++	chip->regulator = reg;
++	return 0;
++}
++
+ static int pca953x_probe(struct i2c_client *client)
+ {
++	struct device *dev = &client->dev;
+ 	struct pca953x_platform_data *pdata;
+ 	struct pca953x_chip *chip;
+ 	int irq_base;
+ 	int ret;
+-	struct regulator *reg;
+ 	const struct regmap_config *regmap_config;
+ 
+ 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
+@@ -1088,16 +1115,9 @@ static int pca953x_probe(struct i2c_client *client)
+ 	if (!chip->driver_data)
+ 		return -ENODEV;
+ 
+-	reg = devm_regulator_get(&client->dev, "vcc");
+-	if (IS_ERR(reg))
+-		return dev_err_probe(&client->dev, PTR_ERR(reg), "reg get err\n");
+-
+-	ret = regulator_enable(reg);
+-	if (ret) {
+-		dev_err(&client->dev, "reg en err: %d\n", ret);
++	ret = pca953x_get_and_enable_regulator(chip);
++	if (ret)
+ 		return ret;
+-	}
+-	chip->regulator = reg;
+ 
+ 	i2c_set_clientdata(client, chip);
+ 
+@@ -1120,10 +1140,8 @@ static int pca953x_probe(struct i2c_client *client)
+ 	}
+ 
+ 	chip->regmap = devm_regmap_init_i2c(client, regmap_config);
+-	if (IS_ERR(chip->regmap)) {
+-		ret = PTR_ERR(chip->regmap);
+-		goto err_exit;
+-	}
++	if (IS_ERR(chip->regmap))
++		return PTR_ERR(chip->regmap);
+ 
+ 	regcache_mark_dirty(chip->regmap);
+ 
+@@ -1158,28 +1176,13 @@ static int pca953x_probe(struct i2c_client *client)
+ 		ret = device_pca95xx_init(chip);
+ 	}
+ 	if (ret)
+-		goto err_exit;
++		return ret;
+ 
+ 	ret = pca953x_irq_setup(chip, irq_base);
+ 	if (ret)
+-		goto err_exit;
+-
+-	ret = devm_gpiochip_add_data(&client->dev, &chip->gpio_chip, chip);
+-	if (ret)
+-		goto err_exit;
+-
+-	return 0;
+-
+-err_exit:
+-	regulator_disable(chip->regulator);
+-	return ret;
+-}
+-
+-static void pca953x_remove(struct i2c_client *client)
+-{
+-	struct pca953x_chip *chip = i2c_get_clientdata(client);
++		return ret;
+ 
+-	regulator_disable(chip->regulator);
++	return devm_gpiochip_add_data(dev, &chip->gpio_chip, chip);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -1347,7 +1350,6 @@ static struct i2c_driver pca953x_driver = {
+ 		.acpi_match_table = pca953x_acpi_ids,
+ 	},
+ 	.probe		= pca953x_probe,
+-	.remove		= pca953x_remove,
+ 	.id_table	= pca953x_id,
+ };
+ 
 -- 
 2.39.5
 
