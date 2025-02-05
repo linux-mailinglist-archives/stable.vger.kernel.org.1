@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F06BA29379
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C531A291BD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A4D16B963
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A16716C034
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C4721345;
-	Wed,  5 Feb 2025 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060C3198851;
+	Wed,  5 Feb 2025 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1dyv03B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDHv7e1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745431519BF;
-	Wed,  5 Feb 2025 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DE71C1F12;
+	Wed,  5 Feb 2025 14:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768014; cv=none; b=mcqT6hfxbNNp6rdhG0BpQrBD9mvYVGT6dk9g+e170263Jxk4Q8q0OqWQJY3i21EhvLXZ3gOvOTtkIOZYPFqXl1d2j/emWibrcvlfbqEuAKpMzl8cQ+7BJzhJBnOb92+zRoIDXBGgHO1+X6fXgjuqP4+77a2GWuw62waAKSFoIWI=
+	t=1738766622; cv=none; b=g5+/m8SNPhYdYZZg4KENnw2uB3ZIPJUakJvyKrVD1op8I9JRV9oQ74zDiyzB7cqwMpGti3Xn2a8yPS6otBi8TRYbarOsaF6UEyP4tAdQN3Cy0reQv08ZNsI65zbvYaFSanBXoIEo0WVh2N9pfmdROQr6HZVewlAzUWY5t+xBjzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768014; c=relaxed/simple;
-	bh=rAKyGmigLr84BWmXp15RmllqIwyyxqAly/DtaBMk1BM=;
+	s=arc-20240116; t=1738766622; c=relaxed/simple;
+	bh=vKY7DELQDJ5DWCxE5Rvqo2wrU6X8Nmhyras3akPAMqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rx8mU0i/bPqA7BIjzI1FIZ+rkLBqlA2FHTbZLpPTrD/0iqOTWbVqU2HTTJdP8KvnEgViMpE22qO3xAUXdaRPBKJIS9wwztsirrU21+HzRD3u8WZaW+dHU3u8UWtfDQKUT32BLV8FxSbW/u0gIj4ca8ksq3ID23STZkNp8iyMi4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1dyv03B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EA9C4CED1;
-	Wed,  5 Feb 2025 15:06:53 +0000 (UTC)
+	 MIME-Version; b=raBs5k9LEKzxdjPmOhRKBF2Oc0yJ48Da7A4JfJjX9Q9nk20PWCE1Vj9GTyl/lIYyolQ4eavGgkDVUUZBOaY+Z/3VHHtXG8+Zur1gMlg3gf0ZfSEbqEyADlV0eBi63D+pzemvYxiJPpLej+EqjkBks19T6ssJEVeCCiZ4w+zX04k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDHv7e1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F12EC4CED1;
+	Wed,  5 Feb 2025 14:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768014;
-	bh=rAKyGmigLr84BWmXp15RmllqIwyyxqAly/DtaBMk1BM=;
+	s=korg; t=1738766622;
+	bh=vKY7DELQDJ5DWCxE5Rvqo2wrU6X8Nmhyras3akPAMqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1dyv03Bp0c3OJ1S2CzWXDchF1B90mBALupvd5hFoKrguEvTkBY598jGxb7CM+gsU
-	 oKvCBwrm1Hj9fSIz/6ij2JUGLIMyYjLao908EuG71gZwzkREjXvQT2Rb9qyljl1zI5
-	 +yma4rRHExfAUOfG3MLI7pU6LIykQSZMqOiu3VfE=
+	b=kDHv7e1Ao1hJzL7DxwfKxUEnFNu1yGki8wa/MqJORRcCc3oYBsMNRbr/iDqJApKZS
+	 eRe+c6hWoM9fK8cWwt/5GoLGsEptHNpwca4CIbOXhlowHo1ZGjpGypCK6fh0839ZRW
+	 /2tt3tUevjTizOXGXZTQp5HbcI7BOf3D7T7IVyps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 542/590] Revert "SUNRPC: Reduce thread wake-up rate when receiving large RPC messages"
-Date: Wed,  5 Feb 2025 14:44:57 +0100
-Message-ID: <20250205134516.008794177@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 379/393] usb: dwc3-am62: Fix an OF node leak in phy_syscon_pll_refclk()
+Date: Wed,  5 Feb 2025 14:44:58 +0100
+Message-ID: <20250205134434.796347028@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 966a675da844f1a764bb44557c21561cc3d09840 upstream.
+commit a266462b937beba065e934a563efe13dd246a164 upstream.
 
-I noticed that a handful of NFSv3 fstests were taking an
-unexpectedly long time to run. Troubleshooting showed that the
-server's TCP window closed and never re-opened, which caused the
-client to trigger an RPC retransmit timeout after 180 seconds.
+phy_syscon_pll_refclk() leaks an OF node obtained by
+of_parse_phandle_with_fixed_args(), thus add an of_node_put() call.
 
-The client's recovery action was to establish a fresh connection
-and retransmit the timed-out requests. This worked, but it adds a
-long delay.
-
-I tracked the problem to the commit that attempted to reduce the
-rate at which the network layer delivers TCP socket data_ready
-callbacks. Under most circumstances this change worked as expected,
-but for NFSv3, which has no session or other type of throttling, it
-can overwhelm the receiver on occasion.
-
-I'm sure I could tweak the lowat settings, but the small benefit
-doesn't seem worth the bother. Just revert it.
-
-Fixes: 2b877fc53e97 ("SUNRPC: Reduce thread wake-up rate when receiving large RPC messages")
-Cc: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable <stable@kernel.org>
+Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250109001638.70033-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svcsock.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/usb/dwc3/dwc3-am62.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1083,9 +1083,6 @@ static void svc_tcp_fragment_received(st
- 	/* If we have more data, signal svc_xprt_enqueue() to try again */
- 	svsk->sk_tcplen = 0;
- 	svsk->sk_marker = xdr_zero;
--
--	smp_wmb();
--	tcp_set_rcvlowat(svsk->sk_sk, 1);
- }
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -160,6 +160,7 @@ static int phy_syscon_pll_refclk(struct
+ 	if (ret)
+ 		return ret;
  
- /**
-@@ -1175,17 +1172,10 @@ err_incomplete:
- 		goto err_delete;
- 	if (len == want)
- 		svc_tcp_fragment_received(svsk);
--	else {
--		/* Avoid more ->sk_data_ready() calls until the rest
--		 * of the message has arrived. This reduces service
--		 * thread wake-ups on large incoming messages. */
--		tcp_set_rcvlowat(svsk->sk_sk,
--				 svc_sock_reclen(svsk) - svsk->sk_tcplen);
--
-+	else
- 		trace_svcsock_tcp_recv_short(&svsk->sk_xprt,
- 				svc_sock_reclen(svsk),
- 				svsk->sk_tcplen - sizeof(rpc_fraghdr));
--	}
- 	goto err_noclose;
- error:
- 	if (len != -EAGAIN)
++	of_node_put(args.np);
+ 	am62->offset = args.args[0];
+ 
+ 	ret = regmap_update_bits(am62->syscon, am62->offset, PHY_PLL_REFCLK_MASK, am62->rate_code);
 
 
 
