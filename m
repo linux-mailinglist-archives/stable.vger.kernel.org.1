@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77D3A29239
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA22A29099
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1377D16BF8C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 472223A611E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722D81FECCD;
-	Wed,  5 Feb 2025 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C01155A21;
+	Wed,  5 Feb 2025 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1l8o6Ay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBnKdgof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F00B1FECB9;
-	Wed,  5 Feb 2025 14:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16AB8634E;
+	Wed,  5 Feb 2025 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767024; cv=none; b=OaOS3JYsf4/OwXrtaqfhuRgFiW1C7I3IsXUT/0rWeCcuxveK/Tg9IZRWDtabUjeyUG2liQoFrnB5BUvGZZOTJfSUH6zuI4GQ+EjBmCl48D2SnF1bjwaSyYDn4K3rykjocGAtkuLuhaquLu6XenN79MfB5d6YGPJQWQQTDKVEdeg=
+	t=1738766285; cv=none; b=M9DK7NxSAvBROyBwbENfaoUvvPgQEX58HNraupgFuUyzioUsprW6/5ZyvPYLOZTei9pW/boYdyVoaDF0/oo3I0/oPoTeGBhKqtOaY5Dbdk1zWm22U4NhWLVYRJWS0HlvEHRu2yxZ2hydoll1U+RtIkm62WLu+lbT/4XwBvK7dAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767024; c=relaxed/simple;
-	bh=dTVRz5MEBp7pz6rHn5nkdfc3fVPjFq/t3mX2msyw7KE=;
+	s=arc-20240116; t=1738766285; c=relaxed/simple;
+	bh=glBo92eN7mwWWQ+JPKHmkBV3Pm3WuEVAax0R2tXUC5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkWHnmGY+DpDOiBueuaxCvE04QrH1uqU3jBc9lZvSJckwTB7rdH9L96s2lM94CRx+vXCIOlv0D3gm/DxgbCeLrOckM/DZUHDvu76KyD4BQsFyv5BNSldD+9aV15grEJlsrj+zhSStDHlSv+8RILJhSR3ua5DAjQi9yQKI/dN6NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1l8o6Ay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43339C4CED1;
-	Wed,  5 Feb 2025 14:50:23 +0000 (UTC)
+	 MIME-Version; b=IKQgdX46nTCzFCtsfj0Oo9fZRLiflaT3jIvtgSpyOXji0ik/gTlLatZwXLiZ5S927Yo1YrNdBt01xowSnKBF31UO0A5G5FkuTaFv4i9QJfZOeDvhlLDpKXM04dU20GrJkl/HMz/Bxtvb51ujjoRdNWpdjuKDqtA7+vXOODdUcjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBnKdgof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E54AC4CED1;
+	Wed,  5 Feb 2025 14:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767023;
-	bh=dTVRz5MEBp7pz6rHn5nkdfc3fVPjFq/t3mX2msyw7KE=;
+	s=korg; t=1738766285;
+	bh=glBo92eN7mwWWQ+JPKHmkBV3Pm3WuEVAax0R2tXUC5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1l8o6AyWOOueOdZ2D6qhAuCjrHIGDfIWAjceiZMFyRaQmj9978UVdEzAflcVRNfy
-	 pppvQrGB7VDewpa14T94VjoqexXMpZmgsDFaSWzEOsIIjeK+CIkIvs0gG8X5QixIFR
-	 5l74K9nuDQYyyhHv/mZuWlssIYSJ2taRVg4J9kfw=
+	b=DBnKdgofSXqCo+7MfqmkYAv6mOB6prbolC5+FTDKYbzccNERATAopBGGWi9s2OjSb
+	 hAOcOy43tIfp+Dc3UhyWAJPk1xOrJytD43Hy3SdhoJyLO9EBream2HXelws6NZ+r6O
+	 +XX+xCOofwMtViDpHCvb+xt38FBGEGKQ9QBO+L9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 320/623] ALSA: hda/realtek - Fixed headphone distorted sound on Acer Aspire A115-31 laptop
+Subject: [PATCH 6.12 307/590] arm64: dts: mediatek: mt8516: fix wdt irq type
 Date: Wed,  5 Feb 2025 14:41:02 +0100
-Message-ID: <20250205134508.463860023@linuxfoundation.org>
+Message-ID: <20250205134507.021779348@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 5cb4e5b056772e341b590755a976081776422053 ]
+[ Upstream commit 03a80442030e7147391738fb6cbe5fa0b3b91bb1 ]
 
-Sound played through headphones is distorted.
+The GICv2 does not support EDGE_FALLING interrupts, so the watchdog
+would refuse to attach due to a failing check coming from the GIC driver.
 
-Fixes: 34ab5bbc6e82 ("ALSA: hda/realtek - Add Headset Mic supported Acer NB platform")
-Closes: https://lore.kernel.org/linux-sound/e142749b-7714-4733-9452-918fbe328c8f@gmail.com/
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/0a89b6c18ed94378a105fa61e9f290e4@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-3-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ad66378d7321a..2d523b53b3d73 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10158,6 +10158,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1025, 0x1308, "Acer Aspire Z24-890", ALC286_FIXUP_ACER_AIO_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x132a, "Acer TravelMate B114-21", ALC233_FIXUP_ACER_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x1330, "Acer TravelMate X514-51T", ALC255_FIXUP_ACER_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1025, 0x1360, "Acer Aspire A115", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x141f, "Acer Spin SP513-54N", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x142b, "Acer Swift SF314-42", ALC255_FIXUP_ACER_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1430, "Acer TravelMate B311R-31", ALC256_FIXUP_ACER_MIC_NO_PRESENCE),
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index 4444293413023..098c32ebf6788 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -206,7 +206,7 @@
+ 			compatible = "mediatek,mt8516-wdt",
+ 				     "mediatek,mt6589-wdt";
+ 			reg = <0 0x10007000 0 0x1000>;
+-			interrupts = <GIC_SPI 198 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <GIC_SPI 198 IRQ_TYPE_LEVEL_LOW>;
+ 			#reset-cells = <1>;
+ 		};
+ 
 -- 
 2.39.5
 
