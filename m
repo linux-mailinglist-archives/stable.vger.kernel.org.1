@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEB8A28D3D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB20FA29066
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41073AA7CE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2196B7A280F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CB71591E3;
-	Wed,  5 Feb 2025 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50782155747;
+	Wed,  5 Feb 2025 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu2LNkfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMGPg0qa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD24158536;
-	Wed,  5 Feb 2025 13:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCB4151988;
+	Wed,  5 Feb 2025 14:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763860; cv=none; b=JGBy2C8g04DktDyRXYRBQY/qS7My0hzFkBtEFbLpthMZ9qGd36mDPWII8Grmm4WwYIg3KBCSZMyc+QrdB2yaw2pro2pPlzVGWUV3O95S12cFpQxiB/XcN2lzK0EcQDcaYgztDB5R04+Agvz9ZTDFBJK6Z2nMoRirZHs8bLI1T2I=
+	t=1738766133; cv=none; b=J8ybwfnOJZGTMVb5YbiCfLxnVmNK1m6Y5r76CqFPhp6ib87JuDXkznQcvIqBvZkSSwFw/41sxOrIXgYWYZl2uE91aL01MmAFodvvXp6zYYJhYDRXWjY5Uhf7CARoboWdqX/12kOPO6bnTcMssRS4V8TfeiGY8HLLaxytMoB6Qpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763860; c=relaxed/simple;
-	bh=nxtjr+iDNzdMJ6EG+FKdiu67GRdP4IdxB2EdCYN8XaI=;
+	s=arc-20240116; t=1738766133; c=relaxed/simple;
+	bh=dB/QCwemnRnKyfgwa3YUZgTeDq4yhkrWYdiAGekmLpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZ65JxeQutp7l6U9cBw2HdjbnnfypmE5dX17hZk72YiLJLa7v/9HLx+zRiKEvZBUK6gwmak7qowTMBs6Ul7jJG8bQaCxYnVpl02HwK7G5MEkFsauV0dl3UdXpyDKbobo47O2A6otoe0+T3sNgwcO1CkznDzXSlNdSVxjiOXePIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu2LNkfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2E8C4CED6;
-	Wed,  5 Feb 2025 13:57:39 +0000 (UTC)
+	 MIME-Version; b=BlTMEqILTmKuZTO5td2qSzap7aykwJann7AmbQdBLgRdRc2vcqpdU0QMEWvfyeOLHdmRcgYpp8v/Yjbe5Ge9fmrkVbMI2BB4yvUOcECwbR8bgJWZ2TMr4XwJt8KTKjQIH9irgNJRmx6Kgreyymxr4AePggwx22EiulxnA3WUehU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMGPg0qa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86387C4CED1;
+	Wed,  5 Feb 2025 14:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763860;
-	bh=nxtjr+iDNzdMJ6EG+FKdiu67GRdP4IdxB2EdCYN8XaI=;
+	s=korg; t=1738766132;
+	bh=dB/QCwemnRnKyfgwa3YUZgTeDq4yhkrWYdiAGekmLpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fu2LNkfycU0niXLow6CLJm9ejGrs8hpTo2IDfJqJn32KqwuPS6LbKzKF22KJCrkxU
-	 ldzVpLmvrkglwg8pyoCe8xLa+rhBjrDVnl0xTl8bUS4RUzmVkgv1B0qGkwSwV4t/jD
-	 Kbagxl2ztgV/32AK+yOFPjpneC3CNvoFROy/Ddyc=
+	b=DMGPg0qa5+Qxv3MPRx7Bqf019JWj/oOJYm7Qt7GsJjRemkuMKbDE3oWFX2NDPA8C8
+	 QoOY+/ZUn/okNwRL3ptCFiyFJwVkD80r05EZrLtLCMhY2acoCQgNLMcCIdjZjhMtYS
+	 pr7XskDVKnIZh600/f/svms3gdt5EDL+dTTrWMhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/393] net/smc: fix data error when recvmsg with MSG_PEEK flag
+Subject: [PATCH 6.12 278/590] ALSA: hda: Fix compilation of snd_hdac_adsp_xxx() helpers
 Date: Wed,  5 Feb 2025 14:40:33 +0100
-Message-ID: <20250205134424.655184657@linuxfoundation.org>
+Message-ID: <20250205134505.914986834@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,246 +63,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit a4b6539038c1aa1ae871aacf6e41b566c3613993 ]
+[ Upstream commit 7579790915387396e26041ceafbc07348658edef ]
 
-When recvmsg with MSG_PEEK flag, the data will be copied to
-user's buffer without advancing consume cursor and without
-reducing the length of rx available data. Once the expected
-peek length is larger than the value of bytes_to_rcv, in the
-loop of do while in smc_rx_recvmsg, the first loop will copy
-bytes_to_rcv bytes of data from the position local_tx_ctrl.cons,
-the second loop will copy the min(bytes_to_rcv, read_remaining)
-bytes from the position local_tx_ctrl.cons again because of the
-lacking of process with advancing consume cursor and reducing
-the length of available data. So do the subsequent loops. The
-data copied in the second loop and the subsequent loops will
-result in data error, as it should not be copied if no more data
-arrives and it should be copied from the position advancing
-bytes_to_rcv bytes from the local_tx_ctrl.cons if more data arrives.
+The snd_hdac_adsp_xxx() wrap snd_hdac_reg_xxx() helpers to simplify
+register access for AudioDSP drivers e.g.: the avs-driver. Byte- and
+word-variants of said helps do not expand to bare readx/writex()
+operations but functions instead and, due to pointer type
+incompatibility, cause compilation to fail.
 
-This issue can be reproduce by the following python script:
-server.py:
-import socket
-import time
-server_ip = '0.0.0.0'
-server_port = 12346
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind((server_ip, server_port))
-server_socket.listen(1)
-print('Server is running and listening for connections...')
-conn, addr = server_socket.accept()
-print('Connected by', addr)
-while True:
-    data = conn.recv(1024)
-    if not data:
-        break
-    print('Received request:', data.decode())
-    conn.sendall(b'Hello, client!\n')
-    time.sleep(5)
-    conn.sendall(b'Hello, again!\n')
-conn.close()
+As the macros are utilized by the avs-driver alone, relocate the code
+introduced with commit c19bd02e9029 ("ALSA: hda: Add helper macros for
+DSP capable devices") into the avs/ directory and update it to operate
+on 'adev' i.e.: the avs-driver-context directly to fix the issue.
 
-client.py:
-import socket
-server_ip = '<server ip>'
-server_port = 12346
-resp=b'Hello, client!\nHello, again!\n'
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect((server_ip, server_port))
-request = 'Hello, server!'
-client_socket.sendall(request.encode())
-peek_data = client_socket.recv(len(resp),
-    socket.MSG_PEEK | socket.MSG_WAITALL)
-print('Peeked data:', peek_data.decode())
-client_socket.close()
-
-Fixes: 952310ccf2d8 ("smc: receive data from RMBE")
-Reported-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Link: https://patch.msgid.link/20250104143201.35529-1-guangguan.wang@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c19bd02e9029 ("ALSA: hda: Add helper macros for DSP capable devices")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20250110113326.3809897-2-cezary.rojewski@intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c |  2 +-
- net/smc/smc_rx.c | 37 +++++++++++++++++++++----------------
- net/smc/smc_rx.h |  8 ++++----
- 3 files changed, 26 insertions(+), 21 deletions(-)
+ include/sound/hdaudio_ext.h     | 45 ---------------------------------
+ sound/soc/intel/avs/apl.c       |  1 +
+ sound/soc/intel/avs/cnl.c       |  1 +
+ sound/soc/intel/avs/registers.h | 45 +++++++++++++++++++++++++++++++++
+ sound/soc/intel/avs/skl.c       |  1 +
+ 5 files changed, 48 insertions(+), 45 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 0acf07538840c..45efbbfff94ae 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2745,7 +2745,7 @@ static int smc_accept(struct socket *sock, struct socket *new_sock,
- 			release_sock(clcsk);
- 		} else if (!atomic_read(&smc_sk(nsk)->conn.bytes_to_rcv)) {
- 			lock_sock(nsk);
--			smc_rx_wait(smc_sk(nsk), &timeo, smc_rx_data_available);
-+			smc_rx_wait(smc_sk(nsk), &timeo, 0, smc_rx_data_available);
- 			release_sock(nsk);
- 		}
- 	}
-diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
-index 9a2f3638d161d..acb14e28cad41 100644
---- a/net/smc/smc_rx.c
-+++ b/net/smc/smc_rx.c
-@@ -238,22 +238,23 @@ static int smc_rx_splice(struct pipe_inode_info *pipe, char *src, size_t len,
- 	return -ENOMEM;
- }
+diff --git a/include/sound/hdaudio_ext.h b/include/sound/hdaudio_ext.h
+index 957295364a5e3..4c7a40e149a59 100644
+--- a/include/sound/hdaudio_ext.h
++++ b/include/sound/hdaudio_ext.h
+@@ -2,8 +2,6 @@
+ #ifndef __SOUND_HDAUDIO_EXT_H
+ #define __SOUND_HDAUDIO_EXT_H
  
--static int smc_rx_data_available_and_no_splice_pend(struct smc_connection *conn)
-+static int smc_rx_data_available_and_no_splice_pend(struct smc_connection *conn, size_t peeked)
+-#include <linux/io-64-nonatomic-lo-hi.h>
+-#include <linux/iopoll.h>
+ #include <sound/hdaudio.h>
+ 
+ int snd_hdac_ext_bus_init(struct hdac_bus *bus, struct device *dev,
+@@ -119,49 +117,6 @@ int snd_hdac_ext_bus_link_put(struct hdac_bus *bus, struct hdac_ext_link *hlink)
+ 
+ void snd_hdac_ext_bus_link_power(struct hdac_device *codec, bool enable);
+ 
+-#define snd_hdac_adsp_writeb(chip, reg, value) \
+-	snd_hdac_reg_writeb(chip, (chip)->dsp_ba + (reg), value)
+-#define snd_hdac_adsp_readb(chip, reg) \
+-	snd_hdac_reg_readb(chip, (chip)->dsp_ba + (reg))
+-#define snd_hdac_adsp_writew(chip, reg, value) \
+-	snd_hdac_reg_writew(chip, (chip)->dsp_ba + (reg), value)
+-#define snd_hdac_adsp_readw(chip, reg) \
+-	snd_hdac_reg_readw(chip, (chip)->dsp_ba + (reg))
+-#define snd_hdac_adsp_writel(chip, reg, value) \
+-	snd_hdac_reg_writel(chip, (chip)->dsp_ba + (reg), value)
+-#define snd_hdac_adsp_readl(chip, reg) \
+-	snd_hdac_reg_readl(chip, (chip)->dsp_ba + (reg))
+-#define snd_hdac_adsp_writeq(chip, reg, value) \
+-	snd_hdac_reg_writeq(chip, (chip)->dsp_ba + (reg), value)
+-#define snd_hdac_adsp_readq(chip, reg) \
+-	snd_hdac_reg_readq(chip, (chip)->dsp_ba + (reg))
+-
+-#define snd_hdac_adsp_updateb(chip, reg, mask, val) \
+-	snd_hdac_adsp_writeb(chip, reg, \
+-			(snd_hdac_adsp_readb(chip, reg) & ~(mask)) | (val))
+-#define snd_hdac_adsp_updatew(chip, reg, mask, val) \
+-	snd_hdac_adsp_writew(chip, reg, \
+-			(snd_hdac_adsp_readw(chip, reg) & ~(mask)) | (val))
+-#define snd_hdac_adsp_updatel(chip, reg, mask, val) \
+-	snd_hdac_adsp_writel(chip, reg, \
+-			(snd_hdac_adsp_readl(chip, reg) & ~(mask)) | (val))
+-#define snd_hdac_adsp_updateq(chip, reg, mask, val) \
+-	snd_hdac_adsp_writeq(chip, reg, \
+-			(snd_hdac_adsp_readq(chip, reg) & ~(mask)) | (val))
+-
+-#define snd_hdac_adsp_readb_poll(chip, reg, val, cond, delay_us, timeout_us) \
+-	readb_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
+-			   delay_us, timeout_us)
+-#define snd_hdac_adsp_readw_poll(chip, reg, val, cond, delay_us, timeout_us) \
+-	readw_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
+-			   delay_us, timeout_us)
+-#define snd_hdac_adsp_readl_poll(chip, reg, val, cond, delay_us, timeout_us) \
+-	readl_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
+-			   delay_us, timeout_us)
+-#define snd_hdac_adsp_readq_poll(chip, reg, val, cond, delay_us, timeout_us) \
+-	readq_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
+-			   delay_us, timeout_us)
+-
+ struct hdac_ext_device;
+ 
+ /* ops common to all codec drivers */
+diff --git a/sound/soc/intel/avs/apl.c b/sound/soc/intel/avs/apl.c
+index d443fe8d51aee..3dccf0a57a3a1 100644
+--- a/sound/soc/intel/avs/apl.c
++++ b/sound/soc/intel/avs/apl.c
+@@ -12,6 +12,7 @@
+ #include "avs.h"
+ #include "messages.h"
+ #include "path.h"
++#include "registers.h"
+ #include "topology.h"
+ 
+ static irqreturn_t avs_apl_dsp_interrupt(struct avs_dev *adev)
+diff --git a/sound/soc/intel/avs/cnl.c b/sound/soc/intel/avs/cnl.c
+index bd3c4bb8bf5a1..03f8fb0dc187f 100644
+--- a/sound/soc/intel/avs/cnl.c
++++ b/sound/soc/intel/avs/cnl.c
+@@ -9,6 +9,7 @@
+ #include <sound/hdaudio_ext.h>
+ #include "avs.h"
+ #include "messages.h"
++#include "registers.h"
+ 
+ static void avs_cnl_ipc_interrupt(struct avs_dev *adev)
  {
--	return atomic_read(&conn->bytes_to_rcv) &&
-+	return smc_rx_data_available(conn, peeked) &&
- 	       !atomic_read(&conn->splice_pending);
- }
+diff --git a/sound/soc/intel/avs/registers.h b/sound/soc/intel/avs/registers.h
+index f76e91cff2a9a..5b6d60eb3c18b 100644
+--- a/sound/soc/intel/avs/registers.h
++++ b/sound/soc/intel/avs/registers.h
+@@ -9,6 +9,8 @@
+ #ifndef __SOUND_SOC_INTEL_AVS_REGS_H
+ #define __SOUND_SOC_INTEL_AVS_REGS_H
  
- /* blocks rcvbuf consumer until >=len bytes available or timeout or interrupted
-  *   @smc    smc socket
-  *   @timeo  pointer to max seconds to wait, pointer to value 0 for no timeout
-+ *   @peeked  number of bytes already peeked
-  *   @fcrit  add'l criterion to evaluate as function pointer
-  * Returns:
-  * 1 if at least 1 byte available in rcvbuf or if socket error/shutdown.
-  * 0 otherwise (nothing in rcvbuf nor timeout, e.g. interrupted).
-  */
--int smc_rx_wait(struct smc_sock *smc, long *timeo,
--		int (*fcrit)(struct smc_connection *conn))
-+int smc_rx_wait(struct smc_sock *smc, long *timeo, size_t peeked,
-+		int (*fcrit)(struct smc_connection *conn, size_t baseline))
++#include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/iopoll.h>
+ #include <linux/sizes.h>
+ 
+ #define AZX_PCIREG_PGCTL		0x44
+@@ -98,4 +100,47 @@
+ #define avs_downlink_addr(adev) \
+ 	avs_sram_addr(adev, AVS_DOWNLINK_WINDOW)
+ 
++#define snd_hdac_adsp_writeb(adev, reg, value) \
++	snd_hdac_reg_writeb(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
++#define snd_hdac_adsp_readb(adev, reg) \
++	snd_hdac_reg_readb(&(adev)->base.core, (adev)->dsp_ba + (reg))
++#define snd_hdac_adsp_writew(adev, reg, value) \
++	snd_hdac_reg_writew(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
++#define snd_hdac_adsp_readw(adev, reg) \
++	snd_hdac_reg_readw(&(adev)->base.core, (adev)->dsp_ba + (reg))
++#define snd_hdac_adsp_writel(adev, reg, value) \
++	snd_hdac_reg_writel(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
++#define snd_hdac_adsp_readl(adev, reg) \
++	snd_hdac_reg_readl(&(adev)->base.core, (adev)->dsp_ba + (reg))
++#define snd_hdac_adsp_writeq(adev, reg, value) \
++	snd_hdac_reg_writeq(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
++#define snd_hdac_adsp_readq(adev, reg) \
++	snd_hdac_reg_readq(&(adev)->base.core, (adev)->dsp_ba + (reg))
++
++#define snd_hdac_adsp_updateb(adev, reg, mask, val) \
++	snd_hdac_adsp_writeb(adev, reg, \
++			(snd_hdac_adsp_readb(adev, reg) & ~(mask)) | (val))
++#define snd_hdac_adsp_updatew(adev, reg, mask, val) \
++	snd_hdac_adsp_writew(adev, reg, \
++			(snd_hdac_adsp_readw(adev, reg) & ~(mask)) | (val))
++#define snd_hdac_adsp_updatel(adev, reg, mask, val) \
++	snd_hdac_adsp_writel(adev, reg, \
++			(snd_hdac_adsp_readl(adev, reg) & ~(mask)) | (val))
++#define snd_hdac_adsp_updateq(adev, reg, mask, val) \
++	snd_hdac_adsp_writeq(adev, reg, \
++			(snd_hdac_adsp_readq(adev, reg) & ~(mask)) | (val))
++
++#define snd_hdac_adsp_readb_poll(adev, reg, val, cond, delay_us, timeout_us) \
++	readb_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
++			   delay_us, timeout_us)
++#define snd_hdac_adsp_readw_poll(adev, reg, val, cond, delay_us, timeout_us) \
++	readw_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
++			   delay_us, timeout_us)
++#define snd_hdac_adsp_readl_poll(adev, reg, val, cond, delay_us, timeout_us) \
++	readl_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
++			   delay_us, timeout_us)
++#define snd_hdac_adsp_readq_poll(adev, reg, val, cond, delay_us, timeout_us) \
++	readq_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
++			   delay_us, timeout_us)
++
+ #endif /* __SOUND_SOC_INTEL_AVS_REGS_H */
+diff --git a/sound/soc/intel/avs/skl.c b/sound/soc/intel/avs/skl.c
+index 34f859d6e5a49..d66ef000de9ee 100644
+--- a/sound/soc/intel/avs/skl.c
++++ b/sound/soc/intel/avs/skl.c
+@@ -12,6 +12,7 @@
+ #include "avs.h"
+ #include "cldma.h"
+ #include "messages.h"
++#include "registers.h"
+ 
+ void avs_skl_ipc_interrupt(struct avs_dev *adev)
  {
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
- 	struct smc_connection *conn = &smc->conn;
-@@ -262,7 +263,7 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo,
- 	struct sock *sk = &smc->sk;
- 	int rc;
- 
--	if (fcrit(conn))
-+	if (fcrit(conn, peeked))
- 		return 1;
- 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 	add_wait_queue(sk_sleep(sk), &wait);
-@@ -271,7 +272,7 @@ int smc_rx_wait(struct smc_sock *smc, long *timeo,
- 			   cflags->peer_conn_abort ||
- 			   READ_ONCE(sk->sk_shutdown) & RCV_SHUTDOWN ||
- 			   conn->killed ||
--			   fcrit(conn),
-+			   fcrit(conn, peeked),
- 			   &wait);
- 	remove_wait_queue(sk_sleep(sk), &wait);
- 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
-@@ -322,11 +323,11 @@ static int smc_rx_recv_urg(struct smc_sock *smc, struct msghdr *msg, int len,
- 	return -EAGAIN;
- }
- 
--static bool smc_rx_recvmsg_data_available(struct smc_sock *smc)
-+static bool smc_rx_recvmsg_data_available(struct smc_sock *smc, size_t peeked)
- {
- 	struct smc_connection *conn = &smc->conn;
- 
--	if (smc_rx_data_available(conn))
-+	if (smc_rx_data_available(conn, peeked))
- 		return true;
- 	else if (conn->urg_state == SMC_URG_VALID)
- 		/* we received a single urgent Byte - skip */
-@@ -344,10 +345,10 @@ static bool smc_rx_recvmsg_data_available(struct smc_sock *smc)
- int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 		   struct pipe_inode_info *pipe, size_t len, int flags)
- {
--	size_t copylen, read_done = 0, read_remaining = len;
-+	size_t copylen, read_done = 0, read_remaining = len, peeked_bytes = 0;
- 	size_t chunk_len, chunk_off, chunk_len_sum;
- 	struct smc_connection *conn = &smc->conn;
--	int (*func)(struct smc_connection *conn);
-+	int (*func)(struct smc_connection *conn, size_t baseline);
- 	union smc_host_cursor cons;
- 	int readable, chunk;
- 	char *rcvbuf_base;
-@@ -384,14 +385,14 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 		if (conn->killed)
- 			break;
- 
--		if (smc_rx_recvmsg_data_available(smc))
-+		if (smc_rx_recvmsg_data_available(smc, peeked_bytes))
- 			goto copy;
- 
- 		if (sk->sk_shutdown & RCV_SHUTDOWN) {
- 			/* smc_cdc_msg_recv_action() could have run after
- 			 * above smc_rx_recvmsg_data_available()
- 			 */
--			if (smc_rx_recvmsg_data_available(smc))
-+			if (smc_rx_recvmsg_data_available(smc, peeked_bytes))
- 				goto copy;
- 			break;
- 		}
-@@ -425,26 +426,28 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 			}
- 		}
- 
--		if (!smc_rx_data_available(conn)) {
--			smc_rx_wait(smc, &timeo, smc_rx_data_available);
-+		if (!smc_rx_data_available(conn, peeked_bytes)) {
-+			smc_rx_wait(smc, &timeo, peeked_bytes, smc_rx_data_available);
- 			continue;
- 		}
- 
- copy:
- 		/* initialize variables for 1st iteration of subsequent loop */
- 		/* could be just 1 byte, even after waiting on data above */
--		readable = atomic_read(&conn->bytes_to_rcv);
-+		readable = smc_rx_data_available(conn, peeked_bytes);
- 		splbytes = atomic_read(&conn->splice_pending);
- 		if (!readable || (msg && splbytes)) {
- 			if (splbytes)
- 				func = smc_rx_data_available_and_no_splice_pend;
- 			else
- 				func = smc_rx_data_available;
--			smc_rx_wait(smc, &timeo, func);
-+			smc_rx_wait(smc, &timeo, peeked_bytes, func);
- 			continue;
- 		}
- 
- 		smc_curs_copy(&cons, &conn->local_tx_ctrl.cons, conn);
-+		if ((flags & MSG_PEEK) && peeked_bytes)
-+			smc_curs_add(conn->rmb_desc->len, &cons, peeked_bytes);
- 		/* subsequent splice() calls pick up where previous left */
- 		if (splbytes)
- 			smc_curs_add(conn->rmb_desc->len, &cons, splbytes);
-@@ -480,6 +483,8 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 			}
- 			read_remaining -= chunk_len;
- 			read_done += chunk_len;
-+			if (flags & MSG_PEEK)
-+				peeked_bytes += chunk_len;
- 
- 			if (chunk_len_sum == copylen)
- 				break; /* either on 1st or 2nd iteration */
-diff --git a/net/smc/smc_rx.h b/net/smc/smc_rx.h
-index db823c97d824e..994f5e42d1ba2 100644
---- a/net/smc/smc_rx.h
-+++ b/net/smc/smc_rx.h
-@@ -21,11 +21,11 @@ void smc_rx_init(struct smc_sock *smc);
- 
- int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
- 		   struct pipe_inode_info *pipe, size_t len, int flags);
--int smc_rx_wait(struct smc_sock *smc, long *timeo,
--		int (*fcrit)(struct smc_connection *conn));
--static inline int smc_rx_data_available(struct smc_connection *conn)
-+int smc_rx_wait(struct smc_sock *smc, long *timeo, size_t peeked,
-+		int (*fcrit)(struct smc_connection *conn, size_t baseline));
-+static inline int smc_rx_data_available(struct smc_connection *conn, size_t peeked)
- {
--	return atomic_read(&conn->bytes_to_rcv);
-+	return atomic_read(&conn->bytes_to_rcv) - peeked;
- }
- 
- #endif /* SMC_RX_H */
 -- 
 2.39.5
 
