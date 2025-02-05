@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF7BA2921F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAE6A2908C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35BB116BD2C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 443C87A24F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90231FDA79;
-	Wed,  5 Feb 2025 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73FF155A21;
+	Wed,  5 Feb 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/aewgfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck5zfivt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6751FDA6D;
-	Wed,  5 Feb 2025 14:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37D3151988;
+	Wed,  5 Feb 2025 14:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766931; cv=none; b=JtUmON8gtSarQn8lOR484mBBSSCgWHh3jdmDtohUd3NCl8KGQRndJHBxI/0f92Hg+yzfyq26ktNjG+9QRTi7uhHGegsOIq8vHD7c8nk3y2F1d2mueY0I8nQkz5e8LKahHsweRR/DxGCgrtIm9slLQenOVTF0f7bI3kDy+NnhPfc=
+	t=1738766251; cv=none; b=nPBUq//Py3EkR5OutO45GCR0PPjgyo2PpN3H5AZcq0RQNa3ThdGlmiUqeX60e4aTyskwQ6Icar3V34CXn9ze7QSlG/zI4HiZ4Bf2FFoNF195mCegauj7L5INN1/vomvLSGE61t3aq584lkgLNlrd0a3OWHnPwwDZKqii9/Hu6js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766931; c=relaxed/simple;
-	bh=7kkogKxavZ3r/iSn2MUsLvNEAtWavRkTEh147fcghR4=;
+	s=arc-20240116; t=1738766251; c=relaxed/simple;
+	bh=Y6WdemQ/SdDRXEotXfhi04jmqjMQLl4ZrdxoRVE3JuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+skiFC8f63OQYKd0GvzcbbltmWyHro1yj5NnGh0/9EjYNjv9MxUNehRyhgmSWLH8LbGCR9M/J9QF9BQU5rHff7G60NFglEX1h3bni3hYcBcydBwRSQoAOWF4XgrBsesnwWTlYKNch33lGkxvZQlHYWOLLkeM6h/7LliZwoillU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/aewgfQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED38CC4CED1;
-	Wed,  5 Feb 2025 14:48:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eeaIz2o8tJPYcVxpUAhiQli1cKzBFh7rH2Fo13IYJ2O6M5DtKx9jaAQ3Hlg/6lq3rasHZpXcMNqNd9GSDhaP4aI4gc954/lJB+lss8YzfgrT+K/tMqpzgOyyEUofwAnKa3YUPKhyVO59VNw4QTbZoXjTZzT8Xt9i9/DXigM9+hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck5zfivt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0679FC4CED1;
+	Wed,  5 Feb 2025 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766931;
-	bh=7kkogKxavZ3r/iSn2MUsLvNEAtWavRkTEh147fcghR4=;
+	s=korg; t=1738766251;
+	bh=Y6WdemQ/SdDRXEotXfhi04jmqjMQLl4ZrdxoRVE3JuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/aewgfQewzj68fMsnZPqDecglOcONKS6DEdz6ign/Ha4IRhOHHOyQid3F+MIEsU5
-	 //h8BL9LbRBpmrK8TZL4G8ublP1CJxhFRUEtPtzxkpZHDOuuODGDnagDBmzEgjVSrs
-	 N5zCdUmsvWx+WrWySPkqNDAKRuCEaKbeGL0Dgh+w=
+	b=ck5zfivtyFQ/ApCfG5Ny2sgRz5cdE4YxVabJBubisfUTmcDopKwO1+EjtcscHS+9r
+	 UIxQv3dKmeoWvfHhX+mRk/Lukdk6cWCUqOATottW+KiFqQrHzZ70/CIrn8ZoCQ1hTH
+	 x3Wc5JoFiSRpSIk3As3qZdwjrNs+9pWRfn4aHktY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Wojciech Macek <wmacek@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 317/623] iommu/amd: Remove type argument from do_iommu_domain_alloc() and related
+Subject: [PATCH 6.12 304/590] arm64: dts: mediatek: mt8186: Move wakeup to MTU3 to get working suspend
 Date: Wed,  5 Feb 2025 14:40:59 +0100
-Message-ID: <20250205134508.348844795@linuxfoundation.org>
+Message-ID: <20250205134506.909248054@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,174 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 55b237dd7f7ec2ee9c7986e0fc28c5867bf63282 ]
+[ Upstream commit 253b4e96f5783fddede1b82274a7b4e0aa57d761 ]
 
-do_iommu_domain_alloc() is only called from
-amd_iommu_domain_alloc_paging_flags() so type is always
-IOMMU_DOMAIN_UNMANAGED. Remove type and all the dead conditionals checking
-it.
+The current DT has the wakeup-source and mediatek,syscon-wakeup
+properties in the XHCI nodes, which configures USB wakeup after powering
+down the XHCI hardware block. However, since the XHCI controller is
+behind an MTU3 (USB3 DRD controller), the MTU3 only gets powered down
+after USB wakeup has been configured, causing the system to detect a
+wakeup, and results in broken suspend support as the system resumes
+immediately.
 
-IOMMU_DOMAIN_IDENTITY checks are similarly obsolete as the conversion to
-the global static identity domain removed those call paths.
+Move the wakeup properties to the MTU3 nodes so that USB wakeup is only
+enabled after the MTU3 has powered down.
 
-The caller of protection_domain_alloc() should set the type, fix the miss
-in the SVA code.
+With this change in place, it is possible to suspend and resume, and
+also to wakeup through USB, as tested on the Google Steelix (Lenovo 300e
+Yoga Chromebook Gen 4).
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/4-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 082f1bcae8d1 ("iommu/amd: Fully decode all combinations of alloc_paging_flags")
+Fixes: f6c3e61c5486 ("arm64: dts: mediatek: mt8186: Add MTU3 nodes")
+Reported-by: Wojciech Macek <wmacek@google.com>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241106-mt8186-suspend-with-usb-wakeup-v1-1-07734a4c8236@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu.h |  2 +-
- drivers/iommu/amd/iommu.c     | 35 ++++++++++-------------------------
- drivers/iommu/amd/pasid.c     |  3 ++-
- 3 files changed, 13 insertions(+), 27 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8186.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index c38e02510cf73..1d384b2c6e28e 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -47,7 +47,7 @@ extern unsigned long amd_iommu_pgsize_bitmap;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+index 148c332018b0d..ac34ba3afacb0 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+@@ -1570,6 +1570,8 @@
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
++			wakeup-source;
++			mediatek,syscon-wakeup = <&pericfg 0x420 2>;
+ 			status = "disabled";
  
- /* Protection domain ops */
- void amd_iommu_init_identity_domain(void);
--struct protection_domain *protection_domain_alloc(unsigned int type, int nid);
-+struct protection_domain *protection_domain_alloc(int nid);
- void protection_domain_free(struct protection_domain *domain);
- struct iommu_domain *amd_iommu_domain_alloc_sva(struct device *dev,
- 						struct mm_struct *mm);
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 12c416abdce7d..081a5dbe7ba7b 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2276,7 +2276,7 @@ static void protection_domain_init(struct protection_domain *domain, int nid)
- 	domain->iop.pgtbl.cfg.amd.nid = nid;
- }
+ 			usb_host0: usb@11200000 {
+@@ -1583,8 +1585,6 @@
+ 					 <&infracfg_ao CLK_INFRA_AO_SSUSB_TOP_XHCI>;
+ 				clock-names = "sys_ck", "ref_ck", "mcu_ck", "dma_ck", "xhci_ck";
+ 				interrupts = <GIC_SPI 294 IRQ_TYPE_LEVEL_HIGH 0>;
+-				mediatek,syscon-wakeup = <&pericfg 0x420 2>;
+-				wakeup-source;
+ 				status = "disabled";
+ 			};
+ 		};
+@@ -1636,6 +1636,8 @@
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
++			wakeup-source;
++			mediatek,syscon-wakeup = <&pericfg 0x424 2>;
+ 			status = "disabled";
  
--struct protection_domain *protection_domain_alloc(unsigned int type, int nid)
-+struct protection_domain *protection_domain_alloc(int nid)
- {
- 	struct protection_domain *domain;
- 	int domid;
-@@ -2297,15 +2297,10 @@ struct protection_domain *protection_domain_alloc(unsigned int type, int nid)
- 	return domain;
- }
- 
--static int pdom_setup_pgtable(struct protection_domain *domain,
--			      unsigned int type, int pgtable)
-+static int pdom_setup_pgtable(struct protection_domain *domain, int pgtable)
- {
- 	struct io_pgtable_ops *pgtbl_ops;
- 
--	/* No need to allocate io pgtable ops in passthrough mode */
--	if (!(type & __IOMMU_DOMAIN_PAGING))
--		return 0;
--
- 	switch (pgtable) {
- 	case AMD_IOMMU_V1:
- 		domain->pd_mode = PD_MODE_V1;
-@@ -2339,27 +2334,19 @@ static bool amd_iommu_hd_support(struct amd_iommu *iommu)
- 	return iommu && (iommu->features & FEATURE_HDSUP);
- }
- 
--static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
--						  struct device *dev,
--						  u32 flags, int pgtable)
-+static struct iommu_domain *do_iommu_domain_alloc(struct device *dev, u32 flags,
-+						  int pgtable)
- {
- 	bool dirty_tracking = flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
- 	struct protection_domain *domain;
- 	int ret;
- 
--	/*
--	 * Since DTE[Mode]=0 is prohibited on SNP-enabled system,
--	 * default to use IOMMU_DOMAIN_DMA[_FQ].
--	 */
--	if (amd_iommu_snp_en && (type == IOMMU_DOMAIN_IDENTITY))
--		return ERR_PTR(-EINVAL);
--
--	domain = protection_domain_alloc(type, dev_to_node(dev));
-+	domain = protection_domain_alloc(dev_to_node(dev));
- 	if (!domain)
- 		return ERR_PTR(-ENOMEM);
- 
--	ret = pdom_setup_pgtable(domain, type, pgtable);
-+	ret = pdom_setup_pgtable(domain, pgtable);
- 	if (ret) {
- 		pdom_id_free(domain->id);
- 		kfree(domain);
-@@ -2371,7 +2358,7 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
- 	domain->domain.geometry.force_aperture = true;
- 	domain->domain.pgsize_bitmap = domain->iop.pgtbl.cfg.pgsize_bitmap;
- 
--	domain->domain.type = type;
-+	domain->domain.type = IOMMU_DOMAIN_UNMANAGED;
- 	domain->domain.ops = iommu->iommu.ops->default_domain_ops;
- 
- 	if (dirty_tracking)
-@@ -2385,7 +2372,6 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 				    const struct iommu_user_data *user_data)
- 
- {
--	unsigned int type = IOMMU_DOMAIN_UNMANAGED;
- 	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
- 	const u32 supported_flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
- 						IOMMU_HWPT_ALLOC_PASID;
-@@ -2398,20 +2384,19 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 		if (!amd_iommu_pasid_supported())
- 			return ERR_PTR(-EOPNOTSUPP);
- 
--		return do_iommu_domain_alloc(type, dev, flags, AMD_IOMMU_V2);
-+		return do_iommu_domain_alloc(dev, flags, AMD_IOMMU_V2);
- 	}
- 
- 	/* Allocate domain with v1 page table for dirty tracking */
- 	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING) {
- 		if (amd_iommu_hd_support(iommu))
--			return do_iommu_domain_alloc(type, dev, flags,
--						     AMD_IOMMU_V1);
-+			return do_iommu_domain_alloc(dev, flags, AMD_IOMMU_V1);
- 
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
- 
- 	/* If nothing specific is required use the kernel commandline default */
--	return do_iommu_domain_alloc(type, dev, 0, amd_iommu_pgtable);
-+	return do_iommu_domain_alloc(dev, 0, amd_iommu_pgtable);
- }
- 
- void amd_iommu_domain_free(struct iommu_domain *dom)
-diff --git a/drivers/iommu/amd/pasid.c b/drivers/iommu/amd/pasid.c
-index 8c73a30c2800e..9101d07b11d3f 100644
---- a/drivers/iommu/amd/pasid.c
-+++ b/drivers/iommu/amd/pasid.c
-@@ -185,12 +185,13 @@ struct iommu_domain *amd_iommu_domain_alloc_sva(struct device *dev,
- 	struct protection_domain *pdom;
- 	int ret;
- 
--	pdom = protection_domain_alloc(IOMMU_DOMAIN_SVA, dev_to_node(dev));
-+	pdom = protection_domain_alloc(dev_to_node(dev));
- 	if (!pdom)
- 		return ERR_PTR(-ENOMEM);
- 
- 	pdom->domain.ops = &amd_sva_domain_ops;
- 	pdom->mn.ops = &sva_mn;
-+	pdom->domain.type = IOMMU_DOMAIN_SVA;
- 
- 	ret = mmu_notifier_register(&pdom->mn, mm);
- 	if (ret) {
+ 			usb_host1: usb@11280000 {
+@@ -1649,8 +1651,6 @@
+ 					 <&infracfg_ao CLK_INFRA_AO_SSUSB_TOP_P1_XHCI>;
+ 				clock-names = "sys_ck", "ref_ck", "mcu_ck", "dma_ck","xhci_ck";
+ 				interrupts = <GIC_SPI 324 IRQ_TYPE_LEVEL_HIGH 0>;
+-				mediatek,syscon-wakeup = <&pericfg 0x424 2>;
+-				wakeup-source;
+ 				status = "disabled";
+ 			};
+ 		};
 -- 
 2.39.5
 
