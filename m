@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F06BA28FD0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55902A28CB4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541BA3A6C44
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 230951885352
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA98155CB3;
-	Wed,  5 Feb 2025 14:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA351494DF;
+	Wed,  5 Feb 2025 13:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF396nJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TelXgU1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FB214B959;
-	Wed,  5 Feb 2025 14:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3637113C9C4;
+	Wed,  5 Feb 2025 13:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765720; cv=none; b=PtK1q9iOpfSLt8L+YlzCLw7dWN+h/1NdQOkfCCKZsfex+RzGD1l/73HdTvNZTAYqLMGO0fcOb5tn0GuhREMYCrz4xkw83fqDjvrjwPnnmnJ1/sOZ5P9ptbWKM+3vQbOtkfUEdw9WReDQl27y6PLuAUUaIO/XOoiv6Ntp+8BKqQs=
+	t=1738763573; cv=none; b=eB+zwyWmEoVkMZCdEPH/LTMq6sIPXmSfOE1KHOsBaIUsrrEtjfKi2NDWvWt6Y/t9CTLXASJf1IvCN9XwtG/P3J76uxFdv7jOCYRKgVw+MtbKbXP/71sKPYErrX+CYj6MkoIsSVB8+UBfmULMbONw3Z6FYOwOeiDCpWSusjSb8oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765720; c=relaxed/simple;
-	bh=d67MxIZ7HJIZf1MRstNEnNPoarvQZUuP07wUbSkQCoQ=;
+	s=arc-20240116; t=1738763573; c=relaxed/simple;
+	bh=PR9M1J7d5kBvyD+62HfBZVegOeWpcFrfEzoBHbcEGRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LHMo+udgYGEZpNHIdaPUICArZX/cIJb9aKChJlMJbI6nMnoSftzqBwB1vfP/2VfH0AvjnOvbpMKQlhALjcdYbzMeRFQSkUXV3vmmjkyiY9m9QqbvaLDRy22RU59GpZv6cKUCxcpDrhQgy6rJeuzXGw4Yg9qbYkoVFZls4+fEykw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF396nJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCA1C4CED1;
-	Wed,  5 Feb 2025 14:28:39 +0000 (UTC)
+	 MIME-Version; b=etKJ39hObFpN6skG8tJDWZfIqP8gZ+kaQzUfAYHMmubmB9DnjAc0+zTl/i8r04zp1Y2NMzQ2g3gu7JCQLybS6VSvEuYOcieTog+50YhvFMd4aV4kq1sW7RVnbHOL10db3xoLubr34/bCkjj0f4sg/Zz5l8xohKuZP0HVNVNajZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TelXgU1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D23C4CEE2;
+	Wed,  5 Feb 2025 13:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765720;
-	bh=d67MxIZ7HJIZf1MRstNEnNPoarvQZUuP07wUbSkQCoQ=;
+	s=korg; t=1738763573;
+	bh=PR9M1J7d5kBvyD+62HfBZVegOeWpcFrfEzoBHbcEGRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OF396nJ6DWO6yNK8GqWUC5R8qzW1cVlLEc08dX3WuH9vIod44ZPi+NhfoGCqCecZ9
-	 Eirdf5XNpOpe6YC2VWClyYXJYXGWpfmxb/NJ+RFuWWALUn4EWLQM1dqbEmZ8AkEZ/K
-	 95kzSJefCcrWCDN8SaEvJlJfyuBADCruNUSwe2kM=
+	b=TelXgU1xxnzkTHfBvwFjCrDJnN+9duoTesP3YAenaxGdKsbnf8hzvOmwvkWyu91so
+	 q5cWyyq9EUIpvVYlXjOkIARlZakZ92YmsvxYBbU2JtuHyMDEjBLGI+L+hA2xhsi6NK
+	 kAOd7j1xoK9zxhMVRgd1dDiOPPYMnn880OtDo9+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/590] iommu/arm-smmuv3: Update comments about ATS and bypass
-Date: Wed,  5 Feb 2025 14:40:01 +0100
-Message-ID: <20250205134504.693111483@linuxfoundation.org>
+Subject: [PATCH 6.6 083/393] gpio: pca953x: Drop unused fields in struct pca953x_platform_data
+Date: Wed,  5 Feb 2025 14:40:02 +0100
+Message-ID: <20250205134423.469522813@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9b640ae7fbba13d45a8b9712dff2911a0c2b5ff4 ]
+[ Upstream commit 2f4d3e293392571e02b106c8b431b638bd029276 ]
 
-The SMMUv3 spec has a note that BYPASS and ATS don't work together under
-the STE EATS field definition. However there is another section "13.6.4
-Full ATS skipping stage 1" that explains under certain conditions BYPASS
-and ATS do work together if the STE is using S1DSS to select BYPASS and
-the CD table has the possibility for a substream.
+New code should solely use firmware nodes for the specifics and
+not any callbacks.
 
-When these comments were written the understanding was that all forms of
-BYPASS just didn't work and this was to be a future problem to solve.
-
-It turns out that ATS and IDENTITY will always work just fine:
-
- - If STE.Config = BYPASS then the PCI ATS is disabled
-
- - If a PASID domain is attached then S1DSS = BYPASS and ATS will be
-   enabled. This meets the requirements of 13.6.4 to automatically
-   generate 1:1 ATS replies on the RID.
-
-Update the comments to reflect this.
-
-Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-f27174f44f39+27a33-smmuv3_ats_note_jgg@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 7cef813a91c4 ("gpio: pca953x: log an error when failing to get the reset GPIO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/gpio/gpio-pca953x.c           | 37 ++++++---------------------
+ include/linux/platform_data/pca953x.h | 13 ----------
+ 2 files changed, 8 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 353fea58cd318..f1a8f8c75cb0e 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -2702,9 +2702,14 @@ static int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
- 		 * Translation Requests and Translated transactions are denied
- 		 * as though ATS is disabled for the stream (STE.EATS == 0b00),
- 		 * causing F_BAD_ATS_TREQ and F_TRANSL_FORBIDDEN events
--		 * (IHI0070Ea 5.2 Stream Table Entry). Thus ATS can only be
--		 * enabled if we have arm_smmu_domain, those always have page
--		 * tables.
-+		 * (IHI0070Ea 5.2 Stream Table Entry).
-+		 *
-+		 * However, if we have installed a CD table and are using S1DSS
-+		 * then ATS will work in S1DSS bypass. See "13.6.4 Full ATS
-+		 * skipping stage 1".
-+		 *
-+		 * Disable ATS if we are going to create a normal 0b100 bypass
-+		 * STE.
- 		 */
- 		state->ats_enabled = arm_smmu_ats_supported(master);
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index ce9a94e332801..b52548822ecc3 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -211,7 +211,6 @@ struct pca953x_chip {
+ 
+ 	struct i2c_client *client;
+ 	struct gpio_chip gpio_chip;
+-	const char *const *names;
+ 	unsigned long driver_data;
+ 	struct regulator *regulator;
+ 
+@@ -712,7 +711,6 @@ static void pca953x_setup_gpio(struct pca953x_chip *chip, int gpios)
+ 	gc->label = dev_name(&chip->client->dev);
+ 	gc->parent = &chip->client->dev;
+ 	gc->owner = THIS_MODULE;
+-	gc->names = chip->names;
+ }
+ 
+ #ifdef CONFIG_GPIO_PCA953X_IRQ
+@@ -1000,7 +998,7 @@ static int pca953x_irq_setup(struct pca953x_chip *chip,
+ }
+ #endif
+ 
+-static int device_pca95xx_init(struct pca953x_chip *chip, u32 invert)
++static int device_pca95xx_init(struct pca953x_chip *chip)
+ {
+ 	DECLARE_BITMAP(val, MAX_LINE);
+ 	u8 regaddr;
+@@ -1018,24 +1016,21 @@ static int device_pca95xx_init(struct pca953x_chip *chip, u32 invert)
+ 	if (ret)
+ 		goto out;
+ 
+-	/* set platform specific polarity inversion */
+-	if (invert)
+-		bitmap_fill(val, MAX_LINE);
+-	else
+-		bitmap_zero(val, MAX_LINE);
++	/* clear polarity inversion */
++	bitmap_zero(val, MAX_LINE);
+ 
+ 	ret = pca953x_write_regs(chip, chip->regs->invert, val);
+ out:
+ 	return ret;
+ }
+ 
+-static int device_pca957x_init(struct pca953x_chip *chip, u32 invert)
++static int device_pca957x_init(struct pca953x_chip *chip)
+ {
+ 	DECLARE_BITMAP(val, MAX_LINE);
+ 	unsigned int i;
+ 	int ret;
+ 
+-	ret = device_pca95xx_init(chip, invert);
++	ret = device_pca95xx_init(chip);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -1056,9 +1051,8 @@ static int pca953x_probe(struct i2c_client *client)
+ {
+ 	struct pca953x_platform_data *pdata;
+ 	struct pca953x_chip *chip;
+-	int irq_base = 0;
++	int irq_base;
+ 	int ret;
+-	u32 invert = 0;
+ 	struct regulator *reg;
+ 	const struct regmap_config *regmap_config;
+ 
+@@ -1070,8 +1064,6 @@ static int pca953x_probe(struct i2c_client *client)
+ 	if (pdata) {
+ 		irq_base = pdata->irq_base;
+ 		chip->gpio_start = pdata->gpio_base;
+-		invert = pdata->invert;
+-		chip->names = pdata->names;
+ 	} else {
+ 		struct gpio_desc *reset_gpio;
+ 
+@@ -1160,10 +1152,10 @@ static int pca953x_probe(struct i2c_client *client)
+ 	 */
+ 	if (PCA_CHIP_TYPE(chip->driver_data) == PCA957X_TYPE) {
+ 		chip->regs = &pca957x_regs;
+-		ret = device_pca957x_init(chip, invert);
++		ret = device_pca957x_init(chip);
+ 	} else {
+ 		chip->regs = &pca953x_regs;
+-		ret = device_pca95xx_init(chip, invert);
++		ret = device_pca95xx_init(chip);
  	}
-@@ -3017,8 +3022,10 @@ static void arm_smmu_attach_dev_ste(struct iommu_domain *domain,
- 	if (arm_smmu_ssids_in_use(&master->cd_table)) {
- 		/*
- 		 * If a CD table has to be present then we need to run with ATS
--		 * on even though the RID will fail ATS queries with UR. This is
--		 * because we have no idea what the PASID's need.
-+		 * on because we have to assume a PASID is using ATS. For
-+		 * IDENTITY this will setup things so that S1DSS=bypass which
-+		 * follows the explanation in "13.6.4 Full ATS skipping stage 1"
-+		 * and allows for ATS on the RID to work.
- 		 */
- 		state.cd_needs_ats = true;
- 		arm_smmu_attach_prepare(&state, domain);
+ 	if (ret)
+ 		goto err_exit;
+@@ -1176,13 +1168,6 @@ static int pca953x_probe(struct i2c_client *client)
+ 	if (ret)
+ 		goto err_exit;
+ 
+-	if (pdata && pdata->setup) {
+-		ret = pdata->setup(client, chip->gpio_chip.base,
+-				   chip->gpio_chip.ngpio, pdata->context);
+-		if (ret < 0)
+-			dev_warn(&client->dev, "setup failed, %d\n", ret);
+-	}
+-
+ 	return 0;
+ 
+ err_exit:
+@@ -1192,14 +1177,8 @@ static int pca953x_probe(struct i2c_client *client)
+ 
+ static void pca953x_remove(struct i2c_client *client)
+ {
+-	struct pca953x_platform_data *pdata = dev_get_platdata(&client->dev);
+ 	struct pca953x_chip *chip = i2c_get_clientdata(client);
+ 
+-	if (pdata && pdata->teardown) {
+-		pdata->teardown(client, chip->gpio_chip.base,
+-				chip->gpio_chip.ngpio, pdata->context);
+-	}
+-
+ 	regulator_disable(chip->regulator);
+ }
+ 
+diff --git a/include/linux/platform_data/pca953x.h b/include/linux/platform_data/pca953x.h
+index 96c1a14ab3657..3c3787c4d96ca 100644
+--- a/include/linux/platform_data/pca953x.h
++++ b/include/linux/platform_data/pca953x.h
+@@ -11,21 +11,8 @@ struct pca953x_platform_data {
+ 	/* number of the first GPIO */
+ 	unsigned	gpio_base;
+ 
+-	/* initial polarity inversion setting */
+-	u32		invert;
+-
+ 	/* interrupt base */
+ 	int		irq_base;
+-
+-	void		*context;	/* param to setup/teardown */
+-
+-	int		(*setup)(struct i2c_client *client,
+-				unsigned gpio, unsigned ngpio,
+-				void *context);
+-	void		(*teardown)(struct i2c_client *client,
+-				unsigned gpio, unsigned ngpio,
+-				void *context);
+-	const char	*const *names;
+ };
+ 
+ #endif /* _LINUX_PCA953X_H */
 -- 
 2.39.5
 
