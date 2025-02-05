@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-113323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84265A291C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C31A28D92
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 682D41884AC7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7B3D3A9928
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DF71925A6;
-	Wed,  5 Feb 2025 14:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D219B1509BD;
+	Wed,  5 Feb 2025 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHfVPyae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nijIgOpt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88AB1917F1;
-	Wed,  5 Feb 2025 14:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D82BF510;
+	Wed,  5 Feb 2025 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766569; cv=none; b=tEHb+1djsXdQCHNSD9fC4akPfTDR/igD8Jtful535WpkNoJg3QO2X7ap58vd+03DmcsNE7WMY5RiMFhysgskFlOkoEYctkbZjSyYyaZZU56KS5hCYUSwaNbqm106/FN0KE9cseECL81QrYxtuuybqbExv3EVYk0DpFMjfhEYS2Y=
+	t=1738764040; cv=none; b=J4f6OUwaM87jDXcHjlCh0nA93wYG6AUXvbF8Vrd0lL7d94hm3yZOu/i6s33OSJZCS7wZICm+VQtYj/dkvEaNyxEQvr1nIs6i1cdT8zLIhi8UCtNXvFg5qbF+HMaPiIO7w/OrSJTTvntwrNEgAn1VSYdfpw70fx+c7Go+BlUmQis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766569; c=relaxed/simple;
-	bh=ghFPL9FRZ2U6Z0A4yUxlaC0fYMuAI1uehUVwiik0was=;
+	s=arc-20240116; t=1738764040; c=relaxed/simple;
+	bh=ZRWxGg3Uh36JnEFgOYM+WzubxLDiAd4H5LhZBxbgS4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNm8y01JG43LjHSxvrFkdPw0cNA0WsgNJTJ4rYbi4SZSDmNYK88T8BoQd4PiKlhb7xkBSy23L4jmg9yCMrKcXJtW4JA/osmhIaMN5tgpjQf8V59lO/oFU24vm7J6WSEtHgX/lBMBEds68aT3gAnu/fyetGl7U0u3nwZKnASj6kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHfVPyae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B90C4CED1;
-	Wed,  5 Feb 2025 14:42:49 +0000 (UTC)
+	 MIME-Version; b=odIHn+9WGPzJcS1mgL1X9D1HLT1VPyNmyvuBD9+smLgbw8NHH8rxK9XHUdan0hFjqM1AJxyxZ51Y0lpwM79Q/GxEHXWd5v68L5xEoxoiyRQnZk7pQSocdq3SmoSjQF3VAxi93w7daXBHOjRVkcdionKtB47ADgpY8DLr1npzZiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nijIgOpt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8197C4CED1;
+	Wed,  5 Feb 2025 14:00:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766569;
-	bh=ghFPL9FRZ2U6Z0A4yUxlaC0fYMuAI1uehUVwiik0was=;
+	s=korg; t=1738764040;
+	bh=ZRWxGg3Uh36JnEFgOYM+WzubxLDiAd4H5LhZBxbgS4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHfVPyaetF9glxkwcMdSWYOfsXmXZQcuTCCbdclh7JwEnbA1RWCgoTow68rECiPr5
-	 hkerA1Mp7mYD7Vx45gegcCgtxTg/j59zY/wxPnQS/ff8XS7RxqT9bjBMWkdRyvpxmy
-	 s5Int8j8/jE2MnUkzhn7p24cGnnWV5OZFJSAaAjE=
+	b=nijIgOpt49oh6lkABvUDUx//ekdrKkh2GIWU1Ms20ZTOKRVdBpVfG//QFnAgr92TM
+	 Z8yCLknpLO8u8wrGdlFogHwbwAxK0rJbK/2W19o9SXmzsGC4tKI3j3m3stTA8llEoE
+	 m8Mh8LefgGD3GqYHj81nS9XmbnUEIUm5qxXGuurc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 288/623] perf top: Dont complain about lack of vmlinux when not resolving some kernel samples
+Subject: [PATCH 6.6 111/393] wifi: mac80211: Fix common size calculation for ML element
 Date: Wed,  5 Feb 2025 14:40:30 +0100
-Message-ID: <20250205134507.248883024@linuxfoundation.org>
+Message-ID: <20250205134424.541663751@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 058b38ccd2af9e5c95590b018e8425fa148d7aca ]
+[ Upstream commit 19aa842dcbb5860509b7e1b7745dbae0b791f6c4 ]
 
-Recently we got a case where a kernel sample wasn't being resolved due
-to a bug that was not setting the end address on kernel functions
-implemented in assembly (see Link: tag), and then those were not being
-found by machine__resolve() -> map__find_symbol().
+When the ML type is EPCS the control bitmap is reserved, the length
+is always 7 and is captured by the 1st octet after the control.
 
-So we ended up with:
-
-  # perf top --stdio
-  PerfTop: 0 irqs/s  kernel: 0%  exact: 0% lost: 0/0 drop: 0/0 [cycles/P]
-  -----------------------------------------------------------------------
-
-  Warning:
-  A vmlinux file was not found.
-  Kernel samples will not be resolved.
-  ^Z
-  [1]+  Stopped                 perf top --stdio
-  #
-
-But then resolving all other kernel symbols.
-
-So just fixup the logic to only print that warning when there are no
-symbols in the kernel map.
-
-Fixes: d88205db9caa0e9d ("perf dso: Add dso__has_symbols() method")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/lkml/Z3buKhcCsZi3_aGb@x1
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250102161730.5790376754a7.I381208cbb72b1be2a88239509294099e9337e254@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ieee80211.h | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 724a793863212..ca3e8eca6610e 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -809,7 +809,7 @@ static void perf_event__process_sample(const struct perf_tool *tool,
- 		 * invalid --vmlinux ;-)
- 		 */
- 		if (!machine->kptr_restrict_warned && !top->vmlinux_warned &&
--		    __map__is_kernel(al.map) && map__has_symbols(al.map)) {
-+		    __map__is_kernel(al.map) && !map__has_symbols(al.map)) {
- 			if (symbol_conf.vmlinux_name) {
- 				char serr[256];
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 5f1e5a16d7b2c..0ff10007eb1a5 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -4826,28 +4826,24 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
+ {
+ 	const struct ieee80211_multi_link_elem *mle = (const void *)data;
+ 	u16 control = le16_to_cpu(mle->control);
+-	u8 common = 0;
  
+ 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
+ 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
+ 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
+ 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
+ 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
++	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		/*
+ 		 * The length is the first octet pointed by mle->variable so no
+ 		 * need to add anything
+ 		 */
+ 		break;
+-	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+-		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+-			common += ETH_ALEN;
+-		return common;
+ 	default:
+ 		WARN_ON(1);
+ 		return 0;
+ 	}
+ 
+-	return sizeof(*mle) + common + mle->variable[0];
++	return sizeof(*mle) + mle->variable[0];
+ }
+ 
+ /**
+@@ -4989,8 +4985,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		check_common_len = true;
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+-		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+-			common += ETH_ALEN;
++		common = ETH_ALEN + 1;
+ 		break;
+ 	default:
+ 		/* we don't know this type */
 -- 
 2.39.5
 
