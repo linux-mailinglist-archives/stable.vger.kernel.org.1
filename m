@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF11A292E5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACBFA28EE2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D055F16C281
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645B81889D9C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2205376;
-	Wed,  5 Feb 2025 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C671547D8;
+	Wed,  5 Feb 2025 14:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0/hmSR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYDeUy8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBB4157465;
-	Wed,  5 Feb 2025 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16B414B959;
+	Wed,  5 Feb 2025 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767466; cv=none; b=hbv/4FXX3PJs8aAUmrykCy7hyw9mAKHFX4V75Nlkg9KVXppmqfKFJ1hwTECMWyKeFfh5ybUYhNpGCLkxT2f4Rreb780ZzI2x4K2j/3ZOmm9Se/vHM7bEyXqSkPovFLnIW5LW7fhClBLfA9mlQCEilF0QDe76UAgb7VPhsyb349o=
+	t=1738765089; cv=none; b=uYFmR82eFgQEanALYuV7lziRaS4zZbQwc4a3NiirLTVCsNDgR1dZW2BYNYzXiJB+iVCVXs/grZeAVsEhVxaAAaW8YecqkfxJdjWnuCRuftxHY4XnqfONF+Y0hrCZGgcV1hdodLIprHp4+3WEJEJYFaqye6R6V+psRES7hfeN1Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767466; c=relaxed/simple;
-	bh=ppgmBYP69j1tglxDQcVmCe94LOL0wFRMzdOl8uZQY1Y=;
+	s=arc-20240116; t=1738765089; c=relaxed/simple;
+	bh=uFlFu/AJVpX6x6H4Ca+RogLXDHfb6Hp7EX8t++gVsPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6r1wuZLCzW00VpUL4jZApm+Gse+g7gaeiXNdqqlsqeQrjvTjAhgLmUTByqHCUK2qHAShuSC0Gqldu/Wc8brdpdV2CGKTfi8WPbajGEvZzIIazAmaGofPuoAj3lWMUQt69E8plxnAsK8yHvorV5knJaNN9UKNYGKXSmq+Zjpbts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0/hmSR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6E2C4CED1;
-	Wed,  5 Feb 2025 14:57:45 +0000 (UTC)
+	 MIME-Version; b=qKczyYPTbtifFTgXTB7WZQ/uG1H/eU+QgjgPrkPHjonThsFc3UxfeFLg6SEJLOC6V89xYoicboqLXE77HVzzlEaDOOxrWXI8t6KmN6chdKYz34HYjLLfL/DaHaPQIBhdQz5/2ssZbsDaC080mS3OQX4e2FfNRkEMPptzFN71yKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYDeUy8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4872AC4CED1;
+	Wed,  5 Feb 2025 14:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767466;
-	bh=ppgmBYP69j1tglxDQcVmCe94LOL0wFRMzdOl8uZQY1Y=;
+	s=korg; t=1738765089;
+	bh=uFlFu/AJVpX6x6H4Ca+RogLXDHfb6Hp7EX8t++gVsPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0/hmSR+Grv4EhhBMHnm9NGbAVBO2s114IbQLkBfuxWESkoGENrHevhet/9gblHVK
-	 k3X2U4C0+K8ZQ6R7OqCeZyvguNlgLoBasWbZ4owMGYUG2s6yeEgZ4noimRDHTZUWR3
-	 pvw9I5RzYLK78EteKV4V1zc7kHYTtJyPo7qpPhHI=
+	b=OYDeUy8/ZeHhM9MyDDooZg/egjO3ZuNK/RGYCQf3jHEVlpQzQ4KxTNx6TyvCxb4LK
+	 1qHEXD00MmthJwq5a/hprxQuAudwrb9AiVqJsCaUMOGt3zPB6snHXaWuvqoYpuGX7f
+	 +l8d6lKY2wVXr1pSB5SO4ClX7v9oRa+FZ3kqWBHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 408/623] arm64: dts: qcom: sc7180: fix psci power domain node names
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 231/393] arm64: dts: qcom: sa8775p: Update sleep_clk frequency
 Date: Wed,  5 Feb 2025 14:42:30 +0100
-Message-ID: <20250205134511.832372850@linuxfoundation.org>
+Message-ID: <20250205134429.144008289@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-commit 092febd32a99800902f865ed86b83314faa9c7e4 upstream.
+[ Upstream commit 30f7dfd2c4899630becf477447e8bbe92683d2c6 ]
 
-Rename the psci power domain node names to match the bindings.
+Fix the sleep_clk frequency is 32000 on SA8775P.
 
-This Fixes:
-sc7180-acer-aspire1.dts: psci: 'cpu-cluster0', 'cpu0', 'cpu1', 'cpu2', 'cpu3', 'cpu4', 'cpu5', 'cpu6', 'cpu7' do not match any of the regexes: '^power-domain-', 'pinctrl-[0-9]+'
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-5-1e6880e9dda3@linaro.org
+Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20241025-sa8775p-mm-v4-resend-patches-v6-1-329a2cac09ae@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -580,55 +580,55 @@
- 		compatible = "arm,psci-1.0";
- 		method = "smc";
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+index 2a6170623ea95..864ad109371ca 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -517,7 +517,7 @@
+ };
  
--		cpu_pd0: cpu0 {
-+		cpu_pd0: power-domain-cpu0 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
+ &sleep_clk {
+-	clock-frequency = <32764>;
++	clock-frequency = <32000>;
+ };
  
--		cpu_pd1: cpu1 {
-+		cpu_pd1: power-domain-cpu1 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd2: cpu2 {
-+		cpu_pd2: power-domain-cpu2 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd3: cpu3 {
-+		cpu_pd3: power-domain-cpu3 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd4: cpu4 {
-+		cpu_pd4: power-domain-cpu4 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd5: cpu5 {
-+		cpu_pd5: power-domain-cpu5 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd6: cpu6 {
-+		cpu_pd6: power-domain-cpu6 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
- 		};
- 
--		cpu_pd7: cpu7 {
-+		cpu_pd7: power-domain-cpu7 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
- 		};
- 
--		cluster_pd: cpu-cluster0 {
-+		cluster_pd: power-domain-cluster {
- 			#power-domain-cells = <0>;
- 			domain-idle-states = <&cluster_sleep_pc
- 					      &cluster_sleep_cx_ret
+ &spi16 {
+-- 
+2.39.5
+
 
 
 
