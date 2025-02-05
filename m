@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3477A28CE0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044DEA2913A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:47:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FF361887F53
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529F11888463
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AF714B080;
-	Wed,  5 Feb 2025 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46A91FC0F8;
+	Wed,  5 Feb 2025 14:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwFjqBJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0JyKyks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA47149C7B;
-	Wed,  5 Feb 2025 13:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3E6188CD8;
+	Wed,  5 Feb 2025 14:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763695; cv=none; b=coPRSutRMt55nWfJ6J1yTBut2Gz52sdTfMGn+UUm/SDNgMseqyPHGAkxeFHbQtHxa/AWxVmPk/Gpe1yCmUOYO0Kxo47eWZkAzAoti5O6+67i3sc98C/Na6+s3SSNIb40KVUmW7DB4SvPg9zlwaWxc80liYJG7lfz7yVgahACYQU=
+	t=1738766486; cv=none; b=ZSbnmuKmtEHo7VmTkRyYA0gDpdjIeb/lzGhSHyg9/B4M8WN/4tTqHX57BNoJPPAizz6mv6AGgSBUFqql7lt21On2ZCO6SdHEUcoAtJJtOoHUMM4IFjCO7gh8eEF4/i34Ycs7zHkV0s77G3yNGxpaWgUjpNGpvvYWattfjAwzyUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763695; c=relaxed/simple;
-	bh=YcTEizN4KUVmkBE0iTtBlDlzn6bHL7mIb3jsMR34Wgc=;
+	s=arc-20240116; t=1738766486; c=relaxed/simple;
+	bh=kMXMUpf8I93kOf1QU1eUHx2XWTYjvBusmfjPZUC7QFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ga5DEQm6FrB27+8+ycJwLsavla//+ru48QsGk3fWCFG6P3ogWq/aIO2Cqx8OfnY2JwfCrJ93//jrXbO2dxwLjI6NDHLAw8FHetlY+OZwRGisuiSCvi86dxrYgFfyuSlWV734hXX99z8hneBTqHxhZenBp52DiRHl0qjHWNGubkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwFjqBJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C01C4CED1;
-	Wed,  5 Feb 2025 13:54:53 +0000 (UTC)
+	 MIME-Version; b=HDv06lBNf/sagaSVVIru9jUf/FQN61bywpcqoVhg1ghA7trm2/t6EHFW46EW7CQJaTpV6slyvVDutRBJy8IeqsY7ENR8ZDQgEHyPMRaaPWfif35qriFH0+iB5QW1mfLWSSPENOhyyPh9SIVXx4pRjGN+YJJ0mLzR0mxXQRtFTNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0JyKyks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5D0C4CEE2;
+	Wed,  5 Feb 2025 14:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763694;
-	bh=YcTEizN4KUVmkBE0iTtBlDlzn6bHL7mIb3jsMR34Wgc=;
+	s=korg; t=1738766486;
+	bh=kMXMUpf8I93kOf1QU1eUHx2XWTYjvBusmfjPZUC7QFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qwFjqBJfZSv6bCkepNqufdxjpt89sBaFP1ZMAABy2oDOTbu6TlxI/WvLQsSPY/rKq
-	 2kmJUgsglq2bddfY6WB5nN7mCPbdfL5QtFRwc5Bww+SUTWRkRA4go4AUyyZvRNmxVJ
-	 awN8rrT01EuwpN9imP2TRQAPRifSwIFIoUjZ8wXo=
+	b=e0JyKyksO1OeYUDsH7S+L1JVe1ssXZa3LiyCxvchJHThWhkX+XegSPgdEs3CZArcG
+	 xP4NxDjBk2LVs58PLqdJ+Tx7lBJ+2GXaui3Hmjp9iVqm/vOL4ZM7QgD/3AtFbw7QVl
+	 88e0P759luLufOiiCzX798EnJad9+uzX5nU6lZCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
-	Santhosh Ramesh <quic_santrame@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Ba Jing <bajing@cmss.chinamobile.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/393] wifi: ath12k: fix tx power, max reg power update to firmware
+Subject: [PATCH 6.13 274/623] ktest.pl: Remove unused declarations in run_bisect_test function
 Date: Wed,  5 Feb 2025 14:40:16 +0100
-Message-ID: <20250205134424.006079049@linuxfoundation.org>
+Message-ID: <20250205134506.710085603@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+From: Ba Jing <bajing@cmss.chinamobile.com>
 
-[ Upstream commit 3540bba855b4b422e8b977d11aa8173ccb4f089d ]
+[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
 
-Currently, when the vdev start WMI cmd is sent from host, vdev related
-parameters such as max_reg_power, max_power, and max_antenna_gain are
-multiplied by 2 before being sent to the firmware. This is incorrect
-because the firmware uses 1 dBm steps for power calculations.
+Since $output and $ret are not used in the subsequent code, the declarations
+should be removed.
 
-This leads to incorrect power values being used in the firmware and
-radio, potentially causing incorrect behavior.
-
-Fix the update of max_reg_power, max_power, and max_antenna_gain values
-in the ath12k_mac_vdev_start_restart function, ensuring accurate
-power settings in the firmware by sending these values as-is,
-without multiplication.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-Signed-off-by: Santhosh Ramesh <quic_santrame@quicinc.com>
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240909073049.3423035-1-quic_santrame@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
+Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
+Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/ktest/ktest.pl | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 713899735ccc5..e1db6e69d2207 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5823,9 +5823,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
- 	arg.mode = ath12k_phymodes[chandef->chan->band][chandef->width];
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index dacad94e2be42..ecb22626805d5 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2960,8 +2960,6 @@ sub run_bisect_test {
  
- 	arg.min_power = 0;
--	arg.max_power = chandef->chan->max_power * 2;
--	arg.max_reg_power = chandef->chan->max_reg_power * 2;
--	arg.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
-+	arg.max_power = chandef->chan->max_power;
-+	arg.max_reg_power = chandef->chan->max_reg_power;
-+	arg.max_antenna_gain = chandef->chan->max_antenna_gain;
+     my $failed = 0;
+     my $result;
+-    my $output;
+-    my $ret;
  
- 	arg.pref_tx_streams = ar->num_tx_chains;
- 	arg.pref_rx_streams = ar->num_rx_chains;
+     $in_bisect = 1;
+ 
 -- 
 2.39.5
 
