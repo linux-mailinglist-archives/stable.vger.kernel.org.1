@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-113684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA02A29365
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E90A292D6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B5F3AC775
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90C63A26F1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8A318C03B;
-	Wed,  5 Feb 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0220819066D;
+	Wed,  5 Feb 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koiPUd5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6jLLs8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574C1DF59;
-	Wed,  5 Feb 2025 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D3516DEB1;
+	Wed,  5 Feb 2025 14:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767805; cv=none; b=c5XnNuHZExGu1wl4zLf1r7TLlziluNS+uEbSYshin1B/VUut74uiNIv1JAOawby1xlEhHCwBgnsYXDrIdkdqZ432HIo+cz3q53ONoiEfrzj3dQQzP9o4iST4j2IVFwT3pI+jjNr7oGpzw3z8VyVwXhXX/QYr/ZrXiNB8zUmCKVo=
+	t=1738767352; cv=none; b=dJUBw1Horfpo1OMpArkHVyOSsGSveM9Pv44Oyvv42qEBWAcXmSfXB8sDBLBo2SxRp0auq7+4iCX/h1D+RPSqKxBm06m8edmRSuTiYewn/c8GbVT68D644lIndyBV7kEmB5n6OZiVtAXGWrhcIohy/N2bRljt4xeFReW4OBsV0CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767805; c=relaxed/simple;
-	bh=J8D+nPgOdoi+Evi5da/wSxDkiUD09zp+9bgr2gsRobI=;
+	s=arc-20240116; t=1738767352; c=relaxed/simple;
+	bh=/eysdykH/Ou5cGyU7JttAJp3sEANb7IO1AnOeFepguE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9FezycHcN/fGHTUXvHHRgTFL6B3boZrxQ5QQaXtTDHxP3EB9xxnd5Uncx8JgCn7K8kTOd8f0hHcUXXn55rgvnGAf2oOSRvcQG5p9rVvQL0dwZm3H8vaa/+VRtDGN9qyLNDbPYKrgYvwJKYPCoVLKNkJE3eLRMQ/btEByWamKxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koiPUd5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD0AC4CED1;
-	Wed,  5 Feb 2025 15:03:24 +0000 (UTC)
+	 MIME-Version; b=dpjfXJWCd6f4NtBWxjuWPl/ZkZecnwDkHOaloK1zcu9kf12ei/uKmEK70q+YeptKjJCwdWXC4m3AfU+aBx4vXioUSai5gblmQuq/7wtuFDpvrN47Fr1zbu8Wq10aTYsMHfNcOzmSa5ihaV97wW5/fJtgrRfV/NOTvKXSVqovXHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6jLLs8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0E8C4CED1;
+	Wed,  5 Feb 2025 14:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767805;
-	bh=J8D+nPgOdoi+Evi5da/wSxDkiUD09zp+9bgr2gsRobI=;
+	s=korg; t=1738767352;
+	bh=/eysdykH/Ou5cGyU7JttAJp3sEANb7IO1AnOeFepguE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koiPUd5uxNGsgPUvYFWsLlwcgBn28nkWkTWdZ16v0kXpS00Q14XGtE/3gUxVGWcyx
-	 hzxXBBDtwtCiFroM9YEJ5W/fTXyKLt/F+TC3ihVp3eGl3pGQ/bcjFna/HTEQwHAvKm
-	 02eGf7bDwOprof4+h62swl/ryNA/BMnTnB4LGD5w=
+	b=X6jLLs8wWmBjG4gVLsVC8L+1I7tGbloy3bdkVIdtzlVbTzXgDtMOirqoqaDyP3vx5
+	 NVp4LYul4W7SHSX3Il6JdqGyNdavmKoAy2hScoXCFEshtptAHIMCXEate/6Bma2p3T
+	 w0J1/llj4bZRK6M6Rtvc+IUtZFomW2DkweJO610Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 456/623] mtd: hyperbus: hbmc-am654: fix an OF node reference leak
+Subject: [PATCH 6.12 443/590] ocfs2: mark dquot as inactive if failed to start trans while releasing dquot
 Date: Wed,  5 Feb 2025 14:43:18 +0100
-Message-ID: <20250205134513.661573127@linuxfoundation.org>
+Message-ID: <20250205134512.217413183@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit bf5821909eb9c7f5d07d5c6e852ead2c373c94a0 ]
+[ Upstream commit 276c61385f6bc3223a5ecd307cf4aba2dfbb9a31 ]
 
-In am654_hbmc_platform_driver, .remove() and the error path of .probe()
-do not decrement the refcount of an OF node obtained by
-  of_get_next_child(). Fix this by adding of_node_put() calls.
+While running fstests generic/329, the kernel workqueue
+quota_release_workfn is dead looping in calling ocfs2_release_dquot().
+The ocfs2 state is already readonly but ocfs2_release_dquot wants to
+start a transaction but fails and returns.
 
-Fixes: aca31ce96814 ("mtd: hyperbus: hbmc-am654: Fix direct mapping setup flash access")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+=====================================================================
+[ 2918.123602 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+[ 2918.124034 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:765
+ERROR: status = -30
+[ 2918.124452 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:795
+ERROR: status = -30
+[ 2918.124883 ][  T275 ] (kworker/u135:1,275,11):ocfs2_start_trans:357
+ERROR: status = -30
+[ 2918.125276 ][  T275 ] OCFS2: abort (device dm-0): ocfs2_start_trans:
+Detected aborted journal
+[ 2918.125710 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+=====================================================================
+
+ocfs2_release_dquot() is much like dquot_release(), which is called by
+ext4 to handle similar situation.  So here fix it by marking the dquot as
+inactive like what dquot_release() does.
+
+Link: https://lkml.kernel.org/r/20250106140653.92292-1-glass.su@suse.com
+Fixes: 9e33d69f553a ("ocfs2: Implementation of local and global quota file handling")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/hbmc-am654.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/ocfs2/quota_global.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
-index 217f4e69233fb..edad2ab0f2fa9 100644
---- a/drivers/mtd/hyperbus/hbmc-am654.c
-+++ b/drivers/mtd/hyperbus/hbmc-am654.c
-@@ -174,26 +174,30 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- 	priv->hbdev.np = of_get_next_child(np, NULL);
- 	ret = of_address_to_resource(priv->hbdev.np, 0, &res);
- 	if (ret)
--		return ret;
-+		goto put_node;
- 
- 	if (of_property_read_bool(dev->of_node, "mux-controls")) {
- 		struct mux_control *control = devm_mux_control_get(dev, NULL);
- 
--		if (IS_ERR(control))
--			return PTR_ERR(control);
-+		if (IS_ERR(control)) {
-+			ret = PTR_ERR(control);
-+			goto put_node;
-+		}
- 
- 		ret = mux_control_select(control, 1);
- 		if (ret) {
- 			dev_err(dev, "Failed to select HBMC mux\n");
--			return ret;
-+			goto put_node;
- 		}
- 		priv->mux_ctrl = control;
- 	}
- 
- 	priv->hbdev.map.size = resource_size(&res);
- 	priv->hbdev.map.virt = devm_ioremap_resource(dev, &res);
--	if (IS_ERR(priv->hbdev.map.virt))
--		return PTR_ERR(priv->hbdev.map.virt);
-+	if (IS_ERR(priv->hbdev.map.virt)) {
-+		ret = PTR_ERR(priv->hbdev.map.virt);
-+		goto disable_mux;
-+	}
- 
- 	priv->ctlr.dev = dev;
- 	priv->ctlr.ops = &am654_hbmc_ops;
-@@ -226,6 +230,8 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- disable_mux:
- 	if (priv->mux_ctrl)
- 		mux_control_deselect(priv->mux_ctrl);
-+put_node:
-+	of_node_put(priv->hbdev.np);
- 	return ret;
- }
- 
-@@ -241,6 +247,7 @@ static void am654_hbmc_remove(struct platform_device *pdev)
- 
- 	if (dev_priv->rx_chan)
- 		dma_release_channel(dev_priv->rx_chan);
-+	of_node_put(priv->hbdev.np);
- }
- 
- static const struct of_device_id am654_hbmc_dt_ids[] = {
+diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
+index 3404e7a30c330..15d9acd456ecc 100644
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -761,6 +761,11 @@ static int ocfs2_release_dquot(struct dquot *dquot)
+ 	handle = ocfs2_start_trans(osb,
+ 		ocfs2_calc_qdel_credits(dquot->dq_sb, dquot->dq_id.type));
+ 	if (IS_ERR(handle)) {
++		/*
++		 * Mark dquot as inactive to avoid endless cycle in
++		 * quota_release_workfn().
++		 */
++		clear_bit(DQ_ACTIVE_B, &dquot->dq_flags);
+ 		status = PTR_ERR(handle);
+ 		mlog_errno(status);
+ 		goto out_ilock;
 -- 
 2.39.5
 
