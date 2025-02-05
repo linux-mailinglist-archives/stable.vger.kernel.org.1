@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463C0A29353
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83279A29095
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C49116CA4D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968AD1885D38
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9D818C006;
-	Wed,  5 Feb 2025 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A925156225;
+	Wed,  5 Feb 2025 14:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgGF1JI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsxcCHkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F01DF59;
-	Wed,  5 Feb 2025 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3717D155A30;
+	Wed,  5 Feb 2025 14:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767802; cv=none; b=qELV85E5q2xwVgR8vLtNKR8G2lOIrOp5VUab3zCeJEUcFj70pex91glbEmmVZqyNM6azwtZWGgMbTeHhtUm9FK4auOYmTb7LXRd04aVkz2JATbgwVv7y0ESoGxSNmUpYfHWozQ9MXIaMQzOgogMol/BBBOj7hHEgbFkchnbMgnU=
+	t=1738766279; cv=none; b=gzFfpzGLm6/R/px+h/Ku4lCWv+n4QEgHeEmlYeovhhMgKqMZ0ksgPubX32n8JkHJH+rJAYYB2Pf4dZ2NqB4onVOM+ainVLrztkSky1PnWSzvKpfBlK76gv7CW0nzMNeZ/3P077x2fPiVwNqWhINuaT/k2w6awpah3YhXe1TwNSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767802; c=relaxed/simple;
-	bh=qgwZbc7uvK0MukDj52mvVMk72MWtfu4MGhYEq9KlokY=;
+	s=arc-20240116; t=1738766279; c=relaxed/simple;
+	bh=KFsuubk2zhtju8qYFH4fRdxd4bh3YRPKXP7N59oH2hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgjFk8UturP8x3aUVdTHahlPiqVx9WNROgQkEljT/7uuHV0hI85S6uPnsI7Ww7d3K6o4SIRAe5gaW0C+8XwCLLnFO51EkWEl3HEtnmsFYsHo3SdtOdrstf+P5Wdd18MZhGkdH+r904JmPRQovVzalGetuA6I6dyQcJg8y5yHYdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgGF1JI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76871C4CED1;
-	Wed,  5 Feb 2025 15:03:21 +0000 (UTC)
+	 MIME-Version; b=pneRpqcKZcPePFXs68Zc6ThDIMVT41fCIRB72f0wi6XFNCqGOva6QTsdQRIdtVo8T4HEh8NWLfvgV8zUjKsr5/558+3hqC3XRGQ/E+jvm+6yKjVYocZ5+AfawQO4l6uhOLwGTUIjyMCg06z7QPWd+ARvmVHqToAIL6i9saCi2tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsxcCHkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EE6C4CED1;
+	Wed,  5 Feb 2025 14:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767802;
-	bh=qgwZbc7uvK0MukDj52mvVMk72MWtfu4MGhYEq9KlokY=;
+	s=korg; t=1738766278;
+	bh=KFsuubk2zhtju8qYFH4fRdxd4bh3YRPKXP7N59oH2hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgGF1JI/yc5YKVeSjSGgV1nkPc+Z/HwBgcRvpgfpYTfbVVWxeErcUCvp9GAZaAZ/y
-	 2bnGdv1F1KcjwJtKNcCpN1shXGIPoq7O83wc2X35Ut73NijbhYLP1xQwfDcCcNWgjT
-	 R2PtHnhVnKu0yLH3o8F2FlvivYBDEBcbFQaiTPos=
+	b=EsxcCHkq+MKnZEJcsUwjP2uHnx4qnCGVdP1Jcin9woqcUjDhX4unRX81AWjsGF5Mz
+	 pH5zDFrEkLlyR3GmrIXsGYK/PhYkRh9mHDSn4NOhm0WoZabO37gY1/O6z23wQQPG+7
+	 v8DVV7/q51+4L8D7GwYyPae63gxyAin3B9VoyXSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 511/590] Bluetooth: btnxpuart: Fix glitches seen in dual A2DP streaming
-Date: Wed,  5 Feb 2025 14:44:26 +0100
-Message-ID: <20250205134514.817827293@linuxfoundation.org>
+Subject: [PATCH 6.6 348/393] genksyms: fix memory leak when the same symbol is added from source
+Date: Wed,  5 Feb 2025 14:44:27 +0100
+Message-ID: <20250205134433.622554039@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7de119bb79a63f6a1959b83117a98734914fb0b0 ]
+[ Upstream commit 45c9c4101d3d2fdfa00852274bbebba65fcc3cf2 ]
 
-This fixes a regression caused by previous commit for fixing truncated
-ACL data, which is causing some intermittent glitches when running two
-A2DP streams.
+When a symbol that is already registered is added again, __add_symbol()
+returns without freeing the symbol definition, making it unreachable.
 
-serdev_device_write_buf() is the root cause of the glitch, which is
-reverted, and the TX work will continue to write until the queue is empty.
+The following test cases demonstrate different memory leak points.
 
-This change fixes both issues. No A2DP streaming glitches or truncated
-ACL data issue observed.
+[Test Case 1]
 
-Fixes: 8023dd220425 ("Bluetooth: btnxpuart: Fix driver sending truncated data")
-Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
-Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Forward declaration with exactly the same definition
+
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  void foo(void) {}
+  EXPORT_SYMBOL(foo);
+
+[Test Case 2]
+
+Forward declaration with a different definition (e.g. attribute)
+
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  __attribute__((__section__(".ref.text"))) void foo(void) {}
+  EXPORT_SYMBOL(foo);
+
+[Test Case 3]
+
+Preserving an overridden symbol (compile with KBUILD_PRESERVE=1)
+
+  $ cat foo.c
+  #include <linux/export.h>
+  void foo(void);
+  void foo(void) { }
+  EXPORT_SYMBOL(foo);
+
+  $ cat foo.symref
+  override foo void foo ( int )
+
+The memory leaks in Test Case 1 and 2 have existed since the introduction
+of genksyms into the kernel tree. [1]
+
+The memory leak in Test Case 3 was introduced by commit 5dae9a550a74
+("genksyms: allow to ignore symbol checksum changes").
+
+When multiple init_declarators are reduced to an init_declarator_list,
+the decl_spec must be duplicated. Otherwise, the following Test Case 4
+would result in a double-free bug.
+
+[Test Case 4]
+
+  $ cat foo.c
+  #include <linux/export.h>
+
+  extern int foo, bar;
+
+  int foo, bar;
+  EXPORT_SYMBOL(foo);
+
+In this case, 'foo' and 'bar' share the same decl_spec, 'int'. It must
+be unshared before being passed to add_symbol().
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=46bd1da672d66ccd8a639d3c1f8a166048cca608
+
+Fixes: 5dae9a550a74 ("genksyms: allow to ignore symbol checksum changes")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ scripts/genksyms/genksyms.c |  3 +++
+ scripts/genksyms/parse.y    | 14 ++++++++++++--
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index a028984f27829..84a1ad61c4ad5 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -1336,13 +1336,12 @@ static void btnxpuart_tx_work(struct work_struct *work)
+diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
+index f5dfdb9d80e9d..6ddc8f406c75f 100644
+--- a/scripts/genksyms/genksyms.c
++++ b/scripts/genksyms/genksyms.c
+@@ -241,6 +241,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 						"unchanged\n");
+ 				}
+ 				sym->is_declared = 1;
++				free_list(defn, NULL);
+ 				return sym;
+ 			} else if (!sym->is_declared) {
+ 				if (sym->is_override && flag_preserve) {
+@@ -249,6 +250,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 					print_type_name(type, name);
+ 					fprintf(stderr, " modversion change\n");
+ 					sym->is_declared = 1;
++					free_list(defn, NULL);
+ 					return sym;
+ 				} else {
+ 					status = is_unknown_symbol(sym) ?
+@@ -256,6 +258,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
+ 				}
+ 			} else {
+ 				error_with_pos("redefinition of %s", name);
++				free_list(defn, NULL);
+ 				return sym;
+ 			}
+ 			break;
+diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
+index 8e9b5e69e8f01..840371d01bf48 100644
+--- a/scripts/genksyms/parse.y
++++ b/scripts/genksyms/parse.y
+@@ -152,14 +152,19 @@ simple_declaration:
+ 	;
  
- 	while ((skb = nxp_dequeue(nxpdev))) {
- 		len = serdev_device_write_buf(serdev, skb->data, skb->len);
--		serdev_device_wait_until_sent(serdev, 0);
- 		hdev->stat.byte_tx += len;
+ init_declarator_list_opt:
+-	/* empty */				{ $$ = NULL; }
+-	| init_declarator_list
++	/* empty */			{ $$ = NULL; }
++	| init_declarator_list		{ free_list(decl_spec, NULL); $$ = $1; }
+ 	;
  
- 		skb_pull(skb, len);
- 		if (skb->len > 0) {
- 			skb_queue_head(&nxpdev->txq, skb);
--			break;
-+			continue;
- 		}
- 
- 		switch (hci_skb_pkt_type(skb)) {
+ init_declarator_list:
+ 	init_declarator
+ 		{ struct string_list *decl = *$1;
+ 		  *$1 = NULL;
++
++		  /* avoid sharing among multiple init_declarators */
++		  if (decl_spec)
++		    decl_spec = copy_list_range(decl_spec, NULL);
++
+ 		  add_symbol(current_name,
+ 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
+ 		  current_name = NULL;
+@@ -170,6 +175,11 @@ init_declarator_list:
+ 		  *$3 = NULL;
+ 		  free_list(*$2, NULL);
+ 		  *$2 = decl_spec;
++
++		  /* avoid sharing among multiple init_declarators */
++		  if (decl_spec)
++		    decl_spec = copy_list_range(decl_spec, NULL);
++
+ 		  add_symbol(current_name,
+ 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
+ 		  current_name = NULL;
 -- 
 2.39.5
 
