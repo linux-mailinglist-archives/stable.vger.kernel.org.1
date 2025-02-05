@@ -1,145 +1,140 @@
-Return-Path: <stable+bounces-113963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5592A29B05
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 21:18:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6809FA29B6B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 21:47:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65279169A64
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 20:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB79C164CBB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 20:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9DA2116F9;
-	Wed,  5 Feb 2025 20:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0712214216;
+	Wed,  5 Feb 2025 20:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WD2Hkmpw"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b="acSko5Pc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8970F846F;
-	Wed,  5 Feb 2025 20:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC18204092;
+	Wed,  5 Feb 2025 20:47:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738786691; cv=none; b=EscZ1l9ynqQwX5tGiNHoNzA4J7I2x+gS03Bmnx/zC6dS7fnHfaN3JCv7fQCYBhBZ6Y2t4cIp+jTmLMR0yBLweoVyGG+/dJ315goUNpww3WZ7FATvnX42S6uzEu+zhKimnjBRX/4LCY0Gj9EzX+D+NRqirjZt3MPDcD8i4THL+wc=
+	t=1738788464; cv=none; b=cwSDE1yDQbeMtNXO7b4TZZhvg2Qc9BVM15cO8oiDI3CkAL1F7agSxERfUd/2qiDSl/yp9O50KBt5WUU41jGLzhPC2oyZGlSNSPhbdeV0on16OorVLlXGV8wH4GDerrFuz8/kjlGXiTlH7UQmRQhaAoeFGMYq/2I/BMZaYz4eBBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738786691; c=relaxed/simple;
-	bh=3apj/wCpVFcLqgGoWp9oW/QY6Fy+q5CZ6CsXsbyvSMs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=reolxNkEFyiIxR/9y8RzQvcbxSYSaAUU2uHxZxMEM8Kx9c8U+OPuqMr2IgfJekO3/iwjBKj8eyTS7KRmPTcNluXZ/tyQ2QtLaE9DFZx9+3KcTtj4p5nHgFWc143uYkmZSaJjnVnXPqJEwUqK0FtIeQzpP+331/Cgxy5ROIkgOzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WD2Hkmpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B3EC4CEE4;
-	Wed,  5 Feb 2025 20:18:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738786688;
-	bh=3apj/wCpVFcLqgGoWp9oW/QY6Fy+q5CZ6CsXsbyvSMs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WD2Hkmpw1aBZ3KfeDNnRzc5pb0R2SQXG63U4CDkSg8wMu+pCD5ZPDu8M9/+2kbVQA
-	 oePfvOcV9FxfX8C1GSG1BXhXR50FDUApGFnywxu+3jBCj2KMN1XFGKlzvDMqArq4wJ
-	 CbDrWN5ogLa+287Sv1aZcotEv2fEP9dwbB+O1XE7tYAVLWoAZdiVGeB+2e+9opVRxu
-	 b2o7s03lnbV6l4gQisrBijsCouBBtur1vTUCqvFZKUNAQuwQ+RvITPDD82ou6LdZ3N
-	 tYI8YNclNq1m+ORggvMLWwv6VrtHUI1lUFyEvcV1nCiTHWNePHKKDk6uBfPqLtHkmr
-	 rUDffFL3nR07w==
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3ee1be3d496so92322b6e.0;
-        Wed, 05 Feb 2025 12:18:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUpvb1NHf9NHswrW1dpNvA/pWjg2lRR9q36JEwDqNd4O+vDvEaB3WmkkqergHoPOfejdMUstRTWKsz8Bfi5@vger.kernel.org, AJvYcCUxA5laqEQRzDORYAbNGTzzvzGe+ZnNZSrI82pgCOvBWMfIjOilRlHXyb+KqZc2udyO3LHsoFjV@vger.kernel.org, AJvYcCXHQa15a0NV8z8ShfqzmTVKR4Q6F4Pgz6oE5w6+vF2E1gW6yE4zu40u+bKv1wBnT1EZl684dkv7WbQN@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBY6I7SpKA8P4cnidkBGtdS+/Xt/PBqBp+mjtGjIKRHFB1Mor2
-	fosOHKKJx6AhOWiKt718+2UjBPdIK6lio4dl1Nr4Grha92MpQEBG6EZg8THC6MP3NKVu1/OntlL
-	YoxKVgzxU/qFQniVwpb4QE7InMZ8=
-X-Google-Smtp-Source: AGHT+IH8lr3G9HtJBfMoyXeJS0alXYeOuqAOV8HvcurRDeD3/5okQ7pZLWVYAHz3KgttINL9+YNyoNQVu8Cqyf0jmEQ=
-X-Received: by 2002:a05:6808:309c:b0:3e6:618a:7b83 with SMTP id
- 5614622812f47-3f386773c3dmr508871b6e.2.1738786688166; Wed, 05 Feb 2025
- 12:18:08 -0800 (PST)
+	s=arc-20240116; t=1738788464; c=relaxed/simple;
+	bh=OMfQHNHB/80r6eS3wpbY3NXufO3OZxJRL26txj/dVVM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=CeA9Hopjg4zLR3jqSBZ+j+9NwRJk91NS/2qL/BbdvevQ0Axc4HKotoQqp8pgZsZS6GwTDfYxPh5A7ULRx+XgaA5LiR98xliClnp44FKEU1IBg+SwSCwCqCOxWvrHBQEV6NH/MVL4Lpmv10UbTARlN3f7f8dZCEn9raDkAD6Ofi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com; spf=pass smtp.mailfrom=yhndnzj.com; dkim=pass (2048-bit key) header.d=yhndnzj.com header.i=@yhndnzj.com header.b=acSko5Pc; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=yhndnzj.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yhndnzj.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yhndnzj.com;
+	s=protonmail2; t=1738788452; x=1739047652;
+	bh=OMfQHNHB/80r6eS3wpbY3NXufO3OZxJRL26txj/dVVM=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector:
+	 List-Unsubscribe:List-Unsubscribe-Post;
+	b=acSko5PcgTpSp9e6wVuJo77+pZf62hXpDafNmRelFvwVYDjPFM5jbx5BGqHKmvuYg
+	 E/1W3zzMFVAbwYOO9lmuIHrzW09/26VHR0ZgEIG/KppdhYNmS7Fd1wDveOSOtOXznl
+	 opu4RuBKSCp+TxEnRZ52YcKXubKDkQNvhb1M3pbsJo0y3/lGmCMfKRQBqCiI4hBP5V
+	 xeALwxGJD7AzDGf9XYsEG39SRCqVJG8RVnSewfNINa1dGkYU9b0/+225fBammnzAlq
+	 RRm+aCR7vkcrfxDiH3ZLilz6Y0Q19WLCKEm/lROTohaCkXzyHuFH40CeY3brhRs4Ab
+	 xmYX02J0zAylw==
+Date: Wed, 05 Feb 2025 20:47:23 +0000
+To: linux-fsdevel@vger.kernel.org
+From: Mike Yuan <me@yhndnzj.com>
+Cc: Mike Yuan <me@yhndnzj.com>, linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, =?utf-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>, Christian Brauner <brauner@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] fs/xattr: actually support O_PATH fds in *xattrat() syscalls
+Message-ID: <20250205204628.49607-1-me@yhndnzj.com>
+Feedback-ID: 102487535:user:proton
+X-Pm-Message-ID: fb475632d93aef10901c3530d8491305e77698c7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250126022250.3014210-1-aubrey.li@linux.intel.com> <CAMj1kXEe_Foz2G4GbdZtbaB9azHoBOW_E97wgTXoNAcZSykwaw@mail.gmail.com>
-In-Reply-To: <CAMj1kXEe_Foz2G4GbdZtbaB9azHoBOW_E97wgTXoNAcZSykwaw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 5 Feb 2025 21:17:57 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iqkXcE+3U72gNAskGt=wzpb-wU5JgZCNfkqpriS5ERHw@mail.gmail.com>
-X-Gm-Features: AWEUYZlQNzbrUiwMCPLB681uzvyx4mRWhv3VPPXn72eMYbk_1cYBherxjf64Uds
-Message-ID: <CAJZ5v0iqkXcE+3U72gNAskGt=wzpb-wU5JgZCNfkqpriS5ERHw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: PRM: Remove unnecessary strict handler address checks
-To: Ard Biesheuvel <ardb@kernel.org>, Aubrey Li <aubrey.li@linux.intel.com>
-Cc: Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>, Koba Ko <kobak@nvidia.com>, 
-	"Matthew R . Ochs" <mochs@nvidia.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Shi Liu <aurelianliu@tencent.com>, All applicable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 1, 2025 at 5:23=E2=80=AFPM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
->
-> On Sun, 26 Jan 2025 at 03:08, Aubrey Li <aubrey.li@linux.intel.com> wrote=
-:
-> >
-> > Commit 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM
-> > handler and context") added unnecessary strict handler address checks,
-> > caused the PRM module to fail in translating memory error addresses.
-> >
-> > Both static data buffer address and acpi parameter buffer address may
-> > be NULL if they are not needed, as described in section 4.1.2 PRM Handl=
-er
-> > Information Structure of Platform Runtime Mechanism specification [1].
-> >
-> > Here are two examples from real hardware:
-> >
-> > ----PRMT.dsl----
-> >
-> > - staic data address is not used
-> > [10Ch 0268   2]                     Revision : 0000
-> > [10Eh 0270   2]                       Length : 002C
-> > [110h 0272  16]                 Handler GUID : F6A58D47-E04F-4F5A-86B8-=
-2A50D4AA109B
-> > [120h 0288   8]              Handler address : 0000000065CE51F4
-> > [128h 0296   8]           Satic Data Address : 0000000000000000
-> > [130h 0304   8]       ACPI Parameter Address : 000000006522A718
-> >
-> > - ACPI parameter address is not used
-> > [1B0h 0432   2]                     Revision : 0000
-> > [1B2h 0434   2]                       Length : 002C
-> > [1B4h 0436  16]                 Handler GUID : 657E8AE6-A8FC-4877-BB28-=
-42E7DE1899A5
-> > [1C4h 0452   8]              Handler address : 0000000065C567C8
-> > [1CCh 0460   8]           Satic Data Address : 000000006113FB98
-> > [1D4h 0468   8]       ACPI Parameter Address : 0000000000000000
-> >
-> > Fixes: 088984c8d54c ("ACPI: PRM: Find EFI_MEMORY_RUNTIME block for PRM =
-handler and context")
-> > Reported-and-tested-by: Shi Liu <aurelianliu@tencent.com>
-> > Cc: All applicable <stable@vger.kernel.org>
-> > Signed-off-by: Aubrey Li <aubrey.li@linux.intel.com>
-> > Link: https://uefi.org/sites/default/files/resources/Platform%20Runtime=
-%20Mechanism%20-%20with%20legal%20notice.pdf # [1]
-> > ---
-> >  drivers/acpi/prmt.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
->
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
->
-> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > index 747f83f7114d..e549914a636c 100644
-> > --- a/drivers/acpi/prmt.c
-> > +++ b/drivers/acpi/prmt.c
-> > @@ -287,9 +287,7 @@ static acpi_status acpi_platformrt_space_handler(u3=
-2 function,
-> >                 if (!handler || !module)
-> >                         goto invalid_guid;
-> >
-> > -               if (!handler->handler_addr ||
-> > -                   !handler->static_data_buffer_addr ||
-> > -                   !handler->acpi_param_buffer_addr) {
-> > +               if (!handler->handler_addr) {
-> >                         buffer->prm_status =3D PRM_HANDLER_ERROR;
-> >                         return AE_OK;
-> >                 }
-> > --
+Cited from commit message of original patch [1]:
 
-Applied as 6.14-rc material, thanks!
+> One use case will be setfiles(8) setting SELinux file contexts
+> ("security.selinux") without race conditions and without a file
+> descriptor opened with read access requiring SELinux read permission.
+
+Also, generally all *at() syscalls operate on O_PATH fds, unlike
+f*() ones. Yet the O_PATH fds are rejected by *xattrat() syscalls
+in the final version merged into tree. Instead, let's switch things
+to CLASS(fd_raw).
+
+Note that there's one side effect: f*xattr() starts to work with
+O_PATH fds too. It's not clear to me whether this is desirable
+(e.g. fstat() accepts O_PATH fds as an outlier).
+
+[1] https://lore.kernel.org/all/20240426162042.191916-1-cgoettsche@seltendo=
+of.de/
+
+Fixes: 6140be90ec70 ("fs/xattr: add *at family syscalls")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: <stable@vger.kernel.org>
+---
+ fs/xattr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 02bee149ad96..15df71e56187 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -704,7 +704,7 @@ static int path_setxattrat(int dfd, const char __user *=
+pathname,
+=20
+ =09filename =3D getname_maybe_null(pathname, at_flags);
+ =09if (!filename) {
+-=09=09CLASS(fd, f)(dfd);
++=09=09CLASS(fd_raw, f)(dfd);
+ =09=09if (fd_empty(f))
+ =09=09=09error =3D -EBADF;
+ =09=09else
+@@ -848,7 +848,7 @@ static ssize_t path_getxattrat(int dfd, const char __us=
+er *pathname,
+=20
+ =09filename =3D getname_maybe_null(pathname, at_flags);
+ =09if (!filename) {
+-=09=09CLASS(fd, f)(dfd);
++=09=09CLASS(fd_raw, f)(dfd);
+ =09=09if (fd_empty(f))
+ =09=09=09return -EBADF;
+ =09=09return file_getxattr(fd_file(f), &ctx);
+@@ -978,7 +978,7 @@ static ssize_t path_listxattrat(int dfd, const char __u=
+ser *pathname,
+=20
+ =09filename =3D getname_maybe_null(pathname, at_flags);
+ =09if (!filename) {
+-=09=09CLASS(fd, f)(dfd);
++=09=09CLASS(fd_raw, f)(dfd);
+ =09=09if (fd_empty(f))
+ =09=09=09return -EBADF;
+ =09=09return file_listxattr(fd_file(f), list, size);
+@@ -1079,7 +1079,7 @@ static int path_removexattrat(int dfd, const char __u=
+ser *pathname,
+=20
+ =09filename =3D getname_maybe_null(pathname, at_flags);
+ =09if (!filename) {
+-=09=09CLASS(fd, f)(dfd);
++=09=09CLASS(fd_raw, f)(dfd);
+ =09=09if (fd_empty(f))
+ =09=09=09return -EBADF;
+ =09=09return file_removexattr(fd_file(f), &kname);
+
+base-commit: a86bf2283d2c9769205407e2b54777c03d012939
+--=20
+2.48.1
+
+
 
