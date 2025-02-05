@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-113795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB98A293F7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A54A293F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D36F3AC066
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B15188E0A0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419701E89C;
-	Wed,  5 Feb 2025 15:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7628A1547D8;
+	Wed,  5 Feb 2025 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPxBMYsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tvx9kJ1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27EC1519B4;
-	Wed,  5 Feb 2025 15:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3209717C79;
+	Wed,  5 Feb 2025 15:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768199; cv=none; b=MjV/jssFM6ayU+YDPv2pLgdirvIQFAVA1fpz4U6gQ7wzYfaI6ZAvfjxE2qB9sm5FVcgFt5EUthovkUMQ1IX4xG72YXA+33OuUOO/w2O70CPnXYFrmmZTgyfAck0R/ksmhkGQ8rn+bCOhHNS9IlJvAKh7gx7Yo7ZNoChEyWh9VNA=
+	t=1738768216; cv=none; b=LCZoiL7yfAwtTf56WcpeKi5CNFAmd1Iun4QDghi/ldy9u+pPzf5d2bN630Xm9/9n8M4OYd2E4nSbT5lqaadTVz+MM6dUBTqPYDqh3onP/WKd8LANAsuZR+olRyI2R06xmgZ+aKp3mbTVmerw7m/yORUov1C+ltGe7HtDYN3AV/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768199; c=relaxed/simple;
-	bh=GrWbuAC7Rx4pEZdJ73H8AXDc9U0B5afYes7Y34QPjlY=;
+	s=arc-20240116; t=1738768216; c=relaxed/simple;
+	bh=Y4leX5e5knHuZYgz8/Eh3F6r+Xs5ghrsGboWIMO/KCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ulxk4yxKmjWhJz5knOQDaJ3m7EY/2JL6LrX6VoPvJtyjZoNl0qOPUgM4o1wFnsoJDPfAjRz5aluIfuKAqHu5hqdyWt1beq9s5kucoqtcNDktV0cDH0HmofpI0k8GbGf0E4nk0yJP0oJZvi0BZYGbNv7cccbNA//DdfS4LTlGwpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPxBMYsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609C6C4CED1;
-	Wed,  5 Feb 2025 15:09:58 +0000 (UTC)
+	 MIME-Version; b=hEHjL52FuJxEAbceOh/XFz1VoMF+OWVaNJLGYFpyD5U63SUOLO+CQWSze44QGaVT8bSI6C/SG/3HNK+oY0D0KgCcJLVT/UDN5jtO13+EItuu4D8hjMypAfvMqKr0Ix5cwvnnJo8plFsptCPbQfpl7elZxyuDsg+e+5Epp/UouE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tvx9kJ1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AC3C4CED1;
+	Wed,  5 Feb 2025 15:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768198;
-	bh=GrWbuAC7Rx4pEZdJ73H8AXDc9U0B5afYes7Y34QPjlY=;
+	s=korg; t=1738768216;
+	bh=Y4leX5e5knHuZYgz8/Eh3F6r+Xs5ghrsGboWIMO/KCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPxBMYsR54wd0hV3qRWL+2164Wp9DVnxmU5pvy3fx6wCso3kFD+wrEzlDmtCHIsS2
-	 E32wwkrCG88aIRGu+IzauH32sqI+er54ia11pT+WmUNa6AnYGuh1duZ5oukTUKlvhY
-	 2eMysbkdT7zOcjS/MyMU2zxa7s7AP2nx+ZMAvWJY=
+	b=Tvx9kJ1cE0Uxe8SmGnXPKzSJzDwzIZ6d0afDOsFsdJf0TaCsOiOuHj5RxpqWJOhrB
+	 xPVSPODfdFAkVgOsgsH5NMOVsflHIWO7NUTUo8MgM7eG5NLMIiBbWF0OsMzkbLbGcp
+	 YcJZpoG/6+5pnMMcGxdPtHnCKQ8DBDGQeVJCpGNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Howard Chu <howardchu95@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Lance Richardson <rlance@google.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 511/623] perf trace: Fix BPF loading failure (-E2BIG)
-Date: Wed,  5 Feb 2025 14:44:13 +0100
-Message-ID: <20250205134515.769074126@linuxfoundation.org>
+Subject: [PATCH 6.13 513/623] idpf: add read memory barrier when checking descriptor done bit
+Date: Wed,  5 Feb 2025 14:44:15 +0100
+Message-ID: <20250205134515.852458286@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,90 +70,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Howard Chu <howardchu95@gmail.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 013eb043f37bd87c4d60d51034401a5a6d105bcf ]
+[ Upstream commit 396f0165672c6a74d7379027d344b83b5f05948c ]
 
-As reported by Namhyung Kim and acknowledged by Qiao Zhao (link:
-https://lore.kernel.org/linux-perf-users/20241206001436.1947528-1-namhyung@kernel.org/),
-on certain machines, perf trace failed to load the BPF program into the
-kernel. The verifier runs perf trace's BPF program for up to 1 million
-instructions, returning an E2BIG error, whereas the perf trace BPF
-program should be much less complex than that. This patch aims to fix
-the issue described above.
+Add read memory barrier to ensure the order of operations when accessing
+control queue descriptors. Specifically, we want to avoid cases where loads
+can be reordered:
 
-The E2BIG problem from clang-15 to clang-16 is cause by this line:
- } else if (size < 0 && size >= -6) { /* buffer */
+1. Load #1 is dispatched to read descriptor flags.
+2. Load #2 is dispatched to read some other field from the descriptor.
+3. Load #2 completes, accessing memory/cache at a point in time when the DD
+   flag is zero.
+4. NIC DMA overwrites the descriptor, now the DD flag is one.
+5. Any fields loaded before step 4 are now inconsistent with the actual
+   descriptor state.
 
-Specifically this check: size < 0. seems like clang generates a cool
-optimization to this sign check that breaks things.
+Add read memory barrier between steps 1 and 2, so that load #2 is not
+executed until load #1 has completed.
 
-Making 'size' s64, and use
- } else if ((int)size < 0 && size >= -6) { /* buffer */
-
-Solves the problem. This is some Hogwarts magic.
-
-And the unbounded access of clang-12 and clang-14 (clang-13 works this
-time) is fixed by making variable 'aug_size' s64.
-
-As for this:
--if (aug_size > TRACE_AUG_MAX_BUF)
--	aug_size = TRACE_AUG_MAX_BUF;
-+aug_size = args->args[index] > TRACE_AUG_MAX_BUF ? TRACE_AUG_MAX_BUF : args->args[index];
-
-This makes the BPF skel generated by clang-18 work. Yes, new clangs
-introduce problems too.
-
-Sorry, I only know that it works, but I don't know how it works. I'm not
-an expert in the BPF verifier. I really hope this is not a kernel
-version issue, as that would make the test case (kernel_nr) *
-(clang_nr), a true horror story. I will test it on more kernel versions
-in the future.
-
-Fixes: 395d38419f18: ("perf trace augmented_raw_syscalls: Add more check s to pass the verifier")
-Reported-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Howard Chu <howardchu95@gmail.com>
-Tested-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20241213023047.541218-1-howardchu95@gmail.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 8077c727561a ("idpf: add controlq init and reset checks")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Suggested-by: Lance Richardson <rlance@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_controlq.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-index 4a62ed593e84e..e4352881e3faa 100644
---- a/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-+++ b/tools/perf/util/bpf_skel/augmented_raw_syscalls.bpf.c
-@@ -431,9 +431,9 @@ static bool pid_filter__has(struct pids_filtered *pids, pid_t pid)
- static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
- {
- 	bool augmented, do_output = false;
--	int zero = 0, size, aug_size, index,
--	    value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
-+	int zero = 0, index, value_size = sizeof(struct augmented_arg) - offsetof(struct augmented_arg, value);
- 	u64 output = 0; /* has to be u64, otherwise it won't pass the verifier */
-+	s64 aug_size, size;
- 	unsigned int nr, *beauty_map;
- 	struct beauty_payload_enter *payload;
- 	void *arg, *payload_offset;
-@@ -484,14 +484,11 @@ static int augment_sys_enter(void *ctx, struct syscall_enter_args *args)
- 		} else if (size > 0 && size <= value_size) { /* struct */
- 			if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, size, arg))
- 				augmented = true;
--		} else if (size < 0 && size >= -6) { /* buffer */
-+		} else if ((int)size < 0 && size >= -6) { /* buffer */
- 			index = -(size + 1);
- 			barrier_var(index); // Prevent clang (noticed with v18) from removing the &= 7 trick.
- 			index &= 7;	    // Satisfy the bounds checking with the verifier in some kernels.
--			aug_size = args->args[index];
--
--			if (aug_size > TRACE_AUG_MAX_BUF)
--				aug_size = TRACE_AUG_MAX_BUF;
-+			aug_size = args->args[index] > TRACE_AUG_MAX_BUF ? TRACE_AUG_MAX_BUF : args->args[index];
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_controlq.c b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+index 4849590a5591f..b28991dd18703 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_controlq.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_controlq.c
+@@ -376,6 +376,9 @@ int idpf_ctlq_clean_sq(struct idpf_ctlq_info *cq, u16 *clean_count,
+ 		if (!(le16_to_cpu(desc->flags) & IDPF_CTLQ_FLAG_DD))
+ 			break;
  
- 			if (aug_size > 0) {
- 				if (!bpf_probe_read_user(((struct augmented_arg *)payload_offset)->value, aug_size, arg))
++		/* Ensure no other fields are read until DD flag is checked */
++		dma_rmb();
++
+ 		/* strip off FW internal code */
+ 		desc_err = le16_to_cpu(desc->ret_val) & 0xff;
+ 
+@@ -563,6 +566,9 @@ int idpf_ctlq_recv(struct idpf_ctlq_info *cq, u16 *num_q_msg,
+ 		if (!(flags & IDPF_CTLQ_FLAG_DD))
+ 			break;
+ 
++		/* Ensure no other fields are read until DD flag is checked */
++		dma_rmb();
++
+ 		q_msg[i].vmvf_type = (flags &
+ 				      (IDPF_CTLQ_FLAG_FTYPE_VM |
+ 				       IDPF_CTLQ_FLAG_FTYPE_PF)) >>
 -- 
 2.39.5
 
