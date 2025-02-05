@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4477DA2927E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56D0A291CA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0BBF3AAA93
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAA4016C1F9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E3A198A38;
-	Wed,  5 Feb 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B551DBB03;
+	Wed,  5 Feb 2025 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPbY9zo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DsuwO/oU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D2197A8B;
-	Wed,  5 Feb 2025 14:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F451DB153;
+	Wed,  5 Feb 2025 14:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767133; cv=none; b=qTm5bzlMBgWdcKx7sG4t/BWzxd7v2DfMEUjpIl0rRVbNDJ6DNyorNcFPSNI8mo+5FB706ytUgBXrMUAcLJJSCLHrxWYO1SSm4Ll6/ANyTumjW6S+LytZ9uN98q9jdZf6DLKs02RszjkGejuuEX0nBjaM2EWd2x/uCP2iSk12soM=
+	t=1738766672; cv=none; b=Bu0IKCwansNyHOqylAuNteOygRED2OQQsh3kZ65TnzGhz1dy5zJxkXlRgZv2qC1/gHVWyh95BvzOrzV9rMbjq9v93WlLO9ZtNIrdMg3OuEBznvhbDanTb/kb7JoV5et2zI8vEFC4iItdvwP+9SmRDJTBAP0GMuX23ZGZzjZ6Rq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767133; c=relaxed/simple;
-	bh=QhQ+eEXMwR7EV5aF8SxvBHJpoBNKlyISa0Kt2GNhn3k=;
+	s=arc-20240116; t=1738766672; c=relaxed/simple;
+	bh=wwY2kTl2Uy+7b6Ws6hMva3BXnVIeEso9XYR9Gz0zae4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZxsGHCgo1E0jzNboBBkSUp/Hlp7aOjYbGM+sjP9Kh1Ux6xFZlUqpNzJot9dhJ8eaw8kSQXw+2OR7tddMEjA7fNUwZJhzq4c9GXPd9VikxApI8n3w1HOiRw3FhBvL9JBDUhJJyMrSoge5fjjsWgRKKWuMf2XZgzGVlAQGdssw0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPbY9zo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34978C4CED1;
-	Wed,  5 Feb 2025 14:52:13 +0000 (UTC)
+	 MIME-Version; b=uABKLBxhfsitYWdjkHgyOiSo9mESHiSFgsx9bCGsQGx7/3SWozt+VmW9jye/LWKQzSbp3e7R4icP2p0w0dXafV8orbx0Dl1lW/X6unZk1VzJTEb8wn6ANbV4nz2TmCLgC6wgkl5/6D4uEr5yKEJopJ0cw4iWNdjz5uuTRvoIKG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DsuwO/oU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEFFC4CED1;
+	Wed,  5 Feb 2025 14:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767133;
-	bh=QhQ+eEXMwR7EV5aF8SxvBHJpoBNKlyISa0Kt2GNhn3k=;
+	s=korg; t=1738766672;
+	bh=wwY2kTl2Uy+7b6Ws6hMva3BXnVIeEso9XYR9Gz0zae4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPbY9zo7AHlcH8bLkM0sa47JUkmRFd5RJ3J3rP7jXSBi9JqBV1eg36KU2ksLy/uJ6
-	 cSdh2I8HjUpR4jg9TGyTOHlt1oJq9BqLMoyEuVUG8CYzxgHRToCJW2Q2mePoVJCJgZ
-	 E8/qSzgAfDmmzZNFQ0o9axhAlKK9Gg+jsUurt/AA=
+	b=DsuwO/oUBNnMYLm4nbQmF6Ifm59ndmBuwFYXHTYQTvztb03Z6DwC0RhQUs59nyZI/
+	 Z1wIVYfB9rUT+brMsY7XEaZT5th7bo5Qf4Tww9Moy+tkAy+2xrH7q67LRXacz9/M65
+	 b/GKJHDw8aRrlf8mAw80M7qrmjsd69YMZfpLMki4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 361/623] RDMA/srp: Fix error handling in srp_add_port
-Date: Wed,  5 Feb 2025 14:41:43 +0100
-Message-ID: <20250205134510.033350581@linuxfoundation.org>
+Subject: [PATCH 6.12 349/590] arm64: dts: qcom: sc7280: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:41:44 +0100
+Message-ID: <20250205134508.624356625@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a3cbf68c69611188cd304229e346bffdabfd4277 ]
+[ Upstream commit f6ccdca14eac545320ab03d6ca91ca343e7372e5 ]
 
-As comment of device_add() says, if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count.
+The SC7280 platform uses PMK8350 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Add a put_device() call before returning from the function to decrement
-reference count for cleanup.
-
-Found by code review.
-
-Fixes: c8e4c2397655 ("RDMA/srp: Rework the srp_add_port() error path")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Link: https://patch.msgid.link/20241217075538.2909996-1-make_ruc2021@163.com
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7a1f4e7f740d ("arm64: dts: qcom: sc7280: Add basic dts/dtsi files for sc7280 soc")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-8-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index 2916e77f589b8..7289ae0b83ace 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -3978,7 +3978,6 @@ static struct srp_host *srp_add_port(struct srp_device *device, u32 port)
- 	return host;
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 3d8410683402f..8fbc95cf63fe7 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -83,7 +83,7 @@
  
- put_host:
--	device_del(&host->dev);
- 	put_device(&host->dev);
- 	return NULL;
- }
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
