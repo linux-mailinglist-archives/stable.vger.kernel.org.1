@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8042A28CAF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC35AA29092
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80483A8BB7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC1C816478F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8BA146A63;
-	Wed,  5 Feb 2025 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0412C15854F;
+	Wed,  5 Feb 2025 14:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tz0YS58A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICjgsR8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E007E142E86;
-	Wed,  5 Feb 2025 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B123D155CB3;
+	Wed,  5 Feb 2025 14:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763556; cv=none; b=mPsL/K61oiOxVBXdx0frSUGATpDOcigINS8t3Z+t3/8X0YI8rM3dfeFnF5FtwIWnrPMlzBxVp9uKIA6mIWJjpa5HI+EqCxmWgxsSKN8p/hjW0O6gqVXGLBPY2c/1nN/S1kQN97Z7meCHY4YtnIBme09s7Ngy+weU8hRhykdRmgY=
+	t=1738766268; cv=none; b=W7OU1m2k58kHx9vR2AwlrHgKxrsEJZy3f389qFaRYwUtwO4B37HXJUOYhvXH5E0ZitRs5vcL+uKIrvWYRKLO1dQ9rjL0lTHrO0szadjcB7qPL4IU4V2i3Uv438CAAiwOOd53VMUmysFWAnE/SZkn66M9abVw1JZl+kPT/vW4roQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763556; c=relaxed/simple;
-	bh=dXdkHQMmAZrZa2H1n92ROnuBUgN4oMzh3Jl2Gs2AHn8=;
+	s=arc-20240116; t=1738766268; c=relaxed/simple;
+	bh=LQ89cJmuEK61XmUYekZeONmpxBAVcTWr3j30SV8fOvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N2PNf/tTbui3glGVn2aOhaX/7zdw4H5sggGL20pgDmhOE0UjHRriM8sKCyx7NmkuLKu/C/hqUjgqgI/E3aIY9oh1aRSWZBQVXxe8Onog38Me7en2tiflTHZD9jgQkQFWnGubJlFpelJekJOomvlk8kDoT+P3k6WdnywSayjQVaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tz0YS58A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC82C4CED1;
-	Wed,  5 Feb 2025 13:52:35 +0000 (UTC)
+	 MIME-Version; b=BpfW/UuSMk3dinuoQbt0nz3Cs1OxHkrn1fho+l2++oudhdHWcHXXRRZEE19MApWBqX3FESLvuA2pXWiX2lAHgR/j6VCvXQ0ykRLt6vOP7REawRwlXiYqQK43Yo7vJ4oZLQQVNKgg/4wVpsTZKGS4ARg2jUBlyB9Bi0rY+AF+wU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICjgsR8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3184EC4CED1;
+	Wed,  5 Feb 2025 14:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763555;
-	bh=dXdkHQMmAZrZa2H1n92ROnuBUgN4oMzh3Jl2Gs2AHn8=;
+	s=korg; t=1738766268;
+	bh=LQ89cJmuEK61XmUYekZeONmpxBAVcTWr3j30SV8fOvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tz0YS58ATm7K24ZuPGixKzZLojYmF/aSGF02dAhiWVQdQ5KtKCfggqCdYHMsJDTYu
-	 H71ZpD1evi4WzdEwsBNvpLNzElC+NvUDHZjD1gYuFZ9MWNWyVjhXCff7vAdSHHg80w
-	 aLk+SxXgzjex78c8jQqNq8Vap91aW0IB90Aw8WTM=
+	b=ICjgsR8Cj9ZWEy+0C/Xu5xTb3vw7MJw3P7Jz/3FblOyVKUHrihqGWIpMKgoZ/yVTS
+	 OZ/tBm/pAni+ymdmaSJJnA5WHONlAg9MGUfUP6vKoguHxh4EgDAlO47WIRymEUl9Ha
+	 6fpptgdxMSHOhh0p9p84euQppqu7ljXdj1KEnfLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	George Lander <lander@jagmn.com>,
+	Marcus Cooper <codekipper@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/393] pwm: stm32-lp: Add check for clk_enable()
+Subject: [PATCH 6.13 258/623] ASoC: sun4i-spdif: Add clock multiplier settings
 Date: Wed,  5 Feb 2025 14:40:00 +0100
-Message-ID: <20250205134423.394536637@linuxfoundation.org>
+Message-ID: <20250205134506.101242243@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: George Lander <lander@jagmn.com>
 
-[ Upstream commit cce16e7f6216227964cda25f5f23634bce2c500f ]
+[ Upstream commit 0a2319308de88b9e819c0b43d0fccd857123eb31 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
-We used APP-Miner to find it.
+There have been intermittent issues with the SPDIF output on H3
+and H2+ devices which has been fixed by setting the s_clk to 4
+times the audio pll.
+Add a quirk for the clock multiplier as not every supported SoC
+requires it. Without the multiplier, the audio at normal sampling
+rates was distorted and did not play at higher sampling rates.
 
-Fixes: e70a540b4e02 ("pwm: Add STM32 LPTimer PWM driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241206215318.3402860-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 1bd92af877ab ("ASoC: sun4i-spdif: Add support for the H3 SoC")
+Signed-off-by: George Lander <lander@jagmn.com>
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Link: https://patch.msgid.link/20241111165600.57219-2-codekipper@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32-lp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/sunxi/sun4i-spdif.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pwm/pwm-stm32-lp.c b/drivers/pwm/pwm-stm32-lp.c
-index bb3a045a73343..7799258638dfa 100644
---- a/drivers/pwm/pwm-stm32-lp.c
-+++ b/drivers/pwm/pwm-stm32-lp.c
-@@ -168,8 +168,12 @@ static int stm32_pwm_lp_get_state(struct pwm_chip *chip,
- 	regmap_read(priv->regmap, STM32_LPTIM_CR, &val);
- 	state->enabled = !!FIELD_GET(STM32_LPTIM_ENABLE, val);
- 	/* Keep PWM counter clock refcount in sync with PWM initial state */
--	if (state->enabled)
--		clk_enable(priv->clk);
-+	if (state->enabled) {
-+		int ret = clk_enable(priv->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index 0aa4164232464..7cf623cbe9ed4 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -176,6 +176,7 @@ struct sun4i_spdif_quirks {
+ 	unsigned int reg_dac_txdata;
+ 	bool has_reset;
+ 	unsigned int val_fctl_ftx;
++	unsigned int mclk_multiplier;
+ };
  
- 	regmap_read(priv->regmap, STM32_LPTIM_CFGR, &val);
- 	presc = FIELD_GET(STM32_LPTIM_PRESC, val);
+ struct sun4i_spdif_dev {
+@@ -313,6 +314,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk *= host->quirks->mclk_multiplier;
+ 
+ 	ret = clk_set_rate(host->spdif_clk, mclk);
+ 	if (ret < 0) {
+@@ -347,6 +349,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk_div *= host->quirks->mclk_multiplier;
+ 
+ 	reg_val = 0;
+ 	reg_val |= SUN4I_SPDIF_TXCFG_ASS;
+@@ -540,24 +543,28 @@ static struct snd_soc_dai_driver sun4i_spdif_dai = {
+ static const struct sun4i_spdif_quirks sun4i_a10_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun6i_a31_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun8i_h3_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 4,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun50i_h6_spdif_quirks = {
+ 	.reg_dac_txdata = SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN50I_H6_SPDIF_FCTL_FTX,
+ 	.has_reset      = true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct of_device_id sun4i_spdif_of_match[] = {
 -- 
 2.39.5
 
