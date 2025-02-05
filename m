@@ -1,147 +1,156 @@
-Return-Path: <stable+bounces-112264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAB2A281C8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:28:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7305CA281CF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:31:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82AC51885201
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:28:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6CD164711
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A7520DD65;
-	Wed,  5 Feb 2025 02:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEF534545;
+	Wed,  5 Feb 2025 02:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pv9PqMmX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4r2WuL2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B841C20C47E;
-	Wed,  5 Feb 2025 02:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D970125A65D;
+	Wed,  5 Feb 2025 02:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738722522; cv=none; b=pbDw6fRUkROi9HMshjXzI/L2PeIlpDpJMV/Q6sZ5q1HBeyNFEYeAOwCnNw+2Gp2pdzSedZcuwazvsBB6y5y24AeqafjaSzGnz4nwXLBH+UI/eAYd/9OirAH1tUhUNGmjKRgMsx75I6mVBO8awsmZ+vNDMBEE+Sp3oYiOBz7Xoys=
+	t=1738722707; cv=none; b=Hc82UrMre/wRt39PH+7VLU9D+l6PWME9jEdUAlF/aIQgdh2mjNZiSVI5vz6dy3BnQ3M9hxKtfFFdxffRyWIk+qbLCIgP+ccwjFvpSJrpEct9eB2LG/HL7tjngnMqZ+YAW01VG8SGEqwvU1JlDQb0zlxjohA+qI7gnmPw9MvnM14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738722522; c=relaxed/simple;
-	bh=Xk8RR9GftsHj4y0HQNqLNT78o3cejeCFocN4ysQOLqQ=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ks7J6YFL7XSX/LI8GqgBUQ5z8FELYWd/egBAmBTfuGXrHEbXfqrfRRYQp9yI/lxsMzZQACZcUhE6u4UjAy12dc4zQZsPXHWwNdXIR1aAzoRwvLSSbAFVBILrQM0gJkuaT9Cb38SPnuaC+At6dVb5qIyO7rjCBHntmc6vyxGlH/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pv9PqMmX; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738722521; x=1770258521;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Xk8RR9GftsHj4y0HQNqLNT78o3cejeCFocN4ysQOLqQ=;
-  b=Pv9PqMmXgKHSWNUSntxBwjs93kLSFhXcTIQF1nkGbSQ7fsZrch4bOHH3
-   Gr9bwrKvg+RfQ/6GIt3F2aaSbLYsjs2zNqQfi0P0qB8aICYtDdHhJmRSn
-   ZOSd79dbNqDueXccJebmvSP9r8iXCrueyPK/HDBvSlCg4CGcJyN+Yuj/A
-   TBIul4po09EbscmXqQhjzuk6Iq8yq4jUWpup3Xy9I4lMSk8xHh5E7j7Pv
-   JLv5k4ZzG3egrOjEkO8xy0yVhQWfrVoAeM3QHQdyXYnIAzexlHDwx+1hu
-   ihspGe9Kii8t0RDb6j6A2YizCrALWKNOzmtL3LwXAFUJux788z2RAi+ZE
-   g==;
-X-CSE-ConnectionGUID: ctMCfK/2TwCY0woUqUE8Vg==
-X-CSE-MsgGUID: 8YNB5lMpTw2Y/ozIIRvlnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="39380945"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="39380945"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 18:28:40 -0800
-X-CSE-ConnectionGUID: c0apBYhbSOSFXVZwC1lGnQ==
-X-CSE-MsgGUID: U+8h4zgnRyuh/QffODtlhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="134012636"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.242.149]) ([10.124.242.149])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 18:28:37 -0800
-Message-ID: <941d401c-c009-4dcf-bb93-00c25490dd38@linux.intel.com>
-Date: Wed, 5 Feb 2025 10:28:35 +0800
+	s=arc-20240116; t=1738722707; c=relaxed/simple;
+	bh=JZJXpwS+xoCT6XiBnJVHG4CZf+80Tv6gEp9DVIKPYN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WDYJOPFRXZrlqtPZYiXywuuEMRcw07zRRLjmAgA+1xLP2vRrt9z+PCN+v7mipUgLOWVl/Y8iUgLfgNdFy1EpOa0N5xRGCeeAFiJVHDiQJ9WSrHAv8+eaayQ/mbUUIw9p+ptwoxbYTLy5aHpptJNJ1P97IK3Qf+ETs/n/C4xvCXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4r2WuL2; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6d888fc8300so30213666d6.3;
+        Tue, 04 Feb 2025 18:31:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738722704; x=1739327504; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fWJ3+/U5udNqpfJpR2/uzHJvQHNbsouaJRdWxi3SJj0=;
+        b=W4r2WuL2z0aZK7SPX1T6hm9b+ih6pMDJAaG0hCW0UucUqOMG6ltDtmlBRfh6KcgBvf
+         +X7yVOAxwNm35/TFU7flEjqERRL1hU1ISa74VcJRGO5VB6iu5aio1ctmPWEgaXgOX7zc
+         fIF1YF0MRpLBm6T4sTtNHmjpdrXnfN+2AOPkD1e7WqCzPLB7aBrIzg/6qpI+QFdUZHGO
+         hTA+QkyxRN0sTZr47IdRtydPmkRTNHWbmnkq+vllLmlZNPacNxI5Des6pgdmgk0fxZF1
+         UJzkdqL7E9Pz+LEIH0q6suWeflKS31i7n85xvMXGMuSNBGXIPkxZWa0kxSkWHqCmowP6
+         iAvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738722704; x=1739327504;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fWJ3+/U5udNqpfJpR2/uzHJvQHNbsouaJRdWxi3SJj0=;
+        b=QnnLRg6h50aECgCifmGhYUK3kJi/Vbtin+FQQzY9tTDfuNVQrdYe8WVKITRL25f0wF
+         XnWidcLfkSWwOe0+yrGf64ZG5vgSkR3ItJzvEaKqF4CqiqeWJ6M+EkvIU6QVmqFxe7vx
+         jc6xeDMQwe/+yO749Fip3govu9bIVQ/S7x0GtWwNQ/ZluAGN2QKJQ/yGmc8h2AE7iUeR
+         PJa9LsmEB6U0xIN6DBH6bhY0lf4rAiq40SYfqLDCx/hEQqruYqpqDQWLb4G5JGs9FxP/
+         nvkslauLKQGQzLnTS4bBZZkMAfu5H/ajlPC1d1qAljIAJJwyzQEi+8MmG5P7o80kzeNy
+         knvw==
+X-Forwarded-Encrypted: i=1; AJvYcCW1tgl7s0Q8vhdbdbcipCbDHhwNANIx6nRgJEfRqyLc+CDbv4hxu3iHat3pSyunQYxOJl4s960cXe3lMSY=@vger.kernel.org, AJvYcCWZULERMSO+FgHse+DzuDQqHEAJN9mL/uT1YjE1kKcFDY24zR+pZ6XEmEfCVsRZz4EYCozjN2Th@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3xHfCqii4RFkUTfzDboTqnIx8WXGS6YJVZTNw+nl8w3fuqqw6
+	sKxxmkVMi0MkwKFrIKw4nf5lUUpfTcdTQyZDrPcAl/5vREB7SFABoQ5yQg==
+X-Gm-Gg: ASbGnctuIeYRKGmcMpXTR3otQjRJLxc3l1ZhsCBXlRQyiIEu5VdoKuVopAB/F26fHGK
+	yH39HY9OxTy+txM5d41uzNZsFiQLp/s0IS9cbeoq/jjZJMkUgzdCNmEy1e7sD0xWECdMJ10g4u5
+	XMvxVW4HsXgKtJo4Y7tZrPYfbYA8zz9BwC8ykksnsB73PUi2wtj8cT6k/ktWgr5i7UWvJJJw9YK
+	/hlsSX0q9m5cZN7BQ/k/Xni9s0B+Z5S9nPD1fxeVB5OkEgPoFgYpL8NCoPbPzQmATnBO8UV9GIU
+	1rnB06tWcMfLuewH41+AUOrZ6hfmZgjAIpfN4A==
+X-Google-Smtp-Source: AGHT+IF5cIIkftGw4WwRHKqTtt8+I6sIv48dAqRnLodKyaijhaIOt3OFLc/uyoQLFQAexUGZekPcbw==
+X-Received: by 2002:ad4:5ec6:0:b0:6d4:b1e:5418 with SMTP id 6a1803df08f44-6e42fc6e390mr18830106d6.33.1738722704642;
+        Tue, 04 Feb 2025 18:31:44 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e25492254esm68579306d6.90.2025.02.04.18.31.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 18:31:44 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: christophe.jaillet@wanadoo.fr
+Cc: gmpy.liaowx@gmail.com,
+	jiashengjiangcool@gmail.com,
+	jirislaby@kernel.org,
+	kees@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	miquel.raynal@bootlin.com,
+	richard@nod.at,
+	stable@vger.kernel.org,
+	vigneshr@ti.com
+Subject: [PATCH v3 1/2] mtd: Replace kcalloc() with devm_kcalloc()
+Date: Wed,  5 Feb 2025 02:31:40 +0000
+Message-Id: <20250205023141.26195-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
+References: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] iommu/vt-d: Make intel_iommu_drain_pasid_prq()
- cover faults for RID
-To: Yi Liu <yi.l.liu@intel.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>
-References: <20250121023150.815972-1-baolu.lu@linux.intel.com>
- <3cca401b-e274-471b-8910-bb30873ead1b@intel.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <3cca401b-e274-471b-8910-bb30873ead1b@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2025/1/21 15:01, Yi Liu wrote:
-> On 2025/1/21 10:31, Lu Baolu wrote:
->> This driver supports page faults on PCI RID since commit <9f831c16c69e>
->> ("iommu/vt-d: Remove the pasid present check in prq_event_thread") by
->> allowing the reporting of page faults with the pasid_present field 
->> cleared
->> to the upper layer for further handling. The fundamental assumption here
->> is that the detach or replace operations act as a fence for page faults.
->> This implies that all pending page faults associated with a specific RID
->> or PASID are flushed when a domain is detached or replaced from a device
->> RID or PASID.
->>
->> However, the intel_iommu_drain_pasid_prq() helper does not correctly
->> handle faults for RID. This leads to faults potentially remaining pending
->> in the iommu hardware queue even after the domain is detached, thereby
->> violating the aforementioned assumption.
->>
->> Fix this issue by extending intel_iommu_drain_pasid_prq() to cover faults
->> for RID.
->>
->> Fixes: 9f831c16c69e ("iommu/vt-d: Remove the pasid present check in 
->> prq_event_thread")
->> Cc: stable@vger.kernel.org
->> Suggested-by: Kevin Tian <kevin.tian@intel.com>
->> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
->> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
->> ---
->>   drivers/iommu/intel/prq.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> Change log:
->> v2:
->>   - Add check on page faults targeting RID.
->>
->> v1: https://lore.kernel.org/linux-iommu/20250120080144.810455-1- 
->> baolu.lu@linux.intel.com/
->>
->> diff --git a/drivers/iommu/intel/prq.c b/drivers/iommu/intel/prq.c
->> index c2d792db52c3..064194399b38 100644
->> --- a/drivers/iommu/intel/prq.c
->> +++ b/drivers/iommu/intel/prq.c
->> @@ -87,7 +87,9 @@ void intel_iommu_drain_pasid_prq(struct device *dev, 
->> u32 pasid)
->>           struct page_req_dsc *req;
->>           req = &iommu->prq[head / sizeof(*req)];
->> -        if (!req->pasid_present || req->pasid != pasid) {
->> +        if (req->rid != sid ||
-> 
-> Does intel-iommu driver managed pasid per-bdf? or global? If the prior one,
-> the rid check is needed even in the old time that does not PRIs in the RID
-> path.
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-Do you mean that this fix should be back ported farther than the fix tag
-commit?
-
-The iommu driver doesn't manage the PASID. IOMMUFD and SVA do actually.
-The SVA uses global PASID. IOMMUFD doesn't yet support PASIDs, pending
-the merging of your patches. Therefore, per-BDF PASID management is not
-currently implemented in the Linux tree. Anything I overlooked?
-
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: <stable@vger.kernel.org> # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 ---
-baolu
+Changelog:
+
+v2 -> v3:
+
+1. Replace kcalloc() with devm_kcalloc().
+2. Remove kfree().
+3. Remove checks.
+
+v1 -> v2:
+
+1. Remove redundant logging.
+2. Add kfree() in the error-handling path.
+---
+ drivers/mtd/mtdpstore.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
+index 7ac8ac901306..2d004d41cf75 100644
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
+ 	}
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+@@ -527,9 +527,6 @@ static void mtdpstore_notify_remove(struct mtd_info *mtd)
+ 	mtdpstore_flush_removed(cxt);
+ 
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
+-- 
+2.25.1
+
 
