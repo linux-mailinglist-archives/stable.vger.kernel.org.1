@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B05A2901E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E058A29109
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EE553A4F60
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D828188B51A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB1070825;
-	Wed,  5 Feb 2025 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDDB197558;
+	Wed,  5 Feb 2025 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1wGs0nV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmLvc16J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA60F1519AF;
-	Wed,  5 Feb 2025 14:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97C7195811;
+	Wed,  5 Feb 2025 14:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765904; cv=none; b=mwmP6Hjbxhi+chwWJ3SJIWV3A1Ek0aAhQKm+siej0bWR0q9z5niELOwrlF3KqeIB+mgiAFFmoS2Pw5TvSSNn/jGiG99fbGMq/Oa2IzA27gJfxK+vIj8OszaDf+/tvlCc88zNdMpifIJ/cJbyShl4952q/WcmKnXyoEsuLX90JJA=
+	t=1738766469; cv=none; b=rT22gcVrnEoAb1D/UgnDZ8bMMg2bmUq7lalQHvy0WW5EJDH8aW+/cFsZkz+Hz3zXpQ3AZnia4ISi63+gMj+m1IgMnX5U6aSJiTOOuBnUOtTyMPTUn0t0tw5VcxvaVGA1csfF9umDsaKKcCE7wa6J+fzBVwB1ty5Pvdmi8nnwbok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765904; c=relaxed/simple;
-	bh=vXPF7fEHkh5T1Iz2pn8Uptmj8DmFzg316w7UmvQ/JXQ=;
+	s=arc-20240116; t=1738766469; c=relaxed/simple;
+	bh=zPvB/gozm8Di/91X9jmSGnjvbdKatgBTMdaFIub/Kwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XJQ5Dgoi5VC6e2WzARrpqebxlE9OqipWNeqX+qllvaocJyp5lSRRa0cX3unrpIs85mV6NBVDcFJRQcE5SUCllnkWScJNSxSrW52Rio0QdKRttCmCnmsSHGW8KWXvZHI+i1tQIAlW8BOgaTgS21aYc86WCWfmU2l+lQ5RoDCB3hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1wGs0nV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184BBC4CED1;
-	Wed,  5 Feb 2025 14:31:43 +0000 (UTC)
+	 MIME-Version; b=G7Kn/dvzX0/BFL67U3Ouqugrlk5LX68HRzmzKzwPOyffOwytXOnzeESTVrKTecR9jC7uAMUdM9jdlbS3KDl7u/ocFX+TDW7o6Bs7TFwT9L+qvF1DTgSNu3iFycI02PgHf8LyBj0zIXaefaqPb3v4Xy0fvX3AeRk26qZWZ5AVSD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmLvc16J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D187C4AF11;
+	Wed,  5 Feb 2025 14:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765904;
-	bh=vXPF7fEHkh5T1Iz2pn8Uptmj8DmFzg316w7UmvQ/JXQ=;
+	s=korg; t=1738766469;
+	bh=zPvB/gozm8Di/91X9jmSGnjvbdKatgBTMdaFIub/Kwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1wGs0nVs1b1WLMiak49bOMwes/3Lqsqm6oEV+kAZ1crc9HLv7uIPxNNwBnWkW/Qk
-	 m7fVi3ks+WSjoxyxGFbQfRtXBdYGGSmQBfQ4Ic6hijIWDjG734AyoODRoxZW2zlQi4
-	 NU5eVyzyM1uqe/jkPLANchdlDtSr5hN9v6FBZGbA=
+	b=DmLvc16JsE0hFntb7yf001cu6CQABxiMT0yGcRjTOhpUkugDgR9971M94rwu68P9g
+	 58NhoLuohMQ3kihalMPBUDmtFiwIN4pInejkXZzFqOnv+DY5Oo04pFYCSsCLXwhpFP
+	 l31ljN1OOEOfux+dgblEmV0DHE/cq5InoCLf3iNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/590] padata: fix sysfs store callback check
+Subject: [PATCH 6.13 279/623] crypto: ixp4xx - fix OF node reference leaks in init_ixp_crypto()
 Date: Wed,  5 Feb 2025 14:40:21 +0100
-Message-ID: <20250205134505.452311772@linuxfoundation.org>
+Message-ID: <20250205134506.903913521@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 9ff6e943bce67d125781fe4780a5d6f072dc44c0 ]
+[ Upstream commit 472a989029aac2b78ef2f0b18b27c568bf76d104 ]
 
-padata_sysfs_store() was copied from padata_sysfs_show() but this check
-was not adapted. Today there is no attribute which can fail this
-check, but if there is one it may as well be correct.
+init_ixp_crypto() calls of_parse_phandle_with_fixed_args() multiple
+times, but does not release all the obtained refcounts. Fix it by adding
+of_node_put() calls.
 
-Fixes: 5e017dc3f8bc ("padata: Added sysfs primitives to padata subsystem")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+This bug was found by an experimental static analysis tool that I am
+developing.
+
+Fixes: 76f24b4f46b8 ("crypto: ixp4xx - Add device tree support")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index d899f34558afc..ada4a0d137d9b 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -977,7 +977,7 @@ static ssize_t padata_sysfs_store(struct kobject *kobj, struct attribute *attr,
+diff --git a/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c b/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
+index 449c6d3ab2db1..fcc0cf4df637d 100644
+--- a/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
++++ b/drivers/crypto/intel/ixp4xx/ixp4xx_crypto.c
+@@ -471,6 +471,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		npe_id = npe_spec.args[0];
++		of_node_put(npe_spec.np);
  
- 	pinst = kobj2pinst(kobj);
- 	pentry = attr2pentry(attr);
--	if (pentry->show)
-+	if (pentry->store)
- 		ret = pentry->store(pinst, attr, buf, count);
+ 		ret = of_parse_phandle_with_fixed_args(np, "queue-rx", 1, 0,
+ 						       &queue_spec);
+@@ -479,6 +480,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		recv_qid = queue_spec.args[0];
++		of_node_put(queue_spec.np);
  
- 	return ret;
+ 		ret = of_parse_phandle_with_fixed_args(np, "queue-txready", 1, 0,
+ 						       &queue_spec);
+@@ -487,6 +489,7 @@ static int init_ixp_crypto(struct device *dev)
+ 			return -ENODEV;
+ 		}
+ 		send_qid = queue_spec.args[0];
++		of_node_put(queue_spec.np);
+ 	} else {
+ 		/*
+ 		 * Hardcoded engine when using platform data, this goes away
 -- 
 2.39.5
 
