@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-113375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E8BA29191
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CF4A28D83
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 190C67A11C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9866B3A1D7F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528911DF242;
-	Wed,  5 Feb 2025 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08C01509BD;
+	Wed,  5 Feb 2025 13:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTKDzHlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gwnOcpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7F8189905;
-	Wed,  5 Feb 2025 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6E91519AA;
+	Wed,  5 Feb 2025 13:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766747; cv=none; b=krVkhYSCmAUxO4CEj+bh2iHKnwbhvR2JMD+RSWQolEUvNwSaXG6vZLVNq809NVlfk2AEHSbRRkHUQepbBtn4HHnlxdjKEHgIgz6PFqMRASazM1jxKMV5v/33+Iyf7a/htLTNW5WMGuCSdIgKxMvJw48nMyHigD5/qmA8rIermeo=
+	t=1738763998; cv=none; b=jP1JhtyO/UvCIm76rcnQG0rpF4Xy/UugYol3tLmBPZKRNW3RE4kiB4B0QfaKzgHdDLJINQIcI9/WJvKIoU5gZdZgWhaSlWqFOglf60tbAoOgBPAHFAAOeNoSG5OfaP0Y3tDb3vRFFJEyewuJrUaOFGzyr6yvuLxbD82YTWVynro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766747; c=relaxed/simple;
-	bh=XGV62LnKzW8Zsy7ZiEGn8wxeubYO4R3z0RA1uh4kt+A=;
+	s=arc-20240116; t=1738763998; c=relaxed/simple;
+	bh=L8nSkxldXuTkoCscATtXkUDAGkJbwv08093QsC+fg/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iv+/FVJowXIfQlug2e+7ImrIEPLgXdqVaHZYTkQ88LCTy/P5PghZd/rGMHUMJ8CCm8sVNCWb/MBB5sYHgaAoA+gGgs6QBj74XYNhNTGbxJHfsJWAa0Fsz2E1Tb8aQIG7Tp9FYEOFgo+8/Di004UzYHF64vdA6h0l501ETjKc+5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTKDzHlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CBAC4CED1;
-	Wed,  5 Feb 2025 14:45:46 +0000 (UTC)
+	 MIME-Version; b=W4BqRlBpFkjH342/2lN9KqQBN1MPJZhRkwLeGyUJ7bCYWR1Zquo2rOv7JJ5YVvSpdJphDreFjMiniEjJz1exV8TLHUDxdcPLxiHEvae2pETuFFnYTMHJ0y9rUT442UY+7T66/UqJqZCx4pzUjFStn0XDYdokuIY4NmtNzL+8tKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gwnOcpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A09C4CED1;
+	Wed,  5 Feb 2025 13:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766746;
-	bh=XGV62LnKzW8Zsy7ZiEGn8wxeubYO4R3z0RA1uh4kt+A=;
+	s=korg; t=1738763997;
+	bh=L8nSkxldXuTkoCscATtXkUDAGkJbwv08093QsC+fg/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTKDzHljoZP3PJNdgAcsieV27QD/LZ08F/SnB0uKGEIhufWXUqcR1WZxtsJ6vnpI0
-	 Z0RberlFiROAKtAr5ugacWNisUG03QJE494v9UHXnSd905fQBHqersoVEs4X1iU/er
-	 PXvv5qWarp6wTPri40NFQUQH34FAPvq7LgNLdulw=
+	b=0gwnOcprvX5EvdFuYuPZj3WfCjUX59wM2qYl7UKRd9Zhd/eivYYCc1ZyifgoPbbn4
+	 QsUat1DcHaBVyseZUVptFk5K0NXyZ69lFNpfhBo2H7PVPzRbOKo7KjLH+E3Iw8zrJx
+	 jk3x8Ax+EVmmvOR7vxE1TTP8BlFXCv3R8HeH1sYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@linaro.org>,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 303/623] perf test stat: Avoid hybrid assumption when virtualized
+Subject: [PATCH 6.6 126/393] wifi: mt76: mt7996: add max mpdu len capability
 Date: Wed,  5 Feb 2025 14:40:45 +0100
-Message-ID: <20250205134507.819821449@linuxfoundation.org>
+Message-ID: <20250205134425.113645809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,52 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit f9c506fb69bdcfb9d7138281378129ff037f2aa1 ]
+[ Upstream commit 1816ad9381e0c150e4c44ce6dd6ee2c52008a052 ]
 
-The cycles event will fallback to task-clock in the hybrid test when
-running virtualized. Change the test to not fail for this.
+Set max mpdu len to 11454 according to hardware capability.
+Without this patch, the max ampdu length would be 3895 and count not get
+expected performance.
 
-Fixes: 65d11821910bd910 ("perf test: Add a test for default perf stat command")
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241212173354.9860-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-1-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/shell/stat.sh | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/tests/shell/stat.sh b/tools/perf/tests/shell/stat.sh
-index 7a8adf81e4b39..68323d636fb77 100755
---- a/tools/perf/tests/shell/stat.sh
-+++ b/tools/perf/tests/shell/stat.sh
-@@ -187,7 +187,11 @@ test_hybrid() {
-   # Run default Perf stat
-   cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/[uH]*|  cycles[:uH]*  " -c)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index aee531cab46f6..7931e43e8b6df 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -729,7 +729,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
  
--  if [ "$pmus" -ne "$cycles_events" ]
-+  # The expectation is that default output will have a cycles events on each
-+  # hybrid PMU. In situations with no cycles PMU events, like virtualized, this
-+  # can fall back to task-clock and so the end count may be 0. Fail if neither
-+  # condition holds.
-+  if [ "$pmus" -ne "$cycles_events" ] && [ "0" -ne "$cycles_events" ]
-   then
-     echo "hybrid test [Found $pmus PMUs but $cycles_events cycles events. Failed]"
-     err=1
+ 	eht_cap_elem->mac_cap_info[0] =
+ 		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+-		IEEE80211_EHT_MAC_CAP0_OM_CONTROL;
++		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
++		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
++			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
+ 
+ 	eht_cap_elem->phy_cap_info[0] =
+ 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
 -- 
 2.39.5
 
