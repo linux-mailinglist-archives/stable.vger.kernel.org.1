@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D58A293AC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE3CA291CC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A7B188960A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A6D188D775
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387F61C6BE;
-	Wed,  5 Feb 2025 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE4D196C7C;
+	Wed,  5 Feb 2025 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc3KpqjM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDSRaM8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E879F1519BF;
-	Wed,  5 Feb 2025 15:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B20616F8E9;
+	Wed,  5 Feb 2025 14:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768001; cv=none; b=GUioXNkOElQgZoZl1LZfE9yTMPbNTyoC94qDvXcIL99YjchunN4xWShgxNQRD6w+A7K2raHenzsVmrT6TBaH8DRNM1iyo6ks+SCihqihV7AIJ19QSK96xPSKLSoDhNkYT/ll2ix4dqHWEJlruwZ8MLyL5jWj1mMgyb2UmhXCY0U=
+	t=1738766587; cv=none; b=GHnILI9f5SS1niNEAfcHX82GjM5VpkYh0+s/n3buXTA/8qzGweSxibkIPXfKrKJnZD2yL6l///vIPFyxjZ+F3cMPCDaLxyrHAKZ4qBm+Y5D43Mw5eZwkT3L5GzZi0/DUrGwsu0gDVEG2osxzWzD5qzwwprvAW7dR2QFIA+SynJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768001; c=relaxed/simple;
-	bh=bAaNfa2KGDHkN8tc4SpowXDvGr5Xv/6A9v+k2PX3d64=;
+	s=arc-20240116; t=1738766587; c=relaxed/simple;
+	bh=83ysKGG1SapOo4zMn7yRNc7+Adjv7MpOsJMJlbFenHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bez8JNaiTRqRnTzAlo7vqo6w1lArvZ+GimgHWUqK+bE9FYywG56yh5HX490Cbi/ub5pW9ACm5Y9PibBy1X4DFzVlLk3DoCszWRHpbSegKGBJDs6c+MwjRPNpvY/bZP1WoAGja5WwWYeQrUvaFapUdLrJjUnvSDFT3aEsuqstC9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc3KpqjM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B65C4CED1;
-	Wed,  5 Feb 2025 15:06:40 +0000 (UTC)
+	 MIME-Version; b=ajcfLwLxmvnJiFgUvHqp/h+el8MQ6zkwsLtFCrZzpUy3prkKlozRETqFUef/T4wmZnOiOgQ82gbIyLqMeLSzqM5PVC7rdtyBFx9eCs0HY0tgCS1EKCQG2nhEewHt6CiCYSdL1oksqmPQOL38+YOO80To8Bb3cBKgkz09o199kVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDSRaM8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3795C4CED6;
+	Wed,  5 Feb 2025 14:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768000;
-	bh=bAaNfa2KGDHkN8tc4SpowXDvGr5Xv/6A9v+k2PX3d64=;
+	s=korg; t=1738766587;
+	bh=83ysKGG1SapOo4zMn7yRNc7+Adjv7MpOsJMJlbFenHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cc3KpqjMNFeWcXBm9UOdfzvWMNfgJkSKC2Odn+hj3zZX+1r6sm+aem8kpWvWxLkdo
-	 7eK7IuUisNvUAhUBfxSDrYzB9SeoxaKpYhq4i8yR6tEiTLQ3wN4B5zsvCGooWpSjfe
-	 I/z9fiHm605etH4UYuMoMssbFlhk+DPnuvPxJ7pc=
+	b=gDSRaM8W1yXueHL+MiMy5R+ze9S9/zUPM8iTiDcbRvxY3GUoPAhPQgCDtLFyRS6m/
+	 3zrTMhrEFs2Zga1N1PRhD/Mo0qVG3jUemB7ivwlub4Z8yKMNGKUbbhLBnlQ9fzFK1s
+	 m/1Jcc3kUroIq/0gjzStx/9vvQW39kaUA/42TmgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Yu Kuai <yukuai1@huaweicloud.com>
-Subject: [PATCH 6.12 540/590] md/raid5: implement pers->bitmap_sector()
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 376/393] usb: xhci: Fix NULL pointer dereference on certain command aborts
 Date: Wed,  5 Feb 2025 14:44:55 +0100
-Message-ID: <20250205134515.932763878@linuxfoundation.org>
+Message-ID: <20250205134434.680142810@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 9c89f604476cf15c31fbbdb043cff7fbf1dbe0cb upstream.
+commit 1e0a19912adb68a4b2b74fd77001c96cd83eb073 upstream.
 
-Bitmap is used for the whole array for raid1/raid10, hence IO for the
-array can be used directly for bitmap. However, bitmap is used for
-underlying disks for raid5, hence IO for the array can't be used
-directly for bitmap.
+If a command is queued to the final usable TRB of a ring segment, the
+enqueue pointer is advanced to the subsequent link TRB and no further.
+If the command is later aborted, when the abort completion is handled
+the dequeue pointer is advanced to the first TRB of the next segment.
 
-Implement pers->bitmap_sector() for raid5 to convert IO ranges from the
-array to the underlying disks.
+If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
+the ring pointers unequal and assumes that there is a pending command,
+so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250109015145.158868-5-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Yu Kuai <yukuai1@huaweicloud.com>
+Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
+ring likely is unnecessary too, but it's harmless. Leave it alone.
+
+This is probably Bug 219532, but no confirmation has been received.
+
+The issue has been independently reproduced and confirmed fixed using
+a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
+Everything continued working normally after several prevented crashes.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
+Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |   51 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ drivers/usb/host/xhci-ring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5919,6 +5919,54 @@ static enum reshape_loc get_reshape_loc(
- 	return LOC_BEHIND_RESHAPE;
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -420,7 +420,8 @@ static void xhci_handle_stopped_cmd_ring
+ 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
+ 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
+ 		xhci->current_cmd = cur_cmd;
+-		xhci_mod_cmd_timer(xhci);
++		if (cur_cmd)
++			xhci_mod_cmd_timer(xhci);
+ 		xhci_ring_cmd_db(xhci);
+ 	}
  }
- 
-+static void raid5_bitmap_sector(struct mddev *mddev, sector_t *offset,
-+				unsigned long *sectors)
-+{
-+	struct r5conf *conf = mddev->private;
-+	sector_t start = *offset;
-+	sector_t end = start + *sectors;
-+	sector_t prev_start = start;
-+	sector_t prev_end = end;
-+	int sectors_per_chunk;
-+	enum reshape_loc loc;
-+	int dd_idx;
-+
-+	sectors_per_chunk = conf->chunk_sectors *
-+		(conf->raid_disks - conf->max_degraded);
-+	start = round_down(start, sectors_per_chunk);
-+	end = round_up(end, sectors_per_chunk);
-+
-+	start = raid5_compute_sector(conf, start, 0, &dd_idx, NULL);
-+	end = raid5_compute_sector(conf, end, 0, &dd_idx, NULL);
-+
-+	/*
-+	 * For LOC_INSIDE_RESHAPE, this IO will wait for reshape to make
-+	 * progress, hence it's the same as LOC_BEHIND_RESHAPE.
-+	 */
-+	loc = get_reshape_loc(mddev, conf, prev_start);
-+	if (likely(loc != LOC_AHEAD_OF_RESHAPE)) {
-+		*offset = start;
-+		*sectors = end - start;
-+		return;
-+	}
-+
-+	sectors_per_chunk = conf->prev_chunk_sectors *
-+		(conf->previous_raid_disks - conf->max_degraded);
-+	prev_start = round_down(prev_start, sectors_per_chunk);
-+	prev_end = round_down(prev_end, sectors_per_chunk);
-+
-+	prev_start = raid5_compute_sector(conf, prev_start, 1, &dd_idx, NULL);
-+	prev_end = raid5_compute_sector(conf, prev_end, 1, &dd_idx, NULL);
-+
-+	/*
-+	 * for LOC_AHEAD_OF_RESHAPE, reshape can make progress before this IO
-+	 * is handled in make_stripe_request(), we can't know this here hence
-+	 * we set bits for both.
-+	 */
-+	*offset = min(start, prev_start);
-+	*sectors = max(end, prev_end) - *offset;
-+}
-+
- static enum stripe_result make_stripe_request(struct mddev *mddev,
- 		struct r5conf *conf, struct stripe_request_ctx *ctx,
- 		sector_t logical_sector, struct bio *bi)
-@@ -8967,6 +9015,7 @@ static struct md_personality raid6_perso
- 	.takeover	= raid6_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
- 	.prepare_suspend = raid5_prepare_suspend,
-+	.bitmap_sector	= raid5_bitmap_sector,
- };
- static struct md_personality raid5_personality =
- {
-@@ -8992,6 +9041,7 @@ static struct md_personality raid5_perso
- 	.takeover	= raid5_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
- 	.prepare_suspend = raid5_prepare_suspend,
-+	.bitmap_sector	= raid5_bitmap_sector,
- };
- 
- static struct md_personality raid4_personality =
-@@ -9018,6 +9068,7 @@ static struct md_personality raid4_perso
- 	.takeover	= raid4_takeover,
- 	.change_consistency_policy = raid5_change_consistency_policy,
- 	.prepare_suspend = raid5_prepare_suspend,
-+	.bitmap_sector	= raid5_bitmap_sector,
- };
- 
- static int __init raid5_init(void)
 
 
 
