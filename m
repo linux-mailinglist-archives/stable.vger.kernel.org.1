@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-113715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4E6A29373
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A98A292D3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B72FE16C048
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C225A7A2235
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4198C15854F;
-	Wed,  5 Feb 2025 15:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C10157465;
+	Wed,  5 Feb 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ON8YHVS2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/gVQa/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC92DF59;
-	Wed,  5 Feb 2025 15:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CCD155A30;
+	Wed,  5 Feb 2025 15:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767912; cv=none; b=NsGbwpdTgVb+A2YTe9XhcIrXVI0IglQJxLg0DzV/2jAbi9nPqX7WS7vj0KVKOMyof3Cn12P28GuHHmed8QMpdYnbRbRf8OpywYI1ANI2Li06KcLOdwvQsm7qrjoBkZ3IjIX1z1QyjqQAF7TTl+u9h8zsgzPVM4KLkIWQDbE8fIY=
+	t=1738767950; cv=none; b=lDUZhLmCP1HCQ7ICzi1MgEGxTWoqVOneG51Gmx/MsRfhsYWNuJibsFJeBkaRu6X3zWP8cWeEGOD3EstFbSMjNtQhTJzA6dO7R7MrRmeCmsg6B9aT1TTvO5M4kAapP/nz9G6IbrgGk3+V8Vf4Ip5p8ncEdCTYQH/4o9BCksk7JLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767912; c=relaxed/simple;
-	bh=4eCJ0YbZWLTHF7thvebAyNacMxChocG4ZWisjkgX29w=;
+	s=arc-20240116; t=1738767950; c=relaxed/simple;
+	bh=2n/iQvDP+U807TrnpBAa2+JyCqqYz2PSoA8ePO4DFvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ft9JPcQjf/w9rttZv+dozYMUm6krSMaRutQVCwU6CBawNkfZy3QZDxvn4u8eBkk/PhJNyuUpbK7DtBAqT5rP4hXHDtPNle7dzuCtpYGhSK2wc/9ysjSKk56sTTbePBWbZS3bQSw9vdZl4+tKTWHNA82C/47ATynDFFEnawF9YOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ON8YHVS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E87C4CED1;
-	Wed,  5 Feb 2025 15:05:11 +0000 (UTC)
+	 MIME-Version; b=DqH4dC3CMFI0TYOC+rhmtRpZ3kSysdJfAY1DvGJ3MgHKF2ztLgCLT5yXN4pOT7CcSmvOqJ3gqhKwzoMnn41BlLXDA8mtG4Db/y9srWQEUWUf5o29KV+AsuYgGLNe6Up+UNqi3v73HydCXm0W7/zsVlzbljzj7z1XD/Cl5S9zxZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/gVQa/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A170BC4CEE2;
+	Wed,  5 Feb 2025 15:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767911;
-	bh=4eCJ0YbZWLTHF7thvebAyNacMxChocG4ZWisjkgX29w=;
+	s=korg; t=1738767950;
+	bh=2n/iQvDP+U807TrnpBAa2+JyCqqYz2PSoA8ePO4DFvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ON8YHVS2fC/y0qjBlwhu85tlCMf/CRReV+/RQ44qqIQ0Rs+3kS8vf73GQFIP9MXUo
-	 eFnm5PODtjW49uUosYGaa5xyc0xGcj1/nlyGeDUTvgEDsQ77AFY7DNCjQCflVJsDpB
-	 UXL0uJviAHL7hq5SqK6/AbMwvY/uN8oFG2XkKNL4=
+	b=I/gVQa/ni+wOnIexO0Qao9EqMH3M6t9Y+2iD5EDw4eQdivEogmYziyquYgcnWlJEi
+	 MIiguEcyn8D2V/ZfPM/rWLrtLXFEvOMp6FZ4vTc7KmHnkMFR7/PUKpyJjbR5C1gJQ0
+	 gD/7JPG1EBdRimQ1Y1iQ66kkPf0XdKj06PST01OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 524/590] tools/power turbostat: Fix PMT mmaped file size rounding
-Date: Wed,  5 Feb 2025 14:44:39 +0100
-Message-ID: <20250205134515.313480685@linuxfoundation.org>
+Subject: [PATCH 6.12 525/590] RISC-V: Mark riscv_v_init() as __init
+Date: Wed,  5 Feb 2025 14:44:40 +0100
+Message-ID: <20250205134515.351238552@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -66,45 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+From: Palmer Dabbelt <palmer@rivosinc.com>
 
-[ Upstream commit 2f60f03934a50bc1fb69bb4f47a25cddd6807b0b ]
+[ Upstream commit 9d87cf525fd2e1a5fcbbb40ee3df216d1d266c88 ]
 
-This (the old code) is just not how you round up to a page size.
-Noticed on a recent Intel platform. Previous ones must have been
-reporting sizes already aligned to a page and so the bug was missed when
-testing.
+This trips up with Xtheadvector enabled, but as far as I can tell it's
+just been an issue since the original patchset.
 
-Fixes: f0e4ed752fda ("tools/power turbostat: Add early support for PMT counters")
-Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+Fixes: 7ca7a7b9b635 ("riscv: Add sysctl to set the default vector rule for new processes")
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20250115180251.31444-1-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/vector.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 38363f11f49f0..da97f4327650b 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -95,6 +95,8 @@
- #define INTEL_ECORE_TYPE	0x20
- #define INTEL_PCORE_TYPE	0x40
+diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
+index 682b3feee4511..a30fb2fb8a2b1 100644
+--- a/arch/riscv/kernel/vector.c
++++ b/arch/riscv/kernel/vector.c
+@@ -309,7 +309,7 @@ static int __init riscv_v_sysctl_init(void)
+ static int __init riscv_v_sysctl_init(void) { return 0; }
+ #endif /* ! CONFIG_SYSCTL */
  
-+#define ROUND_UP_TO_PAGE_SIZE(n) (((n) + 0x1000UL-1UL) & ~(0x1000UL-1UL))
-+
- enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
- enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC, COUNTER_K2M };
- enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT, FORMAT_AVERAGE };
-@@ -8853,7 +8855,7 @@ struct pmt_mmio *pmt_mmio_open(unsigned int target_guid)
- 		if (fd_pmt == -1)
- 			goto loop_cleanup_and_break;
- 
--		mmap_size = (size + 0x1000UL) & (~0x1000UL);
-+		mmap_size = ROUND_UP_TO_PAGE_SIZE(size);
- 		mmio = mmap(0, mmap_size, PROT_READ, MAP_SHARED, fd_pmt, 0);
- 		if (mmio != MAP_FAILED) {
- 
+-static int riscv_v_init(void)
++static int __init riscv_v_init(void)
+ {
+ 	return riscv_v_sysctl_init();
+ }
 -- 
 2.39.5
 
