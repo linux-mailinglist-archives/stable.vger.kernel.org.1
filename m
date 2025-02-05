@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CB7A29255
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC98A290CA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B09188B990
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C82A188AAD8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7A41FDA7A;
-	Wed,  5 Feb 2025 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBBA376;
+	Wed,  5 Feb 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQjZOiNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxM4hTk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD611FDA6D;
-	Wed,  5 Feb 2025 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D304155747;
+	Wed,  5 Feb 2025 14:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766928; cv=none; b=eTC3mcvJ18G5avZ1OD0+ddDX3FX69GnVO9PjtdoAw29zPzO2tVYjkxv1Ydd52Jxts8UbvneLmLN5derxUuUWfqUSdk61RKbjRIYKp9BJJSDgAfN4beZevPEUqyTQjICHfAx7MPW+5sUlbqXN65kguUikMFXQDvF+XfuK38L4x0A=
+	t=1738766397; cv=none; b=pymq64OtVQo6+kIhmZRy+gv00ySPLuRUeelgKJqrtvxkTJy8wNj9Cmaubdk/GyGgtpCPorrm8xXxzANYGGBS/nTCjXVfLXazBw4jef2oxnaiVfJK40KX+rfNMLPddc1GSeDA4ygUsCHLvqwWOUBHr85Q1rdYJhOfE3OWOPSDrKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766928; c=relaxed/simple;
-	bh=Es8TYW47Ym2Na4nxQ5jOVO+m8mQv/hdTRu4NGgBmYmU=;
+	s=arc-20240116; t=1738766397; c=relaxed/simple;
+	bh=luoH14L8F/vNJ1Z1RKjGIU9EiSk0vUmj1sQy8Y4+eL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muJtFlpXdFCgS/T9Yi1t3MMEzr8YdaWpUhFrD28ukRdYEZzgHq+aP8krKdHFKw6zvJMkiEuH37zrxGYPV8iINDdAazbKyRngTMJ6x8heKkuqlxSDq+0imlJbW/e/o3KETo33CuVMA/i8HXPGv3bDg088orE9K5f942kXyy8xY+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQjZOiNb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78248C4CEDD;
-	Wed,  5 Feb 2025 14:48:47 +0000 (UTC)
+	 MIME-Version; b=nnYNkqyaUfSt+XklKyvySJzUwcxHpmg15/CTayzvfw3hDf5otY76Pb6iri7dDEnc8ZflvjCWnYO+Yr0sYgkQzYy6F4siAw94a97cBPuKK2I2AoyywTMrXANIC7SphgLPHKiknD4FomSe2/+1aOl5PWIZ2GAtCLqedOddxRtzHBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxM4hTk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F311C4CED1;
+	Wed,  5 Feb 2025 14:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766928;
-	bh=Es8TYW47Ym2Na4nxQ5jOVO+m8mQv/hdTRu4NGgBmYmU=;
+	s=korg; t=1738766397;
+	bh=luoH14L8F/vNJ1Z1RKjGIU9EiSk0vUmj1sQy8Y4+eL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQjZOiNbmTyrrEgKiJTv4JgBtWPU66TbQdkRQ5bR9E/T+28Z2uYXb567AlMRF94Fw
-	 OUE85XFO6t2jSPjcg/4sYzD9S+WRJwXO+66DNTgbMo0cD06ZnymzEk8v9FM77jH2VZ
-	 eM6VP46RdimnlLToXFll6H2pR7m+R1k5+kCbCU7g=
+	b=RxM4hTk+1wtaTzNKRzPKGvLvrkO/9Ihqd8Fhje+lgxdwv1tYVgKdziSq+eYnj1AdA
+	 Acig5/hxrwFn6IOziAPSXxSZEzWQyUjH1nwCao/ia2hrMkzWHe6sQHsvyvMOhTh3GU
+	 6cgU0381MXhGExUH4Jiw8f2DjyHmCUu6Xqe86rII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 330/623] soc: atmel: fix device_node release in atmel_soc_device_init()
+Subject: [PATCH 6.12 317/590] arm64: dts: mediatek: mt8192-asurada: Drop regulator-compatible property
 Date: Wed,  5 Feb 2025 14:41:12 +0100
-Message-ID: <20250205134508.848383180@linuxfoundation.org>
+Message-ID: <20250205134507.404278960@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit d3455ab798100f40af77123e7c2443ec979c546b ]
+[ Upstream commit d1fb968551c8688652b8b817bb081fdc9c25cd48 ]
 
-A device_node acquired via of_find_node_by_path() requires explicit
-calls to of_node_put() when it is no longer needed to avoid leaking the
-resource.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-Instead of adding the missing calls to of_node_put() in all execution
-paths, use the cleanup attribute for 'np' by means of the __free()
-macro, which automatically calls of_node_put() when the variable goes
-out of scope.
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
 
-Fixes: 960ddf70cc11 ("drivers: soc: atmel: Avoid calling at91_soc_init on non AT91 SoCs")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241031-soc-atmel-soc-cleanup-v2-1-73f2d235fd98@gmail.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 3183cb62b033 ("arm64: dts: mediatek: asurada: Add SPMI regulators")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-5-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/atmel/soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/soc/atmel/soc.c b/drivers/soc/atmel/soc.c
-index 2a42b28931c96..298b542dd1c06 100644
---- a/drivers/soc/atmel/soc.c
-+++ b/drivers/soc/atmel/soc.c
-@@ -399,7 +399,7 @@ static const struct of_device_id at91_soc_allowed_list[] __initconst = {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+index 08d71ddf36683..ad52c1d6e4eef 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8192-asurada.dtsi
+@@ -1420,7 +1420,6 @@
  
- static int __init atmel_soc_device_init(void)
- {
--	struct device_node *np = of_find_node_by_path("/");
-+	struct device_node *np __free(device_node) = of_find_node_by_path("/");
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -1430,7 +1429,6 @@
+ 			};
  
- 	if (!of_match_node(at91_soc_allowed_list, np))
- 		return 0;
+ 			mt6315_6_vbuck3: vbuck3 {
+-				regulator-compatible = "vbuck3";
+ 				regulator-name = "Vlcpu";
+ 				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -1447,7 +1445,6 @@
+ 
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <800000>;
 -- 
 2.39.5
 
