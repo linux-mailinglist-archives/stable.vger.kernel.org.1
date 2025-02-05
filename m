@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70D6A2932C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711D7A2925E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6DBF188CC3C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9B0516AB79
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CDF18A6D2;
-	Wed,  5 Feb 2025 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DCF19307F;
+	Wed,  5 Feb 2025 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njjTyQ7S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnD4QOCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871D9DF59;
-	Wed,  5 Feb 2025 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8467192D83;
+	Wed,  5 Feb 2025 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767449; cv=none; b=rsvaEgH/YPABO5Cw687S3FTk+tNfuiUIy3o/cYo70wJ6O5+oQN8AklNergZS45RWWL0YRysfclD2hLXZlZ9i58SVTgsm9T11KgLK2UueYUM8yexdMKzQIeLtUV4ds/HI6d1dy6VmKYKveSDNbT5TsJgp+zTlr+aDDkyxFyz9B08=
+	t=1738767102; cv=none; b=Gt+zkcHp8WfizH8WZCu/75fXN+NGkXEex6n0Eze+5r53J2wGpRg6PNp6A81KKmXp/ZXwSFKXKs9IiF34Bs1SxKRU32NjQEcFvCu/wosMeAsCv/bah0OqUGLBNse+CuI81+wsfrVjQnIEjT0SJ+nPhKlMnYa7g/lg7F22DWuqLhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767449; c=relaxed/simple;
-	bh=MUfD5cmLmF1oOQjMkTxie6oHNZYeaaDkhfPGebdfbxA=;
+	s=arc-20240116; t=1738767102; c=relaxed/simple;
+	bh=fp2ijNwEltgCPoaN3W+4u56lV5JhR0Q4poe/Nx0TlLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8bi9YgY3J9ZxHmL/rPaJWF4gvRqBCw63drEjg8293Qk9MQdmLHW4uLVYYNixh4sZr3zRc4/s7iNDzFFFrRJtStLxcYNj5KpWcZGx4rnulKD4aeXSt2A0qFtjFBpJ9CO44bmnvGVqNsaMnQVDbAMZgnTiQt78e2a26SLJHAkQfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njjTyQ7S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02B1C4CED1;
-	Wed,  5 Feb 2025 14:57:28 +0000 (UTC)
+	 MIME-Version; b=h1T7d1T9QkSDu0qBGsKADlvVJ9mVS2TwIJ3WwPP73+UR7lPn6hKxVbIEQl6NxHNTqr+mGqMKHZfaPXvJKPAsU0a3Ouoh3anmcMG0aQBQn1xWMc/+lH3LvKzJOnnHDaK8VpXTknSwCzUTypFTN58a92JlejI4zQdO+mnO7hYEAUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnD4QOCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B4C4CED1;
+	Wed,  5 Feb 2025 14:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767449;
-	bh=MUfD5cmLmF1oOQjMkTxie6oHNZYeaaDkhfPGebdfbxA=;
+	s=korg; t=1738767102;
+	bh=fp2ijNwEltgCPoaN3W+4u56lV5JhR0Q4poe/Nx0TlLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njjTyQ7S0UG0l9tZZ5eVoFs/Ab/FBmbN4NNTCjHQZad1E7tbp1OnTx50PYpp7HGzB
-	 rEKqMJIjkz/KAD/pYT44retrZlU7bCd19pRrNzhIkrdjIf7OSCYoAGWU9NslOty6vC
-	 mLvMYTWD9KFeaNoPZL/LGRBRsoIyN8VTw/3xNY50=
+	b=XnD4QOCQ4EHwPhnBlVS0AupfbhNRxNYFuG/BhsXldHurPgaeapFMu4z8DjSXxq15j
+	 VSTG5+FcPTjF78xvjQQeu0+lxhjU8hJIoiOIfMCC9SmlhiLMv7erIu9kw08Z9I71zJ
+	 DZfyHPOxeK5t4T+jCOmFrI6IEhywF9FyRrb45bFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 406/623] arm64: dts: qcom: sc7180-trogdor-pompom: rename 5v-choke thermal zone
+Subject: [PATCH 6.12 393/590] arm64: dts: qcom: x1e80100-romulus: Update firmware nodes
 Date: Wed,  5 Feb 2025 14:42:28 +0100
-Message-ID: <20250205134511.755512586@linuxfoundation.org>
+Message-ID: <20250205134510.302440504@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit 9180b38d706c29ed212181a77999c35ae9ff6879 ]
+[ Upstream commit 983833061d9599a534e44fd6d335080d1a0ba985 ]
 
-Rename the 5v-choke thermal zone to satisfy the bindings.
+Other x1e machines use _dtbs.elf for these firmwares, which matches the
+filenames shipped by Windows.
 
-This fixes:
-sc7180-trogdor-pompom-r2-lte.dts: thermal-zones: '5v-choke-thermal' does not match any of the regexes: '^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-4-1e6880e9dda3@linaro.org
+Fixes: 09d77be56093 ("arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250108124500.44011-1-joel@jms.id.au
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-index ac8d4589e3fb7..f7300ffbb4519 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-@@ -12,11 +12,11 @@
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
+index cdb401767c420..89e39d5527857 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
+@@ -680,14 +680,14 @@
  
- / {
- 	thermal-zones {
--		5v-choke-thermal {
-+		choke-5v-thermal {
- 			thermal-sensors = <&pm6150_adc_tm 1>;
+ &remoteproc_adsp {
+ 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qcadsp8380.mbn",
+-			"qcom/x1e80100/microsoft/Romulus/adsp_dtb.mbn";
++			"qcom/x1e80100/microsoft/Romulus/adsp_dtbs.elf";
  
- 			trips {
--				5v-choke-crit {
-+				choke-5v-crit {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
- 					type = "critical";
+ 	status = "okay";
+ };
+ 
+ &remoteproc_cdsp {
+ 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qccdsp8380.mbn",
+-			"qcom/x1e80100/microsoft/Romulus/cdsp_dtb.mbn";
++			"qcom/x1e80100/microsoft/Romulus/cdsp_dtbs.elf";
+ 
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
