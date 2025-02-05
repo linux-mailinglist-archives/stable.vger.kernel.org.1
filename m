@@ -1,129 +1,104 @@
-Return-Path: <stable+bounces-114001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03736A29C92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:23:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F65DA29CAA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F168E188668B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CEA9167809
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CDC2116F9;
-	Wed,  5 Feb 2025 22:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE91214A90;
+	Wed,  5 Feb 2025 22:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="gOiTxQ+J"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ihj7OjlO"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f201.google.com (mail-vk1-f201.google.com [209.85.221.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F38D207A18;
-	Wed,  5 Feb 2025 22:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467C6F510
+	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 22:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738794222; cv=none; b=QYzzFBqQgMBUoOtAXs6eQ4ZMRxuT36qw82Ds/6JfqMU9Rw+1iUQLaExFEmZFRaKmftWlpcCO5mfYeTzidWgvrUFh8kGBNvawMf/FUf1ScBeEi7S2FRLLOhRKekfIytmKgEC7WbC6UI/0ZJ9VHuupYHOnu/o+xnwMfRKb9WaCd5w=
+	t=1738794432; cv=none; b=VPXvlyCc4sbfVd+c7eDJiOj2iy+010zUbECnOOIwu+3gF70hjMZy+SW5NH3MO6Ai0mqeHvPlpX1t3RutKxJwDkD+qUWln6FMzt1y0ee8FBKg0hBVfEAX1RvcI7OUddi1kNBbPt8V6zrGksUM7V7mRvRyC+q6Z4MvLBzN2YwziN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738794222; c=relaxed/simple;
-	bh=z6eD1FP///AwBHcopqgetq8mUPl1qy7sZPeZfpBTrHo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KUu7A/W77DMC3EzSqZkCX6yn5Cm2WZktZFGjA1qAx7bsOopW4VRYOUpflMlp3CpKLjUCelWJGoIUqg7UxcCWTbuCHLx1yFGvxDZspDyrX05Yi8Zw078eFoSEtP30xc/h9LuUqL5w0LM30cuvvoEvpLDmOzJBKaFKFlXhVI/Bqws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=gOiTxQ+J; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4YpFBJ2WGkz9sdr;
-	Wed,  5 Feb 2025 23:23:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
-	s=MBO0001; t=1738794216;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3A8gIWsEr9yJWnJxL6/MIgQmtdybjtwSXxHXk23OHxc=;
-	b=gOiTxQ+JTd3yBcrxaeqqNlL8wZPKmTjD0ErC8yTAtJFh0MGwxBdGqyAPeaRV5JsbRdpr4C
-	nrcy8XpEEbaJkbx+stTfxLi0F4JLhX5wtkSn5G6kTFmEu0P3tPu944l29uIg9H74Fo0fRm
-	R1qnA1HDUK2vlu8gd+Ej9o9H4nmsoZ14tetw/3WoiLnqPh/fvddhRTmHW/9t3ZlyS0KR6e
-	POZjzclH7hzkKKPggUhsCT8ItwlnIPxYhjMsDpchvOoeAvN3JdhElJaot8BbP3hnQObOYl
-	6C/h/r5g49hO9f03xyYpjsTAr1yDHg9sos/YthUo2t1LoCEBNWYQMYq8XfT2fQ==
-From: Frank Oltmanns <frank@oltmanns.dev>
-To: Johan Hovold <johan@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,  Chris Lew
- <quic_clew@quicinc.com>,  Stephan Gerhold <stephan.gerhold@linaro.org>,
-  Johan Hovold <johan+linaro@kernel.org>,  Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>,  Konrad Dybcio <konradybcio@kernel.org>,
-  Abel Vesa <abel.vesa@linaro.org>,  linux-arm-msm@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  regressions@lists.linux.dev,
-  stable@vger.kernel.org, Caleb Connolly <caleb.connolly@linaro.org>, Joel
- Selvaraj <joelselvaraj.oss@gmail.com>, Alexey Minnekhanov
- <alexeymin@postmarketos.org>
-Subject: Re: [PATCH] soc: qcom: mark pd-mapper as broken
-In-Reply-To: <Z4TXww5rAkMR8OmM@hovoldconsulting.com> (Johan Hovold's message
-	of "Mon, 13 Jan 2025 10:07:15 +0100")
-References: <20241010074246.15725-1-johan+linaro@kernel.org>
-	<Zwj3jDhc9fRoCCn6@linaro.org> <87wmf7ahc3.fsf@oltmanns.dev>
-	<Z3z7sHn6yrUvsc6Y@hovoldconsulting.com>
-	<Z36Gag6XhOrsIXqK@hovoldconsulting.com> <87wmf18m8g.fsf@oltmanns.dev>
-	<Z4TXww5rAkMR8OmM@hovoldconsulting.com>
-Date: Wed, 05 Feb 2025 23:23:22 +0100
-Message-ID: <874j182fqd.fsf@oltmanns.dev>
+	s=arc-20240116; t=1738794432; c=relaxed/simple;
+	bh=gDKm3UOi1ycZkLD85XAgCozDeIGYTajlvHnxJa6MUM4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tcvmFRCvFRUB7+iw2eCOq0Il/s6+6aJHDsn5swJ2C3+6l5xP8y4273grKt6y2EXqAAj29SgrZ5pYDqFjbHhnAOJhUEdDEeG0ljgoe3uBuzFw37L/WWCK1NtX98FLCAws0InxIL4u3RyCNQbSyqLnS6ZTG4iiiT9OoTe3U2vNsAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ihj7OjlO; arc=none smtp.client-ip=209.85.221.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
+Received: by mail-vk1-f201.google.com with SMTP id 71dfb90a1353d-51f20dd678fso29910e0c.0
+        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 14:27:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738794430; x=1739399230; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EF9vcXhQEphhBLiJXIFUaZjjqTY6hbfdzTTVj3kzjxM=;
+        b=ihj7OjlOFt+oNaxqM2HSkJosuprLyuya5kqs+84GiRXKzbsjNGxo8N9bmsfR5CWHzO
+         tXOM+CU/9DSySoTyed+4IANpNpFkJuMXbyBnJhzeAKo9ojsGuG52aFGFjM6zP9hlJfvn
+         qCYQsmTTaPvQvjDIbj2vfQHgsMa0q97hIi+t5hVv0E/4yhhkIYbytyTTyLog00Q+BMil
+         Sjuu7XG8hW7Ymygqru5KRvUqVL5kKHfc7J1b9eilxLyY1HRr4fOdziFMKzKKvnhKcahO
+         LodPPb2QHDRWTVIU7UmBlVZSPM1Q8PhsT2L7Oy/bu9b0ChszjujjGDYjk62nQ23pS+bo
+         HcFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738794430; x=1739399230;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EF9vcXhQEphhBLiJXIFUaZjjqTY6hbfdzTTVj3kzjxM=;
+        b=hJqzarF0mo/ZI5UqH2sH4X0s3/DNbxYWkZL3PjzPfyhJXD/qkc3OfOAVT9M5iRpysR
+         7ETsrIG6ldVnnzgxh2x4oy3Bg4+shMFxtFr3Cx6psZmUMdsX9j3Am45AuRTObH6DIbZz
+         tOOpgUpXRQYptHI/7yE8lOQx7sbWL9+J1l1EIKddg9G5t0UyPBn9TOMMRPG3X7twFyW6
+         iodaVlN1q2w93igDM8YaJyJuIuwqfsdn/zATDnqaZCo+n3R/OIblLG5FxNW4ybUgD1O7
+         cGNX7W9NO3ChEIcVnOnxZ6GL+URIM37bdQw6RG7U9/TTVGi6K9ghhzIGD0dNCxN3ezza
+         xD+A==
+X-Gm-Message-State: AOJu0YzirFil6LP1XeWjkJZGlyrabI5ox9el+WaqFyXwzQuSw/hhupo+
+	rqbQ/O3Fq7EsJXwsJpFJvy5iuyn+BQL2lZUddiuhVLzLqYIRcmMiKfRIyBCF014CRnBrKZgEq8G
+	Cj5ks6r60juELf9A41DdpQm4xEX0c0Cb5RPrnxZiQ59sS9W9fI1AqXn1swStPIWpC4Igw2ysNxl
+	tSGwO/wpfE3uW1kunSE4XkcyNqMVr7ykWuhsrxEAQ/ip7qjo0hBGkfzw==
+X-Google-Smtp-Source: AGHT+IH/soYGxZ8Wgbj/c0qisZbOBmIis3BGBCoRExNgY5mjDcA7YMQ7KMpgFRi76Ny/0A1Vcvt6H4Zy3mqMRFpa
+X-Received: from vkbet6.prod.google.com ([2002:a05:6122:1c06:b0:516:f6b:e2fd])
+ (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6122:c92:b0:518:859e:87c3 with SMTP id 71dfb90a1353d-51f0c4f34b3mr3265460e0c.7.1738794429866;
+ Wed, 05 Feb 2025 14:27:09 -0800 (PST)
+Date: Wed,  5 Feb 2025 22:26:49 +0000
+In-Reply-To: <2024100123-unreached-enrage-2cb1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4YpFBJ2WGkz9sdr
+Mime-Version: 1.0
+References: <2024100123-unreached-enrage-2cb1@gregkh>
+X-Mailer: git-send-email 2.48.1.362.g079036d154-goog
+Message-ID: <20250205222651.3784169-1-jthoughton@google.com>
+Subject: [PATCH 6.6.y 0/2] KVM: x86: Backport split ICR for x2AVIC
+From: James Houghton <jthoughton@google.com>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>, Maxim Levitsky <mlevitsk@redhat.com>, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Gavin Guo <gavinguo@igalia.com>, 
+	James Houghton <jthoughton@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2025-01-13 at 10:07:15 +0100, Johan Hovold <johan@kernel.org> wrote:
-> On Sat, Jan 11, 2025 at 03:21:35PM +0100, Frank Oltmanns wrote:
->> On 2025-01-08 at 15:06:34 +0100, Johan Hovold <johan@kernel.org> wrote:
->
->> > And today I also hit this on the sc8280xp CRD reference design, so as
->> > expected, there is nothing SoC specific about the audio service
->> > regression either:
->> >
->> > [   11.235564] PDR: avs/audio get domain list txn wait failed: -110
->> > [   11.241976] PDR: service lookup for avs/audio failed: -110
->> >
->> > even if it may be masked by random changes in timing.
->> >
->> > These means it affects also machines like the X13s which already have
->> > audio enabled.
->>
->> I've blocklisted the in-kernel pd-mapper module for now and have
->> switched back to the userspace pd-mapper.
->>
->> I don't know if it's helpful or not, but I don't get these error logs
->> when using to the in-kernel pd-mapper. It's just that the phone's mic
->> only works on approximately every third boot (unless I defer loading the
->> module).
->
-> Ok, then it sounds like you're hitting a separate bug that is also
-> triggered by the changed timings with the in-kernel pd-mapper.
+Also pull in commit 4b7c3f6d04bd ("KVM: x86: Make x2APIC ID 100%
+readonly") as a dependency, which itself fixes a WARN.
 
-I worked on finding out what's causing the issue on sdm845 and I've
-submitted a patch here: [1]
+Tested with xapic_state_test avic=Y.
 
-> Are there any hints in the logs about what goes wrong in your setup?
+Sean Christopherson (2):
+  KVM: x86: Make x2APIC ID 100% readonly
+  KVM: x86: Re-split x2APIC ICR into ICR+ICR2 for AMD (x2AVIC)
 
-Unfortunately not, see [1].
+ arch/x86/include/asm/kvm_host.h |  2 +
+ arch/x86/kvm/lapic.c            | 66 +++++++++++++++++++++++----------
+ arch/x86/kvm/svm/svm.c          |  2 +
+ arch/x86/kvm/vmx/vmx.c          |  2 +
+ 4 files changed, 52 insertions(+), 20 deletions(-)
 
-> And
-> the speakers are still working, it's just affecting the mic?
+-- 
+2.48.1.362.g079036d154-goog
 
-Yes, it's only affecting the mic in my setup on xiaomi-beryllium, but
-there seem to be issues with the speaker on oneplus-enchilada that can
-be fixed with the same approach.
-
-Best regards,
-  Frank
-
-[1]: https://lore.kernel.org/all/20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev/
-
->
-> Johan
 
