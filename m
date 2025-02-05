@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888A8A28FA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0529AA293C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E769166F68
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 316CA188B0E6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589391553AB;
-	Wed,  5 Feb 2025 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2D015CD74;
+	Wed,  5 Feb 2025 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkEgfLYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nToNK/Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149258634E;
-	Wed,  5 Feb 2025 14:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7C91C6BE;
+	Wed,  5 Feb 2025 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765635; cv=none; b=Bi6eHFqphWYAlhBzsrXy10T082Lv+5j3p1/gRam5PxW3Q/fYZaWrt/X2DdAtYGc9HmbXqPS11HiekbTd1zzHmQjyXJDbUZLhawMEMD/1MR5V/GywUerqHgVM0p3jTi6TLxjaeu0YPw5pLAq5H2QyB8CL6scbv+C7PZqiU5eY1YE=
+	t=1738767853; cv=none; b=scONR8Ddz2ZHH91srL/+uprfqNfT6YH6RF78DfFdH+vyR3sW6Brzw/56Xgho0hI2ivLhr7gfXdYytKydepVpu5V7mHTsAgKLBvCZjoqLYC32gpOz13ZJa9lFiID09NqT2dBX/9R2o8I5A4Lcn74zNVQAV/YxdJbFswNf68julU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765635; c=relaxed/simple;
-	bh=LDlNqh749KSdojMQfNN2t1JMFbZqL6TohjCEj8d0a0k=;
+	s=arc-20240116; t=1738767853; c=relaxed/simple;
+	bh=SVj8kNYOqZtS+NZmgK41fUXHfqaLC6JzL8FLosMOpSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjCTncnN84jA6ZJ64SWmAf0CvnpL+/N8yRFGWDSmhR/ZYqbKQ3/0qMSkt8Of7d15VqTxvTcoIwGD/kM9v6MZYC8ezwarEvXd4FX+QNim/eRvB1U8vXE6wfUa1atS7zg16PzThilNQEu+P6b7wB5xFebCEQ+b7fIkZxL1+OIV4ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkEgfLYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727B6C4CED1;
-	Wed,  5 Feb 2025 14:27:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BiPBWPEWMKS9TBxltqFgQf/FIm87MvVvw60JX0spiefRUZj555HWxMT4awKyiD7RKvVqYjEKVvePA78yn/TxG2Ok2aMPVF7JDM4GCbXumBdSemOkgxMgnNkS2vQDShtaRhhHCeNdOsCLbiixLGm3Gd/LBZ0xNFTaPEVIWUxbeQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nToNK/Vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75175C4CED1;
+	Wed,  5 Feb 2025 15:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765634;
-	bh=LDlNqh749KSdojMQfNN2t1JMFbZqL6TohjCEj8d0a0k=;
+	s=korg; t=1738767853;
+	bh=SVj8kNYOqZtS+NZmgK41fUXHfqaLC6JzL8FLosMOpSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkEgfLYGm13jRz9MmiQsTJbeCcux0zyflY9tYybsYJdb7kLO/P3Pie2MApQGjtOpD
-	 mvyCxybh8GFlK57ff6tLrLWlcAX42IBIdKjEThxwfIlYXvAGNf82iisYzUmE7mSRjF
-	 Y442iGqoK2TBRPRVcR0rRaUxbVEW79egnTiwVxAY=
+	b=nToNK/VdV8HZZ97oYz2rzBJY5Dxxh8VECGJECQ03RtGqQoELpSguv4/37xBrzC7i5
+	 jvFZCeoXjz2u/9/tGKfi+5la4m84OUcCQIDw0MIkfBj+QnRMKU8e5sgrYmoaiJnItF
+	 IuWtV0kL+V2p7pIjXtdK5ITgE19ZephKW9rcqEV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/393] media: i2c: imx290: Register 0x3011 varies between imx327 and imx290
+Subject: [PATCH 6.13 462/623] PCI: rockchip: Add missing fields descriptions for struct rockchip_pcie_ep
 Date: Wed,  5 Feb 2025 14:43:24 +0100
-Message-ID: <20250205134431.218155074@linuxfoundation.org>
+Message-ID: <20250205134513.892798514@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit f2055c1d62d6dfd25a31d1d1923883f21305aea5 ]
+[ Upstream commit fd46bc0e0bb3c6607363bd23f2b3c2a73dc75d66 ]
 
-Reviewing the datasheets, register 0x3011 is meant to be 0x02 on imx327
-and 0x00 on imx290.
+When compiling the Rockchip endpoint driver with -W=1, the following
+warnings can be seen in the output:
 
-Move it out of the common registers, and set it appropriately in the
-sensor specific sections. (Included for imx290 to be explicit, rather
-than relying on the default value).
+  drivers/pci/controller/pcie-rockchip-ep.c:59: warning: Function parameter or struct member 'perst_irq' not described in 'rockchip_pcie_ep'
+  drivers/pci/controller/pcie-rockchip-ep.c:59: warning: Function parameter or struct member 'perst_asserted' not described in 'rockchip_pcie_ep'
+  drivers/pci/controller/pcie-rockchip-ep.c:59: warning: Function parameter or struct member 'link_up' not described in 'rockchip_pcie_ep'
+  drivers/pci/controller/pcie-rockchip-ep.c:59: warning: Function parameter or struct member 'link_training' not described in 'rockchip_pcie_ep'
 
-Fixes: 2d41947ec2c0 ("media: i2c: imx290: Add support for imx327 variant")
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fix these warnings by adding the missing field descriptions in
+struct rockchip_pcie_ep kernel-doc comment.
+
+Fixes: a7137cbf6bd5 ("PCI: rockchip-ep: Handle PERST# signal in EP mode")
+Fixes: bd6e61df4b2e ("PCI: rockchip-ep: Improve link training")
+Link: https://lore.kernel.org/r/20241216133404.540736-1-dlemoal@kernel.org
+Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx290.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-rockchip-ep.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index 6dacd38ae947a..f8ada6c1ef65b 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -269,7 +269,6 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
- 	{ IMX290_WINWV, 1097 },
- 	{ IMX290_XSOUTSEL, IMX290_XSOUTSEL_XVSOUTSEL_VSYNC |
- 			   IMX290_XSOUTSEL_XHSOUTSEL_HSYNC },
--	{ CCI_REG8(0x3011), 0x02 },
- 	{ CCI_REG8(0x3012), 0x64 },
- 	{ CCI_REG8(0x3013), 0x00 },
- };
-@@ -277,6 +276,7 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
- static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
- 	{ CCI_REG8(0x300f), 0x00 },
- 	{ CCI_REG8(0x3010), 0x21 },
-+	{ CCI_REG8(0x3011), 0x00 },
- 	{ CCI_REG8(0x3016), 0x09 },
- 	{ CCI_REG8(0x3070), 0x02 },
- 	{ CCI_REG8(0x3071), 0x11 },
-@@ -330,6 +330,7 @@ static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
- };
- 
- static const struct cci_reg_sequence imx290_global_init_settings_327[] = {
-+	{ CCI_REG8(0x3011), 0x02 },
- 	{ CCI_REG8(0x309e), 0x4A },
- 	{ CCI_REG8(0x309f), 0x4A },
- 	{ CCI_REG8(0x313b), 0x61 },
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index 1064b7b06cef6..4f978a17fdbba 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -40,6 +40,10 @@
+  * @irq_pci_fn: the latest PCI function that has updated the mapping of
+  *		the MSI/INTX IRQ dedicated outbound region.
+  * @irq_pending: bitmask of asserted INTX IRQs.
++ * @perst_irq: IRQ used for the PERST# signal.
++ * @perst_asserted: True if the PERST# signal was asserted.
++ * @link_up: True if the PCI link is up.
++ * @link_training: Work item to execute PCI link training.
+  */
+ struct rockchip_pcie_ep {
+ 	struct rockchip_pcie	rockchip;
 -- 
 2.39.5
 
