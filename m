@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AD0A290C2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0389A28DD3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD527A3B44
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4019B162107
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B99D1607B7;
-	Wed,  5 Feb 2025 14:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AB21509BD;
+	Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iikXuVu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goVwdUbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169347BAEC;
-	Wed,  5 Feb 2025 14:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B5CF510;
+	Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766408; cv=none; b=DZV0M11RhpXp11jBkm/uPPSYeb1mefkGoQyFyFqX6SxxT+LMxLPPd+heRXuAyKc9SQZ8TdjdYu8UFAxkKbrpjvVdJEXx3R9A8hRVqsNiy4cgb8BsUS/v6KccP5B3sN7JtW5N+oKV3U4H5jzXcfgJ7pWZ+GNQujqq6caIpV5VgkM=
+	t=1738764344; cv=none; b=DSua8X4B8Rh8RgI6qggh6LMK4xlc0tb2cI4yNQgVTykiZ+qQOeREtHUrjaiuUsbD0IWBxhlgT7DhDC0U2W/2wOvqowv4vabeONi3xSGy2QuAxg4EiCt2f8gSmu2mDorm9LZeFi5REdHFFUmLXhsU1kyQ6EkUwC9UjB0i7hkNeM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766408; c=relaxed/simple;
-	bh=y2H8aBoe5tTni9d8KjOE6Q6xqz+XwdwlCJirPsyFdl0=;
+	s=arc-20240116; t=1738764344; c=relaxed/simple;
+	bh=UIDtfOLE+9UQb4pE09RXLo6xmeFlp/2sMDW9fabR67c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nd58PQtqfzURquWHRDHX/96JDfGp6qr0FWjpPYhWc5kZO6nZPhN/Gdeqt6QW8/SJ19oexGpwyD6WCTyYLOHTPzDo0Xra5lXwRZbzpXxBed+0E5a67YSpayBilR2ppmf+VPUXKDGyDgYooOIoNEvHwvP5c4rZD2nmbc7jjd3a+mA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iikXuVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D81C4CEE2;
-	Wed,  5 Feb 2025 14:40:06 +0000 (UTC)
+	 MIME-Version; b=ZDdUqk3l2sMQf1Tab61jm3+NorHSv+zLmEzo1NWl0ek6zd9FQy2G8TXFMOQ1bQ2DAmQNc+fsnyP8LPXgmLLptaEqnDQEKk7UWfqI07om9PwDRylqbQg0hBqn2wDg03rmMyeuKCSl+nJm+PE+a4tBr5azuR4G/oz+JmcPliirLF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goVwdUbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBB1C4CED1;
+	Wed,  5 Feb 2025 14:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766407;
-	bh=y2H8aBoe5tTni9d8KjOE6Q6xqz+XwdwlCJirPsyFdl0=;
+	s=korg; t=1738764343;
+	bh=UIDtfOLE+9UQb4pE09RXLo6xmeFlp/2sMDW9fabR67c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iikXuVuxgo2prYqTpcGALpBi0/DMXnxIRkbcX36waDzL7dSzxn/oLHfOKy9O42vH
-	 dtacXYjvQhq31OxJLbI66hVrbp2IN5FJ/zEJxVFk23a4WLcKUYYX2P71tJORv2pMe7
-	 yIoGdn3w39jbMm20gDgOm5sAKeFkQ5qPPJPJ5jf8=
+	b=goVwdUbBTRV/fLP/wcaa/ByxzvBc2t5Vxw03wu8i11lm7Gcy2BzdW9LHnAz8CRgIK
+	 fnIe2WHM1YhHPLJTwQwmSa4EJWPXcRvnkpUrtS1XCp6uGRfMHvTYkiDx/4tDYi9SCL
+	 AbaIgPJ9vgBVVA8wXMyk02e4gHUsU5KprfAL+tnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marco Leogrande <leogrande@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/590] arm64: dts: mediatek: mt8195-cherry: Drop regulator-compatible property
+Subject: [PATCH 6.6 154/393] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
 Date: Wed,  5 Feb 2025 14:41:13 +0100
-Message-ID: <20250205134507.441923977@linuxfoundation.org>
+Message-ID: <20250205134426.193947094@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Marco Leogrande <leogrande@google.com>
 
-[ Upstream commit 4dbaa5d5def2c49e44efaa5e796c23d9b904be09 ]
+[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
+server bind in test_tc_tunnel.sh") added code that waits for the
+netcat server to start before the netcat client attempts to connect to
+it. However, not all calls to 'server_listen' were guarded.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
+This patch adds the existing 'wait_for_port' guard after the remaining
+call to 'server_listen'.
 
-Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-6-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
+Signed-off-by: Marco Leogrande <leogrande@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index 2c7b2223ee76b..5056e07399e23 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -1285,7 +1285,6 @@
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 7989ec6084545..cb55a908bb0d7 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -305,6 +305,7 @@ else
+ 	client_connect
+ 	verify_data
+ 	server_listen
++	wait_for_port ${port} ${netcat_opt}
+ fi
  
- 		regulators {
- 			mt6315_6_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -1303,7 +1302,6 @@
- 
- 		regulators {
- 			mt6315_7_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <400000>;
- 				regulator-max-microvolt = <1193750>;
+ # serverside, use BPF for decap
 -- 
 2.39.5
 
