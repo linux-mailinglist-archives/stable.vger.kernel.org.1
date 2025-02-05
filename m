@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A00A28C60
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A674A28EF7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BE4168AA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844291888117
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BD813D52B;
-	Wed,  5 Feb 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC109154C08;
+	Wed,  5 Feb 2025 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wAbFkxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byLRKIXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F9313C9C4;
-	Wed,  5 Feb 2025 13:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638941537AC;
+	Wed,  5 Feb 2025 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763340; cv=none; b=FM2l7rJxYsNr3Ionf3gL4KK10zvaXhz6Q33k9Gf0o+S7ARZzNsYLtyefjQwMPDeaNWI7+WCOYk/RnJcRLTzFOzmdlaJp5xbUY5zEtD9XGZzYc4c/5ipfzO0pMDVVkOPz3D/GsvCwMpdTeRJAiCY/RR1Xy1TRAYlX4Mw7iGkKkFI=
+	t=1738765128; cv=none; b=qGZ1P3HKZm9Nxvqx7OHQWP4jfTLgpa3dQr9qo7PPVWQIr+7+Qurj44dKSdrnKDO8/5q+Zy/+Fm2Ily8q53ir4bQVmCJC/3uIj1/9hwjrYv8WRSxHd+9L1POWrCirFg2i36H7IYCW4Z6WoEixnEoELCLzGubT/c+f/0mdZ5spJhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763340; c=relaxed/simple;
-	bh=C0rvdFMZxD5gNwQnQshomLR9dw09NkCp6FeyEB8fIxA=;
+	s=arc-20240116; t=1738765128; c=relaxed/simple;
+	bh=BHzrMhvwpd5TxoWmZLH8G4j0k8YN36xo0K0m3/Z97Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+QKJxK0Kv5JxVKb5RGP7lilUO0gv5luinXwNGKRuLpiKj+x4/O1cwwP01BOfI5iTqwfvMLIidUUJLd4QvYvquMuvE9jCx5ysonwwTYmDBvq6tnvdNfMACLwf5YJbAYBeXszSPRVb4GP5MzK7RqDNzHFh8U8bfi7k9tFaKBtZYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wAbFkxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0092C4CED1;
-	Wed,  5 Feb 2025 13:48:59 +0000 (UTC)
+	 MIME-Version; b=DVgWExLNqexSEaWu0Y9/pq7CaZ6ul8hIEp9eMXuDbRNAzHONAVOhIr9sZUxrR3Uy/UTlcsBmM/6HBNOUJxc4tBnboecdxyom3mjO9mpv7U8iTN1OQwmXe6g1b/FhoBh7GKr8+C/9SJ8GgGTYDkOlNthWUA6z2eo2HEdAgWWe6Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byLRKIXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06EAC4CED1;
+	Wed,  5 Feb 2025 14:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763340;
-	bh=C0rvdFMZxD5gNwQnQshomLR9dw09NkCp6FeyEB8fIxA=;
+	s=korg; t=1738765128;
+	bh=BHzrMhvwpd5TxoWmZLH8G4j0k8YN36xo0K0m3/Z97Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0wAbFkxaSfHp263RfD9cNh5ZzIr8XCP2MMR0eQO1lhHjYe42RN1UjTq6VKYPFQtGs
-	 tjnZtdlzVFLKb5RQ6TD4krrs1kXjPckZahBFgmmuJxp+1MeMoQm7S3/Vsu2ZCihlqg
-	 JH3Us/i9h7BVB/rFHiqtkhK/cqPf8h0GKUaoY3Ng=
+	b=byLRKIXAJ6OdSkIidXDeQu0XCmekleWWDuuhD+vSQ7lx0T4wiadAruOsDmCh5f/DI
+	 EJFmzk4K9tmdNyx03K7HYk0cxIzFBqzyil/s3nluw/+wn6uc7wXeVIaJ5REnbGGK+M
+	 lZO2q9VCtFmL8/NwcNoDiM7Fwu6PjLu4T+0WYNLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/393] drm/rockchip: vop2: Fix the mixer alpha setup for layer 0
+Subject: [PATCH 6.12 192/590] wifi: mt76: mt7925: Update secondary link PS flow
 Date: Wed,  5 Feb 2025 14:39:07 +0100
-Message-ID: <20250205134421.377242265@linuxfoundation.org>
+Message-ID: <20250205134502.625802872@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 6b4dfdcde3573a12b72d2869dabd4ca37ad7e9c7 ]
+[ Upstream commit 8dafab9c4116a6a4fd870be03a3d9b66771dc5a8 ]
 
-The alpha setup should start from the second layer, the current calculation
-starts incorrectly from the first layer, a negative offset will be obtained
-in the following formula:
+Update the power-saving flow for secondary links.
 
-offset = (mixer_id + zpos - 1) * 0x10
-
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-7-andyshrk@163.com
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-13-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7925/main.c  |  7 ++++++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 25 ++++++-------------
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  3 +++
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  7 ++++--
+ 4 files changed, 22 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index f8fdbdf52e907..f7a3b05701e9a 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1830,6 +1830,12 @@ static void vop2_setup_alpha(struct vop2_video_port *vp)
- 		struct vop2_win *win = to_vop2_win(plane);
- 		int zpos = plane->state->normalized_zpos;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index a78aae7d10886..dcdb9bcff3c40 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1903,6 +1903,13 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
+ 		mt7925_mcu_set_tx(dev, info);
  
-+		/*
-+		 * Need to configure alpha from second layer.
-+		 */
-+		if (zpos == 0)
-+			continue;
++	if (changed & BSS_CHANGED_BSSID) {
++		if (ieee80211_vif_is_mld(vif) &&
++		    hweight16(mvif->valid_links) == 2)
++			/* Indicate the secondary setup done */
++			mt7925_mcu_uni_bss_bcnft(dev, info, true);
++	}
 +
- 		if (plane->state->pixel_blend_mode == DRM_MODE_BLEND_PREMULTI)
- 			premulti_en = 1;
- 		else
+ 	mt792x_mutex_release(dev);
+ }
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 4577e838f5872..0976f3dffbe46 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1362,7 +1362,7 @@ int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
+ 				 &ps_req, sizeof(ps_req), true);
+ }
+ 
+-static int
++int
+ mt7925_mcu_uni_bss_bcnft(struct mt792x_dev *dev,
+ 			 struct ieee80211_bss_conf *link_conf, bool enable)
+ {
+@@ -1923,32 +1923,21 @@ int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
+ {
+ #define MT7925_FIF_BIT_CLR		BIT(1)
+ #define MT7925_FIF_BIT_SET		BIT(0)
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	unsigned long valid = ieee80211_vif_is_mld(vif) ?
+-				      mvif->valid_links : BIT(0);
+-	struct ieee80211_bss_conf *bss_conf;
+ 	int err = 0;
+-	int i;
+ 
+ 	if (enable) {
+-		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+-			bss_conf = mt792x_vif_to_bss_conf(vif, i);
+-			err = mt7925_mcu_uni_bss_bcnft(dev, bss_conf, true);
+-			if (err < 0)
+-				return err;
+-		}
++		err = mt7925_mcu_uni_bss_bcnft(dev, &vif->bss_conf, true);
++		if (err < 0)
++			return err;
+ 
+ 		return mt7925_mcu_set_rxfilter(dev, 0,
+ 					       MT7925_FIF_BIT_SET,
+ 					       MT_WF_RFCR_DROP_OTHER_BEACON);
+ 	}
+ 
+-	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		bss_conf = mt792x_vif_to_bss_conf(vif, i);
+-		err = mt7925_mcu_set_bss_pm(dev, bss_conf, false);
+-		if (err)
+-			return err;
+-	}
++	err = mt7925_mcu_set_bss_pm(dev, &vif->bss_conf, false);
++	if (err < 0)
++		return err;
+ 
+ 	return mt7925_mcu_set_rxfilter(dev, 0,
+ 				       MT7925_FIF_BIT_CLR,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index ac53bdc993322..31bb8ed2ec513 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -643,4 +643,7 @@ int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif *mvif,
+ int mt7925_mcu_set_rate_txpower(struct mt76_phy *phy);
+ int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
+ 				 struct ieee80211_bss_conf *link_conf);
++int
++mt7925_mcu_uni_bss_bcnft(struct mt792x_dev *dev,
++			 struct ieee80211_bss_conf *link_conf, bool enable);
+ #endif
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index ab12616ec2b87..2b8b9b2977f74 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -241,6 +241,7 @@ static inline struct mt792x_bss_conf *
+ mt792x_vif_to_link(struct mt792x_vif *mvif, u8 link_id)
+ {
+ 	struct ieee80211_vif *vif;
++	struct mt792x_bss_conf *bss_conf;
+ 
+ 	vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
+ 
+@@ -248,8 +249,10 @@ mt792x_vif_to_link(struct mt792x_vif *mvif, u8 link_id)
+ 	    link_id >= IEEE80211_LINK_UNSPECIFIED)
+ 		return &mvif->bss_conf;
+ 
+-	return rcu_dereference_protected(mvif->link_conf[link_id],
+-		lockdep_is_held(&mvif->phy->dev->mt76.mutex));
++	bss_conf = rcu_dereference_protected(mvif->link_conf[link_id],
++					     lockdep_is_held(&mvif->phy->dev->mt76.mutex));
++
++	return bss_conf ? bss_conf : &mvif->bss_conf;
+ }
+ 
+ static inline struct mt792x_link_sta *
 -- 
 2.39.5
 
