@@ -1,278 +1,142 @@
-Return-Path: <stable+bounces-112261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175A5A28155
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:32:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F31A28183
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F7F18872A7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 01:32:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C9E27A40EB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C62422A4E1;
-	Wed,  5 Feb 2025 01:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DD620FAAB;
+	Wed,  5 Feb 2025 02:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TXQLGNkH"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596F82288FA;
-	Wed,  5 Feb 2025 01:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CDE157A48;
+	Wed,  5 Feb 2025 02:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738718979; cv=none; b=LO4fr9Zak83Cq0p9QSOEwL/DdS13zC705yYZlsNnZWkQBrbBKdATMECHcjLhMJ8RMY3+bAvqoSy46VBwUpACS30Yf5wLW1YTMcJPqLU6YAkLH/WbDBUwymLcyTdl0aRSZcg4UTpyLjtSumkZRAuNbWxFKlCLSnNX6LXnDpMmuyo=
+	t=1738720885; cv=none; b=L8fcb6Ms5FMkZJSG5/jy4GSfuZEjLTC5F10+vhPD3GWypRFi1/7Vais5NlR33bQl+qhZy3joTK+3G2paowpoxHfWA87oMDagEpHOcnSN+KCh+3VbmoB/RuSNpJJT+XVGke0jshxxwbpsyke5si8AcGGnwnhxPcUeC4bJxoSLPN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738718979; c=relaxed/simple;
-	bh=ZqodqJDbBDIYmaw9Q6eFA3nI/NS8YHrRBYnlxn7FyCg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MqlTmrO6zdBK/YFXb8LLs1D6fuIVmfGzarvlGXwdEFhZwZmrHxlIGvgk28Lw8TU7QZt4lqgHb9q/aQFFP/FFo9vhzHqzoo3ls/t9eV8SQ3eay5ALRmQ+KWZNxhs103k5bMPqKCTqOolImywk6nTHWkN8rmQQS8IID1BfQTjHqic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Ynhvx28Bnz1W54x;
-	Wed,  5 Feb 2025 09:09:17 +0800 (CST)
-Received: from kwepemo500009.china.huawei.com (unknown [7.202.194.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id B7E451802D0;
-	Wed,  5 Feb 2025 09:13:34 +0800 (CST)
-Received: from [10.67.111.104] (10.67.111.104) by
- kwepemo500009.china.huawei.com (7.202.194.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 5 Feb 2025 09:13:34 +0800
-Message-ID: <e71dbfcd-317e-43b0-8e67-2a7ea3510281@huawei.com>
-Date: Wed, 5 Feb 2025 09:13:33 +0800
+	s=arc-20240116; t=1738720885; c=relaxed/simple;
+	bh=Es6yk1PUJUxPA8OTmzLtbtyn21alu/ay7LY25tfAGAM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RV310hs4MqgIAi6nea5hPiB7uIAq6ptOG34mA9GPY/smkTCfO0pO0o+pzoeXjybe+yrvF0rdV4AfoZKsfMcYhwo/tdTk3ue9UcYOhtUBhTW13rtrd3nc8DIGfINVHHrKHi7O7H7Phr0JtfivsjdBO7XLvS2g8kAU84w2QYHJ64I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TXQLGNkH; arc=none smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7be8f28172dso326573485a.3;
+        Tue, 04 Feb 2025 18:01:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738720882; x=1739325682; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wmqu8Vw96LdkQbtKmW3VNNRd+LI4ohMPpAuQdsSuoh4=;
+        b=TXQLGNkHb3kjfQQdsZDyfXZNAW4ElI4d2YJ9vvWEpnZCA0ltsMIt+asjJcyhTTbKXk
+         JCozhMM7PXhJEceqvUCM8P36MollRW62mn20024xiUkzeGBbR4xYv0iRAo+GpopccWL+
+         bfDBcjDf4zkEJb8bgGz+v+3i4c89SuFKsKyviNyse5Xo/ie3xZaG7qrx94ChjBUy9i4h
+         hgjvsPrNfdVmGqqLev1Lwv2XVRpIUe1I8FhAlQ7+jFK3VqY8qMxMlq+1HuLa/VH5JuAy
+         OSH3xh7quKx9bDTryxZEGRrWSZmt/aKaDu7InqYj4ZFGV/2EenwBJaxaF6QDEMYoAHDN
+         6J6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738720882; x=1739325682;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wmqu8Vw96LdkQbtKmW3VNNRd+LI4ohMPpAuQdsSuoh4=;
+        b=l6nm4fQdnv/X09c+8P9mZqO9WrAEZOJMhix5F8l0Vz2CJXNKzAPiMR96iuZgi6rZFh
+         czBc7lgFwjRujAvLzeIawYURkNvJ5mhu6yEGxPL95Wk/JebblD+TsR/8glGS8aR9JIYU
+         GSnr4s1MIN64YPGE1S0VOzOArRhn+FQ1xMF7R0CNglTMv2IHyQzM36SqdN+/jlswQT/s
+         z1TlgLFYEXZU/2EahdC0iBkmpCBZZVznRqWeWbp1f6ER2K5lL8dFgHgG4A3XL4r0F1rB
+         ZX9vVydLtQBWIfPq/EgMDUUL+xUgoAPwA/Xg6WF4eMIkOrZT+EOJCXoFuYo6NlPMUZRS
+         6RZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyNdx8QyEI4DfyEj0Nz9lOA5ju8ETxqPUVpJJRXGyMWo7v/TWaP8BCZYAemIJIWm10UkL/Mw0bf1GLblU=@vger.kernel.org, AJvYcCWA8h0dLzclIwM547yDrn3OJYdO8XyqAQXnv7vc3kYGY02IzYQPv2VSSpKMY68Ec7xQFUnnJmZO@vger.kernel.org, AJvYcCWEz5fi/+jI8GW7pQfzBXuWBrKygRj0VyZhzDyX20L3hwtFgtNEL636RWi6xlSdhoYxPWaXFzO4QfXPew==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqHwpdXkuwXY4JI8t8QFkbQPH0al1PoaV52zqIPqmauVK4yvXa
+	PIysbqmKD5tNjMVPLjUuajOaLgITre3yYzIl7afJ5osTGvuCy4JP
+X-Gm-Gg: ASbGncuDlO1STRIMAWjONfCvexzXyqWafPf7dlRuNXUzKwGBzdmyeZmuKqlJ69gH+hN
+	MeojJbCljE5BLavGTxbkLIYi+YnTlw9N4r4jWOVv3Bl/moNsWA6Xi1cZGalN+oPxPn3GJd8flbH
+	oJP4C9BYHh9ZWugD8wGyauhk9hQVNrk0pmBnbp3Zk8XINuaPi5ndUiMalt82rD7qfz/J3Pw5I3G
+	vrIlMmKAJr5sw2bG1wVs4KGmRp8SAytN9jgCTrO0KMWQ7kcOjU0T3bi/Xl9EgFVBxzECNw43FIf
+	/EDczRJfmwKemPjuZhs8GvU8we0EavXXSRDFnw==
+X-Google-Smtp-Source: AGHT+IGnUTZeS4eZWKN2g/ocOzz8X2orsJDvN+Raxy+ImAnJx0e8bxu1WAhIylZPFVNIqSYgYc4MNQ==
+X-Received: by 2002:a05:620a:4894:b0:7b6:dd82:ac9c with SMTP id af79cd13be357-7c039f980ddmr174659085a.12.1738720882196;
+        Tue, 04 Feb 2025 18:01:22 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8bc32bsm705520485a.1.2025.02.04.18.01.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 18:01:21 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: markus.elfring@web.de
+Cc: GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@hansenpartnership.com,
+	arun.easi@cavium.com,
+	bvanassche@acm.org,
+	jhasan@marvell.com,
+	jiashengjiangcool@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	manish.rangankar@cavium.com,
+	martin.petersen@oracle.com,
+	nilesh.javali@cavium.com,
+	skashyap@marvell.com,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND v3 1/2] scsi: qedf: Replace kmalloc_array() with kcalloc()
+Date: Wed,  5 Feb 2025 02:01:18 +0000
+Message-Id: <20250205020119.24007-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <444d6d33-d916-467b-aea8-25c61977713a@web.de>
+References: <444d6d33-d916-467b-aea8-25c61977713a@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "hostfs: convert hostfs to use the new mount API" has been
- added to the 6.6-stable tree
-To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
-CC: Richard Weinberger <richard@nod.at>, Anton Ivanov
-	<anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>
-References: <20250203162734.2179532-1-sashal@kernel.org>
-Content-Language: en-US
-From: Hongbo Li <lihongbo22@huawei.com>
-In-Reply-To: <20250203162734.2179532-1-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemo500009.china.huawei.com (7.202.194.199)
+Content-Transfer-Encoding: 8bit
 
+Replace kmalloc_array() with kcalloc() to avoid old (dirty) data being
+used/freed.
 
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Cc: <stable@vger.kernel.org> # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+Changelog:
 
-On 2025/2/4 0:27, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->      hostfs: convert hostfs to use the new mount API
-> 
-> to the 6.6-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
+v2 -> v3:
 
-Hi Sasha,
+1. Remove the check for bdt_info.
 
-If this, the fix : ef9ca17ca458 ("hostfs: fix the host directory parse 
-when mounting.") also should be added. It fixes the mounting bug when 
-pass the host directory.
+v1 -> v2:
 
-Thanks,
-Hongbo
+1. Replace kzalloc() with kcalloc().
+---
+ drivers/scsi/qedf/qedf_io.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> The filename of the patch is:
->       hostfs-convert-hostfs-to-use-the-new-mount-api.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit 6f2433956e6ade80d59bd673d4062ec2c1bacc3e
-> Author: Hongbo Li <lihongbo22@huawei.com>
-> Date:   Thu May 30 20:01:11 2024 +0800
-> 
->      hostfs: convert hostfs to use the new mount API
->      
->      [ Upstream commit cd140ce9f611a5e9d2a5989a282b75e55c71dab3 ]
->      
->      Convert the hostfs filesystem to the new internal mount API as the old
->      one will be obsoleted and removed.  This allows greater flexibility in
->      communication of mount parameters between userspace, the VFS and the
->      filesystem.
->      
->      See Documentation/filesystems/mount_api.txt for more information.
->      
->      Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
->      Link: https://lore.kernel.org/r/20240530120111.3794664-1-lihongbo22@huawei.com
->      Signed-off-by: Christian Brauner <brauner@kernel.org>
->      Stable-dep-of: 60a600243244 ("hostfs: fix string handling in __dentry_name()")
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-> index ff201753fd181..1fb8eacb9817f 100644
-> --- a/fs/hostfs/hostfs_kern.c
-> +++ b/fs/hostfs/hostfs_kern.c
-> @@ -16,11 +16,16 @@
->   #include <linux/seq_file.h>
->   #include <linux/writeback.h>
->   #include <linux/mount.h>
-> +#include <linux/fs_context.h>
->   #include <linux/namei.h>
->   #include "hostfs.h"
->   #include <init.h>
->   #include <kern.h>
->   
-> +struct hostfs_fs_info {
-> +	char *host_root_path;
-> +};
-> +
->   struct hostfs_inode_info {
->   	int fd;
->   	fmode_t mode;
-> @@ -90,8 +95,10 @@ static char *__dentry_name(struct dentry *dentry, char *name)
->   	char *p = dentry_path_raw(dentry, name, PATH_MAX);
->   	char *root;
->   	size_t len;
-> +	struct hostfs_fs_info *fsi;
->   
-> -	root = dentry->d_sb->s_fs_info;
-> +	fsi = dentry->d_sb->s_fs_info;
-> +	root = fsi->host_root_path;
->   	len = strlen(root);
->   	if (IS_ERR(p)) {
->   		__putname(name);
-> @@ -196,8 +203,10 @@ static int hostfs_statfs(struct dentry *dentry, struct kstatfs *sf)
->   	long long f_bavail;
->   	long long f_files;
->   	long long f_ffree;
-> +	struct hostfs_fs_info *fsi;
->   
-> -	err = do_statfs(dentry->d_sb->s_fs_info,
-> +	fsi = dentry->d_sb->s_fs_info;
-> +	err = do_statfs(fsi->host_root_path,
->   			&sf->f_bsize, &f_blocks, &f_bfree, &f_bavail, &f_files,
->   			&f_ffree, &sf->f_fsid, sizeof(sf->f_fsid),
->   			&sf->f_namelen);
-> @@ -245,7 +254,11 @@ static void hostfs_free_inode(struct inode *inode)
->   
->   static int hostfs_show_options(struct seq_file *seq, struct dentry *root)
->   {
-> -	const char *root_path = root->d_sb->s_fs_info;
-> +	struct hostfs_fs_info *fsi;
-> +	const char *root_path;
-> +
-> +	fsi = root->d_sb->s_fs_info;
-> +	root_path = fsi->host_root_path;
->   	size_t offset = strlen(root_ino) + 1;
->   
->   	if (strlen(root_path) > offset)
-> @@ -924,10 +937,11 @@ static const struct inode_operations hostfs_link_iops = {
->   	.get_link	= hostfs_get_link,
->   };
->   
-> -static int hostfs_fill_sb_common(struct super_block *sb, void *d, int silent)
-> +static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
->   {
-> +	struct hostfs_fs_info *fsi = sb->s_fs_info;
->   	struct inode *root_inode;
-> -	char *host_root_path, *req_root = d;
-> +	char *host_root = fc->source;
->   	int err;
->   
->   	sb->s_blocksize = 1024;
-> @@ -941,15 +955,15 @@ static int hostfs_fill_sb_common(struct super_block *sb, void *d, int silent)
->   		return err;
->   
->   	/* NULL is printed as '(null)' by printf(): avoid that. */
-> -	if (req_root == NULL)
-> -		req_root = "";
-> +	if (fc->source == NULL)
-> +		host_root = "";
->   
-> -	sb->s_fs_info = host_root_path =
-> -		kasprintf(GFP_KERNEL, "%s/%s", root_ino, req_root);
-> -	if (host_root_path == NULL)
-> +	fsi->host_root_path =
-> +		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
-> +	if (fsi->host_root_path == NULL)
->   		return -ENOMEM;
->   
-> -	root_inode = hostfs_iget(sb, host_root_path);
-> +	root_inode = hostfs_iget(sb, fsi->host_root_path);
->   	if (IS_ERR(root_inode))
->   		return PTR_ERR(root_inode);
->   
-> @@ -957,7 +971,7 @@ static int hostfs_fill_sb_common(struct super_block *sb, void *d, int silent)
->   		char *name;
->   
->   		iput(root_inode);
-> -		name = follow_link(host_root_path);
-> +		name = follow_link(fsi->host_root_path);
->   		if (IS_ERR(name))
->   			return PTR_ERR(name);
->   
-> @@ -974,11 +988,38 @@ static int hostfs_fill_sb_common(struct super_block *sb, void *d, int silent)
->   	return 0;
->   }
->   
-> -static struct dentry *hostfs_read_sb(struct file_system_type *type,
-> -			  int flags, const char *dev_name,
-> -			  void *data)
-> +static int hostfs_fc_get_tree(struct fs_context *fc)
->   {
-> -	return mount_nodev(type, flags, data, hostfs_fill_sb_common);
-> +	return get_tree_nodev(fc, hostfs_fill_super);
-> +}
-> +
-> +static void hostfs_fc_free(struct fs_context *fc)
-> +{
-> +	struct hostfs_fs_info *fsi = fc->s_fs_info;
-> +
-> +	if (!fsi)
-> +		return;
-> +
-> +	kfree(fsi->host_root_path);
-> +	kfree(fsi);
-> +}
-> +
-> +static const struct fs_context_operations hostfs_context_ops = {
-> +	.get_tree	= hostfs_fc_get_tree,
-> +	.free		= hostfs_fc_free,
-> +};
-> +
-> +static int hostfs_init_fs_context(struct fs_context *fc)
-> +{
-> +	struct hostfs_fs_info *fsi;
-> +
-> +	fsi = kzalloc(sizeof(*fsi), GFP_KERNEL);
-> +	if (!fsi)
-> +		return -ENOMEM;
-> +
-> +	fc->s_fs_info = fsi;
-> +	fc->ops = &hostfs_context_ops;
-> +	return 0;
->   }
->   
->   static void hostfs_kill_sb(struct super_block *s)
-> @@ -988,11 +1029,11 @@ static void hostfs_kill_sb(struct super_block *s)
->   }
->   
->   static struct file_system_type hostfs_type = {
-> -	.owner 		= THIS_MODULE,
-> -	.name 		= "hostfs",
-> -	.mount	 	= hostfs_read_sb,
-> -	.kill_sb	= hostfs_kill_sb,
-> -	.fs_flags 	= 0,
-> +	.owner			= THIS_MODULE,
-> +	.name			= "hostfs",
-> +	.init_fs_context	= hostfs_init_fs_context,
-> +	.kill_sb		= hostfs_kill_sb,
-> +	.fs_flags		= 0,
->   };
->   MODULE_ALIAS_FS("hostfs");
->   
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index fcfc3bed02c6..d52057b97a4f 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -254,9 +254,7 @@ struct qedf_cmd_mgr *qedf_cmd_mgr_alloc(struct qedf_ctx *qedf)
+ 	}
+ 
+ 	/* Allocate pool of io_bdts - one for each qedf_ioreq */
+-	cmgr->io_bdt_pool = kmalloc_array(num_ios, sizeof(struct io_bdt *),
+-	    GFP_KERNEL);
+-
++	cmgr->io_bdt_pool = kcalloc(num_ios, sizeof(*cmgr->io_bdt_pool), GFP_KERNEL);
+ 	if (!cmgr->io_bdt_pool) {
+ 		QEDF_WARN(&(qedf->dbg_ctx), "Failed to alloc io_bdt_pool.\n");
+ 		goto mem_err;
+-- 
+2.25.1
+
 
