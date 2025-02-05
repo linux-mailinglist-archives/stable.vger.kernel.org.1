@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F2CA29386
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7735EA29128
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8CC41892443
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33F787A2C5A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9AC156225;
-	Wed,  5 Feb 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858E618A6D2;
+	Wed,  5 Feb 2025 14:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzGM6BKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIjsGFeG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59361DF59;
-	Wed,  5 Feb 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426FF18A6C0;
+	Wed,  5 Feb 2025 14:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767937; cv=none; b=uvZckH7ux/7GHjLYy2lJdWaqIgx+J15gSjcf7Micruv2lNh3cd1DO2cPkOFj5rlMQyqextSj9Sg5chNG/sTOatmqI6saxQ37N7o7vQEAXQxHy0jt0HADHc+sPPMpoKhQi7Lwt08BsEL1Ib/FxOFgDUixQWJl20Kbf4q1chpOJDg=
+	t=1738766500; cv=none; b=YVP4Cct3HC5VWRG0JZVjB1wgOunpAqJZA+tf9BnNFWfWDot+IMgbEEevrqc0DGJkL5lupi905GfJc/RQjrDD7kmn0bDL+8YtDlfguOsseI0NT1yqPG8VNimUWqXhRfOo2Vv4YJf1YdibwwyNpTNbr9GY2SU52WHw7I1uc9XrFKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767937; c=relaxed/simple;
-	bh=LOL/dlrlkx4qNdibXQfTxk393YABYQgOi1s27iADxBY=;
+	s=arc-20240116; t=1738766500; c=relaxed/simple;
+	bh=cr8GE7iWznVx7A5SWeJMzuMIeSeWY7rpdbn2E1L52wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RymK5T5k1oWDvlANhTXRAPABPJSeRgzcYaqE0q2EHiVrFLwJr9hm7NMPFffLNw6dWrUx8nowJLdY09dWB7A1O0C2JwYvjCngWtbWGe2TGCgSJ4wqJRheWLs6reJwaBH+GZIyi733ELvg2xc2ZXdbVF8FYK6aKH3AmXyEABD6css=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzGM6BKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB56EC4CED1;
-	Wed,  5 Feb 2025 15:05:36 +0000 (UTC)
+	 MIME-Version; b=glqgEpJa/ZlS+DOEzi6/ukauRSDXJbsAq/kZn8Yfki5B7OZa8vxwJzDEthOk2QhTMEgbAAwjoa996BNi950pPcxQR4LKHzW97yP0CG/uqFFXli8rW8Jd38YypBNDMhc196rK2EMtJacRFiDd4+t1ew6OhXwL3bk1NvZBCcMzZzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIjsGFeG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BECC4CED6;
+	Wed,  5 Feb 2025 14:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767937;
-	bh=LOL/dlrlkx4qNdibXQfTxk393YABYQgOi1s27iADxBY=;
+	s=korg; t=1738766500;
+	bh=cr8GE7iWznVx7A5SWeJMzuMIeSeWY7rpdbn2E1L52wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzGM6BKekJGgZHRkbPzOkD3YxUaQ9XJrpPiIJULmjypySTczyEOsxz92/7QDnbTpA
-	 7onwFvVLE661yaWmXOmbkGbS1Z1id7JnnEaQsv5VYBYIeJVEtXgM/Ad48c9YzqFU/K
-	 INJeZImLyGVWOHLU3e0wYpvPNGGA95webL7zJcd0=
+	b=VIjsGFeGqzCmwvBbQOK+fG6IZR96c9PnolBWX2Q0m11gKEqmc6zQyQohB+wl29xxY
+	 Qp6b5nHg5zkaSpduDZZg7xM0csF/BW+wqUx41v0eEgJtjlhmKejGAjvjNccV3EF8yM
+	 G2tcvxN8WEQs8LdBetaQMJreFej4ZRqMOS3p//R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 532/590] kconfig: fix file name in warnings when loading KCONFIG_DEFCONFIG_LIST
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 368/393] NFSD: Reset cb_seq_status after NFS4ERR_DELAY
 Date: Wed,  5 Feb 2025 14:44:47 +0100
-Message-ID: <20250205134515.620275135@linuxfoundation.org>
+Message-ID: <20250205134434.380593457@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a314f52a0210730d0d556de76bb7388e76d4597d ]
+commit 961b4b5e86bf56a2e4b567f81682defa5cba957e upstream.
 
-Most 'make *config' commands use .config as the base configuration file.
+I noticed that once an NFSv4.1 callback operation gets a
+NFS4ERR_DELAY status on CB_SEQUENCE and then the connection is lost,
+the callback client loops, resending it indefinitely.
 
-When .config does not exist, Kconfig tries to load a file listed in
-KCONFIG_DEFCONFIG_LIST instead.
+The switch arm in nfsd4_cb_sequence_done() that handles
+NFS4ERR_DELAY uses rpc_restart_call() to rearm the RPC state machine
+for the retransmit, but that path does not call the rpc_prepare_call
+callback again. Thus cb_seq_status is set to -10008 by the first
+NFS4ERR_DELAY result, but is never set back to 1 for the retransmits.
 
-However, since commit b75b0a819af9 ("kconfig: change defconfig_list
-option to environment variable"), warning messages have displayed an
-incorrect file name in such cases.
+nfsd4_cb_sequence_done() thinks it's getting nothing but a
+long series of CB_SEQUENCE NFS4ERR_DELAY replies.
 
-Below is a demonstration using Debian Trixie. While loading
-/boot/config-6.12.9-amd64, the warning messages incorrectly show .config
-as the file name.
-
-With this commit, the correct file name is displayed in warnings.
-
-[Before]
-
-  $ rm -f .config
-  $ make config
-  #
-  # using defaults found in /boot/config-6.12.9-amd64
-  #
-  .config:6804:warning: symbol value 'm' invalid for FB_BACKLIGHT
-  .config:9895:warning: symbol value 'm' invalid for ANDROID_BINDER_IPC
-
-[After]
-
-  $ rm -f .config
-  $ make config
-  #
-  # using defaults found in /boot/config-6.12.9-amd64
-  #
-  /boot/config-6.12.9-amd64:6804:warning: symbol value 'm' invalid for FB_BACKLIGHT
-  /boot/config-6.12.9-amd64:9895:warning: symbol value 'm' invalid for ANDROID_BINDER_IPC
-
-Fixes: b75b0a819af9 ("kconfig: change defconfig_list option to environment variable")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7ba6cad6c88f ("nfsd: New helper nfsd4_cb_sequence_done() for processing more cb errors")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/confdata.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4callback.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
-index 4286d5e7f95dc..3b55e7a4131d9 100644
---- a/scripts/kconfig/confdata.c
-+++ b/scripts/kconfig/confdata.c
-@@ -360,10 +360,12 @@ int conf_read_simple(const char *name, int def)
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1202,6 +1202,7 @@ static bool nfsd4_cb_sequence_done(struc
+ 		ret = false;
+ 		break;
+ 	case -NFS4ERR_DELAY:
++		cb->cb_seq_status = 1;
+ 		if (!rpc_restart_call(task))
+ 			goto out;
  
- 			*p = '\0';
- 
--			in = zconf_fopen(env);
-+			name = env;
-+
-+			in = zconf_fopen(name);
- 			if (in) {
- 				conf_message("using defaults found in %s",
--					     env);
-+					     name);
- 				goto load;
- 			}
- 
--- 
-2.39.5
-
 
 
 
