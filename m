@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-112605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED651A28DB3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B009A28CC5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE5053A246D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC021884278
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EEE2E634;
-	Wed,  5 Feb 2025 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50055149C7B;
+	Wed,  5 Feb 2025 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKDpsh+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRtTBd2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE54F510;
-	Wed,  5 Feb 2025 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E065FC0B;
+	Wed,  5 Feb 2025 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764131; cv=none; b=sP8YifUpbqUspEJ2PrtcLtfjPv2dAzvV2pQYp5qOvXY1hTrXtIq5MyaDWn6JoaicVAkPCOzugfxPhOh34qBapHw2FMIE3eUa4pA//s35+S7u7Qs5KjSe6Ou0q3+FTPS5ndwyXsiG7Hq/34jMoCsiHCBvPVZCjQWdIVLQArZc3CA=
+	t=1738763626; cv=none; b=lylqkyKkxuNTds9GDXvGr77PNTuRJIwZOKl1mm83UJ0tKWcP+Hi+l2qVlGonQtz1XKhdHSZ2Or86ceWDiTLiTDprDBz3Qud5msq3tt7BsmbBgtPtQ/02X/uxFixrfyw92ZieFidr8bnCOh/KBmpmq1XR1GGxXbKRsFMybROu4JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764131; c=relaxed/simple;
-	bh=FJowA8M4VVZYFZ9pWsgI42VmXuNVeayoP8gsKOppb5Q=;
+	s=arc-20240116; t=1738763626; c=relaxed/simple;
+	bh=EBEKkcN8yOsB03Yj6vLSqrcluO2gBOlr+mEsSBlkjh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txNFcAzpoUdKs48iAxE7gpYKWARURAQp2/A5MzDgdMszCSkXd/UxlrVRyuFqobHxkTOpu46LxxJVMg4sSzeBfWj25Vlj+8Yr+Rj3cBd1v6w+SawH+/t5rfUvvXsS9WnVTBZs/DwD6cNrjDtTnVOtD16Yc8qnaDwtXgKk9jM5tzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKDpsh+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BC4C4CED1;
-	Wed,  5 Feb 2025 14:02:10 +0000 (UTC)
+	 MIME-Version; b=b8NuwoPMapSf1Jzei9SjDk5Axl6adNRNsxh24iKp6M6Yf2HIEFJgcw/+b29ihOtdIuJIwKxUoYX3LQGqIuvcSxyiddSxFD4RNU15rXdBkkd1W086w4D97O8yxe+Fr+s/wHDCLlOElIVnRl/aUIaDp2WJWNKm02ommTVh2vYgYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRtTBd2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701B2C4CED1;
+	Wed,  5 Feb 2025 13:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764130;
-	bh=FJowA8M4VVZYFZ9pWsgI42VmXuNVeayoP8gsKOppb5Q=;
+	s=korg; t=1738763625;
+	bh=EBEKkcN8yOsB03Yj6vLSqrcluO2gBOlr+mEsSBlkjh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKDpsh+fqXqd5ihk1Ex6U3FdBsaQlnd+SGG35/wFQW2RChx15s2kmIe57v7oLSA2e
-	 8hmdGMAPwtxL5/EgQ70Jqhd2Pr65bFhonKfrltZrh0rQp6yQHg526+U6UhnRoAj0/r
-	 SYhKcgB+VmoC3fwUJQTAAykUNtGuin3Lu89Kmn/o=
+	b=kRtTBd2NfuS0DJqLhxIYuGIFC/U5ToEa1IGSAahE0POlu1lw9DekF1DUAJh6QTnw1
+	 JORdVvG9FJ+IpZHO6y7eknPgB7WOYJN5/424l94C+hqttCwWTCpV0qbcjwt6kuxaNF
+	 GKhwwttv20jMR+565c9iW5/gQRrPhgGyr/Y5c2i0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	Adrian Larumbe <adrian.larumbe@collabora.com>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Andy Yan <andyshrk@163.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 050/623] drm/panthor: Preserve the result returned by panthor_fw_resume()
+Subject: [PATCH 6.12 037/590] drm/rockchip: vop2: fix rk3588 dp+dsi maxclk verification
 Date: Wed,  5 Feb 2025 14:36:32 +0100
-Message-ID: <20250205134458.144182868@linuxfoundation.org>
+Message-ID: <20250205134456.671190548@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit 4bd56ca8226dda6115bca385b166ef87e867d807 ]
+[ Upstream commit 5807f4ee6d32a4cce9a4df36f0d455c64c861947 ]
 
-WARN() will return true if the condition is true, false otherwise.
-If we store the return of drm_WARN_ON() in ret, we lose the actual
-error code.
+The clock is in Hz while the value checked against is in kHz, so
+actual frequencies will never be able to be below to max value.
+Fix this by specifying the max-value in Hz too.
 
-v3:
-- Add R-b
-v2:
-- Add R-b
-
-Fixes: 5fe909cae118 ("drm/panthor: Add the device logical block")
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Adrian Larumbe <adrian.larumbe@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241211075419.2333731-2-boris.brezillon@collabora.com
+Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Acked-by: Andy Yan <andyshrk@163.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241115151131.416830-1-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panthor/panthor_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panthor/panthor_device.c b/drivers/gpu/drm/panthor/panthor_device.c
-index 6fbff516c1c1f..01dff89bed4e1 100644
---- a/drivers/gpu/drm/panthor/panthor_device.c
-+++ b/drivers/gpu/drm/panthor/panthor_device.c
-@@ -445,8 +445,8 @@ int panthor_device_resume(struct device *dev)
- 	    drm_dev_enter(&ptdev->base, &cookie)) {
- 		panthor_gpu_resume(ptdev);
- 		panthor_mmu_resume(ptdev);
--		ret = drm_WARN_ON(&ptdev->base, panthor_fw_resume(ptdev));
--		if (!ret) {
-+		ret = panthor_fw_resume(ptdev);
-+		if (!drm_WARN_ON(&ptdev->base, ret)) {
- 			panthor_sched_resume(ptdev);
- 		} else {
- 			panthor_mmu_suspend(ptdev);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 9873172e3fd33..30d03ff6c01f0 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1721,9 +1721,9 @@ static unsigned long rk3588_calc_cru_cfg(struct vop2_video_port *vp, int id,
+ 		else
+ 			dclk_out_rate = v_pixclk >> 2;
+ 
+-		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000);
++		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000000);
+ 		if (!dclk_rate) {
+-			drm_err(vop2->drm, "DP dclk_out_rate out of range, dclk_out_rate: %ld KHZ\n",
++			drm_err(vop2->drm, "DP dclk_out_rate out of range, dclk_out_rate: %ld Hz\n",
+ 				dclk_out_rate);
+ 			return 0;
+ 		}
+@@ -1738,9 +1738,9 @@ static unsigned long rk3588_calc_cru_cfg(struct vop2_video_port *vp, int id,
+ 		 * dclk_rate = N * dclk_core_rate N = (1,2,4 ),
+ 		 * we get a little factor here
+ 		 */
+-		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000);
++		dclk_rate = rk3588_calc_dclk(dclk_out_rate, 600000000);
+ 		if (!dclk_rate) {
+-			drm_err(vop2->drm, "MIPI dclk out of range, dclk_out_rate: %ld KHZ\n",
++			drm_err(vop2->drm, "MIPI dclk out of range, dclk_out_rate: %ld Hz\n",
+ 				dclk_out_rate);
+ 			return 0;
+ 		}
 -- 
 2.39.5
 
