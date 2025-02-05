@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-112715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68399A28E09
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31720A28E0E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00B0A162723
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB66B7A3844
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36B61494DF;
-	Wed,  5 Feb 2025 14:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654D6149C53;
+	Wed,  5 Feb 2025 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR2LQ2ij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRBUT5zc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7005EF510;
-	Wed,  5 Feb 2025 14:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BF21519AA;
+	Wed,  5 Feb 2025 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764498; cv=none; b=PG34TX9uWt2Yhd26zfzluK5uwb8v30U8QKauLBMXrQiqm0FRYYKgsXAzvo+gmjM4P0GQ9dOcy+zXa+tFGQsuGXxo9YBVsqP1272WanLNB77tRvtdqZpESWp9tPwAfJFBRvHKhazET3m2bUz3NEXZhwO6F6sgl1fGWmfEMq7q2Lg=
+	t=1738764507; cv=none; b=So+OYqjZ9UmS8Om1VQAHTPEbLPoKluk3Wlvt9ZBh/Lba7om6kvavB/p812cuzwtQ5X8uE66IKN5hfOo7lSneW7sK7qU+sOkVtb0oN0kGMxKUKYMUT94eZlN8UmoOyi6bo3ALKbc1gnhBcNa3mzn/3fbGu3qkxpkvSWRt2mTVEOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764498; c=relaxed/simple;
-	bh=GDr+B3HDXIwTmuw7r1cESKnkgHyPCOF+zIUbq9dO5W0=;
+	s=arc-20240116; t=1738764507; c=relaxed/simple;
+	bh=4d/S4Ngc9Ij27qDP6NtkdpK9ChT8rg5W/4Fpt8vZuJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmLzGSzd7lsUUNQWDgs3dUqePWL3BAwdOl/onkjfYG06+LO2ZdFm5Ub7U+QodAnkl9RxCdqyDg0+OeAbXIB6BDIxZSJZPiY1JZTEw0/IOgIb+84CcZueLOUHVVGXQOQTRr6iyHWSkOr5MLEhDS6LgS98GjGzpWj5fLwyQ8zIV98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR2LQ2ij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB631C4CED1;
-	Wed,  5 Feb 2025 14:08:17 +0000 (UTC)
+	 MIME-Version; b=pLVQNqZMyK6E7Hg8WDu+zo9R7O9Dk3hBDOfmTxAwVtB0EgKf0DzyuI0GLN+Y12e0unfAtX3YTzjtDC6fZkBJWmtONyepIw9xWg7BS4aEqq2abQzd4W4LeOSFIZ2cjKt/d/I+hlZvJ8Vl3NSxOPWjDMnmQeUZGj++qFy+gEY5PMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRBUT5zc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9928EC4CED1;
+	Wed,  5 Feb 2025 14:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764498;
-	bh=GDr+B3HDXIwTmuw7r1cESKnkgHyPCOF+zIUbq9dO5W0=;
+	s=korg; t=1738764507;
+	bh=4d/S4Ngc9Ij27qDP6NtkdpK9ChT8rg5W/4Fpt8vZuJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vR2LQ2ijqOPpxjsOBIj3M6Kk1SAGogX6dIwhDxFbgGSKRUW07e/Gvhq3cwM2UGOE8
-	 KTthWB04xJ7QB+UkmUJDv5pg3zQ7+yH+97KlCZXel6VO3FE7VrQzIIyFKjIGwcw25c
-	 TzL79d26TOS+Epmu+P3tWD9TRL9RTwbid9nQ7WPA=
+	b=CRBUT5zcCtDEx/q9eznGsENU+b4afIxFzzhtCZI+CgnaPoKnNjnaygQEaA+V1KtgQ
+	 ZtwxN7+3eyEYd5NYzfrpS1kJC4EAhgGMEKg+2j8N/AtccKp0a9GE79ggzBvGxBC5U7
+	 nyt+aZYCX7ABBEU1adXtGcLM68Vfyc8FSxzs/Pwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
-	Su Hui <suhui@nfschina.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 085/623] wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
-Date: Wed,  5 Feb 2025 14:37:07 +0100
-Message-ID: <20250205134459.475577391@linuxfoundation.org>
+Subject: [PATCH 6.13 086/623] wifi: rtlwifi: do not complete firmware loading needlessly
+Date: Wed,  5 Feb 2025 14:37:08 +0100
+Message-ID: <20250205134459.514468499@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,41 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 5e5903a442bb889a62a0f5d89ac33e53ab08592c ]
+[ Upstream commit e73e11d303940119e41850a0452a0deda2cc4eb5 ]
 
-A previous clean-up fix removed the assignment of v2 inside a while loop
-that turned it into an infinite loop. Fix this by restoring the assignment
-of v2 from array[] so that v2 is updated inside the loop.
+The only code waiting for completion is driver removal, which will not be
+called when probe returns a failure. So this completion is unnecessary.
 
-Fixes: cda37445718d ("wifi: rtlwifi: rtl8821ae: phy: remove some useless code")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Tested-by: Ping-Ke Shih <pkshih@realtek.com>
-Reviewed-by: Su Hui <suhui@nfschina.com>
+Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241106154642.1627886-1-colin.i.king@gmail.com
+Link: https://patch.msgid.link/20241107133322.855112-2-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 -
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index 1be51ea3f3c82..9eddbada8af12 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -2033,8 +2033,10 @@ static bool _rtl8821ae_phy_config_bb_with_pgheaderfile(struct ieee80211_hw *hw,
- 			if (!_rtl8821ae_check_condition(hw, v1)) {
- 				i += 2; /* skip the pair of expression*/
- 				v2 = array[i+1];
--				while (v2 != 0xDEAD)
-+				while (v2 != 0xDEAD) {
- 					i += 3;
-+					v2 = array[i + 1];
-+				}
- 			}
- 		}
- 	}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 11709b6c83f1a..40fc3c297a8ac 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -2266,7 +2266,6 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ 		pci_iounmap(pdev, (void __iomem *)rtlpriv->io.pci_mem_start);
+ 
+ 	pci_release_regions(pdev);
+-	complete(&rtlpriv->firmware_loading_complete);
+ 
+ fail1:
+ 	if (hw)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index d37a017b2b814..c3aa0cd9ff211 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1040,7 +1040,6 @@ int rtl_usb_probe(struct usb_interface *intf,
+ error_out2:
+ 	_rtl_usb_io_handler_release(hw);
+ 	usb_put_dev(udev);
+-	complete(&rtlpriv->firmware_loading_complete);
+ 	kfree(rtlpriv->usb_data);
+ 	ieee80211_free_hw(hw);
+ 	return -ENODEV;
 -- 
 2.39.5
 
