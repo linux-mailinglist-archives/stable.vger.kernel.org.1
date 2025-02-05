@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966F6A2933E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4286FA28F72
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24FE16BD6E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4A703A9F2F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B23158218;
-	Wed,  5 Feb 2025 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188F717ADF8;
+	Wed,  5 Feb 2025 14:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSlZZsJ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgELc3+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BB32A1BB;
-	Wed,  5 Feb 2025 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C485F158D96;
+	Wed,  5 Feb 2025 14:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767703; cv=none; b=qVjwfN6/Rbc9U+75DFLhyyqGg2/8JEARm1x8QTAgnXaYqzL3sBmHzZ37RVtRSAtCWJw1Mv15tbH6wCOuqZClmSzjnSNBH/UhMmhBINPM/o/tVQ+8E5oRyIASdh2LZ3cyuXajqo7lRTwPEQC0PMQhPfV+1id23ShTWwccvViG7ao=
+	t=1738765397; cv=none; b=ZfK1GXsEJbnWkVZ9ulxiE9NxO1doD8MPc2Etk2AGq28Rf7/VpzDsIVq0jZUkryA2ziOdQMfp/obewrZO8pC63axl9rXO8rwWq53KBliQZGIzAwOwOpa0z4HDTBDDpOCnWORGTk+Yyzzaqcogl21ZL0ccjysLEa1Ey0puoTh3cic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767703; c=relaxed/simple;
-	bh=QD+8+FMx8ThcM9ERzs/ubhDZ9OOmy4Dwj4j+vrpGTlM=;
+	s=arc-20240116; t=1738765397; c=relaxed/simple;
+	bh=efVpWKp6z1OWij3SpbgYl6+qTiJ88f7TVuJIykx7fwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPHzvtPKeiNdq66Vu3TLV/PDmkRjRNaGaOF8WFRjotbtpti7povNHjZURTiUN9GYW7dXU4gO7JVNOVjUZbQPp/P5IWaRuI9/5dqtNYyoAZwzVCM+hWNiSwBmv3GNLHmGJrPcu8vR15OmZBGEw81qc7At30eJz+cI1kCgSdt/nkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSlZZsJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C1AC4CED1;
-	Wed,  5 Feb 2025 15:01:41 +0000 (UTC)
+	 MIME-Version; b=DDNq12Nvp4Snh++MNQMr9BBykySR8BkVpaNVbfGiCLaoqmPei9v/DWRmyaOUQTq6WSrcO9+4ABeHyr4zisuc/qeVOvo0wCntob75d8Nxh/rZ84ufaUxN4pZ2001F2eFSrZK9BZjYxGJVn9TTws4pepKscCwabBnsQ9t7Y5u18nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgELc3+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B14C4CED1;
+	Wed,  5 Feb 2025 14:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767702;
-	bh=QD+8+FMx8ThcM9ERzs/ubhDZ9OOmy4Dwj4j+vrpGTlM=;
+	s=korg; t=1738765397;
+	bh=efVpWKp6z1OWij3SpbgYl6+qTiJ88f7TVuJIykx7fwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSlZZsJ3jSKUUkpasoy08rXHUg9jkhjJ75QM8Imv/LKVQ9SbyUuaelMarkBnshSFa
-	 tYFysyBS5iVD/aLlumJvkY548ZcWFNqMcAj21I2R8WuGPmuo7q7EO6T1A7taVYgnaH
-	 zpnUTWSfBxdvfHBISKN8Ujaed4e66DZcCYWPy73M=
+	b=qgELc3+Oz1qVYMNJb0H/NZmcd9JhvXEZU7nseBUVQHILmNuokoe/F9IfQ+NvssmOX
+	 gqD0Z+gUM0jzZwrAgHy8dcaorDFqmfnvJl2MkgCCYQU/sxoKPhPd+mG7Af+8osxQPw
+	 1KNutmRVWRPvNes953mO0Ep20e+OHMhCRHqjXUUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmytro Maluka <dmaluka@chromium.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 441/623] of/fdt: Restore possibility to use both ACPI and FDT from bootloader
+Subject: [PATCH 6.6 264/393] arm64: dts: qcom: sm8150-microsoft-surface-duo: fix typos in da7280 properties
 Date: Wed,  5 Feb 2025 14:43:03 +0100
-Message-ID: <20250205134513.088560115@linuxfoundation.org>
+Message-ID: <20250205134430.412443278@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmytro Maluka <dmaluka@chromium.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 14bce187d1600710623d81888da3501bbc470ba2 ]
+[ Upstream commit 9875adffb87da5c40f4013e55104f5e2fc071c2a ]
 
-There are cases when the bootloader provides information to the kernel
-in both ACPI and DTB, not interchangeably. One such use case is virtual
-machines in Android. When running on x86, the Android Virtualization
-Framework (AVF) boots VMs with ACPI like it is usually done on x86 (i.e.
-the virtual LAPIC, IOAPIC, HPET, PCI MMCONFIG etc are described in ACPI)
-but also passes various AVF-specific boot parameters in DTB. This allows
-reusing the same implementations of various AVF components on both
-arm64 and x86.
+The dlg,const-op-mode & dlg,periodic-op-mode were mis-names with twice
+the "dlg," prefix, drop one to match the bindings.
 
-Commit 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
-removed the possibility to do that, since among other things
-it introduced forcing emptying the bootloader-provided DTB if ACPI is
-enabled (probably assuming that if ACPI is available, a DTB can only be
-useful for applying overlays to it afterwards, for testing purposes).
+This fixes:
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,const-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+m8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,periodic-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,dlg,const-op-mode', 'dlg,dlg,periodic-op-mode' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
 
-So restore this possibility. Instead of completely preventing using ACPI
-and DT together, rely on arch-specific setup code to prevent using both
-to set up the same things (see various acpi_disabled checks under arch/).
+With the dlg,da7280.yaml converted from dlg,da7280.txt at [1].
 
-Fixes: 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
-Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
-Link: https://lore.kernel.org/r/20250105172741.3476758-3-dmaluka@chromium.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+[1] https://lore.kernel.org/all/20241206-topic-misc-da7280-convert-v2-1-1c3539f75604@linaro.org/
+
+Fixes: d1f781db47a8 ("arm64: dts: qcom: add initial device-tree for Microsoft Surface Duo")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-6-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/fdt.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 0121100372b41..3b29a5c50e2e5 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -8,7 +8,6 @@
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+index b039773c44653..a1323a8b8e6bf 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
++++ b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+@@ -376,8 +376,8 @@
+ 		pinctrl-0 = <&da7280_intr_default>;
  
- #define pr_fmt(fmt)	"OF: fdt: " fmt
- 
--#include <linux/acpi.h>
- #include <linux/crash_dump.h>
- #include <linux/crc32.h>
- #include <linux/kernel.h>
-@@ -1215,14 +1214,7 @@ void __init unflatten_device_tree(void)
- 	/* Save the statically-placed regions in the reserved_mem array */
- 	fdt_scan_reserved_mem_reg_nodes();
- 
--	/* Don't use the bootloader provided DTB if ACPI is enabled */
--	if (!acpi_disabled)
--		fdt = NULL;
--
--	/*
--	 * Populate an empty root node when ACPI is enabled or bootloader
--	 * doesn't provide one.
--	 */
-+	/* Populate an empty root node when bootloader doesn't provide one */
- 	if (!fdt) {
- 		fdt = (void *) __dtb_empty_root_begin;
- 		/* fdt_totalsize() will be used for copy size */
+ 		dlg,actuator-type = "LRA";
+-		dlg,dlg,const-op-mode = <1>;
+-		dlg,dlg,periodic-op-mode = <1>;
++		dlg,const-op-mode = <1>;
++		dlg,periodic-op-mode = <1>;
+ 		dlg,nom-microvolt = <2000000>;
+ 		dlg,abs-max-microvolt = <2000000>;
+ 		dlg,imax-microamp = <129000>;
 -- 
 2.39.5
 
