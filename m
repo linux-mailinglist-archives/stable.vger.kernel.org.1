@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21206A291A5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14026A2928A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97AA57A04C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30051188D9F3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF8718C332;
-	Wed,  5 Feb 2025 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC37170A13;
+	Wed,  5 Feb 2025 14:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/Wu9F1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lylF+fKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4CE1591E3;
-	Wed,  5 Feb 2025 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCB61547D8;
+	Wed,  5 Feb 2025 14:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766851; cv=none; b=Lc2JIYXRVJVmj1eb/Z9D/iVrUpNoCb9d362zNKUxOI3G9tyxXd2rh3Y/55t8ro+kxma7KW8VbS1AxZarztjjkOBCtOodiEvqeotBsWlcDDp6Qt+9RODEt/3pNuSe9czt4w+I3hfrz7KMmrTDOu+NwU4CRgsyC/1AHbnDpGEXipU=
+	t=1738767096; cv=none; b=JpfzmRH2yZSfdaBca0FPW+a+YdKl7GWp8QNXUmXK6SADcsFIt7oJlCoU+Dg66k1RLDlAXcr8RsbSMLijB/aBvNUIQLVZlXDYfyl2l+TMSfuu6F4zQmPN4N4trASOGR+hZDVOoszE+rk5pkRCCo7017q8/iwu+ymUtBEZMV1O1eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766851; c=relaxed/simple;
-	bh=ziKt5O+2CJgERT69w7Ltz1wWdfJHwUiB6LnmQUZD7hU=;
+	s=arc-20240116; t=1738767096; c=relaxed/simple;
+	bh=V9ujD61cXX2a3RvNGI13jMUQxI7vxdNTfGqxY7mfdvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+Gl5yuLz6i2UaHYZRyZcxKTFpWxJ0TqXBvcDO4PgFcfpLUO2g7gDARVzlFPPJTVtvirLC9hEN1AOr3TaNdp4TQAMeYIQdj3omRRumn1rmdnlLoGEhP/wpEcfpZ6OI0Unnr/jLvIoqjEOSSVypOt7FkkQQDa6KJZ/LQAk08pEPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/Wu9F1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1891CC4CED1;
-	Wed,  5 Feb 2025 14:47:30 +0000 (UTC)
+	 MIME-Version; b=HXAKAMS1v6pUX2Sx/xDnY8eMUn4P9mtPM1LR1Uh8XGZtpJ1HWVufbZdrOhXZ5v3JKQrfwYDIWRpga5Q1fHFKmQeDTZMmkDHA3S/aSMaaAwT0RxDqOrwGPOjbT4WD6487StIKGlGYxni85mKFJ4+OY2M3TayztuSk7XJ5wriZjKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lylF+fKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE66C4CED1;
+	Wed,  5 Feb 2025 14:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766851;
-	bh=ziKt5O+2CJgERT69w7Ltz1wWdfJHwUiB6LnmQUZD7hU=;
+	s=korg; t=1738767095;
+	bh=V9ujD61cXX2a3RvNGI13jMUQxI7vxdNTfGqxY7mfdvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0/Wu9F1FhtEaF0B3xkhovEz15grA6NrjVot1Z488TH+/yLZwC0AkVqsfoHDc4ZjEs
-	 CSKjRaLw5j+VkaEPOMt+eVc7v/Q71ncw5+k0zBSA6NNxHWPFWblJvwirE2hEzNEaEM
-	 nqmxYpY+4M7uWaG+kqh3gr0NQWhNWj58f+KwEaws=
+	b=lylF+fKeBExRhx1yPP+ZoV6du5qTDcdVfr2oitRCCCiStF6BeI8mFnzVcsAqhhY/y
+	 l39Kj5xOmy0q4Z1Fg6m7atIwJ6Jz6mU2Ukum0NswjgjmVdCkQ5ct51A8+NcEXS/iB8
+	 F9OsdDTfYZxHIEv4vs0VysooxSrAPh/6X/x979fE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>,
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 343/590] arm64: dts: qcom: msm8916: correct sleep clock frequency
+Subject: [PATCH 6.13 356/623] ARM: dts: aspeed: yosemite4: correct the compatible string for max31790
 Date: Wed,  5 Feb 2025 14:41:38 +0100
-Message-ID: <20250205134508.394401839@linuxfoundation.org>
+Message-ID: <20250205134509.844617809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
 
-[ Upstream commit f088b921890cef28862913e5627bb2e2b5f82125 ]
+[ Upstream commit b1a1ecb669bfa763ee5e86a038d7c9363eee7548 ]
 
-The MSM8916 platform uses PM8916 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+Fix the compatible string for max31790 to match the binding document.
 
-Fixes: f4fb6aeafaaa ("arm64: dts: qcom: msm8916: Add fixed rate on-board oscillators")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-1-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2b8d94f4b4a4 ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
+Signed-off-by: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
+Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Link: https://patch.msgid.link/20241003074251.3818101-6-Delphine_CC_Chiu@wiwynn.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/aspeed/aspeed-bmc-facebook-yosemite4.dts | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index 0ee44706b70ba..800bfe83dbf83 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -125,7 +125,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 		};
- 	};
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+index 331578b24c204..14d1751031068 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+@@ -461,10 +461,8 @@
+ 			};
  
+ 			pwm@20{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x20>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			gpio@22{
+@@ -475,10 +473,8 @@
+ 			};
+ 
+ 			pwm@23{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x23>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			adc@33 {
+@@ -513,10 +509,8 @@
+ 			};
+ 
+ 			pwm@20{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x20>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			gpio@22{
+@@ -527,10 +521,8 @@
+ 			};
+ 
+ 			pwm@23{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x23>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			adc@33 {
 -- 
 2.39.5
 
