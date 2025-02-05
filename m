@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B069EA28E8D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B622A28D86
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AD9D3A132C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F27A166894
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365381494DF;
-	Wed,  5 Feb 2025 14:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A101509BD;
+	Wed,  5 Feb 2025 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eynGIMlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho4ITMtF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A6415198D;
-	Wed,  5 Feb 2025 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BBB15198D;
+	Wed,  5 Feb 2025 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764866; cv=none; b=a13Bl73Fz00SFBY+1D+tOguKxzNos5UZ4gtZsd88CKpNceeC3g1/egfhxvyhsgE5aFP8InZgjgMZQkWVQ5V8li+tYNUlXTO3COHipNsP9dWSChkxANYiZNxF2ATha8IPEZj4axj6hjmDOwnfXA3tOObn4DsBz35RKQoqsQDy1JQ=
+	t=1738764134; cv=none; b=BgboUQ65kqv3TIpjDJ0MrJQiIeBDFM6+RgtgUGyxrt3pYnCnPsHuDnybWg5+1gWVItCqMuNPT3JbL4L0yYR4+ph5gsv0WSJkg0OxHJ+fNhXo4f7FeBifUVG68vLeLHH2nuTDecLFdIAqdAtvtHJFbS434J/7AS4rFy87qnb0aHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764866; c=relaxed/simple;
-	bh=YYDOAjYB9HZA49JeTt9248++SLVFBD6tSPOHj5kfQ1c=;
+	s=arc-20240116; t=1738764134; c=relaxed/simple;
+	bh=pyiifWzUKthvbgrTcRTOU2fhdri5+Z5I9JrJGNoUKYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGrkVgDYT1wQXzKeRoMlywL6KBSNzfYm5CswzgEKUYNVH6P+I3y+E2UKXW7phIje9ROXI1gl/xVW35v8LHQrVrb0BEgYDsq2yubjMz3M55LNk/9K0mr6TfRyPxaoct9ZpA0BOin4gGwuI24WhCtDqCCicvK7rLBIfa4oRtg+OzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eynGIMlT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533B6C4CED1;
-	Wed,  5 Feb 2025 14:14:25 +0000 (UTC)
+	 MIME-Version; b=nus0p5QVDzvGXl+AYAQGA/b9VhRYVrNG+gypB9pzBMs/dwlAeb2zymzTjw2owGe068grMg/z3r7nBmkF0Pq52cvJhP2taILAFDFuX8p7+4gAtr6Y+7uCqVdMpWE5/W4c89JMmgO1hgL3BpGzAv4NIYtJhUZyGby9PhdkJb/alZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho4ITMtF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2B8C4CED1;
+	Wed,  5 Feb 2025 14:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764865;
-	bh=YYDOAjYB9HZA49JeTt9248++SLVFBD6tSPOHj5kfQ1c=;
+	s=korg; t=1738764134;
+	bh=pyiifWzUKthvbgrTcRTOU2fhdri5+Z5I9JrJGNoUKYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eynGIMlT/VMsOVQ72ZzhYEo6ZfqHLqQEHUKbH0axzSqmK0O3AKZmJlSU2wTn6JtaK
-	 P6TdCUV98TUZ0t4LQO6pnbR/qFhMjHd/Mw7DXu6ZamtSgfwVvlIYZjF7PZ3+6DLbzZ
-	 6ARytFHZqhbEPLtf8c180klyn+OibmjzdwA/QJn4=
+	b=ho4ITMtFRwOz4r1H1FdE98uhOyChFmKifagFhjV4dmjvVvUN8D2SqaKs+qYER+SpU
+	 yN7oIqHMokcPpTNWn2JBdTACd/9fZE0nGoIkvzgTK+6fzNhlGBlaLvIZkdMTM1gV7M
+	 ZhdkDfAnjuDXYZ070MfJnq7ht6T6CGaJda6BVvUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 105/623] wifi: rtlwifi: destroy workqueue at rtl_deinit_core
+Subject: [PATCH 6.12 092/590] dt-bindings: leds: class-multicolor: Fix path to color definitions
 Date: Wed,  5 Feb 2025 14:37:27 +0100
-Message-ID: <20250205134500.233798505@linuxfoundation.org>
+Message-ID: <20250205134458.771908230@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit d8ece6fc3694657e4886191b32ca1690af11adda ]
+[ Upstream commit 609bc99a4452ffbce82d10f024a85d911c42e6cd ]
 
-rtl_wq is allocated at rtl_init_core, so it makes more sense to destroy it
-at rtl_deinit_core. In the case of USB, where _rtl_usb_init does not
-require anything to be undone, that is fine. But for PCI, rtl_pci_init,
-which is called after rtl_init_core, needs to deallocate data, but only if
-it has been called.
+The LED color definitions have always been in
+include/dt-bindings/leds/common.h in upstream.
 
-That means that destroying the workqueue needs to be done whether
-rtl_pci_init has been called or not. And since rtl_pci_deinit was doing it,
-it has to be moved out of there.
-
-It makes more sense to move it to rtl_deinit_core and have it done in both
-cases, USB and PCI.
-
-Since this is a requirement for a followup memory leak fix, mark this as
-fixing such memory leak.
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241206173713.3222187-3-cascardo@igalia.com
+Fixes: 5c7f8ffe741daae7 ("dt: bindings: Add multicolor class dt bindings documention")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/a3c7ea92e90b77032f2e480d46418b087709286d.1731588129.git.geert+renesas@glider.be
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c | 6 ++++++
- drivers/net/wireless/realtek/rtlwifi/pci.c  | 2 --
- drivers/net/wireless/realtek/rtlwifi/usb.c  | 5 -----
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ .../devicetree/bindings/leds/leds-class-multicolor.yaml         | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index fd28c7a722d89..ff61867d142fa 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -575,9 +575,15 @@ static void rtl_free_entries_from_ack_queue(struct ieee80211_hw *hw,
+diff --git a/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml b/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
+index e850a8894758d..bb40bb9e036ee 100644
+--- a/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
++++ b/Documentation/devicetree/bindings/leds/leds-class-multicolor.yaml
+@@ -27,7 +27,7 @@ properties:
+     description: |
+       For multicolor LED support this property should be defined as either
+       LED_COLOR_ID_RGB or LED_COLOR_ID_MULTI which can be found in
+-      include/linux/leds/common.h.
++      include/dt-bindings/leds/common.h.
+     enum: [ 8, 9 ]
  
- void rtl_deinit_core(struct ieee80211_hw *hw)
- {
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+
- 	rtl_c2hcmd_launcher(hw, 0);
- 	rtl_free_entries_from_scan_list(hw);
- 	rtl_free_entries_from_ack_queue(hw, false);
-+	if (rtlpriv->works.rtl_wq) {
-+		destroy_workqueue(rtlpriv->works.rtl_wq);
-+		rtlpriv->works.rtl_wq = NULL;
-+	}
- }
- EXPORT_SYMBOL_GPL(rtl_deinit_core);
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 4388066eb9e27..e60ac910e750b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -1656,8 +1656,6 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
- 	synchronize_irq(rtlpci->pdev->irq);
- 	tasklet_kill(&rtlpriv->works.irq_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
--
--	destroy_workqueue(rtlpriv->works.rtl_wq);
- }
- 
- static int rtl_pci_init(struct ieee80211_hw *hw, struct pci_dev *pdev)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 0368ecea2e817..f5718e570011e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -629,11 +629,6 @@ static void _rtl_usb_cleanup_rx(struct ieee80211_hw *hw)
- 	tasklet_kill(&rtlusb->rx_work_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
- 
--	if (rtlpriv->works.rtl_wq) {
--		destroy_workqueue(rtlpriv->works.rtl_wq);
--		rtlpriv->works.rtl_wq = NULL;
--	}
--
- 	skb_queue_purge(&rtlusb->rx_queue);
- 
- 	while ((urb = usb_get_from_anchor(&rtlusb->rx_cleanup_urbs))) {
+ required:
 -- 
 2.39.5
 
