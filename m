@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6357AA28F36
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C50A2931C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E4D3A228C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9074D16E16E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E950814F136;
-	Wed,  5 Feb 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC8E192D97;
+	Wed,  5 Feb 2025 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9ksUhhs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn96qDUc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ED01519BE;
-	Wed,  5 Feb 2025 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F7F1898F8;
+	Wed,  5 Feb 2025 15:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765285; cv=none; b=oCODzmQlrPICf5vbXAL4NQKkfPNTHtgJdKRbnU6H9O+YOa59UOWqCF2+hE093TtJnKAip+zETxJ6vOqUMe2Y0Pvs+b9SnFXHwSphAH4wkRKukAgS+9OIgbfaYPXbsIH/2w9TMbfJA/TY5Q+ZvFE6lm/aM3Wq991dftfDUOKXNts=
+	t=1738767610; cv=none; b=c8J8T1rY0FiMDeQeBv28LOG2qs5vg9IAbaKEm4Iv60IJNARJtks5fOTdP7cFxZCK13R3wMLI1aC6lEKz9Ipajw1DNe3XrXqaJRdBIRpuoPByeEVDZPyAtdUBFyaLKSTmi7hOrkbfF1dYwQoLDEQdRSVFTeUGUNOpJWjD9DSIOrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765285; c=relaxed/simple;
-	bh=fANy96USdNhBoxC0JaaHN1A5j6+R2Nc7BsCKA8uV4f8=;
+	s=arc-20240116; t=1738767610; c=relaxed/simple;
+	bh=aPISWEpci008E8jDwPYx62m/pUVVb+yqrduiUHoi8YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NmpLHUCGJNtbFN4ckm95/1D3sO1cBgNrRPh4SSRoj/9TneiOnOHl4ha5ZnIYP87QvVQSpiYAxJ8CJwUNYuYzvI3oRQcFB1KgO3H83b5tq3yOH5c45xzWHjHhoJyE+GhXcuz1W6T3uz+I0sff2ujXJmiAm88XYj6nV/ugIXyfKPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9ksUhhs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1314BC4CED1;
-	Wed,  5 Feb 2025 14:21:24 +0000 (UTC)
+	 MIME-Version; b=T+sMr5b3J0eAwS2SYbfQcHsL/ob3brv5j2I+UrKRSBT+BqsGoulxsyntViqzD/8M1Oy/A7vKju19omKH3UdVotF8+ZHME59dmW4XKYxyrlwBmbSbhEhU2j9Jizja4RfaZKtME3Ueas8O/i7EL4J0VUpArETZzzG3DvHF6mPKTKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn96qDUc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7561DC4CED1;
+	Wed,  5 Feb 2025 15:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765285;
-	bh=fANy96USdNhBoxC0JaaHN1A5j6+R2Nc7BsCKA8uV4f8=;
+	s=korg; t=1738767609;
+	bh=aPISWEpci008E8jDwPYx62m/pUVVb+yqrduiUHoi8YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9ksUhhsrtnbXYlBNVrm+Mzk95aw/HlpN8hHpq6vbHUnsqNx6tLaJjPilJLZfkcFO
-	 O2q1y7/JZoJxev3e9RxV0NhjNsqmXtW2AayWoWRTTA2DsqVKnqIBXNLZpUdK2DmGty
-	 e+Lpb+5XoMTO7a5PB/lkywUhUZUZMG+Oj313EF6U=
+	b=Gn96qDUcKdGKMJ70Tn7bNPqJsUQr3gI4EfOAvV3ioNEDWtfRyvc5jwJnssRn9abM5
+	 8aKEfXo4d6Bbnu5TegE9i6p/QRuzWrFjLltu0eHfzJFuVZgqaSyZzzQtP5yhBanxjN
+	 QOxdPe7m5hFJx8+a1yvlaKlerj8cStiugxMQa89w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mihai Sain <mihai.sain@microchip.com>,
-	Cristian Birsan <cristian.birsan@microchip.com>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/393] ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node
-Date: Wed,  5 Feb 2025 14:42:49 +0100
-Message-ID: <20250205134429.872567153@linuxfoundation.org>
+Subject: [PATCH 6.13 428/623] i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition
+Date: Wed,  5 Feb 2025 14:42:50 +0100
+Message-ID: <20250205134512.597374933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Birsan <cristian.birsan@microchip.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 4d9e5965df04c0adf260c3009c55d5fe240f7286 ]
+[ Upstream commit b75439c945b94dd8a2b645355bdb56f948052601 ]
 
-Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
-This property will stop the LDO regulator from switching to 1.8V when the
-MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
-SDMMC interface pins in GPIO mode (PA0 - PA13).
+In dw_i3c_common_probe, &master->hj_work is bound with
+dw_i3c_hj_work. And dw_i3c_master_irq_handler can call
+dw_i3c_master_irq_handle_ibis function to start the work.
 
-On this board, PA10 is used as GPIO to enable the power switch controlling
-USB Vbus for the USB Host. The change is needed to fix the PA10 voltage
-level to 3.3V instead of 1.8V.
+If we remove the module which will call dw_i3c_common_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
 
-Fixes: 5d4c3cfb63fe ("ARM: dts: at91: sama5d27_wlsom1: add SAMA5D27 wlsom1 and wlsom1-ek")
-Suggested-by: Mihai Sain <mihai.sain@microchip.com>
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
-Tested-by: Andrei Simion <andrei.simion@microchip.com>
-Link: https://lore.kernel.org/r/20241119160107.598411-3-cristian.birsan@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+CPU0                                      CPU1
+
+                                     | dw_i3c_hj_work
+dw_i3c_common_remove                 |
+i3c_master_unregister(&master->base) |
+device_unregister(&master->dev)      |
+device_release                       |
+//free master->base                  |
+                                     | i3c_master_do_daa(&master->base)
+                                     | //use master->base
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in dw_i3c_common_remove.
+
+Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Link: https://lore.kernel.org/r/bfc49c9527be5b513e7ceafeba314ca40a5be4bc.1732703537.git.xiaopei01@kylinos.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 +
+ drivers/i3c/master/dw-i3c-master.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-index 15239834d886e..35a933eec5738 100644
---- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-@@ -197,6 +197,7 @@
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index d4b80eb8cecdf..343b2f9ca63c3 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1647,6 +1647,7 @@ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
  
- &sdmmc0 {
- 	bus-width = <4>;
-+	no-1-8-v;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
- 	status = "okay";
+ void dw_i3c_common_remove(struct dw_i3c_master *master)
+ {
++	cancel_work_sync(&master->hj_work);
+ 	i3c_master_unregister(&master->base);
+ 
+ 	pm_runtime_disable(master->dev);
 -- 
 2.39.5
 
