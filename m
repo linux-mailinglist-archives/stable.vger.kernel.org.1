@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8BBA29055
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C2CA28D5F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 233991881618
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18BFD169018
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C50114B075;
-	Wed,  5 Feb 2025 14:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF4E1514EE;
+	Wed,  5 Feb 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tplm+GzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFGDc5XW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E9B151988;
-	Wed,  5 Feb 2025 14:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9624513C9C4;
+	Wed,  5 Feb 2025 13:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766090; cv=none; b=engEzCmtrHWBAVKyeEcAG2TN6rEzrW4N3DUcR+z4Ao28dLwolkdu5c1sQ2ZwERZcehrMGCf9mqVsz6VY8Vl33C4tsT/Mk6gdHD68Mbq1f/hQ+knZJKsFVuHpQxrXDdomYCpZMv4qg68wdECE315AnOVKx3uICZKRCQD6KbBwKbM=
+	t=1738763952; cv=none; b=WzwWxItQMumrYneDz7LZ/Y71IiwO7sJ6tWY22Tan7KDBTlXSw3UayVL1Ph5X+9BDT3S1aX+fCUoPRqFshdiTSE2uMF3rF6xYQQez/CMJIcGsczJmiFWSHHW276CSnmHwLEjHukMUCNBaJT81vGYAI+KC0K8wks7oinboIouwRLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766090; c=relaxed/simple;
-	bh=830QYp6QG8iaEP49dmJw/yCe622e3A38TC/GsbE75dg=;
+	s=arc-20240116; t=1738763952; c=relaxed/simple;
+	bh=6kLiai8002sLc00HtPwNyufPBn4f0OEYnDBkTJcakso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s9V8jjsYavHQBp7L64f/pzHgOZdlJ5ryHVGuGch1+rxlj5etQM9NraxR8hH7axG9Sko+p6vSGw3CCBe+ID/jK4/mVh+7/gCBcHb1yBGnaAFtGARa9gEBTqPtXjWD5+foyDKlHojf7bODD15IOsip1kj4UQ51eMcezYG+RoAzARQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tplm+GzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B608C4CED1;
-	Wed,  5 Feb 2025 14:34:49 +0000 (UTC)
+	 MIME-Version; b=ZOrNjMfzJkPYGbeoSYA03uJUd79ZU11oxhNzwwdL6eapni1Zdh5ZqoRTmUeCAdXflQS3Hr7d4FWRDyU3s+gjQCbeWFR0rZd8xG+ViQUfW3bqQotl2akTFiA5RZJp7e49Z4nij5Qse26sb5TLCW+/YhUnt+KPuW4sIx0qeL6TlZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFGDc5XW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DDDC4CED1;
+	Wed,  5 Feb 2025 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766089;
-	bh=830QYp6QG8iaEP49dmJw/yCe622e3A38TC/GsbE75dg=;
+	s=korg; t=1738763952;
+	bh=6kLiai8002sLc00HtPwNyufPBn4f0OEYnDBkTJcakso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tplm+GzYbU/enIJBEoYakgIktAtdzQyKGu4NlSQouted3cSV4bFVgF31bTSVPPWpi
-	 nQvsJXAAGcPLVl/BTRtxmogjL4Yl6qna+g6eUfPQycLesb3Ntcfu43dbHhKwsEA8yr
-	 vQF8fHkLKi7wt2W8hnhC8GBKR6GaAe/fp8Y8Fb2w=
+	b=KFGDc5XW/unN1cIB6n84IH2JahQV0IEOaRgCidqmDrjTPxDISEPqUppLKsetlEB73
+	 s6GnC4UjEq/Lto5komBxJ4yoZfghlkwne1p2F5+iGJbjaZSIfoCZL7k5mdQhOyvf1e
+	 WvbjO0E8HFo3/G+Q6Ie+l/hhgwJtLopyyE/gsLps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 286/590] selftests/bpf: Fix btf leak on new btf alloc failure in btf_distill test
+Subject: [PATCH 6.6 122/393] wifi: mt76: mt7915: improve hardware restart reliability
 Date: Wed,  5 Feb 2025 14:40:41 +0100
-Message-ID: <20250205134506.219600587@linuxfoundation.org>
+Message-ID: <20250205134424.962896104@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 4a04cb326a6c7f9a2c066f8c2ca78a5a9b87ddab ]
+[ Upstream commit 328e35c7bfc673cde5a3a453318d044f8f83b505 ]
 
-Fix btf leak on new btf alloc failure in btf_distill test.
+- use reconfig_complete to restart mac_work / queues
+- reset full wtbl after firmware init
+- clear wcid and vif mask to avoid leak
+- fix sta poll list corruption
 
-Fixes: affdeb50616b ("selftests/bpf: Extend distilled BTF tests to cover BTF relocation")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250115100241.4171581-1-pulehui@huaweicloud.com
+Link: https://patch.msgid.link/20240827093011.18621-19-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Stable-dep-of: cd043bbba6f9 ("wifi: mt76: mt7915: fix omac index assignment after hardware reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/btf_distill.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7915/mac.c   | 25 ++++++++++---------
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 12 +++++++++
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  2 ++
+ 3 files changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_distill.c b/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-index ca84726d5ac1b..b72b966df77b9 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-@@ -385,7 +385,7 @@ static void test_distilled_base_missing_err(void)
- 		"[2] INT 'int' size=8 bits_offset=0 nr_bits=64 encoding=SIGNED");
- 	btf5 = btf__new_empty();
- 	if (!ASSERT_OK_PTR(btf5, "empty_reloc_btf"))
--		return;
-+		goto cleanup;
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [1] int */
- 	VALIDATE_RAW_BTF(
- 		btf5,
-@@ -478,7 +478,7 @@ static void test_distilled_base_multi_err2(void)
- 		"[1] INT 'int' size=4 bits_offset=0 nr_bits=32 encoding=SIGNED");
- 	btf5 = btf__new_empty();
- 	if (!ASSERT_OK_PTR(btf5, "empty_reloc_btf"))
--		return;
-+		goto cleanup;
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [1] int */
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [2] int */
- 	VALIDATE_RAW_BTF(
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 675fbf40ecf75..55c52c2d97b09 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1459,26 +1459,27 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
+ 		if (!mt7915_mac_restart(dev))
+ 			break;
+ 	}
+-	mutex_unlock(&dev->mt76.mutex);
+ 
+ 	if (i == 10)
+ 		dev_err(dev->mt76.dev, "chip full reset failed\n");
+ 
+-	ieee80211_restart_hw(mt76_hw(dev));
+-	if (ext_phy)
+-		ieee80211_restart_hw(ext_phy->hw);
++	spin_lock_bh(&dev->mt76.sta_poll_lock);
++	while (!list_empty(&dev->mt76.sta_poll_list))
++		list_del_init(dev->mt76.sta_poll_list.next);
++	spin_unlock_bh(&dev->mt76.sta_poll_lock);
+ 
+-	ieee80211_wake_queues(mt76_hw(dev));
+-	if (ext_phy)
+-		ieee80211_wake_queues(ext_phy->hw);
++	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
++	dev->mt76.vif_mask = 0;
+ 
++	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
++	dev->mt76.global_wcid.idx = i;
+ 	dev->recovery.hw_full_reset = false;
+-	ieee80211_queue_delayed_work(mt76_hw(dev), &dev->mphy.mac_work,
+-				     MT7915_WATCHDOG_TIME);
++
++	mutex_unlock(&dev->mt76.mutex);
++
++	ieee80211_restart_hw(mt76_hw(dev));
+ 	if (ext_phy)
+-		ieee80211_queue_delayed_work(ext_phy->hw,
+-					     &ext_phy->mac_work,
+-					     MT7915_WATCHDOG_TIME);
++		ieee80211_restart_hw(ext_phy->hw);
+ }
+ 
+ /* system error recovery */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index d2429247c3b66..c312a0fa199ae 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1650,6 +1650,17 @@ mt7915_net_fill_forward_path(struct ieee80211_hw *hw,
+ }
+ #endif
+ 
++static void
++mt7915_reconfig_complete(struct ieee80211_hw *hw,
++			 enum ieee80211_reconfig_type reconfig_type)
++{
++	struct mt7915_phy *phy = mt7915_hw_phy(hw);
++
++	ieee80211_wake_queues(hw);
++	ieee80211_queue_delayed_work(hw, &phy->mt76->mac_work,
++				     MT7915_WATCHDOG_TIME);
++}
++
+ const struct ieee80211_ops mt7915_ops = {
+ 	.tx = mt7915_tx,
+ 	.start = mt7915_start,
+@@ -1704,4 +1715,5 @@ const struct ieee80211_ops mt7915_ops = {
+ #ifdef CONFIG_NET_MEDIATEK_SOC_WED
+ 	.net_fill_forward_path = mt7915_net_fill_forward_path,
+ #endif
++	.reconfig_complete = mt7915_reconfig_complete,
+ };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 5fba103bfd65d..f0226db2e57c7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -2351,6 +2351,8 @@ int mt7915_mcu_init_firmware(struct mt7915_dev *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	mt76_connac_mcu_del_wtbl_all(&dev->mt76);
++
+ 	if ((mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+ 	     is_mt7915(&dev->mt76)) ||
+ 	    !mtk_wed_get_rx_capa(&dev->mt76.mmio.wed))
 -- 
 2.39.5
 
