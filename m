@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB091A29190
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:52:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBB1A293B4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6D2C16BA37
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BAA93B08C9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F7A18FDDE;
-	Wed,  5 Feb 2025 14:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD5070825;
+	Wed,  5 Feb 2025 15:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr3r6z8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnSIi1ZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F4B1632DA;
-	Wed,  5 Feb 2025 14:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E8F376;
+	Wed,  5 Feb 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766533; cv=none; b=nDJ7o7CShfxLgwBWWfhO7d4VYxY2UpvM+tSe6OMm+qqLcTU+sYoP0tQvRrPhRfbNm5ipsCUFO7ma1B6Mxy4GRMCG/zndsVqgwRkVPAeGb0b0nMjqTmRCYXUOjEDq5YkJ3aGtkDg0wGJk16Gn3lD5pTtDimcnJm8yj54nc/1LTPQ=
+	t=1738767960; cv=none; b=LwyUBuwNjZ776S2ZcgS/XHMTo9+Jq57JdxgC8LoNv2NxtDBTV7vlqY25PRWdGvYfKGTlc+a2dm0Q0TCn3iLaKuCRp17CCPLwOl4vvhWMLaDXWFKMtIDHXtnZWy0SWXdLwbqO34KFiQCad/CHgZ52HOtUiG9uHNtPFCFKN/E72Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766533; c=relaxed/simple;
-	bh=qrjxr/XRl+TMG34k1gVer+29MJ8GjPruEJWDR03pCw4=;
+	s=arc-20240116; t=1738767960; c=relaxed/simple;
+	bh=J/iDce8Qug0V4m+Ksj3NL08z75Qx4pYonPIb/ZrtIac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5rolpTs6UzyAPVhYW0Hd6F7aR6wfPrQgMYB5+YJfcRyOyiMubomn9Fm9czG/iFRFyIVG5GJswRIRjrpou4UOcCQN9QoFSqFvpimOjLWUBR4/s0ws8uh2SUbFctLpX+ZQ+0idPBb0g+JM+b9vQrtfjXJgFa9lnfg+2cexkfLmKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr3r6z8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CD5C4CEE3;
-	Wed,  5 Feb 2025 14:42:12 +0000 (UTC)
+	 MIME-Version; b=aUuxLXrTJgJiBWUcxQ8v3AidOIEx5mN64b7Z2NOFjbP19er9WHKBOasWS+qqF+woJWB7q1wQeh9WZ2dBF1EBUOsbg2+vn3Rk3wNy/bbZHaylQKL/7IlGAW2mp7CaizqkBugEuGMlTP4VlJGjzHpFWtp64EiLpypSXMiIFJvp9YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnSIi1ZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F14BC4CED1;
+	Wed,  5 Feb 2025 15:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766533;
-	bh=qrjxr/XRl+TMG34k1gVer+29MJ8GjPruEJWDR03pCw4=;
+	s=korg; t=1738767959;
+	bh=J/iDce8Qug0V4m+Ksj3NL08z75Qx4pYonPIb/ZrtIac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kr3r6z8koL6JOFeH3s0jwd76toN03T4tdLvcQYAEh/zNVkyIENZZFdflxzoVLy/vq
-	 oZ/Qeyt1/c8LnNpfwPnsXsl7QZD744aN8/rzP8yqemBJrx9VUflkqHNvlyFw5ddeWJ
-	 ZN6i4UubcFMJvJEJi36bc7UKoCnaXokukZQ4FPSY=
+	b=ZnSIi1ZP6JmJVWJfnHivSuPPYeJfuwdb0WdkuiguSe3NcJYBbcDNPC8za2VKB2M44
+	 RpCVoOlSMha38TtDaxppliJLlsYNg7FNEzu0kcjiTg+MAWj97K2D+r1LjcLuqs3B8Z
+	 LQ96cWApNRXZzvQWVlMNaI2Rfxik+P7nveogV0zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 371/393] netfilter: nf_tables: reject mismatching sum of field_len with set key length
+	Lin Yujun <linyujun809@huawei.com>,
+	Brian Cain <bcain@quicinc.com>,
+	Brian Cain <brian.cain@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 535/590] hexagon: Fix unbalanced spinlock in die()
 Date: Wed,  5 Feb 2025 14:44:50 +0100
-Message-ID: <20250205134434.492086366@linuxfoundation.org>
+Message-ID: <20250205134515.734304980@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Lin Yujun <linyujun809@huawei.com>
 
-commit 1b9335a8000fb70742f7db10af314104b6ace220 upstream.
+[ Upstream commit 03410e87563a122075c3721acc7d5510e41d8332 ]
 
-The field length description provides the length of each separated key
-field in the concatenation, each field gets rounded up to 32-bits to
-calculate the pipapo rule width from pipapo_init(). The set key length
-provides the total size of the key aligned to 32-bits.
+die executes holding the spinlock of &die.lock and unlock
+it after printing the oops message.
+However in the code if the notify_die() returns NOTIFY_STOP
+, die() exit with returning 1 but never unlocked the spinlock.
 
-Register-based arithmetics still allows for combining mismatching set
-key length and field length description, eg. set key length 10 and field
-description [ 5, 4 ] leading to pipapo width of 12.
+Fix this by adding spin_unlock_irq(&die.lock) before returning.
 
-Cc: stable@vger.kernel.org
-Fixes: 3ce67e3793f4 ("netfilter: nf_tables: do not allow mismatch field size and set key length")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf9750bae262 ("Hexagon: Provide basic debugging and system trap support.")
+Signed-off-by: Lin Yujun <linyujun809@huawei.com>
+Link: https://lore.kernel.org/r/20230522025608.2515558-1-linyujun809@huawei.com
+Signed-off-by: Brian Cain <bcain@quicinc.com>
+Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/hexagon/kernel/traps.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4875,7 +4875,7 @@ static int nft_set_desc_concat_parse(con
- static int nft_set_desc_concat(struct nft_set_desc *desc,
- 			       const struct nlattr *nla)
- {
--	u32 num_regs = 0, key_num_regs = 0;
-+	u32 len = 0, num_regs;
- 	struct nlattr *attr;
- 	int rem, err, i;
+diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
+index 75e062722d285..040a958de1dfc 100644
+--- a/arch/hexagon/kernel/traps.c
++++ b/arch/hexagon/kernel/traps.c
+@@ -195,8 +195,10 @@ int die(const char *str, struct pt_regs *regs, long err)
+ 	printk(KERN_EMERG "Oops: %s[#%d]:\n", str, ++die.counter);
  
-@@ -4889,12 +4889,12 @@ static int nft_set_desc_concat(struct nf
- 	}
+ 	if (notify_die(DIE_OOPS, str, regs, err, pt_cause(regs), SIGSEGV) ==
+-	    NOTIFY_STOP)
++	    NOTIFY_STOP) {
++		spin_unlock_irq(&die.lock);
+ 		return 1;
++	}
  
- 	for (i = 0; i < desc->field_count; i++)
--		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
-+		len += round_up(desc->field_len[i], sizeof(u32));
- 
--	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
--	if (key_num_regs != num_regs)
-+	if (len != desc->klen)
- 		return -EINVAL;
- 
-+	num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
- 	if (num_regs > NFT_REG32_COUNT)
- 		return -E2BIG;
- 
+ 	print_modules();
+ 	show_regs(regs);
+-- 
+2.39.5
+
 
 
 
