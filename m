@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C791BA28DB9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EE6A28E7B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C0916555E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67F9E7A4371
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0752E634;
-	Wed,  5 Feb 2025 14:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189B114A088;
+	Wed,  5 Feb 2025 14:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAKhUKdI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McWEUkcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287D3F510;
-	Wed,  5 Feb 2025 14:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C938A1519AA;
+	Wed,  5 Feb 2025 14:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764249; cv=none; b=K8QswwxK1DPY1JrGSH7Ah6nju9DjZRwARqJC0ZWYm9QmSCgyQCtfrcIfJP5YpptHNECE0xVCH8Gei6HvLuAxO0hqZ4cxcS2fzSPNf2utSheSY3cRqMb2+G6mTNLKufeT8sST7PglisIFERaS9OhOIoVpEvhd3bFyFteYvnxZOkU=
+	t=1738764805; cv=none; b=XhlJxDmKFDZqSpW+CUhWowrSAzBFG5ki1Tgu4m2de7QBVpR1ipsfwfJWTVYdPTjkP9URinJbOmI0k5Zh64gN1rKtiu8vmNUTdHcOOeNSZhd4cyCF600KSieSm3wfAAS+5Ba6lfZYq3FpfR2Zl9wh5g5kd1ArVnuu9+Q0cB5LqdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764249; c=relaxed/simple;
-	bh=Qy9eG2NEsdgOH86RxcAy7Je7gI+yPmvHXMA4wGzQaB8=;
+	s=arc-20240116; t=1738764805; c=relaxed/simple;
+	bh=4k/kW6JCZvr7v4vqV4WJ0QSljrhF8Uhf4CLuR2itpIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=luQIiNHQXmgHJ9gNQNqdBSGPjGY0CSiaX/3lHIZTYgE/r7Bd5MQ74JOX2/tho2RuHCzd9ObzW8Z85H2RnhTk4sgrJEtpSGxdzf+FdVWJLT37Nr+m2+U3VMBiZ3zq0CEaCz4/JTlLysyn0hGE9TXpneDb01YdqIKnJOxHeq9GZHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAKhUKdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D286AC4CED1;
-	Wed,  5 Feb 2025 14:04:07 +0000 (UTC)
+	 MIME-Version; b=JdPwjMuSXKVPbz/vnG6Z2lp/yNQfNIsAEb30PnoLREZS9XWoNLCuadpRkvWDq77xp2rG51nSDlBpdD8jRXPQ1dVvat9fnrlLkCGVUNnDewmGsZk4aMpkGmEpO8K4gqEU4zQGapXyFYHFGDaMTb9DYvIB/KVrIfsxsrhdjJbGPqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McWEUkcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353AAC4CED1;
+	Wed,  5 Feb 2025 14:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764248;
-	bh=Qy9eG2NEsdgOH86RxcAy7Je7gI+yPmvHXMA4wGzQaB8=;
+	s=korg; t=1738764805;
+	bh=4k/kW6JCZvr7v4vqV4WJ0QSljrhF8Uhf4CLuR2itpIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAKhUKdIMRaR9Oe031TX0xb15ycCcVWsw1N/8M8XY+ijMxvVjnH/XC7uy+lH3EKmU
-	 Mo0fX+cM7eHulT5v+l7hbAPn7yJ5HrQI1uZdZVnbPgfmMEGPNID2CSOe38OvTKqEN/
-	 5x6vCpo6x5owVy4kcr8fmI2rrFywURUKGtllGP8k=
+	b=McWEUkcspMDu98vG3avQOzSr0taastsqSfsKX4SGWUo/L6IV0Bh1ooVW2QU6mJcaX
+	 TdrtwADgWXDZabYsd8X/rcgOxBF+ldJ2DkVS+zviP7i6fhBbqSSRS2ZqajQYjD7PD8
+	 hL1GgxcU8MPLnpzW1CJw4nLSd2ejVAB9gjWT6Dvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/590] ACPI: fan: cleanup resources in the error path of .probe()
+Subject: [PATCH 6.13 115/623] dt-bindings: mfd: bd71815: Fix rsense and typos
 Date: Wed,  5 Feb 2025 14:37:37 +0100
-Message-ID: <20250205134459.160684637@linuxfoundation.org>
+Message-ID: <20250205134500.619049427@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit c759bc8e9046f9812238f506d70f07d3ea4206d4 ]
+[ Upstream commit 6856edf7ead8c54803216a38a7b227bcb3dadff7 ]
 
-Call thermal_cooling_device_unregister() and sysfs_remove_link() in the
-error path of acpi_fan_probe() to fix possible memory leak.
+The sense resistor used for measuring currents is typically some tens of
+milli Ohms. It has accidentally been documented to be tens of mega Ohms.
+Fix the size of this resistor and a few copy-paste errors while at it.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+Drop the unsuitable 'rohm,charger-sense-resistor-ohms' property (which
+can't represent resistors smaller than one Ohm), and introduce a new
+'rohm,charger-sense-resistor-micro-ohms' property with appropriate
+minimum, maximum and default values instead.
 
-Fixes: 05a83d972293 ("ACPI: register ACPI Fan as generic thermal cooling device")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20241211032812.210164-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 4238dc1e6490 ("dt_bindings: mfd: Add ROHM BD71815 PMIC")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/0efd8e9de0ae8d62ee4c6b78cc565b04007a245d.1731430700.git.mazziesaccount@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/fan_core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../bindings/mfd/rohm,bd71815-pmic.yaml       | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index 7cea4495f19bb..300e5d9199864 100644
---- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -371,19 +371,25 @@ static int acpi_fan_probe(struct platform_device *pdev)
- 	result = sysfs_create_link(&pdev->dev.kobj,
- 				   &cdev->device.kobj,
- 				   "thermal_cooling");
--	if (result)
-+	if (result) {
- 		dev_err(&pdev->dev, "Failed to create sysfs link 'thermal_cooling'\n");
-+		goto err_unregister;
-+	}
+diff --git a/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml b/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
+index bb81307dc11b8..4fc78efaa5504 100644
+--- a/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
++++ b/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
+@@ -50,15 +50,15 @@ properties:
+     minimum: 0
+     maximum: 1
  
- 	result = sysfs_create_link(&cdev->device.kobj,
- 				   &pdev->dev.kobj,
- 				   "device");
- 	if (result) {
- 		dev_err(&pdev->dev, "Failed to create sysfs link 'device'\n");
--		goto err_end;
-+		goto err_remove_link;
- 	}
+-  rohm,charger-sense-resistor-ohms:
+-    minimum: 10000000
+-    maximum: 50000000
++  rohm,charger-sense-resistor-micro-ohms:
++    minimum: 10000
++    maximum: 50000
+     description: |
+-      BD71827 and BD71828 have SAR ADC for measuring charging currents.
+-      External sense resistor (RSENSE in data sheet) should be used. If
+-      something other but 30MOhm resistor is used the resistance value
+-      should be given here in Ohms.
+-    default: 30000000
++      BD71815 has SAR ADC for measuring charging currents. External sense
++      resistor (RSENSE in data sheet) should be used. If something other
++      but a 30 mOhm resistor is used the resistance value should be given
++      here in micro Ohms.
++    default: 30000
  
- 	return 0;
+   regulators:
+     $ref: /schemas/regulator/rohm,bd71815-regulator.yaml
+@@ -67,7 +67,7 @@ properties:
  
-+err_remove_link:
-+	sysfs_remove_link(&pdev->dev.kobj, "thermal_cooling");
-+err_unregister:
-+	thermal_cooling_device_unregister(cdev);
- err_end:
- 	if (fan->acpi4)
- 		acpi_fan_delete_attributes(device);
+   gpio-reserved-ranges:
+     description: |
+-      Usage of BD71828 GPIO pins can be changed via OTP. This property can be
++      Usage of BD71815 GPIO pins can be changed via OTP. This property can be
+       used to mark the pins which should not be configured for GPIO. Please see
+       the ../gpio/gpio.txt for more information.
+ 
+@@ -113,7 +113,7 @@ examples:
+             gpio-controller;
+             #gpio-cells = <2>;
+ 
+-            rohm,charger-sense-resistor-ohms = <10000000>;
++            rohm,charger-sense-resistor-micro-ohms = <10000>;
+ 
+             regulators {
+                 buck1: buck1 {
 -- 
 2.39.5
 
