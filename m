@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2A5A29008
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA517A29340
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE03C16930A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9785316C202
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26A68634E;
-	Wed,  5 Feb 2025 14:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691591632DA;
+	Wed,  5 Feb 2025 15:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idTp+juQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxRiWDHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA94151988;
-	Wed,  5 Feb 2025 14:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2356A1632C8;
+	Wed,  5 Feb 2025 15:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765874; cv=none; b=erAYhW/6X6U1UPSfqEEWCVr7wCkttq8/eX7C+Ru81/XkcOn/KU900+HHWclNKWTmwiuGDG8+YSbLWy2+eIV+phoPlYDnMvkDa1yRK+mPeng+jTZXVhS45qfcjdewFQdO5AfLN50CbrgxalpFr/fWCifDWR9gf7GXpJHiAePL4nk=
+	t=1738767709; cv=none; b=UvG7BMdfG2cQ2XsD+QfTwC30Uif+nkEhN46mUkr2GhO5Gia51wYHusCDYyQTB91X9vQc+DnuBwKgLVYmWegBrJKYkAN8fbRh+KvDeEmRfpTWHmnAn2C0oP4vd/FFuJAJWE+BPirqfQCUHNOlrKGtJawjkAfYDtSmxkW80niQ/Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765874; c=relaxed/simple;
-	bh=irFrj/TBCrDwZuC0UsKoyIj/UE9H5Kuy36w8ZuMFDBE=;
+	s=arc-20240116; t=1738767709; c=relaxed/simple;
+	bh=72yCdLXgsw8kFd7d8B61RobZzfEEobZxmVcMt7fnESw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Baet0UEn/5QiRJjb3XqAnK0oWFNNktO6goU4ge4w9L3P6/X1cqvi8/iWQc+VYz0xeqYkxm9iYL6CrOZIAkzc+tp4LKK03EsDF9XkU7jI15JRemipSDS3JNGjeEQ6d+G0ZauhqdBtywk2qQPpPona+IH4CuK+eFFD2Yw+HYZupmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idTp+juQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8C2C4CED1;
-	Wed,  5 Feb 2025 14:31:13 +0000 (UTC)
+	 MIME-Version; b=GCrgmSrVBUlQs16VC9QGo05HGYosxdX4WQFeCKQJ6o3GsHikCVeKe78VdB+aUm/0SouMo0d+131TyD3ss+Bf0KFrqhf5fXmaUZ0pdgy6Wj3Nf58qpAE9Dj6YzxPeERno+zapQa9gDTkc8CnsDEub1cIgiZE1B8G6P/r1Mt2c8fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxRiWDHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D07C4CED1;
+	Wed,  5 Feb 2025 15:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765874;
-	bh=irFrj/TBCrDwZuC0UsKoyIj/UE9H5Kuy36w8ZuMFDBE=;
+	s=korg; t=1738767709;
+	bh=72yCdLXgsw8kFd7d8B61RobZzfEEobZxmVcMt7fnESw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idTp+juQjsVXnkEy+wS6+sWOF44Gck85t2cTcAK1gb850PRFhm4eXS/wHLUHUFM5G
-	 UqiWQKlezeMNdAG/ydd5kav1F2PqzSwPOMx6ACO1bUNsDopIiW+3PYI+RMiPw71iED
-	 6fqhidwcWCSMNdnlmMSFzMI/3zvim3DAZWNDwOts=
+	b=dxRiWDHUb/SZiTY02ihIvnDyVIEtMpR/HFlqvttLT/qSpZgtkPyhY/VQ09qrrxM/1
+	 ThuQQy7LiaBKP/fwb6o3Po2Pjbbr1UB1uExkoCyqo/Xes0v1bafzS+rDTCRo2+zeLe
+	 26QMGEueWPBgkfJ/1+W4liuUI//0mzkOC7ShBFLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/393] nilfs2: protect access to buffers with no active references
-Date: Wed,  5 Feb 2025 14:43:47 +0100
-Message-ID: <20250205134432.093739170@linuxfoundation.org>
+Subject: [PATCH 6.12 473/590] net: airoha: Fix wrong GDM4 register definition
+Date: Wed,  5 Feb 2025 14:43:48 +0100
+Message-ID: <20250205134513.355792680@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 367a9bffabe08c04f6d725032cce3d891b2b9e1a ]
+[ Upstream commit d31a49d37cb132b31cc6683eef2122f8609d6229 ]
 
-nilfs_lookup_dirty_data_buffers(), which iterates through the buffers
-attached to dirty data folios/pages, accesses the attached buffers without
-locking the folios/pages.
+Fix wrong GDM4 register definition, in Airoha SDK GDM4 is defined at
+offset 0x2400 but this doesn't make sense as it does conflict with the
+CDM4 that is in the same location.
 
-For data cache, nilfs_clear_folio_dirty() may be called asynchronously
-when the file system degenerates to read only, so
-nilfs_lookup_dirty_data_buffers() still has the potential to cause use
-after free issues when buffers lose the protection of their dirty state
-midway due to this asynchronous clearing and are unintentionally freed by
-try_to_free_buffers().
+Following the pattern where each GDM base is at the FWD_CFG, currently
+GDM4 base offset is set to 0x2500. This is correct but REG_GDM4_FWD_CFG
+and REG_GDM4_SRC_PORT_SET are still using the SDK reference with the
+0x2400 offset. Fix these 2 define by subtracting 0x100 to each register
+to reflect the real address location.
 
-Eliminate this race issue by adjusting the lock section in this function.
-
-Link: https://lkml.kernel.org/r/20250107200202.6432-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250120154148.13424-1-ansuelsmth@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 57b535921a73b..d4a98ac72b8ea 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -734,7 +734,6 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 		if (!head)
- 			head = folio_create_empty_buffers(folio,
- 					i_blocksize(inode), 0);
--		folio_unlock(folio);
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index 8d9fb2a20469a..20cf7ba9d7508 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -258,11 +258,11 @@
+ #define REG_GDM3_FWD_CFG		GDM3_BASE
+ #define GDM3_PAD_EN_MASK		BIT(28)
  
- 		bh = head;
- 		do {
-@@ -744,11 +743,14 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 			list_add_tail(&bh->b_assoc_buffers, listp);
- 			ndirties++;
- 			if (unlikely(ndirties >= nlimit)) {
-+				folio_unlock(folio);
- 				folio_batch_release(&fbatch);
- 				cond_resched();
- 				return ndirties;
- 			}
- 		} while (bh = bh->b_this_page, bh != head);
-+
-+		folio_unlock(folio);
- 	}
- 	folio_batch_release(&fbatch);
- 	cond_resched();
+-#define REG_GDM4_FWD_CFG		(GDM4_BASE + 0x100)
++#define REG_GDM4_FWD_CFG		GDM4_BASE
+ #define GDM4_PAD_EN_MASK		BIT(28)
+ #define GDM4_SPORT_OFFSET0_MASK		GENMASK(11, 8)
+ 
+-#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x33c)
++#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x23c)
+ #define GDM4_SPORT_OFF2_MASK		GENMASK(19, 16)
+ #define GDM4_SPORT_OFF1_MASK		GENMASK(15, 12)
+ #define GDM4_SPORT_OFF0_MASK		GENMASK(11, 8)
 -- 
 2.39.5
 
