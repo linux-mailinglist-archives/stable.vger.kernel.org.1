@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-112555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EAAA28D46
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA57A291F7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77E9C7A05C8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDD5188C666
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43424155342;
-	Wed,  5 Feb 2025 13:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCC21DDC2E;
+	Wed,  5 Feb 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="knjXEcJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEW7WU+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F094815696E;
-	Wed,  5 Feb 2025 13:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483B61DC9BA;
+	Wed,  5 Feb 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763963; cv=none; b=ZRFfT6lHQ/ZpbSWWpGI/7zife8lCoe63lI+GCSIzBZvc1NjODYrahxY7+ABULqHVqjHry+eMVKudtbPmnWh6onX2Qp5KHuHYmig/cM6fxlQ5/JQo7I35EIIk/r5sE/DbXATjRfEX1mn93Ph5kqhQUSlnlBxi4lRRBQa6FcYQKMk=
+	t=1738766714; cv=none; b=OZfHMT+oiYj4AT5VqCr3lROT1JqFn2cRUJwW1nmPDzdQuaB9Mw0KJYzUfrfOgZP7G2SFWByT7Pp1tNzLQt7UQvnMwVxphBmQmg0eGCsTzBnqh0trT7DfT+aCERMQhIXiamzER5u0BPhaAZJ/XmJ4jA7vY4thplGhv4NGIyz10NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763963; c=relaxed/simple;
-	bh=Xwtfu7RbZOX/C8pwOTw3yTwwosx0T6VPijoM0bC5EUo=;
+	s=arc-20240116; t=1738766714; c=relaxed/simple;
+	bh=OVANB5oSbIzWE3R7SuUp4Y2V5jeCDjyNcHx2FLxSVaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCTGJb2rZlVp7sJr7m/+nFyTK1tqAZuKpx+NFlY6bK9ckbmkQHg3cw2J4dUfjnJVdnB556FyxL2v/tMPQU+uxraHfzAZlmTj8nJ2QvpKPRsSaoghcRYZj9hBcXBdNK2nl7wchI7b618Goc6tesEYbfdPNBAmfLiSvPHi+nBpydQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=knjXEcJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AEEC4CED6;
-	Wed,  5 Feb 2025 13:59:22 +0000 (UTC)
+	 MIME-Version; b=Lc1yOXcuGngCPj1lbH2FcLNFFptSxw+3xN4VPH8PDOmrrvQKPnl6dwLw8TXwLs9+h8ZyEoMO7EWcLcBZMAqBeSBHMkvPUM5ZYQ3ngORtLH6Qphyf9yC2J6lMVqUqltZMPAxup/lLcNIKuXQCUg/5Bfn5iWHLeZWg83NnWnOLscY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEW7WU+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B49C4CED1;
+	Wed,  5 Feb 2025 14:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763962;
-	bh=Xwtfu7RbZOX/C8pwOTw3yTwwosx0T6VPijoM0bC5EUo=;
+	s=korg; t=1738766714;
+	bh=OVANB5oSbIzWE3R7SuUp4Y2V5jeCDjyNcHx2FLxSVaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=knjXEcJJO1zAEVAGaRI7lBMC48dAckYmXpvtNx2ETg1sJmTSWNUljQmSEz1oL16Nf
-	 Dzbnll+/S0tsfkgwW8PS1QHGMIKXkErbvCgP9PrQCyZCWwTP4RBrSYSCjC5E9yt0A+
-	 Y9xkE3AwFs84lv/9QGQTxstAORwvXMCTDbqMja2U=
+	b=lEW7WU+5JvfWuALihSmkqwdQDoMxXvWydHKOSeKyGj16PYelc9NpjWc/cXKFivTqf
+	 +1be0/MiNyc50u+YPfl8+jnzK1kphCXy6h/GtbXZtPOux/sNxMr8hwaI6xS7SGzRoP
+	 v154Xb/8JU0qs6hffTR+nT2fGTVbq1wXjHfzYdRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Jiachen Zhang <me@jcix.top>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/393] wifi: mt76: mt7915: fix omac index assignment after hardware reset
+Subject: [PATCH 6.13 300/623] perf report: Fix misleading help message about --demangle
 Date: Wed,  5 Feb 2025 14:40:42 +0100
-Message-ID: <20250205134424.999074790@linuxfoundation.org>
+Message-ID: <20250205134507.705613916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Jiachen Zhang <me@jcix.top>
 
-[ Upstream commit cd043bbba6f9b71ebe0781d1bd2107565363c4b9 ]
+[ Upstream commit ac0ac75189a4d6a29a2765a7adbb62bc6cc650c7 ]
 
-Reset per-phy mac address slot mask in order to avoid leaking entries.
+The wrong help message may mislead users. This commit fixes it.
 
-Fixes: 8a55712d124f ("wifi: mt76: mt7915: enable full system reset support")
-Link: https://patch.msgid.link/20241230194202.95065-12-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 328ccdace8855289 ("perf report: Add --no-demangle option")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Jiachen Zhang <me@jcix.top>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250109152220.1869581-1-me@jcix.top
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/perf/builtin-report.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 55c52c2d97b09..92d7dc8e3cc55 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1439,9 +1439,11 @@ static void
- mt7915_mac_full_reset(struct mt7915_dev *dev)
- {
- 	struct mt76_phy *ext_phy;
-+	struct mt7915_phy *phy2;
- 	int i;
- 
- 	ext_phy = dev->mt76.phys[MT_BAND1];
-+	phy2 = ext_phy ? ext_phy->priv : NULL;
- 
- 	dev->recovery.hw_full_reset = true;
- 
-@@ -1470,6 +1472,9 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
- 
- 	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
- 	dev->mt76.vif_mask = 0;
-+	dev->phy.omac_mask = 0;
-+	if (phy2)
-+		phy2->omac_mask = 0;
- 
- 	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
- 	dev->mt76.global_wcid.idx = i;
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 048c91960ba91..a5672749f7819 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1422,7 +1422,7 @@ int cmd_report(int argc, const char **argv)
+ 	OPT_STRING(0, "addr2line", &addr2line_path, "path",
+ 		   "addr2line binary to use for line numbers"),
+ 	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
+-		    "Disable symbol demangling"),
++		    "Symbol demangling. Enabled by default, use --no-demangle to disable."),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+ 	OPT_BOOLEAN(0, "mem-mode", &report.mem_mode, "mem access profile"),
 -- 
 2.39.5
 
