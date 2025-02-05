@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-113592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD17A292FE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35730A29271
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019B23AA95F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4DE0188D368
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233D1FC0F2;
-	Wed,  5 Feb 2025 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7AF1FF1B0;
+	Wed,  5 Feb 2025 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVOnyeb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AewFRTd0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1ED1FBEB0;
-	Wed,  5 Feb 2025 14:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201C21FECDE;
+	Wed,  5 Feb 2025 14:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767487; cv=none; b=BFUvh69kFCT06dBFVxTyme5fXskrrc6Tv5vO/lT/pFeOXRbR8ewFV/+Q2xevGjoNNYmy+/3IUG5b97NHcxRmt/6FY0YxE47EFcso37PIOFtpOss6dDvT1NA+rcK9zqwArjA9N8dAJp+OiTnWjo3NZe+/gqPvTz69KUEiGtcVp/4=
+	t=1738767043; cv=none; b=dytpzuRAU0ifRGFP4qbe53isG0yDVsEQ28RAZV/N7wU+x12424T/HptZlB2AKMsQbkRssSipfM22oAmFR5a6zYmATEmuxAtwhPe/GAamUnRrGA7UOwmLKbVEQUM3n+hsxxR4/dWUMmt/SnxM31/GM1A+Mn9G58jmZjnZOoZrFJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767487; c=relaxed/simple;
-	bh=C6RzqAJF0pgWFbm3sXx0krEnxdHASkfMT/97DTNBz28=;
+	s=arc-20240116; t=1738767043; c=relaxed/simple;
+	bh=EiDiHVKGVKihCLw/ynfiI+HRdO0MjsopBlOybUIb9xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P9efU4mGAeZl5187m53rR4cUpvUSB39LFn8j6+Q+1G2BMopGVsbV5Do2McpZzLzCgAnASXzQFKDic2LTaGMjPnxjpjC8XW/cta9mYH8iifz71DJVkckoARi1uB4nvAcbBWzfjbvH0R8n0bcq+CVkAUYeuz3v3q7+1iXNVJ/Xmrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVOnyeb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A58C4CEE3;
-	Wed,  5 Feb 2025 14:58:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FNfAQQ4aTSBzveSus6S0ZhLrgRiHNq9Ji0iJme2giXflbOvyX9MdIgFWS55lNCVNmQge0VD4hu1Ht/K6zyQr74J4+h8QTjKLDWr4jpMtPv4EzUmPFgEgWBmyuTX+aHoENvC9VN6Bu7ITbSy6mshlHaFzF95SYiohz5tuL1eNDA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AewFRTd0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD3CC4CED1;
+	Wed,  5 Feb 2025 14:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767487;
-	bh=C6RzqAJF0pgWFbm3sXx0krEnxdHASkfMT/97DTNBz28=;
+	s=korg; t=1738767043;
+	bh=EiDiHVKGVKihCLw/ynfiI+HRdO0MjsopBlOybUIb9xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVOnyeb0pyhCtVvd3EJYA2SR8AZfGfBqMqSaZCIwi+pExPEwNvO4OLWSYP9k46/7a
-	 yqnw/91PfCyTzAPPYGAbHwf/JBh2NWqEVyJABlfRX0/lWU1gLNFTsgGpYlV96m4gHM
-	 hRay2OdJH5Lsk5gbm6PPneV9aufqqQ8HCLwzbZlU=
+	b=AewFRTd09E3uDRuVwHvHGjfFy3xEtB1n5yJNnkz5hbIm5Opq37p7BwocngsVZM7rT
+	 aFONYvJjcR8mLgDcXQuagKjPuwyrWei+feVWiedr1mdLaIU3cZPttSMyLrMSoi/Q+u
+	 DavowmQCpPkJiZWgxAdR199KcgtUOTDfcj5/Ppyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	David Rheinsberg <david@readahead.eu>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Peter Jones <pjones@redhat.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-fbdev@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 411/623] firmware: qcom: scm: Cleanup global __scm on probe failures
+Subject: [PATCH 6.12 398/590] efi: sysfb_efi: fix W=1 warnings when EFI is not set
 Date: Wed,  5 Feb 2025 14:42:33 +0100
-Message-ID: <20250205134511.946686362@linuxfoundation.org>
+Message-ID: <20250205134510.491722943@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,119 +69,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 1e76b546e6fca7eb568161f408133904ca6bcf4f ]
+[ Upstream commit 19fdc68aa7b90b1d3d600e873a3e050a39e7663d ]
 
-If SCM driver fails the probe, it should not leave global '__scm'
-variable assigned, because external users of this driver will assume the
-probe finished successfully.  For example TZMEM parts ('__scm->mempool')
-are initialized later in the probe, but users of it (__scm_smc_call())
-rely on the '__scm' variable.
+A build with W=1 fails because there are code and data that are not
+needed or used when CONFIG_EFI is not set. Move the "#ifdef CONFIG_EFI"
+block to earlier in the source file so that the unused code/data are
+not built.
 
-This fixes theoretical NULL pointer exception, triggered via introducing
-probe deferral in SCM driver with call trace:
+drivers/firmware/efi/sysfb_efi.c:345:39: warning: ‘efifb_fwnode_ops’ defined but not used [-Wunused-const-variable=]
+  345 | static const struct fwnode_operations efifb_fwnode_ops = {
+      |                                       ^~~~~~~~~~~~~~~~
+drivers/firmware/efi/sysfb_efi.c:238:35: warning: ‘efifb_dmi_swap_width_height’ defined but not used [-Wunused-const-variable=]
+  238 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/firmware/efi/sysfb_efi.c:188:35: warning: ‘efifb_dmi_system_table’ defined but not used [-Wunused-const-variable=]
+  188 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
+      |                                   ^~~~~~~~~~~~~~~~~~~~~~
 
-  qcom_tzmem_alloc+0x70/0x1ac (P)
-  qcom_tzmem_alloc+0x64/0x1ac (L)
-  qcom_scm_assign_mem+0x78/0x194
-  qcom_rmtfs_mem_probe+0x2d4/0x38c
-  platform_probe+0x68/0xc8
-
-Fixes: 40289e35ca52 ("firmware: qcom: scm: enable the TZ mem allocator")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-4-9061013c8d92@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 15d27b15de96 ("efi: sysfb_efi: fix build when EFI is not set")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501071933.20nlmJJt-lkp@intel.com/
+Cc: David Rheinsberg <david@readahead.eu>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Peter Jones <pjones@redhat.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: linux-fbdev@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-efi@vger.kernel.org
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c | 42 ++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 13 deletions(-)
+ drivers/firmware/efi/sysfb_efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 72bf87ddcd969..26312a5131d2a 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -2029,13 +2029,17 @@ static int qcom_scm_probe(struct platform_device *pdev)
+diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
+index cc807ed35aedf..1e509595ac034 100644
+--- a/drivers/firmware/efi/sysfb_efi.c
++++ b/drivers/firmware/efi/sysfb_efi.c
+@@ -91,6 +91,7 @@ void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
+ 		_ret_;						\
+ 	})
  
- 	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq < 0) {
--		if (irq != -ENXIO)
--			return irq;
-+		if (irq != -ENXIO) {
-+			ret = irq;
-+			goto err;
-+		}
- 	} else {
- 		ret = devm_request_threaded_irq(__scm->dev, irq, NULL, qcom_scm_irq_handler,
- 						IRQF_ONESHOT, "qcom-scm", __scm);
--		if (ret < 0)
--			return dev_err_probe(scm->dev, ret, "Failed to request qcom-scm irq\n");
-+		if (ret < 0) {
-+			dev_err_probe(scm->dev, ret, "Failed to request qcom-scm irq\n");
-+			goto err;
-+		}
- 	}
++#ifdef CONFIG_EFI
+ static int __init efifb_set_system(const struct dmi_system_id *id)
+ {
+ 	struct efifb_dmi_info *info = id->driver_data;
+@@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
+ 	.add_links = efifb_add_links,
+ };
  
- 	__get_convention();
-@@ -2054,14 +2058,18 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 		qcom_scm_disable_sdi();
+-#ifdef CONFIG_EFI
+ static struct fwnode_handle efifb_fwnode;
  
- 	ret = of_reserved_mem_device_init(__scm->dev);
--	if (ret && ret != -ENODEV)
--		return dev_err_probe(__scm->dev, ret,
--				     "Failed to setup the reserved memory region for TZ mem\n");
-+	if (ret && ret != -ENODEV) {
-+		dev_err_probe(__scm->dev, ret,
-+			      "Failed to setup the reserved memory region for TZ mem\n");
-+		goto err;
-+	}
- 
- 	ret = qcom_tzmem_enable(__scm->dev);
--	if (ret)
--		return dev_err_probe(__scm->dev, ret,
--				     "Failed to enable the TrustZone memory allocator\n");
-+	if (ret) {
-+		dev_err_probe(__scm->dev, ret,
-+			      "Failed to enable the TrustZone memory allocator\n");
-+		goto err;
-+	}
- 
- 	memset(&pool_config, 0, sizeof(pool_config));
- 	pool_config.initial_size = 0;
-@@ -2069,9 +2077,11 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	pool_config.max_size = SZ_256K;
- 
- 	__scm->mempool = devm_qcom_tzmem_pool_new(__scm->dev, &pool_config);
--	if (IS_ERR(__scm->mempool))
--		return dev_err_probe(__scm->dev, PTR_ERR(__scm->mempool),
--				     "Failed to create the SCM memory pool\n");
-+	if (IS_ERR(__scm->mempool)) {
-+		dev_err_probe(__scm->dev, PTR_ERR(__scm->mempool),
-+			      "Failed to create the SCM memory pool\n");
-+		goto err;
-+	}
- 
- 	/*
- 	 * Initialize the QSEECOM interface.
-@@ -2087,6 +2097,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	WARN(ret < 0, "failed to initialize qseecom: %d\n", ret);
- 
- 	return 0;
-+
-+err:
-+	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
-+	smp_store_release(&__scm, NULL);
-+
-+	return ret;
- }
- 
- static void qcom_scm_shutdown(struct platform_device *pdev)
+ __init void sysfb_apply_efi_quirks(void)
 -- 
 2.39.5
 
