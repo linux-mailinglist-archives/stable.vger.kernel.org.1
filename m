@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21904A2916F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:51:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8640A28D17
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85258188290C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6EA18895A6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A1120C026;
-	Wed,  5 Feb 2025 14:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B88154BE2;
+	Wed,  5 Feb 2025 13:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejx20fTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqcephLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C38207669;
-	Wed,  5 Feb 2025 14:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0CC14F9E7;
+	Wed,  5 Feb 2025 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766514; cv=none; b=Zwm54/Whv7GXcTpTGAZonq5A7DbUwFsEHolhhYWJSUFIA1x6eRoeIk8SSUFlrypAPrQnMAA/4KBtAvKp5e75C2Js0z0CX3QL1hb3lNOhzssQgGMvXYp/ti08FvX2XrQdEFaOd4LiGkaIY1U9KXiuUUUHZ3ZONeMMPW3NCUrHU8s=
+	t=1738763801; cv=none; b=BuF4BciHSnATivr3zmc/RzpM2LwNREO1wMNJIDo05iAJX0iZ5OVKJMdk6mtry9tVYBRH8avpbSyKg/ymZ4JH0HMpA6I1b/hWGtL85bd94cQi05/Xfa8Om3CSx6TMxnIA8fOD0+1EE+OlQ17/vo4Vj1zFY9fezc8tnBOxuZWaRAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766514; c=relaxed/simple;
-	bh=9KfBS26UnMtj1lx4naqHh46TeMHq00cc4CEKTmnVbpo=;
+	s=arc-20240116; t=1738763801; c=relaxed/simple;
+	bh=sV3Oz4AXC+lZssqLRbU8jjlxHigP4kmVxMWEFb16dfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyRG443xdYVMSyF1hOjsukTaXoaTYUCNDV0che27VYH2+VqHGVJCWATlgBhOSzylakcntpriJzuwxOdkGMh1onyRHxDsdWPNoUjbR/1C7x/Ks471k/dX+uSazXtWcdEnYwHUg8IZ2gySDVp2joLpyo2VzJQ0Zph00PgcBWBp/9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejx20fTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A763C4CEE2;
-	Wed,  5 Feb 2025 14:41:52 +0000 (UTC)
+	 MIME-Version; b=ZRPaRWUfuWCZGI1p+b0cMhODrIFh0r9CrGBQH09R7qnNyO8RW0mmsoAq3Y9J/ial6bWytDESsZSeOKe+N0UPw499bfyqnj0MVDgguAy53wbfqDAIRhD6+VRba1aKrIAQV6vub3cEoZlxJMtsJr1A6ATf/2p2Dwkwd4aoFJOs9Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqcephLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF27C4CED1;
+	Wed,  5 Feb 2025 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766513;
-	bh=9KfBS26UnMtj1lx4naqHh46TeMHq00cc4CEKTmnVbpo=;
+	s=korg; t=1738763801;
+	bh=sV3Oz4AXC+lZssqLRbU8jjlxHigP4kmVxMWEFb16dfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejx20fTlkvxM6Te7P6QDy9MQZYuGsLdGvbrzg0uYR1rTMDuHseYR7XQ8ZwGHI/h7c
-	 VLMyKip21SFqlW7FjOSGN5mxohUJsUnob8k+Y+hvufgN+lhknsI9LfO3hQY7TbPzdz
-	 6SFGEO0AeOEMCYyH3H2taa15ZyJXqnP2Dgoyvl+s=
+	b=SqcephLVrVOyojlM4Mly7Aql9RugNHfHp39GPfzXhESYJAMNXI4GOY2xkoKtGu4PV
+	 JQZVCl0/1nQxSB4pcqrlEJVOqDL9tUTXo2scoz+l3JmY8pmI9idvuQzj80lgfiDlCZ
+	 OSl31PtCmji5qOZaBzu8+CDSKrcGzn0u9mT/tz7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Michael Nemanov <michael.nemanov@ti.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 283/623] ALSA: seq: Make dependency on UMP clearer
-Date: Wed,  5 Feb 2025 14:40:25 +0100
-Message-ID: <20250205134507.058484423@linuxfoundation.org>
+Subject: [PATCH 6.6 107/393] wifi: wlcore: fix unbalanced pm_runtime calls
+Date: Wed,  5 Feb 2025 14:40:26 +0100
+Message-ID: <20250205134424.392481345@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 9001d515443518d72222ba4d58e247696b625071 ]
+[ Upstream commit 996c934c8c196144af386c4385f61fcd5349af28 ]
 
-CONFIG_SND_SEQ_UMP_CLIENT is a Kconfig for a sequencer client
-corresponding to the UMP rawmidi, while we have another major knob
-CONFIG_SND_SEQ_UMP that specifies whether the sequencer core supports
-UMP packets or not.  Strictly speaking both of them are independent,
-but practically seen, it makes no sense to enable
-CONFIG_SND_SEQ_UMP_CLIENT without UMP support itself.
+If firmware boot failes, runtime pm is put too often:
+[12092.708099] wlcore: ERROR firmware boot failed despite 3 retries
+[12092.708099] wl18xx_driver wl18xx.1.auto: Runtime PM usage count underflow!
+Fix that by redirecting all error gotos before runtime_get so that runtime is
+not put.
 
-This patch makes such an implicit dependency clearer.  Now
-CONFIG_SND_SEQ_UMP_CLIENT depends on both CONFIG_SND_UMP and
-CONFIG_SND_SEQ_UMP.  Meanwhile, CONFIG_SND_SEQ_UMP is enabled as
-default when CONFIG_SND_UMP is set.
-
-Fixes: 81fd444aa371 ("ALSA: seq: Bind UMP device")
-Link: https://patch.msgid.link/20250101125548.25961-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c40aad28a3cf ("wlcore: Make sure firmware is initialized in wl1271_op_add_interface()")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20250104195507.402673-1-akemnade@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ti/wlcore/main.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/core/seq/Kconfig b/sound/core/seq/Kconfig
-index 0374bbf51cd4d..e4f58cb985d47 100644
---- a/sound/core/seq/Kconfig
-+++ b/sound/core/seq/Kconfig
-@@ -62,7 +62,7 @@ config SND_SEQ_VIRMIDI
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index bf21611872a3c..9706240ddd416 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -2533,24 +2533,24 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
+ 	if (test_bit(WL1271_FLAG_RECOVERY_IN_PROGRESS, &wl->flags) ||
+ 	    test_bit(WLVIF_FLAG_INITIALIZED, &wlvif->flags)) {
+ 		ret = -EBUSY;
+-		goto out;
++		goto out_unlock;
+ 	}
  
- config SND_SEQ_UMP
- 	bool "Support for UMP events"
--	default y if SND_SEQ_UMP_CLIENT
-+	default SND_UMP
- 	help
- 	  Say Y here to enable the support for handling UMP (Universal MIDI
- 	  Packet) events via ALSA sequencer infrastructure, which is an
-@@ -71,6 +71,6 @@ config SND_SEQ_UMP
- 	  among legacy and UMP clients.
  
- config SND_SEQ_UMP_CLIENT
--	def_tristate SND_UMP
-+	def_tristate SND_UMP && SND_SEQ_UMP
+ 	ret = wl12xx_init_vif_data(wl, vif);
+ 	if (ret < 0)
+-		goto out;
++		goto out_unlock;
  
- endif # SND_SEQUENCER
+ 	wlvif->wl = wl;
+ 	role_type = wl12xx_get_role_type(wl, wlvif);
+ 	if (role_type == WL12XX_INVALID_ROLE_TYPE) {
+ 		ret = -EINVAL;
+-		goto out;
++		goto out_unlock;
+ 	}
+ 
+ 	ret = wlcore_allocate_hw_queue_base(wl, wlvif);
+ 	if (ret < 0)
+-		goto out;
++		goto out_unlock;
+ 
+ 	/*
+ 	 * TODO: after the nvs issue will be solved, move this block
+@@ -2565,7 +2565,7 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
+ 
+ 		ret = wl12xx_init_fw(wl);
+ 		if (ret < 0)
+-			goto out;
++			goto out_unlock;
+ 	}
+ 
+ 	/*
 -- 
 2.39.5
 
