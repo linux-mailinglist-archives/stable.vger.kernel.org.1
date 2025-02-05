@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE73CA293D9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824F2A2906E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C0C3AE09C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D59BF3A1753
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9E135946;
-	Wed,  5 Feb 2025 15:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA8314B959;
+	Wed,  5 Feb 2025 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqrAIxR3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGaKZWN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5121519B4;
-	Wed,  5 Feb 2025 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4D37DA6A;
+	Wed,  5 Feb 2025 14:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768206; cv=none; b=ZO7W9MM8GqgCnZGe1IIyn7059hJ8nRdi4YFt2Fx4eRW1kKVNvFapjJtw1TrC7mju206edYpYsUfLiJ9EuYovw+XjFJb56atxQ9BxhwGbLhmKTPpIfKLyshWRGQErJGJCYUQg+PaExv2OMsk7rNvLzTvCcipXPcwTJJOCPKMiyZ8=
+	t=1738766158; cv=none; b=KUu+DK7mKGWiIYXuYXoXVwCf1f/NMxMJCg7E3FCVgaYl9BgKsI7MC8NPjES8jHbci7Rq8g0c0yPB2QVhJwnXIZd/UO/r5lhNVsvkH87w/d1uv7XJMt19e+DOtbupJxzkd5UsrNJVzrMHWrIECdL19SIns3FcvKGFRd/A/KagjjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768206; c=relaxed/simple;
-	bh=5zZaRcu3xMSYCGMJ+9U1bx0oFEndWEHFxGo11arrTgk=;
+	s=arc-20240116; t=1738766158; c=relaxed/simple;
+	bh=uRN2Jb5Ye8/+gbR6GMakYxGCVAf4iPfSqceluUwU38w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUZkPJoVMBainsHmxhJORJLQu7jrYhP5ChWHyaP02Akf+KOQgwvq2q4rgDmmJf41sYf2Bmy58PkDftdvcMFe4KznMb3/+HW9srKAwllKaWS55a7UtS6RQJv6wuaupW6QCz4Wo5joKRi2kEfF6okUHObKOr9NXtSwVDOkllsWo/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqrAIxR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59EAEC4CED1;
-	Wed,  5 Feb 2025 15:10:05 +0000 (UTC)
+	 MIME-Version; b=H4FzFCkY5SfxnSc/CXPYVAkGIxY2W3PT3gZ0Wm2TRDQFowVddfWllSHFMYnlVdUVZJWLzpS2Gteq6yl/q/duhQ6sUFyAiJRz3Tp4t4dRBnWCre90mGuSQnZ7UOuVUvDczmbY1jOnhRqKHQd4ewBsdxjPcpr29BR4pKPkMahvT6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGaKZWN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DE7C4CED1;
+	Wed,  5 Feb 2025 14:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768205;
-	bh=5zZaRcu3xMSYCGMJ+9U1bx0oFEndWEHFxGo11arrTgk=;
+	s=korg; t=1738766158;
+	bh=uRN2Jb5Ye8/+gbR6GMakYxGCVAf4iPfSqceluUwU38w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqrAIxR3o6JEmD+aJIm4526DzpnP9/NkYodHMvz2gZhQ+XRYPKO2fDa8O1Sr/wwNE
-	 Dve6kKnHMoV+g9ZdWuZTPAJVnKdHM0jmlV6k/suQS3eMuqR5evrpsSGRTPDGv//7Ju
-	 bivj2oi8jMmq0ars8m0xn6Xd7pQIu5J3xmd78yZQ=
+	b=gGaKZWN4QsZUwBDuvX+w3xmHrmfHt4wL6nwuc/AWT+Ik1VdCPPnnBX1WuesikMYzj
+	 oKAt5SJXMBLXaCI5nwBXYwGUouddRVT4bgm3e9E9t1wuBHqI/9JQtRzupaoa5pfs1s
+	 D5yjTxaTdwO4h/C0An3aqrNTZkOgHnmKtWl/TMWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 512/623] xfrm: Dont disable preemption while looking up cache state.
+Subject: [PATCH 6.6 335/393] net: stmmac: Limit FIFO size by hardware capability
 Date: Wed,  5 Feb 2025 14:44:14 +0100
-Message-ID: <20250205134515.814613931@linuxfoundation.org>
+Message-ID: <20250205134433.129089871@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Sewior <bigeasy@linutronix.de>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 6c9b7db96db62ee9ad8d359d90ff468d462518c4 ]
+[ Upstream commit 044f2fbaa2725696ecbf1f02ba7ab0a8ccb7e1ae ]
 
-For the state cache lookup xfrm_input_state_lookup() first disables
-preemption, to remain on the CPU and then retrieves a per-CPU pointer.
-Within the preempt-disable section it also acquires
-netns_xfrm::xfrm_state_lock, a spinlock_t. This lock must not be
-acquired with explicit disabled preemption (such as by get_cpu())
-because this lock becomes a sleeping lock on PREEMPT_RT.
+Tx/Rx FIFO size is specified by the parameter "{tx,rx}-fifo-depth" from
+stmmac_platform layer.
 
-To remain on the same CPU is just an optimisation for the CPU local
-lookup. The actual modification of the per-CPU variable happens with
-netns_xfrm::xfrm_state_lock acquired.
+However, these values are constrained by upper limits determined by the
+capabilities of each hardware feature. There is a risk that the upper
+bits will be truncated due to the calculation, so it's appropriate to
+limit them to the upper limit values and display a warning message.
 
-Remove get_cpu() and use the state_cache_input on the current CPU.
+This only works if the hardware capability has the upper limit values.
 
-Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Closes: https://lore.kernel.org/all/CAADnVQKkCLaj=roayH=Mjiiqz_svdf1tsC3OE4EC0E=mAD+L1A@mail.gmail.com/
-Fixes: 81a331a0e72dd ("xfrm: Add an inbound percpu state cache.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: e7877f52fd4a ("stmmac: Read tx-fifo-depth and rx-fifo-depth from the devicetree")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 1781728ca4285..711e816fc4041 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1150,9 +1150,8 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- 	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct hlist_head *state_cache_input;
- 	struct xfrm_state *x = NULL;
--	int cpu = get_cpu();
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 48ad12bca9566..d3d5c01f6dcba 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7118,6 +7118,21 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
+ 	}
  
--	state_cache_input =  per_cpu_ptr(net->xfrm.state_cache_input, cpu);
-+	state_cache_input = raw_cpu_ptr(net->xfrm.state_cache_input);
- 
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(x, state_cache_input, state_cache_input) {
-@@ -1186,7 +1185,6 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- 
- out:
- 	rcu_read_unlock();
--	put_cpu();
- 	return x;
- }
- EXPORT_SYMBOL(xfrm_input_state_lookup);
++	if (priv->dma_cap.rx_fifo_size &&
++	    priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
++		dev_warn(priv->device,
++			 "Rx FIFO size (%u) exceeds dma capability\n",
++			 priv->plat->rx_fifo_size);
++		priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
++	}
++	if (priv->dma_cap.tx_fifo_size &&
++	    priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
++		dev_warn(priv->device,
++			 "Tx FIFO size (%u) exceeds dma capability\n",
++			 priv->plat->tx_fifo_size);
++		priv->plat->tx_fifo_size = priv->dma_cap.tx_fifo_size;
++	}
++
+ 	priv->hw->vlan_fail_q_en =
+ 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
+ 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
 -- 
 2.39.5
 
