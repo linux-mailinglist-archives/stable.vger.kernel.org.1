@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-113270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12542A290D3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6E6A28CCB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61103164ECB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A587E3A8F14
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2BA156F39;
-	Wed,  5 Feb 2025 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CAE152E12;
+	Wed,  5 Feb 2025 13:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMZ+fAor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBZoDFGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69784376;
-	Wed,  5 Feb 2025 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0714F9FD;
+	Wed,  5 Feb 2025 13:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766394; cv=none; b=aAErMHAq9ZZtjR++KfiZBr8oCXTutydsNJ3+CfsHmILZ8bf1O6B0uQK6NjpA1z9yBFELkf4L2ITt0nO2BK1JzORidCAVYWioaAjA1AeZCm/Hi89lheqvoczNZVIao0/rDBcitUcpVdjJBh3ACYpedTrjGiW6avriEFb+WwqXshw=
+	t=1738763640; cv=none; b=ffO3QkIJNbcFz35ULIfzd0AIXr8EpQe6zhfQlpqj0j/xDTPpXLnoGD1DODoztUOBvGgtoCOMl2AHIDC31LlS7kPWpX96m6zJhjECz9FIwLUP/p9Mvcit2R4/a/+NF6Gw0PiH0Rn1VTWXH12z9dDtmEbfXFnq1sfI+a96eghWDBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766394; c=relaxed/simple;
-	bh=2zfd/wYuQjAnQGu89Jbb+9g5KEF62BsJs6q82TD4480=;
+	s=arc-20240116; t=1738763640; c=relaxed/simple;
+	bh=MS5PohMXpk5gN+YXnC+fyTl3ckRN+1BYAEl2WR8FqYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxp264U6Xb4SmFJN9skw2rCeDX0UlJSFWCFBlRS7ZRG0DgFk2uhVaf7rTaQdSaqTuqvE5lcQylvy6mvAaPjoORbdAxIfs3Xjdvz4zIApvjx6aP7eLThLwkPbmSf6qHBVG/jnC5bICIoSg1nARK4hYgllofhGnfmm4Km+Vdud/b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMZ+fAor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425D0C4CED1;
-	Wed,  5 Feb 2025 14:39:53 +0000 (UTC)
+	 MIME-Version; b=F5y16v0QEFdwDiNSRtTWUBzAxQuyZRQhK4kM2S7SrZa5IPK0LtMhfLaVt3TmmbeRIH000ZxyI577ZIR1L0VSzWpmofYQzfv5SJviISlpfXGpngBohYm4RF+jLYiHQ6a66/anMoogdI5ldEXcn4YT8x8nLxMwy6QkYz0vhGtTLqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBZoDFGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1B9C4CED1;
+	Wed,  5 Feb 2025 13:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766393;
-	bh=2zfd/wYuQjAnQGu89Jbb+9g5KEF62BsJs6q82TD4480=;
+	s=korg; t=1738763639;
+	bh=MS5PohMXpk5gN+YXnC+fyTl3ckRN+1BYAEl2WR8FqYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMZ+fAor5BccRkSmbWUs0fX0KqXH50Xtz2oNPdCI2wZ0mz3jE96YBIxumgKlVuvrr
-	 zCTVT4T3Zx+ehMkgSEzHbCpgN8/PT70CMZDNWcrD7OVELey1zPfOEoEqQ6sqeHPuIz
-	 HNqy5sBj78w1RveFePGE/wQsLXHt5ALu3FS1DFOw=
+	b=sBZoDFGYx0dBW5hNGoNGf1gWLG6QsIf7vox/V+l33aGuuhKDBRueKnXkUSWxmvIvw
+	 2kjXdrZTo222gWjUc4eSHyOsRtp9UfGVSKNiNb3tgazzMqdtCfr7005HsW1Ife/tf5
+	 VERDXAtwVyi04kvhGh8SzaRG6f+PmH2wNp93ZbsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <song@kernel.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 269/623] perf bpf: Fix two memory leakages when calling perf_env__insert_bpf_prog_info()
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.6 092/393] clk: sunxi-ng: a64: stop force-selecting PLL-MIPI as TCON0 parent
 Date: Wed,  5 Feb 2025 14:40:11 +0100
-Message-ID: <20250205134506.520317517@linuxfoundation.org>
+Message-ID: <20250205134423.814832556@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,106 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 03edb7020bb920f1935c3f30acad0bb27fdb99af ]
+[ Upstream commit 383ca7bee8a93be9ff5a072936981c2710d2856b ]
 
-If perf_env__insert_bpf_prog_info() returns false due to a duplicate bpf
-prog info node insertion, the temporary info_node and info_linear memory
-will leak. Add a check to ensure the memory is freed if the function
-returns false.
+Stop force-selecting PLL-MIPI as TCON0 parent, since it breaks video
+output on Pinebook that uses RGB to eDP bridge.
 
-Fixes: d56354dc49091e33 ("perf tools: Save bpf_prog_info and BTF of new BPF programs")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20241205084500.823660-4-quic_zhonhan@quicinc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Partially revert commit ca1170b69968 ("clk: sunxi-ng: a64: force
+select PLL_MIPI in TCON0 mux"), while still leaving
+CLK_SET_RATE_NO_REPARENT flag set, since we do not want the clock to
+be reparented.
+
+The issue is that apparently different TCON0 outputs require a different
+clock, or the mux might be selecting the output type.
+
+I did an experiment: I manually configured PLL_MIPI and PLL_VIDEO0_2X
+to the same clock rate and flipped the switch with devmem. Experiment
+clearly showed that whenever PLL_MIPI is selected as TCON0 clock parent,
+the video output stops working.
+
+Therefore, TCON0 clock parent corresponding to the output type must be
+assigned in the device tree.
+
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-5-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf-event.c | 10 ++++++++--
- tools/perf/util/env.c       |  8 ++++++--
- tools/perf/util/env.h       |  2 +-
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
-index 13608237c50e0..c81444059ad07 100644
---- a/tools/perf/util/bpf-event.c
-+++ b/tools/perf/util/bpf-event.c
-@@ -289,7 +289,10 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
- 		}
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+index 6a4b2b9ef30a8..aee1a2f14c951 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -533,11 +533,11 @@ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+ 				 CLK_SET_RATE_PARENT);
  
- 		info_node->info_linear = info_linear;
--		perf_env__insert_bpf_prog_info(env, info_node);
-+		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			free(info_linear);
-+			free(info_node);
-+		}
- 		info_linear = NULL;
+ /*
+- * DSI output seems to work only when PLL_MIPI selected. Set it and prevent
+- * the mux from reparenting.
++ * Experiments showed that RGB output requires pll-video0-2x, while DSI
++ * requires pll-mipi. It will not work with incorrect clock, the screen will
++ * be blank.
++ * sun50i-a64.dtsi assigns pll-mipi as TCON0 parent by default
+  */
+-#define SUN50I_A64_TCON0_CLK_REG	0x118
+-
+ static const char * const tcon0_parents[] = { "pll-mipi", "pll-video0-2x" };
+ static const u8 tcon0_table[] = { 0, 2, };
+ static SUNXI_CCU_MUX_TABLE_WITH_GATE_CLOSEST(tcon0_clk, "tcon0", tcon0_parents,
+@@ -957,11 +957,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
  
- 		/*
-@@ -480,7 +483,10 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	info_node = malloc(sizeof(struct bpf_prog_info_node));
- 	if (info_node) {
- 		info_node->info_linear = info_linear;
--		perf_env__insert_bpf_prog_info(env, info_node);
-+		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			free(info_linear);
-+			free(info_node);
-+		}
- 	} else
- 		free(info_linear);
+ 	writel(0x515, reg + SUN50I_A64_PLL_MIPI_REG);
  
-diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
-index d7865ae5f8f55..a6321e7f06330 100644
---- a/tools/perf/util/env.c
-+++ b/tools/perf/util/env.c
-@@ -24,12 +24,16 @@ struct perf_env perf_env;
- #include "bpf-utils.h"
- #include <bpf/libbpf.h>
- 
--void perf_env__insert_bpf_prog_info(struct perf_env *env,
-+bool perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				    struct bpf_prog_info_node *info_node)
- {
-+	bool ret;
-+
- 	down_write(&env->bpf_progs.lock);
--	__perf_env__insert_bpf_prog_info(env, info_node);
-+	ret = __perf_env__insert_bpf_prog_info(env, info_node);
- 	up_write(&env->bpf_progs.lock);
-+
-+	return ret;
- }
- 
- bool __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
-diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
-index 9db2e5a625ede..da11add761d0c 100644
---- a/tools/perf/util/env.h
-+++ b/tools/perf/util/env.h
-@@ -178,7 +178,7 @@ int perf_env__nr_cpus_avail(struct perf_env *env);
- void perf_env__init(struct perf_env *env);
- bool __perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				      struct bpf_prog_info_node *info_node);
--void perf_env__insert_bpf_prog_info(struct perf_env *env,
-+bool perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				    struct bpf_prog_info_node *info_node);
- struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
- 							__u32 prog_id);
+-	/* Set PLL MIPI as parent for TCON0 */
+-	val = readl(reg + SUN50I_A64_TCON0_CLK_REG);
+-	val &= ~GENMASK(26, 24);
+-	writel(val | (0 << 24), reg + SUN50I_A64_TCON0_CLK_REG);
+-
+ 	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_a64_ccu_desc);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
