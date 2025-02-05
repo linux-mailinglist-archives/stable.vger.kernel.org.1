@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-113344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17919A291C2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21206A291A5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E441016405F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97AA57A04C0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D971DACA7;
-	Wed,  5 Feb 2025 14:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF8718C332;
+	Wed,  5 Feb 2025 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GEvG7dJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/Wu9F1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB9D185B76;
-	Wed,  5 Feb 2025 14:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4CE1591E3;
+	Wed,  5 Feb 2025 14:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766642; cv=none; b=A9N29RNvpux0XX70ZPIYKudJSvH9+FEPFgYi+ndsmmI0t/EMKRlpYA2efkrXRkJlD963s0lKawDcTriXL82pbwtnrUYXJTXMY4urpXMiABBMQPh6URn4XFJTnPL7+DyXnAqtClrbCaQ9O1ceDSCPzhmOqKpbPovQTJQOPwyQqjs=
+	t=1738766851; cv=none; b=Lc2JIYXRVJVmj1eb/Z9D/iVrUpNoCb9d362zNKUxOI3G9tyxXd2rh3Y/55t8ro+kxma7KW8VbS1AxZarztjjkOBCtOodiEvqeotBsWlcDDp6Qt+9RODEt/3pNuSe9czt4w+I3hfrz7KMmrTDOu+NwU4CRgsyC/1AHbnDpGEXipU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766642; c=relaxed/simple;
-	bh=XmTvcKe2sNhBREtFNculfeEBDYRIzW0JbWv61+g3yTc=;
+	s=arc-20240116; t=1738766851; c=relaxed/simple;
+	bh=ziKt5O+2CJgERT69w7Ltz1wWdfJHwUiB6LnmQUZD7hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ia4IziW+eZEyOU2I3DXE18m08YV62uQ+y4jQF1fZOqd9ehqh0Qu1Vxr0kw/eJlwnYNUpLaJ3uo7iSsof4okHfwJRtx5vpAPqpZo0e9Gg9dxOFIwRs144nfaw5eWeCHZjnIBDvP2j6g+SU9+BcuU4UkHiwA6KUL0bAJV12nVX9JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GEvG7dJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85FFC4CED1;
-	Wed,  5 Feb 2025 14:44:01 +0000 (UTC)
+	 MIME-Version; b=X+Gl5yuLz6i2UaHYZRyZcxKTFpWxJ0TqXBvcDO4PgFcfpLUO2g7gDARVzlFPPJTVtvirLC9hEN1AOr3TaNdp4TQAMeYIQdj3omRRumn1rmdnlLoGEhP/wpEcfpZ6OI0Unnr/jLvIoqjEOSSVypOt7FkkQQDa6KJZ/LQAk08pEPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/Wu9F1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1891CC4CED1;
+	Wed,  5 Feb 2025 14:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766642;
-	bh=XmTvcKe2sNhBREtFNculfeEBDYRIzW0JbWv61+g3yTc=;
+	s=korg; t=1738766851;
+	bh=ziKt5O+2CJgERT69w7Ltz1wWdfJHwUiB6LnmQUZD7hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GEvG7dJd5/SvyzFQkF6Bw0f1BBpKtmsFFeMuINYJVYdOtWMXmWeXJkRgm0iRKr/b
-	 U+wl+gpG23xPbGF9zrf1YOXVBX+0Vm7gEyCginoTWGy2ObWKyBKgnD9xifgmZlNvHh
-	 AutuyT1Mho9OvEc/kHTWo+yzpBZElw+PUgdoMqTo=
+	b=0/Wu9F1FhtEaF0B3xkhovEz15grA6NrjVot1Z488TH+/yLZwC0AkVqsfoHDc4ZjEs
+	 CSKjRaLw5j+VkaEPOMt+eVc7v/Q71ncw5+k0zBSA6NNxHWPFWblJvwirE2hEzNEaEM
+	 nqmxYpY+4M7uWaG+kqh3gr0NQWhNWj58f+KwEaws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 342/590] arm64: dts: qcom: sm7225-fairphone-fp4: Drop extra qcom,msm-id value
-Date: Wed,  5 Feb 2025 14:41:37 +0100
-Message-ID: <20250205134508.356782282@linuxfoundation.org>
+Subject: [PATCH 6.12 343/590] arm64: dts: qcom: msm8916: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:41:38 +0100
+Message-ID: <20250205134508.394401839@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,36 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 7fb88e0d4dc1a40a29d49b603faa1484334c60f3 ]
+[ Upstream commit f088b921890cef28862913e5627bb2e2b5f82125 ]
 
-The ID 434 is for SM6350 while 459 is for SM7225. Fairphone 4 is only
-SM7225, so drop the unused 434 entry.
+The MSM8916 platform uses PM8916 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fixes: 4cbea668767d ("arm64: dts: qcom: sm7225: Add device tree for Fairphone 4")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241220-fp4-msm-id-v1-1-2b75af02032a@fairphone.com
+Fixes: f4fb6aeafaaa ("arm64: dts: qcom: msm8916: Add fixed rate on-board oscillators")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-1-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 2 +-
+ arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 2ee2561b57b1d..52b16a4fdc432 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -32,7 +32,7 @@
- 	chassis-type = "handset";
+diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+index 0ee44706b70ba..800bfe83dbf83 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
+@@ -125,7 +125,7 @@
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+ 			#clock-cells = <0>;
+-			clock-frequency = <32768>;
++			clock-frequency = <32764>;
+ 		};
+ 	};
  
- 	/* required for bootloader to select correct board */
--	qcom,msm-id = <434 0x10000>, <459 0x10000>;
-+	qcom,msm-id = <459 0x10000>;
- 	qcom,board-id = <8 32>;
- 
- 	aliases {
 -- 
 2.39.5
 
