@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0DBA28C9E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F37A28FA8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04B75168ADB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BFA166497
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09058146A63;
-	Wed,  5 Feb 2025 13:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99313155747;
+	Wed,  5 Feb 2025 14:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ey2IDIyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0ku/Ur2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC48142E86;
-	Wed,  5 Feb 2025 13:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A348634E;
+	Wed,  5 Feb 2025 14:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763510; cv=none; b=M1YhFf+ZsiD19NjrZuREj85+1zULhaWJLni40GEocmSk/qXbif0knhm+l7wQRm8CTT61iww0BLbqBUJPzG6Z8feeokIM5lPOSo8muqJeTKS6GgnXq17lWCtSIfcEx/FfYCVhsAbTbSuJX8VFoiOyR4uHm/A0BxMurZJBLW/bVTs=
+	t=1738765652; cv=none; b=N8/Hr9LiRnWe/6IBLKggPUzqi0s+bxqSD8AMLQkv5lRFfeZpxg6sU+QX8rTsrSIwTzzxK1AAyF5Sb1j7x52/JmEbB0z6F/Q4F5nDg48yosQkC+jvxh/IhzBSyQ55tDcKP+W86iQluzEsOkVYPEcbMZuZuyZwzwKFzKtvRYk3cDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763510; c=relaxed/simple;
-	bh=qz3h06YDCywDp48nd09K6Jcy3vXuPMS7b4Q+gzWxbo0=;
+	s=arc-20240116; t=1738765652; c=relaxed/simple;
+	bh=/uQuXrAyAayVdxKIyU/cd7uVY/NDQMgmqzRN5Iiy8qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1BeTupRWvSiWdXfKieJAHH6J2GMVid8IJp0Ba8Hog8shXAY3LtxwwThPp0qUC1FHYGlcpeK+C29B10swE5SDqqEqu7+OpD/cZ6b2gZKMFgMEdqKHWPeAh/uy9gz/3rTWcaZ5drQa+m1UNC5VcXQIBayzcJfgKYBovl3MoOKwvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ey2IDIyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DA9C4CED1;
-	Wed,  5 Feb 2025 13:51:49 +0000 (UTC)
+	 MIME-Version; b=Nn3xQyXyw7mdGQeJbavq0SxUGXQn1sD5Rb7B99o/J4ORvKMs01GZEdAgjo69e2ugH2mHw4WtnbuYJubJwlWxadpHL/Bc/2hwID2z3+xwnTnQzjvYcd3WtcmEUaSJmVC89MhGnlcJHnuKboMDEvBi+o5Fu1K5Jn9Wk3JBRbSX8yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0ku/Ur2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59994C4CED1;
+	Wed,  5 Feb 2025 14:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763510;
-	bh=qz3h06YDCywDp48nd09K6Jcy3vXuPMS7b4Q+gzWxbo0=;
+	s=korg; t=1738765651;
+	bh=/uQuXrAyAayVdxKIyU/cd7uVY/NDQMgmqzRN5Iiy8qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ey2IDIyPv55xNaGqO2XIqWEtQ2qgwfZg7X4HV55//DQVJhMi23UKTBwGkemh8tIHs
-	 9umlmpR7PtKhIgCucNEvdYwWjqXwQ+82jzmhvqkq0OxxZnZD3w+90K2CKRiSPNU2I+
-	 Pdb/vszljzUJ+KW2YfGLuoGp7wtv/+bh8V07SUig=
+	b=a0ku/Ur2UGYLs6C8iTAtIX3khVeKJa7IWN7qGn09Nu3DbQO7+xkvacNg98udzlQwb
+	 dDjm+ip5cNXC6D0Y5Bp8xYc5+aRMxz+W1H6f9duk2w27BnbG1pwP93txSZ2mh8t0sk
+	 EOV5hbGITD0GIE1etMLiFFJM8G3YU5NNTlX0TvQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Lee Jones <lee@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/393] dt-bindings: mfd: bd71815: Fix rsense and typos
-Date: Wed,  5 Feb 2025 14:39:54 +0100
-Message-ID: <20250205134423.162542329@linuxfoundation.org>
+Subject: [PATCH 6.12 240/590] ASoC: wcd937x: Use *-y for Makefile
+Date: Wed,  5 Feb 2025 14:39:55 +0100
+Message-ID: <20250205134504.464848846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 6856edf7ead8c54803216a38a7b227bcb3dadff7 ]
+[ Upstream commit 582057d2233a5a38e1aec3f4a6d66b362b42076c ]
 
-The sense resistor used for measuring currents is typically some tens of
-milli Ohms. It has accidentally been documented to be tens of mega Ohms.
-Fix the size of this resistor and a few copy-paste errors while at it.
+We should use *-y instead of *-objs in Makefile for the module
+objects.  *-objs is used rather for host programs.
 
-Drop the unsuitable 'rohm,charger-sense-resistor-ohms' property (which
-can't represent resistors smaller than one Ohm), and introduce a new
-'rohm,charger-sense-resistor-micro-ohms' property with appropriate
-minimum, maximum and default values instead.
-
-Fixes: 4238dc1e6490 ("dt_bindings: mfd: Add ROHM BD71815 PMIC")
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/0efd8e9de0ae8d62ee4c6b78cc565b04007a245d.1731430700.git.mazziesaccount@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 313e978df7fc ("ASoC: codecs: wcd937x: add audio routing and Kconfig")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241203141823.22393-6-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/mfd/rohm,bd71815-pmic.yaml       | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ sound/soc/codecs/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml b/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
-index 05747e012516e..ab26b1bd567fd 100644
---- a/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
-+++ b/Documentation/devicetree/bindings/mfd/rohm,bd71815-pmic.yaml
-@@ -50,15 +50,15 @@ properties:
-     minimum: 0
-     maximum: 1
- 
--  rohm,charger-sense-resistor-ohms:
--    minimum: 10000000
--    maximum: 50000000
-+  rohm,charger-sense-resistor-micro-ohms:
-+    minimum: 10000
-+    maximum: 50000
-     description: |
--      BD71827 and BD71828 have SAR ADC for measuring charging currents.
--      External sense resistor (RSENSE in data sheet) should be used. If
--      something other but 30MOhm resistor is used the resistance value
--      should be given here in Ohms.
--    default: 30000000
-+      BD71815 has SAR ADC for measuring charging currents. External sense
-+      resistor (RSENSE in data sheet) should be used. If something other
-+      but a 30 mOhm resistor is used the resistance value should be given
-+      here in micro Ohms.
-+    default: 30000
- 
-   regulators:
-     $ref: ../regulator/rohm,bd71815-regulator.yaml
-@@ -67,7 +67,7 @@ properties:
- 
-   gpio-reserved-ranges:
-     description: |
--      Usage of BD71828 GPIO pins can be changed via OTP. This property can be
-+      Usage of BD71815 GPIO pins can be changed via OTP. This property can be
-       used to mark the pins which should not be configured for GPIO. Please see
-       the ../gpio/gpio.txt for more information.
- 
-@@ -113,7 +113,7 @@ examples:
-             gpio-controller;
-             #gpio-cells = <2>;
- 
--            rohm,charger-sense-resistor-ohms = <10000000>;
-+            rohm,charger-sense-resistor-micro-ohms = <10000>;
- 
-             regulators {
-                 buck1: buck1 {
+diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
+index 56c519a5c897b..69cb0b39f2200 100644
+--- a/sound/soc/codecs/Makefile
++++ b/sound/soc/codecs/Makefile
+@@ -324,8 +324,8 @@ snd-soc-wcd-classh-y := wcd-clsh-v2.o
+ snd-soc-wcd-mbhc-y := wcd-mbhc-v2.o
+ snd-soc-wcd9335-y := wcd9335.o
+ snd-soc-wcd934x-y := wcd934x.o
+-snd-soc-wcd937x-objs := wcd937x.o
+-snd-soc-wcd937x-sdw-objs := wcd937x-sdw.o
++snd-soc-wcd937x-y := wcd937x.o
++snd-soc-wcd937x-sdw-y := wcd937x-sdw.o
+ snd-soc-wcd938x-y := wcd938x.o
+ snd-soc-wcd938x-sdw-y := wcd938x-sdw.o
+ snd-soc-wcd939x-y := wcd939x.o
 -- 
 2.39.5
 
