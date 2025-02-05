@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C66A28F04
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D25A2930A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7193AAC67
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6994E16A17E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8D386348;
-	Wed,  5 Feb 2025 14:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D052190676;
+	Wed,  5 Feb 2025 14:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5IX0ix1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfVC0Fkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7F61519BE;
-	Wed,  5 Feb 2025 14:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A010146A7A;
+	Wed,  5 Feb 2025 14:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765160; cv=none; b=PHSjZaYp1TI85Bza5O03/SFp/21cQ+u40JUYqbXW9doyFPrbBQEFAD18rvxmFSbWid8xbdi5np+BwgjdwBcHUTGUb5pHD0uwClC87PPsPyuHdpR56Y2Ci6+x+5S39QRM32nZJqM/NbpqNrlhNa2TP7zNLjYcoetq8P/6aqAjbyE=
+	t=1738767525; cv=none; b=rMoISRryoNZsvqrrf2n9efBN0WELZg9pOKpMBpU9rRW92vyVcAlULhgbdaDltEZggIizx1Iy+qWSsNQ6ssJ+SLD1z0SgvcTtnB5NDS3GNLvexApIBPH/l/XLffJg7307XRtBUgKhocAN0cu/PQSUkKLb525HYtt/MwEvlnalcBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765160; c=relaxed/simple;
-	bh=jT7KnK6ZzC+BIcXG8I/6KECBgr/F7ooDddHJNuBshRY=;
+	s=arc-20240116; t=1738767525; c=relaxed/simple;
+	bh=dSj5cDOYddYO9s7TdCzbBEuEFTm7E/GbrF3mOVfLNRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgu/QpyUXk5GPhN+2O5uLJsn5cPNpFCK237TxQwYci02HPtqX7Co2P0b7WsifIGgKHCmfYlVNCn/zobJ+8ch12BOZkUnjpE8YRPoTMAXXB2Hs/pFYwTTDpX6hAtUKBA+ci+gjrkuXgBh8LKPQlfhaiPS5eYjyhKgIL2zkCCwMNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5IX0ix1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAF3C4CED1;
-	Wed,  5 Feb 2025 14:19:19 +0000 (UTC)
+	 MIME-Version; b=QhQKd7BWGEpMtQIh0ALf7KxvX2/JxnmbUj7CseXvUQu5Ckic0vZJ7ffjFHVjsrEilgPlqI3bVsZ4XJ9LrR2jH3atMYwYh3HaGmrmYPVlrms+2rnrgVnS8/12ewO0dOEhOr7oZJk+IgY5FEIV743syfcGqwktHsqeIM3dEx7za48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfVC0Fkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A05C4CED1;
+	Wed,  5 Feb 2025 14:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765160;
-	bh=jT7KnK6ZzC+BIcXG8I/6KECBgr/F7ooDddHJNuBshRY=;
+	s=korg; t=1738767525;
+	bh=dSj5cDOYddYO9s7TdCzbBEuEFTm7E/GbrF3mOVfLNRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5IX0ix1/aXihZEAm86d9lbjRTYNRqNOsqheQFClJzieuN7o8QRcpKB1OEwAsSkHM
-	 Kx/lC+02F1nIWKWlpYsObqgwjekXtSDQHFPBhnbOyWuYw5/J8xSoDFzsJQRJVv0MRa
-	 NfQj+Y1e1A3Qz/E3pcgToBgJG/AmAJ4xOGTPcG5o=
+	b=hfVC0FktzADT5m36V3sR75qmdtoIyAhw31eY/ywlgRD9ON0jDaZRYV1KP/T0b1ily
+	 uTdy4msrkHMMwvAsjiusdfgF02rchTEcKJVwd54e6R43BAxgb1KIemeHNw72cMWYbv
+	 JyziZ6HA2GBNoSpGCVDe9QdDu6Dn+FpliLrw2AlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/393] arm64: dts: qcom: q[dr]u1000: correct sleep clock frequency
+Subject: [PATCH 6.13 416/623] arm64: dts: qcom: sc8280xp: Fix interrupt type of camss interrupts
 Date: Wed,  5 Feb 2025 14:42:38 +0100
-Message-ID: <20250205134429.450531905@linuxfoundation.org>
+Message-ID: <20250205134512.140595600@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 5546604e034b6c383b65676ff8615b346897eccd ]
+[ Upstream commit b08535cd41c27b4f32319b5bff754c9da6dc2205 ]
 
-The Q[DR]U1000 platforms use PM8150 to provide sleep clock. According to
-the documentation, that clock has 32.7645 kHz frequency. Correct the
-sleep clock definition.
+Qualcomm IP catalog says that all CAMSS interrupts are edge rising,
+fix it in the CAMSS device tree node for sc8280xp SoC.
 
-Fixes: d1f2cfe2f669 ("arm64: dts: qcom: Add base QDU1000/QRU1000 IDP DTs")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-5-e9b08fbeadd3@linaro.org
+Fixes: 5994dd60753e ("arm64: dts: qcom: sc8280xp: camss: Add CAMSS block definition")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241127122950.885982-5-vladimir.zapolskiy@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qdu1000-idp.dts | 2 +-
- arch/arm64/boot/dts/qcom/qru1000-idp.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 40 +++++++++++++-------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-index 5a25cdec969eb..409f06978931a 100644
---- a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-@@ -31,7 +31,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index c97d1eeaf890f..c6a95db0d2a2e 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -3900,26 +3900,26 @@
+ 				    "vfe3",
+ 				    "csid3";
  
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/qcom/qru1000-idp.dts b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-index 2a862c83309e7..a3a7dcbc5e6d2 100644
---- a/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-@@ -31,7 +31,7 @@
- 
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
+-			interrupts = <GIC_SPI 359 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 360 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 640 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 758 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 759 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 760 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 761 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 762 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 764 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 359 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 360 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 640 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 641 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 758 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 759 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 760 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 761 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 762 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 764 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "csid1_lite",
+ 					  "vfe_lite1",
+ 					  "csiphy3",
 -- 
 2.39.5
 
