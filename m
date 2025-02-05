@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D20A291C6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898B1A28CE8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D175F3AB2AB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E4C1888860
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7D91DA63D;
-	Wed,  5 Feb 2025 14:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AA51527B4;
+	Wed,  5 Feb 2025 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlTGZlWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyQ3Ap7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD32F1779AE;
-	Wed,  5 Feb 2025 14:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ECEFC0B;
+	Wed,  5 Feb 2025 13:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766635; cv=none; b=X+DwzPKq6kH7sLhaN+ofW7ZVEn30nHKIhAQGXsYBJEHB5abtezCdUN7j3QZIxAUP6hYg5/yS+k/MH/5y8YGJ7phfv2pJhWsOP2Z4EqNAe9H6o6SBLYu6mNRo008TiUgSCtgdI5tT0ZjDer7TerwiLC5JUh74jBLzR6qEXE+Bkto=
+	t=1738763718; cv=none; b=TQdIK7zmTwpagbj7pzFZHQIP73YEYhMI4HQNxfjPibQFLArtv5FEGjc8dpAcL4acgywNTzwcsKAyMsz1lIbDQEnp73IW8nGxvccgQwB6UxhxEv7sKQ014ipVRD9TNmBL05MHM9j2KJMHlQgNiZ2E14QSsMM+teuuF3WaNiqCj3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766635; c=relaxed/simple;
-	bh=MsTJ0EG+HnCfUE9NvV410ZGAW5WnWUeVaugNduBm7Ug=;
+	s=arc-20240116; t=1738763718; c=relaxed/simple;
+	bh=xyi4Ly8C9KUDGfm8LxC0HMfu5AJbpHuSdmqEokxWuy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vzuo6eMvbYGoXjkmS/NByR88nVvFeYbWcFZ3t2H5HXyq84AGn84VYTDfTjjJs0EXoBdtbU75+vtEiiWD2KJ+Q4V9+47DHHxbu3DTJd5PNSimDmH8UW09Xji8AajLFinoBQt2xinogUXZpb8d4g31DxatZDnLH/jmZ1VIhkb7Xc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlTGZlWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49051C4CED1;
-	Wed,  5 Feb 2025 14:43:55 +0000 (UTC)
+	 MIME-Version; b=MA4A0fcDa9wxqvPZw3pgb4P0miruzHEsaMEvxHk0kRu+umlAvchcQyyB/lrMJN5J2njbdXf1leDlnM5ohwSQdF6kuYInQDKZJ/RgLFXaPKzSmNQNEGuuKyZzBRDfJWYoQ2Nr+B9fzTNq8i7t2hCV9LBxWS0/couL4K0I0X64Fzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyQ3Ap7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4ACC4CED6;
+	Wed,  5 Feb 2025 13:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766635;
-	bh=MsTJ0EG+HnCfUE9NvV410ZGAW5WnWUeVaugNduBm7Ug=;
+	s=korg; t=1738763717;
+	bh=xyi4Ly8C9KUDGfm8LxC0HMfu5AJbpHuSdmqEokxWuy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlTGZlWcYuB1lLAsH96M5FZq2nOF+oigigCEd+xtvLu3all1Uum06ugRw8I3Oq/2H
-	 qd3SRvZ2kOChXKpb9rwRXOw2y0+hhi6hRI4rXSkpzoFbhTOsys+Y/DkklLNtQ4OtBa
-	 PODaYzCdkQafz3dxLi4wzqHoC6zsDTnT/sas2P6g=
+	b=NyQ3Ap7lVBPTFnCENM9tR0rQ0O73fZ/fcK55UJiIZuOgxfILo7jqmVzS9KvyEcNqv
+	 rGhRn+GbxNCPIZVMJg0hCa38F7454QnaW2ZRDhAhj0xkmjBsQ0UR4biH0h08gtCE4v
+	 4Gl7C7p+0MCg3nbQqbNBLXQUfGQ/g4W1sNKlqsxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com,
+	Karol Przybylski <karprzy7@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 276/623] rhashtable: Fix potential deadlock by moving schedule_work outside lock
+Subject: [PATCH 6.6 099/393] HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check
 Date: Wed,  5 Feb 2025 14:40:18 +0100
-Message-ID: <20250205134506.790342194@linuxfoundation.org>
+Message-ID: <20250205134424.082577592@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Karol Przybylski <karprzy7@gmail.com>
 
-[ Upstream commit e1d3422c95f003eba241c176adfe593c33e8a8f6 ]
+[ Upstream commit 50420d7c79c37a3efe4010ff9b1bb14bc61ebccf ]
 
-Move the hash table growth check and work scheduling outside the
-rht lock to prevent a possible circular locking dependency.
+syzbot has found a type mismatch between a USB pipe and the transfer
+endpoint, which is triggered by the hid-thrustmaster driver[1].
+There is a number of similar, already fixed issues [2].
+In this case as in others, implementing check for endpoint type fixes the issue.
 
-The original implementation could trigger a lockdep warning due to
-a potential deadlock scenario involving nested locks between
-rhashtable bucket, rq lock, and dsq lock. By relocating the
-growth check and work scheduling after releasing the rth lock, we break
-this potential deadlock chain.
+[1] https://syzkaller.appspot.com/bug?extid=040e8b3db6a96908d470
+[2] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
 
-This change expands the flexibility of rhashtable by removing
-restrictive locking that previously limited its use in scheduler
-and workqueue contexts.
-
-Import to say that this calls rht_grow_above_75(), which reads from
-struct rhashtable without holding the lock, if this is a problem, we can
-move the check to the lock, and schedule the workqueue after the lock.
-
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-
-Modified so that atomic_inc is also moved outside of the bucket
-lock along with the growth above 75% check.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c49c33637802 ("HID: support for initialization of some Thrustmaster wheels")
+Reported-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
+Tested-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
+Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/rhashtable.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/hid/hid-thrustmaster.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index 6c902639728b7..bf956b85455ab 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -584,10 +584,6 @@ static struct bucket_table *rhashtable_insert_one(
- 	 */
- 	rht_assign_locked(bkt, obj);
+diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
+index cf1679b0d4fbb..6c3e758bbb09e 100644
+--- a/drivers/hid/hid-thrustmaster.c
++++ b/drivers/hid/hid-thrustmaster.c
+@@ -170,6 +170,14 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
+ 	ep = &usbif->cur_altsetting->endpoint[1];
+ 	b_ep = ep->desc.bEndpointAddress;
  
--	atomic_inc(&ht->nelems);
--	if (rht_grow_above_75(ht, tbl))
--		schedule_work(&ht->run_work);
--
- 	return NULL;
- }
- 
-@@ -624,6 +620,12 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
- 				data = ERR_CAST(new_tbl);
- 
- 			rht_unlock(tbl, bkt, flags);
++	/* Are the expected endpoints present? */
++	u8 ep_addr[1] = {b_ep};
 +
-+			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
-+				atomic_inc(&ht->nelems);
-+				if (rht_grow_above_75(ht, tbl))
-+					schedule_work(&ht->run_work);
-+			}
- 		}
- 	} while (!IS_ERR_OR_NULL(new_tbl));
++	if (!usb_check_int_endpoints(usbif, ep_addr)) {
++		hid_err(hdev, "Unexpected non-int endpoint\n");
++		return;
++	}
++
+ 	for (i = 0; i < ARRAY_SIZE(setup_arr); ++i) {
+ 		memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
  
 -- 
 2.39.5
