@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE0FA2931A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA69A293A6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B75E3AE0DE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A663A49EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA1819007F;
-	Wed,  5 Feb 2025 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD71519BF;
+	Wed,  5 Feb 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDoZH3Aq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j74lbD3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284F01E89C;
-	Wed,  5 Feb 2025 14:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136D5DF59;
+	Wed,  5 Feb 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767522; cv=none; b=sEWfEzTiSvmI2g6m45oYnw05aJuz9P9dcHH7Q4uV+mEzJKQOAscxdxwtorFeagyd/w6aWbLuXEd0UpsfmYp0lFnuY5BAOibILIOWAkTV/HaXUW/jKe7SfheyoauhQbQi3L/50IIkEfRkuAGrF/oV4eKxsSs+BvkB1SxuQE3ldrg=
+	t=1738767988; cv=none; b=jdu90fIUIVrAGr6JcT2rRdl3Mta1MzhI9unESDEO8GmrxI/60veIwqU+bcmpKXNXa0yp8cxxPzxDUBe9u/9iTSrOUwNkAXoLI9p1+8tBGOTiLnAIXSJSBiCLb2MtYAa+gek0XmLAFqFF/vVVpv3UHW1k+JIXnktnWIxU3b9XJTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767522; c=relaxed/simple;
-	bh=jDZa+VTAppIVRyhdk7bj/t56Jcm62/qxIAKZvLhoXwU=;
+	s=arc-20240116; t=1738767988; c=relaxed/simple;
+	bh=vCNfNz2z3zl8UkxlX3ua/tPyMSKbz/+FUNJ9c8CbXYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHQtGH4AFtF8WhV5zXxNBPWKbf8x9ttjyTxxyqRHYrcbCPP79z8kb78Caqq/fCe01be9K9sS+yf+UkS28d6B2V3NRxJaVOqUGIa6NljJH5ikzWtKHN8dU9EUMywrF4BFUNj+kixi8VpWEY4ih1Nl+RWc4qBE9Tcv09s0ckE3ch4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDoZH3Aq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A02C4CED1;
-	Wed,  5 Feb 2025 14:58:41 +0000 (UTC)
+	 MIME-Version; b=jfKpbVXk9/sAK88JsRe26BDe8HFsiUrRhH8SWTORZQZ3bUN2gAV66hGP/njX/g4vsQ3TwqjYQmZRYGbFbR5o/5sPAjtH7MCL6LAleXhNMfHwle5VFj+3OiYwq2enXyY5hj9xeHDr6yHE2MzJtYIoHzfOgkjIev3rOH/TY6JX9/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j74lbD3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D446C4CED1;
+	Wed,  5 Feb 2025 15:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767521;
-	bh=jDZa+VTAppIVRyhdk7bj/t56Jcm62/qxIAKZvLhoXwU=;
+	s=korg; t=1738767987;
+	bh=vCNfNz2z3zl8UkxlX3ua/tPyMSKbz/+FUNJ9c8CbXYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDoZH3AqaFHoEbYNV7n8qm1p5/Qo8xLV6M7OhjMeAfL7FkGdLRM7YBfy+p8AMKPPN
-	 EVYJ55ZOijEQ2amnJmcyWQjXTNEhetvcgqtgtokdmEWNXs4ekKNQbHYWkt+qQ/szWx
-	 +jtx2A+baU6BkGTYnOpl1BSusu7N67852ddZC0tI=
+	b=j74lbD3tL4o9QCgqNkJ0sTq6q/KPnvsuBiBp66n8+VN80uqNiUtiQKsySdo2dzgnU
+	 nT2BLAk/w6+v18+NoYEpKj3DrIZhBYv44B2PecO+7w5UT2VNHqgTygvHKSgfaG8aAC
+	 p8YJOOKg4R9QVbTguCs5KRgbfQ4pVYl9LRddCYbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com,
+	syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 468/590] rtc: tps6594: Fix integer overflow on 32bit systems
+Subject: [PATCH 6.13 481/623] nilfs2: handle errors that nilfs_prepare_chunk() may return
 Date: Wed,  5 Feb 2025 14:43:43 +0100
-Message-ID: <20250205134513.164837253@linuxfoundation.org>
+Message-ID: <20250205134514.619170477@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 09c4a610153286cef54d4f0c85398f4e32fc227e ]
+[ Upstream commit ee70999a988b8abc3490609142f50ebaa8344432 ]
 
-The problem is this multiply in tps6594_rtc_set_offset()
+Patch series "nilfs2: fix issues with rename operations".
 
-	tmp = offset * TICKS_PER_HOUR;
+This series fixes BUG_ON check failures reported by syzbot around rename
+operations, and a minor behavioral issue where the mtime of a child
+directory changes when it is renamed instead of moved.
 
-The "tmp" variable is an s64 but "offset" is a long in the
-(-277774)-277774 range.  On 32bit systems a long can hold numbers up to
-approximately two billion.  The number of TICKS_PER_HOUR is really large,
-(32768 * 3600) or roughly a hundred million.  When you start multiplying
-by a hundred million it doesn't take long to overflow the two billion
-mark.
+This patch (of 2):
 
-Probably the safest way to fix this is to change the type of
-TICKS_PER_HOUR to long long because it's such a large number.
+The directory manipulation routines nilfs_set_link() and
+nilfs_delete_entry() rewrite the directory entry in the folio/page
+previously read by nilfs_find_entry(), so error handling is omitted on the
+assumption that nilfs_prepare_chunk(), which prepares the buffer for
+rewriting, will always succeed for these.  And if an error is returned, it
+triggers the legacy BUG_ON() checks in each routine.
 
-Fixes: 9f67c1e63976 ("rtc: tps6594: Add driver for TPS6594 RTC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/1074175e-5ecb-4e3d-b721-347d794caa90@stanley.mountain
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This assumption is wrong, as proven by syzbot: the buffer layer called by
+nilfs_prepare_chunk() may call nilfs_get_block() if necessary, which may
+fail due to metadata corruption or other reasons.  This has been there all
+along, but improved sanity checks and error handling may have made it more
+reproducible in fuzzing tests.
+
+Fix this issue by adding missing error paths in nilfs_set_link(),
+nilfs_delete_entry(), and their caller nilfs_rename().
+
+Link: https://lkml.kernel.org/r/20250111143518.7901-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20250111143518.7901-2-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=32c3706ebf5d95046ea1
+Reported-by: syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1097e95f134f37d9395c
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-tps6594.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/dir.c   | 13 ++++++++++---
+ fs/nilfs2/namei.c | 29 +++++++++++++++--------------
+ fs/nilfs2/nilfs.h |  4 ++--
+ 3 files changed, 27 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/rtc/rtc-tps6594.c b/drivers/rtc/rtc-tps6594.c
-index e696676341378..7c6246e3f0292 100644
---- a/drivers/rtc/rtc-tps6594.c
-+++ b/drivers/rtc/rtc-tps6594.c
-@@ -37,7 +37,7 @@
- #define MAX_OFFSET (277774)
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 0a3aea6c416bc..9b7f8e9655a27 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -400,7 +400,7 @@ int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
+ 	return 0;
+ }
  
- // Number of ticks per hour
--#define TICKS_PER_HOUR (32768 * 3600)
-+#define TICKS_PER_HOUR (32768 * 3600LL)
+-void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
++int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
+ 		    struct folio *folio, struct inode *inode)
+ {
+ 	size_t from = offset_in_folio(folio, de);
+@@ -410,11 +410,15 @@ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
  
- // Multiplier for ppb conversions
- #define PPB_MULT NANO
+ 	folio_lock(folio);
+ 	err = nilfs_prepare_chunk(folio, from, to);
+-	BUG_ON(err);
++	if (unlikely(err)) {
++		folio_unlock(folio);
++		return err;
++	}
+ 	de->inode = cpu_to_le64(inode->i_ino);
+ 	de->file_type = fs_umode_to_ftype(inode->i_mode);
+ 	nilfs_commit_chunk(folio, mapping, from, to);
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
++	return 0;
+ }
+ 
+ /*
+@@ -543,7 +547,10 @@ int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct folio *folio)
+ 		from = (char *)pde - kaddr;
+ 	folio_lock(folio);
+ 	err = nilfs_prepare_chunk(folio, from, to);
+-	BUG_ON(err);
++	if (unlikely(err)) {
++		folio_unlock(folio);
++		goto out;
++	}
+ 	if (pde)
+ 		pde->rec_len = nilfs_rec_len_to_disk(to - from);
+ 	dir->inode = 0;
+diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
+index 1d836a5540f3b..e02fae6757f12 100644
+--- a/fs/nilfs2/namei.c
++++ b/fs/nilfs2/namei.c
+@@ -406,8 +406,10 @@ static int nilfs_rename(struct mnt_idmap *idmap,
+ 			err = PTR_ERR(new_de);
+ 			goto out_dir;
+ 		}
+-		nilfs_set_link(new_dir, new_de, new_folio, old_inode);
++		err = nilfs_set_link(new_dir, new_de, new_folio, old_inode);
+ 		folio_release_kmap(new_folio, new_de);
++		if (unlikely(err))
++			goto out_dir;
+ 		nilfs_mark_inode_dirty(new_dir);
+ 		inode_set_ctime_current(new_inode);
+ 		if (dir_de)
+@@ -430,28 +432,27 @@ static int nilfs_rename(struct mnt_idmap *idmap,
+ 	 */
+ 	inode_set_ctime_current(old_inode);
+ 
+-	nilfs_delete_entry(old_de, old_folio);
+-
+-	if (dir_de) {
+-		nilfs_set_link(old_inode, dir_de, dir_folio, new_dir);
+-		folio_release_kmap(dir_folio, dir_de);
+-		drop_nlink(old_dir);
++	err = nilfs_delete_entry(old_de, old_folio);
++	if (likely(!err)) {
++		if (dir_de) {
++			err = nilfs_set_link(old_inode, dir_de, dir_folio,
++					     new_dir);
++			drop_nlink(old_dir);
++		}
++		nilfs_mark_inode_dirty(old_dir);
+ 	}
+-	folio_release_kmap(old_folio, old_de);
+-
+-	nilfs_mark_inode_dirty(old_dir);
+ 	nilfs_mark_inode_dirty(old_inode);
+ 
+-	err = nilfs_transaction_commit(old_dir->i_sb);
+-	return err;
+-
+ out_dir:
+ 	if (dir_de)
+ 		folio_release_kmap(dir_folio, dir_de);
+ out_old:
+ 	folio_release_kmap(old_folio, old_de);
+ out:
+-	nilfs_transaction_abort(old_dir->i_sb);
++	if (likely(!err))
++		err = nilfs_transaction_commit(old_dir->i_sb);
++	else
++		nilfs_transaction_abort(old_dir->i_sb);
+ 	return err;
+ }
+ 
+diff --git a/fs/nilfs2/nilfs.h b/fs/nilfs2/nilfs.h
+index dff241c53fc58..cb6ed54accd7b 100644
+--- a/fs/nilfs2/nilfs.h
++++ b/fs/nilfs2/nilfs.h
+@@ -261,8 +261,8 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *, const struct qstr *,
+ int nilfs_delete_entry(struct nilfs_dir_entry *, struct folio *);
+ int nilfs_empty_dir(struct inode *);
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *, struct folio **);
+-void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
+-			   struct folio *, struct inode *);
++int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
++		   struct folio *folio, struct inode *inode);
+ 
+ /* file.c */
+ extern int nilfs_sync_file(struct file *, loff_t, loff_t, int);
 -- 
 2.39.5
 
