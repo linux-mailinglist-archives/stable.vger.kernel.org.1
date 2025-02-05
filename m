@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-112756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD38A28E48
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226F0A28F23
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 777D818880B8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF3D23A9EAA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A88B149C53;
-	Wed,  5 Feb 2025 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0B0155756;
+	Wed,  5 Feb 2025 14:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmTwrlRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAPSXHis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F861494DF;
-	Wed,  5 Feb 2025 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1DF1553AB;
+	Wed,  5 Feb 2025 14:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764642; cv=none; b=mpE/QEVe+TJtUkmy3jMV9V0aDhLpL2g0/sgLEN5hcXoa44ySXzPSDmcMFJfCy8hSp63dKc1Itj/uuaUjP3t6216ypbsxxGZevVj51dkUm1GTr5aABkyUG86jeeYXaOCTYC3qCcJYFox7FiA9qJyfuBaUqX7zz3umUJE+R5bqzHM=
+	t=1738765241; cv=none; b=R36Xdd8s4kl90l8juE9fcC27ud+uGgliiaP4vonyXDIHuHhE/4CdlYOnvb1neW+5Sa5oFph8zjskgm6D+2qWjiOEfWs0UaFCsOEjtwrUxXkfh3ZSxegBHlzB/zsC/sWhgGDUxLSPVclqdE8C8CM3wc1DI1RKCVIhnhNe0SFqezk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764642; c=relaxed/simple;
-	bh=O99W7OaJT3333xtdHJKRQsTlogWRUR2dlCqbJdM8fhk=;
+	s=arc-20240116; t=1738765241; c=relaxed/simple;
+	bh=7SMGtTDQnFPdg26W67gcTz5wsyzAiwtndQuHTuGGyAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=osIQTs710ExbNvt3Vg2LAnC0jOHkcPPQraCwwmk7yf4BGF5z3DbNOjJw49ommqSNDBS2c1M11ezYZHxNDfPN+rBE7GGWXlKRP67ZjLFyiGIXlUz12KBcj4BnfBVp3RNHD1vFkRDun3M7UJmng47FTJIkmERTm6c5deXUZrKa5lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmTwrlRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3DFC4CED6;
-	Wed,  5 Feb 2025 14:10:41 +0000 (UTC)
+	 MIME-Version; b=I3NyV9hsj6j0qBoZWVlde5scD/cwC9BUttJDuVNZUzJbIjJYqWv4DCXKkNaZIFYnkv/ZfF4a2xDwRyVgaUYN5Mskr39tUqlVb8fp+ttOz4vUiLs3cvgwKBSd6u1OCrKpTf8orxVcId1IkROE/mLZWDdJdiv6TaFVOa9rvxpI3Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAPSXHis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 816FFC4CED6;
+	Wed,  5 Feb 2025 14:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764642;
-	bh=O99W7OaJT3333xtdHJKRQsTlogWRUR2dlCqbJdM8fhk=;
+	s=korg; t=1738765241;
+	bh=7SMGtTDQnFPdg26W67gcTz5wsyzAiwtndQuHTuGGyAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmTwrlRO7PpMxxocDT0gizQjjLkxI0+9N7G+Ud/HS6+wvFZkJqikuskGWKEPBjfHq
-	 TOcpczSvsZwqiQ173JHbiX/AodmrwzCj8BaR3Cy+vxFv+OupWY8tK9mXIz0tFJRoFl
-	 t6nRrPDt5Y8EHfNvQ9sD6hxglMhzyPTEBIfYCCk0=
+	b=VAPSXHis3T7f7Mo8LDKXa0kO34q/MzQFguqvLecWRoUIjn2boQG7/TCNS+zIAf0aE
+	 6jzpc2otgOwl05LsevYczZb5bAD35kHomo35E76bIJIz0DQa+RmYK4e9KjoFSLdi8U
+	 385uutidM5X7SZ6L7uuRtet+mPcdMNCES/lmMqkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 145/590] wifi: mt76: mt7996: fix invalid interface combinations
-Date: Wed,  5 Feb 2025 14:38:20 +0100
-Message-ID: <20250205134500.822924617@linuxfoundation.org>
+Subject: [PATCH 6.13 159/623] wifi: rtw89: fix race between cancel_hw_scan and hw_scan completion
+Date: Wed,  5 Feb 2025 14:38:21 +0100
+Message-ID: <20250205134502.318837524@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 89aca45f26879dfbbf8374c425c4811f69cfc2df ]
+[ Upstream commit ba4bb0402c60e945c4c396c51f0acac3c3e3ea5c ]
 
-Setting beacon_int_min_gcd and NL80211_IFTYPE_ADHOC in the same interface
-combination is invalid, which will trigger the following warning trace
-and get error returned from wiphy_register().
+The rtwdev->scanning flag isn't protected by mutex originally, so
+cancel_hw_scan can pass the condition, but suddenly hw_scan completion
+unset the flag and calls ieee80211_scan_completed() that will free
+local->hw_scan_req. Then, cancel_hw_scan raises null-ptr-deref and
+use-after-free. Fix it by moving the check condition to where
+protected by mutex.
 
-[   10.080325] Call trace:
-[   10.082761]  wiphy_register+0xc4/0x76c [cfg80211]
-[   10.087465]  ieee80211_register_hw+0x800/0xac4 [mac80211]
-[   10.092868]  mt76_register_device+0x16c/0x2c0 [mt76]
-[   10.097829]  mt7996_register_device+0x740/0x844 [mt7996e]
+ KASAN: null-ptr-deref in range [0x0000000000000088-0x000000000000008f]
+ CPU: 2 PID: 6922 Comm: kworker/2:2 Tainted: G           OE
+ Hardware name: LENOVO 2356AD1/2356AD1, BIOS G7ETB6WW (2.76 ) 09/10/2019
+ Workqueue: events cfg80211_conn_work [cfg80211]
+ RIP: 0010:rtw89_fw_h2c_scan_offload_be+0xc33/0x13c3 [rtw89_core]
+ Code: 00 45 89 6c 24 1c 0f 85 23 01 00 00 48 8b 85 20 ff ff ff 48 8d
+ RSP: 0018:ffff88811fd9f068 EFLAGS: 00010206
+ RAX: dffffc0000000000 RBX: ffff88811fd9f258 RCX: 0000000000000001
+ RDX: 0000000000000011 RSI: 0000000000000001 RDI: 0000000000000089
+ RBP: ffff88811fd9f170 R08: 0000000000000000 R09: 0000000000000000
+ R10: ffff88811fd9f108 R11: 0000000000000000 R12: ffff88810e47f960
+ R13: 0000000000000000 R14: 000000000000ffff R15: 0000000000000000
+ FS:  0000000000000000(0000) GS:ffff8881d6f00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007531dfca55b0 CR3: 00000001be296004 CR4: 00000000001706e0
+ Call Trace:
+  <TASK>
+  ? show_regs+0x61/0x73
+  ? __die_body+0x20/0x73
+  ? die_addr+0x4f/0x7b
+  ? exc_general_protection+0x191/0x1db
+  ? asm_exc_general_protection+0x27/0x30
+  ? rtw89_fw_h2c_scan_offload_be+0xc33/0x13c3 [rtw89_core]
+  ? rtw89_fw_h2c_scan_offload_be+0x458/0x13c3 [rtw89_core]
+  ? __pfx_rtw89_fw_h2c_scan_offload_be+0x10/0x10 [rtw89_core]
+  ? do_raw_spin_lock+0x75/0xdb
+  ? __pfx_do_raw_spin_lock+0x10/0x10
+  rtw89_hw_scan_offload+0xb5e/0xbf7 [rtw89_core]
+  ? _raw_spin_unlock+0xe/0x24
+  ? __mutex_lock.constprop.0+0x40c/0x471
+  ? __pfx_rtw89_hw_scan_offload+0x10/0x10 [rtw89_core]
+  ? __mutex_lock_slowpath+0x13/0x1f
+  ? mutex_lock+0xa2/0xdc
+  ? __pfx_mutex_lock+0x10/0x10
+  rtw89_hw_scan_abort+0x58/0xb7 [rtw89_core]
+  rtw89_ops_cancel_hw_scan+0x120/0x13b [rtw89_core]
+  ieee80211_scan_cancel+0x468/0x4d0 [mac80211]
+  ieee80211_prep_connection+0x858/0x899 [mac80211]
+  ieee80211_mgd_auth+0xbea/0xdde [mac80211]
+  ? __pfx_ieee80211_mgd_auth+0x10/0x10 [mac80211]
+  ? cfg80211_find_elem+0x15/0x29 [cfg80211]
+  ? is_bss+0x1b7/0x1d7 [cfg80211]
+  ieee80211_auth+0x18/0x27 [mac80211]
+  cfg80211_mlme_auth+0x3bb/0x3e7 [cfg80211]
+  cfg80211_conn_do_work+0x410/0xb81 [cfg80211]
+  ? __pfx_cfg80211_conn_do_work+0x10/0x10 [cfg80211]
+  ? __kasan_check_read+0x11/0x1f
+  ? psi_group_change+0x8bc/0x944
+  ? __kasan_check_write+0x14/0x22
+  ? mutex_lock+0x8e/0xdc
+  ? __pfx_mutex_lock+0x10/0x10
+  ? __pfx___radix_tree_lookup+0x10/0x10
+  cfg80211_conn_work+0x245/0x34d [cfg80211]
+  ? __pfx_cfg80211_conn_work+0x10/0x10 [cfg80211]
+  ? update_cfs_rq_load_avg+0x3bc/0x3d7
+  ? sched_clock_noinstr+0x9/0x1a
+  ? sched_clock+0x10/0x24
+  ? sched_clock_cpu+0x7e/0x42e
+  ? newidle_balance+0x796/0x937
+  ? __pfx_sched_clock_cpu+0x10/0x10
+  ? __pfx_newidle_balance+0x10/0x10
+  ? __kasan_check_read+0x11/0x1f
+  ? psi_group_change+0x8bc/0x944
+  ? _raw_spin_unlock+0xe/0x24
+  ? raw_spin_rq_unlock+0x47/0x54
+  ? raw_spin_rq_unlock_irq+0x9/0x1f
+  ? finish_task_switch.isra.0+0x347/0x586
+  ? __schedule+0x27bf/0x2892
+  ? mutex_unlock+0x80/0xd0
+  ? do_raw_spin_lock+0x75/0xdb
+  ? __pfx___schedule+0x10/0x10
+  process_scheduled_works+0x58c/0x821
+  worker_thread+0x4c7/0x586
+  ? __kasan_check_read+0x11/0x1f
+  kthread+0x285/0x294
+  ? __pfx_worker_thread+0x10/0x10
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x29/0x6f
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1b/0x30
+  </TASK>
 
-Fix this by removing unused adhoc iftype.
-
-Fixes: 948f65249868 ("wifi: mt76: mt7996: advertize beacon_int_min_gcd")
-Reported-by: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Tested-By: Frank Wunderlich <frank-w@public-files.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241007135133.5336-1-shayne.chen@mediatek.com
+Fixes: 895907779752 ("rtw89: 8852a: add ieee80211_ops::hw_scan")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250107114254.6769-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 5e96973226bbb..efa7b0697a406 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -16,9 +16,6 @@
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 78d846e4667e7..03fb076e8c954 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -1273,11 +1273,11 @@ static void rtw89_ops_cancel_hw_scan(struct ieee80211_hw *hw,
+ 	if (!RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw))
+ 		return;
  
- static const struct ieee80211_iface_limit if_limits[] = {
- 	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_ADHOC)
--	}, {
- 		.max = 16,
- 		.types = BIT(NL80211_IFTYPE_AP)
- #ifdef CONFIG_MAC80211_MESH
+-	if (!rtwdev->scanning)
+-		return;
+-
+ 	mutex_lock(&rtwdev->mutex);
+ 
++	if (!rtwdev->scanning)
++		goto out;
++
+ 	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
+ 	if (unlikely(!rtwvif_link)) {
+ 		rtw89_err(rtwdev, "cancel hw scan: find no link on HW-0\n");
 -- 
 2.39.5
 
