@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3BFA28D4A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E8D7A28C9D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31B947A1E4A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99821168A75
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A05155A21;
-	Wed,  5 Feb 2025 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3311487DC;
+	Wed,  5 Feb 2025 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHGiAe0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAmwwpkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3E915573F;
-	Wed,  5 Feb 2025 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5943013C9C4;
+	Wed,  5 Feb 2025 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763977; cv=none; b=IZj+bywFgrHIhJeZlYXsSws2k4Uily0OwE0k3BtQZonXVQI4onyjbb5GKLjVxCxjiTtbgHThCRua3tUhX9/U/ZHIpywN/cnNkilRpkIFP4xdmdn+MrSlX00TiXMyHc6IqN/HC50vo/qe7RKrof0wfQx/aqz5xYR89+BFoMrK/wY=
+	t=1738763507; cv=none; b=rThHwqTb7gtPZeXLxYU8tU32qn+bBwcpVSad595K7nuWQDBSv0BLJ64NzUKAkbkyncO+uGi6h3QyKb9Br0WPfcDGNMM4ymK07pqoWAdCQOBcflnVVDHcWFAx3mXaASYT0HainrbicejbUbwhNJnGM4yeHxyS0ddNvOQpM1cmX+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763977; c=relaxed/simple;
-	bh=QGwngiQ2zbis9C/YsQ2gMJNqeo2XgxNTSHFyDogjI0o=;
+	s=arc-20240116; t=1738763507; c=relaxed/simple;
+	bh=ikUO73TSeC4+FWPN+iGBhb0QZjUjKkGrrnlJmYn9Za4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tyPIPfA83031myhZvoHqrfFh1EhFQb9diWWK/funqj/fZqCraHOtd8mbhj7CxRwFcCIQm0fNaaJQ/NrfRQ78ouEMpiCETAC5/MuAQ7q3GlmHh/IiLdbHkAN+omUZL4GA/KIXMDAr87EA2CAcuwWDnHZDYj6cpAoWuiOVO6zFnAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHGiAe0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D38C4CED6;
-	Wed,  5 Feb 2025 13:59:36 +0000 (UTC)
+	 MIME-Version; b=e+9K18JhGnTatmQ94viwW62/46ePC83hunQetpeZyD3BM4+P+UKa0UbZ5pTpO7b6pcgzIP0HCShV73PFStgriq2b/8MS8Y3tSvBvHwEdTtUzggvjSvR2qmEFp/XOUsgjbqYoyCmrGxpVPx4Qi/Wvyc+YoaF+/hZ6p4kBtt1ZjXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAmwwpkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD34DC4CED1;
+	Wed,  5 Feb 2025 13:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763977;
-	bh=QGwngiQ2zbis9C/YsQ2gMJNqeo2XgxNTSHFyDogjI0o=;
+	s=korg; t=1738763507;
+	bh=ikUO73TSeC4+FWPN+iGBhb0QZjUjKkGrrnlJmYn9Za4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHGiAe0vcP8Swo3SWguCxYohmFZ1F8EfFuLpmHJ+I3pZUnpxZyI4tbnqG3KFaai7x
-	 qNojI8yeAEBOH9QiZs3G0ovfHMUrTtZrBsUSdBy4lkpYCcf9hDtbh1qv+F4Lz1XRA0
-	 bBC7wQlvvtOuamZPztmthAC8NoALnjLMXtlGmvEU=
+	b=XAmwwpkLH/JXirq7vY1EDRVd8whWILTgQpVE4SUPJNuUMUmS54dxXSI+rx97zMSlG
+	 h+gE8VzhDg7GDlam01prxClWEY7K0GJEityUeyEcer36f6duW/T6K3h++cR+5jkvsl
+	 iGc6DlQgAUa5gtkwTpFOh1JB/4vTG873EzUH6J4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 035/623] sched: Fix race between yield_to() and try_to_wake_up()
-Date: Wed,  5 Feb 2025 14:36:17 +0100
-Message-ID: <20250205134457.571743616@linuxfoundation.org>
+Subject: [PATCH 6.12 023/590] btrfs: subpage: fix the bitmap dump of the locked flags
+Date: Wed,  5 Feb 2025 14:36:18 +0100
+Message-ID: <20250205134456.131567836@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchen Ding <dtcccc@linux.alibaba.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 5d808c78d97251af1d3a3e4f253e7d6c39fd871e ]
+[ Upstream commit 396294d1afee65a203d6cabd843d0782e5d7388e ]
 
-We met a SCHED_WARN in set_next_buddy():
-  __warn_printk
-  set_next_buddy
-  yield_to_task_fair
-  yield_to
-  kvm_vcpu_yield_to [kvm]
-  ...
+We're dumping the locked bitmap into the @checked_bitmap variable,
+printing incorrect values during debug.
 
-After a short dig, we found the rq_lock held by yield_to() may not
-be exactly the rq that the target task belongs to. There is a race
-window against try_to_wake_up().
+Thankfully even during my development I haven't hit a case where I need
+to dump the locked bitmap.  But for the sake of consistency, fix it by
+dupping the locked bitmap into @locked_bitmap variable for output.
 
-         CPU0                             target_task
-
-                                        blocking on CPU1
-   lock rq0 & rq1
-   double check task_rq == p_rq, ok
-                                        woken to CPU2 (lock task_pi & rq2)
-                                        task_rq = rq2
-   yield_to_task_fair (w/o lock rq2)
-
-In this race window, yield_to() is operating the task w/o the correct
-lock. Fix this by taking task pi_lock first.
-
-Fixes: d95f41220065 ("sched: Add yield_to(task, preempt) functionality")
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241231055020.6521-1-dtcccc@linux.alibaba.com
+Fixes: 75258f20fb70 ("btrfs: subpage: dump extra subpage bitmaps for debug")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/syscalls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/subpage.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index ff0e5ab4e37cb..943406c4ee865 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -1433,7 +1433,7 @@ int __sched yield_to(struct task_struct *p, bool preempt)
- 	struct rq *rq, *p_rq;
- 	int yielded = 0;
+diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
+index fe4d719d506bf..ec7328a6bfd75 100644
+--- a/fs/btrfs/subpage.c
++++ b/fs/btrfs/subpage.c
+@@ -868,6 +868,7 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+ 	unsigned long writeback_bitmap;
+ 	unsigned long ordered_bitmap;
+ 	unsigned long checked_bitmap;
++	unsigned long locked_bitmap;
+ 	unsigned long flags;
  
--	scoped_guard (irqsave) {
-+	scoped_guard (raw_spinlock_irqsave, &p->pi_lock) {
- 		rq = this_rq();
+ 	ASSERT(folio_test_private(folio) && folio_get_private(folio));
+@@ -880,15 +881,16 @@ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, writeback, &writeback_bitmap);
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, ordered, &ordered_bitmap);
+ 	GET_SUBPAGE_BITMAP(subpage, fs_info, checked, &checked_bitmap);
+-	GET_SUBPAGE_BITMAP(subpage, fs_info, locked, &checked_bitmap);
++	GET_SUBPAGE_BITMAP(subpage, fs_info, locked, &locked_bitmap);
+ 	spin_unlock_irqrestore(&subpage->lock, flags);
  
- again:
+ 	dump_page(folio_page(folio, 0), "btrfs subpage dump");
+ 	btrfs_warn(fs_info,
+-"start=%llu len=%u page=%llu, bitmaps uptodate=%*pbl dirty=%*pbl writeback=%*pbl ordered=%*pbl checked=%*pbl",
++"start=%llu len=%u page=%llu, bitmaps uptodate=%*pbl dirty=%*pbl locked=%*pbl writeback=%*pbl ordered=%*pbl checked=%*pbl",
+ 		    start, len, folio_pos(folio),
+ 		    sectors_per_page, &uptodate_bitmap,
+ 		    sectors_per_page, &dirty_bitmap,
++		    sectors_per_page, &locked_bitmap,
+ 		    sectors_per_page, &writeback_bitmap,
+ 		    sectors_per_page, &ordered_bitmap,
+ 		    sectors_per_page, &checked_bitmap);
 -- 
 2.39.5
 
