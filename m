@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-112983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A806AA28F5A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BE9A292CE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3DA167D61
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E905B1886F35
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0C915852E;
-	Wed,  5 Feb 2025 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810381FC11D;
+	Wed,  5 Feb 2025 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qa+KvmcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efOY8sBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7699156886;
-	Wed,  5 Feb 2025 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370EC18C93C;
+	Wed,  5 Feb 2025 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765424; cv=none; b=fLaQP7KBX5oQpoLVC8f4EolOJnt/Qdlwnhe8iGHmk5hyg/CH8IS2TlU7J46jVVQJhMe1UFwqMxdn6tizPABANSOoj5+1W4r7cbxW58+arETmLH8uyUp5LpGRDWbL+XKCVCWfvr171C9xFyLpiW+eOAIrEyeazpZv7qoOVIQRXoo=
+	t=1738767262; cv=none; b=OcmSvKhuERoRhf2S6CEWaKGCHiGX12IFzV85DqRGe1n5aRWO/hGE+qRAO2Cw03Mn1Hlgiz4LlN/hSlnBvRC2nQvERhFF+vZgeUZi1gKSeghJju3UIlVnXnCaI2dxNlfXWgROtEQ8G7+O6Ax4Wdm0xc/cRftFFDwUYzzq3wB7tnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765424; c=relaxed/simple;
-	bh=SqcJNi30XMhdA/UBN71P/QCyfNBTutLafddnPPMaRO0=;
+	s=arc-20240116; t=1738767262; c=relaxed/simple;
+	bh=KsC/tyqT/TyHDVo5FQAT4yZYndeFTwiwCCr7iwwFpJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT60noVHc+2HSwi+6OBx7DvjhPNrxJLo47s7Gr1NGnv80uvIUSiWwYqOZclrBL88vEkDDuD6FojkPU/mezPcz/CtlMv84BnaPDsORA0y63fjEuGfgyMc/LFm4loYUtbeeGInlLuNCbw9NifoDMhZhwxkLLgNQciVGoXmG6ERwW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qa+KvmcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A73C4CED1;
-	Wed,  5 Feb 2025 14:23:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ndo7s00C1L3HgOPr50Af8w6JG90LEG9VXs8cgwtcZE3oZx6O/0MTD0U1mjuC+mF5F8gcAqd2rrVI6WHDETVB0RwOBsJtNkBnnQdAUejVHgyB6buLMOxkQlf88lN4+tSCIRR4rKaNjYwsW4XrgfnwoJtF6P8C3GviSinFWb2GoQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efOY8sBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B00C4CED6;
+	Wed,  5 Feb 2025 14:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765424;
-	bh=SqcJNi30XMhdA/UBN71P/QCyfNBTutLafddnPPMaRO0=;
+	s=korg; t=1738767262;
+	bh=KsC/tyqT/TyHDVo5FQAT4yZYndeFTwiwCCr7iwwFpJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qa+KvmcC3ChiysBtCxEjXRvw9hGYy+T7PeOhgDWdFSIDsCoH/dwKZWQu06qwneHRv
-	 g8RIOtplASV2tQJ4O0w7p2Ex4Y1IuSSPzW7CUAX4aj6OoTpmKyKGTC6IWvl5hvNjXM
-	 gvKXhgtVJNg1Zz0lzR0LznWQS1AsUEAR2BNPLSmE=
+	b=efOY8sBDwxTZnX08c8Vr2Q0k6CaKWQIRpZIQ1bNJqD5dLQDa85d0S9/u/1fskuf4F
+	 okcvq9FGMohBarVL7htoiNWlEiu11nzQZ5g/GF7Ns3q7zdSf4Ms71dRZZDibrlxyZC
+	 g4GG3QU1cXIH1bWS5wiUqw2v8Pv/RGuKUGcyMnxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	Mohamed Khalfella <khalfella@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/393] dts: arm64: mediatek: mt8195: Remove MT8183 compatible for OVL
-Date: Wed,  5 Feb 2025 14:43:05 +0100
-Message-ID: <20250205134430.490241025@linuxfoundation.org>
+Subject: [PATCH 6.12 431/590] PCI: endpoint: pci-epf-test: Set dma_chan_rx pointer to NULL on error
+Date: Wed,  5 Feb 2025 14:43:06 +0100
+Message-ID: <20250205134511.756161941@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Mohamed Khalfella <khalfella@gmail.com>
 
-[ Upstream commit ce3dbc46d7e30a84b8e99c730e3172dd5efbf094 ]
+[ Upstream commit b1b1f4b12969130c0a6ec0cf0299460cb01e799c ]
 
-The OVL hardware capabilities have changed starting from MT8195,
-making the MT8183 compatible no longer applicable.
-Therefore, it is necessary to remove the MT8183 compatible for OVL.
+If dma_chan_tx allocation fails, set dma_chan_rx to NULL after it is
+freed.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
-Link: https://lore.kernel.org/r/20241219181531.4282-5-jason-jh.lin@mediatek.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241227160841.92382-1-khalfella@gmail.com
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Signed-off-by: Mohamed Khalfella <khalfella@gmail.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 1cb22257adb36..7ba30209ba9a9 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -2677,7 +2677,7 @@
- 		};
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 7c2ed6eae53ad..f51ebd6b45c9b 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -251,7 +251,7 @@ static int pci_epf_test_init_dma_chan(struct pci_epf_test *epf_test)
  
- 		ovl0: ovl@1c000000 {
--			compatible = "mediatek,mt8195-disp-ovl", "mediatek,mt8183-disp-ovl";
-+			compatible = "mediatek,mt8195-disp-ovl";
- 			reg = <0 0x1c000000 0 0x1000>;
- 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
+ fail_back_rx:
+ 	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_tx = NULL;
++	epf_test->dma_chan_rx = NULL;
+ 
+ fail_back_tx:
+ 	dma_cap_zero(mask);
 -- 
 2.39.5
 
