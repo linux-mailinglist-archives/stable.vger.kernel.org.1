@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DACA28F6B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F860A292B9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483FA18843A1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E27813AC8D3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63A1553AB;
-	Wed,  5 Feb 2025 14:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA2218D656;
+	Wed,  5 Feb 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOZYr3v1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jk6M0FX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9C31537AC;
-	Wed,  5 Feb 2025 14:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DA818C337;
+	Wed,  5 Feb 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765449; cv=none; b=qBoQV6hgcUrTAh3xSgdyGQfn68IsSj0eJ56EkZSsDM3Nt279LlRH+Gvq1F+ZeaK1vIxyOclioh6XkDTXq/S9g/ud0Fx1vhSXGjoya53XFYZQkHuDkTDfvtNqOBl8OmWWHrihk+b9ls240u5kl45y8YJag980wyDUo8VxgmMaLeY=
+	t=1738767269; cv=none; b=uYlHXOs3+9a/3y8qzsPcSesi7dd8flY0qKT7YyHroWSg1RMqsTfQvVj7hW1Q+E4hzlH2DHZ0zDEibDD9+sRuivQ3Gmq1NR/T6+8yoiJb0awzyvSPD5ncikFmrl853kiGf6DGOXxinhrT4AW55+zwBRD2LXXP7cPWAjl62iadb1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765449; c=relaxed/simple;
-	bh=Dwl3F8ORH6aWYP3lbCD7RIusrS8LlTCmqouHPFiWovc=;
+	s=arc-20240116; t=1738767269; c=relaxed/simple;
+	bh=+BSy60tVfdepAyAq8wqSG4y2xO6giMBnXKZFgz0/nZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+PKbz6tUnf5N2JAoVTDEO0ToBA3SRHRRNUTJBLJKQutdxth2VTwhUAFDaF53bArqitoqZqvhevRfF/GEnw1wpCE90AIOCIVLSL7LeRzBRTawhi7hyjN9q7L4G/tgs/ZZIC36wRygReb6Y9PhSg73/Vm8cmhFa3CJo/b7XfUFXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOZYr3v1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E787C4CED1;
-	Wed,  5 Feb 2025 14:24:08 +0000 (UTC)
+	 MIME-Version; b=DUWIz9JA9vRD99JZG2M8832DyggWDoy6qOBCJFD3mm/oJFtWUCfDC/FhBbYYMl/UfUjg+DdjSJN8Di7Ss7Ay1fFrxCbzvRI1M9YZMw/t+lhn9Uw3YepXewBeb0tK+pPH36cad4RxUak0xK/K5NsMWJOsf0ZlDrltrEpDPC1z6Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jk6M0FX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90347C4CED1;
+	Wed,  5 Feb 2025 14:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765449;
-	bh=Dwl3F8ORH6aWYP3lbCD7RIusrS8LlTCmqouHPFiWovc=;
+	s=korg; t=1738767269;
+	bh=+BSy60tVfdepAyAq8wqSG4y2xO6giMBnXKZFgz0/nZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOZYr3v1GeH7xiom+TPP5tC+rVbTxnHer+wGARx/o1apNamxEd8JdakojW9RsHJxM
-	 4HrKXf+6JnpzpU09xCVQggZ6O8gpWrai3iEqh7o3P95XdKFwxbrGzh/zsB2xFRky5I
-	 wN0GVQ0lYowJcuBh443vQq4AHNzIMHYNByg5hQ/g=
+	b=jk6M0FX/yBpmCeu84X6wouDluWyphmGBtaglv9FYtoNFYz/I5Q56EbQHTIEyKL6Yt
+	 IB7ZLG+GHb0lylJUNek/lJUQMWis6UdugYGzRf8Rtj82dxAop+OltdY5p95iZ1pYmG
+	 JjddkBXOcpAoLD90KpMDGYCSUH50csJ7DRgXXSRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/393] arm64: dts: qcom: sdm845: Fix interrupt types of camss interrupts
+Subject: [PATCH 6.12 432/590] PCI: endpoint: pci-epf-test: Fix check for DMA MEMCPY test
 Date: Wed,  5 Feb 2025 14:43:07 +0100
-Message-ID: <20250205134430.566071414@linuxfoundation.org>
+Message-ID: <20250205134511.794439064@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit cb96722b728e81ad97f5b5b20dea64cd294a5452 ]
+[ Upstream commit 235c2b197a8de2887f13990094a3343d2392155b ]
 
-Qualcomm IP catalog says that all CAMSS interrupts is edge rising,
-fix it in the CAMSS device tree node for sdm845 SoC.
+Currently, if DMA MEMCPY test is requested by the host, and if the endpoint
+DMA controller supports DMA_PRIVATE, the test will fail. This is not
+correct since there is no check for DMA_MEMCPY capability and the DMA
+controller can support both DMA_PRIVATE and DMA_MEMCPY.
 
-Fixes: d48a6698a6b7 ("arm64: dts: qcom: sdm845: Add CAMSS ISP node")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20241127122950.885982-6-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix the check and also reword the error message.
+
+Link: https://lore.kernel.org/r/20250116171650.33585-2-manivannan.sadhasivam@linaro.org
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Reported-by: Niklas Cassel <cassel@kernel.org>
+Closes: https://lore.kernel.org/linux-pci/Z3QtEihbiKIGogWA@ryzen
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index dcdc8a0cd1819..4ea693a075856 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4244,16 +4244,16 @@
- 				"vfe1",
- 				"vfe_lite";
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index f51ebd6b45c9b..14b4c68ab4e1a 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -361,8 +361,8 @@ static void pci_epf_test_copy(struct pci_epf_test *epf_test,
  
--			interrupts = <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 469 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "csid0",
- 				"csid1",
- 				"csid2",
+ 	ktime_get_ts64(&start);
+ 	if (reg->flags & FLAG_USE_DMA) {
+-		if (epf_test->dma_private) {
+-			dev_err(dev, "Cannot transfer data using DMA\n");
++		if (!dma_has_cap(DMA_MEMCPY, epf_test->dma_chan_tx->device->cap_mask)) {
++			dev_err(dev, "DMA controller doesn't support MEMCPY\n");
+ 			ret = -EINVAL;
+ 			goto err_map_addr;
+ 		}
 -- 
 2.39.5
 
