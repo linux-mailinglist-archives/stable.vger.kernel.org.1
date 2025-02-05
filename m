@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-113278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF768A290DE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D68A290CE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA52F16A411
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48D1D3A7BC8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74EE15EFA1;
-	Wed,  5 Feb 2025 14:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E648D376;
+	Wed,  5 Feb 2025 14:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxnJIl0h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQx498PZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600D0156F39;
-	Wed,  5 Feb 2025 14:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0457E792;
+	Wed,  5 Feb 2025 14:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766422; cv=none; b=KwoFQC6990n4pznBMITNQMx3hlJ3ueL4x3KSzqfYQubyBq7272dTj5UePp96dgcqlnqpb3yBg1wiJhAvpzZ5b65tppYuwBZ2zguU42XAyHCk37+d+7T/vrU7RZ4CHAOqY3E8XsFz5TP/Ld9+RUO3BNz/bcfoJ0d9th/wXaopY7U=
+	t=1738766443; cv=none; b=IWc1Oqb+nTcWbhdRPyzT7IIMuq8HgRmuqTqGQLQM2OiF549l3PbxfsF66bNx5odB+ph2audW/egvBP1GoADuAyyMdT0UZT2jLEOM+A3HkaSeKfKX7rdypNTmOwKAt2Xo2LDrJkWyEGT8AA20aFrasU9k44zrfg2GmJbmiQCjuW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766422; c=relaxed/simple;
-	bh=qyp3Tqbe0kydWCn9B+fvwYkgFs0lwvv/l8VdOcSNuzs=;
+	s=arc-20240116; t=1738766443; c=relaxed/simple;
+	bh=bWrfccaUsFhbSrV9eI1Qp+o3NEB40hReBjp5dRUlba8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AqkWqJCXsZny5QdxKnAaY7/ESEYCyKon/plOx+jZszO0r/xq1u8UCbC/GCxCxZm5lBE00rExIVUB0/ps/Gv9EIwr9fIjnetkdY8kkXYfhuLDGsw++7Pual2DQtedBes1zcfTSnI3M9WNhHDxMoyW59yJUusaQZ0bo5gOlXS7msg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nxnJIl0h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631C9C4CED1;
-	Wed,  5 Feb 2025 14:40:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XlypiuT4jmcL4LjJJL1r0mznr3dZDe/PpUwaDCdbId30agfS4DTi3QGTmxJFHC+AnTDZhCGGI/ihYpfrZip8QCRpeGEyys20NANazai1bv9jRPCrCChpQAXx6G9COzmGWspo7Yh6AzVIBWc461//Oycwm8CT4qxzzlsLMIFAzag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQx498PZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C3C4CED6;
+	Wed,  5 Feb 2025 14:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766420;
-	bh=qyp3Tqbe0kydWCn9B+fvwYkgFs0lwvv/l8VdOcSNuzs=;
+	s=korg; t=1738766443;
+	bh=bWrfccaUsFhbSrV9eI1Qp+o3NEB40hReBjp5dRUlba8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nxnJIl0hHEZPuh6mLJu5056lHi00u3x0bXmz0BBoc8jtLrwEmezt11w2Ps3NTnCDE
-	 cFpD49giXSIIq92S1+I9CsTYOZG6aQNqv/gVDYI5C25QALBCq9EXQI9Vgblh3IrzaT
-	 xlGjLdmPRVA6M8y1FvM1iV4QKDRAsS9AtHsRXx7Q=
+	b=GQx498PZ49FvyMoQpVctWDQ75EPMV4YaisHe0G0JzlJypyEVguJ8g8J/4tfiVY8Iw
+	 +FDFQ+iS2V1zr97EKU/Sm0TGPb0fyKqERCTUVt4NNOZR8v7SzgWs1Jhn9+J5ucm2Yk
+	 wiatzk4Wg5/0sEC5+y77yyMaK+vkSAmk0gLINpvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Simon Horman <horms@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Menglong Dong <menglong8.dong@gmail.com>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Jon Maloy <jmaloy@redhat.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 343/393] bgmac: reduce max frame size to support just MTU 1500
-Date: Wed,  5 Feb 2025 14:44:22 +0100
-Message-ID: <20250205134433.435353789@linuxfoundation.org>
+Subject: [PATCH 6.6 344/393] tcp: correct handling of extreme memory squeeze
+Date: Wed,  5 Feb 2025 14:44:23 +0100
+Message-ID: <20250205134433.472810817@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -69,68 +72,162 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Jon Maloy <jmaloy@redhat.com>
 
-[ Upstream commit 752e5fcc2e77358936d36ef8e522d6439372e201 ]
+[ Upstream commit 8c670bdfa58e48abad1d5b6ca1ee843ca91f7303 ]
 
-bgmac allocates new replacement buffer before handling each received
-frame. Allocating & DMA-preparing 9724 B each time consumes a lot of CPU
-time. Ideally bgmac should just respect currently set MTU but it isn't
-the case right now. For now just revert back to the old limited frame
-size.
+Testing with iperf3 using the "pasta" protocol splicer has revealed
+a problem in the way tcp handles window advertising in extreme memory
+squeeze situations.
 
-This change bumps NAT masquerade speed by ~95%.
+Under memory pressure, a socket endpoint may temporarily advertise
+a zero-sized window, but this is not stored as part of the socket data.
+The reasoning behind this is that it is considered a temporary setting
+which shouldn't influence any further calculations.
 
-Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
-page_frag_alloc_align()"), the bgmac driver fails to open its network
-interface successfully and runs out of memory in the following call
-stack:
+However, if we happen to stall at an unfortunate value of the current
+window size, the algorithm selecting a new value will consistently fail
+to advertise a non-zero window once we have freed up enough memory.
+This means that this side's notion of the current window size is
+different from the one last advertised to the peer, causing the latter
+to not send any data to resolve the sitution.
 
-bgmac_open
-  -> bgmac_dma_init
-    -> bgmac_dma_rx_skb_for_slot
-      -> netdev_alloc_frag
+The problem occurs on the iperf3 server side, and the socket in question
+is a completely regular socket with the default settings for the
+fedora40 kernel. We do not use SO_PEEK or SO_RCVBUF on the socket.
 
-BGMAC_RX_ALLOC_SIZE = 10048 and PAGE_FRAG_CACHE_MAX_SIZE = 32768.
+The following excerpt of a logging session, with own comments added,
+shows more in detail what is happening:
 
-Eventually we land into __page_frag_alloc_align() with the following
-parameters across multiple successive calls:
+//              tcp_v4_rcv(->)
+//                tcp_rcv_established(->)
+[5201<->39222]:     ==== Activating log @ net/ipv4/tcp_input.c/tcp_data_queue()/5257 ====
+[5201<->39222]:     tcp_data_queue(->)
+[5201<->39222]:        DROPPING skb [265600160..265665640], reason: SKB_DROP_REASON_PROTO_MEM
+                       [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                       [copied_seq 259909392->260034360 (124968), unread 5565800, qlen 85, ofoq 0]
+                       [OFO queue: gap: 65480, len: 0]
+[5201<->39222]:     tcp_data_queue(<-)
+[5201<->39222]:     __tcp_transmit_skb(->)
+                        [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160]
+[5201<->39222]:       tcp_select_window(->)
+[5201<->39222]:         (inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM) ? --> TRUE
+                        [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160]
+                        returning 0
+[5201<->39222]:       tcp_select_window(<-)
+[5201<->39222]:       ADVERTISING WIN 0, ACK_SEQ: 265600160
+[5201<->39222]:     [__tcp_transmit_skb(<-)
+[5201<->39222]:   tcp_rcv_established(<-)
+[5201<->39222]: tcp_v4_rcv(<-)
 
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=0
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=10048
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=20096
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=30144
+// Receive queue is at 85 buffers and we are out of memory.
+// We drop the incoming buffer, although it is in sequence, and decide
+// to send an advertisement with a window of zero.
+// We don't update tp->rcv_wnd and tp->rcv_wup accordingly, which means
+// we unconditionally shrink the window.
 
-So in that case we do indeed have offset + fragsz (40192) > size (32768)
-and so we would eventually return NULL. Reverting to the older 1500
-bytes MTU allows the network driver to be usable again.
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 0, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+                    [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160]
+[5201<->39222]:   __tcp_cleanup_rbuf(<-)
+                  [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                  [copied_seq 260040464->260040464 (0), unread 5559696, qlen 85, ofoq 0]
+                  returning 6104 bytes
+[5201<->39222]: tcp_recvmsg_locked(<-)
 
-Fixes: 8c7da63978f1 ("bgmac: configure MTU and add support for frames beyond 8192 byte size")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-[florian: expand commit message about recent commits]
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250127175159.1788246-1-florian.fainelli@broadcom.com
+// After each read, the algorithm for calculating the new receive
+// window in __tcp_cleanup_rbuf() finds it is too small to advertise
+// or to update tp->rcv_wnd.
+// Meanwhile, the peer thinks the window is zero, and will not send
+// any more data to trigger an update from the interrupt mode side.
+
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 262144, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+                    [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160]
+[5201<->39222]:   __tcp_cleanup_rbuf(<-)
+                  [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                  [copied_seq 260099840->260171536 (71696), unread 5428624, qlen 83, ofoq 0]
+                  returning 131072 bytes
+[5201<->39222]: tcp_recvmsg_locked(<-)
+
+// The above pattern repeats again and again, since nothing changes
+// between the reads.
+
+[...]
+
+[5201<->39222]: tcp_recvmsg_locked(->)
+[5201<->39222]:   __tcp_cleanup_rbuf(->) tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160
+[5201<->39222]:     [new_win = 262144, win_now = 131184, 2 * win_now = 262368]
+[5201<->39222]:     [new_win >= (2 * win_now) ? --> time_to_ack = 0]
+[5201<->39222]:     NOT calling tcp_send_ack()
+                    [tp->rcv_wup: 265469200, tp->rcv_wnd: 262144, tp->rcv_nxt 265600160]
+[5201<->39222]:   __tcp_cleanup_rbuf(<-)
+                  [rcv_nxt 265600160, rcv_wnd 262144, snt_ack 265469200, win_now 131184]
+                  [copied_seq 265600160->265600160 (0), unread 0, qlen 0, ofoq 0]
+                  returning 54672 bytes
+[5201<->39222]: tcp_recvmsg_locked(<-)
+
+// The receive queue is empty, but no new advertisement has been sent.
+// The peer still thinks the receive window is zero, and sends nothing.
+// We have ended up in a deadlock situation.
+
+Note that well behaved endpoints will send win0 probes, so the problem
+will not occur.
+
+Furthermore, we have observed that in these situations this side may
+send out an updated 'th->ack_seq´ which is not stored in tp->rcv_wup
+as it should be. Backing ack_seq seems to be harmless, but is of
+course still wrong from a protocol viewpoint.
+
+We fix this by updating the socket state correctly when a packet has
+been dropped because of memory exhaustion and we have to advertize
+a zero window.
+
+Further testing shows that the connection recovers neatly from the
+squeeze situation, and traffic can continue indefinitely.
+
+Fixes: e2142825c120 ("net: tcp: send zero-window ACK when no memory")
+Cc: Menglong Dong <menglong8.dong@gmail.com>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Jon Maloy <jmaloy@redhat.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Link: https://patch.msgid.link/20250127231304.1465565-1-jmaloy@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp_output.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
-index d73ef262991d6..6fee9a41839c0 100644
---- a/drivers/net/ethernet/broadcom/bgmac.h
-+++ b/drivers/net/ethernet/broadcom/bgmac.h
-@@ -328,8 +328,7 @@
- #define BGMAC_RX_FRAME_OFFSET			30		/* There are 2 unused bytes between header and real data */
- #define BGMAC_RX_BUF_OFFSET			(NET_SKB_PAD + NET_IP_ALIGN - \
- 						 BGMAC_RX_FRAME_OFFSET)
--/* Jumbo frame size with FCS */
--#define BGMAC_RX_MAX_FRAME_SIZE			9724
-+#define BGMAC_RX_MAX_FRAME_SIZE			1536
- #define BGMAC_RX_BUF_SIZE			(BGMAC_RX_FRAME_OFFSET + BGMAC_RX_MAX_FRAME_SIZE)
- #define BGMAC_RX_ALLOC_SIZE			(SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) + \
- 						 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index cfddc94508f0b..3771ed22c2f56 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -263,11 +263,14 @@ static u16 tcp_select_window(struct sock *sk)
+ 	u32 cur_win, new_win;
+ 
+ 	/* Make the window 0 if we failed to queue the data because we
+-	 * are out of memory. The window is temporary, so we don't store
+-	 * it on the socket.
++	 * are out of memory.
+ 	 */
+-	if (unlikely(inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM))
++	if (unlikely(inet_csk(sk)->icsk_ack.pending & ICSK_ACK_NOMEM)) {
++		tp->pred_flags = 0;
++		tp->rcv_wnd = 0;
++		tp->rcv_wup = tp->rcv_nxt;
+ 		return 0;
++	}
+ 
+ 	cur_win = tcp_receive_window(tp);
+ 	new_win = __tcp_select_window(sk);
 -- 
 2.39.5
 
