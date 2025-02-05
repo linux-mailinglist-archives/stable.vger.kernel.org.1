@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-112892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE86A28EE5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8B8A28E56
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF6481888001
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527CE168AFA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEBA13C3F6;
-	Wed,  5 Feb 2025 14:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3A61547D8;
+	Wed,  5 Feb 2025 14:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzF+slD2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSNxa9CH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5CE1519A4;
-	Wed,  5 Feb 2025 14:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E801494DF;
+	Wed,  5 Feb 2025 14:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765107; cv=none; b=olTZl0e9NbKZKQJ/eMliMzklATvjULYfPQPRlW0Hk1L5Z4bch8UJJIOD03cktys8dZfD9JpucKFBq3EF57268ZYpBlNvuhjlUQg/HQHck6rPOGbhfpy9nQ58mu95WMB/EY4UbW2RNkySCpvAEQcBENVw72QU2NUgbUMhaHHzNz0=
+	t=1738764702; cv=none; b=OUP28oiYtQknFcSJpKdogEgxsAN3eI3YcASaH5p8eF/T1lPxYhYIkaYw/6rqse5VgLgjjr+3HegAfVqg/7BFggJ16jaVt9E2J0CiCGIYrcZfdblGVyJbgjtyGDB8Sv67QhJIxhPkLTAz3JCeAHbIsQGwL+sc0LjuG8CjLC0PoS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765107; c=relaxed/simple;
-	bh=gRVKcDpK2eLI1DC/Xg0c3vsLDeFHR1uYAcbyjD8C5es=;
+	s=arc-20240116; t=1738764702; c=relaxed/simple;
+	bh=5S5lL0Sx1x+NzaP6ELQVjxlcVr/rVjF+fVgra/2sG/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLd2TeRUCof/yWXNLggQbYAbFKgTEtMSVUGffv4tpNOFRYaGL2ijbKbf0P/Wo68K/diJu+s7WYl82spHCHudZnOYcK2De82OcM+p/Z8jNMz/ZllIR02pNBNK2Ajdr6amRVQlzFo3JwzkantuLSUiPPBnCoQ8wrOw9pt3JKVNF/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzF+slD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4460FC4CED6;
-	Wed,  5 Feb 2025 14:18:26 +0000 (UTC)
+	 MIME-Version; b=qkqkHNhUAXFX+YnKJ7WHqL1obb+7NWk9aiMqX3ByfhJqRxtbMpOPVmT3oLaPF0wJhLN+eVJIxNMTd+DaXvzvmPD6ab+hFo6Jtgp3Eq9yB9PBtqIT+ODG97cwsn8eI6wpcxqqbB317XmGwXOYYfTfDJ7E0qPa54XwwFl1Ox3kOxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSNxa9CH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85391C4CED1;
+	Wed,  5 Feb 2025 14:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765106;
-	bh=gRVKcDpK2eLI1DC/Xg0c3vsLDeFHR1uYAcbyjD8C5es=;
+	s=korg; t=1738764699;
+	bh=5S5lL0Sx1x+NzaP6ELQVjxlcVr/rVjF+fVgra/2sG/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzF+slD2VxmodsmuXDlqDAE8GmSt/hJE9oMi1Vj0T1uSX8EaslqAnmPD413dJVlm+
-	 PbOSxdSQxmSfpA4jBSZsfIwgO2/xi90wNOTXaU0WXp9695Lv11PrKUcdo+Y5YWBZ98
-	 wMmDiKo0Y7Tu/SIP1mKbOWJzrkhvoC7Rw+MI/ssQ=
+	b=lSNxa9CHWwvlrHUHGowYj4e57BLT4bb7ivFfVVVqL/7ji4gI4or0yh1cEulNjc06Y
+	 rbc2h7xcIl87MZwFAalY/rIXLOcEJnDVu2diY32P+eun3xP0+fBc3ddfT9sWbF1kce
+	 ZYuvkPXJ6Pd9o9xlbY6o1ig7sTw2IVwbd5HS8SwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathishkumar Muruganandam <quic_murugana@quicinc.com>,
-	Santhosh Ramesh <quic_santrame@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 144/623] wifi: ath12k: fix tx power, max reg power update to firmware
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.12 131/590] clk: sunxi-ng: a64: drop redundant CLK_PLL_VIDEO0_2X and CLK_PLL_MIPI
 Date: Wed,  5 Feb 2025 14:38:06 +0100
-Message-ID: <20250205134501.741815262@linuxfoundation.org>
+Message-ID: <20250205134500.276764477@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 3540bba855b4b422e8b977d11aa8173ccb4f089d ]
+[ Upstream commit 0f368cb7ef103f284f75e962c4c89da5aa8ccec7 ]
 
-Currently, when the vdev start WMI cmd is sent from host, vdev related
-parameters such as max_reg_power, max_power, and max_antenna_gain are
-multiplied by 2 before being sent to the firmware. This is incorrect
-because the firmware uses 1 dBm steps for power calculations.
+Drop redundant CLK_PLL_VIDEO0_2X and CLK_PLL.MIPI. These are now
+defined in dt-bindings/clock/sun50i-a64-ccu.h
 
-This leads to incorrect power values being used in the firmware and
-radio, potentially causing incorrect behavior.
-
-Fix the update of max_reg_power, max_power, and max_antenna_gain values
-in the ath12k_mac_vdev_start_restart function, ensuring accurate
-power settings in the firmware by sending these values as-is,
-without multiplication.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-Signed-off-by: Santhosh Ramesh <quic_santrame@quicinc.com>
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240909073049.3423035-1-quic_santrame@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on pinephone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-3-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index cf4f4245f6068..fd2919f84d6f7 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7658,9 +7658,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_link_vif *arvif,
- 							chandef->chan->band,
- 							ahvif->vif->type);
- 	arg.min_power = 0;
--	arg.max_power = chandef->chan->max_power * 2;
--	arg.max_reg_power = chandef->chan->max_reg_power * 2;
--	arg.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
-+	arg.max_power = chandef->chan->max_power;
-+	arg.max_reg_power = chandef->chan->max_reg_power;
-+	arg.max_antenna_gain = chandef->chan->max_antenna_gain;
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.h b/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
+index a8c11c0b4e067..dfba88a5ad0f7 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
+@@ -21,7 +21,6 @@
  
- 	arg.pref_tx_streams = ar->num_tx_chains;
- 	arg.pref_rx_streams = ar->num_rx_chains;
+ /* PLL_VIDEO0 exported for HDMI PHY */
+ 
+-#define CLK_PLL_VIDEO0_2X		8
+ #define CLK_PLL_VE			9
+ #define CLK_PLL_DDR0			10
+ 
+@@ -32,7 +31,6 @@
+ #define CLK_PLL_PERIPH1_2X		14
+ #define CLK_PLL_VIDEO1			15
+ #define CLK_PLL_GPU			16
+-#define CLK_PLL_MIPI			17
+ #define CLK_PLL_HSIC			18
+ #define CLK_PLL_DE			19
+ #define CLK_PLL_DDR1			20
 -- 
 2.39.5
 
