@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4891A28E7A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7313A28F5B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5306B7A30CA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 794533A66BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04002149C53;
-	Wed,  5 Feb 2025 14:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B32515696E;
+	Wed,  5 Feb 2025 14:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN/lfXHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvfiJFQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45B115198D;
-	Wed,  5 Feb 2025 14:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4174C155A30;
+	Wed,  5 Feb 2025 14:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764802; cv=none; b=CrgDiOOi/JOF9ApiP9QmsAGLy4J5hImLiHf5SviMW41HEUllCmbbU3pA+f44C5vEmAvOcmShgdxbLC+FNaFaSfVnP3G6IHnSUcuYi30ifxn/J28bbfqLH8MVfHnjiAapB3g694Ge9yfOwD5zN6BFZhJXbDxHUT9kXWwWGOxkce0=
+	t=1738765370; cv=none; b=a+hi073bEINpZTQK6JlvW7syrQ2frs2i9aw6QkH05n9leIljMx8BhyX1Mqp02AJVRdiH9Yn53Z4B4qskvHoEQw8kuylMZnc04WQk9JfNvC337/G4YwUxbh66lLEw+6DpsSLhjKMh/i/tRczw1QJmHaxQE/LUj4CqSFNiQdWoIRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764802; c=relaxed/simple;
-	bh=9h9kCzG/IOjkMd45xfETh2TXUlgoXCQjwwHlR6LgR+g=;
+	s=arc-20240116; t=1738765370; c=relaxed/simple;
+	bh=pQkT87eykZB5+Lo2TZyLY+d8wMya631JOGSy1vfUPVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpltipPcI+UE9ZSSlaBYmcZ/R5EvfDIYcjQtYyjASKHXjOXY1kIfzomO9P7LhcL6az5AQpuVFzKOfuqu3F32cEjEzYIxJ1V4bTjxdIe4TrYeMN7uFS2ENl7d8QcV/qZGn5oOTfu/O4MSpKOPaQK6txEUpdo3X28GUzul4sYFjck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN/lfXHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71A8C4CED1;
-	Wed,  5 Feb 2025 14:13:21 +0000 (UTC)
+	 MIME-Version; b=q8sst2E/s/1oA+Od7r/Ztq/gFuTJ9Wwd9slYcP+n/Pt99lYIX3C68TiAhKrt1YoAAel5v99jxCShhdSBsnrtQYX2UW0+epmmyr2VTxMo+GlqKzd/1Of0NhzUOvm0ckpZcbsdpkAYlQJri75hzTJYe9MJNAniOmQhWBZ1g4J/7Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvfiJFQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1156C4CED1;
+	Wed,  5 Feb 2025 14:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764802;
-	bh=9h9kCzG/IOjkMd45xfETh2TXUlgoXCQjwwHlR6LgR+g=;
+	s=korg; t=1738765370;
+	bh=pQkT87eykZB5+Lo2TZyLY+d8wMya631JOGSy1vfUPVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cN/lfXHbw8UrpFB3wIak9c7XX95ajuUlVYsXXOxsp1j39u3E1cGVDkRCz4TEz6QPo
-	 qs/vy7GNkWCd93NQ2cOresIGt2TqHrg+WaMsnxgqimYR6RnmARabxg7N31FRNS0T5r
-	 bKBHXc8HQhow1i3Bryc9F8e7JY/9DQHU07qNMp8U=
+	b=CvfiJFQT+56nF1rYgScO7xnNrNlkgFi3Td/KiI8amqEKKdz68KkH/6PKW+cUHRSG9
+	 gGmfrxO3ycWYM+TzIfUGUI4CFkW5YyrnqRIa2N5VDybNtGILnJo35uy+OgZtlBj9Ma
+	 +2oyJ9FxVB6ILUOD7HokD2Hn68QYnuHQ0FiQwlyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 159/590] wifi: iwlwifi: mvm: avoid NULL pointer dereference
+Subject: [PATCH 6.13 172/623] clk: ralink: mtmips: remove duplicated xtal clock for Ralink SoC RT3883
 Date: Wed,  5 Feb 2025 14:38:34 +0100
-Message-ID: <20250205134501.368055903@linuxfoundation.org>
+Message-ID: <20250205134502.815773396@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit cf704a7624f99eb2ffca1a16c69183e85544a613 ]
+[ Upstream commit 830d8062d25581cf0beaa334486eea06834044da ]
 
-When iterating over the links of a vif, we need to make sure that the
-pointer is valid (in other words - that the link exists) before
-dereferncing it.
-Use for_each_vif_active_link that also does the check.
+Ralink SoC RT3883 has already 'xtal' defined as a base clock so there is no
+need to redefine it again in fixed clocks section. Hence, remove the duplicate
+one from there.
 
-Fixes: 2b7ee1a10a72 ("wifi: iwlwiif: mvm: handle the new BT notif")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20241229164246.31d41f7d3eab.I7fb7036a0b187c1636b01970207259cb2327952c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20250108093636.265033-1-sergio.paracuellos@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/clk/ralink/clk-mtmips.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-index b607961970e97..9b8624304fa30 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
-@@ -530,18 +530,15 @@ static void iwl_mvm_bt_coex_notif_iterator(void *_data, u8 *mac,
- 					   struct ieee80211_vif *vif)
- {
- 	struct iwl_mvm *mvm = _data;
-+	struct ieee80211_bss_conf *link_conf;
-+	unsigned int link_id;
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 97b8ca0f91816..19d433034884a 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -266,7 +266,6 @@ static int mtmips_register_pherip_clocks(struct device_node *np,
+ 	}
  
- 	lockdep_assert_held(&mvm->mutex);
+ static struct mtmips_clk_fixed rt3883_fixed_clocks[] = {
+-	CLK_FIXED("xtal", NULL, 40000000),
+ 	CLK_FIXED("periph", "xtal", 40000000)
+ };
  
- 	if (vif->type != NL80211_IFTYPE_STATION)
- 		return;
- 
--	for (int link_id = 0;
--	     link_id < IEEE80211_MLD_MAX_NUM_LINKS;
--	     link_id++) {
--		struct ieee80211_bss_conf *link_conf =
--			rcu_dereference_check(vif->link_conf[link_id],
--					      lockdep_is_held(&mvm->mutex));
-+	for_each_vif_active_link(vif, link_conf, link_id) {
- 		struct ieee80211_chanctx_conf *chanctx_conf =
- 			rcu_dereference_check(link_conf->chanctx_conf,
- 					      lockdep_is_held(&mvm->mutex));
 -- 
 2.39.5
 
