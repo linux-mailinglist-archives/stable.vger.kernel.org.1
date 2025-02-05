@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA517A29340
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B62FA293D0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9785316C202
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F813AB169
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691591632DA;
-	Wed,  5 Feb 2025 15:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67513188736;
+	Wed,  5 Feb 2025 15:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxRiWDHU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxW1hxMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2356A1632C8;
-	Wed,  5 Feb 2025 15:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E7C186E40;
+	Wed,  5 Feb 2025 15:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767709; cv=none; b=UvG7BMdfG2cQ2XsD+QfTwC30Uif+nkEhN46mUkr2GhO5Gia51wYHusCDYyQTB91X9vQc+DnuBwKgLVYmWegBrJKYkAN8fbRh+KvDeEmRfpTWHmnAn2C0oP4vd/FFuJAJWE+BPirqfQCUHNOlrKGtJawjkAfYDtSmxkW80niQ/Dk=
+	t=1738768030; cv=none; b=VSHZC3dbb5CJP6ZpBu0okr/7c/NTzXMc4FkxsJ6wTxBcUVNQUMmfutQLY+fOI337r9Hz7B8QZ+IRckEHAUZuX0rrARgDcjSV+ATWO48/MXd3tM1EmfDQxXQ4nAF00Y5kA7Q/cAn6rtR/HuuArwxRjIZ03+t4AagmxTrlqwSDbv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767709; c=relaxed/simple;
-	bh=72yCdLXgsw8kFd7d8B61RobZzfEEobZxmVcMt7fnESw=;
+	s=arc-20240116; t=1738768030; c=relaxed/simple;
+	bh=TUJm2RecckECFCyFOx0OXDZostHE/Ec2bGzCTg12QEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCrgmSrVBUlQs16VC9QGo05HGYosxdX4WQFeCKQJ6o3GsHikCVeKe78VdB+aUm/0SouMo0d+131TyD3ss+Bf0KFrqhf5fXmaUZ0pdgy6Wj3Nf58qpAE9Dj6YzxPeERno+zapQa9gDTkc8CnsDEub1cIgiZE1B8G6P/r1Mt2c8fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxRiWDHU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D07C4CED1;
-	Wed,  5 Feb 2025 15:01:48 +0000 (UTC)
+	 MIME-Version; b=ErA7mbAuweD0RrcNND1kvZXrBjj4NaWpE3rRC47lQqjDP8aPTy02kStcOMZdjFQawp63dhdP/CW8xTxFJnPBE6VBkCYxPHES50fb4i+5qUJ/jrA4dSqpvxcOtSKp6X0CP9ZaQt5Dtp47Tk9P44aUUtyPQbB+2UxyEkiAGxmlUN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxW1hxMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CFEC4CEDD;
+	Wed,  5 Feb 2025 15:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767709;
-	bh=72yCdLXgsw8kFd7d8B61RobZzfEEobZxmVcMt7fnESw=;
+	s=korg; t=1738768030;
+	bh=TUJm2RecckECFCyFOx0OXDZostHE/Ec2bGzCTg12QEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxRiWDHUb/SZiTY02ihIvnDyVIEtMpR/HFlqvttLT/qSpZgtkPyhY/VQ09qrrxM/1
-	 ThuQQy7LiaBKP/fwb6o3Po2Pjbbr1UB1uExkoCyqo/Xes0v1bafzS+rDTCRo2+zeLe
-	 26QMGEueWPBgkfJ/1+W4liuUI//0mzkOC7ShBFLE=
+	b=MxW1hxMzkxKyp9QyV4B8jieKWuq1vfBefwKQuVSDj8sY68AtJsO/KWWzpltMGKEht
+	 qu9fpTD9vxG+LLJMsqI+QeLwumD87Z0IXzTWqk7wULe5/lYs3+nkwgHmNK6Pe2Pd79
+	 W/E0D0+E6/RH/s5zvI/CWqESd2YP+dIS228YFVp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 473/590] net: airoha: Fix wrong GDM4 register definition
+Subject: [PATCH 6.13 486/623] tty: mips_ejtag_fdc: fix one more u8 warning
 Date: Wed,  5 Feb 2025 14:43:48 +0100
-Message-ID: <20250205134513.355792680@linuxfoundation.org>
+Message-ID: <20250205134514.811386306@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit d31a49d37cb132b31cc6683eef2122f8609d6229 ]
+[ Upstream commit 6dd1de91e7a62bfd3878992c1db6e1d443022c76 ]
 
-Fix wrong GDM4 register definition, in Airoha SDK GDM4 is defined at
-offset 0x2400 but this doesn't make sense as it does conflict with the
-CDM4 that is in the same location.
+The LKP robot complains about:
+   drivers/tty/mips_ejtag_fdc.c:1224:31: error: incompatible pointer types passing 'const char *[1]' to parameter of type 'const u8 **' (aka 'const unsigned char **')
 
-Following the pattern where each GDM base is at the FWD_CFG, currently
-GDM4 base offset is set to 0x2500. This is correct but REG_GDM4_FWD_CFG
-and REG_GDM4_SRC_PORT_SET are still using the SDK reference with the
-0x2400 offset. Fix these 2 define by subtracting 0x100 to each register
-to reflect the real address location.
+Fix this by turning the missing pieces (fetch from kgdbfdc_wbuf) to u8
+too. Note the filling part (kgdbfdc_write_char()) already receives and
+stores u8 to kgdbfdc_wbuf.
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250120154148.13424-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ce7cbd9a6c81 ("tty: mips_ejtag_fdc: use u8 for character pointers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501101327.oGdWbmuk-lkp@intel.com/
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250110115228.603980-1-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 4 ++--
+ drivers/tty/mips_ejtag_fdc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index 8d9fb2a20469a..20cf7ba9d7508 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -258,11 +258,11 @@
- #define REG_GDM3_FWD_CFG		GDM3_BASE
- #define GDM3_PAD_EN_MASK		BIT(28)
+diff --git a/drivers/tty/mips_ejtag_fdc.c b/drivers/tty/mips_ejtag_fdc.c
+index afbf7738c7c47..58b28be63c79b 100644
+--- a/drivers/tty/mips_ejtag_fdc.c
++++ b/drivers/tty/mips_ejtag_fdc.c
+@@ -1154,7 +1154,7 @@ static char kgdbfdc_rbuf[4];
  
--#define REG_GDM4_FWD_CFG		(GDM4_BASE + 0x100)
-+#define REG_GDM4_FWD_CFG		GDM4_BASE
- #define GDM4_PAD_EN_MASK		BIT(28)
- #define GDM4_SPORT_OFFSET0_MASK		GENMASK(11, 8)
+ /* write buffer to allow compaction */
+ static unsigned int kgdbfdc_wbuflen;
+-static char kgdbfdc_wbuf[4];
++static u8 kgdbfdc_wbuf[4];
  
--#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x33c)
-+#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x23c)
- #define GDM4_SPORT_OFF2_MASK		GENMASK(19, 16)
- #define GDM4_SPORT_OFF1_MASK		GENMASK(15, 12)
- #define GDM4_SPORT_OFF0_MASK		GENMASK(11, 8)
+ static void __iomem *kgdbfdc_setup(void)
+ {
+@@ -1215,7 +1215,7 @@ static int kgdbfdc_read_char(void)
+ /* push an FDC word from write buffer to TX FIFO */
+ static void kgdbfdc_push_one(void)
+ {
+-	const char *bufs[1] = { kgdbfdc_wbuf };
++	const u8 *bufs[1] = { kgdbfdc_wbuf };
+ 	struct fdc_word word;
+ 	void __iomem *regs;
+ 	unsigned int i;
 -- 
 2.39.5
 
