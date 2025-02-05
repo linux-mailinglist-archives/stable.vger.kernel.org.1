@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-113943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE52A29452
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89875A2944C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1733916CEBC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10094162BDB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20DB155A30;
-	Wed,  5 Feb 2025 15:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7C0189905;
+	Wed,  5 Feb 2025 15:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ/jwUE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7Bmcr6A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E517C79;
-	Wed,  5 Feb 2025 15:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9871632D9;
+	Wed,  5 Feb 2025 15:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768694; cv=none; b=T9ynu7Ni0QACh4Re5huQyI3kcx7mKBa02xVUdvRqpoROJh0Tm+NVFLReF6se7IRwH6SETAs13tRkHMdqhh2sjJMW7XCSAaqd77T3QRw34JmoPPrkND8MRIBPUl4qj6et7fUrNLEmhmGXhh/94bDvHzrPFk5GuFubcABjM7dOs18=
+	t=1738768670; cv=none; b=hIQEHD1mJJ68P3dLvlxZBQQUsxrrYjGi8UhCAHxY6lx7/stRYe0CjOMlbPCV5kD0fJcNnlB0+QxljmMBDaAO+fcqCHqY0hKxdsiD9b5gxPzgPVcV1N1ga5N2YOjZF5PjKdWkjsNzlu1/k/WgvUIhPLQdbyj4aFbSX2MNQhEBNXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768694; c=relaxed/simple;
-	bh=29GzDmecpopi+ikliphLiMRrH4eEZxB6lm8tJedawZU=;
+	s=arc-20240116; t=1738768670; c=relaxed/simple;
+	bh=MoWD2nbFBj8O6Z+hdtRJLIJsGGe+sDq/HJr1OGWy/MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d79Se2e8uJZ5QRvyPiLmzWgL51ihxZdegSYS71BQBXwNaPY8PbV6q8hC02zfTxTN8q0XdSJ97TswuTAOHb4+DEzv7ZOoNCDKJkvHmH1ZR6MSnl4P4wSkhzSzGPzPzs6nCiSWpWli4xPPveVdO+eY85U9L3AzE4rN9nvzWPqMrGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ/jwUE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0021C4CED1;
-	Wed,  5 Feb 2025 15:18:13 +0000 (UTC)
+	 MIME-Version; b=kyA6x5VH2G/8XIjzqCdWdQCovXccsSzitZGXksWO0//OzCKNxn5au/TdIUxsowLRsHB8ExCv1nZxqe7CuYvHMCqnoId5gJWWSjruNFvc5vNZ5gFZzvJQc3PRzPEfosZq+NQWh4PhxrrEDEWowkyavcEwfMa3KXYoR2csi6q4UKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7Bmcr6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E521BC4CED1;
+	Wed,  5 Feb 2025 15:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768694;
-	bh=29GzDmecpopi+ikliphLiMRrH4eEZxB6lm8tJedawZU=;
+	s=korg; t=1738768670;
+	bh=MoWD2nbFBj8O6Z+hdtRJLIJsGGe+sDq/HJr1OGWy/MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQ/jwUE7C+XfXOjtURldAdh6j6ZkYhP7SOwez1EE07j/1ILRl3NHJU+PBznIZbbKn
-	 9A756/mEyjLh/6Adycq8TLQFMkOGVkrlsCwh/h9nGVtgyY7WTlg4L4A/Cgi/IDOmf+
-	 3HuBrRlGV9Z6oqHJ6CnrPNigOcvcRmX6ThsL+088=
+	b=N7Bmcr6AMSROpnJhbtsrD9PZ/HK9/2h9zk6D3z6UHukqIxeFmPElVzAkoAFBDYVUh
+	 67ENx8bmkPgxbcm+hh9CThjOcw8+yUiCzdRkz76D48oG79c/pvzjGXKIpeItx8lWOU
+	 3iY8o0p6YFUgOYTA4DVcGGN9Pc4TGfFjBqJZhnvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.13 616/623] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
-Date: Wed,  5 Feb 2025 14:45:58 +0100
-Message-ID: <20250205134519.781731259@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sung Lee <sung.lee@amd.com>,
+	Aric Cyr <Aric.Cyr@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.13 617/623] drm/amd/display: Add hubp cache reset when powergating
+Date: Wed,  5 Feb 2025 14:45:59 +0100
+Message-ID: <20250205134519.819667744@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,64 +69,257 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Aric Cyr <Aric.Cyr@amd.com>
 
-commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
+commit 01130f5260e5868fb6b15ab8c00dbc894139f48e upstream.
 
-GCC changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, there are certain
-places in the s390 code that use their own CFLAGS without a '-std='
-value, which break with this dialect change because of the kernel's own
-definitions of bool, false, and true conflicting with the C23 reserved
-keywords.
+[Why]
+When HUBP is power gated, the SW state can get out of sync with the
+hardware state causing cursor to not be programmed correctly.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+[How]
+Similar to DPP, add a HUBP reset function which is called wherever
+HUBP is initialized or powergated.  This function will clear the cursor
+position and attribute cache allowing for proper programming when the
+HUBP is brought back up.
 
-Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
-these errors and make the C standard version of these areas match the
-rest of the kernel.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Sung Lee <sung.lee@amd.com>
+Signed-off-by: Aric Cyr <Aric.Cyr@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile           |    2 +-
- arch/s390/purgatory/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c     |    3 +++
+ drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c   |   10 +++++++++-
+ drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h   |    2 ++
+ drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c   |    1 +
+ drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c |    1 +
+ drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c   |    3 +++
+ drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c   |    3 +++
+ drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c   |    1 +
+ drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c   |    1 +
+ drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c   |    1 +
+ drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c |    3 ++-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c  |    2 ++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c  |    2 ++
+ drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h             |    2 ++
+ 14 files changed, 33 insertions(+), 2 deletions(-)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -22,7 +22,7 @@ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FL
- ifndef CONFIG_AS_IS_LLVM
- KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
- endif
--KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack
-+KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -D__DECOMPRESSOR
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -13,7 +13,7 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS -
- $(obj)/mem.o: $(srctree)/arch/s390/lib/mem.S FORCE
- 	$(call if_changed_rule,as_o_S)
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn10/dcn10_dpp.c
+@@ -194,6 +194,9 @@ void dpp_reset(struct dpp *dpp_base)
+ 	dpp->filter_h = NULL;
+ 	dpp->filter_v = NULL;
  
--KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
-+KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
- KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -Os -m64 -msoft-float -fno-common
++	memset(&dpp_base->pos, 0, sizeof(dpp_base->pos));
++	memset(&dpp_base->att, 0, sizeof(dpp_base->att));
++
+ 	memset(&dpp->scl_data, 0, sizeof(dpp->scl_data));
+ 	memset(&dpp->pwl_data, 0, sizeof(dpp->pwl_data));
+ }
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.c
+@@ -532,6 +532,12 @@ void hubp1_dcc_control(struct hubp *hubp
+ 			SECONDARY_SURFACE_DCC_IND_64B_BLK, dcc_ind_64b_blk);
+ }
+ 
++void hubp_reset(struct hubp *hubp)
++{
++	memset(&hubp->pos, 0, sizeof(hubp->pos));
++	memset(&hubp->att, 0, sizeof(hubp->att));
++}
++
+ void hubp1_program_surface_config(
+ 	struct hubp *hubp,
+ 	enum surface_pixel_format format,
+@@ -1337,8 +1343,9 @@ static void hubp1_wait_pipe_read_start(s
+ 
+ void hubp1_init(struct hubp *hubp)
+ {
+-	//do nothing
++	hubp_reset(hubp);
+ }
++
+ static const struct hubp_funcs dcn10_hubp_funcs = {
+ 	.hubp_program_surface_flip_and_addr =
+ 			hubp1_program_surface_flip_and_addr,
+@@ -1351,6 +1358,7 @@ static const struct hubp_funcs dcn10_hub
+ 	.hubp_set_vm_context0_settings = hubp1_set_vm_context0_settings,
+ 	.set_blank = hubp1_set_blank,
+ 	.dcc_control = hubp1_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_hubp_blank_en = hubp1_set_hubp_blank_en,
+ 	.set_cursor_attributes	= hubp1_cursor_set_attributes,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn10/dcn10_hubp.h
+@@ -746,6 +746,8 @@ void hubp1_dcc_control(struct hubp *hubp
+ 		bool enable,
+ 		enum hubp_ind_block_size independent_64b_blks);
+ 
++void hubp_reset(struct hubp *hubp);
++
+ bool hubp1_program_surface_flip_and_addr(
+ 	struct hubp *hubp,
+ 	const struct dc_plane_address *address,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn20/dcn20_hubp.c
+@@ -1660,6 +1660,7 @@ static struct hubp_funcs dcn20_hubp_func
+ 	.set_blank = hubp2_set_blank,
+ 	.set_blank_regs = hubp2_set_blank_regs,
+ 	.dcc_control = hubp2_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
+ 	.set_cursor_position	= hubp2_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn201/dcn201_hubp.c
+@@ -121,6 +121,7 @@ static struct hubp_funcs dcn201_hubp_fun
+ 	.set_cursor_position	= hubp1_cursor_set_position,
+ 	.set_blank = hubp1_set_blank,
+ 	.dcc_control = hubp1_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.hubp_clk_cntl = hubp1_clk_cntl,
+ 	.hubp_vtg_sel = hubp1_vtg_sel,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn21/dcn21_hubp.c
+@@ -811,6 +811,8 @@ static void hubp21_init(struct hubp *hub
+ 	struct dcn21_hubp *hubp21 = TO_DCN21_HUBP(hubp);
+ 	//hubp[i].HUBPREQ_DEBUG.HUBPREQ_DEBUG[26] = 1;
+ 	REG_WRITE(HUBPREQ_DEBUG, 1 << 26);
++
++	hubp_reset(hubp);
+ }
+ static struct hubp_funcs dcn21_hubp_funcs = {
+ 	.hubp_enable_tripleBuffer = hubp2_enable_triplebuffer,
+@@ -823,6 +825,7 @@ static struct hubp_funcs dcn21_hubp_func
+ 	.hubp_set_vm_system_aperture_settings = hubp21_set_vm_system_aperture_settings,
+ 	.set_blank = hubp1_set_blank,
+ 	.dcc_control = hubp1_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = hubp21_set_viewport,
+ 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
+ 	.set_cursor_position	= hubp1_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn30/dcn30_hubp.c
+@@ -483,6 +483,8 @@ void hubp3_init(struct hubp *hubp)
+ 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
+ 	//hubp[i].HUBPREQ_DEBUG.HUBPREQ_DEBUG[26] = 1;
+ 	REG_WRITE(HUBPREQ_DEBUG, 1 << 26);
++
++	hubp_reset(hubp);
+ }
+ 
+ static struct hubp_funcs dcn30_hubp_funcs = {
+@@ -497,6 +499,7 @@ static struct hubp_funcs dcn30_hubp_func
+ 	.set_blank = hubp2_set_blank,
+ 	.set_blank_regs = hubp2_set_blank_regs,
+ 	.dcc_control = hubp3_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
+ 	.set_cursor_position	= hubp2_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn31/dcn31_hubp.c
+@@ -79,6 +79,7 @@ static struct hubp_funcs dcn31_hubp_func
+ 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
+ 	.set_blank = hubp2_set_blank,
+ 	.dcc_control = hubp3_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
+ 	.set_cursor_position	= hubp2_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn32/dcn32_hubp.c
+@@ -181,6 +181,7 @@ static struct hubp_funcs dcn32_hubp_func
+ 	.set_blank = hubp2_set_blank,
+ 	.set_blank_regs = hubp2_set_blank_regs,
+ 	.dcc_control = hubp3_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_cursor_attributes	= hubp32_cursor_set_attributes,
+ 	.set_cursor_position	= hubp2_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn35/dcn35_hubp.c
+@@ -199,6 +199,7 @@ static struct hubp_funcs dcn35_hubp_func
+ 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
+ 	.set_blank = hubp2_set_blank,
+ 	.dcc_control = hubp3_dcc_control,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = min_set_viewport,
+ 	.set_cursor_attributes	= hubp2_cursor_set_attributes,
+ 	.set_cursor_position	= hubp2_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/hubp/dcn401/dcn401_hubp.c
+@@ -141,7 +141,7 @@ void hubp401_update_mall_sel(struct hubp
+ 
+ void hubp401_init(struct hubp *hubp)
+ {
+-	//For now nothing to do, HUBPREQ_DEBUG_DB register is removed on DCN4x.
++	hubp_reset(hubp);
+ }
+ 
+ void hubp401_vready_at_or_After_vsync(struct hubp *hubp,
+@@ -974,6 +974,7 @@ static struct hubp_funcs dcn401_hubp_fun
+ 	.hubp_set_vm_system_aperture_settings = hubp3_set_vm_system_aperture_settings,
+ 	.set_blank = hubp2_set_blank,
+ 	.set_blank_regs = hubp2_set_blank_regs,
++	.hubp_reset = hubp_reset,
+ 	.mem_program_viewport = hubp401_set_viewport,
+ 	.set_cursor_attributes	= hubp32_cursor_set_attributes,
+ 	.set_cursor_position	= hubp401_cursor_set_position,
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
+@@ -1286,6 +1286,7 @@ void dcn10_plane_atomic_power_down(struc
+ 		if (hws->funcs.hubp_pg_control)
+ 			hws->funcs.hubp_pg_control(hws, hubp->inst, false);
+ 
++		hubp->funcs->hubp_reset(hubp);
+ 		dpp->funcs->dpp_reset(dpp);
+ 
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0,
+@@ -1447,6 +1448,7 @@ void dcn10_init_pipes(struct dc *dc, str
+ 		/* Disable on the current state so the new one isn't cleared. */
+ 		pipe_ctx = &dc->current_state->res_ctx.pipe_ctx[i];
+ 
++		hubp->funcs->hubp_reset(hubp);
+ 		dpp->funcs->dpp_reset(dpp);
+ 
+ 		pipe_ctx->stream_res.tg = tg;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -788,6 +788,7 @@ void dcn35_init_pipes(struct dc *dc, str
+ 		/* Disable on the current state so the new one isn't cleared. */
+ 		pipe_ctx = &dc->current_state->res_ctx.pipe_ctx[i];
+ 
++		hubp->funcs->hubp_reset(hubp);
+ 		dpp->funcs->dpp_reset(dpp);
+ 
+ 		pipe_ctx->stream_res.tg = tg;
+@@ -944,6 +945,7 @@ void dcn35_plane_atomic_disable(struct d
+ /*to do, need to support both case*/
+ 	hubp->power_gated = true;
+ 
++	hubp->funcs->hubp_reset(hubp);
+ 	dpp->funcs->dpp_reset(dpp);
+ 
+ 	pipe_ctx->stream = NULL;
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/hubp.h
+@@ -152,6 +152,8 @@ struct hubp_funcs {
+ 	void (*dcc_control)(struct hubp *hubp, bool enable,
+ 			enum hubp_ind_block_size blk_size);
+ 
++	void (*hubp_reset)(struct hubp *hubp);
++
+ 	void (*mem_program_viewport)(
+ 			struct hubp *hubp,
+ 			const struct rect *viewport,
 
 
 
