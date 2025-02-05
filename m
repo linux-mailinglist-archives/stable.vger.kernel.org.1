@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3321BA29377
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F141DA28FC9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A62169324
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED9D3A2034
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1871519BF;
-	Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B651D1553AB;
+	Wed,  5 Feb 2025 14:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sSDPmhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFUF/Jl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06810DF59;
-	Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720FC14A088;
+	Wed,  5 Feb 2025 14:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767991; cv=none; b=NIn2WD28CFOo+e9403UCitxNCFwfQlwrDdACLYPe7n7NsHRxLH7Ol6hxyr+BdHcmneJvh4cjuURHoBkz93UEIGMp+oeXJkqfxThfhG3+QLYbzXhMyleOHhQ6HZZMDt/IUBUk8UXYyHzGSrry+pRK1nIPoa6/oyk+Sk9sZGX0qXo=
+	t=1738765703; cv=none; b=jxd37/F++UyIVEshRpkdWHjQ5EmwF2bk0KlXw3eVDROHIxUgfEbgp3jykBYnmZRvNYovf4no2Z/drHHv8KQ5vxB99GAo7P18iyfBL3aTDx8tSVBP0Vq0ZjwtJayyZkcMbTDRelIUviGYBK5gwgLrWyWkmHn4sK8wlsa8/yrGw3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767991; c=relaxed/simple;
-	bh=78clmqIj4ljUzyAFGeeSoXMAQt1PrwoV/3O7V2gsZFc=;
+	s=arc-20240116; t=1738765703; c=relaxed/simple;
+	bh=sAeRCAPQ93Xq+gCLekQXp09BN6s74nrvsaGDp/YBpmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I27wFepM3NeAyBRjbrO+0icxTHRQ55P3JABsq/cFegzAaw8K13M3dNrWNZ9r1YqASeCSnku6GeBRUrOVJOsW8j5hpMBy6NdwW1irX9I39Y7Yt1qVa6EHc668c+7A9HGUEhZAdquYZ0b/lYV1BXwA1Kpb0glrtty3V1Hb8JYx1tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sSDPmhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EEDC4CED6;
-	Wed,  5 Feb 2025 15:06:30 +0000 (UTC)
+	 MIME-Version; b=AlCfaDpe9qNwITq56WTjdFWOibQYn7r5asR/byrC+TO5d1rw1enMq47eFB4VkiLhhtxdCpED0vvaL3EBzKcN4WSrQBX0LTd4U4pUTqNRyhiWJ9559Gq2+qrYHiPNqtIvEmMh21e4Qvmon3tjhRKLa2uIc6QYftmjTnxv1LFXzP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFUF/Jl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC11C4CED1;
+	Wed,  5 Feb 2025 14:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767990;
-	bh=78clmqIj4ljUzyAFGeeSoXMAQt1PrwoV/3O7V2gsZFc=;
+	s=korg; t=1738765703;
+	bh=sAeRCAPQ93Xq+gCLekQXp09BN6s74nrvsaGDp/YBpmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sSDPmhlUDtzUN2xMuBqcb6uVficjpb1uBi1iiAbULHQEc1EqBQ8BEz81ExmPQFxq
-	 DUFkiWazP3LSKSskRCcgdhHOmR6ARYzJLtxJmEdKiCfzG2RkA3YS5OzNfeSDd5mNUa
-	 2e86zpZ1TOxDSM114gMKsMGb4J1GCravye1f1Rnw=
+	b=gFUF/Jl6rvhHqKvWK01Wz4ZLgrcmnqT0mQqXN0wlksExxc7kfbCbU943ZxXFv1tSs
+	 WGfXhevqple10/BENpcu+T34uLCPiZKHuB66GdVdqVPSHX9C7rhzw4iZNzaPZhZEmx
+	 liOU6Iieol7wuUUxvchklO6Hn3HXMKxLQ7qCc/h8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	david regan <dregan@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 468/623] PCI: qcom: Update ICC and OPP values after Link Up event
+Subject: [PATCH 6.6 291/393] mtd: rawnand: brcmnand: fix status read of brcmnand_waitfunc
 Date: Wed,  5 Feb 2025 14:43:30 +0100
-Message-ID: <20250205134514.123414075@linuxfoundation.org>
+Message-ID: <20250205134431.446338199@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+From: david regan <dregan@broadcom.com>
 
-[ Upstream commit f0639013d340580b72df95d012a93f35eeb0da64 ]
+[ Upstream commit 03271ea36ea7a58d30a4bde182eb2a0d46220467 ]
 
-4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in
-'global_irq' interrupt") added the Link Up-based enumeration support, but
-did not update the ICC/OPP vote once link is up. Before that, the update
-happened during probe and the endpoints may or may not be enumerated at
-that time, so the ICC/OPP vote was not guaranteed to be accurate.
+This change fixes an issue where an error return value may be mistakenly
+used as NAND status.
 
-With Link Up-based enumeration support, the driver can request the accurate
-vote based on the PCIe link.
-
-Call qcom_pcie_icc_opp_update() in qcom_pcie_global_irq_thread() after
-enumerating the endpoints.
-
-Fixes: 4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in 'global_irq' interrupt")
-Link: https://lore.kernel.org/r/20241123-remove_wait2-v5-3-b5f9e6b794c2@quicinc.com
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Fixes: f504551b7f15 ("mtd: rawnand: Propagate error and simplify ternary operators for brcmstb_nand_wait_for_completion()")
+Signed-off-by: david regan <dregan@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index dc102d8bd58c6..91b7f9ec78bcc 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1569,6 +1569,8 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
- 		pci_lock_rescan_remove();
- 		pci_rescan_bus(pp->bridge->bus);
- 		pci_unlock_rescan_remove();
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 440bef477930c..085a16148a68d 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2450,6 +2450,11 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 		brcmnand_send_cmd(host, CMD_PROGRAM_PAGE);
+ 		status = brcmnand_waitfunc(chip);
+ 
++		if (status < 0) {
++			ret = status;
++			goto out;
++		}
 +
-+		qcom_pcie_icc_opp_update(pcie);
- 	} else {
- 		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
- 			      status);
+ 		if (status & NAND_STATUS_FAIL) {
+ 			dev_info(ctrl->dev, "program failed at %llx\n",
+ 				(unsigned long long)addr);
 -- 
 2.39.5
 
