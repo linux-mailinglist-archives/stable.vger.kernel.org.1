@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-113596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC08A29315
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC39A293B3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68A4F3AC0BE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1F83A83A8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87FB18FC90;
-	Wed,  5 Feb 2025 14:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9675B1C6BE;
+	Wed,  5 Feb 2025 15:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qd0ckrH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKfWIN8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84823155333;
-	Wed,  5 Feb 2025 14:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525D11519BF;
+	Wed,  5 Feb 2025 15:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767501; cv=none; b=ObNNlyAOhlRylwGzN95qy2QRB16T4l/fLBfLCbNnf6v5bRtVYxTb2tJA66VLJcOQspfgEGEp2Rk8e1ILutIhT93VWyRwSyWGqCultu7wfYiA2S//IQ9y9Zx/uNGVp1w0cKdI/kXCqSNXs76kh7ylZ24W09KNlI3nJz1Yoaii8nA=
+	t=1738767968; cv=none; b=POBhgRsB5RKfRC1vy938gA1NBPYOBdX9N2dMKhYiHHhFj2gNoEWt+R2v6VfnExNI43fpzGuCQdzSD512fZ/l5J3nhOu3iQa0n6BTAjWZBzKvwTBJpUKMXBkMgFlG55kMjIuWoAjr5QY3rqVxqHYFc9tuxhi+7cVsNaoSFq3Ny3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767501; c=relaxed/simple;
-	bh=6TJaShuBOHnOrKtyDRB4lTK+fPcyyMGOJbvxakvtxO8=;
+	s=arc-20240116; t=1738767968; c=relaxed/simple;
+	bh=TiEnP1lUnw5SqR8F+X1R6goTGbbYKEv6Sn5ZLg7eqbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZw1UEfb/RC8gmlsyOElfcDzQzapPp8lto6QWGQKs1aDRB+dlW6Or2DYZQIdIvvhr0XMGylNS3o0nVLIYZUZ0WzYQP8Udrk0DYaMeqcOVEmh6QhyZKI5DxWDGDG/Xma1XG1F/6LlFFjTygocxnBT/HbLqoo3YYXUfxMuhxW9VZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qd0ckrH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ECEC4CED1;
-	Wed,  5 Feb 2025 14:58:20 +0000 (UTC)
+	 MIME-Version; b=tNJ1p/oZ/BHWj5uhhXAokmiXfw3643RtOqfoTnJX8LGzeK2o7M0tx/NxYIAO+pImFH+Byr7k6pyB19B6D9A6Tb4OVzoCw5b7XLVcytdvgnGYXPqzuv5tIEJSp6NBWFWNmNwDdcuncPCfxw8WP4izB0OE0fUmS4XTFVekyO9w6zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKfWIN8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73C4C4CED1;
+	Wed,  5 Feb 2025 15:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767501;
-	bh=6TJaShuBOHnOrKtyDRB4lTK+fPcyyMGOJbvxakvtxO8=;
+	s=korg; t=1738767968;
+	bh=TiEnP1lUnw5SqR8F+X1R6goTGbbYKEv6Sn5ZLg7eqbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qd0ckrH8TAmDKP66nLp07TT6wPOuoKvMQb6/3F0twdjy4mkE6EpRke6xY+v5TtWw5
-	 25o4VKmNuRRgHUrvMZrGJoBEgisBEGsVBtRz8f7vzw4spm/Xa29WnBZswVg2YNWqM9
-	 VtpOICnInPkpvN8CZUsQXYSfKs1d8GRxxqp57Lmc=
+	b=GKfWIN8qXAaVVZqt6YsbmyxO6uqUaELAqjpmwQTdP6gcfafgQZSeD+3vacnZQnSpT
+	 soVylZVQWnVmtYI0kssXOG5zt4mvVaRbypWFREYaYfTbPHln/8N17o5rdz4NaaKUnN
+	 tNZRji7KJuBwNAalqcw9iJtcpxzB41P25NupF8R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 465/590] phy: freescale: fsl-samsung-hdmi: Clean up fld_tg_code calculation
+Subject: [PATCH 6.13 478/623] ocfs2: mark dquot as inactive if failed to start trans while releasing dquot
 Date: Wed,  5 Feb 2025 14:43:40 +0100
-Message-ID: <20250205134513.050218301@linuxfoundation.org>
+Message-ID: <20250205134514.503757672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit d567679f2b6a8bcea20589bbea6488c0236886cd ]
+[ Upstream commit 276c61385f6bc3223a5ecd307cf4aba2dfbb9a31 ]
 
-Currently, the calcuation for fld_tg_code is based on a lookup table,
-but there are gaps in the lookup table, and frequencies in these
-gaps may not properly use the correct divider.  Based on the description
-of FLD_CK_DIV, the internal PLL frequency should be less than 50 MHz,
-so directly calcuate the value of FLD_CK_DIV from pixclk.
-This allow for proper calcuation of any pixel clock and eliminates a
-few gaps in the LUT.
+While running fstests generic/329, the kernel workqueue
+quota_release_workfn is dead looping in calling ocfs2_release_dquot().
+The ocfs2 state is already readonly but ocfs2_release_dquot wants to
+start a transaction but fails and returns.
 
-Since the value of the int_pllclk is in Hz, do the fixed-point
-math in Hz to achieve a more accurate value and reduces the complexity
-of the caluation to 24MHz * (256 / int_pllclk).
+=====================================================================
+[ 2918.123602 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+[ 2918.124034 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:765
+ERROR: status = -30
+[ 2918.124452 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:795
+ERROR: status = -30
+[ 2918.124883 ][  T275 ] (kworker/u135:1,275,11):ocfs2_start_trans:357
+ERROR: status = -30
+[ 2918.125276 ][  T275 ] OCFS2: abort (device dm-0): ocfs2_start_trans:
+Detected aborted journal
+[ 2918.125710 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+=====================================================================
 
-Fixes: 6ad082bee902 ("phy: freescale: add Samsung HDMI PHY")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Link: https://lore.kernel.org/r/20241026132014.73050-3-aford173@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+ocfs2_release_dquot() is much like dquot_release(), which is called by
+ext4 to handle similar situation.  So here fix it by marking the dquot as
+inactive like what dquot_release() does.
+
+Link: https://lkml.kernel.org/r/20250106140653.92292-1-glass.su@suse.com
+Fixes: 9e33d69f553a ("ocfs2: Implementation of local and global quota file handling")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-samsung-hdmi.c | 32 +++++++-------------
- 1 file changed, 11 insertions(+), 21 deletions(-)
+ fs/ocfs2/quota_global.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-index 029de69fbeaf4..6801a09c86a77 100644
---- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-+++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-@@ -388,25 +388,17 @@ fsl_samsung_hdmi_phy_configure_pll_lock_det(struct fsl_samsung_hdmi_phy *phy,
- {
- 	u32 pclk = cfg->pixclk;
- 	u32 fld_tg_code;
--	u32 pclk_khz;
--	u8 div = 1;
--
--	switch (cfg->pixclk) {
--	case  22250000 ...  47500000:
--		div = 1;
--		break;
--	case  50349650 ...  99000000:
--		div = 2;
--		break;
--	case 100699300 ... 198000000:
--		div = 4;
--		break;
--	case 205000000 ... 297000000:
--		div = 8;
--		break;
-+	u32 int_pllclk;
-+	u8 div;
-+
-+	/* Find int_pllclk speed */
-+	for (div = 0; div < 4; div++) {
-+		int_pllclk = pclk / (1 << div);
-+		if (int_pllclk < (50 * MHZ))
-+			break;
- 	}
- 
--	writeb(FIELD_PREP(REG12_CK_DIV_MASK, ilog2(div)), phy->regs + PHY_REG(12));
-+	writeb(FIELD_PREP(REG12_CK_DIV_MASK, div), phy->regs + PHY_REG(12));
- 
- 	/*
- 	 * Calculation for the frequency lock detector target code (fld_tg_code)
-@@ -419,10 +411,8 @@ fsl_samsung_hdmi_phy_configure_pll_lock_det(struct fsl_samsung_hdmi_phy *phy,
- 	 *        settings rounding up always too. TODO: Check if that is
- 	 *        correct.
- 	 */
--	pclk /= div;
--	pclk_khz = pclk / 1000;
--	fld_tg_code = 256 * 1000 * 1000 / pclk_khz * 24;
--	fld_tg_code = DIV_ROUND_UP(fld_tg_code, 1000);
-+
-+	fld_tg_code =  DIV_ROUND_UP(24 * MHZ * 256, int_pllclk);
- 
- 	/* FLD_TOL and FLD_RP_CODE taken from downstream driver */
- 	writeb(FIELD_PREP(REG13_TG_CODE_LOW_MASK, fld_tg_code),
+diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
+index 3404e7a30c330..15d9acd456ecc 100644
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -761,6 +761,11 @@ static int ocfs2_release_dquot(struct dquot *dquot)
+ 	handle = ocfs2_start_trans(osb,
+ 		ocfs2_calc_qdel_credits(dquot->dq_sb, dquot->dq_id.type));
+ 	if (IS_ERR(handle)) {
++		/*
++		 * Mark dquot as inactive to avoid endless cycle in
++		 * quota_release_workfn().
++		 */
++		clear_bit(DQ_ACTIVE_B, &dquot->dq_flags);
+ 		status = PTR_ERR(handle);
+ 		mlog_errno(status);
+ 		goto out_ilock;
 -- 
 2.39.5
 
