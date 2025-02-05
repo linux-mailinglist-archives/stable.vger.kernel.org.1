@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E913EA291A9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46461A292DC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D46B07A0558
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 632B43AEAAC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4A81FCFF4;
-	Wed,  5 Feb 2025 14:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AD616DEB1;
+	Wed,  5 Feb 2025 14:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVFC5/T6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJqNrfXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA15518C93C;
-	Wed,  5 Feb 2025 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AC91519BF;
+	Wed,  5 Feb 2025 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766911; cv=none; b=svoPS9lYK9bHJ4y6hal81B5gpUHRlgQQZV0rZk6+mgNlCMkYbi3L7YIylNNWpjbMtCRHsgj1xGdQzQJBukSGgohvS+tuEW/Uam1aNhn3ep+fFavJmxA9SnB8W1s6jbRNiyE6AySigoRAxv+xUz1zk77p9e1KuIQhpMNA8EYwvb0=
+	t=1738767356; cv=none; b=XIMTlkKhbIFL0yjXrZES3dM5ONGWNlxSERqwV2BxIDddbhXC1WTKVUUWYsD7mMnG9AvJlrVaoxGuEkwC3C8DxM2yE91mXQxbflQOle6/lo/LM6PfggGIdNUbRpd5/JC9TTckSNHyTU5nn5xsXmNohv3RudJpi20rBT/Sncp8MSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766911; c=relaxed/simple;
-	bh=rPFr/NvE2jwENRTIUVfYiFo/OSh+aJaR7Xd5UBpUK+M=;
+	s=arc-20240116; t=1738767356; c=relaxed/simple;
+	bh=u5FSXw5LUMqRC7CcyBtDlt2pqt4T6duAXUthFgdMjHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlU41t4+lPmQZ+P8XiTAUGIZxEAaRGaRYc6kKg66k4u2i4YsrZXSE+Xeu96kzVECw1cvj/IpeHqcmgnpL2qjtFhMt6AP06yVYurbepam69Y+6PzWDi1RN0Jc4yowyf8L3qhmLaTmNshVZlMNuloPul1dvu7Hvygt6Ku0/KENT0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVFC5/T6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E395C4CED1;
-	Wed,  5 Feb 2025 14:48:30 +0000 (UTC)
+	 MIME-Version; b=qrLTQxJsDzRtMpsrGTDgDKtdLV8C5NIar9R5LVN9UiTFx/7kRjHRxxU6yrbJcF158wSl7qZbgU3XpWtkgqJPYzl4jlreOhAGhsGSpbz188kQMr3LRGgM/e+LjaDqd6upSPSa/rZp2g+s80CTvFo0sq48YJtMWGiiRGj8jyzkYPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJqNrfXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A3BC4CED1;
+	Wed,  5 Feb 2025 14:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766910;
-	bh=rPFr/NvE2jwENRTIUVfYiFo/OSh+aJaR7Xd5UBpUK+M=;
+	s=korg; t=1738767355;
+	bh=u5FSXw5LUMqRC7CcyBtDlt2pqt4T6duAXUthFgdMjHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVFC5/T6xRP2/Xr/mlxN2xLawEGTKR/pa03rfo2gVdKjMDdF9F/XQ7BSwTVwDKuYx
-	 4c4vilBZuHrj2n4rK0Wwzwjg+1nofvVrkkycrYUisWsxmFcDtHbU/nBohUZ5ykQSM+
-	 1KBOEEIZtAoFOMasoJS2LASXqIwUZv4kz2vYSsWg=
+	b=yJqNrfXP0UJKbfSIax327upsKHfdg0VuF+T9aIw1E7CF/V/BF0eGyA/5gkLXRSYiT
+	 DCdO0exzRJ9OdWwLhkwm92tpaQuKECaJDDlv4bAfAtThZguR+aEgskuuPzKLwMJS6j
+	 5IwWLuIHUUVFB1iYIGWYsD+1vZuBEfyT1cQBG5Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 379/590] arm64: dts: qcom: sc8280xp: Fix up remoteproc register space sizes
+Subject: [PATCH 6.13 392/623] arm64: dts: qcom: x1e80100: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:14 +0100
-Message-ID: <20250205134509.770078349@linuxfoundation.org>
+Message-ID: <20250205134511.218969339@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 7ec7e327286182c65d0b5b81dff498d620fe9e8c ]
+[ Upstream commit 67e25a3e12d128336114a5d1572e055a8bd33129 ]
 
-Make sure the remoteproc reg ranges reflect the entire register space
-they refer to.
+The X1E80100 platform uses PMK8550 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Since they're unused by the driver, there's no functional change.
-
-Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20241212-topic-8280_rproc_reg-v1-1-bd1c696e91b0@oss.qualcomm.com
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-18-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index 80a57aa228397..4debb4edaf3d1 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -2725,7 +2725,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 7e4f46ad8edda..4dfea255c83f7 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -38,7 +38,7 @@
  
- 		remoteproc_adsp: remoteproc@3000000 {
- 			compatible = "qcom,sc8280xp-adsp-pas";
--			reg = <0 0x03000000 0 0x100>;
-+			reg = <0 0x03000000 0 0x10000>;
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
  
- 			interrupts-extended = <&intc GIC_SPI 162 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-@@ -5205,7 +5205,7 @@
- 
- 		remoteproc_nsp0: remoteproc@1b300000 {
- 			compatible = "qcom,sc8280xp-nsp0-pas";
--			reg = <0 0x1b300000 0 0x100>;
-+			reg = <0 0x1b300000 0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_nsp0_in 0 IRQ_TYPE_EDGE_RISING>,
-@@ -5336,7 +5336,7 @@
- 
- 		remoteproc_nsp1: remoteproc@21300000 {
- 			compatible = "qcom,sc8280xp-nsp1-pas";
--			reg = <0 0x21300000 0 0x100>;
-+			reg = <0 0x21300000 0 0x10000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 887 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_nsp1_in 0 IRQ_TYPE_EDGE_RISING>,
 -- 
 2.39.5
 
