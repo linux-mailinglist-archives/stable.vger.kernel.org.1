@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F04CA28C82
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EFAA28FD5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4F513A787B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D76C91882E1F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33D91487DC;
-	Wed,  5 Feb 2025 13:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F0B156F39;
+	Wed,  5 Feb 2025 14:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYERELUC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhQGu/fM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C82142E86;
-	Wed,  5 Feb 2025 13:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053DD155335;
+	Wed,  5 Feb 2025 14:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763433; cv=none; b=M/D173n1xAdalmORndAnO18Dlactzto2820tU4rU2pgPEf+9nevKYcqKWv2kuQv1BwWEPCHJIBDbwV/V/Zw/RXD+7vVdkTcUmFYqg7s7kJzRgbA80jcEFTkmK58eHGlILjmIH3Po5fwMVfiz9hRDPEcjbDyVwRgl0+E997+YkzA=
+	t=1738765752; cv=none; b=Wl4TBBhk8eioKCHoQ3Xb/Fz6wMsSnvZOrdkOp5KyapBuqrVq1Jn8fJXlGpDy81Pd6oyx/BbFpUul4gKo5HXcK3MY8x3MUBKyClv6J2heXtkylMqm3qRdXhC05DtpRmI+gJhOx9jTPPp67A1Wlutz6zeucj50n+Jkbfyyz3/YZnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763433; c=relaxed/simple;
-	bh=rF3YskUOcGQrpPNw+GHRlbLfqc6hJr7Ww1NDyAC0+E4=;
+	s=arc-20240116; t=1738765752; c=relaxed/simple;
+	bh=27gmfMdpr7cLMogWHfRJ/nsMlVZSbiKnc+XF71e2q+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0zjm6Yj5aNmcwKffwLe3LQhq+hn9r9raNvdfflUM7ejYceoSLOpJVH5KBx2tkd210yJzi21iqFuOm717iVrncGtvsxRB9aVptjUMGn+M7GTUX4DDwNsXUns5WSRbs30ryyxhSw/8jqgHsNuifaJLHCgbneKW12C0y6XtMqshyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYERELUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C61DC4CED1;
-	Wed,  5 Feb 2025 13:50:32 +0000 (UTC)
+	 MIME-Version; b=KFqc0fDPJNK0L9BjG8/I5j+vKHswoJfvyv7I3M1GDjZWIPyGDogZs79OblrL3kVkXEdGqC5kYe6vxkx18SLYIzo17z20vr2bjpcoZn8dl9F7PxP6UJErSgY1cvUAtQthCr5nSPU4yg0WrbMwcgkIIvxDQNqJHFZYFiDedCjhvZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhQGu/fM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64860C4CED1;
+	Wed,  5 Feb 2025 14:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763433;
-	bh=rF3YskUOcGQrpPNw+GHRlbLfqc6hJr7Ww1NDyAC0+E4=;
+	s=korg; t=1738765751;
+	bh=27gmfMdpr7cLMogWHfRJ/nsMlVZSbiKnc+XF71e2q+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYERELUC6gO9jcg3GcGjeajrHeKUbv8tkpk09MJcmvLI8FVBgL3RCNZPnLvn76qfZ
-	 yCyf4+sNHhtfwUguIZNaXbz5/Q1UCHN0h1NPxym6enwcdl56uChdRw+xoY73AqinJq
-	 8l1glqBZibQfaf+wtDFI2Jg/OdEM9uAKgnNXPh70=
+	b=uhQGu/fMwcDf29aZovypPNNAN3vdL7lVF/d5dg5jtHIgtIeM8CaSQcbp/EAKIwjJp
+	 yLLiDkhkXVxV+Tur7luzfjVmdeXmqd+Ho6+wUjEfKAv+6URoU7znTcA4C1wz4QB3zD
+	 RI7JiuM59vVNYyUSz/r93pVpsD+AQLcpg3q2OEvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Howard Hsu <howard-yh.hsu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/393] drm/rockchip: move output interface related definition to rockchip_drm_drv.h
+Subject: [PATCH 6.13 210/623] wifi: mt76: mt7996: fix the capability of reception of EHT MU PPDU
 Date: Wed,  5 Feb 2025 14:39:12 +0100
-Message-ID: <20250205134421.569541530@linuxfoundation.org>
+Message-ID: <20250205134504.262675334@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,221 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit 8c8546546f256f834e9c7cab48e5946df340d1a8 ]
+[ Upstream commit 2ffbdfc1bd78ba944c5754791c84f32232b513c6 ]
 
-The output interface related definition can shared between
-vop and vop2, move them to rockchip_drm_drv.h can avoid duplicated
-definition.
+This commit includes two changes. First, enable "EHT MU PPDU With 4x
+EHT-LTF And 0.8us GI" in EHT Phy capabilities element since hardware
+can support. Second, fix the value of "Maximum number of supported
+EHT LTFs" in the same element, where the previous setting of 3 in
+Bit 3-4 was incorrect.
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211115627.1784735-1-andyshrk@163.com
-Stable-dep-of: 77b1ccb2a27c ("drm/rockchip: vop2: include rockchip_drm_drv.h")
+Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-2-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/analogix_dp-rockchip.c |  1 -
- drivers/gpu/drm/rockchip/cdn-dp-core.c          |  1 -
- drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c |  1 -
- drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c     |  1 -
- drivers/gpu/drm/rockchip/inno_hdmi.c            |  1 -
- drivers/gpu/drm/rockchip/rk3066_hdmi.c          |  1 -
- drivers/gpu/drm/rockchip/rockchip_drm_drv.h     | 17 +++++++++++++++++
- drivers/gpu/drm/rockchip/rockchip_drm_vop.h     | 12 ------------
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.h    | 16 +---------------
- drivers/gpu/drm/rockchip/rockchip_lvds.c        |  1 -
- drivers/gpu/drm/rockchip/rockchip_rgb.c         |  1 -
- 11 files changed, 18 insertions(+), 35 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-index 84aa811ca1e9c..bd08d57486fef 100644
---- a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
-@@ -30,7 +30,6 @@
- #include <drm/drm_simple_kms_helper.h>
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 50ee1e443dfa4..e04abd57b3b3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1232,21 +1232,20 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 		IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK;
  
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
+ 	eht_cap_elem->phy_cap_info[4] =
++		IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
+ 		u8_encode_bits(min_t(int, sts - 1, 2),
+ 			       IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK);
  
- #define RK3288_GRF_SOC_CON6		0x25c
- #define RK3288_EDP_LCDC_SEL		BIT(5)
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-index 3793863c210eb..fca403ccce47e 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -24,7 +24,6 @@
+ 	eht_cap_elem->phy_cap_info[5] =
+ 		u8_encode_bits(IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US,
+ 			       IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK) |
+-		u8_encode_bits(u8_get_bits(0x11, GENMASK(1, 0)),
++		u8_encode_bits(u8_get_bits(1, GENMASK(1, 0)),
+ 			       IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK);
  
- #include "cdn-dp-core.h"
- #include "cdn-dp-reg.h"
--#include "rockchip_drm_vop.h"
+ 	val = width == NL80211_CHAN_WIDTH_320 ? 0xf :
+ 	      width == NL80211_CHAN_WIDTH_160 ? 0x7 :
+ 	      width == NL80211_CHAN_WIDTH_80 ? 0x3 : 0x1;
+ 	eht_cap_elem->phy_cap_info[6] =
+-		u8_encode_bits(u8_get_bits(0x11, GENMASK(4, 2)),
+-			       IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK) |
+ 		u8_encode_bits(val, IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK);
  
- static inline struct cdn_dp_device *connector_to_dp(struct drm_connector *connector)
- {
-diff --git a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
-index 0100162a73b29..002486741aec2 100644
---- a/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
-@@ -26,7 +26,6 @@
- #include <drm/drm_simple_kms_helper.h>
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- 
- #define DSI_PHY_RSTZ			0xa0
- #define PHY_DISFORCEPLL			0
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index 89bc86d620146..aae48e906af11 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -18,7 +18,6 @@
- #include <drm/drm_simple_kms_helper.h>
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- 
- #define RK3228_GRF_SOC_CON2		0x0408
- #define RK3228_HDMI_SDAIN_MSK		BIT(14)
-diff --git a/drivers/gpu/drm/rockchip/inno_hdmi.c b/drivers/gpu/drm/rockchip/inno_hdmi.c
-index 345253e033c53..50c984ac107d6 100644
---- a/drivers/gpu/drm/rockchip/inno_hdmi.c
-+++ b/drivers/gpu/drm/rockchip/inno_hdmi.c
-@@ -23,7 +23,6 @@
- #include <drm/drm_simple_kms_helper.h>
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- 
- #include "inno_hdmi.h"
- 
-diff --git a/drivers/gpu/drm/rockchip/rk3066_hdmi.c b/drivers/gpu/drm/rockchip/rk3066_hdmi.c
-index fa6e592e0276c..78136d0c5a659 100644
---- a/drivers/gpu/drm/rockchip/rk3066_hdmi.c
-+++ b/drivers/gpu/drm/rockchip/rk3066_hdmi.c
-@@ -17,7 +17,6 @@
- #include "rk3066_hdmi.h"
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- 
- #define DEFAULT_PLLA_RATE 30000000
- 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
-index 9ef98968a83aa..bbb9e0bf68048 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
-@@ -20,6 +20,23 @@
- #define ROCKCHIP_MAX_CONNECTOR	2
- #define ROCKCHIP_MAX_CRTC	4
- 
-+/*
-+ * display output interface supported by rockchip lcdc
-+ */
-+#define ROCKCHIP_OUT_MODE_P888		0
-+#define ROCKCHIP_OUT_MODE_BT1120	0
-+#define ROCKCHIP_OUT_MODE_P666		1
-+#define ROCKCHIP_OUT_MODE_P565		2
-+#define ROCKCHIP_OUT_MODE_BT656		5
-+#define ROCKCHIP_OUT_MODE_S888		8
-+#define ROCKCHIP_OUT_MODE_S888_DUMMY	12
-+#define ROCKCHIP_OUT_MODE_YUV420	14
-+/* for use special outface */
-+#define ROCKCHIP_OUT_MODE_AAAA		15
-+
-+/* output flags */
-+#define ROCKCHIP_OUTPUT_DSI_DUAL	BIT(0)
-+
- struct drm_device;
- struct drm_connector;
- struct iommu_domain;
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-index c5c716a69171a..4ea369e004a91 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
-@@ -277,18 +277,6 @@ struct vop_data {
- /* dst alpha ctrl define */
- #define DST_FACTOR_M0(x)		(((x) & 0x7) << 6)
- 
--/*
-- * display output interface supported by rockchip lcdc
-- */
--#define ROCKCHIP_OUT_MODE_P888	0
--#define ROCKCHIP_OUT_MODE_P666	1
--#define ROCKCHIP_OUT_MODE_P565	2
--/* for use special outface */
--#define ROCKCHIP_OUT_MODE_AAAA	15
--
--/* output flags */
--#define ROCKCHIP_OUTPUT_DSI_DUAL	BIT(0)
--
- enum alpha_mode {
- 	ALPHA_STRAIGHT,
- 	ALPHA_INVERSE,
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-index 18f0573b20002..5672df5de90be 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
-@@ -7,10 +7,9 @@
- #ifndef _ROCKCHIP_DRM_VOP2_H
- #define _ROCKCHIP_DRM_VOP2_H
- 
--#include "rockchip_drm_vop.h"
--
- #include <linux/regmap.h>
- #include <drm/drm_modes.h>
-+#include "rockchip_drm_vop.h"
- 
- #define VOP_FEATURE_OUTPUT_10BIT        BIT(0)
- 
-@@ -169,19 +168,6 @@ struct vop2_data {
- #define WB_YRGB_FIFO_FULL_INTR		BIT(18)
- #define WB_COMPLETE_INTR		BIT(19)
- 
--/*
-- * display output interface supported by rockchip lcdc
-- */
--#define ROCKCHIP_OUT_MODE_P888		0
--#define ROCKCHIP_OUT_MODE_BT1120	0
--#define ROCKCHIP_OUT_MODE_P666		1
--#define ROCKCHIP_OUT_MODE_P565		2
--#define ROCKCHIP_OUT_MODE_BT656		5
--#define ROCKCHIP_OUT_MODE_S888		8
--#define ROCKCHIP_OUT_MODE_S888_DUMMY	12
--#define ROCKCHIP_OUT_MODE_YUV420	14
--/* for use special outface */
--#define ROCKCHIP_OUT_MODE_AAAA		15
- 
- enum vop_csc_format {
- 	CSC_BT601L,
-diff --git a/drivers/gpu/drm/rockchip/rockchip_lvds.c b/drivers/gpu/drm/rockchip/rockchip_lvds.c
-index 1b6e0b210aa53..107959530c220 100644
---- a/drivers/gpu/drm/rockchip/rockchip_lvds.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_lvds.c
-@@ -27,7 +27,6 @@
- #include <drm/drm_simple_kms_helper.h>
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- #include "rockchip_lvds.h"
- 
- #define DISPLAY_OUTPUT_RGB		0
-diff --git a/drivers/gpu/drm/rockchip/rockchip_rgb.c b/drivers/gpu/drm/rockchip/rockchip_rgb.c
-index c677b71ae516b..dbfbde24698ef 100644
---- a/drivers/gpu/drm/rockchip/rockchip_rgb.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_rgb.c
-@@ -19,7 +19,6 @@
- #include <drm/drm_simple_kms_helper.h>
- 
- #include "rockchip_drm_drv.h"
--#include "rockchip_drm_vop.h"
- #include "rockchip_rgb.h"
- 
- struct rockchip_rgb {
+ 	val = u8_encode_bits(nss, IEEE80211_EHT_MCS_NSS_RX) |
 -- 
 2.39.5
 
