@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565F6A29036
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E03A28CCE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C807F1884889
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD221684EB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03511155A30;
-	Wed,  5 Feb 2025 14:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9800714B088;
+	Wed,  5 Feb 2025 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmo3qxEm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XzRFmUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B1C7E792;
-	Wed,  5 Feb 2025 14:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5318014A4E9;
+	Wed,  5 Feb 2025 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766007; cv=none; b=FFlioillIGXvvCKATgynvdSp1zJpgcCFazrfyMAXUKhl6rjlhD/Q7kYyPeJCM/gliC6ECMLKWIE5nZ1x2CFLzUBBZQpG+0ugmytv8jFFJcm50KFMihhHH3ebi+FCjEzrYZSjA/bRt3hsDT741W5Xu67jNMz3YRBYeme0nVFCfNA=
+	t=1738763650; cv=none; b=S1ambSp2MarfCfWUoJznsG1Yc6YL+rSwJ4rfZeJECMUecghZMM50oszv9zSpQYM/xH73FDgeyX88p+oKNHW0Y7NCe+q2F3E6cMF0BXDODE2Qf5cU8KFFR2wNUl43WwP1X6IuCPjllOBhqDyXYm8vLaH8FuXD6B6PWEURO+n8vUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766007; c=relaxed/simple;
-	bh=JvUBMSn2o0SBm+nqXyNHksTcOVcnUnxCx0t1Kl/n7UY=;
+	s=arc-20240116; t=1738763650; c=relaxed/simple;
+	bh=GIm9ZT/NeA0R2iakg/aJ+pBiuzbXcdbrlCmo8hkNE8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfXTmz/MSqFt32GsWirccveI0AE51mY275ukWbZKxwk9bui01b8Q1eg4KFKYOr42DXmJzgfUkE8Pi5kvwrXhkURt7S4RVxPou4wegrUSZ2fQ6XYtglgGjP5ejtYPdfUhuBDjIukHo0GASK8P/1R45LmN5Fyv9RvQGTS9iRYvJYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmo3qxEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF56C4CED1;
-	Wed,  5 Feb 2025 14:33:26 +0000 (UTC)
+	 MIME-Version; b=pmBRwWGI94Hi/7rOVKbhN/JWVmJTX+RjFQw0/LBrV4ny14UN0sJMUQNbfk/gzuVj/7oVqI4XqVxj+k4NH03TccnXdR2+dLE1PkoGQG1QtLSs6OpYvIxGciOmB1L7z5jWFwl0UZP5i3Vteymt80+uXpV3DPorQcmbGOc3XvlQNZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XzRFmUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B505DC4CED1;
+	Wed,  5 Feb 2025 13:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766007;
-	bh=JvUBMSn2o0SBm+nqXyNHksTcOVcnUnxCx0t1Kl/n7UY=;
+	s=korg; t=1738763650;
+	bh=GIm9ZT/NeA0R2iakg/aJ+pBiuzbXcdbrlCmo8hkNE8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmo3qxEmja17hgpTDxn6na9SqmvZxxLQgWZXpj41hAElNfx+c76phE1rFGrzYTNc6
-	 49axYvfiYn9lSqXkZ2wvNRuI6tQi4UZ0+phYEULBtJXF9eIPQcF1Ok2iKiaOjVcVZ3
-	 4kPhX9vsnksY8I2n2mTA+W/evCzob1OprOf2xHyE=
+	b=1XzRFmUg7cETQDKAw38Gw1ZgE6S3vueZ/5CUK/9XbxwJVsH+zhnJa2nZ/vmOkQgre
+	 8L2OQdBkTVP5cqim2V2nZhBzkBv2q48S7Ee1OAE7U22kLq7ux4dabQMQC7m+6cmVip
+	 v0L6J2CqbuYFhG7BDb6wRB6XzBeGZWCDIOPA4MbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ba Jing <bajing@cmss.chinamobile.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 256/590] ktest.pl: Remove unused declarations in run_bisect_test function
-Date: Wed,  5 Feb 2025 14:40:11 +0100
-Message-ID: <20250205134505.073660176@linuxfoundation.org>
+Subject: [PATCH 6.6 093/393] regulator: of: Implement the unwind path of of_regulator_match()
+Date: Wed,  5 Feb 2025 14:40:12 +0100
+Message-ID: <20250205134423.854425670@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ba Jing <bajing@cmss.chinamobile.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
+[ Upstream commit dddca3b2fc676113c58b04aaefe84bfb958ac83e ]
 
-Since $output and $ret are not used in the subsequent code, the declarations
-should be removed.
+of_regulator_match() does not release the OF node reference in the error
+path, resulting in an OF node leak. Therefore, call of_node_put() on the
+obtained nodes before returning the EINVAL error.
 
-Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
-Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
-Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Since it is possible that some drivers call this function and do not
+exit on failure, such as s2mps11_pmic_driver, clear the init_data and
+of_node in the error path.
+
+This was reported by an experimental verification tool that I am
+developing. As I do not have access to actual devices nor the QEMU board
+configuration to test drivers that call this function, no runtime test
+was able to be performed.
+
+Fixes: 1c8fa58f4750 ("regulator: Add generic DT parsing for regulators")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250104080453.2153592-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/regulator/of_regulator.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index dacad94e2be42..ecb22626805d5 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2960,8 +2960,6 @@ sub run_bisect_test {
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index 59e71fd0db439..f23c12f4ffbfa 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -435,7 +435,7 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 					"failed to parse DT for regulator %pOFn\n",
+ 					child);
+ 				of_node_put(child);
+-				return -EINVAL;
++				goto err_put;
+ 			}
+ 			match->of_node = of_node_get(child);
+ 			count++;
+@@ -444,6 +444,18 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 	}
  
-     my $failed = 0;
-     my $result;
--    my $output;
--    my $ret;
- 
-     $in_bisect = 1;
+ 	return count;
++
++err_put:
++	for (i = 0; i < num_matches; i++) {
++		struct of_regulator_match *match = &matches[i];
++
++		match->init_data = NULL;
++		if (match->of_node) {
++			of_node_put(match->of_node);
++			match->of_node = NULL;
++		}
++	}
++	return -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(of_regulator_match);
  
 -- 
 2.39.5
