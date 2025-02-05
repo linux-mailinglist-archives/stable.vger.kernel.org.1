@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CACA28DDB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA202A291FA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49F113A466D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817F83AC59B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E991547F2;
-	Wed,  5 Feb 2025 14:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7F81FC0ED;
+	Wed,  5 Feb 2025 14:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OoaJxJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR7SjDrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D75CF510;
-	Wed,  5 Feb 2025 14:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCE7155725;
+	Wed,  5 Feb 2025 14:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764269; cv=none; b=bsUCinPCsxjJ0xgFWAd9q9AdaWPQiD0BMPxGSOxvQM0gmARWShbT3PeRN145y5ApEM2lFUQr0mGc4KiwSx43MhDNKnILlsLuBj7VCvz+hayONDfAjvLCAXug6Bc03VIaBF29Trd30NeznMhY4alN9BvDNoEyvkrUfPvtaq+o7rs=
+	t=1738766780; cv=none; b=ax8cGZxiShXqDOW6+7VbuEpdtumbwctI/rl0vVK+m87g2O3hBwZvsl/ji1LH/Ov75SL9R+/XPrLGStuOgLlk3UhSfMqaVbSK4ZZXzIH/pnB4AZ7qVesjmQiOTZ888prA4TtUiskeJ0vPHq4nsCTDl9pOMmcpFPW5jczmlE4O4vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764269; c=relaxed/simple;
-	bh=FdLCHGFV8XH1N0ER5Iq4dfV3tfarQ2Qm1RJooELOaPk=;
+	s=arc-20240116; t=1738766780; c=relaxed/simple;
+	bh=k9PEhOU1X1fdVdPMUZjwELSYmLWn+3WntLxFkaEpSIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQrgkoUe/U2FFPEkyufFhrf0/f3EtE8Am/QeWhOZ78SwNyu6rikJSokYXrhFe1uQJepuJ5tjhbjZrHmPlDDzkIPPC5bXtpURFxoHzZeAiCG1BJQZktkUmJVkryelSAedBTUwxsQ+n7ChNgZ1hbO5mQwgOep8faKlG259fGhqj7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OoaJxJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E360C4CED1;
-	Wed,  5 Feb 2025 14:04:28 +0000 (UTC)
+	 MIME-Version; b=FzcJ8MDnJxGUpSb0WRD8oT0Lm4gXYlXpKHSiP4EmSnhY7IXSKJ6AyrbGjMlONrfpHT0PnPBUJrUjK9U5X3InZmOshp7KiwPPONVVOigOBMpy5X73GFNrx9jTTtShL3IRoTW5yiQYpnpdCjrgzZIT6WQfB3xu4LLaTgJHVuLrtu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR7SjDrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F246C4CED6;
+	Wed,  5 Feb 2025 14:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764269;
-	bh=FdLCHGFV8XH1N0ER5Iq4dfV3tfarQ2Qm1RJooELOaPk=;
+	s=korg; t=1738766780;
+	bh=k9PEhOU1X1fdVdPMUZjwELSYmLWn+3WntLxFkaEpSIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1OoaJxJOqfUFh/5HPOt6Qo0G77XTnGQwqWnUuhslT5z9lZuKX4CQPhlwleP6sNMOA
-	 AVa2/28g64UMgUtxDLFjVFRi+w1waI+yLOlGNjs2SdCqBqWoSWzN64W9XLpofNObPm
-	 aiH6cC9AM9q1fLCg8DXky/EMohmxk0AxQCe1AdjQ=
+	b=tR7SjDrAgbcERQHIRZpo/zRC1zpS/G9YAQw5cojN8QbH0ONxdeC3HVYTCSXDrrb4U
+	 j4i2O3YOVJp1a00yq33Tde7xd2vZVOmIZkpcMMHC1dYDRVBfO6N6yfT8898gr6z51z
+	 NMZHSkQOEjJbYY8SygS2a6D2zUEhpLOfZ54SIHqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/393] wifi: mt76: mt7996: fix ldpc setting
+Subject: [PATCH 6.13 307/623] bpf: Send signals asynchronously if !preemptible
 Date: Wed,  5 Feb 2025 14:40:49 +0100
-Message-ID: <20250205134425.269838627@linuxfoundation.org>
+Message-ID: <20250205134507.971911667@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Puranjay Mohan <puranjay@kernel.org>
 
-[ Upstream commit da8352da1e4f476fdbf549a4efce4f3c618fde3b ]
+[ Upstream commit 87c544108b612512b254c8f79aa5c0a8546e2cc4 ]
 
-The non-AP interfaces would not use conf->vht_ldpc so they never set
-STA_CAP_VHT_LDPC even if peer-station support LDPC.
-Check conf->vht_ldpc only for AP interface.
+BPF programs can execute in all kinds of contexts and when a program
+running in a non-preemptible context uses the bpf_send_signal() kfunc,
+it will cause issues because this kfunc can sleep.
+Change `irqs_disabled()` to `!preemptible()`.
 
-Without this patch, station only uses BCC to transmit packet in VHT mode.
-
-Fixes: dda423dd65c3 ("wifi: mt76: mt7996: remove mt7996_mcu_beacon_check_caps()")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250114101026.3587702-7-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reported-by: syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67486b09.050a0220.253251.0084.GAE@google.com/
+Fixes: 1bc7896e9ef4 ("bpf: Fix deadlock with rq_lock in bpf_send_signal()")
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20250115103647.38487-1-puranjay@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ kernel/trace/bpf_trace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 19afe89fce785..65a5f24e53136 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1723,7 +1723,7 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
- 			cap |= STA_CAP_VHT_TX_STBC;
- 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
- 			cap |= STA_CAP_VHT_RX_STBC;
--		if (vif->bss_conf.vht_ldpc &&
-+		if ((vif->type != NL80211_IFTYPE_AP || vif->bss_conf.vht_ldpc) &&
- 		    (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
- 			cap |= STA_CAP_VHT_LDPC;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 9f2f65767639d..2c2205e91fee9 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -854,7 +854,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type, struct task_struc
+ 	if (unlikely(is_global_init(task)))
+ 		return -EPERM;
  
+-	if (irqs_disabled()) {
++	if (!preemptible()) {
+ 		/* Do an early check on signal validity. Otherwise,
+ 		 * the error is lost in deferred irq_work.
+ 		 */
 -- 
 2.39.5
 
