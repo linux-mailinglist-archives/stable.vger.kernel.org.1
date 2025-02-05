@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-112896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E280AA28EFC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BB7A28E1A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4ACD3A6FEC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BEE43A9272
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF955522A;
-	Wed,  5 Feb 2025 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231F014A088;
+	Wed,  5 Feb 2025 14:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koWkHj84"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lap2MkXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50D9282EE;
-	Wed,  5 Feb 2025 14:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2353FC0B;
+	Wed,  5 Feb 2025 14:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765121; cv=none; b=gjpzLiOC18VDaq4A4RFyyKPqLhAN282t+y/XWuMbmfXIxgPVUypSUUdrZE0oxFkP5aTsO0/iwa0aVLB5nGTO7XBKFvo1NTCQw8gXKY30fpLbONz+nywD4NpRzujQka/1qGsx8XvgfDzgfLhYIDah/TqKC8XCM5wJzcfixx9oiNw=
+	t=1738764491; cv=none; b=Ai92YMkASZy7XOU4QP4Ytl2LOCRaTp+h3YvMfWzGvteAbFBiifAhtPJK5Chj9jW/Axg5nXaoVdznHzPJwRTtK7Hh1xJXuWGIoyTsv4HWOFS9rYHyEi9uzC26ohuxoF8wruhn+piodL2bkIx904x1lQOaCLUsAIEu10QJK8R4HQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765121; c=relaxed/simple;
-	bh=yRVnnd4VZFkppJ5fPaj0Z7J8DniBoMIYILjY4315XF4=;
+	s=arc-20240116; t=1738764491; c=relaxed/simple;
+	bh=Pc1ZuYvlXNi7OSlIvHuvlSx0wgKOH3g0RfFLxtj2Ew8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QuYGdsqDhnBEL3B0msS7BHHSJPyAMIdVUMEUOaOxmR94jwyU6+1KgV1HyTYlG+dDKXPW8sY6CerANEJDbTyEb5cKGS8jlhTp+xxuGZbiIJ7pGBmewTYbadbnLxwqP9rLCDTLHkO27vqWHXIfdI/HSt6S0TxNWanVGY8jixQK2nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koWkHj84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2EFC4CED1;
-	Wed,  5 Feb 2025 14:18:39 +0000 (UTC)
+	 MIME-Version; b=YIpUSHn+cE14DslYp3M/h/Ce7ATlxcVLBe0VBMM4J/vEba9+c4ac3h+5hoC78bDZMLBjd+EKNdheIssFl2u3DsCO4ttIQPzZSGuwLkJCMXyO+2H0jeF1xd2kPGORw39gCfWqXZhxkV8/AlRBeu858E61C9sXC93IXTwgQvbrVR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lap2MkXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF6FC4CED1;
+	Wed,  5 Feb 2025 14:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765121;
-	bh=yRVnnd4VZFkppJ5fPaj0Z7J8DniBoMIYILjY4315XF4=;
+	s=korg; t=1738764491;
+	bh=Pc1ZuYvlXNi7OSlIvHuvlSx0wgKOH3g0RfFLxtj2Ew8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koWkHj84JQYHgwic7Bk932YOg67JX3X/crggLshFiRBCrZuZ0XaGO/T5vU+hn0Xeq
-	 DKpLQOzI/TjgsunX+OmiNNG1QWBGSBiJR8CYcnuKTkJ/j9fd16Dy4UNpPeH20dRK+3
-	 p3PKODAUD3A2yXACY2Dxm/6cuxQ+VH0vny1x9jwc=
+	b=lap2MkXjAgwXOBC5+RTYbOQURoDj9wGO9ZKvCBQzZyZ7KZ1puX7Kg7cZEdTSW7Z8v
+	 FYirGL6SWVlviRaIPNIEyL4Mz51zTHCXtlEjSJRzWmrml3KptymMahtp+oQB3VnzXl
+	 1FjoacVEM+5KuKke7wMtaTXxBluwb0eibX2OREuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 145/623] clk: qcom: gcc-sdm845: Do not use shared clk_ops for QUPs
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.12 132/590] clk: sunxi-ng: a64: stop force-selecting PLL-MIPI as TCON0 parent
 Date: Wed,  5 Feb 2025 14:38:07 +0100
-Message-ID: <20250205134501.781397985@linuxfoundation.org>
+Message-ID: <20250205134500.316045072@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,187 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Pundir <amit.pundir@linaro.org>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit f760a4bb5e927a133dcd75f7b69ccae2a331e42c ]
+[ Upstream commit 383ca7bee8a93be9ff5a072936981c2710d2856b ]
 
-Similar to the earlier fixes meant for sm8x50 and x1e platforms,
-we have to stop using the shared clk ops for sdm845 QUPs as well.
+Stop force-selecting PLL-MIPI as TCON0 parent, since it breaks video
+output on Pinebook that uses RGB to eDP bridge.
 
-As Stephen Boyd pointed out in earlier fixes, there wasn't a problem
-to mark QUP clks shared until we started parking shared RCGs at clk
-registration time in commit 01a0a6cc8cfd ("clk: qcom: Park shared RCGs
-upon registration"). Parking at init is actually harmful to the UART
-when earlycon is used. If the device is pumping out data while the
-frequency changes and we see garbage on the serial console until the
-driver can probe and actually set a proper frequency.
+Partially revert commit ca1170b69968 ("clk: sunxi-ng: a64: force
+select PLL_MIPI in TCON0 mux"), while still leaving
+CLK_SET_RATE_NO_REPARENT flag set, since we do not want the clock to
+be reparented.
 
-This patch reverts the QUP clk sharing ops part of commit 06391eddb60a
-("clk: qcom: Add Global Clock controller (GCC) driver for SDM845"), so
-that the QUPs on sdm845 don't get parked during clk registration and
-break UART operations.
+The issue is that apparently different TCON0 outputs require a different
+clock, or the mux might be selecting the output type.
 
-Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Link: https://lore.kernel.org/r/20241209174912.2526928-1-amit.pundir@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+I did an experiment: I manually configured PLL_MIPI and PLL_VIDEO0_2X
+to the same clock rate and flipped the switch with devmem. Experiment
+clearly showed that whenever PLL_MIPI is selected as TCON0 clock parent,
+the video output stops working.
+
+Therefore, TCON0 clock parent corresponding to the output type must be
+assigned in the device tree.
+
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-5-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sdm845.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
-index dc3aa7014c3ed..c6692808a8228 100644
---- a/drivers/clk/qcom/gcc-sdm845.c
-+++ b/drivers/clk/qcom/gcc-sdm845.c
-@@ -454,7 +454,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s0_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s0_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+index c255dba2c96db..6727a3e30a129 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -535,11 +535,11 @@ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+ 				 CLK_SET_RATE_PARENT);
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s0_clk_src = {
-@@ -470,7 +470,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s1_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s1_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+ /*
+- * DSI output seems to work only when PLL_MIPI selected. Set it and prevent
+- * the mux from reparenting.
++ * Experiments showed that RGB output requires pll-video0-2x, while DSI
++ * requires pll-mipi. It will not work with incorrect clock, the screen will
++ * be blank.
++ * sun50i-a64.dtsi assigns pll-mipi as TCON0 parent by default
+  */
+-#define SUN50I_A64_TCON0_CLK_REG	0x118
+-
+ static const char * const tcon0_parents[] = { "pll-mipi", "pll-video0-2x" };
+ static const u8 tcon0_table[] = { 0, 2, };
+ static SUNXI_CCU_MUX_TABLE_WITH_GATE_CLOSEST(tcon0_clk, "tcon0", tcon0_parents,
+@@ -959,11 +959,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s1_clk_src = {
-@@ -486,7 +486,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s2_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s2_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
+ 	writel(0x515, reg + SUN50I_A64_PLL_MIPI_REG);
  
- static struct clk_rcg2 gcc_qupv3_wrap0_s2_clk_src = {
-@@ -502,7 +502,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s3_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s3_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s3_clk_src = {
-@@ -518,7 +518,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s4_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s4_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s4_clk_src = {
-@@ -534,7 +534,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s5_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s5_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s5_clk_src = {
-@@ -550,7 +550,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s6_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s6_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s6_clk_src = {
-@@ -566,7 +566,7 @@ static struct clk_init_data gcc_qupv3_wrap0_s7_clk_src_init = {
- 	.name = "gcc_qupv3_wrap0_s7_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap0_s7_clk_src = {
-@@ -582,7 +582,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s0_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s0_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s0_clk_src = {
-@@ -598,7 +598,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s1_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s1_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s1_clk_src = {
-@@ -614,7 +614,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s2_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s2_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s2_clk_src = {
-@@ -630,7 +630,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s3_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s3_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s3_clk_src = {
-@@ -646,7 +646,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s4_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s4_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s4_clk_src = {
-@@ -662,7 +662,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s5_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s5_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s5_clk_src = {
-@@ -678,7 +678,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s6_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s6_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s6_clk_src = {
-@@ -694,7 +694,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s7_clk_src_init = {
- 	.name = "gcc_qupv3_wrap1_s7_clk_src",
- 	.parent_data = gcc_parent_data_0,
- 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
--	.ops = &clk_rcg2_shared_ops,
-+	.ops = &clk_rcg2_ops,
- };
- 
- static struct clk_rcg2 gcc_qupv3_wrap1_s7_clk_src = {
+-	/* Set PLL MIPI as parent for TCON0 */
+-	val = readl(reg + SUN50I_A64_TCON0_CLK_REG);
+-	val &= ~GENMASK(26, 24);
+-	writel(val | (0 << 24), reg + SUN50I_A64_TCON0_CLK_REG);
+-
+ 	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_a64_ccu_desc);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
