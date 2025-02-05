@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-112521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D3FA28D29
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43EB4A28D2D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102FF1696C6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B981889DAB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE05814F136;
-	Wed,  5 Feb 2025 13:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB2B14A4E9;
+	Wed,  5 Feb 2025 13:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNDwv0W3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiPMtDEF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D0114D28C;
-	Wed,  5 Feb 2025 13:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC04D15573F;
+	Wed,  5 Feb 2025 13:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763846; cv=none; b=owq1BtLW/T8IDMQfwX2Eh0q57VlgHUeadPyv04tHVRwtA3r8tCHRPNiLTGWa7xM2eaH6JgktG2aFDD0lcl9zPzHQ2jgJytJ0dSdCxbwQvHF5/iB+SlXsOnt+Gr+yqQQizsMHSh2jjOmrF6CJDF345KxCGjKBvQcQ+kISfLG9TAY=
+	t=1738763856; cv=none; b=CrSJHteM1CIyM7LE6TYN2j7ypbipF0Y4Ay6WChxfKta939BThxtIolWMItLWO5DKpDwt8hpW68kVdUbCRNge6sN67CXFLiDRfMUTsH8ed/BFs/QRGjivx3v/2JQC7gnjmL/ban+IgeJvlQeqdaP/WES69PhQ2zAiOffnuY3I2MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763846; c=relaxed/simple;
-	bh=xsZ7UqPuKGByM0oa2NHaD1Cv3dxz4Jw62g9JSnOBdk8=;
+	s=arc-20240116; t=1738763856; c=relaxed/simple;
+	bh=jiFfABDCQroDxmh4j0HC0QEt0E2PNF2Zh+RKJ853X2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rf9yrVXJMw8d0mp416Cf8Y7m8bg8Xt1C/6oMHFPaLjIb+qTDlYrOnGXLyGMuQXGyP1vVONMpSummUhNnfOXY3hCpslHaW6LgeDwp2G/hD99aEwUyw/VvBuMfE+UbeR9VSQ3FkGYM6rFrjuNj+2cmrhtGYgD3WDk22zLSpkyRryQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNDwv0W3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C972AC4CED1;
-	Wed,  5 Feb 2025 13:57:25 +0000 (UTC)
+	 MIME-Version; b=jExxPcm8TBtig2jzAW5ZjWPqn6Svxn9n2SkWy9/8wVoCpWSsUXYMaT3248HdnCp0RPdz4Y2aWolyGMoOeR5hA3q/uXKW2NQ/FJTmnCpHNeRpvEkMvP8GdqiqRtjOUZl9oxtgocICPoU5fYMbOfCnb+8rWQx0PDRL19tBdHSOELo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiPMtDEF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A5BC4CED1;
+	Wed,  5 Feb 2025 13:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763846;
-	bh=xsZ7UqPuKGByM0oa2NHaD1Cv3dxz4Jw62g9JSnOBdk8=;
+	s=korg; t=1738763856;
+	bh=jiFfABDCQroDxmh4j0HC0QEt0E2PNF2Zh+RKJ853X2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNDwv0W3cjQouJuZzlg9uzOShxvXCFLwt+8rm5N7FTwh/bODTHY6uGZA578jch/U+
-	 frZaCzfqPdMLZc/xhMNhyLkRFlke/k4YPQBzLXKr2zASLtwO7k6Ptiomls57hhC8mO
-	 /bkziMrKTHollFdjz4aJ8JESUGYG+dpSd1Otnfpo=
+	b=tiPMtDEF6cgUE2aOpP+SIBWrefl/d1Na8yKuLcI8WHu+lxlco8c9DWdl7hG5qBXmn
+	 AagO9jtgjKRK0xQqySA/uHbEKbaoQtezM9LtkeN/lWJaKz98qT2PQa8npKqjMf1nh5
+	 K1XCWaIDcp33qVmgKjVOtgAwoqhcP8LetJ68ZwWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/590] drm/msm: Check return value of of_dma_configure()
-Date: Wed,  5 Feb 2025 14:37:01 +0100
-Message-ID: <20250205134457.782293401@linuxfoundation.org>
+Subject: [PATCH 6.12 067/590] drm/msm: dont clean up priv->kms prematurely
+Date: Wed,  5 Feb 2025 14:37:02 +0100
+Message-ID: <20250205134457.821469307@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,55 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b34a7401ffaee45354e81b38a4d072794079cfd6 ]
+[ Upstream commit ebc0deda3c2948d40419677d388b4e6081688a06 ]
 
-Because the of_dma_configure() will returns '-EPROBE_DEFER' if the probe
-procedure of the specific platform IOMMU driver is not finished yet. It
-can also return other error code for various reasons.
+MSM display drivers provide kms structure allocated during probe().
+Don't clean up priv->kms field in case of an error. Otherwise probe
+functions might fail after KMS probe deferral.
 
-Stop pretending that it will always suceess, quit if it fail.
-
-Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 29ac8979cdf7 ("drm/msm/a6xx: use msm_gem for GMU memory objects")
-Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/622782/
-Link: https://lore.kernel.org/r/20241104090738.529848-1-sui.jingfeng@linux.dev
+Fixes: a2ab5d5bb6b1 ("drm/msm: allow passing struct msm_kms to msm_drv_probe()")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 506efcba3129 ("drm/msm: carve out KMS code from msm_drv.c")
+Patchwork: https://patchwork.freedesktop.org/patch/590411/
+Link: https://lore.kernel.org/r/20240420-mdp4-fixes-v1-1-96a70f64fa85@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_kms.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 14db7376c712d..e386b059187ac 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1603,7 +1603,9 @@ int a6xx_gmu_wrapper_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
+diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
+index af6a6fcb11736..6749f0fbca96d 100644
+--- a/drivers/gpu/drm/msm/msm_kms.c
++++ b/drivers/gpu/drm/msm/msm_kms.c
+@@ -244,7 +244,6 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
+ 	ret = priv->kms_init(ddev);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "failed to load kms\n");
+-		priv->kms = NULL;
+ 		return ret;
+ 	}
  
- 	gmu->dev = &pdev->dev;
- 
--	of_dma_configure(gmu->dev, node, true);
-+	ret = of_dma_configure(gmu->dev, node, true);
-+	if (ret)
-+		return ret;
- 
- 	pm_runtime_enable(gmu->dev);
- 
-@@ -1668,7 +1670,9 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
- 
- 	gmu->dev = &pdev->dev;
- 
--	of_dma_configure(gmu->dev, node, true);
-+	ret = of_dma_configure(gmu->dev, node, true);
-+	if (ret)
-+		return ret;
- 
- 	/* Fow now, don't do anything fancy until we get our feet under us */
- 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;
 -- 
 2.39.5
 
