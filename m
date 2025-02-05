@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3804CA2925B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A55AA28EB3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D8C9188C27D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD8F37A0604
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C3615DBA3;
-	Wed,  5 Feb 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8672786348;
+	Wed,  5 Feb 2025 14:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPlq382V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gN+hmirm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A6315CD74;
-	Wed,  5 Feb 2025 14:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431E61519BE;
+	Wed,  5 Feb 2025 14:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766955; cv=none; b=bSLZCnUhcJWsfUIXuHvxGorZQ0gZ52RLpouzdptBh4KNLKh+cwfAfdcFY0XYajAT9TkZU895EI+wkwSOQwkYm+2DAVnwqWRf8HbkQf5qAdB8gE7MU0k9JG9DbfTXO3LfN+mWjeSrYc6FjBAjb1/rwYDQlVhSOSa3IXmMSXJUNDA=
+	t=1738764983; cv=none; b=jinbvY3eFu66s3cMIRRQaW5wCCDV6Lt8mJC4qUz3/iv0pbjX1rxsT0oYmfW4YuQtPiUdHp4xC5qnv3cyLHHRG5mTGO4uKrUqcLanCpEU+9SwQEOTCR0dTTnqL7ICiduXwtolCIa7VWtW/eetXidnWUdgBj9yvegYtUXgF2BDaDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766955; c=relaxed/simple;
-	bh=1arRzAYzMfOL29LO9Ex1gOE0XDyKIzX405PDb16GlwA=;
+	s=arc-20240116; t=1738764983; c=relaxed/simple;
+	bh=hba3cf2Fg3hkp7otQv73gNMKCounjCJtlNSI9Lg25E4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTy3ti3xBNIrOutP+2e/WFqlbs3QSpHPeK93vUm7KlwvihRe0DKagkWxSfSlMuLzHhvVoKIvDIaKpuHxSqhbeh6O96oqCrxzpRmC/XAYaHLjD6TFw4JDjpjKuZRlSebMc1hEngKhxHD1ZLpncWqsHTt+XFAR4+96vO6YLKRwcps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPlq382V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E183AC4CEDD;
-	Wed,  5 Feb 2025 14:49:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ado1TdYAMu2T5dwW5iVwq/kmp+11rmPqBT+u+vgTkQ67N7xgjd/Zrm9Cvuy/EAVVo/DFWnKTIU2YXt4EoC5LWLWhH/41jzHTXf71dpiF0QKNeM5eDw0yNqwdfc6hYMZHUU647dkFF9o4esXR4vz8myDsfEwt3yskPN+hG1GlciU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gN+hmirm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EF2C4CED1;
+	Wed,  5 Feb 2025 14:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766955;
-	bh=1arRzAYzMfOL29LO9Ex1gOE0XDyKIzX405PDb16GlwA=;
+	s=korg; t=1738764983;
+	bh=hba3cf2Fg3hkp7otQv73gNMKCounjCJtlNSI9Lg25E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPlq382Vv6iQtb75IT1n9mw/lj6EeFHUKmJszvAHl3q6aTORnMyQeFTUyazaEdtcN
-	 UC0SKNbGHzWXLp1DusT1oFjNT6tLjH2ejbrF8Tq5kvnNceHa1vJsS05uSkNC/2I+ou
-	 B4wUrAeUGeAWDg/JPYdr4iteUifFFutceFq1RwZY=
+	b=gN+hmirmGlvJe2BrqAM/6obVE1/99b9+Fjrdp6Xm9WGqwwyjl+xPFYvKp2va1cyqF
+	 8SuPcWdjPvPkdpg6siqPLiovyFETB+WIBdN1KwQbyXdexgDm4PqG2DKkzU599ZksRE
+	 xquJBcFAe5YxaE/Dfi/Czn5aM+Qu5gToVQYqY/gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 385/590] arm64: dts: qcom: sdm845: Fix interrupt types of camss interrupts
+Subject: [PATCH 6.6 221/393] arm64: dts: mediatek: mt8195: Remove suspend-breaking reset from pcie1
 Date: Wed,  5 Feb 2025 14:42:20 +0100
-Message-ID: <20250205134509.998282157@linuxfoundation.org>
+Message-ID: <20250205134428.763756919@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit cb96722b728e81ad97f5b5b20dea64cd294a5452 ]
+[ Upstream commit 3d7fdd8e38aafd4858935df2392762c1ab8fb40f ]
 
-Qualcomm IP catalog says that all CAMSS interrupts is edge rising,
-fix it in the CAMSS device tree node for sdm845 SoC.
+The MAC reset for PCIe port 1 on MT8195 when asserted during suspend
+causes the system to hang during resume with the following error (with
+no_console_suspend enabled):
 
-Fixes: d48a6698a6b7 ("arm64: dts: qcom: sdm845: Add CAMSS ISP node")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20241127122950.885982-6-vladimir.zapolskiy@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  mtk-pcie-gen3 112f8000.pcie: PCIe link down, current LTSSM state: detect.quiet (0x0)
+  mtk-pcie-gen3 112f8000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x24 returns -110
+  mtk-pcie-gen3 112f8000.pcie: PM: failed to resume noirq: error -110
+
+This issue is specific to MT8195. On MT8192 with the PCIe reset,
+MT8192_INFRA_RST4_PCIE_TOP_SWRST, added to the DT node, the issue is not
+observed.
+
+Since without the reset, the PCIe controller and WiFi card connected to
+it, work just as well, remove the reset to allow the system to suspend
+and resume properly.
+
+Fixes: ecc0af6a3fe6 ("arm64: dts: mt8195: Add pcie and pcie phy nodes")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20241218-mt8195-pcie1-reset-suspend-fix-v1-1-1c021dda42a6@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 54077549b9da7..0a0cef9dfcc41 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4326,16 +4326,16 @@
- 				"vfe1",
- 				"vfe_lite";
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 5a087404ccc2d..1cb22257adb36 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -1572,9 +1572,6 @@
+ 			phy-names = "pcie-phy";
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_PCIE_MAC_P1>;
  
--			interrupts = <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
--				<GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
-+				<GIC_SPI 469 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "csid0",
- 				"csid1",
- 				"csid2",
+-			resets = <&infracfg_ao MT8195_INFRA_RST2_PCIE_P1_SWRST>;
+-			reset-names = "mac";
+-
+ 			#interrupt-cells = <1>;
+ 			interrupt-map-mask = <0 0 0 7>;
+ 			interrupt-map = <0 0 0 1 &pcie_intc1 0>,
 -- 
 2.39.5
 
