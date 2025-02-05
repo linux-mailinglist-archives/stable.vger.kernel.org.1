@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492D3A29030
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8B9A29045
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 865B4162BF1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2456169EBD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C5C156F39;
-	Wed,  5 Feb 2025 14:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBF2151988;
+	Wed,  5 Feb 2025 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/4wc3dD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvOZxrF/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C941A7DA6A;
-	Wed,  5 Feb 2025 14:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186F67DA6A;
+	Wed,  5 Feb 2025 14:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765952; cv=none; b=PhcuWBLzBDb+OnU6jvtY5rzxcfnEXSaz2MPFetVgIPz8bxDDksw+VY2rRTAwyasPb0PyHHKAv5q99Qh/jM3ypMgckwKOrDIJnhh0vLK5KA0MgZYJ3o8b+RyKrmiA5X/mBrd6oohu4YHNZYmyJVbRzrElB3iSmtyLp7N6uxTnk20=
+	t=1738766011; cv=none; b=jskQsdAXCtL2kkYNmlpLkEnG+GCbEFhaK/YskRQ1RroyIgwx35Mac8gj1YlNubGPdtiUoDvwDto9LmQBF2KcxMeHLZKF71inbDSsTVhLfOZVXzP8DcTQ0v0dSkSvYOjfp+EugPlD8s9O88H1olOIapulVr/WX8/DhS+T7HKAUN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765952; c=relaxed/simple;
-	bh=2t1KRYrpeRJ8c0Iz/qGe9jFuE74FSkMzeekSJ+QHgJY=;
+	s=arc-20240116; t=1738766011; c=relaxed/simple;
+	bh=lsbON/a0+6Utj6DfBV4DTu70DqLY3m7qJzdqnkHyHws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A7nz22AYP8GQHt2OmEtxOt8MhsQsGiadVOj6cQegWtupVDzQlxGJE5Tj0dJik+/66aqHuwoBshTzG68OS7xQMI8Q85xcAhTX5i+zXP3PHbEHThdCE1tDLCTwE2yX91XFwKuDwICwwtd/dZS3EpEUuEB4ey7i8jqGXacl0bzYS8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/4wc3dD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BD9C4CED1;
-	Wed,  5 Feb 2025 14:32:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dIwwmNUjHl1KqxWotGqUcxrNXrXWd0kITCrBxUR7XFkmG78HaOgMlyOHy1N4XDYK3hTf4mJzq0r4CZe5zJJZAqZVJ699afONoF0M9Nt0HFxqiBw4uvnUKP9irFz8kgngA1PvhlyrQqu26vbYMI7twiVaGWmF9AOOZf1uy0EP85o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvOZxrF/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7719AC4CED1;
+	Wed,  5 Feb 2025 14:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765952;
-	bh=2t1KRYrpeRJ8c0Iz/qGe9jFuE74FSkMzeekSJ+QHgJY=;
+	s=korg; t=1738766010;
+	bh=lsbON/a0+6Utj6DfBV4DTu70DqLY3m7qJzdqnkHyHws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/4wc3dD6LOVFPW7F/rjwSeTkbb5k4HMqfrwCpwiErUQhBfC0zMuwLWg7UsdjaMUV
-	 AIOQsLcwNio4uZpkhmozacixmz1nhuXmZM0KS84ZOPOjKHk5oZbyx1WCzRcj5smUbj
-	 hg4Q8f62kLrZdwlUgzZdT/rluC/eHRsDrENweWEY=
+	b=CvOZxrF/BUGQRKM9/YXlZDUzPQMNXgV8fI024kDxWQgauqc94ZxlEHN65QlIjnEUY
+	 FCEuVmeaIluMMyVpcOw7vljcjeJhh+fY6Se9A/ZrRYfxtotHni1L9hhoGqEGZKmkW5
+	 aPTP/SJAQ5gLUmwzZL7JROTzo64boPngBWjf8epc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
+	Mohamed Khalfella <khalfella@gmail.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/393] PCI: imx6: Skip controller_id generation logic for i.MX7D
-Date: Wed,  5 Feb 2025 14:43:39 +0100
-Message-ID: <20250205134431.792106521@linuxfoundation.org>
+Subject: [PATCH 6.6 301/393] PCI: endpoint: pci-epf-test: Set dma_chan_rx pointer to NULL on error
+Date: Wed,  5 Feb 2025 14:43:40 +0100
+Message-ID: <20250205134431.829679238@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -70,39 +70,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Mohamed Khalfella <khalfella@gmail.com>
 
-[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
+[ Upstream commit b1b1f4b12969130c0a6ec0cf0299460cb01e799c ]
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+If dma_chan_tx allocation fails, set dma_chan_rx to NULL after it is
+freed.
 
-Fix by removing "IMX7D" from the switch case branch.
-
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Link: https://lore.kernel.org/r/20241227160841.92382-1-khalfella@gmail.com
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Signed-off-by: Mohamed Khalfella <khalfella@gmail.com>
+[kwilczynski: commit log]
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 20c8f2cba4536..822a750b064b2 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1281,7 +1281,6 @@ static int imx6_pcie_probe(struct platform_device *pdev)
- 	switch (imx6_pcie->drvdata->variant) {
- 	case IMX8MQ:
- 	case IMX8MQ_EP:
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx6_pcie->controller_id = 1;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index 1f0d2b84296a3..fa7ae8cedb676 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -251,7 +251,7 @@ static int pci_epf_test_init_dma_chan(struct pci_epf_test *epf_test)
  
+ fail_back_rx:
+ 	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_tx = NULL;
++	epf_test->dma_chan_rx = NULL;
+ 
+ fail_back_tx:
+ 	dma_cap_zero(mask);
 -- 
 2.39.5
 
