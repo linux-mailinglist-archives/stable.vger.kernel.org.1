@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BE7A28C9C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A43A28FB4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F9E13A1D62
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 548903A19C3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34242149C53;
-	Wed,  5 Feb 2025 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABB915852E;
+	Wed,  5 Feb 2025 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFopKk62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nW2Yl0iB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24CB142E86;
-	Wed,  5 Feb 2025 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A1A156F44;
+	Wed,  5 Feb 2025 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763504; cv=none; b=d6ks+RmJ5btNCpoz5cF6htYexmZK2itdSo8BieRUJbCp6ANc8x339KUf/Ozo1zn7Y236LrI0ts4JSx9hqixmxgSql2sdux4yH40PW1RCjS4aTseWHlZ2mhcYgXrIBwT+OtQEcrT165m/B6/JFAppim8sGNHAVV91km+Dk8FLw3k=
+	t=1738765631; cv=none; b=ga1a5wD8AAXQGTckHf2BB0IgWQl/ahqUHDaN/5rcGO5R0f/Jy70rLU5cst6c7PpK5MXUNGPGnCs94H1Mr6kMBmm4mOx3nuKBH3T/tobFz7zTjsAx+Tbraaqk6PJyYFbjXy/SOf+Wr0jsCNzYsEgsnZBBfvFHVbyWzYh8J9r1XZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763504; c=relaxed/simple;
-	bh=Ky4CApXQhAiLwMIF1Yft5ndO0gr84RtC4sCyQLpMp10=;
+	s=arc-20240116; t=1738765631; c=relaxed/simple;
+	bh=BMZawqKjQShKetbUQ6K1fjWw+hQa/qbFiJfqkSkM6js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKOEy0IYVqUV+TuDd6DfgvGjFALF+EntcR2Tk85w71q7T0qYioU/JQr8Z/XSHA9lK0AkTJvhqAZ6sqJ6I7aB1he9j+NPigacu1BuIu3Uf7o4VBD1GOzuxNC1X7qdwDHZ7KkygEclbGktvaiLnCZSZ4CsLR6W6FLiIrIhlEm8Zvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFopKk62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48213C4CED1;
-	Wed,  5 Feb 2025 13:51:43 +0000 (UTC)
+	 MIME-Version; b=A5AZPVLK+jOdbJuB7Myy5KF88pBrngHN9WgoC6x/UG3g7bp7LiWCmAoN79zTJRhVngzRUi1vNIn838IMLTT7ly0GBc1paOe0sjClK8JT4WqF3btm06/ZTGw+c7M/NnWsltqRtwpUMUqMp2UTqO8bF1sagnAWiXWzhBeW+bxeGZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nW2Yl0iB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B65C4CED1;
+	Wed,  5 Feb 2025 14:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763503;
-	bh=Ky4CApXQhAiLwMIF1Yft5ndO0gr84RtC4sCyQLpMp10=;
+	s=korg; t=1738765631;
+	bh=BMZawqKjQShKetbUQ6K1fjWw+hQa/qbFiJfqkSkM6js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFopKk62D5W2ZVqQqs/zcOvBm5RDr/HiotcHMN63hOGwSd/7gZaJvkzUSfJHfOTIu
-	 okuieOYNa/AHZqW73YKGkt8x/niZfVS/9YRPPbBVdWA1SRS8APD0pMTYnAnlnVYpDD
-	 ZDrAh7xy+bTKDCw6cejUC/v5KOKmB/nwE+iwTB3c=
+	b=nW2Yl0iB3LB8YrbfsUx+ExWcGALER2GQ6/GTnMTRZ1pmRkJbHEkrj5yb6hndqX66T
+	 WE4EO9E0h8BN5GE9va7jg8fXBsp0tqE6Kq9migHJjumuSCwRtRBDrl0+p2vGyMWwOV
+	 VgNI63fnHHkbLSJJunhwmsbSg/L9Elte4O3BHJIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	He Rongguang <herongguang@linux.alibaba.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/393] cpupower: fix TSC MHz calculation
+Subject: [PATCH 6.12 238/590] ASoC: cs40l50: Use *-y for Makefile
 Date: Wed,  5 Feb 2025 14:39:53 +0100
-Message-ID: <20250205134423.123955329@linuxfoundation.org>
+Message-ID: <20250205134504.385743518@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: He Rongguang <herongguang@linux.alibaba.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9d6c0e58514f8b57cd9c2c755e41623d6a966025 ]
+[ Upstream commit 3f0b8d367db5b0c0a0096b1c2ff02ec7c5c893b6 ]
 
-Commit 'cpupower: Make TSC read per CPU for Mperf monitor' (c2adb1877b7)
-changes TSC counter reads per cpu, but left time diff global (from start
-of all cpus to end of all cpus), thus diff(time) is too large for a
-cpu's tsc counting, resulting in far less than acutal TSC_Mhz and thus
-`cpupower monitor` showing far less than actual cpu realtime frequency.
+We should use *-y instead of *-objs in Makefile for the module
+objects.  *-objs is used rather for host programs.
 
-/proc/cpuinfo shows frequency:
-cat /proc/cpuinfo | egrep -e 'processor' -e 'MHz'
-...
-processor : 171
-cpu MHz   : 4108.498
-...
-
-before fix (System 100% busy):
-    | Mperf              || Idle_Stats
- CPU| C0   | Cx   | Freq  || POLL | C1   | C2
- 171|  0.77| 99.23|  2279||  0.00|  0.00|  0.00
-
-after fix (System 100% busy):
-    | Mperf              || Idle_Stats
- CPU| C0   | Cx   | Freq  || POLL | C1   | C2
- 171|  0.46| 99.54|  4095||  0.00|  0.00|  0.00
-
-Fixes: c2adb1877b76 ("cpupower: Make TSC read per CPU for Mperf monitor")
-Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: c486def5b3ba ("ASoC: cs40l50: Support I2S streaming to CS40L50")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241203141823.22393-2-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../cpupower/utils/idle_monitor/mperf_monitor.c   | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ sound/soc/codecs/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-index ae6af354a81db..08a399b0be286 100644
---- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-+++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
-@@ -33,7 +33,7 @@ static int mperf_get_count_percent(unsigned int self_id, double *percent,
- 				   unsigned int cpu);
- static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- 				unsigned int cpu);
--static struct timespec time_start, time_end;
-+static struct timespec *time_start, *time_end;
- 
- static cstate_t mperf_cstates[MPERF_CSTATE_COUNT] = {
- 	{
-@@ -174,7 +174,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
- 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
- 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
- 	} else if (max_freq_mode == MAX_FREQ_SYSFS) {
--		timediff = max_frequency * timespec_diff_us(time_start, time_end);
-+		timediff = max_frequency * timespec_diff_us(time_start[cpu], time_end[cpu]);
- 		*percent = 100.0 * mperf_diff / timediff;
- 		dprint("%s: MAXFREQ - mperf_diff: %llu, time_diff: %llu\n",
- 		       mperf_cstates[id].name, mperf_diff, timediff);
-@@ -207,7 +207,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
- 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
- 		/* Calculate max_freq from TSC count */
- 		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
--		time_diff = timespec_diff_us(time_start, time_end);
-+		time_diff = timespec_diff_us(time_start[cpu], time_end[cpu]);
- 		max_frequency = tsc_diff / time_diff;
- 	}
- 
-@@ -226,9 +226,8 @@ static int mperf_start(void)
- {
- 	int cpu;
- 
--	clock_gettime(CLOCK_REALTIME, &time_start);
--
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
-+		clock_gettime(CLOCK_REALTIME, &time_start[cpu]);
- 		mperf_get_tsc(&tsc_at_measure_start[cpu]);
- 		mperf_init_stats(cpu);
- 	}
-@@ -243,9 +242,9 @@ static int mperf_stop(void)
- 	for (cpu = 0; cpu < cpu_count; cpu++) {
- 		mperf_measure_stats(cpu);
- 		mperf_get_tsc(&tsc_at_measure_end[cpu]);
-+		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
- 	}
- 
--	clock_gettime(CLOCK_REALTIME, &time_end);
- 	return 0;
- }
- 
-@@ -349,6 +348,8 @@ struct cpuidle_monitor *mperf_register(void)
- 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
- 	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
- 	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
-+	time_start = calloc(cpu_count, sizeof(struct timespec));
-+	time_end = calloc(cpu_count, sizeof(struct timespec));
- 	mperf_monitor.name_len = strlen(mperf_monitor.name);
- 	return &mperf_monitor;
- }
-@@ -361,6 +362,8 @@ void mperf_unregister(void)
- 	free(aperf_current_count);
- 	free(tsc_at_measure_start);
- 	free(tsc_at_measure_end);
-+	free(time_start);
-+	free(time_end);
- 	free(is_valid);
- }
- 
+diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
+index 54cbc3feae327..56c519a5c897b 100644
+--- a/sound/soc/codecs/Makefile
++++ b/sound/soc/codecs/Makefile
+@@ -79,7 +79,7 @@ snd-soc-cs35l56-shared-y := cs35l56-shared.o
+ snd-soc-cs35l56-i2c-y := cs35l56-i2c.o
+ snd-soc-cs35l56-spi-y := cs35l56-spi.o
+ snd-soc-cs35l56-sdw-y := cs35l56-sdw.o
+-snd-soc-cs40l50-objs := cs40l50-codec.o
++snd-soc-cs40l50-y := cs40l50-codec.o
+ snd-soc-cs42l42-y := cs42l42.o
+ snd-soc-cs42l42-i2c-y := cs42l42-i2c.o
+ snd-soc-cs42l42-sdw-y := cs42l42-sdw.o
 -- 
 2.39.5
 
