@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-113138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA96FA2903B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21904A2916F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598AD3AA404
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85258188290C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA852155747;
-	Wed,  5 Feb 2025 14:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A1120C026;
+	Wed,  5 Feb 2025 14:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfHFbtYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejx20fTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96429347CC;
-	Wed,  5 Feb 2025 14:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C38207669;
+	Wed,  5 Feb 2025 14:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765949; cv=none; b=DlY4o6nupxl9AFHPXrRiEkwNMSgUnSLg2ry6p5b6kwdnl/tnp7RKO5U5iyTDiTuea6X0VyCY+C2ygTiYJbA0OQC8xjo5TyMaRumEMGSaJxp+O+WPzKf7Y2U8jdhGAx3LKTUkowz58T381eHwtnpLBj7ed8P/8w6Hsv6csgQd04E=
+	t=1738766514; cv=none; b=Zwm54/Whv7GXcTpTGAZonq5A7DbUwFsEHolhhYWJSUFIA1x6eRoeIk8SSUFlrypAPrQnMAA/4KBtAvKp5e75C2Js0z0CX3QL1hb3lNOhzssQgGMvXYp/ti08FvX2XrQdEFaOd4LiGkaIY1U9KXiuUUUHZ3ZONeMMPW3NCUrHU8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765949; c=relaxed/simple;
-	bh=sgg1ktQLV5/V2rSwnYMaMJmvjkWDMlls7oM0dhDcbhA=;
+	s=arc-20240116; t=1738766514; c=relaxed/simple;
+	bh=9KfBS26UnMtj1lx4naqHh46TeMHq00cc4CEKTmnVbpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXXHkMbXsEqBacildPYpaUBA4EuQsm3X4Ky2bBr9dJ/segb//i6m0W1jg2KUUa1GXaf9OU0YAyWZkHvOLEQTHnTtmk7aDaZeVCKS0DTyNFrU3b+3LbibmRyrkF2AGCI/UppbO4k2Tv8UudtBaGNYjYfH3qKIFmYqwE3tACnL7AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfHFbtYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D8FC4CED1;
-	Wed,  5 Feb 2025 14:32:28 +0000 (UTC)
+	 MIME-Version; b=pyRG443xdYVMSyF1hOjsukTaXoaTYUCNDV0che27VYH2+VqHGVJCWATlgBhOSzylakcntpriJzuwxOdkGMh1onyRHxDsdWPNoUjbR/1C7x/Ks471k/dX+uSazXtWcdEnYwHUg8IZ2gySDVp2joLpyo2VzJQ0Zph00PgcBWBp/9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejx20fTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A763C4CEE2;
+	Wed,  5 Feb 2025 14:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765949;
-	bh=sgg1ktQLV5/V2rSwnYMaMJmvjkWDMlls7oM0dhDcbhA=;
+	s=korg; t=1738766513;
+	bh=9KfBS26UnMtj1lx4naqHh46TeMHq00cc4CEKTmnVbpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfHFbtYOA3WDuH9jfQ14Ql1+E0q9FZW66bR3nF0pjyYx9ZItcCUrV29O5gRJQ00eS
-	 ro07cHxikyK3KTcciH7tcml4Zaz4lPbvk/GTtrDQUMUrUIP5uxe+zjXGhwyldzTQIQ
-	 XEK8V/R4KVyZPs9EZW5udwsWymsil9tXgZL5+8U8=
+	b=ejx20fTlkvxM6Te7P6QDy9MQZYuGsLdGvbrzg0uYR1rTMDuHseYR7XQ8ZwGHI/h7c
+	 VLMyKip21SFqlW7FjOSGN5mxohUJsUnob8k+Y+hvufgN+lhknsI9LfO3hQY7TbPzdz
+	 6SFGEO0AeOEMCYyH3H2taa15ZyJXqnP2Dgoyvl+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <songliubraving@fb.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/590] perf machine: Dont ignore _etext when not a text symbol
+Subject: [PATCH 6.13 283/623] ALSA: seq: Make dependency on UMP clearer
 Date: Wed,  5 Feb 2025 14:40:25 +0100
-Message-ID: <20250205134505.603797915@linuxfoundation.org>
+Message-ID: <20250205134507.058484423@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,70 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7a93786c306296f15e728b1dbd949a319e4e3d19 ]
+[ Upstream commit 9001d515443518d72222ba4d58e247696b625071 ]
 
-Depending on how vmlinux.lds is written, _etext might be the very first
-data symbol instead of the very last text symbol.
+CONFIG_SND_SEQ_UMP_CLIENT is a Kconfig for a sequencer client
+corresponding to the UMP rawmidi, while we have another major knob
+CONFIG_SND_SEQ_UMP that specifies whether the sequencer core supports
+UMP packets or not.  Strictly speaking both of them are independent,
+but practically seen, it makes no sense to enable
+CONFIG_SND_SEQ_UMP_CLIENT without UMP support itself.
 
-Don't require it to be a text symbol, accept any symbol type.
+This patch makes such an implicit dependency clearer.  Now
+CONFIG_SND_SEQ_UMP_CLIENT depends on both CONFIG_SND_UMP and
+CONFIG_SND_SEQ_UMP.  Meanwhile, CONFIG_SND_SEQ_UMP is enabled as
+default when CONFIG_SND_UMP is set.
 
-Comitter notes:
-
-See the first Link for further discussion, but it all boils down to
-this:
-
- ---
-  # grep -e _stext -e _etext -e _edata /proc/kallsyms
-  c0000000 T _stext
-  c08b8000 D _etext
-
-  So there is no _edata and _etext is not text
-
-  $ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
-  c0000000 g       .head.text	00000000 _stext
-  c08b8000 g       .rodata	00000000 _etext
-  c1378000 g       .sbss	00000000 _edata
- ---
-
-Fixes: ed9adb2035b5be58 ("perf machine: Read also the end of the kernel")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Link: https://lore.kernel.org/r/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 81fd444aa371 ("ALSA: seq: Bind UMP device")
+Link: https://patch.msgid.link/20250101125548.25961-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 27d5345d2b307..9be2f4479f525 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -1003,7 +1003,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
+diff --git a/sound/core/seq/Kconfig b/sound/core/seq/Kconfig
+index 0374bbf51cd4d..e4f58cb985d47 100644
+--- a/sound/core/seq/Kconfig
++++ b/sound/core/seq/Kconfig
+@@ -62,7 +62,7 @@ config SND_SEQ_VIRMIDI
  
- 	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
- 	if (err)
--		err = kallsyms__get_function_start(filename, "_etext", &addr);
-+		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
- 	if (!err)
- 		*end = addr;
+ config SND_SEQ_UMP
+ 	bool "Support for UMP events"
+-	default y if SND_SEQ_UMP_CLIENT
++	default SND_UMP
+ 	help
+ 	  Say Y here to enable the support for handling UMP (Universal MIDI
+ 	  Packet) events via ALSA sequencer infrastructure, which is an
+@@ -71,6 +71,6 @@ config SND_SEQ_UMP
+ 	  among legacy and UMP clients.
  
+ config SND_SEQ_UMP_CLIENT
+-	def_tristate SND_UMP
++	def_tristate SND_UMP && SND_SEQ_UMP
+ 
+ endif # SND_SEQUENCER
 -- 
 2.39.5
 
