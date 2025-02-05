@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DC9A28E72
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2675BA28DB2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CF457A150D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 288B71885F41
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82ED14A088;
-	Wed,  5 Feb 2025 14:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAE85228;
+	Wed,  5 Feb 2025 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfToKZuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgeTWzzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758C315198D;
-	Wed,  5 Feb 2025 14:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC85CF510;
+	Wed,  5 Feb 2025 14:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764770; cv=none; b=QwKYae9g1yskaYkbCsFcfo9OuNrXH9zRq1jzmvinEdsUnBVVsjmR18Q0FBcrSyBQzqZI2QQChWMxsckngcFT/rQngSo8iqSXuzIj4kql4GK+3h05Nz4eJU4fmqzfRTwsb7KU7eagxUuVq6qlbMD/aBAkwCZ1tGpNmEGYts8a9xo=
+	t=1738764213; cv=none; b=kApLJwGyIH1Kz2afXFBvvSSpxV1qzoGVtIR1qQpEkXkc4l+r5iNgtpZwb5EZRxXSNZx7T7/7zQon4cNU6RrNxwCJp+3Noaq6CRqrJ85G819P1FmxB/GPXL1l7bOWBVU6dDiqYNm6z/e37TklgN8I+mVy6OQG1qyuQrRBWoTFcm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764770; c=relaxed/simple;
-	bh=z5bMtcdCJr7FriL9JMkNTKmLGoxn59uWfv+7+sQTOO4=;
+	s=arc-20240116; t=1738764213; c=relaxed/simple;
+	bh=NcPiZSAr/xEVqoEFFG2zoltGPlKbTGkr76Fd+chfIoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eK+T68dPX73jTIpafpt+ecKXB8RsQIjko1uatfsGl7e9AX3zdOoGPVRdNAeefqZGWuntLmptK4KOYKzlkXNgPUizaL59Ermi6f8w8z/+vi7tfuP47UP/f4Oa7qsvkWz2xFJysPwOzSOdhiMKwU16kJxDxe2gj4uQ/yoFfgXtQuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfToKZuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2F4C4CED1;
-	Wed,  5 Feb 2025 14:12:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U+8/M5pWQG0Q+H0B+XloV+qvR3p2J3QTQ//uIHO91pM90yvoH8uVVOTjo6TNRzvx8596B9qZhSHIE7gxa+p8tMTgo0M/voa1/gxhkz+yNm2T0E7K7L/i6NQjlP4RL4Gr3DPG2sMwu0X8ZaqiGGQ9ynFRfJQm3KNx2ykRg2bSl5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgeTWzzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B589C4CED1;
+	Wed,  5 Feb 2025 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764770;
-	bh=z5bMtcdCJr7FriL9JMkNTKmLGoxn59uWfv+7+sQTOO4=;
+	s=korg; t=1738764213;
+	bh=NcPiZSAr/xEVqoEFFG2zoltGPlKbTGkr76Fd+chfIoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfToKZuzTF0ZsP4umitZUHMI2UU9J6YjDZDuXmwidUb+8MbBcRBD2YaUJtecHVAyj
-	 3llDm0NjH8nGKY9U2+iJCZLzqR+dR+FFD8Ehj7ThHAopsrj+PrUEaz9cv/qUukd/te
-	 GEx3sWrVu5ScEc8mSZ8lkk0Fq2jJJWAZURvwAZQc=
+	b=YgeTWzzn7eVfqmVfNvYghUnY5Vtz2hA1vovi+RO4VVlOm5NTtFdiTIVYsKVQ05Hcv
+	 3mx7MHN71tWV5iUDu19VGqIh/sgNdeYV2I+0GW0NkExd2fddd36zr25AtziR1wFrir
+	 N2hPeo5NGLaJ/CcCF7yx+s+7r7f+829TEEu1Uapg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Marcel Hamer <marcel.hamer@windriver.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 112/623] hwmon: (nct6775): Actually make use of the HWMON_NCT6775 symbol namespace
+Subject: [PATCH 6.12 099/590] wifi: brcmfmac: add missing header include for brcmf_dbg
 Date: Wed,  5 Feb 2025 14:37:34 +0100
-Message-ID: <20250205134500.500469963@linuxfoundation.org>
+Message-ID: <20250205134459.045186413@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Marcel Hamer <marcel.hamer@windriver.com>
 
-[ Upstream commit 2505f87eb3af55f3dd7f57d7cb7783b94b52a2d9 ]
+[ Upstream commit b05d30c2b6df7e2172b18bf1baee9b202f9c6b53 ]
 
-DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
-is included. So move the define above the include block.
+Including the fwil.h header file can lead to a build error:
 
-Fixes: c3963bc0a0cf ("hwmon: (nct6775) Split core and platform driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h: \
+	In function ‘brcmf_fil_cmd_int_set’:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h:90:9: error: implicit \
+	declaration of function ‘brcmf_dbg’ [-Werror=implicit-function-declaration]
+   90 |         brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
+      |         ^~~~~~~~~
+
+The error is often avoided because the debug.h header file is included
+before the fwil.h header file.
+
+This makes sure the header include order is irrelevant by explicitly adding the
+debug.h header.
+
+Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
+Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241211133618.2014083-1-marcel.hamer@windriver.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index c243b51837d2f..fa3351351825b 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -42,6 +42,9 @@
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+index 31e080e4da669..ab3d6cfcb02bd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+@@ -6,6 +6,8 @@
+ #ifndef _fwil_h_
+ #define _fwil_h_
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#undef DEFAULT_SYMBOL_NAMESPACE
-+#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
++#include "debug.h"
 +
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/slab.h>
-@@ -56,9 +59,6 @@
- #include "lm75.h"
- #include "nct6775.h"
- 
--#undef DEFAULT_SYMBOL_NAMESPACE
--#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
--
- #define USE_ALTERNATE
- 
- /* used to set data->name = nct6775_device_names[data->sio_kind] */
+ /*******************************************************************************
+  * Dongle command codes that are interpreted by firmware
+  ******************************************************************************/
 -- 
 2.39.5
 
