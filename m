@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-113011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E795A28F96
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCF0A28F8A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA653A6D2E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4147318846BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF30155333;
-	Wed,  5 Feb 2025 14:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99658155382;
+	Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b32tFcwC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGk7A5NK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5F71459F6;
-	Wed,  5 Feb 2025 14:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635614A088;
+	Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765522; cv=none; b=tQllNjW3edFbYACvuPRpbcnIX4sAnnIluIyBtIQ5GF1G6JY87/UMwWANVoxDxMi2i+hQwyrmzWckb4ZZbA2MH5rJ7fbam/LyVN6zs+gA/Bsq7kFg8Jvs2ePUD6l3CYwRxoHMivUUhgvZOxlx048MyMPw28DEpy8XGDv7tBQ2Dq4=
+	t=1738765574; cv=none; b=Qc+jHho1c0AAaZuVMuBUOD5F5YvIoWRZ8BWlTbRAP6udxYwoXe0Qif/WhfyA5l+CxWVEu2iEhF04j4G5T6mvMKxHmSfApKBCF65kailpQn4lGR5ZHvBxhAejFEcmZ1H5NRW8gJE3xjAuEwOnq2OP5KpYInh3aGF8yw8DnjhKk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765522; c=relaxed/simple;
-	bh=1EMZ6cyu0lQko5kDWhcLb68uOhXoy++58Fj7YBYsQlQ=;
+	s=arc-20240116; t=1738765574; c=relaxed/simple;
+	bh=CBgYBFcQ0fUKLakHV1mpTJdRbtrPQiTYJfXquD7D3BI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtVc6XA7UUlyQtsMk51yz/+5neAvDhrgqcd0trijTHYp1wJWNAV+luEYa7nIRWbYSd3e6iMzjzXCsNCHKQtMhx7G/QTAOwISN8cvW05W2A3rZgIBI9YsKH/U1UxVRjXlDQq+ixWfPoOH+8mpHbCX5CTiX/BSIU7kSPr0jKFtTA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b32tFcwC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F141C4CED1;
-	Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
+	 MIME-Version; b=oxhrxr6RZbebWqgnKWx4m4jH+CG3B5Wy/V2Vd/6ZDV7v9vnYSkUsbp/d9z/pnoF/cEdZmujoQh6Yg9KYKen7Lutl/jVZaSIHr4gS7ag3uwjLTE1lWGHTUzIPDXCWT9qbYw8MwGuQxdfdJHb5IwsAZtBEOssPsB7cZGMNXYGYsIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGk7A5NK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A56C4CED1;
+	Wed,  5 Feb 2025 14:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765522;
-	bh=1EMZ6cyu0lQko5kDWhcLb68uOhXoy++58Fj7YBYsQlQ=;
+	s=korg; t=1738765574;
+	bh=CBgYBFcQ0fUKLakHV1mpTJdRbtrPQiTYJfXquD7D3BI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b32tFcwCda924C/mKmy8ySMPxv88I3f7acAzTMKC5SPLrOeEpMZW29vernV7j84JL
-	 qNtZhWvKbUbqpkmpUUaheweKvD6cy6RQ8OWBJpc0xvS6tZ6ROCa3SEpRRcKX3CCcoP
-	 nBvqzsBOn9wmlxLXtt28AY6nX8k7+e/HVcpmlXpE=
+	b=PGk7A5NK+QHVN+p7k6o8c3EklfrucdaL4dNg1ubTrULUGZgTrkLkPpL7ReMZxjkhU
+	 Ld3JHX/TgoPy6PuY50vHGJJMpo7fSKAj0n0JxjoTxUhQxxw6wJPnmcvaW+TfPsWTJH
+	 cR4cNjM2BobqlnZUsAfg6h+D4UK2XXE0PUoc8e/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 170/623] wifi: mac80211: Fix common size calculation for ML element
-Date: Wed,  5 Feb 2025 14:38:32 +0100
-Message-ID: <20250205134502.737830709@linuxfoundation.org>
+Subject: [PATCH 6.13 171/623] wifi: mac80211: dont flush non-uploaded STAs
+Date: Wed,  5 Feb 2025 14:38:33 +0100
+Message-ID: <20250205134502.777136745@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,69 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 19aa842dcbb5860509b7e1b7745dbae0b791f6c4 ]
+[ Upstream commit aa3ce3f8fafa0b8fb062f28024855ea8cb3f3450 ]
 
-When the ML type is EPCS the control bitmap is reserved, the length
-is always 7 and is captured by the 1st octet after the control.
+If STA state is pre-moved to AUTHORIZED (such as in IBSS
+scenarios) and insertion fails, the station is freed.
+In this case, the driver never knew about the station,
+so trying to flush it is unexpected and may crash.
 
-Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Check if the sta was uploaded to the driver before and
+fix this.
+
+Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.5790376754a7.I381208cbb72b1be2a88239509294099e9337e254@changeid
+Link: https://patch.msgid.link/20250102161730.e3d10970a7c7.I491bbcccc46f835ade07df0640a75f6ed92f20a3@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ net/mac80211/driver-ops.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 05dedc45505ce..a96db2915aabe 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -5055,28 +5055,24 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
- {
- 	const struct ieee80211_multi_link_elem *mle = (const void *)data;
- 	u16 control = le16_to_cpu(mle->control);
--	u8 common = 0;
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index edd1e4d4ad9d2..ca04f2ff9f44e 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -724,6 +724,9 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
+ 	if (sdata && !check_sdata_in_driver(sdata))
+ 		return;
  
- 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
- 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
- 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
- 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
- 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
-+	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
- 		/*
- 		 * The length is the first octet pointed by mle->variable so no
- 		 * need to add anything
- 		 */
- 		break;
--	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
--		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
--			common += ETH_ALEN;
--		return common;
- 	default:
- 		WARN_ON(1);
- 		return 0;
- 	}
- 
--	return sizeof(*mle) + common + mle->variable[0];
-+	return sizeof(*mle) + mle->variable[0];
- }
- 
- /**
-@@ -5314,8 +5310,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 		check_common_len = true;
- 		break;
- 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
--		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
--			common += ETH_ALEN;
-+		common = ETH_ALEN + 1;
- 		break;
- 	default:
- 		/* we don't know this type */
++	if (!sta->uploaded)
++		return;
++
+ 	trace_drv_flush_sta(local, sdata, &sta->sta);
+ 	if (local->ops->flush_sta)
+ 		local->ops->flush_sta(&local->hw, &sdata->vif, &sta->sta);
 -- 
 2.39.5
 
