@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE70A28DA2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5711A29081
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 495CC3A8A98
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C57923A5F87
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA5F1519AA;
-	Wed,  5 Feb 2025 14:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBB414B959;
+	Wed,  5 Feb 2025 14:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRFS+vrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3AtRnGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9FE5228;
-	Wed,  5 Feb 2025 14:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F3A151988;
+	Wed,  5 Feb 2025 14:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764090; cv=none; b=enyYbXvpR0h3wfYvgyodUuIY3Fs7PShL00KdD5Hiagic+tswPuT24PCkDmsU3s5UKihyAb3uyyeT4NMCgozeIHaBbI0U03u3FN6vd6Y8H9dH/yFGWH5RC4Pq8k7BDv9KIIpbTUTWUEO7UwPrqlyuE8sG4yKkzGN49Nzmfj0GpRQ=
+	t=1738766210; cv=none; b=MHMCYvzA/PLadnfvORDMXMF0ceAiyGePhIOL2vhQV2pUH+nrnRJ64AXk9+kTcCUHNViyOweQWPpZRbQW3fbowo92h+p4+QbJirztHkkcaxkSksKihlemM1HqTuyO/Nb6cmNuXVT19c4zPdvUh9K5RQ0pZUEGk5ocTAkP78dLib8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764090; c=relaxed/simple;
-	bh=ScP+PjFTU3C9OHfPG6A9QesdeCIXpLg5rbZgUi9OVCs=;
+	s=arc-20240116; t=1738766210; c=relaxed/simple;
+	bh=R6D7pGiWtKmiFN08p6/wsAVrCrjjxVXIkOB29p7ZLOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqQhKI+z1sDvwv81zUNP6csCfYkEERsBlzo7r6Og/aU5W05OTTMyYXXWMvcMKJ16f6PyemPEk7xGTcwqTC03+0AIB2JZj4GK2Drf9s/xpfF3AGYlFOEdHs5Xsaamo936y1zuTDVqY0vgn1HKS1I9DpGwMvOobD7f9fO0Ynvme+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRFS+vrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D5EC4CED1;
-	Wed,  5 Feb 2025 14:01:29 +0000 (UTC)
+	 MIME-Version; b=fhDVOBIGy6Qj3XGzlVLveGDrR3HFffvH229qaUiFKIm06eTgQa9e26Sc/SfgqFPmO003ujPuGaTql2VqIm4GgEGTFo8I4wdJQo4jRQ8tNei5qGtnvisvzRhA+bH2YZMwSjapcoTJiE1wCg1EM5txhw81ntwRe8TgtdFTzXbph4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3AtRnGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9DEC4CED1;
+	Wed,  5 Feb 2025 14:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764089;
-	bh=ScP+PjFTU3C9OHfPG6A9QesdeCIXpLg5rbZgUi9OVCs=;
+	s=korg; t=1738766210;
+	bh=R6D7pGiWtKmiFN08p6/wsAVrCrjjxVXIkOB29p7ZLOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRFS+vrgiVIZYwWR0/P9pQn1AF5DRW6VPXBoCg9rMjuOrvbLuCAWnc3cBIu+qKD6H
-	 wIWVzIl6uzdpaTTBwDp/J7JHD1T64jpbyO5NEVb9f33XJkDozrbfgjNxliV1UaGrdd
-	 3yQJPZBKmyTMwFsnMdPKojtWqPUHwvDiWCuriNbU=
+	b=G3AtRnGANvnKW3zbSZKiQW6RLcziW8hVr5gIU3LIZfxp5Vuh2Of7ryGooXeuuwOS+
+	 QAdJkEp9wbGBoBY1DOrFM/WGRAWfmrJ2JYD5fcZJqS+tlJCRvzxtI4kwQPexii61po
+	 BP7mjhMcjROe1CiiFnmQquTwhj7QtK3FXFUUmey8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Breno Leitao <leitao@debian.org>,
+	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/393] selftests: timers: clocksource-switch: Adapt progress to kselftest framework
-Date: Wed,  5 Feb 2025 14:40:51 +0100
-Message-ID: <20250205134425.347473544@linuxfoundation.org>
+Subject: [PATCH 6.12 297/590] rhashtable: Fix rhashtable_try_insert test
+Date: Wed,  5 Feb 2025 14:40:52 +0100
+Message-ID: <20250205134506.639138979@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 8694e6a7f7dba23d3abd9f5a96f64d161704c7b1 ]
+[ Upstream commit 9d4f8e54cef2c42e23ef258833dbd06a1eaff89b ]
 
-When adapting the test to the kselftest framework, a few printf() calls
-indicating test progress were not updated.
+The test on whether rhashtable_insert_one did an insertion relies
+on the value returned by rhashtable_lookup_one.  Unfortunately that
+value is overwritten after rhashtable_insert_one returns.  Fix this
+by moving the test before data gets overwritten.
 
-Fix this by replacing these printf() calls by ksft_print_msg() calls.
+Simplify the test as only data == NULL matters.
 
-Link: https://lore.kernel.org/r/7dd4b9ab6e43268846e250878ebf25ae6d3d01ce.1733994134.git.geert+renesas@glider.be
-Fixes: ce7d101750ff ("selftests: timers: clocksource-switch: adapt to kselftest framework")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Finally move atomic_inc back within the lock as otherwise it may
+be reordered with the atomic_dec on the removal side, potentially
+leading to an underflow.
+
+Reported-by: Michael Kelley <mhklinux@outlook.com>
+Fixes: e1d3422c95f0 ("rhashtable: Fix potential deadlock by moving schedule_work outside lock")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/timers/clocksource-switch.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/rhashtable.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/timers/clocksource-switch.c b/tools/testing/selftests/timers/clocksource-switch.c
-index c5264594064c8..83faa4e354e38 100644
---- a/tools/testing/selftests/timers/clocksource-switch.c
-+++ b/tools/testing/selftests/timers/clocksource-switch.c
-@@ -156,8 +156,8 @@ int main(int argc, char **argv)
- 	/* Check everything is sane before we start switching asynchronously */
- 	if (do_sanity_check) {
- 		for (i = 0; i < count; i++) {
--			printf("Validating clocksource %s\n",
--				clocksource_list[i]);
-+			ksft_print_msg("Validating clocksource %s\n",
-+					clocksource_list[i]);
- 			if (change_clocksource(clocksource_list[i])) {
- 				status = -1;
- 				goto out;
-@@ -169,7 +169,7 @@ int main(int argc, char **argv)
- 		}
- 	}
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index bf956b85455ab..0e9a1d4cf89be 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -611,21 +611,23 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
+ 			new_tbl = rht_dereference_rcu(tbl->future_tbl, ht);
+ 			data = ERR_PTR(-EAGAIN);
+ 		} else {
++			bool inserted;
++
+ 			flags = rht_lock(tbl, bkt);
+ 			data = rhashtable_lookup_one(ht, bkt, tbl,
+ 						     hash, key, obj);
+ 			new_tbl = rhashtable_insert_one(ht, bkt, tbl,
+ 							hash, obj, data);
++			inserted = data && !new_tbl;
++			if (inserted)
++				atomic_inc(&ht->nelems);
+ 			if (PTR_ERR(new_tbl) != -EEXIST)
+ 				data = ERR_CAST(new_tbl);
  
--	printf("Running Asynchronous Switching Tests...\n");
-+	ksft_print_msg("Running Asynchronous Switching Tests...\n");
- 	pid = fork();
- 	if (!pid)
- 		return run_tests(runtime);
+ 			rht_unlock(tbl, bkt, flags);
+ 
+-			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
+-				atomic_inc(&ht->nelems);
+-				if (rht_grow_above_75(ht, tbl))
+-					schedule_work(&ht->run_work);
+-			}
++			if (inserted && rht_grow_above_75(ht, tbl))
++				schedule_work(&ht->run_work);
+ 		}
+ 	} while (!IS_ERR_OR_NULL(new_tbl));
+ 
 -- 
 2.39.5
 
