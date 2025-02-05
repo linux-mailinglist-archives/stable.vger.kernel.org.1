@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6A5A2902C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A798A28F4C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34E741613BF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F9018881FA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C0E155A21;
-	Wed,  5 Feb 2025 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CE315DBA3;
+	Wed,  5 Feb 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpYGuyqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFt9XI+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D1D155747;
-	Wed,  5 Feb 2025 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A40156C5E;
+	Wed,  5 Feb 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765946; cv=none; b=tXyqtKcwjn//nmltSYblO8QioMrAdRT5Eo4KkEodn834oxdnQdIJVyNDAU1+y2BMyPnCGzykTDjUuN+yqXTgDEb1ovBRs71dOadaYoFXMH0vXJUctP3L6WWbT2ltSzBTGcI1KT7XzxYKh53/+A+5Npr8iPowapc/XKEKOsnCaYo=
+	t=1738765384; cv=none; b=tHUsqF/z2PXn2btXEgWcWoo1xlvzqq/zBOjdegY0tzQN555MKwysE14dLocpsdskTCCzgjNQVZvFOWboKa1SjmjvK1Xwn2Y+LNTSBNL5aBzupY36xKLNSefOO2smBAlharZow5IkLc/LoxPrjfNkXZsp8gD/zPm7urnqILOJX64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765946; c=relaxed/simple;
-	bh=/FVpbb24FzJdYZvv+mdo10Qx9LyvL40mbLhaAzbpwCc=;
+	s=arc-20240116; t=1738765384; c=relaxed/simple;
+	bh=0VGwlqZrHu2kRZovX8cLzAMLAYYDG3bCG6FRDGw3vJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/5XQMXM/+pvscIQFv1ii77vDiAFB8ctOhRxmPHKF+QbUv1Vq/O1FgfXFzdbKTKewJ8C7uF3u10+ldYFUO8t0kcozmXWTBF+zY+NcRP/2xvw7bpp9F8TOZW6P5sK4F+TKf6mur5egkMpYv55i9RBUUJwG25WAIQS9K8L5dLU6Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpYGuyqC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A25C4CED1;
-	Wed,  5 Feb 2025 14:32:25 +0000 (UTC)
+	 MIME-Version; b=mnUVEvN4MMblTzL0GQTWzaLgIXyu3rCUQRfIMdtFkNkmT3PgwsZjLm3YYWhLibcIhnokBUhE9W/HR40n4eBLVhubgpHFAXZj2gG76wHhhYTgkA0AaW7s5drMHxkg/80h4pVREH/7Xiv6o1jVxtjAvw3B1TLOFV38DKZg11h29VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFt9XI+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916AEC4CED1;
+	Wed,  5 Feb 2025 14:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765946;
-	bh=/FVpbb24FzJdYZvv+mdo10Qx9LyvL40mbLhaAzbpwCc=;
+	s=korg; t=1738765384;
+	bh=0VGwlqZrHu2kRZovX8cLzAMLAYYDG3bCG6FRDGw3vJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpYGuyqCSrqNWxhNmQPx6Dh7dhnDsIxhZ+KLUZhPuqHrSKz+8/yKLj/xq6/Jdue0G
-	 FtmiwF9Lz70H4IZvq/j5b3H94FDXUh7CnrmIKC7pZWElKpO3kX7V6cFvZc0IQ/hd/x
-	 cXQ23sEfp7YwGpb+KTSq/iCwePC5YCddFHqx99nM=
+	b=ZFt9XI+VuCKckGDi9M6f0pa6zPcLsJPqtnxTbvEOlDtcnNKnr5LdL4efs6lhFHVCW
+	 lx+blrKW5dOMaZsALecgrhg757FB8IpbIoT42BwvV1SelG70hGROAanP1M2vaCiqKq
+	 8taTYJKzB8DXBSZMOYjZy1q2coOfe6D1CUSrESLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alex Lu <alex_lu@realsil.com.cn>,
+	Max Chou <max.chou@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 228/623] net: phy: realtek: clear 1000Base-T lpa if link is down
+Subject: [PATCH 6.12 215/590] Bluetooth: btrtl: check for NULL in btrtl_setup_realtek()
 Date: Wed,  5 Feb 2025 14:39:30 +0100
-Message-ID: <20250205134504.945481727@linuxfoundation.org>
+Message-ID: <20250205134503.512547485@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Max Chou <max.chou@realtek.com>
 
-[ Upstream commit 34d5a86ff7bbe225fba3ad91f9b4dc85fb408e18 ]
+[ Upstream commit 3c15082f3567032d196e8760753373332508c2ca ]
 
-Only read 1000Base-T link partner advertisement if autonegotiation has
-completed and otherwise 1000Base-T link partner advertisement bits.
+If insert an USB dongle which chip is not maintained in ic_id_table, it
+will hit the NULL point accessed. Add a null point check to avoid the
+Kernel Oops.
 
-This fixes bogus 1000Base-T link partner advertisement after link goes
-down (eg. by disconnecting the wire).
-Fixes: 5cb409b3960e ("net: phy: realtek: clear 1000Base-T link partner advertisement")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: b39910bb54d9 ("Bluetooth: Populate hci_set_hw_info for Intel and Realtek")
+Reviewed-by: Alex Lu <alex_lu@realsil.com.cn>
+Signed-off-by: Max Chou <max.chou@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/bluetooth/btrtl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index f65d7f1f348e7..26b324ab0f90f 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -1023,23 +1023,20 @@ static int rtl822x_c45_read_status(struct phy_device *phydev)
- {
- 	int ret, val;
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 0bcb44cf7b31d..0a6ca6dfb9484 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -1351,12 +1351,14 @@ int btrtl_setup_realtek(struct hci_dev *hdev)
  
--	ret = genphy_c45_read_status(phydev);
--	if (ret < 0)
--		return ret;
--
--	if (phydev->autoneg == AUTONEG_DISABLE ||
--	    !genphy_c45_aneg_done(phydev))
--		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
--
- 	/* Vendor register as C45 has no standardized support for 1000BaseT */
--	if (phydev->autoneg == AUTONEG_ENABLE) {
-+	if (phydev->autoneg == AUTONEG_ENABLE && genphy_c45_aneg_done(phydev)) {
- 		val = phy_read_mmd(phydev, MDIO_MMD_VEND2,
- 				   RTL822X_VND2_GANLPAR);
- 		if (val < 0)
- 			return val;
--
--		mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
-+	} else {
-+		val = 0;
- 	}
-+	mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, val);
-+
-+	ret = genphy_c45_read_status(phydev);
-+	if (ret < 0)
-+		return ret;
+ 	btrtl_set_quirks(hdev, btrtl_dev);
  
- 	if (!phydev->link)
- 		return 0;
+-	hci_set_hw_info(hdev,
++	if (btrtl_dev->ic_info) {
++		hci_set_hw_info(hdev,
+ 			"RTL lmp_subver=%u hci_rev=%u hci_ver=%u hci_bus=%u",
+ 			btrtl_dev->ic_info->lmp_subver,
+ 			btrtl_dev->ic_info->hci_rev,
+ 			btrtl_dev->ic_info->hci_ver,
+ 			btrtl_dev->ic_info->hci_bus);
++	}
+ 
+ 	btrtl_free(btrtl_dev);
+ 	return ret;
 -- 
 2.39.5
 
