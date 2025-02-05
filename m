@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D32A28C9F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A768A28D67
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F763A13CD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABAE3169256
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBA11494DF;
-	Wed,  5 Feb 2025 13:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26601527B4;
+	Wed,  5 Feb 2025 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7EeP38y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNXatzOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38620142E86;
-	Wed,  5 Feb 2025 13:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA1D152196;
+	Wed,  5 Feb 2025 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763514; cv=none; b=pSEte6WyW55e5K7MAHcsePXv9/LWKE0zOTsgayS7gs0tXf0zMg9mIZl8g3fk3Utvek22/9OSYPblEWVq0SinqtiwcfypcdxKTcjhPfmOXbtAKh+UrUIZ6Erl1463l9Ne5S5UsSa9O7ZOVzNAXK/ehpOwg5k3JjA5H4vOXNjYGA0=
+	t=1738764001; cv=none; b=a1q131r1E+0uuIcMF+/rQQKyXB1Af1UaNYpOWAJhPFOKC0CPz84G30F7pINYzNd/UebxNvCQ8qAke0aGM+S+rqzS566/Iajta3kEdSyKOFFCCaUrguiMnVEkejAQEF12a1lbfBYCWk43b6t5LCrSC4vCv34LukdvGd+12ywKd4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763514; c=relaxed/simple;
-	bh=kD2q4e4DGY275SBzsIed1xlVH5g/g6alMyKqzAqLW5E=;
+	s=arc-20240116; t=1738764001; c=relaxed/simple;
+	bh=e4o4DrZj2R4JmmjpxVBKbxbrYJSfkEM1jM45Tb7CqFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBdRN3UtrI97u7okw+fWanZvYcS9pfQyCbrEc1mKTxFu8dol99lqf4q6TFSrtOxASHfhWmlrv2I4WWHlRGkL1XpCOd1V4K94ljcd6/iobSoEc973BLxY5sHBEU4CiTyCYeMNAOVHzH0sRba3qV6H2X2GFYtQvC996r4c9Xc8dYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7EeP38y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D04BC4CED1;
-	Wed,  5 Feb 2025 13:51:53 +0000 (UTC)
+	 MIME-Version; b=ckC6KJQFL3vnTLckSTrQOQ7IKZPp0hjU0Mo4tdjM8aqf1cZgO4xIvMQtrgwpwgy4xAuXK6I3A6kAICc7RyRZZS8WStxkx3ik83aDuD1/5jjWxlIlIN2WvekrwJk0aaXkKmbMdQObrBYkf6DSW70fRFsx6Y339rFNkDJaXC9dgMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNXatzOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25CFC4CED1;
+	Wed,  5 Feb 2025 14:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763514;
-	bh=kD2q4e4DGY275SBzsIed1xlVH5g/g6alMyKqzAqLW5E=;
+	s=korg; t=1738764001;
+	bh=e4o4DrZj2R4JmmjpxVBKbxbrYJSfkEM1jM45Tb7CqFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7EeP38ywvvPqS+USSzUxWd5rA650PhGzDJBKc95sKP9M5vHDrrO5FFRMfWPOjNHn
-	 gulo2Gv//Y1noAznMZSr154sFqWY/5Djkt5vbuVdE1MT2NsAYHmk+h+HlSjpNtkRSC
-	 er5RE0mjcx+zt0uKixdVELxSRRpnVexUXZ8I/i6U=
+	b=xNXatzOMQAKWwsC0ZL0a2g0SKuHhBsOcVY5Ea/88UkVrkMvyCkX7DIs96wlRRmuRI
+	 i0pJ89T+f1bR+c3AlmGVuGBiObiJtIVSyTZeyZAu+6Y4rnomccL21UplHoMgY/+R9w
+	 Sq66Ufxr92ZBE9f1ebUguLSJ65bAtSErp4OeRpdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Christian Brauner <brauner@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/590] select: Fix unbalanced user_access_end()
+Subject: [PATCH 6.13 037/623] psi: Fix race when task wakes up before psi_sched_switch() adjusts flags
 Date: Wed,  5 Feb 2025 14:36:19 +0100
-Message-ID: <20250205134456.170755612@linuxfoundation.org>
+Message-ID: <20250205134457.648205541@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Chengming Zhou <chengming.zhou@linux.dev>
 
-[ Upstream commit 344af27715ddbf357cf76978d674428b88f8e92d ]
+[ Upstream commit 7d9da040575b343085287686fa902a5b2d43c7ca ]
 
-While working on implementing user access validation on powerpc
-I got the following warnings on a pmac32_defconfig build:
+When running hackbench in a cgroup with bandwidth throttling enabled,
+following PSI splat was observed:
 
-	  CC      fs/select.o
-	fs/select.o: warning: objtool: sys_pselect6+0x1bc: redundant UACCESS disable
-	fs/select.o: warning: objtool: sys_pselect6_time32+0x1bc: redundant UACCESS disable
+    psi: inconsistent task state! task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4
 
-On powerpc/32s, user_read_access_begin/end() are no-ops, but the
-failure path has a user_access_end() instead of user_read_access_end()
-which means an access end without any prior access begin.
+When investigating the series of events leading up to the splat,
+following sequence was observed:
 
-Replace that user_access_end() by user_read_access_end().
+    [008] d..2.: sched_switch: ... ==> next_comm=hackbench next_pid=1831 next_prio=120
+        ...
+    [008] dN.2.: dequeue_entity(task delayed): task=hackbench pid=1831 cfs_rq->throttled=0
+    [008] dN.2.: pick_task_fair: check_cfs_rq_runtime() throttled cfs_rq on CPU8
+    # CPU8 goes into newidle balance and releases the rq lock
+        ...
+    # CPU15 on same LLC Domain is trying to wakeup hackbench(pid=1831)
+    [015] d..4.: psi_flags_change: psi: task state: task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4 final=14 # Splat (cfs_rq->throttled=1)
+    [015] d..4.: sched_wakeup: comm=hackbench pid=1831 prio=120 target_cpu=008 # Task has woken on a throttled hierarchy
+    [008] d..2.: sched_switch: prev_comm=hackbench prev_pid=1831 prev_prio=120 prev_state=S ==> ...
 
-Fixes: 7e71609f64ec ("pselect6() and friends: take handling the combined 6th/7th args into helper")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/a7139e28d767a13e667ee3c79599a8047222ef36.1736751221.git.christophe.leroy@csgroup.eu
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+psi_dequeue() relies on psi_sched_switch() to set the correct PSI flags
+for the blocked entity, however, with the introduction of DELAY_DEQUEUE,
+the block task can wakeup when newidle balance drops the runqueue lock
+during __schedule().
+
+If a task wakes before psi_sched_switch() adjusts the PSI flags, skip
+any modifications in psi_enqueue() which would still see the flags of a
+running task and not a blocked one. Instead, rely on psi_sched_switch()
+to do the right thing.
+
+Since the status returned by try_to_block_task() may no longer be true
+by the time schedule reaches psi_sched_switch(), check if the task is
+blocked or not using a combination of task_on_rq_queued() and
+p->se.sched_delayed checks.
+
+[ prateek: Commit message, testing, early bailout in psi_enqueue() ]
+
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue") # 1a6151017ee5
+Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Link: https://lore.kernel.org/r/20241227061941.2315-1-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/select.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/core.c  | 6 +++---
+ kernel/sched/stats.h | 4 ++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/select.c b/fs/select.c
-index a77907faf2b45..834f438296e2b 100644
---- a/fs/select.c
-+++ b/fs/select.c
-@@ -787,7 +787,7 @@ static inline int get_sigset_argpack(struct sigset_argpack *to,
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 3e5a6bf587f91..e0fd8069c60e6 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6641,7 +6641,6 @@ static void __sched notrace __schedule(int sched_mode)
+ 	 * as a preemption by schedule_debug() and RCU.
+ 	 */
+ 	bool preempt = sched_mode > SM_NONE;
+-	bool block = false;
+ 	unsigned long *switch_count;
+ 	unsigned long prev_state;
+ 	struct rq_flags rf;
+@@ -6702,7 +6701,7 @@ static void __sched notrace __schedule(int sched_mode)
+ 			goto picked;
+ 		}
+ 	} else if (!preempt && prev_state) {
+-		block = try_to_block_task(rq, prev, prev_state);
++		try_to_block_task(rq, prev, prev_state);
+ 		switch_count = &prev->nvcsw;
  	}
- 	return 0;
- Efault:
--	user_access_end();
-+	user_read_access_end();
- 	return -EFAULT;
- }
  
-@@ -1361,7 +1361,7 @@ static inline int get_compat_sigset_argpack(struct compat_sigset_argpack *to,
- 	}
- 	return 0;
- Efault:
--	user_access_end();
-+	user_read_access_end();
- 	return -EFAULT;
- }
+@@ -6748,7 +6747,8 @@ static void __sched notrace __schedule(int sched_mode)
  
+ 		migrate_disable_switch(rq, prev);
+ 		psi_account_irqtime(rq, prev, next);
+-		psi_sched_switch(prev, next, block);
++		psi_sched_switch(prev, next, !task_on_rq_queued(prev) ||
++					     prev->se.sched_delayed);
+ 
+ 		trace_sched_switch(preempt, prev, next, prev_state);
+ 
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 8ee0add5a48a8..6ade91bce63ee 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -138,6 +138,10 @@ static inline void psi_enqueue(struct task_struct *p, int flags)
+ 	if (flags & ENQUEUE_RESTORE)
+ 		return;
+ 
++	/* psi_sched_switch() will handle the flags */
++	if (task_on_cpu(task_rq(p), p))
++		return;
++
+ 	if (p->se.sched_delayed) {
+ 		/* CPU migration of "sleeping" task */
+ 		SCHED_WARN_ON(!(flags & ENQUEUE_MIGRATED));
 -- 
 2.39.5
 
