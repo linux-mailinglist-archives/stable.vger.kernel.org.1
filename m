@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-112770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD60A28E5C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1D3A29251
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6B827A0590
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853D516B881
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED79314D2A2;
-	Wed,  5 Feb 2025 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6018A6C5;
+	Wed,  5 Feb 2025 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSEI9Az5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwam1esI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB46A15198D;
-	Wed,  5 Feb 2025 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D0E190052;
+	Wed,  5 Feb 2025 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764693; cv=none; b=STTL4ibnWaCXmhmhU+7FXBc5W99lXUfpCYUZZ00n3M1uuGZEtqaxGnWxApvyt+MY5wQjPLHyl5bvxIBOgeRhQJOHQPeqnLUhCg7XpUsVNuMV+YFyVztF/5VorhBcVXRrszMWS4DscJ12CMcJh5v/+LLWhcxEriyK7CrFCQDyWLE=
+	t=1738767069; cv=none; b=kx64bIzZGKblSOqO2NrvftQ0qo9aZF+RnEF5b41E2aMTsM1MRk3i8G40GIDVaF0n7kTCRhmPvyjHm01zqmLWtXH53Vqnk1y/g2Q6az7XW6szkuZtj2a9B5ZTOBZhQZPQk9nmHFVbAmVQy5/tqA9dV3QrUlrsul5FWxXSvN63ewc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764693; c=relaxed/simple;
-	bh=FyH55BMYbGrv8HcLmuHvOdnASara61BhkuyQEwsCI7Y=;
+	s=arc-20240116; t=1738767069; c=relaxed/simple;
+	bh=xIoOOUzQmQLriB7KHMNpzUqYlKjqpPZF5i4Q5J+s0qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LN3piB8/pUiFDyYPgBi9qPfXuf/c757qhw4Rcd8JddoCTbB2aAwbbmbd02Dq5TG2ZJ/hL1GImD7e1dQruMkSiEGosp2Dw7VK3DvmygQQ7oZpPfipVEc00efN2xpW5GBtkCxNrMRh1OL54Z1MAutmWalzefyKLcMfiPLrG4qZqmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSEI9Az5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5DDC4CED1;
-	Wed,  5 Feb 2025 14:11:32 +0000 (UTC)
+	 MIME-Version; b=uIE3lQ5l2D2AFVzZ3dFYAst/AkzpaWzXpvu0U1UhPEhVFRlqsymY1f9kF1lJq2Brd+h034Ce9sZoKWs2hElQUEIbo/lB1qWDPE3W9UNs2GBfFrY4vmcHQUlN/kryaq1xv0sCI42XRoLEj92X6ykNWVFz3vgOjxcU49jzeK4tCog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwam1esI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E6C4CED1;
+	Wed,  5 Feb 2025 14:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764693;
-	bh=FyH55BMYbGrv8HcLmuHvOdnASara61BhkuyQEwsCI7Y=;
+	s=korg; t=1738767069;
+	bh=xIoOOUzQmQLriB7KHMNpzUqYlKjqpPZF5i4Q5J+s0qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSEI9Az59mH6oVv6oCXN+7+HyrQqvG9C2IBrv7TNdEQ12dz89agDz61aEZ13v+T7w
-	 YMK1jIvEbgeg2ITAHbHLZIhzVicW0q+VjNFPYn4FQhKKHXWgfy/LjVzXgpKeMSN0jE
-	 KQ2IMbtQtaUiXkqNU4xY4gGornw3S5iA9fSSyAvE=
+	b=xwam1esIA8sP/TpuU/bzoErHoN+alq2HjKSgJH72bxSWYNpYXp+hgvrJQ4dvMAH3F
+	 0OAdnlzgdLOl0mgOHzt1If2RyODjpkhbDMqawgyOn8yrk34PaFr5jZLz4PFc7bL/X0
+	 U1VSLSBgoQn3sWH/K80nM+1RwTuDl98iQzFidm28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <songliubraving@fb.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/393] perf machine: Dont ignore _etext when not a text symbol
+Subject: [PATCH 6.13 352/623] arm64: dts: mediatek: mt8173-elm: Fix MT6397 PMIC sub-node names
 Date: Wed,  5 Feb 2025 14:41:34 +0100
-Message-ID: <20250205134426.990638038@linuxfoundation.org>
+Message-ID: <20250205134509.691614316@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,70 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 7a93786c306296f15e728b1dbd949a319e4e3d19 ]
+[ Upstream commit beb06b727194f68b0a4b5183e50c88265ce185af ]
 
-Depending on how vmlinux.lds is written, _etext might be the very first
-data symbol instead of the very last text symbol.
+The MT6397 PMIC bindings specify exact names for its sub-nodes. The
+names used in the current dts don't match, causing a validation error.
 
-Don't require it to be a text symbol, accept any symbol type.
+Fix up the names. Also drop the label for the regulators node, since
+any reference should be against the individual regulator sub-nodes.
 
-Comitter notes:
-
-See the first Link for further discussion, but it all boils down to
-this:
-
- ---
-  # grep -e _stext -e _etext -e _edata /proc/kallsyms
-  c0000000 T _stext
-  c08b8000 D _etext
-
-  So there is no _edata and _etext is not text
-
-  $ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
-  c0000000 g       .head.text	00000000 _stext
-  c08b8000 g       .rodata	00000000 _etext
-  c1378000 g       .sbss	00000000 _edata
- ---
-
-Fixes: ed9adb2035b5be58 ("perf machine: Read also the end of the kernel")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Link: https://lore.kernel.org/r/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20241210092614.3951748-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 7c6874804660e..e2a6facd1c4e2 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -1217,7 +1217,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+index b91072f4723f3..b5d4b5baf4785 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+@@ -931,7 +931,7 @@
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
  
- 	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
- 	if (err)
--		err = kallsyms__get_function_start(filename, "_etext", &addr);
-+		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
- 	if (!err)
- 		*end = addr;
+-		clock: mt6397clock {
++		clock: clocks {
+ 			compatible = "mediatek,mt6397-clk";
+ 			#clock-cells = <1>;
+ 		};
+@@ -942,7 +942,7 @@
+ 			#gpio-cells = <2>;
+ 		};
  
+-		regulator: mt6397regulator {
++		regulators {
+ 			compatible = "mediatek,mt6397-regulator";
+ 
+ 			mt6397_vpca15_reg: buck_vpca15 {
+@@ -1108,7 +1108,7 @@
+ 			};
+ 		};
+ 
+-		rtc: mt6397rtc {
++		rtc: rtc {
+ 			compatible = "mediatek,mt6397-rtc";
+ 		};
+ 	};
 -- 
 2.39.5
 
