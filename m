@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC8BA29207
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7CFA2939D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81CB91889D86
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 528C216E7B8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D8E18A6A8;
-	Wed,  5 Feb 2025 14:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A19913C8E2;
+	Wed,  5 Feb 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuiNa/1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5BsKVWA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E69F189F57;
-	Wed,  5 Feb 2025 14:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCC61519BF;
+	Wed,  5 Feb 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766753; cv=none; b=RrzTZ/u7MNvvvNDzDU0Njcpcdr9gzpjIzcbw2x54F4WbDHJ30nOBeBUIi02dQe6xpsBfNM0yMkujaHghRECdWrSFTny7M7d7U1bk3ogaLl7SoNcc2N9qWuzKqv64BJaCjjjUjmx03GNN2VoSXVCkybgZTYegI5SenpSAZrqzzsg=
+	t=1738768134; cv=none; b=lSWFXDJ8sRlZBsiVZnIUrPwXncXX7evVTfzfbY63FYHdAq08sXoDuL2XrLbcavzkLJ2wp1lL2+QD0TxU2h8bTRWgBHdAoCFyd2feQPOtRcFf71uJ0TMNcPXnEZN5yldEtWTyeKxryT25lA1sjoperRGGehOiXXtpwYQcZcIAc50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766753; c=relaxed/simple;
-	bh=gJsW59BvgJNLDabZ3KhEbUcqHaocmDrp8SFqEIGE5eg=;
+	s=arc-20240116; t=1738768134; c=relaxed/simple;
+	bh=i7NjOV8XpaswqU8z0LCBpg5yJREZp1M9IcCkhyWzoqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzV3hma51txnK5aXioCZ5BP1uoiI84f90Rp87E8EHvdm/FQFUpWeO8B2uMQcC346HuOed/ydwicAxSk5jpnqBy6JFanQhWSTwUlTOCJyGShDXUPkZBq+ioVLNB6W3praFUNo0IL+sMhyWPi8pPFKgcWIPQ0E2lUaiCY9S3YDCiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuiNa/1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28C1C4CED1;
-	Wed,  5 Feb 2025 14:45:52 +0000 (UTC)
+	 MIME-Version; b=X98cZrPVAfwvCVal9UAkgVEUbSrp5TerH89uSdlcpAbdDO9YlTZpGr3cwlySZcDZ/eOeFwMKtxHSSbmkZyQShP6iA2vpoXBgUeA4vjYk6jWfPl23N21PlzrApnsZzx0GUhqzL0EhjJk8D4M/kLFTWmI6O0PVgTv/riGfZMEemY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5BsKVWA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EADC4CED1;
+	Wed,  5 Feb 2025 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766753;
-	bh=gJsW59BvgJNLDabZ3KhEbUcqHaocmDrp8SFqEIGE5eg=;
+	s=korg; t=1738768133;
+	bh=i7NjOV8XpaswqU8z0LCBpg5yJREZp1M9IcCkhyWzoqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuiNa/1JvojRYvtkYZDIWCgH+1mWGRFEgnYzvZUK6IFMZe6XP81ty8jD/mG/9Dy58
-	 oC8F8CBIDLzqn3Hc7pQto+a37fexbMMhrnFV7ikDDcTFeDq3tz1HbAx64VJPQt4r0z
-	 eb/Und+J2l3gkIcajx/r26r2RQMG3SsEhMar79zA=
+	b=i5BsKVWACPEQXsTcAP73vE1QqN3wYrTmwYQ0oDhNKbUt5BbjNs4EHnUKA7SwJVqEA
+	 2bv00yYzQ148AYrFwDvjQPfJvSn/ruEgxXSCQixqXwvigCvAlf1ovp4DSdflHE8kx0
+	 Pi2tdaZHXWrqGGVJ4L7MZ4MZnLWse3qs5AE8ldYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Xuerui <git@xen0n.name>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 393/393] LoongArch: Change 8 to 14 for LOONGARCH_MAX_{BRP,WRP}
-Date: Wed,  5 Feb 2025 14:45:12 +0100
-Message-ID: <20250205134435.329395771@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Ray Chi <raychi@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 558/590] usb: dwc3: Skip resume if pm_runtime_set_active() fails
+Date: Wed,  5 Feb 2025 14:45:13 +0100
+Message-ID: <20250205134516.617190802@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ray Chi <raychi@google.com>
 
-commit f502ea618bf16d615d7dc6138c8988d3118fe750 upstream.
+commit e3a9bd247cddfb6fa0c29c2361f70b76c359eaa0 upstream.
 
-The maximum number of load/store watchpoints and fetch instruction
-watchpoints is 14 each according to LoongArch Reference Manual, so
-change 8 to 14 for the related code.
+When the system begins to enter suspend mode, dwc3_suspend() is called
+by PM suspend. There is a problem that if someone interrupt the system
+suspend process between dwc3_suspend() and pm_suspend() of its parent
+device, PM suspend will be canceled and attempt to resume suspended
+devices so that dwc3_resume() will be called. However, dwc3 and its
+parent device (like the power domain or glue driver) may already be
+suspended by runtime PM in fact. If this sutiation happened, the
+pm_runtime_set_active() in dwc3_resume() will return an error since
+parent device was suspended. This can lead to unexpected behavior if
+DWC3 proceeds to execute dwc3_resume_common().
 
-Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#control-and-status-registers-related-to-watchpoints
-Cc: stable@vger.kernel.org
-Fixes: edffa33c7bb5 ("LoongArch: Add hardware breakpoints/watchpoints support")
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+EX.
+RPM suspend: ... -> dwc3_runtime_suspend()
+                      -> rpm_suspend() of parent device
+...
+PM suspend: ... -> dwc3_suspend() -> pm_suspend of parent device
+                                 ^ interrupt, so resume suspended device
+          ...  <-  dwc3_resume()  <-/
+                      ^ pm_runtime_set_active() returns error
+
+To prevent the problem, this commit will skip dwc3_resume_common() and
+return the error if pm_runtime_set_active() fails.
+
+Fixes: 68c26fe58182 ("usb: dwc3: set pm runtime active before resume common")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ray Chi <raychi@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250106082240.3822059-1-raychi@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/hw_breakpoint.h |    4 -
- arch/loongarch/include/asm/loongarch.h     |   60 +++++++++++++++++++++++++++++
- arch/loongarch/kernel/hw_breakpoint.c      |   16 ++++++-
- 3 files changed, 76 insertions(+), 4 deletions(-)
+ drivers/usb/dwc3/core.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/include/asm/hw_breakpoint.h
-+++ b/arch/loongarch/include/asm/hw_breakpoint.h
-@@ -38,8 +38,8 @@ struct arch_hw_breakpoint {
-  * Limits.
-  * Changing these will require modifications to the register accessors.
-  */
--#define LOONGARCH_MAX_BRP		8
--#define LOONGARCH_MAX_WRP		8
-+#define LOONGARCH_MAX_BRP		14
-+#define LOONGARCH_MAX_WRP		14
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2597,12 +2597,15 @@ static int dwc3_resume(struct device *de
+ 	pinctrl_pm_select_default_state(dev);
  
- /* Virtual debug register bases. */
- #define CSR_CFG_ADDR	0
---- a/arch/loongarch/include/asm/loongarch.h
-+++ b/arch/loongarch/include/asm/loongarch.h
-@@ -928,6 +928,36 @@
- #define LOONGARCH_CSR_DB7CTRL		0x34a	/* data breakpoint 7 control */
- #define LOONGARCH_CSR_DB7ASID		0x34b	/* data breakpoint 7 asid */
+ 	pm_runtime_disable(dev);
+-	pm_runtime_set_active(dev);
++	ret = pm_runtime_set_active(dev);
++	if (ret)
++		goto out;
  
-+#define LOONGARCH_CSR_DB8ADDR		0x350	/* data breakpoint 8 address */
-+#define LOONGARCH_CSR_DB8MASK		0x351	/* data breakpoint 8 mask */
-+#define LOONGARCH_CSR_DB8CTRL		0x352	/* data breakpoint 8 control */
-+#define LOONGARCH_CSR_DB8ASID		0x353	/* data breakpoint 8 asid */
-+
-+#define LOONGARCH_CSR_DB9ADDR		0x358	/* data breakpoint 9 address */
-+#define LOONGARCH_CSR_DB9MASK		0x359	/* data breakpoint 9 mask */
-+#define LOONGARCH_CSR_DB9CTRL		0x35a	/* data breakpoint 9 control */
-+#define LOONGARCH_CSR_DB9ASID		0x35b	/* data breakpoint 9 asid */
-+
-+#define LOONGARCH_CSR_DB10ADDR		0x360	/* data breakpoint 10 address */
-+#define LOONGARCH_CSR_DB10MASK		0x361	/* data breakpoint 10 mask */
-+#define LOONGARCH_CSR_DB10CTRL		0x362	/* data breakpoint 10 control */
-+#define LOONGARCH_CSR_DB10ASID		0x363	/* data breakpoint 10 asid */
-+
-+#define LOONGARCH_CSR_DB11ADDR		0x368	/* data breakpoint 11 address */
-+#define LOONGARCH_CSR_DB11MASK		0x369	/* data breakpoint 11 mask */
-+#define LOONGARCH_CSR_DB11CTRL		0x36a	/* data breakpoint 11 control */
-+#define LOONGARCH_CSR_DB11ASID		0x36b	/* data breakpoint 11 asid */
-+
-+#define LOONGARCH_CSR_DB12ADDR		0x370	/* data breakpoint 12 address */
-+#define LOONGARCH_CSR_DB12MASK		0x371	/* data breakpoint 12 mask */
-+#define LOONGARCH_CSR_DB12CTRL		0x372	/* data breakpoint 12 control */
-+#define LOONGARCH_CSR_DB12ASID		0x373	/* data breakpoint 12 asid */
-+
-+#define LOONGARCH_CSR_DB13ADDR		0x378	/* data breakpoint 13 address */
-+#define LOONGARCH_CSR_DB13MASK		0x379	/* data breakpoint 13 mask */
-+#define LOONGARCH_CSR_DB13CTRL		0x37a	/* data breakpoint 13 control */
-+#define LOONGARCH_CSR_DB13ASID		0x37b	/* data breakpoint 13 asid */
-+
- #define LOONGARCH_CSR_FWPC		0x380	/* instruction breakpoint config */
- #define LOONGARCH_CSR_FWPS		0x381	/* instruction breakpoint status */
+ 	ret = dwc3_resume_common(dwc, PMSG_RESUME);
+ 	if (ret)
+ 		pm_runtime_set_suspended(dev);
  
-@@ -971,6 +1001,36 @@
- #define LOONGARCH_CSR_IB7CTRL		0x3ca	/* inst breakpoint 7 control */
- #define LOONGARCH_CSR_IB7ASID		0x3cb	/* inst breakpoint 7 asid */
++out:
+ 	pm_runtime_enable(dev);
  
-+#define LOONGARCH_CSR_IB8ADDR		0x3d0	/* inst breakpoint 8 address */
-+#define LOONGARCH_CSR_IB8MASK		0x3d1	/* inst breakpoint 8 mask */
-+#define LOONGARCH_CSR_IB8CTRL		0x3d2	/* inst breakpoint 8 control */
-+#define LOONGARCH_CSR_IB8ASID		0x3d3	/* inst breakpoint 8 asid */
-+
-+#define LOONGARCH_CSR_IB9ADDR		0x3d8	/* inst breakpoint 9 address */
-+#define LOONGARCH_CSR_IB9MASK		0x3d9	/* inst breakpoint 9 mask */
-+#define LOONGARCH_CSR_IB9CTRL		0x3da	/* inst breakpoint 9 control */
-+#define LOONGARCH_CSR_IB9ASID		0x3db	/* inst breakpoint 9 asid */
-+
-+#define LOONGARCH_CSR_IB10ADDR		0x3e0	/* inst breakpoint 10 address */
-+#define LOONGARCH_CSR_IB10MASK		0x3e1	/* inst breakpoint 10 mask */
-+#define LOONGARCH_CSR_IB10CTRL		0x3e2	/* inst breakpoint 10 control */
-+#define LOONGARCH_CSR_IB10ASID		0x3e3	/* inst breakpoint 10 asid */
-+
-+#define LOONGARCH_CSR_IB11ADDR		0x3e8	/* inst breakpoint 11 address */
-+#define LOONGARCH_CSR_IB11MASK		0x3e9	/* inst breakpoint 11 mask */
-+#define LOONGARCH_CSR_IB11CTRL		0x3ea	/* inst breakpoint 11 control */
-+#define LOONGARCH_CSR_IB11ASID		0x3eb	/* inst breakpoint 11 asid */
-+
-+#define LOONGARCH_CSR_IB12ADDR		0x3f0	/* inst breakpoint 12 address */
-+#define LOONGARCH_CSR_IB12MASK		0x3f1	/* inst breakpoint 12 mask */
-+#define LOONGARCH_CSR_IB12CTRL		0x3f2	/* inst breakpoint 12 control */
-+#define LOONGARCH_CSR_IB12ASID		0x3f3	/* inst breakpoint 12 asid */
-+
-+#define LOONGARCH_CSR_IB13ADDR		0x3f8	/* inst breakpoint 13 address */
-+#define LOONGARCH_CSR_IB13MASK		0x3f9	/* inst breakpoint 13 mask */
-+#define LOONGARCH_CSR_IB13CTRL		0x3fa	/* inst breakpoint 13 control */
-+#define LOONGARCH_CSR_IB13ASID		0x3fb	/* inst breakpoint 13 asid */
-+
- #define LOONGARCH_CSR_DEBUG		0x500	/* debug config */
- #define LOONGARCH_CSR_DERA		0x501	/* debug era */
- #define LOONGARCH_CSR_DESAVE		0x502	/* debug save */
---- a/arch/loongarch/kernel/hw_breakpoint.c
-+++ b/arch/loongarch/kernel/hw_breakpoint.c
-@@ -51,7 +51,13 @@ int hw_breakpoint_slots(int type)
- 	READ_WB_REG_CASE(OFF, 4, REG, T, VAL);		\
- 	READ_WB_REG_CASE(OFF, 5, REG, T, VAL);		\
- 	READ_WB_REG_CASE(OFF, 6, REG, T, VAL);		\
--	READ_WB_REG_CASE(OFF, 7, REG, T, VAL);
-+	READ_WB_REG_CASE(OFF, 7, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 8, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 9, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 10, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 11, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 12, REG, T, VAL);		\
-+	READ_WB_REG_CASE(OFF, 13, REG, T, VAL);
- 
- #define GEN_WRITE_WB_REG_CASES(OFF, REG, T, VAL)	\
- 	WRITE_WB_REG_CASE(OFF, 0, REG, T, VAL);		\
-@@ -61,7 +67,13 @@ int hw_breakpoint_slots(int type)
- 	WRITE_WB_REG_CASE(OFF, 4, REG, T, VAL);		\
- 	WRITE_WB_REG_CASE(OFF, 5, REG, T, VAL);		\
- 	WRITE_WB_REG_CASE(OFF, 6, REG, T, VAL);		\
--	WRITE_WB_REG_CASE(OFF, 7, REG, T, VAL);
-+	WRITE_WB_REG_CASE(OFF, 7, REG, T, VAL);		\
-+	WRITE_WB_REG_CASE(OFF, 8, REG, T, VAL);		\
-+	WRITE_WB_REG_CASE(OFF, 9, REG, T, VAL);		\
-+	WRITE_WB_REG_CASE(OFF, 10, REG, T, VAL);	\
-+	WRITE_WB_REG_CASE(OFF, 11, REG, T, VAL);	\
-+	WRITE_WB_REG_CASE(OFF, 12, REG, T, VAL);	\
-+	WRITE_WB_REG_CASE(OFF, 13, REG, T, VAL);
- 
- static u64 read_wb_reg(int reg, int n, int t)
- {
+ 	return ret;
 
 
 
