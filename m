@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8655A29062
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498C9A28F83
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0D018812E2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83A117A0766
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323C14B075;
-	Wed,  5 Feb 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41001155335;
+	Wed,  5 Feb 2025 14:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1/fre8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/h4Th5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F82A151988;
-	Wed,  5 Feb 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D008634E;
+	Wed,  5 Feb 2025 14:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766120; cv=none; b=QGlTSwEKTzEXNqzCpBwgpvRtsKh7p/8z2HYBniqn313u/lEr3ZJ9NLw/5lpJDTUPtJM+5VfmofsaX2NByz0Vm0HmVUhpQt7NDBKzavj3qDuqtdFQY7D2dG01FdHHmvOwAaXh+TV1C5OqH9tJ4ZKal0rk6z63mqdCW8lteMTEffo=
+	t=1738765568; cv=none; b=ISouSmO9OsFKWvN2HsmIz55eTC3BRR6IbtLb645k42pU9NKC9b8+nv0kTmVYzJbRT45zTgocIdlCFUfW5glBOh19bsgBm/iow5I1yMEMxWFw+91ibASSxnQj1mga7xk+31bbD8jWM5xfY/pBA8ZDXa2YvE9T+VWfTvAOOCf8jjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766120; c=relaxed/simple;
-	bh=fV8OcBB220stPXPocGuZyd6z0UvjzGTe/EJ4CzLP/xA=;
+	s=arc-20240116; t=1738765568; c=relaxed/simple;
+	bh=G0FBo35xLbiXRKZZl9eTnp1Xn5tARDAMhv+Xcs/go2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4b5X6LlanR0COVEQeOyE3YbypuLX1JO2nesCr0TSfC+KOI02BG2k4p6MY/SjWuYgpVLCcJcD6wBgpobCi1FRasQmMZHm05O9vsJfYSNo2lQHdq/HmVmQvaIY1YWtNGEx5rjWHscrAojqzkBOqo+gULYlzcHqvO4zrOMmmwQYbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1/fre8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC74C4CED1;
-	Wed,  5 Feb 2025 14:35:19 +0000 (UTC)
+	 MIME-Version; b=WoIz0zwcz8qmUQrsSxsUPzRNIN5CcVpOmP5eBU40mggw5iiuDP/qIXlM2RqUrZ+89BGP5I5M7e+WGti3lfmd8ovG8fZnsE8kTVxEsrTEtL/Hwhc4K2+5MEH2NGVa+xXLV5VY6ebPaAt+untEyg47G0s4UNIHdMIVul2JgzRdhnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/h4Th5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6335CC4CED1;
+	Wed,  5 Feb 2025 14:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766120;
-	bh=fV8OcBB220stPXPocGuZyd6z0UvjzGTe/EJ4CzLP/xA=;
+	s=korg; t=1738765567;
+	bh=G0FBo35xLbiXRKZZl9eTnp1Xn5tARDAMhv+Xcs/go2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1/fre8wXx+iWdQ9H0XaN8Cu9DKhdnLhlURauuYrN1/BhYJIUPtOSv29/rNQrm1PJ
-	 Q4PK9DjAg7ThKnTlHftmtTKLhop3Wjs8fLpLhctixQgJIte5k96YKJcfCPT/zNcO3F
-	 WaL7Jv5tDoAEGUoaXymZah9imj/PTsosvoXzJ2bA=
+	b=I/h4Th5saBc4/deM0cWL+dAhvijafWfGh5SQrIOOwVUrIGcPYpjgba3dKd5a3SzwJ
+	 Ac5ZwGmiPPHDZ6H7CWf7vyGovcLZQw8/+WcnZXiUVIA2LC9VYFjfH/Yx4F9aVdxeJf
+	 jGt3oevSt6QgAxUodG7uYly+0UIvLedKW3cuYC9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Roger Quadros <rogerq@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 244/623] net/rose: prevent integer overflows in rose_setsockopt()
+Subject: [PATCH 6.12 231/590] net: ethernet: ti: am65-cpsw: fix freeing IRQ in am65_cpsw_nuss_remove_tx_chns()
 Date: Wed,  5 Feb 2025 14:39:46 +0100
-Message-ID: <20250205134505.560849593@linuxfoundation.org>
+Message-ID: <20250205134504.117815467@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Roger Quadros <rogerq@kernel.org>
 
-[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
+[ Upstream commit 4395a44acb15850e492dd1de9ec4b6479d96bc80 ]
 
-In case of possible unpredictably large arguments passed to
-rose_setsockopt() and multiplied by extra values on top of that,
-integer overflows may occur.
+When getting the IRQ we use k3_udma_glue_tx_get_irq() which returns
+negative error value on error. So not NULL check is not sufficient
+to deteremine if IRQ is valid. Check that IRQ is greater then zero
+to ensure it is valid.
 
-Do the safest minimum and fix these issues by checking the
-contents of 'opt' and returning -EINVAL if they are too large. Also,
-switch to unsigned int and remove useless check for negative 'opt'
-in ROSE_IDLE case.
+There is no issue at probe time but at runtime user can invoke
+.set_channels which results in the following call chain.
+am65_cpsw_set_channels()
+ am65_cpsw_nuss_update_tx_rx_chns()
+  am65_cpsw_nuss_remove_tx_chns()
+  am65_cpsw_nuss_init_tx_chns()
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+At this point if am65_cpsw_nuss_init_tx_chns() fails due to
+k3_udma_glue_tx_get_irq() then tx_chn->irq will be set to a
+negative value.
+
+Then, at subsequent .set_channels with higher channel count we
+will attempt to free an invalid IRQ in am65_cpsw_nuss_remove_tx_chns()
+leading to a kernel warning.
+
+The issue is present in the original commit that introduced this driver,
+although there, am65_cpsw_nuss_update_tx_rx_chns() existed as
+am65_cpsw_nuss_update_tx_chns().
+
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 59050caab65c8..72c65d938a150 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- {
- 	struct sock *sk = sock->sk;
- 	struct rose_sock *rose = rose_sk(sk);
--	int opt;
-+	unsigned int opt;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index dfca13b82bdce..b13c7e958e6b4 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2207,7 +2207,7 @@ static void am65_cpsw_nuss_remove_tx_chns(struct am65_cpsw_common *common)
+ 	for (i = 0; i < common->tx_ch_num; i++) {
+ 		struct am65_cpsw_tx_chn *tx_chn = &common->tx_chns[i];
  
- 	if (level != SOL_ROSE)
- 		return -ENOPROTOOPT;
+-		if (tx_chn->irq)
++		if (tx_chn->irq > 0)
+ 			devm_free_irq(dev, tx_chn->irq, tx_chn);
  
--	if (optlen < sizeof(int))
-+	if (optlen < sizeof(unsigned int))
- 		return -EINVAL;
- 
--	if (copy_from_sockptr(&opt, optval, sizeof(int)))
-+	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
- 		return -EFAULT;
- 
- 	switch (optname) {
-@@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 
- 	case ROSE_T1:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t1 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T2:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t2 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T3:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t3 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_HOLDBACK:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->hb = opt * HZ;
- 		return 0;
- 
- 	case ROSE_IDLE:
--		if (opt < 0)
-+		if (opt > UINT_MAX / (60 * HZ))
- 			return -EINVAL;
- 		rose->idle = opt * 60 * HZ;
- 		return 0;
+ 		netif_napi_del(&tx_chn->napi_tx);
 -- 
 2.39.5
 
