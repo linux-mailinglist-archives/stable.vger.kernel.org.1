@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74EDA290C0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42605A28FFB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B1241695F7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1D853A7802
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6AF16CD1D;
-	Wed,  5 Feb 2025 14:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CAC1519AF;
+	Wed,  5 Feb 2025 14:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEB7znQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxZgbYGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB732151988;
-	Wed,  5 Feb 2025 14:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2206E15C13A;
+	Wed,  5 Feb 2025 14:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766360; cv=none; b=CD5WBsaoZaJdS2Tnw7czcJyaJpZsGcikUDuOGetQEHHA7szCFDwljaR2NPWy35xIkiy3fEfvt5+XzJea6YQ/nABIlQLTaUjfbnlZ5fom828Odbw4etXyDKgSn+m+0xQ8GKGQP92ou/E7VUFosdQgtUUtpg3EPkd8wZ4Xx1EeeMY=
+	t=1738765804; cv=none; b=f+VHP7PVhzjLwNlmBV7Q7M1eMcUYXyrotRnDNs0yZFc8EjShdVUYgEBqYvD+wM/ypevKpuouArWDrOqKhHRyjcXAckqzs+J6jOX6wQpG0va1SczXJnczPzyc8BmHZOgmcQmunC2q6XJ8KGGZcqwScMWZhvDTxFF8CASbhDAZUGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766360; c=relaxed/simple;
-	bh=BklsNzgkkuJ7ZHAU0p1xtYkuZnsSuD84V/MUeyxltd4=;
+	s=arc-20240116; t=1738765804; c=relaxed/simple;
+	bh=lIr5yXbWycCLwVSr9MHeHTAdtlBXObRp4MbkiHDioIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emybjuPWtW2YkT/jeJFi1XjJRTvyp4sbdGwpG+DSgE+eXT7Hz1UO5sTittpB4vqoilsmLt88l3DiKF7q1XwzzJ4M6RzzTATASOxNGeHebhVfz9nyxRW0HvKFfRCnd2qBQEti0S3EnNI9BYx102GsgMajZO1IAnSuAWCjyM3kh/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEB7znQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0CAC4CED1;
-	Wed,  5 Feb 2025 14:39:20 +0000 (UTC)
+	 MIME-Version; b=dLVhCam9ghTf8nj+sd1UM7G+OIrx9PoX4nBZmGLFTv496IWndSk3yisxJWkvdspJJBWnEweaGlzg7xsxz/BOWJX7fzrkLQaAZmqR60tjVlw1pEwlfDmOI4poFIz1wCuy0NKhrbJXr+iAKtGTHCLRB75405rTtoXaJMJHZCR/WD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxZgbYGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B7CC4CED1;
+	Wed,  5 Feb 2025 14:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766360;
-	bh=BklsNzgkkuJ7ZHAU0p1xtYkuZnsSuD84V/MUeyxltd4=;
+	s=korg; t=1738765804;
+	bh=lIr5yXbWycCLwVSr9MHeHTAdtlBXObRp4MbkiHDioIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEB7znQZRnRHc6mxP5438F60sq41EtMPVkooycHlCNzTtsob+juEs4HA7WwiNrqnH
-	 PwiIcwca+4HI2GVTpaRC/TkWMuCvUKm+0p7Y6gQN9Envfw8dy3Re970IZxit+Xc8Zy
-	 wM7vuoVpySN8QARI8E3WNNKxpRtFzkGmijJs1TfA=
+	b=cxZgbYGOZzo34n9kONoYEVNi5SsHKuyGBtzHgGxpqT+gyuUOicDeqtw3/G4pHBOG7
+	 14eeY7E+L62Nl2u4VZKebXRYlSJAVuqUTRunwbt6z1/iUmeDS0B8GiDaeiKi+wQ2g8
+	 gXI9OOQapawIFgBAHWpFfrhB7nRCkt5mw1N/Q9TY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 266/623] platform/x86: x86-android-tablets: Make variables only used locally static
+Subject: [PATCH 6.12 253/590] ASoC: renesas: rz-ssi: Use only the proper amount of dividers
 Date: Wed,  5 Feb 2025 14:40:08 +0100
-Message-ID: <20250205134506.406743191@linuxfoundation.org>
+Message-ID: <20250205134504.958277162@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit f6728073baa172be6223512fffd72796de891536 ]
+[ Upstream commit 55c209cd4318c701e6e88e0b2512a0f12dd02a7d ]
 
-Commit 06f876def346 ("platform/x86: x86-android-tablets: Add support for
-Vexia EDU ATLA 10 tablet") omitted the static keyword from some variables
-which are only used inside other.c .
+There is no need to populate the ckdv[] with invalid dividers as that
+part will not be indexed anyway. The ssi->audio_mck/bclk_rate should
+always be >= 0. While at it, change the ckdv type as u8, as the divider
+128 was previously using the s8 sign bit.
 
-Add the missing static keyword to these, this fixes the following warnings:
-
-.../x86-android-tablets/other.c:605:12: sparse: sparse: symbol 'crystal_cove_pwrsrc_psy' was not declared. Should it be static?
-.../x86-android-tablets/other.c:612:28: sparse: sparse: symbol 'vexia_edu_atla10_ulpmc_node' was not declared. Should it be static?
-
-Fixes: 06f876def346 ("platform/x86: x86-android-tablets: Add support for Vexia EDU ATLA 10 tablet")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411301001.1glTy7Xm-lkp@intel.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241204204227.95757-3-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 03e786bd43410fa9 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20241210170953.2936724-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/other.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sh/rz-ssi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
-index 735df818f76bf..3cd0db74c6c9c 100644
---- a/drivers/platform/x86/x86-android-tablets/other.c
-+++ b/drivers/platform/x86/x86-android-tablets/other.c
-@@ -602,14 +602,14 @@ const struct x86_dev_info whitelabel_tm800a550l_info __initconst = {
-  * Vexia EDU ATLA 10 tablet, Android 4.2 / 4.4 + Guadalinex Ubuntu tablet
-  * distributed to schools in the Spanish Andalucía region.
-  */
--const char * const crystal_cove_pwrsrc_psy[] = { "crystal_cove_pwrsrc" };
-+static const char * const crystal_cove_pwrsrc_psy[] = { "crystal_cove_pwrsrc" };
- 
- static const struct property_entry vexia_edu_atla10_ulpmc_props[] = {
- 	PROPERTY_ENTRY_STRING_ARRAY("supplied-from", crystal_cove_pwrsrc_psy),
- 	{ }
- };
- 
--const struct software_node vexia_edu_atla10_ulpmc_node = {
-+static const struct software_node vexia_edu_atla10_ulpmc_node = {
- 	.properties = vexia_edu_atla10_ulpmc_props,
- };
- 
+diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
+index 040ce0431fd2c..32db2cead8a4e 100644
+--- a/sound/soc/sh/rz-ssi.c
++++ b/sound/soc/sh/rz-ssi.c
+@@ -258,8 +258,7 @@ static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
+ static int rz_ssi_clk_setup(struct rz_ssi_priv *ssi, unsigned int rate,
+ 			    unsigned int channels)
+ {
+-	static s8 ckdv[16] = { 1,  2,  4,  8, 16, 32, 64, 128,
+-			       6, 12, 24, 48, 96, -1, -1, -1 };
++	static u8 ckdv[] = { 1,  2,  4,  8, 16, 32, 64, 128, 6, 12, 24, 48, 96 };
+ 	unsigned int channel_bits = 32;	/* System Word Length */
+ 	unsigned long bclk_rate = rate * channels * channel_bits;
+ 	unsigned int div;
 -- 
 2.39.5
 
