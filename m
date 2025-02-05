@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3D9A28FCF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD25A28CA9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54EE73A8881
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 855B97A44FC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEAA15852E;
-	Wed,  5 Feb 2025 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD6A1514EE;
+	Wed,  5 Feb 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeqO7pg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7kD7ELA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FE214B959;
-	Wed,  5 Feb 2025 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A523514F136;
+	Wed,  5 Feb 2025 13:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765717; cv=none; b=TnrRdHCksS/OBj/M8FB98vD2dOxOb6w0aSqKthDP+4hL6m3y7OM0Xsh8dG9CY00Hq3nJbh8r/LEocjbsMBrGXwLI6J9+cj0oRvnwNkIHaBGpRdTSUBCUI+vJ7DKGOdunB1QKWEbu3FLbf/Ftd8RWYV9Y6X15FAYArx34pudSmSk=
+	t=1738763416; cv=none; b=iaAeeOI/nF5nVmBYudEKPlS7Sl1Cz8bgYWqtDvqF06CBMA5Y3XZgrnHFbrS+Nk02h2i2FtnBa/UZnASrlnJ/Dkd9BQ4qNDkj1wGYemIql8gxE8WMfn8aiiPioxTAb8OtA9P7/v5uv1GOaYI9Xjrrnfa7OaGGdiijlJjznYPTC0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765717; c=relaxed/simple;
-	bh=oUZSv87kMfzGZY/he1gmFLiHpyl5uj7rczah5zmJ4TE=;
+	s=arc-20240116; t=1738763416; c=relaxed/simple;
+	bh=SUDjy7bID0l3kfwnKxQ57/Un+L7Ery41Ln+ca9ZBy00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+KMP6FOVMsWnyzXKsyd8oWOnfEM6ZAV//6fPLec1ZukSi6d1RNFmxQpg3kCJUBJy71f3+xMG3dS/vXsOAOO953QpUPdyxJnZjkBEfRC9SPKAxl4yHBaIhKWREFEpU/lrtdw9zBBvI9Fa0mX72nhPQ893zAIEhf0UEdBwe9uRIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeqO7pg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21B8C4CED1;
-	Wed,  5 Feb 2025 14:28:36 +0000 (UTC)
+	 MIME-Version; b=mEqgqLzQqinONHSluZGtxyfwujVCj2IakKqGZ6mz15rokFT7DTuw/Vwozk26Ty2a0jh1nBWx8+ZNFXpSx8XSf/YtwpqAAnzHQkL4l8C9fHzXFWarCboe199RF5uq+JQYq7hHxRig6LB2+vpYDxaFzUl1KxIe2b9fRN1In+iPVhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7kD7ELA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B261C4CED6;
+	Wed,  5 Feb 2025 13:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765717;
-	bh=oUZSv87kMfzGZY/he1gmFLiHpyl5uj7rczah5zmJ4TE=;
+	s=korg; t=1738763416;
+	bh=SUDjy7bID0l3kfwnKxQ57/Un+L7Ery41Ln+ca9ZBy00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeqO7pg7v2o87pgx7OMc6UyUrA+llEdN1QvtDIU+Sk4L924nHeOk+R2BEvYvDvRUB
-	 ktuTQV69Cvz/wxaXFDlG96LdkYPmX+rbQd8z48tatM6sLM+MJY+Gu3BzKcoqI0Le2n
-	 JB2LyBzq5jGvW3eNLPXgjrzNvfT9qakhmveeLpU8=
+	b=B7kD7ELASWN8EvLzdUaiQ2qrB8xbsOhsBHBeAQBuhXp+OGwV3TadPdnhbFTAuSb0o
+	 W9X2QTBKBfMyz/TLjWn0xzZcLJMWRpTJZb+B8goWBUBpWIhKto9bCieMlBkqHxufqA
+	 Rz6m6vwrsgpwJJaqx6dsnjb5Vp8rdddmL/P1JWxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 207/623] wifi: mt76: mt7915: fix register mapping
+Subject: [PATCH 6.6 030/393] drm/rockchip: vop2: set bg dly and prescan dly at vop2_post_config
 Date: Wed,  5 Feb 2025 14:39:09 +0100
-Message-ID: <20250205134504.148420921@linuxfoundation.org>
+Message-ID: <20250205134421.456976108@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit dd1649ef966bb87053c17385ea2cfd1758f5385b ]
+[ Upstream commit 075a5b3969becb1ebc2f1d4fa1a1fe9163679273 ]
 
-Bypass the entry when ofs is equal to dev->reg.map[i].size.
-Without this patch, it would get incorrect register mapping when the CR
-address is located at the boundary of an entry.
+We need to setup background delay cycle and prescan
+delay cycle when a mode is enable to avoid trigger
+POST_BUF_EMPTY irq on rk3588.
 
-Fixes: cd4c314a65d3 ("mt76: mt7915: refine register definition")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/OSZPR01MB843401EAA1DA6BD7AEF356F298132@OSZPR01MB8434.jpnprd01.prod.outlook.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Note: RK356x has no such requirement.
+
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211115815.1785131-1-andyshrk@163.com
+Stable-dep-of: 0ca953ac226e ("drm/rockchip: vop2: Fix the windows switch between different layers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 26 ++++++++------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 44e112b8b5b36..2e7604eed27b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -484,7 +484,7 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 			continue;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 2504e2f762358..1295aaffe868a 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1397,8 +1397,18 @@ static void vop2_post_config(struct drm_crtc *crtc)
+ 	u32 top_margin = 100, bottom_margin = 100;
+ 	u16 hsize = hdisplay * (left_margin + right_margin) / 200;
+ 	u16 vsize = vdisplay * (top_margin + bottom_margin) / 200;
++	u16 hsync_len = mode->crtc_hsync_end - mode->crtc_hsync_start;
+ 	u16 hact_end, vact_end;
+ 	u32 val;
++	u32 bg_dly;
++	u32 pre_scan_dly;
++
++	bg_dly = vp->data->pre_scan_max_dly[3];
++	vop2_writel(vp->vop2, RK3568_VP_BG_MIX_CTRL(vp->id),
++		    FIELD_PREP(RK3568_VP_BG_MIX_CTRL__BG_DLY, bg_dly));
++
++	pre_scan_dly = ((bg_dly + (hdisplay >> 1) - 1) << 16) | hsync_len;
++	vop2_vp_write(vp, RK3568_VP_PRE_SCAN_HTIMING, pre_scan_dly);
  
- 		ofs = addr - dev->reg.map[i].phys;
--		if (ofs > dev->reg.map[i].size)
-+		if (ofs >= dev->reg.map[i].size)
- 			continue;
+ 	vsize = rounddown(vsize, 2);
+ 	hsize = rounddown(hsize, 2);
+@@ -1915,11 +1925,6 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 	u32 layer_sel = 0;
+ 	u32 port_sel;
+ 	unsigned int nlayer, ofs;
+-	struct drm_display_mode *adjusted_mode;
+-	u16 hsync_len;
+-	u16 hdisplay;
+-	u32 bg_dly;
+-	u32 pre_scan_dly;
+ 	u32 ovl_ctrl;
+ 	int i;
+ 	struct vop2_video_port *vp0 = &vop2->vps[0];
+@@ -1927,17 +1932,6 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 	struct vop2_video_port *vp2 = &vop2->vps[2];
+ 	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(vp->crtc.state);
  
- 		return dev->reg.map[i].maps + ofs;
+-	adjusted_mode = &vp->crtc.state->adjusted_mode;
+-	hsync_len = adjusted_mode->crtc_hsync_end - adjusted_mode->crtc_hsync_start;
+-	hdisplay = adjusted_mode->crtc_hdisplay;
+-
+-	bg_dly = vp->data->pre_scan_max_dly[3];
+-	vop2_writel(vop2, RK3568_VP_BG_MIX_CTRL(vp->id),
+-		    FIELD_PREP(RK3568_VP_BG_MIX_CTRL__BG_DLY, bg_dly));
+-
+-	pre_scan_dly = ((bg_dly + (hdisplay >> 1) - 1) << 16) | hsync_len;
+-	vop2_vp_write(vp, RK3568_VP_PRE_SCAN_HTIMING, pre_scan_dly);
+-
+ 	ovl_ctrl = vop2_readl(vop2, RK3568_OVL_CTRL);
+ 	ovl_ctrl |= RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD;
+ 	if (vcstate->yuv_overlay)
 -- 
 2.39.5
 
