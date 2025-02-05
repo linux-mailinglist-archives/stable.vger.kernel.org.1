@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-113226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD93A2908A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEF1A293D7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B83431635F4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334DA1891C8D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0808634E;
-	Wed,  5 Feb 2025 14:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674B018B460;
+	Wed,  5 Feb 2025 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGahFT6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Loo73Akv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4891F151988;
-	Wed,  5 Feb 2025 14:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232BADF59;
+	Wed,  5 Feb 2025 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766245; cv=none; b=j74GhA9n0XDMYs0bAwgu/Kkoe+zpNuoxlJxrUr2kpkMYBcdmNpXhYESIN/QVPHrcqYIuxIZ5Vu3XHaiiVJS6cvDNxtayNIp9hYp7aqMUH4uN9jKLn4bX6GH1FsJBO7cLx9UqynrJ2dY9tSkbfmxxYfcwZQJ5m73BtcX75aM00Fw=
+	t=1738767795; cv=none; b=N//yqNhZmT43Ql3gXY7o2DOSu8MxAu2GUTHVUgrXWyflWXmRYfCfjfoMJDTAcs7hfwZozHNJlSm8OfAaJIHN3Pce9gcN3GzhxSpMSxeIcK2pfmyvPbNAXTlzE759B1FT1Vumu/rxLKZE0j209csBsPo/GeBV3Dd5I86vIOvZVRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766245; c=relaxed/simple;
-	bh=VVn75q8Wr2My5PhFazpIsHRPa1Tr30usfvmAp2nIoBQ=;
+	s=arc-20240116; t=1738767795; c=relaxed/simple;
+	bh=GViLDs6d5Njm/u1K2NuzxBQmnv/JOncR9bHnej6zmKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I3lVG68YORIx5p4C5iMSTUXbo0V/IMJXgIUgqcFEaHqrMmBf4OOsp295XtgXQr4VZwVpGZ+Of0hUdCGAvXTbT38AfI2mgYJ6pPt6ADipFZ4kWoz9AYuLF5Vfaod0JaxdnWBE9/LyZj7J7SzrgwxAfwC1wOFjwqRk8ZK+Jd3x+j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGahFT6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F871C4CED1;
-	Wed,  5 Feb 2025 14:37:24 +0000 (UTC)
+	 MIME-Version; b=GjetsQi7VIwAJMHgj6A/DrtcyCS7ys+yt2h68tsQrGd4M00E7KQodvDWm5DYa9+WXF3Oe1B2Ufe7FnqkzylPfJNQCWbzmEHdRbbg7DOfV7wlHqG86/RSCwew5ui07nyyMkqHaiRHBRZ3K8WRrgHpf7X1xTwl4xDA5i+/Pu9BCDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Loo73Akv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECFEC4CED1;
+	Wed,  5 Feb 2025 15:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766244;
-	bh=VVn75q8Wr2My5PhFazpIsHRPa1Tr30usfvmAp2nIoBQ=;
+	s=korg; t=1738767795;
+	bh=GViLDs6d5Njm/u1K2NuzxBQmnv/JOncR9bHnej6zmKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FGahFT6qCF6Wc11a9ejpE5wCoMv7nBYt8lgbZiIiKQjCY6bP3RtzxFXa8lShNe7YX
-	 rTUfiHvqJEJQZrxTeFygkD160TmabzcItISBn7CKwdzhyPcCp2nEXhkHgT1eqrsbkY
-	 /kw7BeAHL/jnFU9dqTnBxlFzPZ9X4UxmZD+zdhfI=
+	b=Loo73AkvkwwzQ/GA0jh3g0YZu0x8WW3JX2pEbFbGxzVItxJNWb4HxCIGOQCh97Kql
+	 9avfnNRs7VQDcd1Ihwsz6CldaE9MQgiPoiDrNBTDBKT6J//FOUSoidaH41gNVwNYhW
+	 2w6QmJPQWj/PQtc2cEbYaK4cHriWnHsmp2Ib2atw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 345/393] net: xdp: Disallow attaching device-bound programs in generic mode
-Date: Wed,  5 Feb 2025 14:44:24 +0100
-Message-ID: <20250205134433.509516020@linuxfoundation.org>
+Subject: [PATCH 6.12 510/590] Bluetooth: btusb: mediatek: Add locks for usb_driver_claim_interface()
+Date: Wed,  5 Feb 2025 14:44:25 +0100
+Message-ID: <20250205134514.778810155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 3595599fa8360bb3c7afa7ee50c810b4a64106ea ]
+[ Upstream commit e9087e828827e5a5c85e124ce77503f2b81c3491 ]
 
-Device-bound programs are used to support RX metadata kfuncs. These
-kfuncs are driver-specific and rely on the driver context to read the
-metadata. This means they can't work in generic XDP mode. However, there
-is no check to disallow such programs from being attached in generic
-mode, in which case the metadata kfuncs will be called in an invalid
-context, leading to crashes.
+The documentation for usb_driver_claim_interface() says that "the
+device lock" is needed when the function is called from places other
+than probe(). This appears to be the lock for the USB interface
+device. The Mediatek btusb code gets called via this path:
 
-Fix this by adding a check to disallow attaching device-bound programs
-in generic mode.
+  Workqueue: hci0 hci_power_on [bluetooth]
+  Call trace:
+   usb_driver_claim_interface
+   btusb_mtk_claim_iso_intf
+   btusb_mtk_setup
+   hci_dev_open_sync
+   hci_power_on
+   process_scheduled_works
+   worker_thread
+   kthread
 
-Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/r/dae862ec-43b5-41a0-8edf-46c59071cdda@hetzner-cloud.de
-Tested-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250127131344.238147-1-toke@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With the above call trace the device lock hasn't been claimed. Claim
+it.
+
+Without this fix, we'd sometimes see the error "Failed to claim iso
+interface". Sometimes we'd even see worse errors, like a NULL pointer
+dereference (where `intf->dev.driver` was NULL) with a trace like:
+
+  Call trace:
+   usb_suspend_both
+   usb_runtime_suspend
+   __rpm_callback
+   rpm_suspend
+   pm_runtime_work
+   process_scheduled_works
+
+Both errors appear to be fixed with the proper locking.
+
+Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bluetooth/btusb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 69da7b009f8b9..479a3892f98c3 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9346,6 +9346,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
- 			NL_SET_ERR_MSG(extack, "Program bound to different device");
- 			return -EINVAL;
- 		}
-+		if (bpf_prog_is_dev_bound(new_prog->aux) && mode == XDP_MODE_SKB) {
-+			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
-+			return -EINVAL;
-+		}
- 		if (new_prog->expected_attach_type == BPF_XDP_DEVMAP) {
- 			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
- 			return -EINVAL;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 0c85c981a8334..258a5cb6f27af 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2632,8 +2632,15 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
+ 	struct btmtk_data *btmtk_data = hci_get_priv(data->hdev);
+ 	int err;
+ 
++	/*
++	 * The function usb_driver_claim_interface() is documented to need
++	 * locks held if it's not called from a probe routine. The code here
++	 * is called from the hci_power_on workqueue, so grab the lock.
++	 */
++	device_lock(&btmtk_data->isopkt_intf->dev);
+ 	err = usb_driver_claim_interface(&btusb_driver,
+ 					 btmtk_data->isopkt_intf, data);
++	device_unlock(&btmtk_data->isopkt_intf->dev);
+ 	if (err < 0) {
+ 		btmtk_data->isopkt_intf = NULL;
+ 		bt_dev_err(data->hdev, "Failed to claim iso interface");
 -- 
 2.39.5
 
