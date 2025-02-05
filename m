@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F56A2923B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1643A28D7B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAD16BFB6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0FE1883DE3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5123D1FECB9;
-	Wed,  5 Feb 2025 14:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468E61547F2;
+	Wed,  5 Feb 2025 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVTf525G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuoT2P9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0425818E377;
-	Wed,  5 Feb 2025 14:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035751519AA;
+	Wed,  5 Feb 2025 14:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767027; cv=none; b=CBJAtHdcMEv/vMarbKsf53j4Rf8ouXzClnIelLeDYfvXC/19/G1xkFUsBzJ+wZ/JArnJhsmmsnr38CyAGo+XR/1e8S9aA7EkL5HhJeNAtN++jcmKHaK9yuJmLvudeIqyMoNMt1Z8GvjUqcjU4StK8G37g20p7GknbM5Q82cFUrc=
+	t=1738764080; cv=none; b=RaXhBbve4QyHpdGfZrFD3vL5dukYb0I78tMT/z8iCphnZgnVSB5LygVZ9fm7sCj35N6hL3kxfCusPLczQ1mFpDv1y1G3gnfWqKJIuKgHLUalOcwKbAtI+IsvLsDB14YVTG0UJw3Kocf8IuiUjKoqB1Gii1XCv8dBbcs2Etd3HJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767027; c=relaxed/simple;
-	bh=7st6haTkXdW/YMMY2xolQbnx80c5i2eoqAYxZd2BXqQ=;
+	s=arc-20240116; t=1738764080; c=relaxed/simple;
+	bh=958lKAmpgfeWPYfDai4mxhAE1AoxwXNXYBE5RhnSHME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbUezwM7mUsyFSfNgWnKaeFYZJn3M+UZLcqsHAKmo7JMMPxqWF8r8Sm5LPhTHrIiEW/cDBOr2yEJ1UjesDdAK3BEBIjcWiaVh1pn5/fStcgoBxC4uAGSNFI75fumlh1Jz2F5n9yoiuwh8CLh0EoFr09itpKt/OgeRevVnuZABwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVTf525G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76960C4CED1;
-	Wed,  5 Feb 2025 14:50:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uvmJ1hyvWbI1QbA32CA6o2UWI3PRs2XJgIy9/ZeeBldK5EQa5/nNQUwau7hxBG/G7kOUHLkxsA0YfKy0+4ahaf1crw5xeWeQiWnAWwUbBxgxMhP7X0/VH8fReEn6w+roxBCDWx/8BnP2RZTd2xFVjQac/P6C5NdcAKJeBdp637Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuoT2P9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C00C4CEDD;
+	Wed,  5 Feb 2025 14:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767026;
-	bh=7st6haTkXdW/YMMY2xolQbnx80c5i2eoqAYxZd2BXqQ=;
+	s=korg; t=1738764079;
+	bh=958lKAmpgfeWPYfDai4mxhAE1AoxwXNXYBE5RhnSHME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVTf525G01oqOtcmBG/vVBFCwPbepMadrLOuijfW3D1aI30ne4Fv/CX64lrMVo8Q4
-	 TGampONn6xhEQ9ve6bKNofloOgPdNrJ6E1KJJjqop5VL+Kjp8utecks33uZOX542Nq
-	 D+9RAaU4lrrc/eugnFm8byjBlgEPF+oow9VGKVlA=
+	b=nuoT2P9VeM8UhgfuI9vnnkvWXeGSTv/RIXSS5H/EZw2/Z84N0R07IkCQNzH1s5lNQ
+	 /Pr/l9Cfa4fWJ1aIT4r0S3F1DsmLyCL+4RwJkmgxw6t30G73vo0P+UmZs5/Da1gaEq
+	 bT0FL4eJcBUWA6yf6/D83kA4SPyafAXnXfnht+EE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 315/623] iommu/amd: Remove domain_alloc()
+Subject: [PATCH 6.6 138/393] pwm: stm32: Add check for clk_enable()
 Date: Wed,  5 Feb 2025 14:40:57 +0100
-Message-ID: <20250205134508.273837220@linuxfoundation.org>
+Message-ID: <20250205134425.581997894@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Mingwei Zheng <zmw12306@gmail.com>
 
-[ Upstream commit f9b80f941e0e68c3347c5d22a17a0f636a064e2c ]
+[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
 
-IOMMU drivers should not be sensitive to the domain type, a paging domain
-should be created based only on the flags passed in, the same for all
-callers.
+Add check for the return value of clk_enable() to catch the potential
+error.
 
-AMD was using the domain_alloc() path to force VFIO into a v1 domain type,
-because v1 gives higher performance. However now that
-IOMMU_HWPT_ALLOC_PASID is present, and a NULL device is not possible,
-domain_alloc_paging_flags() will do the right thing for VFIO.
-
-When invoked from VFIO flags will be 0 and the amd_iommu_pgtable type of
-domain will be selected. This is v1 by default unless the kernel command
-line has overridden it to v2.
-
-If the admin is forcing v2 assume they know what they are doing so force
-it everywhere, including for VFIO.
-
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/2-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 082f1bcae8d1 ("iommu/amd: Fully decode all combinations of alloc_paging_flags")
+Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ drivers/pwm/pwm-stm32.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 7e7246c49006a..96d87406f8946 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2386,25 +2386,6 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
- 	return &domain->domain;
- }
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index b91a14c895bea..67414b97ef4d2 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -635,8 +635,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
+ 	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
  
--static struct iommu_domain *amd_iommu_domain_alloc(unsigned int type)
--{
--	struct iommu_domain *domain;
--	int pgtable = amd_iommu_pgtable;
--
--	/*
--	 * Force IOMMU v1 page table when allocating
--	 * domain for pass-through devices.
--	 */
--	if (type == IOMMU_DOMAIN_UNMANAGED)
--		pgtable = AMD_IOMMU_V1;
--
--	domain = do_iommu_domain_alloc(type, NULL, 0, pgtable);
--	if (IS_ERR(domain))
--		return NULL;
--
--	return domain;
--}
--
- static struct iommu_domain *
- amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 				    const struct iommu_user_data *user_data)
-@@ -2881,7 +2862,6 @@ const struct iommu_ops amd_iommu_ops = {
- 	.blocked_domain = &blocked_domain,
- 	.release_domain = &release_domain,
- 	.identity_domain = &identity_domain.domain,
--	.domain_alloc = amd_iommu_domain_alloc,
- 	.domain_alloc_paging_flags = amd_iommu_domain_alloc_paging_flags,
- 	.domain_alloc_sva = amd_iommu_domain_alloc_sva,
- 	.probe_device = amd_iommu_probe_device,
+ 	/* Initialize clock refcount to number of enabled PWM channels. */
+-	for (i = 0; i < num_enabled; i++)
+-		clk_enable(priv->clk);
++	for (i = 0; i < num_enabled; i++) {
++		ret = clk_enable(priv->clk);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ret = devm_pwmchip_add(dev, &priv->chip);
+ 	if (ret < 0)
 -- 
 2.39.5
 
