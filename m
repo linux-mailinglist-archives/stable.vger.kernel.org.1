@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688C8A291C5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B19A2938E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45BE3AB24E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77FA216DD10
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088C717C21C;
-	Wed,  5 Feb 2025 14:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A811607B7;
+	Wed,  5 Feb 2025 15:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij/dS7dw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn5oneP0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2C1779AE;
-	Wed,  5 Feb 2025 14:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2217155A30;
+	Wed,  5 Feb 2025 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766633; cv=none; b=ZLbyjGkr8moZfi2AHkPxai/67i6Lyt0PIl+ExaOyAQvDeCF3AZpH6Xv5gi5PAodLmhjBOVC63y9Mg5bvtKYc+CHSeRlsNDHXotdPDA4n5xRGpjzsMjXc7kSlRs/8HJDr/EHw6U0jYciPABhIkgoipibv9cfn/JCBOgnXpGNdDGY=
+	t=1738768036; cv=none; b=WjjAFvqYGCwh2ZX4/h3/38QtzwEw6d/dTfj3VkaC9kDXgVfVnfqhWRC/QWCPbxXOXwH2kZrLmvRv1zzefeI3PZpGxNbuJSUUEkVVKo0hzkVhWu9RMFYkbOtTtY+6vgVtbe2ILTuq/4MhglfAew9ogDInI8uibvCt5Ucdn4PyOY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766633; c=relaxed/simple;
-	bh=w3jeCt59HhBnpo6Go5lAj23tPqE8cZp0FnUAOEMGz44=;
+	s=arc-20240116; t=1738768036; c=relaxed/simple;
+	bh=hRygtiYMDYqNINQGoqYeWIHeYNuD9H2yJBI5SmLuMes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8iXzKRwFcHrKywBA9VVtbFAeFIkK5k3DOmteCVQSDPMsC+LRV952m/KlVHGhCzdPcBZIUKfQt/HqQx9O0xbY9FjvpGcMvAhGUL80RrWDxihY+h0brolZIOpMTzKt4qLYppLcx6hL7JAwtCsE2KILOJwq1c5mUCwwFymfYraf0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij/dS7dw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D90C4CED1;
-	Wed,  5 Feb 2025 14:43:51 +0000 (UTC)
+	 MIME-Version; b=ERricIKQNJ/8Cp6Dswmgaj1xj2njr8GeFC4oFWpxJc+hWmMF8bCW1s40OReOWFoxqIPPVbNLPY0YqHOqRvhzNpT6oIZ6iRJ/o060WG/Kux0OHgXd49Cc8lEqqNdrM4S1utizUGdSJ7zIoVajZJCqg5nBjHPZnV8evqnRqsFmwrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn5oneP0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59615C4CED1;
+	Wed,  5 Feb 2025 15:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766632;
-	bh=w3jeCt59HhBnpo6Go5lAj23tPqE8cZp0FnUAOEMGz44=;
+	s=korg; t=1738768036;
+	bh=hRygtiYMDYqNINQGoqYeWIHeYNuD9H2yJBI5SmLuMes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij/dS7dwGEBJaB3HxbVHosOsP7g8KdzAtxxZlihZvOhVyD2ZAKYZmp3OEnYL0CMNC
-	 o2fJbp+R5YK1otRtJ9CDvhAadxX4IT7buZUCCd4SDs7iiBv4uGYMRFqlGSoJ9zEuvI
-	 6J66bPmViCCh5tChDGYdVbDFgzk/UgUrHdksGZRQ=
+	b=Wn5oneP0FP5CwVq9ZCrJkADQ81qYiTO+A9X1mM8xwdxVF6sJu4eQWAOHpz7zNdhCv
+	 FVDCsfnzACAJTCrkPxeMJD4hzqU8kP3PiO9RffFswhNRO/FuDg6i8Q0jRTgDrrWrFJ
+	 WsNWpbuxC9WMCWZkBAt4DcUFKh9CBoSpZLCXUGKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kyle Tso <kyletso@google.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 380/393] usb: dwc3: core: Defer the probe until USB power supply ready
+	Noam Rathaus <noamr@ssd-disclosure.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.12 544/590] netfilter: nf_tables: reject mismatching sum of field_len with set key length
 Date: Wed,  5 Feb 2025 14:44:59 +0100
-Message-ID: <20250205134434.833960025@linuxfoundation.org>
+Message-ID: <20250205134516.084453829@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 66e0ea341a2a78d14336117f19763bd9be26d45d upstream.
+commit 1b9335a8000fb70742f7db10af314104b6ace220 upstream.
 
-Currently, DWC3 driver attempts to acquire the USB power supply only
-once during the probe. If the USB power supply is not ready at that
-time, the driver simply ignores the failure and continues the probe,
-leading to permanent non-functioning of the gadget vbus_draw callback.
+The field length description provides the length of each separated key
+field in the concatenation, each field gets rounded up to 32-bits to
+calculate the pipapo rule width from pipapo_init(). The set key length
+provides the total size of the key aligned to 32-bits.
 
-Address this problem by delaying the dwc3 driver initialization until
-the USB power supply is registered.
+Register-based arithmetics still allows for combining mismatching set
+key length and field length description, eg. set key length 10 and field
+description [ 5, 4 ] leading to pipapo width of 12.
 
-Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250115044548.2701138-1-kyletso@google.com
+Cc: stable@vger.kernel.org
+Fixes: 3ce67e3793f4 ("netfilter: nf_tables: do not allow mismatch field size and set key length")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ net/netfilter/nf_tables_api.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1505,8 +1505,6 @@ static void dwc3_get_properties(struct d
- 	u8			tx_thr_num_pkt_prd = 0;
- 	u8			tx_max_burst_prd = 0;
- 	u8			tx_fifo_resize_max_num;
--	const char		*usb_psy_name;
--	int			ret;
- 
- 	/* default to highest possible threshold */
- 	lpm_nyet_threshold = 0xf;
-@@ -1541,13 +1539,6 @@ static void dwc3_get_properties(struct d
- 
- 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
- 
--	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
--	if (ret >= 0) {
--		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
--		if (!dwc->usb_psy)
--			dev_err(dev, "couldn't get usb power supply\n");
--	}
--
- 	dwc->has_lpm_erratum = device_property_read_bool(dev,
- 				"snps,has-lpm-erratum");
- 	device_property_read_u8(dev, "snps,lpm-nyet-threshold",
-@@ -1887,6 +1878,23 @@ static int dwc3_get_clocks(struct dwc3 *
- 	return 0;
- }
- 
-+static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
-+{
-+	struct power_supply *usb_psy;
-+	const char *usb_psy_name;
-+	int ret;
-+
-+	ret = device_property_read_string(dwc->dev, "usb-psy-name", &usb_psy_name);
-+	if (ret < 0)
-+		return NULL;
-+
-+	usb_psy = power_supply_get_by_name(usb_psy_name);
-+	if (!usb_psy)
-+		return ERR_PTR(-EPROBE_DEFER);
-+
-+	return usb_psy;
-+}
-+
- static int dwc3_probe(struct platform_device *pdev)
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4968,7 +4968,7 @@ static int nft_set_desc_concat_parse(con
+ static int nft_set_desc_concat(struct nft_set_desc *desc,
+ 			       const struct nlattr *nla)
  {
- 	struct device		*dev = &pdev->dev;
-@@ -1940,6 +1948,10 @@ static int dwc3_probe(struct platform_de
+-	u32 num_regs = 0, key_num_regs = 0;
++	u32 len = 0, num_regs;
+ 	struct nlattr *attr;
+ 	int rem, err, i;
  
- 	dwc3_get_properties(dwc);
+@@ -4982,12 +4982,12 @@ static int nft_set_desc_concat(struct nf
+ 	}
  
-+	dwc->usb_psy = dwc3_get_usb_power_supply(dwc);
-+	if (IS_ERR(dwc->usb_psy))
-+		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
-+
- 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
- 	if (IS_ERR(dwc->reset)) {
- 		ret = PTR_ERR(dwc->reset);
+ 	for (i = 0; i < desc->field_count; i++)
+-		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
++		len += round_up(desc->field_len[i], sizeof(u32));
+ 
+-	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
+-	if (key_num_regs != num_regs)
++	if (len != desc->klen)
+ 		return -EINVAL;
+ 
++	num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
+ 	if (num_regs > NFT_REG32_COUNT)
+ 		return -E2BIG;
+ 
 
 
 
