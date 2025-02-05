@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-112498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE5AA28D06
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AD5A2901D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75C6318897C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D926B1883872
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3511215854F;
-	Wed,  5 Feb 2025 13:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECFD155CBD;
+	Wed,  5 Feb 2025 14:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IECghdFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avhk+v+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F89156C76;
-	Wed,  5 Feb 2025 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0B2487BF;
+	Wed,  5 Feb 2025 14:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763770; cv=none; b=OmUdPK0zoWfhEoHVPHeON3a/tgdGnGeA5ohv/jXK85seeVQcf+4V5Ev0j8YAeMAqvd1QNWXOcimq6apXhiOr9+VFdr4PfrZi3WtCDmYpJGbln55EAtk8LVMq5CVdIYB7mispd2oI6gd3oUytdI6cnRMsHvjAvlDmQqwbOzTgNtA=
+	t=1738765929; cv=none; b=pq+Zgm3dnBdH8GkhRw28i+1pLdaK29cY6eiFBx9fk5sBDroNFRz4GEXGLBXWCflC0OR+LW7QkbYAT2jdfmClcGcJheskImpk8SFvSdRb7GlliH/JSJD3vezQulol/SgsFCvkvqr9DAmjh5+RzKWkq+dkSrUpAJWwGdA1qU0UXj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763770; c=relaxed/simple;
-	bh=KrnaoHvIRyuyYuot4uZ2jKvnYjCfcAu3Vr7puKxYbcU=;
+	s=arc-20240116; t=1738765929; c=relaxed/simple;
+	bh=bEQlQnZeCGybdHrWxr40hLZnQ9EfGW0UA40iVN3ofyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnAF9Gf9+ePatm02EApPlcxvn2cMkByIoVmYhoys0p2WyDY9HNts/9WfF/RyItX0APuSTaKRJShPwyWUeGx8tWUYmOAU1uHOb3QDJX92XZ1Ug66iUf1ymP+BWygaY3ilj/vCIfk4XzkSjtM4x0/7Yiz5oz7cM0wR7K5xreb9Nxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IECghdFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A52C4CED1;
-	Wed,  5 Feb 2025 13:56:08 +0000 (UTC)
+	 MIME-Version; b=bjos+d5OCrkf1KGyUlLXrfR5ORSpHnlATct+5mvCPMqhGJx55bc6W/qMH1+rRYOOuGnVcsE3GqqW2L4lmgqmXyK8smiLXst1GzwyjhBxSdNwQ+O1NXjFA/ivF1OFE7oZ3cfmrUxStqusRT0YtmFqnUwZTjdX3i7ax3EDJdIn8i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avhk+v+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2635EC4CED1;
+	Wed,  5 Feb 2025 14:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763769;
-	bh=KrnaoHvIRyuyYuot4uZ2jKvnYjCfcAu3Vr7puKxYbcU=;
+	s=korg; t=1738765928;
+	bh=bEQlQnZeCGybdHrWxr40hLZnQ9EfGW0UA40iVN3ofyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IECghdFWFVnUqqnilMfBn5u0Y/B2QMG2gv3WOzzBYaEeAhmviFRydRJWZ/q9iF0+a
-	 DAT+PxO8gJzt6JWvln1ITfm5vsRWFzWgpMfdmXotgUz6VRL8BLIOr0h8MCAu2y952c
-	 m+yNvNs2rMXhpjdzjHwGlEMeXEt8vsu7zg4xOCBc=
+	b=avhk+v+AiCUMzixr1aqGYlfhRz9jRLIbELBASvReZgXEVTwzIMDV9lu7a/JRJHmVs
+	 pGWxLWuqTKbw5VR/XcI75g6JOeFDQpkadb48+nwFp/b55uI76LktALDsNdur/gx0ZE
+	 MPXnG5FJ879tX5/h7kvlGEIzaOLVxcw9O2pVyqx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/393] mfd: syscon: Use scoped variables with memory allocators to simplify error paths
+Subject: [PATCH 6.12 268/590] perf top: Dont complain about lack of vmlinux when not resolving some kernel samples
 Date: Wed,  5 Feb 2025 14:40:23 +0100
-Message-ID: <20250205134424.271780708@linuxfoundation.org>
+Message-ID: <20250205134505.527447357@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +68,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 82f898f47112bc7b787cb9ce8803c4e2f9f60c89 ]
+[ Upstream commit 058b38ccd2af9e5c95590b018e8425fa148d7aca ]
 
-Allocate the memory with scoped/cleanup.h to reduce error handling and
-make the code a bit simpler.
+Recently we got a case where a kernel sample wasn't being resolved due
+to a bug that was not setting the end address on kernel functions
+implemented in assembly (see Link: tag), and then those were not being
+found by machine__resolve() -> map__find_symbol().
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240707114823.9175-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 805f7aaf7fee ("mfd: syscon: Fix race in device_node_get_regmap()")
+So we ended up with:
+
+  # perf top --stdio
+  PerfTop: 0 irqs/s  kernel: 0%  exact: 0% lost: 0/0 drop: 0/0 [cycles/P]
+  -----------------------------------------------------------------------
+
+  Warning:
+  A vmlinux file was not found.
+  Kernel samples will not be resolved.
+  ^Z
+  [1]+  Stopped                 perf top --stdio
+  #
+
+But then resolving all other kernel symbols.
+
+So just fixup the logic to only print that warning when there are no
+symbols in the kernel map.
+
+Fixes: d88205db9caa0e9d ("perf dso: Add dso__has_symbols() method")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/lkml/Z3buKhcCsZi3_aGb@x1
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ tools/perf/builtin-top.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 33f1e07ab24dc..2ce15f60eb107 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -8,6 +8,7 @@
-  * Author: Dong Aisheng <dong.aisheng@linaro.org>
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/hwspinlock.h>
-@@ -45,7 +46,6 @@ static const struct regmap_config syscon_regmap_config = {
- static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- {
- 	struct clk *clk;
--	struct syscon *syscon;
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	u32 reg_io_width;
-@@ -54,20 +54,16 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	struct resource res;
- 	struct reset_control *reset;
- 
--	syscon = kzalloc(sizeof(*syscon), GFP_KERNEL);
-+	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
- 	if (!syscon)
- 		return ERR_PTR(-ENOMEM);
- 
--	if (of_address_to_resource(np, 0, &res)) {
--		ret = -ENOMEM;
--		goto err_map;
--	}
-+	if (of_address_to_resource(np, 0, &res))
-+		return ERR_PTR(-ENOMEM);
- 
- 	base = of_iomap(np, 0);
--	if (!base) {
--		ret = -ENOMEM;
--		goto err_map;
--	}
-+	if (!base)
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* Parse the device's DT node for an endianness specification */
- 	if (of_property_read_bool(np, "big-endian"))
-@@ -152,7 +148,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	list_add_tail(&syscon->list, &syscon_list);
- 	spin_unlock(&syscon_list_slock);
- 
--	return syscon;
-+	return_ptr(syscon);
- 
- err_reset:
- 	reset_control_put(reset);
-@@ -163,8 +159,6 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	regmap_exit(regmap);
- err_regmap:
- 	iounmap(base);
--err_map:
--	kfree(syscon);
- 	return ERR_PTR(ret);
- }
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index 724a793863212..ca3e8eca6610e 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -809,7 +809,7 @@ static void perf_event__process_sample(const struct perf_tool *tool,
+ 		 * invalid --vmlinux ;-)
+ 		 */
+ 		if (!machine->kptr_restrict_warned && !top->vmlinux_warned &&
+-		    __map__is_kernel(al.map) && map__has_symbols(al.map)) {
++		    __map__is_kernel(al.map) && !map__has_symbols(al.map)) {
+ 			if (symbol_conf.vmlinux_name) {
+ 				char serr[256];
  
 -- 
 2.39.5
