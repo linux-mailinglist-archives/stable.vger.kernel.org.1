@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-112759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F6CA28E4B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398DAA28E46
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 733AB3A15FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E0C16878C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B7615198D;
-	Wed,  5 Feb 2025 14:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F08149C53;
+	Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zUGYQOkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ge7pRAhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C1EFC0B;
-	Wed,  5 Feb 2025 14:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76480FC0B;
+	Wed,  5 Feb 2025 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764651; cv=none; b=hWlifgcF3zICtXprNz0DI6x73gCnmdg4SYDMSEeMxDRtDKo4bcH6JjtijBK5Pt0LM0II9f7ddTP28Vh/D4FtahJRNc6OA1rLNxpJG37PRZYdtuFJdkrr3sLVom7KkfIPrgbABhcKvzEf3CrAB1brYbnVsuWHpVOoNto3xkuRza8=
+	t=1738764662; cv=none; b=QN8DvkfoTHIUMoeRbvsrwfd11bq8SpWwl0hXZ8jRCmV53DUGi69ek1wEFXnm1FkFbSa/pG/zvnXUN6JMYbgsQL9n7g6VJCwTCmbY0jSSZGzZcv3YkdmqUP6QIDokbcJyXYBOj6WuSsAM6me1NpLEF+SZgu57Ae+xwYOyUP5RXHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764651; c=relaxed/simple;
-	bh=bB7LIOyxlNs5MP6Gt9aZUUdCHKdX5BOev14s23AOr/E=;
+	s=arc-20240116; t=1738764662; c=relaxed/simple;
+	bh=elBhsDXo5rPiOepJt1MB4npUXkcVlkqPl28tiV7IIUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=omueRcyoBrZkUa8IiT0Nj6jrrHladX945rquRTPNN3c2KETZ60mnwcLhhj1njmnAWNn/yIjHffKR7yeYADU0URGnUG15EKhglpTZdc3YaqRlrLwDNDjrIB5BT6Qq1v61l5WgqDt98/ow01ErpzmPG1Hv3yXhUHURjpdzw/oqBHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zUGYQOkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351CAC4CED1;
-	Wed,  5 Feb 2025 14:10:51 +0000 (UTC)
+	 MIME-Version; b=MUAI4b5LFjOoXGLXyPjo2Qxvvr8MayIKZYoHjI1AQzPW6H0PRnT9w2GHx/l9yMpXWqPX5grOrofxJpABNxAL/IFJo9Hc5FP/3g5AWVY3WX/3F1bLnif6cAqNIJPUtVu+m4UmRQI1dXU11ivyCcloXXeqgXhyzVg3vvpAyThA90k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ge7pRAhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBC1C4CED1;
+	Wed,  5 Feb 2025 14:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764651;
-	bh=bB7LIOyxlNs5MP6Gt9aZUUdCHKdX5BOev14s23AOr/E=;
+	s=korg; t=1738764661;
+	bh=elBhsDXo5rPiOepJt1MB4npUXkcVlkqPl28tiV7IIUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zUGYQOkQaJfNj8ZnvYmHl1kx89TVK2f41H2mpwKZgBy2+4WvcnXvQzsWsqC2S9o4v
-	 a2gribHhvq1ZLdtVNKcSibMBS0o1KUGBa1Cx4M4ZFns4qBJa26Ij+xnbd8MaJzQIj9
-	 vicvSXnEE+ZA5Z3gJemQqFserLNszSIR1TdPrOYo=
+	b=Ge7pRAhzvdXdLgokhGnKmKcFrwg4ej39QKGNpCWIl3GqzfPzbaQU4za8sOsKca1Wq
+	 efnplPq3HI/gbFRWk8sBMi5q+6RlHt8WlZBMkjaVUK/zHRd0zIZng0H6f0l2Mm0tNL
+	 GHDvtYnlRE9ea4QxEb+l1hqPMQvXhe8lErK+Mu+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/590] wifi: wlcore: fix unbalanced pm_runtime calls
-Date: Wed,  5 Feb 2025 14:38:21 +0100
-Message-ID: <20250205134500.861987954@linuxfoundation.org>
+Subject: [PATCH 6.12 147/590] wifi: rtw89: handle entity active flag per PHY
+Date: Wed,  5 Feb 2025 14:38:22 +0100
+Message-ID: <20250205134500.899878049@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,68 +66,138 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 996c934c8c196144af386c4385f61fcd5349af28 ]
+[ Upstream commit ad95bb3b92c65849a6101402197e2cbeb2910a4a ]
 
-If firmware boot failes, runtime pm is put too often:
-[12092.708099] wlcore: ERROR firmware boot failed despite 3 retries
-[12092.708099] wl18xx_driver wl18xx.1.auto: Runtime PM usage count underflow!
-Fix that by redirecting all error gotos before runtime_get so that runtime is
-not put.
+Originally, we have an active flag to record whether we have set PHY once.
+After impending MLO support, there will be dual-PHY and they can be set
+individually on Wi-Fi 7 chips. So, we now have active flag per PHY and
+handle them individually.
 
-Fixes: c40aad28a3cf ("wlcore: Make sure firmware is initialized in wl1271_op_add_interface()")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20250104195507.402673-1-akemnade@kernel.org
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240925020119.13170-3-pkshih@realtek.com
+Stable-dep-of: e47f0a589854 ("wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.h | 11 +++++++----
+ drivers/net/wireless/realtek/rtw89/core.c | 15 ++++++++-------
+ drivers/net/wireless/realtek/rtw89/core.h |  2 +-
+ drivers/net/wireless/realtek/rtw89/mac.c  |  3 ++-
+ 4 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index 0c77b8524160d..42805ed7ca120 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -2612,24 +2612,24 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
- 	if (test_bit(WL1271_FLAG_RECOVERY_IN_PROGRESS, &wl->flags) ||
- 	    test_bit(WLVIF_FLAG_INITIALIZED, &wlvif->flags)) {
- 		ret = -EBUSY;
--		goto out;
-+		goto out_unlock;
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
+index 4ed777ea50648..74de13a2e7da9 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.h
++++ b/drivers/net/wireless/realtek/rtw89/chan.h
+@@ -43,18 +43,21 @@ struct rtw89_entity_weight {
+ 	unsigned int active_roles;
+ };
+ 
+-static inline bool rtw89_get_entity_state(struct rtw89_dev *rtwdev)
++static inline bool rtw89_get_entity_state(struct rtw89_dev *rtwdev,
++					  enum rtw89_phy_idx phy_idx)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 
+-	return READ_ONCE(hal->entity_active);
++	return READ_ONCE(hal->entity_active[phy_idx]);
+ }
+ 
+-static inline void rtw89_set_entity_state(struct rtw89_dev *rtwdev, bool active)
++static inline void rtw89_set_entity_state(struct rtw89_dev *rtwdev,
++					  enum rtw89_phy_idx phy_idx,
++					  bool active)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 
+-	WRITE_ONCE(hal->entity_active, active);
++	WRITE_ONCE(hal->entity_active[phy_idx], active);
+ }
+ 
+ static inline
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 5b8e65f6de6a4..37d2bcba1b315 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -352,10 +352,6 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
+ 	enum rtw89_entity_mode mode;
+ 	bool entity_active;
+ 
+-	entity_active = rtw89_get_entity_state(rtwdev);
+-	if (!entity_active)
+-		return;
+-
+ 	mode = rtw89_get_entity_mode(rtwdev);
+ 	switch (mode) {
+ 	case RTW89_ENTITY_MODE_SCC:
+@@ -375,6 +371,11 @@ void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
+ 		chanctx_idx = roc_idx;
+ 
+ 	phy_idx = RTW89_PHY_0;
++
++	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
++	if (!entity_active)
++		return;
++
+ 	chan = rtw89_chan_get(rtwdev, chanctx_idx);
+ 	chip->ops->set_txpwr(rtwdev, chan, phy_idx);
+ }
+@@ -393,8 +394,6 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
+ 	enum rtw89_entity_mode mode;
+ 	bool entity_active;
+ 
+-	entity_active = rtw89_get_entity_state(rtwdev);
+-
+ 	mode = rtw89_entity_recalc(rtwdev);
+ 	switch (mode) {
+ 	case RTW89_ENTITY_MODE_SCC:
+@@ -416,6 +415,8 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
+ 	mac_idx = RTW89_MAC_0;
+ 	phy_idx = RTW89_PHY_0;
+ 
++	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
++
+ 	chan = rtw89_chan_get(rtwdev, chanctx_idx);
+ 	chan_rcd = rtw89_chan_rcd_get(rtwdev, chanctx_idx);
+ 
+@@ -432,7 +433,7 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
+ 		rtw89_chip_rfk_band_changed(rtwdev, phy_idx, chan);
  	}
  
+-	rtw89_set_entity_state(rtwdev, true);
++	rtw89_set_entity_state(rtwdev, phy_idx, true);
+ 	return 0;
+ }
  
- 	ret = wl12xx_init_vif_data(wl, vif);
- 	if (ret < 0)
--		goto out;
-+		goto out_unlock;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index de33320b1354c..0ed31b37d10fe 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4668,7 +4668,7 @@ struct rtw89_hal {
+ 	struct rtw89_chanctx chanctx[NUM_OF_RTW89_CHANCTX];
+ 	struct cfg80211_chan_def roc_chandef;
  
- 	wlvif->wl = wl;
- 	role_type = wl12xx_get_role_type(wl, wlvif);
- 	if (role_type == WL12XX_INVALID_ROLE_TYPE) {
- 		ret = -EINVAL;
--		goto out;
-+		goto out_unlock;
+-	bool entity_active;
++	bool entity_active[RTW89_PHY_MAX];
+ 	bool entity_pause;
+ 	enum rtw89_entity_mode entity_mode;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index 4e15d539e3d1c..4574aa62839b0 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -1483,7 +1483,8 @@ static int rtw89_mac_power_switch(struct rtw89_dev *rtwdev, bool on)
+ 		clear_bit(RTW89_FLAG_CMAC1_FUNC, rtwdev->flags);
+ 		clear_bit(RTW89_FLAG_FW_RDY, rtwdev->flags);
+ 		rtw89_write8(rtwdev, R_AX_SCOREBOARD + 3, MAC_AX_NOTIFY_PWR_MAJOR);
+-		rtw89_set_entity_state(rtwdev, false);
++		rtw89_set_entity_state(rtwdev, RTW89_PHY_0, false);
++		rtw89_set_entity_state(rtwdev, RTW89_PHY_1, false);
  	}
  
- 	ret = wlcore_allocate_hw_queue_base(wl, wlvif);
- 	if (ret < 0)
--		goto out;
-+		goto out_unlock;
- 
- 	/*
- 	 * TODO: after the nvs issue will be solved, move this block
-@@ -2644,7 +2644,7 @@ static int wl1271_op_add_interface(struct ieee80211_hw *hw,
- 
- 		ret = wl12xx_init_fw(wl);
- 		if (ret < 0)
--			goto out;
-+			goto out_unlock;
- 	}
- 
- 	/*
+ 	return 0;
 -- 
 2.39.5
 
