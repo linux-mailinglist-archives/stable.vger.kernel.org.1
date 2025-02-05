@@ -1,144 +1,146 @@
-Return-Path: <stable+bounces-112269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B748DA28243
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:59:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CADA28248
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 04:03:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 306913A5615
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7A8C3A63C1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B825212D68;
-	Wed,  5 Feb 2025 02:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AD7212D9E;
+	Wed,  5 Feb 2025 03:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U2m9dvnj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nxEBMQ1O"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5674A25A65E;
-	Wed,  5 Feb 2025 02:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EDE2F46;
+	Wed,  5 Feb 2025 03:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738724392; cv=none; b=oqmkYQ2Yc3Iy+YPJgOVjpjeYrYyBcxDQX3aDs0pwtiv6ApqRXv9brujUtJZpJvNF39HacuOn+w0RFwpbNSJKVGGqw3dz252wB27sIPtpIPlsxrN3xSaX1v0S7r7CEztLd9QZ525ETT6P4Pf4T46A6zeujXgB8QJnLNvKRVwo3EQ=
+	t=1738724593; cv=none; b=NoRbxnZI3lTzXDgl/72WXFqi1zt6dz1ZNarNG4yT5J9m9zbuqb9jtEAG/HUJijNsDjve4yN3fIMtjSnLwhElwlhuRE9KEZ52t+6e7ZvDH6y0UcJjvfCM1k9n7FvCfMKBhUniJGUFAvaMpiur8KRGDIrwkwYqtHUTpaGn+nJ4H7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738724392; c=relaxed/simple;
-	bh=sYStc87QTwMl+FVwFU1qW0OH7vOKR/8Sy0De2ETxsaI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pUwNx888Lj98PHb1W6+1+4tQbOVJgIUReUgbaEtxbHoYOIr5RmVDsZor2wR+r3WrsfXKUMfsIG0EIfrRJwLN5YmYacskshZHqwXvaUQXwPqfzCibtqgETB5rSaj7S2i6idZ7XghEEM/2QaM7IiC7mDTlJyat/j9zWFA3/Qa/KuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U2m9dvnj; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51519CkT014189;
-	Wed, 5 Feb 2025 02:59:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sYStc8
-	7QTwMl+FVwFU1qW0OH7vOKR/8Sy0De2ETxsaI=; b=U2m9dvnjnWWMtijqNsFgsW
-	+1IEm39Uoe9BWxP66AitJhRdLDZP/5TY/mxUj5TjMPA6UZfl6tPG62oS1Z4mJTLU
-	ZtpD+qSRTCknzHQUtBPXLBKErWi5gKBQtMiTgj0tA7lkI5K1pNZkd570okL949AR
-	u4DUsqwL7ierb+0ccDksl0f3BpMEFV8MMJHwPEJkOF+YFgDVRF5ELy9n0p9p6HC0
-	vum8uC+0gYRAXcygc8YY6jsV9pd/FSK3BBAcuiHNVdA6lDE/szny8HIHZM3o9vOr
-	qujXPjUkyLFHdLkPpjU9z5iBfb0Sjgvd3TFOH+T+UN68vM+l4QgLbwm1mmzWH+kw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kx29gc1s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Feb 2025 02:59:34 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5152xY5o014989;
-	Wed, 5 Feb 2025 02:59:34 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kx29gc1n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Feb 2025 02:59:34 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5151Nwdn005258;
-	Wed, 5 Feb 2025 02:59:33 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j05jxeq7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Feb 2025 02:59:33 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5152xVjZ30999180
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Feb 2025 02:59:31 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1109C58056;
-	Wed,  5 Feb 2025 02:59:32 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5FDC45803F;
-	Wed,  5 Feb 2025 02:59:31 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.30.140])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  5 Feb 2025 02:59:31 +0000 (GMT)
-Message-ID: <bbfce282a00854c220eddb1ffcde7c6d839efe5e.camel@linux.ibm.com>
-Subject: Re: [PATCH] ima: Reset IMA_NONACTION_RULE_FLAGS after post_setattr
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org
-Date: Tue, 04 Feb 2025 21:59:31 -0500
-In-Reply-To: <20250204125720.1326257-1-roberto.sassu@huaweicloud.com>
-References: <20250204125720.1326257-1-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1738724593; c=relaxed/simple;
+	bh=g6XqJi+3efzE8zFPlaanW3f9Ug9ugh+JBc0KjXvtBU4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Xvc8yIFggLxjqJboAI/pFQTqLi7dSLZmymtXwSECCRqoEl8wYOaG1DUrLjDOPW0vEogSsVHI24mkzIpSItEEksXAhIa+S2/XUaFNrpRDv7J4zjl+1zlLVE1H/CBlWOvhuWysMPxz5OZBkztd240yEeBOa2iY3Sw7GHBgU1Ba/wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nxEBMQ1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3F6F3C4CEDF;
+	Wed,  5 Feb 2025 03:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738724592;
+	bh=g6XqJi+3efzE8zFPlaanW3f9Ug9ugh+JBc0KjXvtBU4=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=nxEBMQ1Otzbfr8Miy8itzaRuIqZcBtTIS5iDE1E6wSKs74Ttx1ATEpl+6dRt+0R8X
+	 sm99GN4lVBq3IU7w1Ddn7eNxrshzpZQ1ATHV440zSF2s9ep4NhSzHe39I4MFZEBKm1
+	 mEk51fn1ExWrTDE1WbH6RSnopx1/R1/KBf3WHBw0S4lQnhCR8NDLM4LnmQlwMX7L+X
+	 gmoQNW5knlpPqZejpRPb8n1sMYs01FfTutAG4nvf+QX41FzgDCx8GdXZ6JhD1DAslB
+	 vRD4fadAIjuww39fJ3QFUVRERbo1yUCG3g2UkHi6QtLNoYZn0N8dnLR5259/EH54Fm
+	 6oVozAZYZp19g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30CDFC02193;
+	Wed,  5 Feb 2025 03:03:12 +0000 (UTC)
+From: Krishanth Jagaduri via B4 Relay <devnull+Krishanth.Jagaduri.sony.com@kernel.org>
+Date: Wed, 05 Feb 2025 08:32:14 +0530
+Subject: [PATCH] Documentation/no_hz: Remove description that states boot
+ CPU cannot be nohz_full
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: i8FWhhR1o8ynWsjyfh7__tbe3wZ8RFTz
-X-Proofpoint-ORIG-GUID: JAxLJEhDOO32DzSD8fPllQKo9naRWG3n
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-05_01,2025-02-04_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- bulkscore=0 priorityscore=1501 impostorscore=0 spamscore=0 phishscore=0
- suspectscore=0 adultscore=0 mlxlogscore=999 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502050019
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250205-send-oss-20250129-v1-1-d404921e6d7e@sony.com>
+X-B4-Tracking: v=1; b=H4sIALXUomcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDQyNL3eLUvBTd/OJiXbiIcbKJUUpymomZcWqSElBfQVFqWmYF2Mzo2Np
+ aANx8/qJjAAAA
+X-Change-ID: 20250129-send-oss-20250129-3c42dcf463eb
+To: Thomas Gleixner <tglx@linutronix.de>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Atsushi Ochiai <Atsushi.Ochiai@sony.com>, 
+ Daniel Palmer <Daniel.Palmer@sony.com>, Oleg Nesterov <oleg@redhat.com>, 
+ stable@vger.kernel.org, Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738724552; l=2701;
+ i=Krishanth.Jagaduri@sony.com; s=20250122; h=from:subject:message-id;
+ bh=E835T3tqOhFIcn/Jm6X5qlETpMAWcMeplxvdOyEAeTk=;
+ b=arldPplnu5QfSI/nuErJEq7UekxDqNZEtHWhOuNB63444+4wrmK/5cLfNDHZOvmrYyCnN/vOn
+ GO55gjfsmhvDDyu1ZDrKcb7qOBtL1+NorXtzZGYZXpdTPdiNYzmlqQ0
+X-Developer-Key: i=Krishanth.Jagaduri@sony.com; a=ed25519;
+ pk=lx2tvWPqsnFN2XCeuuKdm7G2bXm/Grq1a1KTsSpFZSk=
+X-Endpoint-Received: by B4 Relay for Krishanth.Jagaduri@sony.com/20250122
+ with auth_id=326
+X-Original-From: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+Reply-To: Krishanth.Jagaduri@sony.com
 
-On Tue, 2025-02-04 at 13:57 +0100, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
->=20
-> Commit 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-> mistakenly reverted the performance improvement introduced in commit
-> 42a4c603198f0 ("ima: fix ima_inode_post_setattr"). The unused bit mask wa=
-s
-> subsequently removed by commit 11c60f23ed13 ("integrity: Remove unused
-> macro IMA_ACTION_RULE_FLAGS").
->=20
-> Restore the performance improvement by introducing the new mask
-> IMA_NONACTION_RULE_FLAGS, equal to IMA_NONACTION_FLAGS without
-> IMA_NEW_FILE, which is not a rule-specific flag.
->=20
-> Finally, reset IMA_NONACTION_RULE_FLAGS instead of IMA_NONACTION_FLAGS in
-> process_measurement(), if the IMA_CHANGE_ATTR atomic flag is set (after
-> file metadata modification).
->=20
-> With this patch, new files for which metadata were modified while they ar=
-e
-> still open, can be reopened before the last file close (when security.ima
-> is written), since the IMA_NEW_FILE flag is not cleared anymore. Otherwis=
-e,
-> appraisal fails because security.ima is missing (files with IMA_NEW_FILE
-> set are an exception).
->=20
-> Cc: stable@vger.kernel.org=C2=A0# v4.16.x
-> Fixes: 0d73a55208e9 ("ima: re-introduce own integrity cache lock")
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-Thanks!
+[ Upstream commit 5097cbcb38e6e0d2627c9dde1985e91d2c9f880e ]
 
-Mimi
+Documentation/timers/no_hz.rst states that the "nohz_full=" mask must not
+include the boot CPU, which is no longer true after:
+
+  commit 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full").
+
+Apply changes only to Documentation/timers/no_hz.rst in stable kernels.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Cc: stable@vger.kernel.org # 5.4+
+Signed-off-by: Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+---
+Hi,
+
+Before kernel 6.9, Documentation/timers/no_hz.rst states that
+"nohz_full=" mask must not include the boot CPU, which is no longer
+true after commit 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be
+nohz_full").
+
+This was fixed upstream by commit 5097cbcb38e6 ("sched/isolation: Prevent
+boot crash when the boot CPU is nohz_full").
+
+While it fixes the document description, it also fixes issue introduced
+by another commit aae17ebb53cd ("workqueue: Avoid using isolated cpus'
+timers on queue_delayed_work").
+
+It is unlikely that it will be backported to stable kernels which does
+not contain the commit that introduced the issue.
+
+Could Documentation/timers/no_hz.rst be fixed in stable kernels 5.4+?
+---
+ Documentation/timers/no_hz.rst | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/timers/no_hz.rst b/Documentation/timers/no_hz.rst
+index 065db217cb04fc252bbf6a05991296e7f1d3a4c5..16bda468423e88090c0dc467ca7a5c7f3fd2bf02 100644
+--- a/Documentation/timers/no_hz.rst
++++ b/Documentation/timers/no_hz.rst
+@@ -129,11 +129,8 @@ adaptive-tick CPUs:  At least one non-adaptive-tick CPU must remain
+ online to handle timekeeping tasks in order to ensure that system
+ calls like gettimeofday() returns accurate values on adaptive-tick CPUs.
+ (This is not an issue for CONFIG_NO_HZ_IDLE=y because there are no running
+-user processes to observe slight drifts in clock rate.)  Therefore, the
+-boot CPU is prohibited from entering adaptive-ticks mode.  Specifying a
+-"nohz_full=" mask that includes the boot CPU will result in a boot-time
+-error message, and the boot CPU will be removed from the mask.  Note that
+-this means that your system must have at least two CPUs in order for
++user processes to observe slight drifts in clock rate.) Note that this
++means that your system must have at least two CPUs in order for
+ CONFIG_NO_HZ_FULL=y to do anything for you.
+ 
+ Finally, adaptive-ticks CPUs must have their RCU callbacks offloaded.
+
+---
+base-commit: 219d54332a09e8d8741c1e1982f5eae56099de85
+change-id: 20250129-send-oss-20250129-3c42dcf463eb
+
+Best regards,
+-- 
+Krishanth Jagaduri <Krishanth.Jagaduri@sony.com>
+
+
 
