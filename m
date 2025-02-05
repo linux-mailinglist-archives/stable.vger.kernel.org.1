@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-112635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7092A28DB5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A9DA28DC2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE8A1665DA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145991888F8B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9385D154C1D;
-	Wed,  5 Feb 2025 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5361514B080;
+	Wed,  5 Feb 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9J9yWwu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMlx+bY5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE3F15854F;
-	Wed,  5 Feb 2025 14:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105181519AA;
+	Wed,  5 Feb 2025 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764231; cv=none; b=g0ngWxxYRId+J6P2PkWRsUfE9VNj0XKmRr+HYYFBEro0iSm9kuy2G5Stcfji6teqxdiWhNB9EBdzgiy4BpC62U/IeBQUst+oKiYvfrddGLn4649EBRxNyYimcUplrMSyL6cv+QjldbTxxhTTmAo7o8e3dTn1REjp/xuw3fLSgZU=
+	t=1738764245; cv=none; b=d2IfLVnzqG4HkRHZyltKarV9Wvo7NWtNOkITQ8hoZEqK+LcjFpJ+fku8pIn2xKkZU3WgPyG6FvioUcg8/J/SrwMw4zam++ZzbkO7CCz/KgTCxsrjb1EU+AouHZJJbPDSzWWeCJfVSeSUG4qS0U8FZCMd/jt2s47wOdEeaTfrWek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764231; c=relaxed/simple;
-	bh=IC2nPK+jle/J71+PLYYoUadnj2jtU1Ux1te8OVamz6s=;
+	s=arc-20240116; t=1738764245; c=relaxed/simple;
+	bh=irSJUiisFWwi/TrKrl8B0gWM1ygxrACN2IW2KbmgF4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKxMC1vnHpHvfFUdSDr6014jFYsmMMuU4c0aJ1x6tsaQxOXSdL1AXEF0IoVflhBbA66wYBfRorw/OR6fuSoKg9Oj0aXCmLM2SH/IjJYutasfP/XD7VpIOX0iOEWkbgKNyd9RgAOb/Jra4Hc2Z3VyObxnSdRUo5lbUuZtktmDk+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9J9yWwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53999C4CED1;
-	Wed,  5 Feb 2025 14:03:50 +0000 (UTC)
+	 MIME-Version; b=KyqrmEwUmkOnslbysUuv2Ku8S23jLU9gHCV61KLKqng+gyJ4JzmPQ+BpWCCGsYKbcYTjLnSuDs+YHfABwwoVcfni3DSMVFHDIw/nuSh2XJPhL2/KWNLVynYTMqjL44G5XmlKtqbMjWEBFANvhmCrkZtMEK2hRcA2wfsUmskm7y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMlx+bY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA35C4CED1;
+	Wed,  5 Feb 2025 14:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764230;
-	bh=IC2nPK+jle/J71+PLYYoUadnj2jtU1Ux1te8OVamz6s=;
+	s=korg; t=1738764244;
+	bh=irSJUiisFWwi/TrKrl8B0gWM1ygxrACN2IW2KbmgF4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9J9yWwum0qZ5nq5x+UtxG0f9vsumzWr6gA0tHNHihN065CneMs6cgh1+9TTrBq7A
-	 Qr4HeQi+cJ5VtJ5+4ZOxYhmcVzuDMlS+MMKu/LEJTnsjfT3b2e+kHUtcKbI/G7SA8W
-	 HT729o0SQnPv1n+p+THx58kGG7t74fR+c6HS51aY=
+	b=XMlx+bY5DVTs36ErR4yWpQIaB8Gqi0GjkSg4ZEphRhbZH7oQjt1s6WOziTVh1si/u
+	 tjaNOBmOD2UMH+GBq8HeNdnzD8Q5M2jP0TtKeTEAlXzy8OK7IwkZ4n/jlqZxrlQDP0
+	 hcAAKP4ODB52SHKCIEtZ1xc7iE0B84pEOrNx9IeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andy Yan <andy.yan@rock-chips.com>,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 059/623] drm/rockchip: vop2: Setup delay cycle for Esmart2/3
-Date: Wed,  5 Feb 2025 14:36:41 +0100
-Message-ID: <20250205134458.484793209@linuxfoundation.org>
+Subject: [PATCH 6.13 060/623] drm/rockchip: vop2: Check linear format for Cluster windows on rk3566/8
+Date: Wed,  5 Feb 2025 14:36:42 +0100
+Message-ID: <20250205134458.522475516@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,38 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit c766998ba6df126ab6934d32ff2ff080316ec630 ]
+[ Upstream commit df063c0b8ffbdca486ab2f802e716973985d8f86 ]
 
-Each layer needs to set the correct delay cycle to display properly
-without unexpected offset on screen.
+The Cluster windows on rk3566/8 only support afbc mode.
 
-Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
 Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-5-andyshrk@163.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-6-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index cd3fb906d0089..68b5c438cdaba 100644
+index 68b5c438cdaba..2abc68fe2d1ff 100644
 --- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
 +++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2493,9 +2493,11 @@ static void vop2_setup_dly_for_windows(struct vop2 *vop2)
- 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__ESMART1, dly);
- 			break;
- 		case ROCKCHIP_VOP2_SMART0:
-+		case ROCKCHIP_VOP2_ESMART2:
- 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART0, dly);
- 			break;
- 		case ROCKCHIP_VOP2_SMART1:
-+		case ROCKCHIP_VOP2_ESMART3:
- 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART1, dly);
- 			break;
- 		}
+@@ -550,6 +550,16 @@ static bool rockchip_vop2_mod_supported(struct drm_plane *plane, u32 format,
+ 	if (modifier == DRM_FORMAT_MOD_INVALID)
+ 		return false;
+ 
++	if (vop2->data->soc_id == 3568 || vop2->data->soc_id == 3566) {
++		if (vop2_cluster_window(win)) {
++			if (modifier == DRM_FORMAT_MOD_LINEAR) {
++				drm_dbg_kms(vop2->drm,
++					    "Cluster window only supports format with afbc\n");
++				return false;
++			}
++		}
++	}
++
+ 	if (modifier == DRM_FORMAT_MOD_LINEAR)
+ 		return true;
+ 
 -- 
 2.39.5
 
