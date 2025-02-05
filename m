@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-113425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7941A2922C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4E3A2922E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDDD43AD08E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E425F3A97EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FC11FDA62;
-	Wed,  5 Feb 2025 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13811FDA6A;
+	Wed,  5 Feb 2025 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oRFpL7rr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdn0y8px"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1420A1607B7;
-	Wed,  5 Feb 2025 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D65318D656;
+	Wed,  5 Feb 2025 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766918; cv=none; b=sunFTCG2aWVT3dCVFp4wBawsO/B9hDnrCHg+uWpKqrZiH0nFtTXaV9eAIU9Z2reBVLHAvwQDEoLlaJai4kxDPSZ50mck958ac+bris3scdigQfKLbWy4HJGxJl4MvxxzSshHEmzPZDPyeBMMVJDFLoiBvVQc4g0LvD6nUx8XgZI=
+	t=1738766924; cv=none; b=aRMqkbC/OTEqg+MBGriaF9yK+8/78GmBEWlS7NVxSVang7au4LYDXY3AF9qLxboyPqSl6k4oq1SR/7CZSd54knhK5WKlwwsxyeF6SKYXBKc5/mSlGFF8pYTRzzjzWutvWoKoVAVdtk50+bvt9geoEdMAoEpgvWBYRH950si0IkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766918; c=relaxed/simple;
-	bh=YhnwSAXvrhR4Ahx5LDljKueXJi20F48MxufImqqZYrw=;
+	s=arc-20240116; t=1738766924; c=relaxed/simple;
+	bh=iF48jG8hmb088t+WzCPlsdsv+6ljUkKm6HnaLma3U0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSPhdzpy+2aYEJSJ2Jwy2JNBKTtVfPAuj68CKOxxfBPtVCi4JwQ1NcOa7GnNa+zw+9Mxd47RAhMDiIINkNhMP03DyYXuO4kx9FEq64aH8S51BRumq1EqDw0b0sFgPTLl2/ZQVuJcZSxTog3MUGIKJHJ0Ylqmws+uSZq5O5ZHfUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oRFpL7rr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3FDC4CED1;
-	Wed,  5 Feb 2025 14:48:36 +0000 (UTC)
+	 MIME-Version; b=DcgeRctAN9PTMi5EpXzrw4Sc107TRLrNZjOUyea4SzTK4zvUltgKVqJQQLxm7Fq+osF+JSkk+M6/Dj186TZ9jX8BEtS+Y6CXEh2rdJftJt9wbWO+dewvC6vCpYTmPemAgEMnQ2Hlqe3rfBl7MxgeB72PC7zhPqZdY0n9dEVuJZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdn0y8px; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04016C4CED1;
+	Wed,  5 Feb 2025 14:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766917;
-	bh=YhnwSAXvrhR4Ahx5LDljKueXJi20F48MxufImqqZYrw=;
+	s=korg; t=1738766924;
+	bh=iF48jG8hmb088t+WzCPlsdsv+6ljUkKm6HnaLma3U0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oRFpL7rrjjsjUIgozqbN7ibFKjYFNkRKapImPtV1QVu+pgxAe8IWLgh4OtTCNdt+I
-	 BrSoL1UoxJNyiFSLbGF0Tzlid7TVhpFmWzBlR0uakHtfAwakULsaoQLUE44X1nYw7F
-	 yLskKqRLqCzSmtg2uKZSAgPbjJT7MXuKVcp9rcCE=
+	b=cdn0y8pxx6yfvjPXNAO3RfTVwe+d4Z6RRHCK4iERvVoeo9V7ceVe0kIZ3cG3MZJ4i
+	 vP3MFBW+3mcbF0baFNNKOWz5i3yYP341nh9DkTI7XPvXAU3v4/5wLn8F+b2Mnznfg9
+	 HQflxLQpTnFt3QO1hoqXwI/g4e8Ra7myU8XN2tYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 380/590] firmware: qcom: scm: Cleanup global __scm on probe failures
-Date: Wed,  5 Feb 2025 14:42:15 +0100
-Message-ID: <20250205134509.807833036@linuxfoundation.org>
+Subject: [PATCH 6.12 381/590] arm64: dts: mediatek: mt7988: Add missing clock-div property for i2c
+Date: Wed,  5 Feb 2025 14:42:16 +0100
+Message-ID: <20250205134509.845032986@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -66,113 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-[ Upstream commit 1e76b546e6fca7eb568161f408133904ca6bcf4f ]
+[ Upstream commit e14b49db0087aa5d72f736d7306220ff2e3777f5 ]
 
-If SCM driver fails the probe, it should not leave global '__scm'
-variable assigned, because external users of this driver will assume the
-probe finished successfully.  For example TZMEM parts ('__scm->mempool')
-are initialized later in the probe, but users of it (__scm_smc_call())
-rely on the '__scm' variable.
+I2C binding requires clock-div property.
 
-This fixes theoretical NULL pointer exception, triggered via introducing
-probe deferral in SCM driver with call trace:
-
-  qcom_tzmem_alloc+0x70/0x1ac (P)
-  qcom_tzmem_alloc+0x64/0x1ac (L)
-  qcom_scm_assign_mem+0x78/0x194
-  qcom_rmtfs_mem_probe+0x2d4/0x38c
-  platform_probe+0x68/0xc8
-
-Fixes: 40289e35ca52 ("firmware: qcom: scm: enable the TZ mem allocator")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241209-qcom-scm-missing-barriers-and-all-sort-of-srap-v2-4-9061013c8d92@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Fixes: 660c230bf302 ("arm64: dts: mediatek: mt7988: add I2C controllers")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241217091238.16032-6-linux@fw-web.de
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_scm.c | 42 ++++++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7988a.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 14afd68664a91..a6bdedbbf7088 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -2001,13 +2001,17 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 
- 	irq = platform_get_irq_optional(pdev, 0);
- 	if (irq < 0) {
--		if (irq != -ENXIO)
--			return irq;
-+		if (irq != -ENXIO) {
-+			ret = irq;
-+			goto err;
-+		}
- 	} else {
- 		ret = devm_request_threaded_irq(__scm->dev, irq, NULL, qcom_scm_irq_handler,
- 						IRQF_ONESHOT, "qcom-scm", __scm);
--		if (ret < 0)
--			return dev_err_probe(scm->dev, ret, "Failed to request qcom-scm irq\n");
-+		if (ret < 0) {
-+			dev_err_probe(scm->dev, ret, "Failed to request qcom-scm irq\n");
-+			goto err;
-+		}
- 	}
- 
- 	__get_convention();
-@@ -2026,14 +2030,18 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 		qcom_scm_disable_sdi();
- 
- 	ret = of_reserved_mem_device_init(__scm->dev);
--	if (ret && ret != -ENODEV)
--		return dev_err_probe(__scm->dev, ret,
--				     "Failed to setup the reserved memory region for TZ mem\n");
-+	if (ret && ret != -ENODEV) {
-+		dev_err_probe(__scm->dev, ret,
-+			      "Failed to setup the reserved memory region for TZ mem\n");
-+		goto err;
-+	}
- 
- 	ret = qcom_tzmem_enable(__scm->dev);
--	if (ret)
--		return dev_err_probe(__scm->dev, ret,
--				     "Failed to enable the TrustZone memory allocator\n");
-+	if (ret) {
-+		dev_err_probe(__scm->dev, ret,
-+			      "Failed to enable the TrustZone memory allocator\n");
-+		goto err;
-+	}
- 
- 	memset(&pool_config, 0, sizeof(pool_config));
- 	pool_config.initial_size = 0;
-@@ -2041,9 +2049,11 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	pool_config.max_size = SZ_256K;
- 
- 	__scm->mempool = devm_qcom_tzmem_pool_new(__scm->dev, &pool_config);
--	if (IS_ERR(__scm->mempool))
--		return dev_err_probe(__scm->dev, PTR_ERR(__scm->mempool),
--				     "Failed to create the SCM memory pool\n");
-+	if (IS_ERR(__scm->mempool)) {
-+		dev_err_probe(__scm->dev, PTR_ERR(__scm->mempool),
-+			      "Failed to create the SCM memory pool\n");
-+		goto err;
-+	}
- 
- 	/*
- 	 * Initialize the QSEECOM interface.
-@@ -2059,6 +2069,12 @@ static int qcom_scm_probe(struct platform_device *pdev)
- 	WARN(ret < 0, "failed to initialize qseecom: %d\n", ret);
- 
- 	return 0;
-+
-+err:
-+	/* Paired with smp_load_acquire() in qcom_scm_is_available(). */
-+	smp_store_release(&__scm, NULL);
-+
-+	return ret;
- }
- 
- static void qcom_scm_shutdown(struct platform_device *pdev)
+diff --git a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
+index aa728331e876b..284e240b79977 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
+@@ -129,6 +129,7 @@
+ 			reg = <0 0x11003000 0 0x1000>,
+ 			      <0 0x10217080 0 0x80>;
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
+@@ -142,6 +143,7 @@
+ 			reg = <0 0x11004000 0 0x1000>,
+ 			      <0 0x10217100 0 0x80>;
+ 			interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
+@@ -155,6 +157,7 @@
+ 			reg = <0 0x11005000 0 0x1000>,
+ 			      <0 0x10217180 0 0x80>;
+ 			interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
 -- 
 2.39.5
 
