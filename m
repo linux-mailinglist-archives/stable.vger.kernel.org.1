@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1EDA29277
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EE8A2937C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3F11166303
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9B5188E1E3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5258721345;
-	Wed,  5 Feb 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F38192D86;
+	Wed,  5 Feb 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6EiviPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/HoHg+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D392188704;
-	Wed,  5 Feb 2025 14:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF02194137;
+	Wed,  5 Feb 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767161; cv=none; b=bECjVj6jiJjilm74PKxv3e0CGCr+L3YdRcsX83Xy6VcSuSQpGE8cix6nxRZiR5Wzbjr+b1VgLFfwx6CPy9PLwqKt/TQK0Xs65z1jtuMLTgy/QhlVjMG0/4fPQlsUWkK18nBLV53hCaX9G2MopFyHXCB+GyyT8eQmGyvLHdsEAsM=
+	t=1738767603; cv=none; b=dA3NkWjW0g7M75tajQ/nVWUf9ALSCpxGMnwDcy5/s/sdsZWAEKCoNlcuolvaG/nit6OU9nDN2g8QQc5CwHuSze6FQCP86V+T7YAt0Q5ef8IKeJTwfrEugTPG10vK4QBHgcNfdF9b93pjWawIkC68D3E08XmBQz+VD+cSOhQcZu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767161; c=relaxed/simple;
-	bh=ivAsZbZfJr7lNy7pX3WSkUhfrGg/D6moWZPN1BvS1pA=;
+	s=arc-20240116; t=1738767603; c=relaxed/simple;
+	bh=0UcKgr6DlLY11l1p6y4tOY29D1hNhYPpMJh38Q61EQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWh1gY2pNw0VziMaZ7DBZ7FGOkFoHR5U7wZnY6qIKOzK+tkUtYhfDqcRNkdr+K+n6PDc/Fp7bu41O5QOIuW0P3CE5kLWnwGIyysPG2/nDG7tLB1178GAI0YVjbuZyj1E4k09la439Mp2l7rxUlTZDCof+CYLEPvhC8yhsrUF1/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6EiviPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7019CC4CED1;
-	Wed,  5 Feb 2025 14:52:40 +0000 (UTC)
+	 MIME-Version; b=h1TLUqA0rVN2ZcKO9olZp+Zkqza/V6VD2FrQN5ZbRBqoWPa9zxbi+x54tb4beH8HM6s6xbg/Cjy6S+WgccfZb8Pw6YFOSy2Shx0NjC0WSpgWmLPbNuNXt0hFfQFB8VFcIM6rcDpiaYg1i4B9/2rJE6G7muiBsNYHW5iy2inGyxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/HoHg+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F1AC4CED6;
+	Wed,  5 Feb 2025 15:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767160;
-	bh=ivAsZbZfJr7lNy7pX3WSkUhfrGg/D6moWZPN1BvS1pA=;
+	s=korg; t=1738767603;
+	bh=0UcKgr6DlLY11l1p6y4tOY29D1hNhYPpMJh38Q61EQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6EiviPRCN7rOD90sQnNEa699aFCqpYtpblxC4XkT9wgXDPWFE/QQBVhz3pfkTLnW
-	 QlLTSx8Ht4/CtIKOiciwbBf+gw0G2pGSuJ5OLJFe4QVs51nPk7DBHucQCrQjpQtDLI
-	 8PLLEqAnzBPfEAMHQ9uOanqwpw2r5xaDGiGGAjmg=
+	b=O/HoHg+zotclTztMuGbbDk155Dhq/zfAbPgSMjaZfui+VhE5UPmWAwbCytpicRDp3
+	 V0cbqwaqFMTLFsShcgX77N9iTZ4wU4YjhAHOjcVIcA+GEdaZTjCrdohqTrnUu+SkEb
+	 kFgdbqfYiztple0wrseRzA+ZO8xvPXssi3onQ60Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Joel Stanley <joel@jms.id.au>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 414/590] media: i2c: ov9282: Correct the exposure offset
+Subject: [PATCH 6.13 427/623] arm64: dts: qcom: x1e80100-romulus: Update firmware nodes
 Date: Wed,  5 Feb 2025 14:42:49 +0100
-Message-ID: <20250205134511.104455388@linuxfoundation.org>
+Message-ID: <20250205134512.558018216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Joel Stanley <joel@jms.id.au>
 
-[ Upstream commit feaf4154d69657af2bf96e6e66cca794f88b1a61 ]
+[ Upstream commit 983833061d9599a534e44fd6d335080d1a0ba985 ]
 
-The datasheet lists that "Maximum exposure time is frame
-length -25 row periods, where frame length is set by
-registers {0x380E, 0x380F}".
-However this driver had OV9282_EXPOSURE_OFFSET set to 12
-which allowed that restriction to be violated, and would
-result in very under-exposed images.
+Other x1e machines use _dtbs.elf for these firmwares, which matches the
+filenames shipped by Windows.
 
-Correct the offset.
-
-Fixes: 14ea315bbeb7 ("media: i2c: Add ov9282 camera sensor driver")
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 09d77be56093 ("arm64: dts: qcom: Add support for X1-based Surface Laptop 7 devices")
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250108124500.44011-1-joel@jms.id.au
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov9282.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ov9282.c b/drivers/media/i2c/ov9282.c
-index 9f52af6f047f3..87e5d7ce5a47e 100644
---- a/drivers/media/i2c/ov9282.c
-+++ b/drivers/media/i2c/ov9282.c
-@@ -40,7 +40,7 @@
- /* Exposure control */
- #define OV9282_REG_EXPOSURE	0x3500
- #define OV9282_EXPOSURE_MIN	1
--#define OV9282_EXPOSURE_OFFSET	12
-+#define OV9282_EXPOSURE_OFFSET	25
- #define OV9282_EXPOSURE_STEP	1
- #define OV9282_EXPOSURE_DEFAULT	0x0282
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
+index 6835fdeef3aec..8761874dc2f06 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100-microsoft-romulus.dtsi
+@@ -706,14 +706,14 @@
  
+ &remoteproc_adsp {
+ 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qcadsp8380.mbn",
+-			"qcom/x1e80100/microsoft/Romulus/adsp_dtb.mbn";
++			"qcom/x1e80100/microsoft/Romulus/adsp_dtbs.elf";
+ 
+ 	status = "okay";
+ };
+ 
+ &remoteproc_cdsp {
+ 	firmware-name = "qcom/x1e80100/microsoft/Romulus/qccdsp8380.mbn",
+-			"qcom/x1e80100/microsoft/Romulus/cdsp_dtb.mbn";
++			"qcom/x1e80100/microsoft/Romulus/cdsp_dtbs.elf";
+ 
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
