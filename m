@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E35A28FE6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B63A2904E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD3681883B16
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0033A269C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04DE15A842;
-	Wed,  5 Feb 2025 14:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A567B155747;
+	Wed,  5 Feb 2025 14:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCxwROK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjroLQ4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A5F522A;
-	Wed,  5 Feb 2025 14:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CB18634E;
+	Wed,  5 Feb 2025 14:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765780; cv=none; b=chYhsAorZb6FRS+hdVhw6dC3qS4PFiMJ4dxB/hsgBqY+xOoRck+Vwx02u/jX/H/2fH98dxTUxOuVYzoBhSorF4Ihzfm+EPdvOFqz6FoTYmxKEyWc/HBgo9Ta8evGFVkeRoS82h+SRhSZAs8lCTeDvji95WRz8nlclyLX4SDTu6c=
+	t=1738766018; cv=none; b=TaZfBwVFZtv+DitW5mlVWqZdkxdNecKnOvZ3oXcvWbA5HvNxaEum9His4QHQBy301Ax86nIjgGweGJErI9kTKJtlHF8ViwMUtZr8YQ4aROwNFCcQKA0DZxyKHgH5VH0Sd8d9Xn5aFVVy84UhxCgeqIxL+gZFxg0rTXGX4g0LTQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765780; c=relaxed/simple;
-	bh=aioQuW5DixVMV70RL/F82eEKhIW3B3oXjWrhhK4QEBk=;
+	s=arc-20240116; t=1738766018; c=relaxed/simple;
+	bh=UMW5dmpCsIW3vMZPVbyP+L7aMlPEfiZxZG3a44uBe9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/Wdzfj4vTXksr76gpCzmTlsbUISh0OB9NNJiWbyR8cfIPT9rB8IIpU0Lvcp87JK9hts3CQgX3pgeNrdkzcu+zWCDY8Ctjd85pUgB6u8kgWRF/x2aIYFMIVrz5FL47p+l6Ez5x+G/FyNs9QOdeMgDIko2byCymk6F88pshTaLAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCxwROK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A652C4CED1;
-	Wed,  5 Feb 2025 14:29:39 +0000 (UTC)
+	 MIME-Version; b=LtDBUgyNvwrT5Iaugyo5OvHPLxk+IptO5xEkwLt0PKqPiaK/l/KSsVmzPVHhSCj7ErCFHjEAzD9tVd9WGYskjMxoY1gWPbd8E7+cq+CJrNnskA9HZbWUnj8zwqoR0R8ELnfFAZyxI6RFqyVetPs1TMapObd4iBqBxUp1c63Uoaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjroLQ4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25399C4CED1;
+	Wed,  5 Feb 2025 14:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765780;
-	bh=aioQuW5DixVMV70RL/F82eEKhIW3B3oXjWrhhK4QEBk=;
+	s=korg; t=1738766017;
+	bh=UMW5dmpCsIW3vMZPVbyP+L7aMlPEfiZxZG3a44uBe9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCxwROK8dl1Gr6LREcfeUn8y06sa9AAAcrWVva04H07S/XDtAGpBCLgIGASsMr44k
-	 6Hh7bPZZ8Y30Wd3QxoKQBoQD6kiE7oT5zNwfPAqyHa1e3+2yECYjy9bgiKWdJUj86x
-	 q1BWNDYQMj/VbFPJTaPjqJzqsWkinVgpMJFo7DQc=
+	b=zjroLQ4xP3rC40RRcxz/ZmsgVEcmJESR8ghg/PLao68GtgKbLLjtXfxJXr4gQdIp/
+	 LYnE2FDzp1PyWdDahm6qNnWN5z0RwJ2Btj07dUkpTT5eGrm8zi5Kg4qmEo/ZCLe0Wq
+	 yYUTMa3FgXLMAYa8YSfXN5l1qAEZA1MfP5QIWxLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -57,9 +57,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Yicong Yang <yangyicong@hisilicon.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 251/590] perf header: Fix one memory leakage in process_bpf_prog_info()
-Date: Wed,  5 Feb 2025 14:40:06 +0100
-Message-ID: <20250205134504.883529594@linuxfoundation.org>
+Subject: [PATCH 6.12 252/590] perf bpf: Fix two memory leakages when calling perf_env__insert_bpf_prog_info()
+Date: Wed,  5 Feb 2025 14:40:07 +0100
+Message-ID: <20250205134504.920781613@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -80,15 +80,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit a7da6c7030e1aec32f0a41c7b4fa70ec96042019 ]
+[ Upstream commit 03edb7020bb920f1935c3f30acad0bb27fdb99af ]
 
-Function __perf_env__insert_bpf_prog_info() will return without inserting
-bpf prog info node into perf env again due to a duplicate bpf prog info
-node insertion, causing the temporary info_linear and info_node memory to
-leak. Modify the return type of this function to bool and add a check to
-ensure the memory is freed if the function returns false.
+If perf_env__insert_bpf_prog_info() returns false due to a duplicate bpf
+prog info node insertion, the temporary info_node and info_linear memory
+will leak. Add a check to ensure the memory is freed if the function
+returns false.
 
-Fixes: 606f972b1361f477 ("perf bpf: Save bpf_prog_info information as headers to perf.data")
+Fixes: d56354dc49091e33 ("perf tools: Save bpf_prog_info and BTF of new BPF programs")
 Reviewed-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
@@ -102,73 +101,79 @@ Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Song Liu <song@kernel.org>
 Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20241205084500.823660-3-quic_zhonhan@quicinc.com
+Link: https://lore.kernel.org/r/20241205084500.823660-4-quic_zhonhan@quicinc.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/env.c    | 5 +++--
- tools/perf/util/env.h    | 2 +-
- tools/perf/util/header.c | 5 ++++-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ tools/perf/util/bpf-event.c | 10 ++++++++--
+ tools/perf/util/env.c       |  8 ++++++--
+ tools/perf/util/env.h       |  2 +-
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
-index 1edbccfc3281d..3260eaf267387 100644
---- a/tools/perf/util/env.c
-+++ b/tools/perf/util/env.c
-@@ -30,7 +30,7 @@ void perf_env__insert_bpf_prog_info(struct perf_env *env,
- 	up_write(&env->bpf_progs.lock);
- }
- 
--void __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
-+bool __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
- {
- 	__u32 prog_id = info_node->info_linear->info.id;
- 	struct bpf_prog_info_node *node;
-@@ -48,13 +48,14 @@ void __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info
- 			p = &(*p)->rb_right;
- 		} else {
- 			pr_debug("duplicated bpf prog info %u\n", prog_id);
--			return;
-+			return false;
+diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
+index 13608237c50e0..c81444059ad07 100644
+--- a/tools/perf/util/bpf-event.c
++++ b/tools/perf/util/bpf-event.c
+@@ -289,7 +289,10 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
  		}
- 	}
  
- 	rb_link_node(&info_node->rb_node, parent, p);
- 	rb_insert_color(&info_node->rb_node, &env->bpf_progs.infos);
- 	env->bpf_progs.infos_cnt++;
-+	return true;
- }
- 
- struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
-diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
-index 51b36c36019be..f170a1fb0c8c2 100644
---- a/tools/perf/util/env.h
-+++ b/tools/perf/util/env.h
-@@ -176,7 +176,7 @@ const char *perf_env__raw_arch(struct perf_env *env);
- int perf_env__nr_cpus_avail(struct perf_env *env);
- 
- void perf_env__init(struct perf_env *env);
--void __perf_env__insert_bpf_prog_info(struct perf_env *env,
-+bool __perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				      struct bpf_prog_info_node *info_node);
- void perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				    struct bpf_prog_info_node *info_node);
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index fd66042ecb030..7b99f58f7bf26 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -3188,7 +3188,10 @@ static int process_bpf_prog_info(struct feat_fd *ff, void *data __maybe_unused)
- 		/* after reading from file, translate offset to address */
- 		bpil_offs_to_addr(info_linear);
  		info_node->info_linear = info_linear;
--		__perf_env__insert_bpf_prog_info(env, info_node);
-+		if (!__perf_env__insert_bpf_prog_info(env, info_node)) {
+-		perf_env__insert_bpf_prog_info(env, info_node);
++		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
 +			free(info_linear);
 +			free(info_node);
 +		}
- 	}
+ 		info_linear = NULL;
  
+ 		/*
+@@ -480,7 +483,10 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
+ 	info_node = malloc(sizeof(struct bpf_prog_info_node));
+ 	if (info_node) {
+ 		info_node->info_linear = info_linear;
+-		perf_env__insert_bpf_prog_info(env, info_node);
++		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
++			free(info_linear);
++			free(info_node);
++		}
+ 	} else
+ 		free(info_linear);
+ 
+diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
+index 3260eaf267387..d981b6f4bc5ea 100644
+--- a/tools/perf/util/env.c
++++ b/tools/perf/util/env.c
+@@ -22,12 +22,16 @@ struct perf_env perf_env;
+ #include "bpf-utils.h"
+ #include <bpf/libbpf.h>
+ 
+-void perf_env__insert_bpf_prog_info(struct perf_env *env,
++bool perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				    struct bpf_prog_info_node *info_node)
+ {
++	bool ret;
++
+ 	down_write(&env->bpf_progs.lock);
+-	__perf_env__insert_bpf_prog_info(env, info_node);
++	ret = __perf_env__insert_bpf_prog_info(env, info_node);
  	up_write(&env->bpf_progs.lock);
++
++	return ret;
+ }
+ 
+ bool __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
+diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
+index f170a1fb0c8c2..38de0af2a6808 100644
+--- a/tools/perf/util/env.h
++++ b/tools/perf/util/env.h
+@@ -178,7 +178,7 @@ int perf_env__nr_cpus_avail(struct perf_env *env);
+ void perf_env__init(struct perf_env *env);
+ bool __perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				      struct bpf_prog_info_node *info_node);
+-void perf_env__insert_bpf_prog_info(struct perf_env *env,
++bool perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				    struct bpf_prog_info_node *info_node);
+ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+ 							__u32 prog_id);
 -- 
 2.39.5
 
