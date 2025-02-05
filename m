@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71452A28F69
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E0AA28F01
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A40E1685A7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251113AA04F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7B5154C08;
-	Wed,  5 Feb 2025 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB4B1519BE;
+	Wed,  5 Feb 2025 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voQDPYZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUKaoJcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC741459F6;
-	Wed,  5 Feb 2025 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169F94A28;
+	Wed,  5 Feb 2025 14:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765487; cv=none; b=c1csbkrpsDH6GFW87FLqZzl8jpufG+0ykZwXZIevnltUH+tJVflOIgSKhf1MsUWJRhu/Kxd/1o5m1mkcM0RQtp2oqZexuYIwUYC+fVpyi37cyX/oQkLuqXQlWdlGOn+iK6eXwMOzYwgZLPlnogvop+qD/9/jY83uzarnOussiUY=
+	t=1738765143; cv=none; b=mgIhR69JMvWeazk2/z0wPt2O0mjAhQfluKWgPB2IbBCF0XxcCEMvvtGyCYFJQ9gAH321HidFf/VRjHi0FDyBBNABWLoPEIskv9Cp6zMonMb2KQYqbJrEohittrFcrQbGvnKeGY9DW29JYeI8L1pzTZSBRkGFpDco23HS/qE4tLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765487; c=relaxed/simple;
-	bh=Jh2UQuSkqWJBSrXf6r0wiQ/KhOVG4K2mJ1KuoBwP4Ig=;
+	s=arc-20240116; t=1738765143; c=relaxed/simple;
+	bh=pG5HAy0Jl1NARVXNrYziFZBtw+iTDZIzQf5cO0F+qRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyGoyfvC6ADp+1Lwvj3zMNlQ90QcRserEEZUvIHS+QYtWlE9AYXEZJSf3yTCEkm/MTdlE7Spzad8JyK3kIHmI1fJaBy2wzeYN3G7ybPP4wJgP4pb2obUKKqXjbyNx6seiqqk+NH5/Y9tQMc6OBJEgJQ8JuR4Ft3zp3WMC/Vez28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voQDPYZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF9AC4CEDD;
-	Wed,  5 Feb 2025 14:24:46 +0000 (UTC)
+	 MIME-Version; b=OWIwZLIy1JtDHaWWt8uKkgG4xwWGWvlrApS4IsdKawi3/IVQgFkBbGqYLhDh47mbE2sF6E7lHU+/+rwc7BJJUW0IzHOo1/5xHrA3iJoT1sN1tgVuLqpgXLN+y3j66d9SHQTM4PIFrOjyIxZoGzs0L3x3TUY4M1KwHjMeuMBfp0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUKaoJcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6F5C4CED1;
+	Wed,  5 Feb 2025 14:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765487;
-	bh=Jh2UQuSkqWJBSrXf6r0wiQ/KhOVG4K2mJ1KuoBwP4Ig=;
+	s=korg; t=1738765142;
+	bh=pG5HAy0Jl1NARVXNrYziFZBtw+iTDZIzQf5cO0F+qRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voQDPYZ/53lyKwBS8mDFFfb9KePvRp7+OBamuyqInFQnBrqnUOFrclsH2x75aBF4t
-	 sWif8v8X7SZrW68VM2ZmrmPZ/T8kRLlgr434CVa8cb7l7aq6C/pesU3WgW9ubt6yqd
-	 n9pENMc4Hrlgp4nD8OS2fBES77yKHNjWzEkU7NHg=
+	b=YUKaoJcRNeUhDZ8iNh8IcWSpTvTRyaSSY8hHsOWfa6GErCYzJYYRSCPp8WY71mdfp
+	 iqUpTjg6xjRDMKCgHnmZ0JqK5MkAKgy922R+Q/NDSSy3X8OptbfzSGzilZmDfM11/N
+	 wAR6epiEuYIa1r2KUEwMD+FpQq2BXKjw0m/XO/Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric-SY Chang <eric-sy.chang@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Drew Fustini <dfustini@tenstorrent.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 182/623] wifi: mt76: mt7925: fix wrong band_idx setting when enable sniffer mode
+Subject: [PATCH 6.12 169/590] clk: thead: Fix cpu2vp_clk for TH1520 AP_SUBSYS clocks
 Date: Wed,  5 Feb 2025 14:38:44 +0100
-Message-ID: <20250205134503.198350714@linuxfoundation.org>
+Message-ID: <20250205134501.746177182@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric-SY Chang <eric-sy.chang@mediatek.com>
+From: Drew Fustini <dfustini@tenstorrent.com>
 
-[ Upstream commit 85bb7c10c1a013ab29d4be07559105dd843c6f7d ]
+[ Upstream commit 3a43cd19f1b8d3f57f835ae50cc869f07902c062 ]
 
-Currently, sniffer mode does not support band auto,
-so set band_idx to the default 0.
+cpu2vp_clk is a gate but was mistakenly in th1520_div_clks[] instead
+of th1520_gate_clks[].
 
-Fixes: 0cb349d742d1 ("wifi: mt76: mt7925: update mt7925_mac_link_bss_add for MLO")
-Signed-off-by: Eric-SY Chang <eric-sy.chang@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20241101074340.26176-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
+Signed-off-by: Drew Fustini <dfustini@tenstorrent.com>
+Link: https://lore.kernel.org/r/20241228034802.1573554-1-dfustini@tenstorrent.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/clk/thead/clk-th1520-ap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 0c2a2337c313d..a78883d4d6df0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1976,8 +1976,6 @@ int mt7925_get_txpwr_info(struct mt792x_dev *dev, u8 band_idx, struct mt7925_txp
- int mt7925_mcu_set_sniffer(struct mt792x_dev *dev, struct ieee80211_vif *vif,
- 			   bool enable)
- {
--	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--
- 	struct {
- 		struct {
- 			u8 band_idx;
-@@ -1991,7 +1989,7 @@ int mt7925_mcu_set_sniffer(struct mt792x_dev *dev, struct ieee80211_vif *vif,
- 		} __packed enable;
- 	} __packed req = {
- 		.hdr = {
--			.band_idx = mvif->bss_conf.mt76.band_idx,
-+			.band_idx = 0,
- 		},
- 		.enable = {
- 			.tag = cpu_to_le16(UNI_SNIFFER_ENABLE),
-@@ -2050,7 +2048,7 @@ int mt7925_mcu_config_sniffer(struct mt792x_vif *vif,
- 		} __packed tlv;
- 	} __packed req = {
- 		.hdr = {
--			.band_idx = vif->bss_conf.mt76.band_idx,
-+			.band_idx = 0,
- 		},
- 		.tlv = {
- 			.tag = cpu_to_le16(UNI_SNIFFER_CONFIG),
+diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
+index d02a18fed8a85..4c9555fc61844 100644
+--- a/drivers/clk/thead/clk-th1520-ap.c
++++ b/drivers/clk/thead/clk-th1520-ap.c
+@@ -896,7 +896,6 @@ static struct ccu_common *th1520_div_clks[] = {
+ 	&vo_axi_clk.common,
+ 	&vp_apb_clk.common,
+ 	&vp_axi_clk.common,
+-	&cpu2vp_clk.common,
+ 	&venc_clk.common,
+ 	&dpu0_clk.common,
+ 	&dpu1_clk.common,
+@@ -916,6 +915,7 @@ static struct ccu_common *th1520_gate_clks[] = {
+ 	&bmu_clk.common,
+ 	&cpu2aon_x2h_clk.common,
+ 	&cpu2peri_x2h_clk.common,
++	&cpu2vp_clk.common,
+ 	&perisys_apb1_hclk.common,
+ 	&perisys_apb2_hclk.common,
+ 	&perisys_apb3_hclk.common,
 -- 
 2.39.5
 
