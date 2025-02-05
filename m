@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D45A28E6C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E795A28F96
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBAB01886972
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA653A6D2E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3250D1494DF;
-	Wed,  5 Feb 2025 14:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF30155333;
+	Wed,  5 Feb 2025 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdCblQ4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b32tFcwC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E198815198D;
-	Wed,  5 Feb 2025 14:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5F71459F6;
+	Wed,  5 Feb 2025 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764777; cv=none; b=G3b73Y/FNhDVB3VtseigvB1+RYmMR9eZYMkpytl+gxz3ILnGgECA5q3di5aW13+6L5Z/FcFTfJrw8xSToCsihCegQXFL+nU+ueqfmOnypnjipLuFDhgvEY5RR1ct67V1SZw54TmRr83swFWUblPwplTWfTOcdovdkL8moB5bFt8=
+	t=1738765522; cv=none; b=tQllNjW3edFbYACvuPRpbcnIX4sAnnIluIyBtIQ5GF1G6JY87/UMwWANVoxDxMi2i+hQwyrmzWckb4ZZbA2MH5rJ7fbam/LyVN6zs+gA/Bsq7kFg8Jvs2ePUD6l3CYwRxoHMivUUhgvZOxlx048MyMPw28DEpy8XGDv7tBQ2Dq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764777; c=relaxed/simple;
-	bh=h59i6n/24j6t1aVZ89szr0mvx/YsBPfZybnKYn+RqF0=;
+	s=arc-20240116; t=1738765522; c=relaxed/simple;
+	bh=1EMZ6cyu0lQko5kDWhcLb68uOhXoy++58Fj7YBYsQlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8i4lnFlcKZs9kIE87GG3IhAGE44VVIMW4EnQTjSvDV80/LgSMAfNU+atmC5SlwihVpYsQIzHqegxSB4k2cD6Q0gXVNw4/FBmrtE8FhrHs+1K2mQMk4KIysA5AIz/8VMZ2dctZmmd+MEJMjWvhld+L1tZnGa09uh3Dz5rXbEp0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdCblQ4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CFFC4CED1;
-	Wed,  5 Feb 2025 14:12:56 +0000 (UTC)
+	 MIME-Version; b=JtVc6XA7UUlyQtsMk51yz/+5neAvDhrgqcd0trijTHYp1wJWNAV+luEYa7nIRWbYSd3e6iMzjzXCsNCHKQtMhx7G/QTAOwISN8cvW05W2A3rZgIBI9YsKH/U1UxVRjXlDQq+ixWfPoOH+8mpHbCX5CTiX/BSIU7kSPr0jKFtTA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b32tFcwC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F141C4CED1;
+	Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764776;
-	bh=h59i6n/24j6t1aVZ89szr0mvx/YsBPfZybnKYn+RqF0=;
+	s=korg; t=1738765522;
+	bh=1EMZ6cyu0lQko5kDWhcLb68uOhXoy++58Fj7YBYsQlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdCblQ4WYGaVw1WSGXfassB6yxQZ9s5DVG0iCnnQkCT/kJ40RPVTbbbvDnvwNY+gY
-	 3n7WmFp2yAXf7MOa5/aoOwpo0fKyAWVVzSbpW5nT5zeOu0mWsch2LXInw9X9RN0DQ4
-	 +UpZAulLUcixcD5CX9fiqT62EUiYoElLTwN9CNAs=
+	b=b32tFcwCda924C/mKmy8ySMPxv88I3f7acAzTMKC5SPLrOeEpMZW29vernV7j84JL
+	 qNtZhWvKbUbqpkmpUUaheweKvD6cy6RQ8OWBJpc0xvS6tZ6ROCa3SEpRRcKX3CCcoP
+	 nBvqzsBOn9wmlxLXtt28AY6nX8k7+e/HVcpmlXpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-	Felix Fietkau <nbd@nbd.name>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/590] wifi: mt76: mt7915: Fix mesh scan on MT7916 DBDC
+Subject: [PATCH 6.13 170/623] wifi: mac80211: Fix common size calculation for ML element
 Date: Wed,  5 Feb 2025 14:38:32 +0100
-Message-ID: <20250205134501.291498557@linuxfoundation.org>
+Message-ID: <20250205134502.737830709@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit f21b77cb556296116b1cce1d62295d13e35da574 ]
+[ Upstream commit 19aa842dcbb5860509b7e1b7745dbae0b791f6c4 ]
 
-commit c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop
-period") changes the behavior of mt7915_bss_info_changed() in mesh mode
-when enable_beacon becomes false: it calls mt7915_mcu_add_bss_info(...,
-false) and mt7915_mcu_add_sta(..., false) while the previous code
-didn't.  These sends mcu commands that apparently confuse the firmware.
+When the ML type is EPCS the control bitmap is reserved, the length
+is always 7 and is captured by the 1st octet after the control.
 
-This breaks scanning while in mesh mode on AsiaRF MT7916 DBDC-based cards:
-scanning works but no mesh frames get sent afterwards and the firmware
-seems to be hosed.  It breaks on MT7916 DBDC but not on MT7915 DBDC.
-
-Fixes: c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop period")
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://patch.msgid.link/20240927085350.4594-1-nicolas.cavallari@green-communications.fr
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250102161730.5790376754a7.I381208cbb72b1be2a88239509294099e9337e254@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/ieee80211.h | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index d75e8dea1fbdc..b7884772e2f40 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -619,8 +619,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC)
- 		set_bss_info = vif->cfg.assoc;
- 	if (changed & BSS_CHANGED_BEACON_ENABLED &&
-+	    info->enable_beacon &&
- 	    vif->type != NL80211_IFTYPE_AP)
--		set_bss_info = set_sta = info->enable_beacon;
-+		set_bss_info = set_sta = 1;
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 05dedc45505ce..a96db2915aabe 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -5055,28 +5055,24 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
+ {
+ 	const struct ieee80211_multi_link_elem *mle = (const void *)data;
+ 	u16 control = le16_to_cpu(mle->control);
+-	u8 common = 0;
  
- 	if (set_bss_info == 1)
- 		mt7915_mcu_add_bss_info(phy, vif, true);
+ 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
+ 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
+ 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
+ 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
+ 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
++	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+ 		/*
+ 		 * The length is the first octet pointed by mle->variable so no
+ 		 * need to add anything
+ 		 */
+ 		break;
+-	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+-		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+-			common += ETH_ALEN;
+-		return common;
+ 	default:
+ 		WARN_ON(1);
+ 		return 0;
+ 	}
+ 
+-	return sizeof(*mle) + common + mle->variable[0];
++	return sizeof(*mle) + mle->variable[0];
+ }
+ 
+ /**
+@@ -5314,8 +5310,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
+ 		check_common_len = true;
+ 		break;
+ 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
+-		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
+-			common += ETH_ALEN;
++		common = ETH_ALEN + 1;
+ 		break;
+ 	default:
+ 		/* we don't know this type */
 -- 
 2.39.5
 
