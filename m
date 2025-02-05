@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-113485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF8CA29266
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA93A28E2B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5CD016D54E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8BB1888614
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C294F1990BA;
-	Wed,  5 Feb 2025 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B2D155725;
+	Wed,  5 Feb 2025 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4x59fE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg+TJns+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8B8197A8B;
-	Wed,  5 Feb 2025 14:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC66A14A088;
+	Wed,  5 Feb 2025 14:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767120; cv=none; b=mOkpokSs9qZsPLlYGfHWIaaiVLm5nFp3DvmQ509hO6kCBciJyjRaVPIqS451DZQIHgPaXwPt1QvhuOBN11e+O7/gboOk8gILfcmhD8GaZutJIpACLKbAnP3T2fp7Y3c586eaMeWOSXtDh1NrQsObKY1uFcB74fafvMS/0OJy8n8=
+	t=1738764557; cv=none; b=TnuWU2vOIgBoR/QIZxzuXRYkAOmzHN3I3IUB99/Dq64YWYMSOVUWBFk0+tHRgdxpGIfePkD4LqOoJaPS47ZQ6l7L//RMC1uqZaM+j2YSk6VKzMvqRbhGHonVuldB6lCmF0W47r0AsFtrwBzlzgvKloBHP12PhhR5gtCKKroMOkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767120; c=relaxed/simple;
-	bh=yYcRNfZyxJ/bVN0SOMGF/2jifwlBpaIjuiiLKsiqYqA=;
+	s=arc-20240116; t=1738764557; c=relaxed/simple;
+	bh=mPizTqHmOy3r10QBf4yw1OvzH8N3I4Cwg5ftg7sJhvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sv8f5CodullRoAPnxM7iJoxw3drRyademrvaZuFNV/EqIk9Gmz4nznIlhFJwnm31J7q3RRIqEd+sZdl39L3yfSUxs4ATlibID/Mjfovjj1ZDRG7l9Rc7XIaYiuKaVTksM0gLT79mg4N4qFSrEnhEVjTZSF6fWulK2Mq5LnYoAaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4x59fE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76275C4CED1;
-	Wed,  5 Feb 2025 14:51:59 +0000 (UTC)
+	 MIME-Version; b=JLf2IQEqBz0XtWG2rIOLXljL1jWHvAJ4a94O1A07dbOX7smeDGEzGiHu+l78TYvUI9clM6sdyPs0mNn7khJ/bXr98+1skofr1f8ZdU8npUyuEwkWr6WGunb7hQxbQXKAnaGOI0bgWai6OWZJt8c417bH+j2bJcjmxXjqEFC2lJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg+TJns+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF320C4CEDD;
+	Wed,  5 Feb 2025 14:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767120;
-	bh=yYcRNfZyxJ/bVN0SOMGF/2jifwlBpaIjuiiLKsiqYqA=;
+	s=korg; t=1738764557;
+	bh=mPizTqHmOy3r10QBf4yw1OvzH8N3I4Cwg5ftg7sJhvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4x59fE/on2Q+4ilakuYuGZFAKZxBc/Lu7lmrdv/4wAP1oHr3yjit8WYqh0hiiuz4
-	 UsvEAW5nyvt3sT1Jq8PKgdr+yMv9637K/hjofaiWoxBUpxjEjhDHilovfFOiLP/7Ef
-	 0mwW2O3uAEhvKftfeUC/kbLYdQXXq9z7Zr9cigjE=
+	b=lg+TJns+7JjluQkwTkUZlsL3Wg8CS2MYglgjRk8iRB5hjXqngt8fmDXwZswMK+kvz
+	 IlVF13g7nEDgjl5pwSwzzU+dqCZbMiy9UIwjScLEMWRKYKVl0RbZsosroOm1YVPold
+	 T1OxS1ltS0Ye5X4abGa9VaNqLO+3dYCgiLCD1M8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Jiachen Zhang <me@jcix.top>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 359/623] arm64: dts: mediatek: mt8183: kenzo: Support second source touchscreen
+Subject: [PATCH 6.6 182/393] perf report: Fix misleading help message about --demangle
 Date: Wed,  5 Feb 2025 14:41:41 +0100
-Message-ID: <20250205134509.957938717@linuxfoundation.org>
+Message-ID: <20250205134427.263254803@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +72,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Jiachen Zhang <me@jcix.top>
 
-[ Upstream commit 5ec5dc73c5ac0c6e06803dc3b5aea4493e856568 ]
+[ Upstream commit ac0ac75189a4d6a29a2765a7adbb62bc6cc650c7 ]
 
-Some kenzo devices use second source touchscreen.
+The wrong help message may mislead users. This commit fixes it.
 
-Fixes: 0a9cefe21aec ("arm64: dts: mt8183: Add kukui-jacuzzi-kenzo board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20241213-touchscreen-v3-1-7c1f670913f9@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 328ccdace8855289 ("perf report: Add --no-demangle option")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Jiachen Zhang <me@jcix.top>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250109152220.1869581-1-me@jcix.top
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts   | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tools/perf/builtin-report.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
-index e8241587949b2..561770fcf69e6 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
-@@ -12,3 +12,18 @@
- 	chassis-type = "laptop";
- 	compatible = "google,juniper-sku17", "google,juniper", "mediatek,mt8183";
- };
-+
-+&i2c0 {
-+	touchscreen@40 {
-+		compatible = "hid-over-i2c";
-+		reg = <0x40>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&touchscreen_pins>;
-+
-+		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
-+
-+		post-power-on-delay-ms = <70>;
-+		hid-descr-addr = <0x0001>;
-+	};
-+};
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index cd2f3f1a75633..54b06db597862 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1352,7 +1352,7 @@ int cmd_report(int argc, const char **argv)
+ 	OPT_STRING(0, "addr2line", &addr2line_path, "path",
+ 		   "addr2line binary to use for line numbers"),
+ 	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
+-		    "Disable symbol demangling"),
++		    "Symbol demangling. Enabled by default, use --no-demangle to disable."),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+ 	OPT_BOOLEAN(0, "mem-mode", &report.mem_mode, "mem access profile"),
 -- 
 2.39.5
 
