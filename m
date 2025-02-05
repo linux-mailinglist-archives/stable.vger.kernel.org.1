@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8808A28C49
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADEBA28F89
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8441883E18
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9FB5188306F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BB4132111;
-	Wed,  5 Feb 2025 13:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37FE155747;
+	Wed,  5 Feb 2025 14:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6vbZ+ZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJqX6NCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CB1126C18;
-	Wed,  5 Feb 2025 13:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA648634E;
+	Wed,  5 Feb 2025 14:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763281; cv=none; b=nxeBlYEzkgZfYAYnSBhD7MgWJGFWYNVBMKo8Q9e0dBUn9oglhhUY/XFWNjG7p8czvsHHVYfwf2P8C0cXnCkEX5cCpKkeEYudboeHCz/F/2MF3xe7rOrCZtWaVIOsvTELcjlYDyfrPJxFzKt4/lm/Z27Ny7JD+P66IPdu2oe0dQM=
+	t=1738765564; cv=none; b=lqy7thYlXTEK1AHO0/QNMGue9kw7r+9XUl34bXQkL0CBxx3PiZYTp77roZ1xzG8SJ0cuP8W31FsfBmikJnliYAipogSed/j2Auyuf4k6sK0+QuEz/Ke9we4k/4mqef5cRoYfbGPhA7ngH8wxIS+slaoSZIfxhWRulquJulEBCm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763281; c=relaxed/simple;
-	bh=8KiUNB6sEd9ifK+sPyUOQPRiNaq3ZtQhn+dmMYjUcJ4=;
+	s=arc-20240116; t=1738765564; c=relaxed/simple;
+	bh=DgpNqQjjYPMvi+MRQgsPwDuTi+QI0dzxTnMS4v7vrIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUpFEkyzTr3BpY9LcXSSRJLeJDv629XdXbfV4LJ13+L9wUN+bArnurtQt89VEeWvmyYvsiKjJr69i0IZEC4veh4soO4UBw7zmU+53xB9I3wMNvwS9xoM1Ukr0agUTDqQdD0PdymWr8LL09h33LX6I41ugrWE2YlS8XNxbzO7oSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6vbZ+ZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46494C4CED1;
-	Wed,  5 Feb 2025 13:48:01 +0000 (UTC)
+	 MIME-Version; b=d4zNXuKQQuwIQwfltBeM7s/Kh2dTsGcMYNAEne8WJ8pFgCN1AR3FdDxLCbSyWKjIVQjfN6qIG3RTlDflN/WXhlnO+9gIIhsqh8mvXRQw8YrOVgGdsUBOKdleDhodrzHsrsQhSq3CRl35cEQPj2PGPx84geQw+JgST7JvSEWbbk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJqX6NCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A467C4CED1;
+	Wed,  5 Feb 2025 14:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763281;
-	bh=8KiUNB6sEd9ifK+sPyUOQPRiNaq3ZtQhn+dmMYjUcJ4=;
+	s=korg; t=1738765564;
+	bh=DgpNqQjjYPMvi+MRQgsPwDuTi+QI0dzxTnMS4v7vrIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6vbZ+ZKnou3tXbT5/YO/os8kjBSHV5FafgdSHjGvpwBLfWLqNN5T6Bj0CVGPdQqd
-	 Y1yvR8EVeSkeydBnEHAxwX0qiC9k/5FUdCMzzvhNbQmQ7YD/FIdcl0riTXpEf3EDA+
-	 8BKNQ0WVgptCXPMi/nTiOoppkUsp08fBcPAMGVDE=
+	b=gJqX6NCBVCD8WX7+etBinDXswqZA0kpcOn/s9FJRzzkhwRXVpZSWGif4LdgVpSC7Y
+	 d1zr5RqJUyoHWfW0OCifIpgwxtHarqh2zholueYkbpgQLpvCbnVJzGEWroVatBMrTA
+	 NVri/pNurlBgHEmYc+GX8eVeqh52W52X2FQfhOLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/393] selftests/powerpc: Fix argument order to timer_sub()
-Date: Wed,  5 Feb 2025 14:38:50 +0100
-Message-ID: <20250205134420.728312667@linuxfoundation.org>
+Subject: [PATCH 6.13 189/623] wifi: mt76: mt7925: Fix incorrect WCID assignment for MLO
+Date: Wed,  5 Feb 2025 14:38:51 +0100
+Message-ID: <20250205134503.468627749@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 2bf66e66d2e6feece6175ec09ec590a0a8563bdd ]
+[ Upstream commit 4911e4cb157cf87d5bdb3fa8e0c200032443371e ]
 
-Commit c814bf958926 ("powerpc/selftests: Use timersub() for
-gettimeofday()"), got the order of arguments to timersub() wrong,
-leading to a negative time delta being reported, eg:
+For MLO, each link must have a corresponding WCID.
 
-  test: gettimeofday
-  tags: git_version:v6.12-rc5-409-gdddf291c3030
-  time = -3.297781
-  success: gettimeofday
-
-The correct order is minuend, subtrahend, which in this case is end,
-start. Which gives:
-
-  test: gettimeofday
-  tags: git_version:v6.12-rc5-409-gdddf291c3030-dirty
-  time = 3.300650
-  success: gettimeofday
-
-Fixes: c814bf958926 ("powerpc/selftests: Use timersub() for gettimeofday()")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241218114347.428108-1-mpe@ellerman.id.au
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-3-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/benchmarks/gettimeofday.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/mediatek/mt76/mt7925/mac.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7925/main.c  | 19 ++++++++++---------
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-index 580fcac0a09f3..b71ef8a493ed1 100644
---- a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-@@ -20,7 +20,7 @@ static int test_gettimeofday(void)
- 		gettimeofday(&tv_end, NULL);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index ddd406969061e..a095fb31e391a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -49,7 +49,7 @@ static void mt7925_mac_sta_poll(struct mt792x_dev *dev)
+ 			break;
+ 		mlink = list_first_entry(&sta_poll_list,
+ 					 struct mt792x_link_sta, wcid.poll_list);
+-		msta = container_of(mlink, struct mt792x_sta, deflink);
++		msta = mlink->sta;
+ 		spin_lock_bh(&dev->mt76.sta_poll_lock);
+ 		list_del_init(&mlink->wcid.poll_list);
+ 		spin_unlock_bh(&dev->mt76.sta_poll_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index c45396b17a8af..cbc7a50810256 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -837,6 +837,7 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 	u8 link_id = link_sta->link_id;
+ 	struct mt792x_link_sta *mlink;
+ 	struct mt792x_sta *msta;
++	struct mt76_wcid *wcid;
+ 	int ret, idx;
  
--	timersub(&tv_start, &tv_end, &tv_diff);
-+	timersub(&tv_end, &tv_start, &tv_diff);
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+@@ -855,6 +856,15 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 	mlink->last_txs = jiffies;
+ 	mlink->wcid.link_id = link_sta->link_id;
+ 	mlink->wcid.link_valid = !!link_sta->sta->valid_links;
++	mlink->sta = msta;
++
++	wcid = &mlink->wcid;
++	ewma_signal_init(&wcid->rssi);
++	rcu_assign_pointer(dev->mt76.wcid[wcid->idx], wcid);
++	mt76_wcid_init(wcid);
++	ewma_avg_signal_init(&mlink->avg_ack_signal);
++	memset(mlink->airtime_ac, 0,
++	       sizeof(msta->deflink.airtime_ac));
  
- 	printf("time = %.6f\n", tv_diff.tv_sec + (tv_diff.tv_usec) * 1e-6);
+ 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (ret)
+@@ -904,7 +914,6 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 			 struct ieee80211_sta *sta, unsigned long new_links)
+ {
+ 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
+-	struct mt76_wcid *wcid;
+ 	unsigned int link_id;
+ 	int err = 0;
  
+@@ -921,14 +930,6 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 				err = -ENOMEM;
+ 				break;
+ 			}
+-
+-			wcid = &mlink->wcid;
+-			ewma_signal_init(&wcid->rssi);
+-			rcu_assign_pointer(dev->mt76.wcid[wcid->idx], wcid);
+-			mt76_wcid_init(wcid);
+-			ewma_avg_signal_init(&mlink->avg_ack_signal);
+-			memset(mlink->airtime_ac, 0,
+-			       sizeof(msta->deflink.airtime_ac));
+ 		}
+ 
+ 		msta->valid_links |= BIT(link_id);
 -- 
 2.39.5
 
