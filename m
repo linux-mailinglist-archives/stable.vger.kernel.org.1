@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F27A28F24
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BF1A29295
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CDBF160EF1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0923AB77B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8415573F;
-	Wed,  5 Feb 2025 14:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477721DDC18;
+	Wed,  5 Feb 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qb7yvprC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0fIqw8o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E331519BE;
-	Wed,  5 Feb 2025 14:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D471DC9AF;
+	Wed,  5 Feb 2025 14:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765295; cv=none; b=d4tCLkjps2o2rUiKnVY+atICKE2LvZiVop+++LPzzhPKosEw0iqRRImwi8M0wP4GKoI+RjG0d5taGwvnUqiut5TjWVySPTXYExOzoXlHD/LrwF06dacz6w/xF6Xce75oyA/Mfr0gKog858697srGDXwKUMtco3qCTyZ++gXuw5w=
+	t=1738767168; cv=none; b=NEAL4AE7CuNXdqbzG5SMaltBg1Y4esAb36OhK/f3Jl8nQsc0TQBsOMkg+fxPFT8VqebZYq4F56cCuUdIvr5e1oRKDfzwF5ruxaQA+pzQM86isB2KOgkRjrjMxKZfOS6TtbtC9Y68ap2xyl0r4NfBnVz6YWaO9zjxGJFMCm1XYzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765295; c=relaxed/simple;
-	bh=ro0x+kjc90rOVUNwaRsdSSpu/mSNE4mR+OGiFfjz7h4=;
+	s=arc-20240116; t=1738767168; c=relaxed/simple;
+	bh=COP9ZA5qjhPyhRCWFSJwaHWzibla62j3CTG/b3RT+gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iF0sxTYByIiVTXs01ZxQneNC8ITuKmcskfTvxO2Jx2pPovrO5vZGcV94ZGJULdsmqmjO1jpBWuyjzYVtAWLkVwpeArkhW9sY/3CBnCR5B9/IQIt2k1T4IHEutMfHCP3CXmls9ON4hfaSvyUOVpQIR5qVylUS8omReovcKudWYSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qb7yvprC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BEC4CED1;
-	Wed,  5 Feb 2025 14:21:34 +0000 (UTC)
+	 MIME-Version; b=tYuuBrSNIIOhsxdQegxqYBOfUzP5gsJ1IH91bAS0rAJtBmB9epUyYvksGabZi+ig8izGPBZvqliXQUU02I8VEuI16DZYlH5VyzF8+LmIjIL5aUixm2jGSMw552RRPzZo0Df7MsdbLWWP6cr/uLPjXFrXpvmmVUkUQjnIpqFOeMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0fIqw8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67991C4CED1;
+	Wed,  5 Feb 2025 14:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765295;
-	bh=ro0x+kjc90rOVUNwaRsdSSpu/mSNE4mR+OGiFfjz7h4=;
+	s=korg; t=1738767167;
+	bh=COP9ZA5qjhPyhRCWFSJwaHWzibla62j3CTG/b3RT+gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qb7yvprC5u/j06EO9DIbYt2QfAoK2lsC3VJuznhicmdwRr34I85TdiBpjyeUqIF6b
-	 zwhnStVcE8KpOmae8gUtgvrfDZDA2eRBZaiWkkTrPxruFmdu+qG1OaXD6Y1vn/p6pA
-	 Qd0HjC86tJgEol92llvSkieXRjVP2JODpitjDCHw=
+	b=F0fIqw8oAVrfOc7WF/H5Gce/HVcQoMB8i504NzUVtHyu7G598iHUGsZ+QbqZqJFQ1
+	 X+ZOY3bDfBG2qE8cDuoQ+JHXAA32/u/evLGHVj+iofY/e3Flz7WJXeFVC5BezkcBCk
+	 LJQQsdMBv5cL3kMz2V2vA3X4VYnepotrMLO9L66k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/393] arm64: dts: ti: k3-am62: Remove duplicate GICR reg
+Subject: [PATCH 6.12 415/590] media: mipi-csis: Add check for clk_enable()
 Date: Wed,  5 Feb 2025 14:42:50 +0100
-Message-ID: <20250205134429.909930812@linuxfoundation.org>
+Message-ID: <20250205134511.141719908@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan Brattlof <bb@ti.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 72c691d77ea5d0c4636fd3e9f0ad80d813c7d1a7 ]
+[ Upstream commit 125ad1aeec77eb55273b420be6894b284a01e4b6 ]
 
-The GIC Redistributor control register range is mapped twice. Remove
-the extra entry from the reg range.
+Add check for the return value of clk_enable() to gurantee the success.
 
-Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
-Reported-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-1-758b4d5b4a0a@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: b5f1220d587d ("[media] v4l: Add v4l2 subdev driver for S5P/EXYNOS4 MIPI-CSI receivers")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/platform/samsung/exynos4-is/mipi-csis.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index a9b47ab92a02c..f156167b4e8a7 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-@@ -23,7 +23,6 @@
- 		interrupt-controller;
- 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
- 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
--		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
- 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
- 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
- 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
+diff --git a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
+index 4b9b20ba35041..38c5f22b850b9 100644
+--- a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
++++ b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
+@@ -940,13 +940,19 @@ static int s5pcsis_pm_resume(struct device *dev, bool runtime)
+ 					       state->supplies);
+ 			goto unlock;
+ 		}
+-		clk_enable(state->clock[CSIS_CLK_GATE]);
++		ret = clk_enable(state->clock[CSIS_CLK_GATE]);
++		if (ret) {
++			phy_power_off(state->phy);
++			regulator_bulk_disable(CSIS_NUM_SUPPLIES,
++					       state->supplies);
++			goto unlock;
++		}
+ 	}
+ 	if (state->flags & ST_STREAMING)
+ 		s5pcsis_start_stream(state);
+ 
+ 	state->flags &= ~ST_SUSPENDED;
+- unlock:
++unlock:
+ 	mutex_unlock(&state->lock);
+ 	return ret ? -EAGAIN : 0;
+ }
 -- 
 2.39.5
 
