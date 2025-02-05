@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C531A291BD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70937A292F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A16716C034
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9A6F7A20C8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060C3198851;
-	Wed,  5 Feb 2025 14:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC87B15B122;
+	Wed,  5 Feb 2025 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDHv7e1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kht/Gml7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DE71C1F12;
-	Wed,  5 Feb 2025 14:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69738155A30;
+	Wed,  5 Feb 2025 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766622; cv=none; b=g5+/m8SNPhYdYZZg4KENnw2uB3ZIPJUakJvyKrVD1op8I9JRV9oQ74zDiyzB7cqwMpGti3Xn2a8yPS6otBi8TRYbarOsaF6UEyP4tAdQN3Cy0reQv08ZNsI65zbvYaFSanBXoIEo0WVh2N9pfmdROQr6HZVewlAzUWY5t+xBjzw=
+	t=1738768021; cv=none; b=AbJx5bV/uY8PVu2vmxM14l0xSpDUaz5wyW4BhuJLMWxOxcCL4Dmmv0fJofwUj128uFq+59DG2H+Etb7qFQBzwr+4JT6wN75EegIwwR4XFabSKbw30kp0PuEw3GTPuaCwzSRKKHaG63PHEFLc60b4fd+Up59iqI49hoAjhago6aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766622; c=relaxed/simple;
-	bh=vKY7DELQDJ5DWCxE5Rvqo2wrU6X8Nmhyras3akPAMqM=;
+	s=arc-20240116; t=1738768021; c=relaxed/simple;
+	bh=YSc3EH6FYmTe9/rZ1wLyjpgmXysfSP5DPKzQb915pKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raBs5k9LEKzxdjPmOhRKBF2Oc0yJ48Da7A4JfJjX9Q9nk20PWCE1Vj9GTyl/lIYyolQ4eavGgkDVUUZBOaY+Z/3VHHtXG8+Zur1gMlg3gf0ZfSEbqEyADlV0eBi63D+pzemvYxiJPpLej+EqjkBks19T6ssJEVeCCiZ4w+zX04k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDHv7e1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F12EC4CED1;
-	Wed,  5 Feb 2025 14:43:42 +0000 (UTC)
+	 MIME-Version; b=i6Nr9hST5D9k1H0niQKDMTWvnZ9wDticCfIiOmG+O5I2J05fmHM9BnTODg02ml/0iZBFqu35MQO275vvqYTy5g0zQ87h78zRHkzAog1qYHmrXc/EPde2bYt9kptinsxEn3/KGl6l91Yj4y7CKz9rXm3Zph4ls00/kmHPES5rPME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kht/Gml7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5D7C4CEE2;
+	Wed,  5 Feb 2025 15:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766622;
-	bh=vKY7DELQDJ5DWCxE5Rvqo2wrU6X8Nmhyras3akPAMqM=;
+	s=korg; t=1738768021;
+	bh=YSc3EH6FYmTe9/rZ1wLyjpgmXysfSP5DPKzQb915pKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDHv7e1Ao1hJzL7DxwfKxUEnFNu1yGki8wa/MqJORRcCc3oYBsMNRbr/iDqJApKZS
-	 eRe+c6hWoM9fK8cWwt/5GoLGsEptHNpwca4CIbOXhlowHo1ZGjpGypCK6fh0839ZRW
-	 /2tt3tUevjTizOXGXZTQp5HbcI7BOf3D7T7IVyps=
+	b=Kht/Gml7Oku53FT1aizI6fy8tMnitbD0Lic6b64HhqAQJ9R/CNgQe5bEj/mx3irPV
+	 h+CEpQdPdRVoUy0DLI/LB9PWTKbRnZnjKjtyIAO1M2ScCWfqDJO0J0XqexNaew1kqf
+	 MOnwEOmay0CwBGBx1NagAgb0wKoEITCTD5P7wUlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 379/393] usb: dwc3-am62: Fix an OF node leak in phy_syscon_pll_refclk()
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Parth Pancholi <parth.pancholi@toradex.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Salvatore Bonaccorso <carnil@debian.org>
+Subject: [PATCH 6.12 543/590] kbuild: switch from lz4c to lz4 for compression
 Date: Wed,  5 Feb 2025 14:44:58 +0100
-Message-ID: <20250205134434.796347028@linuxfoundation.org>
+Message-ID: <20250205134516.045962397@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Parth Pancholi <parth.pancholi@toradex.com>
 
-commit a266462b937beba065e934a563efe13dd246a164 upstream.
+commit e397a603e49cc7c7c113fad9f55a09637f290c34 upstream.
 
-phy_syscon_pll_refclk() leaks an OF node obtained by
-of_parse_phandle_with_fixed_args(), thus add an of_node_put() call.
+Replace lz4c with lz4 for kernel image compression.
+Although lz4 and lz4c are functionally similar, lz4c has been deprecated
+upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
+and lz4c have been packaged together, making it safe to update the
+requirement from lz4c to lz4.
 
-Cc: stable <stable@kernel.org>
-Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250109001638.70033-1-joe@pf.is.s.u-tokyo.ac.jp
+Consequently, some distributions and build systems, such as OpenEmbedded,
+have fully transitioned to using lz4. OpenEmbedded core adopted this
+change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
+lz4c"), causing compatibility issues when building the mainline kernel
+in the latest OpenEmbedded environment, as seen in the errors below.
+
+This change also updates the LZ4 compression commands to make it backward
+compatible by replacing stdin and stdout with the '-' option, due to some
+unclear reason, the stdout keyword does not work for lz4 and '-' works for
+both. In addition, this modifies the legacy '-c1' with '-9' which is also
+compatible with both. This fixes the mainline kernel build failures with
+the latest master OpenEmbedded builds associated with the mentioned
+compatibility issues.
+
+LZ4     arch/arm/boot/compressed/piggy_data
+/bin/sh: 1: lz4c: not found
+...
+...
+ERROR: oe_runmake failed
+
+Link: https://github.com/lz4/lz4/pull/553
+Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-am62.c |    1 +
- 1 file changed, 1 insertion(+)
+ Makefile             |    2 +-
+ scripts/Makefile.lib |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -160,6 +160,7 @@ static int phy_syscon_pll_refclk(struct
- 	if (ret)
- 		return ret;
+--- a/Makefile
++++ b/Makefile
+@@ -509,7 +509,7 @@ KGZIP		= gzip
+ KBZIP2		= bzip2
+ KLZOP		= lzop
+ LZMA		= lzma
+-LZ4		= lz4c
++LZ4		= lz4
+ XZ		= xz
+ ZSTD		= zstd
  
-+	of_node_put(args.np);
- 	am62->offset = args.args[0];
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -371,10 +371,10 @@ quiet_cmd_lzo_with_size = LZO     $@
+       cmd_lzo_with_size = { cat $(real-prereqs) | $(KLZOP) -9; $(size_append); } > $@
  
- 	ret = regmap_update_bits(am62->syscon, am62->offset, PHY_PLL_REFCLK_MASK, am62->rate_code);
+ quiet_cmd_lz4 = LZ4     $@
+-      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout > $@
++      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -9 - - > $@
+ 
+ quiet_cmd_lz4_with_size = LZ4     $@
+-      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout; \
++      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -9 - -; \
+                   $(size_append); } > $@
+ 
+ # U-Boot mkimage
 
 
 
