@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-113315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBF8A2919B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976D4A2919D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B3A3A71EC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B593AA507
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9C422488E;
-	Wed,  5 Feb 2025 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6057D16CD33;
+	Wed,  5 Feb 2025 14:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyZCfe30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ECRhV/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C60224882;
-	Wed,  5 Feb 2025 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3C41662EF;
+	Wed,  5 Feb 2025 14:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766543; cv=none; b=AMQ6kuORAKOBZJ1SGAmTagwc5QHjjvztY6jFdsh0C2bE+6gb5vKnsvZ67N1BwW4P5wJAQsmcpHbpawbJ35o/Br2F+Us/8iT/jyFGY8b5DMZe81IxxEublJe5vdhZGXOV819rk29ecL/ackWPdHBHXO2Lt80sdBwFu0e3rhO79AM=
+	t=1738766553; cv=none; b=CtZ0nqJIfgcPAXx2/XEosIInDz6vAw5QILQ9QcbubUMwBH+P3FMNd7c4GZdS7l1pqfoXgjmiPjZx2rVrw5imKGECV7r8n3kPMb6IJHH0KhNKX/TJ/vwa1R1mPMnqVb6VK6I+yOPnbulMN1IFKf7NZv4zlTfnjjJ27Boae573xTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766543; c=relaxed/simple;
-	bh=nW5aGGhY5eyg/ikdUZYh2n5OxpsbZE7GFEt+ZPOe+ok=;
+	s=arc-20240116; t=1738766553; c=relaxed/simple;
+	bh=qTVzLor/R2Nr+BrodBtRWZ+wCtqWi0zDORQWubDycbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJ3KU+6SsRFpA4ZeZF8HQZ2FPNRxkBw0jnJP5ffUZb5Ysq41qW84kWZ3CveSeopWIu+Cnpt7fSAkrNmDMYBfue/69mBGumZbYYsTnKJXC7sj6zejIQJE+stfa90h8jRUxO6zFYk75UZBVsHP0oF73KaIXIbrZZ5Syd5vqX07OCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyZCfe30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C290C4CED1;
-	Wed,  5 Feb 2025 14:42:22 +0000 (UTC)
+	 MIME-Version; b=F3GBV3Vz/xiuhdo0QvwHqont1rTbrnBfJe2x8Bn2uMTDvJlYBRvHgkAPaJxzZSXfqxu6ds5uM6yXAwqiOa5UJ19DrhXPbW+70PsHhZ46CsRKJrkDRg5wOUvugopoDvAzeUAK/votozK8r2WZLFxbZcrjApbw0BeT0ZpuwsbnhYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ECRhV/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6121DC4CED1;
+	Wed,  5 Feb 2025 14:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766543;
-	bh=nW5aGGhY5eyg/ikdUZYh2n5OxpsbZE7GFEt+ZPOe+ok=;
+	s=korg; t=1738766552;
+	bh=qTVzLor/R2Nr+BrodBtRWZ+wCtqWi0zDORQWubDycbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyZCfe300srs6C5Vt91rEVucXzScFZNutex6kFMH5qCF/eHA6oF8fZEvFXBxF7oID
-	 64H5Vn9larTlcPcYLqQvr57Ek+v3ZqxqhdUkYh8w3XTrv1wxPGPLxssaZ+Imoi4z4f
-	 1kZzJ3a+orjW//8YGZec8dydahsmKKQWZ5CLr9bk=
+	b=0ECRhV/HZprRTIFw24BKHpNXBzaA2TT0xxmOlLwWlUULCpAHRIBfAhgVSP/x0h8UX
+	 ohwp/QUAq7yUgFL90ctvRvvixx2aSqH6b8VDxRIPCns+vn9r5H69EXM4NNz9EaMwjc
+	 aTDMAYmc0eAd3Q+B9koeEc0XxbkjQi8A9i4c/seU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Carlos ODonell <carlos@redhat.com>,
-	Florian Weimer <fweimer@redhat.com>,
-	Michael Jeanson <mjeanson@efficios.com>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 6.6 372/393] selftests/rseq: Fix handling of glibc without rseq support
-Date: Wed,  5 Feb 2025 14:44:51 +0100
-Message-ID: <20250205134434.530330349@linuxfoundation.org>
+	John Hawley <warthog9@eaglescrag.net>,
+	"Ricardo B. Marliere" <rbm@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 6.6 373/393] ktest.pl: Check kernelrelease return in get_version
+Date: Wed,  5 Feb 2025 14:44:52 +0100
+Message-ID: <20250205134434.567555988@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -73,146 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Ricardo B. Marliere <rbm@suse.com>
 
-commit 336d02bc4c6bec5c3d933e5d470a94970f830957 upstream.
+commit a4e17a8f239a545c463f8ec27db4ed6e74b31841 upstream.
 
-When porting librseq commit:
+In the case of a test that uses the special option ${KERNEL_VERSION} in one
+of its settings but has no configuration available in ${OUTPUT_DIR}, for
+example if it's a new empty directory, then the `make kernelrelease` call
+will fail and the subroutine will chomp an empty string, silently. Fix that
+by adding an empty configuration and retrying.
 
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
-
-from librseq to the kernel selftests, the following line was missed
-at the end of rseq_init():
-
-  rseq_size = get_rseq_kernel_feature_size();
-
-which effectively leaves rseq_size initialized to -1U when glibc does not
-have rseq support. glibc supports rseq from version 2.35 onwards.
-
-In a following librseq commit
-
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-
-to mimic the libc behavior, a new approach is taken: don't set the
-feature size in 'rseq_size' until at least one thread has successfully
-registered. This allows using 'rseq_size' in fast-paths to test for both
-registration status and available features. The caveat is that on libc
-either all threads are registered or none are, while with bare librseq
-it is the responsability of the user to register all threads using rseq.
-
-This combines the changes from the following librseq git commits:
-
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-
-Fixes: a0cc649353bb ("selftests/rseq: Fix mm_cid test failure")
-Reported-by: Raghavendra Rao Ananta <rananta@google.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Carlos O'Donell <carlos@redhat.com>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Michael Jeanson <mjeanson@efficios.com>
-Cc: linux-kselftest@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: John Hawley <warthog9@eaglescrag.net>
+Fixes: 5f9b6ced04a4e ("ktest: Bisecting, install modules, add logging")
+Link: https://lore.kernel.org/20241205-ktest_kver_fallback-v2-1-869dae4c7777@suse.com
+Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c | 32 ++++++++++++++++++++++-------
- tools/testing/selftests/rseq/rseq.h |  9 +++++++-
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ tools/testing/ktest/ktest.pl |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
-index 5b9772cdf265..f6156790c3b4 100644
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -61,7 +61,6 @@ unsigned int rseq_size = -1U;
- unsigned int rseq_flags;
- 
- static int rseq_ownership;
--static int rseq_reg_success;	/* At least one rseq registration has succeded. */
- 
- /* Allocate a large area for the TLS. */
- #define RSEQ_THREAD_AREA_ALLOC_SIZE	1024
-@@ -152,14 +151,27 @@ int rseq_register_current_thread(void)
- 	}
- 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
- 	if (rc) {
--		if (RSEQ_READ_ONCE(rseq_reg_success)) {
-+		/*
-+		 * After at least one thread has registered successfully
-+		 * (rseq_size > 0), the registration of other threads should
-+		 * never fail.
-+		 */
-+		if (RSEQ_READ_ONCE(rseq_size) > 0) {
- 			/* Incoherent success/failure within process. */
- 			abort();
- 		}
- 		return -1;
- 	}
- 	assert(rseq_current_cpu_raw() >= 0);
--	RSEQ_WRITE_ONCE(rseq_reg_success, 1);
-+
-+	/*
-+	 * The first thread to register sets the rseq_size to mimic the libc
-+	 * behavior.
-+	 */
-+	if (RSEQ_READ_ONCE(rseq_size) == 0) {
-+		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
-+	}
-+
- 	return 0;
- }
- 
-@@ -235,12 +247,18 @@ void rseq_init(void)
- 		return;
- 	}
- 	rseq_ownership = 1;
--	if (!rseq_available()) {
--		rseq_size = 0;
--		return;
--	}
-+
-+	/* Calculate the offset of the rseq area from the thread pointer. */
- 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
-+
-+	/* rseq flags are deprecated, always set to 0. */
- 	rseq_flags = 0;
-+
-+	/*
-+	 * Set the size to 0 until at least one thread registers to mimic the
-+	 * libc behavior.
-+	 */
-+	rseq_size = 0;
- }
- 
- static __attribute__((destructor))
-diff --git a/tools/testing/selftests/rseq/rseq.h b/tools/testing/selftests/rseq/rseq.h
-index 4e217b620e0c..062d10925a10 100644
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -60,7 +60,14 @@
- extern ptrdiff_t rseq_offset;
- 
- /*
-- * Size of the registered rseq area. 0 if the registration was
-+ * The rseq ABI is composed of extensible feature fields. The extensions
-+ * are done by appending additional fields at the end of the structure.
-+ * The rseq_size defines the size of the active feature set which can be
-+ * used by the application for the current rseq registration. Features
-+ * starting at offset >= rseq_size are inactive and should not be used.
-+ *
-+ * The rseq_size is the intersection between the available allocation
-+ * size for the rseq area and the feature size supported by the kernel.
-  * unsuccessful.
-  */
- extern unsigned int rseq_size;
--- 
-2.48.1
-
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2406,6 +2406,11 @@ sub get_version {
+     return if ($have_version);
+     doprint "$make kernelrelease ... ";
+     $version = `$make -s kernelrelease | tail -1`;
++    if (!length($version)) {
++	run_command "$make allnoconfig" or return 0;
++	doprint "$make kernelrelease ... ";
++	$version = `$make -s kernelrelease | tail -1`;
++    }
+     chomp($version);
+     doprint "$version\n";
+     $have_version = 1;
 
 
 
