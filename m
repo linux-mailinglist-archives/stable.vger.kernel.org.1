@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-113292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A519A29102
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:43:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBDA29105
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4142D1886FB3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BE8B3A7230
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC874192598;
-	Wed,  5 Feb 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108E61DB128;
+	Wed,  5 Feb 2025 14:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KMrCQYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYTlhbUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4481922C4;
-	Wed,  5 Feb 2025 14:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB61DAC95;
+	Wed,  5 Feb 2025 14:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766466; cv=none; b=JTlsrr6mlTgvI/Zsqlm4toVpIv81FksRcA+bCvIFmrvipfzid6yk/pjjgxlxDMuLe3G8zJ7hMIcp5aUhAX6uT8rvpeBYreTkgFtui8q1vc8S6w7HFPHhUjucVj26fIe1TswkYSCZiytS/W7burTmTL26DSVhpdW2LjOtueJsxGc=
+	t=1738766476; cv=none; b=Yki1Aw0blSBsd/Dv7eyJxEAahwSAczT7NC6C0d7SUmDoD0Dx23NeKFBn9cw0/htr5Y/JWa7PoEW7GwyK21vbQVFyts4EbF5JzwHduUIRHqIkxzXBwQ7i+cxsISfY4vA3nhZ8jnm8DBCJnDoAvlCjzUdIf7Gsmf9KZ39j7uMAvaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766466; c=relaxed/simple;
-	bh=+HEAaJF8Vfn0JysQdJusarpQaXO7hTReiidKIIHz9pk=;
+	s=arc-20240116; t=1738766476; c=relaxed/simple;
+	bh=qCB8RtvLgEkid4ibqKk8OYgD1F0vFulKBpRFuAFOFjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUNhvSBqkrHJfYs4/r5qfQkTevvBEmwWEyKqNeUveKsE+VKp5LGe0DGmB2RRZz3Cv48ViseJmXrXWxh9sEzkkfx1FoVNg5ROcSpO9vlAc+x3Xw2kpCZp0PkqbCHuwn1BwkvVjmgE0zId6CNQK6afFSzisbPcB6k8pBE9xhCJv9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KMrCQYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79C7C4CED1;
-	Wed,  5 Feb 2025 14:41:05 +0000 (UTC)
+	 MIME-Version; b=mjJaqP+O4bo46lz6ksVD0sSggOKj6XzPDQ2JG6u8GDRcLZcONH9sNn7UpwKDP/g2/a2+CfJIvFg+bKBW2SBXmDg6j/88Tbka8zT42tghQtdHKWiim+GAJXuCzI1Wvhi4XaP53mrnf+EZzygIewmW9x2Djwud0rw41UyzlmyBGGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYTlhbUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E1BC4CEDD;
+	Wed,  5 Feb 2025 14:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766466;
-	bh=+HEAaJF8Vfn0JysQdJusarpQaXO7hTReiidKIIHz9pk=;
+	s=korg; t=1738766476;
+	bh=qCB8RtvLgEkid4ibqKk8OYgD1F0vFulKBpRFuAFOFjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KMrCQYl8DlxkfvevgMoK3qJ/Gtf3vXiZter9WChzpsxbxmy3cB7r7sRvRuCowkxD
-	 +Y+ZxzuIVbUaxl+q8L13r5Kz+SAdAJ/3dzH1Lx4aW9nisTvQqSfZOJBgxp8cTRs7W2
-	 kjZAz+oxCOL1ye+W9raw//h29Yr5U8l79U1q2Sc4=
+	b=yYTlhbUh0GLkk2RBfwVFrS5+p0IRj7R7SUH8lB/fPkh4l69COqpXwH0Gf8rYXm1mN
+	 Qo+TzaUyMDLy1fsXuUXVwk5bGXEjDklNNnKEj/ZBPQfx6ateZle32Tob1FVyjAEGqQ
+	 TEjZdQxejIqUhP66yxg2wLkEnEQsSk/hEiMe1Tts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lin Yujun <linyujun809@huawei.com>,
 	Brian Cain <bcain@quicinc.com>,
 	Brian Cain <brian.cain@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 365/393] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
-Date: Wed,  5 Feb 2025 14:44:44 +0100
-Message-ID: <20250205134434.264582788@linuxfoundation.org>
+Subject: [PATCH 6.6 366/393] hexagon: Fix unbalanced spinlock in die()
+Date: Wed,  5 Feb 2025 14:44:45 +0100
+Message-ID: <20250205134434.305241064@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -69,59 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Lin Yujun <linyujun809@huawei.com>
 
-[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
+[ Upstream commit 03410e87563a122075c3721acc7d5510e41d8332 ]
 
-Sparse reports
+die executes holding the spinlock of &die.lock and unlock
+it after printing the oops message.
+However in the code if the notify_die() returns NOTIFY_STOP
+, die() exit with returning 1 but never unlocked the spinlock.
 
-    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
+Fix this by adding spin_unlock_irq(&die.lock) before returning.
 
-Due to this code calling cmpxchg on a non-integer type
-struct inet_diag_handler *
-
-    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
-                    NULL, h) ? 0 : -EEXIST;
-
-While hexagon's cmpxchg assigns an integer value to a variable of this
-type.
-
-    __typeof__(*(ptr)) __oldval = 0;
-
-Update this assignment to cast 0 to the correct type.
-
-The original issue is easily reproduced at head with the below block,
-and is absent after this change.
-
-    make LLVM=1 ARCH=hexagon defconfig
-    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
-
-Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
-Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
+Fixes: cf9750bae262 ("Hexagon: Provide basic debugging and system trap support.")
+Signed-off-by: Lin Yujun <linyujun809@huawei.com>
+Link: https://lore.kernel.org/r/20230522025608.2515558-1-linyujun809@huawei.com
 Signed-off-by: Brian Cain <bcain@quicinc.com>
 Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/hexagon/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/hexagon/kernel/traps.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
-index bf6cf5579cf45..9c58fb81f7fd6 100644
---- a/arch/hexagon/include/asm/cmpxchg.h
-+++ b/arch/hexagon/include/asm/cmpxchg.h
-@@ -56,7 +56,7 @@ __arch_xchg(unsigned long x, volatile void *ptr, int size)
- 	__typeof__(ptr) __ptr = (ptr);				\
- 	__typeof__(*(ptr)) __old = (old);			\
- 	__typeof__(*(ptr)) __new = (new);			\
--	__typeof__(*(ptr)) __oldval = 0;			\
-+	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
- 								\
- 	asm volatile(						\
- 		"1:	%0 = memw_locked(%1);\n"		\
+diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
+index 6447763ce5a94..b7e394cebe20d 100644
+--- a/arch/hexagon/kernel/traps.c
++++ b/arch/hexagon/kernel/traps.c
+@@ -195,8 +195,10 @@ int die(const char *str, struct pt_regs *regs, long err)
+ 	printk(KERN_EMERG "Oops: %s[#%d]:\n", str, ++die.counter);
+ 
+ 	if (notify_die(DIE_OOPS, str, regs, err, pt_cause(regs), SIGSEGV) ==
+-	    NOTIFY_STOP)
++	    NOTIFY_STOP) {
++		spin_unlock_irq(&die.lock);
+ 		return 1;
++	}
+ 
+ 	print_modules();
+ 	show_regs(regs);
 -- 
 2.39.5
 
