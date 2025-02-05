@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2D2A29360
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C69A28FAD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869E6162CF5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC723A5467
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB9518F2CF;
-	Wed,  5 Feb 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F18155747;
+	Wed,  5 Feb 2025 14:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo0xTyAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGwlfGQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3958718E02A;
-	Wed,  5 Feb 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61656155333;
+	Wed,  5 Feb 2025 14:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767829; cv=none; b=h+uIvOHNmC9+DnMSD5dIXvWcKNjVmuMUJrvItEnpI9OpamVZDVATG57UP2UYohWNVkwA52dk3FP1N7MaUDTmaWZ+4+5BVIDEn+t8gr5KTnWnIgIeYSKNS9ivtLF8KgRDlVdVdyYpdDo2GvnFUCtLz4pxo/pIzsEKL+nhuA9/8k0=
+	t=1738765600; cv=none; b=LP+i0CAuNI2beVGz0Yo5OhKLYwBwhZstnws3Jty+JnanKQ+2IbA4GNT65QNB+Z+Atwkys9qAKtmt5TrrdTzs8O9Y7LxT3hZSXpWx4yy2VxWUrk1SCWDgaiC55+OmkbKk8vQMpebh27UCdyhOHtgchcsUt+wgbd6Eg/jijqJHEEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767829; c=relaxed/simple;
-	bh=Gc2R6DUgFAmDKCb4tHH7wgGpdDzMxkf75Cc81mzPmi4=;
+	s=arc-20240116; t=1738765600; c=relaxed/simple;
+	bh=TLyhpcmXcreivW3RmJfRC1bYSg8Bs1G5Hq7ngR3ykc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWjICxGZjO9CrDMHn6ygwhYam0qDFfTwdHjArqJqUWpIvZl0pc0r+7wmw0ddb8I8BI0gFFno859LS+xLfjgkG1Of94tYrMSw5lM8ljjEMJ9xdtdxQohl9S1V8teIMZTTvJeirK/qI8wpkWd6nwXk3VsmDbMXtcFteMGgkfxwY6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo0xTyAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973A7C4CED1;
-	Wed,  5 Feb 2025 15:03:48 +0000 (UTC)
+	 MIME-Version; b=I67bMcaWE1aFJZaoyeUJG1y+F7C88Lq7ragkjLNRV6XR3SzTgEPF54X8mH867GCIzhlP2ldSY9QVmgV6j2/YS3IwJEvnfxMp11vRJI2zlc+GWdmlmYyZQ6qvq73d0S0DPCQQx2W9NKIrUhzwNxwXwxag/RgGl/0qWP+2yDa7R3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGwlfGQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95CBC4CED1;
+	Wed,  5 Feb 2025 14:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767829;
-	bh=Gc2R6DUgFAmDKCb4tHH7wgGpdDzMxkf75Cc81mzPmi4=;
+	s=korg; t=1738765600;
+	bh=TLyhpcmXcreivW3RmJfRC1bYSg8Bs1G5Hq7ngR3ykc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yo0xTyAIbiuYAMPbg9TafPGAiqt9aRKysqwllBcuCSY4ELNcCWvVT1eTxH18dzmM4
-	 QkaoMqdOHCTeejkMqReiakKnwVi4pBGf7OZWAkDzpRVRfNkwjcs6wYO3SWO/Jacdy6
-	 mJL14hByJyw3duYhFUUZguGbFWWMNQifQQPNMuJY=
+	b=oGwlfGQe1mgsVnPtrvsVYl5uC0vhhkI+aFYm79XHIKVxXI+3XiU8eABvaLOJj6r+0
+	 Ee4chj2lBSEgm1XtH2JuAHApATCRGVMp5SZBq9ky1UN6o38ALwmsDGan4t+EBd2Pdc
+	 N4+TTt7aX/k3NQWcLUSEBzM1aQAKnLuufFOUtImI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 459/623] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
+Subject: [PATCH 6.6 282/393] media: lmedm04: Handle errors for lme2510_int_read
 Date: Wed,  5 Feb 2025 14:43:21 +0100
-Message-ID: <20250205134513.774503788@linuxfoundation.org>
+Message-ID: <20250205134431.099439673@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
+[ Upstream commit a2836d3fe220220ff8c495ca9722f89cea8a67e7 ]
 
-imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
-obtained node to imx_media_of_add_csi(). The passed node is used in
-v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
-Therefore, while the current implementation only releases the node when
-imx_media_of_add_csi() fails, but should always release it. Call
-of_node_put() right after imx_media_of_add_csi().
+Add check for the return value of usb_pipe_endpoint() and
+usb_submit_urb() in order to catch the errors.
 
-Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: 15e1ce33182d ("[media] lmedm04: Fix usb_submit_urb BOGUS urb xfer, pipe 1 != type 3 in interrupt urb")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20240521091042.1769684-1-nichen@iscas.ac.cn
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/imx/imx-media-of.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/media/usb/dvb-usb-v2/lmedm04.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
-index 118bff988bc7e..bb28daa4d7133 100644
---- a/drivers/staging/media/imx/imx-media-of.c
-+++ b/drivers/staging/media/imx/imx-media-of.c
-@@ -54,22 +54,18 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
- 			break;
+diff --git a/drivers/media/usb/dvb-usb-v2/lmedm04.c b/drivers/media/usb/dvb-usb-v2/lmedm04.c
+index 8a34e6c0d6a6d..f0537b741d135 100644
+--- a/drivers/media/usb/dvb-usb-v2/lmedm04.c
++++ b/drivers/media/usb/dvb-usb-v2/lmedm04.c
+@@ -373,6 +373,7 @@ static int lme2510_int_read(struct dvb_usb_adapter *adap)
+ 	struct dvb_usb_device *d = adap_to_d(adap);
+ 	struct lme2510_state *lme_int = adap_to_priv(adap);
+ 	struct usb_host_endpoint *ep;
++	int ret;
  
- 		ret = imx_media_of_add_csi(imxmd, csi_np);
-+		of_node_put(csi_np);
- 		if (ret) {
- 			/* unavailable or already added is not an error */
- 			if (ret == -ENODEV || ret == -EEXIST) {
--				of_node_put(csi_np);
- 				continue;
- 			}
+ 	lme_int->lme_urb = usb_alloc_urb(0, GFP_KERNEL);
  
- 			/* other error, can't continue */
--			goto err_out;
-+			return ret;
- 		}
- 	}
+@@ -390,11 +391,20 @@ static int lme2510_int_read(struct dvb_usb_adapter *adap)
+ 
+ 	/* Quirk of pipe reporting PIPE_BULK but behaves as interrupt */
+ 	ep = usb_pipe_endpoint(d->udev, lme_int->lme_urb->pipe);
++	if (!ep) {
++		usb_free_urb(lme_int->lme_urb);
++		return -ENODEV;
++	}
+ 
+ 	if (usb_endpoint_type(&ep->desc) == USB_ENDPOINT_XFER_BULK)
+ 		lme_int->lme_urb->pipe = usb_rcvbulkpipe(d->udev, 0xa);
+ 
+-	usb_submit_urb(lme_int->lme_urb, GFP_KERNEL);
++	ret = usb_submit_urb(lme_int->lme_urb, GFP_KERNEL);
++	if (ret) {
++		usb_free_urb(lme_int->lme_urb);
++		return ret;
++	}
++
+ 	info("INT Interrupt Service Started");
  
  	return 0;
--
--err_out:
--	of_node_put(csi_np);
--	return ret;
- }
- EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
 -- 
 2.39.5
 
