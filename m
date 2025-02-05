@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-113017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2551A28F76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381A1A28F9D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF7316279E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76EE63A9C0B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068A714A088;
-	Wed,  5 Feb 2025 14:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19A7155333;
+	Wed,  5 Feb 2025 14:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Kj0izGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+UmwJHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F591459F6;
-	Wed,  5 Feb 2025 14:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB858634E;
+	Wed,  5 Feb 2025 14:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765541; cv=none; b=fFooOAISxVJnxWhAZYGUa43bhxhsNB6YosK4KP/F0ZU0LQ1fkEvMg8GuGuXuTFUzcSCGAxafm1zvMA0muUwRUk8XfKi+I1gAtnKlYlL5BdRwQMtiFX8Y5HGwh6rlHpnAbaUVKsruoVbB4o22IjQ0s5wzG/gCY9Kpdv0QDMk2Mhk=
+	t=1738765551; cv=none; b=Ksx9SegKjHdpSV2O/+4skK4B8C+wzQQsf2CCKAZvOnOiIozwAJeyLdZM1gpqOZJaklMhOSfSdCDuw0fK37GNvqpUvo3zA5L4RBZXPDHiHPaFzWZbWClsFwodeM0BQnEf5pEc0mY4MsgvRIvEKEAcSEtt1ps5AaxNLdMrhiavsx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765541; c=relaxed/simple;
-	bh=JtbXPTh1/R+Rw54zxK1bRJxB1/pwSGJ24ywI5laqj10=;
+	s=arc-20240116; t=1738765551; c=relaxed/simple;
+	bh=ItoF3bCKXiymyAh+fOZoG+eWk5IFl9ua0919NLFYvp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1RyDbeCUA3EFxVURaWwmYrunsF3tGikMdckASRA5wjC3KJemnD0P88NYSu4PwOFa/6Ec7qTJTSCP9E1GsrSuggQPF438cNoI1XlWGoBaeE8hzcquA8XMXvEuBz3ds8y0hwuyFK3z/25X3pylDnSaFxlniYvB1hAs5CsEhYaaFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Kj0izGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F08C4CED1;
-	Wed,  5 Feb 2025 14:25:41 +0000 (UTC)
+	 MIME-Version; b=k1o4zOQZT1ELw4jrPqsyWaBR4UhPNYi2Fpv+/dArz+Mh2PNUKs/SX2ZdkGz+ebIKBe0zvAXxkrp11PbCz8Omp2iAgkHQKPFTwIzUi7jtucketIPRyNF2CsOuEhSmR7g0Migfdww2wsG2ic6TGLdAjESYY6ht8L50+Y4geP/gJF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+UmwJHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE2EC4CED1;
+	Wed,  5 Feb 2025 14:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765541;
-	bh=JtbXPTh1/R+Rw54zxK1bRJxB1/pwSGJ24ywI5laqj10=;
+	s=korg; t=1738765551;
+	bh=ItoF3bCKXiymyAh+fOZoG+eWk5IFl9ua0919NLFYvp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Kj0izGgkaPrq6jPbG+ZGnIPKOTZf8FWgT4dMOJJM4pwZEFAfSqK2YiXh4kFaq6gn
-	 4AixCskqRJucvuBquIV6gtFxBd+DnHYJv/CcDOvQYAwNeQ8yxCl7bM+X2mBr9Cu9cg
-	 Cq242cyse1V1hzCg6bwq8W17X6YTU7cZ5RCLtkKA=
+	b=I+UmwJHQEeleMFWz6q2V1LtwKLwWcEiQLVuCBnwZQyL/xK+bcyRfrGfII1TkRZozg
+	 e0F+YALRiZG4ceCmwuBioJsWzBjE/pFQ++Bd/gB2QBI4YxtoL4jEFfeVwjDAJHWM5E
+	 FQ2N65y3QKhDAXbrPfOC+uQClqHaOrUc4zb9EWj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
 	Sean Wang <sean.wang@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 187/623] wifi: mt76: connac: Extend mt76_connac_mcu_uni_add_dev for MLO
-Date: Wed,  5 Feb 2025 14:38:49 +0100
-Message-ID: <20250205134503.392539470@linuxfoundation.org>
+Subject: [PATCH 6.13 188/623] wifi: mt76: mt7925: Fix incorrect MLD address in bss_mld_tlv for MLO support
+Date: Wed,  5 Feb 2025 14:38:50 +0100
+Message-ID: <20250205134503.431323610@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,146 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Wang <sean.wang@mediatek.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 9e4c3a007f01f567f2a8af35decd1e3c1c151c0f ]
+[ Upstream commit 4d5427443595439c6cf5edfd9fb7224589f65b27 ]
 
-This commit extends the `mt76_connac_mcu_uni_add_dev` function to include
-support for Multi-Link Operation (MLO). Additionally, backward
-compatibility for MT7921 is preserved, enabling seamless integration with
-existing setups.
+For this TLV, the address should be set to the MLD address rather than
+the link address.
 
 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-1-sean.wang@kernel.org
+Link: https://patch.msgid.link/20241211011926.5002-2-sean.wang@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c      | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 1 +
- drivers/net/wireless/mediatek/mt76/mt7921/main.c     | 1 +
- drivers/net/wireless/mediatek/mt76/mt7925/mac.c      | 4 +++-
- drivers/net/wireless/mediatek/mt76/mt7925/main.c     | 2 +-
- drivers/net/wireless/mediatek/mt76/mt792x_core.c     | 3 ++-
- 8 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 96e34277fece9..1cc8fc8fefe74 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1113,7 +1113,7 @@ mt7615_mcu_uni_add_dev(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 123a585098e3b..7105705113baa 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2459,6 +2459,7 @@ static void
+ mt7925_mcu_bss_mld_tlv(struct sk_buff *skb,
+ 		       struct ieee80211_bss_conf *link_conf)
  {
- 	struct mt7615_vif *mvif = (struct mt7615_vif *)vif->drv_priv;
++	struct ieee80211_vif *vif = link_conf->vif;
+ 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)link_conf->vif->drv_priv;
+ 	struct bss_mld_tlv *mld;
+@@ -2479,7 +2480,7 @@ mt7925_mcu_bss_mld_tlv(struct sk_buff *skb,
+ 	mld->eml_enable = !!(link_conf->vif->cfg.eml_cap &
+ 			     IEEE80211_EML_CAP_EMLSR_SUPP);
  
--	return mt76_connac_mcu_uni_add_dev(phy->mt76, &vif->bss_conf,
-+	return mt76_connac_mcu_uni_add_dev(phy->mt76, &vif->bss_conf, &mvif->mt76,
- 					   &mvif->sta.wcid, enable);
+-	memcpy(mld->mac_addr, link_conf->addr, ETH_ALEN);
++	memcpy(mld->mac_addr, vif->addr, ETH_ALEN);
  }
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 864246f940889..7d07e720e4ec1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1137,10 +1137,10 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_wtbl_ba_tlv);
- 
- int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
- 				struct ieee80211_bss_conf *bss_conf,
-+				struct mt76_vif *mvif,
- 				struct mt76_wcid *wcid,
- 				bool enable)
- {
--	struct mt76_vif *mvif = (struct mt76_vif *)bss_conf->vif->drv_priv;
- 	struct mt76_dev *dev = phy->dev;
- 	struct {
- 		struct {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 1b0e80dfc346b..57a8340fa7009 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1938,6 +1938,7 @@ void mt76_connac_mcu_sta_ba_tlv(struct sk_buff *skb,
- 				bool enable, bool tx);
- int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
- 				struct ieee80211_bss_conf *bss_conf,
-+				struct mt76_vif *mvif,
- 				struct mt76_wcid *wcid,
- 				bool enable);
- int mt76_connac_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif *mvif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 047106b65d2bc..bd1455698ebe5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -647,6 +647,7 @@ mt7921_vif_connect_iter(void *priv, u8 *mac,
- 		ieee80211_disconnect(vif, true);
- 
- 	mt76_connac_mcu_uni_add_dev(&dev->mphy, &vif->bss_conf,
-+				    &mvif->bss_conf.mt76,
- 				    &mvif->sta.deflink.wcid, true);
- 	mt7921_mcu_set_tx(dev, vif);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 0641538968e6f..e2dfd3670c4c9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -308,6 +308,7 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	mvif->bss_conf.mt76.wmm_idx = mvif->bss_conf.mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
- 
- 	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, &vif->bss_conf,
-+					  &mvif->bss_conf.mt76,
- 					  &mvif->sta.deflink.wcid, true);
- 	if (ret)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index 634c42bbf23f6..ddd406969061e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -1271,6 +1271,7 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
- 	struct mt792x_dev *dev = mvif->phy->dev;
- 	struct ieee80211_hw *hw = mt76_hw(dev);
- 	struct ieee80211_bss_conf *bss_conf;
-+	struct mt792x_bss_conf *mconf;
- 	int i;
- 
- 	if (vif->type == NL80211_IFTYPE_STATION)
-@@ -1278,8 +1279,9 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
- 
- 	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		bss_conf = mt792x_vif_to_bss_conf(vif, i);
-+		mconf = mt792x_vif_to_link(mvif, i);
- 
--		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf,
-+		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf, &mconf->mt76,
- 					    &mvif->sta.deflink.wcid, true);
- 		mt7925_mcu_set_tx(dev, bss_conf);
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index a5110f8485e52..c45396b17a8af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -372,7 +372,7 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 	else
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL;
- 
--	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf,
-+	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
- 					  &mlink->wcid, true);
- 	if (ret)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 78fe37c2e07b5..b87eed4d168df 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -147,7 +147,8 @@ void mt792x_mac_link_bss_remove(struct mt792x_dev *dev,
- 	link_conf = mt792x_vif_to_bss_conf(vif, mconf->link_id);
- 
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
--	mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mlink->wcid, false);
-+	mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
-+				    &mlink->wcid, false);
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
- 
+ static void
 -- 
 2.39.5
 
