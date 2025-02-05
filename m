@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-112672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDBDA28DEA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090D1A2929C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A9A188461D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3610B3AB8AF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BEC15DBC1;
-	Wed,  5 Feb 2025 14:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3BD1DE2A5;
+	Wed,  5 Feb 2025 14:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3WsVm4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoUUPf0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B915C13A;
-	Wed,  5 Feb 2025 14:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFB315EFA1;
+	Wed,  5 Feb 2025 14:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764353; cv=none; b=Le4EsVIQDZMG6C3yqfDsWdh4IqzVUS10y3srmlMl0rbat/133fR69DJSHf6/bzd3+WhZyqCDn8ZxIMxJFEGiA6DAisiOz8ioLh2sHTu0ClIT5Y7LUXTtiOF9jvEMLb89FifabYEe0fUr261nUsPFzMsWLCEVIPurpdUsFMqECoU=
+	t=1738767198; cv=none; b=ZuYUITPXzitRLAFc4713f5NFA++w3U5IB4lYmXeG7rhyxWwEJx4yK8UCIqDeU2KgfoTk1ojdzkiDXsqeE1zXNTX00jkrpP5ZO2h8ugtcJQv+4UpjDApK/Sbhd3f/6scd6KaUFPHZF7OjIafeZkGpOa9hU4UtbfBqtObQtRHJblc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764353; c=relaxed/simple;
-	bh=hffu0T+CYp80z4SkjL3oKgsP7d126LAXPwySP/S0csg=;
+	s=arc-20240116; t=1738767198; c=relaxed/simple;
+	bh=L9vCNrmBdZrcig/tqXcoXIteWUSlIifWj3Mt613yuMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFoQrojQ83fKqG6x5e2h5dS7cbFhBW/9QbiE9cto870Ox276a6FfXPajj8Wz3MYQRw6V3AsDh0PnfuZ21quVpJS/0ZIHXN67gjHSOcSH09Xnn/5jof2Vh7fF1MUJTJhEYOPumdsW6byWvI5O1Kg0MGyoqj11RWB8BasHzy7bOdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3WsVm4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05083C4CEDD;
-	Wed,  5 Feb 2025 14:05:52 +0000 (UTC)
+	 MIME-Version; b=dOb+mwNqAIqMJ1aARRBPyS0MbxwcnCNh/X+y6EbwF4pitoopYGOzvlN3t3WWYceLLobNxY7aE5QB5ZEWotgkGpXp30YsQv5fJGl9gJ8id6mNi0bVlz19ghMCghUq0Nldm9P8uTNYiYnNMOcFUGYL8bSZObZGjDlphxQuidgKdyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoUUPf0v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC01C4CED1;
+	Wed,  5 Feb 2025 14:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764353;
-	bh=hffu0T+CYp80z4SkjL3oKgsP7d126LAXPwySP/S0csg=;
+	s=korg; t=1738767198;
+	bh=L9vCNrmBdZrcig/tqXcoXIteWUSlIifWj3Mt613yuMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3WsVm4pJVMaPjKWQfv9T7PPNGG86jbqK1ysT4KWcgIcmabAV09O4vqj4co648nm0
-	 Oc+20+M82v7AFfAI/xN5vgGI65MM1Vdr4suehwckhwPO4fbmESP/mWzb4mpJl4Y+s1
-	 nHzYYzK0ECY8zXvZYqZIvtU/dH2OKR34KpLgqrGU=
+	b=PoUUPf0vWeUH8T7vcM1HpPbZZAZFfvLKalc2EUP+Pri5wTsLIu2Xkacy/T+jGNUvs
+	 UAjWeaXMSVxk2EaAN8wW5sNoCNAMsUXdGekd4rMulIbIRrTrW4Ca3PuN25ED2pqRej
+	 5cs6iXrf61cMDyHffSFqRSXaMCHpHNR0VFHg+O6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/393] perf expr: Initialize is_test value in expr__ctx_new()
+Subject: [PATCH 6.13 341/623] ARM: dts: stm32: Fix IPCC EXTI declaration on stm32mp151
 Date: Wed,  5 Feb 2025 14:41:23 +0100
-Message-ID: <20250205134426.571976167@linuxfoundation.org>
+Message-ID: <20250205134509.273397276@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 
-[ Upstream commit 1d18ebcfd302a2005b83ae5f13df223894d19902 ]
+[ Upstream commit 4ea654242e0c75bdf6b45d3c619c5fdcb2e9312a ]
 
-When expr_parse_ctx is allocated by expr_ctx_new(),
-expr_scanner_ctx->is_test isn't initialize, so it has garbage value.
-this can affects the result of expr__parse() return when it parses
-non-exist event literal according to garbage value.
+The GIC IRQ type used for IPCC RX should be IRQ_TYPE_LEVEL_HIGH.
+Replacing the interrupt with the EXTI event changes the type to
+the numeric value 1, meaning IRQ_TYPE_EDGE_RISING.
 
-Use calloc instead of malloc in expr_ctx_new() to fix this.
+The issue is that EXTI event 61 is a direct event.The IRQ type of
+direct events is not used by EXTI and is propagated to the parent
+IRQ controller of EXTI, the GIC.
 
-Fixes: 3340a08354ac286e ("perf pmu-events: Fix testing with JEVENTS_ARCH=all")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20241108143424.819126-1-yeoreum.yun@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Align the IRQ type to the value expected by the GIC by replacing
+the second parameter "1" with IRQ_TYPE_LEVEL_HIGH.
+
+Fixes: 7d9802bb0e34 ("ARM: dts: stm32: remove the IPCC "wakeup" IRQ on stm32mp151")
+Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/expr.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm/boot/dts/st/stm32mp151.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index b8875aac8f870..fa0473f7a4ff4 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -292,7 +292,7 @@ struct expr_parse_ctx *expr__ctx_new(void)
- {
- 	struct expr_parse_ctx *ctx;
- 
--	ctx = malloc(sizeof(struct expr_parse_ctx));
-+	ctx = calloc(1, sizeof(struct expr_parse_ctx));
- 	if (!ctx)
- 		return NULL;
- 
-@@ -301,9 +301,6 @@ struct expr_parse_ctx *expr__ctx_new(void)
- 		free(ctx);
- 		return NULL;
- 	}
--	ctx->sctx.user_requested_cpu_list = NULL;
--	ctx->sctx.runtime = 0;
--	ctx->sctx.system_wide = false;
- 
- 	return ctx;
- }
+diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
+index b28dc90926bda..e7e3ce8066ece 100644
+--- a/arch/arm/boot/dts/st/stm32mp151.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
+@@ -129,7 +129,7 @@
+ 			reg = <0x4c001000 0x400>;
+ 			st,proc-id = <0>;
+ 			interrupts-extended =
+-				<&exti 61 1>,
++				<&exti 61 IRQ_TYPE_LEVEL_HIGH>,
+ 				<&intc GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "rx", "tx";
+ 			clocks = <&rcc IPCC>;
 -- 
 2.39.5
 
