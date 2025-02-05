@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95426A28EE9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A00A28C60
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9281B16046C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4BE4168AA1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE899155CBD;
-	Wed,  5 Feb 2025 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BD813D52B;
+	Wed,  5 Feb 2025 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b06Gfigi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wAbFkxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3AE15573F;
-	Wed,  5 Feb 2025 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F9313C9C4;
+	Wed,  5 Feb 2025 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765116; cv=none; b=j/ttIlaUAjzOCle1To+dlZ/XmlyquNdBRlw8ga9SzpGoYAO/HhLW0jKEj3zpDagEcDLgwMWpeJGrx3R1uyC16rYGl0Rf/zmKOCQvTWn8Ljzh6p4LBK3y2nW5vKQNZZ6xp7Y2CjIm/6um89RJPPSDHnCqYpIuTD/pg6uiXGckW0g=
+	t=1738763340; cv=none; b=FM2l7rJxYsNr3Ionf3gL4KK10zvaXhz6Q33k9Gf0o+S7ARZzNsYLtyefjQwMPDeaNWI7+WCOYk/RnJcRLTzFOzmdlaJp5xbUY5zEtD9XGZzYc4c/5ipfzO0pMDVVkOPz3D/GsvCwMpdTeRJAiCY/RR1Xy1TRAYlX4Mw7iGkKkFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765116; c=relaxed/simple;
-	bh=QVKMxVNmPXwRqNInhnMniW4EmgNEZiZOJxlz3IXSbpg=;
+	s=arc-20240116; t=1738763340; c=relaxed/simple;
+	bh=C0rvdFMZxD5gNwQnQshomLR9dw09NkCp6FeyEB8fIxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXYJfhyHeowk7nCt7VwgLCqITUSnUhOJ+qKsKobFd7/a2rrHbTZrsR8dvHndo71yromk2V2VpKNl90AlM34xJJ19sB42CqqbHlNfh8rytcforboOan/pCFzccSya3qPMRge72IeidRiOOQd3mGZBN0/LoY/nN2AODp7reg5i6A0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b06Gfigi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC5FC4CED1;
-	Wed,  5 Feb 2025 14:18:35 +0000 (UTC)
+	 MIME-Version; b=C+QKJxK0Kv5JxVKb5RGP7lilUO0gv5luinXwNGKRuLpiKj+x4/O1cwwP01BOfI5iTqwfvMLIidUUJLd4QvYvquMuvE9jCx5ysonwwTYmDBvq6tnvdNfMACLwf5YJbAYBeXszSPRVb4GP5MzK7RqDNzHFh8U8bfi7k9tFaKBtZYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wAbFkxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0092C4CED1;
+	Wed,  5 Feb 2025 13:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765116;
-	bh=QVKMxVNmPXwRqNInhnMniW4EmgNEZiZOJxlz3IXSbpg=;
+	s=korg; t=1738763340;
+	bh=C0rvdFMZxD5gNwQnQshomLR9dw09NkCp6FeyEB8fIxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b06GfigiBzXVwJ2y98qKZrr3jfxviDGhobLuMthh3b4KXcJP2LTeWe62xU8gzWrQJ
-	 U9S90TTWDX/3/BqGUAUh3yt7ZakOfYW/PTEVBJC5yag3O7Sk+LQm5VxWgCJmDDqYPa
-	 uDNphP+3ZEuA5qEm0RLd9tbAMISuQsHVW7L1DqpE=
+	b=0wAbFkxaSfHp263RfD9cNh5ZzIr8XCP2MMR0eQO1lhHjYe42RN1UjTq6VKYPFQtGs
+	 tjnZtdlzVFLKb5RQ6TD4krrs1kXjPckZahBFgmmuJxp+1MeMoQm7S3/Vsu2ZCihlqg
+	 JH3Us/i9h7BVB/rFHiqtkhK/cqPf8h0GKUaoY3Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 191/590] wifi: mt76: mt7925: Update mt7925_unassign_vif_chanctx for per-link BSS
-Date: Wed,  5 Feb 2025 14:39:06 +0100
-Message-ID: <20250205134502.586536936@linuxfoundation.org>
+Subject: [PATCH 6.6 028/393] drm/rockchip: vop2: Fix the mixer alpha setup for layer 0
+Date: Wed,  5 Feb 2025 14:39:07 +0100
+Message-ID: <20250205134421.377242265@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 30b721467c9c2510e26af6e78e92d7cc08a14bc4 ]
+[ Upstream commit 6b4dfdcde3573a12b72d2869dabd4ca37ad7e9c7 ]
 
-Update mt7925_unassign_vif_chanctx to support per-link BSS.
+The alpha setup should start from the second layer, the current calculation
+starts incorrectly from the first layer, a negative offset will be obtained
+in the following formula:
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-12-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+offset = (mixer_id + zpos - 1) * 0x10
+
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Tested-by: Derek Foreman <derek.foreman@collabora.com>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-7-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 1140af6577937..a78aae7d10886 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -2081,18 +2081,16 @@ static void mt7925_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	struct mt792x_chanctx *mctx = (struct mt792x_chanctx *)ctx->drv_priv;
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
--	struct ieee80211_bss_conf *pri_link_conf;
- 	struct mt792x_bss_conf *mconf;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index f8fdbdf52e907..f7a3b05701e9a 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1830,6 +1830,12 @@ static void vop2_setup_alpha(struct vop2_video_port *vp)
+ 		struct vop2_win *win = to_vop2_win(plane);
+ 		int zpos = plane->state->normalized_zpos;
  
- 	mutex_lock(&dev->mt76.mutex);
- 
- 	if (ieee80211_vif_is_mld(vif)) {
- 		mconf = mt792x_vif_to_link(mvif, link_conf->link_id);
--		pri_link_conf = mt792x_vif_to_bss_conf(vif, mvif->deflink_id);
- 
- 		if (vif->type == NL80211_IFTYPE_STATION &&
- 		    mconf == &mvif->bss_conf)
--			mt7925_mcu_add_bss_info(&dev->phy, NULL, pri_link_conf,
-+			mt7925_mcu_add_bss_info(&dev->phy, NULL, link_conf,
- 						NULL, false);
- 	} else {
- 		mconf = &mvif->bss_conf;
++		/*
++		 * Need to configure alpha from second layer.
++		 */
++		if (zpos == 0)
++			continue;
++
+ 		if (plane->state->pixel_blend_mode == DRM_MODE_BLEND_PREMULTI)
+ 			premulti_en = 1;
+ 		else
 -- 
 2.39.5
 
