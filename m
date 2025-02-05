@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFFFA28D8D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABC9EA28E38
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3C8E3A9146
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2F07A1248
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DEE154C1D;
-	Wed,  5 Feb 2025 14:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A5715854F;
+	Wed,  5 Feb 2025 14:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODCzjbM1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1rN6T2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3608155335;
-	Wed,  5 Feb 2025 14:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E412D1547D8;
+	Wed,  5 Feb 2025 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764014; cv=none; b=WgtHTHKdnOKlS06/ear8u0pndetWqcffKItAhcJ/KEDH1932o4I6BG5fAJ+PTlb/8aBhv7URq+NcAsp0DdtnfSwXMJgmOnYMvXtH/cKTtVaca9cGRRyWsUqBrmnKx8WvKJg+FuON3kueeeyCGMsSthCxi15+hnZjNRrRKNoyOLI=
+	t=1738764603; cv=none; b=Z3Gryp+Ply/unuyeCMGorhBVG6/J1VyhOiEoFmbYONI1BFthw+cKDbbQbDESGQQqYiJCugVO54DLXzRZxGIrYin0y0aPzrTirhxyUc33IAxI4PKEjDqf1FklZnJvzumRhGZ3tTmh7sIdjBosMyfusQEc16TTmmr35NQCMMPJNm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764014; c=relaxed/simple;
-	bh=zklDo6FY3GcPZyvsNDsucKr1iBkcHE9rpqFoExIbxTg=;
+	s=arc-20240116; t=1738764603; c=relaxed/simple;
+	bh=aVQhynL/0cVoTYXFe1AftmS1N5o0bLo7ZFT7unJ0tj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJdgb2RL9C3VvstmoE/eH/LgBuk5ML76hvHqrgDcQ6q/21MJnpcZuuHj93YSJJElEKrkgUrwkveQxoeWEP/HQcDqfPpj6NbY3wU+3T8bUSNJsLuoFPCyEIKAuZHlu9eDI8oPbm3PqYIKxphIUoeTNggkZXVqNYesYyJHXqK95Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODCzjbM1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236F7C4CED1;
-	Wed,  5 Feb 2025 14:00:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WsKE922UlXCtpKpP0K2sbBYegLNvK79gYJM74m80Agf/BEGEge47aY/HLc1U+LPpYHgIxJ/vC+Fwc+j5mcbHvmYBjycPYDH4tqxczJoF+wQBelWLEgCQuW8nHFmxUcKRKPVGu34EC8OeESYwpSxamD/C85M95SsyG/6SqL3QhpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1rN6T2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DB8C4CED1;
+	Wed,  5 Feb 2025 14:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764014;
-	bh=zklDo6FY3GcPZyvsNDsucKr1iBkcHE9rpqFoExIbxTg=;
+	s=korg; t=1738764602;
+	bh=aVQhynL/0cVoTYXFe1AftmS1N5o0bLo7ZFT7unJ0tj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODCzjbM1IVMwJtXjXAV1ZPdYjdoE/rNOk4CoLk8hbIUTM0HjhN41sCiYjksyt7FJP
-	 ELAKuD5EkLFPt7JzubsvPxlYJW+AfltrzrBX+OjJOQKF3GRsh6Q9SpCh8DQGqWCTSU
-	 UOHCC+0AMwlRr0nVzrn8rjCDJ5hSGrleom5+ORQ4=
+	b=r1rN6T2Z14t0/VaB5xCqA6lcY/CPOrESmi2g5d/JillSZplKDF710niCtwvNdmGMq
+	 1Wr2diptt63M7p9b2kwIzjSDvYSh4TJO++uMD/97CEr4e+zXAvX+boR+L54HAe4cqu
+	 156H+R0ZNeKEaWSnVkxzNObgxMzmu6lHP3OtPBQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/590] wifi: rtlwifi: usb: fix workqueue leak when probe fails
+Subject: [PATCH 6.13 094/623] clk: mmp: pxa1908-apbcp: Fix a NULL vs IS_ERR() check
 Date: Wed,  5 Feb 2025 14:37:16 +0100
-Message-ID: <20250205134458.352917335@linuxfoundation.org>
+Message-ID: <20250205134459.821058709@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f79bc5c67867c19ce2762e7934c20dbb835ed82c ]
+[ Upstream commit 3acea81be689b77b3ceac6ff345ff0366734d967 ]
 
-rtl_init_core creates a workqueue that is then assigned to rtl_wq.
-rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
-must be called in the probe error path.
+The devm_kzalloc() function doesn't return error pointers, it returns
+NULL on error.  Update the check to match.
 
-Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-6-cascardo@igalia.com
+Fixes: a89233dbd4df ("clk: mmp: Add Marvell PXA1908 APBCP driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/6155067d-aed5-4799-9e14-6dff7be1cb3a@stanley.mountain
+Acked-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/mmp/clk-pxa1908-apbcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 8ec687fab5721..0368ecea2e817 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1039,6 +1039,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	wait_for_completion(&rtlpriv->firmware_loading_complete);
- 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
- error_out:
-+	rtl_usb_deinit(hw);
- 	rtl_deinit_core(hw);
- error_out2:
- 	_rtl_usb_io_handler_release(hw);
+diff --git a/drivers/clk/mmp/clk-pxa1908-apbcp.c b/drivers/clk/mmp/clk-pxa1908-apbcp.c
+index 08f3845cbb1be..f638d7e89b472 100644
+--- a/drivers/clk/mmp/clk-pxa1908-apbcp.c
++++ b/drivers/clk/mmp/clk-pxa1908-apbcp.c
+@@ -48,8 +48,8 @@ static int pxa1908_apbcp_probe(struct platform_device *pdev)
+ 	struct pxa1908_clk_unit *pxa_unit;
+ 
+ 	pxa_unit = devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERNEL);
+-	if (IS_ERR(pxa_unit))
+-		return PTR_ERR(pxa_unit);
++	if (!pxa_unit)
++		return -ENOMEM;
+ 
+ 	pxa_unit->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(pxa_unit->base))
 -- 
 2.39.5
 
