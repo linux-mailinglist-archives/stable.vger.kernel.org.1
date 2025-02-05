@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D50A28FED
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE0FA2931A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F9947A1C0E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B75E3AE0DE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29B1662EF;
-	Wed,  5 Feb 2025 14:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA1819007F;
+	Wed,  5 Feb 2025 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiB3bdG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDoZH3Aq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA12F7DA6A;
-	Wed,  5 Feb 2025 14:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284F01E89C;
+	Wed,  5 Feb 2025 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765830; cv=none; b=W60WAHrnmLj+nklTyydtlqdJeRsVOnCFgECWh972UnegZbAhYNVQ2Xe9eWJRQHENWTmVB6v2AUrUiwONG1BbLqOO0zh9wQO5pVkWfgs0MjjmxLDG3tCDCaeB9134WbCLGdcQEpSH83im+IoExT9v7jRvabQFjdI0V2x7JrUZcg4=
+	t=1738767522; cv=none; b=sEWfEzTiSvmI2g6m45oYnw05aJuz9P9dcHH7Q4uV+mEzJKQOAscxdxwtorFeagyd/w6aWbLuXEd0UpsfmYp0lFnuY5BAOibILIOWAkTV/HaXUW/jKe7SfheyoauhQbQi3L/50IIkEfRkuAGrF/oV4eKxsSs+BvkB1SxuQE3ldrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765830; c=relaxed/simple;
-	bh=j8lb/tAiNoZeduoXVjnI8yY1IrpadV0F3lmuEgw1Pag=;
+	s=arc-20240116; t=1738767522; c=relaxed/simple;
+	bh=jDZa+VTAppIVRyhdk7bj/t56Jcm62/qxIAKZvLhoXwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGUkhdIsU60Waq8Y9dY2m7NT0dd9gpKlO0VwJAKVr53vUU9f/Ic47vVkyD6SnA9vB1pK5A1Pbn3VTQ8FZSkZJQsjr704kj2o5kTp9GpukUKzxP3NrVbsPwT+xcUXNtVGmkuwxLeqOXpGQZL1fmYp32xluKhXDz0og25aJoS/ooc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiB3bdG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410A1C4CEE2;
-	Wed,  5 Feb 2025 14:30:29 +0000 (UTC)
+	 MIME-Version; b=IHQtGH4AFtF8WhV5zXxNBPWKbf8x9ttjyTxxyqRHYrcbCPP79z8kb78Caqq/fCe01be9K9sS+yf+UkS28d6B2V3NRxJaVOqUGIa6NljJH5ikzWtKHN8dU9EUMywrF4BFUNj+kixi8VpWEY4ih1Nl+RWc4qBE9Tcv09s0ckE3ch4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDoZH3Aq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A02C4CED1;
+	Wed,  5 Feb 2025 14:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765830;
-	bh=j8lb/tAiNoZeduoXVjnI8yY1IrpadV0F3lmuEgw1Pag=;
+	s=korg; t=1738767521;
+	bh=jDZa+VTAppIVRyhdk7bj/t56Jcm62/qxIAKZvLhoXwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YiB3bdG2J9TNplrW9PriR+VIO9VtWIZwUuL1pcJJzyZnNWPuniWO/Gqm4ePhNse7X
-	 /Vhp/qBc0ZCvVoRMYyIQjCkL39gaoYHsWIg7k3T40mQJYD0xebZlMCjreaCRUY9mWX
-	 0H5p7dt6LSkT1naaDL/pl7Oa6opG4vXmH543m3e4=
+	b=jDoZH3AqaFHoEbYNV7n8qm1p5/Qo8xLV6M7OhjMeAfL7FkGdLRM7YBfy+p8AMKPPN
+	 EVYJ55ZOijEQ2amnJmcyWQjXTNEhetvcgqtgtokdmEWNXs4ekKNQbHYWkt+qQ/szWx
+	 +jtx2A+baU6BkGTYnOpl1BSusu7N67852ddZC0tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 304/393] scsi: ufs: bsg: Delete bsg_dev when setting up bsg fails
+Subject: [PATCH 6.12 468/590] rtc: tps6594: Fix integer overflow on 32bit systems
 Date: Wed,  5 Feb 2025 14:43:43 +0100
-Message-ID: <20250205134431.942133611@linuxfoundation.org>
+Message-ID: <20250205134513.164837253@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit fcf247deb3c3e1c6be5774e3fa03bbd018eff1a9 ]
+[ Upstream commit 09c4a610153286cef54d4f0c85398f4e32fc227e ]
 
-We should remove the bsg device when bsg_setup_queue() fails to release the
-resources.
+The problem is this multiply in tps6594_rtc_set_offset()
 
-Fixes: df032bf27a41 ("scsi: ufs: Add a bsg endpoint that supports UPIUs")
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241218014214.64533-2-kanie@linux.alibaba.com
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+	tmp = offset * TICKS_PER_HOUR;
+
+The "tmp" variable is an s64 but "offset" is a long in the
+(-277774)-277774 range.  On 32bit systems a long can hold numbers up to
+approximately two billion.  The number of TICKS_PER_HOUR is really large,
+(32768 * 3600) or roughly a hundred million.  When you start multiplying
+by a hundred million it doesn't take long to overflow the two billion
+mark.
+
+Probably the safest way to fix this is to change the type of
+TICKS_PER_HOUR to long long because it's such a large number.
+
+Fixes: 9f67c1e63976 ("rtc: tps6594: Add driver for TPS6594 RTC")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/1074175e-5ecb-4e3d-b721-347d794caa90@stanley.mountain
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs_bsg.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-tps6594.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
-index fec5993c66c39..f21423a7a6d7d 100644
---- a/drivers/ufs/core/ufs_bsg.c
-+++ b/drivers/ufs/core/ufs_bsg.c
-@@ -256,6 +256,7 @@ int ufs_bsg_probe(struct ufs_hba *hba)
- 	q = bsg_setup_queue(bsg_dev, dev_name(bsg_dev), ufs_bsg_request, NULL, 0);
- 	if (IS_ERR(q)) {
- 		ret = PTR_ERR(q);
-+		device_del(bsg_dev);
- 		goto out;
- 	}
+diff --git a/drivers/rtc/rtc-tps6594.c b/drivers/rtc/rtc-tps6594.c
+index e696676341378..7c6246e3f0292 100644
+--- a/drivers/rtc/rtc-tps6594.c
++++ b/drivers/rtc/rtc-tps6594.c
+@@ -37,7 +37,7 @@
+ #define MAX_OFFSET (277774)
  
+ // Number of ticks per hour
+-#define TICKS_PER_HOUR (32768 * 3600)
++#define TICKS_PER_HOUR (32768 * 3600LL)
+ 
+ // Multiplier for ppb conversions
+ #define PPB_MULT NANO
 -- 
 2.39.5
 
