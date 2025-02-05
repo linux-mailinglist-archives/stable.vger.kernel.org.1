@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA14AA2934D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD19A28F7F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625C016F923
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B72188216C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AF413C8E2;
-	Wed,  5 Feb 2025 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FF7154C08;
+	Wed,  5 Feb 2025 14:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnpjXjI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT2dfAwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F37DF71;
-	Wed,  5 Feb 2025 15:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3F68634E;
+	Wed,  5 Feb 2025 14:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767767; cv=none; b=cMZVLDYBm/npjpSsQlIvFDSdqu7kBm4o46V0wqPr5VhvwKCiIXR0PAuL0gz1rMwoE0dLriYZe6FMnuHvJtFPK204+cS989S5NigIjRgJkVq4s6w1RcRAjGxVTE06J+82Nhuh6ewgz42KyqAXTP5738iYL2c6TdDtmv96Mvn54Ts=
+	t=1738765515; cv=none; b=FNbSS7FUyBR9ZaMisMJWk7E6flcp3lqR33a0Z3Q+FkBcLAkBL7wFlqcAfTWRUZRy5FUnKx7JySV/+gw5bq8nIoFddPZErikoQ5Eb+ymBmEatLtJRHlu7IKbJc6PssktkO0i+uUiCf27/qFGP5NIbXmkpBkh2e/7idfJm64xaWTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767767; c=relaxed/simple;
-	bh=qfa0wzC8lVp41vJgnLy1TGaX+0sU9oJza9ATqP47yJ4=;
+	s=arc-20240116; t=1738765515; c=relaxed/simple;
+	bh=603tDoYVH353fN5BLMdgAq4So19565ePcSAQWeMZLeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFwaMIMuJXUC4XseVqmEkmCkfApDFCtzPWg4yX/h0ZsItsNYoeE7iw5Cjfpbmyh4kuGLW4H0ArHwC0NLnPgLR1QnY/cJWldS+74lOn5NvTqvjZu4ras1uFPfhatfGqC1bLls508zSRsQorcj7DBwxvO9Nv4z/e09gfwEErobSdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NnpjXjI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CFFC4CED1;
-	Wed,  5 Feb 2025 15:02:46 +0000 (UTC)
+	 MIME-Version; b=kfnGTkL/jQpzXaTSVfdJoFC+Gq/P0ycwnOK8v+ht7Bv6bXlLe5XZFcvpQo6Opwb0i7ikJJnRws9aHbUA1ksAlc5MTGHlIif7LmpjzrVM+tPbOSpKMiDd9kT1G30GVoX80j53JX05+YjkJLsa5S19/2+jaTMInOZnJoQUPmud02M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT2dfAwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5774CC4CED6;
+	Wed,  5 Feb 2025 14:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767767;
-	bh=qfa0wzC8lVp41vJgnLy1TGaX+0sU9oJza9ATqP47yJ4=;
+	s=korg; t=1738765514;
+	bh=603tDoYVH353fN5BLMdgAq4So19565ePcSAQWeMZLeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnpjXjI8bgnQBFcjiO1o0VOfjqfX/drDQSDvVA5vLYyDVB+x92qPvIG3bw3D+MlqX
-	 dR+1LvRJnGe3EfVGUd292AtqHGvRrQtks+OlzcWASwHK8CUd/r2+gFbhH29r17Ck16
-	 x/CzGrXeshUgtg8Mh5yn2EQM+rTxG+AIgAJqpHhg=
+	b=IT2dfAwJfCvGg6ZW4moyUi5AyIxeGEb5Ob1n/H7i5+o9btm6mqEOAm9KF55C0BiGD
+	 IR+SNJG46BJcJJRNKIEPbaSIEc/1r71b5YdQd5Cd8vlRpebrgj4Ebj9SOdTTcP3XCY
+	 dp3Eb7Ws9WGMrwl7WH7kaPr0gZ3bnN96HATZ3/DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 451/623] media: mipi-csis: Add check for clk_enable()
+Subject: [PATCH 6.6 274/393] i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition
 Date: Wed,  5 Feb 2025 14:43:13 +0100
-Message-ID: <20250205134513.469717384@linuxfoundation.org>
+Message-ID: <20250205134430.794663005@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 125ad1aeec77eb55273b420be6894b284a01e4b6 ]
+[ Upstream commit b75439c945b94dd8a2b645355bdb56f948052601 ]
 
-Add check for the return value of clk_enable() to gurantee the success.
+In dw_i3c_common_probe, &master->hj_work is bound with
+dw_i3c_hj_work. And dw_i3c_master_irq_handler can call
+dw_i3c_master_irq_handle_ibis function to start the work.
 
-Fixes: b5f1220d587d ("[media] v4l: Add v4l2 subdev driver for S5P/EXYNOS4 MIPI-CSI receivers")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+If we remove the module which will call dw_i3c_common_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
+
+CPU0                                      CPU1
+
+                                     | dw_i3c_hj_work
+dw_i3c_common_remove                 |
+i3c_master_unregister(&master->base) |
+device_unregister(&master->dev)      |
+device_release                       |
+//free master->base                  |
+                                     | i3c_master_do_daa(&master->base)
+                                     | //use master->base
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in dw_i3c_common_remove.
+
+Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Link: https://lore.kernel.org/r/bfc49c9527be5b513e7ceafeba314ca40a5be4bc.1732703537.git.xiaopei01@kylinos.cn
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/samsung/exynos4-is/mipi-csis.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-index 63f3eecdd7e69..452880b5350cd 100644
---- a/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-+++ b/drivers/media/platform/samsung/exynos4-is/mipi-csis.c
-@@ -940,13 +940,19 @@ static int s5pcsis_pm_resume(struct device *dev, bool runtime)
- 					       state->supplies);
- 			goto unlock;
- 		}
--		clk_enable(state->clock[CSIS_CLK_GATE]);
-+		ret = clk_enable(state->clock[CSIS_CLK_GATE]);
-+		if (ret) {
-+			phy_power_off(state->phy);
-+			regulator_bulk_disable(CSIS_NUM_SUPPLIES,
-+					       state->supplies);
-+			goto unlock;
-+		}
- 	}
- 	if (state->flags & ST_STREAMING)
- 		s5pcsis_start_stream(state);
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index 93e9d307e40ef..030127525672e 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1528,6 +1528,7 @@ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
  
- 	state->flags &= ~ST_SUSPENDED;
-- unlock:
-+unlock:
- 	mutex_unlock(&state->lock);
- 	return ret ? -EAGAIN : 0;
- }
+ void dw_i3c_common_remove(struct dw_i3c_master *master)
+ {
++	cancel_work_sync(&master->hj_work);
+ 	i3c_master_unregister(&master->base);
+ 
+ 	reset_control_assert(master->core_rst);
 -- 
 2.39.5
 
