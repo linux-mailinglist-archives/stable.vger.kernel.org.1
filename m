@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F8DA292D9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DD5A29359
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 673413A696C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B349E3B062A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048E5192D97;
-	Wed,  5 Feb 2025 14:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9899918DF64;
+	Wed,  5 Feb 2025 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TtD39qR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPDXxveA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE29175D5D;
-	Wed,  5 Feb 2025 14:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AFB376;
+	Wed,  5 Feb 2025 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767380; cv=none; b=NLr/9T+Vgq7IsODO87HhW8MzivhU9g8u2CTxBQxDto52HTPcK77XJejXeVPQJkzjvLRJkNrCSqvOI3yLYwVRnbdHCowlsQ7htWf0S3XyO5Mh73lv6koYcy3F5dzRSouHDjeBkzFBQ7lAHTcUc70wMTjdNoQWIHnxmko7ZyivLko=
+	t=1738767822; cv=none; b=GvjQA2/VkpqxiVthVyajemd6jaVdXL49KrOpdKF9Y/ZS17hEPpXJH2w/heTiUIRnyG9UhvLnMFr58PTagFNZhv64hbtAFiZD1iWPxFvOc2ta5mUS7hvas6I/X8a4Xw4Nl2UAuMUD9/qIXIErGDj81HAfzBvRzMQMpIzCWPCpKrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767380; c=relaxed/simple;
-	bh=zRDeB428xVc0sjE4fgdyLqeVoOSGs/rabRQA0HXDVYo=;
+	s=arc-20240116; t=1738767822; c=relaxed/simple;
+	bh=L58wPtmvvMhySqaO9ghqMYaC7jSvcH25HLCccPkX7Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnLHU/7az8NbTACS/2iUcqHo92nIBW4VyHp6EHfWPBaCr5+WU1x967qvFK9Q/lXHLFdM3Y9PpLV9Zs/NHPMucV4HoNpd0DuTCFHQ9bplm3+JdR6WwNVnVVBlIADAAgvgfuU9CjXdEDIgsUOLseTtc+7AQy+Jsb7dHvUA9r3cRwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TtD39qR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A81C4CED1;
-	Wed,  5 Feb 2025 14:56:19 +0000 (UTC)
+	 MIME-Version; b=Dn+qGCsSQTAqCpbnG+GJba9xV+ld8JQu26Yf8vlemInIbS+LwogsBuTPKNxmt2HprHbuFdbga6e/7gPqfyWWeLuUZ5k7bK+WbV/e4ObHrlgzNbOCoqwRc/EqK/MzJ3ssbWObYc6x3g/asQCdmB9+YgWZ/cTRbHomALTGoWnVSg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPDXxveA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D38C4CED1;
+	Wed,  5 Feb 2025 15:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767380;
-	bh=zRDeB428xVc0sjE4fgdyLqeVoOSGs/rabRQA0HXDVYo=;
+	s=korg; t=1738767822;
+	bh=L58wPtmvvMhySqaO9ghqMYaC7jSvcH25HLCccPkX7Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TtD39qR544U68WE84BZq9GdMw3ajKSjZTB29CwJ8kmNK/j3gA0rCDWE26NghR/a2
-	 Cvlbjm4nSySOKLfBkZHzTYxempuLjdApeYsJlBFj+Sek73iRIp5PTsIpWYo2byfRBT
-	 NFYxnAvKV8UX+PJklVeSBhL3qe7SQfExwznBi9k0=
+	b=CPDXxveAyaZeArZZYV2YLS6T4aVHHG/4XVESfMOLUBs9V//AjzKIVjGO7+Q6UfKlg
+	 lps5Z2BU/Zd8ivlVQt+wkmFKFnJLpOobRF/joP6vxIV8dh1TWHuf8DdE5Wu1K5ihes
+	 lTX7ypBi1h/X1pRzDKyieNm3ohYNHHcWhtTkPNWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 445/590] nilfs2: protect access to buffers with no active references
+Subject: [PATCH 6.13 458/623] watchdog: rti_wdt: Fix an OF node leak in rti_wdt_probe()
 Date: Wed,  5 Feb 2025 14:43:20 +0100
-Message-ID: <20250205134512.294635995@linuxfoundation.org>
+Message-ID: <20250205134513.736218035@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 367a9bffabe08c04f6d725032cce3d891b2b9e1a ]
+[ Upstream commit 143981aa63f33d469a55a55fd9fb81cd90109672 ]
 
-nilfs_lookup_dirty_data_buffers(), which iterates through the buffers
-attached to dirty data folios/pages, accesses the attached buffers without
-locking the folios/pages.
+rti_wdt_probe() does not release the OF node reference obtained by
+of_parse_phandle(). Add a of_node_put() call.
 
-For data cache, nilfs_clear_folio_dirty() may be called asynchronously
-when the file system degenerates to read only, so
-nilfs_lookup_dirty_data_buffers() still has the potential to cause use
-after free issues when buffers lose the protection of their dirty state
-midway due to this asynchronous clearing and are unintentionally freed by
-try_to_free_buffers().
+This was found by an experimental verification tool that I am
+developing. Due to the lack of the actual device, no runtime test was
+able to be performed.
 
-Eliminate this race issue by adjusting the lock section in this function.
-
-Link: https://lkml.kernel.org/r/20250107200202.6432-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f20ca595ae23 ("watchdog:rit_wdt: Add support for WDIOF_CARDRESET")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250105111718.4184192-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/watchdog/rti_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 5872518308973..58a598b548fa2 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -734,7 +734,6 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 		if (!head)
- 			head = create_empty_buffers(folio,
- 					i_blocksize(inode), 0);
--		folio_unlock(folio);
- 
- 		bh = head;
- 		do {
-@@ -744,11 +743,14 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 			list_add_tail(&bh->b_assoc_buffers, listp);
- 			ndirties++;
- 			if (unlikely(ndirties >= nlimit)) {
-+				folio_unlock(folio);
- 				folio_batch_release(&fbatch);
- 				cond_resched();
- 				return ndirties;
- 			}
- 		} while (bh = bh->b_this_page, bh != head);
-+
-+		folio_unlock(folio);
- 	}
- 	folio_batch_release(&fbatch);
- 	cond_resched();
+diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
+index 58c9445c0f885..255ece133576b 100644
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -301,6 +301,7 @@ static int rti_wdt_probe(struct platform_device *pdev)
+ 	node = of_parse_phandle(pdev->dev.of_node, "memory-region", 0);
+ 	if (node) {
+ 		ret = of_address_to_resource(node, 0, &res);
++		of_node_put(node);
+ 		if (ret) {
+ 			dev_err(dev, "No memory address assigned to the region.\n");
+ 			goto err_iomap;
 -- 
 2.39.5
 
