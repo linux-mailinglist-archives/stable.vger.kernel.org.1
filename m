@@ -1,68 +1,56 @@
-Return-Path: <stable+bounces-113145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6247FA2902F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C027A28D27
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE25D7A4145
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49E93A9685
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C7B188704;
-	Wed,  5 Feb 2025 14:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3881547F2;
+	Wed,  5 Feb 2025 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kspk+gYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnIZlSke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F35186284;
-	Wed,  5 Feb 2025 14:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC72149DE8;
+	Wed,  5 Feb 2025 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765973; cv=none; b=PD0AQutgOzlfzEX239ABfaDKHzwyZi1KnbOZQAif0diL18RwFWBCGwakB+6xmzCo1furfZCAdRoQCgEKMDKtaalAJAto0E5pxLQud3idHpyKtfiVBOHn2aFi03rS9AGaB5HHYJbrpRUqAFMO/o9S9OD8FeE220R0EZboKMIuq94=
+	t=1738763815; cv=none; b=kB19JwPCPBgJY0OyApe8nYT5vaf+cN/U0Ba/cR73wR1eYqiGm9uEzmQzGm19rux5s8yHRjhsL5VkQI4H5axfWelOyzg6co/mLDTK22fIczo0NuyOw/q8gwYDLOUeQNYMgcE6WKemXdSDlCkMu6hZN1MWNBWu+JiYF2+1oEZIEhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765973; c=relaxed/simple;
-	bh=ES3shTkLNo0WW9XiCqXclHbjCYne141qkQrfZQTnWcI=;
+	s=arc-20240116; t=1738763815; c=relaxed/simple;
+	bh=qM8FfnsHoF6xKrPMiXs9E9H8nWL3IzV/NcR6O5hQXuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXdySkd2cidetJpewSjNB1m2BQLKoFPg1NABvswnqBc2dsspYeVFZLcCm9p1rXHUA2EANjKDn4QZRLo2EzBExzZgVe6t/Co26jpIQ0x+ULkw986sNQVb13cMDavYe+SAXuenBo9U4Xe3GZSAaVoKXZMmydTwFpO85ZwT2EF9b8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kspk+gYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94891C4CEE4;
-	Wed,  5 Feb 2025 14:32:52 +0000 (UTC)
+	 MIME-Version; b=UFJlESrp4SVJmK10TzGW2OcMzhl+WBD2Z06QyZ9KpYrgDlfpvBHe7Y/50hbZHb5bvlDF1mr/8TCDfWfv4IgE/HtU1ds+cbDq+GrAS5uHY4dX4oVStgo3w4DeAK8F2/71gDRqytpKDZ+HdESzBKxSD1CMKbVTmVD0DupWi4/IFXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnIZlSke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F33C4CED1;
+	Wed,  5 Feb 2025 13:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765973;
-	bh=ES3shTkLNo0WW9XiCqXclHbjCYne141qkQrfZQTnWcI=;
+	s=korg; t=1738763815;
+	bh=qM8FfnsHoF6xKrPMiXs9E9H8nWL3IzV/NcR6O5hQXuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kspk+gYG2niHblCb6KQH4daJjAY6hs0mGfJJUu0OvlEO8XWKFTZWNpn9EVzT4t4L5
-	 gnFjvORPSrQwv3D0O2b+pLih00T4/ODJne8jcvNpIDmC/AdvItLe3jF+1UpzyGNMeL
-	 3EPf0PvcTyH9btAEWl6jKiGxeYt/3G/a3QP01u20=
+	b=GnIZlSkehegPNMQ73ViCLW9C3Vcyn/NLPbAPg76OIEMas/L6G3ZUn5jUm6UUdIu2F
+	 OTgjY0nmlNvy3AS99fAyhRTJHU4fSIFQjSey49dmC9OtINmo+HaX8jjP6xU8YY2YgH
+	 Ok4dRsZV7pNxiKLNP5VRtmyNhpJ8LeTQGCK8lkEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Nigro <fnigro@redhat.com>,
-	Ilan Green <igreen@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Clark Williams <williams@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/590] perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool
+Subject: [PATCH 6.6 108/393] wifi: mt76: mt7915: Fix mesh scan on MT7916 DBDC
 Date: Wed,  5 Feb 2025 14:40:27 +0100
-Message-ID: <20250205134505.680093053@linuxfoundation.org>
+Message-ID: <20250205134424.429879254@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,66 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
 
-[ Upstream commit 64a7617efd5ae1d57a75e464d7134eec947c3fe3 ]
+[ Upstream commit f21b77cb556296116b1cce1d62295d13e35da574 ]
 
-When adding support for refconunt checking a cut'n'paste made this
-function, that is just an accessor to a bool member of 'struct nsinfo',
-return a pid_t, when that member is a boolean, fix it.
+commit c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop
+period") changes the behavior of mt7915_bss_info_changed() in mesh mode
+when enable_beacon becomes false: it calls mt7915_mcu_add_bss_info(...,
+false) and mt7915_mcu_add_sta(..., false) while the previous code
+didn't.  These sends mcu commands that apparently confuse the firmware.
 
-Fixes: bcaf0a97858de7ab ("perf namespaces: Add functions to access nsinfo")
-Reported-by: Francesco Nigro <fnigro@redhat.com>
-Reported-by: Ilan Green <igreen@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
-Link: https://lore.kernel.org/r/20241206204828.507527-6-acme@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+This breaks scanning while in mesh mode on AsiaRF MT7916 DBDC-based cards:
+scanning works but no mesh frames get sent afterwards and the firmware
+seems to be hosed.  It breaks on MT7916 DBDC but not on MT7915 DBDC.
+
+Fixes: c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop period")
+Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Link: https://patch.msgid.link/20240927085350.4594-1-nicolas.cavallari@green-communications.fr
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/namespaces.c | 2 +-
- tools/perf/util/namespaces.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
-index 36047184d76e2..68f5de2d79c72 100644
---- a/tools/perf/util/namespaces.c
-+++ b/tools/perf/util/namespaces.c
-@@ -266,7 +266,7 @@ pid_t nsinfo__pid(const struct nsinfo  *nsi)
- 	return RC_CHK_ACCESS(nsi)->pid;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 4fd5fd555191a..d2429247c3b66 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -614,8 +614,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_ASSOC)
+ 		set_bss_info = vif->cfg.assoc;
+ 	if (changed & BSS_CHANGED_BEACON_ENABLED &&
++	    info->enable_beacon &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+-		set_bss_info = set_sta = info->enable_beacon;
++		set_bss_info = set_sta = 1;
  
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
-+bool nsinfo__in_pidns(const struct nsinfo *nsi)
- {
- 	return RC_CHK_ACCESS(nsi)->in_pidns;
- }
-diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
-index e014becb9cd8e..e95c79b80e27c 100644
---- a/tools/perf/util/namespaces.h
-+++ b/tools/perf/util/namespaces.h
-@@ -58,7 +58,7 @@ void nsinfo__clear_need_setns(struct nsinfo *nsi);
- pid_t nsinfo__tgid(const struct nsinfo  *nsi);
- pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
- pid_t nsinfo__pid(const struct nsinfo  *nsi);
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
-+bool nsinfo__in_pidns(const struct nsinfo  *nsi);
- void nsinfo__set_in_pidns(struct nsinfo *nsi);
- 
- void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
+ 	if (set_bss_info == 1)
+ 		mt7915_mcu_add_bss_info(phy, vif, true);
 -- 
 2.39.5
 
