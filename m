@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1860DA28DAD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02628A28CBE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F813A531F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54D8016336A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895405228;
-	Wed,  5 Feb 2025 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C9E1494DF;
+	Wed,  5 Feb 2025 13:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVnggDaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRqcc0ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D9115198D;
-	Wed,  5 Feb 2025 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133EDFC0B;
+	Wed,  5 Feb 2025 13:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764107; cv=none; b=qLELf3K5PK+MyHGBGcU3f2JPUlqYNJKg/OES3xY27t1+kZFfVKpEQ2E6mgqrB4+hY+PcN46SUF8WvMaCjMQvXARoUc4QtdxMfU0c1NM5/TAozPfx8sVrq5STwsI9lOvVnwR5DPXvqbN4ip9MXYgnjd9NKAyuq+J+TnsYra1DjKY=
+	t=1738763602; cv=none; b=MWb4j9OuPi82I9tyxUpHMcQ4VDtD2iia4iXxcKE6OTuB1NO4Vxqni6zL+Rej3o8zTrS96dPGWKAeCYPrPVlWtmVSkhLo98YbgaIQXZnTyhZTkj9j/u8oAyltLCL1tqDZrnQdQH/Zbi9+ZFdcbiPsSQH/d+pYnDubDTfGZIIWntc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764107; c=relaxed/simple;
-	bh=jsNFxSmmNL+RvC/fyDaCvynMymAWALUD8NO+vLS7w4U=;
+	s=arc-20240116; t=1738763602; c=relaxed/simple;
+	bh=VPCbIpUmtL3QKczp8VDyrEc9FkyBUftb5CW+DBG995o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pPk6TUPzc1tIu/PxvwI2xOqqEuDErTNvawpfBp+cyi2NeHzwd96V2cVxgUJ/jstYBYE0MS12fJ3/ZKVOujGn4RDrRJWUKJ2Agq31fELEWI7FcME7H9z5Fk0soZaiZ1y2lb4pjNvnx9cDCOvaepFNHigywXhgJPomzN5R8Ywho4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVnggDaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843B6C4CED1;
-	Wed,  5 Feb 2025 14:01:46 +0000 (UTC)
+	 MIME-Version; b=nosVNgwLQ0yqkQnfycJPVP/4D0vX9Rfyx8OoEy0YAQluAP8QydtBhiT8GTAyQ2jyjr2ZGe44N/q3UFTsgZ1bgn/3oZ1xzBVLb4+gXN/xeywpnUMRDUuZwaHIo+kEzzbDrw3DPGJIOcckkZGqBuQFfqFJnQcdO11a64RNLvhd/4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRqcc0ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2EDC4CED1;
+	Wed,  5 Feb 2025 13:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764107;
-	bh=jsNFxSmmNL+RvC/fyDaCvynMymAWALUD8NO+vLS7w4U=;
+	s=korg; t=1738763601;
+	bh=VPCbIpUmtL3QKczp8VDyrEc9FkyBUftb5CW+DBG995o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVnggDaONnGM4XI46S9WroSzyYcKVxnAYAoAgiYdrbMIblJDtIEh1Xz0RjfIKEnte
-	 17Lo1ijvZM1k4IDwhWqQu+n9oXmav5jCF8B23WzJCVyqTCMpT96Cmjkh0xNGYeOAhG
-	 XOaqcN5uLNGm8P9oNWAMvpr9Vr2WV4RnTreeVrFI=
+	b=iRqcc0ixvcFS/XzO0BSVfEofpWPjBm3MLrrkNZHKm5/y9xpkjOdCrm4BVEtMoahSe
+	 ujaLTWSS0kxC1t0hsoSsANTwGUPIc+VZhESbhhxb+yYxgUUTAorCZ60Gplo5FCU3l0
+	 t4txtXLP++3viWDYGpvLuSPW1LlLW4nSX3h3H/SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 048/623] drm/rockchip: vop2: Fix cluster windows alpha ctrl regsiters offset
+Subject: [PATCH 6.12 035/590] psi: Fix race when task wakes up before psi_sched_switch() adjusts flags
 Date: Wed,  5 Feb 2025 14:36:30 +0100
-Message-ID: <20250205134458.067987631@linuxfoundation.org>
+Message-ID: <20250205134456.594634664@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Chengming Zhou <chengming.zhou@linux.dev>
 
-[ Upstream commit 17b4b10a0df1a1421d5fbdc03bad0bd3799bc966 ]
+[ Upstream commit 7d9da040575b343085287686fa902a5b2d43c7ca ]
 
-The phy_id of cluster windws are not increase one for each window.
+When running hackbench in a cgroup with bandwidth throttling enabled,
+following PSI splat was observed:
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-6-andyshrk@163.com
+    psi: inconsistent task state! task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4
+
+When investigating the series of events leading up to the splat,
+following sequence was observed:
+
+    [008] d..2.: sched_switch: ... ==> next_comm=hackbench next_pid=1831 next_prio=120
+        ...
+    [008] dN.2.: dequeue_entity(task delayed): task=hackbench pid=1831 cfs_rq->throttled=0
+    [008] dN.2.: pick_task_fair: check_cfs_rq_runtime() throttled cfs_rq on CPU8
+    # CPU8 goes into newidle balance and releases the rq lock
+        ...
+    # CPU15 on same LLC Domain is trying to wakeup hackbench(pid=1831)
+    [015] d..4.: psi_flags_change: psi: task state: task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4 final=14 # Splat (cfs_rq->throttled=1)
+    [015] d..4.: sched_wakeup: comm=hackbench pid=1831 prio=120 target_cpu=008 # Task has woken on a throttled hierarchy
+    [008] d..2.: sched_switch: prev_comm=hackbench prev_pid=1831 prev_prio=120 prev_state=S ==> ...
+
+psi_dequeue() relies on psi_sched_switch() to set the correct PSI flags
+for the blocked entity, however, with the introduction of DELAY_DEQUEUE,
+the block task can wakeup when newidle balance drops the runqueue lock
+during __schedule().
+
+If a task wakes before psi_sched_switch() adjusts the PSI flags, skip
+any modifications in psi_enqueue() which would still see the flags of a
+running task and not a blocked one. Instead, rely on psi_sched_switch()
+to do the right thing.
+
+Since the status returned by try_to_block_task() may no longer be true
+by the time schedule reaches psi_sched_switch(), check if the task is
+blocked or not using a combination of task_on_rq_queued() and
+p->se.sched_delayed checks.
+
+[ prateek: Commit message, testing, early bailout in psi_enqueue() ]
+
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue") # 1a6151017ee5
+Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
+Link: https://lore.kernel.org/r/20241227061941.2315-1-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ kernel/sched/core.c  | 6 +++---
+ kernel/sched/stats.h | 4 ++++
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 30d03ff6c01f0..594923303a850 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2159,7 +2159,6 @@ static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index c1d2d46feec50..aba41c69f09c4 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6593,7 +6593,6 @@ static void __sched notrace __schedule(int sched_mode)
+ 	 * as a preemption by schedule_debug() and RCU.
+ 	 */
+ 	bool preempt = sched_mode > SM_NONE;
+-	bool block = false;
+ 	unsigned long *switch_count;
+ 	unsigned long prev_state;
+ 	struct rq_flags rf;
+@@ -6654,7 +6653,7 @@ static void __sched notrace __schedule(int sched_mode)
+ 			goto picked;
+ 		}
+ 	} else if (!preempt && prev_state) {
+-		block = try_to_block_task(rq, prev, prev_state);
++		try_to_block_task(rq, prev, prev_state);
+ 		switch_count = &prev->nvcsw;
+ 	}
  
- static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_win)
- {
--	u32 offset = (main_win->data->phys_id * 0x10);
- 	struct vop2_alpha_config alpha_config;
- 	struct vop2_alpha alpha;
- 	struct drm_plane_state *bottom_win_pstate;
-@@ -2167,6 +2166,7 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	u16 src_glb_alpha_val, dst_glb_alpha_val;
- 	bool premulti_en = false;
- 	bool swap = false;
-+	u32 offset = 0;
+@@ -6699,7 +6698,8 @@ static void __sched notrace __schedule(int sched_mode)
  
- 	/* At one win mode, win0 is dst/bottom win, and win1 is a all zero src/top win */
- 	bottom_win_pstate = main_win->base.state;
-@@ -2185,6 +2185,22 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	vop2_parse_alpha(&alpha_config, &alpha);
+ 		migrate_disable_switch(rq, prev);
+ 		psi_account_irqtime(rq, prev, next);
+-		psi_sched_switch(prev, next, block);
++		psi_sched_switch(prev, next, !task_on_rq_queued(prev) ||
++					     prev->se.sched_delayed);
  
- 	alpha.src_color_ctrl.bits.src_dst_swap = swap;
+ 		trace_sched_switch(preempt, prev, next, prev_state);
+ 
+diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
+index 8ee0add5a48a8..6ade91bce63ee 100644
+--- a/kernel/sched/stats.h
++++ b/kernel/sched/stats.h
+@@ -138,6 +138,10 @@ static inline void psi_enqueue(struct task_struct *p, int flags)
+ 	if (flags & ENQUEUE_RESTORE)
+ 		return;
+ 
++	/* psi_sched_switch() will handle the flags */
++	if (task_on_cpu(task_rq(p), p))
++		return;
 +
-+	switch (main_win->data->phys_id) {
-+	case ROCKCHIP_VOP2_CLUSTER0:
-+		offset = 0x0;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER1:
-+		offset = 0x10;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER2:
-+		offset = 0x20;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER3:
-+		offset = 0x30;
-+		break;
-+	}
-+
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_SRC_COLOR_CTRL + offset,
- 		    alpha.src_color_ctrl.val);
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_DST_COLOR_CTRL + offset,
+ 	if (p->se.sched_delayed) {
+ 		/* CPU migration of "sleeping" task */
+ 		SCHED_WARN_ON(!(flags & ENQUEUE_MIGRATED));
 -- 
 2.39.5
 
