@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AE0A28C8C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945D4A28F70
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86E8A7A4E9E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C449162195
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E2C13C9C4;
-	Wed,  5 Feb 2025 13:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0215B155335;
+	Wed,  5 Feb 2025 14:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EynJpdOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL2d1GCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DDC127E18;
-	Wed,  5 Feb 2025 13:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B422D14A088;
+	Wed,  5 Feb 2025 14:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763275; cv=none; b=fvgMUwGjWCuSyQnNMwEpA1PZBaICdNmrID5viLD2ILqMWufKzYSImZ3iJnCJvXpIqZ3McHsm8jxJ0hCySWGD2XLaKIcXptY9Fo1gB9s9r0zAO9fdIDESh6NmDqR9Upa3CC+rk7rrpBAziM40eQ8dOL977J8GUaHFE42XQf/1Y0o=
+	t=1738765531; cv=none; b=FbQ9QqQwlkJxnIv6FQJsOKWQyMRi4+YCZ/1ANmCrfdJnK6viIHBtRYlUHIx7773QU6C54DNCG9Gvi74p4PNcgvGAdStoPfmkdihLN5E4FGzWSmikB+jlK9W/URWfS7ogOUOM8eJOFX4V0GQiazMxGUPsw1MQYx0TqCA50ixbAs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763275; c=relaxed/simple;
-	bh=cxatB5jejVfqclSQ6c/MHcki0EPL0/p2GGc1Tch+8aw=;
+	s=arc-20240116; t=1738765531; c=relaxed/simple;
+	bh=GPgOpDosYClVExeFO5MNYx1wo40rg3AcLHRvvbA4IxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAKzoVboWyfCSv79uXFcRu/tnTBov/U1KzIPwtTyi6sfbdn8ZMFUOmETqZrqM6CJuRwP8YldQ/xE9RkfULYXKPOOimjZrrtYDghdSpbh8QzNb4gXqr6ZJWHq1sZTBW+PWU1CJqiMUvMBygCmzpkjwr499C/hGrxrk97g1lFrdNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EynJpdOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F282C4CED1;
-	Wed,  5 Feb 2025 13:47:54 +0000 (UTC)
+	 MIME-Version; b=Z6P+9PqYLF9qdOudWD5Ir/E9aLnMLpPJ/i//6AUSkNWgkpBWgjV3OvMFv6QoMNlATOqu0KGiycvixCcBE2S5MSjSaXOz6Kr9KZQIoyGz+rWWwGX1quocjSHBS8XA24ZZyavm3SLi04HzQk/wAnGbYplgCYfVbC0waiF3jRoOM6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL2d1GCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248CDC4CED1;
+	Wed,  5 Feb 2025 14:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763274;
-	bh=cxatB5jejVfqclSQ6c/MHcki0EPL0/p2GGc1Tch+8aw=;
+	s=korg; t=1738765531;
+	bh=GPgOpDosYClVExeFO5MNYx1wo40rg3AcLHRvvbA4IxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EynJpdOojLm6COyOLOn2HYjyK4Z7Qasrb8JIbd3LOOyvKPkUTqXZHJgwboUwriyB/
-	 yqCONSZALf+hWMbA7api5Eu91Oy7FvdouLuHBygi/j/u0Kp90P9I1skAQq6kI8qdXz
-	 KWJNAcyzC0XuPPZr1vRWvzRvvtDP4NeQnCpGvCbs=
+	b=FL2d1GCias/WsuInpGSKGEfD7RecMvbNvQyJgoBOlIKKaolTXeoKhV7lxFvS5plre
+	 GPsVQp+ioMIA9kbEMdWehPvkNWKvivrKecs4DFMS/az0vkP1AFXVgAR+zma43RVpei
+	 ooPG3o7dqutYxxrP89gpF462IWYOqa9ZdcT44sK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@linaro.org>,
-	Kees Cook <kees@kernel.org>,
+	xueqin Luo <luoxueqin@kylinos.cn>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/393] pstore/blk: trivial typo fixes
+Subject: [PATCH 6.13 186/623] wifi: mt76: mt7915: fix overflows seen when writing limit attributes
 Date: Wed,  5 Feb 2025 14:38:48 +0100
-Message-ID: <20250205134420.649144020@linuxfoundation.org>
+Message-ID: <20250205134503.354437706@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@linaro.org>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-[ Upstream commit 542243af7182efaeaf6d0f4643f7de437541a9af ]
+[ Upstream commit 64d571742b0ae44eee5efd51e2d4a09d7f6782fc ]
 
-Fix trivial typos in comments.
+DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
+number such as 18446744073709551615 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+This commit was inspired by commit: 57ee12b6c514.
 
-Fixes: 2a03ddbde1e1 ("pstore/blk: Move verify_size() macro out of function")
-Fixes: 17639f67c1d6 ("pstore/blk: Introduce backend for block devices")
-Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-Link: https://lore.kernel.org/r/20250101111921.850406-1-eugen.hristev@linaro.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 02ee68b95d81 ("mt76: mt7915: add control knobs for thermal throttling")
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://patch.msgid.link/20241202031917.23741-3-luoxueqin@kylinos.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/blk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/pstore/blk.c b/fs/pstore/blk.c
-index de8cf5d75f34d..85668cb31c3d2 100644
---- a/fs/pstore/blk.c
-+++ b/fs/pstore/blk.c
-@@ -89,7 +89,7 @@ static struct pstore_device_info *pstore_device_info;
- 		_##name_ = check_size(name, alignsize);		\
- 	else							\
- 		_##name_ = 0;					\
--	/* Synchronize module parameters with resuls. */	\
-+	/* Synchronize module parameters with results. */	\
- 	name = _##name_ / 1024;					\
- 	dev->zone.name = _##name_;				\
- }
-@@ -121,7 +121,7 @@ static int __register_pstore_device(struct pstore_device_info *dev)
- 	if (pstore_device_info)
- 		return -EBUSY;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 6bef96e3d2a3d..77d82ccd73079 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -82,7 +82,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+ 		return ret;
  
--	/* zero means not limit on which backends to attempt to store. */
-+	/* zero means no limit on which backends attempt to store. */
- 	if (!dev->flags)
- 		dev->flags = UINT_MAX;
+ 	mutex_lock(&phy->dev->mt76.mutex);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 60 * 1000, 130 * 1000), 1000);
  
+ 	if ((i - 1 == MT7915_CRIT_TEMP_IDX &&
+ 	     val > phy->throttle_temp[MT7915_MAX_TEMP_IDX]) ||
 -- 
 2.39.5
 
