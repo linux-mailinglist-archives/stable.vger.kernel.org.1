@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B78A28CC4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56307A28F8F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5081883A9C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 139E43AAD80
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F831494DF;
-	Wed,  5 Feb 2025 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F343B14B080;
+	Wed,  5 Feb 2025 14:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+FLcwkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDk5NF5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEA8FC0B;
-	Wed,  5 Feb 2025 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0628634E;
+	Wed,  5 Feb 2025 14:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763622; cv=none; b=drf4unqSNHGRWA1uSrRTfp7glhB8rGgEBicR54uK9uIUYyWOBRgwwZFysJEvZJRU1/YAvcH/p6vpLJ40pKATvhZtXsbc0GjjOYT5xjQ6W6UQyNnhdqFEsKk+j8RsEUWLKvzL8l2XCgdSaVk68E9lgEfFWtV9xjUAA91KbqsrChY=
+	t=1738765490; cv=none; b=o1gqk6G9kn9ciDJRkCKy5x4z4sqUTIRz5QDwjCGDBIke/WWVtWUxn1b5QOMKv+tSH3Rr7fZkXn1POlH1WgB3XOIYy9lvVPeCOqiLXNrPpYak2RxaWvUCpQ3q4D/ZgyordnYrAprd+gKOzHYLlMWz94sOoDi4Szo5C9u7QagX9q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763622; c=relaxed/simple;
-	bh=NaUzkvJb19fGHoflLuFmWk+SHRJuK4nqmyg8tFPu/FU=;
+	s=arc-20240116; t=1738765490; c=relaxed/simple;
+	bh=KLVNfbjW8JJrPmXi9P7ma4NcXd427AqCDkfpp4JmIBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpH9+sS9/bb+gZ2C56q4FjpROpS8Kc/wh7CdC2urAv6tage8wetci8jBvROMAK0YgtNHrmuvAxADXQIrksPMm1oiXa+NWrKvyHdP5ZjhIgYhL9o3ILC+odd3WG1yybwjh+CBwXOaRll4GhBkFQX9+6VgXm7YTUfsc30HEkfYia8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+FLcwkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11508C4CED1;
-	Wed,  5 Feb 2025 13:53:41 +0000 (UTC)
+	 MIME-Version; b=pkXQX1U8BHyPinTfBd8WR3iUQdlh4yAYs+hmHhB/hb/W5Oq+ZZr7t1j1hjzOMTPXlaFuXBL+gBiNkkWxt91vt/fhwPeHBWgZLTNeKq+UBD0/Zo+vX8vmnEQK8KVrk5XGonGXflKG6fwo+cD9fdqLGDvJeDdT+Zm7ZMflhaLbk+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDk5NF5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13157C4CED1;
+	Wed,  5 Feb 2025 14:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763622;
-	bh=NaUzkvJb19fGHoflLuFmWk+SHRJuK4nqmyg8tFPu/FU=;
+	s=korg; t=1738765490;
+	bh=KLVNfbjW8JJrPmXi9P7ma4NcXd427AqCDkfpp4JmIBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+FLcwkOcUBgANMfGMlJYA/sHm2uxgmIvyPFTH0lXb7GlNRa/fQLccNYlQsbQFM4I
-	 7XsRleoZEP9VcRarboyfFd/e35l2d5OnIbTPWIt9dftdCmnuM83sV4QiheX9dv0fOS
-	 1YN3N+3mfZNmWuRj7V8ilq10gYB2N0L0fE8Iv4iE=
+	b=nDk5NF5PjG+RX92xIHHRkttDTIkvJnCN/wlLi2tpuGB+6xW4BrUKuI3KJ4XEG1I6R
+	 Wd6LPWo4mHKqm4tJBgnf3yJUndn5iaDP9wvlQgqt02+QdCCfOt3vK28WumO0aLqtPN
+	 xoNQDEzFqQkx9RmrszneNmrJqO/FE1CAYmrEO/F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/393] dt-bindings: mmc: controller: clarify the address-cells description
+Subject: [PATCH 6.12 224/590] octeon_ep: remove firmware stats fetch in ndo_get_stats64
 Date: Wed,  5 Feb 2025 14:39:39 +0100
-Message-ID: <20250205134422.591994862@linuxfoundation.org>
+Message-ID: <20250205134503.855926677@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Shinas Rasheed <srasheed@marvell.com>
 
-[ Upstream commit b2b8e93ec00b8110cb37cbde5400d5abfdaed6a7 ]
+[ Upstream commit 1f64255bb76c11d0c41a7d81d7cec68e49d5362d ]
 
-The term "slot ID" has nothing to do with the SDIO function number
-which is specified in the reg property of the subnodes, rephrase
-the description to be more accurate.
+The firmware stats fetch call that happens in ndo_get_stats64()
+is currently not required, and causes a warning to issue.
 
-Fixes: f9b7989859dd ("dt-bindings: mmc: Add YAML schemas for the generic MMC options")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Message-ID: <20241128-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v4-1-11d9f9200a59@linaro.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The warn log is given below:
+
+[  123.316837] ------------[ cut here ]------------
+[  123.316840] Voluntary context switch within RCU read-side critical section!
+[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
+[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
+[  123.316947] Call trace:
+[  123.316949]  rcu_note_context_switch+0x2e4/0x300
+[  123.316952]  __schedule+0x84/0x584
+[  123.316955]  schedule+0x38/0x90
+[  123.316956]  schedule_timeout+0xa0/0x1d4
+[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
+[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
+[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
+[  123.316975]  dev_get_stats+0x4c/0x114
+[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
+[  123.316980]  dev_seq_show+0x1c/0x40
+[  123.316982]  seq_read_iter+0x3cc/0x4e0
+[  123.316985]  seq_read+0xc8/0x110
+[  123.316987]  proc_reg_read+0x9c/0xec
+[  123.316990]  vfs_read+0xc8/0x2ec
+[  123.316993]  ksys_read+0x70/0x100
+[  123.316995]  __arm64_sys_read+0x20/0x30
+[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
+[  123.317000]  do_el0_svc+0xb4/0xd0
+[  123.317002]  el0_svc+0xe8/0x1f4
+[  123.317005]  el0t_64_sync_handler+0x134/0x150
+[  123.317006]  el0t_64_sync+0x17c/0x180
+[  123.317008] ---[ end trace 63399811432ab69b ]---
+
+Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Link: https://patch.msgid.link/20250117094653.2588578-2-srasheed@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-index 58ae298cd2fcf..23884b8184a9d 100644
---- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-+++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
-@@ -25,7 +25,7 @@ properties:
-   "#address-cells":
-     const: 1
-     description: |
--      The cell is the slot ID if a function subnode is used.
-+      The cell is the SDIO function number if a function subnode is used.
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index 549436efc2048..730aa5632ccee 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -995,12 +995,6 @@ static void octep_get_stats64(struct net_device *netdev,
+ 	struct octep_device *oct = netdev_priv(netdev);
+ 	int q;
  
-   "#size-cells":
-     const: 0
+-	if (netif_running(netdev))
+-		octep_ctrl_net_get_if_stats(oct,
+-					    OCTEP_CTRL_NET_INVALID_VFID,
+-					    &oct->iface_rx_stats,
+-					    &oct->iface_tx_stats);
+-
+ 	tx_packets = 0;
+ 	tx_bytes = 0;
+ 	rx_packets = 0;
+@@ -1018,10 +1012,6 @@ static void octep_get_stats64(struct net_device *netdev,
+ 	stats->tx_bytes = tx_bytes;
+ 	stats->rx_packets = rx_packets;
+ 	stats->rx_bytes = rx_bytes;
+-	stats->multicast = oct->iface_rx_stats.mcast_pkts;
+-	stats->rx_errors = oct->iface_rx_stats.err_pkts;
+-	stats->collisions = oct->iface_tx_stats.xscol;
+-	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
+ }
+ 
+ /**
 -- 
 2.39.5
 
