@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179EEA28F1F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D47A29281
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F363A8C37
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC8307A1F3A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA6913C3F6;
-	Wed,  5 Feb 2025 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE6B191493;
+	Wed,  5 Feb 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPz9JhSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSRsiU74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE85B1519BE;
-	Wed,  5 Feb 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1A1E89C;
+	Wed,  5 Feb 2025 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765237; cv=none; b=R6s+JiTfJr2yoF4+uphDXZIzy1rYEsuYHtV8F7UX+5m1p2oHP7xJa640rluO8ss3OKZwxev0nuWUCneuSCVQtEDsrvTaU9Xkk4gL5S54WGum90MEtlJahlhZ2iDb3QERyPTFgBx+n4626TtZ1JWo5D76S+egeE7SxijQwt1DrVM=
+	t=1738767572; cv=none; b=n3JxxRLrsI/qnIasy+hhHmQOd/CsRzvheNcs+dj1EOZoM68Mp6SWYhd8V22dM5Tah0a2ep4zi1dfBygAf6FX+irVMroxfVvwb9BnKn1q6Zqf9Y7T+urVsU2E2jMLWMoZB4eYZ6zvAgtkyIsJZAX6L4MHvlUIB49mxv4EINewuiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765237; c=relaxed/simple;
-	bh=NyXTl0VOoOrQrtnaFBxqUxOa7uNb0JFVwJSBHYHQnCk=;
+	s=arc-20240116; t=1738767572; c=relaxed/simple;
+	bh=LyEX7EDOdhypdYyclk46CgFfWpn1H+sz5gQOL+faujs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vC3VLlCnX8mbU0bs2kpt+bIzj0fjTipTDwuJOFJd4ykAdX+6k6S4yWu5h9MJnoeiP6P21fMPQwMQYntpv9eOF2laIIEqlPdHQhAREji6WyOOb37PC9RAT3xzy1jh6/pd94OH+iB+4t5p92mlkIKXX7/QWHQ30pwVbgB5e7gn6ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPz9JhSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F242C4CED1;
-	Wed,  5 Feb 2025 14:20:37 +0000 (UTC)
+	 MIME-Version; b=tX5OH9YzDkOP9Ic0S+tsnVPPJHCg0L6n5kC1x9UW58tmIvRWC456sll8M/yqgYzJY18v1kxPPirJjU3cDPzxIfznapj/tCQ+oVvD/JPggh5DTQmI0cVBgjmKS0AJuYyXVNaxWyud5npVnAlk005RrYenjKq1ybEKFJuLmbftKe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSRsiU74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDBAC4CEE4;
+	Wed,  5 Feb 2025 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765237;
-	bh=NyXTl0VOoOrQrtnaFBxqUxOa7uNb0JFVwJSBHYHQnCk=;
+	s=korg; t=1738767571;
+	bh=LyEX7EDOdhypdYyclk46CgFfWpn1H+sz5gQOL+faujs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPz9JhSAyzlPm4KpavCQ1qNqFRIwEtcN4EhXBZLDXLMQ4Zwqrzwxz0s16e6c+y6r7
-	 0YuV3MSNovhAwKjRMJ43smyY34nIy8kbIV+J/C7P8FrloMraLsFWPzQWEYh5XUWfQU
-	 T5uEvFc0iw1TiWezWpG9dY9MUy1vEmYgn9FFAp60=
+	b=YSRsiU746h69c97q2tiHph3K+4HWhVSGRdRSEFqres4kDdI0MHW1cxAuyEzNmcnms
+	 p22VdaswPpUodd0GrGsdQenO4L51bhROoz214goj98Yf7xWxqFhiyCwVZFsXPw87jN
+	 6Ugl1nz86iRWz6Ebv8B/2/LZssqpROI8mFI+JxjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/393] arm64: dts: qcom: sm8250: correct sleep clock frequency
+Subject: [PATCH 6.13 423/623] arm64: dts: ti: Makefile: Fix typo "k3-j7200-evm-pcie1-ep.dtbo"
 Date: Wed,  5 Feb 2025 14:42:45 +0100
-Message-ID: <20250205134429.719859701@linuxfoundation.org>
+Message-ID: <20250205134512.408205453@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 75420e437eed69fa95d1d7c339dad86dea35319a ]
+[ Upstream commit a7543eaeb31544b9c3f6248cac8189aa1480c0f5 ]
 
-The SM8250 platform uses PM8150 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+The list of "dtbs" should contain the resultant "dtb" formed by applying
+the "dtbo" overlay on the base "dtb", rather than the "dtbo" itself.
 
-Fixes: 9ff8b0591fcf ("arm64: dts: qcom: sm8250: use the right clock-freqency for sleep-clk")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-13-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Hence, change "k3-j7200-evm-pcie1-ep.dtbo" to "k3-j7200-evm-pcie1-ep.dtb"
+in the list of "dtbs".
+
+Fixes: f43ec89bbc83 ("arm64: dts: ti: k3-j7200-evm: Add overlay for PCIE1 Endpoint Mode")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20241205105041.749576-2-s-vadapalli@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ arch/arm64/boot/dts/ti/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index b522d19f3a132..88e8f0437e938 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -85,7 +85,7 @@
- 
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
+diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
+index f71360f14f233..379bfa4425d49 100644
+--- a/arch/arm64/boot/dts/ti/Makefile
++++ b/arch/arm64/boot/dts/ti/Makefile
+@@ -230,7 +230,7 @@ dtb- += k3-am625-beagleplay-csi2-ov5640.dtb \
+ 	k3-am642-tqma64xxl-mbax4xxl-wlan.dtb \
+ 	k3-am68-sk-base-board-csi2-dual-imx219.dtb \
+ 	k3-am69-sk-csi2-dual-imx219.dtb \
+-	k3-j7200-evm-pcie1-ep.dtbo \
++	k3-j7200-evm-pcie1-ep.dtb \
+ 	k3-j721e-common-proc-board-infotainment.dtb \
+ 	k3-j721e-evm-pcie0-ep.dtb \
+ 	k3-j721e-sk-csi2-dual-imx219.dtb \
 -- 
 2.39.5
 
