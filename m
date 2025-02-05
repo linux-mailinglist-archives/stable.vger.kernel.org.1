@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D567BA28CB6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BBDA28D77
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 407671886706
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66223168EDC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6C714A09A;
-	Wed,  5 Feb 2025 13:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460E14EC77;
+	Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR0OSh+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+sdpUhA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6001487DC;
-	Wed,  5 Feb 2025 13:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1110415198D;
+	Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763576; cv=none; b=aSsyw4GoFAMsBMDxboPcLl9c5HUNdSo1iY/3gVop4XQ0ce3ZoFEsGytYoAqmbjXQ6VvQpUfZNtmnpYpjfnDt6oi4r4BwpSwrU+oezTs2rrrg7hixvvaQ0bd6NIbgrut91ZiMERGT76v32LSLuUTZpEpW2ESHSwwKdjYpTJ19j/s=
+	t=1738764083; cv=none; b=YQirD7UueK7G5GlN4w3V+8t+Jeab+5X7TdQd1HF4/yMiQMe2meRYNZ7VjnkZvn3bSkXhITmvnrgA/DFCtkt4zJ1I+Ft9m7kncwGZACkH25EItfj6TCrpZUldax+BUxw6iRjsf/fTWR0CY9NcCnVYSwxuva9ktxqyiM2H1QRHTLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763576; c=relaxed/simple;
-	bh=SEc7ZabdlgZO1n6a7mZAnUtg+LVUP6SP4y0rI2dFbas=;
+	s=arc-20240116; t=1738764083; c=relaxed/simple;
+	bh=BtGUvI063dh9EgidxylBKzaAFgdbKG22z0meNwxPUPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cuYPd4zBQhKzM0O/o2q3UpN0504qqcl5Gpv8GhiL6mH2oS9ItUsCoFICCwh4outWysBnZsB2v57D7dYrvsBCmVELCMMQRDZXqgmWWH35n1sSjeMNdil+qpcXd0LYCO+OucGiwFhl7oIfOvFmrZjogwF8gIf9yCvpaFCst4QklfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR0OSh+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184AFC4CED6;
-	Wed,  5 Feb 2025 13:52:55 +0000 (UTC)
+	 MIME-Version; b=mYIAmyMv0Ra0WfnqB7JLKFMeDukQ+/kOm+6KyZece/tcBcMw3kEaKi6iB9ilXzIHkIGaj/G4qx1sjZyuuQLUy7ihoFOQGpghMZCIf7d+CTw8P5cVtPvvOqFjGP/keAvgC5RY9NDFjDEgHXQ0KrC52wvqtVtj5aNLz4fmbY1SjXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+sdpUhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D73C4CED1;
+	Wed,  5 Feb 2025 14:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763576;
-	bh=SEc7ZabdlgZO1n6a7mZAnUtg+LVUP6SP4y0rI2dFbas=;
+	s=korg; t=1738764082;
+	bh=BtGUvI063dh9EgidxylBKzaAFgdbKG22z0meNwxPUPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR0OSh+WAafn0Xa+BkAIIYvYs0fDYaLDPQSw/SYihuIrToh3x4s+CZxUQPZyvm6vf
-	 pc/RumPxhTRHzn8Y5jAQ3Z9rUhFc4HPfS0HT6cE7mCvkDYa2sI3igVdFmx4j5aoDbb
-	 RkQsvXL5DpczLlz6pWwHI/2Lo+SGEELPPP2qvsEk=
+	b=i+sdpUhADS1YsqNPpwAlUOIE8JA+DpXYloua/GhIqofW0YVwXsxcg4oQb3+TzJkpA
+	 TsiPfR/qHy9EacoX0dwnWVZFgCLQza516BraE+H+xyg/vR916aLSwvUmeBGz+N2iW1
+	 AYQATqs8lNv4W1O3HX401jfzs7vvfJEpel2CcjL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/590] x86/topology: Use x86_sched_itmt_flags for PKG domain unconditionally
-Date: Wed,  5 Feb 2025 14:36:27 +0100
-Message-ID: <20250205134456.479453348@linuxfoundation.org>
+Subject: [PATCH 6.13 046/623] drm/amd/pm: Fix an error handling path in vega10_enable_se_edc_force_stall_config()
+Date: Wed,  5 Feb 2025 14:36:28 +0100
+Message-ID: <20250205134457.992332269@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e1bc02646527fc1ed74f00eb599b2b74d49671c7 ]
+[ Upstream commit a3300782d5375e280ba7040f323d01960bfe3396 ]
 
-x86_sched_itmt_flags() returns SD_ASYM_PACKING if ITMT support is
-enabled by the system. Without ITMT support being enabled, it returns 0
-similar to current x86_die_flags() on non-Hybrid systems
-(!X86_HYBRID_CPU and !X86_FEATURE_AMD_HETEROGENEOUS_CORES)
+In case of error after a amdgpu_gfx_rlc_enter_safe_mode() call, it is not
+balanced by a corresponding amdgpu_gfx_rlc_exit_safe_mode() call.
 
-On Intel systems that enable ITMT support, either the MC domain
-coincides with the PKG domain, or in case of multiple MC groups
-within a PKG domain, either Sub-NUMA Cluster (SNC) is enabled or the
-processor features Hybrid core layout (X86_HYBRID_CPU) which leads to
-three distinct possibilities:
+Add the missing call.
 
-o If PKG and MC domains coincide, PKG domain is degenerated by
-  sd_parent_degenerate() when building sched domain topology.
-
-o If SNC is enabled, PKG domain is never added since
-  "x86_has_numa_in_package" is set and the topology will instead contain
-  NODE and NUMA domains.
-
-o On X86_HYBRID_CPU which contains multiple MC groups within the PKG,
-  the PKG domain requires x86_sched_itmt_flags().
-
-Thus, on Intel systems that contains multiple MC groups within the PKG
-and enables ITMT support, the PKG domain requires
-x86_sched_itmt_flags(). In all other cases PKG domain is either never
-added or is degenerated. Thus, returning x86_sched_itmt_flags()
-unconditionally at PKG domain on Intel systems should not lead to any
-functional changes.
-
-On AMD systems with multiple LLCs (MC groups) within a PKG domain,
-enabling ITMT support requires setting SD_ASYM_PACKING to the PKG domain
-since the core rankings are assigned PKG-wide.
-
-Core rankings on AMD processors is currently set by the amd-pstate
-driver when Preferred Core feature is supported. A subset of systems that
-support Preferred Core feature can be detected using
-X86_FEATURE_AMD_HETEROGENEOUS_CORES however, this does not cover all the
-systems that support Preferred Core ranking.
-
-Detecting Preferred Core support on AMD systems requires inspecting CPPC
-Highest Perf on all present CPUs and checking if it differs on at least
-one CPU. Previous suggestion to use a synthetic feature to detect
-Preferred Core support [1] was found to be non-trivial to implement
-since BSP alone cannot detect if Preferred Core is supported and by the
-time AP comes up, alternatives are patched and setting a X86_FEATURE_*
-then is not possible.
-
-Since x86 processors enabling ITMT support that consists multiple
-non-NUMA MC groups within a PKG requires SD_ASYM_PACKING flag set at the
-PKG domain, return x86_sched_itmt_flags unconditionally for the PKG
-domain.
-
-Since x86_die_flags() would have just returned x86_sched_itmt_flags()
-after the change, remove the unnecessary wrapper and pass
-x86_sched_itmt_flags() directly as the flags function.
-
-Fixes: f3a052391822 ("cpufreq: amd-pstate: Enable amd-pstate preferred core support")
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Link: https://lore.kernel.org/r/20241223043407.1611-6-kprateek.nayak@amd.com
+Fixes: 9b7b8154cdb8 ("drm/amd/powerplay: added didt support for vega10")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/smpboot.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index b5a8f0891135b..f1fac08fdef28 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -495,15 +495,6 @@ static int x86_cluster_flags(void)
- }
- #endif
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
+index 3007b054c873c..776d58ea63ae9 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
+@@ -1120,13 +1120,14 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
+ 	result = vega10_program_didt_config_registers(hwmgr, SEEDCForceStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
+ 	result |= vega10_program_didt_config_registers(hwmgr, SEEDCCtrlForceStallConfig_Vega10, VEGA10_CONFIGREG_DIDT);
+ 	if (0 != result)
+-		return result;
++		goto exit_safe_mode;
  
--static int x86_die_flags(void)
--{
--	if (cpu_feature_enabled(X86_FEATURE_HYBRID_CPU) ||
--	    cpu_feature_enabled(X86_FEATURE_AMD_HETEROGENEOUS_CORES))
--		return x86_sched_itmt_flags();
--
+ 	vega10_didt_set_mask(hwmgr, false);
+ 
++exit_safe_mode:
+ 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+ 
 -	return 0;
--}
--
- /*
-  * Set if a package/die has multiple NUMA nodes inside.
-  * AMD Magny-Cours, Intel Cluster-on-Die, and Intel
-@@ -539,7 +530,7 @@ static void __init build_sched_topology(void)
- 	 */
- 	if (!x86_has_numa_in_package) {
- 		x86_topology[i++] = (struct sched_domain_topology_level){
--			cpu_cpu_mask, x86_die_flags, SD_INIT_NAME(PKG)
-+			cpu_cpu_mask, x86_sched_itmt_flags, SD_INIT_NAME(PKG)
- 		};
- 	}
++	return result;
+ }
  
+ static int vega10_disable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 -- 
 2.39.5
 
