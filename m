@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-113444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61413A2922A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394B7A28DC4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BC616CA40
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA008161B84
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4D31FDE39;
-	Wed,  5 Feb 2025 14:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B7A14B080;
+	Wed,  5 Feb 2025 14:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCN/88Yj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AHDmLqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB801FDE12;
-	Wed,  5 Feb 2025 14:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8C31519AA;
+	Wed,  5 Feb 2025 14:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766983; cv=none; b=vD3H154VRqBisYMu5qRhImJpbiY/mLqNX1JdgKqbDjnuozZpk+5C2kEmGDmDXfRjjv74/L7s2OOViYw9W3byUcrJWBFVWjZCRHLANzEEpP1B1GXx9jrTyGStcIa3xZlU+naCbGqIGFJoyuxFmlo+SKIF6t4OCsmt2n3xax/uFJA=
+	t=1738764306; cv=none; b=C94FH+OiaR5CaDjBnfB7P6XYSdGw95mDJq0B5sNru+bk1/EYjFe5pBvc9LOkITBLpXNIP+SbHFanpKfdzGNIIEgQVB22p9MxNynuNpG+AnjY8Fif3YMmjfZkKzNjXUL6PgZeAaT8tyQH/NShBTQ2KVvaGlYRREq4HkVFJbiHLl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766983; c=relaxed/simple;
-	bh=b0oYSoP/TUPY7Ze0b5XvpSy/KvaUz1Tm/Rqc18ulq4U=;
+	s=arc-20240116; t=1738764306; c=relaxed/simple;
+	bh=2BSiI916WVdnhqxbhW3ws6QBYLCYRBJ95b5jWBJegY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ARt7s5nd7Ya8JQxRPxQqm2JCkMBAXuZjZiZXnL9fAGgiufG4fOflKOM1WhyeNzxvQnMbIhLgOP/GzOxqYMTSO/hWf0dhrytA+r2dAWMXQX79Yw1TfGbokXgv5o118Iazpxd+CPSzkO9S9IDwAmNsAmhovgeO8V6yHUUmNymPMzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCN/88Yj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16297C4CEDD;
-	Wed,  5 Feb 2025 14:49:42 +0000 (UTC)
+	 MIME-Version; b=PBo2Pt0OEr65aZ7l3Ryi+Vc1timRBg0xV8MU5iaIWbE1RyRhQNk4vMaHDEihvcQCFo5nGMm4YCSYq+fhfggdDu6dD7zakdhHaf3to1+kyoDVsbrPjmp6pk0a1qqc4hltnDuZX41rS3bl654AkcxrwapQfr8lyYNeZW0CykQFlVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1AHDmLqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C382BC4CED1;
+	Wed,  5 Feb 2025 14:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766983;
-	bh=b0oYSoP/TUPY7Ze0b5XvpSy/KvaUz1Tm/Rqc18ulq4U=;
+	s=korg; t=1738764306;
+	bh=2BSiI916WVdnhqxbhW3ws6QBYLCYRBJ95b5jWBJegY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zCN/88Yj7pc5HDYnJxBt8FaDweyggrbotSmZjqqgAZ0vi6yLi33Xsa4vfqzbVPaw7
-	 0HwepMQxS54SFB5Kn+V96XUmwbjQ7AmUUGl6o2b+bjyOaeJ7ZCWYaHaC94DUbc9yC7
-	 s1SWy/9WBH4XYRTPVv0dDKoDQCIYhkQRjRwbvb0Y=
+	b=1AHDmLqSdbJIVxhPqnzAnX+tTyDxzQrVUu4A5GrqOYlCpl63R08LS6XNlzpf+IBMC
+	 lhYVqd/fBAxJWguoxQ08jIvEGOBWCZNLpB2rrLhx60jmm75F/ErB5AVDQ+w6lvhO7P
+	 DuMxBIp+yLKam68Cigd96IQ1vVECXA+DZSGR1yzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <song@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 337/623] arm64: dts: mediatek: mt8516: add i2c clock-div property
+Subject: [PATCH 6.6 160/393] perf header: Fix one memory leakage in process_bpf_btf()
 Date: Wed,  5 Feb 2025 14:41:19 +0100
-Message-ID: <20250205134509.119402450@linuxfoundation.org>
+Message-ID: <20250205134426.423894135@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +74,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit eb72341fd92b7af510d236e5a8554d855ed38d3c ]
+[ Upstream commit 875d22980a062521beed7b5df71fb13a1af15d83 ]
 
-Move the clock-div property from the pumpkin board dtsi to the SoC's
-since it belongs to the SoC itself and is required on other devices.
+If __perf_env__insert_btf() returns false due to a duplicate btf node
+insertion, the temporary node will leak. Add a check to ensure the memory
+is freed if the function returns false.
 
-Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241204190524.21862-4-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: a70a1123174ab592 ("perf bpf: Save BTF information as headers to perf.data")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20241205084500.823660-2-quic_zhonhan@quicinc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516.dtsi         | 3 +++
- arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi | 2 --
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ tools/perf/util/header.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index 098c32ebf6788..dd17d8a88c190 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -344,6 +344,7 @@
- 			reg = <0 0x11009000 0 0x90>,
- 			      <0 0x11000180 0 0x80>;
- 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C0>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-@@ -358,6 +359,7 @@
- 			reg = <0 0x1100a000 0 0x90>,
- 			      <0 0x11000200 0 0x80>;
- 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C1>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-@@ -372,6 +374,7 @@
- 			reg = <0 0x1100b000 0 0x90>,
- 			      <0 0x11000280 0 0x80>;
- 			interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C2>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-diff --git a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-index ec8dfb3d1c6d6..a356db5fcc5f3 100644
---- a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-@@ -47,7 +47,6 @@
- };
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 1482567e5ac1a..34d3b567ae772 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -3224,7 +3224,8 @@ static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
+ 		if (__do_read(ff, node->data, data_size))
+ 			goto out;
  
- &i2c0 {
--	clock-div = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c0_pins_a>;
- 	status = "okay";
-@@ -156,7 +155,6 @@
- };
+-		__perf_env__insert_btf(env, node);
++		if (!__perf_env__insert_btf(env, node))
++			free(node);
+ 		node = NULL;
+ 	}
  
- &i2c2 {
--	clock-div = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c2_pins_a>;
- 	status = "okay";
 -- 
 2.39.5
 
