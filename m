@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055ADA29348
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBBCA2906B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CF83B047D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E7727A2A23
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5136716EB42;
-	Wed,  5 Feb 2025 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5DD155756;
+	Wed,  5 Feb 2025 14:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqiO1AZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzT9LYlX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D31C1519BF;
-	Wed,  5 Feb 2025 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B96D151988;
+	Wed,  5 Feb 2025 14:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767733; cv=none; b=fKukyjMsKf32M4lDudfVIe6e2Xys1hwnOSD1EK1zg+J4KbtakujZxmdtOZzMDsP1MLej+0rrQgQAuUVeodx4ASU/Ah9YQNEUTIV2fnDMBmwb9WCPoteC7C0Lpc7pcKCJJyX+jSNw0rPMkvFletwQNoe2vQB1Eb39bjJ9QJOpLdc=
+	t=1738766149; cv=none; b=BMNxhxjbK8w3RzDHM3jxv0uLPJ5KQvKmevX+ss2kZr5Bf+w+ykeeJB5Hw0KS3HQLQMgDrPUQHLOjWT9M24C5qO1ju03femkfAbTETqZwBgpOBJjpZg1ja8iV89vHoNdb57SQcT5mfsBAVo+eTWxYzuWoFteBNY45NW/xbVTV2J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767733; c=relaxed/simple;
-	bh=aAw29CDT7b67tvHc1qEFU/UupJR3A5AypnHuLb6bzA0=;
+	s=arc-20240116; t=1738766149; c=relaxed/simple;
+	bh=uFjskaxu9aI9FbgxUuS8xKr9BTlp8RguA2Gzw3D0vTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHi05Joce7M5Qm/IuWUqjoZIbiEnYsfmDbebIfAyw8CjAOLHqIGfEz9zzd2bLIC88qBhASC2EZyPckQNXQ16koJYIP+OiIWaKCmWaEueSOMpnapRqngDhuDIIYX19dB4q1/0rZ9DWhOVHo0KIddayBz+fYWjSLgokdapJ5iewuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqiO1AZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F51C4CED1;
-	Wed,  5 Feb 2025 15:02:12 +0000 (UTC)
+	 MIME-Version; b=PFOFkoASsU9BmIt/99fUY/qNl21Hp1NRgYU2sUHyv0gliBT6YrlSthP38n044zca3lCULkknZhXla5cK6lp3nF9SrNAuFVr701Fr7byKPBmRZOuRY3Qx34aZ2PQYlWCEsXNXDnBkIA+ZTCRUQ4fzhwvJYE5aAnm3II/HD/+E5rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzT9LYlX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6823EC4CED1;
+	Wed,  5 Feb 2025 14:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767732;
-	bh=aAw29CDT7b67tvHc1qEFU/UupJR3A5AypnHuLb6bzA0=;
+	s=korg; t=1738766148;
+	bh=uFjskaxu9aI9FbgxUuS8xKr9BTlp8RguA2Gzw3D0vTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqiO1AZFDvWiiAg5D3ssVdePwp7N1I5HLcsbruMX/HJ1ehGfhAidHDLHHVx+rYJwM
-	 6grja1Ga4nLQv957ETxt/uHzojk1VGOzL+NaUjcO+6DCD0fEaz3WZjnwPqnsq0o9ui
-	 7ZfiYnwR0LXORe6qHny2Zzxcavjpf8TEIpQvHyuw=
+	b=bzT9LYlXEgap80a8GAChTVrRaO97FEyYsT/+ivJkXpsorO/jNSl/2t0grrT1ppYm/
+	 tIbXjpYtUJchSK+pXVQ+1rZV3uSli4X/nyJdpOM35yNR5MacPAJwcCwPBYzt4lf761
+	 7IhRXBuEeF2fB4wJf2sHP5xaL7y4VB2/kbQVkifQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 497/590] selftests: net/{lib,openvswitch}: extend CFLAGS to keep options from environment
-Date: Wed,  5 Feb 2025 14:44:12 +0100
-Message-ID: <20250205134514.283073234@linuxfoundation.org>
+Subject: [PATCH 6.6 334/393] net: stmmac: Limit the number of MTL queues to hardware capability
+Date: Wed,  5 Feb 2025 14:44:13 +0100
+Message-ID: <20250205134433.090880878@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 9b06d5b956131bde535f5c045cf8c1ff6bfba76c ]
+[ Upstream commit f5fb35a3d6b36d378b2e2ecbfb9caa337d5428e6 ]
 
-Package build environments like Fedora rpmbuild introduced hardening
-options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
-and LDFLAGS.
+The number of MTL queues to use is specified by the parameter
+"snps,{tx,rx}-queues-to-use" from stmmac_platform layer.
 
-Some Makefiles currently override CFLAGS but not LDFLAGS, which leads
-to a mismatch and build failure, for example:
-  /usr/bin/ld: /tmp/ccd2apay.o: relocation R_X86_64_32 against
-    `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIE
-  /usr/bin/ld: failed to set dynamic section sizes: bad value
-  collect2: error: ld returned 1 exit status
-  make[1]: *** [../../lib.mk:222: tools/testing/selftests/net/lib/csum] Error 1
+However, the maximum numbers of queues are constrained by upper limits
+determined by the capability of each hardware feature. It's appropriate
+to limit the values not to exceed the upper limit values and display
+a warning message.
 
-openvswitch/Makefile CFLAGS currently do not appear to be used, but
-fix it anyway for the case when new tests are introduced in future.
+This only works if the hardware capability has the upper limit values.
 
-Fixes: 1d0dc857b5d8 ("selftests: drv-net: add checksum tests")
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/3d173603ee258f419d0403363765c9f9494ff79a.1737635092.git.jstancek@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/lib/Makefile         | 2 +-
- tools/testing/selftests/net/openvswitch/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/testing/selftests/net/lib/Makefile b/tools/testing/selftests/net/lib/Makefile
-index 82c3264b115ee..704b88b6a8d2a 100644
---- a/tools/testing/selftests/net/lib/Makefile
-+++ b/tools/testing/selftests/net/lib/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index d6ee90fef2eca..48ad12bca9566 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7103,6 +7103,21 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 	if (priv->dma_cap.tsoen)
+ 		dev_info(priv->device, "TSO supported\n");
  
--CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g
-+CFLAGS += -Wall -Wl,--no-as-needed -O2 -g
- CFLAGS += -I../../../../../usr/include/ $(KHDR_INCLUDES)
- # Additional include paths needed by kselftest.h
- CFLAGS += -I../../
-diff --git a/tools/testing/selftests/net/openvswitch/Makefile b/tools/testing/selftests/net/openvswitch/Makefile
-index 2f1508abc826b..3fd1da2ec07d5 100644
---- a/tools/testing/selftests/net/openvswitch/Makefile
-+++ b/tools/testing/selftests/net/openvswitch/Makefile
-@@ -2,7 +2,7 @@
- 
- top_srcdir = ../../../../..
- 
--CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
-+CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
- 
- TEST_PROGS := openvswitch.sh
- 
++	if (priv->dma_cap.number_rx_queues &&
++	    priv->plat->rx_queues_to_use > priv->dma_cap.number_rx_queues) {
++		dev_warn(priv->device,
++			 "Number of Rx queues (%u) exceeds dma capability\n",
++			 priv->plat->rx_queues_to_use);
++		priv->plat->rx_queues_to_use = priv->dma_cap.number_rx_queues;
++	}
++	if (priv->dma_cap.number_tx_queues &&
++	    priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
++		dev_warn(priv->device,
++			 "Number of Tx queues (%u) exceeds dma capability\n",
++			 priv->plat->tx_queues_to_use);
++		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
++	}
++
+ 	priv->hw->vlan_fail_q_en =
+ 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
+ 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
 -- 
 2.39.5
 
