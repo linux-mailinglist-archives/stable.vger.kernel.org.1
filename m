@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D275A2929A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA143A28EE4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FD53AC4B4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 000921889B44
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524671DE4EC;
-	Wed,  5 Feb 2025 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DC986348;
+	Wed,  5 Feb 2025 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqT666/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCpHtXTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0321DE2A9;
-	Wed,  5 Feb 2025 14:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28DA4A28;
+	Wed,  5 Feb 2025 14:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767195; cv=none; b=GT4Q54vI1aeK2N6Xz7a7Oh0njxLHTPxn9I1bojRDDcBxA/AukuyOJDpKuJF9FnH04imnRjhDcS0Th/laPzzd2xCSDKpkYD6ea0DPAwpDDVW6efTe5g3OF8lBMwxFHTab2uHxwA95kF4/X33+jjPmF8IiLNziLeJmHr8rIuuoHEw=
+	t=1738765100; cv=none; b=Te76Mvd0BT3FcjQfS0LOe0bMgHUpxAjZo2qBJkJybh7WvPIMr7TtodhGpcNjIk6EOqsxXNOnDVpTkY50Qj2Gk1XoKOaCFZ1OFeEHdT2oybzSq8+wZ6otRfXdx0zROGfE3UxaF+Y+5uwVPqs5e0PuYOSyi7HSfYnsWr5wX77Gk84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767195; c=relaxed/simple;
-	bh=K/vy2Y8vI1RGoYgydXUwhNN4axr50nLgFQ5o2rGpI+4=;
+	s=arc-20240116; t=1738765100; c=relaxed/simple;
+	bh=29y330C9qF272twf62HYr/w5STOKDi0SJnlRvue6Cbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAa5PrA7tQfcaviKQWgUdcGHQi2QUGrC2DvLWI7Jirfrl4zltseS+3mEVcNZuuXuIDrskvfyOwDhoZjB7arGsePeibbMkLhnHTO5uj6LLMrhxZ2BBpz9Hh33o0nLDGuDM19UxFOsR092fDXJJ/DD2Shd864GEvlZ/iyanC2ksaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqT666/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7DEC4CED1;
-	Wed,  5 Feb 2025 14:53:14 +0000 (UTC)
+	 MIME-Version; b=fcWPr0aceJaXAvzD3A97xOatEf2msiFnpQeCGVq5n+rrSktC7Eui/F6810YU4vdakXFZz3dAFgfosgAWjwqdWzxpheon3bGKdSoGQ2pZp5Tznzl2VyIdSe7u9a2urk0Tg3PDL+qhTHu0uW0YvzKbPwz6/WGvBlhX4cA/Nj1kLsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCpHtXTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F58C4CED1;
+	Wed,  5 Feb 2025 14:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767194;
-	bh=K/vy2Y8vI1RGoYgydXUwhNN4axr50nLgFQ5o2rGpI+4=;
+	s=korg; t=1738765099;
+	bh=29y330C9qF272twf62HYr/w5STOKDi0SJnlRvue6Cbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqT666/hIqhyWZny1RKmg+lGxusdPS75VreIlIxo0TsDPgrlJXZcGkulJmuZsUlpQ
-	 qGrct3RCf/ybQQ1MM4eQbG8vyI0UyZEgGGbbjMksSYP4k+cRqi0yXGCyZ2m6ndNC80
-	 mISftnU/9E4lEJUC/Tv0wQ/wUfn8qcCM0rrEwdFc=
+	b=kCpHtXTZM/iDlUSev/Gk0HWJcMlSDvbQcMWC27ZzXj8iaTvNYLzMNUQHAHfnIDoHh
+	 15q1QxjRbv59y9TN8837ATaT/mg7hV+r1KUuVDcPXUw+T01C+jUNnmiCPDsuWkyU5j
+	 uitny2YUBLWHeUfjjzNszXkLqYQikQVi02ZebtGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 396/590] of: property: Avoiding using uninitialized variable @imaplen in parse_interrupt_map()
+Subject: [PATCH 6.6 232/393] arm64: dts: qcom: msm8996: Fix up USB3 interrupts
 Date: Wed,  5 Feb 2025 14:42:31 +0100
-Message-ID: <20250205134510.415794632@linuxfoundation.org>
+Message-ID: <20250205134429.181834244@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit f73780e772c06901e99b2ad114b7f0f3fbe73ad4 ]
+[ Upstream commit 9cb9c9f4e1380da317a056afd26d66a835c5796c ]
 
-parse_interrupt_map() will use uninitialized variable @imaplen if fails
-to get property 'interrupt-map'.
+Add the missing interrupt lines and fix qusb2_phy being an impostor
+of hs_phy_irq.
 
-Fix by using the variable after successfully getting the property.
+This happens to also fix warnings such as:
 
-Fixes: e7985f43609c ("of: property: Fix fw_devlink handling of interrupt-map")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-6-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+usb@6af8800: interrupt-names: ['hs_phy_irq', 'ss_phy_irq'] is too short
+
+Fixes: 4753492de9df ("arm64: dts: qcom: msm8996: Add usb3 interrupts")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241129-topic-qcom_usb_dtb_fixup-v1-3-cba24120c058@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 7bd8390f2fba5..906a33ae717f7 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1317,9 +1317,9 @@ static struct device_node *parse_interrupt_map(struct device_node *np,
- 	addrcells = of_bus_n_addr_cells(np);
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 1f7cbb35886db..70ef8c83e7b9f 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -3046,9 +3046,14 @@
+ 			#size-cells = <1>;
+ 			ranges;
  
- 	imap = of_get_property(np, "interrupt-map", &imaplen);
--	imaplen /= sizeof(*imap);
- 	if (!imap)
- 		return NULL;
-+	imaplen /= sizeof(*imap);
+-			interrupts = <GIC_SPI 347 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 347 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
+-			interrupt-names = "hs_phy_irq", "ss_phy_irq";
++			interrupt-names = "pwr_event",
++					  "qusb2_phy",
++					  "hs_phy_irq",
++					  "ss_phy_irq";
  
- 	imap_end = imap + imaplen;
- 
+ 			clocks = <&gcc GCC_SYS_NOC_USB3_AXI_CLK>,
+ 				 <&gcc GCC_USB30_MASTER_CLK>,
 -- 
 2.39.5
 
