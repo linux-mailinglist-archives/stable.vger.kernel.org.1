@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CA9A28E04
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787D2A28DF5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA9833A19A5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D67C1882A3E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CE82E634;
-	Wed,  5 Feb 2025 14:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565CD149DE8;
+	Wed,  5 Feb 2025 14:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEGBx0Lj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBpghUOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E997F510;
-	Wed,  5 Feb 2025 14:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB26FC0B;
+	Wed,  5 Feb 2025 14:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764412; cv=none; b=u2HdpeEWDWfQ7E5HlTo65Ur3CYGXNBL49+AZzsoJMHa+IeYhlFMxnp+R5K6B6ejySnQIkGudXQI7jnovTkwbVH9m0TAIZchtRyH0s2TPg0etIj+b0FASiAjqe+F4vBvMbLPFHRojk+LiKxv2sHsGtZcD9OL9SK9g73i7VYGC7c4=
+	t=1738764426; cv=none; b=dfNUWYp7VyUtqErUeMQofOQVj3+mLi3uH/cb4cEejwyJGe/tZ3f3dnRbUPL37pnYETZ55bYFEN6cwvBthZMXZhzAsUhKN5bJiFdCMF1TI2iBKECiLmF3AUvuSOicVlhaWVdStqAGPKPUTTSchXv5rCvSxjOnXMADGxEylIVJ/Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764412; c=relaxed/simple;
-	bh=oAXfLkoWBJTMOKmWDG6h+9yuURUrLdDO3i4pMlMyv3c=;
+	s=arc-20240116; t=1738764426; c=relaxed/simple;
+	bh=h6HNJbIXx0B5ivdGiARFdlpeUdjBn/NmNsJ/Hu5cMMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1DHyT1cd+FMwP8EYNYNjX8Jj0eBtxBYBVmaAiuxXJQXDRuI3GHPfPDvs49D7BEtaLUeXfvyCi0VFk/YuUFkuw5X/ljOl7r8PARU8aTwSqGGeuP5/7D6xrsaQ0mUfI6dne8wuRmOD6jIE6qfmhiwSbvsxLyGHSKLOLxvY+uL+2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEGBx0Lj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78330C4CED1;
-	Wed,  5 Feb 2025 14:06:51 +0000 (UTC)
+	 MIME-Version; b=k1/zg7nT8Ne73NnHtfArqucQ5ygrWTfErZHN1SYwSlt0CkwoqimIgSrU7yGFzL7/fpCGQtZVJSLGZ8F6M3cszze9saRR3eXrYP+TcaL256QwX396AkVZX0rO2P+6xQczVJXXwPIKxdqNuTTjuhyQXvlFmFTBjVQjdaCu/6F9xLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBpghUOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A85C4CED1;
+	Wed,  5 Feb 2025 14:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764412;
-	bh=oAXfLkoWBJTMOKmWDG6h+9yuURUrLdDO3i4pMlMyv3c=;
+	s=korg; t=1738764425;
+	bh=h6HNJbIXx0B5ivdGiARFdlpeUdjBn/NmNsJ/Hu5cMMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEGBx0Ljm2YUnFR9eQvMc7lC83Wpq7+niQQZvF9aze218PBkmskWd2EaoP/2Is3QS
-	 1D/6q8Z8t0WlfOXfLU5OTEj9tG4zOHieqNSULkByE6ler/FWGLL6qHeioZ69LkkFOv
-	 kqYf3ooQZcWOnLVX3PFzuhr+uXo72VQXMwvDnA0U=
+	b=eBpghUOQSVg58gFdC1OAv8YphGDBE/yylSqt5v+pkHK+lLgMA1Yl1x/WZ78crC19W
+	 0eFFKWkxUoOp2WA8VzxrJYYXXvPVdb9yRjf7mSdHkZD1X5flZJJj/MUk8+HLLQg3tQ
+	 X0EKEe045nvOljGf/yjGIehDEIzGNr0btibcubV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 076/623] drm/msm: dont clean up priv->kms prematurely
-Date: Wed,  5 Feb 2025 14:36:58 +0100
-Message-ID: <20250205134459.134206435@linuxfoundation.org>
+Subject: [PATCH 6.13 077/623] drm/msm/mdp4: correct LCDC regulator name
+Date: Wed,  5 Feb 2025 14:36:59 +0100
+Message-ID: <20250205134459.171746252@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,35 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ebc0deda3c2948d40419677d388b4e6081688a06 ]
+[ Upstream commit 8aa337cbe7a61a5a98a4d3f446fc968b3bac914a ]
 
-MSM display drivers provide kms structure allocated during probe().
-Don't clean up priv->kms field in case of an error. Otherwise probe
-functions might fail after KMS probe deferral.
+Correct c&p error from the conversion of LCDC regulators to the bulk
+API.
 
-Fixes: a2ab5d5bb6b1 ("drm/msm: allow passing struct msm_kms to msm_drv_probe()")
+Fixes: 54f1fbcb47d4 ("drm/msm/mdp4: use bulk regulators API for LCDC encoder")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Fixes: 506efcba3129 ("drm/msm: carve out KMS code from msm_drv.c")
-Patchwork: https://patchwork.freedesktop.org/patch/590411/
-Link: https://lore.kernel.org/r/20240420-mdp4-fixes-v1-1-96a70f64fa85@linaro.org
+Patchwork: https://patchwork.freedesktop.org/patch/590412/
+Link: https://lore.kernel.org/r/20240420-mdp4-fixes-v1-3-96a70f64fa85@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_kms.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_lcdc_encoder.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
-index f3326d09bdbce..4cfad12f4dc1f 100644
---- a/drivers/gpu/drm/msm/msm_kms.c
-+++ b/drivers/gpu/drm/msm/msm_kms.c
-@@ -244,7 +244,6 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
- 	ret = priv->kms_init(ddev);
- 	if (ret) {
- 		DRM_DEV_ERROR(dev, "failed to load kms\n");
--		priv->kms = NULL;
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_lcdc_encoder.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_lcdc_encoder.c
+index 576995ddce37e..8bbc7fb881d59 100644
+--- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_lcdc_encoder.c
++++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_lcdc_encoder.c
+@@ -389,7 +389,7 @@ struct drm_encoder *mdp4_lcdc_encoder_init(struct drm_device *dev,
  
+ 	/* TODO: different regulators in other cases? */
+ 	mdp4_lcdc_encoder->regs[0].supply = "lvds-vccs-3p3v";
+-	mdp4_lcdc_encoder->regs[1].supply = "lvds-vccs-3p3v";
++	mdp4_lcdc_encoder->regs[1].supply = "lvds-pll-vdda";
+ 	mdp4_lcdc_encoder->regs[2].supply = "lvds-vdda";
+ 
+ 	ret = devm_regulator_bulk_get(dev->dev,
 -- 
 2.39.5
 
