@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFE4A29005
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D296A28C5C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5207418849F4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F673A2FA0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2B114386D;
-	Wed,  5 Feb 2025 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B1A14A4CC;
+	Wed,  5 Feb 2025 13:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u96n1O35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7fPVHtM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062EA487BF;
-	Wed,  5 Feb 2025 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927EB13D52B;
+	Wed,  5 Feb 2025 13:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765868; cv=none; b=ERwEtaeZ9KnPDsk6dHXWkke1urNtr+hbL3ptGp5TAFSZX4U6vATmVaA/rfY5huXex8HHlZ7nkTDGoAcb8nwL9e9Crgk3OW24240g6ldXraW/FScPVsWEzHJndYpipbRQzpgHM3WXWuuCgqDYWpJwNbgednpOCiAISmnbzq3yNew=
+	t=1738763333; cv=none; b=C2R2BaFsoOtIBEuuBnBbWEsol/ffXeQgufwBj0d5pDJEv29hw6yY0OKoONtX7haKG25omQuAyNUK2cJ3pPTqsQwRXxbNWplDJOqtqrBkO9xCtcQvcj47nwQ6Gu6s/wA9qKo5xVJcenfyStt/1UHdUR9hrYAqKQ9R+RjIy0dfzEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765868; c=relaxed/simple;
-	bh=sTm9wj9hSgp8Jr9fXynMiH1lsJZJELhuIaBYv7xa/oM=;
+	s=arc-20240116; t=1738763333; c=relaxed/simple;
+	bh=6HEbxa3hjIKdKzHY8sS20HVJWLvbzuF6wLrCsLSPeR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YGU4Yozp5ioW1Q1ucumBK3QpY6bgihSaEqlY2H8yRyNRIFPBcNvyOHIBNvmqXD3NPQcX2UbDQ5qbWdK2P8j/+5sLNDp+0kEsuor52BDON4pEhZXcWUCI6uKaPsDhk1iceeNhFT5wgtL0cuTb5jGEvLXkL18hs+0epuw/eYMPqh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u96n1O35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6956CC4CED1;
-	Wed,  5 Feb 2025 14:31:07 +0000 (UTC)
+	 MIME-Version; b=A5dALMMDwe3wdRAljGxJ16IxNZVJeEvdadbmq2ud3pXmCBRdWEkBW/IRtvUzIXaeHEcHuSo4Jo+3kQCKwt+bBxP+yLPO/n6UeLyfIl3vZx/MOgOCsRvBExip+5fHcess+0BkFp4OWbnxc5SI46K1JdmEIi/9osGktTpw1HAzAzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7fPVHtM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0268CC4CED6;
+	Wed,  5 Feb 2025 13:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765867;
-	bh=sTm9wj9hSgp8Jr9fXynMiH1lsJZJELhuIaBYv7xa/oM=;
+	s=korg; t=1738763333;
+	bh=6HEbxa3hjIKdKzHY8sS20HVJWLvbzuF6wLrCsLSPeR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u96n1O35tbkU7tMRrGEG1BpzoOtedUfkb3lvVE1uigvswfPpU0okFgVw7J3BrUMgj
-	 /hVhzPynj69tihHul/CKPno27xE//SOQeC/gEyoJ5JOSIhrxA4NRX8Qda6aYnDYbZm
-	 gwDEYpE9mZoksawGqZrIYzGOfpms5ZnZzwyz5woE=
+	b=v7fPVHtMqfq3b1Pufk9oR7yBIT5ee28ArXnj1+iwsQFZ2IefDPZBz8cyxF/BrZ2kG
+	 Mx9Z7zRSvRk+uBZvfta2imsAlkFB06eze0oDwI0Ar+CTLHFK7ORBhzQNRAa+GYOwUV
+	 XeSRV0O88B6Jk2yi5sW6qTMQf2Hb/yOhCjVv2Zzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 221/623] Bluetooth: btbcm: Fix NULL deref in btbcm_get_board_name()
+Subject: [PATCH 6.6 044/393] drm/bridge: it6505: Change definition of AUX_FIFO_MAX_SIZE
 Date: Wed,  5 Feb 2025 14:39:23 +0100
-Message-ID: <20250205134504.679963521@linuxfoundation.org>
+Message-ID: <20250205134421.988109960@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit b88655bc6593c6a7fdc1248b212d17e581c4334e ]
+[ Upstream commit c14870218c14532b0f0a7805b96a4d3c92d06fb2 ]
 
-devm_kstrdup() can return a NULL pointer on failure,but this
-returned value in btbcm_get_board_name() is not checked.
-Add NULL check in btbcm_get_board_name(), to handle kernel NULL
-pointer dereference error.
+The hardware AUX FIFO is 16 bytes
+Change definition of AUX_FIFO_MAX_SIZE to 16
 
-Fixes: f9183eaad915 ("Bluetooth: btbcm: Use devm_kstrdup()")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-1-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btbcm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index a1153ada74d20..0a60660fc8ce8 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -553,6 +553,9 @@ static const char *btbcm_get_board_name(struct device *dev)
- 
- 	/* get rid of any '/' in the compatible string */
- 	board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
-+	if (!board_type)
-+		return NULL;
-+
- 	strreplace(board_type, '/', '-');
- 
- 	return board_type;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 26d3b9b843267..24c5a926af8d1 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -299,7 +299,7 @@
+ #define MAX_CR_LEVEL 0x03
+ #define MAX_EQ_LEVEL 0x03
+ #define AUX_WAIT_TIMEOUT_MS 15
+-#define AUX_FIFO_MAX_SIZE 32
++#define AUX_FIFO_MAX_SIZE 16
+ #define PIXEL_CLK_DELAY 1
+ #define PIXEL_CLK_INVERSE 0
+ #define ADJUST_PHASE_THRESHOLD 80000
 -- 
 2.39.5
 
