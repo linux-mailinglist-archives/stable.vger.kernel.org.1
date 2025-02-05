@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E42A29461
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C18A2940A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 245593ADDB8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A6BB163A7C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B849D15FA7B;
-	Wed,  5 Feb 2025 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AB518FDA5;
+	Wed,  5 Feb 2025 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QluKZE1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8R2lBJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704C9DF59;
-	Wed,  5 Feb 2025 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629E918F2EF;
+	Wed,  5 Feb 2025 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768571; cv=none; b=smKTfp6LgH6+/WNWCmk290DxjieeSe+cO6XWK6H97lfk4RmciCp/fx7gTRPsVJlUZF2qNrODR3sLMaQZDifft3K9DUQOmVO0ORXA7Nq39p4Va2IObBdx5bNfxxrFkZNXq/aE/QakaecImC5gTalA+sWGD+gz1AX11lrKtfDprc8=
+	t=1738768308; cv=none; b=hPQssSKSbtzxZJ//YGcYr9ZBLSQ3rTysUstLXZ1PRDZWl47cW1tR6pw4dqPc87B1fVQ4/uSVZ/hAgsjcPSRlKb1zCd5lHJld4yEO4zhTLYngS6hrvcVSeONMRPRmPmmEoCVr4xhqvMEr4Djafcf039M2kAMJdOn2ordhFfkvHhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768571; c=relaxed/simple;
-	bh=/EM4gDgD5ZPnxkS8sO3H6WWyUJbc61sWtOBQXdNjGi0=;
+	s=arc-20240116; t=1738768308; c=relaxed/simple;
+	bh=fvgcSqRI6OmpdhvAcz5NeYT/TBHlA3A8rNJJ2FGNl8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr6bgUpZ0cwJTxswCogAUCDVetTnaguj9rqeLYsJtO4iamuniKpJV5Q1mM+IuArU8SND/ZuPpjL8aTvvvM+liKGUSM+2RQse+fvXOtBhD8+/YOaMbWX2LfkSG3qC/sYlY9+KreLPnqrWA9IhWFhfaGy/DjasUtasYIdtJg8M46o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QluKZE1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2B8C4CED6;
-	Wed,  5 Feb 2025 15:16:10 +0000 (UTC)
+	 MIME-Version; b=LcIUNp7vCkKiL2BJge3Jo6M/GackX4i+FQTOknKo6bkhJEz9tALMuGFAEpnpOK9QurV786kbTYrfyl1bqiHZGJ2RMmhzwOvxUMoDSIb+zsorMNDBZI9orDuF1D7APQ9CMgVrRGn71swLVyYknFaITzZlGYdJULDUDj+i8DrJcTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8R2lBJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A56C4CED1;
+	Wed,  5 Feb 2025 15:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768571;
-	bh=/EM4gDgD5ZPnxkS8sO3H6WWyUJbc61sWtOBQXdNjGi0=;
+	s=korg; t=1738768308;
+	bh=fvgcSqRI6OmpdhvAcz5NeYT/TBHlA3A8rNJJ2FGNl8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QluKZE1xLscmmB/XvFc5h/MpNaWC0qOPk1n6P4j//JvXDcUgYEUTSV15YbwgmFAbx
-	 a6SN3VMxZtO9UAzuuuZ5Pi5ez7AJL9yLIakZy6jPq7ZHyM2K3A5H2cQtNXxu5aHpq3
-	 hrsTcPIvOTcHFT3Lbm/unHC3Hb2VmDgKJF0hue/E=
+	b=Z8R2lBJQBBQKiomm3KvvBCmNiUi/YYeg7Fv2KzOhPqpLQV8Jkv+C971zLeYwHU5AX
+	 3v7pMuPrBpKlE4h9jfmVD7mk6G9gWcELxowrORwPxwG3ujvsgAlH8j/EI5YZA/DaBR
+	 LMzTf76l4lr6xQAxZ8zyFG3pEsUG6CN0EcBfbIOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ray Chi <raychi@google.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.13 595/623] usb: dwc3: Skip resume if pm_runtime_set_active() fails
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 582/590] Revert "s390/mm: Allow large pages for KASAN shadow mapping"
 Date: Wed,  5 Feb 2025 14:45:37 +0100
-Message-ID: <20250205134518.987197042@linuxfoundation.org>
+Message-ID: <20250205134517.530629930@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ray Chi <raychi@google.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit e3a9bd247cddfb6fa0c29c2361f70b76c359eaa0 upstream.
+commit cc00550b2ae7ab1c7c56669fc004a13d880aaf0a upstream.
 
-When the system begins to enter suspend mode, dwc3_suspend() is called
-by PM suspend. There is a problem that if someone interrupt the system
-suspend process between dwc3_suspend() and pm_suspend() of its parent
-device, PM suspend will be canceled and attempt to resume suspended
-devices so that dwc3_resume() will be called. However, dwc3 and its
-parent device (like the power domain or glue driver) may already be
-suspended by runtime PM in fact. If this sutiation happened, the
-pm_runtime_set_active() in dwc3_resume() will return an error since
-parent device was suspended. This can lead to unexpected behavior if
-DWC3 proceeds to execute dwc3_resume_common().
+This reverts commit ff123eb7741638d55abf82fac090bb3a543c1e74.
 
-EX.
-RPM suspend: ... -> dwc3_runtime_suspend()
-                      -> rpm_suspend() of parent device
-...
-PM suspend: ... -> dwc3_suspend() -> pm_suspend of parent device
-                                 ^ interrupt, so resume suspended device
-          ...  <-  dwc3_resume()  <-/
-                      ^ pm_runtime_set_active() returns error
+Allowing large pages for KASAN shadow mappings isn't inherently wrong,
+but adding POPULATE_KASAN_MAP_SHADOW to large_allowed() exposes an issue
+in can_large_pud() and can_large_pmd().
 
-To prevent the problem, this commit will skip dwc3_resume_common() and
-return the error if pm_runtime_set_active() fails.
+Since commit d8073dc6bc04 ("s390/mm: Allow large pages only for aligned
+physical addresses"), both can_large_pud() and can_large_pmd() call _pa()
+to check if large page physical addresses are aligned. However, _pa()
+has a side effect: it allocates memory in POPULATE_KASAN_MAP_SHADOW
+mode. This results in massive memory leaks.
 
-Fixes: 68c26fe58182 ("usb: dwc3: set pm runtime active before resume common")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ray Chi <raychi@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250106082240.3822059-1-raychi@google.com
+The proper fix would be to address both large_allowed() and _pa()'s side
+effects, but for now, revert this change to avoid the leaks.
+
+Fixes: ff123eb77416 ("s390/mm: Allow large pages for KASAN shadow mapping")
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/s390/boot/vmem.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -2601,12 +2601,15 @@ static int dwc3_resume(struct device *de
- 	pinctrl_pm_select_default_state(dev);
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -264,17 +264,7 @@ static unsigned long _pa(unsigned long a
  
- 	pm_runtime_disable(dev);
--	pm_runtime_set_active(dev);
-+	ret = pm_runtime_set_active(dev);
-+	if (ret)
-+		goto out;
+ static bool large_allowed(enum populate_mode mode)
+ {
+-	switch (mode) {
+-	case POPULATE_DIRECT:
+-	case POPULATE_IDENTITY:
+-	case POPULATE_KERNEL:
+-#ifdef CONFIG_KASAN
+-	case POPULATE_KASAN_MAP_SHADOW:
+-#endif
+-		return true;
+-	default:
+-		return false;
+-	}
++	return (mode == POPULATE_DIRECT) || (mode == POPULATE_IDENTITY) || (mode == POPULATE_KERNEL);
+ }
  
- 	ret = dwc3_resume_common(dwc, PMSG_RESUME);
- 	if (ret)
- 		pm_runtime_set_suspended(dev);
- 
-+out:
- 	pm_runtime_enable(dev);
- 
- 	return ret;
+ static bool can_large_pud(pud_t *pu_dir, unsigned long addr, unsigned long end,
 
 
 
