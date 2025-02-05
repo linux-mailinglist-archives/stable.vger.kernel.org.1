@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DEFA28CB2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F06BA28FD0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE6903A7867
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541BA3A6C44
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC35142E86;
-	Wed,  5 Feb 2025 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA98155CB3;
+	Wed,  5 Feb 2025 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaed/MqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OF396nJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40403149DE8;
-	Wed,  5 Feb 2025 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FB214B959;
+	Wed,  5 Feb 2025 14:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763566; cv=none; b=A0GMUBxEDVeOisD86VHC3dcBJUhqTYI/UiUaiJ2JyM6FMCETdouYkwhLsIL5db9Af5Kr2iMzlLjcK9ND9R6LA/kvu8BMmEBtnDiRefnrAkQYq7ohbRBdCmH+aVNJ/HgnJsPD3PTWBCvzCL+9hoyHlwM1ii8oMPYmlHMcCggHXL4=
+	t=1738765720; cv=none; b=PtK1q9iOpfSLt8L+YlzCLw7dWN+h/1NdQOkfCCKZsfex+RzGD1l/73HdTvNZTAYqLMGO0fcOb5tn0GuhREMYCrz4xkw83fqDjvrjwPnnmnJ1/sOZ5P9ptbWKM+3vQbOtkfUEdw9WReDQl27y6PLuAUUaIO/XOoiv6Ntp+8BKqQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763566; c=relaxed/simple;
-	bh=AIsufjBM7tUwoHTv12yMzRrez0i5IXLWzz0DgJ0OQ/E=;
+	s=arc-20240116; t=1738765720; c=relaxed/simple;
+	bh=d67MxIZ7HJIZf1MRstNEnNPoarvQZUuP07wUbSkQCoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZ8RZXNxLpW1EsAjaNYfr47BX5PiM/uStzMxNP3ZPSgVpc3EGEfexLtw3vNnHQpXO4kqessrT3WYZYIaWWsXT0U9GWNT/NPGtHkxLfqnp/tU6tucHdhnlTCIjkph/y4y1NxBb93OC8GvVGVm4bKVB9w7aEtUah+L2nM8VwawB50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaed/MqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0844C4CEE2;
-	Wed,  5 Feb 2025 13:52:45 +0000 (UTC)
+	 MIME-Version; b=LHMo+udgYGEZpNHIdaPUICArZX/cIJb9aKChJlMJbI6nMnoSftzqBwB1vfP/2VfH0AvjnOvbpMKQlhALjcdYbzMeRFQSkUXV3vmmjkyiY9m9QqbvaLDRy22RU59GpZv6cKUCxcpDrhQgy6rJeuzXGw4Yg9qbYkoVFZls4+fEykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OF396nJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCA1C4CED1;
+	Wed,  5 Feb 2025 14:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763566;
-	bh=AIsufjBM7tUwoHTv12yMzRrez0i5IXLWzz0DgJ0OQ/E=;
+	s=korg; t=1738765720;
+	bh=d67MxIZ7HJIZf1MRstNEnNPoarvQZUuP07wUbSkQCoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaed/MqPw+cdhmLZgJPDZhdWa3wXTIXLXCH+soKL28vzaVy8/x2myrvzHO0cgJ4s3
-	 UVdmmfeqqL8lavHlUbpVXbQb8KfiSLmAvu3Irrlbk12UD3PtyXTQoPorw9ZvPexj6N
-	 jRRWHtddYFp6E7iCjJ7cXG8AHX6A9VUMntFETCvs=
+	b=OF396nJ6DWO6yNK8GqWUC5R8qzW1cVlLEc08dX3WuH9vIod44ZPi+NhfoGCqCecZ9
+	 Eirdf5XNpOpe6YC2VWClyYXJYXGWpfmxb/NJ+RFuWWALUn4EWLQM1dqbEmZ8AkEZ/K
+	 95kzSJefCcrWCDN8SaEvJlJfyuBADCruNUSwe2kM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sultan Alsawaf (unemployed)" <sultan@kerneltoast.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/393] cpufreq: schedutil: Fix superfluous updates caused by need_freq_update
+Subject: [PATCH 6.12 246/590] iommu/arm-smmuv3: Update comments about ATS and bypass
 Date: Wed,  5 Feb 2025 14:40:01 +0100
-Message-ID: <20250205134423.432194694@linuxfoundation.org>
+Message-ID: <20250205134504.693111483@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sultan Alsawaf (unemployed) <sultan@kerneltoast.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 8e461a1cb43d69d2fc8a97e61916dce571e6bb31 ]
+[ Upstream commit 9b640ae7fbba13d45a8b9712dff2911a0c2b5ff4 ]
 
-A redundant frequency update is only truly needed when there is a policy
-limits change with a driver that specifies CPUFREQ_NEED_UPDATE_LIMITS.
+The SMMUv3 spec has a note that BYPASS and ATS don't work together under
+the STE EATS field definition. However there is another section "13.6.4
+Full ATS skipping stage 1" that explains under certain conditions BYPASS
+and ATS do work together if the STE is using S1DSS to select BYPASS and
+the CD table has the possibility for a substream.
 
-In spite of that, drivers specifying CPUFREQ_NEED_UPDATE_LIMITS receive a
-frequency update _all the time_, not just for a policy limits change,
-because need_freq_update is never cleared.
+When these comments were written the understanding was that all forms of
+BYPASS just didn't work and this was to be a future problem to solve.
 
-Furthermore, ignore_dl_rate_limit()'s usage of need_freq_update also leads
-to a redundant frequency update, regardless of whether or not the driver
-specifies CPUFREQ_NEED_UPDATE_LIMITS, when the next chosen frequency is the
-same as the current one.
+It turns out that ATS and IDENTITY will always work just fine:
 
-Fix the superfluous updates by only honoring CPUFREQ_NEED_UPDATE_LIMITS
-when there's a policy limits change, and clearing need_freq_update when a
-requisite redundant update occurs.
+ - If STE.Config = BYPASS then the PCI ATS is disabled
 
-This is neatly achieved by moving up the CPUFREQ_NEED_UPDATE_LIMITS test
-and instead setting need_freq_update to false in sugov_update_next_freq().
+ - If a PASID domain is attached then S1DSS = BYPASS and ATS will be
+   enabled. This meets the requirements of 13.6.4 to automatically
+   generate 1:1 ATS replies on the RID.
 
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Signed-off-by: Sultan Alsawaf (unemployed) <sultan@kerneltoast.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/20241212015734.41241-2-sultan@kerneltoast.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Update the comments to reflect this.
+
+Fixes: 7497f4211f4f ("iommu/arm-smmu-v3: Make changing domains be hitless for ATS")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-f27174f44f39+27a33-smmuv3_ats_note_jgg@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 458d359f5991c..a49f136014ce6 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -83,7 +83,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- 
- 	if (unlikely(sg_policy->limits_changed)) {
- 		sg_policy->limits_changed = false;
--		sg_policy->need_freq_update = true;
-+		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
- 		return true;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 353fea58cd318..f1a8f8c75cb0e 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2702,9 +2702,14 @@ static int arm_smmu_attach_prepare(struct arm_smmu_attach_state *state,
+ 		 * Translation Requests and Translated transactions are denied
+ 		 * as though ATS is disabled for the stream (STE.EATS == 0b00),
+ 		 * causing F_BAD_ATS_TREQ and F_TRANSL_FORBIDDEN events
+-		 * (IHI0070Ea 5.2 Stream Table Entry). Thus ATS can only be
+-		 * enabled if we have arm_smmu_domain, those always have page
+-		 * tables.
++		 * (IHI0070Ea 5.2 Stream Table Entry).
++		 *
++		 * However, if we have installed a CD table and are using S1DSS
++		 * then ATS will work in S1DSS bypass. See "13.6.4 Full ATS
++		 * skipping stage 1".
++		 *
++		 * Disable ATS if we are going to create a normal 0b100 bypass
++		 * STE.
+ 		 */
+ 		state->ats_enabled = arm_smmu_ats_supported(master);
  	}
- 
-@@ -96,7 +96,7 @@ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
- 				   unsigned int next_freq)
- {
- 	if (sg_policy->need_freq_update)
--		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-+		sg_policy->need_freq_update = false;
- 	else if (sg_policy->next_freq == next_freq)
- 		return false;
- 
+@@ -3017,8 +3022,10 @@ static void arm_smmu_attach_dev_ste(struct iommu_domain *domain,
+ 	if (arm_smmu_ssids_in_use(&master->cd_table)) {
+ 		/*
+ 		 * If a CD table has to be present then we need to run with ATS
+-		 * on even though the RID will fail ATS queries with UR. This is
+-		 * because we have no idea what the PASID's need.
++		 * on because we have to assume a PASID is using ATS. For
++		 * IDENTITY this will setup things so that S1DSS=bypass which
++		 * follows the explanation in "13.6.4 Full ATS skipping stage 1"
++		 * and allows for ATS on the RID to work.
+ 		 */
+ 		state.cd_needs_ats = true;
+ 		arm_smmu_attach_prepare(&state, domain);
 -- 
 2.39.5
 
