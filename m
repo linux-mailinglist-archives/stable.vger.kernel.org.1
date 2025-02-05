@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CEEA29282
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E7CA2933F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36CC63AC230
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D99063AAA63
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875671A76DA;
-	Wed,  5 Feb 2025 14:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649791922DE;
+	Wed,  5 Feb 2025 14:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9g59vqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKpi5oH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30109DF71;
-	Wed,  5 Feb 2025 14:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1814613C8E2;
+	Wed,  5 Feb 2025 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767154; cv=none; b=PxeqoDWP3wC9dx2qmj86PJakCVhINUhb4+1xdqCJiz8uvBE5XX/hRuYxP4Aezed3+w4swhflvOa/LeyKhGfn6me/Edr/VK18mwtD0415DR/4Nop2wdDGFUexOKoDjucsQ3QPJu1BJhPMSrqtxVD4ycl5ZgY8QWO0Dq+78sw8fIw=
+	t=1738767593; cv=none; b=efEA8FRY+oXTEVcV1dgQ5u6YC5QLLjSYQtmbVkdDg5x0AE2k49IDIQ46rU4HREtcafrR910oUPac5J8Cms7o7uLhy/01G6P7GqToliW0rADI6hw6aFHkNR6kpj6fSF6tHLEEZ60vQmCZzqj+hxviJPGSlv12pZ/T+hjHzdOFiUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767154; c=relaxed/simple;
-	bh=jhdA3ORgUMVm9z2V7G1jDs6cSLPzw1Y+X1YIyi8we+8=;
+	s=arc-20240116; t=1738767593; c=relaxed/simple;
+	bh=L6s2lrkHsQT8DdOHMDePAwj+H6SF4xAO8uEeXAeq0G0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9dCHKqrGAGBKGbr907O94iFipuJ2i4E4X26pB6qVaJ2KGW/swSBaQYPVr/gDu9nx1HeBSc73gq1mIgQZjL5bCu9da2L3K+1BdEQjxq6kPhuB+gb7tgWl0KDD4bPf7uySFtnDLyWT5Kk78NuLuihFZt7CnZdGMalUTp1/E4y5S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9g59vqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915BEC4CED1;
-	Wed,  5 Feb 2025 14:52:33 +0000 (UTC)
+	 MIME-Version; b=NxyfDO6zHb2U08VZkTz9BzMg+qCEoZ8rRN58YzNwBk4I226FqdL5Dfc4JIwZrIHd5yiDVNSit+P5z6mSBkcpkc+Gtph2LJsTNv9VH8RjJ3hJFw2kcwyu355fGCpsmyymOGbxBmtWNpdk/N5veDkkhhZfjT/XgXcHG/FKPEOWakI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKpi5oH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11774C4CED1;
+	Wed,  5 Feb 2025 14:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767154;
-	bh=jhdA3ORgUMVm9z2V7G1jDs6cSLPzw1Y+X1YIyi8we+8=;
+	s=korg; t=1738767592;
+	bh=L6s2lrkHsQT8DdOHMDePAwj+H6SF4xAO8uEeXAeq0G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9g59vqIMUzx5n2HWRhxuZ/VFnXJ0Vzt4ZxtSO+6J7FOhoITIsXPTl7XcIqcKW2r2
-	 xin7Y8ByYyKO+fewFhmJ3FEag5WOnsqfVzDjLCfwk9rI7204FjpJgoEmDPmvZ8VMSE
-	 8Srr9+6VCo1e2cY/PJrRnWMI0twZizYwxBiP5KGo=
+	b=EKpi5oH7bTqEou6h9YnwHM2RTLdFjS4EyWxtPV5mVTP5KxDTn0tpCe/Tzkkh9bAdn
+	 uwltArW69p44QxBe6mt+ViMjxWzTPj9X6ro0Pwvb8TV09eknCLO5w5vH6nDqCcpc4v
+	 9yRBJ9CHX8M8Om4Xlmg+TcaVFF3cjybZ/0i/iWWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 413/590] media: i2c: imx412: Add missing newline to prints
+Subject: [PATCH 6.13 426/623] arm64: tegra: Fix DMA ID for SPI2
 Date: Wed,  5 Feb 2025 14:42:48 +0100
-Message-ID: <20250205134511.067047009@linuxfoundation.org>
+Message-ID: <20250205134512.520507109@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit 33f4a7fba7229232e294f4794503283e44cd03f2 ]
+[ Upstream commit 346bf459db26325c09ed841fdfd6678de1b1cb3a ]
 
-Add trailing \n to dev_dbg and dev_err prints where missing.
+DMA ID for SPI2 is '16'. Update the incorrect value in the devicetree.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: bb9667d8187b ("arm64: tegra: Add SPI device tree nodes for Tegra234")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Link: https://lore.kernel.org/r/20241206105201.53596-1-akhilrajeev@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx412.c | 42 +++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/imx412.c b/drivers/media/i2c/imx412.c
-index 0bfe3046fcc87..c74097a59c428 100644
---- a/drivers/media/i2c/imx412.c
-+++ b/drivers/media/i2c/imx412.c
-@@ -547,7 +547,7 @@ static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
- 
- 	lpfr = imx412->vblank + imx412->cur_mode->height;
- 
--	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u",
-+	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u\n",
- 		exposure, gain, lpfr);
- 
- 	ret = imx412_write_reg(imx412, IMX412_REG_HOLD, 1, 1);
-@@ -594,7 +594,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_VBLANK:
- 		imx412->vblank = imx412->vblank_ctrl->val;
- 
--		dev_dbg(imx412->dev, "Received vblank %u, new lpfr %u",
-+		dev_dbg(imx412->dev, "Received vblank %u, new lpfr %u\n",
- 			imx412->vblank,
- 			imx412->vblank + imx412->cur_mode->height);
- 
-@@ -613,7 +613,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 		exposure = ctrl->val;
- 		analog_gain = imx412->again_ctrl->val;
- 
--		dev_dbg(imx412->dev, "Received exp %u, analog gain %u",
-+		dev_dbg(imx412->dev, "Received exp %u, analog gain %u\n",
- 			exposure, analog_gain);
- 
- 		ret = imx412_update_exp_gain(imx412, exposure, analog_gain);
-@@ -622,7 +622,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 
- 		break;
- 	default:
--		dev_err(imx412->dev, "Invalid control %d", ctrl->id);
-+		dev_err(imx412->dev, "Invalid control %d\n", ctrl->id);
- 		ret = -EINVAL;
- 	}
- 
-@@ -803,14 +803,14 @@ static int imx412_start_streaming(struct imx412 *imx412)
- 	ret = imx412_write_regs(imx412, reg_list->regs,
- 				reg_list->num_of_regs);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to write initial registers");
-+		dev_err(imx412->dev, "fail to write initial registers\n");
- 		return ret;
- 	}
- 
- 	/* Setup handler will write actual exposure and gain */
- 	ret =  __v4l2_ctrl_handler_setup(imx412->sd.ctrl_handler);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to setup handler");
-+		dev_err(imx412->dev, "fail to setup handler\n");
- 		return ret;
- 	}
- 
-@@ -821,7 +821,7 @@ static int imx412_start_streaming(struct imx412 *imx412)
- 	ret = imx412_write_reg(imx412, IMX412_REG_MODE_SELECT,
- 			       1, IMX412_MODE_STREAMING);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to start streaming");
-+		dev_err(imx412->dev, "fail to start streaming\n");
- 		return ret;
- 	}
- 
-@@ -895,7 +895,7 @@ static int imx412_detect(struct imx412 *imx412)
- 		return ret;
- 
- 	if (val != IMX412_ID) {
--		dev_err(imx412->dev, "chip id mismatch: %x!=%x",
-+		dev_err(imx412->dev, "chip id mismatch: %x!=%x\n",
- 			IMX412_ID, val);
- 		return -ENXIO;
- 	}
-@@ -927,7 +927,7 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
- 						     GPIOD_OUT_LOW);
- 	if (IS_ERR(imx412->reset_gpio)) {
--		dev_err(imx412->dev, "failed to get reset gpio %ld",
-+		dev_err(imx412->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx412->reset_gpio));
- 		return PTR_ERR(imx412->reset_gpio);
- 	}
-@@ -935,13 +935,13 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 	/* Get sensor input clock */
- 	imx412->inclk = devm_clk_get(imx412->dev, NULL);
- 	if (IS_ERR(imx412->inclk)) {
--		dev_err(imx412->dev, "could not get inclk");
-+		dev_err(imx412->dev, "could not get inclk\n");
- 		return PTR_ERR(imx412->inclk);
- 	}
- 
- 	rate = clk_get_rate(imx412->inclk);
- 	if (rate != IMX412_INCLK_RATE) {
--		dev_err(imx412->dev, "inclk frequency mismatch");
-+		dev_err(imx412->dev, "inclk frequency mismatch\n");
- 		return -EINVAL;
- 	}
- 
-@@ -966,14 +966,14 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 
- 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != IMX412_NUM_DATA_LANES) {
- 		dev_err(imx412->dev,
--			"number of CSI2 data lanes %d is not supported",
-+			"number of CSI2 data lanes %d is not supported\n",
- 			bus_cfg.bus.mipi_csi2.num_data_lanes);
- 		ret = -EINVAL;
- 		goto done_endpoint_free;
- 	}
- 
- 	if (!bus_cfg.nr_of_link_frequencies) {
--		dev_err(imx412->dev, "no link frequencies defined");
-+		dev_err(imx412->dev, "no link frequencies defined\n");
- 		ret = -EINVAL;
- 		goto done_endpoint_free;
- 	}
-@@ -1034,7 +1034,7 @@ static int imx412_power_on(struct device *dev)
- 
- 	ret = clk_prepare_enable(imx412->inclk);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to enable inclk");
-+		dev_err(imx412->dev, "fail to enable inclk\n");
- 		goto error_reset;
- 	}
- 
-@@ -1145,7 +1145,7 @@ static int imx412_init_controls(struct imx412 *imx412)
- 		imx412->hblank_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
- 	if (ctrl_hdlr->error) {
--		dev_err(imx412->dev, "control init failed: %d",
-+		dev_err(imx412->dev, "control init failed: %d\n",
- 			ctrl_hdlr->error);
- 		v4l2_ctrl_handler_free(ctrl_hdlr);
- 		return ctrl_hdlr->error;
-@@ -1183,7 +1183,7 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_parse_hw_config(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "HW configuration is not supported");
-+		dev_err(imx412->dev, "HW configuration is not supported\n");
- 		return ret;
- 	}
- 
-@@ -1191,14 +1191,14 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_power_on(imx412->dev);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to power-on the sensor");
-+		dev_err(imx412->dev, "failed to power-on the sensor\n");
- 		goto error_mutex_destroy;
- 	}
- 
- 	/* Check module identity */
- 	ret = imx412_detect(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to find sensor: %d", ret);
-+		dev_err(imx412->dev, "failed to find sensor: %d\n", ret);
- 		goto error_power_off;
- 	}
- 
-@@ -1208,7 +1208,7 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_init_controls(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to init controls: %d", ret);
-+		dev_err(imx412->dev, "failed to init controls: %d\n", ret);
- 		goto error_power_off;
- 	}
- 
-@@ -1222,14 +1222,14 @@ static int imx412_probe(struct i2c_client *client)
- 	imx412->pad.flags = MEDIA_PAD_FL_SOURCE;
- 	ret = media_entity_pads_init(&imx412->sd.entity, 1, &imx412->pad);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to init entity pads: %d", ret);
-+		dev_err(imx412->dev, "failed to init entity pads: %d\n", ret);
- 		goto error_handler_free;
- 	}
- 
- 	ret = v4l2_async_register_subdev_sensor(&imx412->sd);
- 	if (ret < 0) {
- 		dev_err(imx412->dev,
--			"failed to register async subdev: %d", ret);
-+			"failed to register async subdev: %d\n", ret);
- 		goto error_media_entity;
- 	}
- 
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+index 984c85eab41af..570331baa09ee 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -3900,7 +3900,7 @@
+ 			assigned-clock-parents = <&bpmp TEGRA234_CLK_PLLP_OUT0>;
+ 			resets = <&bpmp TEGRA234_RESET_SPI2>;
+ 			reset-names = "spi";
+-			dmas = <&gpcdma 19>, <&gpcdma 19>;
++			dmas = <&gpcdma 16>, <&gpcdma 16>;
+ 			dma-names = "rx", "tx";
+ 			dma-coherent;
+ 			status = "disabled";
 -- 
 2.39.5
 
