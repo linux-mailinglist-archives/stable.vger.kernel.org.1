@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-112958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A22AA28F55
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB44A28FCA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 773413A1C76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EB63A9B95
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C23F155CBD;
-	Wed,  5 Feb 2025 14:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C865155756;
+	Wed,  5 Feb 2025 14:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBTp5I0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaXYGEuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A213C3F6;
-	Wed,  5 Feb 2025 14:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAF2155382;
+	Wed,  5 Feb 2025 14:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765336; cv=none; b=Nrx+olEhAbfL63L04s0fojakLdRLI31kJfxgn0Nxyc0ICOsQc7DO+zbd8/2fO0uztxXIf2JoEmIHBnWPKqbAk5gT4kSZPwvoIIObNdWqsT3vmS90lrKvsde8vaVhwW6iYuC1qUderQyQBlQZj4jsCbL0zyNYYzgqY8giHccFCqM=
+	t=1738765706; cv=none; b=WWXBs7ucjDmhDGT/d/AX6px02KMCzzRnTOWGcugmMv4VCacJnPTT4JPj8IWnLwbIPgg/hIo1oy0ss7emJ2XFhE29MhX0ltdrRn82HaT2NzkIFbUgbCbPPLvgYGKDAx2eAwiTZx6/hCln8mmclMnsnQ+UCbNPfud81VBff1yfxmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765336; c=relaxed/simple;
-	bh=uv4b6EFox4E3aeVhDCjh3NpkIhTHLyGJMfbCE3CfCLo=;
+	s=arc-20240116; t=1738765706; c=relaxed/simple;
+	bh=Y56BcKlRdBADW7I8zeIEJErbQNauliNkWAq1tKvTErE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHOyLdbS7ohG1v+uE2ml2MgQMiaATd1IphnlqHvN/dSWgZ/kLe/6+ykxcjSdsvHQ3KVf8Py1W/KjlE7/f/ETB/AiKnWLTRQ5SF+FZ390SnJHZbXXCrv06yXLXa2nHMceclI+DyVGF1RfC/BXW46UzOgeDdX8QrSPqiD6WVTuAuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBTp5I0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292B0C4CED1;
-	Wed,  5 Feb 2025 14:22:15 +0000 (UTC)
+	 MIME-Version; b=AAqx3/NkPQD8heyiBkph2rLor+8JCzVITP56ZgkmqXZVWl5+4tAWhjMIrzw+8dpXZNrSziSAp+NYrj3JwF6mWfajV5TzD36ItXCMJwSqzXy9aSovr0CiS9HMDMD4puft3SDfrwe470MrY7GQ5fLhUOl0P+vKDnpJjwJS5R+yT+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaXYGEuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232DBC4CEE7;
+	Wed,  5 Feb 2025 14:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765336;
-	bh=uv4b6EFox4E3aeVhDCjh3NpkIhTHLyGJMfbCE3CfCLo=;
+	s=korg; t=1738765706;
+	bh=Y56BcKlRdBADW7I8zeIEJErbQNauliNkWAq1tKvTErE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBTp5I0ioFM3u1To8nw4bp1xlvvqui35oyUZy9eqVnBNLMl9pCHUZqtn7SGYMwQIQ
-	 Ag8suG6+ztINskiRrs+VyNk0Z4cfX1YGoMHhA4nqOGpHIvBTXCMvBSDUh0kxgzw111
-	 wNuBp2RleNjz73Sv9KxxxT9ECGuKOVd2KzuSIg8A=
+	b=ZaXYGEuTwJEXAPQIxz90RLCkgRIuuL14g049fiDkuFiyupY45HeGmYglx5R7MU52I
+	 FWsfvFVjHW3hbK/3zVimHuhVZ2L7Wu2Pn/Siy+6LoiOfZ2ltR4uCZHXuiWteBG6YWw
+	 OSwdh6eLAciDEPt+wZJIDyqsZDPw9tHzmeHYJMRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 193/590] wifi: mt76: mt7925: Init secondary link PM state
+Subject: [PATCH 6.13 206/623] wifi: mt76: mt7915: fix omac index assignment after hardware reset
 Date: Wed,  5 Feb 2025 14:39:08 +0100
-Message-ID: <20250205134502.663015502@linuxfoundation.org>
+Message-ID: <20250205134504.110016910@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 28045ef2bc5bbeec4717da98bf31aca0faaccf02 ]
+[ Upstream commit cd043bbba6f9b71ebe0781d1bd2107565363c4b9 ]
 
-Initialize secondary link PM state.
+Reset per-phy mac address slot mask in order to avoid leaking entries.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-14-sean.wang@kernel.org
+Fixes: 8a55712d124f ("wifi: mt76: mt7915: enable full system reset support")
+Link: https://patch.msgid.link/20241230194202.95065-12-nbd@nbd.name
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index dcdb9bcff3c40..a2d1c43098d3c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1991,6 +1991,8 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			goto free;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index b890a58d37300..799e8d2cc7e6e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1444,9 +1444,11 @@ static void
+ mt7915_mac_full_reset(struct mt7915_dev *dev)
+ {
+ 	struct mt76_phy *ext_phy;
++	struct mt7915_phy *phy2;
+ 	int i;
  
- 		if (mconf != &mvif->bss_conf) {
-+			mt7925_mcu_set_bss_pm(dev, link_conf, true);
-+
- 			err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
- 						 vif->active_links);
- 			if (err < 0)
+ 	ext_phy = dev->mt76.phys[MT_BAND1];
++	phy2 = ext_phy ? ext_phy->priv : NULL;
+ 
+ 	dev->recovery.hw_full_reset = true;
+ 
+@@ -1476,6 +1478,9 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
+ 
+ 	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
+ 	dev->mt76.vif_mask = 0;
++	dev->phy.omac_mask = 0;
++	if (phy2)
++		phy2->omac_mask = 0;
+ 
+ 	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
+ 	dev->mt76.global_wcid.idx = i;
 -- 
 2.39.5
 
