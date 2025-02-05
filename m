@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99652A28D58
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8ECBA28C8F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C86D161469
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D12A3A2CC1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FA114B080;
-	Wed,  5 Feb 2025 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2346D1494DF;
+	Wed,  5 Feb 2025 13:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG2p1w3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qbe7GnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DF713C9C4;
-	Wed,  5 Feb 2025 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A4C13AD22;
+	Wed,  5 Feb 2025 13:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763931; cv=none; b=X3aOsL4pD0mn/+JUowZWAtV+6GpK+rbZZ/ZrAUzazbaGeUrqbvnf3+tpJpt0vdsxs878cUs3vIHWHlIzRUFLXRRpd/Ka+7YpUupFf6olr0JcatNPN7kndrhjXD8RpKb4dId0MpWsK8j2BVuKeTPpasXuf+YnLMYqGB0bWf6wESc=
+	t=1738763469; cv=none; b=UUw/gQ7e8SuUKjT8a6bMrutZ/2ghGXzq++orkMtwHTUvkay42/0e0tSoD0+3q4q2PAEP4eoZmTdYceQ92voNhuqrlKAFPu4bSvHGmFe6oNQ3WiykrW5JOeSZhuJy8mq41FogvtcIIkUbyz1M1UE2xIuKAd4OEctQfIA84nYYXTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763931; c=relaxed/simple;
-	bh=HMPAgSr4nOFvE0/eSd4Q9RRZJvvXDJAALRKXE5z+xd0=;
+	s=arc-20240116; t=1738763469; c=relaxed/simple;
+	bh=Bqo1HTA2X4rlffYP+HKBD3xx7/dcdHMChOiTUufORcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OD0irYLE6p5PSLy05X2UOeL8hsAqVGkFQtKb4OhCBtuQF8joQZznqsG3m5paClngS8NyJjPy/PYbgWUxUBSxEggUgy1DLFeeCNvIH8MOkn4tWnXtj+UEtx6CzPPjJP7A5SvZzUyVGis36MMUqruFc3F2XPSdk3PjzC1YWQxjghs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG2p1w3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057F1C4CED1;
-	Wed,  5 Feb 2025 13:58:50 +0000 (UTC)
+	 MIME-Version; b=CTdjOB1xCxhwDHdHJPV05Ja4SdwPTXzuDWmDLCeEnonyCzYQKsBVKvKdBl+4wRKaUtMr0OOXoxFOHL8d48ghCtUDCEmZ3+LW0+o7eoQpO45TzCHx57ddUybEM1GhwTz1htWA2jCzZTM5dcOXrGg8l0NxTpBT+/cWSUz93qyYSbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qbe7GnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BB4C4CED1;
+	Wed,  5 Feb 2025 13:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763931;
-	bh=HMPAgSr4nOFvE0/eSd4Q9RRZJvvXDJAALRKXE5z+xd0=;
+	s=korg; t=1738763469;
+	bh=Bqo1HTA2X4rlffYP+HKBD3xx7/dcdHMChOiTUufORcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WG2p1w3B5nLCjD66RHbu4SM0DhuyTcQdGIVmqW6YZNOIyOngYWSYHDLArvCx+raaI
-	 TWT9U+HQp7yJepGadlvuFEhQfjvhCpGypQSOL2PXWAgdjf7xewrneoyZuafScrDUGU
-	 LtBd6MoLqAmrZZt8qxVRx3z5wiSElWvnujKaQTM4=
+	b=1qbe7GnKhLewRjV6sHVZ3gfh6sjpkIfllGR0Ly7zWzBdz9VmQEQmJTtPdu+l12dQ4
+	 mXjAL+aSUC3kXVqv3oCBylaVSi3X8e4Ng5P6Zp9MBX6CwfiofUh4BlhzjpshfgtDqm
+	 u16lBffaKA9IEGcWWuRQu/GuocD0meQcaBHAXLTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Gaurav Batra <gbatra@linux.ibm.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 031/623] block: Ensure start sector is aligned for stacking atomic writes
+Subject: [PATCH 6.12 018/590] powerpc/pseries/iommu: IOMMU incorrectly marks MMIO range in DDW
 Date: Wed,  5 Feb 2025 14:36:13 +0100
-Message-ID: <20250205134457.418306946@linuxfoundation.org>
+Message-ID: <20250205134455.938020306@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Gaurav Batra <gbatra@linux.ibm.com>
 
-[ Upstream commit 6564862d646e7d630929ba1ff330740bb215bdac ]
+[ Upstream commit 8f70caad82e9c088ed93b4fea48d941ab6441886 ]
 
-For stacking atomic writes, ensure that the start sector is aligned with
-the device atomic write unit min and any boundary. Otherwise, we may
-permit misaligned atomic writes.
+Power Hypervisor can possibily allocate MMIO window intersecting with
+Dynamic DMA Window (DDW) range, which is over 32-bit addressing.
 
-Rework bdev_can_atomic_write() into a common helper to resuse the
-alignment check. There also use atomic_write_hw_unit_min, which is more
-proper (than atomic_write_unit_min).
+These MMIO pages needs to be marked as reserved so that IOMMU doesn't map
+DMA buffers in this range.
 
-Fixes: d7f36dc446e89 ("block: Support atomic writes limits for stacked devices")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20250109114000.2299896-2-john.g.garry@oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The current code is not marking these pages correctly which is resulting
+in LPAR to OOPS while booting. The stack is at below
+
+BUG: Unable to handle kernel data access on read at 0xc00800005cd40000
+Faulting instruction address: 0xc00000000005cdac
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+Modules linked in: af_packet rfkill ibmveth(X) lpfc(+) nvmet_fc nvmet nvme_keyring crct10dif_vpmsum nvme_fc nvme_fabrics nvme_core be2net(+) nvme_auth rtc_generic nfsd auth_rpcgss nfs_acl lockd grace sunrpc fuse configfs ip_tables x_tables xfs libcrc32c dm_service_time ibmvfc(X) scsi_transport_fc vmx_crypto gf128mul crc32c_vpmsum dm_mirror dm_region_hash dm_log dm_multipath dm_mod sd_mod scsi_dh_emc scsi_dh_rdac scsi_dh_alua t10_pi crc64_rocksoft_generic crc64_rocksoft sg crc64 scsi_mod
+Supported: Yes, External
+CPU: 8 PID: 241 Comm: kworker/8:1 Kdump: loaded Not tainted 6.4.0-150600.23.14-default #1 SLE15-SP6 b44ee71c81261b9e4bab5e0cde1f2ed891d5359b
+Hardware name: IBM,9080-M9S POWER9 (raw) 0x4e2103 0xf000005 of:IBM,FW950.B0 (VH950_149) hv:phyp pSeries
+Workqueue: events work_for_cpu_fn
+NIP:  c00000000005cdac LR: c00000000005e830 CTR: 0000000000000000
+REGS: c00001400c9ff770 TRAP: 0300   Not tainted  (6.4.0-150600.23.14-default)
+MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24228448  XER: 00000001
+CFAR: c00000000005cdd4 DAR: c00800005cd40000 DSISR: 40000000 IRQMASK: 0
+GPR00: c00000000005e830 c00001400c9ffa10 c000000001987d00 c00001400c4fe800
+GPR04: 0000080000000000 0000000000000001 0000000004000000 0000000000800000
+GPR08: 0000000004000000 0000000000000001 c00800005cd40000 ffffffffffffffff
+GPR12: 0000000084228882 c00000000a4c4f00 0000000000000010 0000080000000000
+GPR16: c00001400c4fe800 0000000004000000 0800000000000000 c00000006088b800
+GPR20: c00001401a7be980 c00001400eff3800 c000000002a2da68 000000000000002b
+GPR24: c0000000026793a8 c000000002679368 000000000000002a c0000000026793c8
+GPR28: 000008007effffff 0000080000000000 0000000000800000 c00001400c4fe800
+NIP [c00000000005cdac] iommu_table_reserve_pages+0xac/0x100
+LR [c00000000005e830] iommu_init_table+0x80/0x1e0
+Call Trace:
+[c00001400c9ffa10] [c00000000005e810] iommu_init_table+0x60/0x1e0 (unreliable)
+[c00001400c9ffa90] [c00000000010356c] iommu_bypass_supported_pSeriesLP+0x9cc/0xe40
+[c00001400c9ffc30] [c00000000005c300] dma_iommu_dma_supported+0xf0/0x230
+[c00001400c9ffcb0] [c00000000024b0c4] dma_supported+0x44/0x90
+[c00001400c9ffcd0] [c00000000024b14c] dma_set_mask+0x3c/0x80
+[c00001400c9ffd00] [c0080000555b715c] be_probe+0xc4/0xb90 [be2net]
+[c00001400c9ffdc0] [c000000000986f3c] local_pci_probe+0x6c/0x110
+[c00001400c9ffe40] [c000000000188f28] work_for_cpu_fn+0x38/0x60
+[c00001400c9ffe70] [c00000000018e454] process_one_work+0x314/0x620
+[c00001400c9fff10] [c00000000018f280] worker_thread+0x2b0/0x620
+[c00001400c9fff90] [c00000000019bb18] kthread+0x148/0x150
+[c00001400c9fffe0] [c00000000000ded8] start_kernel_thread+0x14/0x18
+
+There are 2 issues in the code
+
+1. The index is "int" while the address is "unsigned long". This results in
+   negative value when setting the bitmap.
+
+2. The DMA offset is page shifted but the MMIO range is used as-is (64-bit
+   address). MMIO address needs to be page shifted as well.
+
+Fixes: 3c33066a2190 ("powerpc/kernel/iommu: Add new iommu_table_in_use() helper")
+
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241206210039.93172-1-gbatra@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c   |  7 +++++--
- include/linux/blkdev.h | 21 ++++++++++++---------
- 2 files changed, 17 insertions(+), 11 deletions(-)
+ arch/powerpc/kernel/iommu.c            | 2 +-
+ arch/powerpc/platforms/pseries/iommu.c | 9 ++++++---
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index b017637d9e735..64f2e67238d77 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -608,7 +608,7 @@ static bool blk_stack_atomic_writes_head(struct queue_limits *t,
- }
- 
- static void blk_stack_atomic_writes_limits(struct queue_limits *t,
--				struct queue_limits *b)
-+				struct queue_limits *b, sector_t start)
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 76381e14e800c..0ebae6e4c19dd 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -687,7 +687,7 @@ void iommu_table_clear(struct iommu_table *tbl)
+ void iommu_table_reserve_pages(struct iommu_table *tbl,
+ 		unsigned long res_start, unsigned long res_end)
  {
- 	if (!(t->features & BLK_FEAT_ATOMIC_WRITES_STACKED))
- 		goto unsupported;
-@@ -616,6 +616,9 @@ static void blk_stack_atomic_writes_limits(struct queue_limits *t,
- 	if (!b->atomic_write_unit_min)
- 		goto unsupported;
+-	int i;
++	unsigned long i;
  
-+	if (!blk_atomic_write_start_sect_aligned(start, b))
-+		goto unsupported;
-+
+ 	WARN_ON_ONCE(res_end < res_start);
  	/*
- 	 * If atomic_write_hw_max is set, we have already stacked 1x bottom
- 	 * device, so check for compliance.
-@@ -798,7 +801,7 @@ int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
- 		t->zone_write_granularity = 0;
- 		t->max_zone_append_sectors = 0;
- 	}
--	blk_stack_atomic_writes_limits(t, b);
-+	blk_stack_atomic_writes_limits(t, b, start);
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 534cd159e9ab4..29f1a0cc59cd5 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1650,7 +1650,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		iommu_table_setparms_common(newtbl, pci->phb->bus->number, create.liobn,
+ 					    dynamic_addr, dynamic_len, page_shift, NULL,
+ 					    &iommu_table_lpar_multi_ops);
+-		iommu_init_table(newtbl, pci->phb->node, start, end);
++		iommu_init_table(newtbl, pci->phb->node,
++				 start >> page_shift, end >> page_shift);
  
- 	return ret;
- }
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index e0ce4d6913cde..495813277597f 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1701,6 +1701,15 @@ struct io_comp_batch {
- 	void (*complete)(struct io_comp_batch *);
- };
+ 		pci->table_group->tables[default_win_removed ? 0 : 1] = newtbl;
  
-+static inline bool blk_atomic_write_start_sect_aligned(sector_t sector,
-+						struct queue_limits *limits)
-+{
-+	unsigned int alignment = max(limits->atomic_write_hw_unit_min,
-+				limits->atomic_write_hw_boundary);
-+
-+	return IS_ALIGNED(sector, alignment >> SECTOR_SHIFT);
-+}
-+
- static inline bool bdev_can_atomic_write(struct block_device *bdev)
- {
- 	struct request_queue *bd_queue = bdev->bd_queue;
-@@ -1709,15 +1718,9 @@ static inline bool bdev_can_atomic_write(struct block_device *bdev)
- 	if (!limits->atomic_write_unit_min)
- 		return false;
+@@ -2065,7 +2066,9 @@ static long spapr_tce_create_table(struct iommu_table_group *table_group, int nu
+ 							    offset, 1UL << window_shift,
+ 							    IOMMU_PAGE_SHIFT_4K, NULL,
+ 							    &iommu_table_lpar_multi_ops);
+-				iommu_init_table(tbl, pci->phb->node, start, end);
++				iommu_init_table(tbl, pci->phb->node,
++						 start >> IOMMU_PAGE_SHIFT_4K,
++						 end >> IOMMU_PAGE_SHIFT_4K);
  
--	if (bdev_is_partition(bdev)) {
--		sector_t bd_start_sect = bdev->bd_start_sect;
--		unsigned int alignment =
--			max(limits->atomic_write_unit_min,
--			    limits->atomic_write_hw_boundary);
--
--		if (!IS_ALIGNED(bd_start_sect, alignment >> SECTOR_SHIFT))
--			return false;
--	}
-+	if (bdev_is_partition(bdev))
-+		return blk_atomic_write_start_sect_aligned(bdev->bd_start_sect,
-+							limits);
+ 				table_group->tables[0] = tbl;
  
- 	return true;
- }
+@@ -2136,7 +2139,7 @@ static long spapr_tce_create_table(struct iommu_table_group *table_group, int nu
+ 	/* New table for using DDW instead of the default DMA window */
+ 	iommu_table_setparms_common(tbl, pci->phb->bus->number, create.liobn, win_addr,
+ 				    1UL << len, page_shift, NULL, &iommu_table_lpar_multi_ops);
+-	iommu_init_table(tbl, pci->phb->node, start, end);
++	iommu_init_table(tbl, pci->phb->node, start >> page_shift, end >> page_shift);
+ 
+ 	pci->table_group->tables[num] = tbl;
+ 	set_iommu_table_base(&pdev->dev, tbl);
 -- 
 2.39.5
 
