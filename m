@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E9DA29085
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53871A28F64
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 333967A1C41
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A78B97A069B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55C9155747;
-	Wed,  5 Feb 2025 14:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E8A155747;
+	Wed,  5 Feb 2025 14:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO7lPAwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs6CzLnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A203B151988;
-	Wed,  5 Feb 2025 14:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B8614B080;
+	Wed,  5 Feb 2025 14:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766227; cv=none; b=l6mAzki1ZpKCsuYDiOA44w2KtMNV8OOSoJVrofCFoZDuZAKTqA65G4/lklo10DqltiDEo6g2ty+9ZeRT0jDWn7YcZEB0/GJJ3vAcWlBcWfECDflWkpPp0niRNj2bgp5arkN5biwi6g0XDOeHxhFJY9hLGl8IwJln3c/3MgfTrfw=
+	t=1738765476; cv=none; b=lRrEpwGcmSbfccu00oTCDri+rXhNQ4EYLKu+dW9HpJHd0KKVPjD/uj2kcQI9o4zlM1IQAwiE8KNYaSYgsKvFpQmC3MJRaYqSjxKB48JqImwNMqgYSRDTuwK3gTzzUzW7nrgowex8zuBpypS/9rFqCyJXb2cxvOrkrBx8W3rA3so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766227; c=relaxed/simple;
-	bh=lmEg+DBFQzkoML8jCQdCFDPf4AjrtSfLApMp6SGogXQ=;
+	s=arc-20240116; t=1738765476; c=relaxed/simple;
+	bh=39JSK4Iz6h3u7Ax5GVS8VZW3CgqvC3dXSLy9TfImukc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iq5aDop3Grjp3jpMy7lkHTfH3q9Y9mQrxhWKl8TUyBGHYlKRlkTSH+DfaIZVcxYuqIcn85w3IJEZ/JpOrsY4OO5r/oPNH0pPEAlqMD2F+Zk/FzG+XB2h0CNFKFWQrLvHrtdxkFODXDab/eE+gpYvyH/Vt371BDN6tzVCIKIj17Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO7lPAwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C34C4CED6;
-	Wed,  5 Feb 2025 14:37:06 +0000 (UTC)
+	 MIME-Version; b=dMigO3enEyFf70Usl7Xt9ALSuCCuJTNMPrB3lYAIGj33aOJ8KxSSU7hTC4Ndr4+vJS9blHdDP7++x+wLj5qAuI7jV+QnpbNqMEDVrAlm/mne11mGroSC4L0n7FB9RnJeq2uVWubfKQYRDhgI6CNFYggXVtrJTzqT+DQel/wO08M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs6CzLnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7ECC4CED1;
+	Wed,  5 Feb 2025 14:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766227;
-	bh=lmEg+DBFQzkoML8jCQdCFDPf4AjrtSfLApMp6SGogXQ=;
+	s=korg; t=1738765476;
+	bh=39JSK4Iz6h3u7Ax5GVS8VZW3CgqvC3dXSLy9TfImukc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rO7lPAwYg/vUA6G9uN45CipHiHTBQAezbk/r1M3UgO/bSPRbkQvoK9ZjPVOM0DP2a
-	 wDPMuusY0ZzWDlxh5GWaIXjNZGJerU/6X23LoR+/Q4cyyqDhzmP094F9PoTVpnGTFk
-	 BmOzmnI+AeSziZ5vzye9WfRlmB9Y2jLxRxwJG2iE=
+	b=Gs6CzLnOGnXl+vBvjlMwvHasizJeS527U5GOBwyCruMkFUHNsQKB2a7j+xWQH3+b9
+	 xo/64Y/ivHq6LMDjqLYHXaqu/BltCgCCOb/vo7SGzAJt3zEwHOCihoeY7Shh+oToHt
+	 21zPV1GeI1ZbY7b4rOMiV98qYxJsu42i1kDOxdp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinas Rasheed <srasheed@marvell.com>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 235/623] octeon_ep: remove firmware stats fetch in ndo_get_stats64
-Date: Wed,  5 Feb 2025 14:39:37 +0100
-Message-ID: <20250205134505.216823334@linuxfoundation.org>
+Subject: [PATCH 6.12 223/590] net/mlxfw: Drop hard coded max FW flash image size
+Date: Wed,  5 Feb 2025 14:39:38 +0100
+Message-ID: <20250205134503.815526758@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shinas Rasheed <srasheed@marvell.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 1f64255bb76c11d0c41a7d81d7cec68e49d5362d ]
+[ Upstream commit 70d81f25cc92cc4e914516c9935ae752f27d78ad ]
 
-The firmware stats fetch call that happens in ndo_get_stats64()
-is currently not required, and causes a warning to issue.
+Currently, mlxfw kernel module limits FW flash image size to be
+10MB at most, preventing the ability to burn recent BlueField-3
+FW that exceeds the said size limit.
 
-The warn log is given below:
+Thus, drop the hard coded limit. Instead, rely on FW's
+max_component_size threshold that is reported in MCQI register
+as the size limit for FW image.
 
-[  123.316837] ------------[ cut here ]------------
-[  123.316840] Voluntary context switch within RCU read-side critical section!
-[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
-[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
-[  123.316947] Call trace:
-[  123.316949]  rcu_note_context_switch+0x2e4/0x300
-[  123.316952]  __schedule+0x84/0x584
-[  123.316955]  schedule+0x38/0x90
-[  123.316956]  schedule_timeout+0xa0/0x1d4
-[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
-[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
-[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
-[  123.316975]  dev_get_stats+0x4c/0x114
-[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
-[  123.316980]  dev_seq_show+0x1c/0x40
-[  123.316982]  seq_read_iter+0x3cc/0x4e0
-[  123.316985]  seq_read+0xc8/0x110
-[  123.316987]  proc_reg_read+0x9c/0xec
-[  123.316990]  vfs_read+0xc8/0x2ec
-[  123.316993]  ksys_read+0x70/0x100
-[  123.316995]  __arm64_sys_read+0x20/0x30
-[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
-[  123.317000]  do_el0_svc+0xb4/0xd0
-[  123.317002]  el0_svc+0xe8/0x1f4
-[  123.317005]  el0t_64_sync_handler+0x134/0x150
-[  123.317006]  el0t_64_sync+0x17c/0x180
-[  123.317008] ---[ end trace 63399811432ab69b ]---
-
-Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Link: https://patch.msgid.link/20250117094653.2588578-2-srasheed@marvell.com
+Fixes: 410ed13cae39 ("Add the mlxfw module for Mellanox firmware flash process")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/1737030796-1441634-1-git-send-email-moshe@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index 549436efc2048..730aa5632ccee 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -995,12 +995,6 @@ static void octep_get_stats64(struct net_device *netdev,
- 	struct octep_device *oct = netdev_priv(netdev);
- 	int q;
+diff --git a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
+index 46245e0b24623..43c84900369a3 100644
+--- a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
++++ b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
+@@ -14,7 +14,6 @@
+ #define MLXFW_FSM_STATE_WAIT_TIMEOUT_MS 30000
+ #define MLXFW_FSM_STATE_WAIT_ROUNDS \
+ 	(MLXFW_FSM_STATE_WAIT_TIMEOUT_MS / MLXFW_FSM_STATE_WAIT_CYCLE_MS)
+-#define MLXFW_FSM_MAX_COMPONENT_SIZE (10 * (1 << 20))
  
--	if (netif_running(netdev))
--		octep_ctrl_net_get_if_stats(oct,
--					    OCTEP_CTRL_NET_INVALID_VFID,
--					    &oct->iface_rx_stats,
--					    &oct->iface_tx_stats);
--
- 	tx_packets = 0;
- 	tx_bytes = 0;
- 	rx_packets = 0;
-@@ -1018,10 +1012,6 @@ static void octep_get_stats64(struct net_device *netdev,
- 	stats->tx_bytes = tx_bytes;
- 	stats->rx_packets = rx_packets;
- 	stats->rx_bytes = rx_bytes;
--	stats->multicast = oct->iface_rx_stats.mcast_pkts;
--	stats->rx_errors = oct->iface_rx_stats.err_pkts;
--	stats->collisions = oct->iface_tx_stats.xscol;
--	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
- }
+ static const int mlxfw_fsm_state_errno[] = {
+ 	[MLXFW_FSM_STATE_ERR_ERROR] = -EIO,
+@@ -229,7 +228,6 @@ static int mlxfw_flash_component(struct mlxfw_dev *mlxfw_dev,
+ 		return err;
+ 	}
  
- /**
+-	comp_max_size = min_t(u32, comp_max_size, MLXFW_FSM_MAX_COMPONENT_SIZE);
+ 	if (comp->data_size > comp_max_size) {
+ 		MLXFW_ERR_MSG(mlxfw_dev, extack,
+ 			      "Component size is bigger than limit", -EINVAL);
 -- 
 2.39.5
 
