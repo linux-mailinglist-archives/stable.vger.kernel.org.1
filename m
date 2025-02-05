@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-112429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FB3A28CAB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA391A28CAD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68ECF188747C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A3F1887C27
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5395BFC0B;
-	Wed,  5 Feb 2025 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B259A149DE8;
+	Wed,  5 Feb 2025 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBkwhEFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkcLUDZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9F1146A63;
-	Wed,  5 Feb 2025 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA5C146A63;
+	Wed,  5 Feb 2025 13:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763545; cv=none; b=TEUpMbWWaN5cDFoSQ9JuNU/lS33LhP9SfBdFntfpd7ABiUtoimtDaVaErBn5uKhtjqiwhmQiGGI7H0XPd5TYZtK+PKuI6Zl7gT2b2KL4n37GGYsU8ZkIv9F8/BUDHfABy8HDZTecuOklh8h+G9oerWY3PA4pO0ZoAAQ8yjdY5Jo=
+	t=1738763552; cv=none; b=XUjL2m7nlKxlrtmixEDIUAHc4g8VUZKI4fIUKuSl17VpbXhb9KJHzTlvv63uyP86Vu5EqcKevTS3hv+4S+n4I1Au+FjtR1qlyse6ddG/jsEMon3XPuy4+bmG+5DzU5LJ+iUObpizUSJa+s+7Bqt6pSFlhyoTqvg99+3hKwTBhOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763545; c=relaxed/simple;
-	bh=dsZTcUkTrZwDH/jR/Ae+cSWD78pclh7XL3Vuzk31lTs=;
+	s=arc-20240116; t=1738763552; c=relaxed/simple;
+	bh=6nNfQlrF/CT650Rmr1SR8Otel4XPiCzHSATzmY8AC8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0o8tOUa21/XHKYRt/CR8gx2jDAObjYAt1vKXcp5TtiPxB7TrUMJfCejghsCTZo4IAbSTFPZOzhrzrzBet6PmeR3P8s0Utli0myDqWuNfTfwJuWMbVrN0tANrSdshGhst0u9HHc9hzYnYEOL+2Zp2Roh7eoHmuN/hQLPAM+kDK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBkwhEFD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AD0C4CED1;
-	Wed,  5 Feb 2025 13:52:24 +0000 (UTC)
+	 MIME-Version; b=a3xxNG21RfCopZ0PLEta22djthrwgrMwBOn8X236Xd4EXD8HewTcoX8SwUvoMyLj0S8awBYcy6MhZ9WtEjfU/A9F9fMwK41vHxAa4PA3mk8XkdVLQwv160nw9LluAacSPsHbuNi0WNazfNnQwZBjqzM5Beb+RcIfbYj6M6VylqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkcLUDZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B05C4CED1;
+	Wed,  5 Feb 2025 13:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763544;
-	bh=dsZTcUkTrZwDH/jR/Ae+cSWD78pclh7XL3Vuzk31lTs=;
+	s=korg; t=1738763552;
+	bh=6nNfQlrF/CT650Rmr1SR8Otel4XPiCzHSATzmY8AC8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBkwhEFDsSctzUS3ME6wJ33Zn7zcn8a1X93+0RuQqONb51s9FRk86KIGvl6TzWg02
-	 VEJj+rImFSRD7DPj91PcbpnUgzd4RwJn7ml5h6lqj4V+hroQNUGT1uIy86sq8M/XfM
-	 M4zQOXSJIDZlKbmU1jZ+f7oTx7VQPs3oMC1+Ru1Q=
+	b=EkcLUDZSTGob5rR0vrjCRdZZLPsDtBkcjiUhKshAGybZVHLanOF9qcrdty8XFv5FK
+	 SeMncI4f/NVd4w+PbfbSzOEg68wSNv/OguDePdlOcQjYAV+7KaZplWn6btIsU6LASl
+	 mO7jGjiqcKu8RtkGEImUGAGwD5vujlRhvrN7HX+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Swapnil Sapkal <swapnil.sapkal@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/590] sched/fair: Untangle NEXT_BUDDY and pick_next_task()
-Date: Wed,  5 Feb 2025 14:36:23 +0100
-Message-ID: <20250205134456.323437095@linuxfoundation.org>
+Subject: [PATCH 6.12 029/590] sched/fair: Fix value reported by hot tasks pulled in /proc/schedstat
+Date: Wed,  5 Feb 2025 14:36:24 +0100
+Message-ID: <20250205134456.360609947@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,62 +69,93 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 2a77e4be12cb58bbf774e7c717c8bb80e128b7a4 ]
+[ Upstream commit a430d99e349026d53e2557b7b22bd2ebd61fe12a ]
 
-There are 3 sites using set_next_buddy() and only one is conditional
-on NEXT_BUDDY, the other two sites are unconditional; to note:
+In /proc/schedstat, lb_hot_gained reports the number hot tasks pulled
+during load balance. This value is incremented in can_migrate_task()
+if the task is migratable and hot. After incrementing the value,
+load balancer can still decide not to migrate this task leading to wrong
+accounting. Fix this by incrementing stats when hot tasks are detached.
+This issue only exists in detach_tasks() where we can decide to not
+migrate hot task even if it is migratable. However, in detach_one_task(),
+we migrate it unconditionally.
 
-  - yield_to_task()
-  - cgroup dequeue / pick optimization
+[Swapnil: Handled the case where nr_failed_migrations_hot was not accounted properly and wrote commit log]
 
-However, having NEXT_BUDDY control both the wakeup-preemption and the
-picking side of things means its near useless.
-
-Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
+Fixes: d31980846f96 ("sched: Move up affinity check to mitigate useless redoing overhead")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241129101541.GA33464@noisy.programming.kicks-ass.net
+Reported-by: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+Not-yet-signed-off-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241220063224.17767-2-swapnil.sapkal@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c     | 4 ++--
- kernel/sched/features.h | 9 +++++++++
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ include/linux/sched.h |  1 +
+ kernel/sched/fair.c   | 17 +++++++++++++----
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 02eaf84c8626f..8982820dae213 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -944,6 +944,7 @@ struct task_struct {
+ 	unsigned			sched_reset_on_fork:1;
+ 	unsigned			sched_contributes_to_load:1;
+ 	unsigned			sched_migrated:1;
++	unsigned			sched_task_hot:1;
+ 
+ 	/* Force alignment to the next boundary: */
+ 	unsigned			:0;
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 60be5f8bbe711..a21110b220b7b 100644
+index a21110b220b7b..65e7be6448720 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -5647,9 +5647,9 @@ static struct sched_entity *
- pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq)
- {
- 	/*
--	 * Enabling NEXT_BUDDY will affect latency but not fairness.
-+	 * Picking the ->next buddy will affect latency but not fairness.
- 	 */
--	if (sched_feat(NEXT_BUDDY) &&
-+	if (sched_feat(PICK_BUDDY) &&
- 	    cfs_rq->next && entity_eligible(cfs_rq, cfs_rq->next)) {
- 		/* ->next will never be delayed */
- 		SCHED_WARN_ON(cfs_rq->next->sched_delayed);
-diff --git a/kernel/sched/features.h b/kernel/sched/features.h
-index 290874079f60d..050d7503064e3 100644
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -31,6 +31,15 @@ SCHED_FEAT(PREEMPT_SHORT, true)
-  */
- SCHED_FEAT(NEXT_BUDDY, false)
+@@ -9418,6 +9418,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
+ 	int tsk_cache_hot;
  
-+/*
-+ * Allow completely ignoring cfs_rq->next; which can be set from various
-+ * places:
-+ *   - NEXT_BUDDY (wakeup preemption)
-+ *   - yield_to_task()
-+ *   - cgroup dequeue / pick
-+ */
-+SCHED_FEAT(PICK_BUDDY, true)
+ 	lockdep_assert_rq_held(env->src_rq);
++	if (p->sched_task_hot)
++		p->sched_task_hot = 0;
+ 
+ 	/*
+ 	 * We do not migrate tasks that are:
+@@ -9490,10 +9492,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
+ 
+ 	if (tsk_cache_hot <= 0 ||
+ 	    env->sd->nr_balance_failed > env->sd->cache_nice_tries) {
+-		if (tsk_cache_hot == 1) {
+-			schedstat_inc(env->sd->lb_hot_gained[env->idle]);
+-			schedstat_inc(p->stats.nr_forced_migrations);
+-		}
++		if (tsk_cache_hot == 1)
++			p->sched_task_hot = 1;
+ 		return 1;
+ 	}
+ 
+@@ -9508,6 +9508,12 @@ static void detach_task(struct task_struct *p, struct lb_env *env)
+ {
+ 	lockdep_assert_rq_held(env->src_rq);
+ 
++	if (p->sched_task_hot) {
++		p->sched_task_hot = 0;
++		schedstat_inc(env->sd->lb_hot_gained[env->idle]);
++		schedstat_inc(p->stats.nr_forced_migrations);
++	}
 +
- /*
-  * Consider buddies to be cache hot, decreases the likeliness of a
-  * cache buddy being migrated away, increases cache locality.
+ 	deactivate_task(env->src_rq, p, DEQUEUE_NOCLOCK);
+ 	set_task_cpu(p, env->dst_cpu);
+ }
+@@ -9668,6 +9674,9 @@ static int detach_tasks(struct lb_env *env)
+ 
+ 		continue;
+ next:
++		if (p->sched_task_hot)
++			schedstat_inc(p->stats.nr_failed_migrations_hot);
++
+ 		list_move(&p->se.group_node, tasks);
+ 	}
+ 
 -- 
 2.39.5
 
