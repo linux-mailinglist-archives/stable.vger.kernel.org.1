@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE92A2933C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B5FA292EE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 896AE3AFEE1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 350B21887E87
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD0C18D656;
-	Wed,  5 Feb 2025 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F999170A37;
+	Wed,  5 Feb 2025 14:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPvUwckl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6NONmxr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BED18C006;
-	Wed,  5 Feb 2025 15:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D01519BF;
+	Wed,  5 Feb 2025 14:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767647; cv=none; b=Y+/AWA1dB1cEHE7DFtVxEE8pJgFE1CZeSDdoiw8JReZ+AGX71lSyHgXIERxFtudS5+HwTB3fesYub04at+Bz3XEq1CyTTChjGZB/ub2ZK1huNL9YyPl2UeF/j2SlwbUcdQ4pVdXUQjaUOT2vAOaW/VgQ2rVEVZnMcAB4lLjlNXY=
+	t=1738767359; cv=none; b=L6+O05ATcrdjV3wCDYCoHT6ijcKEXPjmJD6eymsuSxl/U6lFwNhPv2CceHCz9/EvQ2PbXxLKNn2F2JLQLfS0hhPHX82WfnaGxseIJbOTM8xhLhjElf/sLdCOHpL88Q2dX8az8U7lHNtTKEZqgSV4Z9/LAHcEc5sP8FubcQk9ml4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767647; c=relaxed/simple;
-	bh=OHzecnifTphLnMalowmq6pcQMDa92RU05vUKGfiSZnE=;
+	s=arc-20240116; t=1738767359; c=relaxed/simple;
+	bh=8O2BGOf+sz8ABVWIfTYVTfc6aMNSQj0KgN7IiJItq4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlgjxmmLXhI1tI0z3ORg2vQ+dpZwpfcy83FZZELsi8m6R9IZoF1BIUp98WXQ1wongf79nyC7jKLycvhpCiV0XDj92ZTWO3AmiQaDBAijmRh5YJ36fA8kIazEKRgfIAS1WVKEM58OusTv2mVxhYcPnATnVFe+VM186Ri3YxRGLZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPvUwckl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5ECC4CED1;
-	Wed,  5 Feb 2025 15:00:46 +0000 (UTC)
+	 MIME-Version; b=H9x/tTV7+NJjdWfNwLGYs9gIjNBKNpUBPnNNQvvdl4nloIpopkfbbMQzYQc1XR3GuJssZ1MlUIOL4yUHcVnBEbNpGPWZa0j2sgH+3H6gvf/4DlfBMsmFCwFY78cAEsbo7oVGduLvhs1fc1yKOVrEBhXIdaZsBgYxFJV5TtZw6yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6NONmxr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F0AC4CED1;
+	Wed,  5 Feb 2025 14:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767647;
-	bh=OHzecnifTphLnMalowmq6pcQMDa92RU05vUKGfiSZnE=;
+	s=korg; t=1738767359;
+	bh=8O2BGOf+sz8ABVWIfTYVTfc6aMNSQj0KgN7IiJItq4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPvUwcklCNjSiu+PNUr1qz6+a2n16KY8tS7MxD5h2hpl9ny5EIfXLHimGtyxGMfR0
-	 BfiwbvzNP/eVJUsT01SjGcKmUG3BhIJWrO5qs/JuaWpn6W+xVwKy13wtdFDzFEVYNP
-	 BIAjBMsgPGWcxDZij+yuXW/RN04rsRbRqZ3VNGT0=
+	b=d6NONmxrUS9Bx3PUomx43bzfwRYF/28gbxWG5Xekx8V01jJxmYrUhPfOz2yeX8aXE
+	 EX9/NTT94rLajpG3FrahZ9jyfVnHzAD+ZKUTN4Yr5frYse/gNSESuXNyGR+lyZ1gBg
+	 Vi9AbLJsrWXd21L/LyjHo0PxtFLtc4AygsCLv/XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anumula Murali Mohan Reddy <anumula@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 433/623] RDMA/cxgb4: Notify rdma stack for IB_EVENT_QP_LAST_WQE_REACHED event
-Date: Wed,  5 Feb 2025 14:42:55 +0100
-Message-ID: <20250205134512.786781830@linuxfoundation.org>
+Subject: [PATCH 6.12 421/590] watchdog: rti_wdt: Fix an OF node leak in rti_wdt_probe()
+Date: Wed,  5 Feb 2025 14:42:56 +0100
+Message-ID: <20250205134511.373722070@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anumula Murali Mohan Reddy <anumula@chelsio.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 42e6ddda4c17fa0d5120e3723d522649f8fc62fa ]
+[ Upstream commit 143981aa63f33d469a55a55fd9fb81cd90109672 ]
 
-This patch sends IB_EVENT_QP_LAST_WQE_REACHED event on a QP that is in
-error state and associated with an SRQ. This behaviour is incorporated
-in flush_qp() which is called when QP transitions to error state.
-Supports SRQ drain functionality added by commit 844bc12e6da3 ("IB/core:
-add support for draining Shared receive queues")
+rti_wdt_probe() does not release the OF node reference obtained by
+of_parse_phandle(). Add a of_node_put() call.
 
-Fixes: 844bc12e6da3 ("IB/core: add support for draining Shared receive queues")
-Signed-off-by: Anumula Murali Mohan Reddy <anumula@chelsio.com>
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
-Link: https://patch.msgid.link/20250107095053.81007-1-anumula@chelsio.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This was found by an experimental verification tool that I am
+developing. Due to the lack of the actual device, no runtime test was
+able to be performed.
+
+Fixes: f20ca595ae23 ("watchdog:rit_wdt: Add support for WDIOF_CARDRESET")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250105111718.4184192-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/cxgb4/qp.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/watchdog/rti_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/cxgb4/qp.c b/drivers/infiniband/hw/cxgb4/qp.c
-index 7b5c4522b426a..955f061a55e9a 100644
---- a/drivers/infiniband/hw/cxgb4/qp.c
-+++ b/drivers/infiniband/hw/cxgb4/qp.c
-@@ -1599,6 +1599,7 @@ static void __flush_qp(struct c4iw_qp *qhp, struct c4iw_cq *rchp,
- 	int count;
- 	int rq_flushed = 0, sq_flushed;
- 	unsigned long flag;
-+	struct ib_event ev;
- 
- 	pr_debug("qhp %p rchp %p schp %p\n", qhp, rchp, schp);
- 
-@@ -1607,6 +1608,13 @@ static void __flush_qp(struct c4iw_qp *qhp, struct c4iw_cq *rchp,
- 	if (schp != rchp)
- 		spin_lock(&schp->lock);
- 	spin_lock(&qhp->lock);
-+	if (qhp->srq && qhp->attr.state == C4IW_QP_STATE_ERROR &&
-+	    qhp->ibqp.event_handler) {
-+		ev.device = qhp->ibqp.device;
-+		ev.element.qp = &qhp->ibqp;
-+		ev.event = IB_EVENT_QP_LAST_WQE_REACHED;
-+		qhp->ibqp.event_handler(&ev, qhp->ibqp.qp_context);
-+	}
- 
- 	if (qhp->wq.flushed) {
- 		spin_unlock(&qhp->lock);
+diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
+index 563d842014dfb..cc239251e1938 100644
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -301,6 +301,7 @@ static int rti_wdt_probe(struct platform_device *pdev)
+ 	node = of_parse_phandle(pdev->dev.of_node, "memory-region", 0);
+ 	if (node) {
+ 		ret = of_address_to_resource(node, 0, &res);
++		of_node_put(node);
+ 		if (ret) {
+ 			dev_err(dev, "No memory address assigned to the region.\n");
+ 			goto err_iomap;
 -- 
 2.39.5
 
