@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DB2A28A14
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0F9A28A15
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E438A3A9851
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 074FC3A8D53
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D0E21D5AD;
-	Wed,  5 Feb 2025 12:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C03722B8B7;
+	Wed,  5 Feb 2025 12:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIA9hN2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv97HvJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4604522B8B7
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB9221D5AD
+	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738757978; cv=none; b=n+kV14JhBhN8gLGx0L1xjAQ/GlGzMo/JtBcTMdbCsJb2Ls1je7QdDGaxihOSoVKM1oWm3AlPp6qq4un6GjxhY1OFcnIzHSzcbA7/G9CRfPa6j9jIacmHI7xHG7d/vKSqSLqEJWhhi/ZcUJd+ofrPiv9X4R6o86d5OD3cOerWEtc=
+	t=1738757981; cv=none; b=CZGJFGY0f+N8mbpCkhdwXUGSw2/CUmMuwnyhEhnVpHh5FTVfbMtFOX99sJU4bLiKlg1JAKxjN120IL0vE8vwOm896RFuloqcWkAqHu1Aho+5R7r4qedA+g7TaQJ1hNkEa59jyOO1p71Lq7KeEwPYRHN/H+sp9KqqktGW72oPZB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738757978; c=relaxed/simple;
-	bh=LjETuThKSRBhxwt2kHWjqN5q0JoMz2TrNRDiyl0JKAg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=T/vD/SGXjF0qNSVYl/pLaz5mO2bn1MdtpKLCQMbxKReqo43Ub/I+ZhPKwH7sS8L4MbM2Bahnrl65dzgBv5ogTsigOlHXmleqN99Mqc4B0zUJIl7xmBqwP/5kxB9NrsH/Ovbka2v1fRJBuZObhsbHJ4WxIpFOT1KhWj+XakJBLOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIA9hN2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4733BC4CED1;
-	Wed,  5 Feb 2025 12:19:37 +0000 (UTC)
+	s=arc-20240116; t=1738757981; c=relaxed/simple;
+	bh=mP08A9Iob2D+DMvWAtrxSfYTRCX9HrbimNqfJhvApog=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mT+ckq1lK+tEfDCvonywHMJjgzY8bQWo1Y0L1qJs3UyrDxdkGQua6c1zCeau3W6I6WkCMSi7xb0VGBbf4OBh4z9KwiUEL74E9kHYHxf51RMtwSW9ukdRmeqorsvAM5NB6rvbQyIV4WXVBjl3k84Lh1bzbBVgLYUpTBiknykk8eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv97HvJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C65C4CED1;
+	Wed,  5 Feb 2025 12:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738757977;
-	bh=LjETuThKSRBhxwt2kHWjqN5q0JoMz2TrNRDiyl0JKAg=;
+	s=korg; t=1738757981;
+	bh=mP08A9Iob2D+DMvWAtrxSfYTRCX9HrbimNqfJhvApog=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RIA9hN2B3fGcTX/NmMy0E7HPIna9619YANN0z5UgK+N03yRTIWRRwseDMdZrfzXff
-	 0Vdy47kXtAQjoFmLTjM5wY97deU6TkkajFCePMiaOM9hUPxpWCSHh+kv+Wqu56QOlq
-	 9oFECOmCH4CMbh6owjet0XeTHm46heKQbPOOoUeI=
-Subject: FAILED: patch "[PATCH] btrfs: fix double accounting race when extent_writepage_io()" failed to apply to 6.12-stable tree
+	b=Jv97HvJ3CB1edHT4xeWI+jYrBdl1GwmYXspZZEY9KjyxW2UZz/6sps2lSxDVXveE3
+	 RkdK2Kh6blGwW4NqpNC4Xwynee8BGBOh4DDXRSEwgHj9GrjNk6hUNOIjCVohrX1KrY
+	 3AwA8oYuIoivg5o0tnDh70fpQVV2YbZ4nxXL6CRU=
+Subject: FAILED: patch "[PATCH] btrfs: fix double accounting race when extent_writepage_io()" failed to apply to 6.6-stable tree
 To: wqu@suse.com,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 05 Feb 2025 13:19:32 +0100
-Message-ID: <2025020532-component-gratified-8153@gregkh>
+Date: Wed, 05 Feb 2025 13:19:33 +0100
+Message-ID: <2025020533-maturity-audacious-3a1f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8bf334beb3496da3c3fbf3daf3856f7eec70dacc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020532-component-gratified-8153@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020533-maturity-audacious-3a1f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
