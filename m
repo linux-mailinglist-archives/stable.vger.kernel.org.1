@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA37DA291EE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32300A292BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DFE8168F8F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE085188C74A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA2318A924;
-	Wed,  5 Feb 2025 14:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B538118A93F;
+	Wed,  5 Feb 2025 14:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqfppyAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWLJfk/s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27538158218;
-	Wed,  5 Feb 2025 14:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708B7155725;
+	Wed,  5 Feb 2025 14:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766773; cv=none; b=pPKGlTTDhk8CRBp26Z6QpaywrmPVWGcvES7wscCe9b2Grf4Qepo7X9xWniQlqqHyBC0jIrjR13Aiaq9IoW1vKePsee2reBR2yx+5hPilroF3WHztfknwlJbUztkEVbtjbomqTlwgjoj6hguDzRLt+EebQxvh7yuAmceZysHzJ7M=
+	t=1738767208; cv=none; b=IXUeSJg2CdgMYVtq2KL+NfNdzbgt9R5CB4l0NQ8CX2XiNWRC7b9CGKzwIZGKn0i4JSKMCdXbsbOyxWICF0GE/cxT1QF45YXcUxR93D66aQlcm+ufJoqc7p0+mb76dC7csH6DMBnPRHJ4EaLqvJBdB0x4gI2CuZ++yhQjivJ17Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766773; c=relaxed/simple;
-	bh=FMFYGv/EhxjebEaDn3tKPYsG4WbIhld8YhNS5iuW9sI=;
+	s=arc-20240116; t=1738767208; c=relaxed/simple;
+	bh=t27KmhzJMaQs1M80wqTHgBWKQT5ambGQtkR3X9812IE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxF03uruCtekhUfldKxVgOjwgFGQk2U2ve+/GbGnMfvDvnbMzFPC1Uz0yjIbAcVwP7VQxq3km+pRkuFTGXW6a+MhPpQTDiEV5J/nrhNiZ974mB612ipptSHWmiIN2oj86c2YRl9k1H4gNHDhYb/q4sBWUnALkx3bkgvU1hTb0bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qqfppyAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E56C4CED6;
-	Wed,  5 Feb 2025 14:46:12 +0000 (UTC)
+	 MIME-Version; b=ZVE0votXxEj/IO+aAapFLZmNKwfGcdz5xnHsj6kTlH49Ks3cCpEoP4eXfpgIsDULt+eoHHCg06e6fjX7WdckLrNrU1ffJdRHukcCo/zHxXBmaARlzOFRwQweIFErNEjlKAHEaEb24chR+Nlsuurqrhbfv9xtzAU11VMTZoVJ8aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWLJfk/s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0927C4CED1;
+	Wed,  5 Feb 2025 14:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766773;
-	bh=FMFYGv/EhxjebEaDn3tKPYsG4WbIhld8YhNS5iuW9sI=;
+	s=korg; t=1738767208;
+	bh=t27KmhzJMaQs1M80wqTHgBWKQT5ambGQtkR3X9812IE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqfppyAAgSHczMT3BDZTggFkMACwSeQgOkZPzm7Lbnea/NviHbwCqB0YFQxHfMMpB
-	 yPIzQV+vtVVpGaq3exdoRjqpY1rPBFOfDbkcUcHStx58r+MmWJzwmf/fSS6pdJB1n0
-	 3+CLfCahmxoc7R6L2zUg9QbUTwlJv9vuSwVV/t6g=
+	b=bWLJfk/s10gDFcZ8aNzXZw4oBhe7UQp5kse949TrViunmUnIj51gMSFqH9RKd1eVQ
+	 xyIkxcK/jrsMknYPIfwcbVucp6A24hh14PyaXStVJoCa6XK/VsOptcMzWMeBCJHcwS
+	 +eDmxOl0+8opIU9aSKYbW3VVzKUayeRDcNHbLWew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Ross Burton <ross.burton@arm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 359/590] arm64: dts: qcom: x1e80100: correct sleep clock frequency
+Subject: [PATCH 6.13 372/623] arm64: defconfig: remove obsolete CONFIG_SM_DISPCC_8650
 Date: Wed,  5 Feb 2025 14:41:54 +0100
-Message-ID: <20250205134509.002509195@linuxfoundation.org>
+Message-ID: <20250205134510.452017520@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ross Burton <ross.burton@arm.com>
 
-[ Upstream commit 67e25a3e12d128336114a5d1572e055a8bd33129 ]
+[ Upstream commit 9be2923ff9641d6491b8ea43791382966505435f ]
 
-The X1E80100 platform uses PMK8550 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+This option was removed from the Kconfig in commit 802b83205519 ("clk:
+qcom: fold dispcc-sm8650 info dispcc-sm8550") but it was not removed
+from the defconfig.
 
-Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-18-e9b08fbeadd3@linaro.org
+Fixes: 802b83205519 ("clk: qcom: fold dispcc-sm8650 info dispcc-sm8550")
+Signed-off-by: Ross Burton <ross.burton@arm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-clkmaster-v1-1-dcbf7fad37b1@arm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/configs/defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index a97ceff939d88..f0797df9619b1 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -38,7 +38,7 @@
- 
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index c62831e615863..c6d6a31a8f48c 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1352,7 +1352,6 @@ CONFIG_SM_DISPCC_6115=m
+ CONFIG_SM_DISPCC_8250=y
+ CONFIG_SM_DISPCC_8450=m
+ CONFIG_SM_DISPCC_8550=m
+-CONFIG_SM_DISPCC_8650=m
+ CONFIG_SM_GCC_4450=y
+ CONFIG_SM_GCC_6115=y
+ CONFIG_SM_GCC_8350=y
 -- 
 2.39.5
 
