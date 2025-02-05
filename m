@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A1CA291CB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1E6A29187
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AE857A07D4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A9EC7A057B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E8B16DC3C;
-	Wed,  5 Feb 2025 14:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8EE1DA31F;
+	Wed,  5 Feb 2025 14:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT2ex5Ue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdRRWcFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22F116DED2;
-	Wed,  5 Feb 2025 14:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9CE17C21C;
+	Wed,  5 Feb 2025 14:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767082; cv=none; b=U+4tpy0CJrfq45JwGGBJPwdxgTboveSyhokHowFeFPsCGAWqltIYuQfq/aUEDeqEnFblNfSDLFNegW6ooS2g9LNiXNwqA1NJMAqo6I6jn02cjmGQbNy/VFQs+PW8pqgp/Cz4qL/En621xujiOy9o9/14+WaJwVz4emWDbHlD68c=
+	t=1738766629; cv=none; b=Ir3Z/C5MaujBGlinoUpYBPDiFNifpoAwRkz6HygFkhc0vs0l640iF2lFLp4QGF8JKwybvT/Uu4brx9SpAnLEPSQGNILZJI9L94yPuA99+0bdEY9YDYOjKr+US4mZRlfOHT87WbOTbhtrxE6L2jP8SkQufnZOmkefKKsw6f9/b2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767082; c=relaxed/simple;
-	bh=pZ+ZCykIz7Z+WBet3EJDrsXWpnKhsXsyNe0bijr7SQE=;
+	s=arc-20240116; t=1738766629; c=relaxed/simple;
+	bh=EW8L8hlmplUVWyrGOWHmNUt6+PsLoys8s2g4k2gHoIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qyGHSMLw4SUH85meDZMi306/3lG99vTaBB2k9ZDqx6IuTzIafWecxCAu+Bg/dHlKJe1wR2Mn7e0Lw8f6SUS4n6ggREsSVHd/mkaCWO8ivlWwzl1HU+q6l69TTw89n6OmQ3bqB/0r8DjdiglisMueZapJNBn5RQtLg6vj6EU3LvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT2ex5Ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEC7C4CED6;
-	Wed,  5 Feb 2025 14:51:21 +0000 (UTC)
+	 MIME-Version; b=mvLKj+PuWU+Ux0lC+Ez4OKQZOpjhehMsJCauSJ1zu3i+BGzLkM4IH7uWkQEdI43Snct45LZo6pzDB2JM99L7KGGkFcz2a4ctorVYW9e8SFjdH86D/F4NpZhtrbX+7c1WgSTZs+Jd22ZPEfma6GFjHaikdNacsTe+9aqfo79BwIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdRRWcFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6B6C4CED1;
+	Wed,  5 Feb 2025 14:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767082;
-	bh=pZ+ZCykIz7Z+WBet3EJDrsXWpnKhsXsyNe0bijr7SQE=;
+	s=korg; t=1738766629;
+	bh=EW8L8hlmplUVWyrGOWHmNUt6+PsLoys8s2g4k2gHoIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JT2ex5UeHyATRRR07j6BLTI7DanW2NyOSlyUBbJabeU5hoG3XYuhOxOcmvJdfsvu2
-	 W0wmkfnh9FUyNNA1v2vphEQQaxop/iJ+i391ppPt3HOkGfLIECK3ytPWKiKd4GC+RU
-	 Y7CYWNEfo8FOj75xLH+fQx5WnMrjaX84p1FFYhWI=
+	b=HdRRWcFnsj9qnNCGQGY5r42K7/BQ5Q9UInmojWTRqw3ezjfXQQHymTtj+bENBsuXy
+	 vRBdRZDXcbVJk3sEmu5xevYwMEDkTKGf1ntyAhhGE7VxXLIhHG/tz/MOLCyCmr+N3m
+	 5k7hzOk4YCWMyLB4NcTlLv3GrMMyWo67cmDETYgs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>,
-	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Petr Vorel <petr.vorel@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 354/623] ARM: dts: aspeed: yosemite4: correct the compatible string of adm1272
+Subject: [PATCH 6.12 341/590] arm64: dts: qcom: msm8994: Describe USB interrupts
 Date: Wed,  5 Feb 2025 14:41:36 +0100
-Message-ID: <20250205134509.769430044@linuxfoundation.org>
+Message-ID: <20250205134508.319885799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit ece3e20e3389ec8a32944ad44746ee379bf1d3eb ]
+[ Upstream commit c910544d2234709660d60f80345c285616e73b1c ]
 
-Remove the space in the compatible string of adm1272 to match the
-pattern of compatible.
+Previously the interrupt lanes were not described, fix that.
 
-Fixes: 2b8d94f4b4a4 ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
-Signed-off-by: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
-Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
-Fixes: 2b8d94f4b4a4765d ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Link: https://patch.msgid.link/20240927085213.331127-1-Delphine_CC_Chiu@wiwynn.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Fixes: d9be0bc95f25 ("arm64: dts: qcom: msm8994: Add USB support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Tested-by: Petr Vorel <petr.vorel@gmail.com>
+Link: https://lore.kernel.org/r/20241129-topic-qcom_usb_dtb_fixup-v1-4-cba24120c058@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8994.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
-index 98477792aa005..7ed76cd4fd2d0 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
-@@ -284,12 +284,12 @@
- &i2c11 {
- 	status = "okay";
- 	power-sensor@10 {
--		compatible = "adi, adm1272";
-+		compatible = "adi,adm1272";
- 		reg = <0x10>;
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+index fc2a7f13f690e..ed2b90148d9f7 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+@@ -437,6 +437,15 @@
+ 			#size-cells = <1>;
+ 			ranges;
  
- 	power-sensor@12 {
--		compatible = "adi, adm1272";
-+		compatible = "adi,adm1272";
- 		reg = <0x12>;
- 	};
- 
++			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "pwr_event",
++					  "qusb2_phy",
++					  "hs_phy_irq",
++					  "ss_phy_irq";
++
+ 			clocks = <&gcc GCC_USB30_MASTER_CLK>,
+ 				 <&gcc GCC_SYS_NOC_USB3_AXI_CLK>,
+ 				 <&gcc GCC_USB30_SLEEP_CLK>,
 -- 
 2.39.5
 
