@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3125A28EDD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29DE4A28C45
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F7981889C51
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEE991686F1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD9C155333;
-	Wed,  5 Feb 2025 14:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392EE1494DF;
+	Wed,  5 Feb 2025 13:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgV9MEB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YySPEn77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969B61519A4;
-	Wed,  5 Feb 2025 14:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89E313AD22;
+	Wed,  5 Feb 2025 13:47:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765069; cv=none; b=d9Efhh5XYWcm/NDy6kHTBLpR8hmlHgKRq2jQMWZRUHUm2q+2XtEPmqRcWrbsJ5pyga8fFADbRJ6M0Hai/QUokeLvcASkxS1s88i8Im1ONoiOFuSc8CD+nCYl2LKZh5wShJ2oDV+hoLmRh0nunopoZT/wj3YGUozakPkGWaAAfiE=
+	t=1738763265; cv=none; b=gVHul4iyqZh443acXCX/BorROGPV+h7bRS1/BZMTE0R6wtmIDqBbB6I6KLF4fN6ceLj6WY3qsL3HCtBXVm9u22iypWqVDQQ2wrX2OmmfJJtAPO4RzoCQhDTIrCrhG72/jwipzybZU9rI+1XMZgPyl1bs196rOcEcIddQpvolrFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765069; c=relaxed/simple;
-	bh=gsyMZA34rkIyqPIP+LWuJEHb3b1xa8Iu5TckbjXRgrA=;
+	s=arc-20240116; t=1738763265; c=relaxed/simple;
+	bh=AYSpeRrB/3zCnX7ZI7AKQX+JRPa8B5fRHotOirce01g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1Zkfm3IDNQep7ArB/WIi9kRhmz6uo0l6yOQL6sxDduNh/cputRH82v/ZWn5lDu7/nmonC7SGVHUP8+YGv5E7yEpRIM31foUzIO/GJuqaTblTs7Mm3C9t7gzwVnrQpmr0sfHDh0ezT2DiQWADM8syZkvAfIkH1STCA+ih3IgdMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgV9MEB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111A0C4CED1;
-	Wed,  5 Feb 2025 14:17:48 +0000 (UTC)
+	 MIME-Version; b=uOFOMnyevPuqkqSZbez/4GQn4sWjijeGQKfp8fx0dxGwdrylNB23Jw7/LX8TZtq4lqTjQ4tNVLNOP+23Yb1gkyAqSIuvuKqch4ERo1XpbSpJMCk8bz78AdRHYuVZgTHlBztl+LkTlfYvlkIMvUNnn7eK+DKLaIwHPGQ3as+UjmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YySPEn77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BA1C4CED1;
+	Wed,  5 Feb 2025 13:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765069;
-	bh=gsyMZA34rkIyqPIP+LWuJEHb3b1xa8Iu5TckbjXRgrA=;
+	s=korg; t=1738763264;
+	bh=AYSpeRrB/3zCnX7ZI7AKQX+JRPa8B5fRHotOirce01g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgV9MEB2yKrjHr75cN6JFxUXJuoqe+3lf9MEHSVhVtUAdPikW1eAZTq+ouC9NhGam
-	 F8SfStR7Hu8c7eRgCGRnpjgQmAttUC9Sl0OtZA8aKkHSfcv6ISKO1HufWzItcUY+Ba
-	 nXC/f0GWgiP21izzv3c1u1SeQZ9rhGA9VwizWJEs=
+	b=YySPEn77h/UD8eg8ovxF3rHG3E0PA69L9g6PrVPTXdpdq9SBt63B51xkYq3nY9xI5
+	 mMgZuVc8FJbm37rfbKQqQYBcbQvGBzp82tWvxXHskk6cafLIF8fQlsIJYC/Hfqnq0y
+	 prfARCgJBlfb2UJ3Mh5oddmkV/oBxNex+ccYg+jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 187/590] wifi: mt76: mt7925: Enhance mt7925_mac_link_bss_add to support MLO
-Date: Wed,  5 Feb 2025 14:39:02 +0100
-Message-ID: <20250205134502.433623333@linuxfoundation.org>
+	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.6 024/393] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+Date: Wed,  5 Feb 2025 14:39:03 +0100
+Message-ID: <20250205134421.225633127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit ac03e5b82bc6b44e8ea3e7c7c624ee1445ff4e4b ]
+commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
 
-In mt7925_mac_link_bss_add(), the mt76_connac_mcu_uni_add_dev() function
-must be executed only after all parameters have been properly initialized.
+A report in 2019 by the syzbot fuzzer was found to be connected to two
+errors in the HID core associated with Resolution Multipliers.  One of
+the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
+in hid_apply_multiplier."), but the other has not been fixed.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-8-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This error arises because hid_apply_multipler() assumes that every
+Resolution Multiplier control is contained in a Logical Collection,
+i.e., there's no way the routine can ever set multiplier_collection to
+NULL.  This is in spite of the fact that the function starts with a
+big comment saying:
+
+	 * "The Resolution Multiplier control must be contained in the same
+	 * Logical Collection as the control(s) to which it is to be applied.
+	   ...
+	 *  If no Logical Collection is
+	 * defined, the Resolution Multiplier is associated with all
+	 * controls in the report."
+	 * HID Usage Table, v1.12, Section 4.3.1, p30
+	 *
+	 * Thus, search from the current collection upwards until we find a
+	 * logical collection...
+
+The comment and the code overlook the possibility that none of the
+collections found may be a Logical Collection.
+
+The fix is to set the multiplier_collection pointer to NULL if the
+collection found isn't a Logical Collection.
+
+Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Peter Hutterer <peter.hutterer@who-t.net>
+Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/hid/hid-core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 268d216f09e20..3cd3c3e289e72 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -365,18 +365,14 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 	mconf->mt76.omac_idx = ieee80211_vif_is_mld(vif) ?
- 			       0 : mconf->mt76.idx;
- 	mconf->mt76.band_idx = 0xff;
--	mconf->mt76.wmm_idx = mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
-+	mconf->mt76.wmm_idx = ieee80211_vif_is_mld(vif) ?
-+			      0 : mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1125,6 +1125,8 @@ static void hid_apply_multiplier(struct
+ 	while (multiplier_collection->parent_idx != -1 &&
+ 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
+ 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
++	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
++		multiplier_collection = NULL;
  
- 	if (mvif->phy->mt76->chandef.chan->band != NL80211_BAND_2GHZ)
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL + 4;
- 	else
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL;
+ 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
  
--	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
--					  &mlink->wcid, true);
--	if (ret)
--		goto out;
--
- 	dev->mt76.vif_mask |= BIT_ULL(mconf->mt76.idx);
- 	mvif->phy->omac_mask |= BIT_ULL(mconf->mt76.omac_idx);
- 
-@@ -395,6 +391,12 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 	ewma_rssi_init(&mconf->rssi);
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], &mlink->wcid);
-+
-+	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
-+					  &mlink->wcid, true);
-+	if (ret)
-+		goto out;
-+
- 	if (vif->txq) {
- 		mtxq = (struct mt76_txq *)vif->txq->drv_priv;
- 		mtxq->wcid = idx;
--- 
-2.39.5
-
 
 
 
