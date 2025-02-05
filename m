@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00DDEA28F1A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06B7A28E23
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22F0A3A6D2E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D963A15BC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250B91519BE;
-	Wed,  5 Feb 2025 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B6C1509BD;
+	Wed,  5 Feb 2025 14:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr4NDVQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b9Ecj/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6263282EE;
-	Wed,  5 Feb 2025 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FD9149C53;
+	Wed,  5 Feb 2025 14:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765221; cv=none; b=R2uIg+Cs8ZnbG4CjVClldcDlBaxeBmOEQy8EPU9UZ3scXBfoZmWOypCkP8V9r5PVvJOpLsnfah/gMzR7Sn8tNeu826Qu2OHkV+Y+1UYCh5t9EjFxuVRr+RC2uYJCqFdcPhHb/Gle613JqeEbGbZDwza4lGtjWvyDl2s79meYa1g=
+	t=1738764538; cv=none; b=ri88jS73LBMLfnRe2HH2njQGsAEsaDc+oi4AQR8CWU8evESJ29Bsr2tickFA1ZbHngjrDw7wRBobT/PKuuUzX+TmWvebCthVHQbfDhx/7NFlzYF9ve7nRHGjqgLqT1yi9eDxJfUvGj73pjlgB2BTbdaXXfseHhpfayuGIowfnuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765221; c=relaxed/simple;
-	bh=IRhTgD6xagYDx0BUgRjbjVXxsNWQH8BegynM9iFxJI8=;
+	s=arc-20240116; t=1738764538; c=relaxed/simple;
+	bh=81OwuTKgF+vb7Gxw+n7ay7WoBqUB0iV0y3RGwphP/z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itK00WfnFSpC8EiPPqc9+QdVtscBhOgWOMYbwZXhfEnjeSih08syHA4gfIuYl0rCPL1uYFZraCJVjWEg2lourI94T2VOwo8TWjVaZfog/0SBuN/qejl9xHTedXkROX0QUbNiuU9DhmLAxy7Y8P+JCYYFwaQiygmbgZIF/DWeetM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr4NDVQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F9CC4CED1;
-	Wed,  5 Feb 2025 14:20:21 +0000 (UTC)
+	 MIME-Version; b=mCF+qxjr68M07nVOBdwaOhBOOwyPwgxeKGST6hNdXR25xXuigKBXSW6I3omrVUZSvd0Obm++Sp/pP8hvLFUg8UrQyjvJcbOABYy8oS9kJbl8DCPdD0/2q5qrVmf0cGm3YrwXde5XGSWExybVfIrEnlShCj1eYl+6LLz50ah644U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b9Ecj/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598EDC4CED6;
+	Wed,  5 Feb 2025 14:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765221;
-	bh=IRhTgD6xagYDx0BUgRjbjVXxsNWQH8BegynM9iFxJI8=;
+	s=korg; t=1738764538;
+	bh=81OwuTKgF+vb7Gxw+n7ay7WoBqUB0iV0y3RGwphP/z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vr4NDVQPaj4YkfM+aRkhAphv5C6bmQTczPIhJEryCD4+ylnsYrGJ1c9nF32tqkC31
-	 uC7RlAHDdAkHZ795RzFUeT7VuKlcmhRfsW09GjpRrPQxORYf8E5aHqW6rx/kQ8Gl1C
-	 MSI67qyymITJyR3svEO0T4ySLUyuLgLxFi89TVrk=
+	b=2b9Ecj/g5sCr5W/miscxvWv0aivR+RlBD8GCz8w7NRsH6XwqsNxI89D/mMvY4E00G
+	 eBGBTnWmJ9LOFoCP3LVZ73yCX8qwAxswFeCug29K02pEaGUQfpwF3E6DDi4xMu7ZAi
+	 jOstIovJCQRd1vAKt3QguNJzd3fGgawI9nA+qtMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Lee Jones <lee@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 148/623] leds: cht-wcove: Use devm_led_classdev_register() to avoid memory leak
-Date: Wed,  5 Feb 2025 14:38:10 +0100
-Message-ID: <20250205134501.897118798@linuxfoundation.org>
+Subject: [PATCH 6.12 136/590] OPP: OF: Fix an OF node leak in _opp_add_static_v2()
+Date: Wed,  5 Feb 2025 14:38:11 +0100
+Message-ID: <20250205134500.472140933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 417cad5dc782096350e6a967ee5dd3417a19a24e ]
+[ Upstream commit 1d38eb7f7b26261a0b642f6e0923269c7c000a97 ]
 
-cht_wc_leds_probe() leaks memory when the second led_classdev_register()
-call in the for-loop fails as it does not call the cleanup function
-led_classdev_unregister() on the first device. Avoid this leak by
-calling devm_led_classdev_register().
+_opp_add_static_v2() leaks the obtained OF node reference when
+_of_opp_alloc_required_opps() fails. Add an of_node_put() call in the
+error path.
 
-Fixes: 047da762b9a9 ("leds: Add Intel Cherry Trail Whiskey Cove PMIC LED driver")
+Fixes: 3466ea2cd6b6 ("OPP: Don't drop opp->np reference while it is still in use")
 Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/20241220085346.533675-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-cht-wcove.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/opp/of.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-cht-wcove.c b/drivers/leds/leds-cht-wcove.c
-index 8246f048edcb4..9a609dd5acdc8 100644
---- a/drivers/leds/leds-cht-wcove.c
-+++ b/drivers/leds/leds-cht-wcove.c
-@@ -394,7 +394,7 @@ static int cht_wc_leds_probe(struct platform_device *pdev)
- 		led->cdev.pattern_clear = cht_wc_leds_pattern_clear;
- 		led->cdev.max_brightness = 255;
+diff --git a/drivers/opp/of.c b/drivers/opp/of.c
+index 55c8cfef97d48..dcab0e7ace106 100644
+--- a/drivers/opp/of.c
++++ b/drivers/opp/of.c
+@@ -959,7 +959,7 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
  
--		ret = led_classdev_register(&pdev->dev, &led->cdev);
-+		ret = devm_led_classdev_register(&pdev->dev, &led->cdev);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -406,10 +406,6 @@ static int cht_wc_leds_probe(struct platform_device *pdev)
- static void cht_wc_leds_remove(struct platform_device *pdev)
- {
- 	struct cht_wc_leds *leds = platform_get_drvdata(pdev);
--	int i;
--
--	for (i = 0; i < CHT_WC_LED_COUNT; i++)
--		led_classdev_unregister(&leds->leds[i].cdev);
+ 	ret = _of_opp_alloc_required_opps(opp_table, new_opp);
+ 	if (ret)
+-		goto free_opp;
++		goto put_node;
  
- 	/* Restore LED1 regs if hw-control was active else leave LED1 off */
- 	if (!(leds->led1_initial_regs.ctrl & CHT_WC_LED1_SWCTL))
+ 	if (!of_property_read_u32(np, "clock-latency-ns", &val))
+ 		new_opp->clock_latency_ns = val;
+@@ -1009,6 +1009,8 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
+ 
+ free_required_opps:
+ 	_of_opp_free_required_opps(opp_table, new_opp);
++put_node:
++	of_node_put(np);
+ free_opp:
+ 	_opp_free(new_opp);
+ 
 -- 
 2.39.5
 
