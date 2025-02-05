@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC342A292B5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A806AA28F5A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F420E3AE684
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3DA167D61
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B302C18CBFB;
-	Wed,  5 Feb 2025 14:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0C915852E;
+	Wed,  5 Feb 2025 14:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKI6H4ZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qa+KvmcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE6833993;
-	Wed,  5 Feb 2025 14:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7699156886;
+	Wed,  5 Feb 2025 14:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767255; cv=none; b=LbmiEIX7GEWgZ/gGZ9htvoXn8iaUL3koPT5r8UaC5ldkBraAhu5iGL9+t2HWqT1G3vwoabzlvoUu4yXe6o09eewvvUGhBULoiBQy2t9rlt56p/rvzUDd7JSkbSPR9371ya7gK7RmNWmZaY4eHQKsJGroCw7hctIk2Ku1Gp+6C3M=
+	t=1738765424; cv=none; b=fLaQP7KBX5oQpoLVC8f4EolOJnt/Qdlwnhe8iGHmk5hyg/CH8IS2TlU7J46jVVQJhMe1UFwqMxdn6tizPABANSOoj5+1W4r7cbxW58+arETmLH8uyUp5LpGRDWbL+XKCVCWfvr171C9xFyLpiW+eOAIrEyeazpZv7qoOVIQRXoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767255; c=relaxed/simple;
-	bh=tp8/uE9aD5ZQkTmDypwnz/TsG+5K4L5SMSH2cThoH2k=;
+	s=arc-20240116; t=1738765424; c=relaxed/simple;
+	bh=SqcJNi30XMhdA/UBN71P/QCyfNBTutLafddnPPMaRO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rfFbZ7FrK/CZ2M5KfRdvkUBA/DIWKMypPJakf52WEbMUoY0t3lrnFwTtn45D7cMW7TeNX0wqyHCncT5czMmEcspomXjfnV3HLJKTKBCm+qu6oX5gvNeOUzFNYDZvkGvSF7Fx2wQBFJRLdWTH2gE2mgmoluTTza+gNZXuw5BE37c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKI6H4ZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6481C4CEDD;
-	Wed,  5 Feb 2025 14:54:14 +0000 (UTC)
+	 MIME-Version; b=LT60noVHc+2HSwi+6OBx7DvjhPNrxJLo47s7Gr1NGnv80uvIUSiWwYqOZclrBL88vEkDDuD6FojkPU/mezPcz/CtlMv84BnaPDsORA0y63fjEuGfgyMc/LFm4loYUtbeeGInlLuNCbw9NifoDMhZhwxkLLgNQciVGoXmG6ERwW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qa+KvmcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A73C4CED1;
+	Wed,  5 Feb 2025 14:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767255;
-	bh=tp8/uE9aD5ZQkTmDypwnz/TsG+5K4L5SMSH2cThoH2k=;
+	s=korg; t=1738765424;
+	bh=SqcJNi30XMhdA/UBN71P/QCyfNBTutLafddnPPMaRO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKI6H4ZB3NsYwpZyQ4P2BfnbzMcZMkQ4+Hlc1pf7RlD8WVAPVQDYNYM+CITcqSHyn
-	 npyFBqPYSISVhNi1HhNVKy2iZEE89LstlUe82QPAnlW9rowXVUYlxuO+ENy6ZzN6Kw
-	 foawsv37cb23DVpgybrboYygq3zMOiUWMW89kC64=
+	b=qa+KvmcC3ChiysBtCxEjXRvw9hGYy+T7PeOhgDWdFSIDsCoH/dwKZWQu06qwneHRv
+	 g8RIOtplASV2tQJ4O0w7p2Ex4Y1IuSSPzW7CUAX4aj6OoTpmKyKGTC6IWvl5hvNjXM
+	 gvKXhgtVJNg1Zz0lzR0LznWQS1AsUEAR2BNPLSmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 430/590] PCI: dwc: Always stop link in the dw_pcie_suspend_noirq
+Subject: [PATCH 6.6 266/393] dts: arm64: mediatek: mt8195: Remove MT8183 compatible for OVL
 Date: Wed,  5 Feb 2025 14:43:05 +0100
-Message-ID: <20250205134511.717150674@linuxfoundation.org>
+Message-ID: <20250205134430.490241025@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 86a016e278b78cc2281edd4ffaddbc011c87a593 ]
+[ Upstream commit ce3dbc46d7e30a84b8e99c730e3172dd5efbf094 ]
 
-On the i.MX8QM, PCIe link can't be re-established again in
-dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared
-properly in dw_pcie_suspend_noirq().
+The OVL hardware capabilities have changed starting from MT8195,
+making the MT8183 compatible no longer applicable.
+Therefore, it is necessary to remove the MT8183 compatible for OVL.
 
-So, add dw_pcie_stop_link() to dw_pcie_suspend_noirq() to fix
-this issue and to align the suspend/resume functions since there
-is dw_pcie_start_link() in dw_pcie_resume_noirq() already.
-
-Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-Link: https://lore.kernel.org/r/20241210081557.163555-2-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
+Link: https://lore.kernel.org/r/20241219181531.4282-5-jason-jh.lin@mediatek.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 3e41865c72904..120e2aca5164a 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -946,6 +946,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
- 		return ret;
- 	}
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 1cb22257adb36..7ba30209ba9a9 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -2677,7 +2677,7 @@
+ 		};
  
-+	dw_pcie_stop_link(pci);
- 	if (pci->pp.ops->deinit)
- 		pci->pp.ops->deinit(&pci->pp);
- 
+ 		ovl0: ovl@1c000000 {
+-			compatible = "mediatek,mt8195-disp-ovl", "mediatek,mt8183-disp-ovl";
++			compatible = "mediatek,mt8195-disp-ovl";
+ 			reg = <0 0x1c000000 0 0x1000>;
+ 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
 -- 
 2.39.5
 
