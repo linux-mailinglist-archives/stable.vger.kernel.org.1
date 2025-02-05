@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-113554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E90A292D6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBB8BA28FA0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90C63A26F1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 530043A2BD6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0220819066D;
-	Wed,  5 Feb 2025 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2C6155382;
+	Wed,  5 Feb 2025 14:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6jLLs8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6qxpZIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D3516DEB1;
-	Wed,  5 Feb 2025 14:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1066214A088;
+	Wed,  5 Feb 2025 14:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767352; cv=none; b=dJUBw1Horfpo1OMpArkHVyOSsGSveM9Pv44Oyvv42qEBWAcXmSfXB8sDBLBo2SxRp0auq7+4iCX/h1D+RPSqKxBm06m8edmRSuTiYewn/c8GbVT68D644lIndyBV7kEmB5n6OZiVtAXGWrhcIohy/N2bRljt4xeFReW4OBsV0CE=
+	t=1738765571; cv=none; b=Vs6DDxav2ouRi9tJteyv+idHldapjUbfGsHWtYBR2MEgNz0XyjIBM24cdG6Mo3JIN9e4hGsIN0wuzkNOell8fmReQnK0ofvOmiRoNbkhC1NqH/XF4QhWexOYPisQUeMoVZTMH4fZotlVSydBBVafE9lYwJHsM2FQ9MFBQHQosuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767352; c=relaxed/simple;
-	bh=/eysdykH/Ou5cGyU7JttAJp3sEANb7IO1AnOeFepguE=;
+	s=arc-20240116; t=1738765571; c=relaxed/simple;
+	bh=PcWiF1XxYcFA1mh/pDCL/twUSLKFmLhknxU1Zizxi48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpjfXJWCd6f4NtBWxjuWPl/ZkZecnwDkHOaloK1zcu9kf12ei/uKmEK70q+YeptKjJCwdWXC4m3AfU+aBx4vXioUSai5gblmQuq/7wtuFDpvrN47Fr1zbu8Wq10aTYsMHfNcOzmSa5ihaV97wW5/fJtgrRfV/NOTvKXSVqovXHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6jLLs8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0E8C4CED1;
-	Wed,  5 Feb 2025 14:55:52 +0000 (UTC)
+	 MIME-Version; b=XcJh3VFKwJzRVFzxLOvjkkuI6gnrLvIPHmsY0K4vvx5933cmloeWqxdDZEcqMWHqTQ/O+mC3WnDnDGabMQXnybem/rJ4Phv1GlAsEqd70ZU31r1dsI54UrRmokdcJ812xJfQee3Te4MGZMqjCu5QIVPSpZeD89aooTBzeYkPSlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6qxpZIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC78C4CED6;
+	Wed,  5 Feb 2025 14:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767352;
-	bh=/eysdykH/Ou5cGyU7JttAJp3sEANb7IO1AnOeFepguE=;
+	s=korg; t=1738765570;
+	bh=PcWiF1XxYcFA1mh/pDCL/twUSLKFmLhknxU1Zizxi48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6jLLs8wWmBjG4gVLsVC8L+1I7tGbloy3bdkVIdtzlVbTzXgDtMOirqoqaDyP3vx5
-	 NVp4LYul4W7SHSX3Il6JdqGyNdavmKoAy2hScoXCFEshtptAHIMCXEate/6Bma2p3T
-	 w0J1/llj4bZRK6M6Rtvc+IUtZFomW2DkweJO610Y=
+	b=b6qxpZIrsdQIRCm3/Od1KWzQsf+jaolLluSMaLUMymMkjCmZpa2MNHJ5Qt/Ne9Cs0
+	 7hRtdoHlTcCVbt/ljtGlu+abdhU5mveSeYRz0JdJAWG7tVyEnwGfcH7a+sSL7IsZSn
+	 1mPcJ3iArgptNpLNb+bUF7nzT2+E5Ki8iyaRR5Cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 443/590] ocfs2: mark dquot as inactive if failed to start trans while releasing dquot
+Subject: [PATCH 6.6 279/393] iommufd/iova_bitmap: Fix shift-out-of-bounds in iova_bitmap_offset_to_index()
 Date: Wed,  5 Feb 2025 14:43:18 +0100
-Message-ID: <20250205134512.217413183@linuxfoundation.org>
+Message-ID: <20250205134430.983226376@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 276c61385f6bc3223a5ecd307cf4aba2dfbb9a31 ]
+[ Upstream commit e24c1551059268b37f6f40639883eafb281b8b9c ]
 
-While running fstests generic/329, the kernel workqueue
-quota_release_workfn is dead looping in calling ocfs2_release_dquot().
-The ocfs2 state is already readonly but ocfs2_release_dquot wants to
-start a transaction but fails and returns.
+Resolve a UBSAN shift-out-of-bounds issue in iova_bitmap_offset_to_index()
+where shifting the constant "1" (of type int) by bitmap->mapped.pgshift
+(an unsigned long value) could result in undefined behavior.
 
-=====================================================================
-[ 2918.123602 ][  T275 ] On-disk corruption discovered. Please run
-fsck.ocfs2 once the filesystem is unmounted.
-[ 2918.124034 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:765
-ERROR: status = -30
-[ 2918.124452 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:795
-ERROR: status = -30
-[ 2918.124883 ][  T275 ] (kworker/u135:1,275,11):ocfs2_start_trans:357
-ERROR: status = -30
-[ 2918.125276 ][  T275 ] OCFS2: abort (device dm-0): ocfs2_start_trans:
-Detected aborted journal
-[ 2918.125710 ][  T275 ] On-disk corruption discovered. Please run
-fsck.ocfs2 once the filesystem is unmounted.
-=====================================================================
+The constant "1" defaults to a 32-bit "int", and when "pgshift" exceeds
+31 (e.g., pgshift = 63) the shift operation overflows, as the result
+cannot be represented in a 32-bit type.
 
-ocfs2_release_dquot() is much like dquot_release(), which is called by
-ext4 to handle similar situation.  So here fix it by marking the dquot as
-inactive like what dquot_release() does.
+To resolve this, the constant is updated to "1UL", promoting it to an
+unsigned long type to match the operand's type.
 
-Link: https://lkml.kernel.org/r/20250106140653.92292-1-glass.su@suse.com
-Fixes: 9e33d69f553a ("ocfs2: Implementation of local and global quota file handling")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
+Link: https://patch.msgid.link/r/20250113223820.10713-1-qasdev00@gmail.com
+Reported-by: syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=85992ace37d5b7b51635
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/quota_global.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/vfio/iova_bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
-index 3404e7a30c330..15d9acd456ecc 100644
---- a/fs/ocfs2/quota_global.c
-+++ b/fs/ocfs2/quota_global.c
-@@ -761,6 +761,11 @@ static int ocfs2_release_dquot(struct dquot *dquot)
- 	handle = ocfs2_start_trans(osb,
- 		ocfs2_calc_qdel_credits(dquot->dq_sb, dquot->dq_id.type));
- 	if (IS_ERR(handle)) {
-+		/*
-+		 * Mark dquot as inactive to avoid endless cycle in
-+		 * quota_release_workfn().
-+		 */
-+		clear_bit(DQ_ACTIVE_B, &dquot->dq_flags);
- 		status = PTR_ERR(handle);
- 		mlog_errno(status);
- 		goto out_ilock;
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index 7af5b204990bb..38b51613ecca9 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -127,7 +127,7 @@ struct iova_bitmap {
+ static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
+ 						 unsigned long iova)
+ {
+-	unsigned long pgsize = 1 << bitmap->mapped.pgshift;
++	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
+ 
+ 	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
+ }
 -- 
 2.39.5
 
