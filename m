@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF65BA28E9B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1320A28F71
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C43551882A5C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9955F1882F94
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF278282EE;
-	Wed,  5 Feb 2025 14:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F0E15696E;
+	Wed,  5 Feb 2025 14:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsV+kkvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DElwBAgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE32A1519AA;
-	Wed,  5 Feb 2025 14:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33D1155CB3;
+	Wed,  5 Feb 2025 14:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764909; cv=none; b=d6cVQV7jvfG6+2S4VVYqPgWiF9U6UiXUUqy05pJFbS/+npoLwpFbfSosPaOXG8a5D/AC7y/MbwATU+2FXat1qxQIgCD1LjbtUotYMVPxy93Tee3f+N5PAWhjScC4AR2iY+e1BVRJRD+pKmhV/Nt+8mQLskvWCM9KAeSm6yAvpEI=
+	t=1738765473; cv=none; b=YCu74hFDXGgiXefN7mehiC9JcWKakdYfXQC44MlvuCz16fUuPilI7DJcmKnhrRDRMKEEeyOyu8THlpVRGwr36LIH88wDstOLn2PrS0v73C5llHoMrzmsRtkzAqVelDJY/nBUrzYcq+HN0Ak/EHl68vd4CVEHdOcbwJDNLSt7ClQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764909; c=relaxed/simple;
-	bh=kjkNOJNNs8iWOz1ZsEbJHPgKWgEM1N1Q9pTOmvBXSiM=;
+	s=arc-20240116; t=1738765473; c=relaxed/simple;
+	bh=9ShpvCY4fitGzvqgUhOYynzA/ZuylWGafabvyCgKs2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+ajV8/vNTOtydFgM1g8aRlyKW1L+HMJdwKTx680QN/6TrJqnUro+GgwfAM0ZigKYSDfYggqgZ51kagHz6GcLm8QhTg+aJo+y8YsK9ku+15GxGM1y2yRSgSOysbbpTsyBL9O3ASk4LCF21tml/RtLXIYhjxudoNWM8RY4bGbsco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsV+kkvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26963C4CED1;
-	Wed,  5 Feb 2025 14:15:08 +0000 (UTC)
+	 MIME-Version; b=A1xgRPvIQ+dXJEVamFHq2fihLFBXYOj7wHrX6+NWb8G98MvaNRf+lPP0QAakibglhMq/+edvRCqCaphaEufszyA/8RiXz4DkkkcxsjHcePHt8I08MmREfOUqOTZhrQ+IoImE1dZg5zXKfFK6MO7PReTin8hgvRgSD06UX6LvVNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DElwBAgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF33DC4CED1;
+	Wed,  5 Feb 2025 14:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764909;
-	bh=kjkNOJNNs8iWOz1ZsEbJHPgKWgEM1N1Q9pTOmvBXSiM=;
+	s=korg; t=1738765473;
+	bh=9ShpvCY4fitGzvqgUhOYynzA/ZuylWGafabvyCgKs2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CsV+kkvXtC12BlkL6Tdvgl2GeUi4LiK/dgUxx9DQ+xMNVqGimVrLfRnBltTplvGBw
-	 KEZhYKypnonn5LQhpICt8GXYzcPT8jN5xuL4Nk4sv2d+Pm7m/4kRYfyHYbvr+Pu1sd
-	 0K0gKzvMbBL4HTjRpLKVyOFh0a5IP/7/w8ndUwSY=
+	b=DElwBAgnKQ6IgxyETrVWGwkcFAHI/2TLXqcNjBV3MOj7fBv8SuEEBwgzsjB1I5b2V
+	 HJwSE3ECZ2Ki4yuACc6902svcmukzGvrrD/yt3aGUsP7l9tfDao6GBr0d+TsUHnRp5
+	 5Z20Xh1ZE8+EHbdE3uIn1PpvByinzvM6GSyW3zDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Drew Fustini <dfustini@tenstorrent.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/590] clk: thead: Add CLK_IGNORE_UNUSED to fix TH1520 boot
+Subject: [PATCH 6.13 181/623] wifi: mt76: mt7925: fix NULL deref check in mt7925_change_vif_links
 Date: Wed,  5 Feb 2025 14:38:43 +0100
-Message-ID: <20250205134501.708956383@linuxfoundation.org>
+Message-ID: <20250205134503.160095502@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Fustini <dfustini@tenstorrent.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 037705e94bf6e1810b7f9dc077d0e23292229e74 ]
+[ Upstream commit 5cd0bd815c8a48862a296df9b30e0ea0da14acd3 ]
 
-Add the CLK_IGNORE_UNUSED flag to apb_pclk, cpu2peri_x2h_clk,
-perisys_apb2_hclk and perisys_apb3_hclk.
+In mt7925_change_vif_links() devm_kzalloc() may return NULL but this
+returned value is not checked.
 
-Without this flag, the boot hangs after "clk: Disabling unused clocks"
-unless clk_ignore_unused is in the kernel cmdline.
-
-Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
-Signed-off-by: Drew Fustini <dfustini@tenstorrent.com>
-Link: https://lore.kernel.org/r/20250113-th1520-clk_ignore_unused-v1-2-0b08fb813438@tenstorrent.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 69acd6d910b0 ("wifi: mt76: mt7925: add mt7925_change_vif_links")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://patch.msgid.link/20241025075554.181572-1-hanchunchao@inspur.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index c95b6e26ca531..d02a18fed8a85 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -657,7 +657,7 @@ static struct ccu_div apb_pclk = {
- 		.hw.init	= CLK_HW_INIT_PARENTS_DATA("apb-pclk",
- 						      apb_parents,
- 						      &ccu_div_ops,
--						      0),
-+						      CLK_IGNORE_UNUSED),
- 	},
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 791c8b00e1126..a5110f8485e52 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1946,6 +1946,8 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 					     GFP_KERNEL);
+ 			mlink = devm_kzalloc(dev->mt76.dev, sizeof(*mlink),
+ 					     GFP_KERNEL);
++			if (!mconf || !mlink)
++				return -ENOMEM;
+ 		}
  
-@@ -794,13 +794,13 @@ static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_
- 		0x134, BIT(7), 0);
- static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), 0);
- static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
--		0x140, BIT(9), 0);
-+		0x140, BIT(9), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
- 		0x150, BIT(9), 0);
- static CCU_GATE(CLK_PERISYS_APB2_HCLK, perisys_apb2_hclk, "perisys-apb2-hclk", perisys_ahb_hclk_pd,
--		0x150, BIT(10), 0);
-+		0x150, BIT(10), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB3_HCLK, perisys_apb3_hclk, "perisys-apb3-hclk", perisys_ahb_hclk_pd,
--		0x150, BIT(11), 0);
-+		0x150, BIT(11), CLK_IGNORE_UNUSED);
- static CCU_GATE(CLK_PERISYS_APB4_HCLK, perisys_apb4_hclk, "perisys-apb4-hclk", perisys_ahb_hclk_pd,
- 		0x150, BIT(12), 0);
- static CCU_GATE(CLK_NPU_AXI, npu_axi_clk, "npu-axi", axi_aclk_pd, 0x1c8, BIT(5), 0);
+ 		mconfs[link_id] = mconf;
 -- 
 2.39.5
 
