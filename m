@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-112863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90973A28ECD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29967A28E07
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD663A5D69
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4933A1D1F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C231E14D2A2;
-	Wed,  5 Feb 2025 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80D613C9C4;
+	Wed,  5 Feb 2025 14:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ffhy0hwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCxmE+WB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E84C1519BE;
-	Wed,  5 Feb 2025 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85ADA1519AA;
+	Wed,  5 Feb 2025 14:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765010; cv=none; b=r4e0UXCgeoUvTwbBLmXWUyuA7h3Pv4TB2ZZqEydm/JgNVSIo7kd+mNM7xIStp8HYcYyhtPYt5lsXTBIEk5Yhd82OCqykGn3R79yCoLTw5VYx/qDnaro97/CrSyUc19QrDfL7UwoO6GLwXAjZllui1SJRBDJvhooiwZHu39DKhz4=
+	t=1738764422; cv=none; b=nWGdX/RsfpigY86HE0uy/cujB8sHFo9tix9VRKSJJtOZuv0I3BK2HyIgj0LVDdfdsDNAy0Jz52LFNTqLydqef9PKotMOmEhlNIacodjTTJGpd6u8V98jnJwgb5PBwsieQ8sTzqWSn7EI9yDIDli9gzqowJKfLNTjK7O+m3notZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765010; c=relaxed/simple;
-	bh=Z5MXwyJeQy573ZasXyes7+ozz1dVjqixwZBgXyUdJQg=;
+	s=arc-20240116; t=1738764422; c=relaxed/simple;
+	bh=L/QnnBlmvgIE1caUgRQv74Fp/OsgrcQOS6pln8rT294=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4XrEE6AuxdcdALUF5UIwdkK8ElwW1Fw2FOlcpgWt2x9DYOFAsEKNf6/mZMnfG7p7UnUnuPw2fijGkN4NT951syjwjd32+PPewQ4TGJjMRtOpOyGvxenUtMhmLhf+UmPMrfxI5hzxu+skgqCNCwNCPT8Z4WjDV1i7l4uQac04Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ffhy0hwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA848C4CED1;
-	Wed,  5 Feb 2025 14:16:49 +0000 (UTC)
+	 MIME-Version; b=nfsYeOlKaqyFWy9klsVN8anh6fotqQEU2ZD9IoCUeVrNu9XeiM+cvXEuPEMDmuSKuNItZ/of1riOnXysNXibs3yUQJk120jPCwNKlcG18lAeWzfYqjIhCqeRtQNAlqm8ds7lkR9lTEK7ogO6WOVitCg7ArbO+C8LuAzL+rmshsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCxmE+WB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44CFC4CED1;
+	Wed,  5 Feb 2025 14:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765010;
-	bh=Z5MXwyJeQy573ZasXyes7+ozz1dVjqixwZBgXyUdJQg=;
+	s=korg; t=1738764422;
+	bh=L/QnnBlmvgIE1caUgRQv74Fp/OsgrcQOS6pln8rT294=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ffhy0hwiWm2woiALQ0U1DwPW73ozjU51EUaVcdu520kP/qCiN0C+cDtW2OkZLFvTq
-	 DuYCj+HJ/xFUXuUWvs4eveT1Yi75HTXbhwIYZhJFqqhFcQ9sFrkWhclXdVAc71Wb1t
-	 BQgKkGlWlu5mhKdHrdkA4I+4OoO89gjcteETVIVo=
+	b=VCxmE+WBokES8Hi7DGWV9omfmSTb62pnRvobcfqmYs1FqMlKgpFV5coqB76zTNn3e
+	 PXEHzqZ4eLylDARuBaa96lVTXHmI9dXhLhnXSe+RFwOvCo11xX3mN4pO9Ff0GeJmYp
+	 RZPuDORiw5ivj/UJqnZ//BZ1f6LHvXwgqITAjq9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 135/623] clk: qcom: camcc-x1e80100: Set titan_top_gdsc as the parent GDSC of subordinate GDSCs
+Subject: [PATCH 6.12 122/590] dt-bindings: clock: imx93: Add SPDIF IPG clk
 Date: Wed,  5 Feb 2025 14:37:57 +0100
-Message-ID: <20250205134501.397757364@linuxfoundation.org>
+Message-ID: <20250205134459.929716769@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit d9377941f2732d2f6f53ec9520321a19c687717a ]
+[ Upstream commit 32e9dea2645fa10dfa08b4e333918affaf1e4de5 ]
 
-The Titan TOP GDSC is the parent GDSC for all other GDSCs in the CAMCC
-block. None of the subordinate blocks will switch on without the parent
-GDSC switched on.
+Add SPDIF IPG clk. The SPDIF IPG clock and root clock
+share same clock gate.
 
-Fixes: 76126a5129b5 ("clk: qcom: Add camcc clock driver for x1e80100")
-Acked-by: Rajendra Nayak <quic_rjendra@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Link: https://lore.kernel.org/r/20241227-b4-linux-next-24-12-16-titan-top-gdsc-v1-1-c96ef62fc307@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20241119015805.3840606-2-shengjiu.wang@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/camcc-x1e80100.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/dt-bindings/clock/imx93-clock.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/camcc-x1e80100.c b/drivers/clk/qcom/camcc-x1e80100.c
-index 85e76c7712ad8..b73524ae64b1b 100644
---- a/drivers/clk/qcom/camcc-x1e80100.c
-+++ b/drivers/clk/qcom/camcc-x1e80100.c
-@@ -2212,6 +2212,8 @@ static struct clk_branch cam_cc_sfe_0_fast_ahb_clk = {
- 	},
- };
+diff --git a/include/dt-bindings/clock/imx93-clock.h b/include/dt-bindings/clock/imx93-clock.h
+index 6c685067288b5..c393fad3a3469 100644
+--- a/include/dt-bindings/clock/imx93-clock.h
++++ b/include/dt-bindings/clock/imx93-clock.h
+@@ -209,5 +209,6 @@
+ #define IMX91_CLK_ENET2_REGULAR     204
+ #define IMX91_CLK_ENET2_REGULAR_GATE		205
+ #define IMX91_CLK_ENET1_QOS_TSN_GATE		206
++#define IMX93_CLK_SPDIF_IPG		207
  
-+static struct gdsc cam_cc_titan_top_gdsc;
-+
- static struct gdsc cam_cc_bps_gdsc = {
- 	.gdscr = 0x10004,
- 	.en_rest_wait_val = 0x2,
-@@ -2221,6 +2223,7 @@ static struct gdsc cam_cc_bps_gdsc = {
- 		.name = "cam_cc_bps_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &cam_cc_titan_top_gdsc.pd,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -2233,6 +2236,7 @@ static struct gdsc cam_cc_ife_0_gdsc = {
- 		.name = "cam_cc_ife_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &cam_cc_titan_top_gdsc.pd,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -2245,6 +2249,7 @@ static struct gdsc cam_cc_ife_1_gdsc = {
- 		.name = "cam_cc_ife_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &cam_cc_titan_top_gdsc.pd,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -2257,6 +2262,7 @@ static struct gdsc cam_cc_ipe_0_gdsc = {
- 		.name = "cam_cc_ipe_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &cam_cc_titan_top_gdsc.pd,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
-@@ -2269,6 +2275,7 @@ static struct gdsc cam_cc_sfe_0_gdsc = {
- 		.name = "cam_cc_sfe_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.parent = &cam_cc_titan_top_gdsc.pd,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
+ #endif
 -- 
 2.39.5
 
