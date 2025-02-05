@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B27A29075
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016BAA29219
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78D543A1D46
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39299188D130
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4728D155A30;
-	Wed,  5 Feb 2025 14:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F17F15FA7B;
+	Wed,  5 Feb 2025 14:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvXil6e5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1URCQoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053AF151988;
-	Wed,  5 Feb 2025 14:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAF2376;
+	Wed,  5 Feb 2025 14:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766178; cv=none; b=E6MPdlP/w4Za1GimaLM5dwrn/CyHAqeMJFdi0/zt2bp02Rn0OEtlYxH4rO6rx8oVyITw4K23sl7SXvVuPsJKoGbGOGdAbqUFz18tIpx9PclGP06d7T63YG5vDxMPgL589DPcUmSJSpqO+ZX5QbdwAKIjUkKgLAxjc8cboYd5iaE=
+	t=1738766787; cv=none; b=nyM7bVNuH9fOFsO0sDmeaFh+kR7HFpzD5P4FS6h+Wvsp3FhDscbi6ytmD3iZOJ5NdYpmv1bGjtYuugZvLZ9LUkoPynziM9pbOkVbFZ+pnUpoHO6iRZk66yHZ4ZlcGV8uIDP5qEItQSAhOE4FHLbHy1bOvpsATEB6clFStTPmw0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766178; c=relaxed/simple;
-	bh=52r+JlhetmPg0ghRr438q+qVBYYUlcYvQ0d8+3ih9NI=;
+	s=arc-20240116; t=1738766787; c=relaxed/simple;
+	bh=XEWG0sLqoXr7D4BDMtLvv5neATqzFVNiZGIIKduHlzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GtcgfIREJ1v6aYIq5o8yufEDluNKDoOHO8hKfg3jp1D6VGGw+/ziK/6oTqRSTdsvCuc68oyszlOipRwa9aYBtB3Z+6BMf3bZbi1bpXmAlZDyfJH9pSxR07UV6MgiscWTIIMOsG3e0ppaiGPfdBwtRw+Zl/I1lj9beXnVdkr7JJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvXil6e5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760B4C4CED1;
-	Wed,  5 Feb 2025 14:36:17 +0000 (UTC)
+	 MIME-Version; b=jPo3oUuVAMUVJ7z8sk1dehjD9WKI6Zl9spUwoank6bACULbjcQEeTHEo0Q8ny8CFvouC4yDP8K//UYxxoQw7ClNHCVoI7XMYHxj/kLGDxQtcTDEgjwQ3cA/EwJPDqIWdE7xbqij2VTjY29B4HFkcQUiVELf+C6nIIcikHHSKw88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1URCQoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E280C4CED1;
+	Wed,  5 Feb 2025 14:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766177;
-	bh=52r+JlhetmPg0ghRr438q+qVBYYUlcYvQ0d8+3ih9NI=;
+	s=korg; t=1738766786;
+	bh=XEWG0sLqoXr7D4BDMtLvv5neATqzFVNiZGIIKduHlzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvXil6e5eg1FCBHPYn1rZI4VppmCnkmAO8ap3zxfsolwJpe5dvH6Dl6DQRVtpSdFm
-	 MQh7OLEB/IlqZjRZGdtlP5IPJ56ykiH/5Krc9jiCVUiyp6MuHIyqeZEY1hsJX1/Fhe
-	 DuhqXpLpkTza/2B1fhZudQzorLSOuF74OCJXVX7s=
+	b=p1URCQohncJ+63CAxTuggZwEwzU9+3k/RWaIcBVS+9rqG2+plnBAr3/bYHoWz0v4G
+	 6UtE0n1EIeVX1KOBKGvp/mTt8dXBa94K8x8fB9sxl8kAXVavTDq3uAs7x0N1WWDTwe
+	 sZkjmIVj3dAQBSrSj9bdskgcJsHnX9FMSjrxz9dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Qu Zicheng <quzicheng@huawei.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/590] padata: fix UAF in padata_reorder
-Date: Wed,  5 Feb 2025 14:40:49 +0100
-Message-ID: <20250205134506.525099255@linuxfoundation.org>
+Subject: [PATCH 6.13 308/623] selftests/bpf: Fix undefined UINT_MAX in veristat.c
+Date: Wed,  5 Feb 2025 14:40:50 +0100
+Message-ID: <20250205134508.010346619@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit e01780ea4661172734118d2a5f41bc9720765668 ]
+[ Upstream commit a8d1c48d0720140b53063ff23507845bb2078e92 ]
 
-A bug was found when run ltp test:
+Include <limits.h> in 'veristat.c' to provide a UINT_MAX definition and
+avoid multiple compile errors against mips64el/musl-libc:
 
-BUG: KASAN: slab-use-after-free in padata_find_next+0x29/0x1a0
-Read of size 4 at addr ffff88bbfe003524 by task kworker/u113:2/3039206
+veristat.c: In function 'max_verifier_log_size':
+veristat.c:1135:36: error: 'UINT_MAX' undeclared (first use in this function)
+ 1135 |         const int SMALL_LOG_SIZE = UINT_MAX >> 8;
+      |                                    ^~~~~~~~
+veristat.c:24:1: note: 'UINT_MAX' is defined in header '<limits.h>'; did you forget to '#include <limits.h>'?
+   23 | #include <math.h>
+  +++ |+#include <limits.h>
+   24 |
 
-CPU: 0 PID: 3039206 Comm: kworker/u113:2 Kdump: loaded Not tainted 6.6.0+
-Workqueue: pdecrypt_parallel padata_parallel_worker
-Call Trace:
-<TASK>
-dump_stack_lvl+0x32/0x50
-print_address_description.constprop.0+0x6b/0x3d0
-print_report+0xdd/0x2c0
-kasan_report+0xa5/0xd0
-padata_find_next+0x29/0x1a0
-padata_reorder+0x131/0x220
-padata_parallel_worker+0x3d/0xc0
-process_one_work+0x2ec/0x5a0
-
-If 'mdelay(10)' is added before calling 'padata_find_next' in the
-'padata_reorder' function, this issue could be reproduced easily with
-ltp test (pcrypt_aead01).
-
-This can be explained as bellow:
-
-pcrypt_aead_encrypt
-...
-padata_do_parallel
-refcount_inc(&pd->refcnt); // add refcnt
-...
-padata_do_serial
-padata_reorder // pd
-while (1) {
-padata_find_next(pd, true); // using pd
-queue_work_on
-...
-padata_serial_worker				crypto_del_alg
-padata_put_pd_cnt // sub refcnt
-						padata_free_shell
-						padata_put_pd(ps->pd);
-						// pd is freed
-// loop again, but pd is freed
-// call padata_find_next, UAF
-}
-
-In the padata_reorder function, when it loops in 'while', if the alg is
-deleted, the refcnt may be decreased to 0 before entering
-'padata_find_next', which leads to UAF.
-
-As mentioned in [1], do_serial is supposed to be called with BHs disabled
-and always happen under RCU protection, to address this issue, add
-synchronize_rcu() in 'padata_free_shell' wait for all _do_serial calls
-to finish.
-
-[1] https://lore.kernel.org/all/20221028160401.cccypv4euxikusiq@parnassus.localdomain/
-[2] https://lore.kernel.org/linux-kernel/jfjz5d7zwbytztackem7ibzalm5lnxldi2eofeiczqmqs2m7o6@fq426cwnjtkm/
-Fixes: b128a3040935 ("padata: allocate workqueue internally")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Qu Zicheng <quzicheng@huawei.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 1f7c33630724 ("selftests/bpf: Increase verifier log limit in veristat")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250116075036.3459898-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/bpf/veristat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index ada4a0d137d9b..e2ae2c3747a85 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -1128,6 +1128,12 @@ void padata_free_shell(struct padata_shell *ps)
- 	if (!ps)
- 		return;
+diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
+index e12ef953fba85..b174c013485cd 100644
+--- a/tools/testing/selftests/bpf/veristat.c
++++ b/tools/testing/selftests/bpf/veristat.c
+@@ -21,6 +21,7 @@
+ #include <gelf.h>
+ #include <float.h>
+ #include <math.h>
++#include <limits.h>
  
-+	/*
-+	 * Wait for all _do_serial calls to finish to avoid touching
-+	 * freed pd's and ps's.
-+	 */
-+	synchronize_rcu();
-+
- 	mutex_lock(&ps->pinst->lock);
- 	list_del(&ps->list);
- 	pd = rcu_dereference_protected(ps->pd, 1);
+ #ifndef ARRAY_SIZE
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 -- 
 2.39.5
 
