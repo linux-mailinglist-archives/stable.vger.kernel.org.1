@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4482A28DEC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B2A2913B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B816A18890F0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 676D31646D0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8280D155335;
-	Wed,  5 Feb 2025 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F6C1FDA69;
+	Wed,  5 Feb 2025 14:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQV/1PHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUdSefOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E83F1519AA;
-	Wed,  5 Feb 2025 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05EC1FCFFC;
+	Wed,  5 Feb 2025 14:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764363; cv=none; b=l+dOGJuNjPmUyS2KM8GYEhpGV6XXDQkxOAruEyf8fjldwPnZOBEkkIIs08LcXHsl2btj3uJkL/w+VladpU3SMP9MoTRvRlM+IEr6zL7A7LKlNASFkZWbTubrN7hYG22OpZlycEbHvJPR+IDa2MBKhm3IQgE6SSh4nWptb+TfCbU=
+	t=1738766496; cv=none; b=lKQNVsTTM4lrOp0LX58EJqI1aspWQXKWuVap8/Bhhb2i+yjAfZG7M4CLzViaYMfQ6pFa9Z9aXReElc66Oifzx+G9x4+MAV0am5egxIEokQ60afb533vXdAcMLFt09jNV6mkW/GkTCJ7rJFd3rw1Zpyfmh2pfqF1HygHmBORXxqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764363; c=relaxed/simple;
-	bh=aeyyR/BS0bAmyLeUaPCpvkMUXUb9NCTXeRS4qBxbMY4=;
+	s=arc-20240116; t=1738766496; c=relaxed/simple;
+	bh=iuBhuyWTD3mnhBPA3ZQRYeFQZMhQIWSOJIFhsf2vEso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FT9nBPxInsORKoLjgf8vRtt5b8gwlhRD44s8QPBYewrLV3iZC2Lp0De/CfGNodOCouM+V8MwrmujN7/EaHPNECIpXN+iAfQ0fJmbLfBjhn5Ug0x2Qso0qjfuy1F77eCTCzCloAba/Hz9y3M5MFAiejhmGUnsUxtQqQy1Ktue704=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQV/1PHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC0DC4CED1;
-	Wed,  5 Feb 2025 14:06:02 +0000 (UTC)
+	 MIME-Version; b=mttDTin4tzp+tdCCdNKM24FIX+BzZpCbcOvw1fq2Wv3Zb1fZITdUXRodJMWRzQqB3uoKTq2d6yCrYKRYJn2KWZcFQx6nKKcmYU6AO9Qmm7e8sxgFS8t9IS/+61YpoImUUyi2Bau/otWVJwXJRbp15nrlp0dAPv1kbQrTyJDz17Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nUdSefOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A979C4CEDD;
+	Wed,  5 Feb 2025 14:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764363;
-	bh=aeyyR/BS0bAmyLeUaPCpvkMUXUb9NCTXeRS4qBxbMY4=;
+	s=korg; t=1738766496;
+	bh=iuBhuyWTD3mnhBPA3ZQRYeFQZMhQIWSOJIFhsf2vEso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQV/1PHth5APJKFp4mLlIGDCIxqSjzGFoMrsXwCUN57QtIpENY5Il687YwUAi6RXg
-	 BngqmrkH+eWURnVHk0X8n7+PXperdPpEPSBcinKArwuXEIjEHeixVHNgG9cosi2bhv
-	 fzDgVuw+lNL/T1ndyed0gZX+w+r7GOdOehoLnwWY=
+	b=nUdSefOC9pBsWdcwRBbdC6Ds4SZCza3iShioZoiYl0OSIwDlfKISbs8Maazl3busQ
+	 osyZ1CSlY8gxmNt7gzu0A9i4B9W0tC7fBfXki6POsoKqgFWFGGXjrzYt2QVVjQ0vKC
+	 FK/1Xaa8JR361fLgylSg5HIWGcwrOiV+DeljymTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ba Jing <bajing@cmss.chinamobile.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/393] ktest.pl: Remove unused declarations in run_bisect_test function
+Subject: [PATCH 6.12 329/590] arm64: dts: mediatek: mt8183: kenzo: Support second source touchscreen
 Date: Wed,  5 Feb 2025 14:41:24 +0100
-Message-ID: <20250205134426.610150480@linuxfoundation.org>
+Message-ID: <20250205134507.861247570@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ba Jing <bajing@cmss.chinamobile.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
+[ Upstream commit 5ec5dc73c5ac0c6e06803dc3b5aea4493e856568 ]
 
-Since $output and $ret are not used in the subsequent code, the declarations
-should be removed.
+Some kenzo devices use second source touchscreen.
 
-Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
-Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
-Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Fixes: 0a9cefe21aec ("arm64: dts: mt8183: Add kukui-jacuzzi-kenzo board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20241213-touchscreen-v3-1-7c1f670913f9@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/ktest.pl | 2 --
- 1 file changed, 2 deletions(-)
+ .../dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
-index 045090085ac5b..e84464d80e183 100755
---- a/tools/testing/ktest/ktest.pl
-+++ b/tools/testing/ktest/ktest.pl
-@@ -2946,8 +2946,6 @@ sub run_bisect_test {
- 
-     my $failed = 0;
-     my $result;
--    my $output;
--    my $ret;
- 
-     $in_bisect = 1;
- 
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+index e8241587949b2..561770fcf69e6 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+@@ -12,3 +12,18 @@
+ 	chassis-type = "laptop";
+ 	compatible = "google,juniper-sku17", "google,juniper", "mediatek,mt8183";
+ };
++
++&i2c0 {
++	touchscreen@40 {
++		compatible = "hid-over-i2c";
++		reg = <0x40>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&touchscreen_pins>;
++
++		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
++
++		post-power-on-delay-ms = <70>;
++		hid-descr-addr = <0x0001>;
++	};
++};
 -- 
 2.39.5
 
