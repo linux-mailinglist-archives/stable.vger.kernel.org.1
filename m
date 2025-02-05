@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-113753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 184CEA293B5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A479A291F8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D20B3AEC56
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A816ADDC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157BC1684B0;
-	Wed,  5 Feb 2025 15:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D161FC112;
+	Wed,  5 Feb 2025 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wL8YHWfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETSRswj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BD11519BF;
-	Wed,  5 Feb 2025 15:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ADF18A6D7;
+	Wed,  5 Feb 2025 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768050; cv=none; b=JKb8LApsd2f9LGHQiVHJtu1WN2uneGh+dVuIxDPPW70bzKJIE/d7fP2JbYY5Vr27B1Js15sCngvA2M6xwQN5mEQGZpde/TPNvPH2JnO72b16HBGyx/v6F0BSsT+VjGGWG/C5+hSzy1N7h5n5ijb4eGGDJ/fKqE1Ns8LbxluJfnc=
+	t=1738766813; cv=none; b=u2RKBWcLVNWPUPpch0o0lxCyVH4TL+FRDkaqP+KO9gq2NS/DtqKTSQ4NG+k+TjY/Gt90D35ZLquv4N5rKSVXvkUGoydzKKwbRYq9JQ4+00PIrS90pNIHQgb7u7h6VXIKyIlgVJncx2WoAXP6vQVW8ht4DzbDsUQrh6oQuZyVlSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768050; c=relaxed/simple;
-	bh=SKYl9ovbwvQOQg7dSysQRrAU4fkMD45oHcfHrlnMGQ0=;
+	s=arc-20240116; t=1738766813; c=relaxed/simple;
+	bh=iQdqMxG72rzio/irL9EWwi0p/y87wZEidYHiR/5cCGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csgBQRkj/rhwq0YJrSjpeGxDdf4k0Gmls6zkBfE+8x3WLk4oFmHwPovxuB2i/KATCykXw8F4rZjQcCrIhtlA5UoZ6G2fCB4c2YpBoOSgx8DVLdjMQsDUvniTK5KbZL0Bn9K4UZEpXUu9EyqaIa+4UDdNPyCTnu5pynecCr+sCUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wL8YHWfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95369C4CED1;
-	Wed,  5 Feb 2025 15:07:29 +0000 (UTC)
+	 MIME-Version; b=sRi+cgIqu6+ZVBnhhoSuGdaoNfaSSazqzikv3SYC7r55Q0gvB6Jam9+WRtir8mVgFRKRxD91gx78LAgkEz7QPkzQMz7v9hBTpQjqEFK0j0JBZpjFlLLrT8a8vZM1jTcfuRRlcpeNUjJjou6MBCkXgCUhC/BG03XmG8SNbVfWonI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETSRswj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E6BC4CED1;
+	Wed,  5 Feb 2025 14:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768050;
-	bh=SKYl9ovbwvQOQg7dSysQRrAU4fkMD45oHcfHrlnMGQ0=;
+	s=korg; t=1738766813;
+	bh=iQdqMxG72rzio/irL9EWwi0p/y87wZEidYHiR/5cCGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wL8YHWfNJ2pfqHfBZkk7SKd0uysVK+zbY1UGCUqgLD5nJzsr7yn3NHC+nS7OrSGnk
-	 GJlmg9u6w4LcDm8bmBHzo+3KXX2Lmu4EXYtCjsLjewBgI9Pd12OC7pdzDptU1mRzDl
-	 x0eSsEYUOUsZ/5zIpEwBSO2BWRG2J85JWU68LgxY=
+	b=ETSRswj8AI/smXAKErXq8J8QTiQHJHp6z6cZUBLLii1s8UrguZVaI41P99Us3M+jm
+	 uVWZwjQwEjF5ipHYkgamqZWumven1x798PL8tuaIW6yoL3OpaZ+DQ0dok6AEKbhP4L
+	 mR9rtGCZohRpIeHdjExDeTEElbeFhs1M40I9pU44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Carlos ODonell <carlos@redhat.com>,
-	Florian Weimer <fweimer@redhat.com>,
-	Michael Jeanson <mjeanson@efficios.com>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 6.12 546/590] selftests/rseq: Fix handling of glibc without rseq support
-Date: Wed,  5 Feb 2025 14:45:01 +0100
-Message-ID: <20250205134516.160256480@linuxfoundation.org>
+	syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 383/393] mptcp: consolidate suboption status
+Date: Wed,  5 Feb 2025 14:45:02 +0100
+Message-ID: <20250205134434.947852579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +63,333 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 336d02bc4c6bec5c3d933e5d470a94970f830957 upstream.
+commit c86b000782daba926c627d2fa00c3f60a75e7472 upstream.
 
-When porting librseq commit:
+MPTCP maintains the received sub-options status is the bitmask carrying
+the received suboptions and in several bitfields carrying per suboption
+additional info.
 
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
+Zeroing the bitmask before parsing is not enough to ensure a consistent
+status, and the MPTCP code has to additionally clear some bitfiled
+depending on the actually parsed suboption.
 
-from librseq to the kernel selftests, the following line was missed
-at the end of rseq_init():
+The above schema is fragile, and syzbot managed to trigger a path where
+a relevant bitfield is not cleared/initialized:
 
-  rseq_size = get_rseq_kernel_feature_size();
+  BUG: KMSAN: uninit-value in __mptcp_expand_seq net/mptcp/options.c:1030 [inline]
+  BUG: KMSAN: uninit-value in mptcp_expand_seq net/mptcp/protocol.h:864 [inline]
+  BUG: KMSAN: uninit-value in ack_update_msk net/mptcp/options.c:1060 [inline]
+  BUG: KMSAN: uninit-value in mptcp_incoming_options+0x2036/0x3d30 net/mptcp/options.c:1209
+   __mptcp_expand_seq net/mptcp/options.c:1030 [inline]
+   mptcp_expand_seq net/mptcp/protocol.h:864 [inline]
+   ack_update_msk net/mptcp/options.c:1060 [inline]
+   mptcp_incoming_options+0x2036/0x3d30 net/mptcp/options.c:1209
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_established+0x1061/0x2510 net/ipv4/tcp_input.c:6264
+   tcp_v4_do_rcv+0x7f3/0x11a0 net/ipv4/tcp_ipv4.c:1916
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
+   do_softirq+0x9a/0x100 kernel/softirq.c:462
+   __local_bh_enable_ip+0x9f/0xb0 kernel/softirq.c:389
+   local_bh_enable include/linux/bottom_half.h:33 [inline]
+   rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
+   __dev_queue_xmit+0x2758/0x57d0 net/core/dev.c:4493
+   dev_queue_xmit include/linux/netdevice.h:3168 [inline]
+   neigh_hh_output include/net/neighbour.h:523 [inline]
+   neigh_output include/net/neighbour.h:537 [inline]
+   ip_finish_output2+0x187c/0x1b70 net/ipv4/ip_output.c:236
+   __ip_finish_output+0x287/0x810
+   ip_finish_output+0x4b/0x600 net/ipv4/ip_output.c:324
+   NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+   ip_output+0x15f/0x3f0 net/ipv4/ip_output.c:434
+   dst_output include/net/dst.h:450 [inline]
+   ip_local_out net/ipv4/ip_output.c:130 [inline]
+   __ip_queue_xmit+0x1f2a/0x20d0 net/ipv4/ip_output.c:536
+   ip_queue_xmit+0x60/0x80 net/ipv4/ip_output.c:550
+   __tcp_transmit_skb+0x3cea/0x4900 net/ipv4/tcp_output.c:1468
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-which effectively leaves rseq_size initialized to -1U when glibc does not
-have rseq support. glibc supports rseq from version 2.35 onwards.
+  Uninit was stored to memory at:
+   mptcp_get_options+0x2c0f/0x2f20 net/mptcp/options.c:397
+   mptcp_incoming_options+0x19a/0x3d30 net/mptcp/options.c:1150
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_established+0x1061/0x2510 net/ipv4/tcp_input.c:6264
+   tcp_v4_do_rcv+0x7f3/0x11a0 net/ipv4/tcp_ipv4.c:1916
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
 
-In a following librseq commit
+  Uninit was stored to memory at:
+   put_unaligned_be32 include/linux/unaligned.h:68 [inline]
+   mptcp_write_options+0x17f9/0x3100 net/mptcp/options.c:1417
+   mptcp_options_write net/ipv4/tcp_output.c:465 [inline]
+   tcp_options_write+0x6d9/0xe90 net/ipv4/tcp_output.c:759
+   __tcp_transmit_skb+0x294b/0x4900 net/ipv4/tcp_output.c:1414
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+  Uninit was stored to memory at:
+   mptcp_pm_add_addr_signal+0x3d7/0x4c0
+   mptcp_established_options_add_addr net/mptcp/options.c:666 [inline]
+   mptcp_established_options+0x1b9b/0x3a00 net/mptcp/options.c:884
+   tcp_established_options+0x2c4/0x7d0 net/ipv4/tcp_output.c:1012
+   __tcp_transmit_skb+0x5b7/0x4900 net/ipv4/tcp_output.c:1333
+   tcp_transmit_skb net/ipv4/tcp_output.c:1486 [inline]
+   tcp_write_xmit+0x3b90/0x9070 net/ipv4/tcp_output.c:2829
+   __tcp_push_pending_frames+0xc4/0x380 net/ipv4/tcp_output.c:3012
+   tcp_send_fin+0x9f6/0xf50 net/ipv4/tcp_output.c:3618
+   __tcp_close+0x140c/0x1550 net/ipv4/tcp.c:3130
+   __mptcp_close_ssk+0x74e/0x16f0 net/mptcp/protocol.c:2496
+   mptcp_close_ssk+0x26b/0x2c0 net/mptcp/protocol.c:2550
+   mptcp_pm_nl_rm_addr_or_subflow+0x635/0xd10 net/mptcp/pm_netlink.c:889
+   mptcp_pm_nl_rm_subflow_received net/mptcp/pm_netlink.c:924 [inline]
+   mptcp_pm_flush_addrs_and_subflows net/mptcp/pm_netlink.c:1688 [inline]
+   mptcp_nl_flush_addrs_list net/mptcp/pm_netlink.c:1709 [inline]
+   mptcp_pm_nl_flush_addrs_doit+0xe10/0x1630 net/mptcp/pm_netlink.c:1750
+   genl_family_rcv_msg_doit net/netlink/genetlink.c:1115 [inline]
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x1214/0x12c0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x375/0x650 net/netlink/af_netlink.c:2542
+   genl_rcv+0x40/0x60 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1321 [inline]
+   netlink_unicast+0xf52/0x1260 net/netlink/af_netlink.c:1347
+   netlink_sendmsg+0x10da/0x11e0 net/netlink/af_netlink.c:1891
+   sock_sendmsg_nosec net/socket.c:711 [inline]
+   __sock_sendmsg+0x30f/0x380 net/socket.c:726
+   ____sys_sendmsg+0x877/0xb60 net/socket.c:2583
+   ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2637
+   __sys_sendmsg net/socket.c:2669 [inline]
+   __do_sys_sendmsg net/socket.c:2674 [inline]
+   __se_sys_sendmsg net/socket.c:2672 [inline]
+   __x64_sys_sendmsg+0x212/0x3c0 net/socket.c:2672
+   x64_sys_call+0x2ed6/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:47
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-to mimic the libc behavior, a new approach is taken: don't set the
-feature size in 'rseq_size' until at least one thread has successfully
-registered. This allows using 'rseq_size' in fast-paths to test for both
-registration status and available features. The caveat is that on libc
-either all threads are registered or none are, while with bare librseq
-it is the responsability of the user to register all threads using rseq.
+  Uninit was stored to memory at:
+   mptcp_pm_add_addr_received+0x95f/0xdd0 net/mptcp/pm.c:235
+   mptcp_incoming_options+0x2983/0x3d30 net/mptcp/options.c:1169
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
+   tcp_rcv_state_process+0x2a38/0x49d0 net/ipv4/tcp_input.c:6972
+   tcp_v4_do_rcv+0xbf9/0x11a0 net/ipv4/tcp_ipv4.c:1939
+   tcp_v4_rcv+0x51df/0x5750 net/ipv4/tcp_ipv4.c:2351
+   ip_protocol_deliver_rcu+0x2a3/0x13d0 net/ipv4/ip_input.c:205
+   ip_local_deliver_finish+0x336/0x500 net/ipv4/ip_input.c:233
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_local_deliver+0x21f/0x490 net/ipv4/ip_input.c:254
+   dst_input include/net/dst.h:460 [inline]
+   ip_rcv_finish+0x4a2/0x520 net/ipv4/ip_input.c:447
+   NF_HOOK include/linux/netfilter.h:314 [inline]
+   ip_rcv+0xcd/0x380 net/ipv4/ip_input.c:567
+   __netif_receive_skb_one_core net/core/dev.c:5704 [inline]
+   __netif_receive_skb+0x319/0xa00 net/core/dev.c:5817
+   process_backlog+0x4ad/0xa50 net/core/dev.c:6149
+   __napi_poll+0xe7/0x980 net/core/dev.c:6902
+   napi_poll net/core/dev.c:6971 [inline]
+   net_rx_action+0xa5a/0x19b0 net/core/dev.c:7093
+   handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:561
+   __do_softirq+0x14/0x1a kernel/softirq.c:595
 
-This combines the changes from the following librseq git commits:
+  Local variable mp_opt created at:
+   mptcp_incoming_options+0x119/0x3d30 net/mptcp/options.c:1127
+   tcp_data_queue+0xb4/0x7be0 net/ipv4/tcp_input.c:5233
 
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+The current schema is too fragile; address the issue grouping all the
+state-related data together and clearing the whole group instead of
+just the bitmask. This also cleans-up the code a bit, as there is no
+need to individually clear "random" bitfield in a couple of places
+any more.
 
-Fixes: a0cc649353bb ("selftests/rseq: Fix mm_cid test failure")
-Reported-by: Raghavendra Rao Ananta <rananta@google.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Carlos O'Donell <carlos@redhat.com>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Michael Jeanson <mjeanson@efficios.com>
-Cc: linux-kselftest@vger.kernel.org
+Fixes: 84dfe3677a6f ("mptcp: send out dedicated ADD_ADDR packet")
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Reported-by: syzbot+23728c2df58b3bd175ad@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/6786ac51.050a0220.216c54.00a7.GAE@google.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/541
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250123-net-mptcp-syzbot-issues-v1-1-af73258a726f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c |   32 +++++++++++++++++++++++++-------
- tools/testing/selftests/rseq/rseq.h |    9 ++++++++-
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ net/mptcp/options.c  |   13 +++++--------
+ net/mptcp/protocol.h |   30 ++++++++++++++++--------------
+ 2 files changed, 21 insertions(+), 22 deletions(-)
 
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -61,7 +61,6 @@ unsigned int rseq_size = -1U;
- unsigned int rseq_flags;
- 
- static int rseq_ownership;
--static int rseq_reg_success;	/* At least one rseq registration has succeded. */
- 
- /* Allocate a large area for the TLS. */
- #define RSEQ_THREAD_AREA_ALLOC_SIZE	1024
-@@ -152,14 +151,27 @@ int rseq_register_current_thread(void)
- 	}
- 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
- 	if (rc) {
--		if (RSEQ_READ_ONCE(rseq_reg_success)) {
-+		/*
-+		 * After at least one thread has registered successfully
-+		 * (rseq_size > 0), the registration of other threads should
-+		 * never fail.
-+		 */
-+		if (RSEQ_READ_ONCE(rseq_size) > 0) {
- 			/* Incoherent success/failure within process. */
- 			abort();
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -108,7 +108,6 @@ static void mptcp_parse_option(const str
+ 			mp_opt->suboptions |= OPTION_MPTCP_DSS;
+ 			mp_opt->use_map = 1;
+ 			mp_opt->mpc_map = 1;
+-			mp_opt->use_ack = 0;
+ 			mp_opt->data_len = get_unaligned_be16(ptr);
+ 			ptr += 2;
  		}
- 		return -1;
- 	}
- 	assert(rseq_current_cpu_raw() >= 0);
--	RSEQ_WRITE_ONCE(rseq_reg_success, 1);
-+
-+	/*
-+	 * The first thread to register sets the rseq_size to mimic the libc
-+	 * behavior.
-+	 */
-+	if (RSEQ_READ_ONCE(rseq_size) == 0) {
-+		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
-+	}
-+
- 	return 0;
- }
+@@ -157,11 +156,6 @@ static void mptcp_parse_option(const str
+ 		pr_debug("DSS\n");
+ 		ptr++;
  
-@@ -235,12 +247,18 @@ void rseq_init(void)
- 		return;
- 	}
- 	rseq_ownership = 1;
--	if (!rseq_available()) {
--		rseq_size = 0;
--		return;
--	}
-+
-+	/* Calculate the offset of the rseq area from the thread pointer. */
- 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
-+
-+	/* rseq flags are deprecated, always set to 0. */
- 	rseq_flags = 0;
-+
-+	/*
-+	 * Set the size to 0 until at least one thread registers to mimic the
-+	 * libc behavior.
-+	 */
-+	rseq_size = 0;
- }
+-		/* we must clear 'mpc_map' be able to detect MP_CAPABLE
+-		 * map vs DSS map in mptcp_incoming_options(), and reconstruct
+-		 * map info accordingly
+-		 */
+-		mp_opt->mpc_map = 0;
+ 		flags = (*ptr++) & MPTCP_DSS_FLAG_MASK;
+ 		mp_opt->data_fin = (flags & MPTCP_DSS_DATA_FIN) != 0;
+ 		mp_opt->dsn64 = (flags & MPTCP_DSS_DSN64) != 0;
+@@ -369,8 +363,11 @@ void mptcp_get_options(const struct sk_b
+ 	const unsigned char *ptr;
+ 	int length;
  
- static __attribute__((destructor))
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -60,7 +60,14 @@
- extern ptrdiff_t rseq_offset;
+-	/* initialize option status */
+-	mp_opt->suboptions = 0;
++	/* Ensure that casting the whole status to u32 is efficient and safe */
++	BUILD_BUG_ON(sizeof_field(struct mptcp_options_received, status) != sizeof(u32));
++	BUILD_BUG_ON(!IS_ALIGNED(offsetof(struct mptcp_options_received, status),
++				 sizeof(u32)));
++	*(u32 *)&mp_opt->status = 0;
  
- /*
-- * Size of the registered rseq area. 0 if the registration was
-+ * The rseq ABI is composed of extensible feature fields. The extensions
-+ * are done by appending additional fields at the end of the structure.
-+ * The rseq_size defines the size of the active feature set which can be
-+ * used by the application for the current rseq registration. Features
-+ * starting at offset >= rseq_size are inactive and should not be used.
-+ *
-+ * The rseq_size is the intersection between the available allocation
-+ * size for the rseq area and the feature size supported by the kernel.
-  * unsuccessful.
-  */
- extern unsigned int rseq_size;
+ 	length = (th->doff * 4) - sizeof(struct tcphdr);
+ 	ptr = (const unsigned char *)(th + 1);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -149,22 +149,24 @@ struct mptcp_options_received {
+ 	u32	subflow_seq;
+ 	u16	data_len;
+ 	__sum16	csum;
+-	u16	suboptions;
++	struct_group(status,
++		u16 suboptions;
++		u16 use_map:1,
++		    dsn64:1,
++		    data_fin:1,
++		    use_ack:1,
++		    ack64:1,
++		    mpc_map:1,
++		    reset_reason:4,
++		    reset_transient:1,
++		    echo:1,
++		    backup:1,
++		    deny_join_id0:1,
++		    __unused:2;
++	);
++	u8	join_id;
+ 	u32	token;
+ 	u32	nonce;
+-	u16	use_map:1,
+-		dsn64:1,
+-		data_fin:1,
+-		use_ack:1,
+-		ack64:1,
+-		mpc_map:1,
+-		reset_reason:4,
+-		reset_transient:1,
+-		echo:1,
+-		backup:1,
+-		deny_join_id0:1,
+-		__unused:2;
+-	u8	join_id;
+ 	u64	thmac;
+ 	u8	hmac[MPTCPOPT_HMAC_LEN];
+ 	struct mptcp_addr_info addr;
 
 
 
