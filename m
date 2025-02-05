@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-113297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66928A29124
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:45:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDBDA28DEA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31924163F04
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:44:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A9A188461D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A701F5413;
-	Wed,  5 Feb 2025 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BEC15DBC1;
+	Wed,  5 Feb 2025 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4hZsybd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3WsVm4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1B18732B;
-	Wed,  5 Feb 2025 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B915C13A;
+	Wed,  5 Feb 2025 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766483; cv=none; b=tzMSr7h9EIPXUpqiL5tanlmlCYSfhxRJX5F4LdBFXTYlQlhPGrfrbecxAn1gNhJszLJPp0GtU6EXBvS+QmTsxHA+7s0xpP4IC/JIPJIdITfiXs6tX/R8t8xX0XeXe7tB7oiDhNSxUE6aCC1XxlH68MhnzprHLp8EjSTJhG7RMII=
+	t=1738764353; cv=none; b=Le4EsVIQDZMG6C3yqfDsWdh4IqzVUS10y3srmlMl0rbat/133fR69DJSHf6/bzd3+WhZyqCDn8ZxIMxJFEGiA6DAisiOz8ioLh2sHTu0ClIT5Y7LUXTtiOF9jvEMLb89FifabYEe0fUr261nUsPFzMsWLCEVIPurpdUsFMqECoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766483; c=relaxed/simple;
-	bh=j58eF9bOpuxNVPaZkKZYn7oJaMeYQhtxxJmB/MN7Luo=;
+	s=arc-20240116; t=1738764353; c=relaxed/simple;
+	bh=hffu0T+CYp80z4SkjL3oKgsP7d126LAXPwySP/S0csg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edvodFh3N9wkiVaRatPlTr15wqonEbG6UXENuWtg0p2TAs4d8h/RMfGKkjWVLbYLBr8xY0nP5kRdFPqHS+UJKjzOWqaJ/zmtXY2xZjLQPBalk5+MbkcKOyxNkYJvvs7ROUuMjY+dQhuIJfBOxo/kpjw10NwTqQ5YH8lmUce+XS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4hZsybd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D8C4CEE2;
-	Wed,  5 Feb 2025 14:41:22 +0000 (UTC)
+	 MIME-Version; b=mFoQrojQ83fKqG6x5e2h5dS7cbFhBW/9QbiE9cto870Ox276a6FfXPajj8Wz3MYQRw6V3AsDh0PnfuZ21quVpJS/0ZIHXN67gjHSOcSH09Xnn/5jof2Vh7fF1MUJTJhEYOPumdsW6byWvI5O1Kg0MGyoqj11RWB8BasHzy7bOdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3WsVm4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05083C4CEDD;
+	Wed,  5 Feb 2025 14:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766482;
-	bh=j58eF9bOpuxNVPaZkKZYn7oJaMeYQhtxxJmB/MN7Luo=;
+	s=korg; t=1738764353;
+	bh=hffu0T+CYp80z4SkjL3oKgsP7d126LAXPwySP/S0csg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4hZsybdU/SqAFb0CnV2XzUZTTD83DQXutChB9LyiWUHE3MYD28xdC/1pXx0msndy
-	 NrnM3l0QX3/91xw+liDSVKrG69VyhzsZFSNTrZv9ogHXPuPA725Rdwbj4kdrxSCBJW
-	 B2BVn1cgYglo5zM92jzMeRTyc+3l0tEHYF8jO6r4=
+	b=v3WsVm4pJVMaPjKWQfv9T7PPNGG86jbqK1ysT4KWcgIcmabAV09O4vqj4co648nm0
+	 Oc+20+M82v7AFfAI/xN5vgGI65MM1Vdr4suehwckhwPO4fbmESP/mWzb4mpJl4Y+s1
+	 nHzYYzK0ECY8zXvZYqZIvtU/dH2OKR34KpLgqrGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: [PATCH 6.12 328/590] RDMA/rxe: Fix mismatched max_msg_sz
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Levi Yun <yeoreum.yun@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 164/393] perf expr: Initialize is_test value in expr__ctx_new()
 Date: Wed,  5 Feb 2025 14:41:23 +0100
-Message-ID: <20250205134507.822967728@linuxfoundation.org>
+Message-ID: <20250205134426.571976167@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Levi Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit db03b70969aab4ef111a3369cfd90ea4da3a6aa0 ]
+[ Upstream commit 1d18ebcfd302a2005b83ae5f13df223894d19902 ]
 
-User mode queries max_msg_sz as 0x800000 by command 'ibv_devinfo -v',
-however ibv_post_send/ibv_post_recv has a limit of 2^31. Fix this
-mismatched information.
+When expr_parse_ctx is allocated by expr_ctx_new(),
+expr_scanner_ctx->is_test isn't initialize, so it has garbage value.
+this can affects the result of expr__parse() return when it parses
+non-exist event literal according to garbage value.
 
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Fixes: f605f26ea196 ("RDMA/rxe: Protect QP state with qp->state_lock")
-Fixes: 5bf944f24129 ("RDMA/rxe: Add error messages")
-Link: https://patch.msgid.link/20241216121953.765331-1-pizhenwei@bytedance.com
-Review-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Use calloc instead of malloc in expr_ctx_new() to fix this.
+
+Fixes: 3340a08354ac286e ("perf pmu-events: Fix testing with JEVENTS_ARCH=all")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20241108143424.819126-1-yeoreum.yun@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_param.h | 2 +-
- drivers/infiniband/sw/rxe/rxe_verbs.c | 5 ++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ tools/perf/util/expr.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_param.h b/drivers/infiniband/sw/rxe/rxe_param.h
-index d2f57ead78ad1..003f681e5dc02 100644
---- a/drivers/infiniband/sw/rxe/rxe_param.h
-+++ b/drivers/infiniband/sw/rxe/rxe_param.h
-@@ -129,7 +129,7 @@ enum rxe_device_param {
- enum rxe_port_param {
- 	RXE_PORT_GID_TBL_LEN		= 1024,
- 	RXE_PORT_PORT_CAP_FLAGS		= IB_PORT_CM_SUP,
--	RXE_PORT_MAX_MSG_SZ		= 0x800000,
-+	RXE_PORT_MAX_MSG_SZ		= (1UL << 31),
- 	RXE_PORT_BAD_PKEY_CNTR		= 0,
- 	RXE_PORT_QKEY_VIOL_CNTR		= 0,
- 	RXE_PORT_LID			= 0,
-diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
-index 8a5fc20fd1869..589ac0d8489db 100644
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -696,7 +696,7 @@ static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
- 		for (i = 0; i < ibwr->num_sge; i++)
- 			length += ibwr->sg_list[i].length;
+diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
+index b8875aac8f870..fa0473f7a4ff4 100644
+--- a/tools/perf/util/expr.c
++++ b/tools/perf/util/expr.c
+@@ -292,7 +292,7 @@ struct expr_parse_ctx *expr__ctx_new(void)
+ {
+ 	struct expr_parse_ctx *ctx;
  
--		if (length > (1UL << 31)) {
-+		if (length > RXE_PORT_MAX_MSG_SZ) {
- 			rxe_err_qp(qp, "message length too long\n");
- 			break;
- 		}
-@@ -980,8 +980,7 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
- 	for (i = 0; i < num_sge; i++)
- 		length += ibwr->sg_list[i].length;
+-	ctx = malloc(sizeof(struct expr_parse_ctx));
++	ctx = calloc(1, sizeof(struct expr_parse_ctx));
+ 	if (!ctx)
+ 		return NULL;
  
--	/* IBA max message size is 2^31 */
--	if (length >= (1UL<<31)) {
-+	if (length > RXE_PORT_MAX_MSG_SZ) {
- 		err = -EINVAL;
- 		rxe_dbg("message length too long\n");
- 		goto err_out;
+@@ -301,9 +301,6 @@ struct expr_parse_ctx *expr__ctx_new(void)
+ 		free(ctx);
+ 		return NULL;
+ 	}
+-	ctx->sctx.user_requested_cpu_list = NULL;
+-	ctx->sctx.runtime = 0;
+-	ctx->sctx.system_wide = false;
+ 
+ 	return ctx;
+ }
 -- 
 2.39.5
 
