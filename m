@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D09A28EC3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EE7A29227
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 251C11886FA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A742162274
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB338634E;
-	Wed,  5 Feb 2025 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7701FDE0E;
+	Wed,  5 Feb 2025 14:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN6uLKyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuXBoCGJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F228691;
-	Wed,  5 Feb 2025 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8876615CD74;
+	Wed,  5 Feb 2025 14:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765001; cv=none; b=SJNiSdf/KIQMayHCQWjIP7HT3mlGtK2KPBhOj5PVJSbiCIGj1NwE7NZ5hJPOdSw0ziWPn0q/OCvODy3P0rxs8DMG0OAZ+fd73utZbO8iT9ZsPHTRftkBGW6kD+sHSWrw2tWX9k7spXBrJq0foQ9Qya62ogUTQThriqYq5TfvQBs=
+	t=1738766973; cv=none; b=czuD+DKgKL1FN81j/6bA3H4EXQLzVtAYQlJq7GDt0og1nxX2cwj+gwXcc836cbT//XSRoIAw1VUHg6H9658+gnsgY0iac6rBdV8YCmCdwUGwikgDWA7OprgB3pQxTVDp6AFkKsuljjtlsDZ0Ec0v703b3++nZziwSVHPrJjQD50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765001; c=relaxed/simple;
-	bh=Iprxw9PeJGxvLRe92A+rJXK6yhdhvW90Xx8byhSwkyU=;
+	s=arc-20240116; t=1738766973; c=relaxed/simple;
+	bh=g1VnNn/qaYjRa69Q533HQW2vxegevvVWQJowxex/8Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZF/uKWljbSixC8YjZB4VizvKoXSbpMBQc4tqju7UhPgxrmULhp9gGLeN+w8Jiob+NN0PsHbuSY4Du3uxJlX8rRdc0dwIsY5wfDImLchyhcYNGM800Fok8BZ7802TLqX9A4oJeMTPjd9UQqbgQ9Spb8UO+P2bi9ho9qeH5qfj5Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN6uLKyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E03C4CED1;
-	Wed,  5 Feb 2025 14:16:40 +0000 (UTC)
+	 MIME-Version; b=Bp0XpMpROAA8dnzPdt9xbVPwBB55W+eGM8D4rkH/QsSanHdtV1VGL+UnSUyL1Q6IMBYTl4fOnIJAy7roXCayFunUmXMs8Mt5nrdYm3k8iTM8HLKVjtEJSrxvOIF2QBiLbh4EUqXRxU5MEpLLSRAz1q7L6CN273nlnPpRXRCtCC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuXBoCGJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93C1C4CED1;
+	Wed,  5 Feb 2025 14:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765001;
-	bh=Iprxw9PeJGxvLRe92A+rJXK6yhdhvW90Xx8byhSwkyU=;
+	s=korg; t=1738766973;
+	bh=g1VnNn/qaYjRa69Q533HQW2vxegevvVWQJowxex/8Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GN6uLKyEBSoCfo1IbIHVlF7+vyHeQxytFONumopYNEhyGv6w2Y2TlBrrQ+niD+SxP
-	 8QqU6W32EhaUPkHD/ZFnCst+DsdhPhZqipGxi+mVEmEjboRhevj6xcI9bDLn5OG7Oc
-	 zisw/G+B+XgJce57HCAl8bn8Uj8845MFStmS1QW4=
+	b=UuXBoCGJ6A5J1R9KYy5IzWjz5X8XL4on9Jmjn+WfSY0Y58nyMiRjKI6ix3hpBojpF
+	 W8TI9ogzOxS0lO5A0g+F3U1qT6JUJJ1JeansvkhE/RsgbLymbogJc+j084L6mRryXI
+	 h/NO81bWQJtc1LiOTM0sDlJaJUVD/BUEOhRDxoEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/393] ARM: dts: stm32: Swap USART3 and UART8 alias on STM32MP15xx DHCOM SoM
+Subject: [PATCH 6.12 387/590] arm64: dts: marvell: cn9131-cf-solidwan: fix cp1 comphy links
 Date: Wed,  5 Feb 2025 14:42:22 +0100
-Message-ID: <20250205134428.838381486@linuxfoundation.org>
+Message-ID: <20250205134510.074268297@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 479b8227ffc433929ba49200182b6383569f9615 ]
+[ Upstream commit 09cdb973afa7a18ce8e66807daff94609cc4b8a4 ]
 
-Swap USART3 and UART8 aliases on STM32MP15xx DHCOM SoM,
-make sure UART8 is listed first, USART3 second, because
-the UART8 is labeled as UART2 on the SoM pinout, while
-USART3 is labeled as UART3 on the SoM pinout.
+Marvell CN913x platforms use common phy framework for configuring and
+linking serdes lanes according to their usage.
+Each CP (X) features 5 serdes lanes (Y) represented by cpX_comphyY
+nodes.
 
-Fixes: 34e0c7847dcf ("ARM: dts: stm32: Add DH Electronics DHCOM STM32MP1 SoM and PDK2 board")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+CN9131 SolidWAN uses CP1 serdes lanes 3 and 5 for eth1 and eth2 of CP1
+respectively. Devicetree however wrongly links from these ports to the
+comphy of CP0.
+
+Replace the wrong links to cp0_comphy with cp1_comphy inside cp1_eth1,
+cp1_eth2.
+
+Fixes: 1280840d2030 ("arm64: dts: add description for solidrun cn9131 solidwan board")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi | 4 ++--
+ arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-index 086d3a60ccce2..142d4a8731f8d 100644
---- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-@@ -15,8 +15,8 @@
- 		rtc0 = &hwrtc;
- 		rtc1 = &rtc;
- 		serial0 = &uart4;
--		serial1 = &usart3;
--		serial2 = &uart8;
-+		serial1 = &uart8;
-+		serial2 = &usart3;
- 	};
+diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+index b1ea7dcaed17d..47234d0858dd2 100644
+--- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
++++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
+@@ -435,7 +435,7 @@
+ 	managed = "in-band-status";
+ 	phy-mode = "sgmii";
+ 	phy = <&cp1_phy0>;
+-	phys = <&cp0_comphy3 1>;
++	phys = <&cp1_comphy3 1>;
+ 	status = "okay";
+ };
  
- 	chosen {
+@@ -444,7 +444,7 @@
+ 	managed = "in-band-status";
+ 	phy-mode = "sgmii";
+ 	phy = <&cp1_phy1>;
+-	phys = <&cp0_comphy5 2>;
++	phys = <&cp1_comphy5 2>;
+ 	status = "okay";
+ };
+ 
 -- 
 2.39.5
 
