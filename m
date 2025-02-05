@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D63A28E63
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA79A28F54
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10EAD3A51F2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF9D3A1C97
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743EF15573F;
-	Wed,  5 Feb 2025 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4BF156F39;
+	Wed,  5 Feb 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+Q3qIzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZLrHYeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E46155327;
-	Wed,  5 Feb 2025 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66A113C3F6;
+	Wed,  5 Feb 2025 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764731; cv=none; b=MBismRNuAmTd0T9ul0D95mzYnJIRfzpvHrknE0i+9RCarBu6emoPnCsE7BGBIq9iSADk/wGv87HN7v/+aobkffTo/nncAL/kst5ST3ckWNncFfRm+6u5hLW6rYL27icuqH7llGy2eCO9g8PxWKa+RItGFtCncI7MtSlzZ+rlrto=
+	t=1738765333; cv=none; b=TNnp6AypregwGDo5HC2TwGd3HBwW9lVAO6aSnBBR7QKp1O/vZEBwEFxJgobfAr4MTzSaS8k58s1jGl1zCMKvMw5RXYi9Ry1JvPsCEizaPP6nH4tDwsNP/y1+0oe5C6ip2WKmBJH42p1e+xMVDdeTTfygy4oEblMAbI423Zm7498=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764731; c=relaxed/simple;
-	bh=VDnRo9n9O059XdkjklgtkVpiMDdvc6U3o/kOuwAzJZQ=;
+	s=arc-20240116; t=1738765333; c=relaxed/simple;
+	bh=oR7QzoYlosWqrxV7rAkZ6JKYt26IVQhQAViNwy3Y+XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svPx8zOTVUQ8aVMat9JIaW7m6c5ESZYxLDxH/Z3qb4Gb0Si/wsTXFNrArrNnYi9lNqVFqRy8ZYG8YHcuGB20zXT6pErJJwlCyEoAgcZUPsQAHBw/yjISUzPjJ7gr1ld8Ir6tlG+2x6ErlBAqtd2U9pp19CH0X6PDX+UFufp9eGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+Q3qIzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF15C4CEDD;
-	Wed,  5 Feb 2025 14:12:10 +0000 (UTC)
+	 MIME-Version; b=LjvRm4sDbvC5hh7NFAAdeX0Hm0vLZGHJY/sVd5P7XMhSFb5/Fpy3BhfwbBWAz6LNTKztpi9Lw6Hpil9RYzyLfLrJgukSXWdYl+uFUQNrliZeBWdYYQGGJnlj3LbMvHU3BUMmUPI1+W3V+cRNafUrTfTI6oUScapfF/t95Aj1W3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RZLrHYeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9386C4CED1;
+	Wed,  5 Feb 2025 14:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764731;
-	bh=VDnRo9n9O059XdkjklgtkVpiMDdvc6U3o/kOuwAzJZQ=;
+	s=korg; t=1738765333;
+	bh=oR7QzoYlosWqrxV7rAkZ6JKYt26IVQhQAViNwy3Y+XI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+Q3qIzPYE2hmztcfpleWfUrfC+kDBMZfVI3C2pMo8bgas5YzrCM8VHgbzp5iPi8V
-	 Gf1bg1owP+NICbEvjNpflBUZQ6eogaBQVdmciJeZrAyBlBQC7kYIQoNyPkGocDcKaq
-	 DwW923u/Md5SofzE/iIFl+33e0AmxQcU2lHDvTyU=
+	b=RZLrHYeEqYEIrO8/h4c7u8o/VZV5b5+KFazpbBplC1txPeclgn/yEXHwwRgKmpNsc
+	 gpbXr3CyRcC7PT2tNvRYaLH+JyD9sEuemVX75+kHFfMfeEf35QvWuS4w86ob4O8NWe
+	 G2hVKcuZcyb7L7NqPVWuSnB1F/ekalfkn8g0vVLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/590] wifi: rtw89: mcc: consider time limits not divisible by 1024
-Date: Wed,  5 Feb 2025 14:38:28 +0100
-Message-ID: <20250205134501.137812601@linuxfoundation.org>
+Subject: [PATCH 6.13 167/623] wifi: mac80211: prohibit deactivating all links
+Date: Wed,  5 Feb 2025 14:38:29 +0100
+Message-ID: <20250205134502.623377428@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 35642ba31dc4a1816a20191e90156a9e329beb10 ]
+[ Upstream commit 7553477cbfd784b128297f9ed43751688415bbaa ]
 
-For each MCC role, time limits, including max_tob_us, max_toa_us, and
-mac_dur_us, are calculated if there are NoA attributes. The relation
-between these time limits is "max_dur_us = max_tob_us + max_toa_us".
-Then, the unit is converted from us to TU. However, originally, each
-time limit was divided by 1024 independently. It missed to consider
-the cases that max_tob_us or max_toa_us is not divisible by 1024. It
-causes the result breaks "max_dur (TU) = max_tob (TU) + max_toa (TU)".
-Finally, when MCC calculates pattern parameters based on these kinds
-of time limits, it might not perform well.
+In the internal API this calls this is a WARN_ON, but that
+should remain since internally we want to know about bugs
+that may cause this. Prevent deactivating all links in the
+debugfs write directly.
 
-Fixes: b09df09b55fb ("wifi: rtw89: mcc: initialize start flow")
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250103074412.124066-1-pkshih@realtek.com
+Reported-by: syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com
+Fixes: 3d9011029227 ("wifi: mac80211: implement link switching")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20241230091408.505bd125c35a.Ic3c1f9572b980a952a444cad62b09b9c6721732b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 2 +-
+ net/mac80211/debugfs_netdev.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index c06d305519df4..4df4e04c3e67d 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -802,7 +802,7 @@ static void rtw89_mcc_fill_role_limit(struct rtw89_dev *rtwdev,
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index a9bc2fd59f55a..e7687a7b16835 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -727,7 +727,7 @@ static ssize_t ieee80211_if_parse_active_links(struct ieee80211_sub_if_data *sda
+ {
+ 	u16 active_links;
  
- 	mcc_role->limit.max_toa = max_toa_us / 1024;
- 	mcc_role->limit.max_tob = max_tob_us / 1024;
--	mcc_role->limit.max_dur = max_dur_us / 1024;
-+	mcc_role->limit.max_dur = mcc_role->limit.max_toa + mcc_role->limit.max_tob;
- 	mcc_role->limit.enable = true;
+-	if (kstrtou16(buf, 0, &active_links))
++	if (kstrtou16(buf, 0, &active_links) || !active_links)
+ 		return -EINVAL;
  
- 	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
+ 	return ieee80211_set_active_links(&sdata->vif, active_links) ?: buflen;
 -- 
 2.39.5
 
