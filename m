@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B70A2935B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F25A28F3D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 961833AFB6C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29CC3A2159
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC9D1898F8;
-	Wed,  5 Feb 2025 15:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611681537AC;
+	Wed,  5 Feb 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjUKvxgm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7YtVONK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC08F1519A9;
-	Wed,  5 Feb 2025 15:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F23913C3F6;
+	Wed,  5 Feb 2025 14:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767616; cv=none; b=rQgkm3yeWkuzuAmEdUlBV6uWq/E6/zViJAtzmHlZS8AgH+QqmSsvIm8CsgC8hMjVF2VyXF8zDulaKcufYYz8BbpqlS4wWv4sYEk1nXTgq3q+C1gKVyWqHBwRvXu3FLkFhXSHuZsY+OLPrZGD6wOzKc5r5CLebngA2ABx2uAzdv0=
+	t=1738765309; cv=none; b=MetIrMb59Joc8GAYHVLrxx6iUGWLKnV9cFZ9OVp+d+2KT8Uk1QS7zmXMEYTK14hCZdllFYl8t0IpE59GXCuAIqIlyzXG4/heilPR89nbwMZGZtoOWvZwv+Udw70PSyocGzxk1COg3N8f5rLEmiMIsZGfpQ2s+7bQivIh8gF62qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767616; c=relaxed/simple;
-	bh=d8Su/k7jS+F5wqJELmLDsHVy9+mfegHLJ9fdu53Fpi0=;
+	s=arc-20240116; t=1738765309; c=relaxed/simple;
+	bh=OHrrl9wMpa6m6v3cfDRJ46ZZS+BDusO149XBCejwy0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Emk3YE6pfDPS+VxsfsL7yTIWnWYrU1WX2VYmcvwg+2CIeB+5sg2TclWWlVXOg8Zw7TEpM5uNko5L1loWOyX/6ljIJKn62hrZuH0ouqi/qP3qCUz8+UYrL85xaCq/HVnyfVDpFqMtdWenAjeAOOhLeuB62K287rJe+L8T5pXP//c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjUKvxgm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526AAC4CED1;
-	Wed,  5 Feb 2025 15:00:16 +0000 (UTC)
+	 MIME-Version; b=QhpOK81duG/wh52HnhLknca6Z2JGNL4uwyoBYYrP3avteuXn23leO0+5tG5mWCI/zthKzg1oFTDPumDiqvoUoxdV+Qx41HlECoGr3LW9QNmx/v/nJwbHfPLsmuiZsUWa8icBtGIGP2pyRe3XnsytggMYYQKM+xl52vFN4EMyKlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7YtVONK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80872C4CED1;
+	Wed,  5 Feb 2025 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767616;
-	bh=d8Su/k7jS+F5wqJELmLDsHVy9+mfegHLJ9fdu53Fpi0=;
+	s=korg; t=1738765309;
+	bh=OHrrl9wMpa6m6v3cfDRJ46ZZS+BDusO149XBCejwy0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjUKvxgmjgW8wtt4Non8Sra3yo8E0/XGtoAfU2YjyGr6jag9VXYGABH/2czxeb54l
-	 YqjoH9niE3mkEqlk+fvGifcLhgG45eXeL4MkWQFo9DvD6QB+ELUjfuf4EL7IYnYho9
-	 FrMGohb6XN5GC82dW0ww7maFa3n8FTvQWHKpCL4g=
+	b=Y7YtVONKdiAW+eSg01cCQYMDjmOoWJqExp/LDH9FxTPXK/NWqz62l/eSQczPT/uIM
+	 OXnCw2yiSaLczSxMLKiVg149my30mfSsKJHvgrg3dr3KKai3anr4W96St4JCarPb9t
+	 HVzmk4S04uwYutEjs8H7zUsricTAWGyX//Eieeq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Artemy Kovalyov <artemyko@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Bin Liu <b-liu@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 429/623] RDMA/mlx5: Fix indirect mkey ODP page count
+Subject: [PATCH 6.6 252/393] arm64: dts: ti: k3-am62a: Remove duplicate GICR reg
 Date: Wed,  5 Feb 2025 14:42:51 +0100
-Message-ID: <20250205134512.635331577@linuxfoundation.org>
+Message-ID: <20250205134429.948356723@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Bryan Brattlof <bb@ti.com>
 
-[ Upstream commit 235f238402194a78ac5fb882a46717eac817e5d1 ]
+[ Upstream commit 6f0232577e260cdbc25508e27bb0b75ade7e7ebc ]
 
-Restrict the check for the number of pages handled during an ODP page
-fault to direct mkeys.
-Perform the check right after handling the page fault and don't
-propagate the number of handled pages to callers.
+The GIC Redistributor control range is mapped twice. Remove the extra
+entry from the reg range.
 
-Indirect mkeys and their associated direct mkeys can have different
-start addresses. As a result, the calculation of the number of pages to
-handle for an indirect mkey may not match the actual page fault
-handling done on the direct mkey.
-
-For example:
-A 4K sized page fault on a KSM mkey that has a start address that is not
-aligned to a page will result a calculation that assumes the number of
-pages required to handle are 2.
-While the underlying MTT might be aligned will require fetching only a
-single page.
-Thus, do the calculation and compare number of pages handled only per
-direct mkey.
-
-Fixes: db570d7deafb ("IB/mlx5: Add ODP support to MW")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
-Link: https://patch.msgid.link/86c483d9e75ce8fe14e9ff85b62df72b779f8ab1.1736187990.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Reported-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-2-758b4d5b4a0a@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 32 +++++++++++++++-----------------
- 1 file changed, 15 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 4b37446758fd4..69ca2de33a80e 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -944,8 +944,7 @@ static struct mlx5_ib_mkey *find_odp_mkey(struct mlx5_ib_dev *dev, u32 key)
- /*
-  * Handle a single data segment in a page-fault WQE or RDMA region.
-  *
-- * Returns number of OS pages retrieved on success. The caller may continue to
-- * the next data segment.
-+ * Returns zero on success. The caller may continue to the next data segment.
-  * Can return the following error codes:
-  * -EAGAIN to designate a temporary error. The caller will abort handling the
-  *  page fault and resolve it.
-@@ -958,7 +957,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 					 u32 *bytes_committed,
- 					 u32 *bytes_mapped)
- {
--	int npages = 0, ret, i, outlen, cur_outlen = 0, depth = 0;
-+	int ret, i, outlen, cur_outlen = 0, depth = 0, pages_in_range;
- 	struct pf_frame *head = NULL, *frame;
- 	struct mlx5_ib_mkey *mmkey;
- 	struct mlx5_ib_mr *mr;
-@@ -993,13 +992,20 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	case MLX5_MKEY_MR:
- 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
- 
-+		pages_in_range = (ALIGN(io_virt + bcnt, PAGE_SIZE) -
-+				  (io_virt & PAGE_MASK)) >>
-+				 PAGE_SHIFT;
- 		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
- 		if (ret < 0)
- 			goto end;
- 
- 		mlx5_update_odp_stats(mr, faults, ret);
- 
--		npages += ret;
-+		if (ret < pages_in_range) {
-+			ret = -EFAULT;
-+			goto end;
-+		}
-+
- 		ret = 0;
- 		break;
- 
-@@ -1090,7 +1096,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	kfree(out);
- 
- 	*bytes_committed = 0;
--	return ret ? ret : npages;
-+	return ret;
- }
- 
- /*
-@@ -1109,8 +1115,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
-  *                   the committed bytes).
-  * @receive_queue: receive WQE end of sg list
-  *
-- * Returns the number of pages loaded if positive, zero for an empty WQE, or a
-- * negative error code.
-+ * Returns zero for success or a negative error code.
-  */
- static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 				   struct mlx5_pagefault *pfault,
-@@ -1118,7 +1123,7 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 				   void *wqe_end, u32 *bytes_mapped,
- 				   u32 *total_wqe_bytes, bool receive_queue)
- {
--	int ret = 0, npages = 0;
-+	int ret = 0;
- 	u64 io_virt;
- 	__be32 key;
- 	u32 byte_count;
-@@ -1175,10 +1180,9 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 						    bytes_mapped);
- 		if (ret < 0)
- 			break;
--		npages += ret;
- 	}
- 
--	return ret < 0 ? ret : npages;
-+	return ret;
- }
- 
- /*
-@@ -1414,12 +1418,6 @@ static void mlx5_ib_mr_wqe_pfault_handler(struct mlx5_ib_dev *dev,
- 	free_page((unsigned long)wqe_start);
- }
- 
--static int pages_in_range(u64 address, u32 length)
--{
--	return (ALIGN(address + length, PAGE_SIZE) -
--		(address & PAGE_MASK)) >> PAGE_SHIFT;
--}
--
- static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
- 					   struct mlx5_pagefault *pfault)
- {
-@@ -1458,7 +1456,7 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
- 	if (ret == -EAGAIN) {
- 		/* We're racing with an invalidation, don't prefetch */
- 		prefetch_activated = 0;
--	} else if (ret < 0 || pages_in_range(address, length) > ret) {
-+	} else if (ret < 0) {
- 		mlx5_ib_page_fault_resume(dev, pfault, 1);
- 		if (ret != -ENOENT)
- 			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%llx, type: 0x%x\n",
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index de36abb243f10..1497f7c8adfaf 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -18,7 +18,6 @@
+ 		compatible = "arm,gic-v3";
+ 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
+ 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
+-		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
+ 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
+ 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
+ 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
 -- 
 2.39.5
 
