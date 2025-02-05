@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-112568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B77BA28D88
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DF9A29208
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F4AB3A8D47
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E50A188C90F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1BB2E634;
-	Wed,  5 Feb 2025 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD16189F57;
+	Wed,  5 Feb 2025 14:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o48gX5lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTBQxNTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381D214F9E7;
-	Wed,  5 Feb 2025 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E161DF993;
+	Wed,  5 Feb 2025 14:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764008; cv=none; b=rGnkQqHlu02xsyojP6IET1DiPkpF0nHjDzEs5vdG8EpQnKzi6CRKZW9xvxEJ/DJm2evWzNDjlfSYuOByPzUf/UT04kfJSyAinrI4XMZlVA2Vpfs4P489t44hk20+TgKEwu+2r9il+niKYlax7YisSDK2wmtqkt8SX+rpNUP5ZYQ=
+	t=1738766756; cv=none; b=mQpxBl3dJZlyb2Qi+tT3ajWfXGdLzgtb8igEd89/6yVwkkMq1BFz9ehXwlup2rQ+RDs5oQD18Xj6ibNSe+A5KY45yV7EC2h5k7VRCfew284QFOPdFsD5qgVOCDgZIfVcM/D+IsNpFgyhgMUni28Ec+vBHnvASRuFxmOLzyPqez0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764008; c=relaxed/simple;
-	bh=ofSrL9JMMM6OBCVUz+pocEc+y/Zj1rQ9wNIyHpoF60w=;
+	s=arc-20240116; t=1738766756; c=relaxed/simple;
+	bh=Di/Nw9sYDutxGkbA5a/mysSauHdu01aMKpcPtt0/HeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxQs5fVsuS+W3e49MAeJs5EJSkgNF2a6BKJXUnRI4umXLi9QOzq1uJMei/DIaGJNnR3425hAXb+6E7YGO8vAUZ39P4iqRjfpDm8MDgUvuG+6ScHk6DQOxSliaZIIH/iPbmCUxtX9dcRuybpjeoD3nrqbRHMdshD+bTrPEQKCDEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o48gX5lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E592C4CED1;
-	Wed,  5 Feb 2025 14:00:07 +0000 (UTC)
+	 MIME-Version; b=VBoC40J+R8WAnf1TfYRwmiBCofmAO86lN9BOrAI8P1CxciYVk5JnFcL+fbufDg9U3c965ZfqHS8KL1YszJYw57DCReNe50jWzBNLfFSfbvFz63+wRbcRr/cqbV37mDUAfgMaY21/iQZcmdxpPxml4u+n/9xREJvbdqKvwIjGFO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTBQxNTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02C9C4CED1;
+	Wed,  5 Feb 2025 14:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764008;
-	bh=ofSrL9JMMM6OBCVUz+pocEc+y/Zj1rQ9wNIyHpoF60w=;
+	s=korg; t=1738766756;
+	bh=Di/Nw9sYDutxGkbA5a/mysSauHdu01aMKpcPtt0/HeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o48gX5lk07rlaSTCH6GAH2pc1f4sYpVe4UCvmTjZXO7xzUqTJYONAoHUyFjE3cmNE
-	 pTQlxnG6aV4GQsyVYTfc1BqLfIBJU11iQy5lOHDiOZWg+smr/F8IpA8zVN98wCUS/T
-	 8GS9zV9z9wqW6GZtFfOabltumqaOLzMWM5QtZhGI=
+	b=gTBQxNTcd0iMd/je8pQxGIZluqmVcGflSQiu6KbzAAb2RxhD83jDNUabTYkKDxzx+
+	 8xfdwAzg/L9U/9IKScHi8hKsW4kSNL6WJa9gI920fiJnmJqNKr9xvv9aafe15iONz7
+	 B+ivQcobnKbt9D87sRvpLrqj6J4beGzYYDuP7MaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Howard Hsu <howard-yh.hsu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/393] wifi: mt76: mt7996: fix the capability of reception of EHT MU PPDU
+Subject: [PATCH 6.13 304/623] perf inject: Fix use without initialization of local variables
 Date: Wed,  5 Feb 2025 14:40:46 +0100
-Message-ID: <20250205134425.151798962@linuxfoundation.org>
+Message-ID: <20250205134507.858114361@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +71,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 2ffbdfc1bd78ba944c5754791c84f32232b513c6 ]
+[ Upstream commit 8e246a1b2a75e187c7d22c9aec4299057f87d19e ]
 
-This commit includes two changes. First, enable "EHT MU PPDU With 4x
-EHT-LTF And 0.8us GI" in EHT Phy capabilities element since hardware
-can support. Second, fix the value of "Maximum number of supported
-EHT LTFs" in the same element, where the previous setting of 3 in
-Bit 3-4 was incorrect.
+Local variables were missing initialization and command line
+processing didn't provide default values.
 
-Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250114101026.3587702-2-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 64eed019f3fce124 ("perf inject: Lazy build-id mmap2 event insertion")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241211060831.806539-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/perf/builtin-inject.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 7931e43e8b6df..855f2d35523d7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -773,21 +773,20 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK;
+diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
+index d6989195a061f..11e49cafa3af9 100644
+--- a/tools/perf/builtin-inject.c
++++ b/tools/perf/builtin-inject.c
+@@ -2367,10 +2367,10 @@ int cmd_inject(int argc, const char **argv)
+ 	};
+ 	int ret;
+ 	const char *known_build_ids = NULL;
+-	bool build_ids;
+-	bool build_id_all;
+-	bool mmap2_build_ids;
+-	bool mmap2_build_id_all;
++	bool build_ids = false;
++	bool build_id_all = false;
++	bool mmap2_build_ids = false;
++	bool mmap2_build_id_all = false;
  
- 	eht_cap_elem->phy_cap_info[4] =
-+		IEEE80211_EHT_PHY_CAP4_EHT_MU_PPDU_4_EHT_LTF_08_GI |
- 		u8_encode_bits(min_t(int, sts - 1, 2),
- 			       IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK);
- 
- 	eht_cap_elem->phy_cap_info[5] =
- 		u8_encode_bits(IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US,
- 			       IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK) |
--		u8_encode_bits(u8_get_bits(0x11, GENMASK(1, 0)),
-+		u8_encode_bits(u8_get_bits(1, GENMASK(1, 0)),
- 			       IEEE80211_EHT_PHY_CAP5_MAX_NUM_SUPP_EHT_LTF_MASK);
- 
- 	val = width == NL80211_CHAN_WIDTH_320 ? 0xf :
- 	      width == NL80211_CHAN_WIDTH_160 ? 0x7 :
- 	      width == NL80211_CHAN_WIDTH_80 ? 0x3 : 0x1;
- 	eht_cap_elem->phy_cap_info[6] =
--		u8_encode_bits(u8_get_bits(0x11, GENMASK(4, 2)),
--			       IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK) |
- 		u8_encode_bits(val, IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK);
- 
- 	val = u8_encode_bits(nss, IEEE80211_EHT_MCS_NSS_RX) |
+ 	struct option options[] = {
+ 		OPT_BOOLEAN('b', "build-ids", &build_ids,
 -- 
 2.39.5
 
