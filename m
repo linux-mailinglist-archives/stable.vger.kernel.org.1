@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3981FA28E45
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F5AA292EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20829168826
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A91188CA65
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9A71537AC;
-	Wed,  5 Feb 2025 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F6519258B;
+	Wed,  5 Feb 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2ISTlEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4C9o0sX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957BA1519AA;
-	Wed,  5 Feb 2025 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B858533993;
+	Wed,  5 Feb 2025 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764658; cv=none; b=Wsmdpb6pJhY7+LoKoxT8AJudfZw5zyyt7SvlbbywqU7deN0O4Zm6XMEpuayDOzsBUuk6LsePP9Wd7x1pS4E+1jEB5yHjANPWrCnC4N7TG2ite/giLhOHU1HWNM4lbx4gSjOjQ8LEYY3PdK5egcI4kez0LLF2MSI1iwcYqCJ3Ct0=
+	t=1738767275; cv=none; b=Mx4/9i10MvWpwOofzBYyXnsPdfotujYxKxXZvgqMkdSsgrKI/c0sCXQEXoC2QF8VpJlZ4iBH8ZwGUr4hVTOPV+zwyH/KANOCgEWi6a0EsQYgiWWQo7iS9QoZkZZXkfmJtlBHaYtuDK4b7hmSqqXvI1Kf8aEaPzZAd0q5u1YduWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764658; c=relaxed/simple;
-	bh=jWOhhwYRQ0Vfo1AkrBDnpUPjBIjKCzTbUtL5r+75xOM=;
+	s=arc-20240116; t=1738767275; c=relaxed/simple;
+	bh=huyLBH3zyMW8rbONc1H8f3Uo9M6fNDuQG/Zr0uAXvHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGduDXLXZXjVke6zOW+/FC7NkR0jXAgomi2taWuFtA/P638CvbhJHzG5YVpGbLI1ASrKXYxJLHTGfmUlciGA8WgxyhecmDZYcpGM1rtQM5Awlro+Nd0piVbIohLT4hAcLnYJ4tqA4j+HvJftn0rzBezS4TePqnfjBjenYwECqMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2ISTlEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DDCC4CED1;
-	Wed,  5 Feb 2025 14:10:57 +0000 (UTC)
+	 MIME-Version; b=ahFbBmgI4B2LjqQpZiFG1O9ttpK3yWTYrXf8LLImA8POvZY2Bpks963qhnTTnkl5FTwmqJ5xJfhBxuO6wNCJYsDRTpqh5ZEsiws9THT/WWJ2qdcHQUA7UprMuJ7ZgI2ESKK3RYMOVuMtl/r/gedPZwA5/FRvYXdnnBkCJfcTgNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4C9o0sX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7AAC4CED1;
+	Wed,  5 Feb 2025 14:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764658;
-	bh=jWOhhwYRQ0Vfo1AkrBDnpUPjBIjKCzTbUtL5r+75xOM=;
+	s=korg; t=1738767275;
+	bh=huyLBH3zyMW8rbONc1H8f3Uo9M6fNDuQG/Zr0uAXvHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2ISTlEgz+/uDpsDvIYU5kvnAsA52fi9zCfYeWi8sjK3WJ9bunznRb+HQEUbGEIJt
-	 jmlJKyWI/XjLod5dCKQbryZnwYC0kSzZfXWJ96zt0+QObGdI6o6+iRUAYfq0CkaD6y
-	 tUQZj+099H7G+lxY+GlCD1312pd4hJyC6dqKHTJo=
+	b=h4C9o0sXyu9Pkyl29Z2N86xkdIwNwb66HJ7aOQLrHoGCo2qgtMjPxRvLXGMenv8el
+	 XOK9s4DKZz4upOIO65yumhk7QarrohQoQovj+kd8q93JBb8hSwImFzCoRP7zFvKHhC
+	 PGfQNGk+CFbe1i/JMGCyWLKyy5XTgBI2T7XoAzUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/393] padata: avoid UAF for reorder_work
+Subject: [PATCH 6.13 368/623] arm64: dts: qcom: sa8775p: Update sleep_clk frequency
 Date: Wed,  5 Feb 2025 14:41:50 +0100
-Message-ID: <20250205134427.604416825@linuxfoundation.org>
+Message-ID: <20250205134510.299708462@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit dd7d37ccf6b11f3d95e797ebe4e9e886d0332600 ]
+[ Upstream commit 30f7dfd2c4899630becf477447e8bbe92683d2c6 ]
 
-Although the previous patch can avoid ps and ps UAF for _do_serial, it
-can not avoid potential UAF issue for reorder_work. This issue can
-happen just as below:
+Fix the sleep_clk frequency is 32000 on SA8775P.
 
-crypto_request			crypto_request		crypto_del_alg
-padata_do_serial
-  ...
-  padata_reorder
-    // processes all remaining
-    // requests then breaks
-    while (1) {
-      if (!padata)
-        break;
-      ...
-    }
-
-				padata_do_serial
-				  // new request added
-				  list_add
-    // sees the new request
-    queue_work(reorder_work)
-				  padata_reorder
-				    queue_work_on(squeue->work)
-...
-
-				<kworker context>
-				padata_serial_worker
-				// completes new request,
-				// no more outstanding
-				// requests
-
-							crypto_del_alg
-							  // free pd
-
-<kworker context>
-invoke_padata_reorder
-  // UAF of pd
-
-To avoid UAF for 'reorder_work', get 'pd' ref before put 'reorder_work'
-into the 'serial_wq' and put 'pd' ref until the 'serial_wq' finish.
-
-Fixes: bbefa1dd6a6d ("crypto: pcrypt - Avoid deadlock by using per-instance padata queues")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20241025-sa8775p-mm-v4-resend-patches-v6-1-329a2cac09ae@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index 6badcbc6d3cb7..071d8cad80787 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -352,8 +352,14 @@ static void padata_reorder(struct parallel_data *pd)
- 	smp_mb();
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+index 3fc62e1236896..db03e04ad9d56 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -608,7 +608,7 @@
+ };
  
- 	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
--	if (!list_empty(&reorder->list) && padata_find_next(pd, false))
-+	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
-+		/*
-+		 * Other context(eg. the padata_serial_worker) can finish the request.
-+		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
-+		 */
-+		padata_get_pd(pd);
- 		queue_work(pinst->serial_wq, &pd->reorder_work);
-+	}
- }
+ &sleep_clk {
+-	clock-frequency = <32764>;
++	clock-frequency = <32000>;
+ };
  
- static void invoke_padata_reorder(struct work_struct *work)
-@@ -364,6 +370,8 @@ static void invoke_padata_reorder(struct work_struct *work)
- 	pd = container_of(work, struct parallel_data, reorder_work);
- 	padata_reorder(pd);
- 	local_bh_enable();
-+	/* Pairs with putting the reorder_work in the serial_wq */
-+	padata_put_pd(pd);
- }
- 
- static void padata_serial_worker(struct work_struct *serial_work)
+ &spi16 {
 -- 
 2.39.5
 
