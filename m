@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED000A29069
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF09BA28FF8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2B67A279B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC64C3AA76D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC11155747;
-	Wed,  5 Feb 2025 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A052115990C;
+	Wed,  5 Feb 2025 14:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObdfoupB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLbbOlvz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5387DA6A;
-	Wed,  5 Feb 2025 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8601607B7;
+	Wed,  5 Feb 2025 14:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766142; cv=none; b=ogUVVOZrgvricP0qgz9YK7QbPMCoqQj6tK9HKm2YzjLiZb2tHyEwn7IsfojaprwI3+yIc/mjsqfsa8bDnB2O727Mh9ArDRp8wY5XcnkKBWLdqvZqyhpuaSQZ+kEna+h81lh03v/0jZc00YsFMQDpRAsykyWVM6qP8M4WeHFHecg=
+	t=1738765777; cv=none; b=a8kVR++fIYQ2NtTLtwbSanEvD71vrifJjJ8C/0Fu6rOtOcvVAHkk6qHBnw5yNMfWbArRH46Ukwgz+3ecehp8jDj0iMY/20xo5Q+nAfTbsxStdH6Zn/Y/Pg4wkRCDoY+6KJmW3YKeaRKsEa0g+htoPbvTBAsioh2gCKnrGUEH1LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766142; c=relaxed/simple;
-	bh=xlmhOtS1GSNXMVjmq51FUb/rJDiIe4++xFz5gkPLjac=;
+	s=arc-20240116; t=1738765777; c=relaxed/simple;
+	bh=miDwXgMiEzEYqwNwKBkD5YGRVKfIqNZADGT38BXYlNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QK9Ar7EoEc/84tTIc2BtD4C7oQ55Dz30TpYimRrrwDQYnH021Uhx/5DeXWDSn5tSYWAdvV3/Sx6F/OAOnJCAj0ECqnkXqyXXKmCIea4ky0Du9NeaEBSiEZPahIDPQms4e8mPjE0JBaeLQCmTQWDQ7hf7QQAV2+4pJhZjF0nag0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObdfoupB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC08C4CED1;
-	Wed,  5 Feb 2025 14:35:41 +0000 (UTC)
+	 MIME-Version; b=BhIKnjuy4iSm9XUaAAwrApfa9pNeI2dAQoB2TGgqri+sVmEfz+gZHWQx+MgcvtpZuh4+DoJTfGV1n4PwTDPSw/G5Hkb9vDTUA8ASnM5Jjur+YA93w+NQsSObBzPQT5eoYcAEsl0WEV82+1P1Au8+UHaG07f0sEQvx7ptX0x4CyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLbbOlvz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61618C4CED6;
+	Wed,  5 Feb 2025 14:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766142;
-	bh=xlmhOtS1GSNXMVjmq51FUb/rJDiIe4++xFz5gkPLjac=;
+	s=korg; t=1738765776;
+	bh=miDwXgMiEzEYqwNwKBkD5YGRVKfIqNZADGT38BXYlNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObdfoupBTtx0BNbT8s5TyIOzEZ1oTLPOpVrEwiAQMuQAUbtoHjn/RdC+Uvz9D7RqC
-	 MAVkQKqklG3emJhHmc7/S8kY5E092saPGNNxMY2H022V78pGZBOcuICpHnvlXMbVBT
-	 WNnCy3eSJsg8AumgBLYpQ7r3XjRBn6FRPW+G1UG0=
+	b=JLbbOlvz7Vx0OOYnO6/LPQmFg0k5TuZT1F9JkZovKj7FfaHu51cpyORvG5i2jXwd3
+	 +cZzB8eSYvNodjYi/Yfst+aK9QH6N600SgQEb/jsRWnDnabwfy3TnhO0au/onZgkgN
+	 vu5tCLzIxg8gPcuf8lC3BI5l9/AHPYfw0s65b8cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 246/623] platform/x86: x86-android-tablets: make platform data be static
+Subject: [PATCH 6.12 233/590] net/rose: prevent integer overflows in rose_setsockopt()
 Date: Wed,  5 Feb 2025 14:39:48 +0100
-Message-ID: <20250205134505.637544378@linuxfoundation.org>
+Message-ID: <20250205134504.195682084@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 6e0fb1bdb71cf8078c8532617e565e3db22c0d3c ]
+[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
 
-make lenovo_yoga_tab2_1380_bq24190_pdata and lenovo_yoga_tab2_1380_modules
-to be static
+In case of possible unpredictably large arguments passed to
+rose_setsockopt() and multiplied by extra values on top of that,
+integer overflows may occur.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410160432.oJAPbrW9-lkp@intel.com/
-Fixes: 3eee73ad42c3 ("platform/x86: x86-android-tablets: Add Lenovo Yoga Tablet 2 Pro 1380F/L data")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/daafd1371e7e9946217712ce8720e29cd5c52f7a.1732161310.git.xiaopei01@kylinos.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Do the safest minimum and fix these issues by checking the
+contents of 'opt' and returning -EINVAL if they are too large. Also,
+switch to unsigned int and remove useless check for negative 'opt'
+in ROSE_IDLE case.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/lenovo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rose/af_rose.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
-index ae087f1471c17..a60efbaf4817f 100644
---- a/drivers/platform/x86/x86-android-tablets/lenovo.c
-+++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
-@@ -601,7 +601,7 @@ static const struct regulator_init_data lenovo_yoga_tab2_1380_bq24190_vbus_init_
- 	.num_consumer_supplies = 1,
- };
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 59050caab65c8..72c65d938a150 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct rose_sock *rose = rose_sk(sk);
+-	int opt;
++	unsigned int opt;
  
--struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
-+static struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
- 	.regulator_init_data = &lenovo_yoga_tab2_1380_bq24190_vbus_init_data,
- };
+ 	if (level != SOL_ROSE)
+ 		return -ENOPROTOOPT;
  
-@@ -726,7 +726,7 @@ static const struct platform_device_info lenovo_yoga_tab2_1380_pdevs[] __initcon
- 	},
- };
+-	if (optlen < sizeof(int))
++	if (optlen < sizeof(unsigned int))
+ 		return -EINVAL;
  
--const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
-+static const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
- 	"bq24190_charger",            /* For the Vbus regulator for lc824206xa */
- 	NULL
- };
+-	if (copy_from_sockptr(&opt, optval, sizeof(int)))
++	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
+ 		return -EFAULT;
+ 
+ 	switch (optname) {
+@@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
+ 
+ 	case ROSE_T1:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t1 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_T2:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t2 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_T3:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t3 = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_HOLDBACK:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->hb = opt * HZ;
+ 		return 0;
+ 
+ 	case ROSE_IDLE:
+-		if (opt < 0)
++		if (opt > UINT_MAX / (60 * HZ))
+ 			return -EINVAL;
+ 		rose->idle = opt * 60 * HZ;
+ 		return 0;
 -- 
 2.39.5
 
