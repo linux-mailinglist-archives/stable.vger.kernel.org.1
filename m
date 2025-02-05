@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE617A29073
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB82AA28F94
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1FFC188297B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FE887A144D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DB6155756;
-	Wed,  5 Feb 2025 14:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911BA155382;
+	Wed,  5 Feb 2025 14:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idANHfpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVtmG8BQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAFA7DA6A;
-	Wed,  5 Feb 2025 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5EA522A;
+	Wed,  5 Feb 2025 14:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766174; cv=none; b=drMeyN3RpvRSCthsz5NT8z2C5n2Evk4iEPIq2vH6TjpAn061AGO+pm9mLnFkpkGR7rPntoBFdHREwEppch9ywIMyyWthtxBLmgGRHrAF17SjXcWEb6hksgIegcqil2gVbHKgitX69mdKKqxxKkf2LUWN4gS1BetAxEdYwGJobdY=
+	t=1738765607; cv=none; b=LK/2vxlDG2PLBT9v/gCMJTVuQLdwGtEht2d3liYBEWCe7nXRbMJdCTLWsonqXivi7qtXZ+0ZTgY5hHIUqzFK/2rRmpLy/lOgLtBhr8nX2sRqfXKqWMujjHG65oin6guco+xnBP5KrJ0/2sY34NhQm+slGvoH0FhGJll8EI13qds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766174; c=relaxed/simple;
-	bh=ZaJ/aBPLBALfpgwGcq2AuA5q1tri1y3Bh+tVHGFGGPI=;
+	s=arc-20240116; t=1738765607; c=relaxed/simple;
+	bh=Ian6/xWloESS1CtM6xfYLTCPHc2B4WENJAW3o9+J4TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1k9j9nW4eQObNuoUrdXoLNjztfbwZHq2M9g/B3anM6tgOpkUIlvzlYOqob82uGBRgdWhi21kiSa1rkXtYHHLZnSwBQwf/NXMIrKTaHiwEjpJ/HxZqtEky5fjAmLttH4Fdc3xqgvnBKOnr1g/M6//FWtrq9fx9WeKO2mcN3b2b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idANHfpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50570C4CED1;
-	Wed,  5 Feb 2025 14:36:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GZl5MRxRIbRbHbFuzxVFT7ei8qhrXHe4ApxSgT8Wt+gDR27V4DfQjJSCR6nD4ViWr9FV5WpTluGHzCULtuAbdQqFY1SAQ6dm5G66HyYEnxeuOK4iBFDdretZ6N9UcjzoGPjnFoBhG0YCDMMwIEnyKTu/jQKKoU3IvtdG4lkhVxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVtmG8BQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF520C4CED1;
+	Wed,  5 Feb 2025 14:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766174;
-	bh=ZaJ/aBPLBALfpgwGcq2AuA5q1tri1y3Bh+tVHGFGGPI=;
+	s=korg; t=1738765607;
+	bh=Ian6/xWloESS1CtM6xfYLTCPHc2B4WENJAW3o9+J4TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idANHfpO0umBlR1H0XlIkRmQyExkPVTn8C000QzOvhk0lH96UNYfVc8aJ0H/QF3Zl
-	 hGasnQy6FK5mz3rGGQU7XCjQYp6Yui08H4y3lBYxXy+mscPI/LSSFlc7PL2aENgbm1
-	 ZvvOapfy7Af6BKIMRZEB/MqJZYU1Vk2TZRBTXDj8=
+	b=aVtmG8BQ96JaCNFXPBuONOdX01D9W/ktRuGA/ID1JfggQDdzmAgfyDCzRifCz4tMw
+	 CU8SetzQzfZe7mdbsapuifsw/By5j8Jt4bDJBKK4ac37yBpTFAtxfduEmmhJoU/6f5
+	 DpnJ/scwjiAz+kOS/6pDckWi1Ux0xY72GsqxxGl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Mark Brown <broonie@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 249/623] ASoC: cs40l50: Use *-y for Makefile
+Subject: [PATCH 6.12 236/590] pinctrl: samsung: Fix irq handling if an error occurs in exynos_irq_demux_eint16_31()
 Date: Wed,  5 Feb 2025 14:39:51 +0100
-Message-ID: <20250205134505.750692767@linuxfoundation.org>
+Message-ID: <20250205134504.310297574@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 3f0b8d367db5b0c0a0096b1c2ff02ec7c5c893b6 ]
+[ Upstream commit f686a2b52e9d78cf401f1b7f446bf0c3a81ebcc0 ]
 
-We should use *-y instead of *-objs in Makefile for the module
-objects.  *-objs is used rather for host programs.
+chained_irq_enter(() should be paired with a corresponding
+chained_irq_exit().
 
-Fixes: c486def5b3ba ("ASoC: cs40l50: Support I2S streaming to CS40L50")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241203141823.22393-2-tiwai@suse.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Here, if clk_enable() fails, a early return occurs and chained_irq_exit()
+is not called.
+
+Add a new label and a goto for fix it.
+
+Fixes: f9c744747973 ("pinctrl: samsung: support a bus clock")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/f148d823acfb3326a115bd49a0eed60f2345f909.1731844995.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/samsung/pinctrl-exynos.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
-index f37e82ddb7a10..57d3aab27d2fe 100644
---- a/sound/soc/codecs/Makefile
-+++ b/sound/soc/codecs/Makefile
-@@ -80,7 +80,7 @@ snd-soc-cs35l56-shared-y := cs35l56-shared.o
- snd-soc-cs35l56-i2c-y := cs35l56-i2c.o
- snd-soc-cs35l56-spi-y := cs35l56-spi.o
- snd-soc-cs35l56-sdw-y := cs35l56-sdw.o
--snd-soc-cs40l50-objs := cs40l50-codec.o
-+snd-soc-cs40l50-y := cs40l50-codec.o
- snd-soc-cs42l42-y := cs42l42.o
- snd-soc-cs42l42-i2c-y := cs42l42-i2c.o
- snd-soc-cs42l42-sdw-y := cs42l42-sdw.o
+diff --git a/drivers/pinctrl/samsung/pinctrl-exynos.c b/drivers/pinctrl/samsung/pinctrl-exynos.c
+index b79c211c03749..ac6dc22b37c98 100644
+--- a/drivers/pinctrl/samsung/pinctrl-exynos.c
++++ b/drivers/pinctrl/samsung/pinctrl-exynos.c
+@@ -636,7 +636,7 @@ static void exynos_irq_demux_eint16_31(struct irq_desc *desc)
+ 		if (clk_enable(b->drvdata->pclk)) {
+ 			dev_err(b->gpio_chip.parent,
+ 				"unable to enable clock for pending IRQs\n");
+-			return;
++			goto out;
+ 		}
+ 	}
+ 
+@@ -652,6 +652,7 @@ static void exynos_irq_demux_eint16_31(struct irq_desc *desc)
+ 	if (eintd->nr_banks)
+ 		clk_disable(eintd->banks[0]->drvdata->pclk);
+ 
++out:
+ 	chained_irq_exit(chip, desc);
+ }
+ 
 -- 
 2.39.5
 
