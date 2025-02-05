@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6517CA29278
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8BA291D0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFA3188D55A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1611188D863
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827ED1FF5FC;
-	Wed,  5 Feb 2025 14:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E8195FEC;
+	Wed,  5 Feb 2025 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrTMTx8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07k9U7eZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E79519924D;
-	Wed,  5 Feb 2025 14:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F22F170A37;
+	Wed,  5 Feb 2025 14:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767060; cv=none; b=eJp3FoIjn4uFloP0xKH1fHT2ELk3+7I54P9Uph9H+sfTxuLHld6YJl/XT9Y7IEu6PhS9N3QDozLATcC7rN5VKsKQI35Vfuo9XRS+TvUPUZ1PBibYRKsZq380u6kM4ab+ZTAP6poxMF/ICKFc8KwGn5hyRMugJgYuxxVyixiiBMU=
+	t=1738766595; cv=none; b=aWT64fd/9HqV/6iix8KADd5jbloS4gcjLVPUnCsycndP6ZSLn1I9MU5pNEoS+sLZH6oViIpCq4/+Y/c+CjDn7yqsku+KwJ8+Tdq9CIvWXUCH/i467XJuxFtnSs1zg2rcF+N3tcUl+j9jJVmET3d01t3YNADzn7xRWsf17dfe0Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767060; c=relaxed/simple;
-	bh=J2BQ4DyKTLojt0K/+4FhGMqYb7Aaeh8lVnKPwLru0sM=;
+	s=arc-20240116; t=1738766595; c=relaxed/simple;
+	bh=ivQeF5sVr7mKA4+9YQNJea5c42NHym7NdZn2iHtDYfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnOyHeh9oqmLAC6L0rN1gR3DxkUV0tTJDPrVhDuELXdItmZ3PBBwMrkqQSzHwhaoEAeerJm+OTL5S0Y2hhHEE0o2bDY1S4G5hRxVcrrxCBT1qWXbbJ04t7jkqmxy/CwnxEFAUS7dZXIhuu6dIZUtWHPAZBRuPyUwlI8Rk1v3WO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrTMTx8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D868C4CED1;
-	Wed,  5 Feb 2025 14:50:58 +0000 (UTC)
+	 MIME-Version; b=QkTJv/g+3hOKNR/6WsvGD2xAWhSYF9R1bFru7FWbFeG7nRF1w7M3YYSxXlAJshizvexrRoYOqSoIic9JpkkKEhJlVQwtZvijU4clDnkoI8B4mbR22PIwNsWa9DS2EgEa76Y000BuGFiUdYKnMwDBu9QLtRo8k067MAAtdkgRCxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07k9U7eZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29431C4CEE8;
+	Wed,  5 Feb 2025 14:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767059;
-	bh=J2BQ4DyKTLojt0K/+4FhGMqYb7Aaeh8lVnKPwLru0sM=;
+	s=korg; t=1738766594;
+	bh=ivQeF5sVr7mKA4+9YQNJea5c42NHym7NdZn2iHtDYfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrTMTx8KK8AV9q5JZ29uJvzeFTTZkd6UndZJc9+x4xRKCu2iD1Yy/eukDS69EuF6p
-	 dLC1PR/bvPJ50AICNqpipM/a89vmVX1XsfXhc8PiNAigdT0x6DsL3Dv2LubYZhoA/g
-	 gqubCF0rj0hkaVC4VwkORppeKNpUkATH3Q4T9eO8=
+	b=07k9U7eZL9rXHMoDdOZNEe4XcQ9j9HifEFz6ABkiJ9S7BocgCWXSxjy5RZjfC9L0T
+	 STVFQeVbzdfK4owriO0vP3rUse0Vny42qFbMm5XCYQeqGy+z42oHh0UI1Pvtdw68Xe
+	 6lckKMFC5QdWp2C30FGJod1uqIj+6lIEbspA1yBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 351/623] arm64: dts: mediatek: mt8395-genio-1200-evk: Drop regulator-compatible property
+Subject: [PATCH 6.12 338/590] arm64: dts: qcom: sa8775p: Update sleep_clk frequency
 Date: Wed,  5 Feb 2025 14:41:33 +0100
-Message-ID: <20250205134509.654030029@linuxfoundation.org>
+Message-ID: <20250205134508.206976828@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit b99bf07c2c8b3c85c1935ddca2a73bc686f8d847 ]
+[ Upstream commit 30f7dfd2c4899630becf477447e8bbe92683d2c6 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+Fix the sleep_clk frequency is 32000 on SA8775P.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: f2b543a191b6 ("arm64: dts: mediatek: add device-tree for Genio 1200 EVK board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-9-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20241025-sa8775p-mm-v4-resend-patches-v6-1-329a2cac09ae@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
-index 5f16fb8205805..5950194c9ccb2 100644
---- a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
-@@ -835,7 +835,6 @@
+diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+index 0c1b21def4b62..adb71aeff339b 100644
+--- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
++++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
+@@ -517,7 +517,7 @@
+ };
  
- 		regulators {
- 			mt6315_6_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vbcpu";
- 				regulator-min-microvolt = <300000>;
- 				regulator-max-microvolt = <1193750>;
-@@ -852,7 +851,6 @@
+ &sleep_clk {
+-	clock-frequency = <32764>;
++	clock-frequency = <32000>;
+ };
  
- 		regulators {
- 			mt6315_7_vbuck1: vbuck1 {
--				regulator-compatible = "vbuck1";
- 				regulator-name = "Vgpu";
- 				regulator-min-microvolt = <546000>;
- 				regulator-max-microvolt = <787000>;
+ &spi16 {
 -- 
 2.39.5
 
