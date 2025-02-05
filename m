@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C094A28D23
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43721A28C7E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C10B16951E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE804168ADB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367201547E9;
-	Wed,  5 Feb 2025 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B8149C64;
+	Wed,  5 Feb 2025 13:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC+N+1NH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqUPSvYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B2D1531C1;
-	Wed,  5 Feb 2025 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F213413AD22;
+	Wed,  5 Feb 2025 13:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763843; cv=none; b=jbbEmGS3JBMR21o9GMSAoHqwx5wfxEkjFu217HMmUmloolI7K0T4q+PmK4/lrWwBYCxxcslV+YCoU9bheWn+2sRlC/5tkdtxBl/InTfCd7M8z97//K7ojzl6yyR6dsWlFALm0Gvfce/GqSgRA1jHV1oa5jypnfq4lvgzLQt8QyU=
+	t=1738763423; cv=none; b=i8eC+OaOR78LEAqXciGB4qfz7m1tBt9JJoGQPnyt4uU/vNO0chEo2rdjDnggua8PINjmypmL+7f+Lld4L0+Qt1n0WNzXDWPK1rJoajWPD0YJ5pD6Zmij6OUk13r4Gq4bz/FdOTLyg50T2UkFVH5sf9KFBP+HGsH/6UXExAAR0cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763843; c=relaxed/simple;
-	bh=y7zeRa/3MC9Syo/h9pO/0RyFgFEfR6FjsFFstVAThUw=;
+	s=arc-20240116; t=1738763423; c=relaxed/simple;
+	bh=3Iuegy77MXwS5si7LozJWKm5NQ4MGiYQR6OBdWmWAiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UiA/DXTQL2xi6cRhMxq3ebjOTJqqmbdgyC5bLXnPvx5VtQVb7wv99dRLTwVT2jy9AIoKP5c1HvUc7QYT4B95y6X7b86Pgl+FqJ75PEebkS2c26U86fvRz9rrBm2kDkuSwXS+zUyz+gSfA52Cy2L4BGeEMjHq8Uy8VSbAz5pH39w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kC+N+1NH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55942C4CEDD;
-	Wed,  5 Feb 2025 13:57:22 +0000 (UTC)
+	 MIME-Version; b=LRvWn9Fn6L+J7F+2uCwBIdDFhgNVCoxWjdpJmRlJ+/WKidySPoutWoUsdlOUJqHS12Aj81SHJPmqFR3P/OiDkYmyr3nW9vwLidaK2mRY87/CiWhEkxvpV/vYwzCX/D2ctilBJ05FjiLNomvXOv4j0In5qjTf5D1Zml3h0COssR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqUPSvYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608F6C4CED1;
+	Wed,  5 Feb 2025 13:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763842;
-	bh=y7zeRa/3MC9Syo/h9pO/0RyFgFEfR6FjsFFstVAThUw=;
+	s=korg; t=1738763422;
+	bh=3Iuegy77MXwS5si7LozJWKm5NQ4MGiYQR6OBdWmWAiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kC+N+1NHIfb4RsZWkEC5ACkfmuLU4PZ2FEaiq6pqTs9VHua3mjUhrmY4qvcNZcFFh
-	 NmesaVAwf2KjmZXDwF+P856Qq4sJjTuT2p0q8gyTssEo36WAEpmdzW556kMwvqOPS9
-	 mRZpNYcISgt5rY1z6Tygek0LZz0dtLpY3n+tRAio=
+	b=WqUPSvYWCTWpwj7iTcMHMS26flglSXTKIs207sZgHcRGm21n6Sa2GNKZMG4UsVKTX
+	 tEsOjxReHpCOMwQIFRTT/aaHMNQ8EOgfyWHEf0kJldXYDRkkzqhk/QhI/8MAkEci7K
+	 jHTGGEbscLdNJqkVElgT16e2T8Q74rogyIwO/0ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 023/623] selftests/powerpc: Fix argument order to timer_sub()
-Date: Wed,  5 Feb 2025 14:36:05 +0100
-Message-ID: <20250205134457.115766280@linuxfoundation.org>
+Subject: [PATCH 6.12 011/590] ps3disk: Do not use dev->bounce_size before it is set
+Date: Wed,  5 Feb 2025 14:36:06 +0100
+Message-ID: <20250205134455.665495238@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 2bf66e66d2e6feece6175ec09ec590a0a8563bdd ]
+[ Upstream commit c2398e6d5f16e15598d3a37e17107fea477e3f91 ]
 
-Commit c814bf958926 ("powerpc/selftests: Use timersub() for
-gettimeofday()"), got the order of arguments to timersub() wrong,
-leading to a negative time delta being reported, eg:
+dev->bounce_size is only initialized after it is used to set the queue
+limits.  Fix this by using BOUNCE_SIZE instead.
 
-  test: gettimeofday
-  tags: git_version:v6.12-rc5-409-gdddf291c3030
-  time = -3.297781
-  success: gettimeofday
-
-The correct order is minuend, subtrahend, which in this case is end,
-start. Which gives:
-
-  test: gettimeofday
-  tags: git_version:v6.12-rc5-409-gdddf291c3030-dirty
-  time = 3.300650
-  success: gettimeofday
-
-Fixes: c814bf958926 ("powerpc/selftests: Use timersub() for gettimeofday()")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241218114347.428108-1-mpe@ellerman.id.au
+Fixes: a7f18b74dbe17162 ("ps3disk: pass queue_limits to blk_mq_alloc_disk")
+Reported-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Closes: https://lore.kernel.org/39256db9-3d73-4e86-a49b-300dfd670212@gmail.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/benchmarks/gettimeofday.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/ps3disk.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-index 580fcac0a09f3..b71ef8a493ed1 100644
---- a/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-+++ b/tools/testing/selftests/powerpc/benchmarks/gettimeofday.c
-@@ -20,7 +20,7 @@ static int test_gettimeofday(void)
- 		gettimeofday(&tv_end, NULL);
- 	}
- 
--	timersub(&tv_start, &tv_end, &tv_diff);
-+	timersub(&tv_end, &tv_start, &tv_diff);
- 
- 	printf("time = %.6f\n", tv_diff.tv_sec + (tv_diff.tv_usec) * 1e-6);
- 
+diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
+index ff45ed7664695..226ffc743238e 100644
+--- a/drivers/block/ps3disk.c
++++ b/drivers/block/ps3disk.c
+@@ -384,9 +384,9 @@ static int ps3disk_probe(struct ps3_system_bus_device *_dev)
+ 	unsigned int devidx;
+ 	struct queue_limits lim = {
+ 		.logical_block_size	= dev->blk_size,
+-		.max_hw_sectors		= dev->bounce_size >> 9,
++		.max_hw_sectors		= BOUNCE_SIZE >> 9,
+ 		.max_segments		= -1,
+-		.max_segment_size	= dev->bounce_size,
++		.max_segment_size	= BOUNCE_SIZE,
+ 		.dma_alignment		= dev->blk_size - 1,
+ 		.features		= BLK_FEAT_WRITE_CACHE |
+ 					  BLK_FEAT_ROTATIONAL,
 -- 
 2.39.5
 
