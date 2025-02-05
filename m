@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D6A2903D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6559BA291BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 866711882C1C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E49A16C05E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4CE155A21;
-	Wed,  5 Feb 2025 14:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0447F1C1F12;
+	Wed,  5 Feb 2025 14:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRK3uuN7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXzhdEbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E967DA6A;
-	Wed,  5 Feb 2025 14:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B603D17BEC5;
+	Wed,  5 Feb 2025 14:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766025; cv=none; b=WvDItvS0p/IbDtJ7ueUPyq4qr+j+5zCDhss5MnN9ouhzO2JEEbhWkYrXEi5tLMMUz7d1lWABoWHYTvHheGlqrB/Wgp87LuAdmV/WPq4rT28A5o5uO9M9GLZznlzh02YVZMKQ0lSso48qiHU7eWPLFjHQM3SqL0TsmgpLSesMCoI=
+	t=1738766625; cv=none; b=cgER4Pai7Dc9pFMrHSwqY9U1Y/0ippbkpo2VpeDcBlUy17dH2NCZLnfpWZSql/gad4uYsonH+YxdqcabVQFDVt7C7WbcFNC2aV0jqlZdUQgqKRfhcK8YjjiA3+f/NgddqIe5s899vMxL70WscIix1S5N0P055eBTp6K98DcG/fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766025; c=relaxed/simple;
-	bh=n/duIPFHiK7B348zoQt90m8Y0hceZbe2BDCcaDQiAQQ=;
+	s=arc-20240116; t=1738766625; c=relaxed/simple;
+	bh=NfLB/sSwpbSkpsaWMs4IUwMcprpSyUo+C+2XIxl9iX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hm/uBbpgb70JSQhoOjLmgkBffGuxeml3nf1ivCLQeW2NoEoBQEoFtgsv6ZmlzjpTJ9M7Q4ROTz5rFT99zvLKmB2FNR731Bn9xTU+lv7eCGAGpzviN+xIfxnnZvVRGGKBDoKyhUbgk6KYmBpn+1nT5PhXKtX4yHXN8f7TpWzkWNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRK3uuN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3201FC4CED1;
-	Wed,  5 Feb 2025 14:33:43 +0000 (UTC)
+	 MIME-Version; b=krCRfs9hO8PAtB3b+GDI613d08XGMvTeB5+QhxgCqofALxs13f/omv0bJFcXbNc+aEJCxZvTs3vuBLOiLRIOG16XxH7CwYsCtknqx8yo9kjXkRz7mU8i3SWsOEAcGoGs//UBSK63JV+E7Dn0ANC6gZdon7fQ98oNGJ/lgBhTcjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXzhdEbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6C7C4CED1;
+	Wed,  5 Feb 2025 14:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766024;
-	bh=n/duIPFHiK7B348zoQt90m8Y0hceZbe2BDCcaDQiAQQ=;
+	s=korg; t=1738766625;
+	bh=NfLB/sSwpbSkpsaWMs4IUwMcprpSyUo+C+2XIxl9iX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRK3uuN7h3SAVmyZPnkbjc/sybQeiE6Ka0BGRAq+XaH1B8XPzX3bIUvY+RYkSxrtE
-	 7h5m0j/sfy+eDGPZZ93MxHPVi4o9+a5cIQGtOAllTevkUfaYaM0J1mdbxdizQA1LdU
-	 CbFDxAnPLFMqY2uUxI2EzHkU8uF6MTln4Kn5zgj0=
+	b=mXzhdEbEAtmBNYFEE5rpD4iGLhbO1ENQqGtc9zeppmphAuNd30jD/o7FYniJF2bMk
+	 xZAGuehbGFhb7JlaMk754ouTjTJY0B55aznPLhY8OlODGxFhpjFpVxnQKDYXLwoXf2
+	 3XiT5orImAdFdDfBtY5/qRKFtm0qi270fjI1Q7GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/590] pinctrl: stm32: Add check for clk_enable()
+Subject: [PATCH 6.13 293/623] ASoC: Intel: avs: Do not readq() u32 registers
 Date: Wed,  5 Feb 2025 14:40:35 +0100
-Message-ID: <20250205134505.991709259@linuxfoundation.org>
+Message-ID: <20250205134507.440630296@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,203 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 451bc9aea9a1a6fe53969e81a5cb1bd785c0d989 ]
+[ Upstream commit bca0fa5f6b5e96c03daac1ed62b1e5c5057a2048 ]
 
-Convert the driver to clk_bulk*() API.
-Add check for the return value of clk_bulk_enable() to catch
-the potential error.
+Register reporting ROM status is 4-bytes wide.
 
-Fixes: 05d8af449d93 ("pinctrl: stm32: Keep pinctrl block clock enabled when LEVEL IRQ requested")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Link: https://lore.kernel.org/20250106220659.2640365-1-zmw12306@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 092cf7b26a48 ("ASoC: Intel: avs: Code loading over HDA")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250109122216.3667847-2-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 76 +++++++++++++--------------
- 1 file changed, 38 insertions(+), 38 deletions(-)
+ sound/soc/intel/avs/loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 5b7fa77c11843..03f3f707d2755 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -86,7 +86,6 @@ struct stm32_pinctrl_group {
- 
- struct stm32_gpio_bank {
- 	void __iomem *base;
--	struct clk *clk;
- 	struct reset_control *rstc;
- 	spinlock_t lock;
- 	struct gpio_chip gpio_chip;
-@@ -108,6 +107,7 @@ struct stm32_pinctrl {
- 	unsigned ngroups;
- 	const char **grp_names;
- 	struct stm32_gpio_bank *banks;
-+	struct clk_bulk_data *clks;
- 	unsigned nbanks;
- 	const struct stm32_pinctrl_match_data *match_data;
- 	struct irq_domain	*domain;
-@@ -1308,12 +1308,6 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
- 	if (IS_ERR(bank->base))
- 		return PTR_ERR(bank->base);
- 
--	err = clk_prepare_enable(bank->clk);
--	if (err) {
--		dev_err(dev, "failed to prepare_enable clk (%d)\n", err);
--		return err;
--	}
--
- 	bank->gpio_chip = stm32_gpio_template;
- 
- 	fwnode_property_read_string(fwnode, "st,bank-name", &bank->gpio_chip.label);
-@@ -1360,26 +1354,20 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
- 							   bank->fwnode, &stm32_gpio_domain_ops,
- 							   bank);
- 
--		if (!bank->domain) {
--			err = -ENODEV;
--			goto err_clk;
--		}
-+		if (!bank->domain)
-+			return -ENODEV;
+diff --git a/sound/soc/intel/avs/loader.c b/sound/soc/intel/avs/loader.c
+index 890efd2f1feab..37de077a99838 100644
+--- a/sound/soc/intel/avs/loader.c
++++ b/sound/soc/intel/avs/loader.c
+@@ -308,7 +308,7 @@ avs_hda_init_rom(struct avs_dev *adev, unsigned int dma_id, bool purge)
  	}
  
- 	names = devm_kcalloc(dev, npins, sizeof(char *), GFP_KERNEL);
--	if (!names) {
--		err = -ENOMEM;
--		goto err_clk;
--	}
-+	if (!names)
-+		return -ENOMEM;
- 
- 	for (i = 0; i < npins; i++) {
- 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
- 		if (stm32_pin && stm32_pin->pin.name) {
- 			names[i] = devm_kasprintf(dev, GFP_KERNEL, "%s", stm32_pin->pin.name);
--			if (!names[i]) {
--				err = -ENOMEM;
--				goto err_clk;
--			}
-+			if (!names[i])
-+				return -ENOMEM;
- 		} else {
- 			names[i] = NULL;
- 		}
-@@ -1390,15 +1378,11 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
- 	err = gpiochip_add_data(&bank->gpio_chip, bank);
- 	if (err) {
- 		dev_err(dev, "Failed to add gpiochip(%d)!\n", bank_nr);
--		goto err_clk;
-+		return err;
- 	}
- 
- 	dev_info(dev, "%s bank added\n", bank->gpio_chip.label);
- 	return 0;
--
--err_clk:
--	clk_disable_unprepare(bank->clk);
--	return err;
- }
- 
- static struct irq_domain *stm32_pctrl_get_irq_domain(struct platform_device *pdev)
-@@ -1621,6 +1605,11 @@ int stm32_pctl_probe(struct platform_device *pdev)
- 	if (!pctl->banks)
- 		return -ENOMEM;
- 
-+	pctl->clks = devm_kcalloc(dev, banks, sizeof(*pctl->clks),
-+				  GFP_KERNEL);
-+	if (!pctl->clks)
-+		return -ENOMEM;
-+
- 	i = 0;
- 	for_each_gpiochip_node(dev, child) {
- 		struct stm32_gpio_bank *bank = &pctl->banks[i];
-@@ -1632,24 +1621,27 @@ int stm32_pctl_probe(struct platform_device *pdev)
- 			return -EPROBE_DEFER;
- 		}
- 
--		bank->clk = of_clk_get_by_name(np, NULL);
--		if (IS_ERR(bank->clk)) {
-+		pctl->clks[i].clk = of_clk_get_by_name(np, NULL);
-+		if (IS_ERR(pctl->clks[i].clk)) {
- 			fwnode_handle_put(child);
--			return dev_err_probe(dev, PTR_ERR(bank->clk),
-+			return dev_err_probe(dev, PTR_ERR(pctl->clks[i].clk),
- 					     "failed to get clk\n");
- 		}
-+		pctl->clks[i].id = "pctl";
- 		i++;
- 	}
- 
-+	ret = clk_bulk_prepare_enable(banks, pctl->clks);
-+	if (ret) {
-+		dev_err(dev, "failed to prepare_enable clk (%d)\n", ret);
-+		return ret;
-+	}
-+
- 	for_each_gpiochip_node(dev, child) {
- 		ret = stm32_gpiolib_register_bank(pctl, child);
- 		if (ret) {
- 			fwnode_handle_put(child);
--
--			for (i = 0; i < pctl->nbanks; i++)
--				clk_disable_unprepare(pctl->banks[i].clk);
--
--			return ret;
-+			goto err_register;
- 		}
- 
- 		pctl->nbanks++;
-@@ -1658,6 +1650,15 @@ int stm32_pctl_probe(struct platform_device *pdev)
- 	dev_info(dev, "Pinctrl STM32 initialized\n");
- 
- 	return 0;
-+err_register:
-+	for (i = 0; i < pctl->nbanks; i++) {
-+		struct stm32_gpio_bank *bank = &pctl->banks[i];
-+
-+		gpiochip_remove(&bank->gpio_chip);
-+	}
-+
-+	clk_bulk_disable_unprepare(banks, pctl->clks);
-+	return ret;
- }
- 
- static int __maybe_unused stm32_pinctrl_restore_gpio_regs(
-@@ -1726,10 +1727,8 @@ static int __maybe_unused stm32_pinctrl_restore_gpio_regs(
- int __maybe_unused stm32_pinctrl_suspend(struct device *dev)
- {
- 	struct stm32_pinctrl *pctl = dev_get_drvdata(dev);
--	int i;
- 
--	for (i = 0; i < pctl->nbanks; i++)
--		clk_disable(pctl->banks[i].clk);
-+	clk_bulk_disable(pctl->nbanks, pctl->clks);
- 
- 	return 0;
- }
-@@ -1738,10 +1737,11 @@ int __maybe_unused stm32_pinctrl_resume(struct device *dev)
- {
- 	struct stm32_pinctrl *pctl = dev_get_drvdata(dev);
- 	struct stm32_pinctrl_group *g = pctl->groups;
--	int i;
-+	int i, ret;
- 
--	for (i = 0; i < pctl->nbanks; i++)
--		clk_enable(pctl->banks[i].clk);
-+	ret = clk_bulk_enable(pctl->nbanks, pctl->clks);
-+	if (ret)
-+		return ret;
- 
- 	for (i = 0; i < pctl->ngroups; i++, g++)
- 		stm32_pinctrl_restore_gpio_regs(pctl, g->pin);
+ 	/* await ROM init */
+-	ret = snd_hdac_adsp_readq_poll(adev, spec->sram->rom_status_offset, reg,
++	ret = snd_hdac_adsp_readl_poll(adev, spec->sram->rom_status_offset, reg,
+ 				       (reg & 0xF) == AVS_ROM_INIT_DONE ||
+ 				       (reg & 0xF) == APL_ROM_FW_ENTERED,
+ 				       AVS_ROM_INIT_POLLING_US, APL_ROM_INIT_TIMEOUT_US);
 -- 
 2.39.5
 
