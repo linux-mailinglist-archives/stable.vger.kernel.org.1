@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D25A2930A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5BEA28F08
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6994E16A17E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB3D3A91E8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D052190676;
-	Wed,  5 Feb 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312F814B080;
+	Wed,  5 Feb 2025 14:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hfVC0Fkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XMOCP1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A010146A7A;
-	Wed,  5 Feb 2025 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA878634E;
+	Wed,  5 Feb 2025 14:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767525; cv=none; b=rMoISRryoNZsvqrrf2n9efBN0WELZg9pOKpMBpU9rRW92vyVcAlULhgbdaDltEZggIizx1Iy+qWSsNQ6ssJ+SLD1z0SgvcTtnB5NDS3GNLvexApIBPH/l/XLffJg7307XRtBUgKhocAN0cu/PQSUkKLb525HYtt/MwEvlnalcBA=
+	t=1738765171; cv=none; b=d35vlcl0Lz5Hvb4Psewrj3co3wc89Ej7T8SQZ0D3vqAkoCWO4Qkb0wMUKS4aeqgQof5z9wPpBKj3ZvzSQvv5gVYBQgMNb1YCJIOedv3ayHtiq3XD7Bww/W41Y8in5L41To6b9+hh5EL8JSqdxpwfhRbI9Huhmj+xvmB52qPhtpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767525; c=relaxed/simple;
-	bh=dSj5cDOYddYO9s7TdCzbBEuEFTm7E/GbrF3mOVfLNRw=;
+	s=arc-20240116; t=1738765171; c=relaxed/simple;
+	bh=bazaHg1Q0CTh7f3PksMNltQeGiSxmS+ftdpmQnd9qEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhQKd7BWGEpMtQIh0ALf7KxvX2/JxnmbUj7CseXvUQu5Ckic0vZJ7ffjFHVjsrEilgPlqI3bVsZ4XJ9LrR2jH3atMYwYh3HaGmrmYPVlrms+2rnrgVnS8/12ewO0dOEhOr7oZJk+IgY5FEIV743syfcGqwktHsqeIM3dEx7za48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hfVC0Fkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A05C4CED1;
-	Wed,  5 Feb 2025 14:58:44 +0000 (UTC)
+	 MIME-Version; b=tQvXvmA6EjzqSySdnukrV9oS1GTrk7iHA+Yz99SFVPuPe+sPYhXmt+H2gp1zI+tf8tYhTHIQuCtodSyPmXsBbVyMe/ubgeqVtcQLFoM+aCA7/b9axCCkBj6yRdP/iQY3Qaakm2MhOjGZHmgSLdFvE/kqH/Q5TBTqg5HO7ZfXVv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XMOCP1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DE4C4CED6;
+	Wed,  5 Feb 2025 14:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767525;
-	bh=dSj5cDOYddYO9s7TdCzbBEuEFTm7E/GbrF3mOVfLNRw=;
+	s=korg; t=1738765170;
+	bh=bazaHg1Q0CTh7f3PksMNltQeGiSxmS+ftdpmQnd9qEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hfVC0FktzADT5m36V3sR75qmdtoIyAhw31eY/ywlgRD9ON0jDaZRYV1KP/T0b1ily
-	 uTdy4msrkHMMwvAsjiusdfgF02rchTEcKJVwd54e6R43BAxgb1KIemeHNw72cMWYbv
-	 JyziZ6HA2GBNoSpGCVDe9QdDu6Dn+FpliLrw2AlU=
+	b=0XMOCP1t8Y6Cj+7mF+KwbkgDVB2n8PpAv032oTpZrcP6HG/q3Agwsl+ZC5UhU+6Q2
+	 2yBeq45apcfLUjVZikenJkGagiQu4ixiQ4Spk4ioOuqgs+VIm556yYqZ3w6jGWz/o3
+	 XjGYMIuylkvjJwsv9hpp99oG7FCxEy9jAwu3g/2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 416/623] arm64: dts: qcom: sc8280xp: Fix interrupt type of camss interrupts
-Date: Wed,  5 Feb 2025 14:42:38 +0100
-Message-ID: <20250205134512.140595600@linuxfoundation.org>
+Subject: [PATCH 6.6 240/393] arm64: dts: qcom: qrb4210-rb2: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:42:39 +0100
+Message-ID: <20250205134429.488235801@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b08535cd41c27b4f32319b5bff754c9da6dc2205 ]
+[ Upstream commit 298192f365a343d84e9d2755e47bebebf0cfb82e ]
 
-Qualcomm IP catalog says that all CAMSS interrupts are edge rising,
-fix it in the CAMSS device tree node for sc8280xp SoC.
+Qualcomm RB2 board uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fixes: 5994dd60753e ("arm64: dts: qcom: sc8280xp: camss: Add CAMSS block definition")
-Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20241127122950.885982-5-vladimir.zapolskiy@linaro.org
+Fixes: 8d58a8c0d930 ("arm64: dts: qcom: Add base qrb4210-rb2 board dts")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-6-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 40 +++++++++++++-------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index c97d1eeaf890f..c6a95db0d2a2e 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -3900,26 +3900,26 @@
- 				    "vfe3",
- 				    "csid3";
+diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+index 5def8c1154ceb..331b6a76560db 100644
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -492,7 +492,7 @@
+ };
  
--			interrupts = <GIC_SPI 359 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 360 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 640 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 758 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 759 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 760 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 761 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 762 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 764 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 359 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 360 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 640 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 641 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 758 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 759 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 760 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 761 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 762 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 764 IRQ_TYPE_EDGE_RISING>;
- 			interrupt-names = "csid1_lite",
- 					  "vfe_lite1",
- 					  "csiphy3",
+ &sleep_clk {
+-	clock-frequency = <32000>;
++	clock-frequency = <32764>;
+ };
+ 
+ &tlmm {
 -- 
 2.39.5
 
