@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-113727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD53A29401
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:19:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF20A2946C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90559188F14A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEF7518948A2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC215EFA1;
-	Wed,  5 Feb 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1C8170A37;
+	Wed,  5 Feb 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IQugZw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdqSN3Sw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB97376;
-	Wed,  5 Feb 2025 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792ED17B505;
+	Wed,  5 Feb 2025 15:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767954; cv=none; b=gs9CAiqbBKwrC7jTXB9PggeeQYeJLWTz04vidJRgGP2hbyIyv1yDhn/QFC4ByJXUW8nh2r1ayh/jY4jOnREhnqiZ918Rq0qXIQmUlmAt9ph2+kjkL0FU5HE7y30Fv7QDC4GUwacu5pRkUmAyzEyEEl0fVgOYB9bDVC13tEsFZGk=
+	t=1738768432; cv=none; b=MWrrvnT9NmvK08PKaWT30vkiFC9NmMgGmtOSd2uqjHeYCs05mp1B5Snnn/cIPzkhiD4laUSTR/gti3IM+w2qZ225W9t0di7/qAzKLfcnH4uQFi5HtSTTIdhzN6N3Cx1ogE6P6Vs14aK9uTcScYgbu+2QZeb5Sp6Z6VzYwX0Oo4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767954; c=relaxed/simple;
-	bh=VKa34jBRg8yKKhlDo1O+BnT5tcyL53zaXHc/jm6ZvNQ=;
+	s=arc-20240116; t=1738768432; c=relaxed/simple;
+	bh=+OVF3VXv2pr6ZcsK9J5+s9dfpUp2oUPmPOCfcVdH0WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rwg1gywW/58t7duMsaaMmpg0LmRUv0zD6B29fhgU+m7exPcrdXphEZbR68Pgp8i+jnuNAegaxE//tIXBUGZzmUCEInErnIFuWEMNlgj6uin33cxstuJBehMRC1booJ02VfUU3W6+jNGN8zgkVZ8JU8ieKmtijGfv47bUbrTxaao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IQugZw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09ECBC4CED6;
-	Wed,  5 Feb 2025 15:05:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhBWsJyygBWwTV+EWMkoSFByfJ936oOaSrjeT4NJtxOxJ8KaAWZGh98GMvR85J69dbR2hbN+6T5516ozjslgZLwIsHH0xrXqJ+3jV1RJChEGrx3aOlJTXh6tQZpD12o4yqoHWgJmGKw4quUDZ0JQRlwcuB2X1J/GKBAXTmWosqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdqSN3Sw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F29C4CED1;
+	Wed,  5 Feb 2025 15:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767953;
-	bh=VKa34jBRg8yKKhlDo1O+BnT5tcyL53zaXHc/jm6ZvNQ=;
+	s=korg; t=1738768432;
+	bh=+OVF3VXv2pr6ZcsK9J5+s9dfpUp2oUPmPOCfcVdH0WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IQugZw3kfpPx/OtvCkwXxTtzKJHhPy/iT48ILfFAcoihigc9geklDWX6vnniiqkI
-	 kYFB2V0Q629zHL3ENC0LLpDYyjO6WKHnINjFhAHSUB+REvX0a/3lUpvGlH1pg+zUaG
-	 MGONJ8cRxNWzp0BZdz9qlJi9Uz16dKy98iSjVDSo=
+	b=YdqSN3SwB2XO33D5sf9DrwVqHEFp8VQ8wpJyZ+MBxdII6yvZaa0eQvXJYYEGis5vv
+	 zp9OSSpsHdictZoASXVqHovM9+KGSfxvVd+0mToREcdbJ/iZpi+10St7LJlj7MQVGb
+	 iAW1k+qYCTHSlxOhOag0AvCita8f7Zwd4NEAwPiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Brian Cain <bcain@quicinc.com>,
-	Brian Cain <brian.cain@oss.qualcomm.com>,
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 534/590] hexagon: fix using plain integer as NULL pointer warning in cmpxchg
-Date: Wed,  5 Feb 2025 14:44:49 +0100
-Message-ID: <20250205134515.696673372@linuxfoundation.org>
+Subject: [PATCH 6.13 548/623] net: xdp: Disallow attaching device-bound programs in generic mode
+Date: Wed,  5 Feb 2025 14:44:50 +0100
+Message-ID: <20250205134517.186978837@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit 8a20030038742b9915c6d811a4e6c14b126cafb4 ]
+[ Upstream commit 3595599fa8360bb3c7afa7ee50c810b4a64106ea ]
 
-Sparse reports
+Device-bound programs are used to support RX metadata kfuncs. These
+kfuncs are driver-specific and rely on the driver context to read the
+metadata. This means they can't work in generic XDP mode. However, there
+is no check to disallow such programs from being attached in generic
+mode, in which case the metadata kfuncs will be called in an invalid
+context, leading to crashes.
 
-    net/ipv4/inet_diag.c:1511:17: sparse: sparse: Using plain integer as NULL pointer
+Fix this by adding a check to disallow attaching device-bound programs
+in generic mode.
 
-Due to this code calling cmpxchg on a non-integer type
-struct inet_diag_handler *
-
-    return !cmpxchg((const struct inet_diag_handler**)&inet_diag_table[type],
-                    NULL, h) ? 0 : -EEXIST;
-
-While hexagon's cmpxchg assigns an integer value to a variable of this
-type.
-
-    __typeof__(*(ptr)) __oldval = 0;
-
-Update this assignment to cast 0 to the correct type.
-
-The original issue is easily reproduced at head with the below block,
-and is absent after this change.
-
-    make LLVM=1 ARCH=hexagon defconfig
-    make C=1 LLVM=1 ARCH=hexagon net/ipv4/inet_diag.o
-
-Fixes: 99a70aa051d2 ("Hexagon: Add processor and system headers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411091538.PGSTqUBi-lkp@intel.com/
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Tested-by: Christian Gmeiner <cgmeiner@igalia.com>
-Link: https://lore.kernel.org/r/20241203221736.282020-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/r/dae862ec-43b5-41a0-8edf-46c59071cdda@hetzner-cloud.de
+Tested-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250127131344.238147-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/hexagon/include/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/hexagon/include/asm/cmpxchg.h b/arch/hexagon/include/asm/cmpxchg.h
-index bf6cf5579cf45..9c58fb81f7fd6 100644
---- a/arch/hexagon/include/asm/cmpxchg.h
-+++ b/arch/hexagon/include/asm/cmpxchg.h
-@@ -56,7 +56,7 @@ __arch_xchg(unsigned long x, volatile void *ptr, int size)
- 	__typeof__(ptr) __ptr = (ptr);				\
- 	__typeof__(*(ptr)) __old = (old);			\
- 	__typeof__(*(ptr)) __new = (new);			\
--	__typeof__(*(ptr)) __oldval = 0;			\
-+	__typeof__(*(ptr)) __oldval = (__typeof__(*(ptr))) 0;	\
- 								\
- 	asm volatile(						\
- 		"1:	%0 = memw_locked(%1);\n"		\
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a994b1c725098..fbb796375aa0e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9699,6 +9699,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
+ 			NL_SET_ERR_MSG(extack, "Program bound to different device");
+ 			return -EINVAL;
+ 		}
++		if (bpf_prog_is_dev_bound(new_prog->aux) && mode == XDP_MODE_SKB) {
++			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
++			return -EINVAL;
++		}
+ 		if (new_prog->expected_attach_type == BPF_XDP_DEVMAP) {
+ 			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
+ 			return -EINVAL;
 -- 
 2.39.5
 
