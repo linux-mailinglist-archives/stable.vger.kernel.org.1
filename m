@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A4EA294B3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:29:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6F1A29431
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0A4318945EF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E40C7164EF2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC4A1632D9;
-	Wed,  5 Feb 2025 15:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDC916CD1D;
+	Wed,  5 Feb 2025 15:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T21xexfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpfxmJIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB9218D621;
-	Wed,  5 Feb 2025 15:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B51E89C;
+	Wed,  5 Feb 2025 15:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768301; cv=none; b=kJChtriXVrkpGoh3FOHqzVWwGMjlq8l4vfkVwC8yQj3MgCmFoHEXiAlesdXYbDZe4d32QNl/7dLQQ2dXAGx3esqRJBajRhCHDn6+cKda4GtX+MolI+44V/i0ThWle4IOIAQKdCVOwbKvZXFit15N0p+iOt0xAqtDpXvd5jkxTCA=
+	t=1738768568; cv=none; b=vDfqmkd9Ymwsjodo0grWdY6q9LLV/X2SA3O/E7TlScOFo2sAkTVf50QVEPORuwIG5IjvlboNgU5CkUi1pc4Drvxn4UQE20MBM2xK/T49YLOLYqGYEvCRoqUa34HtcMbq5RxlVWFJvrlx2RP2d+VINkByo3aYOPwwSxw8u2ln1ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768301; c=relaxed/simple;
-	bh=UnUitE+wq+O4muRtjKnH0PO19ioY1tXmW1ZEEY1isdY=;
+	s=arc-20240116; t=1738768568; c=relaxed/simple;
+	bh=VaOdZTHz6AJugvs1I96ue/N643wZ1zsDyhrYXM7HH4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuMTFHW8oRuQi4YRZehd9EaKKkxyR+4tkNSd2eB1cYm48WNYiJfMslwnKB8G4gIzK5XOP8IZt6Pi+ncVg/Pp6Tt+fWv0ANL5np+/4jAoyjD2l/nQQsUc2XJqrTrFfbCYmuXL2X2yL+5tFUsEHtXsfWZwrN0ydvADWNxDhB+YHCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T21xexfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E4FC4CED1;
-	Wed,  5 Feb 2025 15:11:40 +0000 (UTC)
+	 MIME-Version; b=qabYcAjDJUnAoYzkRyh+Ak3QxyeZlBp2Ro5hJjI1KHdO1zbBxKlXfy1OU9qhdCmCuake3/5mkc668hvB4qGRNU3ZKLxKvqQiZAhx11gWyAsQ1UYA40glPr3ONOcq7BVWdYEIGWJCbN9Y5DRQKCPVpxTFrSvSh1Un2x13e/yh/+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpfxmJIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E77C4CED1;
+	Wed,  5 Feb 2025 15:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768301;
-	bh=UnUitE+wq+O4muRtjKnH0PO19ioY1tXmW1ZEEY1isdY=;
+	s=korg; t=1738768567;
+	bh=VaOdZTHz6AJugvs1I96ue/N643wZ1zsDyhrYXM7HH4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T21xexfCnX0QWhVEBnb8GllKpRspB9ylwsKjr2JSWqypKd10Ud00LmTwdMz12BhXv
-	 fqgkif6iguGIwzeD9oBwSRYhnL2i4Yehtj8oW+BgYunsKvikx7L9JnRyGXQl2Yyhcs
-	 OUp+2voem9xuuH43skEHKteBm7ebanjE1KVZUSWk=
+	b=BpfxmJIP+KWrn4qv8OvMcvWQuQbkj6IbwwaVJqV4nqqUMwngRBQpdDX+3XdX0DOkj
+	 zt6YEf0/vqtn9YnP0FRmxofQ41o4pvqfKrveWJLaLL4Fl7o0G64PryG/iwOsJIT9yK
+	 ZGY7NtHd0XJQIlzhljDVuVytr0xrIL9xHMpHtdms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 581/590] phy: freescale: fsl-samsung-hdmi: Fix 64-by-32 division cocci warnings
+	stable <stable@kernel.org>,
+	Kyle Tso <kyletso@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.13 594/623] usb: dwc3: core: Defer the probe until USB power supply ready
 Date: Wed,  5 Feb 2025 14:45:36 +0100
-Message-ID: <20250205134517.492276038@linuxfoundation.org>
+Message-ID: <20250205134518.949555365@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Kyle Tso <kyletso@google.com>
 
-commit 739214dd1c209e34323814fb815fb17cccb9f95b upstream.
+commit 66e0ea341a2a78d14336117f19763bd9be26d45d upstream.
 
-The Kernel test robot returns the following warning:
- do_div() does a 64-by-32 division, please consider using div64_ul instead.
+Currently, DWC3 driver attempts to acquire the USB power supply only
+once during the probe. If the USB power supply is not ready at that
+time, the driver simply ignores the failure and continues the probe,
+leading to permanent non-functioning of the gadget vbus_draw callback.
 
-To prevent the 64-by-32 divsion, consolidate both the multiplication
-and the do_div into one line which explicitly uses u64 sizes.
+Address this problem by delaying the dwc3 driver initialization until
+the USB power supply is registered.
 
-Fixes: 1951dbb41d1d ("phy: freescale: fsl-samsung-hdmi: Support dynamic integer")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412091243.fSObwwPi-lkp@intel.com/
+Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250115044548.2701138-1-kyletso@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Link: https://lore.kernel.org/r/20241215220555.99113-1-aford173@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-samsung-hdmi.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/core.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-+++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
-@@ -471,8 +471,7 @@ static unsigned long fsl_samsung_hdmi_ph
- 			 * Fvco = (M * f_ref) / P,
- 			 * where f_ref is 24MHz.
- 			 */
--			tmp = (u64)_m * 24 * MHZ;
--			do_div(tmp, _p);
-+			tmp = div64_ul((u64)_m * 24 * MHZ, _p);
- 			if (tmp < 750 * MHZ ||
- 			    tmp > 3000 * MHZ)
- 				continue;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1664,8 +1664,6 @@ static void dwc3_get_properties(struct d
+ 	u8			tx_thr_num_pkt_prd = 0;
+ 	u8			tx_max_burst_prd = 0;
+ 	u8			tx_fifo_resize_max_num;
+-	const char		*usb_psy_name;
+-	int			ret;
+ 
+ 	/* default to highest possible threshold */
+ 	lpm_nyet_threshold = 0xf;
+@@ -1700,13 +1698,6 @@ static void dwc3_get_properties(struct d
+ 
+ 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
+ 
+-	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+-	if (ret >= 0) {
+-		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+-		if (!dwc->usb_psy)
+-			dev_err(dev, "couldn't get usb power supply\n");
+-	}
+-
+ 	dwc->has_lpm_erratum = device_property_read_bool(dev,
+ 				"snps,has-lpm-erratum");
+ 	device_property_read_u8(dev, "snps,lpm-nyet-threshold",
+@@ -2109,6 +2100,23 @@ static int dwc3_get_num_ports(struct dwc
+ 	return 0;
+ }
+ 
++static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
++{
++	struct power_supply *usb_psy;
++	const char *usb_psy_name;
++	int ret;
++
++	ret = device_property_read_string(dwc->dev, "usb-psy-name", &usb_psy_name);
++	if (ret < 0)
++		return NULL;
++
++	usb_psy = power_supply_get_by_name(usb_psy_name);
++	if (!usb_psy)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	return usb_psy;
++}
++
+ static int dwc3_probe(struct platform_device *pdev)
+ {
+ 	struct device		*dev = &pdev->dev;
+@@ -2165,6 +2173,10 @@ static int dwc3_probe(struct platform_de
+ 
+ 	dwc3_get_software_properties(dwc);
+ 
++	dwc->usb_psy = dwc3_get_usb_power_supply(dwc);
++	if (IS_ERR(dwc->usb_psy))
++		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
++
+ 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
+ 	if (IS_ERR(dwc->reset)) {
+ 		ret = PTR_ERR(dwc->reset);
 
 
 
