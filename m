@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C5CA28F95
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0F8A29390
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23809162F65
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13332188DEAD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF9C1553AB;
-	Wed,  5 Feb 2025 14:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC5218FDA5;
+	Wed,  5 Feb 2025 15:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJGcKqba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fr2LwDIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97A8522A;
-	Wed,  5 Feb 2025 14:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C42B18E368;
+	Wed,  5 Feb 2025 15:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765610; cv=none; b=EomTcFmqQ5EhKzuxrA8zkyrQuiIuVKxQwf8edpX1WvvqR3LG4KK13jZRPxLT1W4q1fE4ZNONivvI1bYyzkpn3a0T06m8j2sOsGd2Faz/Be260/sd8fyYM2BxfocGSLFmFlYZTznLrfgcZsR31Mt1o68e+/3wGYzcls9a3nGHbx4=
+	t=1738767836; cv=none; b=Xbukc5GR+GDYhCM0fO+11Ga33S+fOD/bkZEMsMGiYhO8dicDPP8LVcxFa8t69e1TWJxFLxk79nsRfH5vRcirgDoQSZFVlj0FRbinNGK5V98cMNVbL30zjMyW7Ac/Xrf5j7NnygFj+EzaT7gg4f4dozdhez2fF7XBEfdwyBBF50Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765610; c=relaxed/simple;
-	bh=oOBf4pNCiQJXkZ+2nfhARbO5DGQL9fQTN/pC/Vd19jo=;
+	s=arc-20240116; t=1738767836; c=relaxed/simple;
+	bh=8dk0DNbLq07hgDL2MHLA4RhNurvyFVwVwCOA0mDieD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDPFXI54JVfdAiE6ZQSegELPl5ZYLbKFAbXbW4R5Vr+IjbI2OZCfhM3R+fOOB17qge538NaBKT6bkiK54reXp/fzYQtzYaTTSdKs7ZkFfgeIaHnsbubhKTTlFCLNDjv9dj+MEtkMRGDPvtyf5zqplAn5SkZgaaszlQ4NnfMxfwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJGcKqba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1810EC4CED1;
-	Wed,  5 Feb 2025 14:26:49 +0000 (UTC)
+	 MIME-Version; b=g0f+k8mkhrA5AVJmec2GEIxLcxYRzNOLIPjm0Fg7bJ8FmvzidJJgOD2tiuhyab53B0phhIJzVlzX/WJp2Qg+sH+R3RJDLVPIuhBuSR0a8QbEpMTGwVGcU96+aolO7rOC8zIvTcufQamv11fz3UJqixg/vyKSe+xtq3zcDDDdzfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fr2LwDIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8B1C4CED6;
+	Wed,  5 Feb 2025 15:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765610;
-	bh=oOBf4pNCiQJXkZ+2nfhARbO5DGQL9fQTN/pC/Vd19jo=;
+	s=korg; t=1738767836;
+	bh=8dk0DNbLq07hgDL2MHLA4RhNurvyFVwVwCOA0mDieD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJGcKqbaeCBEmmVC8gNJqlOpk3teerk3OHoePnH+FkCmcUPMrh2b+nqcbAolBDXh/
-	 JuLT7mUDRnfMnwaMsJL6AmjZvNH8JhttX/JAwxsWBnN/BD04ibJejRrcvILV1p+xfg
-	 vl/rRfxHk2WToemSufPdkvyfkQ+ASgi/ppBFNGBE=
+	b=fr2LwDILnTVYaDxwCoynwykfBk2jIxDlZ6dj4EZrgrc6JSye0e5TvGlE8JwZqRsK6
+	 n0BBlahLa20i5z6fwQS+RwHKHNEvIT0YEOhboif6usytHRKyn16ucPsuMaSASYkY8k
+	 WDo9n20VVTOAqdTd+9rSSfkp8uuAHJHWy4pdkfbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Desnes Nunes <desnesn@redhat.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/393] PCI: endpoint: Destroy the EPC device in devm_pci_epc_destroy()
+Subject: [PATCH 6.13 460/623] media: dvb-usb-v2: af9035: fix ISO C90 compilation error on af9035_i2c_master_xfer
 Date: Wed,  5 Feb 2025 14:43:22 +0100
-Message-ID: <20250205134431.136950811@linuxfoundation.org>
+Message-ID: <20250205134513.812268914@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Desnes Nunes <desnesn@redhat.com>
 
-[ Upstream commit d4929755e4d02bd3de3ae5569dab69cb9502c54f ]
+[ Upstream commit c36b9ad1a8add3c114e25fe167efa217a813b0c7 ]
 
-The devm_pci_epc_destroy() comment says destroys the EPC device, but it
-does not actually do that since devres_destroy() does not call
-devm_pci_epc_release(), and it also can not fully undo what the API
-devm_pci_epc_create() does, so it is faulty.
+This fixes a 'ISO C90 forbids mixed declarations and code' compilation
+error on af9035_i2c_master_xfer, which is caused by the sanity check added
+on user controlled msg[i], before declaring the demodulator register.
 
-Fortunately, the faulty API has not been used by current kernel tree.  Use
-devres_release() instead of devres_destroy() so the EPC device will be
-released.
-
-Link: https://lore.kernel.org/r/20241210-pci-epc-core_fix-v3-1-4d86dd573e4b@quicinc.com
-Fixes: 5e8cb4033807 ("PCI: endpoint: Add EP core layer to enable EP controller and EP functions")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
+Signed-off-by: Desnes Nunes <desnesn@redhat.com>
+Link: https://lore.kernel.org/r/20240919172755.196907-1-desnesn@redhat.com
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/pci-epc-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
-index d06623c751f84..3a82c6a613a3c 100644
---- a/drivers/pci/endpoint/pci-epc-core.c
-+++ b/drivers/pci/endpoint/pci-epc-core.c
-@@ -808,7 +808,7 @@ void devm_pci_epc_destroy(struct device *dev, struct pci_epc *epc)
- {
- 	int r;
+diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
+index 0d2c42819d390..218f712f56b17 100644
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -322,13 +322,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			/* demod access via firmware interface */
++			u32 reg;
++
+ 			if (msg[0].len < 3 || msg[1].len < 1) {
+ 				ret = -EOPNOTSUPP;
+ 				goto unlock;
+ 			}
+-			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+-					msg[0].buf[2];
++
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++				msg[0].buf[2];
  
--	r = devres_destroy(dev, devm_pci_epc_release, devm_pci_epc_match,
-+	r = devres_release(dev, devm_pci_epc_release, devm_pci_epc_match,
- 			   epc);
- 	dev_WARN_ONCE(dev, r, "couldn't find PCI EPC resource\n");
- }
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+ 				reg |= 0x100000;
+@@ -385,13 +388,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			/* demod access via firmware interface */
++			u32 reg;
++
+ 			if (msg[0].len < 3) {
+ 				ret = -EOPNOTSUPP;
+ 				goto unlock;
+ 			}
+-			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+-					msg[0].buf[2];
++
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++				msg[0].buf[2];
+ 
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+ 				reg |= 0x100000;
 -- 
 2.39.5
 
