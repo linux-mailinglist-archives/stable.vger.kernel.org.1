@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-112898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A674A28EF7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF41CA28FB3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 844291888117
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A236618819AD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC109154C08;
-	Wed,  5 Feb 2025 14:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C55B155382;
+	Wed,  5 Feb 2025 14:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byLRKIXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRQlvESZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638941537AC;
-	Wed,  5 Feb 2025 14:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA57522A;
+	Wed,  5 Feb 2025 14:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765128; cv=none; b=qGZ1P3HKZm9Nxvqx7OHQWP4jfTLgpa3dQr9qo7PPVWQIr+7+Qurj44dKSdrnKDO8/5q+Zy/+Fm2Ily8q53ir4bQVmCJC/3uIj1/9hwjrYv8WRSxHd+9L1POWrCirFg2i36H7IYCW4Z6WoEixnEoELCLzGubT/c+f/0mdZ5spJhs=
+	t=1738765693; cv=none; b=iJGyFcjdXVI6uzsh2uoHTkK+Fe++ydDlROlSAG2IA65XvOBOI0nF3CgJbZleuSgn9VX310ASJOefi0Eu12mwmKjV2yBujpI1HlqFbcXXqUbc53zIM9NnSaCfw/gX1D1i2tUPBM7jXyv/+vKpevg79NJmHuj3g9k/lpqPTsvCORE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765128; c=relaxed/simple;
-	bh=BHzrMhvwpd5TxoWmZLH8G4j0k8YN36xo0K0m3/Z97Rc=;
+	s=arc-20240116; t=1738765693; c=relaxed/simple;
+	bh=jtiq5BRvmQjfmQR1qXtHZs4bh+3LYgaAmPToUzbTIFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVgWExLNqexSEaWu0Y9/pq7CaZ6ul8hIEp9eMXuDbRNAzHONAVOhIr9sZUxrR3Uy/UTlcsBmM/6HBNOUJxc4tBnboecdxyom3mjO9mpv7U8iTN1OQwmXe6g1b/FhoBh7GKr8+C/9SJ8GgGTYDkOlNthWUA6z2eo2HEdAgWWe6Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byLRKIXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06EAC4CED1;
-	Wed,  5 Feb 2025 14:18:47 +0000 (UTC)
+	 MIME-Version; b=q3fRHl8REMVq9wZyG4FUJkj58eQgij3+acMT2EIPDEtVkyFIjgtIsWlsFAHsuSei/fcxnl414V26bbmRnrvWCmVXna9ruXU7ENzESn24taZ0Yg7Ys0zsrZatyja9ZTcs7o4n6OiCu4ucWnIeG/DeoHzXUHWqAJ/gQ+BxXWIjHqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRQlvESZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADD2C4CED6;
+	Wed,  5 Feb 2025 14:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765128;
-	bh=BHzrMhvwpd5TxoWmZLH8G4j0k8YN36xo0K0m3/Z97Rc=;
+	s=korg; t=1738765693;
+	bh=jtiq5BRvmQjfmQR1qXtHZs4bh+3LYgaAmPToUzbTIFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byLRKIXAJ6OdSkIidXDeQu0XCmekleWWDuuhD+vSQ7lx0T4wiadAruOsDmCh5f/DI
-	 EJFmzk4K9tmdNyx03K7HYk0cxIzFBqzyil/s3nluw/+wn6uc7wXeVIaJ5REnbGGK+M
-	 lZO2q9VCtFmL8/NwcNoDiM7Fwu6PjLu4T+0WYNLI=
+	b=KRQlvESZAyNnHlSfpfnlfZibcVUkfPEYQgJCvfIL71ZEresB5wHyDbb8Hb6U0FTx8
+	 iQliHfdX2uiWEqbJow2G8rJ9Y9i9CkDjD9fzk82msjH2eTgIyem1Q4DmYyB92wNk+4
+	 Aj/DzBBo+jDsxdWzl9qnGlrk5/TMC8y2nLpaDS6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 192/590] wifi: mt76: mt7925: Update secondary link PS flow
+Subject: [PATCH 6.13 205/623] wifi: mt76: mt7915: firmware restart on devices with a second pcie link
 Date: Wed,  5 Feb 2025 14:39:07 +0100
-Message-ID: <20250205134502.625802872@linuxfoundation.org>
+Message-ID: <20250205134504.071992696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 8dafab9c4116a6a4fd870be03a3d9b66771dc5a8 ]
+[ Upstream commit 9b60e2ae511c959024ecf6578b3fbe85cd06d7cc ]
 
-Update the power-saving flow for secondary links.
+It seems that the firmware checks the register used for detecting matching
+PCIe links in order to figure out if a secondary PCIe link is enabled.
+Write the register again just before starting the firmware on hw reset,
+in order to fix an issue that left the second band unusable after restart.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-13-sean.wang@kernel.org
+Fixes: 9093cfff72e3 ("mt76: mt7915: add support for using a secondary PCIe link for gen1")
+Link: https://patch.msgid.link/20241230194202.95065-11-nbd@nbd.name
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7925/main.c  |  7 ++++++
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 25 ++++++-------------
- .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  3 +++
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  7 ++++--
- 4 files changed, 22 insertions(+), 20 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c    | 1 +
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index a78aae7d10886..dcdb9bcff3c40 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1903,6 +1903,13 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
- 		mt7925_mcu_set_tx(dev, info);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index cf77ce0c87599..b890a58d37300 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1388,6 +1388,8 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 	if (dev_is_pci(mdev->dev)) {
+ 		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 		if (dev->hif2) {
++			mt76_wr(dev, MT_PCIE_RECOG_ID,
++				dev->hif2->index | MT_PCIE_RECOG_ID_SEM);
+ 			if (is_mt7915(mdev))
+ 				mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
+ 			else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ac0b1f0eb27c1..5fe872ef2e939 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -191,6 +191,7 @@ struct mt7915_hif {
+ 	struct device *dev;
+ 	void __iomem *regs;
+ 	int irq;
++	u32 index;
+ };
  
-+	if (changed & BSS_CHANGED_BSSID) {
-+		if (ieee80211_vif_is_mld(vif) &&
-+		    hweight16(mvif->valid_links) == 2)
-+			/* Indicate the secondary setup done */
-+			mt7925_mcu_uni_bss_bcnft(dev, info, true);
-+	}
-+
- 	mt792x_mutex_release(dev);
- }
+ struct mt7915_phy {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 39132894e8ea2..07b0a5766eab7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -42,6 +42,7 @@ static struct mt7915_hif *mt7915_pci_get_hif2(u32 idx)
+ 			continue;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 4577e838f5872..0976f3dffbe46 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1362,7 +1362,7 @@ int mt7925_mcu_uni_bss_ps(struct mt792x_dev *dev,
- 				 &ps_req, sizeof(ps_req), true);
- }
- 
--static int
-+int
- mt7925_mcu_uni_bss_bcnft(struct mt792x_dev *dev,
- 			 struct ieee80211_bss_conf *link_conf, bool enable)
- {
-@@ -1923,32 +1923,21 @@ int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
- {
- #define MT7925_FIF_BIT_CLR		BIT(1)
- #define MT7925_FIF_BIT_SET		BIT(0)
--	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--	unsigned long valid = ieee80211_vif_is_mld(vif) ?
--				      mvif->valid_links : BIT(0);
--	struct ieee80211_bss_conf *bss_conf;
- 	int err = 0;
--	int i;
- 
- 	if (enable) {
--		for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
--			bss_conf = mt792x_vif_to_bss_conf(vif, i);
--			err = mt7925_mcu_uni_bss_bcnft(dev, bss_conf, true);
--			if (err < 0)
--				return err;
--		}
-+		err = mt7925_mcu_uni_bss_bcnft(dev, &vif->bss_conf, true);
-+		if (err < 0)
-+			return err;
- 
- 		return mt7925_mcu_set_rxfilter(dev, 0,
- 					       MT7925_FIF_BIT_SET,
- 					       MT_WF_RFCR_DROP_OTHER_BEACON);
+ 		get_device(hif->dev);
++		hif->index = idx;
+ 		goto out;
  	}
- 
--	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
--		bss_conf = mt792x_vif_to_bss_conf(vif, i);
--		err = mt7925_mcu_set_bss_pm(dev, bss_conf, false);
--		if (err)
--			return err;
--	}
-+	err = mt7925_mcu_set_bss_pm(dev, &vif->bss_conf, false);
-+	if (err < 0)
-+		return err;
- 
- 	return mt7925_mcu_set_rxfilter(dev, 0,
- 				       MT7925_FIF_BIT_CLR,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index ac53bdc993322..31bb8ed2ec513 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -643,4 +643,7 @@ int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif *mvif,
- int mt7925_mcu_set_rate_txpower(struct mt76_phy *phy);
- int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
- 				 struct ieee80211_bss_conf *link_conf);
-+int
-+mt7925_mcu_uni_bss_bcnft(struct mt792x_dev *dev,
-+			 struct ieee80211_bss_conf *link_conf, bool enable);
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index ab12616ec2b87..2b8b9b2977f74 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -241,6 +241,7 @@ static inline struct mt792x_bss_conf *
- mt792x_vif_to_link(struct mt792x_vif *mvif, u8 link_id)
- {
- 	struct ieee80211_vif *vif;
-+	struct mt792x_bss_conf *bss_conf;
- 
- 	vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
- 
-@@ -248,8 +249,10 @@ mt792x_vif_to_link(struct mt792x_vif *mvif, u8 link_id)
- 	    link_id >= IEEE80211_LINK_UNSPECIFIED)
- 		return &mvif->bss_conf;
- 
--	return rcu_dereference_protected(mvif->link_conf[link_id],
--		lockdep_is_held(&mvif->phy->dev->mt76.mutex));
-+	bss_conf = rcu_dereference_protected(mvif->link_conf[link_id],
-+					     lockdep_is_held(&mvif->phy->dev->mt76.mutex));
-+
-+	return bss_conf ? bss_conf : &mvif->bss_conf;
- }
- 
- static inline struct mt792x_link_sta *
+ 	hif = NULL;
 -- 
 2.39.5
 
