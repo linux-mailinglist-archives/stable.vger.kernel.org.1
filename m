@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D1EA29299
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7741A2931B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6303AC483
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 072D418902DB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EB618A6B8;
-	Wed,  5 Feb 2025 14:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115801DD0E7;
+	Wed,  5 Feb 2025 14:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8pW4vJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEnU0P6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610371C6BE;
-	Wed,  5 Feb 2025 14:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F4218C006;
+	Wed,  5 Feb 2025 14:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767188; cv=none; b=AWMDjUDXHCUrDGSZlA2Q+xB5YuCa8NsdsP8aXRuE0wQnuGPPduXjI37jRQKLrGInb2ZODDLCF839s8tLAhUySvyaUwnEZ8IBMSQdeu7Mldl3FV5Ar4LCZAGjfZrfXk3diUXur2C86iZJQ6C9NVrPxIyohuC7N4ZrFmIIVuIEEAU=
+	t=1738767473; cv=none; b=HCdZnsVxFgz83NFLNo/rxUkXVDX9Sj2TMatbMnJiDwy/nX0+iMluxIa2DGo8e2KLyqYjeNXV6nNReloCTQJ+oZqwc08uV1NVwf3GqZ4xoY61a5IuQU+x1BxHYFS6rWQIbU++rWIsgU8OBDiGtjLAPfFGgOIczkGxmAuTlmXxjeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767188; c=relaxed/simple;
-	bh=Urjvoq6F638Qt8FYDueqI+s2nsnqRclcX0MuWmkk1O0=;
+	s=arc-20240116; t=1738767473; c=relaxed/simple;
+	bh=sD7vm9XXE7VlHlFjPR61aQOA/1lcv+gEZ++qWzFe48Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmYGE5atY8ygfx7+qYfY1Hn2sfSDSYXBRMt5JDMryEBPidHPgShYCTJ8ujw4LujYfDW4z5Og8Z4xPmoZxEIVrZutKpfPN55hD08dcSVAvBntEhghCEF7cDxWpeX4EC4HuHvfOg4qwhzmbziGDh5zLRf9o/TQuwQYlUE4O4v91S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8pW4vJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15FEC4CED1;
-	Wed,  5 Feb 2025 14:53:07 +0000 (UTC)
+	 MIME-Version; b=RAJZuGGQJaDwCmQD1MVe9hsw+cxRiJFfLUQgz+xKOqtN9YnMU4xR4LnMpY2DcA+Wxf266ueDVhpmVfFEWZAHYFqIAmLi9oTaRbeHSYVoFjc5va+NP6Jy9oYjUKKIaeWtuDCgq66ldpHABKo1/cLHokhmFxLz/bzofw7XjZjfJv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEnU0P6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2B7C4CED1;
+	Wed,  5 Feb 2025 14:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767188;
-	bh=Urjvoq6F638Qt8FYDueqI+s2nsnqRclcX0MuWmkk1O0=;
+	s=korg; t=1738767473;
+	bh=sD7vm9XXE7VlHlFjPR61aQOA/1lcv+gEZ++qWzFe48Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8pW4vJLSkjqvEVF9uKeiRF9StucBgfX8A1+30CFhYhAnmzfIDSHUYVuFdCRDTM72
-	 J56GITYzoT5CTkKjCDiXkW/d6lZUEDNQ1FOfu5tOr8o/FwB/6oWGZ0bxeYPmEAsEzn
-	 DXAHjJox9k9P3cxcABh5GlHGqFpq6saEF+EJuIMU=
+	b=mEnU0P6n6Pl0/MEJIKsymoCniIN/ur2/pma5FM83+Rh+Fy4RFmYO99YE5+bufG636
+	 AnhHwCLWVoairsWLUHUqbVFU4Bc5jV4JsQutuLiLhEgyBM4p2upDRYyQqS5h3BHJzi
+	 SUVxU8sGk/e7UA27j4f6nVFP+N32+TGXeCJJELPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Artemy Kovalyov <artemyko@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 395/590] RDMA/mlx5: Fix indirect mkey ODP page count
-Date: Wed,  5 Feb 2025 14:42:30 +0100
-Message-ID: <20250205134510.377991277@linuxfoundation.org>
+Subject: [PATCH 6.13 409/623] arm64: dts: qcom: sm8150-microsoft-surface-duo: fix typos in da7280 properties
+Date: Wed,  5 Feb 2025 14:42:31 +0100
+Message-ID: <20250205134511.870402384@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 235f238402194a78ac5fb882a46717eac817e5d1 ]
+[ Upstream commit 9875adffb87da5c40f4013e55104f5e2fc071c2a ]
 
-Restrict the check for the number of pages handled during an ODP page
-fault to direct mkeys.
-Perform the check right after handling the page fault and don't
-propagate the number of handled pages to callers.
+The dlg,const-op-mode & dlg,periodic-op-mode were mis-names with twice
+the "dlg," prefix, drop one to match the bindings.
 
-Indirect mkeys and their associated direct mkeys can have different
-start addresses. As a result, the calculation of the number of pages to
-handle for an indirect mkey may not match the actual page fault
-handling done on the direct mkey.
+This fixes:
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,const-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+m8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,periodic-op-mode' is a required property
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
+sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,dlg,const-op-mode', 'dlg,dlg,periodic-op-mode' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
 
-For example:
-A 4K sized page fault on a KSM mkey that has a start address that is not
-aligned to a page will result a calculation that assumes the number of
-pages required to handle are 2.
-While the underlying MTT might be aligned will require fetching only a
-single page.
-Thus, do the calculation and compare number of pages handled only per
-direct mkey.
+With the dlg,da7280.yaml converted from dlg,da7280.txt at [1].
 
-Fixes: db570d7deafb ("IB/mlx5: Add ODP support to MW")
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
-Link: https://patch.msgid.link/86c483d9e75ce8fe14e9ff85b62df72b779f8ab1.1736187990.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[1] https://lore.kernel.org/all/20241206-topic-misc-da7280-convert-v2-1-1c3539f75604@linaro.org/
+
+Fixes: d1f781db47a8 ("arm64: dts: qcom: add initial device-tree for Microsoft Surface Duo")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-6-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c | 32 +++++++++++++++-----------------
- 1 file changed, 15 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
-index 4b37446758fd4..69ca2de33a80e 100644
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -944,8 +944,7 @@ static struct mlx5_ib_mkey *find_odp_mkey(struct mlx5_ib_dev *dev, u32 key)
- /*
-  * Handle a single data segment in a page-fault WQE or RDMA region.
-  *
-- * Returns number of OS pages retrieved on success. The caller may continue to
-- * the next data segment.
-+ * Returns zero on success. The caller may continue to the next data segment.
-  * Can return the following error codes:
-  * -EAGAIN to designate a temporary error. The caller will abort handling the
-  *  page fault and resolve it.
-@@ -958,7 +957,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 					 u32 *bytes_committed,
- 					 u32 *bytes_mapped)
- {
--	int npages = 0, ret, i, outlen, cur_outlen = 0, depth = 0;
-+	int ret, i, outlen, cur_outlen = 0, depth = 0, pages_in_range;
- 	struct pf_frame *head = NULL, *frame;
- 	struct mlx5_ib_mkey *mmkey;
- 	struct mlx5_ib_mr *mr;
-@@ -993,13 +992,20 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	case MLX5_MKEY_MR:
- 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+index b039773c44653..a1323a8b8e6bf 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
++++ b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
+@@ -376,8 +376,8 @@
+ 		pinctrl-0 = <&da7280_intr_default>;
  
-+		pages_in_range = (ALIGN(io_virt + bcnt, PAGE_SIZE) -
-+				  (io_virt & PAGE_MASK)) >>
-+				 PAGE_SHIFT;
- 		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
- 		if (ret < 0)
- 			goto end;
- 
- 		mlx5_update_odp_stats(mr, faults, ret);
- 
--		npages += ret;
-+		if (ret < pages_in_range) {
-+			ret = -EFAULT;
-+			goto end;
-+		}
-+
- 		ret = 0;
- 		break;
- 
-@@ -1090,7 +1096,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
- 	kfree(out);
- 
- 	*bytes_committed = 0;
--	return ret ? ret : npages;
-+	return ret;
- }
- 
- /*
-@@ -1109,8 +1115,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
-  *                   the committed bytes).
-  * @receive_queue: receive WQE end of sg list
-  *
-- * Returns the number of pages loaded if positive, zero for an empty WQE, or a
-- * negative error code.
-+ * Returns zero for success or a negative error code.
-  */
- static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 				   struct mlx5_pagefault *pfault,
-@@ -1118,7 +1123,7 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 				   void *wqe_end, u32 *bytes_mapped,
- 				   u32 *total_wqe_bytes, bool receive_queue)
- {
--	int ret = 0, npages = 0;
-+	int ret = 0;
- 	u64 io_virt;
- 	__be32 key;
- 	u32 byte_count;
-@@ -1175,10 +1180,9 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
- 						    bytes_mapped);
- 		if (ret < 0)
- 			break;
--		npages += ret;
- 	}
- 
--	return ret < 0 ? ret : npages;
-+	return ret;
- }
- 
- /*
-@@ -1414,12 +1418,6 @@ static void mlx5_ib_mr_wqe_pfault_handler(struct mlx5_ib_dev *dev,
- 	free_page((unsigned long)wqe_start);
- }
- 
--static int pages_in_range(u64 address, u32 length)
--{
--	return (ALIGN(address + length, PAGE_SIZE) -
--		(address & PAGE_MASK)) >> PAGE_SHIFT;
--}
--
- static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
- 					   struct mlx5_pagefault *pfault)
- {
-@@ -1458,7 +1456,7 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
- 	if (ret == -EAGAIN) {
- 		/* We're racing with an invalidation, don't prefetch */
- 		prefetch_activated = 0;
--	} else if (ret < 0 || pages_in_range(address, length) > ret) {
-+	} else if (ret < 0) {
- 		mlx5_ib_page_fault_resume(dev, pfault, 1);
- 		if (ret != -ENOENT)
- 			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%llx, type: 0x%x\n",
+ 		dlg,actuator-type = "LRA";
+-		dlg,dlg,const-op-mode = <1>;
+-		dlg,dlg,periodic-op-mode = <1>;
++		dlg,const-op-mode = <1>;
++		dlg,periodic-op-mode = <1>;
+ 		dlg,nom-microvolt = <2000000>;
+ 		dlg,abs-max-microvolt = <2000000>;
+ 		dlg,imax-microamp = <129000>;
 -- 
 2.39.5
 
