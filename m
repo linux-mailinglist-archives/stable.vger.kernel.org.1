@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02628A28CBE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF2CA28D2B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54D8016336A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B1CC3A98BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C9E1494DF;
-	Wed,  5 Feb 2025 13:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AFF1519AA;
+	Wed,  5 Feb 2025 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRqcc0ix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFvXb2PK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133EDFC0B;
-	Wed,  5 Feb 2025 13:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E040714B080;
+	Wed,  5 Feb 2025 13:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763602; cv=none; b=MWb4j9OuPi82I9tyxUpHMcQ4VDtD2iia4iXxcKE6OTuB1NO4Vxqni6zL+Rej3o8zTrS96dPGWKAeCYPrPVlWtmVSkhLo98YbgaIQXZnTyhZTkj9j/u8oAyltLCL1tqDZrnQdQH/Zbi9+ZFdcbiPsSQH/d+pYnDubDTfGZIIWntc=
+	t=1738763833; cv=none; b=MNxKNkYGic3UAAHU1SH9SmDEMHkev4mz4UmDaOPSMFJcTOXVb3ivOU4trocyzC+qtiBIeJ2/MPbwTvh2diBCndZPrL2bslG1VRuRt2ncSCyTiWJ6+5r7KNat7Yfy7UExpbbIpm6vXPMIItuabSvSp4/6K31pUUXcJYMbNYARfaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763602; c=relaxed/simple;
-	bh=VPCbIpUmtL3QKczp8VDyrEc9FkyBUftb5CW+DBG995o=;
+	s=arc-20240116; t=1738763833; c=relaxed/simple;
+	bh=En40v7Ks7XHnPympzPUbpYmbGe9UTURiEdnrKgGQhgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nosVNgwLQ0yqkQnfycJPVP/4D0vX9Rfyx8OoEy0YAQluAP8QydtBhiT8GTAyQ2jyjr2ZGe44N/q3UFTsgZ1bgn/3oZ1xzBVLb4+gXN/xeywpnUMRDUuZwaHIo+kEzzbDrw3DPGJIOcckkZGqBuQFfqFJnQcdO11a64RNLvhd/4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRqcc0ix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2EDC4CED1;
-	Wed,  5 Feb 2025 13:53:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EyWdj/OZAG/yu2Ag2Z0jrBMTU5+v5Gtewhy94yTCWdvyQfq2tQdIj4ouLZKQrII/ZmunA4Layy4krWwLNL6NrHX6JaynjoNZtO55YhgSshi3KlRu2tncvJpfZJK04noDaatkUwpXNBZNVD6h4PCE9tsmVixgf4CStq+NWR3EgLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFvXb2PK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9F3C4CEDD;
+	Wed,  5 Feb 2025 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763601;
-	bh=VPCbIpUmtL3QKczp8VDyrEc9FkyBUftb5CW+DBG995o=;
+	s=korg; t=1738763832;
+	bh=En40v7Ks7XHnPympzPUbpYmbGe9UTURiEdnrKgGQhgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRqcc0ixvcFS/XzO0BSVfEofpWPjBm3MLrrkNZHKm5/y9xpkjOdCrm4BVEtMoahSe
-	 ujaLTWSS0kxC1t0hsoSsANTwGUPIc+VZhESbhhxb+yYxgUUTAorCZ60Gplo5FCU3l0
-	 t4txtXLP++3viWDYGpvLuSPW1LlLW4nSX3h3H/SU=
+	b=HFvXb2PKabeN1K4r3928ExwenBqEG5tIzqt0bcT3ETzkCv56p4+5sVfdYmtnlulDO
+	 0Hx33f1edR6V/FGkY5CF1MVUP5ovmEMjj2/DivE4pebWJCP9V681JAf1VJungmy0Bb
+	 WAY2EUczqOHEW7oE5isDdY4T1AnZdfSiGGhQ0uaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/590] psi: Fix race when task wakes up before psi_sched_switch() adjusts flags
-Date: Wed,  5 Feb 2025 14:36:30 +0100
-Message-ID: <20250205134456.594634664@linuxfoundation.org>
+Subject: [PATCH 6.12 036/590] drm/v3d: Fix performance counter source settings on V3D 7.x
+Date: Wed,  5 Feb 2025 14:36:31 +0100
+Message-ID: <20250205134456.632527799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -61,110 +61,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <chengming.zhou@linux.dev>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 7d9da040575b343085287686fa902a5b2d43c7ca ]
+[ Upstream commit e987e22e9229d70c2083a91cc61269b2c4924955 ]
 
-When running hackbench in a cgroup with bandwidth throttling enabled,
-following PSI splat was observed:
+When the new register addresses were introduced for V3D 7.x, we added
+new masks for performance counter sources on V3D 7.x.  Nevertheless,
+we never apply these new masks when setting the sources.
 
-    psi: inconsistent task state! task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4
+Fix the performance counter source settings on V3D 7.x by introducing
+a new macro, `V3D_SET_FIELD_VER`, which allows fields setting to vary
+by version. Using this macro, we can provide different values for
+source mask based on the V3D version, ensuring that sources are
+correctly configure on V3D 7.x.
 
-When investigating the series of events leading up to the splat,
-following sequence was observed:
-
-    [008] d..2.: sched_switch: ... ==> next_comm=hackbench next_pid=1831 next_prio=120
-        ...
-    [008] dN.2.: dequeue_entity(task delayed): task=hackbench pid=1831 cfs_rq->throttled=0
-    [008] dN.2.: pick_task_fair: check_cfs_rq_runtime() throttled cfs_rq on CPU8
-    # CPU8 goes into newidle balance and releases the rq lock
-        ...
-    # CPU15 on same LLC Domain is trying to wakeup hackbench(pid=1831)
-    [015] d..4.: psi_flags_change: psi: task state: task=1831:hackbench cpu=8 psi_flags=14 clear=0 set=4 final=14 # Splat (cfs_rq->throttled=1)
-    [015] d..4.: sched_wakeup: comm=hackbench pid=1831 prio=120 target_cpu=008 # Task has woken on a throttled hierarchy
-    [008] d..2.: sched_switch: prev_comm=hackbench prev_pid=1831 prev_prio=120 prev_state=S ==> ...
-
-psi_dequeue() relies on psi_sched_switch() to set the correct PSI flags
-for the blocked entity, however, with the introduction of DELAY_DEQUEUE,
-the block task can wakeup when newidle balance drops the runqueue lock
-during __schedule().
-
-If a task wakes before psi_sched_switch() adjusts the PSI flags, skip
-any modifications in psi_enqueue() which would still see the flags of a
-running task and not a blocked one. Instead, rely on psi_sched_switch()
-to do the right thing.
-
-Since the status returned by try_to_block_task() may no longer be true
-by the time schedule reaches psi_sched_switch(), check if the task is
-blocked or not using a combination of task_on_rq_queued() and
-p->se.sched_delayed checks.
-
-[ prateek: Commit message, testing, early bailout in psi_enqueue() ]
-
-Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue") # 1a6151017ee5
-Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
-Link: https://lore.kernel.org/r/20241227061941.2315-1-kprateek.nayak@amd.com
+Fixes: 0ad5bc1ce463 ("drm/v3d: fix up register addresses for V3D 7.x")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241106121736.5707-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c  | 6 +++---
- kernel/sched/stats.h | 4 ++++
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/v3d/v3d_debugfs.c |  4 ++--
+ drivers/gpu/drm/v3d/v3d_perfmon.c | 15 ++++++++-------
+ drivers/gpu/drm/v3d/v3d_regs.h    | 29 +++++++++++++++++------------
+ 3 files changed, 27 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c1d2d46feec50..aba41c69f09c4 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6593,7 +6593,6 @@ static void __sched notrace __schedule(int sched_mode)
- 	 * as a preemption by schedule_debug() and RCU.
- 	 */
- 	bool preempt = sched_mode > SM_NONE;
--	bool block = false;
- 	unsigned long *switch_count;
- 	unsigned long prev_state;
- 	struct rq_flags rf;
-@@ -6654,7 +6653,7 @@ static void __sched notrace __schedule(int sched_mode)
- 			goto picked;
- 		}
- 	} else if (!preempt && prev_state) {
--		block = try_to_block_task(rq, prev, prev_state);
-+		try_to_block_task(rq, prev, prev_state);
- 		switch_count = &prev->nvcsw;
+diff --git a/drivers/gpu/drm/v3d/v3d_debugfs.c b/drivers/gpu/drm/v3d/v3d_debugfs.c
+index 19e3ee7ac897f..76816f2551c10 100644
+--- a/drivers/gpu/drm/v3d/v3d_debugfs.c
++++ b/drivers/gpu/drm/v3d/v3d_debugfs.c
+@@ -237,8 +237,8 @@ static int v3d_measure_clock(struct seq_file *m, void *unused)
+ 	if (v3d->ver >= 40) {
+ 		int cycle_count_reg = V3D_PCTR_CYCLE_COUNT(v3d->ver);
+ 		V3D_CORE_WRITE(core, V3D_V4_PCTR_0_SRC_0_3,
+-			       V3D_SET_FIELD(cycle_count_reg,
+-					     V3D_PCTR_S0));
++			       V3D_SET_FIELD_VER(cycle_count_reg,
++						 V3D_PCTR_S0, v3d->ver));
+ 		V3D_CORE_WRITE(core, V3D_V4_PCTR_0_CLR, 1);
+ 		V3D_CORE_WRITE(core, V3D_V4_PCTR_0_EN, 1);
+ 	} else {
+diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
+index 6ee56cbd3f1bf..e3013ac3a5c2a 100644
+--- a/drivers/gpu/drm/v3d/v3d_perfmon.c
++++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
+@@ -240,17 +240,18 @@ void v3d_perfmon_start(struct v3d_dev *v3d, struct v3d_perfmon *perfmon)
+ 
+ 	for (i = 0; i < ncounters; i++) {
+ 		u32 source = i / 4;
+-		u32 channel = V3D_SET_FIELD(perfmon->counters[i], V3D_PCTR_S0);
++		u32 channel = V3D_SET_FIELD_VER(perfmon->counters[i], V3D_PCTR_S0,
++						v3d->ver);
+ 
+ 		i++;
+-		channel |= V3D_SET_FIELD(i < ncounters ? perfmon->counters[i] : 0,
+-					 V3D_PCTR_S1);
++		channel |= V3D_SET_FIELD_VER(i < ncounters ? perfmon->counters[i] : 0,
++					     V3D_PCTR_S1, v3d->ver);
+ 		i++;
+-		channel |= V3D_SET_FIELD(i < ncounters ? perfmon->counters[i] : 0,
+-					 V3D_PCTR_S2);
++		channel |= V3D_SET_FIELD_VER(i < ncounters ? perfmon->counters[i] : 0,
++					     V3D_PCTR_S2, v3d->ver);
+ 		i++;
+-		channel |= V3D_SET_FIELD(i < ncounters ? perfmon->counters[i] : 0,
+-					 V3D_PCTR_S3);
++		channel |= V3D_SET_FIELD_VER(i < ncounters ? perfmon->counters[i] : 0,
++					     V3D_PCTR_S3, v3d->ver);
+ 		V3D_CORE_WRITE(0, V3D_V4_PCTR_0_SRC_X(source), channel);
  	}
  
-@@ -6699,7 +6698,8 @@ static void __sched notrace __schedule(int sched_mode)
+diff --git a/drivers/gpu/drm/v3d/v3d_regs.h b/drivers/gpu/drm/v3d/v3d_regs.h
+index 1b1a62ad95852..6da3c69082bd6 100644
+--- a/drivers/gpu/drm/v3d/v3d_regs.h
++++ b/drivers/gpu/drm/v3d/v3d_regs.h
+@@ -15,6 +15,14 @@
+ 		fieldval & field##_MASK;				\
+ 	 })
  
- 		migrate_disable_switch(rq, prev);
- 		psi_account_irqtime(rq, prev, next);
--		psi_sched_switch(prev, next, block);
-+		psi_sched_switch(prev, next, !task_on_rq_queued(prev) ||
-+					     prev->se.sched_delayed);
- 
- 		trace_sched_switch(preempt, prev, next, prev_state);
- 
-diff --git a/kernel/sched/stats.h b/kernel/sched/stats.h
-index 8ee0add5a48a8..6ade91bce63ee 100644
---- a/kernel/sched/stats.h
-+++ b/kernel/sched/stats.h
-@@ -138,6 +138,10 @@ static inline void psi_enqueue(struct task_struct *p, int flags)
- 	if (flags & ENQUEUE_RESTORE)
- 		return;
- 
-+	/* psi_sched_switch() will handle the flags */
-+	if (task_on_cpu(task_rq(p), p))
-+		return;
++#define V3D_SET_FIELD_VER(value, field, ver)				\
++	({								\
++		typeof(ver) _ver = (ver);				\
++		u32 fieldval = (value) << field##_SHIFT(_ver);		\
++		WARN_ON((fieldval & ~field##_MASK(_ver)) != 0);		\
++		fieldval & field##_MASK(_ver);				\
++	 })
 +
- 	if (p->se.sched_delayed) {
- 		/* CPU migration of "sleeping" task */
- 		SCHED_WARN_ON(!(flags & ENQUEUE_MIGRATED));
+ #define V3D_GET_FIELD(word, field) (((word) & field##_MASK) >>		\
+ 				    field##_SHIFT)
+ 
+@@ -354,18 +362,15 @@
+ #define V3D_V4_PCTR_0_SRC_28_31                        0x0067c
+ #define V3D_V4_PCTR_0_SRC_X(x)                         (V3D_V4_PCTR_0_SRC_0_3 + \
+ 							4 * (x))
+-# define V3D_PCTR_S0_MASK                              V3D_MASK(6, 0)
+-# define V3D_V7_PCTR_S0_MASK                           V3D_MASK(7, 0)
+-# define V3D_PCTR_S0_SHIFT                             0
+-# define V3D_PCTR_S1_MASK                              V3D_MASK(14, 8)
+-# define V3D_V7_PCTR_S1_MASK                           V3D_MASK(15, 8)
+-# define V3D_PCTR_S1_SHIFT                             8
+-# define V3D_PCTR_S2_MASK                              V3D_MASK(22, 16)
+-# define V3D_V7_PCTR_S2_MASK                           V3D_MASK(23, 16)
+-# define V3D_PCTR_S2_SHIFT                             16
+-# define V3D_PCTR_S3_MASK                              V3D_MASK(30, 24)
+-# define V3D_V7_PCTR_S3_MASK                           V3D_MASK(31, 24)
+-# define V3D_PCTR_S3_SHIFT                             24
++# define V3D_PCTR_S0_MASK(ver) (((ver) >= 71) ? V3D_MASK(7, 0) : V3D_MASK(6, 0))
++# define V3D_PCTR_S0_SHIFT(ver)                        0
++# define V3D_PCTR_S1_MASK(ver) (((ver) >= 71) ? V3D_MASK(15, 8) : V3D_MASK(14, 8))
++# define V3D_PCTR_S1_SHIFT(ver)                        8
++# define V3D_PCTR_S2_MASK(ver) (((ver) >= 71) ? V3D_MASK(23, 16) : V3D_MASK(22, 16))
++# define V3D_PCTR_S2_SHIFT(ver)                        16
++# define V3D_PCTR_S3_MASK(ver) (((ver) >= 71) ? V3D_MASK(31, 24) : V3D_MASK(30, 24))
++# define V3D_PCTR_S3_SHIFT(ver)                        24
++
+ #define V3D_PCTR_CYCLE_COUNT(ver) ((ver >= 71) ? 0 : 32)
+ 
+ /* Output values of the counters. */
 -- 
 2.39.5
 
