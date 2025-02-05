@@ -1,225 +1,205 @@
-Return-Path: <stable+bounces-112276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC85A28369
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 05:42:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C409BA283BB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 06:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEB43163C61
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 04:42:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD2A1655F8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 05:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DD9215778;
-	Wed,  5 Feb 2025 04:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E36321D58F;
+	Wed,  5 Feb 2025 05:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="QNQaprYg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rq7MPOCl"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869E220FAA0
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 04:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A58421516C;
+	Wed,  5 Feb 2025 05:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738730525; cv=none; b=V7wAp7skreOo2tszXONVNJpBUb6vT65IaxiDTQEzToez1FbN5p/mMyN0X6rqBUiLpY5Ye+F6QXhO3vd/tHlMPGZDhhoP6vRC/WJcuBcg4AYhqbXJLw3ppq2nzuCM2gbDXiVzyjIvBGTGhqHebfwrBKyjl6O737VbG1kazdOwtU8=
+	t=1738733937; cv=none; b=qqvlt+3UClUotEcHs9j+QlCQL7mJCYBwFP25IzPX5wqlABW1CNy1QKIya3As6ErK1ZiS1vkyesgBIkDXhzdxhK7dhQpZ3gaA0CYQiNlxsy41yjbDmhX5YiEg80mnDdyN7tSq66RJm8FByTrEFYcty+kmfmzW3kx0MHr/PBzdU8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738730525; c=relaxed/simple;
-	bh=64SQosiOCxOdYvT4XbtwmqxP7SLL3kIIkHkxT80x6tQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AMiTeqrz3SPeDwYUUwtjoZKqsNhiHNdwnszgaMsHLrxyJCm0BBVIxkutoSCReoYGNUO7Zjss7dN/G3oLbYSIFPqQSHRmkEKjTlCuzEhtvtgljUdO7YxQc1TKT8Jm+6l79THFKQGHzMIlF76iNDwRZxq4ekYWBOM63nJDGaetWn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=QNQaprYg; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-123-53.bstnma.fios.verizon.net [173.48.123.53])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5154fsLv019785
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Feb 2025 23:41:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1738730516; bh=Dd9XXMDav6Hs9NCwS6iRnr/lA65SEisNRunHxhd51Ws=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=QNQaprYgXZHkcdQ1zU3/dHQEAQQlfkJGHmoxMi74WYq95y0kNIapOpvbLs6Qb6PYD
-	 Ntqc96q+RRzYLHCzYXs619TWAWz/7SQhAPUG+Ueb+8+etqYGOFmbl55cTmD9ANkE+e
-	 MjLtCXM6RTOE5ButlE0+9mxeh3Y++eY7G41rzF5we53qqq9aB7MebQek4gjefcbrzN
-	 s7RTpcvHrsOTi/cfObGOtTj34WAq3ZN8wTijHBbznsAWzONJ51TejPBuR9mZDN/F5g
-	 ZxFM9tbOqQpQfQERZNcvpTku3x/PCvY3DsPIuek6dw2EI0OS4oPmJ/MRxnoArdFldk
-	 zER3KC+bAzHAQ==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 83A3115C013F; Tue, 04 Feb 2025 23:41:54 -0500 (EST)
-Date: Tue, 4 Feb 2025 23:41:54 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Daniel Rosenberg <drosen@google.com>
-Cc: Todd Kjos <tkjos@google.com>, Greg KH <gregkh@linuxfoundation.org>,
-        stable <stable@vger.kernel.org>,
-        Android Kernel Team <kernel-team@android.com>
-Subject: Re: f2fs: Introduce linear search for dentries
-Message-ID: <20250205044154.GB909029@mit.edu>
-References: <CA+PiJmR3etq=i3tQmPLZfrMMxKqkEDwijWQ3wB6ahxAUoc+NHg@mail.gmail.com>
- <2025020118-flap-sandblast-6a48@gregkh>
- <CAHRSSExDWR_65wCvaVu3VsCy3hGNU51mRqeQ4uRczEA0EYs-fA@mail.gmail.com>
- <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
+	s=arc-20240116; t=1738733937; c=relaxed/simple;
+	bh=mmmtL63KI3AyB8ACGMZXLbFMGxTSjUhHH43kkAGv2/s=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jqqkyGhthT1fvg6tChJ9zRRDXjbA6GjS66O0mWoOLZAYAPsMMzth6u9n9kfpGUvx3uqx9bZ6epO4rZnDr6zij2ibTsElF9zuQTKMBit9fzrbg+EGAbIJ4BXYeCreG4hcQYQFajgJH0PENOo5OosAl8xKiGm6dv2paWPyOpUjX70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rq7MPOCl; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2f9c69aefdbso2466273a91.2;
+        Tue, 04 Feb 2025 21:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738733935; x=1739338735; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eN1Ju7cqAFwnwTVKwvibE6YfRh2zoexdCMGAV5/2L/g=;
+        b=Rq7MPOCl5LtyYM1n0jXEB6/rZUT8qZGI1KdsYjUFV2zp+jVopTUYU41TEQBuFLQDBp
+         jzROg309riJ0GT0+X8pTbjr0veFl83UY6sErhFCn7bD61xJ2t/dyrQjsUjnis3lkFKWx
+         L6AvuRYdYvQFoGpyejMaqlQ9QTItOqJFFYYCswC17Tifo94MqUlR2VKkdcm+047r9XJp
+         wIEa/BIOLowCYy69nR7aFwbPy4MBHDbZ3xkMsQOSUr2WuxLj6q7BfT1FZmY/U6jjNz8g
+         I9RzK4fLoE4RJMnfdhYBxjPaWHkLLjCvbGr91n2K7+AjZ8pE5BAks4I3nzSYhJzqUHTI
+         B+kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738733935; x=1739338735;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eN1Ju7cqAFwnwTVKwvibE6YfRh2zoexdCMGAV5/2L/g=;
+        b=PtaLpSjc76Okh5Qw0w2KfQ4oyzjgRoGHjlrfmOyrqg2dFdOGvcwG5FnBjxDfAV4def
+         c/BTpJeWl5Kvbr5NhpvFZMCoUWTTwXkv2UWh4V2l4Fvf48/YY0vBS61UmHmeWtDdPsGK
+         +t8IKBzGXrqlRtpwo1tbPszZVpejIZsdqkWqnjK5urFXOIe4LHkp/GBuzXLvlDlj9R1I
+         4pHZ+oRFsSUjRV+Y1fAX1XMuAet/XI433DqWTl+DmtS/KBonOjvC7bGPZNi5L8+QZFe2
+         9xhqbbLoUPAtfXW4lZCsZ/I4DAhrz6l2SOIey/PfIeYwAj49mALrgtHlsqhY1t+tvjZi
+         bLhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUN39eI8hBG9E4p0qw/uFPBGBjFck5TN/u6CtJ99wtHpWozwIVhGv3rAE19f5qq7oIw1tk9k6fx0CLImSU=@vger.kernel.org, AJvYcCVjC9rSANrXNqN2GD5Aye2b9aSoesygwFx5yppquOwo2AfkjsH+HJEi3A2x3dFTkRl5BD0SKxPg@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQuzfPDPjPHyPTed65BWORbj0Rmdn1DifJRVY8pmR3T57TWvKC
+	h2fNwsHbcu4/TmYZy/Etc4DVOmnAhtzSWwOC/Yxjw60h2ZwHEvMrFLcYIg==
+X-Gm-Gg: ASbGncsYE266gb7L4J1Jq2VGUKE8WlijTqVcMHDFueywPbXwygVYK1274ofGIaLTdKu
+	Y5ym0hNuqpvLXj0RSGy/iVjENRmvwLMwlKsEw619tu99x5quL4Qmeic05wQbNtFNctj2EzB/0v3
+	iCEYPk6onDFLaBo9ln5tn1IFXKmC+oPicbSDDOLO3rZByEgwxyGrx52nNwj06+WAuBltJv9CHx5
+	nZ30zo0T9A4F1MlLJIzaxVgJR/V8vpKC2NhDXV8hBctrAIYRQX/l2hZhkiMDMQeXcvV6IaqlFO+
+	z6uBYnHrdZvVlMzJv6YBtvGv6x/vODoOTtpdwLkj25YGDbLkZOK1YqrH1AXYgvCh8p160CwSxq0
+	qLBPevXvrxm4=
+X-Google-Smtp-Source: AGHT+IEYomyw+d7yZMeBpLHzzGVeiaclVRDD2/yiguAttMA4WN0cdIkvBC/4QjZzCXBTMws9LcU96A==
+X-Received: by 2002:a05:6a00:10cc:b0:72f:a0fe:d5ab with SMTP id d2e1a72fcca58-7303521cb75mr2492469b3a.23.1738733934455;
+        Tue, 04 Feb 2025 21:38:54 -0800 (PST)
+Received: from kic-machine.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe6424f8csm11608434b3a.44.2025.02.04.21.38.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Feb 2025 21:38:54 -0800 (PST)
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+To: mathias.nyman@intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ki.chiang65@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/1] xhci: Correctly handle last TRB of isoc TD on Etron xHCI host
+Date: Wed,  5 Feb 2025 13:37:50 +0800
+Message-Id: <20250205053750.28251-2-ki.chiang65@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250205053750.28251-1-ki.chiang65@gmail.com>
+References: <20250205053750.28251-1-ki.chiang65@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="qKgqDoNG780PGj9N"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+PiJmT-9wL_3PbEXBZbFCBxAFVnoupwcJsRFt8K=YHje-_rLg@mail.gmail.com>
-
-
---qKgqDoNG780PGj9N
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 03, 2025 at 03:07:10PM -0800, Daniel Rosenberg wrote:
-> On Sat, Feb 1, 2025 at 9:06 AM Todd Kjos <tkjos@google.com> wrote:
-> >
-> > Before we can bring back the reverted patch, we need the same fix for
-> > ext4. Daniel, is there progress on that?
-> >
-> Last I knew, Ted had a prototype patch for that, not sure what the
-> current status of it is. I'm also not sure whether the unicode patch
-> is being relanded, or if there's a different fix in the works there.
+Unplugging a USB3.0 webcam while streaming results in errors like this:
 
-Between travel and an emergency at work, I haven't had time to create
-the script to create a test file system to verify the prototype patch.
-It turns out this is quite diffisult!
+[ 132.646387] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
+[ 132.646446] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8630 trb-start 000000002fdf8640 trb-end 000000002fdf8650 seg-start 000000002fdf8000 seg-end 000000002fdf8ff0
+[ 132.646560] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
+[ 132.646568] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8660 trb-start 000000002fdf8670 trb-end 000000002fdf8670 seg-start 000000002fdf8000 seg-end 000000002fdf8ff0
 
-I finally managed to create a script which demonstrates why the revert
-was necessary, but it wasn't enough to demonstrate why a further patch
-is needed.  I think I know what I need to do, but it's a mess and I've
-already wasted hours and hours in this.
+If an error is detected while processing the last TRB of an isoc TD,
+the Etron xHC generates two transfer events for the TRB where the
+error was detected. The first event can be any sort of error (like
+USB Transaction or Babble Detected, etc), and the final event is
+Success.
 
-Do you have a relible script to generate a test file system.  This is
-what I have so far, but as I said, it's not quite good enough...
+The xHCI driver will handle the TD after the first event and remove it
+from its internal list, and then print an "Transfer event TRB DMA ptr
+not part of current TD" error message after the final event.
 
-					- Ted
+Commit 5372c65e1311 ("xhci: process isoc TD properly when there was a
+transaction error mid TD.") is designed to address isoc transaction
+errors, but unfortunately it doesn't account for this scenario.
 
+To work around this by reusing the logic that handles isoc transaction
+errors, but continuing to wait for the final event when this condition
+occurs. Sometimes we see the Stopped event after an error mid TD, this
+is a normal event for a pending TD and we can think of it as the final
+event we are waiting for.
 
---qKgqDoNG780PGj9N
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: attachment; filename=unicode-hijinks
-Content-Transfer-Encoding: 8bit
+Check if the XHCI_ETRON_HOST quirk flag is set before invoking the
+workaround in process_isoc_td().
 
-#!/bin/bash
-#
-# Generate a test file system to verify the handling of mess with
-# Uniode insanity known as "inorable code points".
-#
-# I - ignore/no-ignore invisible "evil" Unicode characters
-# E -encrypt/no-encrypt
-# H - htree/no-htree
-# F - case-fold/no-casefold
-#
-# Run this with first with a kernel new to include the commit
-# 231825b2e1ff ("Revert "unicode: Don't special case ignorable code
-# points".  Then boot a kernel checked out to commit 5c26d2f1d3f5
-# ("unicode: Don't special case ignorable code points") and run this
-# script with the -I option.
-#
-# To test the file system, boot the kernel you want to test, and copy
-# the test file system imge to /tmp/foo.img, and then run the commands:
-#
-#    unicode-hijinks -m
-#    unicode-hijinks -l
+Fixes: 5372c65e1311 ("xhci: process isoc TD properly when there was a transaction error mid TD.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+---
+ drivers/usb/host/xhci-ring.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-FS=/tmp/foo.img
-I=no-I
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 965bffce301e..936fd9151ba8 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2452,8 +2452,10 @@ static void process_isoc_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
+ 	switch (trb_comp_code) {
+ 	case COMP_SUCCESS:
+ 		/* Don't overwrite status if TD had an error, see xHCI 4.9.1 */
+-		if (td->error_mid_td)
++		if (td->error_mid_td) {
++			td->error_mid_td = false;
+ 			break;
++		}
+ 		if (remaining) {
+ 			frame->status = short_framestatus;
+ 			sum_trbs_for_length = true;
+@@ -2468,25 +2470,36 @@ static void process_isoc_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
+ 	case COMP_BANDWIDTH_OVERRUN_ERROR:
+ 		frame->status = -ECOMM;
+ 		break;
++	case COMP_USB_TRANSACTION_ERROR:
+ 	case COMP_BABBLE_DETECTED_ERROR:
+ 		sum_trbs_for_length = true;
+ 		fallthrough;
+ 	case COMP_ISOCH_BUFFER_OVERRUN:
+ 		frame->status = -EOVERFLOW;
++		if (trb_comp_code == COMP_USB_TRANSACTION_ERROR)
++			frame->status = -EPROTO;
+ 		if (ep_trb != td->end_trb)
+ 			td->error_mid_td = true;
++		else
++			td->error_mid_td = false;
++
++		/*
++		 * If an error is detected on the last TRB of the TD,
++		 * wait for the final event.
++		 */
++		if ((xhci->quirks & XHCI_ETRON_HOST) &&
++		    td->urb->dev->speed >= USB_SPEED_SUPER &&
++		    ep_trb == td->end_trb)
++			td->error_mid_td = true;
+ 		break;
+ 	case COMP_INCOMPATIBLE_DEVICE_ERROR:
+ 	case COMP_STALL_ERROR:
+ 		frame->status = -EPROTO;
+ 		break;
+-	case COMP_USB_TRANSACTION_ERROR:
+-		frame->status = -EPROTO;
+-		sum_trbs_for_length = true;
+-		if (ep_trb != td->end_trb)
+-			td->error_mid_td = true;
+-		break;
+ 	case COMP_STOPPED:
++		/* Think of it as the final event if TD had an error */
++		if (td->error_mid_td)
++			td->error_mid_td = false;
+ 		sum_trbs_for_length = true;
+ 		break;
+ 	case COMP_STOPPED_SHORT_PACKET:
+@@ -2519,7 +2532,7 @@ static void process_isoc_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
+ 
+ finish_td:
+ 	/* Don't give back TD yet if we encountered an error mid TD */
+-	if (td->error_mid_td && ep_trb != td->end_trb) {
++	if (td->error_mid_td) {
+ 		xhci_dbg(xhci, "Error mid isoc TD, wait for final completion event\n");
+ 		td->urb_length_set = true;
+ 		return;
+-- 
+2.25.1
 
-TEST_RAW_KEY=
-for i in {1..64}; do
-	TEST_RAW_KEY+="\\x$(printf "%02x" $i)"
-done
-# Key identifier: HKDF-SHA512(key=$TEST_RAW_KEY, salt="", info="fscrypt\0\x01")
-TEST_KEY_IDENTIFIER="69b2f6edeee720cce0577937eb8a6751"
-
-case "$1" in
-    -I)
-	I=I
-	;;
-    -m)
-	mount /tmp/foo.img /mnt
-	echo -ne "$TEST_RAW_KEY" | xfs_io -c add_enckey /mnt
-	exit 0
-	;;
-    -l)
-	for i in I no-I ; do
-	    for e in E no-E ; do
-		for f in F no-F ; do
-		    for h in H no-H ; do
-			ls -il /mnt/$i/$e/$f/$h/❤️
-			ls -il /mnt/$i/$e/$f/$h/❤
-		    done
-		done
-	    done
-	done
-	exit 0
-	;;
-    "") :
-	;;
-    *)
-	echo "usage: unicode-hijinks -I|-m|-l"
-	exit 1
-esac
-
-function gen_files ()
-{
-    echo "red heart" > ❤️
-    echo "black heart" > ❤
-}
-
-function mk_htree ()
-{
-    seq 1 1000 | xargs -I Z touch XXXXXXXXXXXXXXXXXXX-Z
-}
-
-function mk_casefold ()
-{
-    chattr +F .
-}
-
-function mk_htree_set ()
-{
-    mkdir no-H ; cd no-H ; gen_files ; cd ..
-    mkdir H ; cd H ; mk_htree ; gen_files ; cd ..
-}
-
-function mk_htree_and_casefold ()
-{
-    mkdir no-F; cd no-F; mk_htree_set ; cd ..
-    mkdir F; cd F ; mk_casefold ; mk_htree_set ; cd ..
-}
-
-
-if [ "$I" = "no-I" ] ; then
-    mke2fs -t ext4 -Fq -b 1024 -N 8192 -O casefold,encrypt $FS 4M
-fi
-mount $FS /mnt
-
-echo -ne "$TEST_RAW_KEY" | xfs_io -c add_enckey /mnt
-xfs_io -c "enckey_status $TEST_KEY_IDENTIFIER" /mnt
-cd /mnt
-mkdir $I
-cd $I
-mkdir no-E
-cd no-E
-mk_htree_and_casefold
-cd /mnt
-cd $I
-mkdir E
-xfs_io -c "set_encpolicy $TEST_KEY_IDENTIFIER" E
-cd E
-mk_htree_and_casefold
-cd /
-umount /mnt
-
-
-
---qKgqDoNG780PGj9N--
 
