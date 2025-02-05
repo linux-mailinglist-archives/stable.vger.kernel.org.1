@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0389A28DD3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D75A29220
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4019B162107
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E9FA16C7BF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AB21509BD;
-	Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B121FDA85;
+	Wed,  5 Feb 2025 14:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goVwdUbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQYO0Btn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B5CF510;
-	Wed,  5 Feb 2025 14:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DA71FC100;
+	Wed,  5 Feb 2025 14:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764344; cv=none; b=DSua8X4B8Rh8RgI6qggh6LMK4xlc0tb2cI4yNQgVTykiZ+qQOeREtHUrjaiuUsbD0IWBxhlgT7DhDC0U2W/2wOvqowv4vabeONi3xSGy2QuAxg4EiCt2f8gSmu2mDorm9LZeFi5REdHFFUmLXhsU1kyQ6EkUwC9UjB0i7hkNeM8=
+	t=1738766939; cv=none; b=seqtHKR6n5AZHpuueLM1m6ZESh88ya5560nwX9TwAahL9BKEYq3SIuAjAF4FxDqmdn/94TTM9lhhbODWLPdvP63AMcziAIkt1ghfH+cUn3rxZNg7hYt9UGDQKYDK/MOJb+Ke1ILqrGFSl5H2+3NvhDLyWRFhY3SRPQoi8JwU78c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764344; c=relaxed/simple;
-	bh=UIDtfOLE+9UQb4pE09RXLo6xmeFlp/2sMDW9fabR67c=;
+	s=arc-20240116; t=1738766939; c=relaxed/simple;
+	bh=yAKCj0MhBVkT6mzSt6COoBNFepHUB9l/aZROav9VYN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDdUqk3l2sMQf1Tab61jm3+NorHSv+zLmEzo1NWl0ek6zd9FQy2G8TXFMOQ1bQ2DAmQNc+fsnyP8LPXgmLLptaEqnDQEKk7UWfqI07om9PwDRylqbQg0hBqn2wDg03rmMyeuKCSl+nJm+PE+a4tBr5azuR4G/oz+JmcPliirLF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goVwdUbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBB1C4CED1;
-	Wed,  5 Feb 2025 14:05:42 +0000 (UTC)
+	 MIME-Version; b=RxXFZtu0vs6w8I9yXPBDNwwOSVemIsjPEzP8xbeIYQoxO94bg+zLGt6KbeWzA/GMfoC8iZsd/jGdikT4Z4wOrE9ezwrdTzQt2cB8gDP+Y00ZUanYz7CBK+McmQq85mNwrFr5qaEezjd44Qtu0kCxZOVmFkC8FrCzFP40djh/iDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQYO0Btn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF85CC4CED1;
+	Wed,  5 Feb 2025 14:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764343;
-	bh=UIDtfOLE+9UQb4pE09RXLo6xmeFlp/2sMDW9fabR67c=;
+	s=korg; t=1738766938;
+	bh=yAKCj0MhBVkT6mzSt6COoBNFepHUB9l/aZROav9VYN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=goVwdUbBTRV/fLP/wcaa/ByxzvBc2t5Vxw03wu8i11lm7Gcy2BzdW9LHnAz8CRgIK
-	 fnIe2WHM1YhHPLJTwQwmSa4EJWPXcRvnkpUrtS1XCp6uGRfMHvTYkiDx/4tDYi9SCL
-	 AbaIgPJ9vgBVVA8wXMyk02e4gHUsU5KprfAL+tnU=
+	b=yQYO0Btn1PqWV2ZYZNw0T3hCDXQDvWN/1TVjzGvTMeZsXOUo35Zqw6aLu0ZDx8g0Y
+	 fvJleIiNY6Rk3dT4g6Ac1SJpgVUxD/UjHIk/CE5L9OthbPtNoNgTzhYpMnJh0b7o1N
+	 18PJyRAfHraFxlr4IMpid8fu51op5dt+9xYDmAME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Leogrande <leogrande@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 154/393] tools/testing/selftests/bpf/test_tc_tunnel.sh: Fix wait for server bind
+Subject: [PATCH 6.13 331/623] ARM: at91: pm: change BU Power Switch to automatic mode
 Date: Wed,  5 Feb 2025 14:41:13 +0100
-Message-ID: <20250205134426.193947094@linuxfoundation.org>
+Message-ID: <20250205134508.886363144@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Leogrande <leogrande@google.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit e2f0791124a1b6ca8d570110cbd487969d9d41ef ]
+[ Upstream commit 6fc5bdfa872b7da51b5507a1327a17c3db2fcf95 ]
 
-Commit f803bcf9208a ("selftests/bpf: Prevent client connect before
-server bind in test_tc_tunnel.sh") added code that waits for the
-netcat server to start before the netcat client attempts to connect to
-it. However, not all calls to 'server_listen' were guarded.
+Change how the Backup Unit Power is configured and force the
+automatic/hardware mode.
+This change eliminates the need for software management of the power
+switch, ensuring it transitions to the backup power source before
+entering low power modes.
 
-This patch adds the existing 'wait_for_port' guard after the remaining
-call to 'server_listen'.
+This is done in the only location where this switch was configured. It's
+usually done in the bootloader.
 
-Fixes: f803bcf9208a ("selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh")
-Signed-off-by: Marco Leogrande <leogrande@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/r/20241202204530.1143448-1-leogrande@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Previously, the loss of the VDDANA (or VDDIN33) power source was not
+automatically compensated by an alternative power source. This resulted
+in the loss of Backup Unit content, including Backup Self-refresh low
+power mode information, OTP emulation configuration, and boot
+configuration, for instance.
+
+Fixes: ac809e7879b1 ("ARM: at91: pm: switch backup area to vbat in backup mode")
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20241125165648.509162-1-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_tc_tunnel.sh | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-at91/pm.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-index 7989ec6084545..cb55a908bb0d7 100755
---- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
-+++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-@@ -305,6 +305,7 @@ else
- 	client_connect
- 	verify_data
- 	server_listen
-+	wait_for_port ${port} ${netcat_opt}
- fi
+diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
+index b9b995f8a36e1..05a1547642b60 100644
+--- a/arch/arm/mach-at91/pm.c
++++ b/arch/arm/mach-at91/pm.c
+@@ -598,7 +598,21 @@ static int at91_suspend_finish(unsigned long val)
+ 	return 0;
+ }
  
- # serverside, use BPF for decap
+-static void at91_pm_switch_ba_to_vbat(void)
++/**
++ * at91_pm_switch_ba_to_auto() - Configure Backup Unit Power Switch
++ * to automatic/hardware mode.
++ *
++ * The Backup Unit Power Switch can be managed either by software or hardware.
++ * Enabling hardware mode allows the automatic transition of power between
++ * VDDANA (or VDDIN33) and VDDBU (or VBAT, respectively), based on the
++ * availability of these power sources.
++ *
++ * If the Backup Unit Power Switch is already in automatic mode, no action is
++ * required. If it is in software-controlled mode, it is switched to automatic
++ * mode to enhance safety and eliminate the need for toggling between power
++ * sources.
++ */
++static void at91_pm_switch_ba_to_auto(void)
+ {
+ 	unsigned int offset = offsetof(struct at91_pm_sfrbu_regs, pswbu);
+ 	unsigned int val;
+@@ -609,24 +623,19 @@ static void at91_pm_switch_ba_to_vbat(void)
+ 
+ 	val = readl(soc_pm.data.sfrbu + offset);
+ 
+-	/* Already on VBAT. */
+-	if (!(val & soc_pm.sfrbu_regs.pswbu.state))
++	/* Already on auto/hardware. */
++	if (!(val & soc_pm.sfrbu_regs.pswbu.ctrl))
+ 		return;
+ 
+-	val &= ~soc_pm.sfrbu_regs.pswbu.softsw;
+-	val |= soc_pm.sfrbu_regs.pswbu.key | soc_pm.sfrbu_regs.pswbu.ctrl;
++	val &= ~soc_pm.sfrbu_regs.pswbu.ctrl;
++	val |= soc_pm.sfrbu_regs.pswbu.key;
+ 	writel(val, soc_pm.data.sfrbu + offset);
+-
+-	/* Wait for update. */
+-	val = readl(soc_pm.data.sfrbu + offset);
+-	while (val & soc_pm.sfrbu_regs.pswbu.state)
+-		val = readl(soc_pm.data.sfrbu + offset);
+ }
+ 
+ static void at91_pm_suspend(suspend_state_t state)
+ {
+ 	if (soc_pm.data.mode == AT91_PM_BACKUP) {
+-		at91_pm_switch_ba_to_vbat();
++		at91_pm_switch_ba_to_auto();
+ 
+ 		cpu_suspend(0, at91_suspend_finish);
+ 
 -- 
 2.39.5
 
