@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE47A2928D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ECAA29345
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A3016BAD6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7367B16BBF9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E941FC0F5;
-	Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A07C1DC9AF;
+	Wed,  5 Feb 2025 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/7knL3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZaxEcX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50A1FC0EF;
-	Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA94F1607B7;
+	Wed,  5 Feb 2025 15:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767225; cv=none; b=R9u9FeVOwtOEbPFVbAOc2jhM+NBlKg8v71jaTuShk5EdaJ/s/fIPbtpPwbKaGcfgte/yWkOJbBybTivr+ul2I9HE5BWOB5v9ayM6A24/xhJqvZLMDSaPgC4IdMuNvOvvTUAB34TV+1FVle2289Zr390Jf2Y+gl5s0d81o4AXJZw=
+	t=1738767689; cv=none; b=qz5ZeQFwKBy1N9IEhx0MzkbeWSFYYUYPDSjj6ppisNHPcMGrK69SDwqZLrjUFHw+rXy9pG0US41rObi69DsZR0RMAaQpSx9yjvkHr4YLwUivImvYCn5v6kQOfj7E/2kasaNakGQQYJRTCt9oIXGNIS+mGDZ75TCl+Xg5c6Dc5bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767225; c=relaxed/simple;
-	bh=vY0UNt7kkwYb1NyMHZxmDacTyuY8bpWejtj2lM20F/Y=;
+	s=arc-20240116; t=1738767689; c=relaxed/simple;
+	bh=Hq9g/m/OVBovdzdt7O0Irn0kgFZSO2zZq815zHVur5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q2iW1Wkpx/Ej1jB+yDegA5Nnq/7ZUIe2sM3EHPqThwtD3IcObPGHIoEJuJkaujaKhdpLTVsNsHCAdDUPzE3M5WHqGzzzyvSt59f3+yJQOKxpkilim18+uzjTH0o7S0nN4CkgLyAafCILhm8JaX4dotkkoxmVfrKKAVSs/Q6DP5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/7knL3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2BFC4CED1;
-	Wed,  5 Feb 2025 14:53:44 +0000 (UTC)
+	 MIME-Version; b=XsEglQ2whAXLPxFI5X0CubQm3U4h0X981WPhHQd+cbpvIHBfAoJlxFMVO2Ok6UoyPmzOU/akC6PjCphuDO4wWTzIn3TOhhE0ZkBX7WgWfhaV20gX0UDSCTovAw6fM3uM/a0Sj46VjOSntQIvj6RE09tZn+YDogYOOVaKum4DwLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZaxEcX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F55EC4CED1;
+	Wed,  5 Feb 2025 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767225;
-	bh=vY0UNt7kkwYb1NyMHZxmDacTyuY8bpWejtj2lM20F/Y=;
+	s=korg; t=1738767689;
+	bh=Hq9g/m/OVBovdzdt7O0Irn0kgFZSO2zZq815zHVur5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/7knL3pEmX2NXiNi36MPmTmTCCo+RpcLlZaZmaFVBLxIS9amqMEl/ZLVBuAbLudQ
-	 UNYXjU0SJL4K7poRlm9gtdsgFDdWLFNwKGjXwFRN18NfGRNy1DqJ84qamRcbmpj7Wb
-	 4sdQ+USCht8A4bjaybALE36LXdNhx8whvRSFJ7qo=
+	b=zZaxEcX0Dr0rDfoKwojIy7KvKD2lPZ0Rgu7WBUQ6tsu7J7cAwZBck+s11ElOYp37+
+	 Ezv4J8LRqiMigkftnV9vYHvfhm6tin3MNfCMDRXVNaKYw3LSrheVaQb6dOhaqqhBZt
+	 7QDfEgq2S1XwXYF3Zll5mEM2WPuSfw+lGcparEhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 426/590] PCI: imx6: Skip controller_id generation logic for i.MX7D
+Subject: [PATCH 6.13 439/623] mailbox: th1520: Fix memory corruption due to incorrect array size
 Date: Wed,  5 Feb 2025 14:43:01 +0100
-Message-ID: <20250205134511.562868350@linuxfoundation.org>
+Message-ID: <20250205134513.011000645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Michal Wilczynski <m.wilczynski@samsung.com>
 
-[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
+[ Upstream commit db049866943a38bf46a34fa120d526663339d7a5 ]
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+The functions th1520_mbox_suspend_noirq and th1520_mbox_resume_noirq are
+intended to save and restore the interrupt mask registers in the MBOX
+ICU0. However, the array used to store these registers was incorrectly
+sized, leading to memory corruption when accessing all four registers.
 
-Fix by removing "IMX7D" from the switch case branch.
+This commit corrects the array size to accommodate all four interrupt
+mask registers, preventing memory corruption during suspend and resume
+operations.
 
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 5d4d263e1c6b ("mailbox: Introduce support for T-head TH1520 Mailbox driver")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/a99e72be-8490-4960-ad26-cbfef6af238f@stanley.mountain/
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mailbox/mailbox-th1520.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 9d61e7c472082..22bf21846b79d 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1393,7 +1393,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
- 	switch (imx_pcie->drvdata->variant) {
- 	case IMX8MQ:
- 	case IMX8MQ_EP:
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx_pcie->controller_id = 1;
- 		break;
+diff --git a/drivers/mailbox/mailbox-th1520.c b/drivers/mailbox/mailbox-th1520.c
+index e16e7c85ee3cd..a6b2aa9ae9520 100644
+--- a/drivers/mailbox/mailbox-th1520.c
++++ b/drivers/mailbox/mailbox-th1520.c
+@@ -41,7 +41,7 @@
+ #ifdef CONFIG_PM_SLEEP
+ /* store MBOX context across system-wide suspend/resume transitions */
+ struct th1520_mbox_context {
+-	u32 intr_mask[TH_1520_MBOX_CHANS - 1];
++	u32 intr_mask[TH_1520_MBOX_CHANS];
+ };
+ #endif
+ 
 -- 
 2.39.5
 
