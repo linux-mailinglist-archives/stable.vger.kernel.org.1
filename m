@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-112388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43680A28C76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8631CA28C78
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBD8168828
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA7903A2C08
 	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A521F142E86;
-	Wed,  5 Feb 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A79142E86;
+	Wed,  5 Feb 2025 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7hCkx+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kF8ocKcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A57126C18;
-	Wed,  5 Feb 2025 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627F5126C18;
+	Wed,  5 Feb 2025 13:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763406; cv=none; b=mzJo5IBZwpIlDYGv3RLS8LzE6ehnZVV/JrUZATl+A7NXRgLfozR4LiVId380pi0H5D5ZHWTaaZErqfsU8zcKbMD1bCpw73buy/393md96HxzvWvryeljCROqVVXcm1YYcsuY7ZWnEGATcWVsB80CIxLqLfDudXI9woUdWM9rZCU=
+	t=1738763413; cv=none; b=Jadn4uevtjvnVn67nJRLNZr+Fq+oAqs+EKA9ubkILRH0BNx0LFmv+N/FjIZOjU5k4VGdfBRgMSl0uUSvvs9yrlZ1yCUZSCATy9d9OLvdeKGFtAElNDoYV2PN7QJ0jjEEpMi17bD0fNCNSvJl57MAx5BS9gaD479vDpi0E7Pjlis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763406; c=relaxed/simple;
-	bh=SZvKcqii7oeOY18DpuZSqBDIebjRq7a7OoN4deolcSk=;
+	s=arc-20240116; t=1738763413; c=relaxed/simple;
+	bh=0z+voExZYlBio4+RpZtNcfDAaM043turGWffPe0/arQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMh3Ge7WI1RbvW19/uT7p0lbxXjSm1we3bSZ7ojGbaIdPGDSd5u8LUPboGoYCf/5GKxkDeFSzkYGN9iB1WUTxP8/rhg4vpe9REP4NVuWbq4z7PtZWXsFuMkdyYODrhVtex2jQHyI0Q3V+aa5eeueGEFaDgCkGL5jrb2vALg0Oh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7hCkx+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BFEC4CED1;
-	Wed,  5 Feb 2025 13:50:05 +0000 (UTC)
+	 MIME-Version; b=q3Q8yYdEPXJvrIByYXKjLHE67CIN3qRW6eIzFiF5gXksx4kSVcHHu/KBJhjYqJ1k6PrJ+2xyueG81vwgN7NNK2HrAnUxMGTXdYCXRkfZwOUP//2FhYC4PKFbhkHrdx/7Bw4Tgxh55PJFdupIirLZDsPB07wPwNXhXfBrY38Tcu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kF8ocKcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59EAC4CEDD;
+	Wed,  5 Feb 2025 13:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763406;
-	bh=SZvKcqii7oeOY18DpuZSqBDIebjRq7a7OoN4deolcSk=;
+	s=korg; t=1738763413;
+	bh=0z+voExZYlBio4+RpZtNcfDAaM043turGWffPe0/arQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7hCkx+rBptepcUaKbGCZJoAqYZ9b45jhNXXg75wzzNz5xR8/tVji7vta3DgdLU2q
-	 D3GwqXoKWfVolP3/oOTwYtP4zk939ukBFuPLp6dqw4a8rqJpzAgh8UO8vu7aqA+/8B
-	 hkQw29MB8I64VyiKYOal4yNNCuiwGWzmcLdwXV7A=
+	b=kF8ocKcro0JLuVGyJcqXNEj/eXFzMVT81wCg9qRrWN7lGVRBzr6h4BFi6NGccQahs
+	 pvOHHEt22UPus91d9HjuJj4Q/bEMlpph0lTw80+0pgy5VVh7rpBMVgDh3+ymQ5rt/g
+	 n3NMabVfu3xC7RnDgl8fWzDzDwn2s94wFGZVDvEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Yang Erkun <yangerkun@huawei.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/590] block: copy back bounce buffer to user-space correctly in case of split
-Date: Wed,  5 Feb 2025 14:36:04 +0100
-Message-ID: <20250205134455.589063243@linuxfoundation.org>
+Subject: [PATCH 6.12 010/590] block: retry call probe after request_module in blk_request_module
+Date: Wed,  5 Feb 2025 14:36:05 +0100
+Message-ID: <20250205134455.626980507@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -68,57 +67,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 031141976be0bd5f385775727a4ed3cc845eb7ba ]
+[ Upstream commit 457ef47c08d2979f3e59ce66267485c3faed70c8 ]
 
-Copy back the bounce buffer to user-space in entirety when the parent
-bio completes. The existing code uses bip_iter.bi_size for sizing the
-copy, which can be modified. So move away from that and fetch it from
-the vector passed to the block layer. While at it, switch to using
-better variable names.
+Set kernel config:
 
-Fixes: 492c5d455969f ("block: bio-integrity: directly map user buffers")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20241128112240.8867-3-anuj20.g@samsung.com
+ CONFIG_BLK_DEV_LOOP=m
+ CONFIG_BLK_DEV_LOOP_MIN_COUNT=0
+
+Do latter:
+
+ mknod loop0 b 7 0
+ exec 4<> loop0
+
+Before commit e418de3abcda ("block: switch gendisk lookup to a simple
+xarray"), lookup_gendisk will first use base_probe to load module loop,
+and then the retry will call loop_probe to prepare the loop disk. Finally
+open for this disk will success. However, after this commit, we lose the
+retry logic, and open will fail with ENXIO. Block device autoloading is
+deprecated and will be removed soon, but maybe we should keep open success
+until we really remove it. So, give a retry to fix it.
+
+Fixes: e418de3abcda ("block: switch gendisk lookup to a simple xarray")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241209110435.3670985-1-yangerkun@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ block/genhd.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index 88e3ad73c3854..9aed61fcd0bf9 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -118,17 +118,18 @@ static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
- 
- static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
- {
--	unsigned short nr_vecs = bip->bip_max_vcnt - 1;
--	struct bio_vec *copy = &bip->bip_vec[1];
--	size_t bytes = bip->bip_iter.bi_size;
--	struct iov_iter iter;
-+	unsigned short orig_nr_vecs = bip->bip_max_vcnt - 1;
-+	struct bio_vec *orig_bvecs = &bip->bip_vec[1];
-+	struct bio_vec *bounce_bvec = &bip->bip_vec[0];
-+	size_t bytes = bounce_bvec->bv_len;
-+	struct iov_iter orig_iter;
- 	int ret;
- 
--	iov_iter_bvec(&iter, ITER_DEST, copy, nr_vecs, bytes);
--	ret = copy_to_iter(bvec_virt(bip->bip_vec), bytes, &iter);
-+	iov_iter_bvec(&orig_iter, ITER_DEST, orig_bvecs, orig_nr_vecs, bytes);
-+	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
- 	WARN_ON_ONCE(ret != bytes);
- 
--	bio_integrity_unpin_bvec(copy, nr_vecs, true);
-+	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
+diff --git a/block/genhd.c b/block/genhd.c
+index 8645cf3b0816e..99344f53c7897 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -778,7 +778,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
  }
  
- /**
+ #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
+-void blk_request_module(dev_t devt)
++static bool blk_probe_dev(dev_t devt)
+ {
+ 	unsigned int major = MAJOR(devt);
+ 	struct blk_major_name **n;
+@@ -788,14 +788,26 @@ void blk_request_module(dev_t devt)
+ 		if ((*n)->major == major && (*n)->probe) {
+ 			(*n)->probe(devt);
+ 			mutex_unlock(&major_names_lock);
+-			return;
++			return true;
+ 		}
+ 	}
+ 	mutex_unlock(&major_names_lock);
++	return false;
++}
++
++void blk_request_module(dev_t devt)
++{
++	int error;
++
++	if (blk_probe_dev(devt))
++		return;
+ 
+-	if (request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt)) > 0)
+-		/* Make old-style 2.4 aliases work */
+-		request_module("block-major-%d", MAJOR(devt));
++	error = request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt));
++	/* Make old-style 2.4 aliases work */
++	if (error > 0)
++		error = request_module("block-major-%d", MAJOR(devt));
++	if (!error)
++		blk_probe_dev(devt);
+ }
+ #endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
+ 
 -- 
 2.39.5
 
