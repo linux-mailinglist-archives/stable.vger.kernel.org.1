@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-113332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2828CA291B3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263EA291B6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B3E33A7796
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348CE16BEE0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C97D17B505;
-	Wed,  5 Feb 2025 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9301A83F9;
+	Wed,  5 Feb 2025 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovxm2hH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7/LwM2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE06A1684B0;
-	Wed,  5 Feb 2025 14:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A381A76BC;
+	Wed,  5 Feb 2025 14:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766601; cv=none; b=iQEHoHX3p3SSPcMfvuAartQeH70oMOsYR95Ifb4y0JNp1Kr9gaoQ3G7Q2siy3zOj2yX/vQZ6TKuiiwrTE8WNumzCnH38hpMY0hFhO+RlhokNIS/tU9WyqgbDOf2ZhGIh7YNgyR+kcjLzmhbTmqHxB8yBsDn+RTQ/u6+G5hvtxbU=
+	t=1738766612; cv=none; b=YI2J6YvMozIoDRorebae2vZF+ic+KqF2oA6dX7PuCOZwCwPl2bmjOA3BVkVnFXY0PmR+YUy/CgG2lNXSwjyZad8zzkZGO/JgGnQ+sokGDtcRMEMcm35SZwIu411/Y3cmJQEZLc/5wlg2RoyNqzNgW3SpXdfDmTugCldjr2ZZZA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766601; c=relaxed/simple;
-	bh=160zjrfayXmEqCnY3VF5WyJOSxMJynbCRsliyksLMl4=;
+	s=arc-20240116; t=1738766612; c=relaxed/simple;
+	bh=I1NnVbG8wwNWt/y6p1CtWdMSyohWy1GmjUAkLQfSWC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3E3nLhePjrbB1rRPkS+SfTJ057GgBqPR78IzxFdl0tWvF5rf4D30qfXg1PMGR3t+3uFsocH8VbHbnUj82gNMFcdTd6AfeNWyOpM2yWj2bsfkgE9zm8cHScjpEidfvFxYd/g0zA5nNC41PT1iz597sCPZJiNzJt0BITHAzbAgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovxm2hH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5334AC4CEE2;
-	Wed,  5 Feb 2025 14:43:21 +0000 (UTC)
+	 MIME-Version; b=gF1wIGRB7ZF0ApWBT3++ys5VD7LZmNs9iCjTDkTuo4Iad4TDPQBhKV/nhkO5AjRQ6dhfT+yLKDMoVupvd/7qbX61Oa4RK1CFrBJFLOSxuJqccaSzb1SRg6tcJfq513UuIlRzktMNS82tMJYPjo7XI4iBy1/Zqd8EMhdcL0it7lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7/LwM2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D7FC4CEE7;
+	Wed,  5 Feb 2025 14:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766601;
-	bh=160zjrfayXmEqCnY3VF5WyJOSxMJynbCRsliyksLMl4=;
+	s=korg; t=1738766612;
+	bh=I1NnVbG8wwNWt/y6p1CtWdMSyohWy1GmjUAkLQfSWC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovxm2hH1ogueXwHY7Bz5ifjJEWx2MsT1sRQl2OfMxpkG8kncS3pbrKLzuTNzWfvD7
-	 EpaKi2b0131DUDyQqjuamppXRe+yy6BiKDHENt9JXtilOXO1E9QV5g4KjrP0nuwyfc
-	 DH29M9XPyzjKunCEtDfGI+18oQDVaEpCodNUcUIs=
+	b=V7/LwM2vH2Jn3IcOIahc8v7WjNE9ISWwKwSHseqjpWJWEjgAsVgIBbsSUfYlPBx0M
+	 6KKtrZsA+6v0tYqm/pq0mFO5JkzDjanEyiLvmegPpkt5zO9XF6uf01aQqEnXV3IyQA
+	 H73OyseZD32P0zdTuoRRGxadxuzT+3NKn8JuGRCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sean Rhodes <sean@starlabs.systems>
-Subject: [PATCH 6.6 377/393] drivers/card_reader/rtsx_usb: Restore interrupt based detection
-Date: Wed,  5 Feb 2025 14:44:56 +0100
-Message-ID: <20250205134434.717887616@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 378/393] usb: gadget: f_tcm: Fix Get/SetInterface return value
+Date: Wed,  5 Feb 2025 14:44:57 +0100
+Message-ID: <20250205134434.756233018@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -65,60 +64,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 235b630eda072d7e7b102ab346d6b8a2c028a772 upstream.
+commit 3b997089903b909684114aca6f79d683e5c64a0e upstream.
 
-This commit reintroduces interrupt-based card detection previously
-used in the rts5139 driver. This functionality was removed in commit
-00d8521dcd23 ("staging: remove rts5139 driver code").
+Check to make sure that the GetInterface and SetInterface are for valid
+interface. Return proper alternate setting number on GetInterface.
 
-Reintroducing this mechanism fixes presence detection for certain card
-readers, which with the current driver, will taken approximately 20
-seconds to enter S3 as `mmc_rescan` has to be frozen.
-
-Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
+Fixes: 0b8b1a1fede0 ("usb: gadget: f_tcm: Provide support to get alternate setting in tcm function")
 Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://lore.kernel.org/r/20241119085815.11769-1-sean@starlabs.systems
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/ffd91b4640945ea4d3b4f4091cf1abbdbd9cf4fc.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/usb/gadget/function/f_tcm.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -286,6 +286,7 @@ static int rtsx_usb_get_status_with_bulk
- int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -2048,9 +2048,14 @@ static void tcm_delayed_set_alt(struct w
+ 
+ static int tcm_get_alt(struct usb_function *f, unsigned intf)
  {
- 	int ret;
-+	u8 interrupt_val = 0;
- 	u16 *buf;
+-	if (intf == bot_intf_desc.bInterfaceNumber)
++	struct f_uas *fu = to_f_uas(f);
++
++	if (fu->iface != intf)
++		return -EOPNOTSUPP;
++
++	if (fu->flags & USBG_IS_BOT)
+ 		return USB_G_ALT_INT_BBB;
+-	if (intf == uasp_intf_desc.bInterfaceNumber)
++	else if (fu->flags & USBG_IS_UAS)
+ 		return USB_G_ALT_INT_UAS;
  
- 	if (!status)
-@@ -308,6 +309,20 @@ int rtsx_usb_get_card_status(struct rtsx
- 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
- 	}
+ 	return -EOPNOTSUPP;
+@@ -2060,6 +2065,9 @@ static int tcm_set_alt(struct usb_functi
+ {
+ 	struct f_uas *fu = to_f_uas(f);
  
-+	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
-+	/* Cross check presence with interrupts */
-+	if (*status & XD_CD)
-+		if (!(interrupt_val & XD_INT))
-+			*status &= ~XD_CD;
++	if (fu->iface != intf)
++		return -EOPNOTSUPP;
 +
-+	if (*status & SD_CD)
-+		if (!(interrupt_val & SD_INT))
-+			*status &= ~SD_CD;
-+
-+	if (*status & MS_CD)
-+		if (!(interrupt_val & MS_INT))
-+			*status &= ~MS_CD;
-+
- 	/* usb_control_msg may return positive when success */
- 	if (ret < 0)
- 		return ret;
+ 	if ((alt == USB_G_ALT_INT_BBB) || (alt == USB_G_ALT_INT_UAS)) {
+ 		struct guas_setup_wq *work;
+ 
 
 
 
