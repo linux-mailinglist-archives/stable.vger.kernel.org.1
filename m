@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-113866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF20A2946C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BCAA29459
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEF7518948A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B84043AEE00
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1C8170A37;
-	Wed,  5 Feb 2025 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2AE1DB34C;
+	Wed,  5 Feb 2025 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdqSN3Sw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRWMW30j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792ED17B505;
-	Wed,  5 Feb 2025 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A02D1DB128;
+	Wed,  5 Feb 2025 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768432; cv=none; b=MWrrvnT9NmvK08PKaWT30vkiFC9NmMgGmtOSd2uqjHeYCs05mp1B5Snnn/cIPzkhiD4laUSTR/gti3IM+w2qZ225W9t0di7/qAzKLfcnH4uQFi5HtSTTIdhzN6N3Cx1ogE6P6Vs14aK9uTcScYgbu+2QZeb5Sp6Z6VzYwX0Oo4Q=
+	t=1738768507; cv=none; b=F3u/ITXMOmfsAK6EFv1H37AEYUU8QjeEHnIdoNweJxmyCjbQX3KbCtQmWywM7RGOUERnRkXZXmunA4W1YiPeT0SNTCEXIc9KChixDxvCuSq14wWsZ61ZQ096vcLn/c4f57W8LKZ+N5u4uzOBPU0AownxPF9B/aTKaS8w/bachLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768432; c=relaxed/simple;
-	bh=+OVF3VXv2pr6ZcsK9J5+s9dfpUp2oUPmPOCfcVdH0WM=;
+	s=arc-20240116; t=1738768507; c=relaxed/simple;
+	bh=cdcKcjkK8Fr2jh0vDl0J1zFM+vhR9vlb/uMX23xE3cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhBWsJyygBWwTV+EWMkoSFByfJ936oOaSrjeT4NJtxOxJ8KaAWZGh98GMvR85J69dbR2hbN+6T5516ozjslgZLwIsHH0xrXqJ+3jV1RJChEGrx3aOlJTXh6tQZpD12o4yqoHWgJmGKw4quUDZ0JQRlwcuB2X1J/GKBAXTmWosqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdqSN3Sw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F29C4CED1;
-	Wed,  5 Feb 2025 15:13:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dzv95kBofuZ+rrHcV0+tvz4jUd7JEOEWiKQWGq+Q2OSKWMKY7v3x3N2UFVU81svAo9z7jKC+6SWEGtOqZtGZV8C7SaEI2iTnD4RJkWiCHfZYpaGNCP3aVlSapk31o7f6eUtPO+bgG1y4O5oTwevrON9UINPatNrh+FY1nS2aRj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRWMW30j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09293C4CED1;
+	Wed,  5 Feb 2025 15:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768432;
-	bh=+OVF3VXv2pr6ZcsK9J5+s9dfpUp2oUPmPOCfcVdH0WM=;
+	s=korg; t=1738768507;
+	bh=cdcKcjkK8Fr2jh0vDl0J1zFM+vhR9vlb/uMX23xE3cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdqSN3SwB2XO33D5sf9DrwVqHEFp8VQ8wpJyZ+MBxdII6yvZaa0eQvXJYYEGis5vv
-	 zp9OSSpsHdictZoASXVqHovM9+KGSfxvVd+0mToREcdbJ/iZpi+10St7LJlj7MQVGb
-	 iAW1k+qYCTHSlxOhOag0AvCita8f7Zwd4NEAwPiI=
+	b=MRWMW30jF4qsz0vGzRVHhfqA5QvxOx+t7ouFOyViYdsZqbGJn3oU2jgLJYBk8F0Ct
+	 xfY/VBMdBIi6a9lmOAjMSIb4KgssKywWKc6uX/RqDUe/pKjwM6d6sR3YxgwNArLxnJ
+	 W5aI+oCTeXVa6w5VF5ovz85kvmm25HLxkuTif9UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 548/623] net: xdp: Disallow attaching device-bound programs in generic mode
-Date: Wed,  5 Feb 2025 14:44:50 +0100
-Message-ID: <20250205134517.186978837@linuxfoundation.org>
+Subject: [PATCH 6.13 550/623] net: sh_eth: Fix missing rtnl lock in suspend/resume path
+Date: Wed,  5 Feb 2025 14:44:52 +0100
+Message-ID: <20250205134517.261646486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -71,50 +69,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 3595599fa8360bb3c7afa7ee50c810b4a64106ea ]
+[ Upstream commit b95102215a8d0987789715ce11c0d4ec031cbfbe ]
 
-Device-bound programs are used to support RX metadata kfuncs. These
-kfuncs are driver-specific and rely on the driver context to read the
-metadata. This means they can't work in generic XDP mode. However, there
-is no check to disallow such programs from being attached in generic
-mode, in which case the metadata kfuncs will be called in an invalid
-context, leading to crashes.
+Fix the suspend/resume path by ensuring the rtnl lock is held where
+required. Calls to sh_eth_close, sh_eth_open and wol operations must be
+performed under the rtnl lock to prevent conflicts with ongoing ndo
+operations.
 
-Fix this by adding a check to disallow attaching device-bound programs
-in generic mode.
-
-Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/r/dae862ec-43b5-41a0-8edf-46c59071cdda@hetzner-cloud.de
-Tested-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250127131344.238147-1-toke@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b71af04676e9 ("sh_eth: add more PM methods")
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 4 ++++
+ drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a994b1c725098..fbb796375aa0e 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9699,6 +9699,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
- 			NL_SET_ERR_MSG(extack, "Program bound to different device");
- 			return -EINVAL;
- 		}
-+		if (bpf_prog_is_dev_bound(new_prog->aux) && mode == XDP_MODE_SKB) {
-+			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
-+			return -EINVAL;
-+		}
- 		if (new_prog->expected_attach_type == BPF_XDP_DEVMAP) {
- 			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
- 			return -EINVAL;
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 8887b89210093..5fc8027c92c7c 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -3494,10 +3494,12 @@ static int sh_eth_suspend(struct device *dev)
+ 
+ 	netif_device_detach(ndev);
+ 
++	rtnl_lock();
+ 	if (mdp->wol_enabled)
+ 		ret = sh_eth_wol_setup(ndev);
+ 	else
+ 		ret = sh_eth_close(ndev);
++	rtnl_unlock();
+ 
+ 	return ret;
+ }
+@@ -3511,10 +3513,12 @@ static int sh_eth_resume(struct device *dev)
+ 	if (!netif_running(ndev))
+ 		return 0;
+ 
++	rtnl_lock();
+ 	if (mdp->wol_enabled)
+ 		ret = sh_eth_wol_restore(ndev);
+ 	else
+ 		ret = sh_eth_open(ndev);
++	rtnl_unlock();
+ 
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.39.5
 
