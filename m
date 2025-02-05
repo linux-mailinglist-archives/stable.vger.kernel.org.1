@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-113135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAE2A29039
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2BCA2912E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:46:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02A2D3A73F3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216FC3A1A94
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58212170A13;
-	Wed,  5 Feb 2025 14:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5036F1FDE1E;
+	Wed,  5 Feb 2025 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC3b8uJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywtx6uW0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F815CD74;
-	Wed,  5 Feb 2025 14:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF991FDE14;
+	Wed,  5 Feb 2025 14:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765939; cv=none; b=TAWO5LQuLWcY/GYwUGioADU1hZ64otaRjQB4R546gfRm9zEVs+4atzJ4yjspna2HemJ/0Up3SNLnouie1ICOrolDT19C0jviWDP5hLZV4wZ93EKAvrMQABeCc40XLzs7bjs5YeFP+hzg9OB3K/8iPhJXwdqGas2pbGsFp1kCVeU=
+	t=1738766504; cv=none; b=gjGiY3GJCq5seMIUJ7GbvpZGbzxxoTEFBT5bfIjRPDupHIUIoOcqe8mn5b9K5Hufa+/nBo3w3Zwe7SKXn5P0FlKhSvF9ZI8Xza9w0g4diPmec31/wcMs3a0jQroQxcpGjXKDKr/XqIa3b0FIZ0QSFmzT7KBRVFS/3YqpV0Bu78g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765939; c=relaxed/simple;
-	bh=5D0kLIVzGFhiYwnyUi3d/WkxNnnu8WCgTJjqkOVWxac=;
+	s=arc-20240116; t=1738766504; c=relaxed/simple;
+	bh=OKSLxRZYrKlzFz+AAMcS3v+ZH4y5Mk9lBX7tRFniT+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjXdV5zY8bOc9efeOB4mijHXW27GIyS3wIm2+P+C2w73lzQhPRIoOFRkPw8a/jX3ooeqLsqaal94dF1QktM4MHQ00tMJc6ukzsf6nLu0csDAg/EW5a1InVwySROUV0y/HBXRnVRwALUFfRlsxmp3Vcd0ODMZE6l9lh5P3DaeeB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC3b8uJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484EEC4CED1;
-	Wed,  5 Feb 2025 14:32:18 +0000 (UTC)
+	 MIME-Version; b=atrd6WzdfSjd5EkoLBSnBo0SjC2804BMNKnHB5A7XhgA3mUI4YX2Ks9PxqrA4mFS32UIWDuNIGNi1Z0TfGyNVAQCipFsZMpxxQwSn30jDQFZugCZX2EkkW9i54AjNDb6S0FQJpihFa7dIjo3d5Cij5KaoBkEK3yF4+JCmUIRk3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywtx6uW0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54585C4CEDD;
+	Wed,  5 Feb 2025 14:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765939;
-	bh=5D0kLIVzGFhiYwnyUi3d/WkxNnnu8WCgTJjqkOVWxac=;
+	s=korg; t=1738766503;
+	bh=OKSLxRZYrKlzFz+AAMcS3v+ZH4y5Mk9lBX7tRFniT+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QC3b8uJgDL1k1xI/AXyNEWnsTKay57OCusYM3zo6Kvuv+Y0URp5FNTCDqp+LijCzb
-	 O0zhIsv2jRNH7qTyeTIaye3zCad/umk5D1bcrc4rew1R5HMdiU3zD4hoIKutNoYJHI
-	 MJYF9PppfbOsLzfxnBY0AMLtj0hlSx8hrIXHTmP0=
+	b=ywtx6uW0V0/b/9yyw3aNiPlt4KZddQShDbCA+BqvK1LoOHVp4SzQ76/uUvjaFTAvt
+	 wqk9xrDDZ6t3reSKkAxIptVxh9vsCPO2u2H7e11j6uCq2THGFAlTpnJHMb1oJ0/ryE
+	 M2Wqa6yAQGj11zqxz9ojOh/7jFLSV2CcVlXB85lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 269/590] perf maps: Fix display of kernel symbols
+Subject: [PATCH 6.13 282/623] bpf: Use refcount_t instead of atomic_t for mmap_count
 Date: Wed,  5 Feb 2025 14:40:24 +0100
-Message-ID: <20250205134505.565747500@linuxfoundation.org>
+Message-ID: <20250205134507.019607953@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,75 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit dae29277fddaaf6670d17dfcbb916a2ca29c912f ]
+[ Upstream commit dfa94ce54f4139c893b9c4ec17df6f7c6a7515d3 ]
 
-Since commit 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily
-sorted array for addresses"), perf doesn't display anymore kernel
-symbols on powerpc, allthough it still detects them as kernel addresses.
+Use an API that resembles more the actual use of mmap_count.
 
-	# Overhead  Command     Shared Object  Symbol
-	# ........  ..........  ............. ......................................
-	#
-	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
-	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
-	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
-	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
-	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
-	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
-	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+Found by cocci:
+kernel/bpf/arena.c:245:6-25: WARNING: atomic_dec_and_test variation before object free at line 249.
 
-This is because function maps__find_next_entry() now returns current
-entry instead of next entry, leading to kernel map end address getting
-mis-configured with its own start address instead of the start address
-of the following map.
-
-Fix it by really taking the next entry, also make sure that entry
-follows current one by making sure entries are sorted.
-
-Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: b90d77e5fd78 ("bpf: Fix remap of arena.")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412292037.LXlYSHKl-lkp@intel.com/
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Link: https://lore.kernel.org/r/6ecce439a6bc81adb85d5080908ea8959b792a50.1735542814.git.xiaopei01@kylinos.cn
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/maps.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/bpf/arena.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index 432399cbe5dd3..09c9cc326c08d 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -1136,8 +1136,13 @@ struct map *maps__find_next_entry(struct maps *maps, struct map *map)
- 	struct map *result = NULL;
+diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+index 945a5680f6a54..8caf56a308d96 100644
+--- a/kernel/bpf/arena.c
++++ b/kernel/bpf/arena.c
+@@ -218,7 +218,7 @@ static u64 arena_map_mem_usage(const struct bpf_map *map)
+ struct vma_list {
+ 	struct vm_area_struct *vma;
+ 	struct list_head head;
+-	atomic_t mmap_count;
++	refcount_t mmap_count;
+ };
  
- 	down_read(maps__lock(maps));
-+	while (!maps__maps_by_address_sorted(maps)) {
-+		up_read(maps__lock(maps));
-+		maps__sort_by_address(maps);
-+		down_read(maps__lock(maps));
-+	}
- 	i = maps__by_address_index(maps, map);
--	if (i < maps__nr_maps(maps))
-+	if (++i < maps__nr_maps(maps))
- 		result = map__get(maps__maps_by_address(maps)[i]);
+ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
+@@ -228,7 +228,7 @@ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
+ 	vml = kmalloc(sizeof(*vml), GFP_KERNEL);
+ 	if (!vml)
+ 		return -ENOMEM;
+-	atomic_set(&vml->mmap_count, 1);
++	refcount_set(&vml->mmap_count, 1);
+ 	vma->vm_private_data = vml;
+ 	vml->vma = vma;
+ 	list_add(&vml->head, &arena->vma_list);
+@@ -239,7 +239,7 @@ static void arena_vm_open(struct vm_area_struct *vma)
+ {
+ 	struct vma_list *vml = vma->vm_private_data;
  
- 	up_read(maps__lock(maps));
+-	atomic_inc(&vml->mmap_count);
++	refcount_inc(&vml->mmap_count);
+ }
+ 
+ static void arena_vm_close(struct vm_area_struct *vma)
+@@ -248,7 +248,7 @@ static void arena_vm_close(struct vm_area_struct *vma)
+ 	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
+ 	struct vma_list *vml = vma->vm_private_data;
+ 
+-	if (!atomic_dec_and_test(&vml->mmap_count))
++	if (!refcount_dec_and_test(&vml->mmap_count))
+ 		return;
+ 	guard(mutex)(&arena->lock);
+ 	/* update link list under lock */
 -- 
 2.39.5
 
