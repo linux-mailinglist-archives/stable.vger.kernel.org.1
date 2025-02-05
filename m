@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86AF2A28CA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16BFA2908B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E350168AED
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC9B3A7A9D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6041494DF;
-	Wed,  5 Feb 2025 13:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009E5155747;
+	Wed,  5 Feb 2025 14:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3dN7HwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWjllTyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE24142E86;
-	Wed,  5 Feb 2025 13:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CCC151988;
+	Wed,  5 Feb 2025 14:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763534; cv=none; b=dgGJAaJfRngIuk+QTC52LMv9KwmV6vKRL++GAuRA3G+mNz8c9hGqY6+W70jbVm74C6b/qFJhayiZ4MnRe8qz7NglQG3uGihNvDWksJSkNEIqiVYuneY09YbvGRuprS0kK79zeUnm9hP9o9r9vPyHdfSZ3AbOmFQDGTU2IBVQAao=
+	t=1738766248; cv=none; b=j+CBtY6ikHuosscAOOLhMSUGaeyUyLXbIPZDXfVQUe7dH9eT4A+Jpn+rqB+A1nbGOcaR9G/07hT6obZzO3x5n6en7cFbeb4gWoPo+bqdWkQehAm+R/uwsBNvqdCN4GAek+zMydI7HKZGMN/Vguhna3H8AMMvxirVXvSM5ZtaJBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763534; c=relaxed/simple;
-	bh=qeirr0ZrBvgpKQTCyG3gA7Lf06p8C8IF+d5QxZANPn4=;
+	s=arc-20240116; t=1738766248; c=relaxed/simple;
+	bh=1dGhHwqr7BMQIixNVwg66GffDIiV0jX2ci7alnltxlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpxsww4X2rFy+J2ktFkMWpa1kjiKv7wfeHQMTumBVxWlVwCYAhoYUqyzQOZhb1X6eZs+fz8aJ3hLhAUqeL/4W+GxePnYHvwln53QAdk3vvTVYQz5H5OmeZuhZ8Y/03N/7psVGgfaatox/aQ6eMYzkomRnbWGbHvR9lBUrbpZrUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3dN7HwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DCFC4CED1;
-	Wed,  5 Feb 2025 13:52:14 +0000 (UTC)
+	 MIME-Version; b=f6FfOhF3c2AfiBMIDNky4W6g/rtiiLD9HJqwBVkNTWDSr60+ZbyK3/a7SkL9P/M9AnPwsXQTs6DaXL+dCaD6m/9oCfMgF5zWIuYlSl6efgjGT64gHhWtA7zt1D+TNBbb8rHqXyy8DKCsy3NDNsab9MgeXOIbvNvvwhuKVoQdYZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWjllTyw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE99C4CED1;
+	Wed,  5 Feb 2025 14:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763534;
-	bh=qeirr0ZrBvgpKQTCyG3gA7Lf06p8C8IF+d5QxZANPn4=;
+	s=korg; t=1738766248;
+	bh=1dGhHwqr7BMQIixNVwg66GffDIiV0jX2ci7alnltxlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3dN7HwZnMqJDFhT6p3Lq8tttlrhY3alnyYH0CaZfwKtXO4dF8v1GIjawyN9Q/2JS
-	 RrmVs590dasDMn/1ySV37pLxKPSXfDbN8K9v6egosLDs9rY4CD2K2ouy4VC6X1ih6T
-	 C62c+QtKR5UFHPXB8lEHz7aU9aWiqI/0vg2uiBXU=
+	b=cWjllTywfwE+dimzRfrYew9INpl3GLQ1r34quLzQOlRc6nAv8dcFeYPW6QOrTyWnr
+	 Ox7qoAJATRVsbSlF7TY2dajUiTWQo+318FEWElB3K2IQvR2CpsTC4WJpmfC54HRfwY
+	 CZnC74dcf9brd1Kos7dp1jYIX/sCo4iajiBHY9PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/393] inetpeer: remove create argument of inet_getpeer()
-Date: Wed,  5 Feb 2025 14:39:57 +0100
-Message-ID: <20250205134423.279706480@linuxfoundation.org>
+Subject: [PATCH 6.13 256/623] libbpf: Fix segfault due to libelf functions not setting errno
+Date: Wed,  5 Feb 2025 14:39:58 +0100
+Message-ID: <20250205134506.025190593@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Quentin Monnet <qmo@kernel.org>
 
-[ Upstream commit 7a596a50c4a4eab946aec149171c72321b4934aa ]
+[ Upstream commit e10500b69c3f3378f3dcfc8c2fe4cdb74fc844f5 ]
 
-All callers of inet_getpeer() want to create an inetpeer.
+Libelf functions do not set errno on failure. Instead, it relies on its
+internal _elf_errno value, that can be retrieved via elf_errno (or the
+corresponding message via elf_errmsg()). From "man libelf":
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241215175629.1248773-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a853c609504e ("inetpeer: do not get a refcount in inet_getpeer()")
+    If a libelf function encounters an error it will set an internal
+    error code that can be retrieved with elf_errno. Each thread
+    maintains its own separate error code. The meaning of each error
+    code can be determined with elf_errmsg, which returns a string
+    describing the error.
+
+As a consequence, libbpf should not return -errno when a function from
+libelf fails, because an empty value will not be interpreted as an error
+and won't prevent the program to stop. This is visible in
+bpf_linker__add_file(), for example, where we call a succession of
+functions that rely on libelf:
+
+    err = err ?: linker_load_obj_file(linker, filename, opts, &obj);
+    err = err ?: linker_append_sec_data(linker, &obj);
+    err = err ?: linker_append_elf_syms(linker, &obj);
+    err = err ?: linker_append_elf_relos(linker, &obj);
+    err = err ?: linker_append_btf(linker, &obj);
+    err = err ?: linker_append_btf_ext(linker, &obj);
+
+If the object file that we try to process is not, in fact, a correct
+object file, linker_load_obj_file() may fail with errno not being set,
+and return 0. In this case we attempt to run linker_append_elf_sysms()
+and may segfault.
+
+This can happen (and was discovered) with bpftool:
+
+    $ bpftool gen object output.o sample_ret0.bpf.c
+    libbpf: failed to get ELF header for sample_ret0.bpf.c: invalid `Elf' handle
+    zsh: segmentation fault (core dumped)  bpftool gen object output.o sample_ret0.bpf.c
+
+Fix the issue by returning a non-null error code (-EINVAL) when libelf
+functions fail.
+
+Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
+Signed-off-by: Quentin Monnet <qmo@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241205135942.65262-1-qmo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inetpeer.h |  7 +++----
- net/ipv4/inetpeer.c    | 11 ++---------
- 2 files changed, 5 insertions(+), 13 deletions(-)
+ tools/lib/bpf/linker.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/inetpeer.h b/include/net/inetpeer.h
-index 6f51f81d6cb19..f475757daafba 100644
---- a/include/net/inetpeer.h
-+++ b/include/net/inetpeer.h
-@@ -96,8 +96,7 @@ static inline struct in6_addr *inetpeer_get_addr_v6(struct inetpeer_addr *iaddr)
+diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
+index cf71d149fe26a..e56ba6e67451d 100644
+--- a/tools/lib/bpf/linker.c
++++ b/tools/lib/bpf/linker.c
+@@ -566,17 +566,15 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
+ 	}
+ 	obj->elf = elf_begin(obj->fd, ELF_C_READ_MMAP, NULL);
+ 	if (!obj->elf) {
+-		err = -errno;
+ 		pr_warn_elf("failed to parse ELF file '%s'", filename);
+-		return err;
++		return -EINVAL;
+ 	}
  
- /* can be called with or without local BH being disabled */
- struct inet_peer *inet_getpeer(struct inet_peer_base *base,
--			       const struct inetpeer_addr *daddr,
--			       int create);
-+			       const struct inetpeer_addr *daddr);
+ 	/* Sanity check ELF file high-level properties */
+ 	ehdr = elf64_getehdr(obj->elf);
+ 	if (!ehdr) {
+-		err = -errno;
+ 		pr_warn_elf("failed to get ELF header for %s", filename);
+-		return err;
++		return -EINVAL;
+ 	}
  
- static inline struct inet_peer *inet_getpeer_v4(struct inet_peer_base *base,
- 						__be32 v4daddr,
-@@ -108,7 +107,7 @@ static inline struct inet_peer *inet_getpeer_v4(struct inet_peer_base *base,
- 	daddr.a4.addr = v4daddr;
- 	daddr.a4.vif = vif;
- 	daddr.family = AF_INET;
--	return inet_getpeer(base, &daddr, 1);
-+	return inet_getpeer(base, &daddr);
- }
+ 	/* Linker output endianness set by first input object */
+@@ -606,9 +604,8 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
+ 	}
  
- static inline struct inet_peer *inet_getpeer_v6(struct inet_peer_base *base,
-@@ -118,7 +117,7 @@ static inline struct inet_peer *inet_getpeer_v6(struct inet_peer_base *base,
+ 	if (elf_getshdrstrndx(obj->elf, &obj->shstrs_sec_idx)) {
+-		err = -errno;
+ 		pr_warn_elf("failed to get SHSTRTAB section index for %s", filename);
+-		return err;
++		return -EINVAL;
+ 	}
  
- 	daddr.a6 = *v6daddr;
- 	daddr.family = AF_INET6;
--	return inet_getpeer(base, &daddr, 1);
-+	return inet_getpeer(base, &daddr);
- }
+ 	scn = NULL;
+@@ -618,26 +615,23 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
  
- static inline int inetpeer_addr_cmp(const struct inetpeer_addr *a,
-diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
-index e9fed83e9b3cc..5670571ee5fbe 100644
---- a/net/ipv4/inetpeer.c
-+++ b/net/ipv4/inetpeer.c
-@@ -177,13 +177,11 @@ static void inet_peer_gc(struct inet_peer_base *base,
- }
+ 		shdr = elf64_getshdr(scn);
+ 		if (!shdr) {
+-			err = -errno;
+ 			pr_warn_elf("failed to get section #%zu header for %s",
+ 				    sec_idx, filename);
+-			return err;
++			return -EINVAL;
+ 		}
  
- struct inet_peer *inet_getpeer(struct inet_peer_base *base,
--			       const struct inetpeer_addr *daddr,
--			       int create)
-+			       const struct inetpeer_addr *daddr)
- {
- 	struct inet_peer *p, *gc_stack[PEER_MAX_GC];
- 	struct rb_node **pp, *parent;
- 	unsigned int gc_cnt, seq;
--	int invalidated;
+ 		sec_name = elf_strptr(obj->elf, obj->shstrs_sec_idx, shdr->sh_name);
+ 		if (!sec_name) {
+-			err = -errno;
+ 			pr_warn_elf("failed to get section #%zu name for %s",
+ 				    sec_idx, filename);
+-			return err;
++			return -EINVAL;
+ 		}
  
- 	/* Attempt a lockless lookup first.
- 	 * Because of a concurrent writer, we might not find an existing entry.
-@@ -191,16 +189,11 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
- 	rcu_read_lock();
- 	seq = read_seqbegin(&base->lock);
- 	p = lookup(daddr, base, seq, NULL, &gc_cnt, &parent, &pp);
--	invalidated = read_seqretry(&base->lock, seq);
- 	rcu_read_unlock();
+ 		data = elf_getdata(scn, 0);
+ 		if (!data) {
+-			err = -errno;
+ 			pr_warn_elf("failed to get section #%zu (%s) data from %s",
+ 				    sec_idx, sec_name, filename);
+-			return err;
++			return -EINVAL;
+ 		}
  
- 	if (p)
- 		return p;
+ 		sec = add_src_sec(obj, sec_name);
+@@ -2680,14 +2674,14 @@ int bpf_linker__finalize(struct bpf_linker *linker)
  
--	/* If no writer did a change during our lookup, we can return early. */
--	if (!create && !invalidated)
--		return NULL;
--
- 	/* retry an exact lookup, taking the lock before.
- 	 * At least, nodes should be hot in our cache.
- 	 */
-@@ -209,7 +202,7 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 	/* Finalize ELF layout */
+ 	if (elf_update(linker->elf, ELF_C_NULL) < 0) {
+-		err = -errno;
++		err = -EINVAL;
+ 		pr_warn_elf("failed to finalize ELF layout");
+ 		return libbpf_err(err);
+ 	}
  
- 	gc_cnt = 0;
- 	p = lookup(daddr, base, seq, gc_stack, &gc_cnt, &parent, &pp);
--	if (!p && create) {
-+	if (!p) {
- 		p = kmem_cache_alloc(peer_cachep, GFP_ATOMIC);
- 		if (p) {
- 			p->daddr = *daddr;
+ 	/* Write out final ELF contents */
+ 	if (elf_update(linker->elf, ELF_C_WRITE) < 0) {
+-		err = -errno;
++		err = -EINVAL;
+ 		pr_warn_elf("failed to write ELF contents");
+ 		return libbpf_err(err);
+ 	}
 -- 
 2.39.5
 
