@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3C2A28DD2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66928A29124
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45E8A7A1F7C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31924163F04
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A2B14B080;
-	Wed,  5 Feb 2025 14:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A701F5413;
+	Wed,  5 Feb 2025 14:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGV2SVBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4hZsybd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE58BF510;
-	Wed,  5 Feb 2025 14:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E1B18732B;
+	Wed,  5 Feb 2025 14:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764340; cv=none; b=b+2O/sDHgmeerX3YJ1A5TUijB5mtp0/i3idHMJYdRkTIxpn9vaS+S+F0+LO7lX2aWabixOfAglhqkdAaQx+5x25/rDB+Ljog7sBr3j6JhPUQrE4Mi3+GKTLXBqgY9jRTh0k19VdDjg443L8swti9zsYPy64/bcsuyg1lpWrKbxY=
+	t=1738766483; cv=none; b=tzMSr7h9EIPXUpqiL5tanlmlCYSfhxRJX5F4LdBFXTYlQlhPGrfrbecxAn1gNhJszLJPp0GtU6EXBvS+QmTsxHA+7s0xpP4IC/JIPJIdITfiXs6tX/R8t8xX0XeXe7tB7oiDhNSxUE6aCC1XxlH68MhnzprHLp8EjSTJhG7RMII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764340; c=relaxed/simple;
-	bh=2GhGc52CwLJAuavqlSCXLBMjSCGzEz4nxHNuf/7CD0Y=;
+	s=arc-20240116; t=1738766483; c=relaxed/simple;
+	bh=j58eF9bOpuxNVPaZkKZYn7oJaMeYQhtxxJmB/MN7Luo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdvP6bgIJvpln/OxEcupttyyNj54/eJXTUhOrV2tRZVor5VeN5COMvImsp+Mb9WgJiu+1+gEAjbkcoIxoKcxVdgmavmNErYhQa2EniQU9tD4cvm7THrSCmsnEELYC0j3YOhftf0O0c9fgaNCN+lpOfpLuJWlnPExiCdw+KbpDAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGV2SVBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17486C4CED1;
-	Wed,  5 Feb 2025 14:05:39 +0000 (UTC)
+	 MIME-Version; b=edvodFh3N9wkiVaRatPlTr15wqonEbG6UXENuWtg0p2TAs4d8h/RMfGKkjWVLbYLBr8xY0nP5kRdFPqHS+UJKjzOWqaJ/zmtXY2xZjLQPBalk5+MbkcKOyxNkYJvvs7ROUuMjY+dQhuIJfBOxo/kpjw10NwTqQ5YH8lmUce+XS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4hZsybd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D8C4CEE2;
+	Wed,  5 Feb 2025 14:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764340;
-	bh=2GhGc52CwLJAuavqlSCXLBMjSCGzEz4nxHNuf/7CD0Y=;
+	s=korg; t=1738766482;
+	bh=j58eF9bOpuxNVPaZkKZYn7oJaMeYQhtxxJmB/MN7Luo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGV2SVBUJ4CGiVdarg6lnEyZFX3jahD7RwRGoOfDY3ixwWzRsP7PonHboOdyv3h1a
-	 1+HutlkGjY+E3RDAMB/ML6BvCdAllzR5x/GLXCaF7DbMg3XL+GJocQVxkntbFr2XZR
-	 pT3LTXDvNYuHY82VmNjSQqXCM5i3wqWXZThOyHto=
+	b=p4hZsybdU/SqAFb0CnV2XzUZTTD83DQXutChB9LyiWUHE3MYD28xdC/1pXx0msndy
+	 NrnM3l0QX3/91xw+liDSVKrG69VyhzsZFSNTrZv9ogHXPuPA725Rdwbj4kdrxSCBJW
+	 B2BVn1cgYglo5zM92jzMeRTyc+3l0tEHYF8jO6r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/393] ASoC: renesas: rz-ssi: Use only the proper amount of dividers
-Date: Wed,  5 Feb 2025 14:41:22 +0100
-Message-ID: <20250205134426.535278444@linuxfoundation.org>
+	zhenwei pi <pizhenwei@bytedance.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: [PATCH 6.12 328/590] RDMA/rxe: Fix mismatched max_msg_sz
+Date: Wed,  5 Feb 2025 14:41:23 +0100
+Message-ID: <20250205134507.822967728@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit 55c209cd4318c701e6e88e0b2512a0f12dd02a7d ]
+[ Upstream commit db03b70969aab4ef111a3369cfd90ea4da3a6aa0 ]
 
-There is no need to populate the ckdv[] with invalid dividers as that
-part will not be indexed anyway. The ssi->audio_mck/bclk_rate should
-always be >= 0. While at it, change the ckdv type as u8, as the divider
-128 was previously using the s8 sign bit.
+User mode queries max_msg_sz as 0x800000 by command 'ibv_devinfo -v',
+however ibv_post_send/ibv_post_recv has a limit of 2^31. Fix this
+mismatched information.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Fixes: 03e786bd43410fa9 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20241210170953.2936724-6-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Fixes: f605f26ea196 ("RDMA/rxe: Protect QP state with qp->state_lock")
+Fixes: 5bf944f24129 ("RDMA/rxe: Add error messages")
+Link: https://patch.msgid.link/20241216121953.765331-1-pizhenwei@bytedance.com
+Review-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sh/rz-ssi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_param.h | 2 +-
+ drivers/infiniband/sw/rxe/rxe_verbs.c | 5 ++---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
-index 1588b93cc35d0..353863f49b313 100644
---- a/sound/soc/sh/rz-ssi.c
-+++ b/sound/soc/sh/rz-ssi.c
-@@ -245,8 +245,7 @@ static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
- static int rz_ssi_clk_setup(struct rz_ssi_priv *ssi, unsigned int rate,
- 			    unsigned int channels)
- {
--	static s8 ckdv[16] = { 1,  2,  4,  8, 16, 32, 64, 128,
--			       6, 12, 24, 48, 96, -1, -1, -1 };
-+	static u8 ckdv[] = { 1,  2,  4,  8, 16, 32, 64, 128, 6, 12, 24, 48, 96 };
- 	unsigned int channel_bits = 32;	/* System Word Length */
- 	unsigned long bclk_rate = rate * channels * channel_bits;
- 	unsigned int div;
+diff --git a/drivers/infiniband/sw/rxe/rxe_param.h b/drivers/infiniband/sw/rxe/rxe_param.h
+index d2f57ead78ad1..003f681e5dc02 100644
+--- a/drivers/infiniband/sw/rxe/rxe_param.h
++++ b/drivers/infiniband/sw/rxe/rxe_param.h
+@@ -129,7 +129,7 @@ enum rxe_device_param {
+ enum rxe_port_param {
+ 	RXE_PORT_GID_TBL_LEN		= 1024,
+ 	RXE_PORT_PORT_CAP_FLAGS		= IB_PORT_CM_SUP,
+-	RXE_PORT_MAX_MSG_SZ		= 0x800000,
++	RXE_PORT_MAX_MSG_SZ		= (1UL << 31),
+ 	RXE_PORT_BAD_PKEY_CNTR		= 0,
+ 	RXE_PORT_QKEY_VIOL_CNTR		= 0,
+ 	RXE_PORT_LID			= 0,
+diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
+index 8a5fc20fd1869..589ac0d8489db 100644
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -696,7 +696,7 @@ static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
+ 		for (i = 0; i < ibwr->num_sge; i++)
+ 			length += ibwr->sg_list[i].length;
+ 
+-		if (length > (1UL << 31)) {
++		if (length > RXE_PORT_MAX_MSG_SZ) {
+ 			rxe_err_qp(qp, "message length too long\n");
+ 			break;
+ 		}
+@@ -980,8 +980,7 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
+ 	for (i = 0; i < num_sge; i++)
+ 		length += ibwr->sg_list[i].length;
+ 
+-	/* IBA max message size is 2^31 */
+-	if (length >= (1UL<<31)) {
++	if (length > RXE_PORT_MAX_MSG_SZ) {
+ 		err = -EINVAL;
+ 		rxe_dbg("message length too long\n");
+ 		goto err_out;
 -- 
 2.39.5
 
