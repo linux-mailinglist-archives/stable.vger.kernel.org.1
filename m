@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-113019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F16A28F88
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEA5A292B0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90B2D1887061
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FE077A1F3A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51B1155A21;
-	Wed,  5 Feb 2025 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41CA18A924;
+	Wed,  5 Feb 2025 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pN/jtu/i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cElzK5l4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664EC14A088;
-	Wed,  5 Feb 2025 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB66376;
+	Wed,  5 Feb 2025 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765548; cv=none; b=Vle5LTFt/LilEEDSX1UoDG9Qa01bSTUZ0EHopbFfU/xKZkeQswVEwGY1byEqstDarK/aE6XG0AbimBQa4Gs+wTkrE2PYEUdQVtc87Youj7czuPqyYfKcWUV5aRydpjo4RYy80vGxjrk8S7hopAPWEIHPALYIY7XpjGJvQmSqoE4=
+	t=1738767791; cv=none; b=sik5ssqtNw+PJa7wYY1FdMV+I4ihFShD+FCgWMhHJL3VnPOM0Em/C69yUQgxEbu+y8ObygD4IGY1e0YqEM6fpsjtX4lyUkvVEKcBYN2l2hNP15NrsrQAbdSZMJHoZhNm4xhsIVAZoVNSLdP7uGjsobzHinAFOMNFKGa06HYTQsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765548; c=relaxed/simple;
-	bh=rdBayyIqClqn3YDOp73mHJxCK+7YHwhsrxLB5hBfjvY=;
+	s=arc-20240116; t=1738767791; c=relaxed/simple;
+	bh=/fwqXBvoU/d5kDh5KrUpOFqIJMB1xsYX0zYTXbKzLdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PEPD2I0WgLL5aUN3tA+zAZcDpwkf6x2SR7hSWOpALys2nMyXXA/U5nnvV1195mnnPqIygTiF39mU7hH2b2f6o9KX4wx9aGrUKwIbW2pdqVd3RM+7PpvKdjJNixkMXKRGXnxQbP4phR4kSLJxpND9AfVPIhu9a1vLwy6LdYGZdwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pN/jtu/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8FC4CED1;
-	Wed,  5 Feb 2025 14:25:47 +0000 (UTC)
+	 MIME-Version; b=eHxl8uA19fvQ5IZrnslFzVE1y9ifDxNx7pX14tIizarRPJn3KRFvXNtH9xMv1iFFfUTkGyZfbDDjB/FxahAwWloNW/jU3mWrkQGQhnzHU0Ac2/WfGpYZbNXqvKBshPo17YJwuyoLY/n4aBhpSjjcjQuvDghnve1S8mDR6Jexga8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cElzK5l4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E85C4CED1;
+	Wed,  5 Feb 2025 15:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765548;
-	bh=rdBayyIqClqn3YDOp73mHJxCK+7YHwhsrxLB5hBfjvY=;
+	s=korg; t=1738767791;
+	bh=/fwqXBvoU/d5kDh5KrUpOFqIJMB1xsYX0zYTXbKzLdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pN/jtu/iReUKZyiqTbiu+JRJDzGgnbO70J7P3ABgGNgq6wHZmeYoiEbzQC0h2+kUk
-	 WosCq+1UxFXD2clFpruKpjpNYxeXXHsqW20fzjWZxch6FL7jOcMdSmk9dZvT2kJoxo
-	 D3YX8oKMF+8fG4wy6Gc2RCGm+MMZszLq64J6+okg=
+	b=cElzK5l4K3pumqOEyZXFoqeehjNjZhKpeuKF4yF+PFHRlSAXM2qQQyAel2MhwRxSw
+	 A/83YdQPsZEnaX83003xg3pN8DfxiF2C8l7W1h2LiRIfu5zNr7NIWUmQFY+fqwV2l0
+	 WSJku+BxTmgr2mRyCoVkEjbqN9eIi52osKHOrYB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	David Rheinsberg <david@readahead.eu>,
 	Hans de Goede <hdegoede@redhat.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Peter Jones <pjones@redhat.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	linux-fbdev@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/393] efi: sysfb_efi: fix W=1 warnings when EFI is not set
+Subject: [PATCH 6.13 454/623] media: uvcvideo: Propagate buf->error to userspace
 Date: Wed,  5 Feb 2025 14:43:16 +0100
-Message-ID: <20250205134430.908148811@linuxfoundation.org>
+Message-ID: <20250205134513.583746760@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 19fdc68aa7b90b1d3d600e873a3e050a39e7663d ]
+[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
 
-A build with W=1 fails because there are code and data that are not
-needed or used when CONFIG_EFI is not set. Move the "#ifdef CONFIG_EFI"
-block to earlier in the source file so that the unused code/data are
-not built.
+Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
+the correct value, so the user can know if the frame is valid or not via
+struct v4l2_buffer->flags.
 
-drivers/firmware/efi/sysfb_efi.c:345:39: warning: ‘efifb_fwnode_ops’ defined but not used [-Wunused-const-variable=]
-  345 | static const struct fwnode_operations efifb_fwnode_ops = {
-      |                                       ^~~~~~~~~~~~~~~~
-drivers/firmware/efi/sysfb_efi.c:238:35: warning: ‘efifb_dmi_swap_width_height’ defined but not used [-Wunused-const-variable=]
-  238 | static const struct dmi_system_id efifb_dmi_swap_width_height[] __initconst = {
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/firmware/efi/sysfb_efi.c:188:35: warning: ‘efifb_dmi_system_table’ defined but not used [-Wunused-const-variable=]
-  188 | static const struct dmi_system_id efifb_dmi_system_table[] __initconst = {
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: 15d27b15de96 ("efi: sysfb_efi: fix build when EFI is not set")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501071933.20nlmJJt-lkp@intel.com/
-Cc: David Rheinsberg <david@readahead.eu>
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Peter Jones <pjones@redhat.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: linux-fbdev@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: linux-efi@vger.kernel.org
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
+Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/sysfb_efi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_queue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/sysfb_efi.c b/drivers/firmware/efi/sysfb_efi.c
-index 456d0e5eaf78b..f479680299838 100644
---- a/drivers/firmware/efi/sysfb_efi.c
-+++ b/drivers/firmware/efi/sysfb_efi.c
-@@ -91,6 +91,7 @@ void efifb_setup_from_dmi(struct screen_info *si, const char *opt)
- 		_ret_;						\
- 	})
+diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+index 26ee85657fc89..f8464f0aae1b8 100644
+--- a/drivers/media/usb/uvc/uvc_queue.c
++++ b/drivers/media/usb/uvc/uvc_queue.c
+@@ -479,7 +479,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
  
-+#ifdef CONFIG_EFI
- static int __init efifb_set_system(const struct dmi_system_id *id)
- {
- 	struct efifb_dmi_info *info = id->driver_data;
-@@ -346,7 +347,6 @@ static const struct fwnode_operations efifb_fwnode_ops = {
- 	.add_links = efifb_add_links,
- };
+ 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
+ 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
+-	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
++	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
++							VB2_BUF_STATE_DONE);
+ }
  
--#ifdef CONFIG_EFI
- static struct fwnode_handle efifb_fwnode;
- 
- __init void sysfb_apply_efi_quirks(void)
+ /*
 -- 
 2.39.5
 
