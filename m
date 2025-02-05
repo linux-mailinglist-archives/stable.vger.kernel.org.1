@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CB5A293AE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9888A29350
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B65165CBB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18C043AC556
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751AE21345;
-	Wed,  5 Feb 2025 15:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7E1165F16;
+	Wed,  5 Feb 2025 15:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEUt94aw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVsoMv9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302AEDF59;
-	Wed,  5 Feb 2025 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB7A2A1BB;
+	Wed,  5 Feb 2025 15:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768179; cv=none; b=ts4FFfGGDKSWvMb7W5re6Kb/Ss85W9gApCgVkAwGwRuXe0w2o0sAJHlK8pDHFuJr04UpmLRH21w05FUeInLpo4yc9qkCnTFP7Ha0un6AtbFpXE53m5d6lV1OfFFMtShcmhnTV/YezQ27fNLTQHlD2rdSMp1slghN8ZAGMxODTqo=
+	t=1738767705; cv=none; b=Zs8NHc+0XyCkVAyWmqVvPOHR0N6f2BXMmIa3cQvpknj0h32xxRK5WN4CDMmQFZhTghoFajzOqnbB7mp8iXVzlIouEGWtQd7atDPusEGFWgH4PrikI1YtjKmH//xJ1slS51sAxLUGkpGM+aWoH2OnW89zQ2AcsRXG6xe5Wl55cPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768179; c=relaxed/simple;
-	bh=snUfOgxdXxUp76H+xEI2OV6VcPyq+3fsmNPwhc5HEg4=;
+	s=arc-20240116; t=1738767705; c=relaxed/simple;
+	bh=CdRhpaBsKa0MKtXn9VaoB4S+grkwl99dvC0X2b2ThqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mObEo2iTDc6J4j19eYptIptIn5weDAMXa11R7L4v+1lfJdUyuYFtPMXCS1PXTGthHu5841tFbLr1hl6xLaIPmQnDOBNQXofBw40v9WyWiK0m5hL6U6vap2o4llY5780aNYNSm4e/M1AWGNvhuqcwhTZfn7LOa0DNnI+13OW04DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEUt94aw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C20FC4CED1;
-	Wed,  5 Feb 2025 15:09:37 +0000 (UTC)
+	 MIME-Version; b=noHYJk5LI9dRL/hUZKz+IbO8FQkE8FyDPIKVMvDXSwToiPNSGWATuiFdcMQqtyZNcteRYfk4S5z1755NJqON0yxd1q6E55mS+KGMHp6RYscb5sAAqSjYhx4iIP3Y7Jvvoh1rRzTPDO+xMkrV736Qyls3RzG0blLfZfzI9aJfdts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVsoMv9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1F5C4CED1;
+	Wed,  5 Feb 2025 15:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768178;
-	bh=snUfOgxdXxUp76H+xEI2OV6VcPyq+3fsmNPwhc5HEg4=;
+	s=korg; t=1738767705;
+	bh=CdRhpaBsKa0MKtXn9VaoB4S+grkwl99dvC0X2b2ThqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEUt94awamOYCwdmZXI68UCHoHuZ8wrGHSZdwB6RCK2302W1lTuB0Sz7SUH7trYad
-	 a06KELuaR0SPsZE6NvxTG1uSg7MwB1kPrqcp6761jWD5RQRLcZYaK5iHDHkXrnhRnH
-	 FnLrMU2qrDWKQjZnXb1k0AaWyMoe/sX/+ejG7ybU=
+	b=YVsoMv9pF/uGKS5Z1Q9GaQXijJKdGtp4sJZrbb6SGObNw2zOfIxDEGjMZGRbVv6t4
+	 ifh4Bu/yFKKwfgdtYtNi4cbCAu4AU2reB7Xe1fs2/6JNiPl9fM54cNPyStFWYadv1J
+	 yv6VwPqOj9OgGZHq2A6OyJKSh0rtoNBb+WyAoICU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 508/623] net: fec: implement TSO descriptor cleanup
+Subject: [PATCH 6.12 495/590] tools: ynl: c: correct reverse decode of empty attrs
 Date: Wed,  5 Feb 2025 14:44:10 +0100
-Message-ID: <20250205134515.653571872@linuxfoundation.org>
+Message-ID: <20250205134514.207963638@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 61dc1fd9205bc9d9918aa933a847b08e80b4dc20 ]
+[ Upstream commit 964417a5d4a06614ef7fb3ae69bb17c91a2dc016 ]
 
-Implement cleanup of descriptors in the TSO error path of
-fec_enet_txq_submit_tso(). The cleanup
+netlink reports which attribute was incorrect by sending back
+an attribute offset. Offset points to the address of struct nlattr,
+but to interpret the type we also need the nesting path.
+Attribute IDs have different meaning in different nests
+of the same message.
 
-- Unmaps DMA buffers for data descriptors skipping TSO header
-- Clears all buffer descriptors
-- Handles extended descriptors by clearing cbd_esc when enabled
+Correct the condition for "is the offset within current attribute".
+ynl_attr_data_len() does not include the attribute header,
+so the end offset was off by 4 bytes.
 
-Fixes: 79f339125ea3 ("net: fec: Add software TSO support")
-Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250120085430.99318-1-dheeraj.linuxdev@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This means that we'd always skip over flags and empty nests.
+
+The devmem tests, for example, issues an invalid request with
+empty queue nests, resulting in the following error:
+
+  YNL failed: Kernel error: missing attribute: .queues.ifindex
+
+The message is incorrect, "queues" nest does not have an "ifindex"
+attribute defined. With this fix we decend correctly into the nest:
+
+  YNL failed: Kernel error: missing attribute: .queues.id
+
+Fixes: 86878f14d71a ("tools: ynl: user space helpers")
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://patch.msgid.link/20250124012130.1121227-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 31 ++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ tools/net/ynl/lib/ynl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 4566848e1d7c6..2f706d0848199 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -840,6 +840,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	int hdr_len, total_len, data_left;
- 	struct bufdesc *bdp = txq->bd.cur;
-+	struct bufdesc *tmp_bdp;
-+	struct bufdesc_ex *ebdp;
- 	struct tso_t tso;
- 	unsigned int index = 0;
- 	int ret;
-@@ -913,7 +915,34 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	return 0;
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index e16cef160bc2c..ce32cb35007d6 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -95,7 +95,7 @@ ynl_err_walk(struct ynl_sock *ys, void *start, void *end, unsigned int off,
  
- err_release:
--	/* TODO: Release all used data descriptors for TSO */
-+	/* Release all used data descriptors for TSO */
-+	tmp_bdp = txq->bd.cur;
-+
-+	while (tmp_bdp != bdp) {
-+		/* Unmap data buffers */
-+		if (tmp_bdp->cbd_bufaddr &&
-+		    !IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
-+			dma_unmap_single(&fep->pdev->dev,
-+					 fec32_to_cpu(tmp_bdp->cbd_bufaddr),
-+					 fec16_to_cpu(tmp_bdp->cbd_datlen),
-+					 DMA_TO_DEVICE);
-+
-+		/* Clear standard buffer descriptor fields */
-+		tmp_bdp->cbd_sc = 0;
-+		tmp_bdp->cbd_datlen = 0;
-+		tmp_bdp->cbd_bufaddr = 0;
-+
-+		/* Handle extended descriptor if enabled */
-+		if (fep->bufdesc_ex) {
-+			ebdp = (struct bufdesc_ex *)tmp_bdp;
-+			ebdp->cbd_esc = 0;
-+		}
-+
-+		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
-+	}
-+
-+	dev_kfree_skb_any(skb);
-+
- 	return ret;
- }
+ 	ynl_attr_for_each_payload(start, data_len, attr) {
+ 		astart_off = (char *)attr - (char *)start;
+-		aend_off = astart_off + ynl_attr_data_len(attr);
++		aend_off = (char *)ynl_attr_data_end(attr) - (char *)start;
+ 		if (aend_off <= off)
+ 			continue;
  
 -- 
 2.39.5
