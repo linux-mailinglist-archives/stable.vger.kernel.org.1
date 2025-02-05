@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881A2A293AD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66774A29001
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F18E18897EA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8BD3A9BE7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F58435946;
-	Wed,  5 Feb 2025 15:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6640C14386D;
+	Wed,  5 Feb 2025 14:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHk/2aey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yS2zX+lR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1101519BF;
-	Wed,  5 Feb 2025 15:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21498522A;
+	Wed,  5 Feb 2025 14:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767981; cv=none; b=rf8jVQOSPOkjDvs/biB6z3/wTiP/5zxZVoTNR/wGz39ker/kVMHGXd9KOkujejAidcBMGoyMnxeB8CtYx6HxnXQd/fEV2EZG6pfSS8VhH5yfayzqt8ovM8wTWJjR2Z3NKC8pxAKOJdz9gDxFDt9Z60pltTOaAJDVktBt1+NFyH8=
+	t=1738765821; cv=none; b=pT9lz8kl6mgTltVy/lkRWAGP2pxBgy5Mh+eoHYqVns0nSkL40JhFJ+2W1Jww/aZrUyiVxtERj501xgLNuDX4KUdZulJi9Rz05gTQNsAu5IkbY4R77E+9ENQ5GsvO0f8h2yedR5jouliWBUO0yezLk50vzXWtMxvqYfkBtDkqjjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767981; c=relaxed/simple;
-	bh=GWbhruEc6inVKC2oqenJTaw6WCmDXExP9D2kf/qcxko=;
+	s=arc-20240116; t=1738765821; c=relaxed/simple;
+	bh=vZsbIRAmu6yMqgJbxxJxnPgwXoeE+3hMH1O+tQ9DlQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7GI2PuTnM5uHFrYJ5WSrzkT0Xt3LJ62ZgvQ2x4jbseOBp4A2dNHcZuvMNqbM4acNomRG90mOEX6nXRryb5UYRsYOab9AObXLnLhhliNdzNnndnatHgynhGf8SkiAUbkclaEucBrMNnAee3ERXunDPUPPXPU06neHaGbGtk3XTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHk/2aey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F3F2C4CED1;
-	Wed,  5 Feb 2025 15:06:20 +0000 (UTC)
+	 MIME-Version; b=GhYctd9YuLLFHqRwIjUg3qsl+k9x9/BG5fQHZZwa2Yl45VEd3q0+06TybeKkO8BJASWXYrjSvBBYF4Qm4p65D/RvOHpfh0oPwmbcRe5qXO+9MJgJUIW9zmQUHEKOleT7wPTKT3TVto/kTqVFjK33Cz32Zb9BTFZ8mDKZ30JwLeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yS2zX+lR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8493FC4CED1;
+	Wed,  5 Feb 2025 14:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767981;
-	bh=GWbhruEc6inVKC2oqenJTaw6WCmDXExP9D2kf/qcxko=;
+	s=korg; t=1738765821;
+	bh=vZsbIRAmu6yMqgJbxxJxnPgwXoeE+3hMH1O+tQ9DlQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHk/2aeyiDS6Uifbkki8kiGuh3rdOmHJyU+nqmXQ3u3EBbvrgXm+mjIOh6UFoj03p
-	 Kg6WTIESSpHMgT8U2IdKiZqHwvS2LdPMIThWvpNZi0+9bjBxfgSSwB1kf1mYmZIZ6A
-	 QiFrpzCLeL19IJt9a5PRFWj4j/AENV4W+Iaab6Yo=
+	b=yS2zX+lRXbJuBv0DXxGBBHHraj7fPZjIO5f63nmsthSf/5a+e7IA06vaGCNqP8v+v
+	 2y8XuFwFUSUOCuQPoAhIp5q+pi7XronE0OGunUrx29rv+hJvho/6w43DYQpKZLh2c5
+	 VKk25lHbgdJM3IkFotX2NbCe1/rpG3Ok2dZQwMCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 480/623] nilfs2: protect access to buffers with no active references
+Subject: [PATCH 6.6 303/393] scsi: mpt3sas: Set ioc->manu_pg11.EEDPTagMode directly to 1
 Date: Wed,  5 Feb 2025 14:43:42 +0100
-Message-ID: <20250205134514.581456560@linuxfoundation.org>
+Message-ID: <20250205134431.904931771@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 367a9bffabe08c04f6d725032cce3d891b2b9e1a ]
+[ Upstream commit ad7c3c0cb8f61d6d5a48b83e62ca4a9fd2f26153 ]
 
-nilfs_lookup_dirty_data_buffers(), which iterates through the buffers
-attached to dirty data folios/pages, accesses the attached buffers without
-locking the folios/pages.
+Currently, the code does:
 
-For data cache, nilfs_clear_folio_dirty() may be called asynchronously
-when the file system degenerates to read only, so
-nilfs_lookup_dirty_data_buffers() still has the potential to cause use
-after free issues when buffers lose the protection of their dirty state
-midway due to this asynchronous clearing and are unintentionally freed by
-try_to_free_buffers().
+    if (x == 0) {
+    	x &= ~0x3;
+	x |= 0x1;
+    }
 
-Eliminate this race issue by adjusting the lock section in this function.
+Zeroing bits 0 and 1 of a variable that is 0 is not necessary. So directly
+set the variable to 1.
 
-Link: https://lkml.kernel.org/r/20250107200202.6432-3-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Fixes: f92363d12359 ("[SCSI] mpt3sas: add new driver supporting 12GB SAS")
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Link: https://lore.kernel.org/r/20241212221817.78940-2-pmenzel@molgen.mpg.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 5872518308973..58a598b548fa2 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -734,7 +734,6 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 		if (!head)
- 			head = create_empty_buffers(folio,
- 					i_blocksize(inode), 0);
--		folio_unlock(folio);
- 
- 		bh = head;
- 		do {
-@@ -744,11 +743,14 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 			list_add_tail(&bh->b_assoc_buffers, listp);
- 			ndirties++;
- 			if (unlikely(ndirties >= nlimit)) {
-+				folio_unlock(folio);
- 				folio_batch_release(&fbatch);
- 				cond_resched();
- 				return ndirties;
- 			}
- 		} while (bh = bh->b_this_page, bh != head);
-+
-+		folio_unlock(folio);
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index a5d12b95fbd09..cd00f19670355 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -5638,8 +5638,7 @@ _base_static_config_pages(struct MPT3SAS_ADAPTER *ioc)
+ 	if (!ioc->is_gen35_ioc && ioc->manu_pg11.EEDPTagMode == 0) {
+ 		pr_err("%s: overriding NVDATA EEDPTagMode setting\n",
+ 		    ioc->name);
+-		ioc->manu_pg11.EEDPTagMode &= ~0x3;
+-		ioc->manu_pg11.EEDPTagMode |= 0x1;
++		ioc->manu_pg11.EEDPTagMode = 0x1;
+ 		mpt3sas_config_set_manufacturing_pg11(ioc, &mpi_reply,
+ 		    &ioc->manu_pg11);
  	}
- 	folio_batch_release(&fbatch);
- 	cond_resched();
 -- 
 2.39.5
 
