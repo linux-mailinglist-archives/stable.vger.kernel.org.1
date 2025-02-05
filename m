@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-112463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72E0A28CD0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD087A28CD2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C33C188790A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E7CA3A8D12
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1214A4E9;
-	Wed,  5 Feb 2025 13:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D26F149DE8;
+	Wed,  5 Feb 2025 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKeyRQby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddHSrCAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9391B149C64;
-	Wed,  5 Feb 2025 13:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFB41459F6;
+	Wed,  5 Feb 2025 13:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763653; cv=none; b=EItcx68DogzpakM3LiPpk8nUr289U24MXQZfUo/We2i/LgpJCbu/CB8gwY3tXVBSjkWR7PP8uWP/Yo+dDtVALAa7G6EleP/i/+0tshGVHGikEM1oQQ/PMw+HhOyuq2Idfj8qMK+AuOtU6zc4FYChMBh7tY10U12tQDF6l33AJXc=
+	t=1738763668; cv=none; b=k3Ew9i6Xo149mCp5sw2TD2vQqdMSYfpNY9Hv3hd4grzPOdHXNm40ZYbXyVoyHLRm+WEZD99/YnltqiVatN+npkvf86cNVrG1ZLX71ulWlCo1P4i7cpRcLtOcD42JFjRmnr/Yz3Pffmm5nyNrca8d8tfQ9guzLbDmGArzL/YQob4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763653; c=relaxed/simple;
-	bh=P7fnTOI3MHdGB2nTnQAQMABLegmTJqn0wxdd1q1ioOw=;
+	s=arc-20240116; t=1738763668; c=relaxed/simple;
+	bh=oFEF4Bptor2QODUBA14w7Zh3+HPmKtjQP5UQBtrT1lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wu2a7+m71tBlVq2Qb4Bwq9qYJ2FkX4fFfsa7wmUmV4+0wCXtZXRJ/mndkuqCszYtPfUn7ZmlwKIhK9IY6S/MQXqvx1gqkaO3qLUo7oe+v4ux7NdOvgLNIVWVjcTBYfG7LBfmFcBaDnxcuLXK8H0fQL1IA9IoK2mfjOlp36BGguo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKeyRQby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010A5C4CED1;
-	Wed,  5 Feb 2025 13:54:12 +0000 (UTC)
+	 MIME-Version; b=IZdbDIaVBO/X6N2jqhffS74CeWjW84aBELy7IRCLGgUU4SQsfEVfXuyyKAPbC4JgAmy9BKDrjs2z9/WJt6da6bFgPxoB9FFEPLSqNFF9V0EG+cwGHXbb+sZORZR1T9zY7cMDXMWcsvs9zN/uL/dua8ALNNXjxRHu33yMHnDZQs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddHSrCAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F7CC4CED1;
+	Wed,  5 Feb 2025 13:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763653;
-	bh=P7fnTOI3MHdGB2nTnQAQMABLegmTJqn0wxdd1q1ioOw=;
+	s=korg; t=1738763667;
+	bh=oFEF4Bptor2QODUBA14w7Zh3+HPmKtjQP5UQBtrT1lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKeyRQbyVS5/q/IWXV/c20v67JvpwBZDX6qNiZ0EnaItBlsil9MaN3bF4u4Z8PTlk
-	 YjPE2kHod9Kdnqu9P5Pl6ZD+FFzZYPx2X8ewIDRTNBbFeZ4ssM8ims5nlGdIb5KenL
-	 ziYyz7K6XrHua7i7d6ys9ndzqJwYcECacBsSlnB8=
+	b=ddHSrCAC57r0nDJAzjoaK+KIZ2MS/ywOKNS0Qflr3uXh/F1sj+heqvMCpH5mIAb89
+	 CjGiCXsJFtLYhfT+4//P9z/hkExSh+lInaSx7rNT+weBZbCGQuMdUj4HxEpZU7dhEv
+	 gHLGFviD81RnXvetn5pBlGrVVdq+e0Cln7xK36gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
 	linux-afs@lists.infradead.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 006/623] afs: Fix directory format encoding struct
-Date: Wed,  5 Feb 2025 14:35:48 +0100
-Message-ID: <20250205134456.473326258@linuxfoundation.org>
+Subject: [PATCH 6.13 007/623] afs: Fix cleanup of immediately failed async calls
+Date: Wed,  5 Feb 2025 14:35:49 +0100
+Message-ID: <20250205134456.511294854@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,41 +70,109 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 07a10767853adcbdbf436dc91393b729b52c4e81 ]
+[ Upstream commit 9750be93b2be12b6d92323b97d7c055099d279e6 ]
 
-The AFS directory format structure, union afs_xdr_dir_block::meta, has too
-many alloc counter slots declared and so pushes the hash table along and
-over the data.  This doesn't cause a problem at the moment because I'm
-currently ignoring the hash table and only using the correct number of
-alloc_ctrs in the code anyway.  In future, however, I should start using
-the hash table to try and speed up afs_lookup().
+If we manage to begin an async call, but fail to transmit any data on it
+due to a signal, we then abort it which causes a race between the
+notification of call completion from rxrpc and our attempt to cancel the
+notification.  The notification will be necessary, however, for async
+FetchData to terminate the netfs subrequest.
 
-Fix this by using the correct constant to declare the counter array.
+However, since we get a notification from rxrpc upon completion of a call
+(aborted or otherwise), we can just leave it to that.
 
-Fixes: 4ea219a839bf ("afs: Split the directory content defs into a header")
+This leads to calls not getting cleaned up, but appearing in
+/proc/net/rxrpc/calls as being aborted with code 6.
+
+Fix this by making the "error_do_abort:" case of afs_make_call() abort the
+call and then abandon it to the notification handler.
+
+Fixes: 34fa47612bfe ("afs: Fix race in async call refcounting")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241216204124.3752367-14-dhowells@redhat.com
-cc: Marc Dionne <marc.dionne@auristor.com>
+Link: https://lore.kernel.org/r/20241216204124.3752367-25-dhowells@redhat.com
 cc: linux-afs@lists.infradead.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/xdr_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/internal.h          |  9 +++++++++
+ fs/afs/rxrpc.c             | 12 +++++++++---
+ include/trace/events/afs.h |  2 ++
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/xdr_fs.h b/fs/afs/xdr_fs.h
-index 8ca8681645077..cc5f143d21a34 100644
---- a/fs/afs/xdr_fs.h
-+++ b/fs/afs/xdr_fs.h
-@@ -88,7 +88,7 @@ union afs_xdr_dir_block {
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index c9d620175e80c..d9760b2a8d8de 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -1346,6 +1346,15 @@ extern void afs_send_simple_reply(struct afs_call *, const void *, size_t);
+ extern int afs_extract_data(struct afs_call *, bool);
+ extern int afs_protocol_error(struct afs_call *, enum afs_eproto_cause);
  
- 	struct {
- 		struct afs_xdr_dir_hdr	hdr;
--		u8			alloc_ctrs[AFS_DIR_MAX_BLOCKS];
-+		u8			alloc_ctrs[AFS_DIR_BLOCKS_WITH_CTR];
- 		__be16			hashtable[AFS_DIR_HASHTBL_SIZE];
- 	} meta;
++static inline void afs_see_call(struct afs_call *call, enum afs_call_trace why)
++{
++	int r = refcount_read(&call->ref);
++
++	trace_afs_call(call->debug_id, why, r,
++		       atomic_read(&call->net->nr_outstanding_calls),
++		       __builtin_return_address(0));
++}
++
+ static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
+ 				    gfp_t gfp)
+ {
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index 9f2a3bb56ec69..a122c6366ce19 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -430,11 +430,16 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	return;
  
+ error_do_abort:
+-	if (ret != -ECONNABORTED) {
++	if (ret != -ECONNABORTED)
+ 		rxrpc_kernel_abort_call(call->net->socket, rxcall,
+ 					RX_USER_ABORT, ret,
+ 					afs_abort_send_data_error);
+-	} else {
++	if (call->async) {
++		afs_see_call(call, afs_call_trace_async_abort);
++		return;
++	}
++
++	if (ret == -ECONNABORTED) {
+ 		len = 0;
+ 		iov_iter_kvec(&msg.msg_iter, ITER_DEST, NULL, 0, 0);
+ 		rxrpc_kernel_recv_data(call->net->socket, rxcall,
+@@ -445,6 +450,8 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	call->error = ret;
+ 	trace_afs_call_done(call);
+ error_kill_call:
++	if (call->async)
++		afs_see_call(call, afs_call_trace_async_kill);
+ 	if (call->type->done)
+ 		call->type->done(call);
+ 
+@@ -602,7 +609,6 @@ static void afs_deliver_to_call(struct afs_call *call)
+ 	abort_code = 0;
+ call_complete:
+ 	afs_set_call_complete(call, ret, remote_abort);
+-	state = AFS_CALL_COMPLETE;
+ 	goto done;
+ }
+ 
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index a0aed1a428a18..9a75590227f26 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -118,6 +118,8 @@ enum yfs_cm_operation {
+  */
+ #define afs_call_traces \
+ 	EM(afs_call_trace_alloc,		"ALLOC") \
++	EM(afs_call_trace_async_abort,		"ASYAB") \
++	EM(afs_call_trace_async_kill,		"ASYKL") \
+ 	EM(afs_call_trace_free,			"FREE ") \
+ 	EM(afs_call_trace_get,			"GET  ") \
+ 	EM(afs_call_trace_put,			"PUT  ") \
 -- 
 2.39.5
 
