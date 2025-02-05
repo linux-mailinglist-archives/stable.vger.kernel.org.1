@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB2DA28DDA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235AEA28EA6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 473861887CC7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E377A3A26C9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2B62E634;
-	Wed,  5 Feb 2025 14:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39588632B;
+	Wed,  5 Feb 2025 14:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBt6QTj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pvdhMCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7751519AA;
-	Wed,  5 Feb 2025 14:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6014A1519A4;
+	Wed,  5 Feb 2025 14:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764347; cv=none; b=M1lD6C7cmGbGmHxwQS5EXgFxqLXzpcZJjO691SFBpJKsrYDObvSH/W8AaklhnY45bJZt2xmp+6jEhFzdgnSh6z1oOnqT7ed0yQOpSt8al3hiVELy2z4ObuM9KkKaU4Gd+tftim8/oYuqKg3rWn5o4qHIO3s6BEJtbTraafT5Ibw=
+	t=1738764936; cv=none; b=TH77F30oGsCO6Q4seeXVmg0Ny1b3CMXjN34WC9OuGrpHiliZP9xolZxGn35n01s8JXvmTQ1q8Z3GIm7++GoCNReCJGAO3qwEXclNtkSH9GhC2o4qMw+rExcgSyShNDiNwIfeoImoF+HVgzQbb7S49wsXutsViYLeS8RYS24lc+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764347; c=relaxed/simple;
-	bh=4MfPcgXTTLytakOe74T573WkcoZRE7/ptajrrWaMIwo=;
+	s=arc-20240116; t=1738764936; c=relaxed/simple;
+	bh=YB5JXLR0q7BQQ8DZA3F+R5LLJz4KwlUjh2N/Jas+dTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nksLMYExIChs7vgU+KXoKOJBawBGePK/ZBNuo9Gyxh6lu1LzGOcKlbTODtANtJFYeP+gSN9FGy+nai6CIMx4FoLGkddPeHnODDc1zf0KtQ/hY0ZhgTMYgVJmiZG9xChewwBRiYtyJ8PN7xQaXvgSfujCDxVDR3VNRg5GbjUTFSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBt6QTj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D3AC4CED1;
-	Wed,  5 Feb 2025 14:05:46 +0000 (UTC)
+	 MIME-Version; b=Syoj9C8zwNoLWGlljtKMPhDSx6VftlTX7+Q3aohtkbXsqZyty2B42UsWXhZ5IFJVoSsFGQzv1WCxLuEtv8NzVIztTDtmfZjxk8Cdm0rjYk9IrNXKpjWp0DoC+IQ0O8XTeYJqkB3TRhYXmzD4kdYSDubqwLDPmqHlEyRo0px+Li8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pvdhMCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1002C4CEDD;
+	Wed,  5 Feb 2025 14:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764347;
-	bh=4MfPcgXTTLytakOe74T573WkcoZRE7/ptajrrWaMIwo=;
+	s=korg; t=1738764936;
+	bh=YB5JXLR0q7BQQ8DZA3F+R5LLJz4KwlUjh2N/Jas+dTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBt6QTj77wC4Dm+XLYUnrbUKRhiF8O1cjZBpEFrT8Bej+mNzDuCN1eTSF/jMe2RgP
-	 ATTZ2Unm9DmOCZvsETkrBS7C7seLZFGitPFhF8E/jS1WqULDsTd8RMJERUxf6j1ktS
-	 kvDkOkTdduPxSWgYttA2H1xTgA7Ukvnqpo9QWrZY=
+	b=1pvdhMCe9vYDDdWz8MR1K/nu096lLfiaCmp41cotE+k6FhJTO8gCQ5bRWXx6+FgVd
+	 7gA4pTtjGbAw6PQU3Gapo93xI+pk0HcuQTmYi5k7fKa/KpByLgEVbln8gBRTldgeVI
+	 G1EFhNkbpS0kBJVsNATk00Lb0aQvnt3C5y7dX9bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/590] gpio: pca953x: log an error when failing to get the reset GPIO
+Subject: [PATCH 6.13 128/623] cpufreq: qcom: Implement clk_ops::determine_rate() for qcom_cpufreq* clocks
 Date: Wed,  5 Feb 2025 14:37:50 +0100
-Message-ID: <20250205134459.657837485@linuxfoundation.org>
+Message-ID: <20250205134501.123061799@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 7cef813a91c468253c80633891393478b9f2c966 ]
+[ Upstream commit a9ba290d0b829012574b6821ba08815046e60c94 ]
 
-When the dirver fails getting this GPIO, it fails silently. Log an error
-message to make debugging a lot easier by just reading dmesg.
+determine_rate() callback is used by the clk_set_rate() API to get the
+closest rate of the target rate supported by the clock. If this callback
+is not implemented (nor round_rate() callback), then the API will assume
+that the clock cannot set the requested rate. And since there is no parent,
+it will return -EINVAL.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Fixes: 054ccdef8b28 ("gpio: pca953x: Add optional reset gpio control")
-Link: https://lore.kernel.org/r/20241219-pca953x-log-no-reset-gpio-v1-1-9aa7bcc45ead@bootlin.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+This is not an issue right now as clk_set_rate() mistakenly compares the
+target rate with cached rate and bails out early. But once that is fixed
+to compare the target rate with the actual rate of the clock (returned by
+recalc_rate()), then clk_set_rate() for this clock will start to fail as
+below:
+
+cpu cpu0: _opp_config_clk_single: failed to set clock rate: -22
+
+So implement the determine_rate() callback that just returns the actual
+rate at which the clock is passed to the CPUs in a domain.
+
+Fixes: 4370232c727b ("cpufreq: qcom-hw: Add CPU clock provider support")
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Suggested-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpufreq/qcom-cpufreq-hw.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 3f2d33ee20cca..e49802f26e07f 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1088,7 +1088,8 @@ static int pca953x_probe(struct i2c_client *client)
- 		 */
- 		reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
- 		if (IS_ERR(reset_gpio))
--			return PTR_ERR(reset_gpio);
-+			return dev_err_probe(dev, PTR_ERR(reset_gpio),
-+					     "Failed to get reset gpio\n");
- 	}
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index c145ab7b0bb21..b2e7e89feaac4 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -626,8 +626,21 @@ static unsigned long qcom_cpufreq_hw_recalc_rate(struct clk_hw *hw, unsigned lon
+ 	return __qcom_cpufreq_hw_get(data->policy) * HZ_PER_KHZ;
+ }
  
- 	chip->client = client;
++/*
++ * Since we cannot determine the closest rate of the target rate, let's just
++ * return the actual rate at which the clock is running at. This is needed to
++ * make clk_set_rate() API work properly.
++ */
++static int qcom_cpufreq_hw_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
++{
++	req->rate = qcom_cpufreq_hw_recalc_rate(hw, 0);
++
++	return 0;
++}
++
+ static const struct clk_ops qcom_cpufreq_hw_clk_ops = {
+ 	.recalc_rate = qcom_cpufreq_hw_recalc_rate,
++	.determine_rate = qcom_cpufreq_hw_determine_rate,
+ };
+ 
+ static int qcom_cpufreq_hw_driver_probe(struct platform_device *pdev)
 -- 
 2.39.5
 
