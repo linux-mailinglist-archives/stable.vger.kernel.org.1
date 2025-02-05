@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD7AA28F1B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F40CA29047
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79B083A6EA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C89513AA84E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8531459F6;
-	Wed,  5 Feb 2025 14:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC415156F39;
+	Wed,  5 Feb 2025 14:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs/IWzjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0Hhv7p1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA8C282EE;
-	Wed,  5 Feb 2025 14:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968F714B959;
+	Wed,  5 Feb 2025 14:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765225; cv=none; b=qjGpl16urgzVW2xo531qKJMrpWaOfNBulekoemj90RhOwrLMpAVo85ZsqfGhcJhjI8y1Kk7A2J+6yjPnqNnWE9tGGlXisB4PFZSxRKYyIQdFHbUewU/kwMr6OGwmjkfeB53GvQBNBxWn1bNhrPt5Hhg2Qe2KoFTkCgnV2RliuXk=
+	t=1738765990; cv=none; b=RRxsxPeNQG5mQt58ox5kwJI05CZZ3sEiCAvRzePnFJBQ9w7KbjWPUDuz+F4OXRWyOmmOk57gahYCy++YoVGdJETg+GOJHp0iygreKdQsD9e1B/5AaJOmDf7SO30kM+5nmOzlJ7w+Iqh/mi3N/AdKYCWl9MOvnjUa1SCe5j+nPZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765225; c=relaxed/simple;
-	bh=HB6ddLAhoJclGfS/zxE9b/2wshvH6P8G1xqbjm4ei8I=;
+	s=arc-20240116; t=1738765990; c=relaxed/simple;
+	bh=3QulbgmXvhULhe7wd+Dj/ixgiRQ8Di2UNle9W7Z4hWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZjluHhDG4DB0HWVRLw/xAw2HVCnFPCt9hFHg/IRaMQFddE8XkeubxFSZFiwyPZWr4NIayD7Hm7zun1Y7grLYVqMWRnNvCYBtO5TenuW0QS7y/i3qH41tyQuxymygZDa8Vh3/Yx57Tn/qNM+dxBcoY6uHnoD/ZSx7RJVedoOo8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs/IWzjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8786FC4CED1;
-	Wed,  5 Feb 2025 14:20:24 +0000 (UTC)
+	 MIME-Version; b=DmHDfJhXXjnuDEJfrPZdDizOXsLHUoL1DlYDbCQ7N2tGgaXpBMKKe9jZnvcPvuaP6iuRi3TzfdZ6d/9ab6BU3EAcY8875gjtuljYmUMz/g8RLw8F63mIxEhgvT94Xeh8EXcDHHbySrGCezWldFnuMlyOgp633EWCssyy28y2aRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0Hhv7p1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0168CC4CED1;
+	Wed,  5 Feb 2025 14:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765224;
-	bh=HB6ddLAhoJclGfS/zxE9b/2wshvH6P8G1xqbjm4ei8I=;
+	s=korg; t=1738765990;
+	bh=3QulbgmXvhULhe7wd+Dj/ixgiRQ8Di2UNle9W7Z4hWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rs/IWzjVQC0fJQ73Pi7QV0Irn0KGb86cr+Jcrjftac5zhWCPof6fThzCcSWNNyk0p
-	 hbXtFH1ByMGxWV06xCqHdELNoEs2w4DIp3ItTkDaTiluCJrEYzUIkjqaeqbodFVmMJ
-	 b3AojfTBS95W9gxpJuRSv7bz2mVYbjzrcvOP/rxg=
+	b=t0Hhv7p1rdYXDnCi6DfTybHWXaw6JKrOXC4dwGtvrkWpOpXWVSNhBR0eCfqvUBSKl
+	 VhjcswaLTOT9xYb4XBabB67fMf9E1TL+OKW9UAiEeSf8YxpxgCnoYrfG/cMOaxwctX
+	 qVppbPpCcsBNya0ea6VnYaEX2+xMNNw3WqhZhpwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 201/590] wifi: mt76: mt7915: fix register mapping
+Subject: [PATCH 6.13 214/623] wifi: mt76: mt7996: fix ldpc setting
 Date: Wed,  5 Feb 2025 14:39:16 +0100
-Message-ID: <20250205134502.970760774@linuxfoundation.org>
+Message-ID: <20250205134504.414790742@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit dd1649ef966bb87053c17385ea2cfd1758f5385b ]
+[ Upstream commit da8352da1e4f476fdbf549a4efce4f3c618fde3b ]
 
-Bypass the entry when ofs is equal to dev->reg.map[i].size.
-Without this patch, it would get incorrect register mapping when the CR
-address is located at the boundary of an entry.
+The non-AP interfaces would not use conf->vht_ldpc so they never set
+STA_CAP_VHT_LDPC even if peer-station support LDPC.
+Check conf->vht_ldpc only for AP interface.
 
-Fixes: cd4c314a65d3 ("mt76: mt7915: refine register definition")
+Without this patch, station only uses BCC to transmit packet in VHT mode.
+
+Fixes: dda423dd65c3 ("wifi: mt76: mt7996: remove mt7996_mcu_beacon_check_caps()")
 Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Link: https://patch.msgid.link/OSZPR01MB843401EAA1DA6BD7AEF356F298132@OSZPR01MB8434.jpnprd01.prod.outlook.com
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-7-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-index 44e112b8b5b36..2e7604eed27b0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
-@@ -484,7 +484,7 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
- 			continue;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index d6d80b1b2d697..265958f7b7871 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2070,7 +2070,7 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (vif->bss_conf.vht_ldpc &&
++		if ((vif->type != NL80211_IFTYPE_AP || vif->bss_conf.vht_ldpc) &&
+ 		    (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
  
- 		ofs = addr - dev->reg.map[i].phys;
--		if (ofs > dev->reg.map[i].size)
-+		if (ofs >= dev->reg.map[i].size)
- 			continue;
- 
- 		return dev->reg.map[i].maps + ofs;
 -- 
 2.39.5
 
