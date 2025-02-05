@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5614A29070
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55FA4A28D6B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EF78162EED
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362411611FD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731E414B959;
-	Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAA2E634;
+	Wed,  5 Feb 2025 14:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUuDY7/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnj7AX8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305F6151988;
-	Wed,  5 Feb 2025 14:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B0F1509BD;
+	Wed,  5 Feb 2025 14:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766165; cv=none; b=XQFS5TsA6THyvc7Oh8hluv08u6oWQKW+TKrRO5GHmiRvtO6HWKGpaBX/t5VPzddn0vRkJ96u3z5kxVFdzwReRK61vy+dD5mCWYn43NTLvaAeyjFyDW96FXmaVsKkKwEq6BF7YiblUk5y0OXpvwQ+40PmZGPY7WbycSoTJPBSDeA=
+	t=1738764030; cv=none; b=KZGBH7mVFpacKr5BHuksONtsamJn931TKlqYDfTEe3M1nQQRjJ1m2KGVZBqac8BgBWx4yM3RLvaar6Ad45gDghG01cwQMcXn/ZzS/oSXm7qZ+0DZci4N9Vu8SLErsF4DMnypw0kBtKuDBGKQ6DvB3HsTeuPLc9nGb5nM09vz8Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766165; c=relaxed/simple;
-	bh=BNiTe+n9/CWMdAL2TIkOF9Lurn37ZwtRvxgefw/T/iQ=;
+	s=arc-20240116; t=1738764030; c=relaxed/simple;
+	bh=jklQwgSkMdN7kXqIdiS7v8iC/mAr+f37omVvNxKmjro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rc/WCRpIQLxnl2IDg6Br9vIcr9dmKye0pw8Rr4ZgXf9NETfHa0hdIqiMHXDOO+jhLj6D1MV1ori6XxXft46ZfUZTCsgAbPRNHP8+yelxytXcRuzG7jYJoE9CNhHnx+yk/3tFiyqEtyF6aAjv/2GsJZ7nquaYsqeHVgQMGjWxwwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUuDY7/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9601C4CED1;
-	Wed,  5 Feb 2025 14:36:04 +0000 (UTC)
+	 MIME-Version; b=WTDIxaBiZdty3Rq8MT6VrkJI+rd3XRHWDVGoM+NDRcBIgsDlPQOhAQAWrXwtG3SnlYPC5MdNICa6ciULM+5A5FV43SXBy+eca0GykO7lySyF5ToxsoP9deqhBPQUfg4Rt0ys/zQdS24wwbz+B1JjNeSFr5ibSMkB6ciBfsVbx/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnj7AX8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB36C4CED1;
+	Wed,  5 Feb 2025 14:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766165;
-	bh=BNiTe+n9/CWMdAL2TIkOF9Lurn37ZwtRvxgefw/T/iQ=;
+	s=korg; t=1738764030;
+	bh=jklQwgSkMdN7kXqIdiS7v8iC/mAr+f37omVvNxKmjro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUuDY7/nUag1i3lTVWhRZ4F82na6prHOCGYM4GoX192Ul9UotIQP09tWy/dbrLW6a
-	 n+CXXR3Jm0pHH20Kkr4Qai5TGlt2ZE4wo7xz0pOVBrUqUxRe1IhgEYgn0o516ae+cI
-	 paE52vAZVHSD4zFvM4kX8BRwEWkK27cdixswAWyk=
+	b=xnj7AX8mUV2G/4hEHwOPcWhZ9yEvx3hlaQuD8fr6xLw4qi4652tY+UOHBd2iUN1rE
+	 liUm8zs6G9OLJ0Wr5PSa7PfqP/axUlcM4VBof/MlsgvpqMZ0ZkCH4TZ37twnoGUgod
+	 hP6+PJL7N2PDDBz7UXmu2wOchBv3/c/Z6E7Ngj10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Chun-Tse Shao <ctshao@google.com>,
-	nick.forrington@arm.com,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 293/590] perf lock: Fix parse_lock_type which only retrieve one lock flag
+Subject: [PATCH 6.6 129/393] wifi: mt76: mt7996: fix incorrect indexing of MIB FW event
 Date: Wed,  5 Feb 2025 14:40:48 +0100
-Message-ID: <20250205134506.486629344@linuxfoundation.org>
+Message-ID: <20250205134425.232174311@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Tse Shao <ctshao@google.com>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit 1be9264158ef4818393e5d8144887a1a5d3cc480 ]
+[ Upstream commit 5c2a25a1ab76a2976dddc5ffd58498866f3ef7c2 ]
 
-`parse_lock_type` can only add the first lock flag in `lock_type_table`
-given input `str`. For example, for `Y rwlock`, it only adds `rwlock:R`
-into this perf session. Another example is for `-Y mutex`, it only adds
-the mutex without `LCB_F_SPIN` flag. The patch fixes this issue, makes
-sure both `rwlock:R` and `rwlock:W` will be added with `-Y rwlock`, and
-so on.
+Fix wrong calculation of the channel times due to incorrect
+interpretation from the FW event.
 
-Testing:
-  $ ./perf lock con -ab -Y mutex,rwlock -- perf bench sched pipe
-  # Running 'sched/pipe' benchmark:
-  # Executed 1000000 pipe operations between two processes
-
-       Total time: 9.313 [sec]
-
-         9.313976 usecs/op
-           107365 ops/sec
-   contended   total wait     max wait     avg wait         type   caller
-
-         176      1.65 ms     19.43 us      9.38 us        mutex   pipe_read+0x57
-          34    180.14 us     10.93 us      5.30 us        mutex   pipe_write+0x50
-           7     77.48 us     16.09 us     11.07 us        mutex   do_epoll_wait+0x24d
-           7     74.70 us     13.50 us     10.67 us        mutex   do_epoll_wait+0x24d
-           3     35.97 us     14.44 us     11.99 us     rwlock:W   ep_done_scan+0x2d
-           3     35.00 us     12.23 us     11.66 us     rwlock:W   do_epoll_wait+0x255
-           2     15.88 us     11.96 us      7.94 us     rwlock:W   do_epoll_wait+0x47c
-           1     15.23 us     15.23 us     15.23 us     rwlock:W   do_epoll_wait+0x4d0
-           1     14.26 us     14.26 us     14.26 us     rwlock:W   ep_done_scan+0x2d
-           2     14.00 us      7.99 us      7.00 us        mutex   pipe_read+0x282
-           1     12.29 us     12.29 us     12.29 us     rwlock:R   ep_poll_callback+0x35
-           1     12.02 us     12.02 us     12.02 us     rwlock:W   do_epoll_ctl+0xb65
-           1     10.25 us     10.25 us     10.25 us     rwlock:R   ep_poll_callback+0x35
-           1      7.86 us      7.86 us      7.86 us        mutex   do_epoll_ctl+0x6c1
-           1      5.04 us      5.04 us      5.04 us        mutex   do_epoll_ctl+0x3d4
-
-[namhyung: Add a comment and rename to 'mutex:spin' for consistency
-
-Fixes: d783ea8f62c4 ("perf lock contention: Simplify parse_lock_type()")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Chun-Tse Shao <ctshao@google.com>
-Cc: nick.forrington@arm.com
-Link: https://lore.kernel.org/r/20250116235838.2769691-1-ctshao@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-4-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-lock.c | 66 ++++++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 25 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   | 45 ++++++++++++-------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-index 062e2b56a2ab5..33a456980664a 100644
---- a/tools/perf/builtin-lock.c
-+++ b/tools/perf/builtin-lock.c
-@@ -1591,8 +1591,8 @@ static const struct {
- 	{ LCB_F_PERCPU | LCB_F_WRITE,	"pcpu-sem:W",	"percpu-rwsem" },
- 	{ LCB_F_MUTEX,			"mutex",	"mutex" },
- 	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex",	"mutex" },
--	/* alias for get_type_flag() */
--	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex-spin",	"mutex" },
-+	/* alias for optimistic spinning only */
-+	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex:spin",	"mutex-spin" },
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 302171e103597..19afe89fce785 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3189,6 +3189,13 @@ int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap)
  
- static const char *get_type_str(unsigned int flags)
-@@ -1617,19 +1617,6 @@ static const char *get_type_name(unsigned int flags)
- 	return "unknown";
- }
+ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
+ {
++	enum {
++		IDX_TX_TIME,
++		IDX_RX_TIME,
++		IDX_OBSS_AIRTIME,
++		IDX_NON_WIFI_TIME,
++		IDX_NUM
++	};
+ 	struct {
+ 		struct {
+ 			u8 band;
+@@ -3198,16 +3205,15 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
+ 			__le16 tag;
+ 			__le16 len;
+ 			__le32 offs;
+-		} data[4];
++		} data[IDX_NUM];
+ 	} __packed req = {
+ 		.hdr.band = phy->mt76->band_idx,
+ 	};
+-	/* strict order */
+ 	static const u32 offs[] = {
+-		UNI_MIB_TX_TIME,
+-		UNI_MIB_RX_TIME,
+-		UNI_MIB_OBSS_AIRTIME,
+-		UNI_MIB_NON_WIFI_TIME,
++		[IDX_TX_TIME] = UNI_MIB_TX_TIME,
++		[IDX_RX_TIME] = UNI_MIB_RX_TIME,
++		[IDX_OBSS_AIRTIME] = UNI_MIB_OBSS_AIRTIME,
++		[IDX_NON_WIFI_TIME] = UNI_MIB_NON_WIFI_TIME,
+ 	};
+ 	struct mt76_channel_state *state = phy->mt76->chan_state;
+ 	struct mt76_channel_state *state_ts = &phy->state_ts;
+@@ -3216,7 +3222,7 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
+ 	struct sk_buff *skb;
+ 	int i, ret;
  
--static unsigned int get_type_flag(const char *str)
--{
--	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
--		if (!strcmp(lock_type_table[i].name, str))
--			return lock_type_table[i].flags;
--	}
--	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
--		if (!strcmp(lock_type_table[i].str, str))
--			return lock_type_table[i].flags;
--	}
--	return UINT_MAX;
--}
+-	for (i = 0; i < 4; i++) {
++	for (i = 0; i < IDX_NUM; i++) {
+ 		req.data[i].tag = cpu_to_le16(UNI_CMD_MIB_DATA);
+ 		req.data[i].len = cpu_to_le16(sizeof(req.data[i]));
+ 		req.data[i].offs = cpu_to_le32(offs[i]);
+@@ -3235,17 +3241,24 @@ int mt7996_mcu_get_chan_mib_info(struct mt7996_phy *phy, bool chan_switch)
+ 		goto out;
+ 
+ #define __res_u64(s) le64_to_cpu(res[s].data)
+-	state->cc_tx += __res_u64(1) - state_ts->cc_tx;
+-	state->cc_bss_rx += __res_u64(2) - state_ts->cc_bss_rx;
+-	state->cc_rx += __res_u64(2) + __res_u64(3) - state_ts->cc_rx;
+-	state->cc_busy += __res_u64(0) + __res_u64(1) + __res_u64(2) + __res_u64(3) -
++	state->cc_tx += __res_u64(IDX_TX_TIME) - state_ts->cc_tx;
++	state->cc_bss_rx += __res_u64(IDX_RX_TIME) - state_ts->cc_bss_rx;
++	state->cc_rx += __res_u64(IDX_RX_TIME) +
++			__res_u64(IDX_OBSS_AIRTIME) -
++			state_ts->cc_rx;
++	state->cc_busy += __res_u64(IDX_TX_TIME) +
++			  __res_u64(IDX_RX_TIME) +
++			  __res_u64(IDX_OBSS_AIRTIME) +
++			  __res_u64(IDX_NON_WIFI_TIME) -
+ 			  state_ts->cc_busy;
 -
- static void lock_filter_finish(void)
- {
- 	zfree(&filters.types);
-@@ -2350,29 +2337,58 @@ static int parse_lock_type(const struct option *opt __maybe_unused, const char *
- 			   int unset __maybe_unused)
- {
- 	char *s, *tmp, *tok;
--	int ret = 0;
+ out:
+-	state_ts->cc_tx = __res_u64(1);
+-	state_ts->cc_bss_rx = __res_u64(2);
+-	state_ts->cc_rx = __res_u64(2) + __res_u64(3);
+-	state_ts->cc_busy = __res_u64(0) + __res_u64(1) + __res_u64(2) + __res_u64(3);
++	state_ts->cc_tx = __res_u64(IDX_TX_TIME);
++	state_ts->cc_bss_rx = __res_u64(IDX_RX_TIME);
++	state_ts->cc_rx = __res_u64(IDX_RX_TIME) + __res_u64(IDX_OBSS_AIRTIME);
++	state_ts->cc_busy = __res_u64(IDX_TX_TIME) +
++			    __res_u64(IDX_RX_TIME) +
++			    __res_u64(IDX_OBSS_AIRTIME) +
++			    __res_u64(IDX_NON_WIFI_TIME);
+ #undef __res_u64
  
- 	s = strdup(str);
- 	if (s == NULL)
- 		return -1;
- 
- 	for (tok = strtok_r(s, ", ", &tmp); tok; tok = strtok_r(NULL, ", ", &tmp)) {
--		unsigned int flags = get_type_flag(tok);
-+		bool found = false;
- 
--		if (flags == -1U) {
--			pr_err("Unknown lock flags: %s\n", tok);
--			ret = -1;
--			break;
-+		/* `tok` is `str` in `lock_type_table` if it contains ':'. */
-+		if (strchr(tok, ':')) {
-+			for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
-+				if (!strcmp(lock_type_table[i].str, tok) &&
-+				    add_lock_type(lock_type_table[i].flags)) {
-+					found = true;
-+					break;
-+				}
-+			}
-+
-+			if (!found) {
-+				pr_err("Unknown lock flags name: %s\n", tok);
-+				free(s);
-+				return -1;
-+			}
-+
-+			continue;
- 		}
- 
--		if (!add_lock_type(flags)) {
--			ret = -1;
--			break;
-+		/*
-+		 * Otherwise `tok` is `name` in `lock_type_table`.
-+		 * Single lock name could contain multiple flags.
-+		 */
-+		for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
-+			if (!strcmp(lock_type_table[i].name, tok)) {
-+				if (add_lock_type(lock_type_table[i].flags)) {
-+					found = true;
-+				} else {
-+					free(s);
-+					return -1;
-+				}
-+			}
- 		}
-+
-+		if (!found) {
-+			pr_err("Unknown lock name: %s\n", tok);
-+			free(s);
-+			return -1;
-+		}
-+
- 	}
- 
- 	free(s);
--	return ret;
-+	return 0;
- }
- 
- static bool add_lock_addr(unsigned long addr)
+ 	dev_kfree_skb(skb);
 -- 
 2.39.5
 
