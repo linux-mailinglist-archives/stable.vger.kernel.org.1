@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-113246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC864A290A5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226A6A293C1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF16F1886605
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E08267A3BF3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D55E8634E;
-	Wed,  5 Feb 2025 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2820621345;
+	Wed,  5 Feb 2025 15:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9H0NHo2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEz0acnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7C57DA6A;
-	Wed,  5 Feb 2025 14:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E3918D621;
+	Wed,  5 Feb 2025 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766313; cv=none; b=E6sNWh2+KeAnAd5D0YdtGiRe6IVjIeDmCP/O6Dp9YqRQgotImFBARiX1ku5J+j2xm2eon3GNxhvkem4jwPA2s8ulkCX29H1PcgQW+jl1km9AYvGKn/AAE9El8YpAY1eJvyK+HQcsdSBURzXKice6lU9MJge66sMoBj63oMVo7C0=
+	t=1738768304; cv=none; b=OoLD/emttPQcyvoPhh6aXfVXnCCJe9teAk1G2anCihEESJ0c5lyat4NuLnqKT0ArRzPn+Tj6SgUhqw+B17FyCXwJh6arnZbjSKXk8Wj0ws3gobQ+KZjJtUsRqcV0VbyGkMgaUFhlkdyJzz2rRA4cnR2QW94yMAtYz4/z7B0/t90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766313; c=relaxed/simple;
-	bh=FarcMaAoDZQrHlOx4EpChfiic6vPLgdZao089XwGkOE=;
+	s=arc-20240116; t=1738768304; c=relaxed/simple;
+	bh=MYeVt+XObSgD8XUcKAN6mrM0tTY2qe38xx/jAsCKkAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZntCKJGN1K3RTkG9mUhbRz5RspY6h72lSK4j/H1aOkYRVpNCnb5vmbCalTqnL+48M5Yfb2AE9Cz4VsKiB8afmAByBUnI6mWY5f4OBlQvZsY1lQd00LFf37Rd4oO66Z5ow1X82VLlTSCTtDn8pLvMg5IBZiXs+gvyhdRERlohic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9H0NHo2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFF1C4CEDD;
-	Wed,  5 Feb 2025 14:38:32 +0000 (UTC)
+	 MIME-Version; b=dcOoDy1A3HH9gawTvk3EOhzz/OYVyBN17iwCt1decd0xDWcaPrOLkt6x2J4dSoZvZXs+zDz9URyxg58GmWNFjuLeYAAvOS2hc6bXQjft5PaDAQWrSywiof+RusFMbYLoAS1vc9dl2XYq4r6aFm7LIXuvgnGpxT4IJUXJ0SEmxUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEz0acnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A952C4CEE2;
+	Wed,  5 Feb 2025 15:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766313;
-	bh=FarcMaAoDZQrHlOx4EpChfiic6vPLgdZao089XwGkOE=;
+	s=korg; t=1738768304;
+	bh=MYeVt+XObSgD8XUcKAN6mrM0tTY2qe38xx/jAsCKkAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9H0NHo2vRO/s9Q/+jtMnZGNnGH4mCO5lrbPboys4TudOl9n9uzDmCb+FDtitJhsC
-	 6Gw4sFC//c76oMADOo5sK3GpK9a34E51zJIJtKcpX86PqB0tmQeOU/SKnm2KVGiCjs
-	 Dvfs4/ahRrzqFILZ2VjDwL3shAn89vKgOl30XQ8w=
+	b=LEz0acnlXPWZolhoL+Q8a8fmrGRMR1B5ePI25q6cyon5S/+bIX22OJGqOxbeXyLIt
+	 t3WX5W8712iFrWblBnoVPfqyxlhDfdBq02qGTOUk72rBA+4XMfi9SNU9XWt0E/IOFV
+	 leA5aI4h+EZ2YD1EmlUFX/Mbdysm/BEJdB39yvBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Jan Stancek <jstancek@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 351/393] hostfs: fix string handling in __dentry_name()
+Subject: [PATCH 6.13 528/623] selftests: net/{lib,openvswitch}: extend CFLAGS to keep options from environment
 Date: Wed,  5 Feb 2025 14:44:30 +0100
-Message-ID: <20250205134433.736107914@linuxfoundation.org>
+Message-ID: <20250205134516.425342520@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Jan Stancek <jstancek@redhat.com>
 
-[ Upstream commit 60a6002432448bb3f291d80768ae98d62efc9c77 ]
+[ Upstream commit 9b06d5b956131bde535f5c045cf8c1ff6bfba76c ]
 
-strcpy() should not be used with destination potentially overlapping
-the source; what's more, strscpy() in there is pointless - we already
-know the amount we want to copy; might as well use memcpy().
+Package build environments like Fedora rpmbuild introduced hardening
+options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
+and LDFLAGS.
 
-Fixes: c278e81b8a02 "hostfs: Remove open coded strcpy()"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Some Makefiles currently override CFLAGS but not LDFLAGS, which leads
+to a mismatch and build failure, for example:
+  /usr/bin/ld: /tmp/ccd2apay.o: relocation R_X86_64_32 against
+    `.rodata.str1.1' can not be used when making a PIE object; recompile with -fPIE
+  /usr/bin/ld: failed to set dynamic section sizes: bad value
+  collect2: error: ld returned 1 exit status
+  make[1]: *** [../../lib.mk:222: tools/testing/selftests/net/lib/csum] Error 1
+
+openvswitch/Makefile CFLAGS currently do not appear to be used, but
+fix it anyway for the case when new tests are introduced in future.
+
+Fixes: 1d0dc857b5d8 ("selftests: drv-net: add checksum tests")
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/3d173603ee258f419d0403363765c9f9494ff79a.1737635092.git.jstancek@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs_kern.c | 27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+ tools/testing/selftests/net/lib/Makefile         | 2 +-
+ tools/testing/selftests/net/openvswitch/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 1fb8eacb9817f..1efbcfa1f1f88 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -93,32 +93,17 @@ __uml_setup("hostfs=", hostfs_args,
- static char *__dentry_name(struct dentry *dentry, char *name)
- {
- 	char *p = dentry_path_raw(dentry, name, PATH_MAX);
--	char *root;
--	size_t len;
--	struct hostfs_fs_info *fsi;
--
--	fsi = dentry->d_sb->s_fs_info;
--	root = fsi->host_root_path;
--	len = strlen(root);
--	if (IS_ERR(p)) {
--		__putname(name);
--		return NULL;
--	}
--
--	/*
--	 * This function relies on the fact that dentry_path_raw() will place
--	 * the path name at the end of the provided buffer.
--	 */
--	BUG_ON(p + strlen(p) + 1 != name + PATH_MAX);
-+	struct hostfs_fs_info *fsi = dentry->d_sb->s_fs_info;
-+	char *root = fsi->host_root_path;
-+	size_t len = strlen(root);
+diff --git a/tools/testing/selftests/net/lib/Makefile b/tools/testing/selftests/net/lib/Makefile
+index 18b9443454a9e..bc6b6762baf3e 100644
+--- a/tools/testing/selftests/net/lib/Makefile
++++ b/tools/testing/selftests/net/lib/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
  
--	strscpy(name, root, PATH_MAX);
--	if (len > p - name) {
-+	if (IS_ERR(p) || len > p - name) {
- 		__putname(name);
- 		return NULL;
- 	}
+-CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g
++CFLAGS += -Wall -Wl,--no-as-needed -O2 -g
+ CFLAGS += -I../../../../../usr/include/ $(KHDR_INCLUDES)
+ # Additional include paths needed by kselftest.h
+ CFLAGS += -I../../
+diff --git a/tools/testing/selftests/net/openvswitch/Makefile b/tools/testing/selftests/net/openvswitch/Makefile
+index 2f1508abc826b..3fd1da2ec07d5 100644
+--- a/tools/testing/selftests/net/openvswitch/Makefile
++++ b/tools/testing/selftests/net/openvswitch/Makefile
+@@ -2,7 +2,7 @@
  
--	if (p > name + len)
--		strcpy(name + len, p);
-+	memcpy(name, root, len);
-+	memmove(name + len, p, name + PATH_MAX - p);
+ top_srcdir = ../../../../..
  
- 	return name;
- }
+-CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
++CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
+ 
+ TEST_PROGS := openvswitch.sh
+ 
 -- 
 2.39.5
 
