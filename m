@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-113610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40BEEA29352
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 388A7A292B7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3636A18881C6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4FE162DC0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD56185E7F;
-	Wed,  5 Feb 2025 14:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA2F194A75;
+	Wed,  5 Feb 2025 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEj2fWBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkfZGVHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFA216EB42;
-	Wed,  5 Feb 2025 14:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591611662EF;
+	Wed,  5 Feb 2025 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767549; cv=none; b=evIxc4DS/3k/XiRCkSsSHUGcnAHayjboYcEUWQVGYMp2OU4xYPasGIKCXBQT7B/HVeMpdBJS1uP6SSfexzbzxnHmcJAHhPOM8ydQKqPM+1svullZJJkJRXMANgJ4rccH/hAt2nu1sAAj79U4Lk8mhUI7+mVr6zCw56ZftvGy26Q=
+	t=1738767387; cv=none; b=mr6YcpvLZsWJI3/xV6VUvLsRgF/lm4xNbzhQl1zZt5ma1Q5tbhEUN2sUNpTee0SUko9F/klW5eggD2D+q2g7N8qKLQx7Yk0OUJ00IOK/PGnHt/Nx768KY2dGJ9bBmHb6A36YK3481Fr0LaUpdZgBk+Bux9EBOl3TVjk0Op6Wqjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767549; c=relaxed/simple;
-	bh=QTkx8lALeLQAoCV3EHwufF/J6rxTFmfdQtzLn5r54Hg=;
+	s=arc-20240116; t=1738767387; c=relaxed/simple;
+	bh=N0LtqK3yaMZ4r8ZICKISRWo6dYtDHVu3nSdufGVdSLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcrJWmxLD2Df64RIVyByrurrIE3rXipX6fD1dQQR2LywDFojEsJZdj3Grexpef6sGAw7bsJBSEgKkyWgxcOuLQ5CgiXODUO6chZgY8H48TUmsmAeJG1S86qcYAfEq5YI5vLy/azaoeooS4PwMHZ7nAfbLRmMrIgAKmIbY3gvU3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEj2fWBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E412C4CED1;
-	Wed,  5 Feb 2025 14:59:08 +0000 (UTC)
+	 MIME-Version; b=KCmN3Yt7wjcZb8FQ6veaL9ms3DwadEV8pn0bXbDA7j66WNm0nzbACSURX5/mdSUl1kifukRlthB8S544JT84aGq64+sIa7G+E//RiV+RiabzF7a4pxQObGkVXh09hwJLzmuAn8PhmILAj0k3Kqtr69Ah2emk1C9lF0X73ODIBnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkfZGVHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DB0C4CED6;
+	Wed,  5 Feb 2025 14:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767548;
-	bh=QTkx8lALeLQAoCV3EHwufF/J6rxTFmfdQtzLn5r54Hg=;
+	s=korg; t=1738767387;
+	bh=N0LtqK3yaMZ4r8ZICKISRWo6dYtDHVu3nSdufGVdSLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEj2fWBrUKQ7BQpJ3E+P1xJvL98uNZfZab1LRuEj/U4a8wAb37cLpi/rJnsYe7gge
-	 6DIQyNSh8BsTtWd0DaisYDFHvNpABtX5ok7tRLc7phQiSoAelDd9Tt77Oi9j0pGVt3
-	 leRYwOjjbhwsRZsbsyo6f5HQFECU3s1v56xyAzSQ=
+	b=tkfZGVHaJnkv7wQE0pPTtq2wWUyIxzWuYsNh3JpM9P2kwZWT6J7W+lVVwvP2mXSPc
+	 IK6SMDTTLSsOUJdGU4N2rp+mwTkGmFXoYkrOhdPB1MuKqOZJ2bzs+gFgw0szf8ontS
+	 vZOw1lS8uF/4fwFNyRKoMYboy+QxFiOcRHZTzZx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	kernel test robot <lkp@intel.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 449/590] driver core: class: Fix wild pointer dereferences in API class_dev_iter_next()
-Date: Wed,  5 Feb 2025 14:43:24 +0100
-Message-ID: <20250205134512.445724071@linuxfoundation.org>
+Subject: [PATCH 6.12 450/590] tty: mips_ejtag_fdc: fix one more u8 warning
+Date: Wed,  5 Feb 2025 14:43:25 +0100
+Message-ID: <20250205134512.483652787@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -66,73 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit e128f82f7006991c99a58114f70ef61e937b1ac1 ]
+[ Upstream commit 6dd1de91e7a62bfd3878992c1db6e1d443022c76 ]
 
-There are a potential wild pointer dereferences issue regarding APIs
-class_dev_iter_(init|next|exit)(), as explained by below typical usage:
+The LKP robot complains about:
+   drivers/tty/mips_ejtag_fdc.c:1224:31: error: incompatible pointer types passing 'const char *[1]' to parameter of type 'const u8 **' (aka 'const unsigned char **')
 
-// All members of @iter are wild pointers.
-struct class_dev_iter iter;
+Fix this by turning the missing pieces (fetch from kgdbfdc_wbuf) to u8
+too. Note the filling part (kgdbfdc_write_char()) already receives and
+stores u8 to kgdbfdc_wbuf.
 
-// class_dev_iter_init(@iter, @class, ...) checks parameter @class for
-// potential class_to_subsys() error, and it returns void type and does
-// not initialize its output parameter @iter, so caller can not detect
-// the error and continues to invoke class_dev_iter_next(@iter) even if
-// @iter still contains wild pointers.
-class_dev_iter_init(&iter, ...);
-
-// Dereference these wild pointers in @iter here once suffer the error.
-while (dev = class_dev_iter_next(&iter)) { ... };
-
-// Also dereference these wild pointers here.
-class_dev_iter_exit(&iter);
-
-Actually, all callers of these APIs have such usage pattern in kernel tree.
-Fix by:
-- Initialize output parameter @iter by memset() in class_dev_iter_init()
-  and give callers prompt by pr_crit() for the error.
-- Check if @iter is valid in class_dev_iter_next().
-
-Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250105-class_fix-v6-1-3a2f1768d4d4@quicinc.com
+Fixes: ce7cbd9a6c81 ("tty: mips_ejtag_fdc: use u8 for character pointers")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501101327.oGdWbmuk-lkp@intel.com/
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20250110115228.603980-1-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/class.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/tty/mips_ejtag_fdc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/class.c b/drivers/base/class.c
-index cb5359235c702..ce460e1ab1376 100644
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -323,8 +323,12 @@ void class_dev_iter_init(struct class_dev_iter *iter, const struct class *class,
- 	struct subsys_private *sp = class_to_subsys(class);
- 	struct klist_node *start_knode = NULL;
+diff --git a/drivers/tty/mips_ejtag_fdc.c b/drivers/tty/mips_ejtag_fdc.c
+index afbf7738c7c47..58b28be63c79b 100644
+--- a/drivers/tty/mips_ejtag_fdc.c
++++ b/drivers/tty/mips_ejtag_fdc.c
+@@ -1154,7 +1154,7 @@ static char kgdbfdc_rbuf[4];
  
--	if (!sp)
-+	memset(iter, 0, sizeof(*iter));
-+	if (!sp) {
-+		pr_crit("%s: class %p was not registered yet\n",
-+			__func__, class);
- 		return;
-+	}
+ /* write buffer to allow compaction */
+ static unsigned int kgdbfdc_wbuflen;
+-static char kgdbfdc_wbuf[4];
++static u8 kgdbfdc_wbuf[4];
  
- 	if (start)
- 		start_knode = &start->p->knode_class;
-@@ -351,6 +355,9 @@ struct device *class_dev_iter_next(struct class_dev_iter *iter)
- 	struct klist_node *knode;
- 	struct device *dev;
- 
-+	if (!iter->sp)
-+		return NULL;
-+
- 	while (1) {
- 		knode = klist_next(&iter->ki);
- 		if (!knode)
+ static void __iomem *kgdbfdc_setup(void)
+ {
+@@ -1215,7 +1215,7 @@ static int kgdbfdc_read_char(void)
+ /* push an FDC word from write buffer to TX FIFO */
+ static void kgdbfdc_push_one(void)
+ {
+-	const char *bufs[1] = { kgdbfdc_wbuf };
++	const u8 *bufs[1] = { kgdbfdc_wbuf };
+ 	struct fdc_word word;
+ 	void __iomem *regs;
+ 	unsigned int i;
 -- 
 2.39.5
 
