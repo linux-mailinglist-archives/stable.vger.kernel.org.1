@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9938AA28C46
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E005A28EF1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02BBA3A2697
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0473A5FC5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB9B13D26B;
-	Wed,  5 Feb 2025 13:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CC514D2A2;
+	Wed,  5 Feb 2025 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMWbWN+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbGl5oTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A740126C18;
-	Wed,  5 Feb 2025 13:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE991519BE;
+	Wed,  5 Feb 2025 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763268; cv=none; b=OoZSjIXpf1KlsHKQkpUnCnfYNFKrIqske47/M6cbUY7TGW4dvV4AheSg1QgBHgx1A1ARU2wt+3oJbrWvMtdN1uQuKPtHw3Bz/FGpXNagZ9h8X37PXaA64IPOUuwuF02KHoQkp8FfzIq8Cn6QDUdmPmlV06PYOEF/4rDKnAvcYtE=
+	t=1738765092; cv=none; b=cYAZMzqd4Vky3gN1ir905pl2RySHS8WMHhPV132jcb7eG1iV4tdxmPQ0U5qMZi3oEBKQA9Z3Yx7P3SQEZboi1GSh0K/6r8Kaddo7VL0dAfMk0IRaIDKEtrB+BjnqWUVfYpLv393tBeP0i708dTID7rC11ANObzjS8GIlGuzavZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763268; c=relaxed/simple;
-	bh=fq6UoVuQ+1yt4uQAIdLlDCVHRwgYSF8qxCUx8ivqFBI=;
+	s=arc-20240116; t=1738765092; c=relaxed/simple;
+	bh=vKkPrJdXoErywOAAxGrw70dnGtlSebcVKPjwBo0n9RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHPcAnLBS9GMsUzSUzzQ22O0M2p09ZFQ60Tgs3MChAbYxAYvDzYIDN18ap9V+s7Koc/kvzC0gBvupT7lqY8zjqgMp3h7rHs4NF28eyTYTYtMGRPMbxCKL5e7dH9aGhUDwsdEvFylqqvnMbwOgo8Iw1kro0Tyz1lwkJsBrDxw5Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMWbWN+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A2EC4CED1;
-	Wed,  5 Feb 2025 13:47:47 +0000 (UTC)
+	 MIME-Version; b=eefLv2IhCWrrprFNlTu/bdmDvfT2WgF55Uj6/LKSZ/zi0c8XZgeHNS4FVbkd7r8Qu3bR3PmnkHOgLDtwSwsMhUDtQI7MUhyfzlBQyaTYRhvUkFjGAHQ8Jco5NtknzvCNsgQxZR+sY4YT+sxW9Wc0uDnszNVouyaQmy9rMAB6Eeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbGl5oTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B1BC4CED1;
+	Wed,  5 Feb 2025 14:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763267;
-	bh=fq6UoVuQ+1yt4uQAIdLlDCVHRwgYSF8qxCUx8ivqFBI=;
+	s=korg; t=1738765092;
+	bh=vKkPrJdXoErywOAAxGrw70dnGtlSebcVKPjwBo0n9RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMWbWN+sNtBcTuJ1OlEuBnvfAUvmRaKHrara7yoVtXCayXl5JTS8QcznV9Dj0Sjwb
-	 Ysvp1tO2Zr4hQ4dw4xkZ6FX+Y3wD+fkJ1i2oW57JEaVjqUiIViZBLgsOuTCTbURZuX
-	 aTJcol2BJ3Fkh1UVazhW9M7MQQQhe07qQLNXgYLA=
+	b=qbGl5oTLfeD5nL7P0bfI72ijY3oCAL7xHy+Y9Ne+zHgYpS8kLxbSj03H6u83p3kJK
+	 67l8UYw2SqfKw7yYF9+RXbBDhgdS9WmMb7+wBzzBnWSmBZ7ZilxxEsCMtrM3a2+fsT
+	 ivImJOIpldji+WSull6W8ipQ6GalrVbMCWbtdl5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/393] drm/amd/pm: Fix an error handling path in vega10_enable_se_edc_force_stall_config()
+Subject: [PATCH 6.12 189/590] wifi: mt76: mt7925: Update mt7925_mcu_sta_update for BC in ASSOC state
 Date: Wed,  5 Feb 2025 14:39:04 +0100
-Message-ID: <20250205134421.263972719@linuxfoundation.org>
+Message-ID: <20250205134502.511148192@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit a3300782d5375e280ba7040f323d01960bfe3396 ]
+[ Upstream commit 0e02f6ed6a49577e29e0b1f7900fad3ed8ae870c ]
 
-In case of error after a amdgpu_gfx_rlc_enter_safe_mode() call, it is not
-balanced by a corresponding amdgpu_gfx_rlc_exit_safe_mode() call.
+Update mt7925_mcu_sta_update for broadcast (BC) in the ASSOC state.
 
-Add the missing call.
-
-Fixes: 9b7b8154cdb8 ("drm/amd/powerplay: added didt support for vega10")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-10-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-index 3007b054c873c..776d58ea63ae9 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-@@ -1120,13 +1120,14 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
- 	result = vega10_program_didt_config_registers(hwmgr, SEEDCForceStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
- 	result |= vega10_program_didt_config_registers(hwmgr, SEEDCCtrlForceStallConfig_Vega10, VEGA10_CONFIGREG_DIDT);
- 	if (0 != result)
--		return result;
-+		goto exit_safe_mode;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 60a12b0e45ee6..4577e838f5872 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1903,7 +1903,11 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
+ 		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
+ 	}
+ 	info.wcid = link_sta ? &mlink->wcid : &mvif->sta.deflink.wcid;
+-	info.newly = link_sta ? state != MT76_STA_INFO_STATE_ASSOC : true;
++
++	if (link_sta)
++		info.newly = state != MT76_STA_INFO_STATE_ASSOC;
++	else
++		info.newly = state == MT76_STA_INFO_STATE_ASSOC ? false : true;
  
- 	vega10_didt_set_mask(hwmgr, false);
- 
-+exit_safe_mode:
- 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- 
--	return 0;
-+	return result;
- }
- 
- static int vega10_disable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
+ 	if (ieee80211_vif_is_mld(vif))
+ 		err = mt7925_mcu_mlo_sta_cmd(&dev->mphy, &info);
 -- 
 2.39.5
 
