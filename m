@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E63A28FC1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47F1A293DF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 775221680D2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34189188AC1C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846EF155756;
-	Wed,  5 Feb 2025 14:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9BC1607B7;
+	Wed,  5 Feb 2025 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJTfUCw4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hR5BePmK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4D58634E;
-	Wed,  5 Feb 2025 14:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B156155A30;
+	Wed,  5 Feb 2025 15:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765724; cv=none; b=pwegKVZkbC+sS1UcE02ynj1Ev+nJGAp8WmbJ62I2CRagqJQK1UElaZvIghDu4aGEJLOwU/ccHMY0zFtr64OsY4hgazIQML71eHmd7fz+J6PjXVXwQqftas0wbRWVw380XwGZStcjvGKi7xB6bQVNJ0G0B5lXXWvm0p1jyZO6NFI=
+	t=1738768081; cv=none; b=AtToj82NOowppC/CshCnW11AoIYi4cqCu/0bKPunWRyx+y8qJffUz3q+RRXHyvXBxI5xvRRs1eJUN00LBcgg6jVDEKnhytrdyCRF1SrSAcCL/BTdtk6QKJDUk80scL8l0jbB6NZSA5/t68AFR1Au8ESZpS83Q4CfQSLdgV99WXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765724; c=relaxed/simple;
-	bh=olyGunfNOZ6GVvrUBDc3YZvDttF1d2/VZbT8S4RJyOQ=;
+	s=arc-20240116; t=1738768081; c=relaxed/simple;
+	bh=ZiKnqdTKehZWf45o1MaNVYRBX3qki088OYO7lfBa+3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUOjeHM6JiFAMDKuhBRaZdONqxwbeCGzoQuFGKKUHdtOMCBhRxUh6Obz9PguKwbgSLEhg0UHEUw1U0By6Lv6ldUPcbB/wCXZy5Hrh3svp0DGONknwzvDHrZdsxkClMOGIxA2QoLlkC/5t5Mm6ddDvnoq9lB8CmQDJvmRiPgoJJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJTfUCw4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1734C4CED1;
-	Wed,  5 Feb 2025 14:28:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LiooDLXro17idfupG0xxG9a8KJNPhGlfgGNqJlrb1EJpJYYDu+2zjUDqwfls6jXgKHJM4xoqUVl3iPeH3aK/lDke3qIBIx01JN9WKSwqFmm/PeIG5mVNTz7AKdgl9QetmKACLIr2D3yCL9CcouyQkBXTjjkClWS0riVdAra0MMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hR5BePmK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8091BC4CED1;
+	Wed,  5 Feb 2025 15:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765724;
-	bh=olyGunfNOZ6GVvrUBDc3YZvDttF1d2/VZbT8S4RJyOQ=;
+	s=korg; t=1738768081;
+	bh=ZiKnqdTKehZWf45o1MaNVYRBX3qki088OYO7lfBa+3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJTfUCw4X22lG71YwV+cPmFGOhKnSj7edHbqvYBlkvMTcQwUlrqt9gHhpAPkW4Zn0
-	 qSNXqVq43RmRp4OUvTP1eq+aKFaT4q4RhFrOeWSRNzSKZgx3BKYNR04BcX9jIL/KiX
-	 F4/DpFluodc8XRkU9iUjuNfIb0/2uTPJHw9K6YBc=
+	b=hR5BePmKSfpu2ps6dAfKDWfcAqbpQ8pUy2hRJ6vcS7A8AUBQbMEMSOpkURJu/S3mt
+	 /9WMkbWgSEVlSOrOV6J+kLZpcBuGe/hAWT31FaOEHCuMB3MiCm+rKcuKfd19NUNKjf
+	 ZiJm0VIkqpAylCLjEFdz6YJtHwHPKasD/b/K2SuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mohamed Khalfella <khalfella@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/393] mtd: hyperbus: hbmc-am654: fix an OF node reference leak
+Subject: [PATCH 6.13 470/623] PCI: endpoint: pci-epf-test: Set dma_chan_rx pointer to NULL on error
 Date: Wed,  5 Feb 2025 14:43:32 +0100
-Message-ID: <20250205134431.524606362@linuxfoundation.org>
+Message-ID: <20250205134514.198993327@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Mohamed Khalfella <khalfella@gmail.com>
 
-[ Upstream commit bf5821909eb9c7f5d07d5c6e852ead2c373c94a0 ]
+[ Upstream commit b1b1f4b12969130c0a6ec0cf0299460cb01e799c ]
 
-In am654_hbmc_platform_driver, .remove() and the error path of .probe()
-do not decrement the refcount of an OF node obtained by
-  of_get_next_child(). Fix this by adding of_node_put() calls.
+If dma_chan_tx allocation fails, set dma_chan_rx to NULL after it is
+freed.
 
-Fixes: aca31ce96814 ("mtd: hyperbus: hbmc-am654: Fix direct mapping setup flash access")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20241227160841.92382-1-khalfella@gmail.com
+Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
+Signed-off-by: Mohamed Khalfella <khalfella@gmail.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/hbmc-am654.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
-index dbe3eb361cca2..4b6cbee23fe89 100644
---- a/drivers/mtd/hyperbus/hbmc-am654.c
-+++ b/drivers/mtd/hyperbus/hbmc-am654.c
-@@ -174,26 +174,30 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- 	priv->hbdev.np = of_get_next_child(np, NULL);
- 	ret = of_address_to_resource(priv->hbdev.np, 0, &res);
- 	if (ret)
--		return ret;
-+		goto put_node;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
+index ef6677f34116e..d90c8be7371e0 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-test.c
++++ b/drivers/pci/endpoint/functions/pci-epf-test.c
+@@ -251,7 +251,7 @@ static int pci_epf_test_init_dma_chan(struct pci_epf_test *epf_test)
  
- 	if (of_property_read_bool(dev->of_node, "mux-controls")) {
- 		struct mux_control *control = devm_mux_control_get(dev, NULL);
+ fail_back_rx:
+ 	dma_release_channel(epf_test->dma_chan_rx);
+-	epf_test->dma_chan_tx = NULL;
++	epf_test->dma_chan_rx = NULL;
  
--		if (IS_ERR(control))
--			return PTR_ERR(control);
-+		if (IS_ERR(control)) {
-+			ret = PTR_ERR(control);
-+			goto put_node;
-+		}
- 
- 		ret = mux_control_select(control, 1);
- 		if (ret) {
- 			dev_err(dev, "Failed to select HBMC mux\n");
--			return ret;
-+			goto put_node;
- 		}
- 		priv->mux_ctrl = control;
- 	}
- 
- 	priv->hbdev.map.size = resource_size(&res);
- 	priv->hbdev.map.virt = devm_ioremap_resource(dev, &res);
--	if (IS_ERR(priv->hbdev.map.virt))
--		return PTR_ERR(priv->hbdev.map.virt);
-+	if (IS_ERR(priv->hbdev.map.virt)) {
-+		ret = PTR_ERR(priv->hbdev.map.virt);
-+		goto disable_mux;
-+	}
- 
- 	priv->ctlr.dev = dev;
- 	priv->ctlr.ops = &am654_hbmc_ops;
-@@ -226,6 +230,8 @@ static int am654_hbmc_probe(struct platform_device *pdev)
- disable_mux:
- 	if (priv->mux_ctrl)
- 		mux_control_deselect(priv->mux_ctrl);
-+put_node:
-+	of_node_put(priv->hbdev.np);
- 	return ret;
- }
- 
-@@ -241,6 +247,7 @@ static void am654_hbmc_remove(struct platform_device *pdev)
- 
- 	if (dev_priv->rx_chan)
- 		dma_release_channel(dev_priv->rx_chan);
-+	of_node_put(priv->hbdev.np);
- }
- 
- static const struct of_device_id am654_hbmc_dt_ids[] = {
+ fail_back_tx:
+ 	dma_cap_zero(mask);
 -- 
 2.39.5
 
