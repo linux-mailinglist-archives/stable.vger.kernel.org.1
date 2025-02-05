@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-113855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16484A29413
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38658A29497
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9E0168C2D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9940C3AEB85
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854BF156225;
-	Wed,  5 Feb 2025 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCB9198A17;
+	Wed,  5 Feb 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr4xOU+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3a9KeVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416821519B4;
-	Wed,  5 Feb 2025 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B551547D8;
+	Wed,  5 Feb 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768394; cv=none; b=EuhdB3X83lgTRMxfY2sML8TWBtkvsdI8POHe7vTQOeiQKHtBNGViWDK3ZDZ9+SIlJaDP/FZLR3zfWqyISAL+fREjpFrsqq8kE/fYlXuuR14HEetedRe3oSb8EqnkJUa2t3pTPQCXKgHbdf19oxVDmZClgPO+TaJGkUT0xHNflEc=
+	t=1738768422; cv=none; b=L8KYP9N3MxAbSmwWCl2RuwWHmwG21wXcvp2Zl7LkiHzTPes0WQZDi+FemQpdhcXf76zuSzfOyrh98xHGxjV/QbJipEvOq6803aY1hB1ve0n4MMZpL+qBEKHqyUQXAJuixKlwAp3QsbF1uy+Y4xN9/fEsfNzLIdGcgBV5bQLZEJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768394; c=relaxed/simple;
-	bh=6ifo1ABKk78/Ey3ZHqhqsM3w6JBWw/bfSyvZ22MOdGI=;
+	s=arc-20240116; t=1738768422; c=relaxed/simple;
+	bh=IEtOEYWckngbhHMNZUKs0EW7ui6BRe8SwQ+pLJpDIyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kW95i9xcS8//PLQOUH6CccZi+BJoyfrX9YPAnIqC1UvMCJsKT5cH3iKruSXR00b8B9jugwmuAXY76ZHd3mQ3EMZ7eLES9fLuQFLPYv8P+0x3Yz/+gj7Yuy15LYIhWSh74a/JZ7VzKqeHJKQPBRSONc43XzFE7w4gJt3KGpJOWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr4xOU+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D71C4CED1;
-	Wed,  5 Feb 2025 15:13:13 +0000 (UTC)
+	 MIME-Version; b=R2pB9CaPiX4OMlPAZLK8q6Yj/+K/9dVGeSIp8ajC6RhYa9ccpZ3yJcpqv70XfRP3iEVfw6lUYPz+mC5YfRCWIGSkOLLBgv4ezeAIFva5hPx/5PhOOXJ7UMZJKfwEUODiDg2ihz6T5WB8cpIENx/8mU1a/cg2ix5fMo8HxPDzvGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3a9KeVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6876CC4CED1;
+	Wed,  5 Feb 2025 15:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768394;
-	bh=6ifo1ABKk78/Ey3ZHqhqsM3w6JBWw/bfSyvZ22MOdGI=;
+	s=korg; t=1738768421;
+	bh=IEtOEYWckngbhHMNZUKs0EW7ui6BRe8SwQ+pLJpDIyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vr4xOU+BxHp0vUUFtfFz/4NKXR+qJfxWAFjuSbYFN5nG9ltOyHFgyDxsUZe9sqvr2
-	 f58Iahl7n8u0tDChsLUqD/2Q3n+jd8cVUUi4Q0V/yiPgbtBacb0u2zieOrB6uXo544
-	 8yl6HH/G3laJOTKm6GKv/AJAuMBaJLWEbkTC6RvA=
+	b=R3a9KeVVILcHvGMQ/ToiqKroXlXJ4zk1c9PDKO4k3UvuMDU1X9eUWkcidODRO88xr
+	 RTjZd3TFxI8aD656im57KsGksj1MuldgH0/TgefUa6upUBYee3KdI/SOK928YiZnqN
+	 NwF4+u38kfvgz2FQWSIG3PU3mm5CwPfCE3OgerUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Joe Damato <jdamato@fastly.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 522/623] net: rose: fix timer races against user threads
-Date: Wed,  5 Feb 2025 14:44:24 +0100
-Message-ID: <20250205134516.195620303@linuxfoundation.org>
+Subject: [PATCH 6.13 524/623] net/mlx5e: add missing cpu_to_node to kvzalloc_node in mlx5e_open_xdpredirect_sq
+Date: Wed,  5 Feb 2025 14:44:26 +0100
+Message-ID: <20250205134516.272545916@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,114 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stanislav Fomichev <sdf@fomichev.me>
 
-[ Upstream commit 5de7665e0a0746b5ad7943554b34db8f8614a196 ]
+[ Upstream commit 979284535aaf12a287a2f43d9d5dfcbdc1dc4cac ]
 
-Rose timers only acquire the socket spinlock, without
-checking if the socket is owned by one user thread.
+kvzalloc_node is not doing a runtime check on the node argument
+(__alloc_pages_node_noprof does have a VM_BUG_ON, but it expands to
+nothing on !CONFIG_DEBUG_VM builds), so doing any ethtool/netlink
+operation that calls mlx5e_open on a CPU that's larger that MAX_NUMNODES
+triggers OOB access and panic (see the trace below).
 
-Add a check and rearm the timers if needed.
+Add missing cpu_to_node call to convert cpu id to node id.
 
-BUG: KASAN: slab-use-after-free in rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
-Read of size 2 at addr ffff88802f09b82a by task swapper/0/0
+[  165.427394] mlx5_core 0000:5c:00.0 beth1: Link up
+[  166.479327] BUG: unable to handle page fault for address: 0000000800000010
+[  166.494592] #PF: supervisor read access in kernel mode
+[  166.505995] #PF: error_code(0x0000) - not-present page
+...
+[  166.816958] Call Trace:
+[  166.822380]  <TASK>
+[  166.827034]  ? __die_body+0x64/0xb0
+[  166.834774]  ? page_fault_oops+0x2cd/0x3f0
+[  166.843862]  ? exc_page_fault+0x63/0x130
+[  166.852564]  ? asm_exc_page_fault+0x22/0x30
+[  166.861843]  ? __kvmalloc_node_noprof+0x43/0xd0
+[  166.871897]  ? get_partial_node+0x1c/0x320
+[  166.880983]  ? deactivate_slab+0x269/0x2b0
+[  166.890069]  ___slab_alloc+0x521/0xa90
+[  166.898389]  ? __kvmalloc_node_noprof+0x43/0xd0
+[  166.908442]  __kmalloc_node_noprof+0x216/0x3f0
+[  166.918302]  ? __kvmalloc_node_noprof+0x43/0xd0
+[  166.928354]  __kvmalloc_node_noprof+0x43/0xd0
+[  166.938021]  mlx5e_open_channels+0x5e2/0xc00
+[  166.947496]  mlx5e_open_locked+0x3e/0xf0
+[  166.956201]  mlx5e_open+0x23/0x50
+[  166.963551]  __dev_open+0x114/0x1c0
+[  166.971292]  __dev_change_flags+0xa2/0x1b0
+[  166.980378]  dev_change_flags+0x21/0x60
+[  166.988887]  do_setlink+0x38d/0xf20
+[  166.996628]  ? ep_poll_callback+0x1b9/0x240
+[  167.005910]  ? __nla_validate_parse.llvm.10713395753544950386+0x80/0xd70
+[  167.020782]  ? __wake_up_sync_key+0x52/0x80
+[  167.030066]  ? __mutex_lock+0xff/0x550
+[  167.038382]  ? security_capable+0x50/0x90
+[  167.047279]  rtnl_setlink+0x1c9/0x210
+[  167.055403]  ? ep_poll_callback+0x1b9/0x240
+[  167.064684]  ? security_capable+0x50/0x90
+[  167.073579]  rtnetlink_rcv_msg+0x2f9/0x310
+[  167.082667]  ? rtnetlink_bind+0x30/0x30
+[  167.091173]  netlink_rcv_skb+0xb1/0xe0
+[  167.099492]  netlink_unicast+0x20f/0x2e0
+[  167.108191]  netlink_sendmsg+0x389/0x420
+[  167.116896]  __sys_sendto+0x158/0x1c0
+[  167.125024]  __x64_sys_sendto+0x22/0x30
+[  167.133534]  do_syscall_64+0x63/0x130
+[  167.141657]  ? __irq_exit_rcu.llvm.17843942359718260576+0x52/0xd0
+[  167.155181]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <IRQ>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:489
-  kasan_report+0x143/0x180 mm/kasan/report.c:602
-  rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
-  call_timer_fn+0x187/0x650 kernel/time/timer.c:1793
-  expire_timers kernel/time/timer.c:1844 [inline]
-  __run_timers kernel/time/timer.c:2418 [inline]
-  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2430
-  run_timer_base kernel/time/timer.c:2439 [inline]
-  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2449
-  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
-  __do_softirq kernel/softirq.c:595 [inline]
-  invoke_softirq kernel/softirq.c:435 [inline]
-  __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
-  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
-  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
-  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
- </IRQ>
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250122180244.1861468-1-edumazet@google.com
+Fixes: bb135e40129d ("net/mlx5e: move XDP_REDIRECT sq to dynamic allocation")
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250123000407.3464715-1-sdf@fomichev.me
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/rose_timer.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rose/rose_timer.c b/net/rose/rose_timer.c
-index f06ddbed3fed6..1525773e94aa1 100644
---- a/net/rose/rose_timer.c
-+++ b/net/rose/rose_timer.c
-@@ -122,6 +122,10 @@ static void rose_heartbeat_expiry(struct timer_list *t)
- 	struct rose_sock *rose = rose_sk(sk);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 0ec17c276bdd2..cb93f46eaa7c3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -2087,7 +2087,7 @@ static struct mlx5e_xdpsq *mlx5e_open_xdpredirect_sq(struct mlx5e_channel *c,
+ 	struct mlx5e_xdpsq *xdpsq;
+ 	int err;
  
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &sk->sk_timer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	switch (rose->state) {
- 	case ROSE_STATE_0:
- 		/* Magic here: If we listen() and a new link dies before it
-@@ -152,6 +156,7 @@ static void rose_heartbeat_expiry(struct timer_list *t)
- 	}
+-	xdpsq = kvzalloc_node(sizeof(*xdpsq), GFP_KERNEL, c->cpu);
++	xdpsq = kvzalloc_node(sizeof(*xdpsq), GFP_KERNEL, cpu_to_node(c->cpu));
+ 	if (!xdpsq)
+ 		return ERR_PTR(-ENOMEM);
  
- 	rose_start_heartbeat(sk);
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
-@@ -162,6 +167,10 @@ static void rose_timer_expiry(struct timer_list *t)
- 	struct sock *sk = &rose->sock;
- 
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &rose->timer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	switch (rose->state) {
- 	case ROSE_STATE_1:	/* T1 */
- 	case ROSE_STATE_4:	/* T2 */
-@@ -182,6 +191,7 @@ static void rose_timer_expiry(struct timer_list *t)
- 		}
- 		break;
- 	}
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
-@@ -192,6 +202,10 @@ static void rose_idletimer_expiry(struct timer_list *t)
- 	struct sock *sk = &rose->sock;
- 
- 	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		sk_reset_timer(sk, &rose->idletimer, jiffies + HZ/20);
-+		goto out;
-+	}
- 	rose_clear_queues(sk);
- 
- 	rose_write_internal(sk, ROSE_CLEAR_REQUEST);
-@@ -207,6 +221,7 @@ static void rose_idletimer_expiry(struct timer_list *t)
- 		sk->sk_state_change(sk);
- 		sock_set_flag(sk, SOCK_DEAD);
- 	}
-+out:
- 	bh_unlock_sock(sk);
- 	sock_put(sk);
- }
 -- 
 2.39.5
 
