@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-112717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31720A28E0E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 893C3A28D51
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB66B7A3844
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F7F18897E1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654D6149C53;
-	Wed,  5 Feb 2025 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BBF15696E;
+	Wed,  5 Feb 2025 13:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRBUT5zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoVmx/PC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BF21519AA;
-	Wed,  5 Feb 2025 14:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C384514A4E9;
+	Wed,  5 Feb 2025 13:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764507; cv=none; b=So+OYqjZ9UmS8Om1VQAHTPEbLPoKluk3Wlvt9ZBh/Lba7om6kvavB/p812cuzwtQ5X8uE66IKN5hfOo7lSneW7sK7qU+sOkVtb0oN0kGMxKUKYMUT94eZlN8UmoOyi6bo3ALKbc1gnhBcNa3mzn/3fbGu3qkxpkvSWRt2mTVEOc=
+	t=1738763924; cv=none; b=eqlepvlR79q86VRNpuFXnYooyLKr8xZopaERKQxKD4fiG6X8Z60LTkRtbDYECeCRuQNdV9hNDRX9UDZSAMylNqyyVk6P0tA/X/EAnFglYC1ZAVqaFaq35iTu5eaSFS63feJhAlTfWUJN65tNow1zrx5BUgh9dlMzwXsqfkPQDvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764507; c=relaxed/simple;
-	bh=4d/S4Ngc9Ij27qDP6NtkdpK9ChT8rg5W/4Fpt8vZuJQ=;
+	s=arc-20240116; t=1738763924; c=relaxed/simple;
+	bh=HlX7V+l75mg2Z6el+exEN5fKxAn/Snprud2kfOUgYjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLVQNqZMyK6E7Hg8WDu+zo9R7O9Dk3hBDOfmTxAwVtB0EgKf0DzyuI0GLN+Y12e0unfAtX3YTzjtDC6fZkBJWmtONyepIw9xWg7BS4aEqq2abQzd4W4LeOSFIZ2cjKt/d/I+hlZvJ8Vl3NSxOPWjDMnmQeUZGj++qFy+gEY5PMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRBUT5zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9928EC4CED1;
-	Wed,  5 Feb 2025 14:08:26 +0000 (UTC)
+	 MIME-Version; b=Hr60y23TCtSDPdDqujHkWS+dB8n6gslzY505zZXtYQ+OwRairiquIEKEiQL0xuKCW7ftF+XtnYxiUizxG+jToe9XcnOtywSioTp4GhSsU9eQq1sBr867FI1boMISA5WeLY3D/D584f9rGwiMCHpzzoVEaTiBFLhettOky58pL/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoVmx/PC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255A6C4CED1;
+	Wed,  5 Feb 2025 13:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764507;
-	bh=4d/S4Ngc9Ij27qDP6NtkdpK9ChT8rg5W/4Fpt8vZuJQ=;
+	s=korg; t=1738763924;
+	bh=HlX7V+l75mg2Z6el+exEN5fKxAn/Snprud2kfOUgYjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRBUT5zcCtDEx/q9eznGsENU+b4afIxFzzhtCZI+CgnaPoKnNjnaygQEaA+V1KtgQ
-	 ZtwxN7+3eyEYd5NYzfrpS1kJC4EAhgGMEKg+2j8N/AtccKp0a9GE79ggzBvGxBC5U7
-	 nyt+aZYCX7ABBEU1adXtGcLM68Vfyc8FSxzs/Pwc=
+	b=IoVmx/PCqK+LXeyKNgKy1GNMnCc3JY7iD0qcq8gKMP13CmZsmElrLj69a7g174Eu1
+	 ZkPImZh7RYwR6ukBW6eyY81g/GhDbNyvrH86G9shIfTUMJOEDfqkurEi8Rbg/Et1+c
+	 sUxuCcA7ooXV/jVgzOBkM+8tF4fmgVGy4hC8MsCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 086/623] wifi: rtlwifi: do not complete firmware loading needlessly
+Subject: [PATCH 6.12 073/590] genirq: Make handle_enforce_irqctx() unconditionally available
 Date: Wed,  5 Feb 2025 14:37:08 +0100
-Message-ID: <20250205134459.514468499@linuxfoundation.org>
+Message-ID: <20250205134458.049147487@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit e73e11d303940119e41850a0452a0deda2cc4eb5 ]
+[ Upstream commit 8d187a77f04c14fb459a5301d69f733a5a1396bc ]
 
-The only code waiting for completion is driver removal, which will not be
-called when probe returns a failure. So this completion is unnecessary.
+Commit 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
+sett the flag which enforces interrupt handling in interrupt context and
+prevents software base resends for ARM GIC v2/v3.
 
-Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-2-cascardo@igalia.com
+But it missed that the helper function which checks the flag was hidden
+behind CONFIG_GENERIC_PENDING_IRQ, which is not set by ARM[64].
+
+Make the helper unconditionally available so that the enforcement actually
+works.
+
+Fixes: 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241210101811.497716609@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c | 1 -
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 -
- 2 files changed, 2 deletions(-)
+ kernel/irq/internals.h | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 11709b6c83f1a..40fc3c297a8ac 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -2266,7 +2266,6 @@ int rtl_pci_probe(struct pci_dev *pdev,
- 		pci_iounmap(pdev, (void __iomem *)rtlpriv->io.pci_mem_start);
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index fe0272cd84a51..a29df4b02a2ed 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -441,10 +441,6 @@ static inline struct cpumask *irq_desc_get_pending_mask(struct irq_desc *desc)
+ {
+ 	return desc->pending_mask;
+ }
+-static inline bool handle_enforce_irqctx(struct irq_data *data)
+-{
+-	return irqd_is_handle_enforce_irqctx(data);
+-}
+ bool irq_fixup_move_pending(struct irq_desc *desc, bool force_clear);
+ #else /* CONFIG_GENERIC_PENDING_IRQ */
+ static inline bool irq_can_move_pcntxt(struct irq_data *data)
+@@ -471,11 +467,12 @@ static inline bool irq_fixup_move_pending(struct irq_desc *desc, bool fclear)
+ {
+ 	return false;
+ }
++#endif /* !CONFIG_GENERIC_PENDING_IRQ */
++
+ static inline bool handle_enforce_irqctx(struct irq_data *data)
+ {
+-	return false;
++	return irqd_is_handle_enforce_irqctx(data);
+ }
+-#endif /* !CONFIG_GENERIC_PENDING_IRQ */
  
- 	pci_release_regions(pdev);
--	complete(&rtlpriv->firmware_loading_complete);
- 
- fail1:
- 	if (hw)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index d37a017b2b814..c3aa0cd9ff211 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1040,7 +1040,6 @@ int rtl_usb_probe(struct usb_interface *intf,
- error_out2:
- 	_rtl_usb_io_handler_release(hw);
- 	usb_put_dev(udev);
--	complete(&rtlpriv->firmware_loading_complete);
- 	kfree(rtlpriv->usb_data);
- 	ieee80211_free_hw(hw);
- 	return -ENODEV;
+ #if !defined(CONFIG_IRQ_DOMAIN) || !defined(CONFIG_IRQ_DOMAIN_HIERARCHY)
+ static inline int irq_domain_activate_irq(struct irq_data *data, bool reserve)
 -- 
 2.39.5
 
