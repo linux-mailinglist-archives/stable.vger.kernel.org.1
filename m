@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-113263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893D4A290BB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CF1A28CC6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B2E188A1B1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE631647E6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841B517084F;
-	Wed,  5 Feb 2025 14:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C717C1494DF;
+	Wed,  5 Feb 2025 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK59rDs1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDuE7nuR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C87116DED2;
-	Wed,  5 Feb 2025 14:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B1CFC0B;
+	Wed,  5 Feb 2025 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766371; cv=none; b=lSyuqzC6nbPHME81AuOoMVDPhQRxaBZUy9XeTQ0kh9yobSLQ/nO0DtZHOLCuy/jQrkPexQF+2fVnmNLO9O4O1yuHU06wC9SifFEhvIClU5n6WPKTDHRITzA1VBIwAVfrmJOFn9b2yLpAVx7eKOzPoGd7H6OyhLvwg88dxpYx3OU=
+	t=1738763629; cv=none; b=oEwR/IV5CjWgasOxUM4ZsYwpnZ92lb6RfP82F3ZO+0ZmbpL7uTGT/d07W087W1w4e6GsSCmCbNOhoDBRU2OBjgb7+/7zWOLR+z+t5XbD6RVBlTkD3WNC3tHs2MJ7ZGz9Lkl+ER4/1x+XAqCdqIhjV2pyIDzMFjQm/pcBq5W3a4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766371; c=relaxed/simple;
-	bh=M6O5YF+Sk1aV1JeGwq3v/ItUpX1d1Jfxd1RYuiPEtkk=;
+	s=arc-20240116; t=1738763629; c=relaxed/simple;
+	bh=pTprCUDyBfQQlRn7vVnR8ryhJqRxB97adwmSIBAYO/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UI2qS/QoVhr4HylrjmL9i4cTYBfpKhXUMhdBDbRnd+ZUJunDGljbBjP17TZtksi9F9iSbiZQuKtDMPx6NATD+6vzkP5f/KDSXpkm6iPYEylYJ2sahwbblbvae8vDjwCe/HQbUUowAlcp4bHf9xpBwMSv9kpWQUBtKZy6k1B+8z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK59rDs1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB2AC4CED1;
-	Wed,  5 Feb 2025 14:39:30 +0000 (UTC)
+	 MIME-Version; b=udIR9I/Gs0wowy024HiIapICPSsNPDE0snIAjo7TkcP27mqNPJdk0ZtUlgs3Bk8p2nqjsWSx/xfQoiMquUCGDXJQMEs9h+mH1lCFbYNjTm39DSRzcoiF1EaU+s19KS8lpT13yerlRmRX4Ol6BUsxdzYxmdPtFzPsQ501Yw0ATlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDuE7nuR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E585FC4CED1;
+	Wed,  5 Feb 2025 13:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766371;
-	bh=M6O5YF+Sk1aV1JeGwq3v/ItUpX1d1Jfxd1RYuiPEtkk=;
+	s=korg; t=1738763629;
+	bh=pTprCUDyBfQQlRn7vVnR8ryhJqRxB97adwmSIBAYO/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yK59rDs1nQRr6nb9IksYO9Z+UzK8Vi3piMrxZOaIVsHGpIsInxQmajFGQXzk8iovy
-	 EW25LpFtN6wMqxHuhP0zkIgH9g+LjJ4qz6hKE26j3YkwS4J/WM5yZwgPc+yc7tSDRg
-	 nzS2CDpRr/fzFcFvifW6G+bzXx9FrpO1T63TorNk=
+	b=TDuE7nuRwL/C6B0VG9v6DZHN7yZdCvlB+xhqoMDEib+qs8bKIiES3HmZJvEDx7A3u
+	 mwzIX5mfl4pSN0rIkZ+JSiN8fxhG85zTUKkiSflpyc2nktmivJToV4t/VFcz40PJvi
+	 EqokhkhgP8K45DNwOLFZqvcXSWZ0/7Bfe+ZdAp4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <song@kernel.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 267/623] perf header: Fix one memory leakage in process_bpf_btf()
-Date: Wed,  5 Feb 2025 14:40:09 +0100
-Message-ID: <20250205134506.444586546@linuxfoundation.org>
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.6 091/393] clk: sunxi-ng: a64: drop redundant CLK_PLL_VIDEO0_2X and CLK_PLL_MIPI
+Date: Wed,  5 Feb 2025 14:40:10 +0100
+Message-ID: <20250205134423.775963348@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,53 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 875d22980a062521beed7b5df71fb13a1af15d83 ]
+[ Upstream commit 0f368cb7ef103f284f75e962c4c89da5aa8ccec7 ]
 
-If __perf_env__insert_btf() returns false due to a duplicate btf node
-insertion, the temporary node will leak. Add a check to ensure the memory
-is freed if the function returns false.
+Drop redundant CLK_PLL_VIDEO0_2X and CLK_PLL.MIPI. These are now
+defined in dt-bindings/clock/sun50i-a64-ccu.h
 
-Fixes: a70a1123174ab592 ("perf bpf: Save BTF information as headers to perf.data")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20241205084500.823660-2-quic_zhonhan@quicinc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on pinephone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-3-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/header.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index 3451e542b69a8..fbba6ffafec4a 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -3205,7 +3205,8 @@ static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
- 		if (__do_read(ff, node->data, data_size))
- 			goto out;
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.h b/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
+index a8c11c0b4e067..dfba88a5ad0f7 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.h
+@@ -21,7 +21,6 @@
  
--		__perf_env__insert_btf(env, node);
-+		if (!__perf_env__insert_btf(env, node))
-+			free(node);
- 		node = NULL;
- 	}
+ /* PLL_VIDEO0 exported for HDMI PHY */
  
+-#define CLK_PLL_VIDEO0_2X		8
+ #define CLK_PLL_VE			9
+ #define CLK_PLL_DDR0			10
+ 
+@@ -32,7 +31,6 @@
+ #define CLK_PLL_PERIPH1_2X		14
+ #define CLK_PLL_VIDEO1			15
+ #define CLK_PLL_GPU			16
+-#define CLK_PLL_MIPI			17
+ #define CLK_PLL_HSIC			18
+ #define CLK_PLL_DE			19
+ #define CLK_PLL_DDR1			20
 -- 
 2.39.5
 
