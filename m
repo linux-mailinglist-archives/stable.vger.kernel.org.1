@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-113165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D41A29053
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEF7A28C85
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A1B3A6381
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5AA168993
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784A4155747;
-	Wed,  5 Feb 2025 14:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF02149C53;
+	Wed,  5 Feb 2025 13:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUmZ0y+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIDmPIAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F83151988;
-	Wed,  5 Feb 2025 14:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6713D52B;
+	Wed,  5 Feb 2025 13:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766042; cv=none; b=P5Ocix3D7zj0bkQw76v/1/d+SZoD7gmVgCRdDdcIyDaaPq1m6gTPnR4ZYffeNf0JGeWyasxsuB/RFz6yCS7fNdtKmh5qtBe4Y3zxnKu24/t936PaoTZZlZvIjqbtbVHz5kcj/RqvjL/UoNkIN/UVZQd5TkA2qfTAkEnrK62JBYA=
+	t=1738763446; cv=none; b=Az0WOnUtZOcswNa5IJG7SFs2KGYq5JKhu8gwyxH4q656TscQYy86591PuNKyulEFof9nsRqLasjOa3ZgfmLsWxz1SiUEuFsigo78v+CQE+MRqvFtg6Wark5kHPecBjhWCM7f/7gTPefCfRv/9AxKGKiLYxp4lGlEGeShzAyJpV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766042; c=relaxed/simple;
-	bh=kJ2Kg5PX/np29ztHwrhqkkpI5TSMa/RRceo7lMHaJdY=;
+	s=arc-20240116; t=1738763446; c=relaxed/simple;
+	bh=Wa58cmcTuP2zdgPyJAZNtN4K/yH0qxZIRCGEjX0gMNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRmJs8w0iVyl0GZTtEDEImRCCNYDyjH+dBXPixOFXUOBInAcsOP7h3mLcskc3fxyGdChGrwlXSWd1ZwKwfuMAUioFFIEIX25RpkA1DevSBIvn5i6IPWoVZqZQ7pAbC0nNj7jkLgHz1QZNcAIXpIxLOrAx74BK/tnqBVb9TVYVjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUmZ0y+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9877CC4CED1;
-	Wed,  5 Feb 2025 14:34:01 +0000 (UTC)
+	 MIME-Version; b=nNsld/LOUAujjQW8620pKuQMe2dxJUAprhItx/iEI49l2igdgOZlf7AUfQuPPQ5RVpVPcgAFOoVd1oYQnzkgaaEUjxBIkKOG9MF6Rta7q0f+a+UXAe8Lgb4saEmJwc1DB4yykFca2VM8nzfAZwQrEFRjIoOd0LocL5/IRq6nkEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIDmPIAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF03EC4CED1;
+	Wed,  5 Feb 2025 13:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766042;
-	bh=kJ2Kg5PX/np29ztHwrhqkkpI5TSMa/RRceo7lMHaJdY=;
+	s=korg; t=1738763446;
+	bh=Wa58cmcTuP2zdgPyJAZNtN4K/yH0qxZIRCGEjX0gMNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUmZ0y+yn2F69ha/UIU0Xcu1Ucd4e0AEh5QdLtSVqfSM2mFJnkxHpTNRoiQkhwg/R
-	 qBHN/s30ZbMz/JGNYEcQ17mMbsGTzvZvUpCMiGS55xTdW8fvoB9qG+ZUeDuTdMxwR9
-	 0LqqGQJuUuxFFw6bj/rrs/cbs3pmFhRLHdlvUhX8=
+	b=XIDmPIAKUi3Xg7NjuoMCfN/3wCT/yA/Cov2Nsg5o+h7nDSZGopAz8GcM4o98p9Tbl
+	 OxlhQaS66v0s5SqMIcBLK5QCpTWY1j5ddXwMQayQqAzY69gij8eXfSJPwGuOlL+6eB
+	 clw4/O+OlTLf6MgtDVrm/+sdozvj0QfF/aNrTcAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoine Tenart <atenart@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 237/623] net: avoid race between device unregistration and ethnl ops
-Date: Wed,  5 Feb 2025 14:39:39 +0100
-Message-ID: <20250205134505.296589199@linuxfoundation.org>
+Subject: [PATCH 6.6 061/393] serial: sc16is7xx: use device_property APIs when configuring irda mode
+Date: Wed,  5 Feb 2025 14:39:40 +0100
+Message-ID: <20250205134422.629587859@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 12e070eb6964b341b41677fd260af5a305316a1f ]
+[ Upstream commit 1a0a2a1e57aa8dcdae25229f6e95cf6bd4817faf ]
 
-The following trace can be seen if a device is being unregistered while
-its number of channels are being modified.
+Convert driver to be property provider agnostic and allow it to be
+used on non-OF platforms.
 
-  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-  WARNING: CPU: 3 PID: 3754 at kernel/locking/mutex.c:564 __mutex_lock+0xc8a/0x1120
-  CPU: 3 UID: 0 PID: 3754 Comm: ethtool Not tainted 6.13.0-rc6+ #771
-  RIP: 0010:__mutex_lock+0xc8a/0x1120
-  Call Trace:
-   <TASK>
-   ethtool_check_max_channel+0x1ea/0x880
-   ethnl_set_channels+0x3c3/0xb10
-   ethnl_default_set_doit+0x306/0x650
-   genl_family_rcv_msg_doit+0x1e3/0x2c0
-   genl_rcv_msg+0x432/0x6f0
-   netlink_rcv_skb+0x13d/0x3b0
-   genl_rcv+0x28/0x40
-   netlink_unicast+0x42e/0x720
-   netlink_sendmsg+0x765/0xc20
-   __sys_sendto+0x3ac/0x420
-   __x64_sys_sendto+0xe0/0x1c0
-   do_syscall_64+0x95/0x180
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-This is because unregister_netdevice_many_notify might run before the
-rtnl lock section of ethnl operations, eg. set_channels in the above
-example. In this example the rss lock would be destroyed by the device
-unregistration path before being used again, but in general running
-ethnl operations while dismantle has started is not a good idea.
-
-Fix this by denying any operation on devices being unregistered. A check
-was already there in ethnl_ops_begin, but not wide enough.
-
-Note that the same issue cannot be seen on the ioctl version
-(__dev_ethtool) because the device reference is retrieved from within
-the rtnl lock section there. Once dismantle started, the net device is
-unlisted and no reference will be found.
-
-Fixes: dde91ccfa25f ("ethtool: do not perform operations on net devices being unregistered")
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Link: https://patch.msgid.link/20250116092159.50890-1-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20230927160153.2717788-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 28fa3291cad1 ("clk: fix an OF node reference leak in of_clk_get_parent_name()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c | 34 ++++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index e3f0ef6b851bb..4d18dc29b3043 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
- 		pm_runtime_get_sync(dev->dev.parent);
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index f290fbe21d633..8a2ce2ca6b394 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1410,6 +1410,29 @@ static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
+ }
+ #endif
  
- 	if (!netif_device_present(dev) ||
--	    dev->reg_state == NETREG_UNREGISTERING) {
-+	    dev->reg_state >= NETREG_UNREGISTERING) {
- 		ret = -ENODEV;
- 		goto err;
++static void sc16is7xx_setup_irda_ports(struct sc16is7xx_port *s)
++{
++	int i;
++	int ret;
++	int count;
++	u32 irda_port[2];
++	struct device *dev = s->p[0].port.dev;
++
++	count = device_property_count_u32(dev, "irda-mode-ports");
++	if (count < 0 || count > ARRAY_SIZE(irda_port))
++		return;
++
++	ret = device_property_read_u32_array(dev, "irda-mode-ports",
++					     irda_port, count);
++	if (ret)
++		return;
++
++	for (i = 0; i < count; i++) {
++		if (irda_port[i] < s->devtype->nr_uart)
++			s->p[irda_port[i]].irda_mode = true;
++	}
++}
++
+ /*
+  * Configure ports designated to operate as modem control lines.
+  */
+@@ -1603,16 +1626,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 		sc16is7xx_power(&s->p[i].port, 0);
  	}
+ 
+-	if (dev->of_node) {
+-		struct property *prop;
+-		const __be32 *p;
+-		u32 u;
+-
+-		of_property_for_each_u32(dev->of_node, "irda-mode-ports",
+-					 prop, p, u)
+-			if (u < devtype->nr_uart)
+-				s->p[u].irda_mode = true;
+-	}
++	sc16is7xx_setup_irda_ports(s);
+ 
+ 	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
+ 	if (ret)
 -- 
 2.39.5
 
