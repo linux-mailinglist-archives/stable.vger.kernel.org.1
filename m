@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBDEA28EF3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AE0A28C8C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBA73AA97B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86E8A7A4E9E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652D8634E;
-	Wed,  5 Feb 2025 14:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E2C13C9C4;
+	Wed,  5 Feb 2025 13:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnNqxZtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EynJpdOo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D49522A;
-	Wed,  5 Feb 2025 14:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DDC127E18;
+	Wed,  5 Feb 2025 13:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765113; cv=none; b=pyUqtM9NdaFPRFVvxW06qF9MUjbVSF43Fevv5FN6EAMXPMEh+Oo6vxzxMpTd3yiMYtlSEp5iys/fvlVb8k6sHBRxYhPN7tB2myGjjwEQ/mgnHkjFNLBQzM1Hn5/lkOiXxxwVJ+aksj5/Q+8fanepM5fcuEZTYxKMHWPMiyCm9KY=
+	t=1738763275; cv=none; b=fvgMUwGjWCuSyQnNMwEpA1PZBaICdNmrID5viLD2ILqMWufKzYSImZ3iJnCJvXpIqZ3McHsm8jxJ0hCySWGD2XLaKIcXptY9Fo1gB9s9r0zAO9fdIDESh6NmDqR9Upa3CC+rk7rrpBAziM40eQ8dOL977J8GUaHFE42XQf/1Y0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765113; c=relaxed/simple;
-	bh=nLrcwQnJFr4/l6AikL3Rf9eHI2Tg5IDOuoF39xsIwSc=;
+	s=arc-20240116; t=1738763275; c=relaxed/simple;
+	bh=cxatB5jejVfqclSQ6c/MHcki0EPL0/p2GGc1Tch+8aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpheoFMD1Lfdb7avGRoKmoO3w41VCCys9ota6tZ8Je+AUy58JlHTh8vCiIc2AB0wncOGgRLreD3PkjTrhNLnAtJMSoJEce9OAtnNNtRY2T0PoGIcY8/RpLFXqRcSgEMsInJb+LsemS3TbFHz5t3ucnnipLU2zN6FTndsNZWUXUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnNqxZtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69119C4CED1;
-	Wed,  5 Feb 2025 14:18:32 +0000 (UTC)
+	 MIME-Version; b=TAKzoVboWyfCSv79uXFcRu/tnTBov/U1KzIPwtTyi6sfbdn8ZMFUOmETqZrqM6CJuRwP8YldQ/xE9RkfULYXKPOOimjZrrtYDghdSpbh8QzNb4gXqr6ZJWHq1sZTBW+PWU1CJqiMUvMBygCmzpkjwr499C/hGrxrk97g1lFrdNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EynJpdOo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F282C4CED1;
+	Wed,  5 Feb 2025 13:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765113;
-	bh=nLrcwQnJFr4/l6AikL3Rf9eHI2Tg5IDOuoF39xsIwSc=;
+	s=korg; t=1738763274;
+	bh=cxatB5jejVfqclSQ6c/MHcki0EPL0/p2GGc1Tch+8aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnNqxZtDF8xVUla0zaKclTgKV+ztgPGlaVem/AaKMSr3VdXgjQnz0JErVMcSD58a9
-	 75SaWorTHim3ERoL8+0DLljvoaaQ+LL/m2/LlD6G4K2I+zB5BY6RdGTeqq84OnbQ1n
-	 mTT+j3AZAZRW97Dbj4UGPmk3tRm1ckCzO5EhTuCM=
+	b=EynJpdOojLm6COyOLOn2HYjyK4Z7Qasrb8JIbd3LOOyvKPkUTqXZHJgwboUwriyB/
+	 yqCONSZALf+hWMbA7api5Eu91Oy7FvdouLuHBygi/j/u0Kp90P9I1skAQq6kI8qdXz
+	 KWJNAcyzC0XuPPZr1vRWvzRvvtDP4NeQnCpGvCbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	David Ruth <druth@chromium.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Eugen Hristev <eugen.hristev@linaro.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/590] wifi: mt76: mt7921: fix using incorrect group cipher after disconnection.
+Subject: [PATCH 6.6 009/393] pstore/blk: trivial typo fixes
 Date: Wed,  5 Feb 2025 14:38:48 +0100
-Message-ID: <20250205134501.900962543@linuxfoundation.org>
+Message-ID: <20250205134420.649144020@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Eugen Hristev <eugen.hristev@linaro.org>
 
-[ Upstream commit aa566ac6b7272e7ea5359cb682bdca36d2fc7e73 ]
+[ Upstream commit 542243af7182efaeaf6d0f4643f7de437541a9af ]
 
-To avoid incorrect cipher after disconnection, we should
-do the key deletion process in this case.
+Fix trivial typos in comments.
 
-Fixes: e6db67fa871d ("wifi: mt76: ignore key disable commands")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20240801024335.12981-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 2a03ddbde1e1 ("pstore/blk: Move verify_size() macro out of function")
+Fixes: 17639f67c1d6 ("pstore/blk: Introduce backend for block devices")
+Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+Link: https://lore.kernel.org/r/20250101111921.850406-1-eugen.hristev@linaro.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/pstore/blk.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index a7f5bfbc02ed1..0641538968e6f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -531,7 +531,13 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	} else {
- 		if (idx == *wcid_keyidx)
- 			*wcid_keyidx = -1;
--		goto out;
-+
-+		/* For security issue we don't trigger the key deletion when
-+		 * reassociating. But we should trigger the deletion process
-+		 * to avoid using incorrect cipher after disconnection,
-+		 */
-+		if (vif->type != NL80211_IFTYPE_STATION || vif->cfg.assoc)
-+			goto out;
- 	}
+diff --git a/fs/pstore/blk.c b/fs/pstore/blk.c
+index de8cf5d75f34d..85668cb31c3d2 100644
+--- a/fs/pstore/blk.c
++++ b/fs/pstore/blk.c
+@@ -89,7 +89,7 @@ static struct pstore_device_info *pstore_device_info;
+ 		_##name_ = check_size(name, alignsize);		\
+ 	else							\
+ 		_##name_ = 0;					\
+-	/* Synchronize module parameters with resuls. */	\
++	/* Synchronize module parameters with results. */	\
+ 	name = _##name_ / 1024;					\
+ 	dev->zone.name = _##name_;				\
+ }
+@@ -121,7 +121,7 @@ static int __register_pstore_device(struct pstore_device_info *dev)
+ 	if (pstore_device_info)
+ 		return -EBUSY;
  
- 	mt76_wcid_key_setup(&dev->mt76, wcid, key);
+-	/* zero means not limit on which backends to attempt to store. */
++	/* zero means no limit on which backends attempt to store. */
+ 	if (!dev->flags)
+ 		dev->flags = UINT_MAX;
+ 
 -- 
 2.39.5
 
