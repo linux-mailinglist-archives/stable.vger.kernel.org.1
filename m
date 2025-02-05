@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4E5A29198
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D45A2907C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33CA97A04C2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B45D216316F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB28E1FC0F8;
-	Wed,  5 Feb 2025 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5067214B959;
+	Wed,  5 Feb 2025 14:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOaRvl0P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye1EXCWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BC21FC0F4;
-	Wed,  5 Feb 2025 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D067151988;
+	Wed,  5 Feb 2025 14:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766793; cv=none; b=VwFJohZvKGBDEvOHjavM53IkU2DA/0JWgE1WXOQdELaDDDTJa4szFQgdK4pF1+h5cDzp7o/gNQmTx0VDlXFLgF86VcTVretbR3sQ/mojHWe1KAbjb3Uv00foQEgVJWPPGPYNIZln8lP4BikznuOnytSyO1+aS5JiHK401KhHEa0=
+	t=1738766197; cv=none; b=KkX/KYrnEKw7TP+H1vWzTnl0cVlOYhi1n2oryLREZ5rL/C7Sjjs0u5Faneg+XOhvx3cSKLpCN2kNuWGF4uAfLCr1DXKehSsOoMu8zo05tWcSCXqll2y5F6F5bTaUSkfEelqd26oDnnLArufw5E/vpAWDqM0lx0uv3e1tqjiJ2LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766793; c=relaxed/simple;
-	bh=w6ns1Sgc2tlHx4ibxPKxt+aw9KB5JmOGTQqNCVa6sZE=;
+	s=arc-20240116; t=1738766197; c=relaxed/simple;
+	bh=zG9BzUJCSzdfSDEQpl8uZlTG15/d0YOQsZ7n/9X41h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxS+xlRxSorLGr+Gufn++A++vDOOiGLbOszSMG4C5/+AFTIRxfihlok9mHyB3KP/gHQHeRygnTr7YE+XQ5aqkN0anWZb0gtXHA0bA3P+dgKAmGQ/YH5oSR1Zo+6B7uodRShQWZrrCFqAF+oKGhoFgsBTtaVUHgJoqb5oashlGnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOaRvl0P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB806C4CED1;
-	Wed,  5 Feb 2025 14:46:32 +0000 (UTC)
+	 MIME-Version; b=gEcPeNrZusK0JTZcXCTITh2z6xCPQpI7vK9NFvASgfN5BDJ5yWEwzbgozP8MkOMpTfbpbfcT/f2QumNQ8lnr0tG5QkukVpiVK5G9F9c+S53trF1MDDWJZfpWNee86E/Ez32N3PVu1gl9JGL3tcDfykZAGGEwxi1xnaX/DJHZSlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye1EXCWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD42C4CED1;
+	Wed,  5 Feb 2025 14:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766793;
-	bh=w6ns1Sgc2tlHx4ibxPKxt+aw9KB5JmOGTQqNCVa6sZE=;
+	s=korg; t=1738766196;
+	bh=zG9BzUJCSzdfSDEQpl8uZlTG15/d0YOQsZ7n/9X41h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOaRvl0PHyLhNAaNlCJxNAuEarT1iC3y3MJwB7YvK3Z8VL7RH0whO/iS2HFh4m9R/
-	 7GU/vFroNREu1AhSChSSeDNtRJNezqFp6FVCAniuz3AepnnLc0uSHSwk9QInqaGuav
-	 eb6lwchJCjTju17h/3IbDVJ4nUvBI8JWcwVOlHmQ=
+	b=ye1EXCWzfzqwQgOjTxUSxazSR1w/difvjUp8vuydigy7EZGYvgEE+fqSVY07q+AFr
+	 o2xP9i9wHvDdDSBwo0A66N9/sqpsIpCCIhTo8LXXmMlrAYYnS3w0SEBjs3ZqVc7fzJ
+	 0Vxkad7YlTFHS/ohKeQEDwgX3DeT/VZOgSS0aFRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Lehui <pulehui@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 309/623] selftests/bpf: Fix btf leak on new btf alloc failure in btf_distill test
+Subject: [PATCH 6.12 296/590] padata: avoid UAF for reorder_work
 Date: Wed,  5 Feb 2025 14:40:51 +0100
-Message-ID: <20250205134508.048267264@linuxfoundation.org>
+Message-ID: <20250205134506.601094045@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 4a04cb326a6c7f9a2c066f8c2ca78a5a9b87ddab ]
+[ Upstream commit dd7d37ccf6b11f3d95e797ebe4e9e886d0332600 ]
 
-Fix btf leak on new btf alloc failure in btf_distill test.
+Although the previous patch can avoid ps and ps UAF for _do_serial, it
+can not avoid potential UAF issue for reorder_work. This issue can
+happen just as below:
 
-Fixes: affdeb50616b ("selftests/bpf: Extend distilled BTF tests to cover BTF relocation")
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250115100241.4171581-1-pulehui@huaweicloud.com
+crypto_request			crypto_request		crypto_del_alg
+padata_do_serial
+  ...
+  padata_reorder
+    // processes all remaining
+    // requests then breaks
+    while (1) {
+      if (!padata)
+        break;
+      ...
+    }
+
+				padata_do_serial
+				  // new request added
+				  list_add
+    // sees the new request
+    queue_work(reorder_work)
+				  padata_reorder
+				    queue_work_on(squeue->work)
+...
+
+				<kworker context>
+				padata_serial_worker
+				// completes new request,
+				// no more outstanding
+				// requests
+
+							crypto_del_alg
+							  // free pd
+
+<kworker context>
+invoke_padata_reorder
+  // UAF of pd
+
+To avoid UAF for 'reorder_work', get 'pd' ref before put 'reorder_work'
+into the 'serial_wq' and put 'pd' ref until the 'serial_wq' finish.
+
+Fixes: bbefa1dd6a6d ("crypto: pcrypt - Avoid deadlock by using per-instance padata queues")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/btf_distill.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/padata.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_distill.c b/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-index ca84726d5ac1b..b72b966df77b9 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_distill.c
-@@ -385,7 +385,7 @@ static void test_distilled_base_missing_err(void)
- 		"[2] INT 'int' size=8 bits_offset=0 nr_bits=64 encoding=SIGNED");
- 	btf5 = btf__new_empty();
- 	if (!ASSERT_OK_PTR(btf5, "empty_reloc_btf"))
--		return;
-+		goto cleanup;
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [1] int */
- 	VALIDATE_RAW_BTF(
- 		btf5,
-@@ -478,7 +478,7 @@ static void test_distilled_base_multi_err2(void)
- 		"[1] INT 'int' size=4 bits_offset=0 nr_bits=32 encoding=SIGNED");
- 	btf5 = btf__new_empty();
- 	if (!ASSERT_OK_PTR(btf5, "empty_reloc_btf"))
--		return;
-+		goto cleanup;
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [1] int */
- 	btf__add_int(btf5, "int", 4, BTF_INT_SIGNED);   /* [2] int */
- 	VALIDATE_RAW_BTF(
+diff --git a/kernel/padata.c b/kernel/padata.c
+index a4c7a6eefe10e..22770372bdf32 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -352,8 +352,14 @@ static void padata_reorder(struct parallel_data *pd)
+ 	smp_mb();
+ 
+ 	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
+-	if (!list_empty(&reorder->list) && padata_find_next(pd, false))
++	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
++		/*
++		 * Other context(eg. the padata_serial_worker) can finish the request.
++		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
++		 */
++		padata_get_pd(pd);
+ 		queue_work(pinst->serial_wq, &pd->reorder_work);
++	}
+ }
+ 
+ static void invoke_padata_reorder(struct work_struct *work)
+@@ -364,6 +370,8 @@ static void invoke_padata_reorder(struct work_struct *work)
+ 	pd = container_of(work, struct parallel_data, reorder_work);
+ 	padata_reorder(pd);
+ 	local_bh_enable();
++	/* Pairs with putting the reorder_work in the serial_wq */
++	padata_put_pd(pd);
+ }
+ 
+ static void padata_serial_worker(struct work_struct *serial_work)
 -- 
 2.39.5
 
