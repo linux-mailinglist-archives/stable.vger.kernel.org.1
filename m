@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4208A28D76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F56A2923B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8C11889B57
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAD16BFB6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF641509BD;
-	Wed,  5 Feb 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5123D1FECB9;
+	Wed,  5 Feb 2025 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCzpWk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVTf525G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C515198D;
-	Wed,  5 Feb 2025 14:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0425818E377;
+	Wed,  5 Feb 2025 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764070; cv=none; b=URKFF5l08/t48PcdN/Ln4RBbiTOxvDKY9gbBk3dxGDOuHPxk+Cr4ZBYZ+cpOFBtydex+GOYgcyMMkjAOPUMfU70cE9w8G2e3giomMQ/Y/J4BIV/c6nJOAw6357xMQsK4x/tCvAPQAOtcBW+RsYjANyCwHnzAW6dFFaiEpDGWGCE=
+	t=1738767027; cv=none; b=CBJAtHdcMEv/vMarbKsf53j4Rf8ouXzClnIelLeDYfvXC/19/G1xkFUsBzJ+wZ/JArnJhsmmsnr38CyAGo+XR/1e8S9aA7EkL5HhJeNAtN++jcmKHaK9yuJmLvudeIqyMoNMt1Z8GvjUqcjU4StK8G37g20p7GknbM5Q82cFUrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764070; c=relaxed/simple;
-	bh=kO0j02FKJkEq2uZ8ziqK4b1S1lFtOrK/LwUeFWpfSE0=;
+	s=arc-20240116; t=1738767027; c=relaxed/simple;
+	bh=7st6haTkXdW/YMMY2xolQbnx80c5i2eoqAYxZd2BXqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ByH2mEVaLdJyZoy5CmMOSX+VWnDjy1v5dkGFM2+LUkMyHs4eNsfe9B9WXwcG3tuGZO36VgDVP0oL6UtaPczvVH1kTSxEn8CPkOBDi+obhxJ83SWWRBU1m2vGVn7GsT6gphTkJ77CcMTRfVP8VkLZMM31hmYE/0/yXU7fem9LrPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCzpWk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F56EC4CED1;
-	Wed,  5 Feb 2025 14:01:09 +0000 (UTC)
+	 MIME-Version; b=rbUezwM7mUsyFSfNgWnKaeFYZJn3M+UZLcqsHAKmo7JMMPxqWF8r8Sm5LPhTHrIiEW/cDBOr2yEJ1UjesDdAK3BEBIjcWiaVh1pn5/fStcgoBxC4uAGSNFI75fumlh1Jz2F5n9yoiuwh8CLh0EoFr09itpKt/OgeRevVnuZABwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVTf525G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76960C4CED1;
+	Wed,  5 Feb 2025 14:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764070;
-	bh=kO0j02FKJkEq2uZ8ziqK4b1S1lFtOrK/LwUeFWpfSE0=;
+	s=korg; t=1738767026;
+	bh=7st6haTkXdW/YMMY2xolQbnx80c5i2eoqAYxZd2BXqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuCzpWk40yLMn44in2pDiK2FF6fps2R1e4ZxC05fPLt2BNgeU6iS8F8Xz7eYXsIez
-	 q1KAlGqpQjqLrWXTjoj6hNJBL0b9/rjxN5GVYcXxQoPig34HZ1Lh1X/1HLnqYk/o46
-	 SU3Il/d3WLL8gwGOom18M6lk5e9FUVEiDwhC5ifk=
+	b=RVTf525G01oqOtcmBG/vVBFCwPbepMadrLOuijfW3D1aI30ne4Fv/CX64lrMVo8Q4
+	 TGampONn6xhEQ9ve6bKNofloOgPdNrJ6E1KJJjqop5VL+Kjp8utecks33uZOX542Nq
+	 D+9RAaU4lrrc/eugnFm8byjBlgEPF+oow9VGKVlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Gan <ganboing@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/393] clk: analogbits: Fix incorrect calculation of vco rate delta
-Date: Wed,  5 Feb 2025 14:40:56 +0100
-Message-ID: <20250205134425.542286131@linuxfoundation.org>
+Subject: [PATCH 6.13 315/623] iommu/amd: Remove domain_alloc()
+Date: Wed,  5 Feb 2025 14:40:57 +0100
+Message-ID: <20250205134508.273837220@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo Gan <ganboing@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
+[ Upstream commit f9b80f941e0e68c3347c5d22a17a0f636a064e2c ]
 
-In wrpll_configure_for_rate() we try to determine the best PLL
-configuration for a target rate. However, in the loop where we try
-values of R, we should compare the derived `vco` with `target_vco_rate`.
-However, we were in fact comparing it with `target_rate`, which is
-actually after Q shift. This is incorrect, and sometimes can result in
-suboptimal clock rates. Fix it.
+IOMMU drivers should not be sensitive to the domain type, a paging domain
+should be created based only on the flags passed in, the same for all
+callers.
 
-Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
-Signed-off-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+AMD was using the domain_alloc() path to force VFIO into a v1 domain type,
+because v1 gives higher performance. However now that
+IOMMU_HWPT_ALLOC_PASID is present, and a NULL device is not possible,
+domain_alloc_paging_flags() will do the right thing for VFIO.
+
+When invoked from VFIO flags will be 0 and the amd_iommu_pgtable type of
+domain will be selected. This is v1 by default unless the kernel command
+line has overridden it to v2.
+
+If the admin is forcing v2 assume they know what they are doing so force
+it everywhere, including for VFIO.
+
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/2-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 082f1bcae8d1 ("iommu/amd: Fully decode all combinations of alloc_paging_flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/iommu.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
-index 09ca823563993..d8ae392959969 100644
---- a/drivers/clk/analogbits/wrpll-cln28hpc.c
-+++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
-@@ -291,7 +291,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
- 			vco = vco_pre * f;
- 		}
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 7e7246c49006a..96d87406f8946 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2386,25 +2386,6 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
+ 	return &domain->domain;
+ }
  
--		delta = abs(target_rate - vco);
-+		delta = abs(target_vco_rate - vco);
- 		if (delta < best_delta) {
- 			best_delta = delta;
- 			best_r = r;
+-static struct iommu_domain *amd_iommu_domain_alloc(unsigned int type)
+-{
+-	struct iommu_domain *domain;
+-	int pgtable = amd_iommu_pgtable;
+-
+-	/*
+-	 * Force IOMMU v1 page table when allocating
+-	 * domain for pass-through devices.
+-	 */
+-	if (type == IOMMU_DOMAIN_UNMANAGED)
+-		pgtable = AMD_IOMMU_V1;
+-
+-	domain = do_iommu_domain_alloc(type, NULL, 0, pgtable);
+-	if (IS_ERR(domain))
+-		return NULL;
+-
+-	return domain;
+-}
+-
+ static struct iommu_domain *
+ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
+ 				    const struct iommu_user_data *user_data)
+@@ -2881,7 +2862,6 @@ const struct iommu_ops amd_iommu_ops = {
+ 	.blocked_domain = &blocked_domain,
+ 	.release_domain = &release_domain,
+ 	.identity_domain = &identity_domain.domain,
+-	.domain_alloc = amd_iommu_domain_alloc,
+ 	.domain_alloc_paging_flags = amd_iommu_domain_alloc_paging_flags,
+ 	.domain_alloc_sva = amd_iommu_domain_alloc_sva,
+ 	.probe_device = amd_iommu_probe_device,
 -- 
 2.39.5
 
