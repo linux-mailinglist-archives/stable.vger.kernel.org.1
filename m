@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-113432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00265A29221
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13591A29236
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2D816BD75
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F6763A8B4F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D451FDA8B;
-	Wed,  5 Feb 2025 14:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3C318D65C;
+	Wed,  5 Feb 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/EbGoyv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdfkJQko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F218D656;
-	Wed,  5 Feb 2025 14:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A408915CD74;
+	Wed,  5 Feb 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766942; cv=none; b=H6n6E2+Ma2yHJlFj6n9s6+MTFJ66sBw9ZuOp6ja+yJzUAE6l3SABa7CYM9rsqn0JXwsCmFWFKFQzlcefrPF00orIJ3H/dYbfhlQ6FeDamgyBivAnLD2ts4adHvctdUkprNYoyZnhjZXmPy50G2D5KeWqPMWq//RNm9mTd9iqIvs=
+	t=1738766948; cv=none; b=Z7fa8lrdzO5cvvdJQnnHIgyRNpDc9rk4RmxF4lw2LDppbquLfT5eY/6Hlj1IgWUvhpv0OlD+XV1aQ3wxOcLjmn2mltzZhiprh5n2G5EhuSXYA4HYUXSHxGv94SshWeSKvA/KgLTaWJcVvSC4fM8KlS2oc5MRphAUPneKDQx5g2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766942; c=relaxed/simple;
-	bh=W36YvPwS1vTkGt6y1YU539yM4cOUAAtikAxKOCf0cYs=;
+	s=arc-20240116; t=1738766948; c=relaxed/simple;
+	bh=wbksHn0OOymS4v24xbjNcpERSE2CSU7Mq4azHieYeQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9D8lvXp6imYyOUXcfV5MmjpVO+aZ5LV/EfqVgB5fqaQUuuwcJhQrSI+oQlvF1Sboy+GwCayz4b/Uy+fdDpaBxPhQa3T5eO8KfEJnBhSpvgNGWrSXkhVmTsGu9LUhd+nUsTfRBO0Xdu/kmoIotYRQjdc/C3GYZI2bvIGK0zYyaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/EbGoyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1A9C4CED1;
-	Wed,  5 Feb 2025 14:49:01 +0000 (UTC)
+	 MIME-Version; b=Qh1ewBgxz2uSNsLPwLGHoOb6BFOqV/0iFWD3Sn2kxcfXIMMAbTnjU2Mv8nZlHuPO5nquwXIxxOLfTMCi04td0dPFpyEB8RGYkWQcs60IaSGRwcsMohZmYZbk+gY6VpWs4c8sUZwwbBcxdshlTVYgvASYQJVmHrmjorkzWei/vn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdfkJQko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127A7C4CED1;
+	Wed,  5 Feb 2025 14:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766941;
-	bh=W36YvPwS1vTkGt6y1YU539yM4cOUAAtikAxKOCf0cYs=;
+	s=korg; t=1738766948;
+	bh=wbksHn0OOymS4v24xbjNcpERSE2CSU7Mq4azHieYeQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/EbGoyvd3FJUTfuzLPZO37wAjlUYj1G0MVzcCD+Gu2Dzqnux/kKnkhZZwpmD2FNu
-	 akEi6jd/lMeJVcDpi3JTVcY4qQbrVlxFY0UYmkRVHtDtIKcwb9KP17879TBZp7BI+f
-	 mlwy3GvmsCEu73Acp6Y4NpRT0jqeLR5pOXN9Lht4=
+	b=KdfkJQko1NZlm6UxycTZdV9QsZ+crgUSvxSQWc1JBqGu0byMHCpsbI21QcF/pB6RK
+	 LOea0OTL0a+UH6g94k/4aD7wHTkmmE3M7Yp9MPfFiweVKTPHLMrtpIrrnMzWl7u0/P
+	 /Kjx+wDOy1JFBjNUMUM8LIcB0eNwK83sntXSgRwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 383/590] arm64: dts: mediatek: add per-SoC compatibles for keypad nodes
-Date: Wed,  5 Feb 2025 14:42:18 +0100
-Message-ID: <20250205134509.920255121@linuxfoundation.org>
+Subject: [PATCH 6.12 384/590] arm64: dts: qcom: sc8280xp: Fix interrupt type of camss interrupts
+Date: Wed,  5 Feb 2025 14:42:19 +0100
+Message-ID: <20250205134509.960631019@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,54 +68,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 6139d9e9e397dc9711cf10f8f548a8f9da3b5323 ]
+[ Upstream commit b08535cd41c27b4f32319b5bff754c9da6dc2205 ]
 
-The mt6779-keypad binding specifies using a compatible for the
-actual SoC before the generic MT6779 one.
+Qualcomm IP catalog says that all CAMSS interrupts are edge rising,
+fix it in the CAMSS device tree node for sc8280xp SoC.
 
-Fixes: a8013418d35c ("arm64: dts: mediatek: mt8183: add keyboard node")
-Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241225192631.25017-3-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 5994dd60753e ("arm64: dts: qcom: sc8280xp: camss: Add CAMSS block definition")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20241127122950.885982-5-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 3 ++-
- arch/arm64/boot/dts/mediatek/mt8365.dtsi | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 40 +++++++++++++-------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 0a6578aacf828..9cd5e0cef02a2 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1024,7 +1024,8 @@
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index 4debb4edaf3d1..b1e0e51a55829 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -3882,26 +3882,26 @@
+ 				    "vfe3",
+ 				    "csid3";
  
- 		keyboard: keyboard@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8183-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			interrupts = <GIC_SPI 186 IRQ_TYPE_EDGE_FALLING>;
- 			clocks = <&clk26m>;
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index 9c91fe8ea0f96..2bf8c9d02b6ee 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -449,7 +449,8 @@
- 		};
- 
- 		keypad: keypad@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8365-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			wakeup-source;
- 			interrupts = <GIC_SPI 124 IRQ_TYPE_EDGE_FALLING>;
+-			interrupts = <GIC_SPI 359 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 360 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 640 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 641 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 758 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 759 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 760 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 761 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 762 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 764 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 359 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 360 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 469 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 640 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 641 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 758 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 759 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 760 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 761 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 762 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 764 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "csid1_lite",
+ 					  "vfe_lite1",
+ 					  "csiphy3",
 -- 
 2.39.5
 
