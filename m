@@ -1,56 +1,68 @@
-Return-Path: <stable+bounces-113747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B62FA293D0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9D8A29012
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F813AB169
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0DB3A34F7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67513188736;
-	Wed,  5 Feb 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0083A7E792;
+	Wed,  5 Feb 2025 14:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxW1hxMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9d+FXZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E7C186E40;
-	Wed,  5 Feb 2025 15:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4051519AF;
+	Wed,  5 Feb 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768030; cv=none; b=VSHZC3dbb5CJP6ZpBu0okr/7c/NTzXMc4FkxsJ6wTxBcUVNQUMmfutQLY+fOI337r9Hz7B8QZ+IRckEHAUZuX0rrARgDcjSV+ATWO48/MXd3tM1EmfDQxXQ4nAF00Y5kA7Q/cAn6rtR/HuuArwxRjIZ03+t4AagmxTrlqwSDbv4=
+	t=1738765887; cv=none; b=jx0kQ27mgkyHN8jDOKXAPx+mpr5na+5XHvqbOq2ipMTA28O8l5cEAH1hPsaUp2Ygqqql9pSoT8n/TkKk3szbgkHqh31r3QbkyTCTpz6pPgxB7fDIWVB8LXCgIdfEsQnNWdettpCMCkhux3HqnBkJacRTJKiUS+j6PPpuKJSR6Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768030; c=relaxed/simple;
-	bh=TUJm2RecckECFCyFOx0OXDZostHE/Ec2bGzCTg12QEQ=;
+	s=arc-20240116; t=1738765887; c=relaxed/simple;
+	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErA7mbAuweD0RrcNND1kvZXrBjj4NaWpE3rRC47lQqjDP8aPTy02kStcOMZdjFQawp63dhdP/CW8xTxFJnPBE6VBkCYxPHES50fb4i+5qUJ/jrA4dSqpvxcOtSKp6X0CP9ZaQt5Dtp47Tk9P44aUUtyPQbB+2UxyEkiAGxmlUN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxW1hxMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CFEC4CEDD;
-	Wed,  5 Feb 2025 15:07:09 +0000 (UTC)
+	 MIME-Version; b=qRHZT2U9G3/nuoqbKWN56Zi0t3Y9mdFbrniyt5u1BvTtjZKqYOn7LWfG/cFTUZerb4dv7xdxqxT4X036eAB1NGPD0sJslOrngqistlkjGu2zjH1UK3msOYOSAVi7/BEDv/x/HfXrcPskvwDKpVWgZX1AuvsT9NPuucO9H5uFTu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9d+FXZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6C0C4CED1;
+	Wed,  5 Feb 2025 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768030;
-	bh=TUJm2RecckECFCyFOx0OXDZostHE/Ec2bGzCTg12QEQ=;
+	s=korg; t=1738765887;
+	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxW1hxMzkxKyp9QyV4B8jieKWuq1vfBefwKQuVSDj8sY68AtJsO/KWWzpltMGKEht
-	 qu9fpTD9vxG+LLJMsqI+QeLwumD87Z0IXzTWqk7wULe5/lYs3+nkwgHmNK6Pe2Pd79
-	 W/E0D0+E6/RH/s5zvI/CWqESd2YP+dIS228YFVp4=
+	b=X9d+FXZrRh8SRtZt5l77axtbpK/UpnirP/YGmW0VcLN2Fv+YZ3+9tRA36J+yXg93J
+	 rXyZB58EAMg4VnA+S2j2kuwcOpVjkM7gq9tKAqVVThOWQSPrfzppAIGWEcgT+YQdND
+	 UARy21Y+KJqlr6P5jt1/e8RqDYEzrxjbbxFDuJ+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 486/623] tty: mips_ejtag_fdc: fix one more u8 warning
+Subject: [PATCH 6.6 309/393] module: Extend the preempt disabled section in dereference_symbol_descriptor().
 Date: Wed,  5 Feb 2025 14:43:48 +0100
-Message-ID: <20250205134514.811386306@linuxfoundation.org>
+Message-ID: <20250205134432.131530756@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +74,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 6dd1de91e7a62bfd3878992c1db6e1d443022c76 ]
+[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
 
-The LKP robot complains about:
-   drivers/tty/mips_ejtag_fdc.c:1224:31: error: incompatible pointer types passing 'const char *[1]' to parameter of type 'const u8 **' (aka 'const unsigned char **')
+dereference_symbol_descriptor() needs to obtain the module pointer
+belonging to pointer in order to resolve that pointer.
+The returned mod pointer is obtained under RCU-sched/ preempt_disable()
+guarantees and needs to be used within this section to ensure that the
+module is not removed in the meantime.
 
-Fix this by turning the missing pieces (fetch from kgdbfdc_wbuf) to u8
-too. Note the filling part (kgdbfdc_write_char()) already receives and
-stores u8 to kgdbfdc_wbuf.
+Extend the preempt_disable() section to also cover
+dereference_module_function_descriptor().
 
-Fixes: ce7cbd9a6c81 ("tty: mips_ejtag_fdc: use u8 for character pointers")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501101327.oGdWbmuk-lkp@intel.com/
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20250110115228.603980-1-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/mips_ejtag_fdc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/kallsyms.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/mips_ejtag_fdc.c b/drivers/tty/mips_ejtag_fdc.c
-index afbf7738c7c47..58b28be63c79b 100644
---- a/drivers/tty/mips_ejtag_fdc.c
-+++ b/drivers/tty/mips_ejtag_fdc.c
-@@ -1154,7 +1154,7 @@ static char kgdbfdc_rbuf[4];
+diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
+index c3f075e8f60cb..1c6a6c1704d8d 100644
+--- a/include/linux/kallsyms.h
++++ b/include/linux/kallsyms.h
+@@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
  
- /* write buffer to allow compaction */
- static unsigned int kgdbfdc_wbuflen;
--static char kgdbfdc_wbuf[4];
-+static u8 kgdbfdc_wbuf[4];
+ 	preempt_disable();
+ 	mod = __module_address((unsigned long)ptr);
+-	preempt_enable();
  
- static void __iomem *kgdbfdc_setup(void)
- {
-@@ -1215,7 +1215,7 @@ static int kgdbfdc_read_char(void)
- /* push an FDC word from write buffer to TX FIFO */
- static void kgdbfdc_push_one(void)
- {
--	const char *bufs[1] = { kgdbfdc_wbuf };
-+	const u8 *bufs[1] = { kgdbfdc_wbuf };
- 	struct fdc_word word;
- 	void __iomem *regs;
- 	unsigned int i;
+ 	if (mod)
+ 		ptr = dereference_module_function_descriptor(mod, ptr);
++	preempt_enable();
+ #endif
+ 	return ptr;
+ }
 -- 
 2.39.5
 
