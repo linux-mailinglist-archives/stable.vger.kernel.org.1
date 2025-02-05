@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDD9A2904B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B78A28CC4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8612C16A43B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5081883A9C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8662B14B959;
-	Wed,  5 Feb 2025 14:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F831494DF;
+	Wed,  5 Feb 2025 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHuNRI3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+FLcwkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4193D151988;
-	Wed,  5 Feb 2025 14:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEA8FC0B;
+	Wed,  5 Feb 2025 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766032; cv=none; b=sRkbbjAykVTvYwM8iEkew3RxrdoyHOOiNCmw83BuiNe3vrpLhrp3xINutvgtvYKToLNRW2modklUdD7LyqgwHinAz5WWz8SPhAyYssQWcL2ETYpngJwC9C85WVEcZ3ldmF4r8cVwgEBAjnr4FqsuGxaqzFr1Gibd/uCN6BZQ9fM=
+	t=1738763622; cv=none; b=drf4unqSNHGRWA1uSrRTfp7glhB8rGgEBicR54uK9uIUYyWOBRgwwZFysJEvZJRU1/YAvcH/p6vpLJ40pKATvhZtXsbc0GjjOYT5xjQ6W6UQyNnhdqFEsKk+j8RsEUWLKvzL8l2XCgdSaVk68E9lgEfFWtV9xjUAA91KbqsrChY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766032; c=relaxed/simple;
-	bh=l8w4JU8r6TrRXkczLp7KfW7LKD1cJ89F2bgBwIzd3UA=;
+	s=arc-20240116; t=1738763622; c=relaxed/simple;
+	bh=NaUzkvJb19fGHoflLuFmWk+SHRJuK4nqmyg8tFPu/FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rmy2mtDs6oCSz0+rMPos3J5Sp4Zug8mTu0cIRP2w8EWorvQ827iFqkdrvFAGXFa4Q1JILkgk3tdCvgWDQTJk9wWK18DMdx7eDsSi6b9OaVJd/9IeMdnXfKFhYI3rxpU0zyLhsT4ZnQ3yUaWoizBloZOKMS/Og+zLBs4tMUsBows=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHuNRI3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45094C4CED1;
-	Wed,  5 Feb 2025 14:33:51 +0000 (UTC)
+	 MIME-Version; b=HpH9+sS9/bb+gZ2C56q4FjpROpS8Kc/wh7CdC2urAv6tage8wetci8jBvROMAK0YgtNHrmuvAxADXQIrksPMm1oiXa+NWrKvyHdP5ZjhIgYhL9o3ILC+odd3WG1yybwjh+CBwXOaRll4GhBkFQX9+6VgXm7YTUfsc30HEkfYia8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+FLcwkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11508C4CED1;
+	Wed,  5 Feb 2025 13:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766031;
-	bh=l8w4JU8r6TrRXkczLp7KfW7LKD1cJ89F2bgBwIzd3UA=;
+	s=korg; t=1738763622;
+	bh=NaUzkvJb19fGHoflLuFmWk+SHRJuK4nqmyg8tFPu/FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHuNRI3rrimNkSj2E+SYv5mANFKnhvj7CiZfFWB09xYiSW2KcDh62TKoO4axaO2A+
-	 yYu/yADQadzbqLSLTq0FRekHwYVU4Vjlwl3oSHl/fv5fHb4LbID7Uh5ol7O+aDH4eK
-	 sgIo3rYRaQv2VzaC2g67u1jvOkIH8VZ54Pa3rI1A=
+	b=0+FLcwkOcUBgANMfGMlJYA/sHm2uxgmIvyPFTH0lXb7GlNRa/fQLccNYlQsbQFM4I
+	 7XsRleoZEP9VcRarboyfFd/e35l2d5OnIbTPWIt9dftdCmnuM83sV4QiheX9dv0fOS
+	 1YN3N+3mfZNmWuRj7V8ilq10gYB2N0L0fE8Iv4iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinas Rasheed <srasheed@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 236/623] octeon_ep_vf: remove firmware stats fetch in ndo_get_stats64
-Date: Wed,  5 Feb 2025 14:39:38 +0100
-Message-ID: <20250205134505.254981567@linuxfoundation.org>
+Subject: [PATCH 6.6 060/393] dt-bindings: mmc: controller: clarify the address-cells description
+Date: Wed,  5 Feb 2025 14:39:39 +0100
+Message-ID: <20250205134422.591994862@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shinas Rasheed <srasheed@marvell.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit cc0e510cc89fe0a6479203bc20cd964962dc6a43 ]
+[ Upstream commit b2b8e93ec00b8110cb37cbde5400d5abfdaed6a7 ]
 
-The firmware stats fetch call that happens in ndo_get_stats64()
-is currently not required, and causes a warning to issue.
+The term "slot ID" has nothing to do with the SDIO function number
+which is specified in the reg property of the subnodes, rephrase
+the description to be more accurate.
 
-The corresponding warn log for the PF is given below:
-
-[  123.316837] ------------[ cut here ]------------
-[  123.316840] Voluntary context switch within RCU read-side critical section!
-[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
-[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
-[  123.316947] Call trace:
-[  123.316949]  rcu_note_context_switch+0x2e4/0x300
-[  123.316952]  __schedule+0x84/0x584
-[  123.316955]  schedule+0x38/0x90
-[  123.316956]  schedule_timeout+0xa0/0x1d4
-[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
-[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
-[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
-[  123.316975]  dev_get_stats+0x4c/0x114
-[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
-[  123.316980]  dev_seq_show+0x1c/0x40
-[  123.316982]  seq_read_iter+0x3cc/0x4e0
-[  123.316985]  seq_read+0xc8/0x110
-[  123.316987]  proc_reg_read+0x9c/0xec
-[  123.316990]  vfs_read+0xc8/0x2ec
-[  123.316993]  ksys_read+0x70/0x100
-[  123.316995]  __arm64_sys_read+0x20/0x30
-[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
-[  123.317000]  do_el0_svc+0xb4/0xd0
-[  123.317002]  el0_svc+0xe8/0x1f4
-[  123.317005]  el0t_64_sync_handler+0x134/0x150
-[  123.317006]  el0t_64_sync+0x17c/0x180
-[  123.317008] ---[ end trace 63399811432ab69b ]---
-
-Fixes: c3fad23cdc06 ("octeon_ep_vf: add support for ndo ops")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Link: https://patch.msgid.link/20250117094653.2588578-4-srasheed@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f9b7989859dd ("dt-bindings: mmc: Add YAML schemas for the generic MMC options")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Message-ID: <20241128-topic-amlogic-arm32-upstream-bindings-fixes-convert-meson-mx-sdio-v4-1-11d9f9200a59@linaro.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 8 --------
- 1 file changed, 8 deletions(-)
+ Documentation/devicetree/bindings/mmc/mmc-controller.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 7e6771c9cdbba..4c699514fd57a 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -799,14 +799,6 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 	stats->tx_bytes = tx_bytes;
- 	stats->rx_packets = rx_packets;
- 	stats->rx_bytes = rx_bytes;
--	if (!octep_vf_get_if_stats(oct)) {
--		stats->multicast = oct->iface_rx_stats.mcast_pkts;
--		stats->rx_errors = oct->iface_rx_stats.err_pkts;
--		stats->rx_dropped = oct->iface_rx_stats.dropped_pkts_fifo_full +
--				    oct->iface_rx_stats.err_pkts;
--		stats->rx_missed_errors = oct->iface_rx_stats.dropped_pkts_fifo_full;
--		stats->tx_dropped = oct->iface_tx_stats.dropped;
--	}
- }
+diff --git a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+index 58ae298cd2fcf..23884b8184a9d 100644
+--- a/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
++++ b/Documentation/devicetree/bindings/mmc/mmc-controller.yaml
+@@ -25,7 +25,7 @@ properties:
+   "#address-cells":
+     const: 1
+     description: |
+-      The cell is the slot ID if a function subnode is used.
++      The cell is the SDIO function number if a function subnode is used.
  
- /**
+   "#size-cells":
+     const: 0
 -- 
 2.39.5
 
