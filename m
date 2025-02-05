@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97D5A2904A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DEAA28D63
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06B53A9E25
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3A1188705B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AF315FA7B;
-	Wed,  5 Feb 2025 14:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C467814F9FD;
+	Wed,  5 Feb 2025 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8QdJQz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXl+yOeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA6115B984;
-	Wed,  5 Feb 2025 14:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8078114A4E9;
+	Wed,  5 Feb 2025 13:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765997; cv=none; b=lzcnW1x+Hg184PSSOV806vOyGOSvrol9V9HZg1Yce5PIGE7IqEULRrB17ZFFOPf8qJnpFW3uqbY3GZO/TwrgpflC2l07l07BvC6Z2t5Kv3BcQ3f+7FAdDXDlEqpl1SNOsutWWU0eedb2zA7g8r+PPdDf339T3YQY7e2pouQMGtk=
+	t=1738763987; cv=none; b=IaWPWdsf6n9ubVoIoj4gdzTl1i5aRRsRkPo3Unn2/6n6Kj04CXSABKCuclXiQOxv9oK31raaVTFcHF3wzZrylh6OI/93pGRf5o2iBY5POrmWsVdRTE6OzjIOTnsjOmVHwY4wr1GlOzB+og+ovs+kDqX5+rmQzCLsNkbhlbR40ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765997; c=relaxed/simple;
-	bh=tK+TmaycY9PiTSuFU/EmLT0+j6ceeDNyT5bzjcKANUA=;
+	s=arc-20240116; t=1738763987; c=relaxed/simple;
+	bh=NRtOCY3QQt1DhvyPtpuWMQZ/l5GZbm7UpfkVbxoAjnY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tc+Y8Xiy0jaD+NcChlaovixGgy8wRiN6tZS9OUUvbm59ZdnrZYx2eUYROmDS+2joklvBZOgyRwPt6NPnx47r8K1ke9cp4e5YDFjlMoGlqGAiS8oq+SV1guvQfvo1qWb0Gomn/lP/avEa7Nh6skMNN0wmfbSplp5rMJ7ynEdy+j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8QdJQz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB056C4CED1;
-	Wed,  5 Feb 2025 14:33:16 +0000 (UTC)
+	 MIME-Version; b=OpSTByhrkdQIm7kppnr0JrDHc5Y6Yag+riX0o3xUrG3vhEx3mX+miUxeCZqFuxnGy5iMzHVc2HI40FMVNWubIfWq5Nzb6pPbMSnr7ZqQFwE7oZ1oG8diCiEbB3jazCYWm5EY24vhjzELALRJ688bcLC5Rx1Tq5v0i0O+0hX3dKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXl+yOeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D75C4CED6;
+	Wed,  5 Feb 2025 13:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765997;
-	bh=tK+TmaycY9PiTSuFU/EmLT0+j6ceeDNyT5bzjcKANUA=;
+	s=korg; t=1738763987;
+	bh=NRtOCY3QQt1DhvyPtpuWMQZ/l5GZbm7UpfkVbxoAjnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8QdJQz3XFCaglcp1+OTpCiT1TY292xiZUFidh740Cf2wCc8g9J8qkC9D+B8ldFH4
-	 g4dUy/uOcAJGD/DMElLSCHdUKSaWF0psn+Fxa6ybc2gHbgZWaWoeYa19oQqmXbBSO1
-	 Q8pziijlINUwnNd5TltI/aJzC5v0SuzcOjDx7nHs=
+	b=NXl+yOeOHQ5L+y6/YzTPH3XXLnEDW91IoTPuvew0dkUt3Pp+aoGfnLAt6t2IPRssU
+	 OesB8YR/6RgaJg8zAHXOXPxKbnfZ0fY6eRAmIhqtMxgUzDVkbOORORjw7J+ZIvu6la
+	 ifeLUkZsvnsNgwi+jUZo/yXU3srgMTiSn7VZcK1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Andy Strohman <andrew@andrewstrohman.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 274/590] ASoC: Intel: avs: Fix the minimum firmware version numbers
+Subject: [PATCH 6.6 110/393] wifi: mac80211: fix tid removal during mesh forwarding
 Date: Wed,  5 Feb 2025 14:40:29 +0100
-Message-ID: <20250205134505.756165310@linuxfoundation.org>
+Message-ID: <20250205134424.504799089@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Andy Strohman <andrew@andrewstrohman.com>
 
-[ Upstream commit dbda5c35b88794f6e5efe1b5b20044b0b3a340d4 ]
+[ Upstream commit 3aaa1a5a9a2ceeb32afa6ea4110a92338a863c33 ]
 
-For few TGL-based platforms the minor version number for AudioDSP
-firmware is incorrect forcing users to utilize ignore_fw_version module
-parameter.
+With change (wifi: mac80211: fix receiving A-MSDU
+frames on mesh interfaces), a non-zero TID assignment
+is lost during slow path mesh forwarding.
 
-Fixes: 5acb19ecd198 ("ASoC: Intel: avs: TGL-based platforms support")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250109122216.3667847-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Prior to this change, ieee80211_rx_h_mesh_fwding()
+left the TID intact in the header.
+
+As a result of this header corruption, packets belonging
+to non-zero TIDs will get treating as belonging
+TID 0 by functions such as ieee80211_get_tid().
+While this miscategorization by itself is an
+issue, there are additional ramifications
+due to the fact that skb->priority still reflects
+the mesh forwarded packet's ingress (correct) TID.
+
+The mt7915 driver inspects the TID recorded within
+skb->priority and relays this to the
+hardware/radio during TX. The radio firmware appears to
+react to this by changing the sequence control
+header, but it does not also ensure/correct the TID in
+the QoS control header. As a result, the receiver
+will see packets with sequence numbers corresponding
+to the wrong TID. The receiver of the forwarded
+packet will see TID 0 in QoS control but a sequence number
+corresponding to the correct (different) TID in sequence
+control. This causes data stalls for TID 0 until
+the TID 0 sequence number advances past what the receiver
+believes it should be due to this bug.
+
+Mesh routing mpath changes cause a brief transition
+from fast path forwarding to slow path forwarding.
+Since this bug only affects the slow path forwarding,
+mpath changes bring opportunity for the bug to be triggered.
+In the author's case, he was experiencing TID 0 data stalls
+after mpath changes on an intermediate mesh node.
+
+These observed stalls may be specific
+to mediatek radios. But the inconsistency between
+the packet header and skb->priority may cause problems
+for other drivers as well. Regardless if this causes
+connectivity issues on other radios, this change is
+necessary in order transmit (forward) the packet on the
+correct TID and to have a consistent view a packet's TID
+within mac80211.
+
+Fixes: 986e43b19ae9 ("wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces")
+Signed-off-by: Andy Strohman <andrew@andrewstrohman.com>
+Link: https://patch.msgid.link/20250107104431.446775-1-andrew@andrewstrohman.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/mac80211/rx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index 73d4bde9b2f78..82839d0994ee3 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -829,10 +829,10 @@ static const struct avs_spec jsl_desc = {
- 	.hipc = &cnl_hipc_spec,
- };
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 604863cebc198..5eb233f619817 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2957,6 +2957,7 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
+ 	}
  
--#define AVS_TGL_BASED_SPEC(sname)		\
-+#define AVS_TGL_BASED_SPEC(sname, min)		\
- static const struct avs_spec sname##_desc = {	\
- 	.name = #sname,				\
--	.min_fw_version = { 10,	29, 0, 5646 },	\
-+	.min_fw_version = { 10,	min, 0, 5646 },	\
- 	.dsp_ops = &avs_tgl_dsp_ops,		\
- 	.core_init_mask = 1,			\
- 	.attributes = AVS_PLATATTR_IMR,		\
-@@ -840,11 +840,11 @@ static const struct avs_spec sname##_desc = {	\
- 	.hipc = &cnl_hipc_spec,			\
- }
+ 	IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, fwded_frames);
++	ieee80211_set_qos_hdr(sdata, fwd_skb);
+ 	ieee80211_add_pending_skb(local, fwd_skb);
  
--AVS_TGL_BASED_SPEC(lkf);
--AVS_TGL_BASED_SPEC(tgl);
--AVS_TGL_BASED_SPEC(ehl);
--AVS_TGL_BASED_SPEC(adl);
--AVS_TGL_BASED_SPEC(adl_n);
-+AVS_TGL_BASED_SPEC(lkf, 28);
-+AVS_TGL_BASED_SPEC(tgl, 29);
-+AVS_TGL_BASED_SPEC(ehl, 30);
-+AVS_TGL_BASED_SPEC(adl, 35);
-+AVS_TGL_BASED_SPEC(adl_n, 35);
- 
- static const struct pci_device_id avs_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_SKL_LP, &skl_desc) },
+ rx_accept:
 -- 
 2.39.5
 
