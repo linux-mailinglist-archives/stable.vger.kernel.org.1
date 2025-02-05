@@ -1,129 +1,90 @@
-Return-Path: <stable+bounces-113945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE840A2953E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:51:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE1BA2957F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B021884CA9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B1893A2E85
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658AB191F66;
-	Wed,  5 Feb 2025 15:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51B31946B1;
+	Wed,  5 Feb 2025 15:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="qaKuTW7g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u+SZtybM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1693619259E;
-	Wed,  5 Feb 2025 15:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0F918FDDE;
+	Wed,  5 Feb 2025 15:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738770670; cv=none; b=Yh9tHO49Y5m4x/TkTRheQJ0RFjLGwT6sRFscv3wnyuXU8qi8l4Kww2eXMyQzrd7fLgKRmNAF4MHCKcTXWUl6n42RCxff95J+m4CfZ9Xz7K+DGJygmqB5s7YCH7eb0YxM5dolrMhP5Rd2gsPGcMLzOmERMXeTwtMvSk53Z2tr03Q=
+	t=1738770995; cv=none; b=PfFl+Sn7VYjzbf9ceuM/oBetehxAdgS35/HBsfU4xarQ1oCKlip+YvRnh4yfoK0fTJ2ici8o0WqsCRMrqrQWjCxWMgNuauyLDeZuzHeY/PUnnK3UIVSh0wk2mUtiyIbNxLq8/V+6fCyZBfdcPHrDYGGNcspABo3XY4swWgM/FJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738770670; c=relaxed/simple;
-	bh=NhPpYHkJzdx9mLMRYJYHdoEtTD8D6E2oHbhTAtJyPS4=;
-	h=Date:From:To:Cc:Message-Id:In-Reply-To:References:Mime-Version:
-	 Content-Type:Subject; b=Mcx7eoS7JP4VsVSyJWOIHwyJPcAVUiU2fe0p6HFtZvZ+qvz+auXzyxN/+ZNMyW9T0LToOiHaYig6hXxQwl6/y744VnQlvqdJcr17ieQK7W4OeUclx4VMlwD7FH/bwIaFtFU+P35K3N5KB9L4hXO86vKiDC24oYVFxe5WGhxwaWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=qaKuTW7g; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=yZg+oI2Ua6zX+3n+8KZ5jmQeWW9OzEWiVA+W0PmqN4g=; b=qaKuTW7g9kQeRBeSs7oa1DsKfy
-	RUuRDNQLfDkPUEcGFT6KRW7TMc+5cljAnwE/rqa8goG1GxP68+wKPx64KNjQhZrApLEbWUml611vv
-	eFNsIPLJB3lol1HPsmxrGvlpAoLDUXgAAoCNXMTKAkl1qugWoBvjnzEUFW2BT3+1T9mY=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41000 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1tfhg2-0000am-Jv; Wed, 05 Feb 2025 10:50:59 -0500
-Date: Wed, 5 Feb 2025 10:50:57 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Alistair Francis
- <alistair@alistair23.me>, Maxime Ripard <mripard@kernel.org>,
- =?ISO-8859-1?Q?Myl=E8ne?= Josserand <mylene.josserand@bootlin.com>, Hugo
- Villeneuve <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <20250205105057.3ec9fe8c8935c3a72061edad@hugovil.com>
-In-Reply-To: <Z6OE0IRgaovHMf34@google.com>
-References: <20250204190100.2210863-1-hugo@hugovil.com>
-	<Z6OE0IRgaovHMf34@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738770995; c=relaxed/simple;
+	bh=MFQF50d7FG+/Q6NzXwHuucLTVQVAWALAr+y3xBK51Kg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CltdaFdTPE+n3sP29GNTXv9KPSaMhA0NTwqZZO7zemGNbyhjXeanPS68KocN3fsTfrNufsS3UqbhkrGT9NXeMc8bcsrWAcmX7+WE2F/eojg1nDHpyPI59pC2HeKwu4UeR/T61IinOu+B/DLE4cQUULnJnBeqDOgqZIV8gMOwGUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u+SZtybM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D771CC4CEE4;
+	Wed,  5 Feb 2025 15:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738770994;
+	bh=MFQF50d7FG+/Q6NzXwHuucLTVQVAWALAr+y3xBK51Kg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u+SZtybMGB+SDMfJiK/bnGwJ5tO/uVoPdwrNcN6eQ5FIBLWl+ObbL66Z5zUn+9oUi
+	 wpIly07ezw7YN0ePL+zfFUMKiUkGkktH+9i/4NhrtrS+0301zi+eaTaESpCasb3Lrz
+	 suPBI20beTOlDyn7Oj/pf3a513RtWZwWweBXafeWPYKBW1U6yuNNaw19Pbz+KPQziN
+	 C650kkcocJnYihrlFXMt63XQNxBtgzzvdw9z5GGydCLyxJyq6/YOwLXK2aEFVH/ENG
+	 rXs+FVYhOMLjgrXSYXX3pJ7D360R/p/gUy8+6B7KWb4++w2lVW5Y544I4TaGPI7Cvt
+	 64w4Ug0K+5c8A==
+Date: Wed, 5 Feb 2025 07:56:34 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: xfs-stable@lists.linux.dev, linux-xfs@vger.kernel.org,
+	syzbot+3126ab3db03db42e7a31@syzkaller.appspotmail.com,
+	eflorac@intellique.com, hch@lst.de, cem@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCHSET RFC 6.12] xfs: bug fixes for 6.12.y LTS
+Message-ID: <20250205155634.GG21808@frogsfrogsfrogs>
+References: <173869499323.410229.9898612619797978336.stgit@frogsfrogsfrogs>
+ <2025020556-bagful-cosmos-2a72@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -2.8 NICE_REPLY_A Looks like a legit reply (A)
-Subject: Re: [PATCH] Input: cyttsp5 - ensure minimum reset pulse width
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025020556-bagful-cosmos-2a72@gregkh>
 
-On Wed, 5 Feb 2025 07:33:36 -0800
-Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
-
-> On Tue, Feb 04, 2025 at 02:01:00PM -0500, Hugo Villeneuve wrote:
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On Wed, Feb 05, 2025 at 06:55:19AM +0100, Greg KH wrote:
+> On Tue, Feb 04, 2025 at 10:51:15AM -0800, Darrick J. Wong wrote:
+> > Hi all,
 > > 
-> > The current reset pulse width is measured to be 5us on a
-> > Renesas RZ/G2L SOM. The manufacturer's minimum reset pulse width is
-> > specified as 10us.
+> > Here's a bunch of bespoke hand-ported bug fixes for 6.12 LTS.
 > > 
-> > Extend reset pulse width to make sure it is long enough on all platforms.
+> > If you're going to start using this code, I strongly recommend pulling
+> > from my git trees, which are linked below.
 > > 
-> > Also reword confusing comments about reset pin assertion.
-> > 
-> > Fixes: 5b0c03e24a06 ("Input: Add driver for Cypress Generation 5 touchscreen")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > ---
-> >  drivers/input/touchscreen/cyttsp5.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/input/touchscreen/cyttsp5.c b/drivers/input/touchscreen/cyttsp5.c
-> > index eafe5a9b8964..bb09e84d0e92 100644
-> > --- a/drivers/input/touchscreen/cyttsp5.c
-> > +++ b/drivers/input/touchscreen/cyttsp5.c
-> > @@ -870,13 +870,16 @@ static int cyttsp5_probe(struct device *dev, struct regmap *regmap, int irq,
-> >  	ts->input->phys = ts->phys;
-> >  	input_set_drvdata(ts->input, ts);
-> >  
-> > -	/* Reset the gpio to be in a reset state */
-> > +	/* Assert gpio to be in a reset state */
-> >  	ts->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-> >  	if (IS_ERR(ts->reset_gpio)) {
-> >  		error = PTR_ERR(ts->reset_gpio);
-> >  		dev_err(dev, "Failed to request reset gpio, error %d\n", error);
-> >  		return error;
-> >  	}
-> > +
-> > +	fsleep(1000); /* Ensure long-enough reset pulse (minimum 10us). */
-> > +
+> > With a bit of luck, this should all go splendidly.
+> > Comments and questions are, as always, welcome.
 > 
-> If the manufacturer specified that 10us is enough why do we want to wait
-> 100 times longer?
+> Should we take these into the next stable release, or do you want us to
+> wait a bit?
 
-Hi,
-10us would do fine. I simply put 1ms because it is then much easier to
-see the reset pulse on an oscilloscope when correlating it
-with other signals.
+Let's wait a day or two to see if anyone has objections, and then I'll
+send this series again without the RFC tag.  Already I think I see that
+the first patch needs a cc:stable tag to capture the version.
 
-Hugo.
+--D
 
-
--- 
-Hugo Villeneuve
+> thanks,
+> 
+> greg k-h
+> 
 
