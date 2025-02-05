@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-113745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20B5A293F6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFF5A2940C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:19:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAFE7188F1F1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F17188FF25
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E72917C79;
-	Wed,  5 Feb 2025 15:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DFC16DC3C;
+	Wed,  5 Feb 2025 15:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4e9oAiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdn9BNRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB5CDF59;
-	Wed,  5 Feb 2025 15:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F191519BF;
+	Wed,  5 Feb 2025 15:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768018; cv=none; b=RlU5Fd+Llt1oS5Hjf0kqKXi0FZCneoZRSOJHQbtDFydj5NB5cgWyXOg+YPLl1McazIjNwCYpsIEmvEESGn3+r2p6UHmobKzHtwvetA7ECf+o+uOB502atUf8cfLm0TNPcrlpAZPWSSo2SNJbEO1YDwMQOC6qYFO6aWxdqYTcXes=
+	t=1738768060; cv=none; b=XZKRl6PgMY+Ji9zB1qby7/3Q69OiP58EjlD5yfqS7Jslefy7gTXxR6ebQWL6VsBYJTd2pGPc+Wf3JQyay2h7I12JGHDsJ8OKvRDz7abKgGzau8H586aiz3pG0kex0wUV8l49ISjAgFgq1s7VN5rhqClYIbc4N5L0n22hHTva15E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768018; c=relaxed/simple;
-	bh=TUJynldOELTqpSc4U8l4QAfO2VzLRobPdPFownAFae4=;
+	s=arc-20240116; t=1738768060; c=relaxed/simple;
+	bh=4GGV5UA1aoq/dXIBr+P2suvL4R2cngJAU/QPSVPKRHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igd3Davz5o1qapCbyjfrKVTFrRbdUlzluBrMzVmNJhIx9wriDNSZ3HF0qsKAb9901VYD6HODS87reMnhWSp8gbCb3ekTHhErv7oXCUq7wTgjwxf4lRZYa6jr2eDVvDvzQo5QXazFPWAeE4MIuO4P9dEB4pqheAfPBfUAtCOnroo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4e9oAiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561BAC4CED1;
-	Wed,  5 Feb 2025 15:06:57 +0000 (UTC)
+	 MIME-Version; b=DhHXnonHPjRJwNGlUjdmVeP3SkgVarckH3Cwo0bJZjuKRCs1krcippqeEYFT8MHdsXzdHAPoT4Cqbv2dQ8jRyCMoF77i5JsT0NUWBe5tM+mjTbW5GM4M4Dh3zNXVWNwl32lWXXJ0zLRQ34tr/zGlnvYQvZkntetzboYEmiHsd0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdn9BNRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FC6C4CED1;
+	Wed,  5 Feb 2025 15:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768017;
-	bh=TUJynldOELTqpSc4U8l4QAfO2VzLRobPdPFownAFae4=;
+	s=korg; t=1738768060;
+	bh=4GGV5UA1aoq/dXIBr+P2suvL4R2cngJAU/QPSVPKRHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4e9oAiPFveqNEPiCLq6CwhF3POnC22UbD9TsMkJqCUo5WswldcGr7X4KE4BTuXxk
-	 sSAQFbHLA/Pzxn2fwYkjnpT8VjjbCnIshTW0es3gyhv7FMG/T8TZanfxgEsrhVMRFP
-	 GOM4E9EOiRqsBxt0K+DzJ9PqkRZrdx5ax7fEEQcY=
+	b=gdn9BNROhe1Qdol86mPkxIimC1S3Zns2HKJNbj1a3V6swefnkincHpfuCbEMqQ/o8
+	 A8gLA4JhGUzQvoHSc19YDulHbJT7jG4fxh8TPySAVIH6LXiTGK4fDPi025BNHwhM6k
+	 SlLOVDjoa5SDIdRGZwNjh8acBVYNkESHXZwzxcms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 485/623] driver core: class: Fix wild pointer dereferences in API class_dev_iter_next()
-Date: Wed,  5 Feb 2025 14:43:47 +0100
-Message-ID: <20250205134514.771679052@linuxfoundation.org>
+Subject: [PATCH 6.13 490/623] NFSv4.2: mark OFFLOAD_CANCEL MOVEABLE
+Date: Wed,  5 Feb 2025 14:43:52 +0100
+Message-ID: <20250205134514.963069318@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,73 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Olga Kornievskaia <okorniev@redhat.com>
 
-[ Upstream commit e128f82f7006991c99a58114f70ef61e937b1ac1 ]
+[ Upstream commit 668135b9348c53fd205f5e07d11e82b10f31b55b ]
 
-There are a potential wild pointer dereferences issue regarding APIs
-class_dev_iter_(init|next|exit)(), as explained by below typical usage:
+OFFLOAD_CANCEL should be marked MOVEABLE for when we need to move
+tasks off a non-functional transport.
 
-// All members of @iter are wild pointers.
-struct class_dev_iter iter;
-
-// class_dev_iter_init(@iter, @class, ...) checks parameter @class for
-// potential class_to_subsys() error, and it returns void type and does
-// not initialize its output parameter @iter, so caller can not detect
-// the error and continues to invoke class_dev_iter_next(@iter) even if
-// @iter still contains wild pointers.
-class_dev_iter_init(&iter, ...);
-
-// Dereference these wild pointers in @iter here once suffer the error.
-while (dev = class_dev_iter_next(&iter)) { ... };
-
-// Also dereference these wild pointers here.
-class_dev_iter_exit(&iter);
-
-Actually, all callers of these APIs have such usage pattern in kernel tree.
-Fix by:
-- Initialize output parameter @iter by memset() in class_dev_iter_init()
-  and give callers prompt by pr_crit() for the error.
-- Check if @iter is valid in class_dev_iter_next().
-
-Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250105-class_fix-v6-1-3a2f1768d4d4@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c975c2092657 ("NFS send OFFLOAD_CANCEL when COPY killed")
+Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/class.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/nfs/nfs42proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/class.c b/drivers/base/class.c
-index 582b5a02a5c41..d57f277978dc9 100644
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -323,8 +323,12 @@ void class_dev_iter_init(struct class_dev_iter *iter, const struct class *class,
- 	struct subsys_private *sp = class_to_subsys(class);
- 	struct klist_node *start_knode = NULL;
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index 531c9c20ef1d1..9f0d69e652644 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -552,7 +552,7 @@ static int nfs42_do_offload_cancel_async(struct file *dst,
+ 		.rpc_message = &msg,
+ 		.callback_ops = &nfs42_offload_cancel_ops,
+ 		.workqueue = nfsiod_workqueue,
+-		.flags = RPC_TASK_ASYNC,
++		.flags = RPC_TASK_ASYNC | RPC_TASK_MOVEABLE,
+ 	};
+ 	int status;
  
--	if (!sp)
-+	memset(iter, 0, sizeof(*iter));
-+	if (!sp) {
-+		pr_crit("%s: class %p was not registered yet\n",
-+			__func__, class);
- 		return;
-+	}
- 
- 	if (start)
- 		start_knode = &start->p->knode_class;
-@@ -351,6 +355,9 @@ struct device *class_dev_iter_next(struct class_dev_iter *iter)
- 	struct klist_node *knode;
- 	struct device *dev;
- 
-+	if (!iter->sp)
-+		return NULL;
-+
- 	while (1) {
- 		knode = klist_next(&iter->ki);
- 		if (!knode)
 -- 
 2.39.5
 
