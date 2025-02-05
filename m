@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-113373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F43A291E5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184CEA293B5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D91116095C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D20B3AEC56
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8831DBB13;
-	Wed,  5 Feb 2025 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157BC1684B0;
+	Wed,  5 Feb 2025 15:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgnig561"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wL8YHWfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46188189F5C;
-	Wed,  5 Feb 2025 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BD11519BF;
+	Wed,  5 Feb 2025 15:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766740; cv=none; b=htGXatgxJN3lnij5gPoIKcni+Z13Ak19TBf4YocVTDsofonkty+cXXekGi0SfaT1AdyKtLFrMAozBJm7YsIIeb9f1EId1ZnZa8me6tP406/ZzXo+fEWUWdH1oHRTge6ixxgrFUEQij8ql6QLcnzgmaLUv6af2PhQ3ZXCLJRDSLE=
+	t=1738768050; cv=none; b=JKb8LApsd2f9LGHQiVHJtu1WN2uneGh+dVuIxDPPW70bzKJIE/d7fP2JbYY5Vr27B1Js15sCngvA2M6xwQN5mEQGZpde/TPNvPH2JnO72b16HBGyx/v6F0BSsT+VjGGWG/C5+hSzy1N7h5n5ijb4eGGDJ/fKqE1Ns8LbxluJfnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766740; c=relaxed/simple;
-	bh=zfjWMXMTnrKN7V1qc48+Zc3tRwlfC7qTNzCUfXo8TU0=;
+	s=arc-20240116; t=1738768050; c=relaxed/simple;
+	bh=SKYl9ovbwvQOQg7dSysQRrAU4fkMD45oHcfHrlnMGQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCPU19GH6FiUmR/cVsSVFJnvK7Ef8esWZ+lNrYZVMdY8v1gl6oMS7y7PJ7He8BclIlzqv7gWHqQ2EiAhBz7Kh9SN65JvndK14XxTY6EHzCqCuoDl6ywPE7/tPmp7TX+QD0Z3RZ9qJ94LXecnESUyhVX8Ts69pMX4absW+HJaQ+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgnig561; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84EEC4CED1;
-	Wed,  5 Feb 2025 14:45:39 +0000 (UTC)
+	 MIME-Version; b=csgBQRkj/rhwq0YJrSjpeGxDdf4k0Gmls6zkBfE+8x3WLk4oFmHwPovxuB2i/KATCykXw8F4rZjQcCrIhtlA5UoZ6G2fCB4c2YpBoOSgx8DVLdjMQsDUvniTK5KbZL0Bn9K4UZEpXUu9EyqaIa+4UDdNPyCTnu5pynecCr+sCUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wL8YHWfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95369C4CED1;
+	Wed,  5 Feb 2025 15:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766740;
-	bh=zfjWMXMTnrKN7V1qc48+Zc3tRwlfC7qTNzCUfXo8TU0=;
+	s=korg; t=1738768050;
+	bh=SKYl9ovbwvQOQg7dSysQRrAU4fkMD45oHcfHrlnMGQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgnig561VBW62N7Pl8tQnfUwBce5crTgkqJIse/OyLhdcitOED2bLCiiNzt2cb5kx
-	 gY3XSfR7Swtiu7qID6q8QfmD9+tRyfkyteNj1FfL50r6hC9B4p6Jj0kir9gcodWQm+
-	 BgEMmXXVsLbeE4ksX4LcbwRwEo+kQbXhL1TciTZA=
+	b=wL8YHWfNJ2pfqHfBZkk7SKd0uysVK+zbY1UGCUqgLD5nJzsr7yn3NHC+nS7OrSGnk
+	 GJlmg9u6w4LcDm8bmBHzo+3KXX2Lmu4EXYtCjsLjewBgI9Pd12OC7pdzDptU1mRzDl
+	 x0eSsEYUOUsZ/5zIpEwBSO2BWRG2J85JWU68LgxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kyle Tso <kyletso@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Badhri Jagan Sridharan <badhri@google.com>
-Subject: [PATCH 6.6 382/393] usb: typec: tcpci: Prevent Sink disconnection before vPpsShutdown in SPR PPS
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Carlos ODonell <carlos@redhat.com>,
+	Florian Weimer <fweimer@redhat.com>,
+	Michael Jeanson <mjeanson@efficios.com>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 6.12 546/590] selftests/rseq: Fix handling of glibc without rseq support
 Date: Wed,  5 Feb 2025 14:45:01 +0100
-Message-ID: <20250205134434.910782469@linuxfoundation.org>
+Message-ID: <20250205134516.160256480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +69,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-commit 4d27afbf256028a1f54363367f30efc8854433c3 upstream.
+commit 336d02bc4c6bec5c3d933e5d470a94970f830957 upstream.
 
-The Source can drop its output voltage to the minimum of the requested
-PPS APDO voltage range when it is in Current Limit Mode. If this voltage
-falls within the range of vPpsShutdown, the Source initiates a Hard
-Reset and discharges Vbus. However, currently the Sink may disconnect
-before the voltage reaches vPpsShutdown, leading to unexpected behavior.
+When porting librseq commit:
 
-Prevent premature disconnection by setting the Sink's disconnect
-threshold to the minimum vPpsShutdown value. Additionally, consider the
-voltage drop due to IR drop when calculating the appropriate threshold.
-This ensures a robust and reliable interaction between the Source and
-Sink during SPR PPS Current Limit Mode operation.
+commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
 
-Fixes: 4288debeaa4e ("usb: typec: tcpci: Fix up sink disconnect thresholds for PD")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Link: https://lore.kernel.org/r/20250114142435.2093857-1-kyletso@google.com
+from librseq to the kernel selftests, the following line was missed
+at the end of rseq_init():
+
+  rseq_size = get_rseq_kernel_feature_size();
+
+which effectively leaves rseq_size initialized to -1U when glibc does not
+have rseq support. glibc supports rseq from version 2.35 onwards.
+
+In a following librseq commit
+
+commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+
+to mimic the libc behavior, a new approach is taken: don't set the
+feature size in 'rseq_size' until at least one thread has successfully
+registered. This allows using 'rseq_size' in fast-paths to test for both
+registration status and available features. The caveat is that on libc
+either all threads are registered or none are, while with bare librseq
+it is the responsability of the user to register all threads using rseq.
+
+This combines the changes from the following librseq git commits:
+
+commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
+commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+
+Fixes: a0cc649353bb ("selftests/rseq: Fix mm_cid test failure")
+Reported-by: Raghavendra Rao Ananta <rananta@google.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Carlos O'Donell <carlos@redhat.com>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: Michael Jeanson <mjeanson@efficios.com>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c |   13 +++++++++----
- drivers/usb/typec/tcpm/tcpm.c  |    8 +++++---
- include/linux/usb/tcpm.h       |    3 ++-
- 3 files changed, 16 insertions(+), 8 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |   32 +++++++++++++++++++++++++-------
+ tools/testing/selftests/rseq/rseq.h |    9 ++++++++-
+ 2 files changed, 33 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -26,6 +26,7 @@
- #define	VPPS_NEW_MIN_PERCENT			95
- #define	VPPS_VALID_MIN_MV			100
- #define	VSINKDISCONNECT_PD_MIN_PERCENT		90
-+#define	VPPS_SHUTDOWN_MIN_PERCENT		85
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -61,7 +61,6 @@ unsigned int rseq_size = -1U;
+ unsigned int rseq_flags;
  
- struct tcpci {
- 	struct device *dev;
-@@ -337,7 +338,8 @@ static int tcpci_enable_auto_vbus_discha
+ static int rseq_ownership;
+-static int rseq_reg_success;	/* At least one rseq registration has succeded. */
+ 
+ /* Allocate a large area for the TLS. */
+ #define RSEQ_THREAD_AREA_ALLOC_SIZE	1024
+@@ -152,14 +151,27 @@ int rseq_register_current_thread(void)
+ 	}
+ 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
+ 	if (rc) {
+-		if (RSEQ_READ_ONCE(rseq_reg_success)) {
++		/*
++		 * After at least one thread has registered successfully
++		 * (rseq_size > 0), the registration of other threads should
++		 * never fail.
++		 */
++		if (RSEQ_READ_ONCE(rseq_size) > 0) {
+ 			/* Incoherent success/failure within process. */
+ 			abort();
+ 		}
+ 		return -1;
+ 	}
+ 	assert(rseq_current_cpu_raw() >= 0);
+-	RSEQ_WRITE_ONCE(rseq_reg_success, 1);
++
++	/*
++	 * The first thread to register sets the rseq_size to mimic the libc
++	 * behavior.
++	 */
++	if (RSEQ_READ_ONCE(rseq_size) == 0) {
++		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
++	}
++
+ 	return 0;
  }
  
- static int tcpci_set_auto_vbus_discharge_threshold(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
--						   bool pps_active, u32 requested_vbus_voltage_mv)
-+						   bool pps_active, u32 requested_vbus_voltage_mv,
-+						   u32 apdo_min_voltage_mv)
- {
- 	struct tcpci *tcpci = tcpc_to_tcpci(dev);
- 	unsigned int pwr_ctrl, threshold = 0;
-@@ -359,9 +361,12 @@ static int tcpci_set_auto_vbus_discharge
- 		threshold = AUTO_DISCHARGE_DEFAULT_THRESHOLD_MV;
- 	} else if (mode == TYPEC_PWR_MODE_PD) {
- 		if (pps_active)
--			threshold = ((VPPS_NEW_MIN_PERCENT * requested_vbus_voltage_mv / 100) -
--				     VSINKPD_MIN_IR_DROP_MV - VPPS_VALID_MIN_MV) *
--				     VSINKDISCONNECT_PD_MIN_PERCENT / 100;
-+			/*
-+			 * To prevent disconnect when the source is in Current Limit Mode.
-+			 * Set the threshold to the lowest possible voltage vPpsShutdown (min)
-+			 */
-+			threshold = VPPS_SHUTDOWN_MIN_PERCENT * apdo_min_voltage_mv / 100 -
-+				    VSINKPD_MIN_IR_DROP_MV;
- 		else
- 			threshold = ((VSRC_NEW_MIN_PERCENT * requested_vbus_voltage_mv / 100) -
- 				     VSINKPD_MIN_IR_DROP_MV - VSRC_VALID_MIN_MV) *
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2326,10 +2326,12 @@ static int tcpm_set_auto_vbus_discharge_
- 		return 0;
- 
- 	ret = port->tcpc->set_auto_vbus_discharge_threshold(port->tcpc, mode, pps_active,
--							    requested_vbus_voltage);
-+							    requested_vbus_voltage,
-+							    port->pps_data.min_volt);
- 	tcpm_log_force(port,
--		       "set_auto_vbus_discharge_threshold mode:%d pps_active:%c vbus:%u ret:%d",
--		       mode, pps_active ? 'y' : 'n', requested_vbus_voltage, ret);
-+		       "set_auto_vbus_discharge_threshold mode:%d pps_active:%c vbus:%u pps_apdo_min_volt:%u ret:%d",
-+		       mode, pps_active ? 'y' : 'n', requested_vbus_voltage,
-+		       port->pps_data.min_volt, ret);
- 
- 	return ret;
+@@ -235,12 +247,18 @@ void rseq_init(void)
+ 		return;
+ 	}
+ 	rseq_ownership = 1;
+-	if (!rseq_available()) {
+-		rseq_size = 0;
+-		return;
+-	}
++
++	/* Calculate the offset of the rseq area from the thread pointer. */
+ 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
++
++	/* rseq flags are deprecated, always set to 0. */
+ 	rseq_flags = 0;
++
++	/*
++	 * Set the size to 0 until at least one thread registers to mimic the
++	 * libc behavior.
++	 */
++	rseq_size = 0;
  }
---- a/include/linux/usb/tcpm.h
-+++ b/include/linux/usb/tcpm.h
-@@ -150,7 +150,8 @@ struct tcpc_dev {
- 	void (*frs_sourcing_vbus)(struct tcpc_dev *dev);
- 	int (*enable_auto_vbus_discharge)(struct tcpc_dev *dev, bool enable);
- 	int (*set_auto_vbus_discharge_threshold)(struct tcpc_dev *dev, enum typec_pwr_opmode mode,
--						 bool pps_active, u32 requested_vbus_voltage);
-+						 bool pps_active, u32 requested_vbus_voltage,
-+						 u32 pps_apdo_min_voltage);
- 	bool (*is_vbus_vsafe0v)(struct tcpc_dev *dev);
- 	void (*set_partner_usb_comm_capable)(struct tcpc_dev *dev, bool enable);
- 	void (*check_contaminant)(struct tcpc_dev *dev);
+ 
+ static __attribute__((destructor))
+--- a/tools/testing/selftests/rseq/rseq.h
++++ b/tools/testing/selftests/rseq/rseq.h
+@@ -60,7 +60,14 @@
+ extern ptrdiff_t rseq_offset;
+ 
+ /*
+- * Size of the registered rseq area. 0 if the registration was
++ * The rseq ABI is composed of extensible feature fields. The extensions
++ * are done by appending additional fields at the end of the structure.
++ * The rseq_size defines the size of the active feature set which can be
++ * used by the application for the current rseq registration. Features
++ * starting at offset >= rseq_size are inactive and should not be used.
++ *
++ * The rseq_size is the intersection between the available allocation
++ * size for the rseq area and the feature size supported by the kernel.
+  * unsuccessful.
+  */
+ extern unsigned int rseq_size;
 
 
 
