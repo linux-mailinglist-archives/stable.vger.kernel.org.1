@@ -1,59 +1,77 @@
-Return-Path: <stable+bounces-112279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3239CA28402
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 06:59:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CEDA284E2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 08:21:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87F623A4BC3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 05:59:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA1E1887FFE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 07:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E11221D86;
-	Wed,  5 Feb 2025 05:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DB0228387;
+	Wed,  5 Feb 2025 07:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="B+dL7N63"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BhLp7zQh"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FF821C180;
-	Wed,  5 Feb 2025 05:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.241.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738735192; cv=none; b=jE393QtzvyG+35qjH2nZdxFE5kWcPfYiAoSKAN2wYsmyIRmz3TwkZXRsO6rM8M49RL0yzPIGymv2HVAgd6BqqN2t+C/iknI9ZH91acIUEaNVV3K9WlLmlLzZprmaqg5txAn++eZfur5j+m9DBNQZSecqKW2pt0AMKZO2ALBKgEM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738735192; c=relaxed/simple;
-	bh=lMlSGn6f5axZQbtd0v8R34NIoyp+US5nWf53BEGR6e8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WwT0NgVjiYiMpK9XGvlt6Dl5jM7nkchgKBnNAgj8QVBbJWuvkjmHLCvsHJxMTO+gLRCn1Sw3/0edpj7nfxxBs1VeVfY439MQpEKbr1EWVGd8Vrk60qs3PJycrGUz+hTtskMpdedAtSCV24CGYePIdzo+zXaG2xTv6RvtKLozEMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=B+dL7N63; arc=none smtp.client-ip=159.100.241.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id 30EEA20063;
-	Wed,  5 Feb 2025 05:59:42 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 40F623E94E;
-	Wed,  5 Feb 2025 05:59:34 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id D7628400CC;
-	Wed,  5 Feb 2025 05:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1738735173; bh=lMlSGn6f5axZQbtd0v8R34NIoyp+US5nWf53BEGR6e8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=B+dL7N63Xde0M11M9aBrJl4MlW0q+IwgQDyKJ68PezxqVg8DthaIhOrYgjpzPbFQf
-	 lhJfPI7V+J1O6cBHRWOEHAKMA7S8/AHoGLkdItj9TGlckSvXQ9NCZ8ak8Epto/cJ+a
-	 bjXLOO/MyykjiQg+TL+NuaPvb3j97L79KErpuoMY=
-Received: from [172.23.33.41] (unknown [103.152.35.21])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 616654050D;
-	Wed,  5 Feb 2025 05:59:29 +0000 (UTC)
-Message-ID: <6838de5f-2984-4722-9ee5-c4c62d13911b@aosc.io>
-Date: Wed, 5 Feb 2025 13:59:24 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B122B21C16F;
+	Wed,  5 Feb 2025 07:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738740054; cv=fail; b=QR+SFBPlKnYlmVtFuAyfpChzGMKP12blvW17wwIMOW5X+iiwVzhCuDsjc7SEznyXdZoDbxy/49ZpBOC2ngOChqpfgEHQoywvQrRi1f0R3k3Mn+guabSlceLzMgHXsMNBW8dnQvuQoxPba94CRIs6EWhQrwlHKXvVl1QcqFV1wio=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738740054; c=relaxed/simple;
+	bh=ZSRnPRC7WN3x9+Sx+YLrN17Bt6gVXHmt1Kl3bqsj9jo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ajFvWXB6SOojv3GxYc+wRoX75nvZTmQGkWv5xYwBNnF274dGZ3atnIPmjE+yfgMuz1kk+xU6FTCz3gn+tJnRqvCXixx/zd0iLulWuKIVRqGk01gC5/L+FGSxahKUETyDLvCk7cXL/s7Jao1fBV2gBqcVYhNZ1wsppqg8lihMIZM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BhLp7zQh; arc=fail smtp.client-ip=40.107.93.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WbgYwo6gjbe/2hKGH3qhSskXNu3BMwr5NQuUy5lO4ioaFXuMCIaK+1C2OivCXj5I3MBcpEeCIfm3VDBg3vNZMamht+2Kb39KZ1PBuW19tRHiLYum2Q235OBGnzQoDtC5JVH1hgkr1pJtSW6+l2bWO0y7V65yKyiDWccbLryyr7u33wb6hr/ng0xRumwiOnL5Dt4PMylfrpQRZZ+IsUsn79fTAHIxTUsLYMbYploKKZ8neP3kxNiq2vWVU3k8k6Tk94Xo/WFrhLPusFvLPqwIQuxaAs0mObBOZiT25ziBDM9eg5ORGfd+WhGIAqfrgbpAaieB18Rh0vJlawLtwcE/Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W2iI9Phpr+xd5rjNGvVWgNzBD/pzji8oftqdBNF6Bso=;
+ b=oiffP9U2UilcVukyCS0hMCez8bvj6tSGPXY9UsS5nbuhCmS0rALw/cf9tRWGiluHRw0QnXBRAyihlY+4gUtvWMBTxIa4r7Ky07udNINI6isClM8WrGaWXtp491HICfr+ueXP4mnbqBOOxigQMUn4wupa/nbGGOH4o0pLvwCT3DTM8SVazVaTUdk4bVwxsSvntv0p/o13n3d/wYQQ+AmRiSeF8mWwHj7dlIIRh3UhlfIBLT6FKbPUxNMONuoo5xDMO710FOHXd+Vklm6x0JXGhD/+3QbacEbft7ohr9gPyUQ7dPN3vdiOGTmvPhwXzMgrSm2dvmwtqpSXl/yp058vGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.microsoft.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W2iI9Phpr+xd5rjNGvVWgNzBD/pzji8oftqdBNF6Bso=;
+ b=BhLp7zQhFq7dUm1RX7pQ7m5c6CCy31yJsiDvb7WDW3HD4jnn451dyPO0bFchX5ph+Ax7kvUa++Su09QBKNUQuSK9+chsL/NFZraGe6CmmF4jtd769GIBDZQhZTkAWQTNEo+1eTUYKX/w5C24B25XI2L36pTx3odrE10HNEOb3Ag=
+Received: from MN2PR20CA0009.namprd20.prod.outlook.com (2603:10b6:208:e8::22)
+ by PH7PR12MB5711.namprd12.prod.outlook.com (2603:10b6:510:1e2::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Wed, 5 Feb
+ 2025 07:20:48 +0000
+Received: from BN3PEPF0000B06A.namprd21.prod.outlook.com
+ (2603:10b6:208:e8:cafe::d9) by MN2PR20CA0009.outlook.office365.com
+ (2603:10b6:208:e8::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8356.22 via Frontend Transport; Wed,
+ 5 Feb 2025 07:20:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B06A.mail.protection.outlook.com (10.167.243.69) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8445.2 via Frontend Transport; Wed, 5 Feb 2025 07:20:47 +0000
+Received: from [10.136.39.79] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 5 Feb
+ 2025 01:20:42 -0600
+Message-ID: <bf469858-dedf-490a-abf2-b066aee6077e@amd.com>
+Date: Wed, 5 Feb 2025 12:50:40 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,135 +79,169 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Huacai Chen <chenhuacai@kernel.org>, Huacai Chen
- <chenhuacai@loongson.cn>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
- <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
- <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
- <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
- <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
- <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
- <06c81c97-7e5f-412b-b6af-04368dd644c9@rowland.harvard.edu>
+Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
+ for debug builds
+To: Naman Jain <namjain@linux.microsoft.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Ben Segall
+	<bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Valentin Schneider
+	<vschneid@redhat.com>
+CC: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Steve Wahl
+	<steve.wahl@hpe.com>, Saurabh Singh Sengar <ssengar@linux.microsoft.com>,
+	<srivatsa@csail.mit.edu>, Michael Kelley <mhklinux@outlook.com>
+References: <20250203114738.3109-1-namjain@linux.microsoft.com>
 Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <06c81c97-7e5f-412b-b6af-04368dd644c9@rowland.harvard.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: D7628400CC
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-0.10 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	TO_DN_SOME(0.00)[]
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <20250203114738.3109-1-namjain@linux.microsoft.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06A:EE_|PH7PR12MB5711:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f46608f-4195-4238-9d5f-08dd45b59ca2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|7416014|36860700013|32650700017|921020|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?LzRGOUVVTUx1SnRyYXFYQTZaQkFKTnhhZkRTQzZHTkNpVmZpTGFIWnIvNUl5?=
+ =?utf-8?B?ZFljbGt0a2tnUkFhZ0RreE03SDBUUDZDOEkvN25jVlE2Wmovc0JCU2ZLblBC?=
+ =?utf-8?B?VE1PTXNtRHA5UStUWUlxUDVSdGVIaFY0R3F0eFNvbHFIZGkrQitMZjBkWUs2?=
+ =?utf-8?B?bERQVjRBMU4rcXZkSnk4ajlucFl4b1VJZ3hUSE5uMkY3MDdzUk9pbEFrdEFQ?=
+ =?utf-8?B?NjZ3eFR0QXFkZnNzQjZkd0tmRjhKbUdXZ28xTm9BZlJHbWoxdjJqRC9iSHZv?=
+ =?utf-8?B?WlY5YkUvQjNNVXVoc09iUkFpZEErVDNBUmJxVzF4aHNBbzRGdGdhc20rcUdC?=
+ =?utf-8?B?dXZpWkhZVFpvUVBYRWgvdTlzOVE1Q0JmTlRpelY2c0dyRTk0UkM4eGtBYVBW?=
+ =?utf-8?B?ZE1kb2Q5NldxaGl0dk5qK2NjMkUvd0w4N3J4QjViRmptRDE3OXR1UU9hOVp0?=
+ =?utf-8?B?SW9hMHhzQ0VSbDFpUWtNTHg5bGVuWEVvS3J6d0hHd1plRnB4TGdENzlLRzNB?=
+ =?utf-8?B?ai9OWWR0bk5qSHpNb0VPNTc4V21lMk04SFRRUElRZ3JLQTg3bGEwV1VjeDE4?=
+ =?utf-8?B?eWJ3V29NVm1kdlIwWEdsRDJ0cVFPNXRwQ1JqTTJYSmw4TEVyM0Q2YVpPdlRx?=
+ =?utf-8?B?UjFvMWhQeEtXVExlYUtzSTROVUo3MlQ5V1lJWkNzajNOdU1DQWVBVnZRK2ky?=
+ =?utf-8?B?eHBCbmt5azY1VFVBbi9DUWp3SDdIK3NCa05reDI1eFY2VmtDN2JHWUNzdjVN?=
+ =?utf-8?B?VmMvdUllalRLYnpEbWNqVTl2bHdSckdpL3p0MjFpaDMyM1VtVE5uSlRnWGl0?=
+ =?utf-8?B?d0NlTnEzQVV0VHN2UUx2c3RtRTA5UTIyRVV1dXo4ZTRTUEZQYnhJMnZFQ3JC?=
+ =?utf-8?B?TTVSeEpZcGZXRnc3em1mOTNGeXFLQVpMK0ljdW1YWmRoZXVEYVRwdmZnZTUr?=
+ =?utf-8?B?bWlSNVVsRGllSC9Yd095a0wxS0lTY29pRTZJZm42clRYQi9xN1Rpdm1EUGhI?=
+ =?utf-8?B?bDh3cjZzaXhoTldFVGl5bEthZHJkZnM3WTlyWWpqREl3cHZOVUx0TWppRG1O?=
+ =?utf-8?B?WDBKZ0ZqZTlqLzFvY1drcjR1VWhMNFRhUFlpZW0rNVMrci8zcEtKcTBtWVlt?=
+ =?utf-8?B?dTdNVmdWYjhYOEdwd2I5UzZCNm9FZXRNUzcyMTJCQ013VXF3WHN3Y2J1bCs3?=
+ =?utf-8?B?azF6b2tqZmRlelZDdnhKMTNIaHRKTnVpUkNQWWVMM2JIdFU5N0E1YXVqK2N4?=
+ =?utf-8?B?YkxVRlVoT3lmZERHS3laS2dKR0VteUdqeTdJQXgvRGFMR3NPaGpCSWx6amg0?=
+ =?utf-8?B?US9ZK2JTYzhDZWIxUWEwNWdQUDBzSFFrVFh1NmxlRW9KSjJXTitESHNLMVk0?=
+ =?utf-8?B?RFRLYzkxQitSTUdReW5DdXd4ZUowUGhyRUJuTENHZ1pKaG9yWUVyc3FiNzIy?=
+ =?utf-8?B?ODA0T2dRVDg4aTJzYWtRby9KdnJWQmVBTHJqMEI0bndBRzRqMmJTNktuRTFZ?=
+ =?utf-8?B?YWpxWWI4SjBzMVBtb3haWjhtbm85NVRUNWpMR1FseVVqOTdwd2Q0Y01GbmFa?=
+ =?utf-8?B?RHBTbHdWUG5HK0psbko2VURJcitBVEFHNVBBOXgzWFUwUHZuQXBxNmxzZTRw?=
+ =?utf-8?B?WVhaY1ZDS1UyK2ltcmFtTWtyc3lidWpQWmN0Qmo1YW5OZVRqZmhnTmxSbExj?=
+ =?utf-8?B?bHJoa1ZaandxUUJrem9obkZKd0huSzFpT0ptTEFBK21vTUx4OUhaaU9tRUpw?=
+ =?utf-8?B?UFVFbWQ1aUFqOTZXeHFlNGpyckN0MnNBMEdQa1JEZFU1UEZ0aENXQndNTlNN?=
+ =?utf-8?B?YVhKS1lETTdOeWlQWEc5VG9ObzZGRWtpenJoRElGcjVtM1FKd1BwZjRjeGtw?=
+ =?utf-8?B?ZVM0RURUVDBDam5OTWc1T1ZJZ3ovQlU0QUtIUDU0ZExsbEdueVhrb2ZhVlls?=
+ =?utf-8?B?SXFUblZWU0tuKzVSaEdIaFJ5c0NOT1ZyUXNnT3h0V3kxNTFCLy9tQ3U4TWp6?=
+ =?utf-8?B?OVFwSFlFRzdrS3VKM0I2NHV3MytXcXJWSXE4ZjVVazFuS3VBQm5veXRma1Zo?=
+ =?utf-8?Q?FSnFo8?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(7416014)(36860700013)(32650700017)(921020)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 07:20:47.4997
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f46608f-4195-4238-9d5f-08dd45b59ca2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B06A.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5711
 
-Hi Alan,
+Hello Naman,
 
-在 2025/2/4 00:15, Alan Stern 写道:
-> On Tue, Feb 04, 2025 at 12:01:37AM +0800, Mingcong Bai wrote:
->> Hi Alan, Huacai,
->>
->> <snip>
->>
->>> I just tried running the experiment on my system.  I enabled wakeup for
->>> the mouse device, made sure it was disabled for the intermediate hub and
->>> the root hub, and made sure it was enabled for the host controller.
->>> (Those last three are the default settings.)  Then I put the system in
->>> S3 suspend by writing "mem" to /sys/power/state, and when the system was
->>> asleep I pressed one of the mouse buttons -- and the system woke up.
->>> This was done under a 6.12.10 kernel, with an EHCI host controller, not
->>> xHCI.
->>>
->>> So it seems like something is wrong with your system in particular, not
->>> the core USB code in general.  What type of host controller is your
->>> mouse attached to?  Have you tested whether the mouse is able to wake up
->>> from runtime suspend, as opposed to S3 suspend?
->>>
->>
->> Just to chime in with my own test results. I was looking at this with Huacai
->> a few days back and we suspected that this had something to do with
->> particular systems, as you have found; we also suspected that if a keyboard
->> was connected to a non-xHCI controller, it would fail to wake up the system.
->>
->> I conducted a simple experiment on my Lenovo ThinkPad X200s, which does not
->> come with any USB 3.0 port. Here are my findings:
+On 2/3/2025 5:17 PM, Naman Jain wrote:
+> From: Saurabh Sengar <ssengar@linux.microsoft.com>
 > 
-> What sort of USB controller does the X200s have?  Is the controller
-> enabled for wakeup?
+> On a x86 system under test with 1780 CPUs, topology_span_sane() takes
+> around 8 seconds cumulatively for all the iterations. It is an expensive
+> operation which does the sanity of non-NUMA topology masks.
 > 
-> What happens with runtime suspend rather than S3 suspend?
-
-It has the Intel Corporation 82801I (ICH9 Family) USB UCHI/USB2 EHCI 
-controller with PCI IDs 17aa:20f0/17aa:20f1. The hub is a Genesys Logic, 
-Inc. Hub with an ID of 05e3:0610 - this is an xHCI hub.
-
-Sorry but the record here is going to get a bit messy... But let's start 
-with a kernel with Huacai's patch.
-
-=== Kernel + Huacai's Patch ===
-
-1. If I plug in the external keyboard via the hub, 
-/sys/bus/usb/devices/usb1, power/state is set to enabled. For the hub, 
-corresponding to usb1/1-1, power/wakeup is set to disabled.
-
-2. If I plug the keyboard directly into the chassis, usb1/power/wakeup 
-is set to disabled, but usb1/1-1/power/wakeup is set to enabled.
-
-The system wakes up via external keyboard plugged directly into the 
-chassis **or** the hub either way, regardless if I used S3 or runtime 
-suspend (which I assume to be echo freeze > /sys/power/state).
-
-=== Kernel w/o Huacai's Patch ===
-
-The controller where I plugged in the USB hub, /sys/bus/usb/devices/usb1 
-and the hub, corresponding to usb1/1-1, their power/wakeup entries are 
-both set to disabled. Same for when I have the patch applied.
-
-However, if I plug the external keyboard into the chassis, it would fail 
-to wakeup regardless of S3/runtime suspend (freeze). If I plug the 
-external keyboard via that USB Hub though, it would wake up the machine. 
-The findings are consistent between S3/freeze.
-
+> CPU topology is not something which changes very frequently hence make
+> this check optional for the systems where the topology is trusted and
+> need faster bootup.
 > 
->> 1. With upstream code, the system would not wake up with neither the
->> internal nor the external keyboards. One exception being the Fn key on the
->> internal keyboard, which would wake up the system (but I suspect that this
->> is EC behaviour). This behaviour is consistent across any USB port on the
->> laptop and, regardless if the external keyboard was connected to the laptop
->> itself or via a hub.
->>
->> 2. With Huacai's code, I was able to wake up the laptop with an external
->> keyboard in all the scenarios listed in (1). The internal keyboard still
->> failed to wake up the system unless I strike the Fn key.
->>
->> I should note, however, that the internal keyboard is not connected via USB
->> so it's probably irrelevant information anyway.
->>
->> As for mice, it seems that the kernel disables wake-up via USB mice and
->> enables wake-up via USB keyboards. This is also consistent with your
->> findings.
+> Restrict this to sched_verbose kernel cmdline option so that this penalty
+> can be avoided for the systems who want to avoid it.
 > 
-> Yes, and of course you can manually change the default wakeup settings
-> whenever you want.
+> Cc: stable@vger.kernel.org
+> Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap")
+> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+> Co-developed-by: Naman Jain <namjain@linux.microsoft.com>
+> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+> ---
 > 
-> Alan Stern
+> Changes since v2:
+> https://lore.kernel.org/all/1731922777-7121-1-git-send-email-ssengar@linux.microsoft.com/
+> 	- Use sched_debug() instead of using sched_debug_verbose
+> 	  variable directly (addressing Prateek's comment)
+> 
+> Changes since v1:
+> https://lore.kernel.org/all/1729619853-2597-1-git-send-email-ssengar@linux.microsoft.com/
+> 	- Use kernel cmdline param instead of compile time flag.
+> 
+> Adding a link to the other patch which is under review.
+> https://lore.kernel.org/lkml/20241031200431.182443-1-steve.wahl@hpe.com/
+> Above patch tries to optimize the topology sanity check, whereas this
+> patch makes it optional. We believe both patches can coexist, as even
+> with optimization, there will still be some performance overhead for
+> this check. > ---
+>   kernel/sched/topology.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index c49aea8c1025..b030c1a2121f 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -2359,6 +2359,13 @@ static bool topology_span_sane(struct sched_domain_topology_level *tl,
+>   {
+>   	int i = cpu + 1;
+>   
+> +	/* Skip the topology sanity check for non-debug, as it is a time-consuming operatin */
 
-Best Regards,
-Mingcong Bai
+s/operatin/operation/
+
+> +	if (!sched_debug()) {
+> +		pr_info_once("%s: Skipping topology span sanity check. Use `sched_verbose` boot parameter to enable it.\n",
+
+This could be broken down as follows:
+
+		pr_info_once("%s: Skipping topology span sanity check."
+			     " Use `sched_verbose` boot parameter to enable it.\n",
+			     __func__);
+
+Running:
+
+     grep -r -A 5 "pr_info(.*[^;,]$" kernel/
+
+gives similar usage across kernel/*. Apart from those nits, feel
+free to add:
+
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com> # x86
+
+if the future version does not change much.
+
+-- 
+Thanks and Regards,
+Prateek
+
+> +			     __func__);
+> +		return true;
+> +	}
+> +
+>   	/* NUMA levels are allowed to overlap */
+>   	if (tl->flags & SDTL_OVERLAP)
+>   		return true;
+> 
+> base-commit: 00f3246adeeacbda0bd0b303604e46eb59c32e6e
+
+
 
