@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB67A28E58
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C61A28F2C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EF3168AA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E8ED1884400
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9CC1553AB;
-	Wed,  5 Feb 2025 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3BC14B959;
+	Wed,  5 Feb 2025 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5g2KXWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtnfCuUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3C1519AA;
-	Wed,  5 Feb 2025 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889051519BE;
+	Wed,  5 Feb 2025 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764710; cv=none; b=FA3PM2HA0drWfMo4Y2jUjBCyaqH2FUacfjoYB5lueAngdUWeYmA8J9/GCDMsbzKJ6Lf26qMk6UQnuUQrmhBMZynYVg2wkgBif6uTKSBDEdOobASRmvgeqOAAo5xlG+lOlDoiQKyOKp4I7oNu0AMoVsG0uhY+7x80ubD9vY3vLHQ=
+	t=1738765302; cv=none; b=uWlipZClzrNijtLJMHQl2y7WGYjcNS/0rGs1FpZdGD79UYx/TJzPnyV0Ogl0Pfnt3u/KnL1BuLZumg6Swwrg9cNwrkeoaZRYjQ60JaynWZrYPdQROa3+WH+H/Qhz0R+t1WWFFgxq/NAoq+1wmCnmWs5aWKlNGSs4GQP2I7W/lj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764710; c=relaxed/simple;
-	bh=IX+56iVeUssAT9d0ytNJ5cA85HRxWn+5p9B9iX3egVA=;
+	s=arc-20240116; t=1738765302; c=relaxed/simple;
+	bh=UXb83zwmOUkNt5hVI+n8cZsDWMNNd9jNS9Rd1NROzqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnFASp482h3xGMK3+LT61vApAZNjatbpXhzmp5dBffhLJONVWBd/kywj0+sI4qEJmhtQ6aJ/syZeaO2bLqhJLrPpWf+z9dVetlZRy9ke695RnOs04H82T54LQa2b1XDbNht0OKK85E2LJqFvHpR5SBCQES5JqRhf6+S9pe4zVeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5g2KXWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E6C4CED1;
-	Wed,  5 Feb 2025 14:11:49 +0000 (UTC)
+	 MIME-Version; b=QWS0m+LY40JAYmVZWR6qrCvrJpPsZtJ7RuLoU/TFdz2qP+b+DF2lxp2qp9CgYXvSuCG+/N/GB8OwIpllNDOE2zEisZvt4oGk4BP0/pVUi43LrmFBf1g9NRV5O2yUYou1TX3oHHhWTs4KL9m+wSvJC8Rut2SVaUBhSMOv2sN2Hy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtnfCuUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD96C4CED1;
+	Wed,  5 Feb 2025 14:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764710;
-	bh=IX+56iVeUssAT9d0ytNJ5cA85HRxWn+5p9B9iX3egVA=;
+	s=korg; t=1738765302;
+	bh=UXb83zwmOUkNt5hVI+n8cZsDWMNNd9jNS9Rd1NROzqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5g2KXWcluI/xZJML38pZi3bbojjX1QZKhX8FGVmxmP19k6zhna6GNwoRWlfR33If
-	 TJEoIS84D0fDMDQapkzNWTlZTdKe63g9NBmDGxNGDGHKf6aVnrBtnElD4VQj46E7P3
-	 G+hOeAmy7iGX509QaLrLWRp3t+rkHOlHlGV83ArE=
+	b=CtnfCuUYqcpRt74Zbs+nVq+hDwQ/dRufLxASn+80hxXYmiItFCHx6oVYjOLrdSvE/
+	 krXABbVUvsfBg/nLFFaQw/0F75SOQULDYW1tr0xkdKzYTPs4eL/8L2I0l0GyQBp5Gn
+	 3efuTGrmtSJ6pH64dKS6prPZI6ojBpiVH91hNccs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/590] wifi: rtw89: chan: fix soft lockup in rtw89_entity_recalc_mgnt_roles()
+Subject: [PATCH 6.13 164/623] wifi: iwlwifi: mvm: avoid NULL pointer dereference
 Date: Wed,  5 Feb 2025 14:38:26 +0100
-Message-ID: <20250205134501.054840228@linuxfoundation.org>
+Message-ID: <20250205134502.509895741@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit e4790b3e314a4814f1680a5dc552031fb199b878 ]
+[ Upstream commit cf704a7624f99eb2ffca1a16c69183e85544a613 ]
 
-During rtw89_entity_recalc_mgnt_roles(), there is a normalizing process
-which will re-order the list if an entry with target pattern is found.
-And once one is found, should have aborted the list_for_each_entry. But,
-`break` just aborted the inner for-loop. The outer list_for_each_entry
-still continues. Normally, only the first entry will match the target
-pattern, and the re-ordering will change nothing, so there won't be
-soft lockup. However, in some special cases, soft lockup would happen.
+When iterating over the links of a vif, we need to make sure that the
+pointer is valid (in other words - that the link exists) before
+dereferncing it.
+Use for_each_vif_active_link that also does the check.
 
-Fix it by `goto fill` to break from the list_for_each_entry.
-
-The following is a sample of kernel log for this problem.
-
-watchdog: BUG: soft lockup - CPU#1 stuck for 26s! [wpa_supplicant:2055]
-[...]
-RIP: 0010:rtw89_entity_recalc ([...] chan.c:392 chan.c:479) rtw89_core
-[...]
-
-Fixes: 68ec751b2881 ("wifi: rtw89: chan: manage active interfaces")
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241231004811.8646-3-pkshih@realtek.com
+Fixes: 2b7ee1a10a72 ("wifi: iwlwiif: mvm: handle the new BT notif")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20241229164246.31d41f7d3eab.I7fb7036a0b187c1636b01970207259cb2327952c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/chan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/coex.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
-index abc78716596d0..c06d305519df4 100644
---- a/drivers/net/wireless/realtek/rtw89/chan.c
-+++ b/drivers/net/wireless/realtek/rtw89/chan.c
-@@ -391,11 +391,12 @@ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+index 36726ea4b822a..21641d41a958c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/coex.c
+@@ -530,18 +530,15 @@ static void iwl_mvm_bt_coex_notif_iterator(void *_data, u8 *mac,
+ 					   struct ieee80211_vif *vif)
+ {
+ 	struct iwl_mvm *mvm = _data;
++	struct ieee80211_bss_conf *link_conf;
++	unsigned int link_id;
  
- 				list_del(&role->mgnt_entry);
- 				list_add(&role->mgnt_entry, &mgnt->active_list);
--				break;
-+				goto fill;
- 			}
- 		}
- 	}
+ 	lockdep_assert_held(&mvm->mutex);
  
-+fill:
- 	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
- 		if (unlikely(pos >= RTW89_MAX_INTERFACE_NUM)) {
- 			rtw89_warn(rtwdev,
+ 	if (vif->type != NL80211_IFTYPE_STATION)
+ 		return;
+ 
+-	for (int link_id = 0;
+-	     link_id < IEEE80211_MLD_MAX_NUM_LINKS;
+-	     link_id++) {
+-		struct ieee80211_bss_conf *link_conf =
+-			rcu_dereference_check(vif->link_conf[link_id],
+-					      lockdep_is_held(&mvm->mutex));
++	for_each_vif_active_link(vif, link_conf, link_id) {
+ 		struct ieee80211_chanctx_conf *chanctx_conf =
+ 			rcu_dereference_check(link_conf->chanctx_conf,
+ 					      lockdep_is_held(&mvm->mutex));
 -- 
 2.39.5
 
