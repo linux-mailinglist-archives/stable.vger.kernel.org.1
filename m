@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7ABA28E76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B069EA28E8D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4A1B7A3F2E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AD9D3A132C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD4914B959;
-	Wed,  5 Feb 2025 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365381494DF;
+	Wed,  5 Feb 2025 14:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6ZwPkw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eynGIMlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2F215198D;
-	Wed,  5 Feb 2025 14:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A6415198D;
+	Wed,  5 Feb 2025 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764785; cv=none; b=YeoRvmJrzKpoDQ0J52HIdlJ+n2cfEZFN+XjEzEaQ+9ohGlmppeBDIQnFkuGwE5jbqJQsgyWNmpTivei5dnroKjseedBeH/gh1rGvRWtdHkagT9VRBqbhgROUpv3WQ0RuMLIzboMcs/GthAXGfCdEqyQNVSNNF8gW0datQ+9eZqg=
+	t=1738764866; cv=none; b=a13Bl73Fz00SFBY+1D+tOguKxzNos5UZ4gtZsd88CKpNceeC3g1/egfhxvyhsgE5aFP8InZgjgMZQkWVQ5V8li+tYNUlXTO3COHipNsP9dWSChkxANYiZNxF2ATha8IPEZj4axj6hjmDOwnfXA3tOObn4DsBz35RKQoqsQDy1JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764785; c=relaxed/simple;
-	bh=+J8nWexLfi3a7LKt9sI/H9HyaKV8QPvL85DQM7v7Rbs=;
+	s=arc-20240116; t=1738764866; c=relaxed/simple;
+	bh=YYDOAjYB9HZA49JeTt9248++SLVFBD6tSPOHj5kfQ1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9YbOFIWuXY7XpJTb9za8Mt/o84LorYBrx4qghx/pv5vVb1h9A7ivElBjsaH49hrRLWKwh6x6blC3hFVmSXRhjuO8NNwgBWlaoVNkBHskFOnW0U0I0tCcTQ6JTiLV+mVoWgZGKMI/NPZxMRgHTrAEzY3OCTG2RyWIZ7wlfGCznI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6ZwPkw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51600C4CED1;
-	Wed,  5 Feb 2025 14:13:04 +0000 (UTC)
+	 MIME-Version; b=uGrkVgDYT1wQXzKeRoMlywL6KBSNzfYm5CswzgEKUYNVH6P+I3y+E2UKXW7phIje9ROXI1gl/xVW35v8LHQrVrb0BEgYDsq2yubjMz3M55LNk/9K0mr6TfRyPxaoct9ZpA0BOin4gGwuI24WhCtDqCCicvK7rLBIfa4oRtg+OzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eynGIMlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533B6C4CED1;
+	Wed,  5 Feb 2025 14:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764784;
-	bh=+J8nWexLfi3a7LKt9sI/H9HyaKV8QPvL85DQM7v7Rbs=;
+	s=korg; t=1738764865;
+	bh=YYDOAjYB9HZA49JeTt9248++SLVFBD6tSPOHj5kfQ1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6ZwPkw1W/EG2XshpkyGbYQN0j6YjpKRdLOKhabZwF6SfxyF7d/fxqq+EGN+pSBFK
-	 62OuLBuWJ2/IGbBcNuSLez4h93ZCL0AsojdX04QJ0w6u3pBI1ky7XTRePYp5/TAAal
-	 8PsXJFdQn0SwKdACm5g/zOt62VZLQoF84iJPInss=
+	b=eynGIMlT/VMsOVQ72ZzhYEo6ZfqHLqQEHUKbH0axzSqmK0O3AKZmJlSU2wTn6JtaK
+	 P6TdCUV98TUZ0t4LQO6pnbR/qFhMjHd/Mw7DXu6ZamtSgfwVvlIYZjF7PZ3+6DLbzZ
+	 6ARytFHZqhbEPLtf8c180klyn+OibmjzdwA/QJn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
 	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 104/623] wifi: rtlwifi: remove unused check_buddy_priv
-Date: Wed,  5 Feb 2025 14:37:26 +0100
-Message-ID: <20250205134500.195590032@linuxfoundation.org>
+Subject: [PATCH 6.13 105/623] wifi: rtlwifi: destroy workqueue at rtl_deinit_core
+Date: Wed,  5 Feb 2025 14:37:27 +0100
+Message-ID: <20250205134500.233798505@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,196 +68,84 @@ Content-Transfer-Encoding: 8bit
 
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 2fdac64c3c35858aa8ac5caa70b232e03456e120 ]
+[ Upstream commit d8ece6fc3694657e4886191b32ca1690af11adda ]
 
-Commit 2461c7d60f9f ("rtlwifi: Update header file") introduced a global
-list of private data structures.
+rtl_wq is allocated at rtl_init_core, so it makes more sense to destroy it
+at rtl_deinit_core. In the case of USB, where _rtl_usb_init does not
+require anything to be undone, that is fine. But for PCI, rtl_pci_init,
+which is called after rtl_init_core, needs to deallocate data, but only if
+it has been called.
 
-Later on, commit 26634c4b1868 ("rtlwifi Modify existing bits to match
-vendor version 2013.02.07") started adding the private data to that list at
-probe time and added a hook, check_buddy_priv to find the private data from
-a similar device.
+That means that destroying the workqueue needs to be done whether
+rtl_pci_init has been called or not. And since rtl_pci_deinit was doing it,
+it has to be moved out of there.
 
-However, that function was never used.
+It makes more sense to move it to rtl_deinit_core and have it done in both
+cases, USB and PCI.
 
-Besides, though there is a lock for that list, it is never used. And when
-the probe fails, the private data is never removed from the list. This
-would cause a second probe to access freed memory.
+Since this is a requirement for a followup memory leak fix, mark this as
+fixing such memory leak.
 
-Remove the unused hook, structures and members, which will prevent the
-potential race condition on the list and its corruption during a second
-probe when probe fails.
-
-Fixes: 26634c4b1868 ("rtlwifi Modify existing bits to match vendor version 2013.02.07")
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241206173713.3222187-2-cascardo@igalia.com
+Link: https://patch.msgid.link/20241206173713.3222187-3-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c |  7 ----
- drivers/net/wireless/realtek/rtlwifi/base.h |  1 -
- drivers/net/wireless/realtek/rtlwifi/pci.c  | 44 ---------------------
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 12 ------
- 4 files changed, 64 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/base.c | 6 ++++++
+ drivers/net/wireless/realtek/rtlwifi/pci.c  | 2 --
+ drivers/net/wireless/realtek/rtlwifi/usb.c  | 5 -----
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index aab4605de9c47..fd28c7a722d89 100644
+index fd28c7a722d89..ff61867d142fa 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/base.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -2696,9 +2696,6 @@ MODULE_AUTHOR("Larry Finger	<Larry.FInger@lwfinger.net>");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Realtek 802.11n PCI wireless core");
+@@ -575,9 +575,15 @@ static void rtl_free_entries_from_ack_queue(struct ieee80211_hw *hw,
  
--struct rtl_global_var rtl_global_var = {};
--EXPORT_SYMBOL_GPL(rtl_global_var);
--
- static int __init rtl_core_module_init(void)
+ void rtl_deinit_core(struct ieee80211_hw *hw)
  {
- 	BUILD_BUG_ON(TX_PWR_BY_RATE_NUM_RATE < TX_PWR_BY_RATE_NUM_SECTION);
-@@ -2712,10 +2709,6 @@ static int __init rtl_core_module_init(void)
- 	/* add debugfs */
- 	rtl_debugfs_add_topdir();
- 
--	/* init some global vars */
--	INIT_LIST_HEAD(&rtl_global_var.glb_priv_list);
--	spin_lock_init(&rtl_global_var.glb_list_lock);
--
- 	return 0;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
+ 	rtl_c2hcmd_launcher(hw, 0);
+ 	rtl_free_entries_from_scan_list(hw);
+ 	rtl_free_entries_from_ack_queue(hw, false);
++	if (rtlpriv->works.rtl_wq) {
++		destroy_workqueue(rtlpriv->works.rtl_wq);
++		rtlpriv->works.rtl_wq = NULL;
++	}
  }
+ EXPORT_SYMBOL_GPL(rtl_deinit_core);
  
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.h b/drivers/net/wireless/realtek/rtlwifi/base.h
-index f081a9a90563f..f3a6a43a42eca 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.h
-@@ -124,7 +124,6 @@ int rtl_send_smps_action(struct ieee80211_hw *hw,
- u8 *rtl_find_ie(u8 *data, unsigned int len, u8 ie);
- void rtl_recognize_peer(struct ieee80211_hw *hw, u8 *data, unsigned int len);
- u8 rtl_tid_to_ac(u8 tid);
--extern struct rtl_global_var rtl_global_var;
- void rtl_phy_scan_operation_backup(struct ieee80211_hw *hw, u8 operation);
- 
- #endif
 diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 40fc3c297a8ac..4388066eb9e27 100644
+index 4388066eb9e27..e60ac910e750b 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -295,46 +295,6 @@ static bool rtl_pci_get_amd_l1_patch(struct ieee80211_hw *hw)
- 	return status;
+@@ -1656,8 +1656,6 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
+ 	synchronize_irq(rtlpci->pdev->irq);
+ 	tasklet_kill(&rtlpriv->works.irq_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+-
+-	destroy_workqueue(rtlpriv->works.rtl_wq);
  }
  
--static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
--				     struct rtl_priv **buddy_priv)
--{
--	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
--	struct rtl_priv *tpriv = NULL, *iter;
--	struct rtl_pci_priv *tpcipriv = NULL;
--
--	if (!list_empty(&rtlpriv->glb_var->glb_priv_list)) {
--		list_for_each_entry(iter, &rtlpriv->glb_var->glb_priv_list,
--				    list) {
--			tpcipriv = (struct rtl_pci_priv *)iter->priv;
--			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--				"pcipriv->ndis_adapter.funcnumber %x\n",
--				pcipriv->ndis_adapter.funcnumber);
--			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--				"tpcipriv->ndis_adapter.funcnumber %x\n",
--				tpcipriv->ndis_adapter.funcnumber);
--
--			if (pcipriv->ndis_adapter.busnumber ==
--			    tpcipriv->ndis_adapter.busnumber &&
--			    pcipriv->ndis_adapter.devnumber ==
--			    tpcipriv->ndis_adapter.devnumber &&
--			    pcipriv->ndis_adapter.funcnumber !=
--			    tpcipriv->ndis_adapter.funcnumber) {
--				tpriv = iter;
--				break;
--			}
--		}
+ static int rtl_pci_init(struct ieee80211_hw *hw, struct pci_dev *pdev)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 0368ecea2e817..f5718e570011e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -629,11 +629,6 @@ static void _rtl_usb_cleanup_rx(struct ieee80211_hw *hw)
+ 	tasklet_kill(&rtlusb->rx_work_tasklet);
+ 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+ 
+-	if (rtlpriv->works.rtl_wq) {
+-		destroy_workqueue(rtlpriv->works.rtl_wq);
+-		rtlpriv->works.rtl_wq = NULL;
 -	}
 -
--	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--		"find_buddy_priv %d\n", tpriv != NULL);
--
--	if (tpriv)
--		*buddy_priv = tpriv;
--
--	return tpriv != NULL;
--}
--
- static void rtl_pci_parse_configuration(struct pci_dev *pdev,
- 					struct ieee80211_hw *hw)
- {
-@@ -2011,7 +1971,6 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
- 		pcipriv->ndis_adapter.amd_l1_patch);
+ 	skb_queue_purge(&rtlusb->rx_queue);
  
- 	rtl_pci_parse_configuration(pdev, hw);
--	list_add_tail(&rtlpriv->list, &rtlpriv->glb_var->glb_priv_list);
- 
- 	return true;
- }
-@@ -2158,7 +2117,6 @@ int rtl_pci_probe(struct pci_dev *pdev,
- 	rtlpriv->rtlhal.interface = INTF_PCI;
- 	rtlpriv->cfg = (struct rtl_hal_cfg *)(id->driver_data);
- 	rtlpriv->intf_ops = &rtl_pci_ops;
--	rtlpriv->glb_var = &rtl_global_var;
- 	rtl_efuse_ops_init(hw);
- 
- 	/* MEM map */
-@@ -2316,7 +2274,6 @@ void rtl_pci_disconnect(struct pci_dev *pdev)
- 	if (rtlpci->using_msi)
- 		pci_disable_msi(rtlpci->pdev);
- 
--	list_del(&rtlpriv->list);
- 	if (rtlpriv->io.pci_mem_start != 0) {
- 		pci_iounmap(pdev, (void __iomem *)rtlpriv->io.pci_mem_start);
- 		pci_release_regions(pdev);
-@@ -2375,7 +2332,6 @@ EXPORT_SYMBOL(rtl_pci_resume);
- const struct rtl_intf_ops rtl_pci_ops = {
- 	.adapter_start = rtl_pci_start,
- 	.adapter_stop = rtl_pci_stop,
--	.check_buddy_priv = rtl_pci_check_buddy_priv,
- 	.adapter_tx = rtl_pci_tx,
- 	.flush = rtl_pci_flush,
- 	.reset_trx_ring = rtl_pci_reset_trx_ring,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index ae6e351bc83c9..f1830ddcdd8c1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -2270,8 +2270,6 @@ struct rtl_intf_ops {
- 	/*com */
- 	int (*adapter_start)(struct ieee80211_hw *hw);
- 	void (*adapter_stop)(struct ieee80211_hw *hw);
--	bool (*check_buddy_priv)(struct ieee80211_hw *hw,
--				 struct rtl_priv **buddy_priv);
- 
- 	int (*adapter_tx)(struct ieee80211_hw *hw,
- 			  struct ieee80211_sta *sta,
-@@ -2514,14 +2512,6 @@ struct dig_t {
- 	u32 rssi_max;
- };
- 
--struct rtl_global_var {
--	/* from this list we can get
--	 * other adapter's rtl_priv
--	 */
--	struct list_head glb_priv_list;
--	spinlock_t glb_list_lock;
--};
--
- #define IN_4WAY_TIMEOUT_TIME	(30 * MSEC_PER_SEC)	/* 30 seconds */
- 
- struct rtl_btc_info {
-@@ -2667,9 +2657,7 @@ struct rtl_scan_list {
- struct rtl_priv {
- 	struct ieee80211_hw *hw;
- 	struct completion firmware_loading_complete;
--	struct list_head list;
- 	struct rtl_priv *buddy_priv;
--	struct rtl_global_var *glb_var;
- 	struct rtl_dmsp_ctl dmsp_ctl;
- 	struct rtl_locks locks;
- 	struct rtl_works works;
+ 	while ((urb = usb_get_from_anchor(&rtlusb->rx_cleanup_urbs))) {
 -- 
 2.39.5
 
