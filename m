@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9431A291E8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AFAA28E5A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E545B162605
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8ED11889735
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAFB18A6BA;
-	Wed,  5 Feb 2025 14:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CAD149C53;
+	Wed,  5 Feb 2025 14:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkHsxTT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owNgsHn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF38618A6B5;
-	Wed,  5 Feb 2025 14:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84EA1537AC;
+	Wed,  5 Feb 2025 14:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766759; cv=none; b=rd3RkpBdltP9qaWpmJicyJsxnNBMNneIS4Q1mmhj9RDVMI6X8yC1kMlLIBe/Gr2/jMVkIF6rALTFP5SSg2onhEHtyDzY30fzsqCNnHc1rOh1LZ0udmX9l1yhSwIhEnJNd9jsha1JW9ThWaJcwE/dA6Y2viGrJnrmeA5yB0vVlmU=
+	t=1738764687; cv=none; b=kk7HZJrFCyH6zlYpatutFPB7xwpZJjWEn4O3/GdCT9xuprTcNNSJKRKtNkgwKIQ+W31vTv9EH/wce95ghhTI7gNAPiU4lcGVSC8138Y4SaLoPmytxD5mNry2QsKPekMmrFyjVnoabhn5A9jiSAIrlovORP6SAL+dsZPZgbLcdOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766759; c=relaxed/simple;
-	bh=PEP6iBQBvjKdi4LB1LyxbqV7HQ/iwk8oqAQ5tFaU+1w=;
+	s=arc-20240116; t=1738764687; c=relaxed/simple;
+	bh=HUT5buw53I9xrLuaniY/dN65aB08hTZJ4ToAWeeKfHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfhAZQwUyHVPTPJUQrUBZQ1kc/tIT1b3bFzO+RLjO1zHT4aEVHMLHovUG9hFfl+RyJoG+SKseBk2cYm/IOK2/4kPuQk8dYqBg9Cg91ltS6o5JA9ZqSzCvHlQSLAhjLl+Ds2uerZI5ME1VZvPx5xsXBT7WXTUnSm1Bp4foEpHZJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkHsxTT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8E8C4CED1;
-	Wed,  5 Feb 2025 14:45:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TOHH2vm/M19XOsEBqFMjOQzWwAhyxauJrNz6/0IvG8hmWo7db3Sea9DPALXiPptL9L4VVZZDfrfjwEO6X8pmZN0LM6TnSxC9vWUONKoqE+jCgUbav7STHwm71bQ+A0D7bmtITP+Xz26J9xYWOSvUp8+/7LB1doznOGcqNVjk16k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owNgsHn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BDEC4CED1;
+	Wed,  5 Feb 2025 14:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766759;
-	bh=PEP6iBQBvjKdi4LB1LyxbqV7HQ/iwk8oqAQ5tFaU+1w=;
+	s=korg; t=1738764686;
+	bh=HUT5buw53I9xrLuaniY/dN65aB08hTZJ4ToAWeeKfHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkHsxTT6jYuoN/n1MWbzwu+OlWTRgCniVhxv+54bqX311iVpSAIYkF5/47l3KOOuJ
-	 5wjPEtM7f7jEbrzU2il1+NlD/0sdGXqcH8gFIpPdHa2CDF27mOe0ET/H7fHbFLujmj
-	 mQJoy7hJAL+kKZm4FXpRGgU3myXmziUoA1RDG/qw=
+	b=owNgsHn2SIIA0PkwDurXktKKPIBYMKtG+idZSfPhFxFAAGaxt+yQzh1U0bN+PkSls
+	 rFy0KAn+rFjrTehnjoaVnTaSVfHd2j20qa62NKuvrWshrt6etueb/kkNOlHaTGu9bf
+	 OWYX7U1cDD+5S5CpYrk/olyrxir2G3DM9nDK0Up4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/590] arm64: dts: qcom: sm8550: correct sleep clock frequency
+Subject: [PATCH 6.6 193/393] cifs: Use cifs_autodisable_serverino() for disabling CIFS_MOUNT_SERVER_INUM in readdir.c
 Date: Wed,  5 Feb 2025 14:41:52 +0100
-Message-ID: <20250205134508.926573055@linuxfoundation.org>
+Message-ID: <20250205134427.679861037@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,117 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit e59334a088c3e722c0a287d4616af997f46c985e ]
+[ Upstream commit 015683d4ed0d23698c71f2194f09bd17dbfad044 ]
 
-The SM8550 platform uses PMK8550 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+In all other places is used function cifs_autodisable_serverino() for
+disabling CIFS_MOUNT_SERVER_INUM mount flag. So use is also in readir.c
+_initiate_cifs_search() function. Benefit of cifs_autodisable_serverino()
+is that it also prints dmesg message that server inode numbers are being
+disabled.
 
-Fixes: 0b12da4e28d8 ("arm64: dts: qcom: add base AIM300 dtsi")
-Fixes: b5e25ded2721 ("arm64: dts: qcom: sm8550: add support for the SM8550-HDK board")
-Fixes: 71342fb91eae ("arm64: dts: qcom: Add base SM8550 MTP dts")
-Fixes: d228efe88469 ("arm64: dts: qcom: sm8550-qrd: add QRD8550")
-Fixes: ba2c082a401f ("arm64: dts: qcom: sm8550: Add support for Samsung Galaxy Z Fold5")
-Fixes: 39c596304e44 ("arm64: dts: qcom: Add SM8550 Xperia 1 V")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-16-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: ec06aedd4454 ("cifs: clean up handling when server doesn't consistently support inode numbers")
+Fixes: f534dc994397 ("cifs: clear server inode number flag while autodisabling")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs8550-aim300.dtsi                | 2 +-
- arch/arm64/boot/dts/qcom/sm8550-hdk.dts                     | 2 +-
- arch/arm64/boot/dts/qcom/sm8550-mtp.dts                     | 2 +-
- arch/arm64/boot/dts/qcom/sm8550-qrd.dts                     | 2 +-
- arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts             | 2 +-
- arch/arm64/boot/dts/qcom/sm8550-sony-xperia-yodo-pdx234.dts | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ fs/smb/client/readdir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs8550-aim300.dtsi b/arch/arm64/boot/dts/qcom/qcs8550-aim300.dtsi
-index f6960e2d466a2..e6ac529e6b721 100644
---- a/arch/arm64/boot/dts/qcom/qcs8550-aim300.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs8550-aim300.dtsi
-@@ -367,7 +367,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &ufs_mem_hc {
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-hdk.dts b/arch/arm64/boot/dts/qcom/sm8550-hdk.dts
-index 01c9216026057..29bc1ddfc7b25 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-hdk.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-hdk.dts
-@@ -1172,7 +1172,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &swr0 {
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-index ab447fc252f7d..5648ab60ba4c4 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-mtp.dts
-@@ -825,7 +825,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &swr0 {
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
-index 6052dd922ec55..3a6cb27913048 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
-@@ -1005,7 +1005,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &swr0 {
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts b/arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts
-index 3d351e90bb398..62a6b90697b06 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts
-@@ -565,7 +565,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &tlmm {
-diff --git a/arch/arm64/boot/dts/qcom/sm8550-sony-xperia-yodo-pdx234.dts b/arch/arm64/boot/dts/qcom/sm8550-sony-xperia-yodo-pdx234.dts
-index 85d487ef80a0b..d90dc7b37c4a7 100644
---- a/arch/arm64/boot/dts/qcom/sm8550-sony-xperia-yodo-pdx234.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8550-sony-xperia-yodo-pdx234.dts
-@@ -722,7 +722,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32000>;
-+	clock-frequency = <32764>;
- };
- 
- &tlmm {
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index 3cffdf3975a21..75929a0a56f96 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -413,7 +413,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
+ 		cifsFile->invalidHandle = false;
+ 	} else if ((rc == -EOPNOTSUPP) &&
+ 		   (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_SERVER_INUM)) {
+-		cifs_sb->mnt_cifs_flags &= ~CIFS_MOUNT_SERVER_INUM;
++		cifs_autodisable_serverino(cifs_sb);
+ 		goto ffirst_retry;
+ 	}
+ error_exit:
 -- 
 2.39.5
 
