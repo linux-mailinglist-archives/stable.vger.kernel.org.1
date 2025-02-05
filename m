@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-112825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729AEA28E95
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46409A28E98
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC1A188279B
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1EF71625B5
 	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BBB1519AA;
-	Wed,  5 Feb 2025 14:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C971537AC;
+	Wed,  5 Feb 2025 14:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etth00QB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jy3KTxaa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A8415198D;
-	Wed,  5 Feb 2025 14:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94DF1519AA;
+	Wed,  5 Feb 2025 14:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764889; cv=none; b=bFA8X1lEzrxYENasVBrAQFfrACdJ4+K+t3bNo+48vINgoWytO0Qz/hUJODLuUECbuJrb3aq0G5/fhwj5Kn1Q9HgiwQdPgIH7qschUKTEyc2lwgqSjuEsYRtrb3Y0udE9DthSVKpvWqeRs7m1Fkogfkdkp54GK3hnNy1vCFhhO7A=
+	t=1738764899; cv=none; b=ADK2Shpr0i0xsQjaxn6YKgX5wB3WLiLK0lyN0mHV/tkFSLciFRd0dj9a36XcM60XvXxWuK/I+ZHNgtd2epEcogTeib73lZJsWAWpmAqTqmKl/xLjlqBMUBckoUcy8Han38G5wl5yeQh6AJ+vKQ0h36xf+QF9AF6MruYJ2SLsngM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764889; c=relaxed/simple;
-	bh=tQvV4JRgfGS5hnBcL5AsrsO3J1MoQQ2VS4d3oLQpyD0=;
+	s=arc-20240116; t=1738764899; c=relaxed/simple;
+	bh=z3KUtzS4Gd9k3jkBm2wrCXT2y6r/6BHF/Ft15X5pFLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhJlPiFFGk8uTT0IK895YeH+XxrtaxiGhf9IMWJEH7EsUG2/d52dIMosMbZmE4OCB7fi7+w7KeZWBniyiL2HhNxriCofdm9ppLUT3wzpuOIrz8QaJrmxra51CY1KK2HH99xhAE7btGQS5MKKrPvWvkWkN2aCz9asy7r0Ea4J7Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etth00QB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1679CC4CED1;
-	Wed,  5 Feb 2025 14:14:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BGynisnMRlQarAw9EY1xMSiTsbPcsQzLmVHdetzlLBaAE4dAiz9Zwgevhwo4pMDr0ykHnrq2WrXvJaT4Al6T7gZVQJOd5diNEsC86D4TIfnYWbshsesN9WLSWuzMJkLbg5DHiUd+dKElIEtxkKdZxQroUvGR2NqVWjw5Ijk2kfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jy3KTxaa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D01C4CED1;
+	Wed,  5 Feb 2025 14:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764889;
-	bh=tQvV4JRgfGS5hnBcL5AsrsO3J1MoQQ2VS4d3oLQpyD0=;
+	s=korg; t=1738764899;
+	bh=z3KUtzS4Gd9k3jkBm2wrCXT2y6r/6BHF/Ft15X5pFLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etth00QBKqffxGUBgXoXNUhFXxuTG32wxa7tqHQ6uTAfLdqJ74N+Fvz33ciWyh9/4
-	 pf1ivdrVzDglJHqjwVd6V8bg5vzF8duvRriKV+2MYH8nXzTSR94tO+CxZ/RwknnWsw
-	 Qc+HP0t7hC93/HNJUjumN9WZMejmvOE8ZPHxREaI=
+	b=Jy3KTxaaDdfUhamKkuStPR1bN4Gy/nmT12JcLvk3ACxqIcUpBHwypEs5iHf+b50b2
+	 8xi49g7fWzDHXSYdPeIbly+HJzjRdW549jeWWHqJRE9Y0cgDkNNMwDXpb4zL3vkAdj
+	 IVZqTL7Q4BimEbD7v+yhjdG9pbw5KlfGx2awGpu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sultan Alsawaf (unemployed)" <sultan@kerneltoast.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 122/623] cpufreq: schedutil: Fix superfluous updates caused by need_freq_update
-Date: Wed,  5 Feb 2025 14:37:44 +0100
-Message-ID: <20250205134500.888903613@linuxfoundation.org>
+Subject: [PATCH 6.13 123/623] selftests: ktap_helpers: Fix uninitialized variable
+Date: Wed,  5 Feb 2025 14:37:45 +0100
+Message-ID: <20250205134500.926865177@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -61,67 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sultan Alsawaf (unemployed) <sultan@kerneltoast.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 8e461a1cb43d69d2fc8a97e61916dce571e6bb31 ]
+[ Upstream commit 3e707b07f582c12ed78fa5516a97bf701bf0634c ]
 
-A redundant frequency update is only truly needed when there is a policy
-limits change with a driver that specifies CPUFREQ_NEED_UPDATE_LIMITS.
+__ktap_test() may be called without the optional third argument which is
+an issue for scripts using `set -u` to detect uninitialized variables
+and potential bugs.
 
-In spite of that, drivers specifying CPUFREQ_NEED_UPDATE_LIMITS receive a
-frequency update _all the time_, not just for a policy limits change,
-because need_freq_update is never cleared.
+Fix this optional "directive" argument by either using the third
+argument or an empty string.
 
-Furthermore, ignore_dl_rate_limit()'s usage of need_freq_update also leads
-to a redundant frequency update, regardless of whether or not the driver
-specifies CPUFREQ_NEED_UPDATE_LIMITS, when the next chosen frequency is the
-same as the current one.
+This is required for the next commit to properly test script execution
+control.
 
-Fix the superfluous updates by only honoring CPUFREQ_NEED_UPDATE_LIMITS
-when there's a policy limits change, and clearing need_freq_update when a
-requisite redundant update occurs.
-
-This is neatly achieved by moving up the CPUFREQ_NEED_UPDATE_LIMITS test
-and instead setting need_freq_update to false in sugov_update_next_freq().
-
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Signed-off-by: Sultan Alsawaf (unemployed) <sultan@kerneltoast.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/20241212015734.41241-2-sultan@kerneltoast.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 14571ab1ad21 ("kselftest: Add new test for detecting unprobed Devicetree devices")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20241212174223.389435-7-mic@digikod.net
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kselftest/ktap_helpers.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 28c77904ea749..e51d5ce730be1 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -83,7 +83,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+diff --git a/tools/testing/selftests/kselftest/ktap_helpers.sh b/tools/testing/selftests/kselftest/ktap_helpers.sh
+index 79a125eb24c2e..14e7f3ec3f84c 100644
+--- a/tools/testing/selftests/kselftest/ktap_helpers.sh
++++ b/tools/testing/selftests/kselftest/ktap_helpers.sh
+@@ -40,7 +40,7 @@ ktap_skip_all() {
+ __ktap_test() {
+ 	result="$1"
+ 	description="$2"
+-	directive="$3" # optional
++	directive="${3:-}" # optional
  
- 	if (unlikely(sg_policy->limits_changed)) {
- 		sg_policy->limits_changed = false;
--		sg_policy->need_freq_update = true;
-+		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
- 		return true;
- 	}
- 
-@@ -96,7 +96,7 @@ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
- 				   unsigned int next_freq)
- {
- 	if (sg_policy->need_freq_update)
--		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-+		sg_policy->need_freq_update = false;
- 	else if (sg_policy->next_freq == next_freq)
- 		return false;
- 
+ 	local directive_str=
+ 	[ ! -z "$directive" ] && directive_str="# $directive"
 -- 
 2.39.5
 
