@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-113193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A400A29067
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E8BA29191
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A36D188181A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 190C67A11C0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EF214B075;
-	Wed,  5 Feb 2025 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528911DF242;
+	Wed,  5 Feb 2025 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMoPJo6x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTKDzHlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFFB151988;
-	Wed,  5 Feb 2025 14:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7F8189905;
+	Wed,  5 Feb 2025 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766136; cv=none; b=EC2WelNEBmIwx4/jpDLvdSewWZdNgWaBYG6+VAhd1dktVdZnmBz4gz8Y7f66zy/7ZRUzNOs5PcKsmMzLHq0YFX4UZB05CEHsIMq6E6UzJSgQhPa5a7s/khRoOWVxGCu7lnHjxir01fvCsxtRT4nkf+SA0VTwPT5irI489Jftj9o=
+	t=1738766747; cv=none; b=krVkhYSCmAUxO4CEj+bh2iHKnwbhvR2JMD+RSWQolEUvNwSaXG6vZLVNq809NVlfk2AEHSbRRkHUQepbBtn4HHnlxdjKEHgIgz6PFqMRASazM1jxKMV5v/33+Iyf7a/htLTNW5WMGuCSdIgKxMvJw48nMyHigD5/qmA8rIermeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766136; c=relaxed/simple;
-	bh=HOaJ7y5SaHK50TiXViDDsnldon0Stz/W6qQJ2KnTAWg=;
+	s=arc-20240116; t=1738766747; c=relaxed/simple;
+	bh=XGV62LnKzW8Zsy7ZiEGn8wxeubYO4R3z0RA1uh4kt+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXu9aqOLY+/kEBBsGIUeBbb4mmZ3rBi7n+tR/P4yAU326BTFsmNScL0bOpYVvAAx4LvChHirfn15qo7UiC21MeYJ7mbuoDIz2vOZ6F6C7xlh/Ff+aeYo8t5csz5r7B/FLez/FZpXK8SvOJmDZCHnkW1Uxg9zlOwDNA++PbN53hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMoPJo6x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B298AC4CED1;
-	Wed,  5 Feb 2025 14:35:35 +0000 (UTC)
+	 MIME-Version; b=Iv+/FVJowXIfQlug2e+7ImrIEPLgXdqVaHZYTkQ88LCTy/P5PghZd/rGMHUMJ8CCm8sVNCWb/MBB5sYHgaAoA+gGgs6QBj74XYNhNTGbxJHfsJWAa0Fsz2E1Tb8aQIG7Tp9FYEOFgo+8/Di004UzYHF64vdA6h0l501ETjKc+5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTKDzHlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CBAC4CED1;
+	Wed,  5 Feb 2025 14:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766136;
-	bh=HOaJ7y5SaHK50TiXViDDsnldon0Stz/W6qQJ2KnTAWg=;
+	s=korg; t=1738766746;
+	bh=XGV62LnKzW8Zsy7ZiEGn8wxeubYO4R3z0RA1uh4kt+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMoPJo6xkZqFYpYyBFlFwp/eFvbMv0usHINpQtnHWqF6/16QK3rHZwFMFfxa4OJRX
-	 ypMtDxpKCS+HuYCqrSFhkCsu4gzx6Po/Kw1crIvDK/wxqsyv0v+jPIYzUNPQ8F3L4w
-	 MIHt1QhW4HLIBcxEqRGfAwm10EZYzb92dmuo/oZ0=
+	b=zTKDzHljoZP3PJNdgAcsieV27QD/LZ08F/SnB0uKGEIhufWXUqcR1WZxtsJ6vnpI0
+	 Z0RberlFiROAKtAr5ugacWNisUG03QJE494v9UHXnSd905fQBHqersoVEs4X1iU/er
+	 PXvv5qWarp6wTPri40NFQUQH34FAPvq7LgNLdulw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	James Clark <james.clark@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 290/590] iommu/amd: Remove unused amd_iommu_domain_update()
+Subject: [PATCH 6.13 303/623] perf test stat: Avoid hybrid assumption when virtualized
 Date: Wed,  5 Feb 2025 14:40:45 +0100
-Message-ID: <20250205134506.371503468@linuxfoundation.org>
+Message-ID: <20250205134507.819821449@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +71,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1a684b099fac9a37e6fe2f0e594adbb1eff5181a ]
+[ Upstream commit f9c506fb69bdcfb9d7138281378129ff037f2aa1 ]
 
-All the callers have been removed by the below commit, remove the
-implementation and prototypes.
+The cycles event will fallback to task-clock in the hybrid test when
+running virtualized. Change the test to not fail for this.
 
-Fixes: 322d889ae7d3 ("iommu/amd: Remove amd_iommu_domain_update() from page table freeing")
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/1-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 65d11821910bd910 ("perf test: Add a test for default perf stat command")
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241212173354.9860-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu.h | 1 -
- drivers/iommu/amd/iommu.c     | 9 ---------
- 2 files changed, 10 deletions(-)
+ tools/perf/tests/shell/stat.sh | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index 6386fa4556d9b..6fac9ee8dd3ed 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -87,7 +87,6 @@ int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag);
-  */
- void amd_iommu_flush_all_caches(struct amd_iommu *iommu);
- void amd_iommu_update_and_flush_device_table(struct protection_domain *domain);
--void amd_iommu_domain_update(struct protection_domain *domain);
- void amd_iommu_domain_flush_pages(struct protection_domain *domain,
- 				  u64 address, size_t size);
- void amd_iommu_dev_flush_pasid_pages(struct iommu_dev_data *dev_data,
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 8364cd6fa47d0..a24a97a2c6469 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1606,15 +1606,6 @@ void amd_iommu_update_and_flush_device_table(struct protection_domain *domain)
- 	domain_flush_complete(domain);
- }
+diff --git a/tools/perf/tests/shell/stat.sh b/tools/perf/tests/shell/stat.sh
+index 7a8adf81e4b39..68323d636fb77 100755
+--- a/tools/perf/tests/shell/stat.sh
++++ b/tools/perf/tests/shell/stat.sh
+@@ -187,7 +187,11 @@ test_hybrid() {
+   # Run default Perf stat
+   cycles_events=$(perf stat -- true 2>&1 | grep -E "/cycles/[uH]*|  cycles[:uH]*  " -c)
  
--void amd_iommu_domain_update(struct protection_domain *domain)
--{
--	/* Update device table */
--	amd_iommu_update_and_flush_device_table(domain);
--
--	/* Flush domain TLB(s) and wait for completion */
--	amd_iommu_domain_flush_all(domain);
--}
--
- int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag)
- {
- 	struct iommu_dev_data *dev_data;
+-  if [ "$pmus" -ne "$cycles_events" ]
++  # The expectation is that default output will have a cycles events on each
++  # hybrid PMU. In situations with no cycles PMU events, like virtualized, this
++  # can fall back to task-clock and so the end count may be 0. Fail if neither
++  # condition holds.
++  if [ "$pmus" -ne "$cycles_events" ] && [ "0" -ne "$cycles_events" ]
+   then
+     echo "hybrid test [Found $pmus PMUs but $cycles_events cycles events. Failed]"
+     err=1
 -- 
 2.39.5
 
