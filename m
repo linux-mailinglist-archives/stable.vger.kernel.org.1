@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC120A28E67
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C068DA28E71
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9123A252F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 968637A2C09
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE9F1547E9;
-	Wed,  5 Feb 2025 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC881494DF;
+	Wed,  5 Feb 2025 14:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns89Dd3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ1lA6HN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEFF14A088;
-	Wed,  5 Feb 2025 14:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14711519AA;
+	Wed,  5 Feb 2025 14:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764749; cv=none; b=r8CCyv3M8oWuQ1k1r4VJtGRQAG6VB5ySJow58djwxsdqZRiIMdmXTRTuw2WCLhcwNYYmKa1ydZQeLu1y+llX2vqSwGDf/t+HAY5ckY31ddDOWWXzBR5Sc7mFMcx+NR9iNvLyhMVufDE/v35/h2gl5qYUfQTGGyLI4I+fdsj4cDY=
+	t=1738764759; cv=none; b=YeOHcYwuyAIb0t7zBVOe+cOzLfOkQr605ZsHD756y4mP1Vptt8A1O7BrfpR+zIQ4am0FpcDKHr2ztZ4rjPXT6Zq/5+mmB/WcykHTG9rpxmZJAOliY23RfPpsn8C6J3sUErUJr9GAea7GXvUrPm7qCusIlGXUaDgfzd8+x3ZPqh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764749; c=relaxed/simple;
-	bh=c8zwyVes9rkRIsoguMk/JD598gizJNzyUfaCfsqEhng=;
+	s=arc-20240116; t=1738764759; c=relaxed/simple;
+	bh=ETy/LVQyN3RnaaAluKnrgOfwl9wbVDxb/GL2hiR4Wcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlKzIrO14sSQ4c3FvKUyTEZ2Ok8Ht8fGRHAQJwUwPOAigZ43CGzKI1CBH4egCwAdegpQWiYwq+tUajKItnNuUZkBMe2PUMdI0MQzyJ/m9cG2DFbJtnbJJrZTPgqOBfcotpOs0sbvzKsZizEehe43wUDwK1Kedj+XdG+0MG3ZHHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns89Dd3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0C6C4CED1;
-	Wed,  5 Feb 2025 14:12:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BgpDGjvGjwskKNjuo9dhpCGrqu6J77sJfk32yot2EAggwqom1zUh5kmDXJESFn8yXw7bFDnqWgl3Dj6dRLoU7i3wo3Mb9/G7jwVfxeT9RogvjYm8Rg+o4SWRTzVGa90IxgmCE5vT7iRh/2qKVOTFIeLDD5WNACyofrLM8Ebwyr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ1lA6HN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF409C4CED1;
+	Wed,  5 Feb 2025 14:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764748;
-	bh=c8zwyVes9rkRIsoguMk/JD598gizJNzyUfaCfsqEhng=;
+	s=korg; t=1738764758;
+	bh=ETy/LVQyN3RnaaAluKnrgOfwl9wbVDxb/GL2hiR4Wcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ns89Dd3Hy5U2N6tV3q9w4b0FDKaj2DGnQIUIlv4k3NOWwy0XEKzgFcMz15oGEts20
-	 gWYtN1t4CnMkxUcmFNWecyvBqr1HzhGrLWwoZlJ/B8wwJyvBwqygDwVOuFwMCBwyhJ
-	 Kf3WmqjGuvbQd3gxFnyWq44rzxnMQo5mGj3dsTL4=
+	b=AJ1lA6HNTMovl5wpunRbDUW2STL4fqSts2pQlE+qvoGqiigB21JPnSWA/gu7Vjn5c
+	 sS/QUS5beZOOKPQ/CJMO0GPp/vKC6so7B3p8PiVezcuJ/Wws3dow3cCiOBaPGB7dbW
+	 MYvhiQCH0AdW04OlY8ZhaMZ7RgdmTN5BAtzKKTDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Marcel Hamer <marcel.hamer@windriver.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 110/623] wifi: ath12k: fix read pointer after free in ath12k_mac_assign_vif_to_vdev()
-Date: Wed,  5 Feb 2025 14:37:32 +0100
-Message-ID: <20250205134500.423396951@linuxfoundation.org>
+Subject: [PATCH 6.13 111/623] wifi: brcmfmac: add missing header include for brcmf_dbg
+Date: Wed,  5 Feb 2025 14:37:33 +0100
+Message-ID: <20250205134500.461573814@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -61,63 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Marcel Hamer <marcel.hamer@windriver.com>
 
-[ Upstream commit 5a10971c7645a95f5d5dc23c26fbac4bf61801d0 ]
+[ Upstream commit b05d30c2b6df7e2172b18bf1baee9b202f9c6b53 ]
 
-In ath12k_mac_assign_vif_to_vdev(), if arvif is created on a different
-radio, it gets deleted from that radio through a call to
-ath12k_mac_unassign_link_vif(). This action frees the arvif pointer.
-Subsequently, there is a check involving arvif, which will result in a
-read-after-free scenario.
+Including the fwil.h header file can lead to a build error:
 
-Fix this by moving this check after arvif is again assigned via call to
-ath12k_mac_assign_link_vif().
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h: \
+	In function ‘brcmf_fil_cmd_int_set’:
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h:90:9: error: implicit \
+	declaration of function ‘brcmf_dbg’ [-Werror=implicit-function-declaration]
+   90 |         brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
+      |         ^~~~~~~~~
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+The error is often avoided because the debug.h header file is included
+before the fwil.h header file.
 
-Closes: https://scan5.scan.coverity.com/#/project-view/63541/10063?selectedIssue=1636423
-Fixes: b5068bc9180d ("wifi: ath12k: Cache vdev configs before vdev create")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Acked-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241210-read_after_free-v1-1-969f69c7d66c@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+This makes sure the header include order is irrelevant by explicitly adding the
+debug.h header.
+
+Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
+Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241211133618.2014083-1-marcel.hamer@windriver.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index d493ec812055f..cf4f4245f6068 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7173,9 +7173,6 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+index 31e080e4da669..ab3d6cfcb02bd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
+@@ -6,6 +6,8 @@
+ #ifndef _fwil_h_
+ #define _fwil_h_
  
- 	ab = ar->ab;
- 
--	if (arvif->is_created)
--		goto flush;
--
- 	/* Assign arvif again here since previous radio switch block
- 	 * would've unassigned and cleared it.
- 	 */
-@@ -7186,6 +7183,9 @@ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
- 		goto unlock;
- 	}
- 
-+	if (arvif->is_created)
-+		goto flush;
++#include "debug.h"
 +
- 	if (ar->num_created_vdevs > (TARGET_NUM_VDEVS - 1)) {
- 		ath12k_warn(ab, "failed to create vdev, reached max vdev limit %d\n",
- 			    TARGET_NUM_VDEVS);
+ /*******************************************************************************
+  * Dongle command codes that are interpreted by firmware
+  ******************************************************************************/
 -- 
 2.39.5
 
