@@ -1,65 +1,54 @@
-Return-Path: <stable+bounces-112858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDD8A28EBA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC4FA28FF4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2BD164927
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4D331884AB9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6DD8634E;
-	Wed,  5 Feb 2025 14:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F85D7E792;
+	Wed,  5 Feb 2025 14:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bfxywMgP"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="cCrFcTDA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625471519BE;
-	Wed,  5 Feb 2025 14:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1CE7BAEC;
+	Wed,  5 Feb 2025 14:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764997; cv=none; b=WGqH4/lc66etkCORGpa3zrCe6MkX12dzkCJ8OowKcTwFBKivqEeLxfR0KfKSWngNcH87kjuytZ9vykjtVWrJwbqQc3b6BXeOBAWjaXnl0p1EYxEYsINdNTxsmLCKXus/FAuMShv9FhstCZCprwylMemBS/FqW2dwnCNM4I7NKIY=
+	t=1738765827; cv=none; b=OfOut4HgbRldNQdUMmzWHq1uZDxWjLqhJRJJN/nTEIlznHRAl9f2CarT81LmGBj/pQVfBxgFuBFLsAY4RYrtsF4cddnYK5mINAImSneroO87w5axoGKoHoHKBG77EEk6bE4+kzPXz6lD9gR6pdmtzDrv2OTfW1QgDS26P5L2q+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764997; c=relaxed/simple;
-	bh=ytnuGd7Q2qXoBsvqoNaaIzEvhm8uBCFG9Rm4tRWce10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cQ1uM5JD0xYiSC77brUyYo+r4zrnvJ5WpDheOJlxRG5K8R5r6CSzNFQyDkUeGa/UAha3niOGsPhVisw2eRtbq51dH1OR08a/QMfeaseRLbcKrPye+S2hiUeaqNWdiQf2TUDejiuVgBKBajyCHRdSzfgAklXxnzdN7oAoqPccx28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bfxywMgP; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738764996; x=1770300996;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ytnuGd7Q2qXoBsvqoNaaIzEvhm8uBCFG9Rm4tRWce10=;
-  b=bfxywMgPA00vIOlwuakc4lmGXz9JN843nTt1zyL2Jx43Wzo0X17qj7qN
-   diUUSKN91mcFib92cgjtbNH29Vwc4jlURB2+HrcPnNGo4dxUFHFmAdc3v
-   cns9fUTJEB037vofLEjjer+pxFuOE30/HQjFScVu9O3XIx9dXdBxqMVyn
-   oFtIsABBXo6ZTLQVLPFlcakOueirExBSO0d50TZecHNKoryc+a27PgfKK
-   yiaQu4jUHjY6ryGV94lLCnqNYUsKoQfOwcZaMo4Uq9S5lHXQvvfrN49Rr
-   eR+rzdkI2RBAFuWaSHQnY0DvMH/T9kDthPum8kp/yKeAwPeaa6HiDiRUU
-   g==;
-X-CSE-ConnectionGUID: 1bhRCv8OTVycUix+3GxRYQ==
-X-CSE-MsgGUID: +nGrMYbbTK6FZTUJCWjCwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="26935325"
-X-IronPort-AV: E=Sophos;i="6.13,261,1732608000"; 
-   d="scan'208";a="26935325"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 06:16:35 -0800
-X-CSE-ConnectionGUID: 143MMiNlRHaIXhEvZWb7Zw==
-X-CSE-MsgGUID: GiGYv/mAQ1yJxLRtX0HmkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="116114484"
-Received: from unknown (HELO [10.237.72.199]) ([10.237.72.199])
-  by orviesa005.jf.intel.com with ESMTP; 05 Feb 2025 06:16:33 -0800
-Message-ID: <c746c10a-d504-48bc-bc8d-ba65230d13f6@linux.intel.com>
-Date: Wed, 5 Feb 2025 16:17:35 +0200
+	s=arc-20240116; t=1738765827; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=WwFCVPucBhSPtNwd2CQjjuCQz09uKnQg7QxtLBFbLWh0zaZceB610EjHNJ96V4IoOKja9cosiGDBxkRXBZd2XaxEhxLB5Q1btaLwEeGt8YCrvEJbfoPOIOhyxI+V2WE5miiPvaY7lUPAIr4i+hu72Vh+thJjmXBeBHakWMeV8UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=cCrFcTDA; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1738765822; x=1739370622; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=cCrFcTDAEGRBJh2TNJrRW5rNT3+t5g3eBMc3xn6lNCh5DQ4QD6CX9Wb0NVAJCdZC
+	 NNSY0BNxeLygDUf3NhZwRq+IKnv1AAWd/X5Z+lcEd87hra4RWlmLyCaFJvwRH1Wrf
+	 9RvVqmbcTSxDgfuFVlySjHcRICTNbPp9fnPEEP8Q0nw+jkpBy9Eja/WdnR2K0iGgZ
+	 GqpppLfdxwdNYRepq+FPSrY6XLSFUX1SKPoeuevrIuNokasf/0TH04ezfehEFleS6
+	 jLTA9fA+ZLtDVaMG/5SFzjsP0/zx9tu9WdBO3AbqtDwtJyQaQErA1vmCGe/H0LBh9
+	 rzUG9FHR7163CAHZrw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.104]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4b1y-1tgENk1xCw-00F3Bk; Wed, 05
+ Feb 2025 15:30:22 +0100
+Message-ID: <f9f936a9-1a55-4b4f-a093-7b94ab726a51@gmx.de>
+Date: Wed, 5 Feb 2025 15:30:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,58 +56,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/1] xhci: Correctly handle last TRB of isoc TD on
- Etron xHCI host
-To: Kuangyi Chiang <ki.chiang65@gmail.com>, mathias.nyman@intel.com,
- gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250205053750.28251-1-ki.chiang65@gmail.com>
- <20250205053750.28251-2-ki.chiang65@gmail.com>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20250205053750.28251-2-ki.chiang65@gmail.com>
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.13 000/623] 6.13.2-rc1 review
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:YO+z50rx9oBFRQTW6llk4tATg29xkVCXlF9fx1B+Ca1prNIJa4+
+ 26g7R3TiBVP5dQHvFk9TIaSx9o6Cgvbe2rnzw7i8+KB2drcX/diurNbWtuwj0mg1GmWUjXa
+ hnRCjGgQ6mcy082grU2HDR140FYquEem6XMwYy/qQ+7hTXN3fYLBOX3P2XQFXqdishUunCu
+ 66kDmUEIKl4FZY2mZzIOw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:b0b1eIE9X+g=;ozl6l71yTyyqppiD2fZ0GLiCZ3f
+ dpihhv6YlBZyLTDckELZ68r9SNjWCoyF0aBQjaNEf6X0np+Nwio8Oc3kAcbi70R1EIPvBQpgN
+ Mq4mitfCYahhXP7y+gnO0q5zlxKltW8cIUC40gDkWU7qUgif7ddLcVHOR84/nVba6PLfFm/xO
+ l1ixAYb6uNJIpROibRjrOCiQA0/QPipYezRQm6IVbFfKGiupg1gvGICxiVRqFxDp2gJna0r/L
+ lJePjPzgcZwsznW23azvO6Wyb33vJGfDYPv9GCk92NPkhJUnByJsJJTE0aPFKbA+1ZN/1XXQW
+ ZcMvQCcHxRrkuxRRsJ2UK/OLbf0vmWmugGtwFvx1zEhJIG/nLiJISYApkg51QtcKyGZHeSR9V
+ t7eNYJomaPmw3HZg7GqzePxdLBZpJNLpCLPt+GfIf0tD0GT1sm7Pp1fQ6fWWSZV+jHQP8f8Lr
+ mOQIXnQbS8ueqNkRU78S0Dn8y0/imI77ITQ6anA4GFKybermonGrGkCCAwBKkU6xhXDJ/JgRR
+ kv02cQy8CBL/va+7rYGpWhdNqHhxp1kaM5aopSS3Rliek4kYx7ZxoqrfR16ON4FRlYFhwKYqS
+ QCzmnXLwDFLzLQCHL4h/wUq/jPNPqrGesGTuUaCWoaTJkhaRBt9xFCqSIIFgyAlRU2oovx09B
+ 5aMgCay5tyeA0kuKkhzXt82XdG8U/TdymHGtuf4OEjTLeYvnLGbfmdN9ighBHW8+0ZBePQL2N
+ MOHQ+6Lq5VjNCYjbTrDhSWuIhmD/WSrAmWOvAkEU0f1hpE537uNc8aXxaobp9UHxVF+NBDDhL
+ 3qg7DL2uXdl6uz3nXbOMB/3EleWpBqofJgpkM3xoCAwwFNk8wY34pIluj2mtWp0JfsS2KAx2L
+ /ITtwlcZRRg22dThMjB0uTCloh8MkglE0aPXpX0E44/HNfWDKHWtYGM45vIFq8gSeCvRvPV4a
+ 0/3dHP45J6EJ/MDlku8PBIDkJOSYEK/ZC0/dGeqlIctxPeo1JBx3KHtS/Q1ZqBkydumQ13n6A
+ NBZH+yCU0y9Zfo9WKHLSYFoMDWusUYCqKMcsamo9kXsZ7/gHr0W0ArHuXt1355EQYN0yyWLtB
+ jqFhKQ/7Qj+TutvsoXNRSseDY+65g3rYGC87oRGBujhDxOxXT4qxsJ6OtjFrF19XWv0lCfj1z
+ X0nUYpGXI38HhStWDE/RVd153wM8y58tO5MbyIwJjyc1bJ1ADoYzTKcpEkl1cqW20jqnYTwkd
+ 0xC6gX/IrFNgBtdf6Ij3nirFpjY5Cg/kHFvk2tcSYPIb44IxTjmgZwDR+wqLe9G74MeNgJbC8
+ /Vg0MIktoweLyHEVMdUk90CID7oOQ3QZYyl9Tul5KigLUM=
 
-On 5.2.2025 7.37, Kuangyi Chiang wrote:
-> Unplugging a USB3.0 webcam while streaming results in errors like this:
-> 
-> [ 132.646387] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-> [ 132.646446] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8630 trb-start 000000002fdf8640 trb-end 000000002fdf8650 seg-start 000000002fdf8000 seg-end 000000002fdf8ff0
-> [ 132.646560] xhci_hcd 0000:03:00.0: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 18 comp_code 13
-> [ 132.646568] xhci_hcd 0000:03:00.0: Looking for event-dma 000000002fdf8660 trb-start 000000002fdf8670 trb-end 000000002fdf8670 seg-start 000000002fdf8000 seg-end 000000002fdf8ff0
-> 
-> If an error is detected while processing the last TRB of an isoc TD,
-> the Etron xHC generates two transfer events for the TRB where the
-> error was detected. The first event can be any sort of error (like
-> USB Transaction or Babble Detected, etc), and the final event is
-> Success.
-> 
-> The xHCI driver will handle the TD after the first event and remove it
-> from its internal list, and then print an "Transfer event TRB DMA ptr
-> not part of current TD" error message after the final event.
-> 
-> Commit 5372c65e1311 ("xhci: process isoc TD properly when there was a
-> transaction error mid TD.") is designed to address isoc transaction
-> errors, but unfortunately it doesn't account for this scenario.
-> 
-> To work around this by reusing the logic that handles isoc transaction
-> errors, but continuing to wait for the final event when this condition
-> occurs. Sometimes we see the Stopped event after an error mid TD, this
-> is a normal event for a pending TD and we can think of it as the final
-> event we are waiting for.
+Hi Greg
 
-Not giving back the TD when we get an event for the last TRB in the
-TD sounds risky. With this change we assume all old and future ETRON hosts
-will trigger this additional spurious success event.
-
-I think we could handle this more like the XHCI_SPURIOUS_SUCCESS case seen
-with short transfers, and just silence the error message.
-
-Are there any other issues besides the error message seen?
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
 Thanks
-Mathias
 
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
