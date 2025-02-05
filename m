@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC26FA29203
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4208A28D76
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3BE3165196
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8C11889B57
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F61E1FCCE4;
-	Wed,  5 Feb 2025 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF641509BD;
+	Wed,  5 Feb 2025 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6Pl67f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuCzpWk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2111FC7C2;
-	Wed,  5 Feb 2025 14:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1C515198D;
+	Wed,  5 Feb 2025 14:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766831; cv=none; b=oCMVrUTgKNfwb8v9tXw3KDzHTwNYSPZlDGz8OtRtc090x85EapR4ubnD3i+QYKwdOtuVjcaFlboBezv1AoUNzpTWFQs/yZQ++VeydE1d3FXBu20YFFMyl5C4YTWFw43RV5PfOZIsCqxK4By6R3HCabl88g9HHDfIfG3hpLN/vTw=
+	t=1738764070; cv=none; b=URKFF5l08/t48PcdN/Ln4RBbiTOxvDKY9gbBk3dxGDOuHPxk+Cr4ZBYZ+cpOFBtydex+GOYgcyMMkjAOPUMfU70cE9w8G2e3giomMQ/Y/J4BIV/c6nJOAw6357xMQsK4x/tCvAPQAOtcBW+RsYjANyCwHnzAW6dFFaiEpDGWGCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766831; c=relaxed/simple;
-	bh=IPOUgjUwndzaIDBbu6j4ae/bC794uBxYXl34gRa815U=;
+	s=arc-20240116; t=1738764070; c=relaxed/simple;
+	bh=kO0j02FKJkEq2uZ8ziqK4b1S1lFtOrK/LwUeFWpfSE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qijcnyMJug2qz2UuySCZ9UXR9aLPQYEJLnfEvYYB8EUo9zcH3zgwxWTAJ+6q6I9PkkUlBOrBLLBvSLl5oHKG2ius2/aG43GIPhmC6/Hicw2ycMoQFDS/YEsGFTwezISZ5Kcg5l+vN8PK/O9IYa6ofzVAIYsYApdsQWVoXJAMivQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6Pl67f8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E5DCC4CED1;
-	Wed,  5 Feb 2025 14:47:10 +0000 (UTC)
+	 MIME-Version; b=ByH2mEVaLdJyZoy5CmMOSX+VWnDjy1v5dkGFM2+LUkMyHs4eNsfe9B9WXwcG3tuGZO36VgDVP0oL6UtaPczvVH1kTSxEn8CPkOBDi+obhxJ83SWWRBU1m2vGVn7GsT6gphTkJ77CcMTRfVP8VkLZMM31hmYE/0/yXU7fem9LrPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuCzpWk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F56EC4CED1;
+	Wed,  5 Feb 2025 14:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766830;
-	bh=IPOUgjUwndzaIDBbu6j4ae/bC794uBxYXl34gRa815U=;
+	s=korg; t=1738764070;
+	bh=kO0j02FKJkEq2uZ8ziqK4b1S1lFtOrK/LwUeFWpfSE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6Pl67f8KxeMpMsU/F/x69oPTUq9qaANJMFx+tIsow7wAm/tRG6E7t45s9RDuoDct
-	 IN0kIh6k3UXE5U0k09idQKqC/8I8IgO2XsQ5tY1V0lGLW4edSt6QUnOT9/a6FMUBfa
-	 pMVcrUhjQCHzqXKDKZGuyULV0ELCFS87T2G4sIO4=
+	b=tuCzpWk40yLMn44in2pDiK2FF6fps2R1e4ZxC05fPLt2BNgeU6iS8F8Xz7eYXsIez
+	 q1KAlGqpQjqLrWXTjoj6hNJBL0b9/rjxN5GVYcXxQoPig34HZ1Lh1X/1HLnqYk/o46
+	 SU3Il/d3WLL8gwGOom18M6lk5e9FUVEiDwhC5ifk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Bo Gan <ganboing@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 314/623] iommu/amd: Remove unused amd_iommu_domain_update()
+Subject: [PATCH 6.6 137/393] clk: analogbits: Fix incorrect calculation of vco rate delta
 Date: Wed,  5 Feb 2025 14:40:56 +0100
-Message-ID: <20250205134508.236020163@linuxfoundation.org>
+Message-ID: <20250205134425.542286131@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+From: Bo Gan <ganboing@gmail.com>
 
-[ Upstream commit 1a684b099fac9a37e6fe2f0e594adbb1eff5181a ]
+[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
 
-All the callers have been removed by the below commit, remove the
-implementation and prototypes.
+In wrpll_configure_for_rate() we try to determine the best PLL
+configuration for a target rate. However, in the loop where we try
+values of R, we should compare the derived `vco` with `target_vco_rate`.
+However, we were in fact comparing it with `target_rate`, which is
+actually after Q shift. This is incorrect, and sometimes can result in
+suboptimal clock rates. Fix it.
 
-Fixes: 322d889ae7d3 ("iommu/amd: Remove amd_iommu_domain_update() from page table freeing")
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/1-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
+Signed-off-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu.h | 1 -
- drivers/iommu/amd/iommu.c     | 9 ---------
- 2 files changed, 10 deletions(-)
+ drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index 1bef5d55b2f9d..c38e02510cf73 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -89,7 +89,6 @@ int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag);
-  */
- void amd_iommu_flush_all_caches(struct amd_iommu *iommu);
- void amd_iommu_update_and_flush_device_table(struct protection_domain *domain);
--void amd_iommu_domain_update(struct protection_domain *domain);
- void amd_iommu_domain_flush_pages(struct protection_domain *domain,
- 				  u64 address, size_t size);
- void amd_iommu_dev_flush_pasid_pages(struct iommu_dev_data *dev_data,
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 16f40b8000d79..7e7246c49006a 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1603,15 +1603,6 @@ void amd_iommu_update_and_flush_device_table(struct protection_domain *domain)
- 	domain_flush_complete(domain);
- }
+diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
+index 09ca823563993..d8ae392959969 100644
+--- a/drivers/clk/analogbits/wrpll-cln28hpc.c
++++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
+@@ -291,7 +291,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
+ 			vco = vco_pre * f;
+ 		}
  
--void amd_iommu_domain_update(struct protection_domain *domain)
--{
--	/* Update device table */
--	amd_iommu_update_and_flush_device_table(domain);
--
--	/* Flush domain TLB(s) and wait for completion */
--	amd_iommu_domain_flush_all(domain);
--}
--
- int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag)
- {
- 	struct iommu_dev_data *dev_data;
+-		delta = abs(target_rate - vco);
++		delta = abs(target_vco_rate - vco);
+ 		if (delta < best_delta) {
+ 			best_delta = delta;
+ 			best_r = r;
 -- 
 2.39.5
 
