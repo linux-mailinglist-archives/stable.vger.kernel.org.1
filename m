@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E5AA28D1B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833D6A28C73
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7014C18888AF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7D743A2C15
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744041514EE;
-	Wed,  5 Feb 2025 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E06142E86;
+	Wed,  5 Feb 2025 13:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4Cv77h4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IYV1ETqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7B114A4E9;
-	Wed,  5 Feb 2025 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDCA126C18;
+	Wed,  5 Feb 2025 13:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763819; cv=none; b=KNuc6LBLm4MDS2YCnqDRJJlmyMyYJ3Xy2Hdsnade2TT2m4Tbn0uBEX0mYfL/HgNF+baNpjxNdy0Z2w9VAxEwozdz/tnF+6ZfG4mRYDz1QiiuZeXyO6yorpAm8YmRCKcGYB5NMVO6NOhlIwxjCo8Ia9NFzb+v5JAKGXtm2JuUIyU=
+	t=1738763399; cv=none; b=shAU+ElAz74pmTmSfOPDG7ukLjHLgTKwzXyxV30Kmom5ajNVeo0y2UeU8kozfBocw3CFNsn8QtwGh3kfqoyNNDoEvh4HM3eGeBrXxg+MzhXavvfBCIZLpP+R397fsvYZZ7b/TVjiYnBppBDZqWaJ1mF7G56JhnthOMjmkcuutos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763819; c=relaxed/simple;
-	bh=92j3FbzGWaSMCBS2WYE13ze11pJx4f3w9MkmfFQ4/fo=;
+	s=arc-20240116; t=1738763399; c=relaxed/simple;
+	bh=Y9CY3bY4GzwdUfN7nlDiT6gZD1FXURRuxx0A/+UVgTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXQM/Q1I6jTLh6byD5M0Z+UC+wEM3bIwdfHiUmNKpPf0rdVyW8E0Z5HdVIkiKAisHALHkr5IhIwDrlNR74dD/ftIlm2+MwrOL3Lm0G0+mYHkTDpt8xXSYMVrRMkDrpc5W5cR5Dc4AstQkMGhcNtK+cqoHEB+ZkWSA742Z6VfQhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4Cv77h4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8E2C4CED1;
-	Wed,  5 Feb 2025 13:56:58 +0000 (UTC)
+	 MIME-Version; b=NuxZcv0Bou/CLmZHe62o8fMkDDoqvmo7THDOZgh56NEbIMuqJ61UhmCr7WgiciruBHIOL0EjoL5eWW/QF6maKSN/g/G+CnMxNde0wEmiSn321HRYYRiQ75tMvUZwS6hScDa9f3mfRLiZFAbKHfKxuApgjOZHS85hNdyeADIlpcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IYV1ETqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D14CC4CED1;
+	Wed,  5 Feb 2025 13:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763819;
-	bh=92j3FbzGWaSMCBS2WYE13ze11pJx4f3w9MkmfFQ4/fo=;
+	s=korg; t=1738763399;
+	bh=Y9CY3bY4GzwdUfN7nlDiT6gZD1FXURRuxx0A/+UVgTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4Cv77h4rNj1eehGUH2oMNYOSs9dbTgZraQE9AhnIKjkqtJOO74XkZFS/JV5T0XPs
-	 s8pU5NEju6wtBWTeh7nT0fAaTQXLa06wcj56ujtInOCfpItnlusvLQBAXQOxiwqnlS
-	 +F4BmJVimbarh81D/B6UqPZ3qqKnDnxdDZ6489P4=
+	b=IYV1ETqp95DZ1PzKI0gu1rB0n6TjFJ8dVtlWGr0B19QAz9+w7ZdSKxsLdOLS7qMD2
+	 X50jU0YWZGtrMmraZGeglKnyv2oDMNLsMnDfKfO2tFjJT3NVBvQtOXm3H0fGvUPLVQ
+	 p6fhK5HIWew/g55KWdMrJU0JKKQxi314/fUmkWRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 021/623] nvme: Add error check for xa_store in nvme_get_effects_log
+Subject: [PATCH 6.12 008/590] fs: fix proc_handler for sysctl_nr_open
 Date: Wed,  5 Feb 2025 14:36:03 +0100
-Message-ID: <20250205134457.039126755@linuxfoundation.org>
+Message-ID: <20250205134455.551038187@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Jinliang Zheng <alexjlzheng@gmail.com>
 
-[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
+[ Upstream commit d727935cad9f6f52c8d184968f9720fdc966c669 ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index csi is already used. This fix adds an
-error check of the return value of xa_store() in nvme_get_effects_log().
+Use proc_douintvec_minmax() instead of proc_dointvec_minmax() to handle
+sysctl_nr_open, because its data type is unsigned int, not int.
 
-Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 9b80a184eaad ("fs/file: more unsigned file descriptors")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Link: https://lore.kernel.org/r/20241124034636.325337-1-alexjlzheng@tencent.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/file_table.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index a970168a3014e..315692cb2e614 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3092,7 +3092,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
- static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 				struct nvme_effects_log **log)
- {
--	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
-+	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
- 	int ret;
- 
- 	if (cel)
-@@ -3109,7 +3109,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
- 		return ret;
- 	}
- 
--	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(cel);
-+		return xa_err(old);
-+	}
- out:
- 	*log = cel;
- 	return 0;
+diff --git a/fs/file_table.c b/fs/file_table.c
+index eed5ffad9997c..18735dc8269a1 100644
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -125,7 +125,7 @@ static struct ctl_table fs_stat_sysctls[] = {
+ 		.data		= &sysctl_nr_open,
+ 		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec_minmax,
++		.proc_handler	= proc_douintvec_minmax,
+ 		.extra1		= &sysctl_nr_open_min,
+ 		.extra2		= &sysctl_nr_open_max,
+ 	},
 -- 
 2.39.5
 
