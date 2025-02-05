@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40DCA28CCD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2CBA28DA3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A7DC168E6B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 524577A4212
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AD7FC0B;
-	Wed,  5 Feb 2025 13:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F01F14EC77;
+	Wed,  5 Feb 2025 14:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVoePS1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mJIRBey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59CB1494DF;
-	Wed,  5 Feb 2025 13:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E4C1519AA;
+	Wed,  5 Feb 2025 14:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763647; cv=none; b=PUVXphp4zon7/S1EjVb4FkkNfwSNNYdxrXpuyuBvF9sL8uYMtwYUhZFwBrMg4+mS/IAQXSLdAR3podyk/iaUF3ohRiF1a1J3V0xMMqKUwQ6WlzPOaUjRVzb7obIzPn4JCZxCTKvZIyhLfUv33CUu76Ts39oE3BuhUL6c20N4SCY=
+	t=1738764210; cv=none; b=XH3gomwIn5vkpchgZUP9fv0pFa+s6u9nFUPzjrpFL19GXOBvXOyOsfAf886Z+q525RTksNVV9LcVbSV1+IEgv21v3ZT4D7TT6znznABsxgLFuDIIgGtyR+/b9BpWzEd/1Y2hVsVoATQy5MetGT+PsqT8TuAvdb1KVsXpIhQjpug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763647; c=relaxed/simple;
-	bh=mgh3xNPZC64oMlIOl7QyUa1wUdlg2YZpKKNOI83O6OY=;
+	s=arc-20240116; t=1738764210; c=relaxed/simple;
+	bh=NCieyCbgnnyl00XLHYqkmE43fuMQ42EU/oM9PDURWNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDndCJE188Ajhg+b1xS0PoDcvsCudRvdExuLV1QU6BLEVpl04pfOaFWXVUp8pvgsPR5ZmZRWylxCAo+CTk3055YPlDCnFCzif3Gz9gWeWDPuzeYaoj/EwuW9IWx145ADApcqVlQ/M7JHnafyXSMv3VPHjE/M2m08/ZLHqyGKWoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVoePS1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543E3C4CED1;
-	Wed,  5 Feb 2025 13:54:06 +0000 (UTC)
+	 MIME-Version; b=LIH1dKQhelViVECaMkROvtnHO0wg/X9cf9PXshUCd+bcN0id+wHF+3md7C39jrwLtAov5THRbcQYEfJhR7lP5kqBHVWhHyvoL9gb77hHd91Y8WPS4akaFdJgPp7TO+cjvQgkB5ucrJqJYgj9XqsVL4aoRKONVgXJLDcP78+kods=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mJIRBey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF35C4CED1;
+	Wed,  5 Feb 2025 14:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763646;
-	bh=mgh3xNPZC64oMlIOl7QyUa1wUdlg2YZpKKNOI83O6OY=;
+	s=korg; t=1738764210;
+	bh=NCieyCbgnnyl00XLHYqkmE43fuMQ42EU/oM9PDURWNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVoePS1BKUe8tz2gsnyWMQXcptiCuH5Kby7hVgZsbbUyvCAEWTs5k3oSQkumtYzqK
-	 kvqvLUz3SyFQo+tn1NxKwbOOn7d//2X4EG3xAbyQW2NRTBaPwQElgOsDjpHrnbPH6q
-	 8xfIa3tJ/69IRy+RV1EDv7efIzRIAqntK2irFZw4=
+	b=2mJIRBeym7HoRQILcfI+sq3zGg99UJFfcJ69pyEUhrmSOnnKwDKCE9VvgK7psmOGI
+	 xTbDTnWsQB9GWTeTlDljERGO5BHz3E//3rpWfsUfLyJaVgWByi2FU1vk6tTjmuNkYJ
+	 PFYCNDGde2tGkiM4ke0wloPHvrgYkpSzUxcK0k6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Derek Foreman <derek.foreman@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/590] drm/rockchip: vop2: Fix cluster windows alpha ctrl regsiters offset
+Subject: [PATCH 6.13 057/623] drm/connector: Allow clearing HDMI infoframes
 Date: Wed,  5 Feb 2025 14:36:39 +0100
-Message-ID: <20250205134456.942432705@linuxfoundation.org>
+Message-ID: <20250205134458.409584734@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Derek Foreman <derek.foreman@collabora.com>
 
-[ Upstream commit 17b4b10a0df1a1421d5fbdc03bad0bd3799bc966 ]
+[ Upstream commit d34357743b360c99903b5a59daab08f55b2f41a1 ]
 
-The phy_id of cluster windws are not increase one for each window.
+Our infoframe setting code currently lacks the ability to clear
+infoframes. For some of the infoframes, we only need to replace them,
+so if an error occurred when generating a new infoframe we would leave
+a stale frame instead of clearing the frame.
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-6-andyshrk@163.com
+However, the Dynamic Range and Mastering (DRM) infoframe should only
+be present when displaying HDR content (ie: the HDR_OUTPUT_METADATA blob
+is set). If we can't clear infoframes, the stale DRM infoframe will
+remain and we can never set the display back to SDR mode.
+
+With this change, we clear infoframes when they can not, or should not,
+be generated. This fixes switching to an SDR mode from an HDR one.
+
+Fixes: f378b77227bc ("drm/connector: hdmi: Add Infoframes generation")
+Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241202181939.724011-1-derek.foreman@collabora.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_hdmi_state_helper.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 30d03ff6c01f0..594923303a850 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2159,7 +2159,6 @@ static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
+diff --git a/drivers/gpu/drm/display/drm_hdmi_state_helper.c b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
+index feb7a3a759811..936a8f95d80f7 100644
+--- a/drivers/gpu/drm/display/drm_hdmi_state_helper.c
++++ b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
+@@ -347,6 +347,8 @@ static int hdmi_generate_avi_infoframe(const struct drm_connector *connector,
+ 		is_limited_range ? HDMI_QUANTIZATION_RANGE_LIMITED : HDMI_QUANTIZATION_RANGE_FULL;
+ 	int ret;
  
- static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_win)
- {
--	u32 offset = (main_win->data->phys_id * 0x10);
- 	struct vop2_alpha_config alpha_config;
- 	struct vop2_alpha alpha;
- 	struct drm_plane_state *bottom_win_pstate;
-@@ -2167,6 +2166,7 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	u16 src_glb_alpha_val, dst_glb_alpha_val;
- 	bool premulti_en = false;
- 	bool swap = false;
-+	u32 offset = 0;
- 
- 	/* At one win mode, win0 is dst/bottom win, and win1 is a all zero src/top win */
- 	bottom_win_pstate = main_win->base.state;
-@@ -2185,6 +2185,22 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	vop2_parse_alpha(&alpha_config, &alpha);
- 
- 	alpha.src_color_ctrl.bits.src_dst_swap = swap;
++	infoframe->set = false;
 +
-+	switch (main_win->data->phys_id) {
-+	case ROCKCHIP_VOP2_CLUSTER0:
-+		offset = 0x0;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER1:
-+		offset = 0x10;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER2:
-+		offset = 0x20;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER3:
-+		offset = 0x30;
-+		break;
-+	}
+ 	ret = drm_hdmi_avi_infoframe_from_display_mode(frame, connector, mode);
+ 	if (ret)
+ 		return ret;
+@@ -376,6 +378,8 @@ static int hdmi_generate_spd_infoframe(const struct drm_connector *connector,
+ 		&infoframe->data.spd;
+ 	int ret;
+ 
++	infoframe->set = false;
 +
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_SRC_COLOR_CTRL + offset,
- 		    alpha.src_color_ctrl.val);
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_DST_COLOR_CTRL + offset,
+ 	ret = hdmi_spd_infoframe_init(frame,
+ 				      connector->hdmi.vendor,
+ 				      connector->hdmi.product);
+@@ -398,6 +402,8 @@ static int hdmi_generate_hdr_infoframe(const struct drm_connector *connector,
+ 		&infoframe->data.drm;
+ 	int ret;
+ 
++	infoframe->set = false;
++
+ 	if (connector->max_bpc < 10)
+ 		return 0;
+ 
+@@ -425,6 +431,8 @@ static int hdmi_generate_hdmi_vendor_infoframe(const struct drm_connector *conne
+ 		&infoframe->data.vendor.hdmi;
+ 	int ret;
+ 
++	infoframe->set = false;
++
+ 	if (!info->has_hdmi_infoframe)
+ 		return 0;
+ 
 -- 
 2.39.5
 
