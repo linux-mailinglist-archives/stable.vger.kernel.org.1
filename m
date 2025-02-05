@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A106A293A5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DAFA292D2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97F441891CA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696873ACF53
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF2C18B477;
-	Wed,  5 Feb 2025 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C54191F66;
+	Wed,  5 Feb 2025 14:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0idiXOYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7kpFIw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0F5DF59;
-	Wed,  5 Feb 2025 15:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F0318A6C5;
+	Wed,  5 Feb 2025 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767799; cv=none; b=Wm36OSIBJMq0OwHY16CSiuMWcldEl0bxn2t3G/ZV1B637T3q35KbY6btnQ8IXdM5tBzj4hPSROozSp5mx13suJUV3eYc2LBNiM6jE3Ng+YLEwxkweVMdsSlgp0oR69zMA/0JxfsfduG428imxtXBs0HzxXyeENIwA2gVBYlGbLo=
+	t=1738767343; cv=none; b=FANmo54v4n2MqH36dfQKF/enB7NqE6/3ftvnq8NLDaqMurTcP8I5gpX6Bl+2dZvcoS2U0VSbma9w5a941TowS3q5fa7D58RUGEgUptIzwMxOKX+YdECFlfPyWAK0221ZAwX9kcO82RLd66x23AKUKzAC9wSVcT8lmzQFM68FtEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767799; c=relaxed/simple;
-	bh=vZF0gbK35GVxrkkQ9u2B7gU0Yp4JVcxTWp7NKdHsTw8=;
+	s=arc-20240116; t=1738767343; c=relaxed/simple;
+	bh=Tpm9IB3dr/GJkIVMWT+fm6DPFxsncWYiUoucRzaUtlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfM7pQdmANnD+B+sn0kdPcrsNNXxoR6czSisscQnYPc0dbqkndu3V7ZZyWmIA4xPBPeJHSyN0IimLtu19hzmsn+7wm7Mq5aaJJRDlZvK8BORwGiPkN1ax1B1iKqupfc7HGZBbv1rC2zSv1t8Xv4cZzltG+138wCUzKG8UneE5Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0idiXOYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AADAC4CED1;
-	Wed,  5 Feb 2025 15:03:17 +0000 (UTC)
+	 MIME-Version; b=CMwpYdZEogVPALlzpTwHwbQR3kv+8xkpyEbShwzwJmrcy/0lDXh3MO/ie2X633nWF9t1quOfOCnHHuKv9BSqTR7QG7kMtWQI8T/OUg6vF8PN/zMJOVboHrV7VAa/W3PMmBH0nyK01GQJFP90yvXFW+J61VNzQjcT8yrdIe80HRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7kpFIw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B980C4CED1;
+	Wed,  5 Feb 2025 14:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767798;
-	bh=vZF0gbK35GVxrkkQ9u2B7gU0Yp4JVcxTWp7NKdHsTw8=;
+	s=korg; t=1738767342;
+	bh=Tpm9IB3dr/GJkIVMWT+fm6DPFxsncWYiUoucRzaUtlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0idiXOYka2/bsqcWgDklzxq7Fu7sFCxFmLCCcgmLUlI37iTTfHdZjIYvuB9W/xkZO
-	 lPzbVoKHFYgwNx2gxdkpAydP4tSnBuTRP8/2QRngOIm20ragPZMJfEwYndFm6HBAet
-	 EeIADodfbg964f9xAtr00dK+h8CKmos5heiuyv/g=
+	b=s7kpFIw1F3LwmF9FLR7Vp2nP1BNWYE2RH9SJ4b7rWehELiPEEyYNHT2RWCILRiJwP
+	 liu3gwxoA5u+J84vz639P2DmwNC9/XKIG9Dq+v06SK3brefHMTDeXWJ+0Krbnxd6nL
+	 +HTUAVVcHM4YfCyC6D62dwDpRYPu+WnIuuDU7VkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	david regan <dregan@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 455/623] mtd: rawnand: brcmnand: fix status read of brcmnand_waitfunc
+Subject: [PATCH 6.12 442/590] erofs: fix potential return value overflow of z_erofs_shrink_scan()
 Date: Wed,  5 Feb 2025 14:43:17 +0100
-Message-ID: <20250205134513.623369563@linuxfoundation.org>
+Message-ID: <20250205134512.179279170@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: david regan <dregan@broadcom.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 03271ea36ea7a58d30a4bde182eb2a0d46220467 ]
+[ Upstream commit db902986dee453bfb5835cbc8efa67154ab34caf ]
 
-This change fixes an issue where an error return value may be mistakenly
-used as NAND status.
+z_erofs_shrink_scan() could return small numbers due to the mistyped
+`freed`.
 
-Fixes: f504551b7f15 ("mtd: rawnand: Propagate error and simplify ternary operators for brcmstb_nand_wait_for_completion()")
-Signed-off-by: david regan <dregan@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Although I don't think it has any visible impact.
+
+Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250114040058.459981-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/erofs/zdata.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 9c253a511e45a..fea5b61199563 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2342,6 +2342,11 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 		brcmnand_send_cmd(host, CMD_PROGRAM_PAGE);
- 		status = brcmnand_waitfunc(chip);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 6be6146b67d9c..a8fb4b525f544 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -923,8 +923,7 @@ unsigned long z_erofs_shrink_scan(struct erofs_sb_info *sbi,
+ 				  unsigned long nr_shrink)
+ {
+ 	struct z_erofs_pcluster *pcl;
+-	unsigned int freed = 0;
+-	unsigned long index;
++	unsigned long index, freed = 0;
  
-+		if (status < 0) {
-+			ret = status;
-+			goto out;
-+		}
-+
- 		if (status & NAND_STATUS_FAIL) {
- 			dev_info(ctrl->dev, "program failed at %llx\n",
- 				(unsigned long long)addr);
+ 	xa_lock(&sbi->managed_pslots);
+ 	xa_for_each(&sbi->managed_pslots, index, pcl) {
 -- 
 2.39.5
 
