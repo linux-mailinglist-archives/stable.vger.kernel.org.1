@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A75A29238
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB9FA290CC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919503A918F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DD943A8359
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBED1FDA93;
-	Wed,  5 Feb 2025 14:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B771662EF;
+	Wed,  5 Feb 2025 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptdyZKFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hnr+fM0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F02146A7A;
-	Wed,  5 Feb 2025 14:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B4A7E792;
+	Wed,  5 Feb 2025 14:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766952; cv=none; b=Jl4+bEZg0dwFXw9RhEx49RFifUpJeAofM6Ct8vnVM799cUScbVmnDBC9Hx7PLdqsjcvEeTaIf8GkiLVEiaX6Zx65zi9a4aK1tunHQ3Mjz2VhpDMmZp4d7aFhKtgrc/5Vrhs69kLcbYZu3cjk6X+Hri83a+ywCKndG6/wzjXYVNE=
+	t=1738766430; cv=none; b=YnCu540o003F0ZY7Zb0Tzb5bkYPEl+otBbf6kuI/PyK4uRdHAuGkGQZrLK8iaUGyX34fleGp/x1VWOvC/CcPiKp7mOlgrZQuzzayKkMbef9Lki7vMqTG1L5y/4u7LEw783jVWA2/PxtuOWfv3leC+BdmTl/pB1ehvfy3+Icz1VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766952; c=relaxed/simple;
-	bh=MEdLpnUQu+2Rn/djpj9uP98G8P6dKjwIsGF12yU9NQk=;
+	s=arc-20240116; t=1738766430; c=relaxed/simple;
+	bh=7V9kuGNXodbDluAr7ICotoBCFVOQKfw4AZEu4EX0cAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mW0gFzL76Cyx26PrNRdrkZkDL1XgwK+SACbkoPc99snn16BpLiksVKNmttTE6ycgwEaJvmZ/KWewD3kMUe+APlDHl8cFdgdIJ67oDlmG6vt2Nyl6+nsJfn2lJn1LX+Z7ZO5vTyemvP/RoGui7tmtfstVyH/RJrYAougZ7q86JFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptdyZKFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87539C4CED1;
-	Wed,  5 Feb 2025 14:49:11 +0000 (UTC)
+	 MIME-Version; b=grjepqlKy6RBPpuWI7RYLz9chEymCTnJmI8/J1GKs1gxme9I0s88a21t60F9bYMWafulMq2LmdKtX2q8q2USJEw9xD7Bta63s1eFpBVMtN6lx4s8a54RPdAS0RA/rQwpQHJj3gE3uXDeyPHec60oUA+ekyCg6aGZuh6YPv9qKXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hnr+fM0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C394CC4CED1;
+	Wed,  5 Feb 2025 14:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766952;
-	bh=MEdLpnUQu+2Rn/djpj9uP98G8P6dKjwIsGF12yU9NQk=;
+	s=korg; t=1738766430;
+	bh=7V9kuGNXodbDluAr7ICotoBCFVOQKfw4AZEu4EX0cAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptdyZKFibl4uTZg6m3EJ0cjl1xSUjSSTXVhwkbK1FLV06jf3uvdkzJATndi6bnOpj
-	 x+XpqMxeX/EbCmtams0OU9qTmFc2t9Jr5TwCs2nPqTxifVBTOZgiCgzQGldQb/pOwQ
-	 W2CypA+ZbbPX6EgcgqhdQbMDWfcRK4cajV6dQrAA=
+	b=Hnr+fM0iVGKaYXBgs37k/Cj5S2Nn9U/2v86u7GqYMhfU+je1SGs2dhxekbT27KHGu
+	 3JxwPJUyRYPTWsGX/z68WjntygkCENdsgJJuNauh7AQ9m3f5i+3kFfWwQsWYdLJQAQ
+	 BqABzB1hCTJbID2BpHsmsNRP1SUQjNlSRPtm0xzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Macek <wmacek@google.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 333/623] arm64: dts: mediatek: mt8186: Move wakeup to MTU3 to get working suspend
+Subject: [PATCH 6.12 320/590] arm64: dts: medaitek: mt8395-nio-12l: Drop regulator-compatible property
 Date: Wed,  5 Feb 2025 14:41:15 +0100
-Message-ID: <20250205134508.962465424@linuxfoundation.org>
+Message-ID: <20250205134507.517121942@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 253b4e96f5783fddede1b82274a7b4e0aa57d761 ]
+[ Upstream commit ab60442f26b15ba69b210974722a851ed03188ff ]
 
-The current DT has the wakeup-source and mediatek,syscon-wakeup
-properties in the XHCI nodes, which configures USB wakeup after powering
-down the XHCI hardware block. However, since the XHCI controller is
-behind an MTU3 (USB3 DRD controller), the MTU3 only gets powered down
-after USB wakeup has been configured, causing the system to detect a
-wakeup, and results in broken suspend support as the system resumes
-immediately.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-Move the wakeup properties to the MTU3 nodes so that USB wakeup is only
-enabled after the MTU3 has powered down.
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
 
-With this change in place, it is possible to suspend and resume, and
-also to wakeup through USB, as tested on the Google Steelix (Lenovo 300e
-Yoga Chromebook Gen 4).
-
-Fixes: f6c3e61c5486 ("arm64: dts: mediatek: mt8186: Add MTU3 nodes")
-Reported-by: Wojciech Macek <wmacek@google.com>
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Fixes: 96564b1e2ea4 ("arm64: dts: mediatek: Introduce the MT8395 Radxa NIO 12L board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241106-mt8186-suspend-with-usb-wakeup-v1-1-07734a4c8236@collabora.com
+Link: https://lore.kernel.org/r/20241211052427.4178367-8-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index d3c3c2a40adcd..b91f88ffae0e8 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -1577,6 +1577,8 @@
- 			#address-cells = <2>;
- 			#size-cells = <2>;
- 			ranges;
-+			wakeup-source;
-+			mediatek,syscon-wakeup = <&pericfg 0x420 2>;
- 			status = "disabled";
+diff --git a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
+index 14ec970c4e491..41dc34837b02e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
+@@ -812,7 +812,6 @@
  
- 			usb_host0: usb@11200000 {
-@@ -1590,8 +1592,6 @@
- 					 <&infracfg_ao CLK_INFRA_AO_SSUSB_TOP_XHCI>;
- 				clock-names = "sys_ck", "ref_ck", "mcu_ck", "dma_ck", "xhci_ck";
- 				interrupts = <GIC_SPI 294 IRQ_TYPE_LEVEL_HIGH 0>;
--				mediatek,syscon-wakeup = <&pericfg 0x420 2>;
--				wakeup-source;
- 				status = "disabled";
- 			};
- 		};
-@@ -1643,6 +1643,8 @@
- 			#address-cells = <2>;
- 			#size-cells = <2>;
- 			ranges;
-+			wakeup-source;
-+			mediatek,syscon-wakeup = <&pericfg 0x424 2>;
- 			status = "disabled";
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -829,7 +828,6 @@
  
- 			usb_host1: usb@11280000 {
-@@ -1656,8 +1658,6 @@
- 					 <&infracfg_ao CLK_INFRA_AO_SSUSB_TOP_P1_XHCI>;
- 				clock-names = "sys_ck", "ref_ck", "mcu_ck", "dma_ck","xhci_ck";
- 				interrupts = <GIC_SPI 324 IRQ_TYPE_LEVEL_HIGH 0>;
--				mediatek,syscon-wakeup = <&pericfg 0x424 2>;
--				wakeup-source;
- 				status = "disabled";
- 			};
- 		};
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
 -- 
 2.39.5
 
