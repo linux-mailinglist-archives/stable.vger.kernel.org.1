@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACBFA28EE2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D1EA29299
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645B81889D9C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6303AC483
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C671547D8;
-	Wed,  5 Feb 2025 14:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EB618A6B8;
+	Wed,  5 Feb 2025 14:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYDeUy8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8pW4vJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16B414B959;
-	Wed,  5 Feb 2025 14:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610371C6BE;
+	Wed,  5 Feb 2025 14:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765089; cv=none; b=uYFmR82eFgQEanALYuV7lziRaS4zZbQwc4a3NiirLTVCsNDgR1dZW2BYNYzXiJB+iVCVXs/grZeAVsEhVxaAAaW8YecqkfxJdjWnuCRuftxHY4XnqfONF+Y0hrCZGgcV1hdodLIprHp4+3WEJEJYFaqye6R6V+psRES7hfeN1Ec=
+	t=1738767188; cv=none; b=AWMDjUDXHCUrDGSZlA2Q+xB5YuCa8NsdsP8aXRuE0wQnuGPPduXjI37jRQKLrGInb2ZODDLCF839s8tLAhUySvyaUwnEZ8IBMSQdeu7Mldl3FV5Ar4LCZAGjfZrfXk3diUXur2C86iZJQ6C9NVrPxIyohuC7N4ZrFmIIVuIEEAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765089; c=relaxed/simple;
-	bh=uFlFu/AJVpX6x6H4Ca+RogLXDHfb6Hp7EX8t++gVsPg=;
+	s=arc-20240116; t=1738767188; c=relaxed/simple;
+	bh=Urjvoq6F638Qt8FYDueqI+s2nsnqRclcX0MuWmkk1O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKczyYPTbtifFTgXTB7WZQ/uG1H/eU+QgjgPrkPHjonThsFc3UxfeFLg6SEJLOC6V89xYoicboqLXE77HVzzlEaDOOxrWXI8t6KmN6chdKYz34HYjLLfL/DaHaPQIBhdQz5/2ssZbsDaC080mS3OQX4e2FfNRkEMPptzFN71yKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYDeUy8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4872AC4CED1;
-	Wed,  5 Feb 2025 14:18:09 +0000 (UTC)
+	 MIME-Version; b=XmYGE5atY8ygfx7+qYfY1Hn2sfSDSYXBRMt5JDMryEBPidHPgShYCTJ8ujw4LujYfDW4z5Og8Z4xPmoZxEIVrZutKpfPN55hD08dcSVAvBntEhghCEF7cDxWpeX4EC4HuHvfOg4qwhzmbziGDh5zLRf9o/TQuwQYlUE4O4v91S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8pW4vJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15FEC4CED1;
+	Wed,  5 Feb 2025 14:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765089;
-	bh=uFlFu/AJVpX6x6H4Ca+RogLXDHfb6Hp7EX8t++gVsPg=;
+	s=korg; t=1738767188;
+	bh=Urjvoq6F638Qt8FYDueqI+s2nsnqRclcX0MuWmkk1O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYDeUy8/ZeHhM9MyDDooZg/egjO3ZuNK/RGYCQf3jHEVlpQzQ4KxTNx6TyvCxb4LK
-	 1qHEXD00MmthJwq5a/hprxQuAudwrb9AiVqJsCaUMOGt3zPB6snHXaWuvqoYpuGX7f
-	 +l8d6lKY2wVXr1pSB5SO4ClX7v9oRa+FZ3kqWBHs=
+	b=b8pW4vJLSkjqvEVF9uKeiRF9StucBgfX8A1+30CFhYhAnmzfIDSHUYVuFdCRDTM72
+	 J56GITYzoT5CTkKjCDiXkW/d6lZUEDNQ1FOfu5tOr8o/FwB/6oWGZ0bxeYPmEAsEzn
+	 DXAHjJox9k9P3cxcABh5GlHGqFpq6saEF+EJuIMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Artemy Kovalyov <artemyko@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/393] arm64: dts: qcom: sa8775p: Update sleep_clk frequency
+Subject: [PATCH 6.12 395/590] RDMA/mlx5: Fix indirect mkey ODP page count
 Date: Wed,  5 Feb 2025 14:42:30 +0100
-Message-ID: <20250205134429.144008289@linuxfoundation.org>
+Message-ID: <20250205134510.377991277@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 30f7dfd2c4899630becf477447e8bbe92683d2c6 ]
+[ Upstream commit 235f238402194a78ac5fb882a46717eac817e5d1 ]
 
-Fix the sleep_clk frequency is 32000 on SA8775P.
+Restrict the check for the number of pages handled during an ODP page
+fault to direct mkeys.
+Perform the check right after handling the page fault and don't
+propagate the number of handled pages to callers.
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20241025-sa8775p-mm-v4-resend-patches-v6-1-329a2cac09ae@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Indirect mkeys and their associated direct mkeys can have different
+start addresses. As a result, the calculation of the number of pages to
+handle for an indirect mkey may not match the actual page fault
+handling done on the direct mkey.
+
+For example:
+A 4K sized page fault on a KSM mkey that has a start address that is not
+aligned to a page will result a calculation that assumes the number of
+pages required to handle are 2.
+While the underlying MTT might be aligned will require fetching only a
+single page.
+Thus, do the calculation and compare number of pages handled only per
+direct mkey.
+
+Fixes: db570d7deafb ("IB/mlx5: Add ODP support to MW")
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Reviewed-by: Artemy Kovalyov <artemyko@nvidia.com>
+Link: https://patch.msgid.link/86c483d9e75ce8fe14e9ff85b62df72b779f8ab1.1736187990.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/odp.c | 32 +++++++++++++++-----------------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-index 2a6170623ea95..864ad109371ca 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-@@ -517,7 +517,7 @@
- };
+diff --git a/drivers/infiniband/hw/mlx5/odp.c b/drivers/infiniband/hw/mlx5/odp.c
+index 4b37446758fd4..69ca2de33a80e 100644
+--- a/drivers/infiniband/hw/mlx5/odp.c
++++ b/drivers/infiniband/hw/mlx5/odp.c
+@@ -944,8 +944,7 @@ static struct mlx5_ib_mkey *find_odp_mkey(struct mlx5_ib_dev *dev, u32 key)
+ /*
+  * Handle a single data segment in a page-fault WQE or RDMA region.
+  *
+- * Returns number of OS pages retrieved on success. The caller may continue to
+- * the next data segment.
++ * Returns zero on success. The caller may continue to the next data segment.
+  * Can return the following error codes:
+  * -EAGAIN to designate a temporary error. The caller will abort handling the
+  *  page fault and resolve it.
+@@ -958,7 +957,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 					 u32 *bytes_committed,
+ 					 u32 *bytes_mapped)
+ {
+-	int npages = 0, ret, i, outlen, cur_outlen = 0, depth = 0;
++	int ret, i, outlen, cur_outlen = 0, depth = 0, pages_in_range;
+ 	struct pf_frame *head = NULL, *frame;
+ 	struct mlx5_ib_mkey *mmkey;
+ 	struct mlx5_ib_mr *mr;
+@@ -993,13 +992,20 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	case MLX5_MKEY_MR:
+ 		mr = container_of(mmkey, struct mlx5_ib_mr, mmkey);
  
- &sleep_clk {
--	clock-frequency = <32764>;
-+	clock-frequency = <32000>;
- };
++		pages_in_range = (ALIGN(io_virt + bcnt, PAGE_SIZE) -
++				  (io_virt & PAGE_MASK)) >>
++				 PAGE_SHIFT;
+ 		ret = pagefault_mr(mr, io_virt, bcnt, bytes_mapped, 0, false);
+ 		if (ret < 0)
+ 			goto end;
  
- &spi16 {
+ 		mlx5_update_odp_stats(mr, faults, ret);
+ 
+-		npages += ret;
++		if (ret < pages_in_range) {
++			ret = -EFAULT;
++			goto end;
++		}
++
+ 		ret = 0;
+ 		break;
+ 
+@@ -1090,7 +1096,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+ 	kfree(out);
+ 
+ 	*bytes_committed = 0;
+-	return ret ? ret : npages;
++	return ret;
+ }
+ 
+ /*
+@@ -1109,8 +1115,7 @@ static int pagefault_single_data_segment(struct mlx5_ib_dev *dev,
+  *                   the committed bytes).
+  * @receive_queue: receive WQE end of sg list
+  *
+- * Returns the number of pages loaded if positive, zero for an empty WQE, or a
+- * negative error code.
++ * Returns zero for success or a negative error code.
+  */
+ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 				   struct mlx5_pagefault *pfault,
+@@ -1118,7 +1123,7 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 				   void *wqe_end, u32 *bytes_mapped,
+ 				   u32 *total_wqe_bytes, bool receive_queue)
+ {
+-	int ret = 0, npages = 0;
++	int ret = 0;
+ 	u64 io_virt;
+ 	__be32 key;
+ 	u32 byte_count;
+@@ -1175,10 +1180,9 @@ static int pagefault_data_segments(struct mlx5_ib_dev *dev,
+ 						    bytes_mapped);
+ 		if (ret < 0)
+ 			break;
+-		npages += ret;
+ 	}
+ 
+-	return ret < 0 ? ret : npages;
++	return ret;
+ }
+ 
+ /*
+@@ -1414,12 +1418,6 @@ static void mlx5_ib_mr_wqe_pfault_handler(struct mlx5_ib_dev *dev,
+ 	free_page((unsigned long)wqe_start);
+ }
+ 
+-static int pages_in_range(u64 address, u32 length)
+-{
+-	return (ALIGN(address + length, PAGE_SIZE) -
+-		(address & PAGE_MASK)) >> PAGE_SHIFT;
+-}
+-
+ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
+ 					   struct mlx5_pagefault *pfault)
+ {
+@@ -1458,7 +1456,7 @@ static void mlx5_ib_mr_rdma_pfault_handler(struct mlx5_ib_dev *dev,
+ 	if (ret == -EAGAIN) {
+ 		/* We're racing with an invalidation, don't prefetch */
+ 		prefetch_activated = 0;
+-	} else if (ret < 0 || pages_in_range(address, length) > ret) {
++	} else if (ret < 0) {
+ 		mlx5_ib_page_fault_resume(dev, pfault, 1);
+ 		if (ret != -ENOENT)
+ 			mlx5_ib_dbg(dev, "PAGE FAULT error %d. QP 0x%llx, type: 0x%x\n",
 -- 
 2.39.5
 
