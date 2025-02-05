@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-112882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F9DA28EE8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5322A28E1D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16AFF3AA04F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20773A1F9E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44039155382;
-	Wed,  5 Feb 2025 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0D013C9C4;
+	Wed,  5 Feb 2025 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsYrbmuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SON+Tc/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAEB522A;
-	Wed,  5 Feb 2025 14:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A621C1519AA;
+	Wed,  5 Feb 2025 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765073; cv=none; b=FDsFuysgWTOiv5QSCC+Gr6K73sDrq6xbVAcAoZjxaz0orYkQNDjsXyto8HL7qaGFi48t4w0KluFncYh9LkLxy9BanOaUU/MRK00CGaWiJoIXBLnPWIqhH0XwT3nGlLnHRNDjEngUbhSRtCU4ODRotk+HJUCA/w/2D4FwnGuJ7NI=
+	t=1738764522; cv=none; b=RVAtRz9u1wRGgrYQxp9A2KRF0X0N7cDAcqEk7lvEm5NH5WPjBkNOAUwXkluplxthkF1j2dDJGS/LEDVdgAJLZEfjHgaTmoj1wV2eTDgNzY3zLYgCbUVEOEHD9QYA+kS2P1poN303ND5H8HX8MpTI+dy9sblx8sMTuj+/6aQ5DQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765073; c=relaxed/simple;
-	bh=W54yb6/P++E3B/wOw/RTRU/Ko3R3P1h9vGwwD5Ol4Js=;
+	s=arc-20240116; t=1738764522; c=relaxed/simple;
+	bh=2pOvVGI1UVBOIgweXgyPXFfNXgatd3rpY6LADY0iL6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMGuYlt10CIgYHD2bFzMLuTeO/1c5/4O/1WryvQN9mro2hGzudrOK4+dTFGfYOpeSKVaHqxRzi3UQFSlfkUDz9We4pdAJ27E7N7DKUNrwyFZGXZsx44GMrB7aB0fslvkZXhkQThmr54bMKiRNueQzccqXMFlrtqN6JZVYVzqed0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsYrbmuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D5DC4CEDD;
-	Wed,  5 Feb 2025 14:17:51 +0000 (UTC)
+	 MIME-Version; b=WGQbjF1ctVOP3nfNfc9bc5TeffOfjeVfj7RKeO15Iw/CwEO11/vPSnIEvorXYIFJeO8MuVhhDDKCqzlAASD5nFsLPntSAUH5ZOwcV2aXCxjfZOFFRGCB2WZZKBYp70/KA7q+dHjU3WylXGN1b3byfBWQeeCbwvlBvjkeIOpa5aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SON+Tc/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8621C4CED1;
+	Wed,  5 Feb 2025 14:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765072;
-	bh=W54yb6/P++E3B/wOw/RTRU/Ko3R3P1h9vGwwD5Ol4Js=;
+	s=korg; t=1738764522;
+	bh=2pOvVGI1UVBOIgweXgyPXFfNXgatd3rpY6LADY0iL6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsYrbmuoPuC8b3IWKZsLy+qd5DBylejkxk8NoOFbQb3zhVs79GPG0fVVSjyjZvP2q
-	 eAYCMQ1ZIEdL9CUgEv+SvWO1JUPHt8LG3VXkkIevQQ1CjCQS3/4yGp4vNwMsaPqaEp
-	 5NE6TizD3IksWDSJc90FtSeIRljElzq0PdgGBxt0=
+	b=SON+Tc/5JJHqvN93otJF+/VkRofT5V1dEks/xzZc3T1oqDd/85SFoc102nbOgUD/F
+	 0kLOzJKtSW1+HwrF4uZbLDUfk5EZus7ihoh+uVZYjYT/IUk1z2J710v41M100M5Q7W
+	 6W3TxnH8+GbwzJwYehmxBCmq87LDeg1PtmP/L2wI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 141/623] net/mlx5: HWS, fix definers HWS_SET32 macro for negative offset
+Subject: [PATCH 6.12 128/590] clk: qcom: camcc-x1e80100: Set titan_top_gdsc as the parent GDSC of subordinate GDSCs
 Date: Wed,  5 Feb 2025 14:38:03 +0100
-Message-ID: <20250205134501.628083766@linuxfoundation.org>
+Message-ID: <20250205134500.158114044@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit be482f1d10da781db9445d2753c1e3f1fd82babf ]
+[ Upstream commit d9377941f2732d2f6f53ec9520321a19c687717a ]
 
-When bit offset for HWS_SET32 macro is negative,
-UBSAN complains about the shift-out-of-bounds:
+The Titan TOP GDSC is the parent GDSC for all other GDSCs in the CAMCC
+block. None of the subordinate blocks will switch on without the parent
+GDSC switched on.
 
-  UBSAN: shift-out-of-bounds in
-  drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c:177:2
-  shift exponent -8 is negative
-
-Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250102181415.1477316-12-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 76126a5129b5 ("clk: qcom: Add camcc clock driver for x1e80100")
+Acked-by: Rajendra Nayak <quic_rjendra@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Link: https://lore.kernel.org/r/20241227-b4-linux-next-24-12-16-titan-top-gdsc-v1-1-c96ef62fc307@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/camcc-x1e80100.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-index 8fe96eb76baff..10ece7df1cfaf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
-@@ -70,7 +70,7 @@
- 			u32 second_dw_mask = (mask) & ((1 << _bit_off) - 1); \
- 			_HWS_SET32(p, (v) >> _bit_off, byte_off, 0, (mask) >> _bit_off); \
- 			_HWS_SET32(p, (v) & second_dw_mask, (byte_off) + DW_SIZE, \
--				    (bit_off) % BITS_IN_DW, second_dw_mask); \
-+				    (bit_off + BITS_IN_DW) % BITS_IN_DW, second_dw_mask); \
- 		} else { \
- 			_HWS_SET32(p, v, byte_off, (bit_off), (mask)); \
- 		} \
+diff --git a/drivers/clk/qcom/camcc-x1e80100.c b/drivers/clk/qcom/camcc-x1e80100.c
+index 85e76c7712ad8..b73524ae64b1b 100644
+--- a/drivers/clk/qcom/camcc-x1e80100.c
++++ b/drivers/clk/qcom/camcc-x1e80100.c
+@@ -2212,6 +2212,8 @@ static struct clk_branch cam_cc_sfe_0_fast_ahb_clk = {
+ 	},
+ };
+ 
++static struct gdsc cam_cc_titan_top_gdsc;
++
+ static struct gdsc cam_cc_bps_gdsc = {
+ 	.gdscr = 0x10004,
+ 	.en_rest_wait_val = 0x2,
+@@ -2221,6 +2223,7 @@ static struct gdsc cam_cc_bps_gdsc = {
+ 		.name = "cam_cc_bps_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2233,6 +2236,7 @@ static struct gdsc cam_cc_ife_0_gdsc = {
+ 		.name = "cam_cc_ife_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2245,6 +2249,7 @@ static struct gdsc cam_cc_ife_1_gdsc = {
+ 		.name = "cam_cc_ife_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2257,6 +2262,7 @@ static struct gdsc cam_cc_ipe_0_gdsc = {
+ 		.name = "cam_cc_ipe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+@@ -2269,6 +2275,7 @@ static struct gdsc cam_cc_sfe_0_gdsc = {
+ 		.name = "cam_cc_sfe_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
++	.parent = &cam_cc_titan_top_gdsc.pd,
+ 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
 -- 
 2.39.5
 
