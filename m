@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-113169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85142A29051
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FEB0A28D57
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90AF01650D6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2209D1608FF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C6714B959;
-	Wed,  5 Feb 2025 14:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ABB14F9FD;
+	Wed,  5 Feb 2025 13:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1tSQkg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EawQVdlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE5D7DA6A;
-	Wed,  5 Feb 2025 14:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D614A4E9;
+	Wed,  5 Feb 2025 13:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766058; cv=none; b=I4s6hU7sw9ZkP8LlBW7wNDjyJsEXcTFhv6mdnhsD7EflWo/QXjh9oQkvDPIr9+AHQtfcvRhRK+7orZ8Pb++3eunutKQfmaIyI7H6BoVp15kGmEjZ8zR/E7Tydr15XXdSYYyKHq6foji0Kl6hWWbDmyL9NXWUmvyfDrWAmVdCY78=
+	t=1738763928; cv=none; b=i0FMW6RaKFsMz24lgvwFfMJyDaKn8ovn+nuMefKPzskwyMtAgh43VXsXJq2ViXtTiFrLnHfVr6HhX/55ZagY9YFh1bmHKUHUdA9GtXAx9sCAqlH44pmc30XVDi1XAhHVaABYD48Jw5T6nU4F9PHlrVdwITiwn7mY9HHsnr7sfZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766058; c=relaxed/simple;
-	bh=VmXnRXC4T+qg2YljcbXNMYLa0edyjt+sYOGBtuGrkPU=;
+	s=arc-20240116; t=1738763928; c=relaxed/simple;
+	bh=WOMRNF2y3fWhZSxiFchSRDFKAXdZikKmEFhU6wt+A44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XkgVIvjKcq8CpooNRbZuMasxx9bdjf8t7yRYjkB/S6W+orUdq22B947hGu5F9Yq6CMphU6rk+EIjfmsE3LmiqM5DuIv0cZNChSHdcjSG+okudHgzXhgdSkL5QLh14VajAag495LhMrLxFUaiZkzRNB5nrxVW8aur7UKU4HjPm8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1tSQkg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215D4C4CED1;
-	Wed,  5 Feb 2025 14:34:14 +0000 (UTC)
+	 MIME-Version; b=DDGLoRJ6yAApfdLpTFw0Xe8Ue05AMmgQI9vEdki+6mzBh8P80xGGzGL53dntTKLKjzLCDdQZmoeFu6of29w7+VhLPHHyC4WAAqvfxkpNX8t8p41lpbFYEzxEspr5MPKGfSM4c+MUTqoS2D4UD916kNvJ0IBx04y/5p0fVQ81B0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EawQVdlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857B3C4CEDD;
+	Wed,  5 Feb 2025 13:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766055;
-	bh=VmXnRXC4T+qg2YljcbXNMYLa0edyjt+sYOGBtuGrkPU=;
+	s=korg; t=1738763928;
+	bh=WOMRNF2y3fWhZSxiFchSRDFKAXdZikKmEFhU6wt+A44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1tSQkg/Jxjar0tc/6ZnZl4OIk6bPbI+IrvgV3JNcjKqa++xigO5WH1JYjJaOBeKU
-	 sMBq5By9AeVAT1iE3RKNqmeRMCImCMOXrSEErs0A5j8ojd9QB0ozlnTxUMORdqR3/L
-	 YA+4Mq8T7pq4OvFQfaL2tMx02T70O5VbrK/oM1Tw=
+	b=EawQVdlZp8JY7aldU7is7AmnP0kxEgzs+rK4Sshs3+Rnhx/qXotvG7KvgMV01zDrV
+	 4O5rUhGmrIJp5p9JOsmg1zlv+cXnsvak/aYlk9ukQcui3NXveWdB8j02eXRBRc+nE8
+	 Gdib1ZytfO5LDvXkYZgTsv7hUD8aDSGSS5wgDRm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/590] ASoC: Intel: sof_sdw: Fix DMI match for Lenovo 83LC
-Date: Wed,  5 Feb 2025 14:40:38 +0100
-Message-ID: <20250205134506.105892591@linuxfoundation.org>
+Subject: [PATCH 6.6 120/393] wifi: mt76: mt7915: firmware restart on devices with a second pcie link
+Date: Wed,  5 Feb 2025 14:40:39 +0100
+Message-ID: <20250205134424.886770716@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit c9e05763f334845ba69494dd71d7cbfd05fd0e6e ]
+[ Upstream commit 9b60e2ae511c959024ecf6578b3fbe85cd06d7cc ]
 
-Update the DMI match for a Lenovo laptop to the new DMI identifier.
+It seems that the firmware checks the register used for detecting matching
+PCIe links in order to figure out if a secondary PCIe link is enabled.
+Write the register again just before starting the firmware on hw reset,
+in order to fix an issue that left the second band unusable after restart.
 
-This laptop ships with a different DMI identifier to what was expected,
-and also has the DMICs connected to the host rather than the cs42l43
-codec.
-
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Fixes: 83c062ae81e8 ("ASoC: Intel: sof_sdw: Add quirks for some new Lenovo laptops")
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250102123335.256698-2-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9093cfff72e3 ("mt76: mt7915: add support for using a secondary PCIe link for gen1")
+Link: https://patch.msgid.link/20241230194202.95065-11-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c    | 1 +
+ 3 files changed, 4 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index b6f9e5ee7e347..9350a1ea146b0 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -594,9 +594,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "3832")
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83LC")
- 		},
--		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
- 	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 38d27f8721733..675fbf40ecf75 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1383,6 +1383,8 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 	if (dev_is_pci(mdev->dev)) {
+ 		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 		if (dev->hif2) {
++			mt76_wr(dev, MT_PCIE_RECOG_ID,
++				dev->hif2->index | MT_PCIE_RECOG_ID_SEM);
+ 			if (is_mt7915(mdev))
+ 				mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
+ 			else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index e192211d4b23e..14d4bbeae9d63 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -191,6 +191,7 @@ struct mt7915_hif {
+ 	struct device *dev;
+ 	void __iomem *regs;
+ 	int irq;
++	u32 index;
+ };
+ 
+ struct mt7915_phy {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 39132894e8ea2..07b0a5766eab7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -42,6 +42,7 @@ static struct mt7915_hif *mt7915_pci_get_hif2(u32 idx)
+ 			continue;
+ 
+ 		get_device(hif->dev);
++		hif->index = idx;
+ 		goto out;
+ 	}
+ 	hif = NULL;
 -- 
 2.39.5
 
