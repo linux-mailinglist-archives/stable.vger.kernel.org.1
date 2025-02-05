@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27284A28CCC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72E0A28CD0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8299D168045
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C33C188790A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965314A088;
-	Wed,  5 Feb 2025 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1214A4E9;
+	Wed,  5 Feb 2025 13:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQBWcgfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKeyRQby"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271DFFC0B;
-	Wed,  5 Feb 2025 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9391B149C64;
+	Wed,  5 Feb 2025 13:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763643; cv=none; b=tPNHbRpexgVmbGYVPGhFum3Q15qk78QzAZse59tCA4QeNaknjBKOG2HQJZwRVFhKlFwtKdRCk7wFcaSv+ymO9mspF7NJCY3D+/yk7NaGyLmvbWtdhMDY/LTV/H3xNtqCKlzmCMBtzrDokg2ZhLNxT37Rwh13TIo5VxTV4hqxzjU=
+	t=1738763653; cv=none; b=EItcx68DogzpakM3LiPpk8nUr289U24MXQZfUo/We2i/LgpJCbu/CB8gwY3tXVBSjkWR7PP8uWP/Yo+dDtVALAa7G6EleP/i/+0tshGVHGikEM1oQQ/PMw+HhOyuq2Idfj8qMK+AuOtU6zc4FYChMBh7tY10U12tQDF6l33AJXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763643; c=relaxed/simple;
-	bh=DDXDRDk/O7rp9GLkzuiKIvD1e52WosGtwGNLJxG2x/8=;
+	s=arc-20240116; t=1738763653; c=relaxed/simple;
+	bh=P7fnTOI3MHdGB2nTnQAQMABLegmTJqn0wxdd1q1ioOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fxu5Osd8w+n6OGazKFn7HZD558Q1mtZnt2xGLpeFhdFiQeYZRYpbY3P1DUjb08i1eV7DgVyoU5AkPC7mjcL1cSoENCT2R5+YGVBvXE57zGZmo9vPoxVj55s3mfZ28PYV0OJhJLGwixlEBniAj5xSIonh2St1Vr32s2gL2qtFKtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQBWcgfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894DEC4CED1;
-	Wed,  5 Feb 2025 13:54:02 +0000 (UTC)
+	 MIME-Version; b=Wu2a7+m71tBlVq2Qb4Bwq9qYJ2FkX4fFfsa7wmUmV4+0wCXtZXRJ/mndkuqCszYtPfUn7ZmlwKIhK9IY6S/MQXqvx1gqkaO3qLUo7oe+v4ux7NdOvgLNIVWVjcTBYfG7LBfmFcBaDnxcuLXK8H0fQL1IA9IoK2mfjOlp36BGguo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKeyRQby; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010A5C4CED1;
+	Wed,  5 Feb 2025 13:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763643;
-	bh=DDXDRDk/O7rp9GLkzuiKIvD1e52WosGtwGNLJxG2x/8=;
+	s=korg; t=1738763653;
+	bh=P7fnTOI3MHdGB2nTnQAQMABLegmTJqn0wxdd1q1ioOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQBWcgfnVsqS7TJkEgw+NBEPdh7zDYUB7TPvQJHcKKX4NPdtvcW+HuXcXK0qB3zvX
-	 QD9yQZWSPOg06pe/Wv0AAzN5scROWp+7OT4cpVx/q1z/3L+c5f8yNk1m3xxT8XVA+A
-	 KtZRiqS9IYvB0a500V5HVS/1Ka3DtKRfhmtldKc8=
+	b=VKeyRQbyVS5/q/IWXV/c20v67JvpwBZDX6qNiZ0EnaItBlsil9MaN3bF4u4Z8PTlk
+	 YjPE2kHod9Kdnqu9P5Pl6ZD+FFzZYPx2X8ewIDRTNBbFeZ4ssM8ims5nlGdIb5KenL
+	 ziYyz7K6XrHua7i7d6ys9ndzqJwYcECacBsSlnB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-afs@lists.infradead.org,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 005/623] afs: Fix EEXIST error returned from afs_rmdir() to be ENOTEMPTY
-Date: Wed,  5 Feb 2025 14:35:47 +0100
-Message-ID: <20250205134456.435612122@linuxfoundation.org>
+Subject: [PATCH 6.13 006/623] afs: Fix directory format encoding struct
+Date: Wed,  5 Feb 2025 14:35:48 +0100
+Message-ID: <20250205134456.473326258@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,44 +70,41 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b49194da2aff2c879dec9c59ef8dec0f2b0809ef ]
+[ Upstream commit 07a10767853adcbdbf436dc91393b729b52c4e81 ]
 
-AFS servers pass back a code indicating EEXIST when they're asked to remove
-a directory that is not empty rather than ENOTEMPTY because not all the
-systems that an AFS server can run on have the latter error available and
-AFS preexisted the addition of that error in general.
+The AFS directory format structure, union afs_xdr_dir_block::meta, has too
+many alloc counter slots declared and so pushes the hash table along and
+over the data.  This doesn't cause a problem at the moment because I'm
+currently ignoring the hash table and only using the correct number of
+alloc_ctrs in the code anyway.  In future, however, I should start using
+the hash table to try and speed up afs_lookup().
 
-Fix afs_rmdir() to translate EEXIST to ENOTEMPTY.
+Fix this by using the correct constant to declare the counter array.
 
-Fixes: 260a980317da ("[AFS]: Add "directory write" support.")
+Fixes: 4ea219a839bf ("afs: Split the directory content defs into a header")
 Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20241216204124.3752367-13-dhowells@redhat.com
+Link: https://lore.kernel.org/r/20241216204124.3752367-14-dhowells@redhat.com
 cc: Marc Dionne <marc.dionne@auristor.com>
 cc: linux-afs@lists.infradead.org
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/afs/xdr_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index ada363af5aab8..50edd1cae28ac 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -1472,7 +1472,12 @@ static int afs_rmdir(struct inode *dir, struct dentry *dentry)
- 		op->file[1].vnode = vnode;
- 	}
+diff --git a/fs/afs/xdr_fs.h b/fs/afs/xdr_fs.h
+index 8ca8681645077..cc5f143d21a34 100644
+--- a/fs/afs/xdr_fs.h
++++ b/fs/afs/xdr_fs.h
+@@ -88,7 +88,7 @@ union afs_xdr_dir_block {
  
--	return afs_do_sync_operation(op);
-+	ret = afs_do_sync_operation(op);
-+
-+	/* Not all systems that can host afs servers have ENOTEMPTY. */
-+	if (ret == -EEXIST)
-+		ret = -ENOTEMPTY;
-+	return ret;
+ 	struct {
+ 		struct afs_xdr_dir_hdr	hdr;
+-		u8			alloc_ctrs[AFS_DIR_MAX_BLOCKS];
++		u8			alloc_ctrs[AFS_DIR_BLOCKS_WITH_CTR];
+ 		__be16			hashtable[AFS_DIR_HASHTBL_SIZE];
+ 	} meta;
  
- error:
- 	return afs_put_operation(op);
 -- 
 2.39.5
 
