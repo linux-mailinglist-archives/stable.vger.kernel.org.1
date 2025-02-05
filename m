@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79763A293A1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AACA28F7D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351961891B2D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2025A18885D5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C7E189F3F;
-	Wed,  5 Feb 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D038155333;
+	Wed,  5 Feb 2025 14:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B16A92G2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0If+Zbz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E84513C8E2;
-	Wed,  5 Feb 2025 15:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A98C8634E;
+	Wed,  5 Feb 2025 14:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767760; cv=none; b=EhHEVoO3NUzlIJqyNNjRL8dl9AqU/dzeWFr0BYLQKGL4aw8n5ACfsZFT0xtZcfM8H6iWLBHKG4Bv2U0EhSPpd1rafxyFBy3DP+/bbRbgqRiexwtr6p8pBJLIyqOGsF+su10BSF5GDJXEfr16queB3/JVIUFlDcP1KWh81lDiDPw=
+	t=1738765505; cv=none; b=AdCkZ5Y+K22yjJC9FDgmJyAkuuEGUxGgNXNX/050VbXEa9ifnC/VfwlHul0OwDZHqrGw1cvVH44KG1Laj5+dTffTQQ5YgCjfoCq90id5IfW53n9aIV6z+tJhK0skUS0xBUmysJeBxA/rh62F9FhPHG96FDrwhjoCUic1Sx3SbbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767760; c=relaxed/simple;
-	bh=HMo+CYNxsScGgd/kBtM7H9C0YJcTXLK/MpsfUYJaazM=;
+	s=arc-20240116; t=1738765505; c=relaxed/simple;
+	bh=IZ9zoCULoGVSwbZ77lLNvlC/4Z67gieLSAfnvP2+taU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srs4xa7IXyFudckWwQEDHGDFBdcBgOZHDB9G7hb07V4rjd0Z+0+LQ+Rwx1AmUvoGdm+6oWaNmz2spU1tljLHjcnmWQt3t+LY23jWZMm+vMuhHL3eFAKC8RQ8M8FON8i5bA4STey2f/jltwSodlA5GQ+3q94Bdyvmi6RsWYmTDg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B16A92G2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCDEC4CED1;
-	Wed,  5 Feb 2025 15:02:39 +0000 (UTC)
+	 MIME-Version; b=S/S64bmXSthrwCYRM1n396baibuSWbCVjB/CBP8Abz8IMnrX6W4pAS3mfONd5N1mt1dafzYhCzUgrxf3hqX4Od+idalfMIxi24jwzE5z4A15CW5s4tMB+6BAJCBy7FnlcB1VGOtTxZDEUFbsfCKveKeCeP6UWVmES1PY35k3wnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0If+Zbz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2661C4CED1;
+	Wed,  5 Feb 2025 14:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767760;
-	bh=HMo+CYNxsScGgd/kBtM7H9C0YJcTXLK/MpsfUYJaazM=;
+	s=korg; t=1738765504;
+	bh=IZ9zoCULoGVSwbZ77lLNvlC/4Z67gieLSAfnvP2+taU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B16A92G2JEVyRs3WIGexjoQ6VtDmy5BLOEjg5YUCFt69ICmgRQcB8q9v0b495gBDq
-	 Mnn+vnIqUPTi63BsDak+s8OzZCDUYwb6guJg3FFKyWOufCzkOEyuShIw/ScSwsH7Si
-	 zkzuMAmAJVFQq4iWqLEkt9mGwfY6zR9Q7NqLWjls=
+	b=0If+Zbz3/6UuU+4yUfQiOIOJ3s0Croo8YYBFiqDelshDCDNtcyn/iVVKJ1vqCfB5P
+	 Kx3iW+kIbPPJ9GMiT1qXxgvGF3vmL01Ybm9FiY9YJzwgOa8NlWIYojWNKe15E+B/RJ
+	 WPbmMhTW24kq2m4NeTnl7sSYp/DwGI3cYBLWCatk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Billy Tsai <billy_tsai@aspeedtech.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 450/623] media: i2c: ov9282: Correct the exposure offset
+Subject: [PATCH 6.6 273/393] i3c: dw: Add hot-join support.
 Date: Wed,  5 Feb 2025 14:43:12 +0100
-Message-ID: <20250205134513.431989228@linuxfoundation.org>
+Message-ID: <20250205134430.757488335@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Billy Tsai <billy_tsai@aspeedtech.com>
 
-[ Upstream commit feaf4154d69657af2bf96e6e66cca794f88b1a61 ]
+[ Upstream commit 1d08326020fba690cbb7b8f1b38ab4eab6745969 ]
 
-The datasheet lists that "Maximum exposure time is frame
-length -25 row periods, where frame length is set by
-registers {0x380E, 0x380F}".
-However this driver had OV9282_EXPOSURE_OFFSET set to 12
-which allowed that restriction to be violated, and would
-result in very under-exposed images.
+Add hot-join support for dw i3c master controller.
+By default, the hot-join acknowledgment is disabled, and the hardware will
+automatically send the DISEC CCC when it receives the hot-join request.
+Users can use the sys entry to enable it.
 
-Correct the offset.
-
-Fixes: 14ea315bbeb7 ("media: i2c: Add ov9282 camera sensor driver")
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
+Link: https://lore.kernel.org/r/20240429073624.256830-1-billy_tsai@aspeedtech.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Stable-dep-of: b75439c945b9 ("i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov9282.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/dw-i3c-master.c | 67 ++++++++++++++++++++++++------
+ drivers/i3c/master/dw-i3c-master.h |  2 +
+ 2 files changed, 56 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/i2c/ov9282.c b/drivers/media/i2c/ov9282.c
-index 9f52af6f047f3..87e5d7ce5a47e 100644
---- a/drivers/media/i2c/ov9282.c
-+++ b/drivers/media/i2c/ov9282.c
-@@ -40,7 +40,7 @@
- /* Exposure control */
- #define OV9282_REG_EXPOSURE	0x3500
- #define OV9282_EXPOSURE_MIN	1
--#define OV9282_EXPOSURE_OFFSET	12
-+#define OV9282_EXPOSURE_OFFSET	25
- #define OV9282_EXPOSURE_STEP	1
- #define OV9282_EXPOSURE_DEFAULT	0x0282
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index 235235613c1b9..93e9d307e40ef 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -1136,6 +1136,23 @@ static void dw_i3c_master_free_ibi(struct i3c_dev_desc *dev)
+ 	data->ibi_pool = NULL;
+ }
  
++static void dw_i3c_master_enable_sir_signal(struct dw_i3c_master *master, bool enable)
++{
++	u32 reg;
++
++	reg = readl(master->regs + INTR_STATUS_EN);
++	reg &= ~INTR_IBI_THLD_STAT;
++	if (enable)
++		reg |= INTR_IBI_THLD_STAT;
++	writel(reg, master->regs + INTR_STATUS_EN);
++
++	reg = readl(master->regs + INTR_SIGNAL_EN);
++	reg &= ~INTR_IBI_THLD_STAT;
++	if (enable)
++		reg |= INTR_IBI_THLD_STAT;
++	writel(reg, master->regs + INTR_SIGNAL_EN);
++}
++
+ static void dw_i3c_master_set_sir_enabled(struct dw_i3c_master *master,
+ 					  struct i3c_dev_desc *dev,
+ 					  u8 idx, bool enable)
+@@ -1170,23 +1187,34 @@ static void dw_i3c_master_set_sir_enabled(struct dw_i3c_master *master,
+ 	}
+ 	writel(reg, master->regs + IBI_SIR_REQ_REJECT);
+ 
+-	if (global) {
+-		reg = readl(master->regs + INTR_STATUS_EN);
+-		reg &= ~INTR_IBI_THLD_STAT;
+-		if (enable)
+-			reg |= INTR_IBI_THLD_STAT;
+-		writel(reg, master->regs + INTR_STATUS_EN);
+-
+-		reg = readl(master->regs + INTR_SIGNAL_EN);
+-		reg &= ~INTR_IBI_THLD_STAT;
+-		if (enable)
+-			reg |= INTR_IBI_THLD_STAT;
+-		writel(reg, master->regs + INTR_SIGNAL_EN);
+-	}
++	if (global)
++		dw_i3c_master_enable_sir_signal(master, enable);
++
+ 
+ 	spin_unlock_irqrestore(&master->devs_lock, flags);
+ }
+ 
++static int dw_i3c_master_enable_hotjoin(struct i3c_master_controller *m)
++{
++	struct dw_i3c_master *master = to_dw_i3c_master(m);
++
++	dw_i3c_master_enable_sir_signal(master, true);
++	writel(readl(master->regs + DEVICE_CTRL) & ~DEV_CTRL_HOT_JOIN_NACK,
++	       master->regs + DEVICE_CTRL);
++
++	return 0;
++}
++
++static int dw_i3c_master_disable_hotjoin(struct i3c_master_controller *m)
++{
++	struct dw_i3c_master *master = to_dw_i3c_master(m);
++
++	writel(readl(master->regs + DEVICE_CTRL) | DEV_CTRL_HOT_JOIN_NACK,
++	       master->regs + DEVICE_CTRL);
++
++	return 0;
++}
++
+ static int dw_i3c_master_enable_ibi(struct i3c_dev_desc *dev)
+ {
+ 	struct dw_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
+@@ -1326,6 +1354,8 @@ static void dw_i3c_master_irq_handle_ibis(struct dw_i3c_master *master)
+ 
+ 		if (IBI_TYPE_SIRQ(reg)) {
+ 			dw_i3c_master_handle_ibi_sir(master, reg);
++		} else if (IBI_TYPE_HJ(reg)) {
++			queue_work(master->base.wq, &master->hj_work);
+ 		} else {
+ 			len = IBI_QUEUE_STATUS_DATA_LEN(reg);
+ 			dev_info(&master->base.dev,
+@@ -1393,6 +1423,8 @@ static const struct i3c_master_controller_ops dw_mipi_i3c_ibi_ops = {
+ 	.enable_ibi = dw_i3c_master_enable_ibi,
+ 	.disable_ibi = dw_i3c_master_disable_ibi,
+ 	.recycle_ibi_slot = dw_i3c_master_recycle_ibi_slot,
++	.enable_hotjoin = dw_i3c_master_enable_hotjoin,
++	.disable_hotjoin = dw_i3c_master_disable_hotjoin,
+ };
+ 
+ /* default platform ops implementations */
+@@ -1412,6 +1444,14 @@ static const struct dw_i3c_platform_ops dw_i3c_platform_ops_default = {
+ 	.set_dat_ibi = dw_i3c_platform_set_dat_ibi_nop,
+ };
+ 
++static void dw_i3c_hj_work(struct work_struct *work)
++{
++	struct dw_i3c_master *master =
++		container_of(work, typeof(*master), hj_work);
++
++	i3c_master_do_daa(&master->base);
++}
++
+ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 			struct platform_device *pdev)
+ {
+@@ -1469,6 +1509,7 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+ 	if (master->ibi_capable)
+ 		ops = &dw_mipi_i3c_ibi_ops;
+ 
++	INIT_WORK(&master->hj_work, dw_i3c_hj_work);
+ 	ret = i3c_master_register(&master->base, &pdev->dev, ops, false);
+ 	if (ret)
+ 		goto err_assert_rst;
+diff --git a/drivers/i3c/master/dw-i3c-master.h b/drivers/i3c/master/dw-i3c-master.h
+index ab862c5d15fe7..4ab94aa72252e 100644
+--- a/drivers/i3c/master/dw-i3c-master.h
++++ b/drivers/i3c/master/dw-i3c-master.h
+@@ -57,6 +57,8 @@ struct dw_i3c_master {
+ 
+ 	/* platform-specific data */
+ 	const struct dw_i3c_platform_ops *platform_ops;
++
++	struct work_struct hj_work;
+ };
+ 
+ struct dw_i3c_platform_ops {
 -- 
 2.39.5
 
