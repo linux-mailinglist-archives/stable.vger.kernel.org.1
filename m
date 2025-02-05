@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E861BA28CC3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8655A29062
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71D6D164DF7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0D018812E2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761F1149C7B;
-	Wed,  5 Feb 2025 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B323C14B075;
+	Wed,  5 Feb 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RC4qA9Om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1/fre8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304B413C9C4;
-	Wed,  5 Feb 2025 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F82A151988;
+	Wed,  5 Feb 2025 14:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763619; cv=none; b=JTutJmh+9qfimqYSEWuxLdx/WXyTYkIuabkjEkIdYbfjNsGzjxI77PkMSC4A10G6/ODqN7RBI6Do3Os8lffxB9R4ueUzLEoXb4yWWl1Hbv88vA8ZE0wo+xEUlaEc3d1+RMBeo3kfP5h/gow0XdiBS77FyyT4ZBIWu11Fo5rAGek=
+	t=1738766120; cv=none; b=QGlTSwEKTzEXNqzCpBwgpvRtsKh7p/8z2HYBniqn313u/lEr3ZJ9NLw/5lpJDTUPtJM+5VfmofsaX2NByz0Vm0HmVUhpQt7NDBKzavj3qDuqtdFQY7D2dG01FdHHmvOwAaXh+TV1C5OqH9tJ4ZKal0rk6z63mqdCW8lteMTEffo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763619; c=relaxed/simple;
-	bh=R54hvtfzc3w+cmPv7a5fRUIxA+iDkI9QQS3Knz20wsE=;
+	s=arc-20240116; t=1738766120; c=relaxed/simple;
+	bh=fV8OcBB220stPXPocGuZyd6z0UvjzGTe/EJ4CzLP/xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCCbHS0iGDNnJW5q3gJHmR+3MRDuQIJnm6bfXDIbNA5o4gt3sqtFaeYSmrslmgqYa6nlueRwt0paQ1MKfgeaec8YLdkyZmRjMJcLHQ885rq5vASu2JpcWa4pElG6BQB/pe0i72m99n2+3dHUqPWaxsWePfzZMnMq1f5WhCOuo8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RC4qA9Om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F74C4CED1;
-	Wed,  5 Feb 2025 13:53:38 +0000 (UTC)
+	 MIME-Version; b=G4b5X6LlanR0COVEQeOyE3YbypuLX1JO2nesCr0TSfC+KOI02BG2k4p6MY/SjWuYgpVLCcJcD6wBgpobCi1FRasQmMZHm05O9vsJfYSNo2lQHdq/HmVmQvaIY1YWtNGEx5rjWHscrAojqzkBOqo+gULYlzcHqvO4zrOMmmwQYbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1/fre8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC74C4CED1;
+	Wed,  5 Feb 2025 14:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763619;
-	bh=R54hvtfzc3w+cmPv7a5fRUIxA+iDkI9QQS3Knz20wsE=;
+	s=korg; t=1738766120;
+	bh=fV8OcBB220stPXPocGuZyd6z0UvjzGTe/EJ4CzLP/xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RC4qA9OmHDSDUaFmTsjm1xy+Yvrk5s54InZOe9a0Es+axgu1txvFt8GQE5+sCyutc
-	 Z8YYEoFFPNCbC6DbstmMcfWis23ou8lqP36EslGgmr9tD2LleNJ2VX7Zz8ofFRCRy2
-	 gMvwTmvVEvPeqU+gIMRSQuQ7H+cp1NaH2TTROTmw=
+	b=l1/fre8wXx+iWdQ9H0XaN8Cu9DKhdnLhlURauuYrN1/BhYJIUPtOSv29/rNQrm1PJ
+	 Q4PK9DjAg7ThKnTlHftmtTKLhop3Wjs8fLpLhctixQgJIte5k96YKJcfCPT/zNcO3F
+	 WaL7Jv5tDoAEGUoaXymZah9imj/PTsosvoXzJ2bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/393] wifi: rtlwifi: remove unused check_buddy_priv
-Date: Wed,  5 Feb 2025 14:39:45 +0100
-Message-ID: <20250205134422.820654833@linuxfoundation.org>
+Subject: [PATCH 6.13 244/623] net/rose: prevent integer overflows in rose_setsockopt()
+Date: Wed,  5 Feb 2025 14:39:46 +0100
+Message-ID: <20250205134505.560849593@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,202 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 2fdac64c3c35858aa8ac5caa70b232e03456e120 ]
+[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
 
-Commit 2461c7d60f9f ("rtlwifi: Update header file") introduced a global
-list of private data structures.
+In case of possible unpredictably large arguments passed to
+rose_setsockopt() and multiplied by extra values on top of that,
+integer overflows may occur.
 
-Later on, commit 26634c4b1868 ("rtlwifi Modify existing bits to match
-vendor version 2013.02.07") started adding the private data to that list at
-probe time and added a hook, check_buddy_priv to find the private data from
-a similar device.
+Do the safest minimum and fix these issues by checking the
+contents of 'opt' and returning -EINVAL if they are too large. Also,
+switch to unsigned int and remove useless check for negative 'opt'
+in ROSE_IDLE case.
 
-However, that function was never used.
-
-Besides, though there is a lock for that list, it is never used. And when
-the probe fails, the private data is never removed from the list. This
-would cause a second probe to access freed memory.
-
-Remove the unused hook, structures and members, which will prevent the
-potential race condition on the list and its corruption during a second
-probe when probe fails.
-
-Fixes: 26634c4b1868 ("rtlwifi Modify existing bits to match vendor version 2013.02.07")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241206173713.3222187-2-cascardo@igalia.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c |  7 ----
- drivers/net/wireless/realtek/rtlwifi/base.h |  1 -
- drivers/net/wireless/realtek/rtlwifi/pci.c  | 44 ---------------------
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 12 ------
- 4 files changed, 64 deletions(-)
+ net/rose/af_rose.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index 807a53a97325b..c7d5b20039ca0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -2710,9 +2710,6 @@ MODULE_AUTHOR("Larry Finger	<Larry.FInger@lwfinger.net>");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Realtek 802.11n PCI wireless core");
- 
--struct rtl_global_var rtl_global_var = {};
--EXPORT_SYMBOL_GPL(rtl_global_var);
--
- static int __init rtl_core_module_init(void)
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 59050caab65c8..72c65d938a150 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
  {
- 	BUILD_BUG_ON(TX_PWR_BY_RATE_NUM_RATE < TX_PWR_BY_RATE_NUM_SECTION);
-@@ -2726,10 +2723,6 @@ static int __init rtl_core_module_init(void)
- 	/* add debugfs */
- 	rtl_debugfs_add_topdir();
+ 	struct sock *sk = sock->sk;
+ 	struct rose_sock *rose = rose_sk(sk);
+-	int opt;
++	unsigned int opt;
  
--	/* init some global vars */
--	INIT_LIST_HEAD(&rtl_global_var.glb_priv_list);
--	spin_lock_init(&rtl_global_var.glb_list_lock);
--
- 	return 0;
- }
+ 	if (level != SOL_ROSE)
+ 		return -ENOPROTOOPT;
  
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.h b/drivers/net/wireless/realtek/rtlwifi/base.h
-index f081a9a90563f..f3a6a43a42eca 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.h
-@@ -124,7 +124,6 @@ int rtl_send_smps_action(struct ieee80211_hw *hw,
- u8 *rtl_find_ie(u8 *data, unsigned int len, u8 ie);
- void rtl_recognize_peer(struct ieee80211_hw *hw, u8 *data, unsigned int len);
- u8 rtl_tid_to_ac(u8 tid);
--extern struct rtl_global_var rtl_global_var;
- void rtl_phy_scan_operation_backup(struct ieee80211_hw *hw, u8 operation);
+-	if (optlen < sizeof(int))
++	if (optlen < sizeof(unsigned int))
+ 		return -EINVAL;
  
- #endif
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 766e43f13d3f5..8ee3a11e8dc73 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -295,46 +295,6 @@ static bool rtl_pci_get_amd_l1_patch(struct ieee80211_hw *hw)
- 	return status;
- }
+-	if (copy_from_sockptr(&opt, optval, sizeof(int)))
++	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
+ 		return -EFAULT;
  
--static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
--				     struct rtl_priv **buddy_priv)
--{
--	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
--	struct rtl_priv *tpriv = NULL, *iter;
--	struct rtl_pci_priv *tpcipriv = NULL;
--
--	if (!list_empty(&rtlpriv->glb_var->glb_priv_list)) {
--		list_for_each_entry(iter, &rtlpriv->glb_var->glb_priv_list,
--				    list) {
--			tpcipriv = (struct rtl_pci_priv *)iter->priv;
--			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--				"pcipriv->ndis_adapter.funcnumber %x\n",
--				pcipriv->ndis_adapter.funcnumber);
--			rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--				"tpcipriv->ndis_adapter.funcnumber %x\n",
--				tpcipriv->ndis_adapter.funcnumber);
--
--			if (pcipriv->ndis_adapter.busnumber ==
--			    tpcipriv->ndis_adapter.busnumber &&
--			    pcipriv->ndis_adapter.devnumber ==
--			    tpcipriv->ndis_adapter.devnumber &&
--			    pcipriv->ndis_adapter.funcnumber !=
--			    tpcipriv->ndis_adapter.funcnumber) {
--				tpriv = iter;
--				break;
--			}
--		}
--	}
--
--	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--		"find_buddy_priv %d\n", tpriv != NULL);
--
--	if (tpriv)
--		*buddy_priv = tpriv;
--
--	return tpriv != NULL;
--}
--
- static void rtl_pci_parse_configuration(struct pci_dev *pdev,
- 					struct ieee80211_hw *hw)
- {
-@@ -2013,7 +1973,6 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
- 		pcipriv->ndis_adapter.amd_l1_patch);
+ 	switch (optname) {
+@@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
+ 		return 0;
  
- 	rtl_pci_parse_configuration(pdev, hw);
--	list_add_tail(&rtlpriv->list, &rtlpriv->glb_var->glb_priv_list);
+ 	case ROSE_T1:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t1 = opt * HZ;
+ 		return 0;
  
- 	return true;
- }
-@@ -2160,7 +2119,6 @@ int rtl_pci_probe(struct pci_dev *pdev,
- 	rtlpriv->rtlhal.interface = INTF_PCI;
- 	rtlpriv->cfg = (struct rtl_hal_cfg *)(id->driver_data);
- 	rtlpriv->intf_ops = &rtl_pci_ops;
--	rtlpriv->glb_var = &rtl_global_var;
- 	rtl_efuse_ops_init(hw);
+ 	case ROSE_T2:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t2 = opt * HZ;
+ 		return 0;
  
- 	/* MEM map */
-@@ -2318,7 +2276,6 @@ void rtl_pci_disconnect(struct pci_dev *pdev)
- 	if (rtlpci->using_msi)
- 		pci_disable_msi(rtlpci->pdev);
+ 	case ROSE_T3:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->t3 = opt * HZ;
+ 		return 0;
  
--	list_del(&rtlpriv->list);
- 	if (rtlpriv->io.pci_mem_start != 0) {
- 		pci_iounmap(pdev, (void __iomem *)rtlpriv->io.pci_mem_start);
- 		pci_release_regions(pdev);
-@@ -2378,7 +2335,6 @@ const struct rtl_intf_ops rtl_pci_ops = {
- 	.read_efuse_byte = read_efuse_byte,
- 	.adapter_start = rtl_pci_start,
- 	.adapter_stop = rtl_pci_stop,
--	.check_buddy_priv = rtl_pci_check_buddy_priv,
- 	.adapter_tx = rtl_pci_tx,
- 	.flush = rtl_pci_flush,
- 	.reset_trx_ring = rtl_pci_reset_trx_ring,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 8cbf3fb388539..2106d7763bada 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -2321,8 +2321,6 @@ struct rtl_intf_ops {
- 	void (*read_efuse_byte)(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf);
- 	int (*adapter_start)(struct ieee80211_hw *hw);
- 	void (*adapter_stop)(struct ieee80211_hw *hw);
--	bool (*check_buddy_priv)(struct ieee80211_hw *hw,
--				 struct rtl_priv **buddy_priv);
+ 	case ROSE_HOLDBACK:
+-		if (opt < 1)
++		if (opt < 1 || opt > UINT_MAX / HZ)
+ 			return -EINVAL;
+ 		rose->hb = opt * HZ;
+ 		return 0;
  
- 	int (*adapter_tx)(struct ieee80211_hw *hw,
- 			  struct ieee80211_sta *sta,
-@@ -2566,14 +2564,6 @@ struct dig_t {
- 	u32 rssi_max;
- };
- 
--struct rtl_global_var {
--	/* from this list we can get
--	 * other adapter's rtl_priv
--	 */
--	struct list_head glb_priv_list;
--	spinlock_t glb_list_lock;
--};
--
- #define IN_4WAY_TIMEOUT_TIME	(30 * MSEC_PER_SEC)	/* 30 seconds */
- 
- struct rtl_btc_info {
-@@ -2719,9 +2709,7 @@ struct rtl_scan_list {
- struct rtl_priv {
- 	struct ieee80211_hw *hw;
- 	struct completion firmware_loading_complete;
--	struct list_head list;
- 	struct rtl_priv *buddy_priv;
--	struct rtl_global_var *glb_var;
- 	struct rtl_dmsp_ctl dmsp_ctl;
- 	struct rtl_locks locks;
- 	struct rtl_works works;
+ 	case ROSE_IDLE:
+-		if (opt < 0)
++		if (opt > UINT_MAX / (60 * HZ))
+ 			return -EINVAL;
+ 		rose->idle = opt * 60 * HZ;
+ 		return 0;
 -- 
 2.39.5
 
