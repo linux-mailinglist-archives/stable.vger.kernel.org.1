@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-112973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206A1A28F4F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5078A292CD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2C6188A1E5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B081886FEB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC04158870;
-	Wed,  5 Feb 2025 14:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384321FC10E;
+	Wed,  5 Feb 2025 14:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpUQGDh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czWzLrM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69B615854F;
-	Wed,  5 Feb 2025 14:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90DF1591E3;
+	Wed,  5 Feb 2025 14:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765388; cv=none; b=lbfyjAoBIDkvHFzqwYpIR4Tj37UHPmEIulXMoIP6crTR7TdepUJXrnIra8JKj8aEEB1oj9nGmzQZ3lokwa4y6mNNSA9tBb3SBNpVE/6a7x7UnplW8/J3koGAmelbwiEp9Zn4JtS8V5ktocn3PzGAgIQlHgbnAxvsEEbDA8NXSCU=
+	t=1738767242; cv=none; b=SzOfnP4KPiQB3lNyFD7ZcO2kPUi48ndbUVbOLfVP8HSro87mLCilocF4Z5+dJAhbvDCTnV+juy4OpD0RcD1dMz7MJwdOO0SCSVWGRlBEM4ZXV/AGRC3m4kaeeMhJFT7tb0ACuvQo/tNnNfAuPCMGfo3Bjl6s+XCmmSvM67Q5ftA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765388; c=relaxed/simple;
-	bh=UVlInEnrdqm80bLsYXMhS8LyQTIqsFIO+6sP+OLQTAM=;
+	s=arc-20240116; t=1738767242; c=relaxed/simple;
+	bh=iQmWYVz0K/r65KQXXqJCrLvHHzIVXMbrOgNeXN3RC40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uP0xOt8kp/bePFRsUqd0/ovPfh3+sxZgJiozVlD3J+v2xCkVyP4qpeq+GNRaNCkDGQXgYGDud/RvqELrGPYwdGdW3wj6Z9VSQ5i//O0mfdC/XFLY5ZoPBHv3sc/wAD1L61HmhJd1sTiqrTvvFE5THc+qW6dtjKYhgmqg7QC/7ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpUQGDh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED01DC4CED6;
-	Wed,  5 Feb 2025 14:23:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M5q+DNT+CK5av5NxdcUHhci8kURIggOLG1aydDOH3cXku3HsZYJYhDF0brlM1M8KB1GgeHNin8MgaFhIQGoy2GAGMVmc7aIgpW4WXaPkMgYse2npHR6CsEdWn85eV2iz6lb5pY5HVSkd7OtamEfO3afYURdru5p32vMrkN3KKew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czWzLrM7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036D9C4CED1;
+	Wed,  5 Feb 2025 14:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765387;
-	bh=UVlInEnrdqm80bLsYXMhS8LyQTIqsFIO+6sP+OLQTAM=;
+	s=korg; t=1738767241;
+	bh=iQmWYVz0K/r65KQXXqJCrLvHHzIVXMbrOgNeXN3RC40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpUQGDh3jPtdE1Opw4sXt4o3JyUsK66u8LZCkArN0qWoPKL4AJLOwNaZDUoN8F16Z
-	 w0xcve7ckxZ1icUm8X8cqxOulJ2yFasDVwdM4RJeY48rUWFy0WGJRC6VrhKNRTMAyi
-	 1Kgtk7yqXJHq4eS9FDeEgLQob59drwWZVimgU3nM=
+	b=czWzLrM7NqRZpdk+iQkKNRaWYiCQlvKQaGv/r56HTt9Fm2vrpTXdgNEXHCKeT6Mmy
+	 OThriyEVtcbVocZ0nYwLldNpEN900zQZEFALGFCYvHVw1Ixc3kuqWXyYjtb5Qi6WiM
+	 MtUDrIsYJoGVyk1Cu0kCQp/Gh816gIoWiO5m1Auk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/393] arm64: dts: qcom: sc7180: fix psci power domain node names
-Date: Wed,  5 Feb 2025 14:43:02 +0100
-Message-ID: <20250205134430.375699426@linuxfoundation.org>
+Subject: [PATCH 6.12 428/590] PCI: imx6: Add missing reference clock disable logic
+Date: Wed,  5 Feb 2025 14:43:03 +0100
+Message-ID: <20250205134511.639288716@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 092febd32a99800902f865ed86b83314faa9c7e4 ]
+[ Upstream commit 93d883f89063744a92006fc356b1c767eb62d950 ]
 
-Rename the psci power domain node names to match the bindings.
+Ensure the *_enable_ref_clk() function is symmetric by addressing missing
+disable parts on some platforms.
 
-This Fixes:
-sc7180-acer-aspire1.dts: psci: 'cpu-cluster0', 'cpu0', 'cpu1', 'cpu2', 'cpu3', 'cpu4', 'cpu5', 'cpu6', 'cpu7' do not match any of the regexes: '^power-domain-', 'pinctrl-[0-9]+'
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-5-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match enable")
+Link: https://lore.kernel.org/r/20241126075702.4099164-7-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 5db7b3bce368b..7758136d71d64 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -580,55 +580,55 @@
- 		compatible = "arm,psci-1.0";
- 		method = "smc";
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 94f5246b3a720..ad3028b755d16 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -598,10 +598,9 @@ static int imx_pcie_attach_pd(struct device *dev)
  
--		cpu_pd0: cpu0 {
-+		cpu_pd0: power-domain-cpu0 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
+ static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+-	if (enable)
+-		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+-				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+-
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
++			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
++			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+ 	return 0;
+ }
  
--		cpu_pd1: cpu1 {
-+		cpu_pd1: power-domain-cpu1 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
+@@ -630,19 +629,20 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+ 	int offset = imx_pcie_grp_offset(imx_pcie);
  
--		cpu_pd2: cpu2 {
-+		cpu_pd2: power-domain-cpu2 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
+-	if (enable) {
+-		regmap_clear_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
+-		regmap_set_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
+-	}
+-
++	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
++			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
++			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
++	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
++			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
++			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
+ 	return 0;
+ }
  
--		cpu_pd3: cpu3 {
-+		cpu_pd3: power-domain-cpu3 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
+ static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+-	if (!enable)
+-		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+-				IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
++			   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
++			   enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+ 	return 0;
+ }
  
--		cpu_pd4: cpu4 {
-+		cpu_pd4: power-domain-cpu4 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd5: cpu5 {
-+		cpu_pd5: power-domain-cpu5 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
- 		};
- 
--		cpu_pd6: cpu6 {
-+		cpu_pd6: power-domain-cpu6 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
- 		};
- 
--		cpu_pd7: cpu7 {
-+		cpu_pd7: power-domain-cpu7 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&cluster_pd>;
- 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
- 		};
- 
--		cluster_pd: cpu-cluster0 {
-+		cluster_pd: power-domain-cluster {
- 			#power-domain-cells = <0>;
- 			domain-idle-states = <&cluster_sleep_pc
- 					      &cluster_sleep_cx_ret
 -- 
 2.39.5
 
