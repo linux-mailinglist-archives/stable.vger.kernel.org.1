@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B22A29356
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA4CA290B9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 402CE3AB9BB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7D18164FF0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA71188704;
-	Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96DB175D5D;
+	Wed,  5 Feb 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfjyKfoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiETl6J+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733CD1519BF;
-	Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7593D1714D0;
+	Wed,  5 Feb 2025 14:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767757; cv=none; b=Ir7o+c8JXoR3RrxIWrWdxaZjrjhIxjg2b0TOWacxdBxHV1ePo5/JUyc0Lqm36v/HHBhJ6JwxvtSTFqSc80xsx4I3o2+JQ4+q0YD80wOSi6fTye7qYVpr9SY3OvEEVDrGzY1T+TbPZJR6DrhdfukGp7aPxJOzEQmOoeyk0ZwNXEA=
+	t=1738766347; cv=none; b=Lm8eYBdFYXjeXxdEDR5MExcLB9HyNorMV2nhckD4Dt5UaZCKmDmX1oLEalegysS/RVzy4yPup1XvBFm6SKE0SzUGxodigXwPaiO82tVOuC/VGmrmJgRNzUCHKaoifDADme5FIXBpFTwjLskQaJGJsuCH0QJTdTaACBDH2IVBSLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767757; c=relaxed/simple;
-	bh=7QRlqHNHMFsrNHB0O1Qk5Vr53yGEu+greh8axemfMc8=;
+	s=arc-20240116; t=1738766347; c=relaxed/simple;
+	bh=XdVlU2fySb3b23m53u+zsmqnnS3pa6IqP6E3hzSFhkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHSwE/AbUFUoC5xm1sEK8EIffc9co6BX9b7Ub/sfPRhAUp/1bX9G9IVdfZhquOxyvphyJrlJxiWAivwcRjmjKYUgQlEhu43w0tgae7cCVsRVTnDXKx//Se/zNubscOQVRXfJv+khD4Kq9tjYoO+/qeDpGRchBlrdAKn4oZe6ohU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfjyKfoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9997CC4CED1;
-	Wed,  5 Feb 2025 15:02:36 +0000 (UTC)
+	 MIME-Version; b=PTjZoCfWNAgtdSr6Ltl7ZMwL7KNG/pnGoOIkjkhqGK/nksA3WYBUMHVpEi2Z45gQbFEQAUG8basQUA/mW5Cjs3ejmjtZtBngQ3JfPa/Yb6Eiy4ez27OnDhrV4QwRfaABDmPuCMq2WQsqbsiM8IbDekuJsnuvi42ZWr/v9Z6riDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiETl6J+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57EFC4CED6;
+	Wed,  5 Feb 2025 14:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767757;
-	bh=7QRlqHNHMFsrNHB0O1Qk5Vr53yGEu+greh8axemfMc8=;
+	s=korg; t=1738766347;
+	bh=XdVlU2fySb3b23m53u+zsmqnnS3pa6IqP6E3hzSFhkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfjyKfoVYltpoytMKEqYszCt//iKk/+dYDLal9SfQgO3+aoAWDxgxoil42i0i0jKS
-	 akpQc/uh5Oeano+UoT0lX+qUAmGbTB+2Qan5mnIjUjc8B1uqVbryRbAY7GFaEqpN1g
-	 nLiYhzom+I7GGEXgRpefWeGNgf1ce8jCV4UUrIxQ=
+	b=DiETl6J+wMBymZiMH6cpxLUSmyRzMm1NOBP+zssIJ8hmT7A7cgNVSdntjBVn8Eygr
+	 0XU6xaFi6Zs22xgkEIRbALlA2OIM9sJhrZVec8PqFXc5VC2wPENzxektMie8rVtPY2
+	 gJhG2NXi7XA9d2iPQuOu6zXyVY72fM3pCp4s8VF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 505/590] net: stmmac: Limit FIFO size by hardware capability
-Date: Wed,  5 Feb 2025 14:44:20 +0100
-Message-ID: <20250205134514.588738451@linuxfoundation.org>
+Subject: [PATCH 6.6 342/393] vsock: Allow retrying on connect() failure
+Date: Wed,  5 Feb 2025 14:44:21 +0100
+Message-ID: <20250205134433.397412504@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 044f2fbaa2725696ecbf1f02ba7ab0a8ccb7e1ae ]
+[ Upstream commit aa388c72113b7458127b709bdd7d3628af26e9b4 ]
 
-Tx/Rx FIFO size is specified by the parameter "{tx,rx}-fifo-depth" from
-stmmac_platform layer.
+sk_err is set when a (connectible) connect() fails. Effectively, this makes
+an otherwise still healthy SS_UNCONNECTED socket impossible to use for any
+subsequent connection attempts.
 
-However, these values are constrained by upper limits determined by the
-capabilities of each hardware feature. There is a risk that the upper
-bits will be truncated due to the calculation, so it's appropriate to
-limit them to the upper limit values and display a warning message.
+Clear sk_err upon trying to establish a connection.
 
-This only works if the hardware capability has the upper limit values.
-
-Fixes: e7877f52fd4a ("stmmac: Read tx-fifo-depth and rx-fifo-depth from the devicetree")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-2-1cf57065b770@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/vmw_vsock/af_vsock.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7b1ae6f397fb9..918d7f2e8ba99 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7251,6 +7251,21 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
- 		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
- 	}
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index ea857ed57d046..df7d95b404d99 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1457,6 +1457,11 @@ static int vsock_connect(struct socket *sock, struct sockaddr *addr,
+ 		if (err < 0)
+ 			goto out;
  
-+	if (priv->dma_cap.rx_fifo_size &&
-+	    priv->plat->rx_fifo_size > priv->dma_cap.rx_fifo_size) {
-+		dev_warn(priv->device,
-+			 "Rx FIFO size (%u) exceeds dma capability\n",
-+			 priv->plat->rx_fifo_size);
-+		priv->plat->rx_fifo_size = priv->dma_cap.rx_fifo_size;
-+	}
-+	if (priv->dma_cap.tx_fifo_size &&
-+	    priv->plat->tx_fifo_size > priv->dma_cap.tx_fifo_size) {
-+		dev_warn(priv->device,
-+			 "Tx FIFO size (%u) exceeds dma capability\n",
-+			 priv->plat->tx_fifo_size);
-+		priv->plat->tx_fifo_size = priv->dma_cap.tx_fifo_size;
-+	}
++		/* sk_err might have been set as a result of an earlier
++		 * (failed) connect attempt.
++		 */
++		sk->sk_err = 0;
 +
- 	priv->hw->vlan_fail_q_en =
- 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
- 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
+ 		/* Mark sock as connecting and set the error code to in
+ 		 * progress in case this is a non-blocking connect.
+ 		 */
 -- 
 2.39.5
 
