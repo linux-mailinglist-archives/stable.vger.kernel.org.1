@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BE6A29058
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BCCA28F6D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A0D3A6C88
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AE451600AF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC84155CB3;
-	Wed,  5 Feb 2025 14:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22D7155335;
+	Wed,  5 Feb 2025 14:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j44L4D3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjTSrpIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5662C7E792;
-	Wed,  5 Feb 2025 14:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA338634E;
+	Wed,  5 Feb 2025 14:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766052; cv=none; b=P4MrETJOcKfcvJOwrIz0K+Mun+hLSwjH/46KNrzLVtyeRL/m3yjJQEoI82yXD2XcI00Vh1awU4I0mjJqR6DEmdeTb8S/E/SrQvXt6b8gl7EQ+5DmjI8yhbxbb/IqzWWIj2jQt7I89F2Y7KjnK5hYss7yONZ3ZLiPLEvEXBc9i+g=
+	t=1738765511; cv=none; b=hAdSv/f6aSnW2T2xAWhLiPJQNOgSu34IFfEk7+y/5cya1f+pgIVHUtgYA+huHaicxVibWUHLmHPjmAzFhhhtgMyYoW/QrYCWohsDGuUFyhpbE7nD6nawDGoxamqDOrCxYXo2rC1LkImgJmylxEDCzRkqihQHrfH1ePHEoG3ejNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766052; c=relaxed/simple;
-	bh=843MH68/L4pDuJNBkKNrP/qHMj/xMn9Y1x2yQG02fKY=;
+	s=arc-20240116; t=1738765511; c=relaxed/simple;
+	bh=c/X/uPEd5dM2wFlZRf8AQiCfklvgygJxlV11z1zB5s8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9+RcMqQ9yp+hm1zLIMxQAZnsq9TK5UPhfFiprcRet+xFU59KiJcBCJ6pMqg2lX5vPaL94Mjuac1DtkulYFEk+KvzOXRCxoWHsAMW9MWuSD9v2nn7J0f8fdZWe6FxXqzDfbr9+nQeOr1IC0YnO3cNxMn3yyFTnBQoM8uBYSomUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j44L4D3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5862C4CED1;
-	Wed,  5 Feb 2025 14:34:11 +0000 (UTC)
+	 MIME-Version; b=fcDDuJdI+pTjnGjK4MIqEEecU833cNY6VVzqvYtWGlHAT8xKGxlOkDAdkojo0IW8cAbm9xDfJdBwEeq6dbIHs5dovavJGeUVp0TDfBqY6xIn7AVbn89uIExaieWQVtPvcv3R4AbOx+7mlWF4aP5PN2e/BYiji8frDlCNCiPRH64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjTSrpIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED718C4CED1;
+	Wed,  5 Feb 2025 14:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766052;
-	bh=843MH68/L4pDuJNBkKNrP/qHMj/xMn9Y1x2yQG02fKY=;
+	s=korg; t=1738765511;
+	bh=c/X/uPEd5dM2wFlZRf8AQiCfklvgygJxlV11z1zB5s8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j44L4D3MP9Q2qNGl+3O/ot8riRmeRy1kz4jgixfpdj8/moz+mi8qBRxoW99eUofxJ
-	 fsmfVay3IKuO119L2VsZRKSRg4KTrSryzFhxc7QHxLiCQY/boE89SXrTiapUMqfFPc
-	 BrT3s/AVSjwLnPAa0EGhgrecnh5PQHBn4lieAgHE=
+	b=zjTSrpIGqf/jFRRD+nYIaakdaEglbMKAYTfQ5s9QTgRAs/Jt/bPj9k8RV3YZwh2xQ
+	 m4aqUEIQ2LHht4uOyLWiZMhLcBLaI8jTE35kdgGuXEKCOIG4s7x9R67mUV4k3AaqMz
+	 hYyoc4+B8BT3nj4H/NVJ7kJf99GoOEjLmpU7ZBpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Simon Horman <horms@kernel.org>,
+	Antoine Tenart <atenart@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 238/623] net: sched: Disallow replacing of child qdisc from one parent to another
-Date: Wed,  5 Feb 2025 14:39:40 +0100
-Message-ID: <20250205134505.334214185@linuxfoundation.org>
+Subject: [PATCH 6.12 226/590] net: avoid race between device unregistration and ethnl ops
+Date: Wed,  5 Feb 2025 14:39:41 +0100
+Message-ID: <20250205134503.930741235@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit bc50835e83f60f56e9bec2b392fb5544f250fb6f ]
+[ Upstream commit 12e070eb6964b341b41677fd260af5a305316a1f ]
 
-Lion Ackermann was able to create a UAF which can be abused for privilege
-escalation with the following script
+The following trace can be seen if a device is being unregistered while
+its number of channels are being modified.
 
-Step 1. create root qdisc
-tc qdisc add dev lo root handle 1:0 drr
+  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+  WARNING: CPU: 3 PID: 3754 at kernel/locking/mutex.c:564 __mutex_lock+0xc8a/0x1120
+  CPU: 3 UID: 0 PID: 3754 Comm: ethtool Not tainted 6.13.0-rc6+ #771
+  RIP: 0010:__mutex_lock+0xc8a/0x1120
+  Call Trace:
+   <TASK>
+   ethtool_check_max_channel+0x1ea/0x880
+   ethnl_set_channels+0x3c3/0xb10
+   ethnl_default_set_doit+0x306/0x650
+   genl_family_rcv_msg_doit+0x1e3/0x2c0
+   genl_rcv_msg+0x432/0x6f0
+   netlink_rcv_skb+0x13d/0x3b0
+   genl_rcv+0x28/0x40
+   netlink_unicast+0x42e/0x720
+   netlink_sendmsg+0x765/0xc20
+   __sys_sendto+0x3ac/0x420
+   __x64_sys_sendto+0xe0/0x1c0
+   do_syscall_64+0x95/0x180
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-step2. a class for packet aggregation do demonstrate uaf
-tc class add dev lo classid 1:1 drr
+This is because unregister_netdevice_many_notify might run before the
+rtnl lock section of ethnl operations, eg. set_channels in the above
+example. In this example the rss lock would be destroyed by the device
+unregistration path before being used again, but in general running
+ethnl operations while dismantle has started is not a good idea.
 
-step3. a class for nesting
-tc class add dev lo classid 1:2 drr
+Fix this by denying any operation on devices being unregistered. A check
+was already there in ethnl_ops_begin, but not wide enough.
 
-step4. a class to graft qdisc to
-tc class add dev lo classid 1:3 drr
+Note that the same issue cannot be seen on the ioctl version
+(__dev_ethtool) because the device reference is retrieved from within
+the rtnl lock section there. Once dismantle started, the net device is
+unlisted and no reference will be found.
 
-step5.
-tc qdisc add dev lo parent 1:1 handle 2:0 plug limit 1024
-
-step6.
-tc qdisc add dev lo parent 1:2 handle 3:0 drr
-
-step7.
-tc class add dev lo classid 3:1 drr
-
-step 8.
-tc qdisc add dev lo parent 3:1 handle 4:0 pfifo
-
-step 9. Display the class/qdisc layout
-
-tc class ls dev lo
- class drr 1:1 root leaf 2: quantum 64Kb
- class drr 1:2 root leaf 3: quantum 64Kb
- class drr 3:1 root leaf 4: quantum 64Kb
-
-tc qdisc ls
- qdisc drr 1: dev lo root refcnt 2
- qdisc plug 2: dev lo parent 1:1
- qdisc pfifo 4: dev lo parent 3:1 limit 1000p
- qdisc drr 3: dev lo parent 1:2
-
-step10. trigger the bug <=== prevented by this patch
-tc qdisc replace dev lo parent 1:3 handle 4:0
-
-step 11. Redisplay again the qdiscs/classes
-
-tc class ls dev lo
- class drr 1:1 root leaf 2: quantum 64Kb
- class drr 1:2 root leaf 3: quantum 64Kb
- class drr 1:3 root leaf 4: quantum 64Kb
- class drr 3:1 root leaf 4: quantum 64Kb
-
-tc qdisc ls
- qdisc drr 1: dev lo root refcnt 2
- qdisc plug 2: dev lo parent 1:1
- qdisc pfifo 4: dev lo parent 3:1 refcnt 2 limit 1000p
- qdisc drr 3: dev lo parent 1:2
-
-Observe that a) parent for 4:0 does not change despite the replace request.
-There can only be one parent.  b) refcount has gone up by two for 4:0 and
-c) both class 1:3 and 3:1 are pointing to it.
-
-Step 12.  send one packet to plug
-echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10001))
-step13.  send one packet to the grafted fifo
-echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10003))
-
-step14. lets trigger the uaf
-tc class delete dev lo classid 1:3
-tc class delete dev lo classid 1:1
-
-The semantics of "replace" is for a del/add _on the same node_ and not
-a delete from one node(3:1) and add to another node (1:3) as in step10.
-While we could "fix" with a more complex approach there could be
-consequences to expectations so the patch takes the preventive approach of
-"disallow such config".
-
-Joint work with Lion Ackermann <nnamrec@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250116013713.900000-1-kuba@kernel.org
+Fixes: dde91ccfa25f ("ethtool: do not perform operations on net devices being unregistered")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://patch.msgid.link/20250116092159.50890-1-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ethtool/netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 300430b8c4d22..fac9c946a4c75 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1664,6 +1664,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 				q = qdisc_lookup(dev, tcm->tcm_handle);
- 				if (!q)
- 					goto create_n_graft;
-+				if (q->parent != tcm->tcm_parent) {
-+					NL_SET_ERR_MSG(extack, "Cannot move an existing qdisc to a different parent");
-+					return -EINVAL;
-+				}
- 				if (n->nlmsg_flags & NLM_F_EXCL) {
- 					NL_SET_ERR_MSG(extack, "Exclusivity flag on, cannot override");
- 					return -EEXIST;
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index e3f0ef6b851bb..4d18dc29b3043 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
+ 		pm_runtime_get_sync(dev->dev.parent);
+ 
+ 	if (!netif_device_present(dev) ||
+-	    dev->reg_state == NETREG_UNREGISTERING) {
++	    dev->reg_state >= NETREG_UNREGISTERING) {
+ 		ret = -ENODEV;
+ 		goto err;
+ 	}
 -- 
 2.39.5
 
