@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0067EA291AE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B786A290E0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E007A14FF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CEB0188A73C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8A91FDA9B;
-	Wed,  5 Feb 2025 14:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748D7156225;
+	Wed,  5 Feb 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjlAfAQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgVlxSL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CED146A7A;
-	Wed,  5 Feb 2025 14:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFA4376;
+	Wed,  5 Feb 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766958; cv=none; b=MwoFv4WcxfTSflGNCf/OfC9KclrlUTLefOHv/wY775Usc8FkI1GYXbIigCM8aWLb7s9ybmw7+l4jR2dgwygJWVq+zlJCO7isnL0Xv8Z2QAnqhDzPqPAPrXxqgoKUDAnDG8V5DYRVKBs+mTMdxN1SP3m4DDejYjHSqDL6zHVEArI=
+	t=1738766450; cv=none; b=uD+RR82n8i/6QNnpxSDLfK5e++hkgu2m+2GqNVYrdemlmYWPLeHUiOWb/bXe/avYOjVWerccEbvWqUepjiwACR9OkLluU8cIP/vlFo/7h1m9JyBeKy7aSRZw+cUZaZUVqpJ5B1iZXdffSzqNeTbdGSkwpGLGPvGjtsJT//jCQOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766958; c=relaxed/simple;
-	bh=Gydyi4er4VRLxO6ON+3Zo5FO/l/Gx0eboVUrid87U3k=;
+	s=arc-20240116; t=1738766450; c=relaxed/simple;
+	bh=IDfAhc554bopSO+tG8H/olMVQXLJdghfFfJQBr2qqrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urhBz4H2ivs3z9JV4MuRKPtInpfhvgZ3J6clThJGIQSh0adhB6gOoh+XwyDjXBGZF4BGn16SartLxRt5CrKSrFCsCUgeEJtCsLE/fzkLCY8MICf1GZBHyIjv4r0Ngxg79/XmMyoa+uxac3rNv1+Mi4FFrX7yY01Nvf7GQDcHxWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjlAfAQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336ABC4CED1;
-	Wed,  5 Feb 2025 14:49:18 +0000 (UTC)
+	 MIME-Version; b=VVS1aaSNr7fmimh3Lo/Q5Gu/+A6ZJ+aPAl5B49AMLip38oRHV6LDIlEBN8d8y1umOoLZN8jgdyOJLRx9ghnTvus+zYMy5mR4+e9O83QrSNSbeDZmIIO6GuEpzylMSf3AFPK6PKfJrmNZ7o8v4X1VYQTb5UOiJlOjmVUsdx+L4ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgVlxSL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8B3C4CED1;
+	Wed,  5 Feb 2025 14:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766958;
-	bh=Gydyi4er4VRLxO6ON+3Zo5FO/l/Gx0eboVUrid87U3k=;
+	s=korg; t=1738766450;
+	bh=IDfAhc554bopSO+tG8H/olMVQXLJdghfFfJQBr2qqrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjlAfAQGpAcAzVDxSxAc4U9IoHNbU216fhkau0RQcN1cpAkgqOumzThIl183jX/He
-	 /3PULJBKwQ5fQfX6kRV57uphCJ/w/NYD+2Ib0CDP4icBBC+O/VQ/vP2+dp8PUxOH+0
-	 gS/ju5HRSpYy45HmMTzIxVH89sJh4tz9uHoMg3h8=
+	b=vgVlxSL7RynkVhEG6UxS9qrhkyKcfnwtUGdestnwQSSqMv7EGih8uM2i/0Ix2hy4P
+	 qVcPjoqAUfp/1SMmp8QlpprQI+ojLlTGfOYVL67Yn5UH7CjkVEazhTlTZAxxJuuCwg
+	 ZusLFAFnsuxLuMk5GCYrtzGIBkeeoMisgGp0AhCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 334/623] arm64: dts: mt8183: set DMIC one-wire mode on Damu
+Subject: [PATCH 6.12 321/590] arm64: dts: mediatek: mt8395-genio-1200-evk: Drop regulator-compatible property
 Date: Wed,  5 Feb 2025 14:41:16 +0100
-Message-ID: <20250205134509.000824926@linuxfoundation.org>
+Message-ID: <20250205134507.555359925@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 6c379e8b984815fc8f876e4bc78c4d563f13ddae ]
+[ Upstream commit b99bf07c2c8b3c85c1935ddca2a73bc686f8d847 ]
 
-Sets DMIC one-wire mode on Damu.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
+
+Fixes: f2b543a191b6 ("arm64: dts: mediatek: add device-tree for Genio 1200 EVK board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20241113-damu-v4-1-6911b69610dd@chromium.org
+Link: https://lore.kernel.org/r/20241211052427.4178367-9-wenst@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-index 65860b33c01fe..3935d83a047e0 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-@@ -26,6 +26,10 @@
- 	hid-descr-addr = <0x0001>;
- };
+diff --git a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+index b4b48eb93f3c5..6f34b06a0359a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+@@ -820,7 +820,6 @@
  
-+&mt6358codec {
-+	mediatek,dmic-mode = <1>; /* one-wire */
-+};
-+
- &qca_wifi {
- 	qcom,ath10k-calibration-variant = "GO_DAMU";
- };
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -837,7 +836,6 @@
+ 
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
 -- 
 2.39.5
 
