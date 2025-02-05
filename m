@@ -1,160 +1,115 @@
-Return-Path: <stable+bounces-114009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-114010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D68A29D4F
-	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 00:16:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502A9A29DAB
+	for <lists+stable@lfdr.de>; Thu,  6 Feb 2025 00:46:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 128CF3A6FDA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B21E167E7C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ACF219A67;
-	Wed,  5 Feb 2025 23:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A80F21D002;
+	Wed,  5 Feb 2025 23:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Qp/XVm8S"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="EFzUOuY5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD76151982;
-	Wed,  5 Feb 2025 23:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E6821B19F;
+	Wed,  5 Feb 2025 23:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738797374; cv=none; b=rulc1sNJjdQm6ZU3zMtsIQNqOx0lfOZDcC5kO2FE2QeRTA6RhX27VAkh7X09hFn/tY7iefMoTxaYgNlo3uAg7G648kX2a0oeT03+bFw3RO152G6R2XnFPPuIw0Lt7QCkzBnKVtGNFS+9X7pFd30cr/kgA64Un7Jc4L9Ol+rBZA4=
+	t=1738799165; cv=none; b=q2jEHL9tyQoT/rLUJJVMVrA2NzUDWXi9CW9amg8VIEbHtHiw39JlfkOwZY9PnNL7+cxGKeISklnG94FDlnI35/640Qo0iujcPj05QLDt6R6F2cDoLrfRcw0P+VrlgDFfr2TjWSf9bT2vzXlchzXMLe8JH0EDYcqifwE1ax41pnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738797374; c=relaxed/simple;
-	bh=Nvv2DGEOtcrJV98VNO3iVlHK1XBISSzOjxsw4Jo6yl0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MbOoEw5WRWJ18OMMhoN/UqVRqvdvmoz3zQoaZvNsfs4M9UQthAQoiSXJpqKWFq+0wsA6rwRvVm84fKRHiKtGgaFC8I6XhSN2Ko/GTus9m4XCuVMrAMZlMybufPmpmwD2BgX6VfrPunNbrrvAjJwJtxTMft0pWULiA/Lzaze4tTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Qp/XVm8S; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 515ErV0S010937;
-	Wed, 5 Feb 2025 23:16:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	h9JQqmEzqkt43tgEtRsXtbPM/f5qT4U4nQT1jZMaNJs=; b=Qp/XVm8S+hm6/Ok3
-	11dH+qDDzDBft589lXneobeKEcbV120C62PAyk2CI4DpkJf58MJZNJeTvXa/P5/X
-	1SOBGYEjlNdCQFCPVTS44HlAXnaKO0qibFRR0K26VbOqw+yN2nnd2Ynrk47RAdl/
-	VMas7vxp7oD6P6M3mCFO7JMD0+8yRyCDwrP/P6W99p+GJT26wuxELQt6ZRzhu4h4
-	n1xdMwiSlB4+FIC6I9NEMTcEdnVx2j/nYeECljzN0NcoYFrt5/FYjo5bs5jSQxfC
-	/tLzwSdDY7wElhqPEfUycwkOtQMm24oUy5HQ6THS5PnyL41bkz4QQxYX7Q3Suf5+
-	kOaVlg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44ma5994sj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Feb 2025 23:16:06 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 515NG5Xf012438
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 5 Feb 2025 23:16:05 GMT
-Received: from [10.110.44.123] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 5 Feb 2025
- 15:16:04 -0800
-Message-ID: <c3fca109-b9ad-40c8-8f4a-033c48a86850@quicinc.com>
-Date: Wed, 5 Feb 2025 15:15:43 -0800
+	s=arc-20240116; t=1738799165; c=relaxed/simple;
+	bh=g09ZCqXnNJJVNUAm2aaH4LByKmRn9oc/DAVX0yAT7Ww=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qf4/33DLZ5H3VsQR7Pq+x6IZTrcByg75MHuz5otPE11DrMamW/ZSKojzCACM8u8ycWebSYYByVvE8aRrUDCR7hF07NyFanr+vKFSq+HuudjUMtTiE3rATp7/mFY2v04Mun8FPMbw+/F/NrGUmXkBvbW/KejdiAyMBmapNxhYx5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=EFzUOuY5; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1738799164; x=1770335164;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=LVoyEb4eO8E2i2Vxvj92QtiYB4cbewa0hWoTfpwNUdc=;
+  b=EFzUOuY5kwvg5DBvBYRlWZKoABO+tVbLsiz8yUWkyZVmKrz3U8X5bwBH
+   MEelcNC7ytddRDCYOoll2bwygjvjMht55zp0y9KYpmdsJ3hL64gaRGeia
+   bwPYKosYTjPK9fiTOPW7+gCEVnd82ioefmtD8j2qfx4g4Ii4takP0nCGu
+   0=;
+X-IronPort-AV: E=Sophos;i="6.13,262,1732579200"; 
+   d="scan'208";a="796459408"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 23:45:58 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.38.20:15949]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.242:2525] with esmtp (Farcaster)
+ id c8515f7e-9835-464e-9b44-6453fd1c087c; Wed, 5 Feb 2025 23:45:57 +0000 (UTC)
+X-Farcaster-Flow-ID: c8515f7e-9835-464e-9b44-6453fd1c087c
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 5 Feb 2025 23:45:55 +0000
+Received: from 6c7e67bfbae3.amazon.com (10.37.244.8) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 5 Feb 2025 23:45:51 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <nicolas.dichtel@6wind.com>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
+	<kuba@kernel.org>, <kuniyu@amazon.com>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <razor@blackwall.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH net] rtnetlink: fix netns leak with rtnl_setlink()
+Date: Thu, 6 Feb 2025 08:45:39 +0900
+Message-ID: <20250205234539.52299-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250205221037.2474426-1-nicolas.dichtel@6wind.com>
+References: <20250205221037.2474426-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: roles: cache usb roles received during switch
- registration
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-CC: <gregkh@linuxfoundation.org>, <xu.yang_2@nxp.com>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20250127230715.6142-1-quic_eserrao@quicinc.com>
- <Z6DVRbmwB859RlCt@kuha.fi.intel.com>
-Content-Language: en-US
-From: Elson Serrao <quic_eserrao@quicinc.com>
-In-Reply-To: <Z6DVRbmwB859RlCt@kuha.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: keEM2tfYbGFv4zlfVJmgl6J_dOEKNLk0
-X-Proofpoint-ORIG-GUID: keEM2tfYbGFv4zlfVJmgl6J_dOEKNLk0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-05_08,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 malwarescore=0 adultscore=0 clxscore=1015 phishscore=0
- bulkscore=0 spamscore=0 mlxscore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502050178
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-
-
-On 2/3/2025 6:40 AM, Heikki Krogerus wrote:
-> On Mon, Jan 27, 2025 at 03:07:15PM -0800, Elson Roy Serrao wrote:
->> The role switch registration and set_role() can happen in parallel as they
->> are invoked independent of each other. There is a possibility that a driver
->> might spend significant amount of time in usb_role_switch_register() API
->> due to the presence of time intensive operations like component_add()
->> which operate under common mutex. This leads to a time window after
->> allocating the switch and before setting the registered flag where the set
->> role notifications are dropped. Below timeline summarizes this behavior
->>
->> Thread1				|	Thread2
->> usb_role_switch_register()	|
->> 	|			|
->> 	---> allocate switch	|
->> 	|			|
->> 	---> component_add()	|	usb_role_switch_set_role()
->> 	|			|	|
->> 	|			|	--> Drop role notifications
->> 	|			|	    since sw->registered
->> 	|			|	    flag is not set.
->> 	|			|
->> 	--->Set registered flag.|
->>
->> To avoid this, cache the last role received and set it once the switch
->> registration is complete. Since we are now caching the roles based on
->> registered flag, protect this flag with the switch mutex.
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Date: Wed,  5 Feb 2025 23:10:37 +0100
+> A call to rtnl_nets_destroy() is needed to release references taken on
+> netns put in rtnl_nets.
 > 
-> Instead, why not just mark the switch registered from the get-go?
+> CC: stable@vger.kernel.org
+> Fixes: 636af13f213b ("rtnetlink: Register rtnl_dellink() and rtnl_setlink() with RTNL_FLAG_DOIT_PERNET_WIP.")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+
+Thanks!
+
+
+> ---
+>  net/core/rtnetlink.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-> index c58a12c147f4..cf38be82d397 100644
-> --- a/drivers/usb/roles/class.c
-> +++ b/drivers/usb/roles/class.c
-> @@ -387,6 +387,8 @@ usb_role_switch_register(struct device *parent,
->         dev_set_name(&sw->dev, "%s-role-switch",
->                      desc->name ? desc->name : dev_name(parent));
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index 1f4d4b5570ab..d1e559fce918 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -3432,6 +3432,7 @@ static int rtnl_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+>  		err = -ENODEV;
 >  
-> +       sw->registered = true;
-> +
->         ret = device_register(&sw->dev);
->         if (ret) {
->                 put_device(&sw->dev);
-> @@ -399,8 +401,6 @@ usb_role_switch_register(struct device *parent,
->                         dev_warn(&sw->dev, "failed to add component\n");
->         }
->  
-> -       sw->registered = true;
-> -
->         /* TODO: Symlinks for the host port and the device controller. */
->  
->         return sw;
+>  	rtnl_nets_unlock(&rtnl_nets);
+> +	rtnl_nets_destroy(&rtnl_nets);
+>  errout:
+>  	return err;
+>  }
+> -- 
+> 2.47.1
 > 
-
-Thank you for the feedback.
-
-Yes that works as well. Wasn't entirely sure if we can set that flag from the get-go before calling device_register().
-But guess we can reset the flag if device_register fails since that is the only failure path in role_switch_register().
-
-I will upload v2 with this modification.
-
-Best Regards,
-Elson
 
