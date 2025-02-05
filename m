@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2853AA28C87
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01306A28C8A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA87B1882457
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EF3E168965
 	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3231C143759;
-	Wed,  5 Feb 2025 13:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882271442F3;
+	Wed,  5 Feb 2025 13:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgDG0vrj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1izYzmYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3854126C18;
-	Wed,  5 Feb 2025 13:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4578013AD22;
+	Wed,  5 Feb 2025 13:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763450; cv=none; b=HQ4fVKiens4Do2TEFe+njRjPfM2TCPp9JKHe6k8jcSDdaF+PgsRsn1O1RpqBxlHMtfoOJenCLN3zYfUz8wF/sKbSCbdo37c1hgNQAXm+CdbV1uVx5wOkX7vcf8cRWUUESD257r+4ujtCD2RO7K8JXLB2dIO4Idu3Ij6bdMQFyFo=
+	t=1738763456; cv=none; b=NbxLO1O4hRo5Mkr3D8sSuRXGMyDqfplBWFfWUFgPuQf4LAgXK1Qopyg7wkEkwxvmGu+qrXnsDDujPjZl9isU/rr3SHGZI6BWZwB1Zq9yqcQyzGtA+aCH0Ih8MLMgZD9JvW5g8wZbeLlVDehjNEwljbDaqhaa8F9KS6ZWcRSP3jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763450; c=relaxed/simple;
-	bh=ip8XZ0fXQruBclAqM/LuP/IiF/XRPSlr4PhAoP3Lk7w=;
+	s=arc-20240116; t=1738763456; c=relaxed/simple;
+	bh=a1llCpKMjnSZOBEb9j543BSW+KOJHFJZYrY6OrxL58c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRcN21I4bNUm4LMgCLxyVo0CqXqPt72utmI1KX30cCRmLW1/5G+VeXD3NsNc3wVGPcbNsxjKIgHXqdQnPOucPrK2wD5wNiGzHVs/+8o/wmhTrBQ6SMUN+kc0Hi0JWvlcew61g5NFPoDs+O0JJhTJIrcWVZY5eDX2rF4aTZzo3ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgDG0vrj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026AC4CED1;
-	Wed,  5 Feb 2025 13:50:48 +0000 (UTC)
+	 MIME-Version; b=pmwgO/WTjWl4m/GhejT889L3tJ+L0neQurBjyyL932YLCIW4k+t4oh5e4r4pdQnHvMdqpMYVHJNPNNwFgoxzs9xaoqjRh9rtGi0uTcj17qd2rS1rKI7JjUyuU1Uy9RNHNG6wTx2Wsxs/Oyu3eIDUGTuNK+xdL+Bx00q+HGjv9As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1izYzmYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52C6C4CED1;
+	Wed,  5 Feb 2025 13:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763449;
-	bh=ip8XZ0fXQruBclAqM/LuP/IiF/XRPSlr4PhAoP3Lk7w=;
+	s=korg; t=1738763456;
+	bh=a1llCpKMjnSZOBEb9j543BSW+KOJHFJZYrY6OrxL58c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgDG0vrjtB+AF2lOySNTQtdiDYE14aFZNeOaChpvjAxZfvHan+3KwsPLUeyPlkot9
-	 NL1FmO7G1UwB0z/hiCiFekbxVJ7pC5xfzcqiHIvjm0kFy+kHJQOoYlFm1dFXX3rq9O
-	 yS3UfJOCM2Yio55/OmXhkBYr6QYF4wd4++3NWxlk=
+	b=1izYzmYXII7mEDCPIpQOsm4gTrYK/6HJWZqABcIeHTiZp1f1WmtWmKLmWnV2gciI9
+	 ZvhrQpC0MCEesbjHjUDAWG/8w6nCakR/jOUCvsLDiE7Yz+aUI97IJW22SzN7YmJWTr
+	 qFdm49rgqsAN2Yhut7OHSb3ECC7RArZSdk3P/Z2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Hannes Reinecke <hare@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/590] block: dont update BLK_FEAT_POLL in __blk_mq_update_nr_hw_queues
-Date: Wed,  5 Feb 2025 14:36:10 +0100
-Message-ID: <20250205134455.823743905@linuxfoundation.org>
+Subject: [PATCH 6.12 016/590] nvme-tcp: Fix I/O queue cpu spreading for multiple controllers
+Date: Wed,  5 Feb 2025 14:36:11 +0100
+Message-ID: <20250205134455.861347812@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -71,170 +69,214 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit d432c817c21a48c3baaa0d28e4d3e74b6aa238a0 ]
+[ Upstream commit 32193789878c259e39b97bd0c0f2f0ccbe5cb8a8 ]
 
-When __blk_mq_update_nr_hw_queues changes the number of tag sets, it
-might have to disable poll queues.  Currently it does so by adjusting
-the BLK_FEAT_POLL, which is a bit against the intent of features that
-describe hardware / driver capabilities, but more importantly causes
-nasty lock order problems with the broadly held freeze when updating the
-number of hardware queues and the limits lock.  Fix this by leaving
-BLK_FEAT_POLL alone, and instead check for the number of poll queues in
-the bio submission and poll handlers.  While this adds extra work to the
-fast path, the variables are in cache lines used by these operations
-anyway, so it should be cheap enough.
+Since day-1 we are assigning the queue io_cpu very naively. We always
+base the queue id (controller scope) and assign it its matching cpu
+from the online mask. This works fine when the number of queues match
+the number of cpu cores.
 
-Fixes: 8023e144f9d6 ("block: move the poll flag to queue_limits")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250110054726.1499538-5-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The problem starts when we have less queues than cpu cores. First, we
+should take into account the mq_map and select a cpu within the cpus
+that are assigned to this queue by the mq_map in order to minimize cross
+numa cpu bouncing.
+
+Second, even worse is that we don't take into account multiple
+controllers may have assigned queues to a given cpu. As a result we may
+simply compund more and more queues on the same set of cpus, which is
+suboptimal.
+
+We fix this by introducing global per-cpu counters that tracks the
+number of queues assigned to each cpu, and we select the least used cpu
+based on the mq_map and the per-cpu counters, and assign it as the queue
+io_cpu.
+
+The behavior for a single controller is slightly optimized by selecting
+better cpu candidates by consulting with the mq_map, and multiple
+controllers are spreading queues among cpu cores much better, resulting
+in lower average cpu load, and less likelihood to hit hotspots.
+
+Note that the accounting is not 100% perfect, but we don't need to be,
+we're simply putting our best effort to select the best candidate cpu
+core that we find at any given point.
+
+Another byproduct is that every controller reset/reconnect may change
+the queues io_cpu mapping, based on the current LRU accounting scheme.
+
+Here is the baseline queue io_cpu assignment for 4 controllers, 2 queues
+per controller, and 4 cpus on the host:
+nvme1: queue 0: using cpu 0
+nvme1: queue 1: using cpu 1
+nvme2: queue 0: using cpu 0
+nvme2: queue 1: using cpu 1
+nvme3: queue 0: using cpu 0
+nvme3: queue 1: using cpu 1
+nvme4: queue 0: using cpu 0
+nvme4: queue 1: using cpu 1
+
+And this is the fixed io_cpu assignment:
+nvme1: queue 0: using cpu 0
+nvme1: queue 1: using cpu 2
+nvme2: queue 0: using cpu 1
+nvme2: queue 1: using cpu 3
+nvme3: queue 0: using cpu 0
+nvme3: queue 1: using cpu 2
+nvme4: queue 0: using cpu 1
+nvme4: queue 1: using cpu 3
+
+Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
+Suggested-by: Hannes Reinecke <hare@kernel.org>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+[fixed kbuild reported errors]
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c  |  7 +++----
- block/blk-mq.c    | 26 +++++---------------------
- block/blk-mq.h    |  6 ++++++
- block/blk-sysfs.c |  9 ++++++++-
- 4 files changed, 22 insertions(+), 26 deletions(-)
+ drivers/nvme/host/tcp.c | 70 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 57 insertions(+), 13 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 487e8cafccc55..42023addf9cda 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -951,14 +951,13 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
- 	 */
- 	if (!percpu_ref_tryget(&q->q_usage_counter))
- 		return 0;
--	if (!(q->limits.features & BLK_FEAT_POLL)) {
--		ret = 0;
--	} else if (queue_is_mq(q)) {
-+	if (queue_is_mq(q)) {
- 		ret = blk_mq_poll(q, cookie, iob, flags);
- 	} else {
- 		struct gendisk *disk = q->disk;
- 
--		if (disk && disk->fops->poll_bio)
-+		if ((q->limits.features & BLK_FEAT_POLL) && disk &&
-+		    disk->fops->poll_bio)
- 			ret = disk->fops->poll_bio(bio, iob, flags);
- 	}
- 	blk_queue_exit(q);
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 784d41eb0abba..662e52ab06467 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3101,8 +3101,7 @@ void blk_mq_submit_bio(struct bio *bio)
- 		goto queue_exit;
- 	}
- 
--	if ((bio->bi_opf & REQ_POLLED) &&
--	    !(q->limits.features & BLK_FEAT_POLL)) {
-+	if ((bio->bi_opf & REQ_POLLED) && !blk_mq_can_poll(q)) {
- 		bio->bi_status = BLK_STS_NOTSUPP;
- 		bio_endio(bio);
- 		goto queue_exit;
-@@ -4333,12 +4332,6 @@ void blk_mq_release(struct request_queue *q)
- 	blk_mq_sysfs_deinit(q);
- }
- 
--static bool blk_mq_can_poll(struct blk_mq_tag_set *set)
--{
--	return set->nr_maps > HCTX_TYPE_POLL &&
--		set->map[HCTX_TYPE_POLL].nr_queues;
--}
--
- struct request_queue *blk_mq_alloc_queue(struct blk_mq_tag_set *set,
- 		struct queue_limits *lim, void *queuedata)
- {
-@@ -4349,7 +4342,7 @@ struct request_queue *blk_mq_alloc_queue(struct blk_mq_tag_set *set,
- 	if (!lim)
- 		lim = &default_lim;
- 	lim->features |= BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT;
--	if (blk_mq_can_poll(set))
-+	if (set->nr_maps > HCTX_TYPE_POLL)
- 		lim->features |= BLK_FEAT_POLL;
- 
- 	q = blk_alloc_queue(lim, set->numa_node);
-@@ -5037,8 +5030,6 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- fallback:
- 	blk_mq_update_queue_map(set);
- 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
--		struct queue_limits lim;
--
- 		blk_mq_realloc_hw_ctxs(set, q);
- 
- 		if (q->nr_hw_queues != set->nr_hw_queues) {
-@@ -5052,13 +5043,6 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
- 			set->nr_hw_queues = prev_nr_hw_queues;
- 			goto fallback;
- 		}
--		lim = queue_limits_start_update(q);
--		if (blk_mq_can_poll(set))
--			lim.features |= BLK_FEAT_POLL;
--		else
--			lim.features &= ~BLK_FEAT_POLL;
--		if (queue_limits_commit_update(q, &lim) < 0)
--			pr_warn("updating the poll flag failed\n");
- 		blk_mq_map_swqueue(q);
- 	}
- 
-@@ -5118,9 +5102,9 @@ static int blk_hctx_poll(struct request_queue *q, struct blk_mq_hw_ctx *hctx,
- int blk_mq_poll(struct request_queue *q, blk_qc_t cookie,
- 		struct io_comp_batch *iob, unsigned int flags)
- {
--	struct blk_mq_hw_ctx *hctx = xa_load(&q->hctx_table, cookie);
--
--	return blk_hctx_poll(q, hctx, iob, flags);
-+	if (!blk_mq_can_poll(q))
-+		return 0;
-+	return blk_hctx_poll(q, xa_load(&q->hctx_table, cookie), iob, flags);
- }
- 
- int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
-diff --git a/block/blk-mq.h b/block/blk-mq.h
-index f4ac1af77a267..364c0415293cf 100644
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -451,4 +451,10 @@ do {								\
- #define blk_mq_run_dispatch_ops(q, dispatch_ops)		\
- 	__blk_mq_run_dispatch_ops(q, true, dispatch_ops)	\
- 
-+static inline bool blk_mq_can_poll(struct request_queue *q)
-+{
-+	return (q->limits.features & BLK_FEAT_POLL) &&
-+		q->tag_set->map[HCTX_TYPE_POLL].nr_queues;
-+}
-+
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 55abfe5e1d254..8305d3c128074 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -54,6 +54,8 @@ MODULE_PARM_DESC(tls_handshake_timeout,
+ 		 "nvme TLS handshake timeout in seconds (default 10)");
  #endif
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 207577145c54f..692b27266220f 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -256,10 +256,17 @@ static ssize_t queue_##_name##_show(struct gendisk *disk, char *page)	\
- 		!!(disk->queue->limits.features & _feature));		\
+ 
++static atomic_t nvme_tcp_cpu_queues[NR_CPUS];
++
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ /* lockdep can detect a circular dependency of the form
+  *   sk_lock -> mmap_lock (page fault) -> fs locks -> sk_lock
+@@ -127,6 +129,7 @@ enum nvme_tcp_queue_flags {
+ 	NVME_TCP_Q_ALLOCATED	= 0,
+ 	NVME_TCP_Q_LIVE		= 1,
+ 	NVME_TCP_Q_POLLING	= 2,
++	NVME_TCP_Q_IO_CPU_SET	= 3,
+ };
+ 
+ enum nvme_tcp_recv_state {
+@@ -1562,23 +1565,56 @@ static bool nvme_tcp_poll_queue(struct nvme_tcp_queue *queue)
+ 			  ctrl->io_queues[HCTX_TYPE_POLL];
  }
  
--QUEUE_SYSFS_FEATURE_SHOW(poll, BLK_FEAT_POLL);
- QUEUE_SYSFS_FEATURE_SHOW(fua, BLK_FEAT_FUA);
- QUEUE_SYSFS_FEATURE_SHOW(dax, BLK_FEAT_DAX);
- 
-+static ssize_t queue_poll_show(struct gendisk *disk, char *page)
-+{
-+	if (queue_is_mq(disk->queue))
-+		return sysfs_emit(page, "%u\n", blk_mq_can_poll(disk->queue));
-+	return sysfs_emit(page, "%u\n",
-+		!!(disk->queue->limits.features & BLK_FEAT_POLL));
-+}
-+
- static ssize_t queue_zoned_show(struct gendisk *disk, char *page)
++/**
++ * Track the number of queues assigned to each cpu using a global per-cpu
++ * counter and select the least used cpu from the mq_map. Our goal is to spread
++ * different controllers I/O threads across different cpu cores.
++ *
++ * Note that the accounting is not 100% perfect, but we don't need to be, we're
++ * simply putting our best effort to select the best candidate cpu core that we
++ * find at any given point.
++ */
+ static void nvme_tcp_set_queue_io_cpu(struct nvme_tcp_queue *queue)
  {
- 	if (blk_queue_is_zoned(disk->queue))
+ 	struct nvme_tcp_ctrl *ctrl = queue->ctrl;
+-	int qid = nvme_tcp_queue_id(queue);
+-	int n = 0;
++	struct blk_mq_tag_set *set = &ctrl->tag_set;
++	int qid = nvme_tcp_queue_id(queue) - 1;
++	unsigned int *mq_map = NULL;
++	int cpu, min_queues = INT_MAX, io_cpu;
++
++	if (wq_unbound)
++		goto out;
+ 
+ 	if (nvme_tcp_default_queue(queue))
+-		n = qid - 1;
++		mq_map = set->map[HCTX_TYPE_DEFAULT].mq_map;
+ 	else if (nvme_tcp_read_queue(queue))
+-		n = qid - ctrl->io_queues[HCTX_TYPE_DEFAULT] - 1;
++		mq_map = set->map[HCTX_TYPE_READ].mq_map;
+ 	else if (nvme_tcp_poll_queue(queue))
+-		n = qid - ctrl->io_queues[HCTX_TYPE_DEFAULT] -
+-				ctrl->io_queues[HCTX_TYPE_READ] - 1;
+-	if (wq_unbound)
+-		queue->io_cpu = WORK_CPU_UNBOUND;
+-	else
+-		queue->io_cpu = cpumask_next_wrap(n - 1, cpu_online_mask, -1, false);
++		mq_map = set->map[HCTX_TYPE_POLL].mq_map;
++
++	if (WARN_ON(!mq_map))
++		goto out;
++
++	/* Search for the least used cpu from the mq_map */
++	io_cpu = WORK_CPU_UNBOUND;
++	for_each_online_cpu(cpu) {
++		int num_queues = atomic_read(&nvme_tcp_cpu_queues[cpu]);
++
++		if (mq_map[cpu] != qid)
++			continue;
++		if (num_queues < min_queues) {
++			io_cpu = cpu;
++			min_queues = num_queues;
++		}
++	}
++	if (io_cpu != WORK_CPU_UNBOUND) {
++		queue->io_cpu = io_cpu;
++		atomic_inc(&nvme_tcp_cpu_queues[io_cpu]);
++		set_bit(NVME_TCP_Q_IO_CPU_SET, &queue->flags);
++	}
++out:
++	dev_dbg(ctrl->ctrl.device, "queue %d: using cpu %d\n",
++		qid, queue->io_cpu);
+ }
+ 
+ static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
+@@ -1722,7 +1758,7 @@ static int nvme_tcp_alloc_queue(struct nvme_ctrl *nctrl, int qid,
+ 
+ 	queue->sock->sk->sk_allocation = GFP_ATOMIC;
+ 	queue->sock->sk->sk_use_task_frag = false;
+-	nvme_tcp_set_queue_io_cpu(queue);
++	queue->io_cpu = WORK_CPU_UNBOUND;
+ 	queue->request = NULL;
+ 	queue->data_remaining = 0;
+ 	queue->ddgst_remaining = 0;
+@@ -1844,6 +1880,9 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
+ 	if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags))
+ 		return;
+ 
++	if (test_and_clear_bit(NVME_TCP_Q_IO_CPU_SET, &queue->flags))
++		atomic_dec(&nvme_tcp_cpu_queues[queue->io_cpu]);
++
+ 	mutex_lock(&queue->queue_lock);
+ 	if (test_and_clear_bit(NVME_TCP_Q_LIVE, &queue->flags))
+ 		__nvme_tcp_stop_queue(queue);
+@@ -1878,9 +1917,10 @@ static int nvme_tcp_start_queue(struct nvme_ctrl *nctrl, int idx)
+ 	nvme_tcp_init_recv_ctx(queue);
+ 	nvme_tcp_setup_sock_ops(queue);
+ 
+-	if (idx)
++	if (idx) {
++		nvme_tcp_set_queue_io_cpu(queue);
+ 		ret = nvmf_connect_io_queue(nctrl, idx);
+-	else
++	} else
+ 		ret = nvmf_connect_admin_queue(nctrl);
+ 
+ 	if (!ret) {
+@@ -2856,6 +2896,7 @@ static struct nvmf_transport_ops nvme_tcp_transport = {
+ static int __init nvme_tcp_init_module(void)
+ {
+ 	unsigned int wq_flags = WQ_MEM_RECLAIM | WQ_HIGHPRI | WQ_SYSFS;
++	int cpu;
+ 
+ 	BUILD_BUG_ON(sizeof(struct nvme_tcp_hdr) != 8);
+ 	BUILD_BUG_ON(sizeof(struct nvme_tcp_cmd_pdu) != 72);
+@@ -2873,6 +2914,9 @@ static int __init nvme_tcp_init_module(void)
+ 	if (!nvme_tcp_wq)
+ 		return -ENOMEM;
+ 
++	for_each_possible_cpu(cpu)
++		atomic_set(&nvme_tcp_cpu_queues[cpu], 0);
++
+ 	nvmf_register_transport(&nvme_tcp_transport);
+ 	return 0;
+ }
 -- 
 2.39.5
 
