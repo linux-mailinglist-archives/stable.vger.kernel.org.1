@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-113158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31B63A2904E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE619A28CE2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0033A269C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C107F3A8A7A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A567B155747;
-	Wed,  5 Feb 2025 14:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B87214A4E9;
+	Wed,  5 Feb 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjroLQ4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaGgWYAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CB18634E;
-	Wed,  5 Feb 2025 14:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590E3142E86;
+	Wed,  5 Feb 2025 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766018; cv=none; b=TaZfBwVFZtv+DitW5mlVWqZdkxdNecKnOvZ3oXcvWbA5HvNxaEum9His4QHQBy301Ax86nIjgGweGJErI9kTKJtlHF8ViwMUtZr8YQ4aROwNFCcQKA0DZxyKHgH5VH0Sd8d9Xn5aFVVy84UhxCgeqIxL+gZFxg0rTXGX4g0LTQs=
+	t=1738763701; cv=none; b=BcNnTVzBUhEocDpXqA0+Izjf3Qen3o3K5KyHF0R1S15cc9qkP+qGUW92D9NKj3pV3VJnqcSgvaLY5oW1RMeC7AwkASOGI6OlgqyYG7llC9PJu4nngFLaMuueZHUvOjyJNqY19PVC2aJhMFWUNxXVCzyXiLrKgAW7foHsJb7gEDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766018; c=relaxed/simple;
-	bh=UMW5dmpCsIW3vMZPVbyP+L7aMlPEfiZxZG3a44uBe9c=;
+	s=arc-20240116; t=1738763701; c=relaxed/simple;
+	bh=afapCJp70i2eVHVs88yY9eLj2sOVqS2lH5CdnOjQ58c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtDBUgyNvwrT5Iaugyo5OvHPLxk+IptO5xEkwLt0PKqPiaK/l/KSsVmzPVHhSCj7ErCFHjEAzD9tVd9WGYskjMxoY1gWPbd8E7+cq+CJrNnskA9HZbWUnj8zwqoR0R8ELnfFAZyxI6RFqyVetPs1TMapObd4iBqBxUp1c63Uoaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjroLQ4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25399C4CED1;
-	Wed,  5 Feb 2025 14:33:37 +0000 (UTC)
+	 MIME-Version; b=CWbVZDES4EuA5DrZM5Bq5PcXf+KUaiZedLsinwUewZyMGOQaRkHyDnufpK8b/L0idxHV+vWbdhjNAEytPOkU0HmFVX1xYLQBMZEtJKWFGJjkfdkx8veOrFudskVkGcd06Eb3qZEz0rH3YnwG0T/6oBkvM8zahZJfIORyE3i5lwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaGgWYAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC31CC4CED1;
+	Wed,  5 Feb 2025 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766017;
-	bh=UMW5dmpCsIW3vMZPVbyP+L7aMlPEfiZxZG3a44uBe9c=;
+	s=korg; t=1738763701;
+	bh=afapCJp70i2eVHVs88yY9eLj2sOVqS2lH5CdnOjQ58c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjroLQ4xP3rC40RRcxz/ZmsgVEcmJESR8ghg/PLao68GtgKbLLjtXfxJXr4gQdIp/
-	 LYnE2FDzp1PyWdDahm6qNnWN5z0RwJ2Btj07dUkpTT5eGrm8zi5Kg4qmEo/ZCLe0Wq
-	 yYUTMa3FgXLMAYa8YSfXN5l1qAEZA1MfP5QIWxLM=
+	b=HaGgWYAgrpIf10EIeXEhOyjL4DSD78AYSTskoRfoTziZMxlnDpB7WaMwCzQB93ZJo
+	 irhvuzrEyfRfdWsvlWGhmStVQRRXmw7Ap51P7ey+AXgJ9Jls6+GvJ+SV4WmZg29N2e
+	 X5Bhd5dn06Ua3USCCeBBhPDmjI7rYjfUUh/n9hLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Song Liu <song@kernel.org>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Marek Vasut <marex@denx.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/590] perf bpf: Fix two memory leakages when calling perf_env__insert_bpf_prog_info()
+Subject: [PATCH 6.6 088/393] clk: imx8mp: Fix clkout1/2 support
 Date: Wed,  5 Feb 2025 14:40:07 +0100
-Message-ID: <20250205134504.920781613@linuxfoundation.org>
+Message-ID: <20250205134423.659792790@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,106 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 03edb7020bb920f1935c3f30acad0bb27fdb99af ]
+[ Upstream commit a9b7c84d22fb1687d63ca2a386773015cf59436b ]
 
-If perf_env__insert_bpf_prog_info() returns false due to a duplicate bpf
-prog info node insertion, the temporary info_node and info_linear memory
-will leak. Add a check to ensure the memory is freed if the function
-returns false.
+The CLKOUTn may be fed from PLL1/2/3, but the PLL1/2/3 has to be enabled
+first by setting PLL_CLKE bit 11 in CCM_ANALOG_SYS_PLLn_GEN_CTRL register.
+The CCM_ANALOG_SYS_PLLn_GEN_CTRL bit 11 is modeled by plln_out clock. Fix
+the clock tree and place the clkout1/2 under plln_sel instead of plain plln
+to let the clock subsystem correctly control the bit 11 and enable the PLL
+in case the CLKOUTn is supplied by PLL1/2/3.
 
-Fixes: d56354dc49091e33 ("perf tools: Save bpf_prog_info and BTF of new BPF programs")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20241205084500.823660-4-quic_zhonhan@quicinc.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 43896f56b59e ("clk: imx8mp: add clkout1/2 support")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20241112013718.333771-1-marex@denx.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/bpf-event.c | 10 ++++++++--
- tools/perf/util/env.c       |  8 ++++++--
- tools/perf/util/env.h       |  2 +-
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/clk/imx/clk-imx8mp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
-index 13608237c50e0..c81444059ad07 100644
---- a/tools/perf/util/bpf-event.c
-+++ b/tools/perf/util/bpf-event.c
-@@ -289,7 +289,10 @@ static int perf_event__synthesize_one_bpf_prog(struct perf_session *session,
- 		}
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index e561ff7b135fb..747f5397692e5 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -399,8 +399,9 @@ static const char * const imx8mp_dram_core_sels[] = {"dram_pll_out", "dram_alt_r
  
- 		info_node->info_linear = info_linear;
--		perf_env__insert_bpf_prog_info(env, info_node);
-+		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			free(info_linear);
-+			free(info_node);
-+		}
- 		info_linear = NULL;
+ static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_out", "video_pll1_out",
+ 						  "dummy", "dummy", "gpu_pll_out", "vpu_pll_out",
+-						  "arm_pll_out", "sys_pll1", "sys_pll2", "sys_pll3",
+-						  "dummy", "dummy", "osc_24m", "dummy", "osc_32k"};
++						  "arm_pll_out", "sys_pll1_out", "sys_pll2_out",
++						  "sys_pll3_out", "dummy", "dummy", "osc_24m",
++						  "dummy", "osc_32k"};
  
- 		/*
-@@ -480,7 +483,10 @@ static void perf_env__add_bpf_info(struct perf_env *env, u32 id)
- 	info_node = malloc(sizeof(struct bpf_prog_info_node));
- 	if (info_node) {
- 		info_node->info_linear = info_linear;
--		perf_env__insert_bpf_prog_info(env, info_node);
-+		if (!perf_env__insert_bpf_prog_info(env, info_node)) {
-+			free(info_linear);
-+			free(info_node);
-+		}
- 	} else
- 		free(info_linear);
- 
-diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
-index 3260eaf267387..d981b6f4bc5ea 100644
---- a/tools/perf/util/env.c
-+++ b/tools/perf/util/env.c
-@@ -22,12 +22,16 @@ struct perf_env perf_env;
- #include "bpf-utils.h"
- #include <bpf/libbpf.h>
- 
--void perf_env__insert_bpf_prog_info(struct perf_env *env,
-+bool perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				    struct bpf_prog_info_node *info_node)
- {
-+	bool ret;
-+
- 	down_write(&env->bpf_progs.lock);
--	__perf_env__insert_bpf_prog_info(env, info_node);
-+	ret = __perf_env__insert_bpf_prog_info(env, info_node);
- 	up_write(&env->bpf_progs.lock);
-+
-+	return ret;
- }
- 
- bool __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
-diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
-index f170a1fb0c8c2..38de0af2a6808 100644
---- a/tools/perf/util/env.h
-+++ b/tools/perf/util/env.h
-@@ -178,7 +178,7 @@ int perf_env__nr_cpus_avail(struct perf_env *env);
- void perf_env__init(struct perf_env *env);
- bool __perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				      struct bpf_prog_info_node *info_node);
--void perf_env__insert_bpf_prog_info(struct perf_env *env,
-+bool perf_env__insert_bpf_prog_info(struct perf_env *env,
- 				    struct bpf_prog_info_node *info_node);
- struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
- 							__u32 prog_id);
+ static struct clk_hw **hws;
+ static struct clk_hw_onecell_data *clk_hw_data;
 -- 
 2.39.5
 
