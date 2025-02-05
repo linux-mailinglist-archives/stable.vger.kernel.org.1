@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-113699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECFFA29374
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5072A2934F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB0011891F73
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA42216BFAE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A9B155747;
-	Wed,  5 Feb 2025 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB6516DC28;
+	Wed,  5 Feb 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqOWJJlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZE08Jxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC812A1BB;
-	Wed,  5 Feb 2025 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881582A1BB;
+	Wed,  5 Feb 2025 15:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767856; cv=none; b=vD0nTCgk07Al955PVArHNAq7SJOlS8yl3w5NQJedY5kH4ZIPnGxIL3c0g+vLb/Y07eGYbP6dmD3UIzUuPHYA7ZC6nkqZPQgF64Iq8RUnEvBawe1EPgkeDI1n1ZTE1lfewqQ/HvwAiMnyp2MZn6/Qlz9FxtWLHTDyiPi7VCjiT6I=
+	t=1738767863; cv=none; b=fw7N4yNFOBlNqwdP9PyT03C4nlQPYBfSL50td6+vRr8Go0sqdPneJJwYr5MsWxVFaZGWxKdwdr/eAo27Fi6GoAc19Vd7F2tHNG+LQhY5FnUwvVKOXUo7wSvKOuFuxH0LH2hrC5uYc5Ac54p8GQpXtZ98wfPWb7ZTEDTa87JtEe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767856; c=relaxed/simple;
-	bh=9OyBvEHpjHnH2MkREDS4bfF+IGxh9ETX1vo2dE/PA9g=;
+	s=arc-20240116; t=1738767863; c=relaxed/simple;
+	bh=OJ7T60d9FfCpRndp8kntcB8/Yak1MF4gznbALM+pjM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tkvgShkp7kr5/VDgE3poN4FaGhvglA6fRRAelORcby7onymbZy6WI9joGpsXZ48k5qZFv4b9usShtGk3gG3ZvYxfdQ+HthfKeyYelW6DMTGVfk1FWZGDZJqgUe7T+Pp3XwhabTqw57p8A9e7NQil+HDJGAREdZtYBad/tp2DeSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqOWJJlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140E5C4CED1;
-	Wed,  5 Feb 2025 15:04:15 +0000 (UTC)
+	 MIME-Version; b=nDfdSG9B8NHbczQ/Eoy1LTiwsmSMKU6CT6RcDrdNMEWzJrPyqce/iu7Ll+G3XgmMUhkCXDoKQlvL9xphvlhz0m6zmq7LVdlfsF7eUt5mwbpqdYpwqYC1+iW+OFX2r9WKZKV2eIHuitlVDssQjfPml6E2A7HTlc6+GI4gG2c8v5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZE08Jxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B0BC4CED1;
+	Wed,  5 Feb 2025 15:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767856;
-	bh=9OyBvEHpjHnH2MkREDS4bfF+IGxh9ETX1vo2dE/PA9g=;
+	s=korg; t=1738767863;
+	bh=OJ7T60d9FfCpRndp8kntcB8/Yak1MF4gznbALM+pjM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rqOWJJlP5vkSR5F8AeqVgK3uhdTJH73co3gEyi/92jPacQ2/JGMtFZ4mZs7A978yO
-	 ur6aGv0Mz7KFPyLgQ/PcnNjQlLNEccAzVHG/xfFT18OSycw/gy5JMpqKZ2Ii0M6ybt
-	 54AJaMLUr5yoQ/DJxbaTWIIw+tO9qmZto8/t3H/E=
+	b=ZZE08JxcZOikTU6PFjXC8hhhcOIVrmV5dDLeI1zqv1FFOXu6I2IbSuhSiPwLH/ETt
+	 j00NLY0OslFf6cre0t1FzLm7XtRs+eoej59YKNxQ6KB4B0gJry5Fl4dtVKV75yzGT5
+	 Cez/9kE4TyEtG/ZWBvefi0bCyT7oNc3xsNd1cZEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stephan Wurm <stephan.wurm@a-eberle.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 518/590] net: sh_eth: Fix missing rtnl lock in suspend/resume path
-Date: Wed,  5 Feb 2025 14:44:33 +0100
-Message-ID: <20250205134515.082420456@linuxfoundation.org>
+Subject: [PATCH 6.12 519/590] net: hsr: fix fill_frame_info() regression vs VLAN packets
+Date: Wed,  5 Feb 2025 14:44:34 +0100
+Message-ID: <20250205134515.120785579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -62,62 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b95102215a8d0987789715ce11c0d4ec031cbfbe ]
+[ Upstream commit 0f5697f1a3f99bc2b674b8aa3c5da822c5673c11 ]
 
-Fix the suspend/resume path by ensuring the rtnl lock is held where
-required. Calls to sh_eth_close, sh_eth_open and wol operations must be
-performed under the rtnl lock to prevent conflicts with ongoing ndo
-operations.
+Stephan Wurm reported that my recent patch broke VLAN support.
 
-Fixes: b71af04676e9 ("sh_eth: add more PM methods")
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Apparently skb->mac_len is not correct for VLAN traffic as
+shown by debug traces [1].
+
+Use instead pskb_may_pull() to make sure the expected header
+is present in skb->head.
+
+Many thanks to Stephan for his help.
+
+[1]
+kernel: skb len=170 headroom=2 headlen=170 tailroom=20
+        mac=(2,14) mac_len=14 net=(16,-1) trans=-1
+        shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
+        csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
+        hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
+        priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
+        encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
+kernel: dev name=prp0 feat=0x0000000000007000
+kernel: sk family=17 type=3 proto=0
+kernel: skb headroom: 00000000: 74 00
+kernel: skb linear:   00000000: 01 0c cd 01 00 01 00 d0 93 53 9c cb 81 00 80 00
+kernel: skb linear:   00000010: 88 b8 00 01 00 98 00 00 00 00 61 81 8d 80 16 52
+kernel: skb linear:   00000020: 45 47 44 4e 43 54 52 4c 2f 4c 4c 4e 30 24 47 4f
+kernel: skb linear:   00000030: 24 47 6f 43 62 81 01 14 82 16 52 45 47 44 4e 43
+kernel: skb linear:   00000040: 54 52 4c 2f 4c 4c 4e 30 24 44 73 47 6f 6f 73 65
+kernel: skb linear:   00000050: 83 07 47 6f 49 64 65 6e 74 84 08 67 8d f5 93 7e
+kernel: skb linear:   00000060: 76 c8 00 85 01 01 86 01 00 87 01 00 88 01 01 89
+kernel: skb linear:   00000070: 01 00 8a 01 02 ab 33 a2 15 83 01 00 84 03 03 00
+kernel: skb linear:   00000080: 00 91 08 67 8d f5 92 77 4b c6 1f 83 01 00 a2 1a
+kernel: skb linear:   00000090: a2 06 85 01 00 83 01 00 84 03 03 00 00 91 08 67
+kernel: skb linear:   000000a0: 8d f5 92 77 4b c6 1f 83 01 00
+kernel: skb tailroom: 00000000: 80 18 02 00 fe 4e 00 00 01 01 08 0a 4f fd 5e d1
+kernel: skb tailroom: 00000010: 4f fd 5e cd
+
+Fixes: b9653d19e556 ("net: hsr: avoid potential out-of-bound access in fill_frame_info()")
+Reported-by: Stephan Wurm <stephan.wurm@a-eberle.de>
+Tested-by: Stephan Wurm <stephan.wurm@a-eberle.de>
+Closes: https://lore.kernel.org/netdev/Z4o_UC0HweBHJ_cw@PC-LX-SteWu/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250129130007.644084-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/hsr/hsr_forward.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
-index 7a25903e35c30..bc12c0c7347f6 100644
---- a/drivers/net/ethernet/renesas/sh_eth.c
-+++ b/drivers/net/ethernet/renesas/sh_eth.c
-@@ -3494,10 +3494,12 @@ static int sh_eth_suspend(struct device *dev)
+diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+index 40c5fbbd155d6..c0217476eb17f 100644
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -688,9 +688,12 @@ static int fill_frame_info(struct hsr_frame_info *frame,
+ 		frame->is_vlan = true;
  
- 	netif_device_detach(ndev);
- 
-+	rtnl_lock();
- 	if (mdp->wol_enabled)
- 		ret = sh_eth_wol_setup(ndev);
- 	else
- 		ret = sh_eth_close(ndev);
-+	rtnl_unlock();
- 
- 	return ret;
- }
-@@ -3511,10 +3513,12 @@ static int sh_eth_resume(struct device *dev)
- 	if (!netif_running(ndev))
- 		return 0;
- 
-+	rtnl_lock();
- 	if (mdp->wol_enabled)
- 		ret = sh_eth_wol_restore(ndev);
- 	else
- 		ret = sh_eth_open(ndev);
-+	rtnl_unlock();
- 
- 	if (ret < 0)
- 		return ret;
+ 	if (frame->is_vlan) {
+-		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
++		/* Note: skb->mac_len might be wrong here. */
++		if (!pskb_may_pull(skb,
++				   skb_mac_offset(skb) +
++				   offsetofend(struct hsr_vlan_ethhdr, vlanhdr)))
+ 			return -EINVAL;
+-		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
++		vlan_hdr = (struct hsr_vlan_ethhdr *)skb_mac_header(skb);
+ 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
+ 		/* FIXME: */
+ 		netdev_warn_once(skb->dev, "VLAN not yet supported");
 -- 
 2.39.5
 
