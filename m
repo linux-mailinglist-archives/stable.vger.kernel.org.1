@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D5EA292B2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF11A292E5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49627188C516
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D055F16C281
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD15189BB3;
-	Wed,  5 Feb 2025 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2205376;
+	Wed,  5 Feb 2025 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gC6dUhie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0/hmSR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0CDDF59;
-	Wed,  5 Feb 2025 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBB4157465;
+	Wed,  5 Feb 2025 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767178; cv=none; b=QZxylw30R8UTv/an4gADHxrBSdznwxPdCmPCL86wk1FlCPWDfqYYwEXZtsBLTXe7e4t8zfvZzFPEcdlvk9AeHrr2NrRcViiE1AfxmFkPE9sOE7CmQFHMxTxLjB4cbgv0jvSm5xh9jh5Ab4oJeN1oDyIm+tlnqFwBmbaBqpFu058=
+	t=1738767466; cv=none; b=hbv/4FXX3PJs8aAUmrykCy7hyw9mAKHFX4V75Nlkg9KVXppmqfKFJ1hwTECMWyKeFfh5ybUYhNpGCLkxT2f4Rreb780ZzI2x4K2j/3ZOmm9Se/vHM7bEyXqSkPovFLnIW5LW7fhClBLfA9mlQCEilF0QDe76UAgb7VPhsyb349o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767178; c=relaxed/simple;
-	bh=NV5aNkm8PMORBYPCaVCaS/FVbvjrMdPMaNZS1SiPFrk=;
+	s=arc-20240116; t=1738767466; c=relaxed/simple;
+	bh=ppgmBYP69j1tglxDQcVmCe94LOL0wFRMzdOl8uZQY1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LEo+DrD/yapMCbDiDgXhQ1B9xBCvjhnYThEOg//sR+tjMAhFiVFO5aC3Tj5YOrXbpxHcw9PsI5ez+kQ/0vnr9FyMw+1DW2rw8rijCPl+sOkryzblzNtKI0LX5r3PENWzvMy+1NP5I1eDWbhCyH8GBO4lWoPZHv3cEfnDOGi1p1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gC6dUhie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880E1C4CED1;
-	Wed,  5 Feb 2025 14:52:57 +0000 (UTC)
+	 MIME-Version; b=V6r1wuZLCzW00VpUL4jZApm+Gse+g7gaeiXNdqqlsqeQrjvTjAhgLmUTByqHCUK2qHAShuSC0Gqldu/Wc8brdpdV2CGKTfi8WPbajGEvZzIIazAmaGofPuoAj3lWMUQt69E8plxnAsK8yHvorV5knJaNN9UKNYGKXSmq+Zjpbts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0/hmSR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6E2C4CED1;
+	Wed,  5 Feb 2025 14:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767178;
-	bh=NV5aNkm8PMORBYPCaVCaS/FVbvjrMdPMaNZS1SiPFrk=;
+	s=korg; t=1738767466;
+	bh=ppgmBYP69j1tglxDQcVmCe94LOL0wFRMzdOl8uZQY1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gC6dUhieqxeTQ8TuY9xb30Ok0eaGhOCCWdHx81WLGvfGxS4pPUUxomT8aRcjhsvsS
-	 1qGQlkTO+dKAUlX+3L1uW8j8hkmKh11l/0X6q/leRS1PrXJtwNexpUeTjy9ARVHU9s
-	 TZAkyeXi3ve3lW8hOuji0dWTJB3Y3es3otgGNoS4=
+	b=X0/hmSR+Grv4EhhBMHnm9NGbAVBO2s114IbQLkBfuxWESkoGENrHevhet/9gblHVK
+	 k3X2U4C0+K8ZQ6R7OqCeZyvguNlgLoBasWbZ4owMGYUG2s6yeEgZ4noimRDHTZUWR3
+	 pvw9I5RzYLK78EteKV4V1zc7kHYTtJyPo7qpPhHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 394/590] i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition
-Date: Wed,  5 Feb 2025 14:42:29 +0100
-Message-ID: <20250205134510.339770083@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.13 408/623] arm64: dts: qcom: sc7180: fix psci power domain node names
+Date: Wed,  5 Feb 2025 14:42:30 +0100
+Message-ID: <20250205134511.832372850@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit b75439c945b94dd8a2b645355bdb56f948052601 ]
+commit 092febd32a99800902f865ed86b83314faa9c7e4 upstream.
 
-In dw_i3c_common_probe, &master->hj_work is bound with
-dw_i3c_hj_work. And dw_i3c_master_irq_handler can call
-dw_i3c_master_irq_handle_ibis function to start the work.
+Rename the psci power domain node names to match the bindings.
 
-If we remove the module which will call dw_i3c_common_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
+This Fixes:
+sc7180-acer-aspire1.dts: psci: 'cpu-cluster0', 'cpu0', 'cpu1', 'cpu2', 'cpu3', 'cpu4', 'cpu5', 'cpu6', 'cpu7' do not match any of the regexes: '^power-domain-', 'pinctrl-[0-9]+'
 
-CPU0                                      CPU1
-
-                                     | dw_i3c_hj_work
-dw_i3c_common_remove                 |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in dw_i3c_common_remove.
-
-Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/bfc49c9527be5b513e7ceafeba314ca40a5be4bc.1732703537.git.xiaopei01@kylinos.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-5-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 8d694672c1104..dbcd3984f2578 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1624,6 +1624,7 @@ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -580,55 +580,55 @@
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
  
- void dw_i3c_common_remove(struct dw_i3c_master *master)
- {
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
+-		cpu_pd0: cpu0 {
++		cpu_pd0: power-domain-cpu0 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
  
- 	pm_runtime_disable(master->dev);
--- 
-2.39.5
-
+-		cpu_pd1: cpu1 {
++		cpu_pd1: power-domain-cpu1 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd2: cpu2 {
++		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd3: cpu3 {
++		cpu_pd3: power-domain-cpu3 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd4: cpu4 {
++		cpu_pd4: power-domain-cpu4 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd5: cpu5 {
++		cpu_pd5: power-domain-cpu5 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd6: cpu6 {
++		cpu_pd6: power-domain-cpu6 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd7: cpu7 {
++		cpu_pd7: power-domain-cpu7 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+ 		};
+ 
+-		cluster_pd: cpu-cluster0 {
++		cluster_pd: power-domain-cluster {
+ 			#power-domain-cells = <0>;
+ 			domain-idle-states = <&cluster_sleep_pc
+ 					      &cluster_sleep_cx_ret
 
 
 
