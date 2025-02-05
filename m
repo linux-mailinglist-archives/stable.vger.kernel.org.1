@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-113303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2BCA2912E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:46:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA2AA28D11
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216FC3A1A94
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:46:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01DB2168EDC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5036F1FDE1E;
-	Wed,  5 Feb 2025 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909C01684B0;
+	Wed,  5 Feb 2025 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywtx6uW0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOyaGT1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF991FDE14;
-	Wed,  5 Feb 2025 14:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF241553AB;
+	Wed,  5 Feb 2025 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766504; cv=none; b=gjGiY3GJCq5seMIUJ7GbvpZGbzxxoTEFBT5bfIjRPDupHIUIoOcqe8mn5b9K5Hufa+/nBo3w3Zwe7SKXn5P0FlKhSvF9ZI8Xza9w0g4diPmec31/wcMs3a0jQroQxcpGjXKDKr/XqIa3b0FIZ0QSFmzT7KBRVFS/3YqpV0Bu78g=
+	t=1738763782; cv=none; b=hY+3skMadZouxJOsAEWm3PD6J5H2H24igrMBFrOatXL1EP+sJSxvO5okz8pAIjvgUIbhzzcVQsCnZEGXn9aIMk+wT7hJBREMUpflhvTftjgWWyLe16qCrQK9A+vtN+is9xEOguQmI0oHQTloahDC2v5K43RVyKjcMJLdt+v7QPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766504; c=relaxed/simple;
-	bh=OKSLxRZYrKlzFz+AAMcS3v+ZH4y5Mk9lBX7tRFniT+g=;
+	s=arc-20240116; t=1738763782; c=relaxed/simple;
+	bh=JJ37HfIC9nzRfGyfAKHtoR11UN0E6zPgPZq86fFB4WY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atrd6WzdfSjd5EkoLBSnBo0SjC2804BMNKnHB5A7XhgA3mUI4YX2Ks9PxqrA4mFS32UIWDuNIGNi1Z0TfGyNVAQCipFsZMpxxQwSn30jDQFZugCZX2EkkW9i54AjNDb6S0FQJpihFa7dIjo3d5Cij5KaoBkEK3yF4+JCmUIRk3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywtx6uW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54585C4CEDD;
-	Wed,  5 Feb 2025 14:41:43 +0000 (UTC)
+	 MIME-Version; b=epWvuJpz8qgIjs0LYYsjmCKmjzIXZQKM5Qq5y11aRzKror7MxEeN+2xnJTLR7W/9HHPk2nU4j7Y3l1IhjKsFWAwP3UQ2I/AafoUkyuV71CkL745yEHAcRjDLk1H4SufNxYEThLJZ3WN3fzB1Dbw7LKvEnHxp9GW2vIB0uyl3qN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOyaGT1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4DDC4CED6;
+	Wed,  5 Feb 2025 13:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766503;
-	bh=OKSLxRZYrKlzFz+AAMcS3v+ZH4y5Mk9lBX7tRFniT+g=;
+	s=korg; t=1738763782;
+	bh=JJ37HfIC9nzRfGyfAKHtoR11UN0E6zPgPZq86fFB4WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywtx6uW0V0/b/9yyw3aNiPlt4KZddQShDbCA+BqvK1LoOHVp4SzQ76/uUvjaFTAvt
-	 wqk9xrDDZ6t3reSKkAxIptVxh9vsCPO2u2H7e11j6uCq2THGFAlTpnJHMb1oJ0/ryE
-	 M2Wqa6yAQGj11zqxz9ojOh/7jFLSV2CcVlXB85lE=
+	b=tOyaGT1qjvUL8Pdz/a8bn2+qrFdoEjoWiqCD79fuZU95NQaowh8h5psnynU9rNUJJ
+	 5BAxm7ckBEJwJGVmQ28fh5LoqnDLLjZ8Fd6pfCSOOUoG+qklh/YH7VSxlZNZI5qLKS
+	 UO4wo3DsGA0F4G7CDIPyDubpvftw/2vgGE8C2zr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Will McVicker <willmcvicker@google.com>,
+	Pankaj Dubey <pankaj.dubey@samsung.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 282/623] bpf: Use refcount_t instead of atomic_t for mmap_count
+Subject: [PATCH 6.6 105/393] mfd: syscon: Fix race in device_node_get_regmap()
 Date: Wed,  5 Feb 2025 14:40:24 +0100
-Message-ID: <20250205134507.019607953@linuxfoundation.org>
+Message-ID: <20250205134424.310231429@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit dfa94ce54f4139c893b9c4ec17df6f7c6a7515d3 ]
+[ Upstream commit 805f7aaf7fee14a57b56af01d270edf6c10765e8 ]
 
-Use an API that resembles more the actual use of mmap_count.
+It is possible for multiple, simultaneous callers calling
+device_node_get_regmap() with the same node to fail to find an entry in
+the syscon_list. There is a period of time while the first caller is
+calling of_syscon_register() that subsequent callers also fail to find
+an entry in the syscon_list and then call of_syscon_register() a second
+time.
 
-Found by cocci:
-kernel/bpf/arena.c:245:6-25: WARNING: atomic_dec_and_test variation before object free at line 249.
+Fix this by keeping the lock held until after of_syscon_register()
+completes and adds the node to syscon_list. Convert the spinlock to a
+mutex as many of the functions called in of_syscon_register() such as
+kzalloc() and of_clk_get() may sleep.
 
-Fixes: b90d77e5fd78 ("bpf: Fix remap of arena.")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412292037.LXlYSHKl-lkp@intel.com/
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/6ecce439a6bc81adb85d5080908ea8959b792a50.1735542814.git.xiaopei01@kylinos.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: bdb0066df96e ("mfd: syscon: Decouple syscon interface from platform devices")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Will McVicker <willmcvicker@google.com>
+Tested-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+Link: https://lore.kernel.org/r/20241217-syscon-fixes-v2-1-4f56d750541d@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arena.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/mfd/syscon.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index 945a5680f6a54..8caf56a308d96 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -218,7 +218,7 @@ static u64 arena_map_mem_usage(const struct bpf_map *map)
- struct vma_list {
- 	struct vm_area_struct *vma;
- 	struct list_head head;
--	atomic_t mmap_count;
-+	refcount_t mmap_count;
- };
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 2ce15f60eb107..729e79e1be49f 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -15,6 +15,7 @@
+ #include <linux/io.h>
+ #include <linux/init.h>
+ #include <linux/list.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_platform.h>
+@@ -27,7 +28,7 @@
  
- static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
-@@ -228,7 +228,7 @@ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
- 	vml = kmalloc(sizeof(*vml), GFP_KERNEL);
- 	if (!vml)
- 		return -ENOMEM;
--	atomic_set(&vml->mmap_count, 1);
-+	refcount_set(&vml->mmap_count, 1);
- 	vma->vm_private_data = vml;
- 	vml->vma = vma;
- 	list_add(&vml->head, &arena->vma_list);
-@@ -239,7 +239,7 @@ static void arena_vm_open(struct vm_area_struct *vma)
+ static struct platform_driver syscon_driver;
+ 
+-static DEFINE_SPINLOCK(syscon_list_slock);
++static DEFINE_MUTEX(syscon_list_lock);
+ static LIST_HEAD(syscon_list);
+ 
+ struct syscon {
+@@ -54,6 +55,8 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	struct resource res;
+ 	struct reset_control *reset;
+ 
++	WARN_ON(!mutex_is_locked(&syscon_list_lock));
++
+ 	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
+ 	if (!syscon)
+ 		return ERR_PTR(-ENOMEM);
+@@ -144,9 +147,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	syscon->regmap = regmap;
+ 	syscon->np = np;
+ 
+-	spin_lock(&syscon_list_slock);
+ 	list_add_tail(&syscon->list, &syscon_list);
+-	spin_unlock(&syscon_list_slock);
+ 
+ 	return_ptr(syscon);
+ 
+@@ -167,7 +168,7 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
  {
- 	struct vma_list *vml = vma->vm_private_data;
+ 	struct syscon *entry, *syscon = NULL;
  
--	atomic_inc(&vml->mmap_count);
-+	refcount_inc(&vml->mmap_count);
+-	spin_lock(&syscon_list_slock);
++	mutex_lock(&syscon_list_lock);
+ 
+ 	list_for_each_entry(entry, &syscon_list, list)
+ 		if (entry->np == np) {
+@@ -175,11 +176,11 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
+ 			break;
+ 		}
+ 
+-	spin_unlock(&syscon_list_slock);
+-
+ 	if (!syscon)
+ 		syscon = of_syscon_register(np, check_res);
+ 
++	mutex_unlock(&syscon_list_lock);
++
+ 	if (IS_ERR(syscon))
+ 		return ERR_CAST(syscon);
+ 
+@@ -210,7 +211,7 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
+ 		return -ENOMEM;
+ 
+ 	/* check if syscon entry already exists */
+-	spin_lock(&syscon_list_slock);
++	mutex_lock(&syscon_list_lock);
+ 
+ 	list_for_each_entry(entry, &syscon_list, list)
+ 		if (entry->np == np) {
+@@ -223,12 +224,12 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
+ 
+ 	/* register the regmap in syscon list */
+ 	list_add_tail(&syscon->list, &syscon_list);
+-	spin_unlock(&syscon_list_slock);
++	mutex_unlock(&syscon_list_lock);
+ 
+ 	return 0;
+ 
+ err_unlock:
+-	spin_unlock(&syscon_list_slock);
++	mutex_unlock(&syscon_list_lock);
+ 	kfree(syscon);
+ 	return ret;
  }
- 
- static void arena_vm_close(struct vm_area_struct *vma)
-@@ -248,7 +248,7 @@ static void arena_vm_close(struct vm_area_struct *vma)
- 	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
- 	struct vma_list *vml = vma->vm_private_data;
- 
--	if (!atomic_dec_and_test(&vml->mmap_count))
-+	if (!refcount_dec_and_test(&vml->mmap_count))
- 		return;
- 	guard(mutex)(&arena->lock);
- 	/* update link list under lock */
 -- 
 2.39.5
 
