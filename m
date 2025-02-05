@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5078A292CD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966F6A2933E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B081886FEB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24FE16BD6E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384321FC10E;
-	Wed,  5 Feb 2025 14:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B23158218;
+	Wed,  5 Feb 2025 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czWzLrM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSlZZsJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90DF1591E3;
-	Wed,  5 Feb 2025 14:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BB32A1BB;
+	Wed,  5 Feb 2025 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767242; cv=none; b=SzOfnP4KPiQB3lNyFD7ZcO2kPUi48ndbUVbOLfVP8HSro87mLCilocF4Z5+dJAhbvDCTnV+juy4OpD0RcD1dMz7MJwdOO0SCSVWGRlBEM4ZXV/AGRC3m4kaeeMhJFT7tb0ACuvQo/tNnNfAuPCMGfo3Bjl6s+XCmmSvM67Q5ftA=
+	t=1738767703; cv=none; b=qVjwfN6/Rbc9U+75DFLhyyqGg2/8JEARm1x8QTAgnXaYqzL3sBmHzZ37RVtRSAtCWJw1Mv15tbH6wCOuqZClmSzjnSNBH/UhMmhBINPM/o/tVQ+8E5oRyIASdh2LZ3cyuXajqo7lRTwPEQC0PMQhPfV+1id23ShTWwccvViG7ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767242; c=relaxed/simple;
-	bh=iQmWYVz0K/r65KQXXqJCrLvHHzIVXMbrOgNeXN3RC40=;
+	s=arc-20240116; t=1738767703; c=relaxed/simple;
+	bh=QD+8+FMx8ThcM9ERzs/ubhDZ9OOmy4Dwj4j+vrpGTlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M5q+DNT+CK5av5NxdcUHhci8kURIggOLG1aydDOH3cXku3HsZYJYhDF0brlM1M8KB1GgeHNin8MgaFhIQGoy2GAGMVmc7aIgpW4WXaPkMgYse2npHR6CsEdWn85eV2iz6lb5pY5HVSkd7OtamEfO3afYURdru5p32vMrkN3KKew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czWzLrM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036D9C4CED1;
-	Wed,  5 Feb 2025 14:54:00 +0000 (UTC)
+	 MIME-Version; b=iPHzvtPKeiNdq66Vu3TLV/PDmkRjRNaGaOF8WFRjotbtpti7povNHjZURTiUN9GYW7dXU4gO7JVNOVjUZbQPp/P5IWaRuI9/5dqtNYyoAZwzVCM+hWNiSwBmv3GNLHmGJrPcu8vR15OmZBGEw81qc7At30eJz+cI1kCgSdt/nkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSlZZsJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C1AC4CED1;
+	Wed,  5 Feb 2025 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767241;
-	bh=iQmWYVz0K/r65KQXXqJCrLvHHzIVXMbrOgNeXN3RC40=;
+	s=korg; t=1738767702;
+	bh=QD+8+FMx8ThcM9ERzs/ubhDZ9OOmy4Dwj4j+vrpGTlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czWzLrM7NqRZpdk+iQkKNRaWYiCQlvKQaGv/r56HTt9Fm2vrpTXdgNEXHCKeT6Mmy
-	 OThriyEVtcbVocZ0nYwLldNpEN900zQZEFALGFCYvHVw1Ixc3kuqWXyYjtb5Qi6WiM
-	 MtUDrIsYJoGVyk1Cu0kCQp/Gh816gIoWiO5m1Auk=
+	b=JSlZZsJ3jSKUUkpasoy08rXHUg9jkhjJ75QM8Imv/LKVQ9SbyUuaelMarkBnshSFa
+	 tYFysyBS5iVD/aLlumJvkY548ZcWFNqMcAj21I2R8WuGPmuo7q7EO6T1A7taVYgnaH
+	 zpnUTWSfBxdvfHBISKN8Ujaed4e66DZcCYWPy73M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Dmytro Maluka <dmaluka@chromium.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 428/590] PCI: imx6: Add missing reference clock disable logic
+Subject: [PATCH 6.13 441/623] of/fdt: Restore possibility to use both ACPI and FDT from bootloader
 Date: Wed,  5 Feb 2025 14:43:03 +0100
-Message-ID: <20250205134511.639288716@linuxfoundation.org>
+Message-ID: <20250205134513.088560115@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Dmytro Maluka <dmaluka@chromium.org>
 
-[ Upstream commit 93d883f89063744a92006fc356b1c767eb62d950 ]
+[ Upstream commit 14bce187d1600710623d81888da3501bbc470ba2 ]
 
-Ensure the *_enable_ref_clk() function is symmetric by addressing missing
-disable parts on some platforms.
+There are cases when the bootloader provides information to the kernel
+in both ACPI and DTB, not interchangeably. One such use case is virtual
+machines in Android. When running on x86, the Android Virtualization
+Framework (AVF) boots VMs with ACPI like it is usually done on x86 (i.e.
+the virtual LAPIC, IOAPIC, HPET, PCI MMCONFIG etc are described in ACPI)
+but also passes various AVF-specific boot parameters in DTB. This allows
+reusing the same implementations of various AVF components on both
+arm64 and x86.
 
-Fixes: d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match enable")
-Link: https://lore.kernel.org/r/20241126075702.4099164-7-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Commit 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
+removed the possibility to do that, since among other things
+it introduced forcing emptying the bootloader-provided DTB if ACPI is
+enabled (probably assuming that if ACPI is available, a DTB can only be
+useful for applying overlays to it afterwards, for testing purposes).
+
+So restore this possibility. Instead of completely preventing using ACPI
+and DT together, rely on arch-specific setup code to prevent using both
+to set up the same things (see various acpi_disabled checks under arch/).
+
+Fixes: 7b937cc243e5 ("of: Create of_root if no dtb provided by firmware")
+Signed-off-by: Dmytro Maluka <dmaluka@chromium.org>
+Link: https://lore.kernel.org/r/20250105172741.3476758-3-dmaluka@chromium.org
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/of/fdt.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 94f5246b3a720..ad3028b755d16 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -598,10 +598,9 @@ static int imx_pcie_attach_pd(struct device *dev)
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 0121100372b41..3b29a5c50e2e5 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -8,7 +8,6 @@
  
- static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
--	if (enable)
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
--				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+ #define pr_fmt(fmt)	"OF: fdt: " fmt
+ 
+-#include <linux/acpi.h>
+ #include <linux/crash_dump.h>
+ #include <linux/crc32.h>
+ #include <linux/kernel.h>
+@@ -1215,14 +1214,7 @@ void __init unflatten_device_tree(void)
+ 	/* Save the statically-placed regions in the reserved_mem array */
+ 	fdt_scan_reserved_mem_reg_nodes();
+ 
+-	/* Don't use the bootloader provided DTB if ACPI is enabled */
+-	if (!acpi_disabled)
+-		fdt = NULL;
 -
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-+			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
-+			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
- 	return 0;
- }
- 
-@@ -630,19 +629,20 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
- 	int offset = imx_pcie_grp_offset(imx_pcie);
- 
--	if (enable) {
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
--		regmap_set_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
--	}
--
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
-+			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
-+			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
-+			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
-+			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
- 	return 0;
- }
- 
- static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
--	if (!enable)
--		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
--				IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-+			   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
-+			   enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
- 	return 0;
- }
- 
+-	/*
+-	 * Populate an empty root node when ACPI is enabled or bootloader
+-	 * doesn't provide one.
+-	 */
++	/* Populate an empty root node when bootloader doesn't provide one */
+ 	if (!fdt) {
+ 		fdt = (void *) __dtb_empty_root_begin;
+ 		/* fdt_totalsize() will be used for copy size */
 -- 
 2.39.5
 
