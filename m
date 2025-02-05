@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBBDA29105
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:43:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B28A292CA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BE8B3A7230
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40D997A2235
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108E61DB128;
-	Wed,  5 Feb 2025 14:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FE9155333;
+	Wed,  5 Feb 2025 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYTlhbUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvgGs1jD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB61DAC95;
-	Wed,  5 Feb 2025 14:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BBD1E89C;
+	Wed,  5 Feb 2025 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766476; cv=none; b=Yki1Aw0blSBsd/Dv7eyJxEAahwSAczT7NC6C0d7SUmDoD0Dx23NeKFBn9cw0/htr5Y/JWa7PoEW7GwyK21vbQVFyts4EbF5JzwHduUIRHqIkxzXBwQ7i+cxsISfY4vA3nhZ8jnm8DBCJnDoAvlCjzUdIf7Gsmf9KZ39j7uMAvaA=
+	t=1738767922; cv=none; b=VIt92wMOIzp/Sj0B2PV7yu2twSM7DZaw8caYllBj/p8cWC34RJcqyQUnaHjWLUAWC4r1Kov3w5c7neULgjn1WFubWAkkPzaLFuU3M06VeIGNgyClh/iJODeJUku2leVGQtTOGeCcFTEZiMMTg4hGh+8cjJ7n+phQNSwMXdRYrfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766476; c=relaxed/simple;
-	bh=qCB8RtvLgEkid4ibqKk8OYgD1F0vFulKBpRFuAFOFjA=;
+	s=arc-20240116; t=1738767922; c=relaxed/simple;
+	bh=pfJd/Ot7HHIeQlTV5pZ2DG4g2b+vMKwV03tW6dFGieA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjJaqP+O4bo46lz6ksVD0sSggOKj6XzPDQ2JG6u8GDRcLZcONH9sNn7UpwKDP/g2/a2+CfJIvFg+bKBW2SBXmDg6j/88Tbka8zT42tghQtdHKWiim+GAJXuCzI1Wvhi4XaP53mrnf+EZzygIewmW9x2Djwud0rw41UyzlmyBGGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYTlhbUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E1BC4CEDD;
-	Wed,  5 Feb 2025 14:41:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rfvuEFXLzilGSPxae0xDpmfo3JUoTPq97p4cdlHzd8N2Xx24/quzEOrxUnVQMgypYlO1qj3lda307XrkYgdo6EhAhRs4n4YxxBy/J+oG65SAiK859WFl8cZwMjcqgNBoxg/xpUkBY585//nSVlHeRlGxXE2XwLudXuyq1prEq3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvgGs1jD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4E7C4CED1;
+	Wed,  5 Feb 2025 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766476;
-	bh=qCB8RtvLgEkid4ibqKk8OYgD1F0vFulKBpRFuAFOFjA=;
+	s=korg; t=1738767922;
+	bh=pfJd/Ot7HHIeQlTV5pZ2DG4g2b+vMKwV03tW6dFGieA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYTlhbUh0GLkk2RBfwVFrS5+p0IRj7R7SUH8lB/fPkh4l69COqpXwH0Gf8rYXm1mN
-	 Qo+TzaUyMDLy1fsXuUXVwk5bGXEjDklNNnKEj/ZBPQfx6ateZle32Tob1FVyjAEGqQ
-	 TEjZdQxejIqUhP66yxg2wLkEnEQsSk/hEiMe1Tts=
+	b=ZvgGs1jDH9/QlezM9Ka7XopFVPgNrRm+hF21WqkNrkbauD+7HGIprnTarQSpXNcnH
+	 7hEx9K30x1g4ee8WdERZ/hAiXo4ljSpHJ6FQJX5gOBnvt2Q0YbM1hCTPC3VNCMkET3
+	 tKJYhfif0oxfECGQF+F1A1CSzBZpMFwymlIH7Tlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Yujun <linyujun809@huawei.com>,
-	Brian Cain <bcain@quicinc.com>,
-	Brian Cain <brian.cain@oss.qualcomm.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 366/393] hexagon: Fix unbalanced spinlock in die()
+Subject: [PATCH 6.12 530/590] cifs: Validate EAs for WSL reparse points
 Date: Wed,  5 Feb 2025 14:44:45 +0100
-Message-ID: <20250205134434.305241064@linuxfoundation.org>
+Message-ID: <20250205134515.544254155@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Yujun <linyujun809@huawei.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 03410e87563a122075c3721acc7d5510e41d8332 ]
+[ Upstream commit ef201e8759d20bf82b5943101147072de12bc524 ]
 
-die executes holding the spinlock of &die.lock and unlock
-it after printing the oops message.
-However in the code if the notify_die() returns NOTIFY_STOP
-, die() exit with returning 1 but never unlocked the spinlock.
+Major and minor numbers for char and block devices are mandatory for stat.
+So check that the WSL EA $LXDEV is present for WSL CHR and BLK reparse
+points.
 
-Fix this by adding spin_unlock_irq(&die.lock) before returning.
+WSL reparse point tag determinate type of the file. But file type is
+present also in the WSL EA $LXMOD. So check that both file types are same.
 
-Fixes: cf9750bae262 ("Hexagon: Provide basic debugging and system trap support.")
-Signed-off-by: Lin Yujun <linyujun809@huawei.com>
-Link: https://lore.kernel.org/r/20230522025608.2515558-1-linyujun809@huawei.com
-Signed-off-by: Brian Cain <bcain@quicinc.com>
-Signed-off-by: Brian Cain <brian.cain@oss.qualcomm.com>
+Fixes: 78e26bec4d6d ("smb: client: parse uid, gid, mode and dev from WSL reparse points")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/hexagon/kernel/traps.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/reparse.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/arch/hexagon/kernel/traps.c b/arch/hexagon/kernel/traps.c
-index 6447763ce5a94..b7e394cebe20d 100644
---- a/arch/hexagon/kernel/traps.c
-+++ b/arch/hexagon/kernel/traps.c
-@@ -195,8 +195,10 @@ int die(const char *str, struct pt_regs *regs, long err)
- 	printk(KERN_EMERG "Oops: %s[#%d]:\n", str, ++die.counter);
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index d3abb99cc9909..e56a8df23fec9 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -674,11 +674,12 @@ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
+ 	return parse_reparse_point(buf, plen, cifs_sb, full_path, true, data);
+ }
  
- 	if (notify_die(DIE_OOPS, str, regs, err, pt_cause(regs), SIGSEGV) ==
--	    NOTIFY_STOP)
-+	    NOTIFY_STOP) {
-+		spin_unlock_irq(&die.lock);
- 		return 1;
-+	}
+-static void wsl_to_fattr(struct cifs_open_info_data *data,
++static bool wsl_to_fattr(struct cifs_open_info_data *data,
+ 			 struct cifs_sb_info *cifs_sb,
+ 			 u32 tag, struct cifs_fattr *fattr)
+ {
+ 	struct smb2_file_full_ea_info *ea;
++	bool have_xattr_dev = false;
+ 	u32 next = 0;
  
- 	print_modules();
- 	show_regs(regs);
+ 	switch (tag) {
+@@ -721,13 +722,24 @@ static void wsl_to_fattr(struct cifs_open_info_data *data,
+ 			fattr->cf_uid = wsl_make_kuid(cifs_sb, v);
+ 		else if (!strncmp(name, SMB2_WSL_XATTR_GID, nlen))
+ 			fattr->cf_gid = wsl_make_kgid(cifs_sb, v);
+-		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen))
++		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen)) {
++			/* File type in reparse point tag and in xattr mode must match. */
++			if (S_DT(fattr->cf_mode) != S_DT(le32_to_cpu(*(__le32 *)v)))
++				return false;
+ 			fattr->cf_mode = (umode_t)le32_to_cpu(*(__le32 *)v);
+-		else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen))
++		} else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen)) {
+ 			fattr->cf_rdev = reparse_mkdev(v);
++			have_xattr_dev = true;
++		}
+ 	} while (next);
+ out:
++
++	/* Major and minor numbers for char and block devices are mandatory. */
++	if (!have_xattr_dev && (tag == IO_REPARSE_TAG_LX_CHR || tag == IO_REPARSE_TAG_LX_BLK))
++		return false;
++
+ 	fattr->cf_dtype = S_DT(fattr->cf_mode);
++	return true;
+ }
+ 
+ static bool posix_reparse_to_fattr(struct cifs_sb_info *cifs_sb,
+@@ -801,7 +813,9 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	case IO_REPARSE_TAG_AF_UNIX:
+ 	case IO_REPARSE_TAG_LX_CHR:
+ 	case IO_REPARSE_TAG_LX_BLK:
+-		wsl_to_fattr(data, cifs_sb, tag, fattr);
++		ok = wsl_to_fattr(data, cifs_sb, tag, fattr);
++		if (!ok)
++			return false;
+ 		break;
+ 	case IO_REPARSE_TAG_NFS:
+ 		ok = posix_reparse_to_fattr(cifs_sb, fattr, data);
 -- 
 2.39.5
 
