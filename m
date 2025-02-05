@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-112615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10DFA28D99
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FB3A28CAB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802E1188790E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68ECF188747C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E279F510;
-	Wed,  5 Feb 2025 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5395BFC0B;
+	Wed,  5 Feb 2025 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7leT0W6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBkwhEFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA565228;
-	Wed,  5 Feb 2025 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9F1146A63;
+	Wed,  5 Feb 2025 13:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764167; cv=none; b=f2wRukB58KSR3jCrOiTSkAwyJarrkJnIhnRb0X2sstgXu8SX2dXG+/gqT+bUXS2hicVofGvawAC6SlsYouI1Rm3whIEj3m2zaazMFFr1G53I0c1SMnCSCxo6fIm5u7sy8ChF6gXtRWMjyNXgchsIrJnB+iEPri78nCtmZF8naHk=
+	t=1738763545; cv=none; b=TEUpMbWWaN5cDFoSQ9JuNU/lS33LhP9SfBdFntfpd7ABiUtoimtDaVaErBn5uKhtjqiwhmQiGGI7H0XPd5TYZtK+PKuI6Zl7gT2b2KL4n37GGYsU8ZkIv9F8/BUDHfABy8HDZTecuOklh8h+G9oerWY3PA4pO0ZoAAQ8yjdY5Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764167; c=relaxed/simple;
-	bh=DKtbY6APvzB9r9nuzSPs3mO5ZT7mhM8cYyPL4LtgE4k=;
+	s=arc-20240116; t=1738763545; c=relaxed/simple;
+	bh=dsZTcUkTrZwDH/jR/Ae+cSWD78pclh7XL3Vuzk31lTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nZV7Kwcg+Gc+w+Gi5TeeNlCC0qHiK79QXX3l4YTXErVVA3Trj+sdS7sIhUo5cbBT1AB13ihG7zHEu4/r5jtBOeHnoctQkm/oKdR7WXT5vZykbsXk1RcPvzKUiUETL/Z2njEhUWZLmZNyYCojapd+dKaZ2rKQnqnaJWuMmcZeTDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7leT0W6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597E3C4CEDD;
-	Wed,  5 Feb 2025 14:02:45 +0000 (UTC)
+	 MIME-Version; b=h0o8tOUa21/XHKYRt/CR8gx2jDAObjYAt1vKXcp5TtiPxB7TrUMJfCejghsCTZo4IAbSTFPZOzhrzrzBet6PmeR3P8s0Utli0myDqWuNfTfwJuWMbVrN0tANrSdshGhst0u9HHc9hzYnYEOL+2Zp2Roh7eoHmuN/hQLPAM+kDK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBkwhEFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AD0C4CED1;
+	Wed,  5 Feb 2025 13:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764166;
-	bh=DKtbY6APvzB9r9nuzSPs3mO5ZT7mhM8cYyPL4LtgE4k=;
+	s=korg; t=1738763544;
+	bh=dsZTcUkTrZwDH/jR/Ae+cSWD78pclh7XL3Vuzk31lTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7leT0W6RRFNt467H107MAKaPiDUlne/XxNQEgyfGqeAoPMQjOmnnrBztHhZxOemN
-	 TKYaK0rwzEK3zEYXoBSKIMSBdzp1ORpOAN3CzQ0PcODlV85PeK9W5bsdmPg6GHghTj
-	 HqYAq8KDBfk/Q7roKwbiW+TmdGRioxnQhDh5AmDI=
+	b=lBkwhEFDsSctzUS3ME6wJ33Zn7zcn8a1X93+0RuQqONb51s9FRk86KIGvl6TzWg02
+	 VEJj+rImFSRD7DPj91PcbpnUgzd4RwJn7ml5h6lqj4V+hroQNUGT1uIy86sq8M/XfM
+	 M4zQOXSJIDZlKbmU1jZ+f7oTx7VQPs3oMC1+Ru1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 041/623] drm/msm/dp: set safe_to_exit_level before printing it
+Subject: [PATCH 6.12 028/590] sched/fair: Untangle NEXT_BUDDY and pick_next_task()
 Date: Wed,  5 Feb 2025 14:36:23 +0100
-Message-ID: <20250205134457.800362809@linuxfoundation.org>
+Message-ID: <20250205134456.323437095@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 7dee35d79bb046bfd425aa9e58a82414f67c1cec ]
+[ Upstream commit 2a77e4be12cb58bbf774e7c717c8bb80e128b7a4 ]
 
-Rather than printing random garbage from stack and pretending that it is
-the default safe_to_exit_level, set the variable beforehand.
+There are 3 sites using set_next_buddy() and only one is conditional
+on NEXT_BUDDY, the other two sites are unconditional; to note:
 
-Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411081748.0PPL9MIj-lkp@intel.com/
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/626804/
-Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-1-d9187ea96dad@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+  - yield_to_task()
+  - cgroup dequeue / pick optimization
+
+However, having NEXT_BUDDY control both the wakeup-preemption and the
+picking side of things means its near useless.
+
+Fixes: 147f3efaa241 ("sched/fair: Implement an EEVDF-like scheduling policy")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241129101541.GA33464@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c     | 4 ++--
+ kernel/sched/features.h | 9 +++++++++
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index 74e01a5dd4195..5cbb11986460d 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -329,10 +329,10 @@ static void msm_dp_audio_safe_to_exit_level(struct msm_dp_audio_private *audio)
- 		safe_to_exit_level = 5;
- 		break;
- 	default:
-+		safe_to_exit_level = 14;
- 		drm_dbg_dp(audio->drm_dev,
- 				"setting the default safe_to_exit_level = %u\n",
- 				safe_to_exit_level);
--		safe_to_exit_level = 14;
- 		break;
- 	}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 60be5f8bbe711..a21110b220b7b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5647,9 +5647,9 @@ static struct sched_entity *
+ pick_next_entity(struct rq *rq, struct cfs_rq *cfs_rq)
+ {
+ 	/*
+-	 * Enabling NEXT_BUDDY will affect latency but not fairness.
++	 * Picking the ->next buddy will affect latency but not fairness.
+ 	 */
+-	if (sched_feat(NEXT_BUDDY) &&
++	if (sched_feat(PICK_BUDDY) &&
+ 	    cfs_rq->next && entity_eligible(cfs_rq, cfs_rq->next)) {
+ 		/* ->next will never be delayed */
+ 		SCHED_WARN_ON(cfs_rq->next->sched_delayed);
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 290874079f60d..050d7503064e3 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -31,6 +31,15 @@ SCHED_FEAT(PREEMPT_SHORT, true)
+  */
+ SCHED_FEAT(NEXT_BUDDY, false)
  
++/*
++ * Allow completely ignoring cfs_rq->next; which can be set from various
++ * places:
++ *   - NEXT_BUDDY (wakeup preemption)
++ *   - yield_to_task()
++ *   - cgroup dequeue / pick
++ */
++SCHED_FEAT(PICK_BUDDY, true)
++
+ /*
+  * Consider buddies to be cache hot, decreases the likeliness of a
+  * cache buddy being migrated away, increases cache locality.
 -- 
 2.39.5
 
