@@ -1,68 +1,62 @@
-Return-Path: <stable+bounces-113336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7ADBA291DD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B4CA28D47
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03EC21885B65
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91823A9644
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C371D88AC;
-	Wed,  5 Feb 2025 14:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02776154BE5;
+	Wed,  5 Feb 2025 13:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gefcqrl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQxPiw/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80731D86C6;
-	Wed,  5 Feb 2025 14:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150F14A4E9;
+	Wed,  5 Feb 2025 13:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766615; cv=none; b=MI335eV1HQaIPp82xYz6RGz2ZQ8T1v632EHPC/7nw2IvC6W5SdzOlhYajOW2WAInbYtLMaz/CmGsnvvbFNxB5umxmnaf1l5iHohypdhUIXLneciEpgOdOfKDWVenKSQRXoWYMEMX+kQrzyqYewhMWzkbjbTLcoEgsdrNvHym8bk=
+	t=1738763870; cv=none; b=Uo2mYxgBSzL7MLnfQU6QSNPJQUMcRvOpBvr+CAdjOyDelgyxRawDUbMqz1QtzGDtQ7FgauJyWfCfUtwZmSdTVDEW1Bq9Eg/YKcpAIlzc6MX/vcubyzhVHras2hK3PJ1HcUdnFVVVLv1i8Stdwcn9pQgUPBQ7K8b1XfC1HjUFOEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766615; c=relaxed/simple;
-	bh=M2Y0vKT1kVR8q8Q1FD5Q7PeaEjRvTo7L2ZeWQUFRx8w=;
+	s=arc-20240116; t=1738763870; c=relaxed/simple;
+	bh=rP7J5jgS4SnvPQdAQIgjfTTCiTz7jI/aC/JxtA1tSW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK9xrkpyVV2UyoKgQ2a+RKldXx/27ZWhex/SeqztePBMqcl1dP5kZkHKQviwwcofOyrnvlrNvZarBdkvMDrytDUAAFZ0uiHrJnLU5kXhyilgrUm376cRhxbwLj/ctJBb/xUcyZOpbMmzTAuMAE7Qh6jPJzQAiMCNOiBaA3/XZRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gefcqrl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6C4C4CED6;
-	Wed,  5 Feb 2025 14:43:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fs5g7WHp1bAztjolgHR3AzT98qGu+l1Cy3LkwyrW06MO/2xm9y5BQ1k4RwgjH3IQGK+dRJ1n8c0W6eX3PGpqeJrNgt4QQRJ9Wkim224JQM5Wafo836k1OOE7sgESZBOXbqySk4SLmJ/JK1+a7f1NfMYTFjtHIcMN75wl1sUWNn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQxPiw/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02786C4CED1;
+	Wed,  5 Feb 2025 13:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766615;
-	bh=M2Y0vKT1kVR8q8Q1FD5Q7PeaEjRvTo7L2ZeWQUFRx8w=;
+	s=korg; t=1738763870;
+	bh=rP7J5jgS4SnvPQdAQIgjfTTCiTz7jI/aC/JxtA1tSW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gefcqrl6N1rTJjCGbadeiEQmNGslzDaF3UDuOFxhAE3cjKnKL3zxefTeDiK5c0I97
-	 cwRqkO9pvn1Fm3/pbufCG6EhyvYK/kLybXq9HiYKbfQSSHf7fFhEoDb8ncKEWZRJZg
-	 LJBF6nyUyNUzrTFde1FMNn9lHBQrmeM0MgsYv3l4=
+	b=SQxPiw/gDGsGvU15gSB3vQrsZlIEC2f1zIDc3Kkw1G4SkBtWORGLFUwtcVOEQkyCj
+	 VJ/oCopYyP3T2EdrfkGjFUm9/pyM62TkU9rJdscUalFWHV6Hmk0935+Xq065Xzj/qZ
+	 xNg86oaj+NmREh5WTVSIxAku30h6Mo5RPnXVYjcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Nigro <fnigro@redhat.com>,
-	Ilan Green <igreen@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Clark Williams <williams@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Paul Moore <paul@paul-moore.com>,
+	syzbot+34b68f850391452207df@syzkaller.appspotmail.com,
+	syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com,
+	Ubisectech Sirius <bugreport@ubisectech.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 292/623] perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool
+Subject: [PATCH 6.6 115/393] landlock: Handle weird files
 Date: Wed,  5 Feb 2025 14:40:34 +0100
-Message-ID: <20250205134507.402456772@linuxfoundation.org>
+Message-ID: <20250205134424.692953452@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,68 +66,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 64a7617efd5ae1d57a75e464d7134eec947c3fe3 ]
+[ Upstream commit 49440290a0935f428a1e43a5ac8dc275a647ff80 ]
 
-When adding support for refconunt checking a cut'n'paste made this
-function, that is just an accessor to a bool member of 'struct nsinfo',
-return a pid_t, when that member is a boolean, fix it.
+A corrupted filesystem (e.g. bcachefs) might return weird files.
+Instead of throwing a warning and allowing access to such file, treat
+them as regular files.
 
-Fixes: bcaf0a97858de7ab ("perf namespaces: Add functions to access nsinfo")
-Reported-by: Francesco Nigro <fnigro@redhat.com>
-Reported-by: Ilan Green <igreen@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
-Link: https://lore.kernel.org/r/20241206204828.507527-6-acme@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Paul Moore <paul@paul-moore.com>
+Reported-by: syzbot+34b68f850391452207df@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/000000000000a65b35061cffca61@google.com
+Reported-by: syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/67379b3f.050a0220.85a0.0001.GAE@google.com
+Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
+Closes: https://lore.kernel.org/r/c426821d-8380-46c4-a494-7008bbd7dd13.bugreport@ubisectech.com
+Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20250110153918.241810-1-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/namespaces.c | 2 +-
- tools/perf/util/namespaces.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ security/landlock/fs.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
-index 36047184d76e2..68f5de2d79c72 100644
---- a/tools/perf/util/namespaces.c
-+++ b/tools/perf/util/namespaces.c
-@@ -266,7 +266,7 @@ pid_t nsinfo__pid(const struct nsinfo  *nsi)
- 	return RC_CHK_ACCESS(nsi)->pid;
+diff --git a/security/landlock/fs.c b/security/landlock/fs.c
+index 1bdd049e3d636..fe4622d88eb15 100644
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -664,10 +664,6 @@ static inline access_mask_t get_mode_access(const umode_t mode)
+ 	switch (mode & S_IFMT) {
+ 	case S_IFLNK:
+ 		return LANDLOCK_ACCESS_FS_MAKE_SYM;
+-	case 0:
+-		/* A zero mode translates to S_IFREG. */
+-	case S_IFREG:
+-		return LANDLOCK_ACCESS_FS_MAKE_REG;
+ 	case S_IFDIR:
+ 		return LANDLOCK_ACCESS_FS_MAKE_DIR;
+ 	case S_IFCHR:
+@@ -678,9 +674,12 @@ static inline access_mask_t get_mode_access(const umode_t mode)
+ 		return LANDLOCK_ACCESS_FS_MAKE_FIFO;
+ 	case S_IFSOCK:
+ 		return LANDLOCK_ACCESS_FS_MAKE_SOCK;
++	case S_IFREG:
++	case 0:
++		/* A zero mode translates to S_IFREG. */
+ 	default:
+-		WARN_ON_ONCE(1);
+-		return 0;
++		/* Treats weird files as regular files. */
++		return LANDLOCK_ACCESS_FS_MAKE_REG;
+ 	}
  }
  
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
-+bool nsinfo__in_pidns(const struct nsinfo *nsi)
- {
- 	return RC_CHK_ACCESS(nsi)->in_pidns;
- }
-diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
-index e014becb9cd8e..e95c79b80e27c 100644
---- a/tools/perf/util/namespaces.h
-+++ b/tools/perf/util/namespaces.h
-@@ -58,7 +58,7 @@ void nsinfo__clear_need_setns(struct nsinfo *nsi);
- pid_t nsinfo__tgid(const struct nsinfo  *nsi);
- pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
- pid_t nsinfo__pid(const struct nsinfo  *nsi);
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
-+bool nsinfo__in_pidns(const struct nsinfo  *nsi);
- void nsinfo__set_in_pidns(struct nsinfo *nsi);
- 
- void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
 -- 
 2.39.5
 
