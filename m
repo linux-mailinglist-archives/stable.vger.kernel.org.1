@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3782EA28F07
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A272A28FE1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D7E33A9016
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80FB3A9BB4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BC9522A;
-	Wed,  5 Feb 2025 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB38156C76;
+	Wed,  5 Feb 2025 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zksvklab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5otIwxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F61519BE;
-	Wed,  5 Feb 2025 14:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A535155751;
+	Wed,  5 Feb 2025 14:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765167; cv=none; b=AHKYEoEjyF/KCJY7Gw6Xz8G1KzhLUrsKaIDMCngJq3GwBOXdU8rkJjaXWaEGTzD00cqsdCiQBcmoE4dct/biDBnvAgObA8bNOCNe6lIBm/9/VaAP30jlWYmjeUUzk78m583FKVVzFYn4XP3flvSLkuhRs9rJgE7crLxPmnpcgnc=
+	t=1738765741; cv=none; b=FalRXtVTImcHLBaqX2jJXLrY/4fkbdPTe+f6sm4+fRi1KsS0pOip/9PWOIaPKmDMcDYiKBDLxwXSo6Y7UYrU/KvCOSBJ7gPCHUJr96c158pmjplZWxSXn/g8uE8fzW806eyNZsg13pEeSuOzXkIZbNDwlrWXOFbgX1QgvjxvP9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765167; c=relaxed/simple;
-	bh=/d/IoqD2pO5mXETN9c7K1rcs3iROSXmsDk5UYqH4/i0=;
+	s=arc-20240116; t=1738765741; c=relaxed/simple;
+	bh=cfADiCgCHcNQfSQLrr3zH4qNk0VJUULGVU811itAx30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGzYJr+w97kXFdAiTNzrrEKzavzPF08PLe3B76wLvNusvTDhjDizYMusbpJVHDDY001iK2odlKFwG4Draq7W0g6VU2sBCFJaVxPM5p6aWpKb0oDGv56ZrcHNXHg4MMtq+Jh/VCH/XcB2Je2SYv6zCuFqUAys5hsBeiI5xAsIFWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zksvklab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C397EC4CEDD;
-	Wed,  5 Feb 2025 14:19:26 +0000 (UTC)
+	 MIME-Version; b=ozHo9icZEGpf0drmhkxarAGYEnj+Ag/bblh7ic+ZDlu9MCuVYFq1rOa/FOUdYhZceKGnwJ0P6EJcvYmO15RAgsxXZ8n6mlNtYQveBlF3D7U98C2x5mVjsa2IkbHRCzAk9KGqvlhLUgii/X6wJXTls5VyHSyeOunWjGmIXUr2+QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5otIwxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC29C4CED1;
+	Wed,  5 Feb 2025 14:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765167;
-	bh=/d/IoqD2pO5mXETN9c7K1rcs3iROSXmsDk5UYqH4/i0=;
+	s=korg; t=1738765741;
+	bh=cfADiCgCHcNQfSQLrr3zH4qNk0VJUULGVU811itAx30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZksvklabHI8jaBc/hs89f3zh+6qtZKrRYnCTvxTQrAu/Sw/LeBclv18Yvpu/oMgin
-	 jLQLK+lOLFn6ia03MTyelIX2lpStBsSx5hXMw4+Ylv9Fywr9aAgBtP3fzIwHU1V6Lg
-	 pJX3bQnN5m4P75K8zFbxhCkBnw4FdgqkU7rkYxCk=
+	b=G5otIwxddM3D6Vy1rweR+ebnaeMORXEan5P1u2mi4UVVEovEVQUoT5j0DJ7ds7abO
+	 LSzwAwGq741bclO1UNyWX3Okv1YyFAOHrF8QBokD7V7uAR00e757g5QVLGdbsG/Vpj
+	 CF+c8E80y/6/ZYtIy4Rg5NwvAo1aEZGhcb+YLepM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 196/590] wifi: mt76: mt7925: Properly handle responses for commands with events
+Subject: [PATCH 6.13 209/623] wifi: mt76: mt7996: add max mpdu len capability
 Date: Wed,  5 Feb 2025 14:39:11 +0100
-Message-ID: <20250205134502.777020656@linuxfoundation.org>
+Message-ID: <20250205134504.225186236@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 349460913a4d029cc37c9e3817b1903233b4a627 ]
+[ Upstream commit 1816ad9381e0c150e4c44ce6dd6ee2c52008a052 ]
 
-Properly retrieve the response for commands with events. Ensure accurate
-handling of event-driven commands.
+Set max mpdu len to 11454 according to hardware capability.
+Without this patch, the max ampdu length would be 3895 and count not get
+expected performance.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-17-sean.wang@kernel.org
+Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-1-shayne.chen@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |  1 -
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 10 +++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 116b6980c7335..ddc67423efe2c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1244,7 +1244,6 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
- 		memcpy(dev_req.tlv.omac_addr, vif->addr, ETH_ALEN);
- 		mt76_mcu_send_msg(mdev, MCU_UNI_CMD(DEV_INFO_UPDATE),
- 				  &dev_req, sizeof(dev_req), true);
--
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index d5f53abc4dcb4..50ee1e443dfa4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -1187,7 +1187,9 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
  
- 	if (vif->type == NL80211_IFTYPE_STATION) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index c7dd263446c9e..ce3d8197b026a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1252,7 +1252,7 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 	}
+ 	eht_cap_elem->mac_cap_info[0] =
+ 		IEEE80211_EHT_MAC_CAP0_EPCS_PRIO_ACCESS |
+-		IEEE80211_EHT_MAC_CAP0_OM_CONTROL;
++		IEEE80211_EHT_MAC_CAP0_OM_CONTROL |
++		u8_encode_bits(IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_11454,
++			       IEEE80211_EHT_MAC_CAP0_MAX_MPDU_LEN_MASK);
  
- 	return mt76_mcu_send_msg(&mvif->phy->dev->mt76, MCU_UNI_CMD(ROC),
--				 &req, sizeof(req), false);
-+				 &req, sizeof(req), true);
- }
- 
- int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
-@@ -1301,7 +1301,7 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 	}
- 
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(ROC),
--				 &req, sizeof(req), false);
-+				 &req, sizeof(req), true);
- }
- 
- int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
-@@ -1331,7 +1331,7 @@ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 	};
- 
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(ROC),
--				 &req, sizeof(req), false);
-+				 &req, sizeof(req), true);
- }
- 
- int mt7925_mcu_set_eeprom(struct mt792x_dev *dev)
-@@ -1484,12 +1484,12 @@ mt7925_mcu_set_bss_pm(struct mt792x_dev *dev,
- 	int err;
- 
- 	err = mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
--				&req1, sizeof(req1), false);
-+				&req1, sizeof(req1), true);
- 	if (err < 0 || !enable)
- 		return err;
- 
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
--				 &req, sizeof(req), false);
-+				 &req, sizeof(req), true);
- }
- 
- static void
+ 	eht_cap_elem->phy_cap_info[0] =
+ 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
 -- 
 2.39.5
 
