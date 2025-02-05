@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E366A28C44
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622E5A28F9B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0840F3A902A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5531B1881FBE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389411487DC;
-	Wed,  5 Feb 2025 13:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448C18634E;
+	Wed,  5 Feb 2025 14:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Anyw56tI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b7cwXmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34AD1459EA;
-	Wed,  5 Feb 2025 13:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00244522A;
+	Wed,  5 Feb 2025 14:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763258; cv=none; b=XDp5p1RTihG048SoUyNCFv3d/dEcrcrCx2z6SfE/dxKj+BCkCgxn5bPCScDIiYzZ4WYDL1QIfhYzzF/Grb1zgita5EJjS/1Dg3fbpXddCnEgnaBEN7+iEtD1u0u7S/VR1xZEq0qyvD30nqE8l8Iyxkl/j12CvL+qizYZSaI/vlE=
+	t=1738765628; cv=none; b=oI0Q0ysa3/pjezD2t8uNHIl62HcDVtgTI6UTyDo0vdbnVvOoDdyg/RZB6nNSDxkJM02B4SI80Q1sDPquBgAGIEfLJnN+ReBbaiFUqbqvL0gWeFBz1VQ3atdm4TQDUkVMLhIplNQaSRcM+c/8EsRTHqMnIZMalOYLDIlW+XTy5cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763258; c=relaxed/simple;
-	bh=Q+OvS9KjrAHqPQCTjEKLLYwm4/rZEdf1iB6rnAKeqsk=;
+	s=arc-20240116; t=1738765628; c=relaxed/simple;
+	bh=eNGrD/MhLYRWRK/rIj9IyhaiPeo9pggo0WuwYhfdJZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkMpRDeMq6OeXJx6eCjFNzu/kZgp+tvcu0ugFyOqZVBEqZcYHPRrTXcQIeJXdWGFGtfQRmPlZhvoLHcBGP9oE8hZgbbjLh1UyOGr4iS5It9iiTxOTS3CH+JdmT9u+1mMprnRB/wrEuiAdvDaiftGQ4EWDUxZiIfZ9D+3KlGA7Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Anyw56tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF834C4CED1;
-	Wed,  5 Feb 2025 13:47:36 +0000 (UTC)
+	 MIME-Version; b=ngoOwcHyw/5JWrbLKJVj6oSBoQrvlPqMalx4Ry0HnpcKDqHCrfCAWA3ZeMXBJNlmjYMn0/j37Pp5j5+fEn1GVMyvN2dfYJUClWGZjft+oVJkDFNwS6p2mjvYex2QJj0nQDC/kQty7sYC6GJz/4o7x14ETO0OzK+HOJF74/od8/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b7cwXmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E7C4CED1;
+	Wed,  5 Feb 2025 14:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763257;
-	bh=Q+OvS9KjrAHqPQCTjEKLLYwm4/rZEdf1iB6rnAKeqsk=;
+	s=korg; t=1738765627;
+	bh=eNGrD/MhLYRWRK/rIj9IyhaiPeo9pggo0WuwYhfdJZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Anyw56tI6gI2Oihbat9HSkl1NuLSll6eECRSfOSPY5wuMaKBIMmR3StksxBaRdU5o
-	 C5FU7VeM8H+zZoaCLmBUVo/7cCYVDh0rQHfLqcr01rfJow8zj2Tqn2rEem7fd6H8Wn
-	 ys9mxuzpx0UWKoYyvx2NVErS5Jb4UNoQ0WrRsJRs=
+	b=2b7cwXmg6OxNo03Jlysx+evfZM5FoqpFa5nKxswKgC1D1SW0mov8sgnqVDriFDcsh
+	 t0ZSfQuuQXbyL1oStIxwZUfqmwYzq4FYXVDy+Aft9oHq2X6unzl9DfVRGbR7k0e1ty
+	 f1hq84SuSrg5DV8EUrC5czQ2qvPUTkD4nmFj4kT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/393] drm/msm/dp: set safe_to_exit_level before printing it
+Subject: [PATCH 6.13 199/623] wifi: mt76: mt7925: Init secondary link PM state
 Date: Wed,  5 Feb 2025 14:39:01 +0100
-Message-ID: <20250205134421.150515632@linuxfoundation.org>
+Message-ID: <20250205134503.845404408@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 7dee35d79bb046bfd425aa9e58a82414f67c1cec ]
+[ Upstream commit 28045ef2bc5bbeec4717da98bf31aca0faaccf02 ]
 
-Rather than printing random garbage from stack and pretending that it is
-the default safe_to_exit_level, set the variable beforehand.
+Initialize secondary link PM state.
 
-Fixes: d13e36d7d222 ("drm/msm/dp: add audio support for Display Port on MSM")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411081748.0PPL9MIj-lkp@intel.com/
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/626804/
-Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-1-d9187ea96dad@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-14-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_audio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_audio.c b/drivers/gpu/drm/msm/dp/dp_audio.c
-index 4a2e479723a85..610cbe23aa839 100644
---- a/drivers/gpu/drm/msm/dp/dp_audio.c
-+++ b/drivers/gpu/drm/msm/dp/dp_audio.c
-@@ -410,10 +410,10 @@ static void dp_audio_safe_to_exit_level(struct dp_audio_private *audio)
- 		safe_to_exit_level = 5;
- 		break;
- 	default:
-+		safe_to_exit_level = 14;
- 		drm_dbg_dp(audio->drm_dev,
- 				"setting the default safe_to_exit_level = %u\n",
- 				safe_to_exit_level);
--		safe_to_exit_level = 14;
- 		break;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index dcdb9bcff3c40..a2d1c43098d3c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1991,6 +1991,8 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			goto free;
  
+ 		if (mconf != &mvif->bss_conf) {
++			mt7925_mcu_set_bss_pm(dev, link_conf, true);
++
+ 			err = mt7925_set_mlo_roc(phy, &mvif->bss_conf,
+ 						 vif->active_links);
+ 			if (err < 0)
 -- 
 2.39.5
 
