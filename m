@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-112506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE25A28D15
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F53A28C71
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15CD01889C07
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BE8D1884FC2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B42914D2A2;
-	Wed,  5 Feb 2025 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1AB13D52B;
+	Wed,  5 Feb 2025 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2Mcms0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqP+fBx0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B681519AA;
-	Wed,  5 Feb 2025 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B01126C18;
+	Wed,  5 Feb 2025 13:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763795; cv=none; b=Nr8bkGHGBaJsSAohFJKv09TSjIgKdTBiZSKWHRhiCc3pXLL/piyaxXDxFH1VhmtDEJZrp6mwgPiJYjrSjbjs2ZOgL1gYBU6rbdgqFSVANHxjsEBnfU9HZZ3zzfENNAWoBEWJsOwGNtPifnnb61ShxKUZmBMPJmklSjeEGF0zhJA=
+	t=1738763392; cv=none; b=g0O5ghTPrhFfk6xNot2k48oPDjBY79D0UmoeVwgjTMUM0CfG+nNefdHZxjY2VWd3FjRiWCMlvEM4bvDW0EpbGMfRSJLX62807MrnqpK5b7iNZB3dwLMEe8oeolre9lmqA0GuxqGLOM+AfthmwCg9mS8/lE7cOkigsKTdwInLyIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763795; c=relaxed/simple;
-	bh=haW5CrQlP4JOTW2d2kO3KeJH264mt95iSINQtYlWi3k=;
+	s=arc-20240116; t=1738763392; c=relaxed/simple;
+	bh=2Ick2i8k8bDhfSQAUPmu8OC1uMcENJTV+9+5DMTvhDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSgBj28XKFzn00YSMxcD+aQZYqsdmvks1AbSYXD4yxDJ4isz5Y69Gv4knhQSnJ4PDWVbBKsJi+NcBpnx6yVSnordqKdBaauVa5RwisAbwBj4kATCgOVbyyuxw6ATabM5Ivq8g1zL20TuxOpTgH09yw6DRLNt5VCLNbORuuA8hVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2Mcms0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99226C4CED1;
-	Wed,  5 Feb 2025 13:56:34 +0000 (UTC)
+	 MIME-Version; b=nDgnre0btrICj2hdX4td8qg16dIYnniOTKHsUxKLkJKuZEseP1Qfw8YduRykGRM36E1aXJ3EzaOSmiX/CtAs9X6wYbnEOws1YaVAsG/7k23xovROYEH1MGZcUm5nL77CZW+iZ1T8vff6vo5etVdQfSdec6TtBA/J+4tYJBM0Pl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqP+fBx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144DFC4CED6;
+	Wed,  5 Feb 2025 13:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763795;
-	bh=haW5CrQlP4JOTW2d2kO3KeJH264mt95iSINQtYlWi3k=;
+	s=korg; t=1738763392;
+	bh=2Ick2i8k8bDhfSQAUPmu8OC1uMcENJTV+9+5DMTvhDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2Mcms0gE/hhpMY3Jk1KokM+5r/AMJwmjte4aQLfQfEw7uqLNpeJQtKTHVNeRXlQb
-	 Xzf0ehyv2rQhxpm0mbACLZqW/YSW8NpTJsi8N5n9mFbVpW1+KK3JSAq9F0tRmX/8RS
-	 wkcLipsmZ/JKxARQv66gNsP0vnQDgipXoqArTRTo=
+	b=nqP+fBx0XGV+xCpanPnPzLMHXKPBeOsqzNUXAneeoJsKfNd7A1jYOLPjbBUBTrIAC
+	 HdK7zxcBPBAG9d5spKJumrHwgkrt7HgMEr2mj7nAE5E7DfDCkWcT9LWilhpHdklKKw
+	 dpm+btpHKtb+FB0v55OGtVCPNllOIb/A9Na8dW8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 019/623] block: fix queue freeze vs limits lock order in sysfs store methods
-Date: Wed,  5 Feb 2025 14:36:01 +0100
-Message-ID: <20250205134456.963768722@linuxfoundation.org>
+Subject: [PATCH 6.12 007/590] afs: Fix cleanup of immediately failed async calls
+Date: Wed,  5 Feb 2025 14:36:02 +0100
+Message-ID: <20250205134455.513571809@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c99f66e4084a62a2cc401c4704a84328aeddc9ec ]
+[ Upstream commit 9750be93b2be12b6d92323b97d7c055099d279e6 ]
 
-queue_attr_store() always freezes a device queue before calling the
-attribute store operation. For attributes that control queue limits, the
-store operation will also lock the queue limits with a call to
-queue_limits_start_update(). However, some drivers (e.g. SCSI sd) may
-need to issue commands to a device to obtain limit values from the
-hardware with the queue limits locked. This creates a potential ABBA
-deadlock situation if a user attempts to modify a limit (thus freezing
-the device queue) while the device driver starts a revalidation of the
-device queue limits.
+If we manage to begin an async call, but fail to transmit any data on it
+due to a signal, we then abort it which causes a race between the
+notification of call completion from rxrpc and our attempt to cancel the
+notification.  The notification will be necessary, however, for async
+FetchData to terminate the netfs subrequest.
 
-Avoid such deadlock by not freezing the queue before calling the
-->store_limit() method in struct queue_sysfs_entry and instead use the
-queue_limits_commit_update_frozen helper to freeze the queue after taking
-the limits lock.
+However, since we get a notification from rxrpc upon completion of a call
+(aborted or otherwise), we can just leave it to that.
 
-This also removes taking the sysfs lock for the store_limit method as
-it doesn't protect anything here, but creates even more nesting.
-Hopefully it will go away from the actual sysfs methods entirely soon.
+This leads to calls not getting cleaned up, but appearing in
+/proc/net/rxrpc/calls as being aborted with code 6.
 
-(commit log adapted from a similar patch from  Damien Le Moal)
+Fix this by making the "error_do_abort:" case of afs_make_call() abort the
+call and then abandon it to the notification handler.
 
-Fixes: ff956a3be95b ("block: use queue_limits_commit_update in queue_discard_max_store")
-Fixes: 0327ca9d53bf ("block: use queue_limits_commit_update in queue_max_sectors_store")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Link: https://lore.kernel.org/r/20250110054726.1499538-7-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 34fa47612bfe ("afs: Fix race in async call refcounting")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241216204124.3752367-25-dhowells@redhat.com
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ fs/afs/internal.h          |  9 +++++++++
+ fs/afs/rxrpc.c             | 12 +++++++++---
+ include/trace/events/afs.h |  2 ++
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index d2aa2177e4ba5..e828be777206b 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -694,22 +694,24 @@ queue_attr_store(struct kobject *kobj, struct attribute *attr,
- 	if (entry->load_module)
- 		entry->load_module(disk, page, length);
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index c9d620175e80c..d9760b2a8d8de 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -1346,6 +1346,15 @@ extern void afs_send_simple_reply(struct afs_call *, const void *, size_t);
+ extern int afs_extract_data(struct afs_call *, bool);
+ extern int afs_protocol_error(struct afs_call *, enum afs_eproto_cause);
  
--	mutex_lock(&q->sysfs_lock);
--	blk_mq_freeze_queue(q);
- 	if (entry->store_limit) {
- 		struct queue_limits lim = queue_limits_start_update(q);
++static inline void afs_see_call(struct afs_call *call, enum afs_call_trace why)
++{
++	int r = refcount_read(&call->ref);
++
++	trace_afs_call(call->debug_id, why, r,
++		       atomic_read(&call->net->nr_outstanding_calls),
++		       __builtin_return_address(0));
++}
++
+ static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
+ 				    gfp_t gfp)
+ {
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index 9f2a3bb56ec69..a122c6366ce19 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -430,11 +430,16 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	return;
  
- 		res = entry->store_limit(disk, page, length, &lim);
- 		if (res < 0) {
- 			queue_limits_cancel_update(q);
--		} else {
--			res = queue_limits_commit_update(q, &lim);
--			if (!res)
--				res = length;
-+			return res;
- 		}
+ error_do_abort:
+-	if (ret != -ECONNABORTED) {
++	if (ret != -ECONNABORTED)
+ 		rxrpc_kernel_abort_call(call->net->socket, rxcall,
+ 					RX_USER_ABORT, ret,
+ 					afs_abort_send_data_error);
 -	} else {
--		res = entry->store(disk, page, length);
++	if (call->async) {
++		afs_see_call(call, afs_call_trace_async_abort);
++		return;
++	}
 +
-+		res = queue_limits_commit_update_frozen(q, &lim);
-+		if (res)
-+			return res;
-+		return length;
- 	}
-+
-+	mutex_lock(&q->sysfs_lock);
-+	blk_mq_freeze_queue(q);
-+	res = entry->store(disk, page, length);
- 	blk_mq_unfreeze_queue(q);
- 	mutex_unlock(&q->sysfs_lock);
- 	return res;
++	if (ret == -ECONNABORTED) {
+ 		len = 0;
+ 		iov_iter_kvec(&msg.msg_iter, ITER_DEST, NULL, 0, 0);
+ 		rxrpc_kernel_recv_data(call->net->socket, rxcall,
+@@ -445,6 +450,8 @@ void afs_make_call(struct afs_call *call, gfp_t gfp)
+ 	call->error = ret;
+ 	trace_afs_call_done(call);
+ error_kill_call:
++	if (call->async)
++		afs_see_call(call, afs_call_trace_async_kill);
+ 	if (call->type->done)
+ 		call->type->done(call);
+ 
+@@ -602,7 +609,6 @@ static void afs_deliver_to_call(struct afs_call *call)
+ 	abort_code = 0;
+ call_complete:
+ 	afs_set_call_complete(call, ret, remote_abort);
+-	state = AFS_CALL_COMPLETE;
+ 	goto done;
+ }
+ 
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index a0aed1a428a18..9a75590227f26 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -118,6 +118,8 @@ enum yfs_cm_operation {
+  */
+ #define afs_call_traces \
+ 	EM(afs_call_trace_alloc,		"ALLOC") \
++	EM(afs_call_trace_async_abort,		"ASYAB") \
++	EM(afs_call_trace_async_kill,		"ASYKL") \
+ 	EM(afs_call_trace_free,			"FREE ") \
+ 	EM(afs_call_trace_get,			"GET  ") \
+ 	EM(afs_call_trace_put,			"PUT  ") \
 -- 
 2.39.5
 
