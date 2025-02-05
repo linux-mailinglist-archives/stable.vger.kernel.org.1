@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C1EA292DA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC59CA28FA4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35EBA188EFF1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11AEC3A5FD6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DC61FC0EB;
-	Wed,  5 Feb 2025 14:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFC0155382;
+	Wed,  5 Feb 2025 14:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTzAvdYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcJdAh09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C617A18A6D7;
-	Wed,  5 Feb 2025 14:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E02C8634E;
+	Wed,  5 Feb 2025 14:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767218; cv=none; b=t+A0QKDvnQtknNg5NJRN8wFtTip3qdMxZdr7n5DHdkZQ4Br/XnoM8aKSSnFpNmisOaT8pqwSU9W3w44ZmpBoabeBdAmeol/MdwEJ5qcIcV3l40oGeJ+PA1ieH15tW8k2q7MJ5vLPOWelEu17F2jNOmE017+vvXOgP9PKDhp3GLI=
+	t=1738765580; cv=none; b=XGzbDA9ZiLeyT0kbWAdHEpm0WW4/rnzlLyVt46+BRng7EGY5CpODz3DERZD1qIrURKvUvytOZ2ijHZDsLA9wbQyjDzKclMQRUVH7FwE2PcdRW3n+KoyC2YNmjuBilDaSGPb1Wr4brHVRne8cNt4KT19F6En7tcbhMM3MfuIEImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767218; c=relaxed/simple;
-	bh=YsXC8HeBKoCSW2sFQRZLbVgrrERjFQXk2WA+4CitRAI=;
+	s=arc-20240116; t=1738765580; c=relaxed/simple;
+	bh=fvhAqaOZG8Eiid/B7EP0z65+1QLpv7hdSQtMyMUyyxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V/BbuI3KH0Yy2MW7r/hREnaOPOxIND1Nw5i6ksRwQ75YlirmOP3JGWHGcuR3a6MU1ELMP1BedvQ0m1GY5PAog3x/dco08JtJq7/gPo0a0FJUhFyA6QYztBHDAZ9pQXfeB0CR8Ayhjd+WW9CxHrDtyUEq5R0jLvM0fhNl70dy+H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTzAvdYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354B4C4CED1;
-	Wed,  5 Feb 2025 14:53:38 +0000 (UTC)
+	 MIME-Version; b=Jr2Vb7M8IgQyVGqYrp4MOB3kXfCAqYTcEOdXw1tI2aJMGa/CTNntFvT+OjhyLZX5WnwH8jx8Q4oW0m6/92MqQiYe9BjSH16EqU2sCYjgFgpOfDuNwtp7EdSUgRk9OEMoibLJpRRjnT7v0zG3AJH4/ZiTHL6u0nGUYT8z76DGQHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcJdAh09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B98C4CED1;
+	Wed,  5 Feb 2025 14:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767218;
-	bh=YsXC8HeBKoCSW2sFQRZLbVgrrERjFQXk2WA+4CitRAI=;
+	s=korg; t=1738765580;
+	bh=fvhAqaOZG8Eiid/B7EP0z65+1QLpv7hdSQtMyMUyyxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTzAvdYZt63kqgUgeVY9QiCZ/jaXJVnyMyxWUHiKYv4h5c6qEz5XQKYzz8WW95DoE
-	 zmkEz/aYCLUSiATp6BgHAcboBgwHdpgcpxotFsopLzEik4O+qeJiPw886jtNJYSv1m
-	 LLeSRX6C63ML8bmcLP3/LLtz9c62tfe5cz3GDvxQ=
+	b=dcJdAh09gyZJAJ5dUuDyLmHoBeEbO6gqrGaB0gta5caXv9u4EQoQlIv+b3U7Xfzsp
+	 +H0FKqK0zE2yM0y+AmB9r2kKySn7c1BpCoKj4fTDax4oMM9trRLaQ9dQfS8t7kKpMO
+	 VAphbAs2Od5FZX8WrX5VAh/el5KuWWwVzA/VJnSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Richard Zhu <hongxing.zhu@nxp.com>,
+	David Wronek <davidwronek@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 425/590] PCI: imx6: Configure PHY based on Root Complex or Endpoint mode
+Subject: [PATCH 6.6 261/393] arm64: dts: qcom: Add SM7125 device tree
 Date: Wed,  5 Feb 2025 14:43:00 +0100
-Message-ID: <20250205134511.525570410@linuxfoundation.org>
+Message-ID: <20250205134430.297498452@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: David Wronek <davidwronek@gmail.com>
 
-[ Upstream commit de22e20589b79f35f92543119c33051f8179dba0 ]
+[ Upstream commit 72fbf05149bd451e7222c2ed1e3823972f19df9c ]
 
-Pass PHY_MODE_PCIE_EP if the PCI controller operates in Endpoint (EP) mode,
-and fix the Root Complex (RC) mode being hardcoded using a drvdata mode
-check.
+The Snapdragon 720G (sm7125) is software-wise very similar to the
+Snapdragon 7c with minor differences in clock speeds and as added here,
+it uses the Kryo 465 instead of Kryo 468.
 
-Fixes: 8026f2d8e8a9 ("PCI: imx6: Call common PHY API to set mode, speed, and submode")
-Link: https://lore.kernel.org/r/20241119-pci_fixup_addr-v8-6-c4bfa5193288@nxp.com
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: David Wronek <davidwronek@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230824091737.75813-4-davidwronek@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 092febd32a99 ("arm64: dts: qcom: sc7180: fix psci power domain node names")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm7125.dtsi | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm7125.dtsi
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index c8d5c90aa4d45..9d61e7c472082 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -966,7 +966,9 @@ static int imx_pcie_host_init(struct dw_pcie_rp *pp)
- 			goto err_clk_disable;
- 		}
- 
--		ret = phy_set_mode_ext(imx_pcie->phy, PHY_MODE_PCIE, PHY_MODE_PCIE_RC);
-+		ret = phy_set_mode_ext(imx_pcie->phy, PHY_MODE_PCIE,
-+				       imx_pcie->drvdata->mode == DW_PCIE_EP_TYPE ?
-+						PHY_MODE_PCIE_EP : PHY_MODE_PCIE_RC);
- 		if (ret) {
- 			dev_err(dev, "unable to set PCIe PHY mode\n");
- 			goto err_phy_exit;
+diff --git a/arch/arm64/boot/dts/qcom/sm7125.dtsi b/arch/arm64/boot/dts/qcom/sm7125.dtsi
+new file mode 100644
+index 0000000000000..12dd72859a433
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sm7125.dtsi
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2021, The Linux Foundation. All rights reserved.
++ */
++
++#include "sc7180.dtsi"
++
++/* SM7125 uses Kryo 465 instead of Kryo 468 */
++&CPU0 { compatible = "qcom,kryo465"; };
++&CPU1 { compatible = "qcom,kryo465"; };
++&CPU2 { compatible = "qcom,kryo465"; };
++&CPU3 { compatible = "qcom,kryo465"; };
++&CPU4 { compatible = "qcom,kryo465"; };
++&CPU5 { compatible = "qcom,kryo465"; };
++&CPU6 { compatible = "qcom,kryo465"; };
++&CPU7 { compatible = "qcom,kryo465"; };
 -- 
 2.39.5
 
