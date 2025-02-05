@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AE0A28F03
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787BAA29279
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E10A3AA374
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86081188D060
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF1E8634E;
-	Wed,  5 Feb 2025 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0744C1917D6;
+	Wed,  5 Feb 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyuULlba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvOD8qFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8035522A;
-	Wed,  5 Feb 2025 14:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64FF1632D3;
+	Wed,  5 Feb 2025 14:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765149; cv=none; b=IxoMD5zPaKPnOxe+f1kf1XsWuHJZbmpUCtWdZeySKoiZUgICoFgufyvXmX2vL4v63xZ3TITKEpDkF9UWVQ6B9bfWSFy//Jf05oCKXolLRWlqmByXaXGnG/1thKmeavah6bzt6dMsx8iclGTgK8Q0oNOTUaOOlw0eV6m8Bwt7xJ0=
+	t=1738767072; cv=none; b=ODle0hlTQ+SBy86vAHBkYRm4mxfLNzS2l2WkqgGuub9IccpEVa+VYWCfrAGdOGoX4KdekFQq7TidiOkp9Za4RDHwCsom0IzG4VuLdfWr43qRxrwmpoOTURtG3ZOb0u5Pt4qzCLNVIyN98YZlkCIkGApVUKPHqx5tYJdF4JjKfns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765149; c=relaxed/simple;
-	bh=kJSy77rIMKAmPHX0VYr0iavw0f4o+nfcX5DTtobi/Fw=;
+	s=arc-20240116; t=1738767072; c=relaxed/simple;
+	bh=P0+8MI5qhrCmjeGRdiXMIj0iFJwb1IWk9pOjtQBBWFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhY8HLGX5wZneDH63muExUak2ZHhPv3EDQIQIyMc95UJ+VF68QzcOj/pAp+2I/KhXzOYpObiIbtvdHqYJBCHZ6pgP+VmQyNa3UkjuqSBm9wc7wx6BUT/oEBqVr7CBiR4gLB07YIfyuImi4IHYutFp2Hkn4rmW8sgt+VlNSvfmtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyuULlba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1069DC4CEDD;
-	Wed,  5 Feb 2025 14:19:08 +0000 (UTC)
+	 MIME-Version; b=al//Krqb6xkUQDqmcSKJsb+0xKAtEIFF2Ucni6S7j5MaWIqnEAHFyxaAnMY3H9i3l5y5yxLn7HAjl0xYKNGYv8K6gvEXA58TNoI17GsTbyX683TnZ/xRgEXkvudrbWW0n5Afic6HLt0jHQVPphvq/OmRG7VgBDu/iM75pkPsEjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvOD8qFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D78BC4CED1;
+	Wed,  5 Feb 2025 14:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765149;
-	bh=kJSy77rIMKAmPHX0VYr0iavw0f4o+nfcX5DTtobi/Fw=;
+	s=korg; t=1738767072;
+	bh=P0+8MI5qhrCmjeGRdiXMIj0iFJwb1IWk9pOjtQBBWFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyuULlbarytXBNOBni8yRgTtYLh7NeM3hgdV4NSkKglxlU/GbPf7ntVPX8F8QgBMl
-	 2T4WV/tdBlMGOOKOWDBxgcce/SmW1DbmvE/wOIn0jht2jGxlypHdjMG4P1YE7LzDKu
-	 oGYRjjv6TF8fleiNzTf+J4Tchg51cTJtn+nHgXtc=
+	b=bvOD8qFJ/Gx1X28BICXeGgmPIOYI33o6Wapk0pc8wPnY+LqGxDYhgE+O5/gaRCxA3
+	 Y1vN7E40my36H9C2nt6W7dt2kat2L6FwvCQUT+t8726wgMpfVZw0Xna/T6thBhJG7g
+	 3haB4Fy1UFfKxiXIfCfZLuAnT6WGnJd6LQr5tgu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/393] arm64: dts: qcom: qcs404: correct sleep clock frequency
+Subject: [PATCH 6.12 402/590] iommufd/iova_bitmap: Fix shift-out-of-bounds in iova_bitmap_offset_to_index()
 Date: Wed,  5 Feb 2025 14:42:37 +0100
-Message-ID: <20250205134429.411755006@linuxfoundation.org>
+Message-ID: <20250205134510.642617300@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit 1473ff0b69de68b23ce9874548cdabc64d72725e ]
+[ Upstream commit e24c1551059268b37f6f40639883eafb281b8b9c ]
 
-The QCS40x platforms use PMS405 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+Resolve a UBSAN shift-out-of-bounds issue in iova_bitmap_offset_to_index()
+where shifting the constant "1" (of type int) by bitmap->mapped.pgshift
+(an unsigned long value) could result in undefined behavior.
 
-Fixes: 9181bb939984 ("arm64: dts: qcom: Add SDX75 platform and IDP board support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-4-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The constant "1" defaults to a 32-bit "int", and when "pgshift" exceeds
+31 (e.g., pgshift = 63) the shift operation overflows, as the result
+cannot be represented in a 32-bit type.
+
+To resolve this, the constant is updated to "1UL", promoting it to an
+unsigned long type to match the operand's type.
+
+Fixes: 58ccf0190d19 ("vfio: Add an IOVA bitmap support")
+Link: https://patch.msgid.link/r/20250113223820.10713-1-qasdev00@gmail.com
+Reported-by: syzbot <syzbot+85992ace37d5b7b51635@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=85992ace37d5b7b51635
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs404.dtsi | 2 +-
+ drivers/iommu/iommufd/iova_bitmap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs404.dtsi b/arch/arm64/boot/dts/qcom/qcs404.dtsi
-index 2721f32dfb710..cbe469cc159e9 100644
---- a/arch/arm64/boot/dts/qcom/qcs404.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs404.dtsi
-@@ -28,7 +28,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 		};
- 	};
+diff --git a/drivers/iommu/iommufd/iova_bitmap.c b/drivers/iommu/iommufd/iova_bitmap.c
+index d90b9e253412f..2cdc4f542df47 100644
+--- a/drivers/iommu/iommufd/iova_bitmap.c
++++ b/drivers/iommu/iommufd/iova_bitmap.c
+@@ -130,7 +130,7 @@ struct iova_bitmap {
+ static unsigned long iova_bitmap_offset_to_index(struct iova_bitmap *bitmap,
+ 						 unsigned long iova)
+ {
+-	unsigned long pgsize = 1 << bitmap->mapped.pgshift;
++	unsigned long pgsize = 1UL << bitmap->mapped.pgshift;
  
+ 	return iova / (BITS_PER_TYPE(*bitmap->bitmap) * pgsize);
+ }
 -- 
 2.39.5
 
