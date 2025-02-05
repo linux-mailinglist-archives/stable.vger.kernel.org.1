@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-112591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BBDA28D77
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EF3A28CB9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66223168EDC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6E201884558
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460E14EC77;
-	Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE78142E86;
+	Wed,  5 Feb 2025 13:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+sdpUhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+BuHpcI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1110415198D;
-	Wed,  5 Feb 2025 14:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA15F13C9C4;
+	Wed,  5 Feb 2025 13:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764083; cv=none; b=YQirD7UueK7G5GlN4w3V+8t+Jeab+5X7TdQd1HF4/yMiQMe2meRYNZ7VjnkZvn3bSkXhITmvnrgA/DFCtkt4zJ1I+Ft9m7kncwGZACkH25EItfj6TCrpZUldax+BUxw6iRjsf/fTWR0CY9NcCnVYSwxuva9ktxqyiM2H1QRHTLQ=
+	t=1738763584; cv=none; b=Z9HrYwaa6hCWq2aI2Hw4kOs2mZEryMlGUdo75ycn2VY/xUnEqIzLBOK1r724YKLSqjZrWyIZbS/tNc09NihBz0S75QibgV1cJwcMAvVLzMjS0ilC5eKxhYdDzM9UzvJG3OOAxTLiVBXJ46OIUukVwjkaNMPkt6K/LrxG9uOqj34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764083; c=relaxed/simple;
-	bh=BtGUvI063dh9EgidxylBKzaAFgdbKG22z0meNwxPUPY=;
+	s=arc-20240116; t=1738763584; c=relaxed/simple;
+	bh=XNkVD8zda0f8pj2VtTQge6sJPzeo6o8/tkBlMngbziw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYIAmyMv0Ra0WfnqB7JLKFMeDukQ+/kOm+6KyZece/tcBcMw3kEaKi6iB9ilXzIHkIGaj/G4qx1sjZyuuQLUy7ihoFOQGpghMZCIf7d+CTw8P5cVtPvvOqFjGP/keAvgC5RY9NDFjDEgHXQ0KrC52wvqtVtj5aNLz4fmbY1SjXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+sdpUhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D73C4CED1;
-	Wed,  5 Feb 2025 14:01:22 +0000 (UTC)
+	 MIME-Version; b=NKJVqgxNPqTdoHC9DM703NXSza3flDVPLhq+JK4pcjpxiMgpJALA2ZlR42sQbJi38LK04IFtIgeOkVceGrLTqZrNPMbl3zpLbJx7ua5hLhzYk2Jjn/8+Af+AUOow94rR9By9DxQvy1TLjO4CKMuEAqSEkR0lKWCP3p8wwDr5eIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+BuHpcI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A550C4CEDD;
+	Wed,  5 Feb 2025 13:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764082;
-	bh=BtGUvI063dh9EgidxylBKzaAFgdbKG22z0meNwxPUPY=;
+	s=korg; t=1738763584;
+	bh=XNkVD8zda0f8pj2VtTQge6sJPzeo6o8/tkBlMngbziw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+sdpUhADS1YsqNPpwAlUOIE8JA+DpXYloua/GhIqofW0YVwXsxcg4oQb3+TzJkpA
-	 TsiPfR/qHy9EacoX0dwnWVZFgCLQza516BraE+H+xyg/vR916aLSwvUmeBGz+N2iW1
-	 AYQATqs8lNv4W1O3HX401jfzs7vvfJEpel2CcjL0=
+	b=q+BuHpcILxnlFiaDfa0hstL2LFOLpgBSy9s29d+uB2PStqDjrFse/OhmbtsdepllF
+	 9puJyk+KTtCQszKUfm2H0alDrDATFAZTjFCMwMJZl+dqr5SGxWhvfuIdXkGNnKdNhM
+	 XyVW6yjCGZWdEiujWQbQYpesKh5l5gc/QZB1i0Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	John Stultz <jstultz@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Metin Kaya <metin.kaya@arm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 046/623] drm/amd/pm: Fix an error handling path in vega10_enable_se_edc_force_stall_config()
+Subject: [PATCH 6.12 033/590] sched: Split out __schedule() deactivate task logic into a helper
 Date: Wed,  5 Feb 2025 14:36:28 +0100
-Message-ID: <20250205134457.992332269@linuxfoundation.org>
+Message-ID: <20250205134456.518230907@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: John Stultz <jstultz@google.com>
 
-[ Upstream commit a3300782d5375e280ba7040f323d01960bfe3396 ]
+[ Upstream commit 7b3d61f6578ab06f130ecc13cd2f3010a6c295bb ]
 
-In case of error after a amdgpu_gfx_rlc_enter_safe_mode() call, it is not
-balanced by a corresponding amdgpu_gfx_rlc_exit_safe_mode() call.
+As we're going to re-use the deactivation logic,
+split it into a helper.
 
-Add the missing call.
-
-Fixes: 9b7b8154cdb8 ("drm/amd/powerplay: added didt support for vega10")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Metin Kaya <metin.kaya@arm.com>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Metin Kaya <metin.kaya@arm.com>
+Link: https://lore.kernel.org/r/20241009235352.1614323-7-jstultz@google.com
+Stable-dep-of: 7d9da040575b ("psi: Fix race when task wakes up before psi_sched_switch() adjusts flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/core.c | 67 +++++++++++++++++++++++++++------------------
+ 1 file changed, 40 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-index 3007b054c873c..776d58ea63ae9 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_powertune.c
-@@ -1120,13 +1120,14 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
- 	result = vega10_program_didt_config_registers(hwmgr, SEEDCForceStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
- 	result |= vega10_program_didt_config_registers(hwmgr, SEEDCCtrlForceStallConfig_Vega10, VEGA10_CONFIGREG_DIDT);
- 	if (0 != result)
--		return result;
-+		goto exit_safe_mode;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index d07dc87787dff..d794d9bb429fd 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6507,6 +6507,45 @@ pick_next_task(struct rq *rq, struct task_struct *prev, struct rq_flags *rf)
+ #define SM_PREEMPT		1
+ #define SM_RTLOCK_WAIT		2
  
- 	vega10_didt_set_mask(hwmgr, false);
++/*
++ * Helper function for __schedule()
++ *
++ * If a task does not have signals pending, deactivate it
++ * Otherwise marks the task's __state as RUNNING
++ */
++static bool try_to_block_task(struct rq *rq, struct task_struct *p,
++			      unsigned long task_state)
++{
++	int flags = DEQUEUE_NOCLOCK;
++
++	if (signal_pending_state(task_state, p)) {
++		WRITE_ONCE(p->__state, TASK_RUNNING);
++		return false;
++	}
++
++	p->sched_contributes_to_load =
++		(task_state & TASK_UNINTERRUPTIBLE) &&
++		!(task_state & TASK_NOLOAD) &&
++		!(task_state & TASK_FROZEN);
++
++	if (unlikely(is_special_task_state(task_state)))
++		flags |= DEQUEUE_SPECIAL;
++
++	/*
++	 * __schedule()			ttwu()
++	 *   prev_state = prev->state;    if (p->on_rq && ...)
++	 *   if (prev_state)		    goto out;
++	 *     p->on_rq = 0;		  smp_acquire__after_ctrl_dep();
++	 *				  p->state = TASK_WAKING
++	 *
++	 * Where __schedule() and ttwu() have matching control dependencies.
++	 *
++	 * After this, schedule() must not care about p->state any more.
++	 */
++	block_task(rq, p, flags);
++	return true;
++}
++
+ /*
+  * __schedule() is the main scheduler function.
+  *
+@@ -6615,33 +6654,7 @@ static void __sched notrace __schedule(int sched_mode)
+ 			goto picked;
+ 		}
+ 	} else if (!preempt && prev_state) {
+-		if (signal_pending_state(prev_state, prev)) {
+-			WRITE_ONCE(prev->__state, TASK_RUNNING);
+-		} else {
+-			int flags = DEQUEUE_NOCLOCK;
+-
+-			prev->sched_contributes_to_load =
+-				(prev_state & TASK_UNINTERRUPTIBLE) &&
+-				!(prev_state & TASK_NOLOAD) &&
+-				!(prev_state & TASK_FROZEN);
+-
+-			if (unlikely(is_special_task_state(prev_state)))
+-				flags |= DEQUEUE_SPECIAL;
+-
+-			/*
+-			 * __schedule()			ttwu()
+-			 *   prev_state = prev->state;    if (p->on_rq && ...)
+-			 *   if (prev_state)		    goto out;
+-			 *     p->on_rq = 0;		  smp_acquire__after_ctrl_dep();
+-			 *				  p->state = TASK_WAKING
+-			 *
+-			 * Where __schedule() and ttwu() have matching control dependencies.
+-			 *
+-			 * After this, schedule() must not care about p->state any more.
+-			 */
+-			block_task(rq, prev, flags);
+-			block = true;
+-		}
++		block = try_to_block_task(rq, prev, prev_state);
+ 		switch_count = &prev->nvcsw;
+ 	}
  
-+exit_safe_mode:
- 	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- 
--	return 0;
-+	return result;
- }
- 
- static int vega10_disable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 -- 
 2.39.5
 
