@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72202A29369
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487F0A290AA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF58816CC77
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A1123A7F56
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5E61632D3;
-	Wed,  5 Feb 2025 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651F1156225;
+	Wed,  5 Feb 2025 14:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFHwOT8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvcEQsWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0921155A30;
-	Wed,  5 Feb 2025 15:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F23376;
+	Wed,  5 Feb 2025 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767849; cv=none; b=gRtpIJQ0Q10tqe1ZJ1tEtDqqaTZD3+y3zOvZ+HwYFELxLFVENm/P1NLiMOVm6+DkY0uEBRB89/PkDRzurAhz5aeaAB2HySzW/j+7Khkpjgyl+L+vKdGWcDTvLmrz2Vgh+oSvnP1TSTu1QbYkDUkGSscjHAnc2UDsDUbs9ZK2yuk=
+	t=1738766334; cv=none; b=iBU2Se7lYFX5QFSrEQznO3uu7bvyaq0QCplcZ2cVSoxqboEiOxqkgMIcJyrb97fLO2s5hJWa6uT5p9uGij/W6asSRTcZ+a+XuVeSLIFPXtaFRwoM8sePvIBLSnYu3KbnPlVyAxq7yf+XPsZKaF835YHEDqKoHhW6soXT9mmaZN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767849; c=relaxed/simple;
-	bh=VqROhE1My5MQ50maj/HO82KZlg6vn8F9MRwqj9DOkCw=;
+	s=arc-20240116; t=1738766334; c=relaxed/simple;
+	bh=ov2+vcihaMA6GnNuOY4XYiqxWNyz3ZYZJdVwUZ8sK28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yk2GBF7yPR97Yw1enTFaSIZ4Kz2RZ3nbJqttBwd2Rq1vzpBNwyZxt0BKfTJ2+3/lk5y/7fh11CjgvyRNYelzBHGlO+ddX5DEk5p0CZl+8vmYBk2bjelIxOf3SiPWoW6CrurFmmTraZ5zKl6he2/zPJpunmx0z4G8YMMgH+BLCs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFHwOT8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F776C4CED1;
-	Wed,  5 Feb 2025 15:04:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rlNudXA2/uFtQ7VosDJHlDZ9YzFXbuZuDkx4uoXUdCck2xEd2Kt9Dhk5N6V0YDqQS8BW9i71FW9AhtSs49/SLT9RszLRCDhZ4AKfLZJHhIsmOCCA6mZwEEw9hyzTnbJQFz5ImpW0tJSE4EoaJv9feFl5Vyp7bBR+4kp/sHCnVBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvcEQsWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231D4C4CED1;
+	Wed,  5 Feb 2025 14:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767849;
-	bh=VqROhE1My5MQ50maj/HO82KZlg6vn8F9MRwqj9DOkCw=;
+	s=korg; t=1738766333;
+	bh=ov2+vcihaMA6GnNuOY4XYiqxWNyz3ZYZJdVwUZ8sK28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFHwOT8I+ILNOhew1lmErNHe99mw9AFwnTMh+uWctpwI8aX2smTAw3kiHp5Cm2d6k
-	 VuPEb2jcOX4LFT0Fs5+JAWy7FZOTMV5BXfn59t1IPR79JHu3zvn7G2eCHu3BnGBtUv
-	 gsksJgAUt8n8FI2RJkU9sxnfZ/wEnoQKDpbzsjs0=
+	b=yvcEQsWvSpvQ4nzlBDMMHsug1d0JYCA8kck91HwkVFdtS0YKPTIoyug3AOLNHFHZV
+	 owd8cFxWWDrvBA4b/+TkZbiBT4N7rM+CO03pH/VHg8WLBdN9m+tWJToyVG7pRI7P3V
+	 4OL8OvW+Mvjdw/OaZf+Ij9gusBWGhSeanjoZJHHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 517/590] net: ravb: Fix missing rtnl lock in suspend/resume path
+	Christian Brauner <brauner@kernel.org>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 6.6 353/393] hostfs: fix the host directory parse when mounting.
 Date: Wed,  5 Feb 2025 14:44:32 +0100
-Message-ID: <20250205134515.044555421@linuxfoundation.org>
+Message-ID: <20250205134433.810470614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +63,135 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 2c2ebb2b49573e5f8726112ad06b1dffc3c9ea03 ]
+commit ef9ca17ca458ac7253ae71b552e601e49311fc48 upstream.
 
-Fix the suspend/resume path by ensuring the rtnl lock is held where
-required. Calls to ravb_open, ravb_close and wol operations must be
-performed under the rtnl lock to prevent conflicts with ongoing ndo
-operations.
+hostfs not keep the host directory when mounting. When the host
+directory is none (default), fc->source is used as the host root
+directory, and this is wrong. Here we use `parse_monolithic` to
+handle the old mount path for parsing the root directory. For new
+mount path, The `parse_param` is used for the host directory parse.
 
-Without this fix, the following warning is triggered:
-[   39.032969] =============================
-[   39.032983] WARNING: suspicious RCU usage
-[   39.033019] -----------------------------
-[   39.033033] drivers/net/phy/phy_device.c:2004 suspicious
-rcu_dereference_protected() usage!
-...
-[   39.033597] stack backtrace:
-[   39.033613] CPU: 0 UID: 0 PID: 174 Comm: python3 Not tainted
-6.13.0-rc7-next-20250116-arm64-renesas-00002-g35245dfdc62c #7
-[   39.033623] Hardware name: Renesas SMARC EVK version 2 based on
-r9a08g045s33 (DT)
-[   39.033628] Call trace:
-[   39.033633]  show_stack+0x14/0x1c (C)
-[   39.033652]  dump_stack_lvl+0xb4/0xc4
-[   39.033664]  dump_stack+0x14/0x1c
-[   39.033671]  lockdep_rcu_suspicious+0x16c/0x22c
-[   39.033682]  phy_detach+0x160/0x190
-[   39.033694]  phy_disconnect+0x40/0x54
-[   39.033703]  ravb_close+0x6c/0x1cc
-[   39.033714]  ravb_suspend+0x48/0x120
-[   39.033721]  dpm_run_callback+0x4c/0x14c
-[   39.033731]  device_suspend+0x11c/0x4dc
-[   39.033740]  dpm_suspend+0xdc/0x214
-[   39.033748]  dpm_suspend_start+0x48/0x60
-[   39.033758]  suspend_devices_and_enter+0x124/0x574
-[   39.033769]  pm_suspend+0x1ac/0x274
-[   39.033778]  state_store+0x88/0x124
-[   39.033788]  kobj_attr_store+0x14/0x24
-[   39.033798]  sysfs_kf_write+0x48/0x6c
-[   39.033808]  kernfs_fop_write_iter+0x118/0x1a8
-[   39.033817]  vfs_write+0x27c/0x378
-[   39.033825]  ksys_write+0x64/0xf4
-[   39.033833]  __arm64_sys_write+0x18/0x20
-[   39.033841]  invoke_syscall+0x44/0x104
-[   39.033852]  el0_svc_common.constprop.0+0xb4/0xd4
-[   39.033862]  do_el0_svc+0x18/0x20
-[   39.033870]  el0_svc+0x3c/0xf0
-[   39.033880]  el0t_64_sync_handler+0xc0/0xc4
-[   39.033888]  el0t_64_sync+0x154/0x158
-[   39.041274] ravb 11c30000.ethernet eth0: Link is Down
-
-Reported-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Closes: https://lore.kernel.org/netdev/4c6419d8-c06b-495c-b987-d66c2e1ff848@tuxon.dev/
-Fixes: 0184165b2f42 ("ravb: add sleep PM suspend/resume support")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Maciej Żenczykowski <maze@google.com>
+Fixes: cd140ce9f611 ("hostfs: convert hostfs to use the new mount API")
+Link: https://lore.kernel.org/all/CANP3RGceNzwdb7w=vPf5=7BCid5HVQDmz1K5kC9JG42+HVAh_g@mail.gmail.com/
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://lore.kernel.org/r/20240725065130.1821964-1-lihongbo22@huawei.com
+[brauner: minor fixes]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ fs/hostfs/hostfs_kern.c |   65 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 55 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 6f6b0566c65bc..cc4f0d16c7630 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -3208,10 +3208,15 @@ static int ravb_suspend(struct device *dev)
+--- a/fs/hostfs/hostfs_kern.c
++++ b/fs/hostfs/hostfs_kern.c
+@@ -17,6 +17,7 @@
+ #include <linux/writeback.h>
+ #include <linux/mount.h>
+ #include <linux/fs_context.h>
++#include <linux/fs_parser.h>
+ #include <linux/namei.h>
+ #include "hostfs.h"
+ #include <init.h>
+@@ -925,7 +926,6 @@ static const struct inode_operations hos
+ static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	struct hostfs_fs_info *fsi = sb->s_fs_info;
+-	const char *host_root = fc->source;
+ 	struct inode *root_inode;
+ 	int err;
  
- 	netif_device_detach(ndev);
+@@ -939,15 +939,6 @@ static int hostfs_fill_super(struct supe
+ 	if (err)
+ 		return err;
  
--	if (priv->wol_enabled)
--		return ravb_wol_setup(ndev);
-+	rtnl_lock();
-+	if (priv->wol_enabled) {
-+		ret = ravb_wol_setup(ndev);
-+		rtnl_unlock();
-+		return ret;
+-	/* NULL is printed as '(null)' by printf(): avoid that. */
+-	if (fc->source == NULL)
+-		host_root = "";
+-
+-	fsi->host_root_path =
+-		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
+-	if (fsi->host_root_path == NULL)
+-		return -ENOMEM;
+-
+ 	root_inode = hostfs_iget(sb, fsi->host_root_path);
+ 	if (IS_ERR(root_inode))
+ 		return PTR_ERR(root_inode);
+@@ -973,6 +964,58 @@ static int hostfs_fill_super(struct supe
+ 	return 0;
+ }
+ 
++enum hostfs_parma {
++	Opt_hostfs,
++};
++
++static const struct fs_parameter_spec hostfs_param_specs[] = {
++	fsparam_string_empty("hostfs",		Opt_hostfs),
++	{}
++};
++
++static int hostfs_parse_param(struct fs_context *fc, struct fs_parameter *param)
++{
++	struct hostfs_fs_info *fsi = fc->s_fs_info;
++	struct fs_parse_result result;
++	char *host_root;
++	int opt;
++
++	opt = fs_parse(fc, hostfs_param_specs, param, &result);
++	if (opt < 0)
++		return opt;
++
++	switch (opt) {
++	case Opt_hostfs:
++		host_root = param->string;
++		if (!*host_root)
++			host_root = "";
++		fsi->host_root_path =
++			kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
++		if (fsi->host_root_path == NULL)
++			return -ENOMEM;
++		break;
 +	}
++
++	return 0;
++}
++
++static int hostfs_parse_monolithic(struct fs_context *fc, void *data)
++{
++	struct hostfs_fs_info *fsi = fc->s_fs_info;
++	char *host_root = (char *)data;
++
++	/* NULL is printed as '(null)' by printf(): avoid that. */
++	if (host_root == NULL)
++		host_root = "";
++
++	fsi->host_root_path =
++		kasprintf(GFP_KERNEL, "%s/%s", root_ino, host_root);
++	if (fsi->host_root_path == NULL)
++		return -ENOMEM;
++
++	return 0;
++}
++
+ static int hostfs_fc_get_tree(struct fs_context *fc)
+ {
+ 	return get_tree_nodev(fc, hostfs_fill_super);
+@@ -990,6 +1033,8 @@ static void hostfs_fc_free(struct fs_con
+ }
  
- 	ret = ravb_close(ndev);
-+	rtnl_unlock();
- 	if (ret)
- 		return ret;
- 
-@@ -3236,19 +3241,20 @@ static int ravb_resume(struct device *dev)
- 	if (!netif_running(ndev))
- 		return 0;
- 
-+	rtnl_lock();
- 	/* If WoL is enabled restore the interface. */
--	if (priv->wol_enabled) {
-+	if (priv->wol_enabled)
- 		ret = ravb_wol_restore(ndev);
--		if (ret)
--			return ret;
--	} else {
-+	else
- 		ret = pm_runtime_force_resume(dev);
--		if (ret)
--			return ret;
-+	if (ret) {
-+		rtnl_unlock();
-+		return ret;
- 	}
- 
- 	/* Reopening the interface will restore the device to the working state. */
- 	ret = ravb_open(ndev);
-+	rtnl_unlock();
- 	if (ret < 0)
- 		goto out_rpm_put;
- 
--- 
-2.39.5
-
+ static const struct fs_context_operations hostfs_context_ops = {
++	.parse_monolithic = hostfs_parse_monolithic,
++	.parse_param	= hostfs_parse_param,
+ 	.get_tree	= hostfs_fc_get_tree,
+ 	.free		= hostfs_fc_free,
+ };
 
 
 
