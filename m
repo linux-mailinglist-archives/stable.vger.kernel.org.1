@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4ABA28F8C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60217A2901B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6D818831B2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A4131883706
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA17155335;
-	Wed,  5 Feb 2025 14:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8590F14B075;
+	Wed,  5 Feb 2025 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tH9KrVYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDIJ70uz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE78634E;
-	Wed,  5 Feb 2025 14:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FA7151988;
+	Wed,  5 Feb 2025 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765577; cv=none; b=orS8hOvxrlTrjQemYn0fZ6pAjojRKzKcb6MowihnfSqBuwFah/bpY3K3NxBzxJQ1Z4U/78XoP68P3NHtsfIlC869GwfNahlxpAQSAtcKxgNvi/qt54TbQWQA1L9q+K2Y0RgGC1JLYm2hpsDc7MoLUw8jxcyG0WK4by5Kngpdu3g=
+	t=1738765925; cv=none; b=vEsOtYkO62dy6E6k43rsju9+MFcfSNDF3ZzaJAPLl2eZruNtRDh3niUN/fRnLJ+nEO7n4XwOnU1H8QV/uFZa2gfHtH4ddr6aOAOOH8zEAe+rhIhvowhzJNuKQIawkMQkDPAZ+pdhPP3aG8aHFlsIurTyPEmSKzrKh/Ua3gaycm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765577; c=relaxed/simple;
-	bh=yHxNIVdcgJiNYMx7BhhYp2fnYhtNbFIQk6xj3p+J3vk=;
+	s=arc-20240116; t=1738765925; c=relaxed/simple;
+	bh=uZfcU1VOIuiddUQeOhoqxcgVKEdT1MO0S9czkR1WNY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inQEajr9LCPGISLmXI+QpUCJ+QeG3NfgS0PadBpqiJfyKP2tLt/a4ENKEIRy5DEjvheLU8E/P3Q/QizN20z+hwOgIBY8U5mLolFVZnSTsiXg2UyB6p1JFHwRujE6JgnfqFQaJOTPzis4yx4jN3IYZG547mtIINa+QeVYe4loCdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tH9KrVYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDD2C4CED1;
-	Wed,  5 Feb 2025 14:26:16 +0000 (UTC)
+	 MIME-Version; b=SBFtCgjwmLyO21t468NBhQRFohffYPfk57xWPuS2mWDT5xjKbulCNsKq/gw+LqFyTRJJt0HdpJdfTNFOkvmCxE+OIvMpaASI9R+Zhwl014eh9S2d1v8igPXJPx+ftyn0EXjpAq7FFj9ECCRqTqIqilA/+GCfrrSFn0tNhuKrbR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDIJ70uz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A53C4CED6;
+	Wed,  5 Feb 2025 14:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765577;
-	bh=yHxNIVdcgJiNYMx7BhhYp2fnYhtNbFIQk6xj3p+J3vk=;
+	s=korg; t=1738765925;
+	bh=uZfcU1VOIuiddUQeOhoqxcgVKEdT1MO0S9czkR1WNY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tH9KrVYLW4L8QwJE72tUe+JzVfoFXfkvg7VRQk8YxUHgqTfb/8H0S9lCvPFh74juv
-	 8T5tej/jv6+nq7G/BSGJ3lBxrUfRpfMgpraV06djAQ7lTmxdgyY5iAXBa47n/HF3S9
-	 NSgj0/i9zGHh+mYzTsHAtJ6moxqPG4YoNC23jeC0=
+	b=jDIJ70uzDsSpUo9aEMfg73O0QvIAmNwFHXYEPYTi8e41EzIMG8mSmAJNc+r2ZSjmC
+	 u5GIWLQh6VQDJQoKRwhgadIVZJd3sXL7s9HlUc5z1x1zk4leg36An149feCEUQQyv8
+	 zET71zycMsAFsXiPFXxOaGvU4aU7jcfTsbX0mEmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 213/590] wifi: cfg80211: adjust allocation of colocated AP data
+Subject: [PATCH 6.13 226/623] dev: Acquire netdev_rename_lock before restoring dev->name in dev_change_name().
 Date: Wed,  5 Feb 2025 14:39:28 +0100
-Message-ID: <20250205134503.435575961@linuxfoundation.org>
+Message-ID: <20250205134504.870327761@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1a0d24775cdee2b8dc14bfa4f4418c930ab1ac57 ]
+[ Upstream commit e361560a7912958ba3059f51e7dd21612d119169 ]
 
-In 'cfg80211_scan_6ghz()', an instances of 'struct cfg80211_colocated_ap'
-are allocated as if they would have 'ssid' as trailing VLA member. Since
-this is not so, extra IEEE80211_MAX_SSID_LEN bytes are not needed.
-Briefly tested with KUnit.
+The cited commit forgot to add netdev_rename_lock in one of the
+error paths in dev_change_name().
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250113155417.552587-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Let's hold netdev_rename_lock before restoring the old dev->name.
+
+Fixes: 0840556e5a3a ("net: Protect dev->name by seqlock.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250115095545.52709-2-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/core/dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 21bc057fd8c29..18e132cdea72a 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -857,9 +857,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 			if (ret)
- 				continue;
- 
--			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
--					GFP_ATOMIC);
--
-+			entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
- 			if (!entry)
- 				continue;
- 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a9f62f5aeb840..7600820bed6bd 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1279,7 +1279,9 @@ int dev_change_name(struct net_device *dev, const char *newname)
+ rollback:
+ 	ret = device_rename(&dev->dev, dev->name);
+ 	if (ret) {
++		write_seqlock_bh(&netdev_rename_lock);
+ 		memcpy(dev->name, oldname, IFNAMSIZ);
++		write_sequnlock_bh(&netdev_rename_lock);
+ 		WRITE_ONCE(dev->name_assign_type, old_assign_type);
+ 		up_write(&devnet_rename_sem);
+ 		return ret;
 -- 
 2.39.5
 
