@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6470DA28C3B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ACDA28FD2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06831684AD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DA11884842
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB91D139D1B;
-	Wed,  5 Feb 2025 13:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FBD5165F16;
+	Wed,  5 Feb 2025 14:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgLOoLg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uuo2uRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87811B640;
-	Wed,  5 Feb 2025 13:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D86C155751;
+	Wed,  5 Feb 2025 14:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763238; cv=none; b=TSsu8oTiqWpN7cgThYYLUeTwU91TJQA/6EXHv6GH/5m35pCJZtnjgTNyo0ijfBxkxZME+hUDn5Z5n/ryIEJdumLQsBxMaE6PtTQPbMcWIiqnUvjTgpzdMKdTWYuD8lVynYsoBPPM9VoFRGx6UsL3iCPb6/bay6PizC04U8f0L0c=
+	t=1738765738; cv=none; b=VmBJycBBtHpuiNY2AofL3x7CAXNvdZrgjmXxJvXAYJZXsuB+aK2KCmWBLHf4+agfzJC8qPTGIK6QvBAGNo7NnsMO7UhPn580U8IyNPYMozLR/ttVbuMBNseA7MmuXpPhITxSn2Rizj9rXTPfllmddfXyEGLHr+qxiQHeTeJtPYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763238; c=relaxed/simple;
-	bh=yCt83+PIXF2ne+wjvu01vOSd2aECRZOgAq0Cc8s6RYo=;
+	s=arc-20240116; t=1738765738; c=relaxed/simple;
+	bh=MHLxApZOTbGAkJozaD9PJb3OhJOGccITYKuPb5LAj2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glMJiLGW959GGw67OigFu7QAk20u9Tr+IG9xu8siVAdrBB1gEg4wZCP4R/5bvjb9YfvHjJ60HF7Y/r9UuHKhhS/ifK3zoBd22z8lT5UfvoP3NcfWPCCd0GNn3TskBVHhFsIAfN01eyVurwXfPHxA/NZ0n8CkIpMmzJ9yXoCIzSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgLOoLg3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B2EC4CED1;
-	Wed,  5 Feb 2025 13:47:15 +0000 (UTC)
+	 MIME-Version; b=jqhsT4AKYurJ5ipwQ2hZWgoHXtPzYo4iAWrtV/bASuoKwZcyrI+v+gMsr1o12PpT+v0aH3XFWmmLtBnUSueMsPCN2/7ZHh2/1yM4IVZlvBbDDzNi4nG/vlM4g6gOAGdCG2SnQFJTrIrCJMqhBM9CmArEotD6iU9vr8wc8P6a7D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uuo2uRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76784C4CED1;
+	Wed,  5 Feb 2025 14:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763236;
-	bh=yCt83+PIXF2ne+wjvu01vOSd2aECRZOgAq0Cc8s6RYo=;
+	s=korg; t=1738765737;
+	bh=MHLxApZOTbGAkJozaD9PJb3OhJOGccITYKuPb5LAj2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgLOoLg3ZmECJrnmXIGEMAb/TA+y6R4gt7+QX3eNbTPwSreeenNZzRw+4EqTpDSPj
-	 yYOA+XSDYJs/Fm7ARefXEMsAc2+q6rqlqQyKxl+0SoJQiGDS6SiJh6bwwE6u1XXLVS
-	 nGrFTkLJskzkTj1WabtGjXL0scn51cviyxIAmblg=
+	b=2uuo2uRC5rUaespyfDO1AwTJOIJCqhXzffd3hZjciOciLkt0Hi0lpOdjO28j5gC5J
+	 1tf7albwC0Vw6XaPjzlEzL3tjZj6NkkhJ6R/tE64bbCQxv/R0pITEETyQ7tV+fYMuL
+	 SuZk/OmAjgCr02X2Ap9RG/cFI2tWfaS6+Mf7VUS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Christian Brauner <brauner@kernel.org>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/393] afs: Fix the fallback handling for the YFS.RemoveFile2 RPC call
-Date: Wed,  5 Feb 2025 14:38:55 +0100
-Message-ID: <20250205134420.915956842@linuxfoundation.org>
+Subject: [PATCH 6.13 194/623] wifi: mt76: Enhance mt7925_mac_link_sta_add to support MLO
+Date: Wed,  5 Feb 2025 14:38:56 +0100
+Message-ID: <20250205134503.657716429@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit e30458d690f35abb01de8b3cbc09285deb725d00 ]
+[ Upstream commit e6803d39a8aa59e557402a541a97ee04b06c49b2 ]
 
-Fix a pair of bugs in the fallback handling for the YFS.RemoveFile2 RPC
-call:
+Enhance mt7925_mac_link_sta_add to support MLO.
 
- (1) Fix the abort code check to also look for RXGEN_OPCODE.  The lack of
-     this masks the second bug.
-
- (2) call->server is now not used for ordinary filesystem RPC calls that
-     have an operation descriptor.  Fix to use call->op->server instead.
-
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/109541.1736865963@warthog.procyon.org.uk
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-9-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/yfsclient.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
-index 11571cca86c19..01f333e691d64 100644
---- a/fs/afs/yfsclient.c
-+++ b/fs/afs/yfsclient.c
-@@ -655,8 +655,9 @@ static int yfs_deliver_fs_remove_file2(struct afs_call *call)
- static void yfs_done_fs_remove_file2(struct afs_call *call)
- {
- 	if (call->error == -ECONNABORTED &&
--	    call->abort_code == RX_INVALID_OPERATION) {
--		set_bit(AFS_SERVER_FL_NO_RM2, &call->server->flags);
-+	    (call->abort_code == RX_INVALID_OPERATION ||
-+	     call->abort_code == RXGEN_OPCODE)) {
-+		set_bit(AFS_SERVER_FL_NO_RM2, &call->op->server->flags);
- 		call->op->flags |= AFS_OPERATION_DOWNGRADE;
- 	}
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 3cd3c3e289e72..1140af6577937 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -878,9 +878,14 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 	link_conf = mt792x_vif_to_bss_conf(vif, link_id);
+ 
+ 	/* should update bss info before STA add */
+-	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls)
+-		mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
+-					link_conf, link_sta, false);
++	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls) {
++		if (ieee80211_vif_is_mld(vif))
++			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
++						link_conf, link_sta, link_sta != mlink->pri_link);
++		else
++			mt7925_mcu_add_bss_info(&dev->phy, mconf->mt76.ctx,
++						link_conf, link_sta, false);
++	}
+ 
+ 	if (ieee80211_vif_is_mld(vif) &&
+ 	    link_sta == mlink->pri_link) {
 -- 
 2.39.5
 
