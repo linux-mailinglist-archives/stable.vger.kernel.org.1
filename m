@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD0BA28DCF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A707AA28EFE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 019447A1F3D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138FB3A8523
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C24C14B080;
-	Wed,  5 Feb 2025 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273191537AC;
+	Wed,  5 Feb 2025 14:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKWaTNkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD1kueKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585941519AA;
-	Wed,  5 Feb 2025 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50C71519BE;
+	Wed,  5 Feb 2025 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764334; cv=none; b=agrTxD+JZb3UwrTgGrZJvxqeuyojTUGgw45LmZHEL0+8jMZt3X4v5dcLgfZOBsDknTNvvygyV5tavp61G3ljRZHQucShzLW9xF/pgWrRCCYsE6f5v7XvwtOq/br98+1ONAodyF+Ab6M4FYIIIMORoXg6rBUdlx77covFAm9R/Kg=
+	t=1738765131; cv=none; b=raeb5EjFZvA59epx1Lchb75vNpKyW6X1s2a4jy+3HmvXmk/+SYTXNwZK7WL2ZF4tvzC9Z842Iy/+yDOFlP+qFRk9DSemq/Q+vVaGINVCIHH300wEUipugCznPOhW46lHVe+esKPLg5hREDYAFB+XrPi+EfmC6TG8Z8qyHJNTY4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764334; c=relaxed/simple;
-	bh=tgxUWKisDc7FBQKbpqaYqCf6IrlKa57fQUIyKQq0tmI=;
+	s=arc-20240116; t=1738765131; c=relaxed/simple;
+	bh=9bbhJLKCHdUX/NivN5NcYAMbkEJSCWOItz+xkAvAD/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq82NMMYT+eQu4k2/Mqzz3s4EW59C8nD0Zth6W2e/9VHDp77h0gNA88hG3qp6YWCup2fkZny59FbJ29EoFXZFzC2OIGS3HlyWSs55zukeBT6322ZL1/0YBBuvB/Npnn5ZAuzYRrV8Bg3jEFE/TX8jEjTxLRL4l74RQo5lqAkE7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKWaTNkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63A5C4CED1;
-	Wed,  5 Feb 2025 14:05:33 +0000 (UTC)
+	 MIME-Version; b=BE5gszRTT4htlUscPTUhciYPadGwFzZTQFlTMnyY5Zb139Efgx3+TGukvXcsdjIlVELM4vg8/MzTq6hLWSM7oufnr/L8hrtzdnGWuMphPat9s9Nv4md5k2/E2rXWdMArJDYFPC+egqm3yyglNo2Mu8UkyZOhnwMt1YYOZIssqSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD1kueKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41938C4CED1;
+	Wed,  5 Feb 2025 14:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764334;
-	bh=tgxUWKisDc7FBQKbpqaYqCf6IrlKa57fQUIyKQq0tmI=;
+	s=korg; t=1738765131;
+	bh=9bbhJLKCHdUX/NivN5NcYAMbkEJSCWOItz+xkAvAD/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKWaTNkYKuPOnvZWlISbiw8vBjnCwfv2xNFUmOOJJ4BWlqv6YxAA6/YJBo7tSFH4W
-	 0mywS70QB2pczJn7RBMFbMj8aL7Ffs6Htu8xcw6Y+WlVtPe1wSgz/5LonEyJWG4rBU
-	 ebumGphGx4CvO3zNLj9pQoKkofApK41jC3kQexBg=
+	b=VD1kueKs4Jqiw9sFg4B7+YWil6t4CoVYkRlflOHWA0bf/cxTwsXNZ7FCRPAq3ewyg
+	 uqpfjq1kHQrF8/5s/D90qu1uKRbFlswhBGJ97V7uXTTSB960WRhjMhfBy2xxvMx9AO
+	 O6PerywRIoub4qnTbR4ejUOXxR013WuedoYAgvsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 114/590] net: airoha: Fix error path in airoha_probe()
+Subject: [PATCH 6.13 127/623] cpufreq: qcom: Fix qcom_cpufreq_hw_recalc_rate() to query LUT if LMh IRQ is not available
 Date: Wed,  5 Feb 2025 14:37:49 +0100
-Message-ID: <20250205134459.619425854@linuxfoundation.org>
+Message-ID: <20250205134501.085011055@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 0c7469ee718e1dd929f52bfb142a7f6fb68f0765 ]
+[ Upstream commit 85d8b11351a8f15d6ec7a5e97909861cb3b6bcec ]
 
-Do not run napi_disable() if airoha_hw_init() fails since Tx/Rx napi
-has not been started yet. In order to fix the issue, introduce
-airoha_qdma_stop_napi routine and remove napi_disable in
-airoha_hw_cleanup().
+Currently, qcom_cpufreq_hw_recalc_rate() returns the LMh throttled
+frequency for the domain even if LMh IRQ is not available. But as per
+qcom_cpufreq_hw_get(), the driver has to query LUT entries to get the
+actual frequency of the domain. So do the same in
+qcom_cpufreq_hw_recalc_rate().
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20241216-airoha_probe-error-path-fix-v2-1-6b10e04e9a5c@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+While doing so, refactor the existing qcom_cpufreq_hw_get() function so
+that qcom_cpufreq_hw_recalc_rate() can make use of the existing code and
+avoid code duplication. This also requires setting the
+qcom_cpufreq_data::policy even if LMh IRQ is not available.
+
+Fixes: 4370232c727b ("cpufreq: qcom-hw: Add CPU clock provider support")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 33 ++++++++++++++++------
- 1 file changed, 25 insertions(+), 8 deletions(-)
+ drivers/cpufreq/qcom-cpufreq-hw.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index 2c26eb1852837..8d9fb2a20469a 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -2123,17 +2123,14 @@ static void airoha_hw_cleanup(struct airoha_qdma *qdma)
- 		if (!qdma->q_rx[i].ndesc)
- 			continue;
- 
--		napi_disable(&qdma->q_rx[i].napi);
- 		netif_napi_del(&qdma->q_rx[i].napi);
- 		airoha_qdma_cleanup_rx_queue(&qdma->q_rx[i]);
- 		if (qdma->q_rx[i].page_pool)
- 			page_pool_destroy(qdma->q_rx[i].page_pool);
- 	}
- 
--	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++) {
--		napi_disable(&qdma->q_tx_irq[i].napi);
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
- 		netif_napi_del(&qdma->q_tx_irq[i].napi);
--	}
- 
- 	for (i = 0; i < ARRAY_SIZE(qdma->q_tx); i++) {
- 		if (!qdma->q_tx[i].ndesc)
-@@ -2158,6 +2155,21 @@ static void airoha_qdma_start_napi(struct airoha_qdma *qdma)
- 	}
+diff --git a/drivers/cpufreq/qcom-cpufreq-hw.c b/drivers/cpufreq/qcom-cpufreq-hw.c
+index 98129565acb8e..c145ab7b0bb21 100644
+--- a/drivers/cpufreq/qcom-cpufreq-hw.c
++++ b/drivers/cpufreq/qcom-cpufreq-hw.c
+@@ -143,14 +143,12 @@ static unsigned long qcom_lmh_get_throttle_freq(struct qcom_cpufreq_data *data)
  }
  
-+static void airoha_qdma_stop_napi(struct airoha_qdma *qdma)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_tx_irq); i++)
-+		napi_disable(&qdma->q_tx_irq[i].napi);
-+
-+	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
-+		if (!qdma->q_rx[i].ndesc)
-+			continue;
-+
-+		napi_disable(&qdma->q_rx[i].napi);
-+	}
+ /* Get the frequency requested by the cpufreq core for the CPU */
+-static unsigned int qcom_cpufreq_get_freq(unsigned int cpu)
++static unsigned int qcom_cpufreq_get_freq(struct cpufreq_policy *policy)
+ {
+ 	struct qcom_cpufreq_data *data;
+ 	const struct qcom_cpufreq_soc_data *soc_data;
+-	struct cpufreq_policy *policy;
+ 	unsigned int index;
+ 
+-	policy = cpufreq_cpu_get_raw(cpu);
+ 	if (!policy)
+ 		return 0;
+ 
+@@ -163,12 +161,10 @@ static unsigned int qcom_cpufreq_get_freq(unsigned int cpu)
+ 	return policy->freq_table[index].frequency;
+ }
+ 
+-static unsigned int qcom_cpufreq_hw_get(unsigned int cpu)
++static unsigned int __qcom_cpufreq_hw_get(struct cpufreq_policy *policy)
+ {
+ 	struct qcom_cpufreq_data *data;
+-	struct cpufreq_policy *policy;
+ 
+-	policy = cpufreq_cpu_get_raw(cpu);
+ 	if (!policy)
+ 		return 0;
+ 
+@@ -177,7 +173,12 @@ static unsigned int qcom_cpufreq_hw_get(unsigned int cpu)
+ 	if (data->throttle_irq >= 0)
+ 		return qcom_lmh_get_throttle_freq(data) / HZ_PER_KHZ;
+ 
+-	return qcom_cpufreq_get_freq(cpu);
++	return qcom_cpufreq_get_freq(policy);
 +}
 +
- static void airoha_update_hw_stats(struct airoha_gdm_port *port)
++static unsigned int qcom_cpufreq_hw_get(unsigned int cpu)
++{
++	return __qcom_cpufreq_hw_get(cpufreq_cpu_get_raw(cpu));
+ }
+ 
+ static unsigned int qcom_cpufreq_hw_fast_switch(struct cpufreq_policy *policy,
+@@ -363,7 +364,7 @@ static void qcom_lmh_dcvs_notify(struct qcom_cpufreq_data *data)
+ 	 * If h/w throttled frequency is higher than what cpufreq has requested
+ 	 * for, then stop polling and switch back to interrupt mechanism.
+ 	 */
+-	if (throttled_freq >= qcom_cpufreq_get_freq(cpu))
++	if (throttled_freq >= qcom_cpufreq_get_freq(cpufreq_cpu_get_raw(cpu)))
+ 		enable_irq(data->throttle_irq);
+ 	else
+ 		mod_delayed_work(system_highpri_wq, &data->throttle_work,
+@@ -441,7 +442,6 @@ static int qcom_cpufreq_hw_lmh_init(struct cpufreq_policy *policy, int index)
+ 		return data->throttle_irq;
+ 
+ 	data->cancel_throttle = false;
+-	data->policy = policy;
+ 
+ 	mutex_init(&data->throttle_lock);
+ 	INIT_DEFERRABLE_WORK(&data->throttle_work, qcom_lmh_dcvs_poll);
+@@ -552,6 +552,7 @@ static int qcom_cpufreq_hw_cpu_init(struct cpufreq_policy *policy)
+ 
+ 	policy->driver_data = data;
+ 	policy->dvfs_possible_from_any_cpu = true;
++	data->policy = policy;
+ 
+ 	ret = qcom_cpufreq_hw_read_lut(cpu_dev, policy);
+ 	if (ret) {
+@@ -622,7 +623,7 @@ static unsigned long qcom_cpufreq_hw_recalc_rate(struct clk_hw *hw, unsigned lon
  {
- 	struct airoha_eth *eth = port->qdma->eth;
-@@ -2713,7 +2725,7 @@ static int airoha_probe(struct platform_device *pdev)
+ 	struct qcom_cpufreq_data *data = container_of(hw, struct qcom_cpufreq_data, cpu_clk);
  
- 	err = airoha_hw_init(pdev, eth);
- 	if (err)
--		goto error;
-+		goto error_hw_cleanup;
+-	return qcom_lmh_get_throttle_freq(data);
++	return __qcom_cpufreq_hw_get(data->policy) * HZ_PER_KHZ;
+ }
  
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_qdma_start_napi(&eth->qdma[i]);
-@@ -2728,13 +2740,16 @@ static int airoha_probe(struct platform_device *pdev)
- 		err = airoha_alloc_gdm_port(eth, np);
- 		if (err) {
- 			of_node_put(np);
--			goto error;
-+			goto error_napi_stop;
- 		}
- 	}
- 
- 	return 0;
- 
--error:
-+error_napi_stop:
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+		airoha_qdma_stop_napi(&eth->qdma[i]);
-+error_hw_cleanup:
- 	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
- 		airoha_hw_cleanup(&eth->qdma[i]);
- 
-@@ -2755,8 +2770,10 @@ static void airoha_remove(struct platform_device *pdev)
- 	struct airoha_eth *eth = platform_get_drvdata(pdev);
- 	int i;
- 
--	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++)
-+	for (i = 0; i < ARRAY_SIZE(eth->qdma); i++) {
-+		airoha_qdma_stop_napi(&eth->qdma[i]);
- 		airoha_hw_cleanup(&eth->qdma[i]);
-+	}
- 
- 	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
- 		struct airoha_gdm_port *port = eth->ports[i];
+ static const struct clk_ops qcom_cpufreq_hw_clk_ops = {
 -- 
 2.39.5
 
