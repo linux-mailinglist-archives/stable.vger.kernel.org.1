@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83279A29095
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5B4A2935F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968AD1885D38
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981B73AC456
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A925156225;
-	Wed,  5 Feb 2025 14:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4896E18CC15;
+	Wed,  5 Feb 2025 15:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsxcCHkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+lnd7h8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3717D155A30;
-	Wed,  5 Feb 2025 14:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03858158536;
+	Wed,  5 Feb 2025 15:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766279; cv=none; b=gzFfpzGLm6/R/px+h/Ku4lCWv+n4QEgHeEmlYeovhhMgKqMZ0ksgPubX32n8JkHJH+rJAYYB2Pf4dZ2NqB4onVOM+ainVLrztkSky1PnWSzvKpfBlK76gv7CW0nzMNeZ/3P077x2fPiVwNqWhINuaT/k2w6awpah3YhXe1TwNSM=
+	t=1738767812; cv=none; b=ANWdNSqTZKby/LDt8RTNRcw8A6J0llXMOyURhUcnaRzPr5ejEFpQQKU4hzHijL9W3qU0eTMyD1EwsnFWtf8WP/t/luTYA5bWJQAhrW+p10OyGyC4Vvdoronq7uwdBTW9z6gMedBeW39GLUkGyx+ysZYsJjDWx5PImnF37EMiAiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766279; c=relaxed/simple;
-	bh=KFsuubk2zhtju8qYFH4fRdxd4bh3YRPKXP7N59oH2hM=;
+	s=arc-20240116; t=1738767812; c=relaxed/simple;
+	bh=AZaSBJx0pc9OVjmvt0tLAG/K9AT1CGlBwIgzMXp739o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pneRpqcKZcPePFXs68Zc6ThDIMVT41fCIRB72f0wi6XFNCqGOva6QTsdQRIdtVo8T4HEh8NWLfvgV8zUjKsr5/558+3hqC3XRGQ/E+jvm+6yKjVYocZ5+AfawQO4l6uhOLwGTUIjyMCg06z7QPWd+ARvmVHqToAIL6i9saCi2tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsxcCHkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40EE6C4CED1;
-	Wed,  5 Feb 2025 14:37:58 +0000 (UTC)
+	 MIME-Version; b=fQrBCKIEWt143WToeyeY9uYKt29wyi7LaMvBy7uDj70iw3b1BBdzGwEibLT1wJX0SjcJQCzGYthABwviBnS9LMNaiwnnkRg7IlFQfM8zI336jAOvvy4gL9qLT/eN0rnWfsa2oj1EcnMa6bJ0Q2akta1Kd4a5bFDVGpD4ZCOEM9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+lnd7h8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66659C4CED1;
+	Wed,  5 Feb 2025 15:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766278;
-	bh=KFsuubk2zhtju8qYFH4fRdxd4bh3YRPKXP7N59oH2hM=;
+	s=korg; t=1738767811;
+	bh=AZaSBJx0pc9OVjmvt0tLAG/K9AT1CGlBwIgzMXp739o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsxcCHkq+MKnZEJcsUwjP2uHnx4qnCGVdP1Jcin9woqcUjDhX4unRX81AWjsGF5Mz
-	 pH5zDFrEkLlyR3GmrIXsGYK/PhYkRh9mHDSn4NOhm0WoZabO37gY1/O6z23wQQPG+7
-	 v8DVV7/q51+4L8D7GwYyPae63gxyAin3B9VoyXSU=
+	b=k+lnd7h8/oUAMaoBIRVnLeCn+KnsqSYALaqlJea10ux9VFhNG/Ww5YYO6ax6xFPCA
+	 dnq3jWiBNulNooz5ZDzZgcFMJzkgEKQd2TpUhCgivTEiGpOMLVwVIbRgJzL9iWuvpk
+	 4fO59aFDtVPqImiF1Hk8G3as3K90/R0vYQrqEFjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 348/393] genksyms: fix memory leak when the same symbol is added from source
+Subject: [PATCH 6.12 512/590] vsock: Keep the binding until socket destruction
 Date: Wed,  5 Feb 2025 14:44:27 +0100
-Message-ID: <20250205134433.622554039@linuxfoundation.org>
+Message-ID: <20250205134514.856152216@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 45c9c4101d3d2fdfa00852274bbebba65fcc3cf2 ]
+[ Upstream commit fcdd2242c0231032fc84e1404315c245ae56322a ]
 
-When a symbol that is already registered is added again, __add_symbol()
-returns without freeing the symbol definition, making it unreachable.
+Preserve sockets bindings; this includes both resulting from an explicit
+bind() and those implicitly bound through autobind during connect().
 
-The following test cases demonstrate different memory leak points.
+Prevents socket unbinding during a transport reassignment, which fixes a
+use-after-free:
 
-[Test Case 1]
+    1. vsock_create() (refcnt=1) calls vsock_insert_unbound() (refcnt=2)
+    2. transport->release() calls vsock_remove_bound() without checking if
+       sk was bound and moved to bound list (refcnt=1)
+    3. vsock_bind() assumes sk is in unbound list and before
+       __vsock_insert_bound(vsock_bound_sockets()) calls
+       __vsock_remove_bound() which does:
+           list_del_init(&vsk->bound_table); // nop
+           sock_put(&vsk->sk);               // refcnt=0
 
-Forward declaration with exactly the same definition
+BUG: KASAN: slab-use-after-free in __vsock_bind+0x62e/0x730
+Read of size 4 at addr ffff88816b46a74c by task a.out/2057
+ dump_stack_lvl+0x68/0x90
+ print_report+0x174/0x4f6
+ kasan_report+0xb9/0x190
+ __vsock_bind+0x62e/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  void foo(void) {}
-  EXPORT_SYMBOL(foo);
+Allocated by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ __kasan_slab_alloc+0x85/0x90
+ kmem_cache_alloc_noprof+0x131/0x450
+ sk_prot_alloc+0x5b/0x220
+ sk_alloc+0x2c/0x870
+ __vsock_create.constprop.0+0x2e/0xb60
+ vsock_create+0xe4/0x420
+ __sock_create+0x241/0x650
+ __sys_socket+0xf2/0x1a0
+ __x64_sys_socket+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[Test Case 2]
+Freed by task 2057:
+ kasan_save_stack+0x1e/0x40
+ kasan_save_track+0x10/0x30
+ kasan_save_free_info+0x37/0x60
+ __kasan_slab_free+0x4b/0x70
+ kmem_cache_free+0x1a1/0x590
+ __sk_destruct+0x388/0x5a0
+ __vsock_bind+0x5e1/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Forward declaration with a different definition (e.g. attribute)
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:25 refcount_warn_saturate+0xce/0x150
+RIP: 0010:refcount_warn_saturate+0xce/0x150
+ __vsock_bind+0x66d/0x730
+ vsock_bind+0x97/0xe0
+ __sys_bind+0x154/0x1f0
+ __x64_sys_bind+0x6e/0xb0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  __attribute__((__section__(".ref.text"))) void foo(void) {}
-  EXPORT_SYMBOL(foo);
+refcount_t: underflow; use-after-free.
+WARNING: CPU: 7 PID: 2057 at lib/refcount.c:28 refcount_warn_saturate+0xee/0x150
+RIP: 0010:refcount_warn_saturate+0xee/0x150
+ vsock_remove_bound+0x187/0x1e0
+ __vsock_release+0x383/0x4a0
+ vsock_release+0x90/0x120
+ __sock_release+0xa3/0x250
+ sock_close+0x14/0x20
+ __fput+0x359/0xa80
+ task_work_run+0x107/0x1d0
+ do_exit+0x847/0x2560
+ do_group_exit+0xb8/0x250
+ __x64_sys_exit_group+0x3a/0x50
+ x64_sys_call+0xfec/0x14f0
+ do_syscall_64+0x93/0x1b0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[Test Case 3]
-
-Preserving an overridden symbol (compile with KBUILD_PRESERVE=1)
-
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  void foo(void) { }
-  EXPORT_SYMBOL(foo);
-
-  $ cat foo.symref
-  override foo void foo ( int )
-
-The memory leaks in Test Case 1 and 2 have existed since the introduction
-of genksyms into the kernel tree. [1]
-
-The memory leak in Test Case 3 was introduced by commit 5dae9a550a74
-("genksyms: allow to ignore symbol checksum changes").
-
-When multiple init_declarators are reduced to an init_declarator_list,
-the decl_spec must be duplicated. Otherwise, the following Test Case 4
-would result in a double-free bug.
-
-[Test Case 4]
-
-  $ cat foo.c
-  #include <linux/export.h>
-
-  extern int foo, bar;
-
-  int foo, bar;
-  EXPORT_SYMBOL(foo);
-
-In this case, 'foo' and 'bar' share the same decl_spec, 'int'. It must
-be unshared before being passed to add_symbol().
-
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=46bd1da672d66ccd8a639d3c1f8a166048cca608
-
-Fixes: 5dae9a550a74 ("genksyms: allow to ignore symbol checksum changes")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20250128-vsock-transport-vs-autobind-v3-1-1cf57065b770@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/genksyms/genksyms.c |  3 +++
- scripts/genksyms/parse.y    | 14 ++++++++++++--
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ net/vmw_vsock/af_vsock.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
-index f5dfdb9d80e9d..6ddc8f406c75f 100644
---- a/scripts/genksyms/genksyms.c
-+++ b/scripts/genksyms/genksyms.c
-@@ -241,6 +241,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 						"unchanged\n");
- 				}
- 				sym->is_declared = 1;
-+				free_list(defn, NULL);
- 				return sym;
- 			} else if (!sym->is_declared) {
- 				if (sym->is_override && flag_preserve) {
-@@ -249,6 +250,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 					print_type_name(type, name);
- 					fprintf(stderr, " modversion change\n");
- 					sym->is_declared = 1;
-+					free_list(defn, NULL);
- 					return sym;
- 				} else {
- 					status = is_unknown_symbol(sym) ?
-@@ -256,6 +258,7 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 				}
- 			} else {
- 				error_with_pos("redefinition of %s", name);
-+				free_list(defn, NULL);
- 				return sym;
- 			}
- 			break;
-diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
-index 8e9b5e69e8f01..840371d01bf48 100644
---- a/scripts/genksyms/parse.y
-+++ b/scripts/genksyms/parse.y
-@@ -152,14 +152,19 @@ simple_declaration:
- 	;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 15724f171b0f9..98315d9d07528 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -337,7 +337,10 @@ EXPORT_SYMBOL_GPL(vsock_find_connected_socket);
  
- init_declarator_list_opt:
--	/* empty */				{ $$ = NULL; }
--	| init_declarator_list
-+	/* empty */			{ $$ = NULL; }
-+	| init_declarator_list		{ free_list(decl_spec, NULL); $$ = $1; }
- 	;
+ void vsock_remove_sock(struct vsock_sock *vsk)
+ {
+-	vsock_remove_bound(vsk);
++	/* Transport reassignment must not remove the binding. */
++	if (sock_flag(sk_vsock(vsk), SOCK_DEAD))
++		vsock_remove_bound(vsk);
++
+ 	vsock_remove_connected(vsk);
+ }
+ EXPORT_SYMBOL_GPL(vsock_remove_sock);
+@@ -821,12 +824,13 @@ static void __vsock_release(struct sock *sk, int level)
+ 	 */
+ 	lock_sock_nested(sk, level);
  
- init_declarator_list:
- 	init_declarator
- 		{ struct string_list *decl = *$1;
- 		  *$1 = NULL;
++	sock_orphan(sk);
 +
-+		  /* avoid sharing among multiple init_declarators */
-+		  if (decl_spec)
-+		    decl_spec = copy_list_range(decl_spec, NULL);
-+
- 		  add_symbol(current_name,
- 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
- 		  current_name = NULL;
-@@ -170,6 +175,11 @@ init_declarator_list:
- 		  *$3 = NULL;
- 		  free_list(*$2, NULL);
- 		  *$2 = decl_spec;
-+
-+		  /* avoid sharing among multiple init_declarators */
-+		  if (decl_spec)
-+		    decl_spec = copy_list_range(decl_spec, NULL);
-+
- 		  add_symbol(current_name,
- 			     is_typedef ? SYM_TYPEDEF : SYM_NORMAL, decl, is_extern);
- 		  current_name = NULL;
+ 	if (vsk->transport)
+ 		vsk->transport->release(vsk);
+ 	else if (sock_type_connectible(sk->sk_type))
+ 		vsock_remove_sock(vsk);
+ 
+-	sock_orphan(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+ 	skb_queue_purge(&sk->sk_receive_queue);
 -- 
 2.39.5
 
