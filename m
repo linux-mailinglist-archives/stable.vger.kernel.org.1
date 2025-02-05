@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B665A28D56
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 352A5A28E3D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9E447A1CAE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005E27A440F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEDF1547E9;
-	Wed,  5 Feb 2025 14:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C541509BD;
+	Wed,  5 Feb 2025 14:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUbN20f/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0BrOq4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8BDF510;
-	Wed,  5 Feb 2025 14:00:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD2149C53;
+	Wed,  5 Feb 2025 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764027; cv=none; b=L/6lS0z5EWsJ9mEzLPWhxuyWcJnizq7hIQGIrUsf2MrKDsQPNtLhvtO4Wk6rU50lXH7ZeZF9EC7uDLnKYUzLe2FqVONzNh4GiE2pSFOvmV0zeSuUyLqeI5xmAnPuQXhi+SKrFGNrOeFNCEOqo65dfSbfJLKrKAf3IICxc/gcfUE=
+	t=1738764613; cv=none; b=f72Qh3TZKdtSD+GGjdQrXhLTO1/x2ZAh7uFRcYQfAooo7Yb96DXrZ+uSwVV8WnaBy4Q8/S6WBDmkjMSXjUB3EqbAjlSAFLNthq1S5nrPcGbiI649KfykJVQ+KZl8ZlEQM1SejF4xLs4ojwepSaHnS7THGVVXstFRaWEEI9X4OxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764027; c=relaxed/simple;
-	bh=kPjRHMr91w5da7K+TLq4Bx32KAblDCoABQ7XhOa8jQA=;
+	s=arc-20240116; t=1738764613; c=relaxed/simple;
+	bh=vkXsnzlrZlNaobZhFq57aZZFuZcNkzim3MXhWOF8BQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bFxopZUh2NrptqhBQ+ULxEu44qklpPO07LPNCjjRpwrFTjq3jjKUguMrdRNZeexkVxxVXPjTAnyKp1J1vNlwAtKmnJ6jbozrRoZmzLftoV5OVwfnWZiDHv2sDIfDPyYInCXoz7BDbmsX/T/geGZz75+rkmU823REj86hwS+5GMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUbN20f/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D651C4CED1;
-	Wed,  5 Feb 2025 14:00:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Aakm7wc0r4m+ck5d5T5zHaQbyoibMw4kIpyT8Cdxig1pCpVdohI19ESEtW3Zf3RNKBW92scMqql1QoVPhJy4VlXN7TpRBj7pjv8Xoou7LH9IVzabRXRVmP2EQ9gXjkZCcDEOZ03Ohftdue02sero17/V/FOQO4dkbsPHILP3tuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0BrOq4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED61C4CED1;
+	Wed,  5 Feb 2025 14:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764027;
-	bh=kPjRHMr91w5da7K+TLq4Bx32KAblDCoABQ7XhOa8jQA=;
+	s=korg; t=1738764613;
+	bh=vkXsnzlrZlNaobZhFq57aZZFuZcNkzim3MXhWOF8BQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUbN20f/3EePgaMEd31G2A1cAs1gtFLc2XSygRyIJB1bv1xUNotBnOsfhFMXgKEpz
-	 ROQHFSEruGfP4trKQmXp8wwK+7IElzhEoMUuM7Vu5Dj1DOqm5AfeIQqu0er2z1Zw0m
-	 n7pyJLTajcaMr/ohjYXoU9qituUz1ZfAw1XXW5T4=
+	b=r0BrOq4qo2yHH9R2qgeCwZcmxhPCkx91Whe8iQQerTwx+Bhabnt+NU9HA8RuYH0FP
+	 IsqSbDSm4a3S50lRRAaYfeNSO9B8vSpiPOAHJdf62XGC4CXcDxWrmVzegEhS1gq3i8
+	 mQZwMW8ZEKfNfxbbrIKf3OS+7XdvhAvu3Et7gtx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/590] wifi: wcn36xx: fix channel survey memory allocation size
+Subject: [PATCH 6.13 095/623] clk: mmp: pxa1908-apbc: Fix NULL vs IS_ERR() check
 Date: Wed,  5 Feb 2025 14:37:17 +0100
-Message-ID: <20250205134458.391167859@linuxfoundation.org>
+Message-ID: <20250205134459.858725645@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +64,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6200d947f050efdba4090dfefd8a01981363d954 ]
+[ Upstream commit e5ca5d7b4d7c29246d957dc45d63610584ae3a54 ]
 
-KASAN reported a memory allocation issue in wcn->chan_survey
-due to incorrect size calculation.
-This commit uses kcalloc to allocate memory for wcn->chan_survey,
-ensuring proper initialization and preventing the use of uninitialized
-values when there are no frames on the channel.
+The devm_kzalloc() function returns NULL on error, not error pointers.
+Fix the check.
 
-Fixes: 29696e0aa413 ("wcn36xx: Track SNR and RSSI for each RX frame")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Acked-by: Loic Poulain <loic.poulain@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://patch.msgid.link/20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Fixes: 51ce55919273 ("clk: mmp: Add Marvell PXA1908 APBC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/d7078eb7-a7d6-4753-b453-8fce15245c34@stanley.mountain
+Acked-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/mmp/clk-pxa1908-apbc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 408776562a7e5..cd36cab6db75d 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1590,7 +1590,10 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/clk/mmp/clk-pxa1908-apbc.c b/drivers/clk/mmp/clk-pxa1908-apbc.c
+index b93d084661985..3fd7b5e644f3b 100644
+--- a/drivers/clk/mmp/clk-pxa1908-apbc.c
++++ b/drivers/clk/mmp/clk-pxa1908-apbc.c
+@@ -96,8 +96,8 @@ static int pxa1908_apbc_probe(struct platform_device *pdev)
+ 	struct pxa1908_clk_unit *pxa_unit;
  
- 	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
--	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
-+	wcn->chan_survey = devm_kcalloc(wcn->dev,
-+					n_channels,
-+					sizeof(struct wcn36xx_chan_survey),
-+					GFP_KERNEL);
- 	if (!wcn->chan_survey) {
- 		ret = -ENOMEM;
- 		goto out_wq;
+ 	pxa_unit = devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERNEL);
+-	if (IS_ERR(pxa_unit))
+-		return PTR_ERR(pxa_unit);
++	if (!pxa_unit)
++		return -ENOMEM;
+ 
+ 	pxa_unit->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(pxa_unit->base))
 -- 
 2.39.5
 
