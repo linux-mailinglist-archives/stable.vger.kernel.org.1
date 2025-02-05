@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD19A28F7F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129E7A292C5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B72188216C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8745C3A8083
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FF7154C08;
-	Wed,  5 Feb 2025 14:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBA61FCCF2;
+	Wed,  5 Feb 2025 14:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT2dfAwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNK+JgXF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3F68634E;
-	Wed,  5 Feb 2025 14:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A101FCCEA;
+	Wed,  5 Feb 2025 14:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765515; cv=none; b=FNbSS7FUyBR9ZaMisMJWk7E6flcp3lqR33a0Z3Q+FkBcLAkBL7wFlqcAfTWRUZRy5FUnKx7JySV/+gw5bq8nIoFddPZErikoQ5Eb+ymBmEatLtJRHlu7IKbJc6PssktkO0i+uUiCf27/qFGP5NIbXmkpBkh2e/7idfJm64xaWTc=
+	t=1738767317; cv=none; b=lS/dWRQVO+pMiZB4twwFruzsj9vA6QuuXNFQLUZ6c47GAtFU0wSKK++w9gWBL8EY+ni3jub++ue1RjZ2ivaMuw/yjkJWsOrknQzjWDF/eN3xe/9jS+i0CslsMXllZ2erTlGddx5V5Wkre6ynwWiDmol3Q6QdgUtkaCH4beCVjN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765515; c=relaxed/simple;
-	bh=603tDoYVH353fN5BLMdgAq4So19565ePcSAQWeMZLeQ=;
+	s=arc-20240116; t=1738767317; c=relaxed/simple;
+	bh=TbMUCxTID7qo0UZ9hktS/x6g0XfWS/1xVtJb86Qggt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfnGTkL/jQpzXaTSVfdJoFC+Gq/P0ycwnOK8v+ht7Bv6bXlLe5XZFcvpQo6Opwb0i7ikJJnRws9aHbUA1ksAlc5MTGHlIif7LmpjzrVM+tPbOSpKMiDd9kT1G30GVoX80j53JX05+YjkJLsa5S19/2+jaTMInOZnJoQUPmud02M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT2dfAwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5774CC4CED6;
-	Wed,  5 Feb 2025 14:25:14 +0000 (UTC)
+	 MIME-Version; b=u3vDn6DqzrQC4SgKpPB31LnBrw6PreqlMVu3KRkAPxYwxGLAxjMRj6NomOi2d+Gc6IXUNO06vzpinWVTm8nB61CxGjeBJymmr8LGxkpVLcLJTbQO7ARyohf7Wua7OwQiJEvFMRYLQq1F4PwWSHYqOsyC2LpmhVaLE/DIHhtnEgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNK+JgXF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9016EC4CED1;
+	Wed,  5 Feb 2025 14:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765514;
-	bh=603tDoYVH353fN5BLMdgAq4So19565ePcSAQWeMZLeQ=;
+	s=korg; t=1738767316;
+	bh=TbMUCxTID7qo0UZ9hktS/x6g0XfWS/1xVtJb86Qggt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IT2dfAwJfCvGg6ZW4moyUi5AyIxeGEb5Ob1n/H7i5+o9btm6mqEOAm9KF55C0BiGD
-	 IR+SNJG46BJcJJRNKIEPbaSIEc/1r71b5YdQd5Cd8vlRpebrgj4Ebj9SOdTTcP3XCY
-	 dp3Eb7Ws9WGMrwl7WH7kaPr0gZ3bnN96HATZ3/DI=
+	b=MNK+JgXFyruTbY7AQJx74+ecXv5wYi7fLamxItcBeinhQ1vPPW5QrixDfUNYEFboa
+	 rWgEPCiPiQVDHug/Yy9pfdVq+pPrFECFzBQZqbo11+ynKd2R/HkB8vslqU9vYE3CTB
+	 ++/r+ogI7lipL97GSWrnapbS++JeUiubCBKf9DhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/393] i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition
+Subject: [PATCH 6.12 438/590] firewire: test: Fix potential null dereference in firewire kunit test
 Date: Wed,  5 Feb 2025 14:43:13 +0100
-Message-ID: <20250205134430.794663005@linuxfoundation.org>
+Message-ID: <20250205134512.025094995@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit b75439c945b94dd8a2b645355bdb56f948052601 ]
+[ Upstream commit 352fafe97784e81a10a7c74bd508f71a19b53c2a ]
 
-In dw_i3c_common_probe, &master->hj_work is bound with
-dw_i3c_hj_work. And dw_i3c_master_irq_handler can call
-dw_i3c_master_irq_handle_ibis function to start the work.
+kunit_kzalloc() may return a NULL pointer, dereferencing it without
+NULL check may lead to NULL dereference.
+Add a NULL check for test_state.
 
-If we remove the module which will call dw_i3c_common_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
-
-CPU0                                      CPU1
-
-                                     | dw_i3c_hj_work
-dw_i3c_common_remove                 |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in dw_i3c_common_remove.
-
-Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/bfc49c9527be5b513e7ceafeba314ca40a5be4bc.1732703537.git.xiaopei01@kylinos.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 1c8506d62624 ("firewire: test: add test of device attributes for simple AV/C device")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20250110084237.8877-1-hanchunchao@inspur.com
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/device-attribute-test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index 93e9d307e40ef..030127525672e 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1528,6 +1528,7 @@ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
+diff --git a/drivers/firewire/device-attribute-test.c b/drivers/firewire/device-attribute-test.c
+index 2f123c6b0a165..97478a96d1c96 100644
+--- a/drivers/firewire/device-attribute-test.c
++++ b/drivers/firewire/device-attribute-test.c
+@@ -99,6 +99,7 @@ static void device_attr_simple_avc(struct kunit *test)
+ 	struct device *unit0_dev = (struct device *)&unit0.device;
+ 	static const int unit0_expected_ids[] = {0x00ffffff, 0x00ffffff, 0x0000a02d, 0x00010001};
+ 	char *buf = kunit_kzalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+ 	int ids[4] = {0, 0, 0, 0};
  
- void dw_i3c_common_remove(struct dw_i3c_master *master)
- {
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
+ 	// Ensure associations for node and unit devices.
+@@ -180,6 +181,7 @@ static void device_attr_legacy_avc(struct kunit *test)
+ 	struct device *unit0_dev = (struct device *)&unit0.device;
+ 	static const int unit0_expected_ids[] = {0x00012345, 0x00fedcba, 0x00abcdef, 0x00543210};
+ 	char *buf = kunit_kzalloc(test, PAGE_SIZE, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buf);
+ 	int ids[4] = {0, 0, 0, 0};
  
- 	reset_control_assert(master->core_rst);
+ 	// Ensure associations for node and unit devices.
 -- 
 2.39.5
 
