@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7580A28F00
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA949A29302
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345E8188330E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0EB316803E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C79A86348;
-	Wed,  5 Feb 2025 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68661FC7D5;
+	Wed,  5 Feb 2025 14:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1/0TiCX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzUzN5Hw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497D61519BE;
-	Wed,  5 Feb 2025 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7410E146A7A;
+	Wed,  5 Feb 2025 14:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765184; cv=none; b=YkRUFuxQThNMf8/TgSeStDvKghGzbHyQdQLK2jkBtY2oQjIGWcBS1q7h3UqWu313v6FB5QQpcQbaCyJ6HsO07wtgu+MBCyVfueOKmvQwrjrCCT4dJ2PGHEF9botp0CZ1chtZphRLedQ1sIxqWWVhildvn6B6iI4Ip3/HxjD1p70=
+	t=1738767498; cv=none; b=KgWHi6eqsJxee29bQIWfILN9VdgPJvpENcYA4Z7NAV1MpVlOGYqe6xxcbFC8oew1PGadJGNgBDbUV7yjqYpECRC0UMRanLbEVh1COfPXVFG/zGUj0YnvT+eEzjGQlc5l0cr+RNtkcNiJUWhPyZ+YEjLAWmTElt8BemuTiR/lpHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765184; c=relaxed/simple;
-	bh=T0jKdShjcIyFVXozVca0bcm6da1lxTZQmAIjwu+21F8=;
+	s=arc-20240116; t=1738767498; c=relaxed/simple;
+	bh=BUkshUIobu1gOwlMGUyFPOe1do8H7FZv3EvhPU170xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uV1WH//ICkcuFUcfg519H0taQmzJnd6DWTNbQo8Vi8jBjvz5bhKxnnU1or5f5TSI5AkCqdbPwiigwWPTaN/SglHXYnxOza4ZrdUrI0+6h4qhjKZQyP+eVeOU1pZP1JxtqKgO5UT4xIRJmKf/ZqEXYeVg6og/6iaRUwjxrXMI7Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1/0TiCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86CEC4CED1;
-	Wed,  5 Feb 2025 14:19:43 +0000 (UTC)
+	 MIME-Version; b=l0QTFolE+R0KKR9vdgHCKANh1nRf1fRofuoeylSr1zvGVvy6vL+vNwRNm/qPP5sNHPRmvQ8VxrsYnUfhJssBTHuKn2j2q8mUZQpiXzg5YnKrLnZeI+aHP7LceMk3UXUqmU68x21Nb4wYvYvUpM2323PO4mZsm7YIXx2iU8BmcOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzUzN5Hw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA36C4CED1;
+	Wed,  5 Feb 2025 14:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765184;
-	bh=T0jKdShjcIyFVXozVca0bcm6da1lxTZQmAIjwu+21F8=;
+	s=korg; t=1738767497;
+	bh=BUkshUIobu1gOwlMGUyFPOe1do8H7FZv3EvhPU170xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1/0TiCXTZKiokp1ajOBbeje5xUA5Rib2ckk2vs2IYS5Ewxzv04OsghLIrCx3S2MB
-	 GThoh0V4wSDi9eA2CB36LsyxSqr5KtBj2raknfGYREAwQJF6m/8CWWk8VuJt6OrROM
-	 01h3b8wSmbviofgUIXmQ6F6OzRnUDjWIH13ZwIx4=
+	b=uzUzN5Hw7GOn9v/IS+koCKHV7Sd9tk76F3nAYi5VHdE4gFbF0KpM381vG7q6Mt2Sj
+	 ZJr+0vVxSdVqo4EbBhdA6NRuXxul1Zecu3reH6qS0GH5wmK9qElFGlbpXgNkaCcklW
+	 uPsL9ia1SW+0qymLiTbXy2yX/raFuIqmnxpCpvbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 235/393] arm64: dts: qcom: msm8916: correct sleep clock frequency
+Subject: [PATCH 6.13 412/623] arm64: dts: mediatek: mt7988: Add missing clock-div property for i2c
 Date: Wed,  5 Feb 2025 14:42:34 +0100
-Message-ID: <20250205134429.298543648@linuxfoundation.org>
+Message-ID: <20250205134511.985871859@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-[ Upstream commit f088b921890cef28862913e5627bb2e2b5f82125 ]
+[ Upstream commit e14b49db0087aa5d72f736d7306220ff2e3777f5 ]
 
-The MSM8916 platform uses PM8916 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+I2C binding requires clock-div property.
 
-Fixes: f4fb6aeafaaa ("arm64: dts: qcom: msm8916: Add fixed rate on-board oscillators")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-1-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Fixes: 660c230bf302 ("arm64: dts: mediatek: mt7988: add I2C controllers")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241217091238.16032-6-linux@fw-web.de
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7988a.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index 961ceb83a91fa..6f5f96853ba1c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -104,7 +104,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 		};
- 	};
- 
+diff --git a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
+index c9649b8152768..73561c7a3ad26 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7988a.dtsi
+@@ -162,6 +162,7 @@
+ 			reg = <0 0x11003000 0 0x1000>,
+ 			      <0 0x10217080 0 0x80>;
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
+@@ -175,6 +176,7 @@
+ 			reg = <0 0x11004000 0 0x1000>,
+ 			      <0 0x10217100 0 0x80>;
+ 			interrupts = <GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
+@@ -188,6 +190,7 @@
+ 			reg = <0 0x11005000 0 0x1000>,
+ 			      <0 0x10217180 0 0x80>;
+ 			interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>;
++			clock-div = <1>;
+ 			clocks = <&infracfg CLK_INFRA_I2C_BCK>,
+ 				 <&infracfg CLK_INFRA_66M_AP_DMA_BCK>;
+ 			clock-names = "main", "dma";
 -- 
 2.39.5
 
