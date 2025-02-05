@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDD3A28E40
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A170A291F9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52EE17A3B00
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87060188C6C0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D051509BD;
-	Wed,  5 Feb 2025 14:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3821DC9BA;
+	Wed,  5 Feb 2025 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJBj53Li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY81unAC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D78013C9C4;
-	Wed,  5 Feb 2025 14:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FBB1C6BE;
+	Wed,  5 Feb 2025 14:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764626; cv=none; b=bK80PIhri2QqOIApHNii34NoLhGqPTXACx8bXAVB6zsNWNvEgeZUlVoWLw+Cyd/oyEatrqSA66XMVtWT/6CvRjt1ThBwm8d4jEdwKVXwaLWUx207O04sXOKzZzbiEoN4F97mR3e8LTSylUiE7wbNR4LUz5iLgLSZlGi5gNc2bzI=
+	t=1738766718; cv=none; b=rxbvUpgCoMsxtoDud71i2KajXwnVl06Pmm8ooRR3dASxRLcXtQ69ETM8tsayHX8VDdOgeiDUxocsjTLhkr0N+oyMjOc6iVp/i6sDs3x3guJfoIg/zIBkMoDHYxOH85Fk/nfpBR8ZjC/vSBCXRJjbDdyxKIzPtJddTLs4xtZFLlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764626; c=relaxed/simple;
-	bh=h2XWsYvhy1KcIlLfkaezR8gPcJJfYjDKytzt5R+1Lrs=;
+	s=arc-20240116; t=1738766718; c=relaxed/simple;
+	bh=0gBx31L0gJ8iaz5sLf6BtUnOZse9q3GKOlEvBMRn2rE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+XTe7pskTOyukfu5lzPUTxtWZ5SlG9BUbspDvdIQh4dKUgRZ8no/E9+kxasKAS4eYkjTyl+SaZfVbncu7icCZQ1VQnJIQiQHh9tywmiVtadtopeQevekMQzA5XWn24UFVXdWJoUqLAO9iUb/hVjTShH0z8k7N/9EfCpa81BlSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJBj53Li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89997C4CED1;
-	Wed,  5 Feb 2025 14:10:25 +0000 (UTC)
+	 MIME-Version; b=mAGz71qFrSdLQvzyS+8YKrNbba5XlXv/A/Pafrd8xh5YJhaJ6Dc7JBmOhggYn0AOY2GIOOjD12800nfQ9/9t9UB1wijpQDYSU3XhIyX07cYhl4RQoadMQJNiU+JNMNe8QROKW1ydM64J/Yno+Hz3PL977DC1eK17AAVFoYkvXgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY81unAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F32CC4CED1;
+	Wed,  5 Feb 2025 14:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764626;
-	bh=h2XWsYvhy1KcIlLfkaezR8gPcJJfYjDKytzt5R+1Lrs=;
+	s=korg; t=1738766717;
+	bh=0gBx31L0gJ8iaz5sLf6BtUnOZse9q3GKOlEvBMRn2rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJBj53Liz8wTjOjG3mwYgc7VhU+CHieNLZr+OgKVhM0TebvBuA/Hpm7uWbXeuyi87
-	 sy6tU2Y4wGXaW7cc5HkY0PQVWQeOD6QcBNDHnB5g7yM2M4y4Uwszk5EYn9IOe4nuEX
-	 E+nTZ3t20IQ3eqGShKybzv+POhotYA2jDjILIa9E=
+	b=XY81unACoA8XlPybPs1X1wxYq7aaW4L+g/5i6ZnN0F0p/Q0MjSWHMho+dYuYBxNxS
+	 +VkGkpw61KRo2oNFYHZLD7ywOzZGzsyWyYYEiIE3GABDFKN6sbafdg0L31uCDqIA/+
+	 1jGMTUyto/x08ytYVaOB74fVSj4hsyH/wEKxOiL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Chun-Tse Shao <ctshao@google.com>,
-	nick.forrington@arm.com,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/393] perf lock: Fix parse_lock_type which only retrieve one lock flag
-Date: Wed,  5 Feb 2025 14:41:47 +0100
-Message-ID: <20250205134427.490652602@linuxfoundation.org>
+Subject: [PATCH 6.12 353/590] arm64: dts: qcom: sm6375: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:41:48 +0100
+Message-ID: <20250205134508.775185981@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,165 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Tse Shao <ctshao@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 1be9264158ef4818393e5d8144887a1a5d3cc480 ]
+[ Upstream commit 223382c94f1f07c475d39713e4c058401480b441 ]
 
-`parse_lock_type` can only add the first lock flag in `lock_type_table`
-given input `str`. For example, for `Y rwlock`, it only adds `rwlock:R`
-into this perf session. Another example is for `-Y mutex`, it only adds
-the mutex without `LCB_F_SPIN` flag. The patch fixes this issue, makes
-sure both `rwlock:R` and `rwlock:W` will be added with `-Y rwlock`, and
-so on.
+The SM6375 platform uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Testing:
-  $ ./perf lock con -ab -Y mutex,rwlock -- perf bench sched pipe
-  # Running 'sched/pipe' benchmark:
-  # Executed 1000000 pipe operations between two processes
-
-       Total time: 9.313 [sec]
-
-         9.313976 usecs/op
-           107365 ops/sec
-   contended   total wait     max wait     avg wait         type   caller
-
-         176      1.65 ms     19.43 us      9.38 us        mutex   pipe_read+0x57
-          34    180.14 us     10.93 us      5.30 us        mutex   pipe_write+0x50
-           7     77.48 us     16.09 us     11.07 us        mutex   do_epoll_wait+0x24d
-           7     74.70 us     13.50 us     10.67 us        mutex   do_epoll_wait+0x24d
-           3     35.97 us     14.44 us     11.99 us     rwlock:W   ep_done_scan+0x2d
-           3     35.00 us     12.23 us     11.66 us     rwlock:W   do_epoll_wait+0x255
-           2     15.88 us     11.96 us      7.94 us     rwlock:W   do_epoll_wait+0x47c
-           1     15.23 us     15.23 us     15.23 us     rwlock:W   do_epoll_wait+0x4d0
-           1     14.26 us     14.26 us     14.26 us     rwlock:W   ep_done_scan+0x2d
-           2     14.00 us      7.99 us      7.00 us        mutex   pipe_read+0x282
-           1     12.29 us     12.29 us     12.29 us     rwlock:R   ep_poll_callback+0x35
-           1     12.02 us     12.02 us     12.02 us     rwlock:W   do_epoll_ctl+0xb65
-           1     10.25 us     10.25 us     10.25 us     rwlock:R   ep_poll_callback+0x35
-           1      7.86 us      7.86 us      7.86 us        mutex   do_epoll_ctl+0x6c1
-           1      5.04 us      5.04 us      5.04 us        mutex   do_epoll_ctl+0x3d4
-
-[namhyung: Add a comment and rename to 'mutex:spin' for consistency
-
-Fixes: d783ea8f62c4 ("perf lock contention: Simplify parse_lock_type()")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Chun-Tse Shao <ctshao@google.com>
-Cc: nick.forrington@arm.com
-Link: https://lore.kernel.org/r/20250116235838.2769691-1-ctshao@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 59d34ca97f91 ("arm64: dts: qcom: Add initial device tree for SM6375")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-12-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-lock.c | 66 ++++++++++++++++++++++++---------------
- 1 file changed, 41 insertions(+), 25 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-index fcb32c58bee7e..bd24ed0af208a 100644
---- a/tools/perf/builtin-lock.c
-+++ b/tools/perf/builtin-lock.c
-@@ -1591,8 +1591,8 @@ static const struct {
- 	{ LCB_F_PERCPU | LCB_F_WRITE,	"pcpu-sem:W",	"percpu-rwsem" },
- 	{ LCB_F_MUTEX,			"mutex",	"mutex" },
- 	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex",	"mutex" },
--	/* alias for get_type_flag() */
--	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex-spin",	"mutex" },
-+	/* alias for optimistic spinning only */
-+	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex:spin",	"mutex-spin" },
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm6375.dtsi b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+index 4d519dd6e7ef2..72e01437ded12 100644
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -29,7 +29,7 @@
  
- static const char *get_type_str(unsigned int flags)
-@@ -1617,19 +1617,6 @@ static const char *get_type_name(unsigned int flags)
- 	return "unknown";
- }
- 
--static unsigned int get_type_flag(const char *str)
--{
--	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
--		if (!strcmp(lock_type_table[i].name, str))
--			return lock_type_table[i].flags;
--	}
--	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
--		if (!strcmp(lock_type_table[i].str, str))
--			return lock_type_table[i].flags;
--	}
--	return UINT_MAX;
--}
--
- static void lock_filter_finish(void)
- {
- 	zfree(&filters.types);
-@@ -2321,29 +2308,58 @@ static int parse_lock_type(const struct option *opt __maybe_unused, const char *
- 			   int unset __maybe_unused)
- {
- 	char *s, *tmp, *tok;
--	int ret = 0;
- 
- 	s = strdup(str);
- 	if (s == NULL)
- 		return -1;
- 
- 	for (tok = strtok_r(s, ", ", &tmp); tok; tok = strtok_r(NULL, ", ", &tmp)) {
--		unsigned int flags = get_type_flag(tok);
-+		bool found = false;
- 
--		if (flags == -1U) {
--			pr_err("Unknown lock flags: %s\n", tok);
--			ret = -1;
--			break;
-+		/* `tok` is `str` in `lock_type_table` if it contains ':'. */
-+		if (strchr(tok, ':')) {
-+			for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
-+				if (!strcmp(lock_type_table[i].str, tok) &&
-+				    add_lock_type(lock_type_table[i].flags)) {
-+					found = true;
-+					break;
-+				}
-+			}
-+
-+			if (!found) {
-+				pr_err("Unknown lock flags name: %s\n", tok);
-+				free(s);
-+				return -1;
-+			}
-+
-+			continue;
- 		}
- 
--		if (!add_lock_type(flags)) {
--			ret = -1;
--			break;
-+		/*
-+		 * Otherwise `tok` is `name` in `lock_type_table`.
-+		 * Single lock name could contain multiple flags.
-+		 */
-+		for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
-+			if (!strcmp(lock_type_table[i].name, tok)) {
-+				if (add_lock_type(lock_type_table[i].flags)) {
-+					found = true;
-+				} else {
-+					free(s);
-+					return -1;
-+				}
-+			}
- 		}
-+
-+		if (!found) {
-+			pr_err("Unknown lock name: %s\n", tok);
-+			free(s);
-+			return -1;
-+		}
-+
- 	}
- 
- 	free(s);
--	return ret;
-+	return 0;
- }
- 
- static bool add_lock_addr(unsigned long addr)
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
