@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090D1A2929C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4482A28DEC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3610B3AB8AF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B816A18890F0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3BD1DE2A5;
-	Wed,  5 Feb 2025 14:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8280D155335;
+	Wed,  5 Feb 2025 14:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoUUPf0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQV/1PHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFB315EFA1;
-	Wed,  5 Feb 2025 14:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E83F1519AA;
+	Wed,  5 Feb 2025 14:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767198; cv=none; b=ZuYUITPXzitRLAFc4713f5NFA++w3U5IB4lYmXeG7rhyxWwEJx4yK8UCIqDeU2KgfoTk1ojdzkiDXsqeE1zXNTX00jkrpP5ZO2h8ugtcJQv+4UpjDApK/Sbhd3f/6scd6KaUFPHZF7OjIafeZkGpOa9hU4UtbfBqtObQtRHJblc=
+	t=1738764363; cv=none; b=l+dOGJuNjPmUyS2KM8GYEhpGV6XXDQkxOAruEyf8fjldwPnZOBEkkIIs08LcXHsl2btj3uJkL/w+VladpU3SMP9MoTRvRlM+IEr6zL7A7LKlNASFkZWbTubrN7hYG22OpZlycEbHvJPR+IDa2MBKhm3IQgE6SSh4nWptb+TfCbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767198; c=relaxed/simple;
-	bh=L9vCNrmBdZrcig/tqXcoXIteWUSlIifWj3Mt613yuMs=;
+	s=arc-20240116; t=1738764363; c=relaxed/simple;
+	bh=aeyyR/BS0bAmyLeUaPCpvkMUXUb9NCTXeRS4qBxbMY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOb+mwNqAIqMJ1aARRBPyS0MbxwcnCNh/X+y6EbwF4pitoopYGOzvlN3t3WWYceLLobNxY7aE5QB5ZEWotgkGpXp30YsQv5fJGl9gJ8id6mNi0bVlz19ghMCghUq0Nldm9P8uTNYiYnNMOcFUGYL8bSZObZGjDlphxQuidgKdyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoUUPf0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC01C4CED1;
-	Wed,  5 Feb 2025 14:53:17 +0000 (UTC)
+	 MIME-Version; b=FT9nBPxInsORKoLjgf8vRtt5b8gwlhRD44s8QPBYewrLV3iZC2Lp0De/CfGNodOCouM+V8MwrmujN7/EaHPNECIpXN+iAfQ0fJmbLfBjhn5Ug0x2Qso0qjfuy1F77eCTCzCloAba/Hz9y3M5MFAiejhmGUnsUxtQqQy1Ktue704=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQV/1PHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC0DC4CED1;
+	Wed,  5 Feb 2025 14:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767198;
-	bh=L9vCNrmBdZrcig/tqXcoXIteWUSlIifWj3Mt613yuMs=;
+	s=korg; t=1738764363;
+	bh=aeyyR/BS0bAmyLeUaPCpvkMUXUb9NCTXeRS4qBxbMY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoUUPf0vWeUH8T7vcM1HpPbZZAZFfvLKalc2EUP+Pri5wTsLIu2Xkacy/T+jGNUvs
-	 UAjWeaXMSVxk2EaAN8wW5sNoCNAMsUXdGekd4rMulIbIRrTrW4Ca3PuN25ED2pqRej
-	 5cs6iXrf61cMDyHffSFqRSXaMCHpHNR0VFHg+O6A=
+	b=jQV/1PHth5APJKFp4mLlIGDCIxqSjzGFoMrsXwCUN57QtIpENY5Il687YwUAi6RXg
+	 BngqmrkH+eWURnVHk0X8n7+PXperdPpEPSBcinKArwuXEIjEHeixVHNgG9cosi2bhv
+	 fzDgVuw+lNL/T1ndyed0gZX+w+r7GOdOehoLnwWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Ba Jing <bajing@cmss.chinamobile.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 341/623] ARM: dts: stm32: Fix IPCC EXTI declaration on stm32mp151
-Date: Wed,  5 Feb 2025 14:41:23 +0100
-Message-ID: <20250205134509.273397276@linuxfoundation.org>
+Subject: [PATCH 6.6 165/393] ktest.pl: Remove unused declarations in run_bisect_test function
+Date: Wed,  5 Feb 2025 14:41:24 +0100
+Message-ID: <20250205134426.610150480@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+From: Ba Jing <bajing@cmss.chinamobile.com>
 
-[ Upstream commit 4ea654242e0c75bdf6b45d3c619c5fdcb2e9312a ]
+[ Upstream commit 776735b954f49f85fd19e1198efa421fae2ad77c ]
 
-The GIC IRQ type used for IPCC RX should be IRQ_TYPE_LEVEL_HIGH.
-Replacing the interrupt with the EXTI event changes the type to
-the numeric value 1, meaning IRQ_TYPE_EDGE_RISING.
+Since $output and $ret are not used in the subsequent code, the declarations
+should be removed.
 
-The issue is that EXTI event 61 is a direct event.The IRQ type of
-direct events is not used by EXTI and is propagated to the parent
-IRQ controller of EXTI, the GIC.
-
-Align the IRQ type to the value expected by the GIC by replacing
-the second parameter "1" with IRQ_TYPE_LEVEL_HIGH.
-
-Fixes: 7d9802bb0e34 ("ARM: dts: stm32: remove the IPCC "wakeup" IRQ on stm32mp151")
-Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: a75fececff3c ("ktest: Added sample.conf, new %default option format")
+Link: https://lore.kernel.org/20240902130735.6034-1-bajing@cmss.chinamobile.com
+Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp151.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/ktest/ktest.pl | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
-index b28dc90926bda..e7e3ce8066ece 100644
---- a/arch/arm/boot/dts/st/stm32mp151.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
-@@ -129,7 +129,7 @@
- 			reg = <0x4c001000 0x400>;
- 			st,proc-id = <0>;
- 			interrupts-extended =
--				<&exti 61 1>,
-+				<&exti 61 IRQ_TYPE_LEVEL_HIGH>,
- 				<&intc GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "rx", "tx";
- 			clocks = <&rcc IPCC>;
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index 045090085ac5b..e84464d80e183 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -2946,8 +2946,6 @@ sub run_bisect_test {
+ 
+     my $failed = 0;
+     my $result;
+-    my $output;
+-    my $ret;
+ 
+     $in_bisect = 1;
+ 
 -- 
 2.39.5
 
