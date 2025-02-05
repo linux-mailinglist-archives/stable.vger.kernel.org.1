@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF09BA28FF8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC09A28C8E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC64C3AA76D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1228B1881F83
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A052115990C;
-	Wed,  5 Feb 2025 14:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F557143759;
+	Wed,  5 Feb 2025 13:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLbbOlvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FayKSgoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8601607B7;
-	Wed,  5 Feb 2025 14:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2CF126C18;
+	Wed,  5 Feb 2025 13:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765777; cv=none; b=a8kVR++fIYQ2NtTLtwbSanEvD71vrifJjJ8C/0Fu6rOtOcvVAHkk6qHBnw5yNMfWbArRH46Ukwgz+3ecehp8jDj0iMY/20xo5Q+nAfTbsxStdH6Zn/Y/Pg4wkRCDoY+6KJmW3YKeaRKsEa0g+htoPbvTBAsioh2gCKnrGUEH1LY=
+	t=1738763466; cv=none; b=aIATTYNPIvjrhx1auZ5IB2w8YSyUE+iwGboeDyEMuKDJj61SGydeoFEMyiAMjcIQc7azbZuO76PMNPUoczR/zo2/q+P2g+GnuugEyL4cCuhuncnRnKOPaJabGBIBI0g/CILbcB78fSzcCc5naI0F+frrPB0+671kyvFVzRPEVYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765777; c=relaxed/simple;
-	bh=miDwXgMiEzEYqwNwKBkD5YGRVKfIqNZADGT38BXYlNs=;
+	s=arc-20240116; t=1738763466; c=relaxed/simple;
+	bh=Fz+I96vPbsMNsGwo3tWIZ7oqDt2zOS5d0lALahflZjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhIKnjuy4iSm9XUaAAwrApfa9pNeI2dAQoB2TGgqri+sVmEfz+gZHWQx+MgcvtpZuh4+DoJTfGV1n4PwTDPSw/G5Hkb9vDTUA8ASnM5Jjur+YA93w+NQsSObBzPQT5eoYcAEsl0WEV82+1P1Au8+UHaG07f0sEQvx7ptX0x4CyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLbbOlvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61618C4CED6;
-	Wed,  5 Feb 2025 14:29:36 +0000 (UTC)
+	 MIME-Version; b=FhJ/BnnlYJSemSE9hNUPKrYSb3h8gU+7EcPow7gA3LYsoBC95l6zB0OXAdKLDn+kEHVk7bD87Yi8Xyc/lDy2c4LDT4Uumia6aCnePWzhFE+/vYXTXgYH/C3St2zI5Jkc/dtNx8mDedinjzn94+2taob0McJaPcEDMeuBBv5TeQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FayKSgoo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63955C4CED1;
+	Wed,  5 Feb 2025 13:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765776;
-	bh=miDwXgMiEzEYqwNwKBkD5YGRVKfIqNZADGT38BXYlNs=;
+	s=korg; t=1738763466;
+	bh=Fz+I96vPbsMNsGwo3tWIZ7oqDt2zOS5d0lALahflZjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLbbOlvz7Vx0OOYnO6/LPQmFg0k5TuZT1F9JkZovKj7FfaHu51cpyORvG5i2jXwd3
-	 +cZzB8eSYvNodjYi/Yfst+aK9QH6N600SgQEb/jsRWnDnabwfy3TnhO0au/onZgkgN
-	 vu5tCLzIxg8gPcuf8lC3BI5l9/AHPYfw0s65b8cU=
+	b=FayKSgooycH5n1TPiCfsLssg2/I53akRalCztha/8ydUSekjXpP/EPYl5sRppWrZV
+	 ySeKkPN5cZuICo519WCAd8lvbqE5Wn2fmXNSrsMB/EOjCaapGZKT3JGwDEURuaoD+9
+	 b8DpT8PO7GE3sdlv5dOqZgXADYeNtlUwhuCIyaow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/590] net/rose: prevent integer overflows in rose_setsockopt()
+Subject: [PATCH 6.6 069/393] wifi: rtlwifi: pci: wait for firmware loading before releasing memory
 Date: Wed,  5 Feb 2025 14:39:48 +0100
-Message-ID: <20250205134504.195682084@linuxfoundation.org>
+Message-ID: <20250205134422.933655022@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit d640627663bfe7d8963c7615316d7d4ef60f3b0b ]
+[ Upstream commit b59b86c5d08be7d761c04affcbcec8184738c200 ]
 
-In case of possible unpredictably large arguments passed to
-rose_setsockopt() and multiplied by extra values on top of that,
-integer overflows may occur.
+At probe error path, the firmware loading work may have already been
+queued. In such a case, it will try to access memory allocated by the probe
+function, which is about to be released. In such paths, wait for the
+firmware worker to finish before releasing memory.
 
-Do the safest minimum and fix these issues by checking the
-contents of 'opt' and returning -EINVAL if they are too large. Also,
-switch to unsigned int and remove useless check for negative 'opt'
-in ROSE_IDLE case.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250115164220.19954-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3d86b93064c7 ("rtlwifi: Fix PCI probe error path orphaned memory")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241206173713.3222187-5-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 59050caab65c8..72c65d938a150 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -397,15 +397,15 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- {
- 	struct sock *sk = sock->sk;
- 	struct rose_sock *rose = rose_sk(sk);
--	int opt;
-+	unsigned int opt;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 711f75ce7690a..3abd0c4c954bc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -2220,6 +2220,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ fail4:
+ 	rtl_deinit_core(hw);
+ fail3:
++	wait_for_completion(&rtlpriv->firmware_loading_complete);
+ 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
  
- 	if (level != SOL_ROSE)
- 		return -ENOPROTOOPT;
- 
--	if (optlen < sizeof(int))
-+	if (optlen < sizeof(unsigned int))
- 		return -EINVAL;
- 
--	if (copy_from_sockptr(&opt, optval, sizeof(int)))
-+	if (copy_from_sockptr(&opt, optval, sizeof(unsigned int)))
- 		return -EFAULT;
- 
- 	switch (optname) {
-@@ -414,31 +414,31 @@ static int rose_setsockopt(struct socket *sock, int level, int optname,
- 		return 0;
- 
- 	case ROSE_T1:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t1 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T2:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t2 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_T3:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->t3 = opt * HZ;
- 		return 0;
- 
- 	case ROSE_HOLDBACK:
--		if (opt < 1)
-+		if (opt < 1 || opt > UINT_MAX / HZ)
- 			return -EINVAL;
- 		rose->hb = opt * HZ;
- 		return 0;
- 
- 	case ROSE_IDLE:
--		if (opt < 0)
-+		if (opt > UINT_MAX / (60 * HZ))
- 			return -EINVAL;
- 		rose->idle = opt * 60 * HZ;
- 		return 0;
+ fail2:
 -- 
 2.39.5
 
