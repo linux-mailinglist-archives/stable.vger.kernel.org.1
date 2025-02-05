@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E40A29042
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E3AA28C70
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D271C1699C1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FB91688C5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4370315CD74;
-	Wed,  5 Feb 2025 14:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7488713C9C4;
+	Wed,  5 Feb 2025 13:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qv471GTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlucOcIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4BB15B984;
-	Wed,  5 Feb 2025 14:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3374C126C18;
+	Wed,  5 Feb 2025 13:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765994; cv=none; b=hRwNfnqXB5bAbtVBAXS0a8JtPMbBjNo94nWdTTDVnvm8gIbl+gUIzWU9UxZzs5FTRPB/LI4S6ZkSWD1kyOfFZ0/rEFGO/GYkf5VM0L4BF3i95Tzp1JPbvCtjKlWSs1C/+kmjwJEOO+f8OU/OrOiaV9S/c6O6zLfIzEkRTOcZHsQ=
+	t=1738763389; cv=none; b=eqz+dSaHv2PHiMMdl2V1K/f5Vv0dhWm6/2hURV4Wnj7C9Bbs230vjoN1if1j/R+gwBfaSFaog7fJRenf7s0tXVgVX/EXcw/9PrZIO2w6GmwAHFTsblEXvh0PjdOp9Jso71Kr2jzUFJxBERrNmeYiov4xMXiOux5/QQd43qrlrjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765994; c=relaxed/simple;
-	bh=NFPodEiBmIzJOEwt+GZcarfny1fku8OYu1VYKLffwaY=;
+	s=arc-20240116; t=1738763389; c=relaxed/simple;
+	bh=f14kOU0TC3R4YhiiS8L0f9BG0lpuWBxxLfYLmhBYJhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XgKL91Jst2tZSVpDXg0jnnwfqKJqlf8ampX559XzpIoPEm3SA9SePKuXxThw/nlkjrgpBS2NQ9TbmI9DQvToUopZ5eUmLkwF0MLZ1iC9ObQhveTPo+RtTXZ+TgtaPBm+cGbM+F2VqsKqIMyMej5jV6eOQudCOEwnsdMJbLIMeSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qv471GTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E34AC4CED1;
-	Wed,  5 Feb 2025 14:33:13 +0000 (UTC)
+	 MIME-Version; b=G7UqVH0BEnKGB99e1G9UYrtSKbfDx63nae1FBwSUdNrUSfaAkWFXqGUrURBaxzg/P5d1Xgbpj5MfeUhLl9r5qfJT5JQ6uEXm93QO2WkuMSqSxgkN3u/9c47Dqc0rjS8eq0zE7559h2n3mxMkvGM6zpt4I0Yq8lmFxneXkeM41JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlucOcIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9402BC4CED1;
+	Wed,  5 Feb 2025 13:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765993;
-	bh=NFPodEiBmIzJOEwt+GZcarfny1fku8OYu1VYKLffwaY=;
+	s=korg; t=1738763389;
+	bh=f14kOU0TC3R4YhiiS8L0f9BG0lpuWBxxLfYLmhBYJhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qv471GTgcvDIXy6b309hu9umPhSEKAgf9o4A0dxHSeVDhDRdK5RxoZzNcjQEWHI8k
-	 IfA2HlDSknBUt2YM7EQzpA7uSZSOjbxo8OACIMTz+LSdXWjRXPveMWR17lAuWn6vAw
-	 99opZZqy5L9iPKPfMMeNYGa1jpvnrf8O26YUdiAY=
+	b=BlucOcIsSX1cRXugULq1NJcsfTWG8rdTOntSDokeRSyIAixf2peBSsB335BcpIJu4
+	 IVFE9GkGP9+7xSUieyIGHQa35sVGt+7UFmye4sLDGkYeU2rehWvtNHgNKN/kP7DU4b
+	 5tAKR5QD/V2gCjL1kbbTosOikITKJOsnd+D+T5bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 232/623] selftests/landlock: Fix error message
+Subject: [PATCH 6.6 055/393] net_sched: sch_sfq: annotate data-races around q->perturb_period
 Date: Wed,  5 Feb 2025 14:39:34 +0100
-Message-ID: <20250205134505.101048882@linuxfoundation.org>
+Message-ID: <20250205134422.402596389@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
+[ Upstream commit a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f ]
 
-The global variable errno may not be set in test_execute().  Do not use
-it in related error message.
+sfq_perturbation() reads q->perturb_period locklessly.
+Add annotations to fix potential issues.
 
-Cc: Günther Noack <gnoack@google.com>
-Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
-Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240430180015.3111398-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/landlock/fs_test.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/sched/sch_sfq.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
-index 6788762188fea..97d360eae4f69 100644
---- a/tools/testing/selftests/landlock/fs_test.c
-+++ b/tools/testing/selftests/landlock/fs_test.c
-@@ -2003,8 +2003,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
- 	ASSERT_EQ(1, WIFEXITED(status));
- 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
- 	{
--		TH_LOG("Unexpected return code for \"%s\": %s", path,
--		       strerror(errno));
-+		TH_LOG("Unexpected return code for \"%s\"", path);
- 	};
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 66dcb18638fea..ed362eefeea9a 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -608,6 +608,7 @@ static void sfq_perturbation(struct timer_list *t)
+ 	struct Qdisc *sch = q->sch;
+ 	spinlock_t *root_lock;
+ 	siphash_key_t nkey;
++	int period;
+ 
+ 	get_random_bytes(&nkey, sizeof(nkey));
+ 	rcu_read_lock();
+@@ -618,8 +619,12 @@ static void sfq_perturbation(struct timer_list *t)
+ 		sfq_rehash(sch);
+ 	spin_unlock(root_lock);
+ 
+-	if (q->perturb_period)
+-		mod_timer(&q->perturb_timer, jiffies + q->perturb_period);
++	/* q->perturb_period can change under us from
++	 * sfq_change() and sfq_destroy().
++	 */
++	period = READ_ONCE(q->perturb_period);
++	if (period)
++		mod_timer(&q->perturb_timer, jiffies + period);
+ 	rcu_read_unlock();
  }
  
+@@ -662,7 +667,7 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
+ 		q->quantum = ctl->quantum;
+ 		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
+ 	}
+-	q->perturb_period = ctl->perturb_period * HZ;
++	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
+ 	if (ctl->flows)
+ 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
+@@ -724,7 +729,7 @@ static void sfq_destroy(struct Qdisc *sch)
+ 	struct sfq_sched_data *q = qdisc_priv(sch);
+ 
+ 	tcf_block_put(q->block);
+-	q->perturb_period = 0;
++	WRITE_ONCE(q->perturb_period, 0);
+ 	del_timer_sync(&q->perturb_timer);
+ 	sfq_free(q->ht);
+ 	sfq_free(q->slots);
 -- 
 2.39.5
 
