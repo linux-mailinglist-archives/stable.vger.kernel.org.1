@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE658A28E91
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8D5A28C54
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F45B1882CD3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DFDB7A4AA7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A788155725;
-	Wed,  5 Feb 2025 14:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE41F13C9C4;
+	Wed,  5 Feb 2025 13:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="luLt5KeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYV7GhGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56D155327;
-	Wed,  5 Feb 2025 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AD214A4E9;
+	Wed,  5 Feb 2025 13:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764876; cv=none; b=DOcxS8CTXl94Jb5z91dE6ZZOnQ7Gg29PFXxMyjhJzwCcyeP77OaPp0moKoBsLRmgo24QERikvJHoXntwrerNXG399SUchPCcxdGFsuYBXLzATPSDRYSJbk0EKDsfolJaM0Za8z0/kYNnC1/pZhoMBtaNh5uWAp45jhmi3iQnX9c=
+	t=1738763132; cv=none; b=Lbb2f7rXzLD+OoZaKyD/EOLHskNEK/j4dT8YtJEP/N8lblKGl+6strHh2OLEX5h16PZ6wmV4bpPbEs8KFHDtRmPAyxdjjYaSaehBL0PE+slSANW8BpIHG30XHvE96ZGu0NucpDFreM60ooopmonWohyVw6hcf4FWMFOH+Rh3Ng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764876; c=relaxed/simple;
-	bh=npLKsjQf4WDrybGphrDITE5Jth3pLfY1rtgi982Fza4=;
+	s=arc-20240116; t=1738763132; c=relaxed/simple;
+	bh=EbHBpOM15JQQBQ2qNk/wu+QK5kBPK12I3PCTPtJ/Sxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVrIp9gWj6P9UucD8dxm8vBdNz7EXVUV84YmBnLRZQBJOqSh5Dp7gSVeJ6UffeAaj+9CvdH3EZdmDuPFheWHxTho09fejyoDnf54d+KExHro4E5zx7tg1YGjm6i5fLAX1RdFkr46N/mzDbuG0KpqNYG1ZAQ8Kbd6wpL81oP76II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=luLt5KeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59141C4CED6;
-	Wed,  5 Feb 2025 14:14:35 +0000 (UTC)
+	 MIME-Version; b=gK9QXnioWe+OiC63C9MU5XMKIir8Mu7+ulb9HQ+pH0gwV9iFeoIt6U35o40QZdaaX4pVhqjVCG/D2yWQZcAHHFWWtcF+Yr/ytJVoOb5TV1BmA1XGmraSMC3o14CGq5SDNdQ0NmnNFSKkUmBNb5bTgnh70LIPwL1zx7aP3w5To+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYV7GhGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE55EC4CED1;
+	Wed,  5 Feb 2025 13:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764875;
-	bh=npLKsjQf4WDrybGphrDITE5Jth3pLfY1rtgi982Fza4=;
+	s=korg; t=1738763132;
+	bh=EbHBpOM15JQQBQ2qNk/wu+QK5kBPK12I3PCTPtJ/Sxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=luLt5KeWZZsFSFhnmds8whHB8DUGvNFXI6PM1JqurhEvA0YNqojbshuXGNCCPRXxG
-	 Suyyj55Fw+/qkZXzKmmac1LjcXqBN0BtnzkoBtCk4bP9cHu3JNrlz1BWy5ihRATZHe
-	 WWomF9K7c2r3i1YDc9/BkExgcZQfluLY6pkB4tLY=
+	b=eYV7GhGAojLMuihpO9/nqxrqG5PZ2++vcSU2fASLr2vTyf706nlTRJXngQNNHkWpY
+	 wr/JUCoiHIiOnDXNOmrmdwoYQCJaNlnugbTW1X6VucK5ap3HZNup+/gd8RFb9IYUMm
+	 JP2Laj6e0LfS2IfOdc2MzCmhZhRevpYxM/ChTnYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/590] wifi: mac80211: dont flush non-uploaded STAs
+Subject: [PATCH 6.6 001/393] powerpc/book3s64/hugetlb: Fix disabling hugetlb when fadump is active
 Date: Wed,  5 Feb 2025 14:38:40 +0100
-Message-ID: <20250205134501.595573235@linuxfoundation.org>
+Message-ID: <20250205134420.344308523@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-[ Upstream commit aa3ce3f8fafa0b8fb062f28024855ea8cb3f3450 ]
+[ Upstream commit d629d7a8efc33d05d62f4805c0ffb44727e3d99f ]
 
-If STA state is pre-moved to AUTHORIZED (such as in IBSS
-scenarios) and insertion fails, the station is freed.
-In this case, the driver never knew about the station,
-so trying to flush it is unexpected and may crash.
+Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
+is active") disabled hugetlb support when fadump is active by returning
+early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
+populating hpage_shift/HPAGE_SHIFT.
 
-Check if the sta was uploaded to the driver before and
-fix this.
+Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
+early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
+which inadvertently re-enabled hugetlb support when fadump is active.
 
-Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.e3d10970a7c7.I491bbcccc46f835ade07df0640a75f6ed92f20a3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by implementing hugepages_supported() on powerpc. This ensures
+that disabling hugetlb for the fadump kernel is independent of
+hpage_shift/HPAGE_SHIFT.
+
+Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241217074640.1064510-1-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.h | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index d382d9729e853..a06644084d15d 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -724,6 +724,9 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
- 	if (sdata && !check_sdata_in_driver(sdata))
- 		return;
+diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+index ea71f7245a63e..8d8f4909ae1a4 100644
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -15,6 +15,15 @@
  
-+	if (!sta->uploaded)
-+		return;
+ extern bool hugetlb_disabled;
+ 
++static inline bool hugepages_supported(void)
++{
++	if (hugetlb_disabled)
++		return false;
 +
- 	trace_drv_flush_sta(local, sdata, &sta->sta);
- 	if (local->ops->flush_sta)
- 		local->ops->flush_sta(&local->hw, &sdata->vif, &sta->sta);
++	return HPAGE_SHIFT != 0;
++}
++#define hugepages_supported hugepages_supported
++
+ void __init hugetlbpage_init_defaultsize(void);
+ 
+ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
 -- 
 2.39.5
 
