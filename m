@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1BFA28E29
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E99DA28F44
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 531EF3A16A6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73D2E188499F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC1415CD74;
-	Wed,  5 Feb 2025 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072F715C13A;
+	Wed,  5 Feb 2025 14:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvGm1BdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMSodMWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72A614F9E7;
-	Wed,  5 Feb 2025 14:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7060157465;
+	Wed,  5 Feb 2025 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764551; cv=none; b=cZAEWC57q0jOAoR8b/DbXczA4tWPhWH+bVKnUQ/EG6yMo6pRQAqfqEge82+Xga38XwClJeDpsNEG1XvmiYaNw3oXqWQ1kGmjiscbzW5wJ6fSRVTnahuN2U0zXXTJDMG5p81cnes1dourqoeqPj4aefRj+sdHA5KYb/iVs4Aeprc=
+	t=1738765356; cv=none; b=uerbiWURFnB2B2eLNvoVU+r6d4qMh59bAhljX7ve7vBrdxrns3w06KdX+m8HwbZr7t18wxXdgktCnJcPmaioAZTlqvnHUYnkg9kVuC5GjPW7eSO3OquLvnjpETHr9aSBnu5qxe0Oh4Goakt87+xC1CFxbLQStuoQenX83hQ6zr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764551; c=relaxed/simple;
-	bh=atlgMCwcpL1IVmx2WffOaIsdPhMvAWPo/FhfWbZ724Y=;
+	s=arc-20240116; t=1738765356; c=relaxed/simple;
+	bh=fhQnllwvGD+3KjHCRxSUnGLRz33KSkIjxEYWB0NqZSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUS8rFK+3ESua1GvZKQmcXOAptXnBjvaDpJw9+f1IEs4/9KwQ8uq1Sx9Dt9vw8Ytt6j0I5ZF+U6DcummUwyc8D/YKDfXzvpX+7+2gwyUdaDN2wGM2xLvlo0UD83oXeyotqVUj7Gj0P0GRF0qqhZbzfljMaH2XjT3jVzV4TXprt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvGm1BdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BEDC4CED1;
-	Wed,  5 Feb 2025 14:09:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PyECKuoE4pD2HfCUrO3dMDuMvqqgx0q9/bN3xaRaNrcQxy0NuzEqBZZYbnN3tkqFeAQZFRadvBxUGCx8GEbqjYi+zTyHf4AteMSQ3H+nFqjo4Dl5U+FE74dZvDBVIgYPho8X4gpgYXzDXUBs9qf75wfKIz2WNMncNzjqlwCW2PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMSodMWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EF6C4CEDD;
+	Wed,  5 Feb 2025 14:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764550;
-	bh=atlgMCwcpL1IVmx2WffOaIsdPhMvAWPo/FhfWbZ724Y=;
+	s=korg; t=1738765356;
+	bh=fhQnllwvGD+3KjHCRxSUnGLRz33KSkIjxEYWB0NqZSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvGm1BdFnEPD9TovP88cq4tRMdsG8XRV4icJqdISrgewbmEVxBTtaKGXXakdpYs5/
-	 F0u3TM4RYk5JEyD3rVtxnm0k0WdLUJxcSpOU+2LAxzfPyBvU5wqqj2nPsMxzk7txWv
-	 qQGACnfMrnK7YqAMm0AiTrKD/29TBR3BERzd60Mg=
+	b=MMSodMWJqxOfgZcHzEPFH8u3ne0jKCHGs7z5OVUOCNOoablTIDCm37PKOeg5kCvv5
+	 Ly8a0nDsUKZXUsem0M4McJL/Be6QsQ6lVHlmKQChaS6IhdMDcrKrfbHOy047tpK0oV
+	 gw7x1nf3Xa7vns6d+mSYleIC4GDVwOqy3YdntCE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmo Chou <chou.cosmo@gmail.com>,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Corey Minyard <corey@minyard.net>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/590] ipmi: ssif_bmc: Fix new request loss when bmc ready for a response
+Subject: [PATCH 6.13 150/623] samples/landlock: Fix possible NULL dereference in parse_path()
 Date: Wed,  5 Feb 2025 14:38:12 +0100
-Message-ID: <20250205134500.511175011@linuxfoundation.org>
+Message-ID: <20250205134501.974151690@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Nguyen <quan@os.amperecomputing.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 83d8c79aa958e37724ed9c14dc7d0f66a48ad864 ]
+[ Upstream commit 078bf9438a31567e2c0587159ccefde835fb1ced ]
 
-Cosmo found that when there is a new request comes in while BMC is
-ready for a response, the complete_response(), which is called to
-complete the pending response, would accidentally clear out that new
-request and force ssif_bmc to move back to abort state again.
+malloc() may return NULL, leading to NULL dereference.  Add a NULL
+check.
 
-This commit is to address that issue.
-
-Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
-Reported-by: Cosmo Chou <chou.cosmo@gmail.com>
-Closes: https://lore.kernel.org/lkml/20250101165431.2113407-1-chou.cosmo@gmail.com/
-Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
-Message-ID: <20250107034734.1842247-1-quan@os.amperecomputing.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Fixes: ba84b0bf5a16 ("samples/landlock: Add a sandbox manager example")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://lore.kernel.org/r/20241128032955.11711-1-zichenxie0106@gmail.com
+[mic: Simplify fix]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ssif_bmc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ samples/landlock/sandboxer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
-index a14fafc583d4d..310f17dd9511a 100644
---- a/drivers/char/ipmi/ssif_bmc.c
-+++ b/drivers/char/ipmi/ssif_bmc.c
-@@ -292,7 +292,6 @@ static void complete_response(struct ssif_bmc_ctx *ssif_bmc)
- 	ssif_bmc->nbytes_processed = 0;
- 	ssif_bmc->remain_len = 0;
- 	ssif_bmc->busy = false;
--	memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
- 	wake_up_all(&ssif_bmc->wait_queue);
- }
- 
-@@ -744,9 +743,11 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
- 			ssif_bmc->aborting = true;
+diff --git a/samples/landlock/sandboxer.c b/samples/landlock/sandboxer.c
+index 57565dfd74a26..07fab2ef534e8 100644
+--- a/samples/landlock/sandboxer.c
++++ b/samples/landlock/sandboxer.c
+@@ -91,6 +91,9 @@ static int parse_path(char *env_path, const char ***const path_list)
  		}
- 	} else if (ssif_bmc->state == SSIF_RES_SENDING) {
--		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF)
-+		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF) {
-+			memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
- 			/* Invalidate response buffer to denote it is sent */
- 			complete_response(ssif_bmc);
-+		}
- 		ssif_bmc->state = SSIF_READY;
  	}
+ 	*path_list = malloc(num_paths * sizeof(**path_list));
++	if (!*path_list)
++		return -1;
++
+ 	for (i = 0; i < num_paths; i++)
+ 		(*path_list)[i] = strsep(&env_path, ENV_DELIMITER);
  
+@@ -127,6 +130,10 @@ static int populate_ruleset_fs(const char *const env_var, const int ruleset_fd,
+ 	env_path_name = strdup(env_path_name);
+ 	unsetenv(env_var);
+ 	num_paths = parse_path(env_path_name, &path_list);
++	if (num_paths < 0) {
++		fprintf(stderr, "Failed to allocate memory\n");
++		goto out_free_name;
++	}
+ 	if (num_paths == 1 && path_list[0][0] == '\0') {
+ 		/*
+ 		 * Allows to not use all possible restrictions (e.g. use
 -- 
 2.39.5
 
