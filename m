@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFDDA28FAB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A481A28EB8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2D7F7A2A6F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DE857A0FB8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB61A14B959;
-	Wed,  5 Feb 2025 14:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E77F8632B;
+	Wed,  5 Feb 2025 14:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNtAgl1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V41Rc073"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66579522A;
-	Wed,  5 Feb 2025 14:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C49AEED7;
+	Wed,  5 Feb 2025 14:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765662; cv=none; b=tXtgvovgCLKAzMH8HGi32sGwYQqEadyulZMhgp6tfpcEqf7+l6dwUtna9PUZ2atdCphUrh4rQ1pPtCek32MyFGBXXIpbn/MnJlbw//aJsYgJJmnKp0+9bFDT7kwgeBfXFrWCLUhcVf99cFCCNcP73KU92rB0a/TGeIOqSU8hoeM=
+	t=1738764995; cv=none; b=lunsCmouHXirAddJfuemGPYKr2JwEy/L7izcNfc/AUNpIgGaWfdwce8PASCb5xwyr3y0aO0+IC0taERQ9JCiJOENmnhnEtB5odosGefrMx8DXAZHib2yKuwsNAu9vXEaXMHv1Wf+Dj88ykNg7BBby9fo1TyRsySO9zCA0Vx2p6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765662; c=relaxed/simple;
-	bh=ULvoZgXjLGrmVE/K4OT8q7RGVN5BzuAm1EcEWdL+H10=;
+	s=arc-20240116; t=1738764995; c=relaxed/simple;
+	bh=jDWGGbLVHlatuYVGaccmeFBmTdoBrCLVra2MFWOsqsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el2GLcFqeGP1Pd7dC0dSI00nBo8Ix0aRfEZT/b0elZrtogin21sL7kNISeLdnHmeTZoZWdSXtvL5ZkZwnrdcTx9g2BvFs9inyhWdVYl6KDTcd9k5E9MaeO+YVIZm+U6liB3ScstRP+b/KQULhm0OfjX6PD05MaTcrKKxtYPcoqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNtAgl1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61B8C4CED1;
-	Wed,  5 Feb 2025 14:27:41 +0000 (UTC)
+	 MIME-Version; b=YjrkJBYb+sII37X5soOq9kM9KgmNRuxGCUMNbL8FxlWcuVQ8muLuoD7Vkot19V8zB/+wknpm8Utkjazlti0OfQwb0tmhijR6L3umBua75F57FVjuBS8SdAFa+WCLvvC7iE7asP992TNT8aqw1TPJ6ZVoRrs6vuPOJ/PqllzmdYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V41Rc073; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F58C4CED1;
+	Wed,  5 Feb 2025 14:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765662;
-	bh=ULvoZgXjLGrmVE/K4OT8q7RGVN5BzuAm1EcEWdL+H10=;
+	s=korg; t=1738764995;
+	bh=jDWGGbLVHlatuYVGaccmeFBmTdoBrCLVra2MFWOsqsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNtAgl1k00RGfTbGluvDBNi89/IgKuKp/O5agj2R0YNZfwjKT1ayXQUHpaOqi9dmu
-	 X61GzEAVSxAQOaODMaM4pmefQ5s4cb986FFrJrx1Vzilwo+Jz5mXslM+qDzfSZdwFJ
-	 ATjstYAiB9pxbg44dlKrDhDSDk+N4QZOSBge7fPM=
+	b=V41Rc073kL/14KFhI5vmMi2r6P+aVdkI2pFuwDHLvasQzyiYdpqgj8/WfDykMF2L+
+	 q04De4eRvii4TwZmiYT+9FW9x3q6+kfiS/YFFuBjEAtSBZM96fiNDo4DPRWf1dpS4B
+	 Z80EagZJiEjQtNe2rxQi4oawe7XwU2LWsBAM/ePg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
+	xueqin Luo <luoxueqin@kylinos.cn>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 193/623] wifi: mt76: mt7925: Enhance mt7925_mac_link_bss_add to support MLO
+Subject: [PATCH 6.12 180/590] wifi: mt76: mt7915: fix overflows seen when writing limit attributes
 Date: Wed,  5 Feb 2025 14:38:55 +0100
-Message-ID: <20250205134503.620270800@linuxfoundation.org>
+Message-ID: <20250205134502.166832686@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-[ Upstream commit ac03e5b82bc6b44e8ea3e7c7c624ee1445ff4e4b ]
+[ Upstream commit 64d571742b0ae44eee5efd51e2d4a09d7f6782fc ]
 
-In mt7925_mac_link_bss_add(), the mt76_connac_mcu_uni_add_dev() function
-must be executed only after all parameters have been properly initialized.
+DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
+number such as 18446744073709551615 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+This commit was inspired by commit: 57ee12b6c514.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-8-sean.wang@kernel.org
+Fixes: 02ee68b95d81 ("mt76: mt7915: add control knobs for thermal throttling")
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://patch.msgid.link/20241202031917.23741-3-luoxueqin@kylinos.cn
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 268d216f09e20..3cd3c3e289e72 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -365,18 +365,14 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 	mconf->mt76.omac_idx = ieee80211_vif_is_mld(vif) ?
- 			       0 : mconf->mt76.idx;
- 	mconf->mt76.band_idx = 0xff;
--	mconf->mt76.wmm_idx = mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
-+	mconf->mt76.wmm_idx = ieee80211_vif_is_mld(vif) ?
-+			      0 : mconf->mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 6bef96e3d2a3d..77d82ccd73079 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -82,7 +82,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+ 		return ret;
  
- 	if (mvif->phy->mt76->chandef.chan->band != NL80211_BAND_2GHZ)
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL + 4;
- 	else
- 		mconf->mt76.basic_rates_idx = MT792x_BASIC_RATES_TBL;
+ 	mutex_lock(&phy->dev->mt76.mutex);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 60 * 1000, 130 * 1000), 1000);
  
--	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
--					  &mlink->wcid, true);
--	if (ret)
--		goto out;
--
- 	dev->mt76.vif_mask |= BIT_ULL(mconf->mt76.idx);
- 	mvif->phy->omac_mask |= BIT_ULL(mconf->mt76.omac_idx);
- 
-@@ -395,6 +391,12 @@ static int mt7925_mac_link_bss_add(struct mt792x_dev *dev,
- 	ewma_rssi_init(&mconf->rssi);
- 
- 	rcu_assign_pointer(dev->mt76.wcid[idx], &mlink->wcid);
-+
-+	ret = mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mconf->mt76,
-+					  &mlink->wcid, true);
-+	if (ret)
-+		goto out;
-+
- 	if (vif->txq) {
- 		mtxq = (struct mt76_txq *)vif->txq->drv_priv;
- 		mtxq->wcid = idx;
+ 	if ((i - 1 == MT7915_CRIT_TEMP_IDX &&
+ 	     val > phy->throttle_temp[MT7915_MAX_TEMP_IDX]) ||
 -- 
 2.39.5
 
