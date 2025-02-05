@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC13A29218
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795B2A28D6D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 527533ACA56
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFE3C7A1E05
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE54C1FCD17;
-	Wed,  5 Feb 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583F514EC77;
+	Wed,  5 Feb 2025 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6r5dqO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmrwRluP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8783F1FCD0C;
-	Wed,  5 Feb 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1477615198D;
+	Wed,  5 Feb 2025 14:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766855; cv=none; b=LDog7vg5aY+LyaH4tOYkO9ff74f7pp8aRuAkW20RSgkbSPqpiTgEKtZ8iAUcpjkuDlHm0TfJgtCfNYBRmOr84zrzwHH4M8Tj4KwSNIPiPDCcqQCwK2SIsTIbN9WyG+IX7kndTAz04U8927KpdoknG/Pna816J7jBtn9O5fd6ihU=
+	t=1738764104; cv=none; b=hiiy0rkhaiszr+GnQZNgblruVJuRMGoZGgrab3tusTeNA5hus4DqwAwXfUI1oTBS9NKL6b+sdZ7cS/RIXyrXTrsCTvb0+Y4S1UzLW8Ai3E0Lue41PB5B8snHxCsqol+YLJZmGqIdZ0Lgwa+g8OwR7oGDgHdHI6d8xHJH7DMF3YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766855; c=relaxed/simple;
-	bh=ArSJnTiD+Wmu+VabDeNKYxUsmJz901KGwBaOOHhOdLo=;
+	s=arc-20240116; t=1738764104; c=relaxed/simple;
+	bh=tere086RbhDcZkCL/AKf3HSriC29Y0q2/+zvcKHwj4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEMq/Q/FWPAIihScWVo2yJ8zZlWwzJq1ryRyU32RAsPvLRGyz+r3G7Ie2Rlj0DdFem7iw69Jp96dxzvYt+xr5+BARGsCb1PhK+t5hsxOgRhO83iVE6jUrg7dQk/D0Ea/H4PtRCNBYU97gj7CsyxYsPNNPTld5CNPWk0EaNHkX3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6r5dqO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2FBC4CED1;
-	Wed,  5 Feb 2025 14:47:34 +0000 (UTC)
+	 MIME-Version; b=uJGcDArUrK7ScafY8ohHrPfUkUswr8IgLdYcTaRU2sVGIrv/gXoAzDjMqn85kQ4AXi6BHzCe+6nCYDYwnosaO2wymC8InPnH+G8xGTo2BxokJr4c6MeSaJBH9AbTYk9HwvuOvzkPCHlNn6KTdx5UkOPM/ywb8ibaDhNFJoAklqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmrwRluP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E491C4CED1;
+	Wed,  5 Feb 2025 14:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766855;
-	bh=ArSJnTiD+Wmu+VabDeNKYxUsmJz901KGwBaOOHhOdLo=;
+	s=korg; t=1738764103;
+	bh=tere086RbhDcZkCL/AKf3HSriC29Y0q2/+zvcKHwj4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6r5dqO6wlbMtLvhChZiMMFsvVwAZ0+3B2aWbyce9hsV2mae6FsT/N+LDM6s/hHv9
-	 Xv4qmN1ZzPCCw1fZANFazWz1vbkq5sSXPd9RypPk6jq5+KCyf5bEinJj8egqkeBzh0
-	 1YBnhrhmFJJQiCnz8YF+NrLxv58GJKrJaWW7ZYU4=
+	b=cmrwRluP+YNA+kx7YMFgK5aFjQNOIfz0Fissw9IAX9RDCx1OxOLEJm44wef76E+id
+	 XY9/d1U7PzCr6qWCoBzlNPIWvsJB3cm+4bAL6/dQgCs8wwiYFKp5m41br00PG7Vx0d
+	 05zTdCnClN2e8GVV/0O/U9Ncclu7W/lQC6gTk5Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Liu Jian <liujian56@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 316/623] iommu/amd: Remove dev == NULL checks
-Date: Wed,  5 Feb 2025 14:40:58 +0100
-Message-ID: <20250205134508.311492696@linuxfoundation.org>
+Subject: [PATCH 6.6 140/393] net: let net.core.dev_weight always be non-zero
+Date: Wed,  5 Feb 2025 14:40:59 +0100
+Message-ID: <20250205134425.661774607@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 02bcd1a8b991c6fc29271fa02250bea1b61fb742 ]
+[ Upstream commit d1f9f79fa2af8e3b45cffdeef66e05833480148a ]
 
-This is no longer possible, amd_iommu_domain_alloc_paging_flags() is never
-called with dev = NULL from the core code. Similarly
-get_amd_iommu_from_dev() can never be NULL either.
+The following problem was encountered during stability test:
 
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/3-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 082f1bcae8d1 ("iommu/amd: Fully decode all combinations of alloc_paging_flags")
+(NULL net_device): NAPI poll function process_backlog+0x0/0x530 \
+	returned 1, exceeding its budget of 0.
+------------[ cut here ]------------
+list_add double add: new=ffff88905f746f48, prev=ffff88905f746f48, \
+	next=ffff88905f746e40.
+WARNING: CPU: 18 PID: 5462 at lib/list_debug.c:35 \
+	__list_add_valid_or_report+0xf3/0x130
+CPU: 18 UID: 0 PID: 5462 Comm: ping Kdump: loaded Not tainted 6.13.0-rc7+
+RIP: 0010:__list_add_valid_or_report+0xf3/0x130
+Call Trace:
+? __warn+0xcd/0x250
+? __list_add_valid_or_report+0xf3/0x130
+enqueue_to_backlog+0x923/0x1070
+netif_rx_internal+0x92/0x2b0
+__netif_rx+0x15/0x170
+loopback_xmit+0x2ef/0x450
+dev_hard_start_xmit+0x103/0x490
+__dev_queue_xmit+0xeac/0x1950
+ip_finish_output2+0x6cc/0x1620
+ip_output+0x161/0x270
+ip_push_pending_frames+0x155/0x1a0
+raw_sendmsg+0xe13/0x1550
+__sys_sendto+0x3bf/0x4e0
+__x64_sys_sendto+0xdc/0x1b0
+do_syscall_64+0x5b/0x170
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The reproduction command is as follows:
+  sysctl -w net.core.dev_weight=0
+  ping 127.0.0.1
+
+This is because when the napi's weight is set to 0, process_backlog() may
+return 0 and clear the NAPI_STATE_SCHED bit of napi->state, causing this
+napi to be re-polled in net_rx_action() until __do_softirq() times out.
+Since the NAPI_STATE_SCHED bit has been cleared, napi_schedule_rps() can
+be retriggered in enqueue_to_backlog(), causing this issue.
+
+Making the napi's weight always non-zero solves this problem.
+
+Triggering this issue requires system-wide admin (setting is
+not namespaced).
+
+Fixes: e38766054509 ("[NET]: Fix sysctl net.core.dev_weight")
+Fixes: 3d48b53fb2ae ("net: dev_weight: TX/RX orthogonality")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Link: https://patch.msgid.link/20250116143053.4146855-1-liujian56@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 30 ++++++++++--------------------
- 1 file changed, 10 insertions(+), 20 deletions(-)
+ net/core/sysctl_net_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 96d87406f8946..12c416abdce7d 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2344,13 +2344,10 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
- 						  u32 flags, int pgtable)
- {
- 	bool dirty_tracking = flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-+	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
- 	struct protection_domain *domain;
--	struct amd_iommu *iommu = NULL;
- 	int ret;
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 373b5b2231c49..0b15272dd2d35 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -297,7 +297,7 @@ static int proc_do_dev_weight(struct ctl_table *table, int write,
+ 	int ret, weight;
  
--	if (dev)
--		iommu = get_amd_iommu_from_dev(dev);
--
- 	/*
- 	 * Since DTE[Mode]=0 is prohibited on SNP-enabled system,
- 	 * default to use IOMMU_DOMAIN_DMA[_FQ].
-@@ -2358,8 +2355,7 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
- 	if (amd_iommu_snp_en && (type == IOMMU_DOMAIN_IDENTITY))
- 		return ERR_PTR(-EINVAL);
- 
--	domain = protection_domain_alloc(type,
--					 dev ? dev_to_node(dev) : NUMA_NO_NODE);
-+	domain = protection_domain_alloc(type, dev_to_node(dev));
- 	if (!domain)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -2375,13 +2371,11 @@ static struct iommu_domain *do_iommu_domain_alloc(unsigned int type,
- 	domain->domain.geometry.force_aperture = true;
- 	domain->domain.pgsize_bitmap = domain->iop.pgtbl.cfg.pgsize_bitmap;
- 
--	if (iommu) {
--		domain->domain.type = type;
--		domain->domain.ops = iommu->iommu.ops->default_domain_ops;
-+	domain->domain.type = type;
-+	domain->domain.ops = iommu->iommu.ops->default_domain_ops;
- 
--		if (dirty_tracking)
--			domain->domain.dirty_ops = &amd_dirty_ops;
--	}
-+	if (dirty_tracking)
-+		domain->domain.dirty_ops = &amd_dirty_ops;
- 
- 	return &domain->domain;
- }
-@@ -2392,13 +2386,10 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 
- {
- 	unsigned int type = IOMMU_DOMAIN_UNMANAGED;
--	struct amd_iommu *iommu = NULL;
-+	struct amd_iommu *iommu = get_amd_iommu_from_dev(dev);
- 	const u32 supported_flags = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
- 						IOMMU_HWPT_ALLOC_PASID;
- 
--	if (dev)
--		iommu = get_amd_iommu_from_dev(dev);
--
- 	if ((flags & ~supported_flags) || user_data)
- 		return ERR_PTR(-EOPNOTSUPP);
- 
-@@ -2412,10 +2403,9 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 
- 	/* Allocate domain with v1 page table for dirty tracking */
- 	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING) {
--		if (iommu && amd_iommu_hd_support(iommu)) {
--			return do_iommu_domain_alloc(type, dev,
--						     flags, AMD_IOMMU_V1);
--		}
-+		if (amd_iommu_hd_support(iommu))
-+			return do_iommu_domain_alloc(type, dev, flags,
-+						     AMD_IOMMU_V1);
- 
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
+ 	mutex_lock(&dev_weight_mutex);
+-	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (!ret && write) {
+ 		weight = READ_ONCE(weight_p);
+ 		WRITE_ONCE(dev_rx_weight, weight * dev_weight_rx_bias);
+@@ -422,6 +422,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "dev_weight_rx_bias",
+@@ -429,6 +430,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "dev_weight_tx_bias",
+@@ -436,6 +438,7 @@ static struct ctl_table net_core_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_do_dev_weight,
++		.extra1         = SYSCTL_ONE,
+ 	},
+ 	{
+ 		.procname	= "netdev_max_backlog",
 -- 
 2.39.5
 
