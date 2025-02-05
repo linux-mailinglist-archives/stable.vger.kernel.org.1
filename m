@@ -1,120 +1,121 @@
-Return-Path: <stable+bounces-112281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D260FA284E7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 08:24:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D8FA28513
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 08:48:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4AC18867E9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 07:24:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 955C43A6DC5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 07:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD2B228C92;
-	Wed,  5 Feb 2025 07:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184EB229B0F;
+	Wed,  5 Feb 2025 07:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="JRD5kY+C"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SxVNKyd0"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22764228C91;
-	Wed,  5 Feb 2025 07:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF71228CA6;
+	Wed,  5 Feb 2025 07:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738740247; cv=none; b=XRv7VM9+umepuvrYNCVO3oZND9rRRzVIb+OUfY8D0Ac36Z+BhyPNI8emo7BR9RAjA3UfOOd/9erRqsFcEPQYv6wRkCH7QDed45DAv+/AmXpnh0cvPtvyBLi+z6gkXC160rHG+4SCYCg7E2fbDbRNjM0q3ufmRuCJX/QWwgkV1BM=
+	t=1738741679; cv=none; b=pZmXOXI2vs3lpvvhAuwwPb2Zd4DoNtas9fwr3GeTBt7wsdWmnyIx2wJAcIqmUdar1wKkECx+foJ72Z88Zv2P8cEcsQuvh3XfJVNk6ycqPUm8FnmmmCraLCYTtJlkbHraB0Sa9IHmXGkt8NY8QXuBmKu5VvopNy3a9zRXkV079f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738740247; c=relaxed/simple;
-	bh=Cj+Pbd2/n1KYGHKtDmEbSbjEAdbJy4st9tAoUhSsWuU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iEYbVG6iquzznsi8XTDZLSBDUUvNSALXxDJzPJjPBA1HfmUyz/RYmQhqQ3tzG+Yo+WD67iufta3O9qTa9MmL1Gb2KX/q4PDcejNTBDYpBX3g1Hegf+Al8MZ5NWVbI7ZJXEfimMwFPH+U/4yBJ60qj9DVEaTnduxmTStjeTFOK8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=JRD5kY+C; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.95.84.73] (unknown [167.220.238.9])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 89ABC203F585;
-	Tue,  4 Feb 2025 23:24:01 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 89ABC203F585
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1738740245;
-	bh=M5OQQ11HeiOo2qp+8sLAhdiGvT4ZXKIkzKf7G8IAmO4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JRD5kY+C9R5ef8/QcMU5axu1dttEyYFB/4dQvNdFAOgiM/L+aKx4soAdj7ug4jrVd
-	 SJmWcMthL9Aw19RU7G6WcITKUyIuRs4zIL5+DrGi1L1Y0FTTQwZj+FapQaPm8rgofz
-	 BlPuJY7Rl6YlayUXg+vWkeiGrdpqspU1Vr1c1tus=
-Message-ID: <ee7f3c75-b7f6-416b-b6e6-983c466f1c83@linux.microsoft.com>
-Date: Wed, 5 Feb 2025 12:53:58 +0530
+	s=arc-20240116; t=1738741679; c=relaxed/simple;
+	bh=o88vN75r/CCchZ1ZgARyFWNKshBMUCiRaIzui97yu+s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KeXtiLAqgazj9TgXYfA97eCTJ1EKxSZ32fLW3Gpl0D8g8fvvEqiCYKTjWQ3X5BiMbcyf/zRCo2Gux5YZiNv1Wc1j+IeESqFYzhYCXorTTLMieyrucTCTGE8i31AuWfIJrFt1k/unVs4y6OO+YslfLI6ISTXo8srncejIVYQjvLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SxVNKyd0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5156pTl2018072;
+	Wed, 5 Feb 2025 07:47:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	EqjBNpcOcQyoZAU5Cc3pyFMNDW6+e2lGvh4SKtFvV1M=; b=SxVNKyd0QwlyX4gh
+	7X9IjS6RgrCPTA1HsiwsD7f2DU4hqFUwWobM9vh8IN1RCx15esOkimiq/4AVeZYY
+	k3sUuJAjdelZhkiPpAQQgXHON2vU/n7B/yYWvqID51qXJO2Lqy7Cqb5n39g3be0j
+	WXg5mSdmSDqeKR7yndBfijkxnierPhRYvUQq5quJa7I6JALsRtAxbFNKqqeZDK+X
+	qYCbu0G+IFsdOZgf3XdunMXwyWA1iypYU3AVevZV2Y81sre/Dr/uF25kBbgL53u9
+	fdoULXu4RYNFtahpRrZDouEG7HEBnYSgMsrTpzmfutVmo4QTeQVsRb+5ickSZPFj
+	0D1hNg==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44m33b83sb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Feb 2025 07:47:54 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5157lrJ5010635
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 5 Feb 2025 07:47:53 GMT
+Received: from hu-varada-blr.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 4 Feb 2025 23:47:49 -0800
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
+To: <lgirdwood@gmail.com>, <broonie@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <andersson@kernel.org>,
+        <konradybcio@kernel.org>, <agross@kernel.org>,
+        <quic_varada@quicinc.com>, <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH v1 1/2] regulator: qcom_smd: Add l2, l5 sub-node to mp5496 regulator
+Date: Wed, 5 Feb 2025 13:16:56 +0530
+Message-ID: <20250205074657.4142365-2-quic_varada@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250205074657.4142365-1-quic_varada@quicinc.com>
+References: <20250205074657.4142365-1-quic_varada@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] sched/topology: Enable topology_span_sane check only
- for debug builds
-To: K Prateek Nayak <kprateek.nayak@amd.com>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Steve Wahl <steve.wahl@hpe.com>,
- Saurabh Singh Sengar <ssengar@linux.microsoft.com>, srivatsa@csail.mit.edu,
- Michael Kelley <mhklinux@outlook.com>
-References: <20250203114738.3109-1-namjain@linux.microsoft.com>
- <bf469858-dedf-490a-abf2-b066aee6077e@amd.com>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <bf469858-dedf-490a-abf2-b066aee6077e@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -k2OSWfKOiHigzS0jgnYGDwJZbSU3N5t
+X-Proofpoint-ORIG-GUID: -k2OSWfKOiHigzS0jgnYGDwJZbSU3N5t
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-05_03,2025-02-05_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 spamscore=0 mlxlogscore=999 clxscore=1011 impostorscore=0
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502050061
 
+Adding l2, l5 sub-node entry to mp5496 regulator node.
 
+Cc: stable@vger.kernel.org
+Acked-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+---
+ .../devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2/5/2025 12:50 PM, K Prateek Nayak wrote:
-> Hello Naman,
-> 
-> On 2/3/2025 5:17 PM, Naman Jain wrote:
->> From: Saurabh Sengar <ssengar@linux.microsoft.com>
->>
->> On a x86 system under test with 1780 CPUs, topology_span_sane() takes
-
-<.>
-
->>   {
->>       int i = cpu + 1;
->> +    /* Skip the topology sanity check for non-debug, as it is a time- 
->> consuming operatin */
-> 
-> s/operatin/operation/
-> 
->> +    if (!sched_debug()) {
->> +        pr_info_once("%s: Skipping topology span sanity check. Use 
->> `sched_verbose` boot parameter to enable it.\n",
-> 
-> This could be broken down as follows:
-> 
->          pr_info_once("%s: Skipping topology span sanity check."
->                   " Use `sched_verbose` boot parameter to enable it.\n",
->                   __func__);
-> 
-> Running:
-> 
->      grep -r -A 5 "pr_info(.*[^;,]$" kernel/
-> 
-> gives similar usage across kernel/*. Apart from those nits, feel
-> free to add:
-> 
-> Tested-by: K Prateek Nayak <kprateek.nayak@amd.com> # x86
-> 
-> if the future version does not change much.
-> 
-
-Hello Prateek,
-Thanks for reviewing and testing this. I'll make changes based on your
-feedback in next version.
-
-Regards,
-Naman
+diff --git a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+index f2fd2df68a9e..b7241ce975b9 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom,smd-rpm-regulator.yaml
+@@ -22,7 +22,7 @@ description:
+   Each sub-node is identified using the node's name, with valid values listed
+   for each of the pmics below.
+ 
+-  For mp5496, s1, s2
++  For mp5496, s1, s2, l2, l5
+ 
+   For pm2250, s1, s2, s3, s4, l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11,
+   l12, l13, l14, l15, l16, l17, l18, l19, l20, l21, l22
+-- 
+2.34.1
 
 
