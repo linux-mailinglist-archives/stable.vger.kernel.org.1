@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A98A292D3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D17A290DF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C225A7A2235
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A9016A3F2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C10157465;
-	Wed,  5 Feb 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559CF15CD4A;
+	Wed,  5 Feb 2025 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/gVQa/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ni2/Adl/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40CCD155A30;
-	Wed,  5 Feb 2025 15:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F0C7E792;
+	Wed,  5 Feb 2025 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767950; cv=none; b=lDUZhLmCP1HCQ7ICzi1MgEGxTWoqVOneG51Gmx/MsRfhsYWNuJibsFJeBkaRu6X3zWP8cWeEGOD3EstFbSMjNtQhTJzA6dO7R7MrRmeCmsg6B9aT1TTvO5M4kAapP/nz9G6IbrgGk3+V8Vf4Ip5p8ncEdCTYQH/4o9BCksk7JLA=
+	t=1738766424; cv=none; b=fkX5EUjAS3EfU6+oebgcbphbLYlZeOGQrKuqN04hwAANYIG88xw0odSBXkNt5QbVc36Rj5epnf9RzwG8uKzg34+BusD5o1sPqf/Dsai5NFEqR8BeCexbyrBvodvimODWtUWa1e0dyveJN1Vhnbq80lyD/SdkJpcQP4aUxA1CF9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767950; c=relaxed/simple;
-	bh=2n/iQvDP+U807TrnpBAa2+JyCqqYz2PSoA8ePO4DFvQ=;
+	s=arc-20240116; t=1738766424; c=relaxed/simple;
+	bh=UCqMD/40fdd7/m4TplarNNJMIqx9QOafQG/cOw4wR0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DqH4dC3CMFI0TYOC+rhmtRpZ3kSysdJfAY1DvGJ3MgHKF2ztLgCLT5yXN4pOT7CcSmvOqJ3gqhKwzoMnn41BlLXDA8mtG4Db/y9srWQEUWUf5o29KV+AsuYgGLNe6Up+UNqi3v73HydCXm0W7/zsVlzbljzj7z1XD/Cl5S9zxZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/gVQa/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A170BC4CEE2;
-	Wed,  5 Feb 2025 15:05:49 +0000 (UTC)
+	 MIME-Version; b=RoGzCvxcWX4565veU/TIHfayDLr1Qf3s8pgZf+iUOsOaJUyQ1d/psgiR6uCs+bdEF8EnPbmOTlKkLcKrnybwKRdXPT9sU2CHesTgn/uhifvhb48gnFyZsDLDKoLNe9Nm5INWqBApTjPEQazGEOmkGyGENR8/OyjWuukX7YMlpS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ni2/Adl/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF2BC4CED6;
+	Wed,  5 Feb 2025 14:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767950;
-	bh=2n/iQvDP+U807TrnpBAa2+JyCqqYz2PSoA8ePO4DFvQ=;
+	s=korg; t=1738766423;
+	bh=UCqMD/40fdd7/m4TplarNNJMIqx9QOafQG/cOw4wR0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/gVQa/ni+wOnIexO0Qao9EqMH3M6t9Y+2iD5EDw4eQdivEogmYziyquYgcnWlJEi
-	 MIiguEcyn8D2V/ZfPM/rWLrtLXFEvOMp6FZ4vTc7KmHnkMFR7/PUKpyJjbR5C1gJQ0
-	 gD/7JPG1EBdRimQ1Y1iQ66kkPf0XdKj06PST01OI=
+	b=ni2/Adl/Ur95spa6lMwozlLUECDTLkFFMxLphtOOdH9eoaJ2gf2OuolLaXSv7uTYp
+	 zldXbGh2gzrSlo1/lT4XyZQEdK9GY++6oAmZUjhG0gGDCYx95PSedS+dD9EydX16WP
+	 yj9pTsz0bccvl1Ele812xxqMhTgRjahM2pL1IJZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 525/590] RISC-V: Mark riscv_v_init() as __init
+Subject: [PATCH 6.6 361/393] kconfig: remove unused code for S_DEF_AUTO in conf_read_simple()
 Date: Wed,  5 Feb 2025 14:44:40 +0100
-Message-ID: <20250205134515.351238552@linuxfoundation.org>
+Message-ID: <20250205134434.114094961@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 9d87cf525fd2e1a5fcbbb40ee3df216d1d266c88 ]
+[ Upstream commit 92d4fe0a48f1ab6cf20143dd0b376f4fe842854b ]
 
-This trips up with Xtheadvector enabled, but as far as I can tell it's
-just been an issue since the original patchset.
+The 'else' arm here is unreachable in practical use cases.
 
-Fixes: 7ca7a7b9b635 ("riscv: Add sysctl to set the default vector rule for new processes")
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20250115180251.31444-1-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+include/config/auto.conf does not include "# CONFIG_... is not set"
+line unless it is manually hacked.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: a409fc1463d6 ("kconfig: fix memory leak in sym_warn_unmet_dep()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/vector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/confdata.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
-diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
-index 682b3feee4511..a30fb2fb8a2b1 100644
---- a/arch/riscv/kernel/vector.c
-+++ b/arch/riscv/kernel/vector.c
-@@ -309,7 +309,7 @@ static int __init riscv_v_sysctl_init(void)
- static int __init riscv_v_sysctl_init(void) { return 0; }
- #endif /* ! CONFIG_SYSCTL */
+diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
+index 8694ab1e04067..21a65ffe7c3db 100644
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -442,20 +442,15 @@ int conf_read_simple(const char *name, int def)
+ 			*p++ = 0;
+ 			if (strncmp(p, "is not set", 10))
+ 				continue;
+-			if (def == S_DEF_USER) {
+-				sym = sym_find(line + 2 + strlen(CONFIG_));
+-				if (!sym) {
+-					if (warn_unknown)
+-						conf_warning("unknown symbol: %s",
+-							     line + 2 + strlen(CONFIG_));
  
--static int riscv_v_init(void)
-+static int __init riscv_v_init(void)
- {
- 	return riscv_v_sysctl_init();
- }
+-					conf_set_changed(true);
+-					continue;
+-				}
+-			} else {
+-				sym = sym_lookup(line + 2 + strlen(CONFIG_), 0);
+-				if (sym->type == S_UNKNOWN)
+-					sym->type = S_BOOLEAN;
++			sym = sym_find(line + 2 + strlen(CONFIG_));
++			if (!sym) {
++				if (warn_unknown)
++					conf_warning("unknown symbol: %s",
++						     line + 2 + strlen(CONFIG_));
++
++				conf_set_changed(true);
++				continue;
+ 			}
+ 			if (sym->flags & def_flags) {
+ 				conf_warning("override: reassigning to symbol %s", sym->name);
 -- 
 2.39.5
 
