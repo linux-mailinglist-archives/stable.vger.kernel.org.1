@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1EFA29310
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693A0A28EAB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5507616ACE2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BBCD167500
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEF017C7C4;
-	Wed,  5 Feb 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23061519A4;
+	Wed,  5 Feb 2025 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJecbg4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCFrRUxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB151E89C;
-	Wed,  5 Feb 2025 14:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82E13C3F6;
+	Wed,  5 Feb 2025 14:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767538; cv=none; b=gs46zVIVpSuEu8fSAR6pOWp3aPIpEOkGSxPUi9VeAcuMzPg9vuH4mE9DTZQRNdqt4ioMZTLvYohCyHBvd2PsclkpuBIBDsEPKsAb8q3ArpT6TYDY6Nh2+ZPEqs+P37UmO8zFXsouVf6YNGHO+wj5EJ0y76aKi0FFmDfpNDRsUjc=
+	t=1738764949; cv=none; b=U3m77hOZ0xp7Sx9zlbmUEqzHf8DFfZOZZ1fsUALuT4L86DwPbv7dVI9H0sPtYLrv+NY6NuP10E+FKdrfMkx95T1ej5e2QtZ/iFWFfaKouxHXwdC05eWLyd/PPQmyNHT2Juu8aBOaHN+jJFTq1za0Jn77MtjAjwBDSWDxiTAhQ5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767538; c=relaxed/simple;
-	bh=FepK3vKzOdy0dNG/RFpTRI5Y0XabN8kpA+sHsTnw24A=;
+	s=arc-20240116; t=1738764949; c=relaxed/simple;
+	bh=0LI4yy37iskR/n8a1DnLQWGsuN9TS5oEOHb32/8ABOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fODLxQ1GE/Xbl4p75dHbHvj94w+G4hKCssDtHRc3DPAKTEA+zKlzy3P2pPxMZe0YZtryFvefvTP+6Wu8nz9qE7POpA9eQ35UNZ4/TmpxYJ8pH/IiWcmor0bmzpJpQKntHjym1Md0C0nKAGasNDiesvvlGCru9j4+ABito7TLs5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJecbg4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F35C4CED1;
-	Wed,  5 Feb 2025 14:58:57 +0000 (UTC)
+	 MIME-Version; b=N/SoWIYJdfeP1nfFiKsEqvAh7B71VinVUlWi8Z1w5p7TVZ+RSKfn0KpOM6QCTMdtq10HIKdrlkb3r9ZY2OmUGwJ7RgV71oFAKhODEYozgAppq7AVR8irOhd6ekC+yaUj92PAm76dp3lqwg8LndSET/+SKm/5WrgbGGd41THzL9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCFrRUxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A856EC4CED6;
+	Wed,  5 Feb 2025 14:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767538;
-	bh=FepK3vKzOdy0dNG/RFpTRI5Y0XabN8kpA+sHsTnw24A=;
+	s=korg; t=1738764949;
+	bh=0LI4yy37iskR/n8a1DnLQWGsuN9TS5oEOHb32/8ABOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJecbg4yy3KPNEK+giYxZYGNHWbcUj23vsJ5GsfFUFhRA1miSs5D6G8jGf/JeStDT
-	 S0MJrKv+pVEP8O3nEpY7BFRTG2DZYWEobf+l/AbvhrotUcbW4vLpUtN6oDIvVwtq4i
-	 PzrVrUnjr3uR2wMWMH9Q8BKZkEWJjoJqgLfyZUu0=
+	b=ZCFrRUxXbbP4iPFZZY7uhejuYiqo9veFKMEIJmwX4+7ffMljUUIbKM52XIrzDcHoF
+	 LqN+gMPjSqy4wVbIRc6Vz0RhB1njtPQVJmDYkkpeKR37P9QEceS942NdHZTiiNdkY8
+	 Y8eWVoGv1a9e5B7B8BxCthpVwzK3XzGd3cDnxx6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mihai Sain <mihai.sain@microchip.com>,
-	Cristian Birsan <cristian.birsan@microchip.com>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 395/623] ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node
+Subject: [PATCH 6.6 218/393] arm64: dts: mediatek: mt8183: kenzo: Support second source touchscreen
 Date: Wed,  5 Feb 2025 14:42:17 +0100
-Message-ID: <20250205134511.333674399@linuxfoundation.org>
+Message-ID: <20250205134428.644420542@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Birsan <cristian.birsan@microchip.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit 4d9e5965df04c0adf260c3009c55d5fe240f7286 ]
+[ Upstream commit 5ec5dc73c5ac0c6e06803dc3b5aea4493e856568 ]
 
-Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
-This property will stop the LDO regulator from switching to 1.8V when the
-MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
-SDMMC interface pins in GPIO mode (PA0 - PA13).
+Some kenzo devices use second source touchscreen.
 
-On this board, PA10 is used as GPIO to enable the power switch controlling
-USB Vbus for the USB Host. The change is needed to fix the PA10 voltage
-level to 3.3V instead of 1.8V.
-
-Fixes: 5d4c3cfb63fe ("ARM: dts: at91: sama5d27_wlsom1: add SAMA5D27 wlsom1 and wlsom1-ek")
-Suggested-by: Mihai Sain <mihai.sain@microchip.com>
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
-Tested-by: Andrei Simion <andrei.simion@microchip.com>
-Link: https://lore.kernel.org/r/20241119160107.598411-3-cristian.birsan@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 0a9cefe21aec ("arm64: dts: mt8183: Add kukui-jacuzzi-kenzo board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20241213-touchscreen-v3-1-7c1f670913f9@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 +
- 1 file changed, 1 insertion(+)
+ .../dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts   | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-index 15239834d886e..35a933eec5738 100644
---- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-+++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
-@@ -197,6 +197,7 @@
- 
- &sdmmc0 {
- 	bus-width = <4>;
-+	no-1-8-v;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
- 	status = "okay";
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+index 8fa89db03e639..328294245a79d 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dts
+@@ -11,3 +11,18 @@
+ 	model = "Google kenzo sku17 board";
+ 	compatible = "google,juniper-sku17", "google,juniper", "mediatek,mt8183";
+ };
++
++&i2c0 {
++	touchscreen@40 {
++		compatible = "hid-over-i2c";
++		reg = <0x40>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&touchscreen_pins>;
++
++		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
++
++		post-power-on-delay-ms = <70>;
++		hid-descr-addr = <0x0001>;
++	};
++};
 -- 
 2.39.5
 
