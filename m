@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-113365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA57A291F7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE1AA2905B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDD5188C666
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8BB71881590
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCC21DDC2E;
-	Wed,  5 Feb 2025 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536B4151988;
+	Wed,  5 Feb 2025 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEW7WU+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pn5o9bt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483B61DC9BA;
-	Wed,  5 Feb 2025 14:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB5A7DA6A;
+	Wed,  5 Feb 2025 14:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766714; cv=none; b=OZfHMT+oiYj4AT5VqCr3lROT1JqFn2cRUJwW1nmPDzdQuaB9Mw0KJYzUfrfOgZP7G2SFWByT7Pp1tNzLQt7UQvnMwVxphBmQmg0eGCsTzBnqh0trT7DfT+aCERMQhIXiamzER5u0BPhaAZJ/XmJ4jA7vY4thplGhv4NGIyz10NY=
+	t=1738766104; cv=none; b=U11IcunBPHPAur791FApBp900InD0d/yG3m9+m1bl3Ttgo11ZZJKfHrs9HZRzlUR2uQZz1C8tOf5dEO7sECJGlZVYvULX02TxDcpL4iaHBGwcM5g18/+FQ4asQ4LFtl2Fdaf674P4pVivRS9gPf4HlnAQyKIOkmm6qYIGK5C4tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766714; c=relaxed/simple;
-	bh=OVANB5oSbIzWE3R7SuUp4Y2V5jeCDjyNcHx2FLxSVaI=;
+	s=arc-20240116; t=1738766104; c=relaxed/simple;
+	bh=LVaivByUdPMCBOZcvbd1Cb2SKSaDmYUulbvWQHwv7Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lc1yOXcuGngCPj1lbH2FcLNFFptSxw+3xN4VPH8PDOmrrvQKPnl6dwLw8TXwLs9+h8ZyEoMO7EWcLcBZMAqBeSBHMkvPUM5ZYQ3ngORtLH6Qphyf9yC2J6lMVqUqltZMPAxup/lLcNIKuXQCUg/5Bfn5iWHLeZWg83NnWnOLscY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEW7WU+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B49C4CED1;
-	Wed,  5 Feb 2025 14:45:13 +0000 (UTC)
+	 MIME-Version; b=jGNjons6K0PYFGoABTzErE5Yrsg68aTltNRL8PRBnlT41xrLsGP4HCupzmsglNzmdFUpVGskFJT98NvpaVCCzjZYarXL2EBhsv+46VvMsm+tH3/9hNtsNrUTpCp7s2NCeOex9OsEKEx9EIGe+HqoZ/cKlJvDgH+twHdPO9HmtJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pn5o9bt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAE6C4CED6;
+	Wed,  5 Feb 2025 14:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766714;
-	bh=OVANB5oSbIzWE3R7SuUp4Y2V5jeCDjyNcHx2FLxSVaI=;
+	s=korg; t=1738766103;
+	bh=LVaivByUdPMCBOZcvbd1Cb2SKSaDmYUulbvWQHwv7Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEW7WU+5JvfWuALihSmkqwdQDoMxXvWydHKOSeKyGj16PYelc9NpjWc/cXKFivTqf
-	 +1be0/MiNyc50u+YPfl8+jnzK1kphCXy6h/GtbXZtPOux/sNxMr8hwaI6xS7SGzRoP
-	 v154Xb/8JU0qs6hffTR+nT2fGTVbq1wXjHfzYdRY=
+	b=Pn5o9bt7D7s/usEphIe5E7JCRerL37WVAiGUOmFRAj1etSQAGnWjykk1EOnfWvVlE
+	 le95aSTov7+PgLshj+nGEjX7ddxFm55NqFxlGmfylzqHmzO37PYagSFTnEG9PwNtKL
+	 DrTInlIKMMXBkhtn7UeR/8HZ8+p9zfzYeQaUrmMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Jiachen Zhang <me@jcix.top>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung.kim@lge.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 300/623] perf report: Fix misleading help message about --demangle
+Subject: [PATCH 6.12 287/590] libbpf: Fix return zero when elf_begin failed
 Date: Wed,  5 Feb 2025 14:40:42 +0100
-Message-ID: <20250205134507.705613916@linuxfoundation.org>
+Message-ID: <20250205134506.256934088@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,48 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiachen Zhang <me@jcix.top>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit ac0ac75189a4d6a29a2765a7adbb62bc6cc650c7 ]
+[ Upstream commit 5436a54332c19df0acbef2b87cbf9f7cba56f2dd ]
 
-The wrong help message may mislead users. This commit fixes it.
+The error number of elf_begin is omitted when encapsulating the
+btf_find_elf_sections function.
 
-Fixes: 328ccdace8855289 ("perf report: Add --no-demangle option")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Jiachen Zhang <me@jcix.top>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung.kim@lge.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250109152220.1869581-1-me@jcix.top
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: c86f180ffc99 ("libbpf: Make btf_parse_elf process .BTF.base transparently")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250115100241.4171581-2-pulehui@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-report.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/bpf/btf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
-index 048c91960ba91..a5672749f7819 100644
---- a/tools/perf/builtin-report.c
-+++ b/tools/perf/builtin-report.c
-@@ -1422,7 +1422,7 @@ int cmd_report(int argc, const char **argv)
- 	OPT_STRING(0, "addr2line", &addr2line_path, "path",
- 		   "addr2line binary to use for line numbers"),
- 	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
--		    "Disable symbol demangling"),
-+		    "Symbol demangling. Enabled by default, use --no-demangle to disable."),
- 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
- 		    "Enable kernel symbol demangling"),
- 	OPT_BOOLEAN(0, "mem-mode", &report.mem_mode, "mem access profile"),
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 3c131039c5232..27e7bfae953bd 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -1185,6 +1185,7 @@ static struct btf *btf_parse_elf(const char *path, struct btf *base_btf,
+ 
+ 	elf = elf_begin(fd, ELF_C_READ, NULL);
+ 	if (!elf) {
++		err = -LIBBPF_ERRNO__FORMAT;
+ 		pr_warn("failed to open %s as ELF file\n", path);
+ 		goto done;
+ 	}
 -- 
 2.39.5
 
