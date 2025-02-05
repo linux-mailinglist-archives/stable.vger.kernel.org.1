@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6367A2920E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC28A28E8F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD0E716C576
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4460F3A2428
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00931FCFC6;
-	Wed,  5 Feb 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D357A1494DF;
+	Wed,  5 Feb 2025 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18OCUQ3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sw/1KyOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3BB1FCF66;
-	Wed,  5 Feb 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900E115198D;
+	Wed,  5 Feb 2025 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766879; cv=none; b=fSYi5ILlsf7INlV4EOceTns1M0QhL0DxQ3N/7ddZN567sGX+jTh5c5+CRHnlzIoJYJgpp397XA61f9XpGcGTaYJ6ztI7itx71b0+QP8ecuWVfmOtEW4mgJNwnuocj4m2EMW80pG0psQuuGkKNrfsls67MX1HS7rg4ctDm0wO36w=
+	t=1738764872; cv=none; b=rc0gEmtobayUSBG/9NyXjXDOpOPpaGH4D3IkWv2KMKkC/8+lWRUk+U7smViq90zl+LbVy+i3mCIV5bJA58/riY9j9oR+KE7+U5BwICSpT9MPmHXRrbOiS/2BHf/OwSs1dZy5b+3+hSoUZAuOvdGxKlV3POv2mkU5OmDo1x3BFqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766879; c=relaxed/simple;
-	bh=HsGHCdJIUUM9YUAoSjGYEW7ZG+8Vt1qn81fzVSVwczU=;
+	s=arc-20240116; t=1738764872; c=relaxed/simple;
+	bh=R8z8sE0jnoF6TbdvL/hW0K9sDm0idY2pcwx8A0GO2U4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbL3+Ic8YRZ7VQ6ro5CIq4oWLOAaEimTTNghxZCzKbbMgsAowNJRbwIHY9CmWxroex2dhKMLq2tzK7Bti8uI0VirOfEXTcpu8+uoreCpw96da3R71WcTWG49HGleqM0ed7VrRAZ1wX3VODr5ZlQ31j8MfPKhaa//htuddQQRTzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18OCUQ3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDB5C4CED1;
-	Wed,  5 Feb 2025 14:47:58 +0000 (UTC)
+	 MIME-Version; b=vFTa+i/7MwYLFTMlTpvPRL6cj110tn2BbkqqC2Zri4DZTkKXWL+WAipArza7yL3OrZWqTSr5/JjTEE6s/qMHMhWSpHEpaKjaI6F7H8XjEFTWDCEHf2lTY2by1KF20iAdDgUd08jEnCNaWo4wenEDPWFAzT6xqqhRIxFStzb1rqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sw/1KyOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBE0C4CED1;
+	Wed,  5 Feb 2025 14:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766879;
-	bh=HsGHCdJIUUM9YUAoSjGYEW7ZG+8Vt1qn81fzVSVwczU=;
+	s=korg; t=1738764872;
+	bh=R8z8sE0jnoF6TbdvL/hW0K9sDm0idY2pcwx8A0GO2U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18OCUQ3w3spZ6VrgFhagTKJVksDvRm6EaHv1flGyAVCZFpQLULr+6Z5ebDrpu1C4g
-	 zULIOZtROx9lvIXqFjpXtnBSz7JQVz4rFJcOOvnXGMc7m9JLiJvlEVoYry3mKpyPjt
-	 o790+fcjAg97ptoblhfTtKnllQgB72hUxypMieeE=
+	b=Sw/1KyOEKJ8ZI3/cvPFYTS+aPG1XyAUDyaa9AO5X9j8k47hNpAlxGHJl5Oe8VtKIN
+	 XI5JMXE4IulKQjADM6NsecmY8g3HUDmVD4qS4Jqe6OTk5m6xIxZ2j+M0sPhOGTSaKa
+	 2cOCCUxj/4jfhaAbIbnY2Rw6PILmdozDIc/5jeJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 375/590] arm64: dts: qcom: sc7180-trogdor-pompom: rename 5v-choke thermal zone
+Subject: [PATCH 6.6 211/393] arm64: dts: mediatek: mt8173-evb: Fix MT6397 PMIC sub-node names
 Date: Wed,  5 Feb 2025 14:42:10 +0100
-Message-ID: <20250205134509.617399885@linuxfoundation.org>
+Message-ID: <20250205134428.372646862@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 9180b38d706c29ed212181a77999c35ae9ff6879 ]
+[ Upstream commit 9545ba142865b9099d43c972b9ebcf463606499a ]
 
-Rename the 5v-choke thermal zone to satisfy the bindings.
+The MT6397 PMIC bindings specify exact names for its sub-nodes. The
+names used in the current dts don't match, causing a validation error.
 
-This fixes:
-sc7180-trogdor-pompom-r2-lte.dts: thermal-zones: '5v-choke-thermal' does not match any of the regexes: '^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
+Fix up the names. Also drop the label for the regulators node, since
+any reference should be against the individual regulator sub-nodes.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-4-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20241210092614.3951748-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-index ac8d4589e3fb7..f7300ffbb4519 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-@@ -12,11 +12,11 @@
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+index f9a84825b5cad..f6a70f22bd0c4 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -308,7 +308,7 @@
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
  
- / {
- 	thermal-zones {
--		5v-choke-thermal {
-+		choke-5v-thermal {
- 			thermal-sensors = <&pm6150_adc_tm 1>;
+-		mt6397regulator: mt6397regulator {
++		regulators {
+ 			compatible = "mediatek,mt6397-regulator";
  
- 			trips {
--				5v-choke-crit {
-+				choke-5v-crit {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
- 					type = "critical";
+ 			mt6397_vpca15_reg: buck_vpca15 {
 -- 
 2.39.5
 
