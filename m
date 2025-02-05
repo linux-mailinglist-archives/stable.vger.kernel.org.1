@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-113068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE292A28FBA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E63A28FC1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C7316505D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 775221680D2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A07615B984;
-	Wed,  5 Feb 2025 14:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846EF155756;
+	Wed,  5 Feb 2025 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ8T0rrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJTfUCw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4159F156C76;
-	Wed,  5 Feb 2025 14:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4D58634E;
+	Wed,  5 Feb 2025 14:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765714; cv=none; b=qhySeFsbfBbpbNTbie6PwO9W2jRYhKTEKOT+YsPKEonVEVBFW+vC4SE2BnfZFnSeEXABzCwXg8kUPAHIp7YR94ZQB1wEqjwrY+A25k6eKUIrnlfDk3PR6BlpIEkXz/RALqlWgWTEBcUAPF5QVqGky5/nBS38apqTFKJ6binhJcg=
+	t=1738765724; cv=none; b=pwegKVZkbC+sS1UcE02ynj1Ev+nJGAp8WmbJ62I2CRagqJQK1UElaZvIghDu4aGEJLOwU/ccHMY0zFtr64OsY4hgazIQML71eHmd7fz+J6PjXVXwQqftas0wbRWVw380XwGZStcjvGKi7xB6bQVNJ0G0B5lXXWvm0p1jyZO6NFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765714; c=relaxed/simple;
-	bh=P4bqZLSvZrfmvwjRexe1l61wq1vLZFB8KqxxDEcieLs=;
+	s=arc-20240116; t=1738765724; c=relaxed/simple;
+	bh=olyGunfNOZ6GVvrUBDc3YZvDttF1d2/VZbT8S4RJyOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BCyci2BCzpw4Ty2emEa20R6XAIcBaZ9xXGiqRrLUymvl3seEecnd2goq1k7qpZvkIADq2cWylHl62f8UhdjtR98WNSDDkmc2E5P9MMXKd4zpWg0oxwMfZL9wMlR0XMc+QdGOgV9I5kTfXrdipDB6zFLt8qUI6c0pXhuvTMyB720=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ8T0rrx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350CCC4CED1;
-	Wed,  5 Feb 2025 14:28:33 +0000 (UTC)
+	 MIME-Version; b=oUOjeHM6JiFAMDKuhBRaZdONqxwbeCGzoQuFGKKUHdtOMCBhRxUh6Obz9PguKwbgSLEhg0UHEUw1U0By6Lv6ldUPcbB/wCXZy5Hrh3svp0DGONknwzvDHrZdsxkClMOGIxA2QoLlkC/5t5Mm6ddDvnoq9lB8CmQDJvmRiPgoJJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJTfUCw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1734C4CED1;
+	Wed,  5 Feb 2025 14:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765713;
-	bh=P4bqZLSvZrfmvwjRexe1l61wq1vLZFB8KqxxDEcieLs=;
+	s=korg; t=1738765724;
+	bh=olyGunfNOZ6GVvrUBDc3YZvDttF1d2/VZbT8S4RJyOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJ8T0rrxLPp5diRKgifd30CToD2copLXYS7NtJVNXN+dLyFT9jt4c8Eeqn5GDP8vO
-	 Tq0h5+g4aHB0J0r/pkuhjpFCwNZh15XMdYAVviCj/DpY2dqezIv7IG6pFmRkpCm6r/
-	 UtK3yz5MHDDtmH6HtvjsX6bhwOIEGIzv4ZH+QzxY=
+	b=KJTfUCw4X22lG71YwV+cPmFGOhKnSj7edHbqvYBlkvMTcQwUlrqt9gHhpAPkW4Zn0
+	 qSNXqVq43RmRp4OUvTP1eq+aKFaT4q4RhFrOeWSRNzSKZgx3BKYNR04BcX9jIL/KiX
+	 F4/DpFluodc8XRkU9iUjuNfIb0/2uTPJHw9K6YBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 292/393] mtd: hyperbus: hbmc-am654: Convert to platform remove callback returning void
-Date: Wed,  5 Feb 2025 14:43:31 +0100
-Message-ID: <20250205134431.485341156@linuxfoundation.org>
+Subject: [PATCH 6.6 293/393] mtd: hyperbus: hbmc-am654: fix an OF node reference leak
+Date: Wed,  5 Feb 2025 14:43:32 +0100
+Message-ID: <20250205134431.524606362@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -61,71 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 59bd56760df17506bc2f828f19b40a2243edd0d0 ]
+[ Upstream commit bf5821909eb9c7f5d07d5c6e852ead2c373c94a0 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+In am654_hbmc_platform_driver, .remove() and the error path of .probe()
+do not decrement the refcount of an OF node obtained by
+  of_get_next_child(). Fix this by adding of_node_put() calls.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
-
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: aca31ce96814 ("mtd: hyperbus: hbmc-am654: Fix direct mapping setup flash access")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/linux-mtd/20231008200143.196369-10-u.kleine-koenig@pengutronix.de
-Stable-dep-of: bf5821909eb9 ("mtd: hyperbus: hbmc-am654: fix an OF node reference leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/hbmc-am654.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mtd/hyperbus/hbmc-am654.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
-index a6161ce340d4e..dbe3eb361cca2 100644
+index dbe3eb361cca2..4b6cbee23fe89 100644
 --- a/drivers/mtd/hyperbus/hbmc-am654.c
 +++ b/drivers/mtd/hyperbus/hbmc-am654.c
-@@ -229,7 +229,7 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+@@ -174,26 +174,30 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+ 	priv->hbdev.np = of_get_next_child(np, NULL);
+ 	ret = of_address_to_resource(priv->hbdev.np, 0, &res);
+ 	if (ret)
+-		return ret;
++		goto put_node;
+ 
+ 	if (of_property_read_bool(dev->of_node, "mux-controls")) {
+ 		struct mux_control *control = devm_mux_control_get(dev, NULL);
+ 
+-		if (IS_ERR(control))
+-			return PTR_ERR(control);
++		if (IS_ERR(control)) {
++			ret = PTR_ERR(control);
++			goto put_node;
++		}
+ 
+ 		ret = mux_control_select(control, 1);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to select HBMC mux\n");
+-			return ret;
++			goto put_node;
+ 		}
+ 		priv->mux_ctrl = control;
+ 	}
+ 
+ 	priv->hbdev.map.size = resource_size(&res);
+ 	priv->hbdev.map.virt = devm_ioremap_resource(dev, &res);
+-	if (IS_ERR(priv->hbdev.map.virt))
+-		return PTR_ERR(priv->hbdev.map.virt);
++	if (IS_ERR(priv->hbdev.map.virt)) {
++		ret = PTR_ERR(priv->hbdev.map.virt);
++		goto disable_mux;
++	}
+ 
+ 	priv->ctlr.dev = dev;
+ 	priv->ctlr.ops = &am654_hbmc_ops;
+@@ -226,6 +230,8 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+ disable_mux:
+ 	if (priv->mux_ctrl)
+ 		mux_control_deselect(priv->mux_ctrl);
++put_node:
++	of_node_put(priv->hbdev.np);
  	return ret;
  }
  
--static int am654_hbmc_remove(struct platform_device *pdev)
-+static void am654_hbmc_remove(struct platform_device *pdev)
- {
- 	struct am654_hbmc_priv *priv = platform_get_drvdata(pdev);
- 	struct am654_hbmc_device_priv *dev_priv = priv->hbdev.priv;
-@@ -241,8 +241,6 @@ static int am654_hbmc_remove(struct platform_device *pdev)
+@@ -241,6 +247,7 @@ static void am654_hbmc_remove(struct platform_device *pdev)
  
  	if (dev_priv->rx_chan)
  		dma_release_channel(dev_priv->rx_chan);
--
--	return 0;
++	of_node_put(priv->hbdev.np);
  }
  
  static const struct of_device_id am654_hbmc_dt_ids[] = {
-@@ -256,7 +254,7 @@ MODULE_DEVICE_TABLE(of, am654_hbmc_dt_ids);
- 
- static struct platform_driver am654_hbmc_platform_driver = {
- 	.probe = am654_hbmc_probe,
--	.remove = am654_hbmc_remove,
-+	.remove_new = am654_hbmc_remove,
- 	.driver = {
- 		.name = "hbmc-am654",
- 		.of_match_table = am654_hbmc_dt_ids,
 -- 
 2.39.5
 
