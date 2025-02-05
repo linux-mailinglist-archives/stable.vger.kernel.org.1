@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE779A29321
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72369A28EFF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8F853AE2AB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07845160950
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD41418732B;
-	Wed,  5 Feb 2025 14:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D50B86348;
+	Wed,  5 Feb 2025 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukZ41PR0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4fU+2Ps"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0B61E89C;
-	Wed,  5 Feb 2025 14:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E871519BE;
+	Wed,  5 Feb 2025 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767565; cv=none; b=BDousirUZ9EJEJhvoEE7LT8RxoDJMunv19/wks1CNHCno4F6w/BiTre+HB4wOGjG23Uw/UeZ1piEKpddxpAyUlGUOkjLpYacjRUJh9e7voQI1kO9JqMU2yyXGxiCaPvRhgO5KkYyqtwbNm6b0SmHbppgcp3uZs7XPDippEO1Krk=
+	t=1738765228; cv=none; b=oPJD2WDQ7Qbbz25pL592fGgAtUYlwCWuF4QhOAksMjjdJr0uNlaxGiMLkVWBG4PPcdm8kRvFdIbF57YKYMRxXeDjETSM9OmbDs6KMCHX5pmAUMeArn8KtXZQeK+uqqn82j4weDakv9iAOfYhhghNSgdBU5/+SDUpmQvV31H2vFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767565; c=relaxed/simple;
-	bh=rnZN/PPYkeSyU2Y3Sr0aqqscC6G49PEsKh7Rw3t9lHU=;
+	s=arc-20240116; t=1738765228; c=relaxed/simple;
+	bh=SvHFcQGMP9effPxut+NnCgetKmMDpxgdVsqa7bXrXac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNnXtdLItIi4mDKJiOj6gXCBj3jRhboNfbtTwC5DGsm+yJBecqJ764gVOWQIa08aHSOC1S/VqPfbF5fPi6P1QUfBw/dDOqSUISvcjRztrs0W5pOVZb8zuKgKYl/3w8I61IsNeqb2plYjRxx3QqXDHds0AT6FVR+CjEfY46gtEtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukZ41PR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07455C4CEDD;
-	Wed,  5 Feb 2025 14:59:23 +0000 (UTC)
+	 MIME-Version; b=VBllrSprsvpZ03X4mhN3pDm9bhNbzOGApI9wwd7HoOsGCZT60ZbqYOf5zwJEP+YRnhFG7nH7v+zeF4CRx9L6n5GV9TPLlFO5wh0mo4s957GDxq10VXzG/8midbO878RGMXhBJJf7RzyPakNXYNp3Ev0JpDOp8Co9IxT6dOzBWU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4fU+2Ps; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FF4C4CED1;
+	Wed,  5 Feb 2025 14:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767564;
-	bh=rnZN/PPYkeSyU2Y3Sr0aqqscC6G49PEsKh7Rw3t9lHU=;
+	s=korg; t=1738765228;
+	bh=SvHFcQGMP9effPxut+NnCgetKmMDpxgdVsqa7bXrXac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukZ41PR0UNjCPKUUMye5R1IGPsT6o9ZB5vzElXL6hpdzuafe9RlIorKJermzQSAL1
-	 KpGSxdMIbY6Hxy46IasoYZKaCdZPiXYf/jDwp4Y1s4sor6eZvZa7R2qiAYIsO13Mql
-	 /WCAPZoOCfkzFzKr7UOeqRjpS78PLlqTIYvRwOOI=
+	b=U4fU+2Pss9oeb9rJleQntwEBAnPYeONhIQItOfMuyeym52Aq1AzUiTRXDizm9Wy/n
+	 XoSBvH3PcLCpwnytQPwWT0fg/myuAphWEal7Svh/TSASGjMCSvvCCqQLUYTshRxvce
+	 J8XcmrOvt0iJJ2FLsVh9QugnkjK6mxVMQ6kxzNiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 422/623] arm64: dts: rockchip: fix num-channels property of wolfvision pf5 mic
+Subject: [PATCH 6.6 245/393] arm64: dts: qcom: sm6375: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:44 +0100
-Message-ID: <20250205134512.370189018@linuxfoundation.org>
+Message-ID: <20250205134429.680790635@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Riesch <michael.riesch@wolfvision.net>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 11d07966c83f5eccf6b927cb32862aef58488e23 ]
+[ Upstream commit 223382c94f1f07c475d39713e4c058401480b441 ]
 
-The Rockchip RK3568 PDM block always considers stereo inputs. Therefore,
-the number of channels must be always an even number, even if a single
-mono microphone is attached.
+The SM6375 platform uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fixes: 0be29f76633a ("arm64: dts: rockchip: add wolfvision pf5 mainboard")
-Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
-Link: https://lore.kernel.org/r/20241218-b4-wolfvision-pf5-update-v1-1-1d1959858708@wolfvision.net
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 59d34ca97f91 ("arm64: dts: qcom: Add initial device tree for SM6375")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-12-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sm6375.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-index e8243c9085427..c6e4137312410 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
-@@ -53,7 +53,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/sm6375.dtsi b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+index e56f7ea4ebc6a..c5f7715626a09 100644
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -29,7 +29,7 @@
  
- 	pdm_codec: pdm-codec {
- 		compatible = "dmic-codec";
--		num-channels = <1>;
-+		num-channels = <2>;
- 		#sound-dai-cells = <0>;
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
  	};
- 
 -- 
 2.39.5
 
