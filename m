@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-112849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B674A28EB1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA66AA28C3A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 859B01884FBB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B04167B42
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1074A28;
-	Wed,  5 Feb 2025 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCF8139D1B;
+	Wed,  5 Feb 2025 13:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OP5qiAh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USD0T9kJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD911519A4;
-	Wed,  5 Feb 2025 14:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF09B640;
+	Wed,  5 Feb 2025 13:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764970; cv=none; b=ACM/Vhyd0aILi4igGJ5AG9mQy8pgXb6MhKy9up3+/ecKnnHkNywDzjnJx3nYDgx7/BWerJVhldjpVym00Bp/Jbtjxe32oNzufBpRJfhM2qdocFUXlDfxyjpkbR9OIUzxA3I4RjzzzQmHVi+LouReFPNtGRYSbcJRvP8IqmxmTpY=
+	t=1738763232; cv=none; b=VdogDcSNjZN9cxe0qAi7Y9HRqJD8ebsVzuWsNjHk+DOOSE8JqDi2WKUOb/X295FkIuAOBFKuKBoZvA/rTzPvvcPFBFH5yDrkEN2L4c6gwQ8UwgrkH1nq6D1IewVDms2C6LAHoh5ePHJYrW+WKq32ppTo3pxzqsBLNXpNdVBqf7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764970; c=relaxed/simple;
-	bh=CfOfuULQHzs78EZ5ncm/Wl5MddPEKawHo0EGnxFw3uw=;
+	s=arc-20240116; t=1738763232; c=relaxed/simple;
+	bh=iCIrBBqe/4kLhzzZcvOWsm/q4kp9yMFzV8K1S3G6u0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LiIWzwFTFRDzjpP7M6eWqaDTxYlzk0DhI+jNBmG33iXYMRiZlQvyBvCBtxt0RaIi4NKi4RaP7DSodH6xLHogEjzQyr2W7RIo4EScYyleRmLDnYFesevurcex4xNW5o0AsF0xeKgmica+rakYBbfGeGT92L/tYMla1n9y88Bafl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OP5qiAh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79C0C4CEDD;
-	Wed,  5 Feb 2025 14:16:08 +0000 (UTC)
+	 MIME-Version; b=SdqOCpZo1qskewSFc1RYLG1Rt8sdr5WclqljqeIzGFT+vTsO9Ad4lx7dWWAPhCGsq7p7q+6C94G0S5w8aioWdejabr0ccTaBfKC3uO5FViu6dH/ApN1xqeit+u/1k/PmbMvsCYt97hgIJalcWaEkMD8Nbt/z9mgnpwQHJ1uYm5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USD0T9kJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336A0C4CED1;
+	Wed,  5 Feb 2025 13:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764969;
-	bh=CfOfuULQHzs78EZ5ncm/Wl5MddPEKawHo0EGnxFw3uw=;
+	s=korg; t=1738763232;
+	bh=iCIrBBqe/4kLhzzZcvOWsm/q4kp9yMFzV8K1S3G6u0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OP5qiAh2sgfJLEoAI6uGKAXVZFLKLXdQ0twmjQzzhFlXpGnEYgNgYyy5bnxfhXE3h
-	 lGk4H+K6qA7v+T/7QMgqw3vI+qyXExiul1/OsYjdviVXZyr1Qm+b/FigALAbI95AtF
-	 F4oHNqzhHB5II6oaw3c158CA5VdWgutIYvwjI/2s=
+	b=USD0T9kJVyJUsDm6ureDQYZeuXrbJ9VY6w2Wu70gg/WUj0kJLMx7dhuAsFuxQ7w/z
+	 BltzP0tHIaOeQlLvGXxtKzGXW1zdxPxiWt7LsgXjn2QLad28AzwksducSsDqCYcjQX
+	 xXlgaV5UVJH4Za6b8rBEtWKb76b5niLxStNGwffY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	syzbot+34b68f850391452207df@syzkaller.appspotmail.com,
-	syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/590] landlock: Handle weird files
+Subject: [PATCH 6.6 007/393] block: retry call probe after request_module in blk_request_module
 Date: Wed,  5 Feb 2025 14:38:46 +0100
-Message-ID: <20250205134501.825008323@linuxfoundation.org>
+Message-ID: <20250205134420.573816418@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 49440290a0935f428a1e43a5ac8dc275a647ff80 ]
+[ Upstream commit 457ef47c08d2979f3e59ce66267485c3faed70c8 ]
 
-A corrupted filesystem (e.g. bcachefs) might return weird files.
-Instead of throwing a warning and allowing access to such file, treat
-them as regular files.
+Set kernel config:
 
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Paul Moore <paul@paul-moore.com>
-Reported-by: syzbot+34b68f850391452207df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000a65b35061cffca61@google.com
-Reported-by: syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67379b3f.050a0220.85a0.0001.GAE@google.com
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/r/c426821d-8380-46c4-a494-7008bbd7dd13.bugreport@ubisectech.com
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20250110153918.241810-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+ CONFIG_BLK_DEV_LOOP=m
+ CONFIG_BLK_DEV_LOOP_MIN_COUNT=0
+
+Do latter:
+
+ mknod loop0 b 7 0
+ exec 4<> loop0
+
+Before commit e418de3abcda ("block: switch gendisk lookup to a simple
+xarray"), lookup_gendisk will first use base_probe to load module loop,
+and then the retry will call loop_probe to prepare the loop disk. Finally
+open for this disk will success. However, after this commit, we lose the
+retry logic, and open will fail with ENXIO. Block device autoloading is
+deprecated and will be removed soon, but maybe we should keep open success
+until we really remove it. So, give a retry to fix it.
+
+Fixes: e418de3abcda ("block: switch gendisk lookup to a simple xarray")
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241209110435.3670985-1-yangerkun@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/fs.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ block/genhd.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index e31b97a9f175a..7adb25150488f 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -937,10 +937,6 @@ static access_mask_t get_mode_access(const umode_t mode)
- 	switch (mode & S_IFMT) {
- 	case S_IFLNK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SYM;
--	case 0:
--		/* A zero mode translates to S_IFREG. */
--	case S_IFREG:
--		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	case S_IFDIR:
- 		return LANDLOCK_ACCESS_FS_MAKE_DIR;
- 	case S_IFCHR:
-@@ -951,9 +947,12 @@ static access_mask_t get_mode_access(const umode_t mode)
- 		return LANDLOCK_ACCESS_FS_MAKE_FIFO;
- 	case S_IFSOCK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SOCK;
-+	case S_IFREG:
-+	case 0:
-+		/* A zero mode translates to S_IFREG. */
- 	default:
--		WARN_ON_ONCE(1);
--		return 0;
-+		/* Treats weird files as regular files. */
-+		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	}
+diff --git a/block/genhd.c b/block/genhd.c
+index 6d704c37f26e7..8f72539e08dea 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -763,7 +763,7 @@ static ssize_t disk_badblocks_store(struct device *dev,
  }
+ 
+ #ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
+-void blk_request_module(dev_t devt)
++static bool blk_probe_dev(dev_t devt)
+ {
+ 	unsigned int major = MAJOR(devt);
+ 	struct blk_major_name **n;
+@@ -773,14 +773,26 @@ void blk_request_module(dev_t devt)
+ 		if ((*n)->major == major && (*n)->probe) {
+ 			(*n)->probe(devt);
+ 			mutex_unlock(&major_names_lock);
+-			return;
++			return true;
+ 		}
+ 	}
+ 	mutex_unlock(&major_names_lock);
++	return false;
++}
++
++void blk_request_module(dev_t devt)
++{
++	int error;
++
++	if (blk_probe_dev(devt))
++		return;
+ 
+-	if (request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt)) > 0)
+-		/* Make old-style 2.4 aliases work */
+-		request_module("block-major-%d", MAJOR(devt));
++	error = request_module("block-major-%d-%d", MAJOR(devt), MINOR(devt));
++	/* Make old-style 2.4 aliases work */
++	if (error > 0)
++		error = request_module("block-major-%d", MAJOR(devt));
++	if (!error)
++		blk_probe_dev(devt);
+ }
+ #endif /* CONFIG_BLOCK_LEGACY_AUTOLOAD */
  
 -- 
 2.39.5
