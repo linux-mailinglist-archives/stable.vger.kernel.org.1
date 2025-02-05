@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE64AA29396
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DA1A293AA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91640188DDE3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A7C16BA3F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC1D1DAC92;
-	Wed,  5 Feb 2025 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DD6170A37;
+	Wed,  5 Feb 2025 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBJkUbH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvQzX7P/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1CF1DA617;
-	Wed,  5 Feb 2025 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D981E89C;
+	Wed,  5 Feb 2025 15:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767680; cv=none; b=Cj1DvvBFqz4e4vNNiBOcEv4jJPfx1rCiqhNI828s10A560gHL7mWYWhP0YuHAACTM+V5r5O0113siiwJ0Bx4ZOj8GDcqVpC1wfozBqYE3ZnGumwLwTmONdPACPuEnJIhFA+fgQZjSEFId65hIVBlFJf4tBhl6bHI467ZVlzY1Qg=
+	t=1738768148; cv=none; b=IOqJRlY4Xi6wEm5UnsRa92tIm4FF8d87q0IwprJx5NG5Aad8haTGZ7RYLrJBjQyZMUlhBo8XsBNhtcjQtK2n9rVNpLCnstn9YslYnWnEy9+vGLer/QUfNdwqbbP/iQbQvpPhyXah++mfqtehyirCkTIQ2tWDHFcG++YSd/0tG+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767680; c=relaxed/simple;
-	bh=PEK5DiB1Cm6kNLipXGXArlaCmIpCXUC/kxJDRGp6bWw=;
+	s=arc-20240116; t=1738768148; c=relaxed/simple;
+	bh=WzPghb5qosyu8oon1XRDdt895ySa/HXzNw2ow6QaP5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVU8KuMrLMpa9VogD/slqZhu9/jptrmMBcn5qb/wPD0NM7QlzstO0kTg2B2UlCP9GTWgS6hc745ge652QdW+SohkTNGKO7+uTTUFIfVuLfyDpRgG6iMKrUrLxNrKEb8S+BPcP8MvOtqygu6v/lEu0qFHBfo3J4g+eHJxrwCEy1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBJkUbH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80394C4CEE2;
-	Wed,  5 Feb 2025 15:01:19 +0000 (UTC)
+	 MIME-Version; b=mF4aP128IwXc5DPDuYT0m37b4etz8May5StU4XleDvtl5ZDNVCZJEWtQPEe2QFmod2aJ+MQpsy5eySb3IRI32Np7mkGYNzkV1Yq5oao5TYIGgKvmz33DHlJpRyAXudp2k2UFgBk7ymiPXn3KrPY4iJXQxyIc8tl0otbAlXlIfdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvQzX7P/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49057C4CED6;
+	Wed,  5 Feb 2025 15:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767679;
-	bh=PEK5DiB1Cm6kNLipXGXArlaCmIpCXUC/kxJDRGp6bWw=;
+	s=korg; t=1738768147;
+	bh=WzPghb5qosyu8oon1XRDdt895ySa/HXzNw2ow6QaP5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBJkUbH8pa0caS7u/9AcUSihBQBC1J65DglxPOBfZrGhC0oqxS8rbTK8faOWIEk1H
-	 uf1+seDezSQS9JPaGkdiIJkrkP904wkgLpA+Zk+jpBG90luZtYOqkt+dUjuNn8AhlC
-	 HX9LONsIewwhL0RHZHjRViPN3Wv+rcyAendp16o8=
+	b=kvQzX7P/P+7btocTDFocQcMFIBtTKFlLW9DfHs4ajs28zeDJYE0ZsmnTziaYBHEeU
+	 n8gGQQNpOvXFTVJt1vNCJ+Zwp981CXx+nrZzI4xtI/BFtQl6AwuomDCH72xMVTMyQK
+	 rmqZ6tvdwCblUyfoboJkuA0QvLilDgEZ7qBlhhZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 491/590] s390/mm: Allow large pages for KASAN shadow mapping
+Subject: [PATCH 6.13 504/623] net: airoha: Fix wrong GDM4 register definition
 Date: Wed,  5 Feb 2025 14:44:06 +0100
-Message-ID: <20250205134514.054482919@linuxfoundation.org>
+Message-ID: <20250205134515.500983086@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Gorbik <gor@linux.ibm.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit ff123eb7741638d55abf82fac090bb3a543c1e74 ]
+[ Upstream commit d31a49d37cb132b31cc6683eef2122f8609d6229 ]
 
-Commit c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address
-spaces") introduced a large_allowed() helper that restricts which mapping
-modes can use large pages. This change unintentionally prevented KASAN
-shadow mappings from using large pages, despite there being no reason
-to avoid them. In fact, large pages are preferred for performance.
+Fix wrong GDM4 register definition, in Airoha SDK GDM4 is defined at
+offset 0x2400 but this doesn't make sense as it does conflict with the
+CDM4 that is in the same location.
 
-Add POPULATE_KASAN_MAP_SHADOW to the allowed list in large_allowed()
-to restore large page mappings for KASAN shadows.
+Following the pattern where each GDM base is at the FWD_CFG, currently
+GDM4 base offset is set to 0x2500. This is correct but REG_GDM4_FWD_CFG
+and REG_GDM4_SRC_PORT_SET are still using the SDK reference with the
+0x2400 offset. Fix these 2 define by subtracting 0x100 to each register
+to reflect the real address location.
 
-While large_allowed() isn't strictly necessary with current mapping
-modes since disallowed modes either don't map anything or fail alignment
-and size checks, keep it for clarity.
-
-Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250120154148.13424-1-ansuelsmth@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/boot/vmem.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/airoha_eth.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
-index 3fa28db2fe59f..824690427b61a 100644
---- a/arch/s390/boot/vmem.c
-+++ b/arch/s390/boot/vmem.c
-@@ -264,7 +264,17 @@ static unsigned long _pa(unsigned long addr, unsigned long size, enum populate_m
+diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
+index d8bfc21a5b194..00b80fb9d87ac 100644
+--- a/drivers/net/ethernet/mediatek/airoha_eth.c
++++ b/drivers/net/ethernet/mediatek/airoha_eth.c
+@@ -258,11 +258,11 @@
+ #define REG_GDM3_FWD_CFG		GDM3_BASE
+ #define GDM3_PAD_EN_MASK		BIT(28)
  
- static bool large_allowed(enum populate_mode mode)
- {
--	return (mode == POPULATE_DIRECT) || (mode == POPULATE_IDENTITY) || (mode == POPULATE_KERNEL);
-+	switch (mode) {
-+	case POPULATE_DIRECT:
-+	case POPULATE_IDENTITY:
-+	case POPULATE_KERNEL:
-+#ifdef CONFIG_KASAN
-+	case POPULATE_KASAN_MAP_SHADOW:
-+#endif
-+		return true;
-+	default:
-+		return false;
-+	}
- }
+-#define REG_GDM4_FWD_CFG		(GDM4_BASE + 0x100)
++#define REG_GDM4_FWD_CFG		GDM4_BASE
+ #define GDM4_PAD_EN_MASK		BIT(28)
+ #define GDM4_SPORT_OFFSET0_MASK		GENMASK(11, 8)
  
- static bool can_large_pud(pud_t *pu_dir, unsigned long addr, unsigned long end,
+-#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x33c)
++#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x23c)
+ #define GDM4_SPORT_OFF2_MASK		GENMASK(19, 16)
+ #define GDM4_SPORT_OFF1_MASK		GENMASK(15, 12)
+ #define GDM4_SPORT_OFF0_MASK		GENMASK(11, 8)
 -- 
 2.39.5
 
