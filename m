@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80AAA29212
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CACA28DDB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0225C188B576
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49F113A466D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2674E1FC0EC;
-	Wed,  5 Feb 2025 14:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E991547F2;
+	Wed,  5 Feb 2025 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ4RMC0G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1OoaJxJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D770918A922;
-	Wed,  5 Feb 2025 14:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D75CF510;
+	Wed,  5 Feb 2025 14:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766769; cv=none; b=pBw5w3RtMb2XyT+tyhNLRc9tWfQQqHI9GeRy5uiBmu+/N+jM91MivjaxFUe7ohjL837QGChPLliHKRUCg8ed8w7uns5f1waDQGnfNcrRSwmSV1XJEtPQ9hINd+R6n0KGU8itjLLC1Qd3Z0el3dPr2B2Rezaz8KcbusDHjdY1E3c=
+	t=1738764269; cv=none; b=bsUCinPCsxjJ0xgFWAd9q9AdaWPQiD0BMPxGSOxvQM0gmARWShbT3PeRN145y5ApEM2lFUQr0mGc4KiwSx43MhDNKnILlsLuBj7VCvz+hayONDfAjvLCAXug6Bc03VIaBF29Trd30NeznMhY4alN9BvDNoEyvkrUfPvtaq+o7rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766769; c=relaxed/simple;
-	bh=YCopvq9DtyvfLvp1g6hp3vik7uNVbnpkwgDrEImL1io=;
+	s=arc-20240116; t=1738764269; c=relaxed/simple;
+	bh=FdLCHGFV8XH1N0ER5Iq4dfV3tfarQ2Qm1RJooELOaPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=We1iJ6ITONKUmkfd9A24yjo9Iva5PJZ3Jf/5SghN2WzmDoQR57IOTzCpIf5/JFymAtiIriZfwTj61qGrTLR7dlV0jKmD7ciUa6In9k/cjIW1i8RS76hQKrYv+iV7cydgM/em2ZyhKEFr2t5BC+mhCD8lwUTsGAei0Wom4KJh9B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZ4RMC0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA58C4CED6;
-	Wed,  5 Feb 2025 14:46:09 +0000 (UTC)
+	 MIME-Version; b=GQrgkoUe/U2FFPEkyufFhrf0/f3EtE8Am/QeWhOZ78SwNyu6rikJSokYXrhFe1uQJepuJ5tjhbjZrHmPlDDzkIPPC5bXtpURFxoHzZeAiCG1BJQZktkUmJVkryelSAedBTUwxsQ+n7ChNgZ1hbO5mQwgOep8faKlG259fGhqj7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1OoaJxJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E360C4CED1;
+	Wed,  5 Feb 2025 14:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766769;
-	bh=YCopvq9DtyvfLvp1g6hp3vik7uNVbnpkwgDrEImL1io=;
+	s=korg; t=1738764269;
+	bh=FdLCHGFV8XH1N0ER5Iq4dfV3tfarQ2Qm1RJooELOaPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZ4RMC0GQltiuDXna8e1tBbm6ObfqeDymfIFo5GkJaUOY/kXe/4ksKAJKaTcgBuLY
-	 ogSqWQhK8tl/r9nu7J4Ec/NlC5pOYuG2axntqNW7QztkywXu6PYwnr3b7OxTYRoeWh
-	 6uMWQT2wDDpEsy+kR+r4FjLf+Bid4dvUR9iuKowc=
+	b=1OoaJxJOqfUFh/5HPOt6Qo0G77XTnGQwqWnUuhslT5z9lZuKX4CQPhlwleP6sNMOA
+	 AVa2/28g64UMgUtxDLFjVFRi+w1waI+yLOlGNjs2SdCqBqWoSWzN64W9XLpofNObPm
+	 aiH6cC9AM9q1fLCg8DXky/EMohmxk0AxQCe1AdjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 306/623] ASoC: Intel: sof_sdw: Fix DMI match for Lenovo 83JX, 83MC and 83NM
-Date: Wed,  5 Feb 2025 14:40:48 +0100
-Message-ID: <20250205134507.933625354@linuxfoundation.org>
+Subject: [PATCH 6.6 130/393] wifi: mt76: mt7996: fix ldpc setting
+Date: Wed,  5 Feb 2025 14:40:49 +0100
+Message-ID: <20250205134425.269838627@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 17615e4216115a0454e0f2007267a006231dcb7d ]
+[ Upstream commit da8352da1e4f476fdbf549a4efce4f3c618fde3b ]
 
-Update the DMI match for a Lenovo laptop to a new DMI identifier.
+The non-AP interfaces would not use conf->vht_ldpc so they never set
+STA_CAP_VHT_LDPC even if peer-station support LDPC.
+Check conf->vht_ldpc only for AP interface.
 
-This laptop ships with a different DMI identifier to what was expected
-and now has three match entries. It also has the DMICs connected to the
-host rather than the cs42l43 codec.
+Without this patch, station only uses BCC to transmit packet in VHT mode.
 
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Fixes: 83c062ae81e8 ("ASoC: Intel: sof_sdw: Add quirks for some new Lenovo laptops")
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20250102123335.256698-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dda423dd65c3 ("wifi: mt76: mt7996: remove mt7996_mcu_beacon_check_caps()")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-7-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index d42b012a6bb9d..5554ad4e7c787 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -610,9 +610,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
--			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "3838")
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83JX")
- 		},
--		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS),
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
- 	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
-@@ -622,6 +622,21 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 		},
- 		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83MC")
-+		},
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
-+	},	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83NM")
-+		},
-+		.driver_data = (void *)(SOC_SDW_SIDECAR_AMPS | SOC_SDW_CODEC_MIC),
-+	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
- 		.matches = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 19afe89fce785..65a5f24e53136 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1723,7 +1723,7 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (vif->bss_conf.vht_ldpc &&
++		if ((vif->type != NL80211_IFTYPE_AP || vif->bss_conf.vht_ldpc) &&
+ 		    (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
 -- 
 2.39.5
 
