@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410E2A29254
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C66A28F04
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0235316C1C3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D7193AAC67
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B9E1922DE;
-	Wed,  5 Feb 2025 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8D386348;
+	Wed,  5 Feb 2025 14:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HaUuscdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5IX0ix1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE58191F6D;
-	Wed,  5 Feb 2025 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7F61519BE;
+	Wed,  5 Feb 2025 14:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767079; cv=none; b=HtH7NKNcSqPsXOaGmY4UDM9Lu5BjVe98Q6jUkb7AvNIB8ptwX2nxLF6CmTNymc2RhdMtH/nWqWa7e7GLJIGEJpYILOzGGTPrNtuzTYJS9951wD3QdFBCHpDMl+Yz0ZD6VVys+A4M5JGIG0v9jnM13x9V0OxZOxdnzTlCzAAhvqI=
+	t=1738765160; cv=none; b=PHSjZaYp1TI85Bza5O03/SFp/21cQ+u40JUYqbXW9doyFPrbBQEFAD18rvxmFSbWid8xbdi5np+BwgjdwBcHUTGUb5pHD0uwClC87PPsPyuHdpR56Y2Ci6+x+5S39QRM32nZJqM/NbpqNrlhNa2TP7zNLjYcoetq8P/6aqAjbyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767079; c=relaxed/simple;
-	bh=2VRy0eOZ1gl2DuePwVJkkRMGtIUZEGNwPFCtij2uVms=;
+	s=arc-20240116; t=1738765160; c=relaxed/simple;
+	bh=jT7KnK6ZzC+BIcXG8I/6KECBgr/F7ooDddHJNuBshRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQ67bWAdvQ4OtpmG4P9HsqWUCDtF2+Dhen/9bex4IzkXvtrwA/XoOsTg4DKGD+L2Bc4BueVRU+3PQClLTKXC9g1204iNzXevgxUf1OELZnHkuaNMmDnjXF/Juk9octUohYHHMYRvRwKZ9FjsvTByyK1vcg5P8FVwKPuT53Z5LZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HaUuscdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4091C4CED1;
-	Wed,  5 Feb 2025 14:51:18 +0000 (UTC)
+	 MIME-Version; b=pgu/QpyUXk5GPhN+2O5uLJsn5cPNpFCK237TxQwYci02HPtqX7Co2P0b7WsifIGgKHCmfYlVNCn/zobJ+8ch12BOZkUnjpE8YRPoTMAXXB2Hs/pFYwTTDpX6hAtUKBA+ci+gjrkuXgBh8LKPQlfhaiPS5eYjyhKgIL2zkCCwMNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5IX0ix1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAF3C4CED1;
+	Wed,  5 Feb 2025 14:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767079;
-	bh=2VRy0eOZ1gl2DuePwVJkkRMGtIUZEGNwPFCtij2uVms=;
+	s=korg; t=1738765160;
+	bh=jT7KnK6ZzC+BIcXG8I/6KECBgr/F7ooDddHJNuBshRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HaUuscdA6Fw+DiBGqJ1pPTt+oUQSH/rR4eQXyCA5aq3Rll2Ys3IpmRjZ7CeR+QQB0
-	 iXPW9WvUGc7qA1euvI6gLYkZM9jrqWp4KtTbrft8N4rioLTclYKDjE/KtnJvEGvi2r
-	 OcMvCVpyzqPKPSZQLN/nhsvoZEgRZMZSdq2QKV5A=
+	b=M5IX0ix1/aXihZEAm86d9lbjRTYNRqNOsqheQFClJzieuN7o8QRcpKB1OEwAsSkHM
+	 Kx/lC+02F1nIWKWlpYsObqgwjekXtSDQHFPBhnbOyWuYw5/J8xSoDFzsJQRJVv0MRa
+	 NfQj+Y1e1A3Qz/E3pcgToBgJG/AmAJ4xOGTPcG5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Pedersen <lapeddk@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 403/590] spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors
+Subject: [PATCH 6.6 239/393] arm64: dts: qcom: q[dr]u1000: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:38 +0100
-Message-ID: <20250205134510.680580384@linuxfoundation.org>
+Message-ID: <20250205134429.450531905@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a07eb4f67ed085f32002a1af2b6073546d67de3f ]
+[ Upstream commit 5546604e034b6c383b65676ff8615b346897eccd ]
 
-devm_clk_get_optional() returns NULL for missing clocks and a PTR_ERR()
-if there is a clock but we fail to get it, but currently we only handle
-the latter case and do so as though the clock was missing.  If we get an
-error back we should handle that as an error since the clock exists but
-we failed to get it, if we get NULL then the clock doesn't exist and we
-should handle that.
+The Q[DR]U1000 platforms use PM8150 to provide sleep clock. According to
+the documentation, that clock has 32.7645 kHz frequency. Correct the
+sleep clock definition.
 
-Fixes: 4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()")
-Reported-by: Lars Pedersen <lapeddk@gmail.com>
-Link: https://patch.msgid.link/20250117-spi-fix-omap2-optional-v1-1-e77d4ac6db6e@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Tested-by: Lars Pedersen <lapeddk@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d1f2cfe2f669 ("arm64: dts: qcom: Add base QDU1000/QRU1000 IDP DTs")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-5-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qdu1000-idp.dts | 2 +-
+ arch/arm64/boot/dts/qcom/qru1000-idp.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 4a2f84c4d22e5..532b2e9c31d0d 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1561,10 +1561,15 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
+index 5a25cdec969eb..409f06978931a 100644
+--- a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
++++ b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
+@@ -31,7 +31,7 @@
  
- 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
--	if (IS_ERR(mcspi->ref_clk))
--		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
--	else
-+	if (IS_ERR(mcspi->ref_clk)) {
-+		status = PTR_ERR(mcspi->ref_clk);
-+		dev_err_probe(&pdev->dev, status, "Failed to get ref_clk");
-+		goto free_ctlr;
-+	}
-+	if (mcspi->ref_clk)
- 		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
-+	else
-+		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
- 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
- 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
+diff --git a/arch/arm64/boot/dts/qcom/qru1000-idp.dts b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
+index 2a862c83309e7..a3a7dcbc5e6d2 100644
+--- a/arch/arm64/boot/dts/qcom/qru1000-idp.dts
++++ b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
+@@ -31,7 +31,7 @@
  
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
