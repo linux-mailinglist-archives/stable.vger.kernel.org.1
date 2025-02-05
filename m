@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-113803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE13A293BE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C87C4A293EF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809FE162ED6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFD116C2F0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EE913C8E2;
-	Wed,  5 Feb 2025 15:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5180517ADF8;
+	Wed,  5 Feb 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj4o83/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/bWg8B0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42ADD21345;
-	Wed,  5 Feb 2025 15:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99BF1DC19F;
+	Wed,  5 Feb 2025 15:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768227; cv=none; b=byrwSwGKLi6/nkwu3Ad+GvX4z4uXnQdvTB2TSIcOUDn1n0QLe52+GCrpg1yBFUQV1HAuu5nGZGJhi25zCax62KuwEI+5UltMdCVnDoNiiJ85OgBclERpuILxwNJOnc5FwdTZbp96s+E4sNAu19upcLfDqOFNNSCr/il3M1NL3co=
+	t=1738768257; cv=none; b=KjqasOu9HdaLZ5ug6qVB99vHcxxVaRYxJWRwyrxfDKeXFXdJUqudaCOGOyversEan4nHL/r0apgq8fkq5dx152Xu1YISWU3+Rc8S046igEPwtb8+Du8jb0s2s9/CnN0mzBzL1h3YR1Xi9HYQ/XCh4PUym6lrRg6d/KB0Gu38CUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768227; c=relaxed/simple;
-	bh=w8PDmPM8zpWTMjPCGy9LBUdIsaYW+iWbGXJjvMnZR0U=;
+	s=arc-20240116; t=1738768257; c=relaxed/simple;
+	bh=dWtOlbqt6mx2TVlh/vqNomMFE1dCKAe9fpHyAhdKQIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZGQmDtS6gB49XbVH/FA+bEzzt4swtF98FRYNRdIuIS7jzxTS4jN2mYVkp54dUM/5xbjxJZNi0muGTJMj47+hmfwOOcDsQ9NG6eDX2GzOfMAOzT6fIYDgA0FFHzq7nnnICoOyDxzmLytQc+GKojFsmuzGU9uPM4dzCWl8dBK9xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj4o83/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C68C4CED6;
-	Wed,  5 Feb 2025 15:10:26 +0000 (UTC)
+	 MIME-Version; b=ji2yHQ0ET1FtaUP+ZB7F1q5rg2KOrleZVSYF8Ftad9Cs0GRK8qEfDrm6RhP1nO8i4vRkdrmRlhaFnDDfjgeo1RbV10+RZUb/nrfBzfJ4OSOS+8za1TuebamVDgUyW/BWiNiz4RGNYaPoc7WEfyR+6gMe4Y88vG5hVglMITlkf60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/bWg8B0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6842C4CED6;
+	Wed,  5 Feb 2025 15:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768227;
-	bh=w8PDmPM8zpWTMjPCGy9LBUdIsaYW+iWbGXJjvMnZR0U=;
+	s=korg; t=1738768256;
+	bh=dWtOlbqt6mx2TVlh/vqNomMFE1dCKAe9fpHyAhdKQIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rj4o83/WzoEMdqDtNVCN4P1FAyPNaRU1aPDDCl8Xi/YohpYAETTb7D3tMLmZZbjQ/
-	 eeAJzNCneA+33YY/lPqzAS8Mcz05sVNBYArpIwzVf4WINKpjIQqZqwjUqHMWEupGq3
-	 5Gzdcadp2CWTRAKcrYnxaMlSV8kPePZOhihpZ+zc=
+	b=T/bWg8B0cohW1vlZifsDjvr1nlZeDnMgpmDLB2TuB6qxC5YROM8Ma05eoNrJKkKPY
+	 RBs6oY1uMo09a+F4HdtlwRNW6NpXy0llZliCENcjXC5jGTwpl4AjOkienici4jB4F+
+	 1x8zvYALpYRxPqOewerL4Rh49ve7HIEdce7v13s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 570/590] usb: gadget: f_tcm: Dont free command immediately
-Date: Wed,  5 Feb 2025 14:45:25 +0100
-Message-ID: <20250205134517.074924489@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.12 574/590] md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime
+Date: Wed,  5 Feb 2025 14:45:29 +0100
+Message-ID: <20250205134517.226476671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -64,41 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit c225d006a31949d673e646d585d9569bc28feeb9 upstream.
+commit 8d28d0ddb986f56920ac97ae704cc3340a699a30 upstream.
 
-Don't prematurely free the command. Wait for the status completion of
-the sense status. It can be freed then. Otherwise we will double-free
-the command.
+After commit ec6bb299c7c3 ("md/md-bitmap: add 'sync_size' into struct
+md_bitmap_stats"), following panic is reported:
 
-Fixes: cff834c16d23 ("usb-gadget/tcm: Convert to TARGET_SCF_ACK_KREF I/O krefs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/ae919ac431f16275e05ec819bdffb3ac5f44cbe1.1733876548.git.Thinh.Nguyen@synopsys.com
+Oops: general protection fault, probably for non-canonical address
+RIP: 0010:bitmap_get_stats+0x2b/0xa0
+Call Trace:
+ <TASK>
+ md_seq_show+0x2d2/0x5b0
+ seq_read_iter+0x2b9/0x470
+ seq_read+0x12f/0x180
+ proc_reg_read+0x57/0xb0
+ vfs_read+0xf6/0x380
+ ksys_read+0x6c/0xf0
+ do_syscall_64+0x82/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Root cause is that bitmap_get_stats() can be called at anytime if mddev
+is still there, even if bitmap is destroyed, or not fully initialized.
+Deferenceing bitmap in this case can crash the kernel. Meanwhile, the
+above commit start to deferencing bitmap->storage, make the problem
+easier to trigger.
+
+Fix the problem by protecting bitmap_get_stats() with bitmap_info.mutex.
+
+Cc: stable@vger.kernel.org # v6.12+
+Fixes: 32a7627cf3a3 ("[PATCH] md: optimised resync using Bitmap based intent logging")
+Reported-and-tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Closes: https://lore.kernel.org/linux-raid/ca3a91a2-50ae-4f68-b317-abd9889f3907@oracle.com/T/#m6e5086c95201135e4941fe38f9efa76daf9666c5
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20250124092055.4050195-1-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/md/md-bitmap.c |    5 ++++-
+ drivers/md/md.c        |    5 +++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -1066,7 +1066,6 @@ static void usbg_cmd_work(struct work_st
- out:
- 	transport_send_check_condition_and_sense(se_cmd,
- 			TCM_UNSUPPORTED_SCSI_OPCODE, 1);
--	transport_generic_free_cmd(&cmd->se_cmd, 0);
- }
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2355,7 +2355,10 @@ static int bitmap_get_stats(void *data,
  
- static struct usbg_cmd *usbg_get_cmd(struct f_uas *fu,
-@@ -1195,7 +1194,6 @@ static void bot_cmd_work(struct work_str
- out:
- 	transport_send_check_condition_and_sense(se_cmd,
- 				TCM_UNSUPPORTED_SCSI_OPCODE, 1);
--	transport_generic_free_cmd(&cmd->se_cmd, 0);
- }
+ 	if (!bitmap)
+ 		return -ENOENT;
+-
++	if (bitmap->mddev->bitmap_info.external)
++		return -ENOENT;
++	if (!bitmap->storage.sb_page) /* no superblock */
++		return -EINVAL;
+ 	sb = kmap_local_page(bitmap->storage.sb_page);
+ 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ 	kunmap_local(sb);
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8376,6 +8376,10 @@ static int md_seq_show(struct seq_file *
+ 		return 0;
  
- static int bot_submit_command(struct f_uas *fu,
+ 	spin_unlock(&all_mddevs_lock);
++
++	/* prevent bitmap to be freed after checking */
++	mutex_lock(&mddev->bitmap_info.mutex);
++
+ 	spin_lock(&mddev->lock);
+ 	if (mddev->pers || mddev->raid_disks || !list_empty(&mddev->disks)) {
+ 		seq_printf(seq, "%s : ", mdname(mddev));
+@@ -8451,6 +8455,7 @@ static int md_seq_show(struct seq_file *
+ 		seq_printf(seq, "\n");
+ 	}
+ 	spin_unlock(&mddev->lock);
++	mutex_unlock(&mddev->bitmap_info.mutex);
+ 	spin_lock(&all_mddevs_lock);
+ 
+ 	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
 
 
 
