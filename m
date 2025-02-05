@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-113770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82D4A293A9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36188A29204
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4923216AD6E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603B4188DF1E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256E156C5E;
-	Wed,  5 Feb 2025 15:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6251DF261;
+	Wed,  5 Feb 2025 14:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD2CQ9/4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6+l6wZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5DE17C79;
-	Wed,  5 Feb 2025 15:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC334189905;
+	Wed,  5 Feb 2025 14:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768113; cv=none; b=PmObdI0Pd6TwzYLuCPELShHYNVvXRysa/N9ODQRlb9IRfb1uCxYyoPInkExpmCip9kkIjjZn6t17i14DGq/v9o+dolhMHPSx1WzdU7AuURnugUONlfebQpAXgKZ8D1lLmtHl8SH1R+0wuV9SVG47F9328VA8MsEJNbHYn9YhNeE=
+	t=1738766744; cv=none; b=fUSLtka68pTvl0NEA7Bgm9obrQTKT2Od13QA7nVYeaMMiueqnGWgDrJnHxojDG5itoI/ag8HPB9BISy7mMq+2COaEQOgLK0iN2sPq9D9xEeieW9j1Ol6E97rp2HMvVuuE+HEA1QhNKmZQa4fLa516eu7U24a6KfcWvh4wwvbu0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768113; c=relaxed/simple;
-	bh=xwbmvnYY6lnkot7OCQwTYtIyLxpCFteBpd7J0xG2bc4=;
+	s=arc-20240116; t=1738766744; c=relaxed/simple;
+	bh=mLWYPtFDnMSh8f0fLzwDB1I43FI9KMSdQ5c3KXKeKcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiXhsrtuC9nMjCggD/aGAgpTyhNvzVgkKBxhlIkyfDg24x10MqTRZ41MI0YNkkTho0stoJsADuP1kpQ2gczGYkPtPWydvnbygqmqwQ6sToGBDxFefv0nZ/idMGKeK/PbFKiPMfudyxrX31vvqRZM6iTHzzDIUPivrvMovCFv8H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD2CQ9/4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E7C4CED1;
-	Wed,  5 Feb 2025 15:08:32 +0000 (UTC)
+	 MIME-Version; b=igbGZuS4CQp6zcZ3zKXq2ULzbH/kxHYZc9eXJBV26w5ocy1S/A6++cUZNS3xC3FaHcCdIOnz3lW1LvJqIBc8qnFpwljCXdXaEQQZmSNyNGDX8TAO0ZtQmgbD5MqMajIbPgwEHOVpV7LnnXumDKTnnYm5bo9wmEmKENWEc2qP+ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6+l6wZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D8FC4CED1;
+	Wed,  5 Feb 2025 14:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768113;
-	bh=xwbmvnYY6lnkot7OCQwTYtIyLxpCFteBpd7J0xG2bc4=;
+	s=korg; t=1738766743;
+	bh=mLWYPtFDnMSh8f0fLzwDB1I43FI9KMSdQ5c3KXKeKcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KD2CQ9/4V1kqTZ7uhOb7N0iGJDseDuCvySpobWpwtPt/y5aavCc1KF1F62Xf0aor/
-	 NqUo+uEudYMcQ7RwiKvAYQENUykZvC0U+KPkSnmgNAkMJiYLlKwNh+vWTFjnSgrnc3
-	 tcnNG1jM3nBUfR3nVqrPWZE/aurmG9lRoeQ0Nknc=
+	b=o6+l6wZzE9Humj2l2vf/+m84tJYMuFSHr4ncxThXQqPCydrPgho/+mW6iUL+pVcm0
+	 nJuAIiOdVQTgX3yYlYmIwup7AB5WBph6/CM/DhQazr/CiTst7FLHuA124BnvuhGpNz
+	 uxPVWNqlpadLqMfrQd7xox7JneSfN3YO3UikYa1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 555/590] usb: gadget: f_tcm: Fix Get/SetInterface return value
-Date: Wed,  5 Feb 2025 14:45:10 +0100
-Message-ID: <20250205134516.503810704@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 392/393] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
+Date: Wed,  5 Feb 2025 14:45:11 +0100
+Message-ID: <20250205134435.292327230@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 3b997089903b909684114aca6f79d683e5c64a0e upstream.
+commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
 
-Check to make sure that the GetInterface and SetInterface are for valid
-interface. Return proper alternate setting number on GetInterface.
+GCC changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, there are certain
+places in the s390 code that use their own CFLAGS without a '-std='
+value, which break with this dialect change because of the kernel's own
+definitions of bool, false, and true conflicting with the C23 reserved
+keywords.
 
-Fixes: 0b8b1a1fede0 ("usb: gadget: f_tcm: Provide support to get alternate setting in tcm function")
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+
+Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+these errors and make the C standard version of these areas match the
+rest of the kernel.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/ffd91b4640945ea4d3b4f4091cf1abbdbd9cf4fc.1733876548.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_tcm.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/s390/Makefile           |    2 +-
+ arch/s390/purgatory/Makefile |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_tcm.c
-+++ b/drivers/usb/gadget/function/f_tcm.c
-@@ -2051,9 +2051,14 @@ static void tcm_delayed_set_alt(struct w
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -21,7 +21,7 @@ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FL
+ ifndef CONFIG_AS_IS_LLVM
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+ endif
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -21,7 +21,7 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
  
- static int tcm_get_alt(struct usb_function *f, unsigned intf)
- {
--	if (intf == bot_intf_desc.bInterfaceNumber)
-+	struct f_uas *fu = to_f_uas(f);
-+
-+	if (fu->iface != intf)
-+		return -EOPNOTSUPP;
-+
-+	if (fu->flags & USBG_IS_BOT)
- 		return USB_G_ALT_INT_BBB;
--	if (intf == uasp_intf_desc.bInterfaceNumber)
-+	else if (fu->flags & USBG_IS_UAS)
- 		return USB_G_ALT_INT_UAS;
- 
- 	return -EOPNOTSUPP;
-@@ -2063,6 +2068,9 @@ static int tcm_set_alt(struct usb_functi
- {
- 	struct f_uas *fu = to_f_uas(f);
- 
-+	if (fu->iface != intf)
-+		return -EOPNOTSUPP;
-+
- 	if ((alt == USB_G_ALT_INT_BBB) || (alt == USB_G_ALT_INT_UAS)) {
- 		struct guas_setup_wq *work;
- 
+-KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -Os -m64 -msoft-float -fno-common
 
 
 
