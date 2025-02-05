@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-113262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2AEA290C4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C63A293C6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95C3D168989
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47B1A7A2E20
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DD116DC28;
-	Wed,  5 Feb 2025 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB41F191F6D;
+	Wed,  5 Feb 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYAScIhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFxsbNl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3661684B0;
-	Wed,  5 Feb 2025 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C711C6BE;
+	Wed,  5 Feb 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766368; cv=none; b=YGHkvGO/SSsJdoOSM37Om2OhFxefLLbWHD7+eBI552gL0NIFJF1v0caLbmUMiS4OAK7LaHDOlrxv94Fx5YIfmU+yEHjv7ejnFzjTM9DILYQaDbn6ZlsLXpn8JlYPn41Em9HOeR381cOVyyTb+kB2beq5l2peeRVXvJDdgW045Eg=
+	t=1738768349; cv=none; b=jEYbTH16sg4Ir6t1dnvVAgnSzXms2jsCXwFULHjkkhHfQ6WX7o5vOWek1Uphyc0AdZZoPt3STxKaGu6Wlgcic0iGRAiTM+EH/c1o0Ez8F/XbgyjVSrf2Xm1FYn5CRbmsSFdVsVx6S9LjDdYzXhp4ZsqpWabnPNRDpKgZWjcUszI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766368; c=relaxed/simple;
-	bh=Th3fMlHhlDKLJjrJyUXIurCUcBRKYvs/gVB1epkn3ZA=;
+	s=arc-20240116; t=1738768349; c=relaxed/simple;
+	bh=D+hhcKfMGQ6eldCvIr47CaSGetVZG4eqNpWZ5KqYKoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=inaEq6DZZ8A5D10NKXVp3DvINN/etX+mBE0i4qiu8WkSmK0DIARtU+d4zJ+z7AjN2dRC+vj52O4g3VmkzWnmJFzr29PTBPdAfBYCJbgDLOx2/4EA91ucedpyeFURrZeE/iMQZyq1ryOiNRT0Rh4iE2WTZs+fWDn3jZ37yP17s3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYAScIhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A495CC4CED1;
-	Wed,  5 Feb 2025 14:39:27 +0000 (UTC)
+	 MIME-Version; b=YwqYW5SMovLTRfYIqaDOlvRaQl4kbJWzQDGqad371lRLyE3slDqv4+7X+uzn28jL6YVgyXy1Ob3FxCKiSqXJKI/1z4dsAtyqbCNhKLEGD05vKVT+XxtjG7cGbWmlbPRJsZUAJlgw3JXJnDq1U16VhlV0SGiwxAWLnin2sXgjeaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFxsbNl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A60C4CED1;
+	Wed,  5 Feb 2025 15:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766368;
-	bh=Th3fMlHhlDKLJjrJyUXIurCUcBRKYvs/gVB1epkn3ZA=;
+	s=korg; t=1738768349;
+	bh=D+hhcKfMGQ6eldCvIr47CaSGetVZG4eqNpWZ5KqYKoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYAScIhXGragiOMKxeLv8/wkmTKkgs/LZ+hKEArGXJNQZGEm1hhX7fmNOqXCNbRUn
-	 4kNu8AI0rSRphvN+/ab97Blub3U8JFeXjcP/Yxfuz+/Whd7PBMI9k2lSfY7bHMV3ux
-	 cgGmSJ7KJqe8layGQmmNboYf5rGkN2tguF5xWkOM=
+	b=mFxsbNl4TmsD3xLPVX0FwSvMJUOUEby+QrvrzbJiUQFWNht3kQXDRMIP3d7fvdUx9
+	 pD+PbYCswAqpPa+DXbAgW9Q804DoazRWFKb1DWTcZMsZM0C40x5EjBUM69RCzCKjrw
+	 26hdpjaIY9vdB53TpViN+ugpGN6PzHkWyKa5v+gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 356/393] io_uring/uring_cmd: use cached cmd_op in io_uring_cmd_sock()
-Date: Wed,  5 Feb 2025 14:44:35 +0100
-Message-ID: <20250205134433.922562189@linuxfoundation.org>
+Subject: [PATCH 6.13 534/623] ethtool: Fix set RXNFC command with symmetric RSS hash
+Date: Wed,  5 Feb 2025 14:44:36 +0100
+Message-ID: <20250205134516.654282984@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit d58d82bd0efd6c8edd452fc2f6c6dd052ec57cb2 ]
+[ Upstream commit 4f5a52adeb1ad675ca33f1e1eacd9c0bbaf393d4 ]
 
-io_uring_cmd_sock() does a normal read of cmd->sqe->cmd_op, where it
-really should be using a READ_ONCE() as ->sqe may still be pointing to
-the original SQE. Since the prep side already does this READ_ONCE() and
-stores it locally, use that value rather than re-read it.
+The sanity check that both source and destination are set when symmetric
+RSS hash is requested is only relevant for ETHTOOL_SRXFH (rx-flow-hash),
+it should not be performed on any other commands (e.g.
+ETHTOOL_SRXCLSRLINS/ETHTOOL_SRXCLSRLDEL).
 
-Fixes: 8e9fad0e70b7b ("io_uring: Add io_uring command support for sockets")
-Link: https://lore.kernel.org/r/20250121-uring-sockcmd-fix-v1-1-add742802a29@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This resolves accessing uninitialized 'info.data' field, and fixes false
+errors in rule insertion:
+  # ethtool --config-ntuple eth2 flow-type ip4 dst-ip 255.255.255.255 action -1 loc 0
+  rmgr: Cannot insert RX class rule: Invalid argument
+  Cannot insert classification rule
+
+Fixes: 13e59344fb9d ("net: ethtool: add support for symmetric-xor RSS hash")
+Cc: Ahmed Zaki <ahmed.zaki@intel.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Reviewed-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Link: https://patch.msgid.link/20250126191845.316589-1-gal@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/uring_cmd.c | 2 +-
+ net/ethtool/ioctl.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-index 5fa19861cda54..2cbd1c24414c6 100644
---- a/io_uring/uring_cmd.c
-+++ b/io_uring/uring_cmd.c
-@@ -175,7 +175,7 @@ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
- 	if (!prot || !prot->ioctl)
- 		return -EOPNOTSUPP;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 7bb94875a7ec8..34bee42e12470 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -998,7 +998,7 @@ static noinline_for_stack int ethtool_set_rxnfc(struct net_device *dev,
+ 	    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
+ 		return -EINVAL;
  
--	switch (cmd->sqe->cmd_op) {
-+	switch (cmd->cmd_op) {
- 	case SOCKET_URING_OP_SIOCINQ:
- 		ret = prot->ioctl(sk, SIOCINQ, &arg);
- 		if (ret)
+-	if (ops->get_rxfh) {
++	if (cmd == ETHTOOL_SRXFH && ops->get_rxfh) {
+ 		struct ethtool_rxfh_param rxfh = {};
+ 
+ 		rc = ops->get_rxfh(dev, &rxfh);
 -- 
 2.39.5
 
