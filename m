@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5E4A2936C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540C8A29068
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5706E16C053
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B172C3A1830
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88A515DBA3;
-	Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A79814B959;
+	Wed,  5 Feb 2025 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdwAgYfy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkEMucEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75225DF59;
-	Wed,  5 Feb 2025 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E52151988;
+	Wed,  5 Feb 2025 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767908; cv=none; b=estg609B577mj4GqOVksjG/1MEE9ldVFdQ/axVbKCuP/PjtY9dB045V0/c3bYs1SSIKUHDrZcr14rBO/5iuLYnelD8GbVuJfXirCNyMIldWDtGgaV0WFOWWRjDr77HJap7YEq+ct6wXPCft7aSUJbsLpZaN39MzKKhCAlWWX270=
+	t=1738766139; cv=none; b=aXgf0yEKDqAemttUFY3O7dzq1AHJ91QAkGeqq1iuKHztkiZA8AbGIh1fuN5sH7L7XnCeWRwzElL/0mkVqSUVl85rbboUDLnUXKfvWdGf/dxb9SCE8eRVJPnv/31iFwt/yvWKhxk//toVFbho64mMS/0kEYmbeAulW9wiDMho75k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767908; c=relaxed/simple;
-	bh=lMlRd1RHsK5AZoa2brCZCl7gHmaUZWefwedzhHHpd4M=;
+	s=arc-20240116; t=1738766139; c=relaxed/simple;
+	bh=xQMaRFOPxrwC+2uKmAUMoQhxEIK/ZtxBfoxdItlBOBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjNgVLXdYYlzCGJVunbMnn/s3wK9g+I/iRXm6V1PzE9CDIVsCRdWDgtEDD5tTXQvOiLNb2bWjHcgnAnYghkPfy8zI7BqwMBrAQCGhDAplF9VXg5xRn3IckRR1nusG2nbIIKxh2XDY2NBSQoKzbH+Kdst6prhS0wyQxeM4Aqzgzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdwAgYfy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6929C4CED6;
-	Wed,  5 Feb 2025 15:05:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ehWKIKUK5I0NU2aQ9GqrEy3U7C5MPwOpC00s6gwr04LQMJhAGlc7RGqvQnFLdfbz9c0zQWo8pxhD8FEvsSzeP/ZNnZ8jilw9v++9M7bjl08nma1Mf2PiHe57+2Nl08Py0H4y4ZRQUnt2W2O1/oBijjsARenM9m5QiWu0XPRGgOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkEMucEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7473C4CED1;
+	Wed,  5 Feb 2025 14:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767908;
-	bh=lMlRd1RHsK5AZoa2brCZCl7gHmaUZWefwedzhHHpd4M=;
+	s=korg; t=1738766139;
+	bh=xQMaRFOPxrwC+2uKmAUMoQhxEIK/ZtxBfoxdItlBOBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdwAgYfypHNnD2kNoCQ4l43YrjpAP7Ct1f67eZygZPDo7UCpPx2M+XPr2eY8PO7rA
-	 bP+PDcq6r2/t6fsGIyt2/fdjYLBGubiuNMxqwnLohJosIzwQ2p9f8bmF4L0cOtCUeC
-	 i73OSRxcHsUImAKdmSmiZ1fJSlG7vA0yH4xhsQlY=
+	b=EkEMucEcrtxIeyaafT6FtjO7DSTk66xyli6xvsLPeqGiC/UKCE+cfQkW/3q4yW/2o
+	 6Si+8kozoP69qfKMb2Qj2HKl/wXsLgRy0KabMzLALATnx2CjjPbpFMoWOtPy+nezWA
+	 qUScEViagZFbbqgQUOMQzw7IU53F6Dx8+5eJdh90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 496/590] selftests: mptcp: extend CFLAGS to keep options from environment
-Date: Wed,  5 Feb 2025 14:44:11 +0100
-Message-ID: <20250205134514.245152718@linuxfoundation.org>
+Subject: [PATCH 6.6 333/393] ptp: Properly handle compat ioctls
+Date: Wed,  5 Feb 2025 14:44:12 +0100
+Message-ID: <20250205134433.052833614@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 23b3a7c4a7583eac9e3976355928a832c87caa0f ]
+[ Upstream commit 19ae40f572a9ce1ade9954990af709a03fd37010 ]
 
-Package build environments like Fedora rpmbuild introduced hardening
-options (e.g. -pie -Wl,-z,now) by passing a -spec option to CFLAGS
-and LDFLAGS.
+Pointer arguments passed to ioctls need to pass through compat_ptr() to
+work correctly on s390; as explained in Documentation/driver-api/ioctl.rst.
+Detect compat mode at runtime and call compat_ptr() for those commands
+which do take pointer arguments.
 
-mptcp Makefile currently overrides CFLAGS but not LDFLAGS, which leads
-to a mismatch and build failure, for example:
-  make[1]: *** [../../lib.mk:222: tools/testing/selftests/net/mptcp/mptcp_sockopt] Error 1
-  /usr/bin/ld: /tmp/ccqyMVdb.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
-  /usr/bin/ld: failed to set dynamic section sizes: bad value
-  collect2: error: ld returned 1 exit status
-
-Fixes: cc937dad85ae ("selftests: centralize -D_GNU_SOURCE= to CFLAGS in lib.mk")
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/7abc701da9df39c2d6cd15bc3cf9e6cee445cb96.1737621162.git.jstancek@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/lkml/1ba5d3a4-7931-455b-a3ce-85a968a7cb10@app.fastmail.com/
+Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20250125-posix-clock-compat_ioctl-v2-1-11c865c500eb@weissschuh.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_chardev.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
-index 5d796622e7309..580610c46e5ae 100644
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -2,7 +2,7 @@
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -4,6 +4,7 @@
+  *
+  * Copyright (C) 2010 OMICRON electronics GmbH
+  */
++#include <linux/compat.h>
+ #include <linux/module.h>
+ #include <linux/posix-clock.h>
+ #include <linux/poll.h>
+@@ -124,6 +125,9 @@ long ptp_ioctl(struct posix_clock *pc, u
+ 	struct timespec64 ts;
+ 	int enable, err = 0;
  
- top_srcdir = ../../../../..
++	if (in_compat_syscall() && cmd != PTP_ENABLE_PPS && cmd != PTP_ENABLE_PPS2)
++		arg = (unsigned long)compat_ptr(arg);
++
+ 	switch (cmd) {
  
--CFLAGS =  -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
-+CFLAGS += -Wall -Wl,--no-as-needed -O2 -g -I$(top_srcdir)/usr/include $(KHDR_INCLUDES)
- 
- TEST_PROGS := mptcp_connect.sh pm_netlink.sh mptcp_join.sh diag.sh \
- 	      simult_flows.sh mptcp_sockopt.sh userspace_pm.sh
--- 
-2.39.5
-
+ 	case PTP_CLOCK_GETCAPS:
 
 
 
