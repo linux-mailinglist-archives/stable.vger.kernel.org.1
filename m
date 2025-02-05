@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52B2A28DED
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036E0A29259
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 534BA16210B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B34C188BD11
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2851459F6;
-	Wed,  5 Feb 2025 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F70F18C337;
+	Wed,  5 Feb 2025 14:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIoQWJfm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es0EODdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F31519AA;
-	Wed,  5 Feb 2025 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4879C18D656;
+	Wed,  5 Feb 2025 14:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764415; cv=none; b=NoT224Rta4d+t8yzQS4IE1GNeZsmV1s7ucb7UGHRBd+BNZ/c0aIRkqxy7mEEboWDokd/UiLU0xPvLnDxd2OKaPZeHbTJHVDU5f2v/EmbrO9IvjwVV2Wk4n5wkiFhO5bKnUAFhotz6ToAMfzn6wDk5t1Xg+Xq6aG0O33U/nw/MhU=
+	t=1738766945; cv=none; b=apMWOqjcQT1+1IPR3DQhem4gj8RCAkJFsRb2owXe2Ktb5a6z+sxUjbHysM5td0usEYLeVFCSDKU2qLcl9/0mms7bLsYeg6ZwOIn+GPSny9PzcETSHCGx2AMKmEWNC84ibu+ZHqdWDMOxqsRgO8Q/+EAmnlcLP8gidpLulO/xIMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764415; c=relaxed/simple;
-	bh=+ehALnKpRq0QEDcEnmDaq3ra8MGcwjfnGMV4kx4YQKA=;
+	s=arc-20240116; t=1738766945; c=relaxed/simple;
+	bh=rqNB9L9Vy/JXDfEmUsdu/c/KdTgq9K7/HQAb1UK/xx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Koupfis/plGIKMfZuFe/V8+21Txs4ycDP9VDNShcjhqYA0WGH5VlScdPgTert1LdESB/R83yTI2Dm7hrRHNcOyJDsI3lH5EL6NS488e9NlMTUJE8hNY2LNdWm1k6BsE0JYFLh8IBLYenk0c0h8k8+ncoozOQppVWW09ZxLgzHQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIoQWJfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121AEC4CED1;
-	Wed,  5 Feb 2025 14:06:54 +0000 (UTC)
+	 MIME-Version; b=ZYWB6EDZy89g4TqFCxPuL8tgltaxU6WLdi1eOAhgvWVadHXMoamwpAzTo3Jc9nBWi5B3OmSBHJRpT0rUZbRoXZXk6JSWhEAIlnCs5VhaVkVlemSIqGpWBUwOgBTzZ8W2zCgUaLXQ+V1QzvH4ZWgvfa1+6P9CP8yGC5BsCMD2IqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es0EODdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0177C4CED1;
+	Wed,  5 Feb 2025 14:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764415;
-	bh=+ehALnKpRq0QEDcEnmDaq3ra8MGcwjfnGMV4kx4YQKA=;
+	s=korg; t=1738766945;
+	bh=rqNB9L9Vy/JXDfEmUsdu/c/KdTgq9K7/HQAb1UK/xx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIoQWJfmgt9SFbG4MNhLLwVSLsBjewvGc9kRsW/z0aMVdGjvINbw/uy3RRuDmJQqG
-	 tGfQnmJ3rM6JJqeonFEhONC9fGcGkovULKsSAzzFTB5N4iIZ61yysmE/7BQ+3u/Q2k
-	 1xz1AeoARUZ0TvTlS6MBZmBD305kOCRwWgLh4zxI=
+	b=es0EODdb+7LKbO3xNARx19bbvo9xZlIyaLWZ0QRj8pbZSEtdT4la9a9X2lP/91GwL
+	 Ij+7TVI0xPNIb6oVVV+Mo04E6J3NRmW3bDeuFdB0jTwpzo3xfWGaZpZU6Y/G3Qvxa3
+	 YLDAxzFogDplYwUzhfKhsVRLclJMbHdeaqPibOKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Monnet <qmo@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Markus Niebel <markus.niebel@ew.tq-group.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/393] libbpf: Fix segfault due to libelf functions not setting errno
+Subject: [PATCH 6.13 332/623] ARM: dts: imx7-tqma7: add missing vs-supply for LM75A (rev. 01xxx)
 Date: Wed,  5 Feb 2025 14:41:14 +0100
-Message-ID: <20250205134426.231970118@linuxfoundation.org>
+Message-ID: <20250205134508.924848237@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Monnet <qmo@kernel.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit e10500b69c3f3378f3dcfc8c2fe4cdb74fc844f5 ]
+[ Upstream commit 78e08cebfe41a99d12a3a79d3e3be913559182e2 ]
 
-Libelf functions do not set errno on failure. Instead, it relies on its
-internal _elf_errno value, that can be retrieved via elf_errno (or the
-corresponding message via elf_errmsg()). From "man libelf":
+Add missing supply for LM75. Fixes the kernel warning:
+  lm75 0-0048: supply vs not found, using dummy regulator
 
-    If a libelf function encounters an error it will set an internal
-    error code that can be retrieved with elf_errno. Each thread
-    maintains its own separate error code. The meaning of each error
-    code can be determined with elf_errmsg, which returns a string
-    describing the error.
-
-As a consequence, libbpf should not return -errno when a function from
-libelf fails, because an empty value will not be interpreted as an error
-and won't prevent the program to stop. This is visible in
-bpf_linker__add_file(), for example, where we call a succession of
-functions that rely on libelf:
-
-    err = err ?: linker_load_obj_file(linker, filename, opts, &obj);
-    err = err ?: linker_append_sec_data(linker, &obj);
-    err = err ?: linker_append_elf_syms(linker, &obj);
-    err = err ?: linker_append_elf_relos(linker, &obj);
-    err = err ?: linker_append_btf(linker, &obj);
-    err = err ?: linker_append_btf_ext(linker, &obj);
-
-If the object file that we try to process is not, in fact, a correct
-object file, linker_load_obj_file() may fail with errno not being set,
-and return 0. In this case we attempt to run linker_append_elf_sysms()
-and may segfault.
-
-This can happen (and was discovered) with bpftool:
-
-    $ bpftool gen object output.o sample_ret0.bpf.c
-    libbpf: failed to get ELF header for sample_ret0.bpf.c: invalid `Elf' handle
-    zsh: segmentation fault (core dumped)  bpftool gen object output.o sample_ret0.bpf.c
-
-Fix the issue by returning a non-null error code (-EINVAL) when libelf
-functions fail.
-
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Signed-off-by: Quentin Monnet <qmo@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241205135942.65262-1-qmo@kernel.org
+Fixes: c9d4affbe60a ("ARM: dts: imx: tqma7: add lm75a sensor (rev. 01xxx)")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Markus Niebel <markus.niebel@ew.tq-group.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 88cc7236f1220..736ebceea233f 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -567,17 +567,15 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
- 	}
- 	obj->elf = elf_begin(obj->fd, ELF_C_READ_MMAP, NULL);
- 	if (!obj->elf) {
--		err = -errno;
- 		pr_warn_elf("failed to parse ELF file '%s'", filename);
--		return err;
-+		return -EINVAL;
- 	}
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
+index 028961eb71089..91ca23a66bf3c 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
+@@ -135,6 +135,7 @@
+ 	lm75a: temperature-sensor@48 {
+ 		compatible = "national,lm75a";
+ 		reg = <0x48>;
++		vs-supply = <&vgen4_reg>;
+ 	};
  
- 	/* Sanity check ELF file high-level properties */
- 	ehdr = elf64_getehdr(obj->elf);
- 	if (!ehdr) {
--		err = -errno;
- 		pr_warn_elf("failed to get ELF header for %s", filename);
--		return err;
-+		return -EINVAL;
- 	}
- 	if (ehdr->e_ident[EI_DATA] != host_endianness) {
- 		err = -EOPNOTSUPP;
-@@ -593,9 +591,8 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
- 	}
- 
- 	if (elf_getshdrstrndx(obj->elf, &obj->shstrs_sec_idx)) {
--		err = -errno;
- 		pr_warn_elf("failed to get SHSTRTAB section index for %s", filename);
--		return err;
-+		return -EINVAL;
- 	}
- 
- 	scn = NULL;
-@@ -605,26 +602,23 @@ static int linker_load_obj_file(struct bpf_linker *linker, const char *filename,
- 
- 		shdr = elf64_getshdr(scn);
- 		if (!shdr) {
--			err = -errno;
- 			pr_warn_elf("failed to get section #%zu header for %s",
- 				    sec_idx, filename);
--			return err;
-+			return -EINVAL;
- 		}
- 
- 		sec_name = elf_strptr(obj->elf, obj->shstrs_sec_idx, shdr->sh_name);
- 		if (!sec_name) {
--			err = -errno;
- 			pr_warn_elf("failed to get section #%zu name for %s",
- 				    sec_idx, filename);
--			return err;
-+			return -EINVAL;
- 		}
- 
- 		data = elf_getdata(scn, 0);
- 		if (!data) {
--			err = -errno;
- 			pr_warn_elf("failed to get section #%zu (%s) data from %s",
- 				    sec_idx, sec_name, filename);
--			return err;
-+			return -EINVAL;
- 		}
- 
- 		sec = add_src_sec(obj, sec_name);
-@@ -2602,14 +2596,14 @@ int bpf_linker__finalize(struct bpf_linker *linker)
- 
- 	/* Finalize ELF layout */
- 	if (elf_update(linker->elf, ELF_C_NULL) < 0) {
--		err = -errno;
-+		err = -EINVAL;
- 		pr_warn_elf("failed to finalize ELF layout");
- 		return libbpf_err(err);
- 	}
- 
- 	/* Write out final ELF contents */
- 	if (elf_update(linker->elf, ELF_C_WRITE) < 0) {
--		err = -errno;
-+		err = -EINVAL;
- 		pr_warn_elf("failed to write ELF contents");
- 		return libbpf_err(err);
- 	}
+ 	/* NXP SE97BTP with temperature sensor + eeprom, TQMa7x 02xx */
 -- 
 2.39.5
 
