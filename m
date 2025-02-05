@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83C1A29226
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CAEA29292
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB053ACD88
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FF42167166
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98F218B484;
-	Wed,  5 Feb 2025 14:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D6F18DF73;
+	Wed,  5 Feb 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R75MB3DO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6/o9g2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771631FCF66;
-	Wed,  5 Feb 2025 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179A333993;
+	Wed,  5 Feb 2025 14:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766895; cv=none; b=OWkjd8+B0EnV+z9ZF++Pif/zn/g0YUUTcdBUk2X73mW+mfIO85mu4AntQD/ird2cGkJrH4qEw/isS97p8TxcahHQuQdnH1yzoMiDbVWvZUsI0rN6HScVk08i6+c3wTXgT8MfeiUtWYt0QWn8W8Y/N65l2TcatFfsmbWe1p99ei4=
+	t=1738767282; cv=none; b=NdvyCUiegifAjTcffo+Cj76PuLzug64nR7tEXihuuaSzWwkat/inCK9VY9E25EsWbMBPJTxiV68Hk6pAnFZeYxMF+NzuUr08KcE3NuTsv0ScuToRB+2n0loz1tcK0ZSJkup+6rcwf5H8Wvuk0v/xpMEBGgvBA4bzlHeSTGBTC0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766895; c=relaxed/simple;
-	bh=dNMWNQZnxB+R0IqxhXPgKxsVYCG6R5aadGWleveu6rM=;
+	s=arc-20240116; t=1738767282; c=relaxed/simple;
+	bh=0LJ/r6TaQH1EPADzXFNm63Vr/cH9agfjfm2jjQY1YQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCNDmLnViXum3SI47gKG95pXHrBvYrPDdVL2SbT7JdPd1A8PcnbLUiLX+DWG47LR1azjfKPh8FrrB9qkas2sUWPu/1+evPxNTsjQDxbxKC4TZSm7ymdhHtPe8DxEN1n0IzBmF3OdWr4H7XB3te1z8Mp4Q7LnX7s0RiczXrQjZ9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R75MB3DO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FADAC4CED1;
-	Wed,  5 Feb 2025 14:48:13 +0000 (UTC)
+	 MIME-Version; b=Pp2kvCJg88rPNcY2cSRseEj46ncompgag2gkqiqDCMbb1zmF7E24l6Z8uyKzwT5EtlH0hsb7C+WGhL1+IrLm3PnnKshQ022efYSra9KbRSs+RJkndQt9qxodXTAcqYgmP1CH89eGgTNdR7jU4BPd6n3eos7TMFSfoXn27DtlzVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6/o9g2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772B4C4CED1;
+	Wed,  5 Feb 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766893;
-	bh=dNMWNQZnxB+R0IqxhXPgKxsVYCG6R5aadGWleveu6rM=;
+	s=korg; t=1738767282;
+	bh=0LJ/r6TaQH1EPADzXFNm63Vr/cH9agfjfm2jjQY1YQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R75MB3DO/SeO3L8BgHseFPtJ1mvn4iI9w6z+cS1uvIwC9fXxWx/8Gm1HXD3iUz6xe
-	 fqLyyfGTDEC9SOM+KzVAbPUhCD/2LSpGgDKd1nPA6GVHNm4SXtbaDyAelbHmwNf05R
-	 /MWfktoYUlu3/d+Gi08L0Z2phE/3bPspJouzlEwQ=
+	b=J6/o9g2W2fdfS+nFhos/hxZOCKV00nN4RqFbk0HIFMQe9UWUMzJKlCBl16taLFe36
+	 nzQOZkHS7MsFqDOGnMqjT3apT1uCvwSTl1OnkQHmI+Ltn+CtZprlFVHDXSA18GmfBb
+	 EM3VD/UQcYIiGFcaEmFIA7cI1OcgQ1HNVKuVMBlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinpu Wang <jinpu.wang@ionos.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 368/590] RDMA/rtrs: Add missing deinit() call
-Date: Wed,  5 Feb 2025 14:42:03 +0100
-Message-ID: <20250205134509.350309349@linuxfoundation.org>
+Subject: [PATCH 6.13 382/623] arm64: dts: qcom: sc7280: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:42:04 +0100
+Message-ID: <20250205134510.839453927@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 81468c4058a62e84e475433b83b3edc613294f5e ]
+[ Upstream commit f6ccdca14eac545320ab03d6ca91ca343e7372e5 ]
 
-A warning is triggered when repeatedly connecting and disconnecting the
-rnbd:
- list_add corruption. prev->next should be next (ffff88800b13e480), but was ffff88801ecd1338. (prev=ffff88801ecd1340).
- WARNING: CPU: 1 PID: 36562 at lib/list_debug.c:32 __list_add_valid_or_report+0x7f/0xa0
- Workqueue: ib_cm cm_work_handler [ib_cm]
- RIP: 0010:__list_add_valid_or_report+0x7f/0xa0
-  ? __list_add_valid_or_report+0x7f/0xa0
-  ib_register_event_handler+0x65/0x93 [ib_core]
-  rtrs_srv_ib_dev_init+0x29/0x30 [rtrs_server]
-  rtrs_ib_dev_find_or_add+0x124/0x1d0 [rtrs_core]
-  __alloc_path+0x46c/0x680 [rtrs_server]
-  ? rtrs_rdma_connect+0xa6/0x2d0 [rtrs_server]
-  ? rcu_is_watching+0xd/0x40
-  ? __mutex_lock+0x312/0xcf0
-  ? get_or_create_srv+0xad/0x310 [rtrs_server]
-  ? rtrs_rdma_connect+0xa6/0x2d0 [rtrs_server]
-  rtrs_rdma_connect+0x23c/0x2d0 [rtrs_server]
-  ? __lock_release+0x1b1/0x2d0
-  cma_cm_event_handler+0x4a/0x1a0 [rdma_cm]
-  cma_ib_req_handler+0x3a0/0x7e0 [rdma_cm]
-  cm_process_work+0x28/0x1a0 [ib_cm]
-  ? _raw_spin_unlock_irq+0x2f/0x50
-  cm_req_handler+0x618/0xa60 [ib_cm]
-  cm_work_handler+0x71/0x520 [ib_cm]
+The SC7280 platform uses PMK8350 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Commit 667db86bcbe8 ("RDMA/rtrs: Register ib event handler") introduced a
-new element .deinit but never used it at all. Fix it by invoking the
-`deinit()` to appropriately unregister the IB event handler.
-
-Cc: Jinpu Wang <jinpu.wang@ionos.com>
-Fixes: 667db86bcbe8 ("RDMA/rtrs: Register ib event handler")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://patch.msgid.link/20250106004516.16611-1-lizhijian@fujitsu.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 7a1f4e7f740d ("arm64: dts: qcom: sc7280: Add basic dts/dtsi files for sc7280 soc")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-8-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
-index 4e17d546d4ccf..bf38ac6f87c47 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs.c
-@@ -584,6 +584,9 @@ static void dev_free(struct kref *ref)
- 	list_del(&dev->entry);
- 	mutex_unlock(&pool->mutex);
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 55db1c83ef551..d12e0a63fd087 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -83,7 +83,7 @@
  
-+	if (pool->ops && pool->ops->deinit)
-+		pool->ops->deinit(dev);
-+
- 	ib_dealloc_pd(dev->ib_pd);
- 	kfree(dev);
- }
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
