@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E156AA29458
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57043A29479
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F16123B1364
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62F113AE248
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4E118A6C5;
-	Wed,  5 Feb 2025 15:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CDE155747;
+	Wed,  5 Feb 2025 15:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMCuWwor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwrq+5xg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C561607B7;
-	Wed,  5 Feb 2025 15:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A9C17C79;
+	Wed,  5 Feb 2025 15:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768282; cv=none; b=AIL37DyRiT2x10rt3ab6JgYEeaxDB69cHktMGOvA9kn+kcp926gAUtnMqTmE++k5LP+5ipTUIUd2AC4DenSDp0+1EFMkxNQ5gL6wmzuFvcJC9QeZvy1mlayDYM1I2/2R83DZmZiOhdBdTQa3fWkDk2+rxQFn9woRHM9WoFUVzf4=
+	t=1738768564; cv=none; b=rjrKlAIPMkcyP0a/U72tGncOdJEPevVHX75atTvQijWVwBfjQ7owYQrF4HwTjaxX+s+fxEtltzHrJCmef+nD3f1OEdA6U8+Y6yPDLcG3iv5zAHNruYOIWZaSfnaslTz/F5Iz/12qCsUMmNlkTPto/YmC53fB3S0CvHhq29LTmcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768282; c=relaxed/simple;
-	bh=jgYna+Zo2nWBerAZaf5ztbaQ0bWuya+/RILwOW5Zyg0=;
+	s=arc-20240116; t=1738768564; c=relaxed/simple;
+	bh=sZ2Dlzmb1Il/SKkvDrs/RqvG9mTFlaz27EUp+X/cpKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vF8/VCAW8uN1lInc+pUzjb5yrVdx06UZuWLEQoj4jxlPOUifibwhUjcR7zWIIV2fPmrXh5P+j1YzVV6pwrh8ScZq7Q5zEIKW6TfveGYZBGTT32ah0CDdlsTT4nC5ANk4RHv1lZBqcumTkstoMotqV6oo0PX0YEQsT3UXLemBE+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMCuWwor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F3FC4CED6;
-	Wed,  5 Feb 2025 15:11:21 +0000 (UTC)
+	 MIME-Version; b=eDAugbOfrhsvfH4M/zsMR3UifuLCRceWzuV0x9NIgGQWCqC6e/sjoPvlLW+V/Qwty5LCfWTlnpsnf8m6Vlt+3OtRG1AOnczxhAMIA3xUF8rj6ltnDiqcseCjGqU75weMV8cw8tDHY6g6j4TnqBjotNHKb1+xs7AvhZjEsWr1/nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dwrq+5xg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3C5C4CED1;
+	Wed,  5 Feb 2025 15:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768282;
-	bh=jgYna+Zo2nWBerAZaf5ztbaQ0bWuya+/RILwOW5Zyg0=;
+	s=korg; t=1738768564;
+	bh=sZ2Dlzmb1Il/SKkvDrs/RqvG9mTFlaz27EUp+X/cpKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMCuWworb3kwQlTlbDwc2JGo0DYuxxC0lBvAHprzcAU7Jr3qggnatioFDyCqTvzpd
-	 uuAMAebYDPf6FbJzM4yEyr9XZWCWZY5/cs5ypngnWZ6OE4LDIA89fpcFIgeNy40enm
-	 CJWmYZmMjvnnpYZQXXvBUKzY1tooipvHMh/LLSRo=
+	b=Dwrq+5xghVBS9px4I5g/cJHblfL9SKQH3JxHxZ6LKUrNx4+PfVkoeJm7AmCw3otj5
+	 r2d9H0ff0CZJm3In7CD9KYiY2KhB2W2aa7/4rz5mKIn5ZGtO9pBi6U5ymf/fn4OE4K
+	 4OnEhbyrv4TjZJ8A5aBWwF7ockot0PAgumvcunWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.12 579/590] xfrm: Fix acquire state insertion.
-Date: Wed,  5 Feb 2025 14:45:34 +0100
-Message-ID: <20250205134517.415920360@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.13 593/623] usb: dwc3-am62: Fix an OF node leak in phy_syscon_pll_refclk()
+Date: Wed,  5 Feb 2025 14:45:35 +0100
+Message-ID: <20250205134518.912425024@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steffen Klassert <steffen.klassert@secunet.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit a35672819f8d85e2ae38b80d40b923e3ef81e4ea upstream.
+commit a266462b937beba065e934a563efe13dd246a164 upstream.
 
-A recent commit jumped over the dst hash computation and
-left the symbol uninitialized. Fix this by explicitly
-computing the dst hash before it is used.
+phy_syscon_pll_refclk() leaks an OF node obtained by
+of_parse_phandle_with_fixed_args(), thus add an of_node_put() call.
 
-Fixes: 0045e3d80613 ("xfrm: Cache used outbound xfrm states at the policy.")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: stable <stable@kernel.org>
+Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250109001638.70033-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c |    1 +
+ drivers/usb/dwc3/dwc3-am62.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1512,6 +1512,7 @@ found:
- 			x->km.state = XFRM_STATE_ACQ;
- 			x->dir = XFRM_SA_DIR_OUT;
- 			list_add(&x->km.all, &net->xfrm.state_all);
-+			h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
- 			XFRM_STATE_INSERT(bydst, &x->bydst,
- 					  net->xfrm.state_bydst + h,
- 					  x->xso.type);
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -166,6 +166,7 @@ static int phy_syscon_pll_refclk(struct
+ 	if (ret)
+ 		return ret;
+ 
++	of_node_put(args.np);
+ 	am62->offset = args.args[0];
+ 
+ 	/* Core voltage. PHY_CORE_VOLTAGE bit Recommended to be 0 always */
 
 
 
