@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-113201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0563A2906F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE617A29073
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3B2A18827A9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1FFC188297B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30ECD155756;
-	Wed,  5 Feb 2025 14:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DB6155756;
+	Wed,  5 Feb 2025 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjrNTWMB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idANHfpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF56D7DA6A;
-	Wed,  5 Feb 2025 14:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAFA7DA6A;
+	Wed,  5 Feb 2025 14:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766162; cv=none; b=hKNwk9CXRJXrD6Fa4eb58HXPOBz6QpcWgUGPYSNpDPm2NiZYEjT6RPhdJFyu1e0DMfTNgV64KWFd0AIUOkzIopzmqnfr8HOW7vOBlSSzX8z/d//yIL+nLmLckn0lPyU/sWWkiBkIZtCytK4sqESRjG3xS4ybDL1Nn+nITXa1mPs=
+	t=1738766174; cv=none; b=drMeyN3RpvRSCthsz5NT8z2C5n2Evk4iEPIq2vH6TjpAn061AGO+pm9mLnFkpkGR7rPntoBFdHREwEppch9ywIMyyWthtxBLmgGRHrAF17SjXcWEb6hksgIegcqil2gVbHKgitX69mdKKqxxKkf2LUWN4gS1BetAxEdYwGJobdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766162; c=relaxed/simple;
-	bh=26ToBPSgEvYia6R+2gcdUIYKaATc7yHQElONWh1klYc=;
+	s=arc-20240116; t=1738766174; c=relaxed/simple;
+	bh=ZaJ/aBPLBALfpgwGcq2AuA5q1tri1y3Bh+tVHGFGGPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9XuhB6JV+WXamHUmHve84A2cd4+ND9IhgTQnoIs3vMhAxh525WNFDGjdmovONEFWFN3GvPcWB60H5y4npcIF9XfO4dTP9ZxqrtJ3Cw2ZAqJY4/NMcs5ZiGFau2143W60+EfrqfEhqFVSPssEcC0Z2lEk1Vsxq3Zvp18NGfgLE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjrNTWMB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FA2C4CED1;
-	Wed,  5 Feb 2025 14:36:01 +0000 (UTC)
+	 MIME-Version; b=c1k9j9nW4eQObNuoUrdXoLNjztfbwZHq2M9g/B3anM6tgOpkUIlvzlYOqob82uGBRgdWhi21kiSa1rkXtYHHLZnSwBQwf/NXMIrKTaHiwEjpJ/HxZqtEky5fjAmLttH4Fdc3xqgvnBKOnr1g/M6//FWtrq9fx9WeKO2mcN3b2b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idANHfpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50570C4CED1;
+	Wed,  5 Feb 2025 14:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766161;
-	bh=26ToBPSgEvYia6R+2gcdUIYKaATc7yHQElONWh1klYc=;
+	s=korg; t=1738766174;
+	bh=ZaJ/aBPLBALfpgwGcq2AuA5q1tri1y3Bh+tVHGFGGPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjrNTWMBf+THRNUAoUGEfCZUTLhHlA9N6xcSpbKO2aibj82tv39IBWrR0Ci0Pp2I7
-	 WSP0JwBgn7cZYLSHf9eC75fYppmu5Xufmh1AllWGeS+JsITCah9/oEwkm0qR0dtjcv
-	 a3EmxVvSNvYXFX2sic+0IbXADBAGr1I8g6KOJ1yM=
+	b=idANHfpO0umBlR1H0XlIkRmQyExkPVTn8C000QzOvhk0lH96UNYfVc8aJ0H/QF3Zl
+	 hGasnQy6FK5mz3rGGQU7XCjQYp6Yui08H4y3lBYxXy+mscPI/LSSFlc7PL2aENgbm1
+	 ZvvOapfy7Af6BKIMRZEB/MqJZYU1Vk2TZRBTXDj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 248/623] libbpf: dont adjust USDT semaphore address if .stapsdt.base addr is missing
-Date: Wed,  5 Feb 2025 14:39:50 +0100
-Message-ID: <20250205134505.712562944@linuxfoundation.org>
+Subject: [PATCH 6.13 249/623] ASoC: cs40l50: Use *-y for Makefile
+Date: Wed,  5 Feb 2025 14:39:51 +0100
+Message-ID: <20250205134505.750692767@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,44 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 98ebe5ef6f5c4517ba92fb3e56f95827ebea83fd ]
+[ Upstream commit 3f0b8d367db5b0c0a0096b1c2ff02ec7c5c893b6 ]
 
-USDT ELF note optionally can record an offset of .stapsdt.base, which is
-used to make adjustments to USDT target attach address. Currently,
-libbpf will do this address adjustment unconditionally if it finds
-.stapsdt.base ELF section in target binary. But there is a corner case
-where .stapsdt.base ELF section is present, but specific USDT note
-doesn't reference it. In such case, libbpf will basically just add base
-address and end up with absolutely incorrect USDT target address.
+We should use *-y instead of *-objs in Makefile for the module
+objects.  *-objs is used rather for host programs.
 
-This adjustment has to be done only if both .stapsdt.sema section is
-present and USDT note is recording a reference to it.
-
-Fixes: 74cc6311cec9 ("libbpf: Add USDT notes parsing and resolution logic")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20241121224558.796110-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: c486def5b3ba ("ASoC: cs40l50: Support I2S streaming to CS40L50")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241203141823.22393-2-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/usdt.c | 2 +-
+ sound/soc/codecs/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
-index 5f085736c6c45..4e4a52742b01c 100644
---- a/tools/lib/bpf/usdt.c
-+++ b/tools/lib/bpf/usdt.c
-@@ -661,7 +661,7 @@ static int collect_usdt_targets(struct usdt_manager *man, Elf *elf, const char *
- 		 *   [0] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
- 		 */
- 		usdt_abs_ip = note.loc_addr;
--		if (base_addr)
-+		if (base_addr && note.base_addr)
- 			usdt_abs_ip += base_addr - note.base_addr;
- 
- 		/* When attaching uprobes (which is what USDTs basically are)
+diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
+index f37e82ddb7a10..57d3aab27d2fe 100644
+--- a/sound/soc/codecs/Makefile
++++ b/sound/soc/codecs/Makefile
+@@ -80,7 +80,7 @@ snd-soc-cs35l56-shared-y := cs35l56-shared.o
+ snd-soc-cs35l56-i2c-y := cs35l56-i2c.o
+ snd-soc-cs35l56-spi-y := cs35l56-spi.o
+ snd-soc-cs35l56-sdw-y := cs35l56-sdw.o
+-snd-soc-cs40l50-objs := cs40l50-codec.o
++snd-soc-cs40l50-y := cs40l50-codec.o
+ snd-soc-cs42l42-y := cs42l42.o
+ snd-soc-cs42l42-i2c-y := cs42l42-i2c.o
+ snd-soc-cs42l42-sdw-y := cs42l42-sdw.o
 -- 
 2.39.5
 
