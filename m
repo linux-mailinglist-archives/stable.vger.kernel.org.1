@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DA1A293AA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21CCA2904D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A7C16BA3F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 634117A48F2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DD6170A37;
-	Wed,  5 Feb 2025 15:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2C414B959;
+	Wed,  5 Feb 2025 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvQzX7P/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kp2Azpla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D981E89C;
-	Wed,  5 Feb 2025 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7F17DA6A;
+	Wed,  5 Feb 2025 14:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768148; cv=none; b=IOqJRlY4Xi6wEm5UnsRa92tIm4FF8d87q0IwprJx5NG5Aad8haTGZ7RYLrJBjQyZMUlhBo8XsBNhtcjQtK2n9rVNpLCnstn9YslYnWnEy9+vGLer/QUfNdwqbbP/iQbQvpPhyXah++mfqtehyirCkTIQ2tWDHFcG++YSd/0tG+w=
+	t=1738766072; cv=none; b=NLW/KI3JwUPiLCEJw3YOimX6p9ONzPdd5LMo1xOrn8D2RpbI+It9pKaElkQ+FbaBHEhb8iWFYOjMEHe56GXFYwpVmXL7cwJZXl8PsNgMpJ9Vs9lgAXENxQBewEad6Feo+wqFVdQxdNWJFZTdd7AyqxKyrXVB2XCI25kH3G6NCD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768148; c=relaxed/simple;
-	bh=WzPghb5qosyu8oon1XRDdt895ySa/HXzNw2ow6QaP5c=;
+	s=arc-20240116; t=1738766072; c=relaxed/simple;
+	bh=lpTbS+BSlGIv4YnKYQHA2wVWg6xvCSNkshtq+SvbCo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mF4aP128IwXc5DPDuYT0m37b4etz8May5StU4XleDvtl5ZDNVCZJEWtQPEe2QFmod2aJ+MQpsy5eySb3IRI32Np7mkGYNzkV1Yq5oao5TYIGgKvmz33DHlJpRyAXudp2k2UFgBk7ymiPXn3KrPY4iJXQxyIc8tl0otbAlXlIfdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvQzX7P/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49057C4CED6;
-	Wed,  5 Feb 2025 15:09:07 +0000 (UTC)
+	 MIME-Version; b=qMaPar4VEmLjrw/KrkIG07BQDjlcUwBmMaZKcI8P+ya9belUadDkA7dXq1QpmjnRRuvBT4thhb+dBwPLcNHOt+kKnIsma+/rGsMFChCTRNSihNCTBkr6CRKC9EOyAO497FuBeZdBuO0Kv8D5WpalC0DchcAmyFKcSP/FjSOTF2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kp2Azpla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E82C4CED1;
+	Wed,  5 Feb 2025 14:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768147;
-	bh=WzPghb5qosyu8oon1XRDdt895ySa/HXzNw2ow6QaP5c=;
+	s=korg; t=1738766072;
+	bh=lpTbS+BSlGIv4YnKYQHA2wVWg6xvCSNkshtq+SvbCo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvQzX7P/P+7btocTDFocQcMFIBtTKFlLW9DfHs4ajs28zeDJYE0ZsmnTziaYBHEeU
-	 n8gGQQNpOvXFTVJt1vNCJ+Zwp981CXx+nrZzI4xtI/BFtQl6AwuomDCH72xMVTMyQK
-	 rmqZ6tvdwCblUyfoboJkuA0QvLilDgEZ7qBlhhZI=
+	b=Kp2Azplahjyel/S/1oR8z031e5VtOBBUrToDFU3Jq+oU9SsIZuONBWjpvOhw1AIDH
+	 oEmGHKd2+QgOXXPspecUdB6JrFZdS9sogoynyTzIJore9d4C6i/pxSMYAqPvPIitVO
+	 /WewRGnKqh4UcKSRZgxAwRjo+pIWaIp/4lHbd1CQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 504/623] net: airoha: Fix wrong GDM4 register definition
+Subject: [PATCH 6.6 327/393] PM: hibernate: Add error handling for syscore_suspend()
 Date: Wed,  5 Feb 2025 14:44:06 +0100
-Message-ID: <20250205134515.500983086@linuxfoundation.org>
+Message-ID: <20250205134432.824921009@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit d31a49d37cb132b31cc6683eef2122f8609d6229 ]
+[ Upstream commit e20a70c572539a486dbd91b225fa6a194a5e2122 ]
 
-Fix wrong GDM4 register definition, in Airoha SDK GDM4 is defined at
-offset 0x2400 but this doesn't make sense as it does conflict with the
-CDM4 that is in the same location.
+In hibernation_platform_enter(), the code did not check the
+return value of syscore_suspend(), potentially leading to a
+situation where syscore_resume() would be called even if
+syscore_suspend() failed. This could cause unpredictable
+behavior or system instability.
 
-Following the pattern where each GDM base is at the FWD_CFG, currently
-GDM4 base offset is set to 0x2500. This is correct but REG_GDM4_FWD_CFG
-and REG_GDM4_SRC_PORT_SET are still using the SDK reference with the
-0x2400 offset. Fix these 2 define by subtracting 0x100 to each register
-to reflect the real address location.
+Modify the code sequence in question to properly handle errors returned
+by syscore_suspend(). If an error occurs in the suspend path, the code
+now jumps to label 'Enable_irqs' skipping the syscore_resume() call and
+only enabling interrupts after setting the system state to SYSTEM_RUNNING.
 
-Fixes: 23020f049327 ("net: airoha: Introduce ethernet support for EN7581 SoC")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250120154148.13424-1-ansuelsmth@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 40dc166cb5dd ("PM / Core: Introduce struct syscore_ops for core subsystems PM")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250119143205.2103-1-vulab@iscas.ac.cn
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/airoha_eth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/power/hibernate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/airoha_eth.c b/drivers/net/ethernet/mediatek/airoha_eth.c
-index d8bfc21a5b194..00b80fb9d87ac 100644
---- a/drivers/net/ethernet/mediatek/airoha_eth.c
-+++ b/drivers/net/ethernet/mediatek/airoha_eth.c
-@@ -258,11 +258,11 @@
- #define REG_GDM3_FWD_CFG		GDM3_BASE
- #define GDM3_PAD_EN_MASK		BIT(28)
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index 8d35b9f9aaa3f..c2fc58938dee5 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -599,7 +599,11 @@ int hibernation_platform_enter(void)
  
--#define REG_GDM4_FWD_CFG		(GDM4_BASE + 0x100)
-+#define REG_GDM4_FWD_CFG		GDM4_BASE
- #define GDM4_PAD_EN_MASK		BIT(28)
- #define GDM4_SPORT_OFFSET0_MASK		GENMASK(11, 8)
+ 	local_irq_disable();
+ 	system_state = SYSTEM_SUSPEND;
+-	syscore_suspend();
++
++	error = syscore_suspend();
++	if (error)
++		goto Enable_irqs;
++
+ 	if (pm_wakeup_pending()) {
+ 		error = -EAGAIN;
+ 		goto Power_up;
+@@ -611,6 +615,7 @@ int hibernation_platform_enter(void)
  
--#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x33c)
-+#define REG_GDM4_SRC_PORT_SET		(GDM4_BASE + 0x23c)
- #define GDM4_SPORT_OFF2_MASK		GENMASK(19, 16)
- #define GDM4_SPORT_OFF1_MASK		GENMASK(15, 12)
- #define GDM4_SPORT_OFF0_MASK		GENMASK(11, 8)
+  Power_up:
+ 	syscore_resume();
++ Enable_irqs:
+ 	system_state = SYSTEM_RUNNING;
+ 	local_irq_enable();
+ 
 -- 
 2.39.5
 
