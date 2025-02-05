@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01FDA2925C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86B3A28E74
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CA8F188C0AB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB5A164F50
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C6F1FDE08;
-	Wed,  5 Feb 2025 14:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3DA14B959;
+	Wed,  5 Feb 2025 14:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtECIihJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ga3avG1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7DB15CD74;
-	Wed,  5 Feb 2025 14:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3A215198D;
+	Wed,  5 Feb 2025 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766969; cv=none; b=MqDinIYgAGCvDUaut9dhZ0fH0HOD3L6TJhRsY/rrS9ukhmPZ4YLvGxzCqVMdHp3Yta3c8XtmyLf2zkozuST/t0xsA139Jhb55cdDaTP/9Sutyc2JEn0j4TmQinr75GhBSBeyZMNCU7SBQJRcB0kkprh2/2YSZfM6w+/sPYstzcQ=
+	t=1738764799; cv=none; b=kHjiphoq6HA/5N0bO07EmZwlCC17h0WzmPFZdcpXedAt9ZJwNVaJqh/RMLpPJZGumnbZqyc6UHQFHwcXIgtnUx8Ua8ikXcS4ae0yR5TU6oMVTEA4wzXZbYxj5feK0OYcNaLJGCMY1JdCBwGZ+CKRUE4Nw+TI0OJg+LOgCa1epls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766969; c=relaxed/simple;
-	bh=ShT6SaJKFEyD8UmZkDfbHnHEDuyytSgXH6ziMKzw2mA=;
+	s=arc-20240116; t=1738764799; c=relaxed/simple;
+	bh=xgDtIFlOsKv3VxFIELqFHqb3dsCkj6SnSBKoCRgpoG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gh+6/80i0a6godnr0pGRfxs1uPDMYg4cmnopwtWZH54JJB1sE0crbdxyrKkVl12br2wsyK6ucsau63DJQKT7oQNVhQYxYTmTuIZ6TYqybMJHgdTSPcucUnkI/mbwrSGWUOu4jPL7JJ7OBA8g0f6r3GpnbjGNKAa/28tChKtesTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtECIihJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434DAC4CED1;
-	Wed,  5 Feb 2025 14:49:29 +0000 (UTC)
+	 MIME-Version; b=kjMd5rA8sNLTB0oPZpzcst5jTeDfoqFlqCQ5Y/a7bIZZZO877F4FdhMR88ZVo0XHyaYDt0L4iME5IzdJILCq1Nu1w9YA1K4p9LGyjORA1pbcrilAKleb4pJDm1veQUmXBVCbpqED2MzoHG2Au2s5cX/18YziiWLBcdcyUcaVYMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ga3avG1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED0EC4CED1;
+	Wed,  5 Feb 2025 14:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766969;
-	bh=ShT6SaJKFEyD8UmZkDfbHnHEDuyytSgXH6ziMKzw2mA=;
+	s=korg; t=1738764798;
+	bh=xgDtIFlOsKv3VxFIELqFHqb3dsCkj6SnSBKoCRgpoG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OtECIihJYRYl1cEZ281ITiA7JvZVw1x/KdYpBsvcLtrBoQh3P/SrtvHf3vFWkXjT3
-	 PQSU38mKs1gACqGULKeblZ4hX/lzIVHyHgg2vy03TMN6ZdQMrThlGfAvxc05Qktf6H
-	 TIblQM+Us95uTjQzBM/MoD9EpG1INmXSlS6wUqYA=
+	b=Ga3avG1mIlIkPkHDqpVblxyF1GrlF5tHfODzhkyjOHFzHR0QCY5Xv3PQT+VZbLEl5
+	 SCVHCKArSJcgZxM/Wf0xLK7F63JkUvrgvB+1EmciR+IyQ+mtAbAP29AHnwaIeF3tUp
+	 aNYR6dKBE/zeOp7kzoEmOsYnKgTrH8chdJPUdsv8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 369/590] RDMA/hns: Clean up the legacy CONFIG_INFINIBAND_HNS
+Subject: [PATCH 6.6 205/393] arm64: dts: mediatek: mt8173-evb: Drop regulator-compatible property
 Date: Wed,  5 Feb 2025 14:42:04 +0100
-Message-ID: <20250205134509.387389210@linuxfoundation.org>
+Message-ID: <20250205134428.147554377@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,216 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 8977b561216c7e693d61c6442657e33f134bfeb5 ]
+[ Upstream commit a6d5983e40f5d5b219337569cdd269727f5a3e2e ]
 
-hns driver used to support hip06 and hip08 devices with
-CONFIG_INFINIBAND_HNS_HIP06 and CONFIG_INFINIBAND_HNS_HIP08
-respectively, which both depended on CONFIG_INFINIBAND_HNS.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It is also not listed in the MT6397
+regulator bindings. Having them present produces a whole bunch of
+validation errors:
 
-But we no longer provide support for hip06 and only support
-hip08 and higher since the commit in fixes line, so there is
-no need to have CONFIG_INFINIBAND_HNS any more. Remove it and
-only keep CONFIG_INFINIBAND_HNS_HIP08.
+    Unevaluated properties are not allowed ('regulator-compatible' was unexpected)
 
-Fixes: 38d220882426 ("RDMA/hns: Remove support for HIP06")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250106111211.3945051-1-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
+
+Fixes: 16ea61fc5614 ("arm64: dts: mt8173-evb: Add PMIC support")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-3-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/Makefile     |  2 +-
- drivers/infiniband/hw/hns/Kconfig  | 20 +++++---------------
- drivers/infiniband/hw/hns/Makefile |  9 +++------
- 3 files changed, 9 insertions(+), 22 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts | 23 ---------------------
+ 1 file changed, 23 deletions(-)
 
-diff --git a/drivers/infiniband/hw/Makefile b/drivers/infiniband/hw/Makefile
-index 1211f4317a9f4..aba96ca9bce5d 100644
---- a/drivers/infiniband/hw/Makefile
-+++ b/drivers/infiniband/hw/Makefile
-@@ -11,7 +11,7 @@ obj-$(CONFIG_INFINIBAND_OCRDMA)		+= ocrdma/
- obj-$(CONFIG_INFINIBAND_VMWARE_PVRDMA)	+= vmw_pvrdma/
- obj-$(CONFIG_INFINIBAND_USNIC)		+= usnic/
- obj-$(CONFIG_INFINIBAND_HFI1)		+= hfi1/
--obj-$(CONFIG_INFINIBAND_HNS)		+= hns/
-+obj-$(CONFIG_INFINIBAND_HNS_HIP08)	+= hns/
- obj-$(CONFIG_INFINIBAND_QEDR)		+= qedr/
- obj-$(CONFIG_INFINIBAND_BNXT_RE)	+= bnxt_re/
- obj-$(CONFIG_INFINIBAND_ERDMA)		+= erdma/
-diff --git a/drivers/infiniband/hw/hns/Kconfig b/drivers/infiniband/hw/hns/Kconfig
-index ab3fbba70789c..44cdb706fe276 100644
---- a/drivers/infiniband/hw/hns/Kconfig
-+++ b/drivers/infiniband/hw/hns/Kconfig
-@@ -1,21 +1,11 @@
- # SPDX-License-Identifier: GPL-2.0-only
--config INFINIBAND_HNS
--	tristate "HNS RoCE Driver"
--	depends on NET_VENDOR_HISILICON
--	depends on ARM64 || (COMPILE_TEST && 64BIT)
--	depends on (HNS_DSAF && HNS_ENET) || HNS3
--	help
--	  This is a RoCE/RDMA driver for the Hisilicon RoCE engine.
--
--	  To compile HIP08 driver as module, choose M here.
--
- config INFINIBAND_HNS_HIP08
--	bool "Hisilicon Hip08 Family RoCE support"
--	depends on INFINIBAND_HNS && PCI && HNS3
--	depends on INFINIBAND_HNS=m || HNS3=y
-+	tristate "Hisilicon Hip08 Family RoCE support"
-+	depends on ARM64 || (COMPILE_TEST && 64BIT)
-+	depends on PCI && HNS3
- 	help
- 	  RoCE driver support for Hisilicon RoCE engine in Hisilicon Hip08 SoC.
- 	  The RoCE engine is a PCI device.
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+index d258c80213b26..f9a84825b5cad 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -312,7 +312,6 @@
+ 			compatible = "mediatek,mt6397-regulator";
  
--	  To compile this driver, choose Y here: if INFINIBAND_HNS is m, this
--	  module will be called hns-roce-hw-v2.
-+	  To compile this driver, choose M here. This module will be called
-+	  hns-roce-hw-v2.
-diff --git a/drivers/infiniband/hw/hns/Makefile b/drivers/infiniband/hw/hns/Makefile
-index be1e1cdbcfa8a..7917af8e6380e 100644
---- a/drivers/infiniband/hw/hns/Makefile
-+++ b/drivers/infiniband/hw/hns/Makefile
-@@ -5,12 +5,9 @@
+ 			mt6397_vpca15_reg: buck_vpca15 {
+-				regulator-compatible = "buck_vpca15";
+ 				regulator-name = "vpca15";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -321,7 +320,6 @@
+ 			};
  
- ccflags-y :=  -I $(srctree)/drivers/net/ethernet/hisilicon/hns3
+ 			mt6397_vpca7_reg: buck_vpca7 {
+-				regulator-compatible = "buck_vpca7";
+ 				regulator-name = "vpca7";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -330,7 +328,6 @@
+ 			};
  
--hns-roce-objs := hns_roce_main.o hns_roce_cmd.o hns_roce_pd.o \
-+hns-roce-hw-v2-objs := hns_roce_main.o hns_roce_cmd.o hns_roce_pd.o \
- 	hns_roce_ah.o hns_roce_hem.o hns_roce_mr.o hns_roce_qp.o \
- 	hns_roce_cq.o hns_roce_alloc.o hns_roce_db.o hns_roce_srq.o hns_roce_restrack.o \
--	hns_roce_debugfs.o
-+	hns_roce_debugfs.o hns_roce_hw_v2.o
+ 			mt6397_vsramca15_reg: buck_vsramca15 {
+-				regulator-compatible = "buck_vsramca15";
+ 				regulator-name = "vsramca15";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -339,7 +336,6 @@
+ 			};
  
--ifdef CONFIG_INFINIBAND_HNS_HIP08
--hns-roce-hw-v2-objs := hns_roce_hw_v2.o $(hns-roce-objs)
--obj-$(CONFIG_INFINIBAND_HNS) += hns-roce-hw-v2.o
--endif
-+obj-$(CONFIG_INFINIBAND_HNS_HIP08) += hns-roce-hw-v2.o
+ 			mt6397_vsramca7_reg: buck_vsramca7 {
+-				regulator-compatible = "buck_vsramca7";
+ 				regulator-name = "vsramca7";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -348,7 +344,6 @@
+ 			};
+ 
+ 			mt6397_vcore_reg: buck_vcore {
+-				regulator-compatible = "buck_vcore";
+ 				regulator-name = "vcore";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -357,7 +352,6 @@
+ 			};
+ 
+ 			mt6397_vgpu_reg: buck_vgpu {
+-				regulator-compatible = "buck_vgpu";
+ 				regulator-name = "vgpu";
+ 				regulator-min-microvolt = < 700000>;
+ 				regulator-max-microvolt = <1350000>;
+@@ -366,7 +360,6 @@
+ 			};
+ 
+ 			mt6397_vdrm_reg: buck_vdrm {
+-				regulator-compatible = "buck_vdrm";
+ 				regulator-name = "vdrm";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <1400000>;
+@@ -375,7 +368,6 @@
+ 			};
+ 
+ 			mt6397_vio18_reg: buck_vio18 {
+-				regulator-compatible = "buck_vio18";
+ 				regulator-name = "vio18";
+ 				regulator-min-microvolt = <1620000>;
+ 				regulator-max-microvolt = <1980000>;
+@@ -384,19 +376,16 @@
+ 			};
+ 
+ 			mt6397_vtcxo_reg: ldo_vtcxo {
+-				regulator-compatible = "ldo_vtcxo";
+ 				regulator-name = "vtcxo";
+ 				regulator-always-on;
+ 			};
+ 
+ 			mt6397_va28_reg: ldo_va28 {
+-				regulator-compatible = "ldo_va28";
+ 				regulator-name = "va28";
+ 				regulator-always-on;
+ 			};
+ 
+ 			mt6397_vcama_reg: ldo_vcama {
+-				regulator-compatible = "ldo_vcama";
+ 				regulator-name = "vcama";
+ 				regulator-min-microvolt = <1500000>;
+ 				regulator-max-microvolt = <2800000>;
+@@ -404,18 +393,15 @@
+ 			};
+ 
+ 			mt6397_vio28_reg: ldo_vio28 {
+-				regulator-compatible = "ldo_vio28";
+ 				regulator-name = "vio28";
+ 				regulator-always-on;
+ 			};
+ 
+ 			mt6397_vusb_reg: ldo_vusb {
+-				regulator-compatible = "ldo_vusb";
+ 				regulator-name = "vusb";
+ 			};
+ 
+ 			mt6397_vmc_reg: ldo_vmc {
+-				regulator-compatible = "ldo_vmc";
+ 				regulator-name = "vmc";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -423,7 +409,6 @@
+ 			};
+ 
+ 			mt6397_vmch_reg: ldo_vmch {
+-				regulator-compatible = "ldo_vmch";
+ 				regulator-name = "vmch";
+ 				regulator-min-microvolt = <3000000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -431,7 +416,6 @@
+ 			};
+ 
+ 			mt6397_vemc_3v3_reg: ldo_vemc3v3 {
+-				regulator-compatible = "ldo_vemc3v3";
+ 				regulator-name = "vemc_3v3";
+ 				regulator-min-microvolt = <3000000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -439,7 +423,6 @@
+ 			};
+ 
+ 			mt6397_vgp1_reg: ldo_vgp1 {
+-				regulator-compatible = "ldo_vgp1";
+ 				regulator-name = "vcamd";
+ 				regulator-min-microvolt = <1220000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -447,7 +430,6 @@
+ 			};
+ 
+ 			mt6397_vgp2_reg: ldo_vgp2 {
+-				regulator-compatible = "ldo_vgp2";
+ 				regulator-name = "vcamio";
+ 				regulator-min-microvolt = <1000000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -455,7 +437,6 @@
+ 			};
+ 
+ 			mt6397_vgp3_reg: ldo_vgp3 {
+-				regulator-compatible = "ldo_vgp3";
+ 				regulator-name = "vcamaf";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -463,7 +444,6 @@
+ 			};
+ 
+ 			mt6397_vgp4_reg: ldo_vgp4 {
+-				regulator-compatible = "ldo_vgp4";
+ 				regulator-name = "vgp4";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -471,7 +451,6 @@
+ 			};
+ 
+ 			mt6397_vgp5_reg: ldo_vgp5 {
+-				regulator-compatible = "ldo_vgp5";
+ 				regulator-name = "vgp5";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3000000>;
+@@ -479,7 +458,6 @@
+ 			};
+ 
+ 			mt6397_vgp6_reg: ldo_vgp6 {
+-				regulator-compatible = "ldo_vgp6";
+ 				regulator-name = "vgp6";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3300000>;
+@@ -487,7 +465,6 @@
+ 			};
+ 
+ 			mt6397_vibr_reg: ldo_vibr {
+-				regulator-compatible = "ldo_vibr";
+ 				regulator-name = "vibr";
+ 				regulator-min-microvolt = <1300000>;
+ 				regulator-max-microvolt = <3300000>;
 -- 
 2.39.5
 
