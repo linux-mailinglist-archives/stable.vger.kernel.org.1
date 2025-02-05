@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-113876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F5A2941C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419D9A29422
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F9E16D63B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1DE3B11C1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA4D1A83E7;
-	Wed,  5 Feb 2025 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A96D1FC10F;
+	Wed,  5 Feb 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMP/xZAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek6nOi/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0BB1A83ED;
-	Wed,  5 Feb 2025 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61B11FC104;
+	Wed,  5 Feb 2025 15:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768466; cv=none; b=GzM0dinP/5IBCi7YRUMWxO7q1R5yXC3Zx8K47M0jm61vIDpZQWuumNs+rZtgammigAVxopyPWePhKUmSBw6uEMhd+8tNdWfneDwmOW7R4i6vVvTTzRuuYiJP7Y+srx9SR3hKOHiAS/Y7kKqvCBMp0upFR/7oFPFx8hRAr5jG8U0=
+	t=1738768269; cv=none; b=koby/u+PcJCgNIn5ZNzwJCus2Emfi40Nl9gb1qgtnrjfVbEsZy+L8nb1FdF8SC9MdgkiXBJnwbseTWm/UKipLXjL3vbkoaAHSUxs9VcVbQzLkQt/jwjvLeCNBAqBx4aWX1svcpXc7K5bHkordULDS4lba9QJ4C4V0MLPvxG/4z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768466; c=relaxed/simple;
-	bh=ny448OW3qZm7FLB5sKTWKgEE0jb0kSZMFzaoe5ZHmho=;
+	s=arc-20240116; t=1738768269; c=relaxed/simple;
+	bh=d9Ocwact0GAXJcBxCnDBEZvju4lhOg+9fUNIqmY4I6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWfSALe3WfVUtGIekxl5d5LH0ImRlDE7SABe0r1QGbnuj9IUqeSLbplE1Ex/0u1qNfXt+KHbW3pSIY+e6KnoD61mWjmq4VDTOts3ZG2AoVRReYCfHkYJ8LExNa5jKMEDuKU1GP1jTSrXOGdoUn5YLI9zZN7kyQ08dvnBmQS3r2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMP/xZAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF2DC4CED1;
-	Wed,  5 Feb 2025 15:14:25 +0000 (UTC)
+	 MIME-Version; b=rQn6buAwlECKiAs+H8P4IPrMSFxuL1ldu88ir0eCsSZso+IAkP6mQa06dxwm5/rQFR2hE8AKgo5zmWZ9/6NGquxFbtw8usBymVj6bYParBXpYGXnyPGr5Pi855TybDf3CHx+yLNXoXVyNLf0VUQmKo7nMBC/1V+vhlmSoQwlJto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek6nOi/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D29C4CEE2;
+	Wed,  5 Feb 2025 15:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768466;
-	bh=ny448OW3qZm7FLB5sKTWKgEE0jb0kSZMFzaoe5ZHmho=;
+	s=korg; t=1738768269;
+	bh=d9Ocwact0GAXJcBxCnDBEZvju4lhOg+9fUNIqmY4I6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMP/xZAcYJSxLLEeCGC87oq5w4uyRwvMNKB8y/9BJYQFLS9U2GO8fTnlpmAiOI0G+
-	 Zh5QNV4V3sguwnIkfm7M9dh4fNBbeOQmVuQl9Io1xAdSRrUqpzUhze+jdD9XoaJ9+o
-	 H9quSzSvOCNrZtOdr027JKLaT7QWQApxAcwZpjIg=
+	b=Ek6nOi/Rzy5f3CYlKW55e+nFPCnaWWpFzkSsGlah5dS4lWWKq7ZRdn2dRDAI50Lgb
+	 qzw/G8hP8XM+Zu7y5A8OyFdtaJiZ2YK4GQ3cK0UrMp+vcUvkcvLyVoc+GCsGJXVbxj
+	 Jz1GN4lip0j1jY3LUdamuxLfUtojJCNeBx+ByXBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 566/623] kconfig: fix file name in warnings when loading KCONFIG_DEFCONFIG_LIST
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.12 553/590] usb: xhci: Fix NULL pointer dereference on certain command aborts
 Date: Wed,  5 Feb 2025 14:45:08 +0100
-Message-ID: <20250205134517.871221884@linuxfoundation.org>
+Message-ID: <20250205134516.427784084@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit a314f52a0210730d0d556de76bb7388e76d4597d ]
+commit 1e0a19912adb68a4b2b74fd77001c96cd83eb073 upstream.
 
-Most 'make *config' commands use .config as the base configuration file.
+If a command is queued to the final usable TRB of a ring segment, the
+enqueue pointer is advanced to the subsequent link TRB and no further.
+If the command is later aborted, when the abort completion is handled
+the dequeue pointer is advanced to the first TRB of the next segment.
 
-When .config does not exist, Kconfig tries to load a file listed in
-KCONFIG_DEFCONFIG_LIST instead.
+If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
+the ring pointers unequal and assumes that there is a pending command,
+so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
 
-However, since commit b75b0a819af9 ("kconfig: change defconfig_list
-option to environment variable"), warning messages have displayed an
-incorrect file name in such cases.
+Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
+ring likely is unnecessary too, but it's harmless. Leave it alone.
 
-Below is a demonstration using Debian Trixie. While loading
-/boot/config-6.12.9-amd64, the warning messages incorrectly show .config
-as the file name.
+This is probably Bug 219532, but no confirmation has been received.
 
-With this commit, the correct file name is displayed in warnings.
+The issue has been independently reproduced and confirmed fixed using
+a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
+Everything continued working normally after several prevented crashes.
 
-[Before]
-
-  $ rm -f .config
-  $ make config
-  #
-  # using defaults found in /boot/config-6.12.9-amd64
-  #
-  .config:6804:warning: symbol value 'm' invalid for FB_BACKLIGHT
-  .config:9895:warning: symbol value 'm' invalid for ANDROID_BINDER_IPC
-
-[After]
-
-  $ rm -f .config
-  $ make config
-  #
-  # using defaults found in /boot/config-6.12.9-amd64
-  #
-  /boot/config-6.12.9-amd64:6804:warning: symbol value 'm' invalid for FB_BACKLIGHT
-  /boot/config-6.12.9-amd64:9895:warning: symbol value 'm' invalid for ANDROID_BINDER_IPC
-
-Fixes: b75b0a819af9 ("kconfig: change defconfig_list option to environment variable")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
+Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/confdata.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-ring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
-index 4286d5e7f95dc..3b55e7a4131d9 100644
---- a/scripts/kconfig/confdata.c
-+++ b/scripts/kconfig/confdata.c
-@@ -360,10 +360,12 @@ int conf_read_simple(const char *name, int def)
- 
- 			*p = '\0';
- 
--			in = zconf_fopen(env);
-+			name = env;
-+
-+			in = zconf_fopen(name);
- 			if (in) {
- 				conf_message("using defaults found in %s",
--					     env);
-+					     name);
- 				goto load;
- 			}
- 
--- 
-2.39.5
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -422,7 +422,8 @@ static void xhci_handle_stopped_cmd_ring
+ 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
+ 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
+ 		xhci->current_cmd = cur_cmd;
+-		xhci_mod_cmd_timer(xhci);
++		if (cur_cmd)
++			xhci_mod_cmd_timer(xhci);
+ 		xhci_ring_cmd_db(xhci);
+ 	}
+ }
 
 
 
