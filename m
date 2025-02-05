@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F37A28FA8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7AAA29082
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BFA166497
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C0B3A639F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99313155747;
-	Wed,  5 Feb 2025 14:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C738634E;
+	Wed,  5 Feb 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0ku/Ur2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXqNayId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A348634E;
-	Wed,  5 Feb 2025 14:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8350F151988;
+	Wed,  5 Feb 2025 14:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765652; cv=none; b=N8/Hr9LiRnWe/6IBLKggPUzqi0s+bxqSD8AMLQkv5lRFfeZpxg6sU+QX8rTsrSIwTzzxK1AAyF5Sb1j7x52/JmEbB0z6F/Q4F5nDg48yosQkC+jvxh/IhzBSyQ55tDcKP+W86iQluzEsOkVYPEcbMZuZuyZwzwKFzKtvRYk3cDk=
+	t=1738766217; cv=none; b=tuANso+/HhAqX9kGVnWzspdU6o1jtoChfZw6QAVYDW2896KfD2u8rE4DjUPvStIqXtMr1LU/ae0vr3u0FvgaRFRyrV7qH6cTD6K5UOIP1dXHxxhgxShgr7W/QtSc3tKIHVfwCuSYhQFMLjpkJA16yr3dqJAoJVJTYmd+iwOjhRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765652; c=relaxed/simple;
-	bh=/uQuXrAyAayVdxKIyU/cd7uVY/NDQMgmqzRN5Iiy8qU=;
+	s=arc-20240116; t=1738766217; c=relaxed/simple;
+	bh=WXWJjc0tQ2hw4QsvZaHD2uPbPEeTdGRvEy0TK65MfAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nn3xQyXyw7mdGQeJbavq0SxUGXQn1sD5Rb7B99o/J4ORvKMs01GZEdAgjo69e2ugH2mHw4WtnbuYJubJwlWxadpHL/Bc/2hwID2z3+xwnTnQzjvYcd3WtcmEUaSJmVC89MhGnlcJHnuKboMDEvBi+o5Fu1K5Jn9Wk3JBRbSX8yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0ku/Ur2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59994C4CED1;
-	Wed,  5 Feb 2025 14:27:31 +0000 (UTC)
+	 MIME-Version; b=qZzHtAkczj7h68eZlM2iqmAAF0ZmOMG0WEI2p/ef7kckJ+wEmf5kpABIYqubmkTzJVTrH3tslImnubhTcfsU8mLvlrzQzenN26FxvD28aAeIJZk9GOOYclLFGZpWJgI7e9s4nQ3rgE8qmkpvUpeYQW6H+4MOTAGhftQPz5dtPGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXqNayId; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27E9C4CEDD;
+	Wed,  5 Feb 2025 14:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765651;
-	bh=/uQuXrAyAayVdxKIyU/cd7uVY/NDQMgmqzRN5Iiy8qU=;
+	s=korg; t=1738766217;
+	bh=WXWJjc0tQ2hw4QsvZaHD2uPbPEeTdGRvEy0TK65MfAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0ku/Ur2UGYLs6C8iTAtIX3khVeKJa7IWN7qGn09Nu3DbQO7+xkvacNg98udzlQwb
-	 dDjm+ip5cNXC6D0Y5Bp8xYc5+aRMxz+W1H6f9duk2w27BnbG1pwP93txSZ2mh8t0sk
-	 EOV5hbGITD0GIE1etMLiFFJM8G3YU5NNTlX0TvQM=
+	b=RXqNayIdxKQdlgY9oKGOsHFws4rOycNOR/LSjLrYQm/eHmDUNjmVTcKe4+XcljWOS
+	 xO/QS6a/QspY+0B1vkWqRDH2lU1vikktgrLZxM33gPV/ypsV7mQ3aJ3J5YOhHOiL9S
+	 sAQ5m8LEYEqvYKHhX6daXBnMyFKA2OiQjiItSan4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Takashi Iwai <tiwai@suse.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/590] ASoC: wcd937x: Use *-y for Makefile
+Subject: [PATCH 6.13 253/623] ASoC: wcd937x: Use *-y for Makefile
 Date: Wed,  5 Feb 2025 14:39:55 +0100
-Message-ID: <20250205134504.464848846@linuxfoundation.org>
+Message-ID: <20250205134505.910622713@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/soc/codecs/Makefile b/sound/soc/codecs/Makefile
-index 56c519a5c897b..69cb0b39f2200 100644
+index 5a83ee9639661..d7ad795603c17 100644
 --- a/sound/soc/codecs/Makefile
 +++ b/sound/soc/codecs/Makefile
-@@ -324,8 +324,8 @@ snd-soc-wcd-classh-y := wcd-clsh-v2.o
+@@ -334,8 +334,8 @@ snd-soc-wcd-classh-y := wcd-clsh-v2.o
  snd-soc-wcd-mbhc-y := wcd-mbhc-v2.o
  snd-soc-wcd9335-y := wcd9335.o
  snd-soc-wcd934x-y := wcd934x.o
