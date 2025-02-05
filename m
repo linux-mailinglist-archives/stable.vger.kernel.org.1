@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2992A28C6C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E53A29011
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67E701888A92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9541883712
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767E2149C64;
-	Wed,  5 Feb 2025 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22EA14B075;
+	Wed,  5 Feb 2025 14:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9Nxbd3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="081rPtr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A8D13AD22;
-	Wed,  5 Feb 2025 13:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E348151988;
+	Wed,  5 Feb 2025 14:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763351; cv=none; b=JOe9kPbOdT1Q9mwaLOZhO/inMMvvBH4i1HIdacVL1qUoGTzpKZNlEEoQk5RL3cCmhvojltDiYocZ94wC/GhA793aAGiSmelUC2GCPnw+BlXGfObwfntPHEr2ztsVjTjtUKC9E69plDuVGBGJQ/CnAz8ReDWQhWulKg6nk34shLc=
+	t=1738765911; cv=none; b=Mcz5daw3ggMse/lbXjvx7w46baWLoH+T+gepwO9W8LaQbd8qZdxYvshdJVC/X5KCh319XJZH6oYXldhP2IFCAd3EY/kM6OjMd5lcySfB54ZcFyjXy8jr+VnIoJpN88DOfq9CluUqrMvQ82wRelDocEUc6kKT92TDoWBYtHCEYbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763351; c=relaxed/simple;
-	bh=tolORI/kbCuDMsJ3WvQ7q9Pk4mBy7t5Z1wgqR14uGWk=;
+	s=arc-20240116; t=1738765911; c=relaxed/simple;
+	bh=6qzP5bvLXef/GMP3jaAdsCkALrznFw7AE/a2W45asQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFJqzSyuk3oxtGi/NTVrYhMhdB25Gm2XKo53YdDCM+j+Pkc+VUhkcXJc6GlbY9B81Gu4hgirkDsWYijastJ7Sg/0Sou/GfJF9RGXNkTjhAHgc4DNlNOWhh65ZdEMtckJ0WNnE+Kgc+oWyu/rMKZUf/3bTtXbUxhHdFaI2qswaUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9Nxbd3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FF6C4CED1;
-	Wed,  5 Feb 2025 13:49:10 +0000 (UTC)
+	 MIME-Version; b=GopgECyDboL2psAZHDOQk0HBXBL5PsbMWhGIaDEpN3P6g4ME0jor/KqOewoQgALku0qBxeR0ra9JPM2VnWHiPJUQOnZWN2cFIORZ30wfkQPVo4QG2mIXu8IpWxX8Kn2uPdFzcP5QvU7DvxzwIbWv9P+Vwv1rxNguPPTp5bh8Wig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=081rPtr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C98C4CEE2;
+	Wed,  5 Feb 2025 14:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763351;
-	bh=tolORI/kbCuDMsJ3WvQ7q9Pk4mBy7t5Z1wgqR14uGWk=;
+	s=korg; t=1738765911;
+	bh=6qzP5bvLXef/GMP3jaAdsCkALrznFw7AE/a2W45asQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9Nxbd3upailkWXTDuDjN0HcdUQEcY2EG2D2saQL7Azyz9ZhEFF0LVrP7wdGkT2OL
-	 7hxhsWbgT6jFHHPDjx4OICkJY1g7wMKf0HONDnM8uSdm0RPfO0W08UDF6oO+AVh9MM
-	 XCD0Os1CzMg+aNh9f6tQTTlvdAKuKfZxr2MNyO14=
+	b=081rPtr4K5doajLNbRy+zDEFf18ObWhwXx+iwqpuvDmL5dMx07MIqCGG9LfrRtpN4
+	 DfAiyXfjWPtTaarOtkxVt++KCDINDrwzI9y9pO+Nk/+/wPzePKLbRl1o/cPe1yPOse
+	 /paSQzrtpY3lBDdDYuq83PCvO0qMFotwcW41LNDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balaji Pothunoori <quic_bpothuno@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Bo Gan <ganboing@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/393] wifi: ath11k: Fix unexpected return buffer manager error for WCN6750/WCN6855
+Subject: [PATCH 6.13 225/623] clk: analogbits: Fix incorrect calculation of vco rate delta
 Date: Wed,  5 Feb 2025 14:39:27 +0100
-Message-ID: <20250205134422.139918408@linuxfoundation.org>
+Message-ID: <20250205134504.833180212@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+From: Bo Gan <ganboing@gmail.com>
 
-[ Upstream commit 78e154d42f2c72905fe66a400847e1b2b101b7b2 ]
+[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
 
-The following error messages were encountered while parsing fragmented RX
-packets for WCN6750/WCN6855:
+In wrpll_configure_for_rate() we try to determine the best PLL
+configuration for a target rate. However, in the loop where we try
+values of R, we should compare the derived `vco` with `target_vco_rate`.
+However, we were in fact comparing it with `target_rate`, which is
+actually after Q shift. This is incorrect, and sometimes can result in
+suboptimal clock rates. Fix it.
 
-ath11k 17a10040.wifi: invalid return buffer manager 4
-
-This issue arose due to a hardcoded check for HAL_RX_BUF_RBM_SW3_BM
-introduced in 'commit 71c748b5e01e ("ath11k: Fix unexpected return buffer
-manager error for QCA6390")'
-
-For WCN6750 and WCN6855, the return buffer manager ID should be
-HAL_RX_BUF_RBM_SW1_BM. The incorrect conditional check caused fragmented
-packets to be dropped, resulting in the above error log.
-
-Fix this by adding a check for HAL_RX_BUF_RBM_SW1_BM.
-
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00258-QCAMSLSWPL-1
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-
-Fixes: 71c748b5e01e ("ath11k: Fix unexpected return buffer manager error for QCA6390")
-Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241030114625.2416942-1-quic_bpothuno@quicinc.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
+Signed-off-by: Bo Gan <ganboing@gmail.com>
+Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c  | 1 +
- drivers/net/wireless/ath/ath11k/hal_rx.c | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index fb426195a3f01..4c70366ac56eb 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -3811,6 +3811,7 @@ int ath11k_dp_process_rx_err(struct ath11k_base *ab, struct napi_struct *napi,
- 		ath11k_hal_rx_msdu_link_info_get(link_desc_va, &num_msdus, msdu_cookies,
- 						 &rbm);
- 		if (rbm != HAL_RX_BUF_RBM_WBM_IDLE_DESC_LIST &&
-+		    rbm != HAL_RX_BUF_RBM_SW1_BM &&
- 		    rbm != HAL_RX_BUF_RBM_SW3_BM) {
- 			ab->soc_stats.invalid_rbm++;
- 			ath11k_warn(ab, "invalid return buffer manager %d\n", rbm);
-diff --git a/drivers/net/wireless/ath/ath11k/hal_rx.c b/drivers/net/wireless/ath/ath11k/hal_rx.c
-index 363adac84a870..2bc95026335e3 100644
---- a/drivers/net/wireless/ath/ath11k/hal_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/hal_rx.c
-@@ -372,7 +372,8 @@ int ath11k_hal_wbm_desc_parse_err(struct ath11k_base *ab, void *desc,
+diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
+index 65d422a588e1f..9d178afc73bdd 100644
+--- a/drivers/clk/analogbits/wrpll-cln28hpc.c
++++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
+@@ -292,7 +292,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
+ 			vco = vco_pre * f;
+ 		}
  
- 	ret_buf_mgr = FIELD_GET(BUFFER_ADDR_INFO1_RET_BUF_MGR,
- 				wbm_desc->buf_addr_info.info1);
--	if (ret_buf_mgr != HAL_RX_BUF_RBM_SW3_BM) {
-+	if (ret_buf_mgr != HAL_RX_BUF_RBM_SW1_BM &&
-+	    ret_buf_mgr != HAL_RX_BUF_RBM_SW3_BM) {
- 		ab->soc_stats.invalid_rbm++;
- 		return -EINVAL;
- 	}
+-		delta = abs(target_rate - vco);
++		delta = abs(target_vco_rate - vco);
+ 		if (delta < best_delta) {
+ 			best_delta = delta;
+ 			best_r = r;
 -- 
 2.39.5
 
