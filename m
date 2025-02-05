@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6371FA29334
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CE6A291FC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8963AFC2A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAF8C7A064D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1457C189F5C;
-	Wed,  5 Feb 2025 15:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360C818A6BD;
+	Wed,  5 Feb 2025 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDswLxLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY0XAAuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C486CDF59;
-	Wed,  5 Feb 2025 15:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B24DF59;
+	Wed,  5 Feb 2025 14:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767623; cv=none; b=qblVtgB0QUeb1N1TMEnVMMHv4wqW1VtC97f/lglCINNqCYhWIWdCrPbj2sezCCf7bIBq7g/eHf+bw5sT09w9SzVDn4wY9N1MLzBXnhkKAxnOw1aa1H1Pl8KPwS1kL/3Gyb6PmMZvKVTqsyjrdq6V0uqujwf4BogtKRItAO6a7uc=
+	t=1738767202; cv=none; b=GpoVeBMZdVyX3UzoMKeWLfJqrZuvFyCzxmcyf3oxo0ziAmdLgRoCiScTzyUqmdCsSuS+/aLOZEcHZ7TOEv6qTWWqaU2fBsZjhAsAkjf0z8pmrt/2j5gUb/eWE/tXdEEBZPmd6s11sjYpw4suuaGsG3hVOMr8ffzQkcNHUBBKZo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767623; c=relaxed/simple;
-	bh=t8uFL6n98acZ7YtiPsn/xehZQY7A2HB5rXY9Z/TfCdY=;
+	s=arc-20240116; t=1738767202; c=relaxed/simple;
+	bh=nDqsEHn+50BA2cB2H7eniHdlbXO8Q/vTn4UKESXNap0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIa3Zs/0YPlsibJ8Bb1uUi450pbMOCtH8HTPBTm1ttzxNBmjztjh1na35N7V4+Eor8X7yIOglR9hlWcFsS6IuSaQ/1Ox9TUBFqwhLBnCPg+B63az/TXKfKrV3pya9hvOFchkjGY9ZmQh4TNyJj9LPOcLpiEDS3MUKnUb9jfPaLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDswLxLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323D5C4CED1;
-	Wed,  5 Feb 2025 15:00:22 +0000 (UTC)
+	 MIME-Version; b=AMpJzlgsDpSXi/eJ181wYUlntm177xN+mmlNnHJ//IOisM2NUNcjQvSsPMXMhk3mJBFelemDmN0bNuaECEmrp+a1HW4BM1Luk+onTgTo3RlBhtOBFZVGvb6Z3QQn37ZGa9KEboyanNilbbOcNAJyzrkyfRXZehSQVLUiKkIjeeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY0XAAuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C31FC4CED1;
+	Wed,  5 Feb 2025 14:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767623;
-	bh=t8uFL6n98acZ7YtiPsn/xehZQY7A2HB5rXY9Z/TfCdY=;
+	s=korg; t=1738767201;
+	bh=nDqsEHn+50BA2cB2H7eniHdlbXO8Q/vTn4UKESXNap0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDswLxLI9zP6wG6f+LjlMVoxUjhzvDOdYe8aZVmAlO5w19YUOYoOy5h6r88DtvFjS
-	 betgXQ4m4OekcfFG3l3A/nyZlGwptXlZ6GzAJfseNkCCEX0MOQ5na57DIc17PWNWXF
-	 5U0BsPWtzF8iL9bAyi68G5pk8l39N+YqEDjXnXUI=
+	b=vY0XAAuvGllGCIgI8HunPfOb+V85C3FOTO7ErV1J7iBYI73eHpgf+HNeUwbE7M8a9
+	 KEmzSY/ALfMid8Lj84UeEPX03GMOtGjpZGKLu4sVBNOIoexIub6IL0cd9gPcOLm43O
+	 R+6LPvMClhl5axNe8z2D1rGJe6XmtGXYl2ihwCjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	david regan <dregan@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 430/623] of: property: Avoiding using uninitialized variable @imaplen in parse_interrupt_map()
-Date: Wed,  5 Feb 2025 14:42:52 +0100
-Message-ID: <20250205134512.672930625@linuxfoundation.org>
+Subject: [PATCH 6.12 418/590] mtd: rawnand: brcmnand: fix status read of brcmnand_waitfunc
+Date: Wed,  5 Feb 2025 14:42:53 +0100
+Message-ID: <20250205134511.257526300@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: david regan <dregan@broadcom.com>
 
-[ Upstream commit f73780e772c06901e99b2ad114b7f0f3fbe73ad4 ]
+[ Upstream commit 03271ea36ea7a58d30a4bde182eb2a0d46220467 ]
 
-parse_interrupt_map() will use uninitialized variable @imaplen if fails
-to get property 'interrupt-map'.
+This change fixes an issue where an error return value may be mistakenly
+used as NAND status.
 
-Fix by using the variable after successfully getting the property.
-
-Fixes: e7985f43609c ("of: property: Fix fw_devlink handling of interrupt-map")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-6-db8a72415b8c@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: f504551b7f15 ("mtd: rawnand: Propagate error and simplify ternary operators for brcmstb_nand_wait_for_completion()")
+Signed-off-by: david regan <dregan@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/property.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index cfc8aea002e43..b0633f3589de8 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1390,9 +1390,9 @@ static struct device_node *parse_interrupt_map(struct device_node *np,
- 	addrcells = of_bus_n_addr_cells(np);
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 1b2ec0fec60c7..e76df6a00ed4f 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2342,6 +2342,11 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 		brcmnand_send_cmd(host, CMD_PROGRAM_PAGE);
+ 		status = brcmnand_waitfunc(chip);
  
- 	imap = of_get_property(np, "interrupt-map", &imaplen);
--	imaplen /= sizeof(*imap);
- 	if (!imap)
- 		return NULL;
-+	imaplen /= sizeof(*imap);
- 
- 	imap_end = imap + imaplen;
- 
++		if (status < 0) {
++			ret = status;
++			goto out;
++		}
++
+ 		if (status & NAND_STATUS_FAIL) {
+ 			dev_info(ctrl->dev, "program failed at %llx\n",
+ 				(unsigned long long)addr);
 -- 
 2.39.5
 
