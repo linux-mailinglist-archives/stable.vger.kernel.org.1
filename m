@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8ABA290C5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CB7A29255
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748E81882760
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B09188B990
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC1A1632D9;
-	Wed,  5 Feb 2025 14:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7A41FDA7A;
+	Wed,  5 Feb 2025 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X64cQRkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQjZOiNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CB5155747;
-	Wed,  5 Feb 2025 14:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD611FDA6D;
+	Wed,  5 Feb 2025 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766386; cv=none; b=cMrmQLnYQpJQp+be9PsDHIvhxP/pWZkvcBP/w8ygEBwEjZ5eGlNQU+LFT8lRclNTlQv57nM87hClh47SiELT2AqUN5baOgQddJ6+a61uzRJjVb/OOZbhzbQLLaB0NlKHymr+nkRJTGy1emtCBOSP95WBFs8U9PRTRSMwY3/Dlag=
+	t=1738766928; cv=none; b=eTC3mcvJ18G5avZ1OD0+ddDX3FX69GnVO9PjtdoAw29zPzO2tVYjkxv1Ydd52Jxts8UbvneLmLN5derxUuUWfqUSdk61RKbjRIYKp9BJJSDgAfN4beZevPEUqyTQjICHfAx7MPW+5sUlbqXN65kguUikMFXQDvF+XfuK38L4x0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766386; c=relaxed/simple;
-	bh=90kRe49dI5o3Z6c6jRI2CFZfPjjvx9mVPeAFroQtDnw=;
+	s=arc-20240116; t=1738766928; c=relaxed/simple;
+	bh=Es8TYW47Ym2Na4nxQ5jOVO+m8mQv/hdTRu4NGgBmYmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQmEbyqUBauE3rcYXsWjoDZ+j5N28w0sMql6pistC2Ad39+FWJyShUOkRwHNson4wvgINmjSddwS0AKDEW7lbrFuSURZYwzByQ9xjhjOw7rBILnAzUMXyzM8wAv26vpHEphR9NhMoXp0Gv5hxlfeO2niDRZHW/oG8WKl1+7XYHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X64cQRkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24297C4CED1;
-	Wed,  5 Feb 2025 14:39:45 +0000 (UTC)
+	 MIME-Version; b=muJtFlpXdFCgS/T9Yi1t3MMEzr8YdaWpUhFrD28ukRdYEZzgHq+aP8krKdHFKw6zvJMkiEuH37zrxGYPV8iINDdAazbKyRngTMJ6x8heKkuqlxSDq+0imlJbW/e/o3KETo33CuVMA/i8HXPGv3bDg088orE9K5f942kXyy8xY+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQjZOiNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78248C4CEDD;
+	Wed,  5 Feb 2025 14:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766386;
-	bh=90kRe49dI5o3Z6c6jRI2CFZfPjjvx9mVPeAFroQtDnw=;
+	s=korg; t=1738766928;
+	bh=Es8TYW47Ym2Na4nxQ5jOVO+m8mQv/hdTRu4NGgBmYmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X64cQRkSkF4XkNl0YEQUy2n3aslWXWAqkvctbKaQKnCo8XL6byVp/MjzDGe8Xfkm3
-	 NNor/t+2Ry/zJJRNzN5FhQoWStQdThLyPhflehto8ZSrDVixK8jEAkceqXI/iuJs1A
-	 TU3w5UIslPPZGTE12XTB2u+SaMbEysZg+P9Hcd90=
+	b=iQjZOiNbmTyrrEgKiJTv4JgBtWPU66TbQdkRQ5bR9E/T+28Z2uYXb567AlMRF94Fw
+	 OUE85XFO6t2jSPjcg/4sYzD9S+WRJwXO+66DNTgbMo0cD06ZnymzEk8v9FM77jH2VZ
+	 eM6VP46RdimnlLToXFll6H2pR7m+R1k5+kCbCU7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 316/590] arm64: dts: mediatek: mt8173-elm: Drop regulator-compatible property
-Date: Wed,  5 Feb 2025 14:41:11 +0100
-Message-ID: <20250205134507.366593893@linuxfoundation.org>
+Subject: [PATCH 6.13 330/623] soc: atmel: fix device_node release in atmel_soc_device_init()
+Date: Wed,  5 Feb 2025 14:41:12 +0100
+Message-ID: <20250205134508.848383180@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,215 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 4b907b3ea5fba240808136cc5599d14b52230b39 ]
+[ Upstream commit d3455ab798100f40af77123e7c2443ec979c546b ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It is also not listed in the MT6397
-regulator bindings. Having them present produces a whole bunch of
-validation errors:
+A device_node acquired via of_find_node_by_path() requires explicit
+calls to of_node_put() when it is no longer needed to avoid leaking the
+resource.
 
-    Unevaluated properties are not allowed ('regulator-compatible' was unexpected)
+Instead of adding the missing calls to of_node_put() in all execution
+paths, use the cleanup attribute for 'np' by means of the __free()
+macro, which automatically calls of_node_put() when the variable goes
+out of scope.
 
-Drop the "regulator-compatible" property from the board dts. The
-property values are the same as the node name, so everything should
-continue to work.
-
-Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241211052427.4178367-4-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 960ddf70cc11 ("drivers: soc: atmel: Avoid calling at91_soc_init on non AT91 SoCs")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241031-soc-atmel-soc-cleanup-v2-1-73f2d235fd98@gmail.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 23 --------------------
- 1 file changed, 23 deletions(-)
+ drivers/soc/atmel/soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-index b4d85147b77b0..dfa2e9ec6b33f 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
-@@ -946,7 +946,6 @@
- 			compatible = "mediatek,mt6397-regulator";
+diff --git a/drivers/soc/atmel/soc.c b/drivers/soc/atmel/soc.c
+index 2a42b28931c96..298b542dd1c06 100644
+--- a/drivers/soc/atmel/soc.c
++++ b/drivers/soc/atmel/soc.c
+@@ -399,7 +399,7 @@ static const struct of_device_id at91_soc_allowed_list[] __initconst = {
  
- 			mt6397_vpca15_reg: buck_vpca15 {
--				regulator-compatible = "buck_vpca15";
- 				regulator-name = "vpca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -956,7 +955,6 @@
- 			};
+ static int __init atmel_soc_device_init(void)
+ {
+-	struct device_node *np = of_find_node_by_path("/");
++	struct device_node *np __free(device_node) = of_find_node_by_path("/");
  
- 			mt6397_vpca7_reg: buck_vpca7 {
--				regulator-compatible = "buck_vpca7";
- 				regulator-name = "vpca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -966,7 +964,6 @@
- 			};
- 
- 			mt6397_vsramca15_reg: buck_vsramca15 {
--				regulator-compatible = "buck_vsramca15";
- 				regulator-name = "vsramca15";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -975,7 +972,6 @@
- 			};
- 
- 			mt6397_vsramca7_reg: buck_vsramca7 {
--				regulator-compatible = "buck_vsramca7";
- 				regulator-name = "vsramca7";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -984,7 +980,6 @@
- 			};
- 
- 			mt6397_vcore_reg: buck_vcore {
--				regulator-compatible = "buck_vcore";
- 				regulator-name = "vcore";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -993,7 +988,6 @@
- 			};
- 
- 			mt6397_vgpu_reg: buck_vgpu {
--				regulator-compatible = "buck_vgpu";
- 				regulator-name = "vgpu";
- 				regulator-min-microvolt = < 700000>;
- 				regulator-max-microvolt = <1350000>;
-@@ -1002,7 +996,6 @@
- 			};
- 
- 			mt6397_vdrm_reg: buck_vdrm {
--				regulator-compatible = "buck_vdrm";
- 				regulator-name = "vdrm";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <1400000>;
-@@ -1011,7 +1004,6 @@
- 			};
- 
- 			mt6397_vio18_reg: buck_vio18 {
--				regulator-compatible = "buck_vio18";
- 				regulator-name = "vio18";
- 				regulator-min-microvolt = <1620000>;
- 				regulator-max-microvolt = <1980000>;
-@@ -1020,18 +1012,15 @@
- 			};
- 
- 			mt6397_vtcxo_reg: ldo_vtcxo {
--				regulator-compatible = "ldo_vtcxo";
- 				regulator-name = "vtcxo";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_va28_reg: ldo_va28 {
--				regulator-compatible = "ldo_va28";
- 				regulator-name = "va28";
- 			};
- 
- 			mt6397_vcama_reg: ldo_vcama {
--				regulator-compatible = "ldo_vcama";
- 				regulator-name = "vcama";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1039,18 +1028,15 @@
- 			};
- 
- 			mt6397_vio28_reg: ldo_vio28 {
--				regulator-compatible = "ldo_vio28";
- 				regulator-name = "vio28";
- 				regulator-always-on;
- 			};
- 
- 			mt6397_vusb_reg: ldo_vusb {
--				regulator-compatible = "ldo_vusb";
- 				regulator-name = "vusb";
- 			};
- 
- 			mt6397_vmc_reg: ldo_vmc {
--				regulator-compatible = "ldo_vmc";
- 				regulator-name = "vmc";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1058,7 +1044,6 @@
- 			};
- 
- 			mt6397_vmch_reg: ldo_vmch {
--				regulator-compatible = "ldo_vmch";
- 				regulator-name = "vmch";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1066,7 +1051,6 @@
- 			};
- 
- 			mt6397_vemc_3v3_reg: ldo_vemc3v3 {
--				regulator-compatible = "ldo_vemc3v3";
- 				regulator-name = "vemc_3v3";
- 				regulator-min-microvolt = <3000000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1074,7 +1058,6 @@
- 			};
- 
- 			mt6397_vgp1_reg: ldo_vgp1 {
--				regulator-compatible = "ldo_vgp1";
- 				regulator-name = "vcamd";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1082,7 +1065,6 @@
- 			};
- 
- 			mt6397_vgp2_reg: ldo_vgp2 {
--				regulator-compatible = "ldo_vgp2";
- 				regulator-name = "vcamio";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1090,7 +1072,6 @@
- 			};
- 
- 			mt6397_vgp3_reg: ldo_vgp3 {
--				regulator-compatible = "ldo_vgp3";
- 				regulator-name = "vcamaf";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-@@ -1098,7 +1079,6 @@
- 			};
- 
- 			mt6397_vgp4_reg: ldo_vgp4 {
--				regulator-compatible = "ldo_vgp4";
- 				regulator-name = "vgp4";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1106,7 +1086,6 @@
- 			};
- 
- 			mt6397_vgp5_reg: ldo_vgp5 {
--				regulator-compatible = "ldo_vgp5";
- 				regulator-name = "vgp5";
- 				regulator-min-microvolt = <1200000>;
- 				regulator-max-microvolt = <3000000>;
-@@ -1114,7 +1093,6 @@
- 			};
- 
- 			mt6397_vgp6_reg: ldo_vgp6 {
--				regulator-compatible = "ldo_vgp6";
- 				regulator-name = "vgp6";
- 				regulator-min-microvolt = <3300000>;
- 				regulator-max-microvolt = <3300000>;
-@@ -1123,7 +1101,6 @@
- 			};
- 
- 			mt6397_vibr_reg: ldo_vibr {
--				regulator-compatible = "ldo_vibr";
- 				regulator-name = "vibr";
- 				regulator-min-microvolt = <1300000>;
- 				regulator-max-microvolt = <3300000>;
+ 	if (!of_match_node(at91_soc_allowed_list, np))
+ 		return 0;
 -- 
 2.39.5
 
