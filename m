@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86866A28F65
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98535A29040
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B90A188883C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 798B4169510
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9C114B080;
-	Wed,  5 Feb 2025 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D557915696E;
+	Wed,  5 Feb 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0ibJrUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saEuWwmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4913C3F6;
-	Wed,  5 Feb 2025 14:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7658634E;
+	Wed,  5 Feb 2025 14:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765408; cv=none; b=EQ0L2TFnXLmsH9Uiwb0hQ1xST4mskMXBujKjUoIJEX3OK4EcdDP+myjOs8WyPrxo8ABIuxfli4eRsI5XsdpQtJ3mTBr4gPK0sx+qdbQSLL5fk7HFaU+znKgi8b7o/q5Mrh1I1OBnfr89mNOq85i5ckVvbcIfCLjCDxI7dQxXrHg=
+	t=1738765980; cv=none; b=AsM0voSiEaorkDZ1+hDue90KmmtIV/jmFQo0RfG7KI43TB+PYO6D7tgMBEeOZSSkXB/ypAlxBmTQ7oXd0P6gJeUHfUwRZtZybk5Q6MUZesipi+2fanqQtVXg/UwtCzOAop5bqgirubP+7YBBhrli7sZil8FeCF3WN6tZQYhdufU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765408; c=relaxed/simple;
-	bh=yeAABee57wZsFRNzRMx+ULOkTut8kT2w8qJaqrWeRKI=;
+	s=arc-20240116; t=1738765980; c=relaxed/simple;
+	bh=IJPAZNs/6yFg6UhXJKOq2+9Dl3gaiNiDKrnrxSgAHso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5NvhJy3tS26R7PiF4d50A7LC5CXFQWcZ1Dim0YwsBYsggFK7+TwSKHXRyPmsbaSsTdxWYE2NBUkqpDjD7rZJBvcxyG86iacAmQamAyQD9G5pieyX6tbD0HaP+7tyFEHe0DxV0MuA71CoELqEBzmGZzqOJHc4ibSTPJrPLU757Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0ibJrUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A565C4CED1;
-	Wed,  5 Feb 2025 14:23:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vAs/suvuc5A6gvnSaJB/UUQrX/UGHW0uG2SSXqkoaAnVv18qd27VrNiQNejWwanCsGa/Vzc4LQppi2/3BvLCByUQpiD7WKjgEPtapHaopb6dTUR4eUILL782qnQCzg1sjDRyvw1THy8IirGwtSilhc5/kE3sOhuDiwbRFEMiwz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saEuWwmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893D7C4CED1;
+	Wed,  5 Feb 2025 14:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765407;
-	bh=yeAABee57wZsFRNzRMx+ULOkTut8kT2w8qJaqrWeRKI=;
+	s=korg; t=1738765980;
+	bh=IJPAZNs/6yFg6UhXJKOq2+9Dl3gaiNiDKrnrxSgAHso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z0ibJrUKpc8lX8GiBlnS/hlUMqX1bg5goZ3FvAHvq+Uu8aAYV2dLsNeWfsDelVK2K
-	 ZlgbAWRAsuqzd8Uv6LJBnVKVvCMA5fbRQLX2WmEhrfBe9j9RZ2xSlkDtbrsslS/j3j
-	 TsWGl/7osgW443qKpy4gq29pC1M6VeVI1Ge7Qhts=
+	b=saEuWwmV1ykX3GgKdGKVxjCkw7OxLrNsM9oc5jN0qUBBg4JxFz+5tHqKIfzQ2J/sp
+	 n0KZHEJKJH8UqZcbSZENEQi7Q1G4Yjoyi7MDcX1EeM2gIvLstOOrbxvu71IzuU4Fg9
+	 J8jWc5MBpmrF1yk+/q7iiPLLpGMbnTpjbvyVcOBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Gan <ganboing@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tahera Fahimi <fahimitahera@gmail.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 217/590] clk: analogbits: Fix incorrect calculation of vco rate delta
-Date: Wed,  5 Feb 2025 14:39:32 +0100
-Message-ID: <20250205134503.588726202@linuxfoundation.org>
+Subject: [PATCH 6.13 231/623] selftests/landlock: Fix build with non-default pthread linking
+Date: Wed,  5 Feb 2025 14:39:33 +0100
+Message-ID: <20250205134505.063302935@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo Gan <ganboing@gmail.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit d7f12857f095ef38523399d47e68787b357232f6 ]
+[ Upstream commit 0e4db4f843c2c0115b5981bd6f6b75dea62e7d60 ]
 
-In wrpll_configure_for_rate() we try to determine the best PLL
-configuration for a target rate. However, in the loop where we try
-values of R, we should compare the derived `vco` with `target_vco_rate`.
-However, we were in fact comparing it with `target_rate`, which is
-actually after Q shift. This is incorrect, and sometimes can result in
-suboptimal clock rates. Fix it.
+Old toolchains require explicit -lpthread (e.g. on Debian 11).
 
-Fixes: 7b9487a9a5c4 ("clk: analogbits: add Wide-Range PLL library")
-Signed-off-by: Bo Gan <ganboing@gmail.com>
-Link: https://lore.kernel.org/r/20240830061639.2316-1-ganboing@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Tahera Fahimi <fahimitahera@gmail.com>
+Fixes: c8994965013e ("selftests/landlock: Test signal scoping for threads")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20250115145409.312226-1-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/analogbits/wrpll-cln28hpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/landlock/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/analogbits/wrpll-cln28hpc.c b/drivers/clk/analogbits/wrpll-cln28hpc.c
-index 65d422a588e1f..9d178afc73bdd 100644
---- a/drivers/clk/analogbits/wrpll-cln28hpc.c
-+++ b/drivers/clk/analogbits/wrpll-cln28hpc.c
-@@ -292,7 +292,7 @@ int wrpll_configure_for_rate(struct wrpll_cfg *c, u32 target_rate,
- 			vco = vco_pre * f;
- 		}
+diff --git a/tools/testing/selftests/landlock/Makefile b/tools/testing/selftests/landlock/Makefile
+index 348e2dbdb4e0b..480f13e77fcc4 100644
+--- a/tools/testing/selftests/landlock/Makefile
++++ b/tools/testing/selftests/landlock/Makefile
+@@ -13,11 +13,11 @@ TEST_GEN_PROGS := $(src_test:.c=)
+ TEST_GEN_PROGS_EXTENDED := true
  
--		delta = abs(target_rate - vco);
-+		delta = abs(target_vco_rate - vco);
- 		if (delta < best_delta) {
- 			best_delta = delta;
- 			best_r = r;
+ # Short targets:
+-$(TEST_GEN_PROGS): LDLIBS += -lcap
++$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
+ $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
+ 
+ include ../lib.mk
+ 
+ # Targets with $(OUTPUT)/ prefix:
+-$(TEST_GEN_PROGS): LDLIBS += -lcap
++$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
+ $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
 -- 
 2.39.5
 
