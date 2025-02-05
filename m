@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1ECA28CB0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3764CA28DB8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DAFD3A46DC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82C467A2D16
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F97149C53;
-	Wed,  5 Feb 2025 13:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6A31519AA;
+	Wed,  5 Feb 2025 14:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWm8R6qy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/z6f+sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB87313C9C4;
-	Wed,  5 Feb 2025 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A81F510;
+	Wed,  5 Feb 2025 14:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763562; cv=none; b=qBFM90JgW6XYgmybpdjLYtU9064F2nz6xDI14KgNULEro9SmDGRV6CzgnuSxObsfORtfF7yT70HbhlWOEM772kHPaXA7Sf5c86ucN8/j/TDkDMFn2MKiDjQUIjtkJYMMdKj9c7yxRIqdg39i93X/Gv16IEUmMdGREc+JL+VNmhI=
+	t=1738764266; cv=none; b=R2aLqo7wJwRnTZRWMKsaoq4N+YEsjGHwhmPhDoKgu6WVOS2c6yop1jw1opAta2l3CyD9vV2S6KdT+94OBVcfv/4zF5GqzcphsmfSr9c/UvKCOu2cuExbXB2jUb0rxvxw4MRjR0NvR58WCgk6sxGHNISXORTaxteq65AVHOBhl8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763562; c=relaxed/simple;
-	bh=0J3nXKIRWtvqEmBwrJIgIu0DRjVKFQ4HUc5ElIzvjV8=;
+	s=arc-20240116; t=1738764266; c=relaxed/simple;
+	bh=bcCqLfePKx1mY9ShPc1cTSE0fYFf1FnFfKBxYZ+OCVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvrW7nGGqAgkRt9vVvTLHOASCwcZAirk/jzF2kD2zAzrd5pMqszGSN3BfFPGrtmKvmCBpQ6RYYEeSPL6mF+7i9wReZxyXVeTi3PRu7xrtbypVLNACgz6A6xPWuD5mECYW+ksI8FU+kbDALocHSYaRFzcciDqIcX7diDnCpEYedA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWm8R6qy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB11C4CED1;
-	Wed,  5 Feb 2025 13:52:41 +0000 (UTC)
+	 MIME-Version; b=kGI4ierKayG0yRi+x0ZXuEhuUxDCz4Vr7uZTPy8ZCgcAHx9Gb/6K/chmBbye4l5gfvJb6ebzRKi+QR2BKl5/744F4uAPUT8j6ITN4tBVJSCiyantm/Psh3vmJnkqxBrAwU79PXl3bcdmb94zxYehc+lEhdMrNXdRSzB7cGiFceE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/z6f+sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAFBC4CED1;
+	Wed,  5 Feb 2025 14:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763562;
-	bh=0J3nXKIRWtvqEmBwrJIgIu0DRjVKFQ4HUc5ElIzvjV8=;
+	s=korg; t=1738764265;
+	bh=bcCqLfePKx1mY9ShPc1cTSE0fYFf1FnFfKBxYZ+OCVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWm8R6qyTP7bCw4PTd6rqyPrc58N4+RXRkCZbA6jxFaZsxd6d6ZotJadlpzaLrXRu
-	 1YjJK/jj1sFmvystQsidEhkrC6GIyafuW3VZkx8QO+7ifD03Hr/e7oH29ow+TI2QJ4
-	 13yjBu2ipwZE1Nc/HJiEEt7ysQ6MOjFos429Zyqo=
+	b=s/z6f+szS8PhuDqPJ/KcV5FmEv6OjLBizHzYnhCRM8h+5o6xlLu5HSAU/THlb5fmX
+	 P5tFtOu5FAzQ8wq5Tx/Rbmo0PQ5uXXsdYNqHpsZHOyZIMUFR3od0kGSh4oF6AFJ8k0
+	 ax1KGdfB7f7PqQH/AEE8fLEZfczWkgbV7k4RA4G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Rob Herring <robh@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/590] sched: Fix race between yield_to() and try_to_wake_up()
+Subject: [PATCH 6.13 043/623] dt-bindings: display/msm: qcom,sa8775p-mdss: fix the example
 Date: Wed,  5 Feb 2025 14:36:25 +0100
-Message-ID: <20250205134456.398778260@linuxfoundation.org>
+Message-ID: <20250205134457.876895205@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchen Ding <dtcccc@linux.alibaba.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5d808c78d97251af1d3a3e4f253e7d6c39fd871e ]
+[ Upstream commit 3b08796f2a7ca0c27b16543603df85bb45a640ff ]
 
-We met a SCHED_WARN in set_next_buddy():
-  __warn_printk
-  set_next_buddy
-  yield_to_task_fair
-  yield_to
-  kvm_vcpu_yield_to [kvm]
-  ...
+Add p1 region to the list of DP registers in the SA8775p example. This
+fixes the following warning:
 
-After a short dig, we found the rq_lock held by yield_to() may not
-be exactly the rq that the target task belongs to. There is a race
-window against try_to_wake_up().
+Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.example.dtb: displayport-controller@af54000: reg: [[183844864, 260], [183845376, 192], [183848960, 1904], [183853056, 156]] is too short
 
-         CPU0                             target_task
-
-                                        blocking on CPU1
-   lock rq0 & rq1
-   double check task_rq == p_rq, ok
-                                        woken to CPU2 (lock task_pi & rq2)
-                                        task_rq = rq2
-   yield_to_task_fair (w/o lock rq2)
-
-In this race window, yield_to() is operating the task w/o the correct
-lock. Fix this by taking task pi_lock first.
-
-Fixes: d95f41220065 ("sched: Add yield_to(task, preempt) functionality")
-Signed-off-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241231055020.6521-1-dtcccc@linux.alibaba.com
+Fixes: 409685915f00 ("dt-bindings: display/msm: Document MDSS on SA8775P")
+Reported-by: Rob Herring <robh@kernel.org>
+Closes: https://lore.kernel.org/dri-devel/CAL_JsqJ0zoyaZAgZtyJ8xMsPY+YzrbF-YG1vPN6tFoFXQaW09w@mail.gmail.com/
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Patchwork: https://patchwork.freedesktop.org/patch/624068/
+Link: https://lore.kernel.org/r/20241112-fd-dp-fux-warning-v2-1-8cc4960094bd@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/syscalls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml     | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index 1784ed1fb3fe5..f9cb7896c1b96 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -1471,7 +1471,7 @@ int __sched yield_to(struct task_struct *p, bool preempt)
- 	struct rq *rq, *p_rq;
- 	int yielded = 0;
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
+index 58f8a01f29c7a..4536bb2f971f3 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,sa8775p-mdss.yaml
+@@ -168,7 +168,8 @@ examples:
+             reg = <0xaf54000 0x104>,
+                   <0xaf54200 0x0c0>,
+                   <0xaf55000 0x770>,
+-                  <0xaf56000 0x09c>;
++                  <0xaf56000 0x09c>,
++                  <0xaf57000 0x09c>;
  
--	scoped_guard (irqsave) {
-+	scoped_guard (raw_spinlock_irqsave, &p->pi_lock) {
- 		rq = this_rq();
- 
- again:
+             interrupt-parent = <&mdss0>;
+             interrupts = <12>;
 -- 
 2.39.5
 
