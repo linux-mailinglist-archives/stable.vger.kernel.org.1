@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0C4A2911E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:45:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB90A293DB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F573A6D14
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0923B1892311
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F571FCCE1;
-	Wed,  5 Feb 2025 14:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894E8165F16;
+	Wed,  5 Feb 2025 15:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRio5GAv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XdWmUue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E234B1FC7E7;
-	Wed,  5 Feb 2025 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463601684B0;
+	Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766490; cv=none; b=XPGiq4typ75a3qiS4RAiw7YEIMgTr5p/js+z76D4EB8KmqDQ48BWtYxtTK/Djjh9UuOV65ycEbYsPrem5JrDPyEIyvGhbi+6OWHjPY30bpLQSc8CKDAe6qfztXjoKVhx0FQEDcZ/B0ZM/aCOaojkhwYaCCWEdJTynklTv2ELg3k=
+	t=1738767931; cv=none; b=Txp7y3MoWpkGjM+5A+tVZO8Kr3lEi2nwQ5MQDVz6yKBfTKn1Gt/rv2NC5ttG2YW5I5kMzsl3NoozeDZs2tKVWZtoGru3+NUFdVCaTYOE5kJzefFRcdU2Mu5Tet5JsyuRz4qb0JylOxou8VG1Or11bSxbiO6aJ3qaixnatR4hZKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766490; c=relaxed/simple;
-	bh=mqzY2JrK7Q7A62kycUwCj9tyimLWLpesm7El4BEpVZw=;
+	s=arc-20240116; t=1738767931; c=relaxed/simple;
+	bh=iRDnozzzP2K2hAZic5USh3G/A/hV/wEUYBwHoWGJCss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hN4je8APT4sDdnMuhfaxUxayiFPjzHfbyi11vnwIOVnpSwHzkO77EjoceCwAS4J+HWBQk0SKlbGwzKlj65h4Qlj2sN3ohEvxpousvBMRmtpD3GSfUKg7Ow0SXmWyDXo7O0286+OENnrO963WYcIcn9Kgx2+xdhTaje2GWrHGz2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRio5GAv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BE7C4CEE2;
-	Wed,  5 Feb 2025 14:41:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E8QfvbRvxbEeB1SxtfVm0PAILUIIVNCibb9cQ/Esz5Iy0+LRPiSe588dy+AI9L8pCCN3AIxvWSr6zvmGg9/KpyDy3GFS4VeYFk7vCKDatAR7ifqt7tDSOkYlikb1wY7q7KrQo5jk8GmogJnU3R9FW1v5TV6A2U/5O6AXFOsOa3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XdWmUue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69127C4CED1;
+	Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766489;
-	bh=mqzY2JrK7Q7A62kycUwCj9tyimLWLpesm7El4BEpVZw=;
+	s=korg; t=1738767930;
+	bh=iRDnozzzP2K2hAZic5USh3G/A/hV/wEUYBwHoWGJCss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRio5GAve4TEUoe0joIO9pgtEugdPpsOWp+HfqC2Mry5AF9u5y9W+jcWmGQQImSTJ
-	 SzOACkpHXER/KE2sSYwSxWMyjQs07QT6hgwZGDclaBL0oU/z7KBt5GDmSWnnifYJ7D
-	 +iTBShEL004hvwqLXpyOpaBNzxz6Fb4B18AnmrWs=
+	b=2XdWmUuer8C8ryqyq9YyjkgdlLxrr80crXzjKbeOngaTo0AbY+FSBdHtTvqg/Ir1E
+	 AmMn0k+75uCRR2RQx+cz9Df5vOu5D4b16u0hwmAe7ZtkPxO+N2ERcwoAn9FcCConDd
+	 k3+Ce02/z9kWBDf16s0SRcUavbe54wVK7wc8yzPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lee <chullee@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Daniel Rosenberg <drosen@google.com>
-Subject: [PATCH 6.6 367/393] f2fs: Introduce linear search for dentries
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 531/590] cifs: Fix getting and setting SACLs over SMB1
 Date: Wed,  5 Feb 2025 14:44:46 +0100
-Message-ID: <20250205134434.342979910@linuxfoundation.org>
+Message-ID: <20250205134515.582341120@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,225 +60,159 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lee <chullee@google.com>
+From: Pali Rohár <pali@kernel.org>
 
-commit 91b587ba79e1b68bb718d12b0758dbcdab4e9cb7 upstream.
+[ Upstream commit 8b19dfb34d17e77a0809d433cc128b779282131b ]
 
-This patch addresses an issue where some files in case-insensitive
-directories become inaccessible due to changes in how the kernel function,
-utf8_casefold(), generates case-folded strings from the commit 5c26d2f1d3f5
-("unicode: Don't special case ignorable code points").
+SMB1 callback get_cifs_acl_by_fid() currently ignores its last argument and
+therefore ignores request for SACL_SECINFO. Fix this issue by correctly
+propagating info argument from get_cifs_acl() and get_cifs_acl_by_fid() to
+CIFSSMBGetCIFSACL() function and pass SACL_SECINFO when requested.
 
-F2FS uses these case-folded names to calculate hash values for locating
-dentries and stores them on disk. Since utf8_casefold() can produce
-different output across kernel versions, stored hash values and newly
-calculated hash values may differ. This results in affected files no
-longer being found via the hash-based lookup.
+For accessing SACLs it is needed to open object with SYSTEM_SECURITY
+access. Pass this flag when trying to get or set SACLs.
 
-To resolve this, the patch introduces a linear search fallback.
-If the initial hash-based search fails, F2FS will sequentially scan the
-directory entries.
+Same logic is in the SMB2+ code path.
 
-Fixes: 5c26d2f1d3f5 ("unicode: Don't special case ignorable code points")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219586
-Signed-off-by: Daniel Lee <chullee@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Daniel Rosenberg <drosen@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change fixes getting and setting of "system.cifs_ntsd_full" and
+"system.smb3_ntsd_full" xattrs over SMB1 as currently it silentely ignored
+SACL part of passed xattr buffer.
+
+Fixes: 3970acf7ddb9 ("SMB3: Add support for getting and setting SACLs")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/dir.c    |   53 ++++++++++++++++++++++++++++++++++++++---------------
- fs/f2fs/f2fs.h   |    6 ++++--
- fs/f2fs/inline.c |    5 +++--
- 3 files changed, 45 insertions(+), 19 deletions(-)
+ fs/smb/client/cifsacl.c   | 25 +++++++++++++++----------
+ fs/smb/client/cifsproto.h |  2 +-
+ fs/smb/client/cifssmb.c   |  4 ++--
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
---- a/fs/f2fs/dir.c
-+++ b/fs/f2fs/dir.c
-@@ -166,7 +166,8 @@ static unsigned long dir_block_index(uns
- static struct f2fs_dir_entry *find_in_block(struct inode *dir,
- 				struct page *dentry_page,
- 				const struct f2fs_filename *fname,
--				int *max_slots)
-+				int *max_slots,
-+				bool use_hash)
+diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
+index c68ad526a4de1..ebe9a7d7c70e8 100644
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -1395,7 +1395,7 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
+ #ifdef CONFIG_CIFS_ALLOW_INSECURE_LEGACY
+ struct smb_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
+ 				      const struct cifs_fid *cifsfid, u32 *pacllen,
+-				      u32 __maybe_unused unused)
++				      u32 info)
  {
- 	struct f2fs_dentry_block *dentry_blk;
- 	struct f2fs_dentry_ptr d;
-@@ -174,7 +175,7 @@ static struct f2fs_dir_entry *find_in_bl
- 	dentry_blk = (struct f2fs_dentry_block *)page_address(dentry_page);
+ 	struct smb_ntsd *pntsd = NULL;
+ 	unsigned int xid;
+@@ -1407,7 +1407,7 @@ struct smb_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
  
- 	make_dentry_ptr_block(dir, &d, dentry_blk);
--	return f2fs_find_target_dentry(&d, fname, max_slots);
-+	return f2fs_find_target_dentry(&d, fname, max_slots, use_hash);
+ 	xid = get_xid();
+ 	rc = CIFSSMBGetCIFSACL(xid, tlink_tcon(tlink), cifsfid->netfid, &pntsd,
+-				pacllen);
++				pacllen, info);
+ 	free_xid(xid);
+ 
+ 	cifs_put_tlink(tlink);
+@@ -1419,7 +1419,7 @@ struct smb_ntsd *get_cifs_acl_by_fid(struct cifs_sb_info *cifs_sb,
  }
  
- #if IS_ENABLED(CONFIG_UNICODE)
-@@ -251,7 +252,8 @@ static inline int f2fs_match_name(const
- }
- 
- struct f2fs_dir_entry *f2fs_find_target_dentry(const struct f2fs_dentry_ptr *d,
--			const struct f2fs_filename *fname, int *max_slots)
-+			const struct f2fs_filename *fname, int *max_slots,
-+			bool use_hash)
+ static struct smb_ntsd *get_cifs_acl_by_path(struct cifs_sb_info *cifs_sb,
+-		const char *path, u32 *pacllen)
++		const char *path, u32 *pacllen, u32 info)
  {
- 	struct f2fs_dir_entry *de;
- 	unsigned long bit_pos = 0;
-@@ -274,7 +276,7 @@ struct f2fs_dir_entry *f2fs_find_target_
- 			continue;
- 		}
+ 	struct smb_ntsd *pntsd = NULL;
+ 	int oplock = 0;
+@@ -1446,9 +1446,12 @@ static struct smb_ntsd *get_cifs_acl_by_path(struct cifs_sb_info *cifs_sb,
+ 		.fid = &fid,
+ 	};
  
--		if (de->hash_code == fname->hash) {
-+		if (!use_hash || de->hash_code == fname->hash) {
- 			res = f2fs_match_name(d->inode, fname,
- 					      d->filename[bit_pos],
- 					      le16_to_cpu(de->name_len));
-@@ -301,11 +303,12 @@ found:
- static struct f2fs_dir_entry *find_in_level(struct inode *dir,
- 					unsigned int level,
- 					const struct f2fs_filename *fname,
--					struct page **res_page)
-+					struct page **res_page,
-+					bool use_hash)
- {
- 	int s = GET_DENTRY_SLOTS(fname->disk_name.len);
- 	unsigned int nbucket, nblock;
--	unsigned int bidx, end_block;
-+	unsigned int bidx, end_block, bucket_no;
- 	struct page *dentry_page;
- 	struct f2fs_dir_entry *de = NULL;
- 	pgoff_t next_pgofs;
-@@ -315,8 +318,11 @@ static struct f2fs_dir_entry *find_in_le
- 	nbucket = dir_buckets(level, F2FS_I(dir)->i_dir_level);
- 	nblock = bucket_blocks(level);
- 
-+	bucket_no = use_hash ? le32_to_cpu(fname->hash) % nbucket : 0;
++	if (info & SACL_SECINFO)
++		oparms.desired_access |= SYSTEM_SECURITY;
 +
-+start_find_bucket:
- 	bidx = dir_block_index(level, F2FS_I(dir)->i_dir_level,
--			       le32_to_cpu(fname->hash) % nbucket);
-+			       bucket_no);
- 	end_block = bidx + nblock;
- 
- 	while (bidx < end_block) {
-@@ -333,7 +339,7 @@ static struct f2fs_dir_entry *find_in_le
- 			}
- 		}
- 
--		de = find_in_block(dir, dentry_page, fname, &max_slots);
-+		de = find_in_block(dir, dentry_page, fname, &max_slots, use_hash);
- 		if (IS_ERR(de)) {
- 			*res_page = ERR_CAST(de);
- 			de = NULL;
-@@ -350,12 +356,18 @@ static struct f2fs_dir_entry *find_in_le
- 		bidx++;
+ 	rc = CIFS_open(xid, &oparms, &oplock, NULL);
+ 	if (!rc) {
+-		rc = CIFSSMBGetCIFSACL(xid, tcon, fid.netfid, &pntsd, pacllen);
++		rc = CIFSSMBGetCIFSACL(xid, tcon, fid.netfid, &pntsd, pacllen, info);
+ 		CIFSSMBClose(xid, tcon, fid.netfid);
  	}
  
--	if (!de && room && F2FS_I(dir)->chash != fname->hash) {
--		F2FS_I(dir)->chash = fname->hash;
--		F2FS_I(dir)->clevel = level;
--	}
-+	if (de)
-+		return de;
+@@ -1472,7 +1475,7 @@ struct smb_ntsd *get_cifs_acl(struct cifs_sb_info *cifs_sb,
+ 	if (inode)
+ 		open_file = find_readable_file(CIFS_I(inode), true);
+ 	if (!open_file)
+-		return get_cifs_acl_by_path(cifs_sb, path, pacllen);
++		return get_cifs_acl_by_path(cifs_sb, path, pacllen, info);
  
--	return de;
-+	if (likely(use_hash)) {
-+		if (room && F2FS_I(dir)->chash != fname->hash) {
-+			F2FS_I(dir)->chash = fname->hash;
-+			F2FS_I(dir)->clevel = level;
-+		}
-+	} else if (++bucket_no < nbucket) {
-+		goto start_find_bucket;
-+	}
-+	return NULL;
- }
- 
- struct f2fs_dir_entry *__f2fs_find_entry(struct inode *dir,
-@@ -366,11 +378,15 @@ struct f2fs_dir_entry *__f2fs_find_entry
- 	struct f2fs_dir_entry *de = NULL;
- 	unsigned int max_depth;
- 	unsigned int level;
-+	bool use_hash = true;
- 
- 	*res_page = NULL;
- 
-+#if IS_ENABLED(CONFIG_UNICODE)
-+start_find_entry:
-+#endif
- 	if (f2fs_has_inline_dentry(dir)) {
--		de = f2fs_find_in_inline_dir(dir, fname, res_page);
-+		de = f2fs_find_in_inline_dir(dir, fname, res_page, use_hash);
- 		goto out;
- 	}
- 
-@@ -386,11 +402,18 @@ struct f2fs_dir_entry *__f2fs_find_entry
- 	}
- 
- 	for (level = 0; level < max_depth; level++) {
--		de = find_in_level(dir, level, fname, res_page);
-+		de = find_in_level(dir, level, fname, res_page, use_hash);
- 		if (de || IS_ERR(*res_page))
- 			break;
- 	}
-+
- out:
-+#if IS_ENABLED(CONFIG_UNICODE)
-+	if (IS_CASEFOLDED(dir) && !de && use_hash) {
-+		use_hash = false;
-+		goto start_find_entry;
-+	}
-+#endif
- 	/* This is to increase the speed of f2fs_create */
- 	if (!de)
- 		F2FS_I(dir)->task = current;
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3531,7 +3531,8 @@ int f2fs_prepare_lookup(struct inode *di
- 			struct f2fs_filename *fname);
- void f2fs_free_filename(struct f2fs_filename *fname);
- struct f2fs_dir_entry *f2fs_find_target_dentry(const struct f2fs_dentry_ptr *d,
--			const struct f2fs_filename *fname, int *max_slots);
-+			const struct f2fs_filename *fname, int *max_slots,
-+			bool use_hash);
- int f2fs_fill_dentries(struct dir_context *ctx, struct f2fs_dentry_ptr *d,
- 			unsigned int start_pos, struct fscrypt_str *fstr);
- void f2fs_do_make_empty_dir(struct inode *inode, struct inode *parent,
-@@ -4148,7 +4149,8 @@ int f2fs_write_inline_data(struct inode
- int f2fs_recover_inline_data(struct inode *inode, struct page *npage);
- struct f2fs_dir_entry *f2fs_find_in_inline_dir(struct inode *dir,
- 					const struct f2fs_filename *fname,
--					struct page **res_page);
-+					struct page **res_page,
-+					bool use_hash);
- int f2fs_make_empty_inline_dir(struct inode *inode, struct inode *parent,
- 			struct page *ipage);
- int f2fs_add_inline_entry(struct inode *dir, const struct f2fs_filename *fname,
---- a/fs/f2fs/inline.c
-+++ b/fs/f2fs/inline.c
-@@ -353,7 +353,8 @@ process_inline:
- 
- struct f2fs_dir_entry *f2fs_find_in_inline_dir(struct inode *dir,
- 					const struct f2fs_filename *fname,
--					struct page **res_page)
-+					struct page **res_page,
-+					bool use_hash)
+ 	pntsd = get_cifs_acl_by_fid(cifs_sb, &open_file->fid, pacllen, info);
+ 	cifsFileInfo_put(open_file);
+@@ -1485,7 +1488,7 @@ int set_cifs_acl(struct smb_ntsd *pnntsd, __u32 acllen,
  {
- 	struct f2fs_sb_info *sbi = F2FS_SB(dir->i_sb);
- 	struct f2fs_dir_entry *de;
-@@ -370,7 +371,7 @@ struct f2fs_dir_entry *f2fs_find_in_inli
- 	inline_dentry = inline_data_addr(dir, ipage);
+ 	int oplock = 0;
+ 	unsigned int xid;
+-	int rc, access_flags;
++	int rc, access_flags = 0;
+ 	struct cifs_tcon *tcon;
+ 	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct tcon_link *tlink = cifs_sb_tlink(cifs_sb);
+@@ -1498,10 +1501,12 @@ int set_cifs_acl(struct smb_ntsd *pnntsd, __u32 acllen,
+ 	tcon = tlink_tcon(tlink);
+ 	xid = get_xid();
  
- 	make_dentry_ptr_inline(dir, &d, inline_dentry);
--	de = f2fs_find_target_dentry(&d, fname, NULL);
-+	de = f2fs_find_target_dentry(&d, fname, NULL, use_hash);
- 	unlock_page(ipage);
- 	if (IS_ERR(de)) {
- 		*res_page = ERR_CAST(de);
+-	if (aclflag == CIFS_ACL_OWNER || aclflag == CIFS_ACL_GROUP)
+-		access_flags = WRITE_OWNER;
+-	else
+-		access_flags = WRITE_DAC;
++	if (aclflag & CIFS_ACL_OWNER || aclflag & CIFS_ACL_GROUP)
++		access_flags |= WRITE_OWNER;
++	if (aclflag & CIFS_ACL_SACL)
++		access_flags |= SYSTEM_SECURITY;
++	if (aclflag & CIFS_ACL_DACL)
++		access_flags |= WRITE_DAC;
+ 
+ 	oparms = (struct cifs_open_parms) {
+ 		.tcon = tcon,
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index a697e53ccee2b..907af3cbffd1b 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -568,7 +568,7 @@ extern int CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
+ 		const struct nls_table *nls_codepage,
+ 		struct cifs_sb_info *cifs_sb);
+ extern int CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon,
+-			__u16 fid, struct smb_ntsd **acl_inf, __u32 *buflen);
++			__u16 fid, struct smb_ntsd **acl_inf, __u32 *buflen, __u32 info);
+ extern int CIFSSMBSetCIFSACL(const unsigned int, struct cifs_tcon *, __u16,
+ 			struct smb_ntsd *pntsd, __u32 len, int aclflag);
+ extern int cifs_do_get_acl(const unsigned int xid, struct cifs_tcon *tcon,
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 0eae60731c20c..e2a14e25da87c 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -3427,7 +3427,7 @@ validate_ntransact(char *buf, char **ppparm, char **ppdata,
+ /* Get Security Descriptor (by handle) from remote server for a file or dir */
+ int
+ CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
+-		  struct smb_ntsd **acl_inf, __u32 *pbuflen)
++		  struct smb_ntsd **acl_inf, __u32 *pbuflen, __u32 info)
+ {
+ 	int rc = 0;
+ 	int buf_type = 0;
+@@ -3450,7 +3450,7 @@ CIFSSMBGetCIFSACL(const unsigned int xid, struct cifs_tcon *tcon, __u16 fid,
+ 	pSMB->MaxSetupCount = 0;
+ 	pSMB->Fid = fid; /* file handle always le */
+ 	pSMB->AclFlags = cpu_to_le32(CIFS_ACL_OWNER | CIFS_ACL_GROUP |
+-				     CIFS_ACL_DACL);
++				     CIFS_ACL_DACL | info);
+ 	pSMB->ByteCount = cpu_to_le16(11); /* 3 bytes pad + 8 bytes parm */
+ 	inc_rfc1001_len(pSMB, 11);
+ 	iov[0].iov_base = (char *)pSMB;
+-- 
+2.39.5
+
 
 
 
