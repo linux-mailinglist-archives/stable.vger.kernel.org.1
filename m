@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A58A28FFA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D20A291C6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 141ED7A17C2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D175F3AB2AB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6AB41519AF;
-	Wed,  5 Feb 2025 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7D91DA63D;
+	Wed,  5 Feb 2025 14:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNx5cWCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlTGZlWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723DA70825;
-	Wed,  5 Feb 2025 14:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD32F1779AE;
+	Wed,  5 Feb 2025 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765871; cv=none; b=HlfCK+4f0ZpY3A/AHVShl4I3J2SrXSSfx/iF16Bu4rwgpueM1qb1S3K0PNcW8uXo9wLAD+xtGKz/9xSRGznfy4hUPr9j1cREI6YXD/bbjVy90dRRlNf+xwd4mnEI8D3RVuvOt3FMGmI8ItBsMDQzzvgUUOTDd3BiC6FREt8NSy0=
+	t=1738766635; cv=none; b=X+DwzPKq6kH7sLhaN+ofW7ZVEn30nHKIhAQGXsYBJEHB5abtezCdUN7j3QZIxAUP6hYg5/yS+k/MH/5y8YGJ7phfv2pJhWsOP2Z4EqNAe9H6o6SBLYu6mNRo008TiUgSCtgdI5tT0ZjDer7TerwiLC5JUh74jBLzR6qEXE+Bkto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765871; c=relaxed/simple;
-	bh=GRk0FtJobpWPjooub5emkbbSfECeRAwWMgAw7sg5kJY=;
+	s=arc-20240116; t=1738766635; c=relaxed/simple;
+	bh=MsTJ0EG+HnCfUE9NvV410ZGAW5WnWUeVaugNduBm7Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgixyt/KZmYTqGJMnFNGRHehVYsxhdGFKxrkn3Oyc7q/a/R3RaUQffSHtVvUsd4TdBWzLwZafDdrYlr/c/oOh8S+guECP6FlpP8wrpQpCFQHAsek0aszZrPVNoybIq6AZ1Xr6TPOKyCjDN3GgwNxTFTBH2R8Rvbac8CC8eSzDWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNx5cWCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BB0C4CED1;
-	Wed,  5 Feb 2025 14:31:10 +0000 (UTC)
+	 MIME-Version; b=Vzuo6eMvbYGoXjkmS/NByR88nVvFeYbWcFZ3t2H5HXyq84AGn84VYTDfTjjJs0EXoBdtbU75+vtEiiWD2KJ+Q4V9+47DHHxbu3DTJd5PNSimDmH8UW09Xji8AajLFinoBQt2xinogUXZpb8d4g31DxatZDnLH/jmZ1VIhkb7Xc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlTGZlWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49051C4CED1;
+	Wed,  5 Feb 2025 14:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765871;
-	bh=GRk0FtJobpWPjooub5emkbbSfECeRAwWMgAw7sg5kJY=;
+	s=korg; t=1738766635;
+	bh=MsTJ0EG+HnCfUE9NvV410ZGAW5WnWUeVaugNduBm7Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNx5cWCctNLvOKO43Y3q7c2ewrv1oXI33pyvbfDztmu5P4ZZu5A7eCa2FGqVysCDl
-	 GGv8RfWsAGnPGre2NKZiewGqE2Yyxu0KOv8sdRPiaGoFh3LdbaKDebBbQvkMqRqCBb
-	 PQLKuR/G6OeSeWmzImpFW68OW+blkMxue4Alkzo8=
+	b=RlTGZlWcYuB1lLAsH96M5FZq2nOF+oigigCEd+xtvLu3all1Uum06ugRw8I3Oq/2H
+	 qd3SRvZ2kOChXKpb9rwRXOw2y0+hhi6hRI4rXSkpzoFbhTOsys+Y/DkklLNtQ4OtBa
+	 PODaYzCdkQafz3dxLi4wzqHoC6zsDTnT/sas2P6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/590] bpf: Use refcount_t instead of atomic_t for mmap_count
+Subject: [PATCH 6.13 276/623] rhashtable: Fix potential deadlock by moving schedule_work outside lock
 Date: Wed,  5 Feb 2025 14:40:18 +0100
-Message-ID: <20250205134505.337855931@linuxfoundation.org>
+Message-ID: <20250205134506.790342194@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit dfa94ce54f4139c893b9c4ec17df6f7c6a7515d3 ]
+[ Upstream commit e1d3422c95f003eba241c176adfe593c33e8a8f6 ]
 
-Use an API that resembles more the actual use of mmap_count.
+Move the hash table growth check and work scheduling outside the
+rht lock to prevent a possible circular locking dependency.
 
-Found by cocci:
-kernel/bpf/arena.c:245:6-25: WARNING: atomic_dec_and_test variation before object free at line 249.
+The original implementation could trigger a lockdep warning due to
+a potential deadlock scenario involving nested locks between
+rhashtable bucket, rq lock, and dsq lock. By relocating the
+growth check and work scheduling after releasing the rth lock, we break
+this potential deadlock chain.
 
-Fixes: b90d77e5fd78 ("bpf: Fix remap of arena.")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202412292037.LXlYSHKl-lkp@intel.com/
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://lore.kernel.org/r/6ecce439a6bc81adb85d5080908ea8959b792a50.1735542814.git.xiaopei01@kylinos.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+This change expands the flexibility of rhashtable by removing
+restrictive locking that previously limited its use in scheduler
+and workqueue contexts.
+
+Import to say that this calls rht_grow_above_75(), which reads from
+struct rhashtable without holding the lock, if this is a problem, we can
+move the check to the lock, and schedule the workqueue after the lock.
+
+Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
+Suggested-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+
+Modified so that atomic_inc is also moved outside of the bucket
+lock along with the growth above 75% check.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/arena.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ lib/rhashtable.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-index e52b3ad231b9c..93e48c7cad4ef 100644
---- a/kernel/bpf/arena.c
-+++ b/kernel/bpf/arena.c
-@@ -212,7 +212,7 @@ static u64 arena_map_mem_usage(const struct bpf_map *map)
- struct vma_list {
- 	struct vm_area_struct *vma;
- 	struct list_head head;
--	atomic_t mmap_count;
-+	refcount_t mmap_count;
- };
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 6c902639728b7..bf956b85455ab 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -584,10 +584,6 @@ static struct bucket_table *rhashtable_insert_one(
+ 	 */
+ 	rht_assign_locked(bkt, obj);
  
- static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
-@@ -222,7 +222,7 @@ static int remember_vma(struct bpf_arena *arena, struct vm_area_struct *vma)
- 	vml = kmalloc(sizeof(*vml), GFP_KERNEL);
- 	if (!vml)
- 		return -ENOMEM;
--	atomic_set(&vml->mmap_count, 1);
-+	refcount_set(&vml->mmap_count, 1);
- 	vma->vm_private_data = vml;
- 	vml->vma = vma;
- 	list_add(&vml->head, &arena->vma_list);
-@@ -233,7 +233,7 @@ static void arena_vm_open(struct vm_area_struct *vma)
- {
- 	struct vma_list *vml = vma->vm_private_data;
- 
--	atomic_inc(&vml->mmap_count);
-+	refcount_inc(&vml->mmap_count);
+-	atomic_inc(&ht->nelems);
+-	if (rht_grow_above_75(ht, tbl))
+-		schedule_work(&ht->run_work);
+-
+ 	return NULL;
  }
  
- static void arena_vm_close(struct vm_area_struct *vma)
-@@ -242,7 +242,7 @@ static void arena_vm_close(struct vm_area_struct *vma)
- 	struct bpf_arena *arena = container_of(map, struct bpf_arena, map);
- 	struct vma_list *vml = vma->vm_private_data;
+@@ -624,6 +620,12 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
+ 				data = ERR_CAST(new_tbl);
  
--	if (!atomic_dec_and_test(&vml->mmap_count))
-+	if (!refcount_dec_and_test(&vml->mmap_count))
- 		return;
- 	guard(mutex)(&arena->lock);
- 	/* update link list under lock */
+ 			rht_unlock(tbl, bkt, flags);
++
++			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
++				atomic_inc(&ht->nelems);
++				if (rht_grow_above_75(ht, tbl))
++					schedule_work(&ht->run_work);
++			}
+ 		}
+ 	} while (!IS_ERR_OR_NULL(new_tbl));
+ 
 -- 
 2.39.5
 
