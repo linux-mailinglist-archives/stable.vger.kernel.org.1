@@ -1,161 +1,197 @@
-Return-Path: <stable+bounces-112297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C34BA289FD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:15:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CCCA28A0E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B8AF3A6624
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:14:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3220B3A9F9C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE9C1519B9;
-	Wed,  5 Feb 2025 12:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A2721D5AD;
+	Wed,  5 Feb 2025 12:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="oFO2A2pg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="X6zSbh0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIzGXCzc"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F17218AC4;
-	Wed,  5 Feb 2025 12:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FA322B8DC
+	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738757702; cv=none; b=iDHu6fucmVFFbxPBBinyfH4whd6ih38LpT+Sum63AxK+x1F572BofWqoXIpT1D62J0ThVtcCJyyMv9SbSpEsMDr+/e1GSdb/zyX4bcckXqRbXglqFstSNur31F1Wt19yj+AQlnP13ZyMqE4cXDb7jD1+2GbSZVDiUrbqX4Yd0Jc=
+	t=1738757898; cv=none; b=lRhxplBIzBGcaTFGLxtaCw5CXHjhvBobIFpc6plZAMCBdFXdkLti5P/nkwtDA8gAZE60OISqptcBHld/EOMPS8+q/+/nODCSkIbNCUoB9ZRljsmo14Y42RoNuZQpvtPflvj8ZL4wFnHKC/GT4uNV7H5EdghYQ0lrEbenQMc/gWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738757702; c=relaxed/simple;
-	bh=FMLGSLj6R8JVgLvkdOdwv134eD/wDE/J7GN3jj3lJvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vc+kNcOXsx3aHQatb3oc+LbpVT3nvS9TOKxC4J4iDLrWAUyRmx7Dc9lp99uwfcbrId07fnlbTZdx/Njz4HhQa/+67mU58o7t/hdrZ/YcJ9IpdeeL77WGUv2GQsfRoz/3vyeHfp3j8CFLhZGmqx5G2tQjArNugPtuJefnSISrDes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=oFO2A2pg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=X6zSbh0E; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id E63C011400E4;
-	Wed,  5 Feb 2025 07:14:58 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 05 Feb 2025 07:14:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1738757698; x=1738844098; bh=ZEkXZWhhni
-	DQ23BUYVMWyvX3Ay9kHR31GJKwgx6W/G8=; b=oFO2A2pgXLHzJzdFKyBKCelNn5
-	L5pkEvoqHVoU2FRozr2mtPtFF7qEbGJEEc7HrLe5N5T/BouIYV8devfJIbu+QHJe
-	oEHYrpDj8sqRSzs9dqNCb30stXZtE1X3QKX8tgFIqgT04VR+tTD8PcPFTSt8KaCU
-	If8zwdVUMQnpdmtisOTjta3++Lf6G4vi7181DdbRRYGBcf7qcbJJx6TnDhO/z+Fh
-	0yKpahVs2IlL/+09MEP7MAPVx12gnX1IfSh0vJVfYxaL0A5nTb6cqu8ek+LfC1f2
-	NgJO+NISaXabitkL7p5VUxPkdzWomjHLhsuotzPkjarZsN3U9s/GjLTg/o/Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1738757698; x=1738844098; bh=ZEkXZWhhniDQ23BUYVMWyvX3Ay9kHR31GJK
-	wgx6W/G8=; b=X6zSbh0EOWqv3fmrfPU9iYtbWOrlpjsYkgVisARFsOgFpuhe1BY
-	SdT55t7iprSYfJEdXa6CfmfKMri2WyyvismKosLtd64QnFNmUPaMF/KF8dE6eGhd
-	lKVNTSz/G+JCt+lIB21XC0M6KuKD7Zgfp7ly5Vsk57H0SvOhmzg7qDvL+gXe32Zx
-	8+j0mesBL2WR/G6vrmbRowBKo8rkjoc/8BinWiRv6xqUaW2FCfUnxQVi/9mDYo3r
-	Wzz/8T/deDQQCbdrP3vcn7hmVjPri1vP/+slZc6eFkSHzEtqZTi8jYjfD7XhfplV
-	sQUmrJnaO4fXFxvGHUBELWiy8If7MPHDCBw==
-X-ME-Sender: <xms:QlajZ2ifL2uHrFupypxXD2WljhW3MR0ZTn3sPfgPhv5qSsIu1NkZcQ>
-    <xme:QlajZ3BrVNhpkeL3PoikA2dXUz39FlWPmwYa_yrlDTHjbomfpRFNiBG3k0FgD9JfK
-    UOi9Z0jXcrQOg>
-X-ME-Received: <xmr:QlajZ-G2GBfSswox4yPg5PGsrqAlbgcI93B-BmNEcg-uu3UcBG-mB3ZD54z7eKQSY4BpCcSOTq2WqYZujtkua40sKjBCqHOke5nEYw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfeegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhepfffhvf
-    evuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgv
-    gheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehueehgfdtledutdelke
-    efgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgrihhnpehkvghrnhgv
-    lhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddtpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopeihihhfvghirdhlrdhlihhusehorhgrtghlvgdrtg
-    homhdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehk
-    vghvihhnrdgsrhhoughskhihsegrrhhmrdgtohhmpdhrtghpthhtohepshhtrggslhgvse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhhsvghlfhht
-    vghsthesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:QlajZ_RvIwQmHFqY4KS1TgqdnfX3lRou0dECf9jvXglNvdoAzMqbFA>
-    <xmx:QlajZzyn36K1jq1Ir8PakjSYdsz5zDyi2ncmCbDJ-tMXz4FpgZyTxQ>
-    <xmx:QlajZ964sP0EL_PDAPiy-T99tGfoqdLT9wpbR7WYWumS4IzLl13uBg>
-    <xmx:QlajZwy8my3lVtz6W7peoFLcZi9n94527mfHqyJQPEZ3Uq-VopFpaQ>
-    <xmx:QlajZ4qArvGqtd-EuOnOcZ8WzQi3DJy8azP8fCnj7hNCnuEWd5_MpfVm>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 5 Feb 2025 07:14:57 -0500 (EST)
-Date: Wed, 5 Feb 2025 13:14:55 +0100
-From: Greg KH <greg@kroah.com>
-To: Yifei Liu <yifei.l.liu@oracle.com>
-Cc: shuah@kernel.org, kevin.brodsky@arm.com, stable@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 Linux-6.12.y Linux-6.13.y 1/1] selftests/mm: build
- with -O2
-Message-ID: <2025020544-preview-worshiper-8539@gregkh>
-References: <20250204214723.1991309-1-yifei.l.liu@oracle.com>
+	s=arc-20240116; t=1738757898; c=relaxed/simple;
+	bh=Ld52xv3IW7cByUUr70rwbM29Sna13OzjYGYDDcwHC/o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iiidJwaxs/fQjulGW4IxSqWVR0doG8xvGffwn1TkieC8lKkFQKuL539l+BENEEUECOJE7EO8RvX36tk3AsMDkwOaloKVfKOSoySPnmUyWyvsb9SvQ0tIzSr04ty9Vdiq5S0x8ErgcXbPYBWO+DjTKmWVBbRWAvMuh5fz+EyvCXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIzGXCzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD92C4CED1;
+	Wed,  5 Feb 2025 12:18:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1738757897;
+	bh=Ld52xv3IW7cByUUr70rwbM29Sna13OzjYGYDDcwHC/o=;
+	h=Subject:To:Cc:From:Date:From;
+	b=YIzGXCzcmOo3EnhnX6DOG6I+It43uEDdEIZYSb3tTQRfvekYMj011epQUVSBlML3G
+	 VW4l3w9X7Znt9aIkdi3Hm5WkRXkNgHMjfAfpQoK07ANxpStFFYf+I6gazoAmUUqH7b
+	 nTtAyXf9RoCysfIaohUK3rRbm6MwPaJ8rnN1YHNQ=
+Subject: FAILED: patch "[PATCH] memcg: fix soft lockup in the OOM process" failed to apply to 6.6-stable tree
+To: chenridong@huawei.com,akpm@linux-foundation.org,hannes@cmpxchg.org,mhocko@suse.com,mkoutny@suse.com,roman.gushchin@linux.dev,shakeelb@google.com,songmuchun@bytedance.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 05 Feb 2025 13:18:14 +0100
+Message-ID: <2025020514-hacker-slouching-58c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250204214723.1991309-1-yifei.l.liu@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 04, 2025 at 01:47:23PM -0800, Yifei Liu wrote:
-> From: Kevin Brodsky <kevin.brodsky@arm.com>
-> 
-> [ Upstream commit 46036188ea1f5266df23a6149dea0df1c77cd1c7 ]
-> 
-> The mm kselftests are currently built with no optimisation (-O0).  It's
-> unclear why, and besides being obviously suboptimal, this also prevents
-> the pkeys tests from working as intended.  Let's build all the tests with
-> -O2.
-> 
-> [kevin.brodsky@arm.com: silence unused-result warnings]
->   Link: https://lkml.kernel.org/r/20250107170110.2819685-1-kevin.brodsky@arm.com
-> Link: https://lkml.kernel.org/r/20241209095019.1732120-6-kevin.brodsky@arm.com
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Cc: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Joey Gouly <joey.gouly@arm.com>
-> Cc: Keith Lucas <keith.lucas@oracle.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 46036188ea1f5266df23a6149dea0df1c77cd1c7)
-> [Yifei: This commit also fix the failure of pkey_sighandler_tests_64,
-> which is also in linux-6.12.y and linux-6.13.y, thus backport this commit]
-> Signed-off-by: Yifei Liu <yifei.l.liu@oracle.com>
-> ---
->  tools/testing/selftests/mm/Makefile | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-> index 02e1204971b0..c0138cb19705 100644
-> --- a/tools/testing/selftests/mm/Makefile
-> +++ b/tools/testing/selftests/mm/Makefile
-> @@ -33,9 +33,16 @@ endif
->  # LDLIBS.
->  MAKEFLAGS += --no-builtin-rules
->  
-> -CFLAGS = -Wall -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
-> +CFLAGS = -Wall -O2 -I $(top_srcdir) $(EXTRA_CFLAGS) $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
->  LDLIBS = -lrt -lpthread -lm
->  
-> +# Some distributions (such as Ubuntu) configure GCC so that _FORTIFY_SOURCE is
-> +# automatically enabled at -O1 or above. This triggers various unused-result
-> +# warnings where functions such as read() or write() are called and their
-> +# return value is not checked. Disable _FORTIFY_SOURCE to silence those
-> +# warnings.
-> +CFLAGS += -U_FORTIFY_SOURCE
-> +
->  TEST_GEN_FILES = cow
->  TEST_GEN_FILES += compaction_test
->  TEST_GEN_FILES += gup_longterm
 
-This does not apply to 6.13 :(
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x ade81479c7dda1ce3eedb215c78bc615bbd04f06
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020514-hacker-slouching-58c8@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ade81479c7dda1ce3eedb215c78bc615bbd04f06 Mon Sep 17 00:00:00 2001
+From: Chen Ridong <chenridong@huawei.com>
+Date: Tue, 24 Dec 2024 02:52:38 +0000
+Subject: [PATCH] memcg: fix soft lockup in the OOM process
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+A soft lockup issue was found in the product with about 56,000 tasks were
+in the OOM cgroup, it was traversing them when the soft lockup was
+triggered.
+
+watchdog: BUG: soft lockup - CPU#2 stuck for 23s! [VM Thread:1503066]
+CPU: 2 PID: 1503066 Comm: VM Thread Kdump: loaded Tainted: G
+Hardware name: Huawei Cloud OpenStack Nova, BIOS
+RIP: 0010:console_unlock+0x343/0x540
+RSP: 0000:ffffb751447db9a0 EFLAGS: 00000247 ORIG_RAX: ffffffffffffff13
+RAX: 0000000000000001 RBX: 0000000000000000 RCX: 00000000ffffffff
+RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000247
+RBP: ffffffffafc71f90 R08: 0000000000000000 R09: 0000000000000040
+R10: 0000000000000080 R11: 0000000000000000 R12: ffffffffafc74bd0
+R13: ffffffffaf60a220 R14: 0000000000000247 R15: 0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2fe6ad91f0 CR3: 00000004b2076003 CR4: 0000000000360ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ vprintk_emit+0x193/0x280
+ printk+0x52/0x6e
+ dump_task+0x114/0x130
+ mem_cgroup_scan_tasks+0x76/0x100
+ dump_header+0x1fe/0x210
+ oom_kill_process+0xd1/0x100
+ out_of_memory+0x125/0x570
+ mem_cgroup_out_of_memory+0xb5/0xd0
+ try_charge+0x720/0x770
+ mem_cgroup_try_charge+0x86/0x180
+ mem_cgroup_try_charge_delay+0x1c/0x40
+ do_anonymous_page+0xb5/0x390
+ handle_mm_fault+0xc4/0x1f0
+
+This is because thousands of processes are in the OOM cgroup, it takes a
+long time to traverse all of them.  As a result, this lead to soft lockup
+in the OOM process.
+
+To fix this issue, call 'cond_resched' in the 'mem_cgroup_scan_tasks'
+function per 1000 iterations.  For global OOM, call
+'touch_softlockup_watchdog' per 1000 iterations to avoid this issue.
+
+Link: https://lkml.kernel.org/r/20241224025238.3768787-1-chenridong@huaweicloud.com
+Fixes: 9cbb78bb3143 ("mm, memcg: introduce own oom handler to iterate only over its own threads")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 65fb5eee1466..46f8b372d212 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1161,6 +1161,7 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ {
+ 	struct mem_cgroup *iter;
+ 	int ret = 0;
++	int i = 0;
+ 
+ 	BUG_ON(mem_cgroup_is_root(memcg));
+ 
+@@ -1169,8 +1170,12 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ 		struct task_struct *task;
+ 
+ 		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
+-		while (!ret && (task = css_task_iter_next(&it)))
++		while (!ret && (task = css_task_iter_next(&it))) {
++			/* Avoid potential softlockup warning */
++			if ((++i & 1023) == 0)
++				cond_resched();
+ 			ret = fn(task, arg);
++		}
+ 		css_task_iter_end(&it);
+ 		if (ret) {
+ 			mem_cgroup_iter_break(memcg, iter);
+diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+index 1c485beb0b93..044ebab2c941 100644
+--- a/mm/oom_kill.c
++++ b/mm/oom_kill.c
+@@ -44,6 +44,7 @@
+ #include <linux/init.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/cred.h>
++#include <linux/nmi.h>
+ 
+ #include <asm/tlb.h>
+ #include "internal.h"
+@@ -430,10 +431,15 @@ static void dump_tasks(struct oom_control *oc)
+ 		mem_cgroup_scan_tasks(oc->memcg, dump_task, oc);
+ 	else {
+ 		struct task_struct *p;
++		int i = 0;
+ 
+ 		rcu_read_lock();
+-		for_each_process(p)
++		for_each_process(p) {
++			/* Avoid potential softlockup warning */
++			if ((++i & 1023) == 0)
++				touch_softlockup_watchdog();
+ 			dump_task(p, oc);
++		}
+ 		rcu_read_unlock();
+ 	}
+ }
 
 
