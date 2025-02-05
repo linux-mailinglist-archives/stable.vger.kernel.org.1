@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044AFA28ED5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B4EA28ED6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027C61889C16
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3672A7A1C2D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1722282EE;
-	Wed,  5 Feb 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5D9522A;
+	Wed,  5 Feb 2025 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKPUlKzu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pc8OpmcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EACB1519A4;
-	Wed,  5 Feb 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD8E155756;
+	Wed,  5 Feb 2025 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765047; cv=none; b=T9v7qvscAVwGbxnmkWtrsJvmK9Uy1st42ZHvJdRg1ZZMVZJGkwOnQIGERQW0XP5bnnOt5WCAtCroEbA8xrB22U6CAa04RQEsoNOFhkRa6dse8RKujpKQ3d4TRdSAXMU/Wv5xDr6vHBX70zCfZETyTgK2FVCKlLfIWQAct0whm8c=
+	t=1738765056; cv=none; b=k5fwqEuW3+tunyl+ejNbttyqpT8WP87bUoCxY+hSZevM52wejnB/zeFKtp0DRY5YPn4c5lFOwIipuZKrdk3xxblQ7NYJJVv0gMMt+QEGJSM5dJPs4zqZ4TFw+0VhMcciV3dpv/NNW/lXcGsZYREzIHZZodc5hedzQJt4+x19084=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765047; c=relaxed/simple;
-	bh=/dwElW6z28VGheJVU+UAx4MBIUetp7yeiAXEZaTBVJY=;
+	s=arc-20240116; t=1738765056; c=relaxed/simple;
+	bh=J0sA0jmjf4gvbTgddD6HUKRX8dM+zVZ5ZK5QUYTnPMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZ6tIA97seTOIjtAAUh3HDkuKjVxmqwkGKNevXG0ChG5rmzuwELOJ2masQfXqhdtRmp6HhZrlc225TedkmAzR+ow5StwZSJmq/dvf5cqO0gxVLdlAwsUMHTsfMlnJWjD4HA5fmWRw2JiAZWSwwUR0eEEyWDblL25jZeKADB0J3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKPUlKzu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB0EC4CED1;
-	Wed,  5 Feb 2025 14:17:26 +0000 (UTC)
+	 MIME-Version; b=F5qDmfKgEFHWw2wbkw40pX4K4Ge2o59p6eI+Gunsjekz1bbCJrKMpFA/4z0cDniXp34WMWx06qhW06yCT5i5R3URawDQCkoS9KAxBjGesCGapFbgPydC1pujcOQ3Ll8KmP6lAAJ/3L3ue4+U4gAfCyhR1aCjB2Ezo+JF1dF2aeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pc8OpmcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF7AC4CED1;
+	Wed,  5 Feb 2025 14:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765047;
-	bh=/dwElW6z28VGheJVU+UAx4MBIUetp7yeiAXEZaTBVJY=;
+	s=korg; t=1738765056;
+	bh=J0sA0jmjf4gvbTgddD6HUKRX8dM+zVZ5ZK5QUYTnPMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKPUlKzujRuKegcjixIPBcTj4c9e/jydIjXS3hglGNoIYnRqXd0QH5WglH4YDiGoT
-	 aTijxnqIuqgc2PiPZB5zlkG5PL4Kzl8v1DmElh1vCadq2OlxunzXHEeD76r0ji8eBn
-	 0h498yZQYLyZ05jj5m0lvvO0cb7E56zjRMd79ARM=
+	b=Pc8OpmcHToT2Q9KqAt8g2nfl+8D+DogS/EtArFmKQJd856keFm5KTwZjs7oxcbwH8
+	 JO2BDYIJc/ZWB6HkewNbaK6S0W5v08VYL8P6ZChxWBXs3/R7BTrhW6AYnx0P9LclwX
+	 uDWzAnhCQYsdr4kTz+Pu5fHs1m8sknOqw5062Voc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/393] arm64: dts: qcom: sa8775p-ride: Describe sgmii_phy0 irq
-Date: Wed,  5 Feb 2025 14:42:26 +0100
-Message-ID: <20250205134428.991664444@linuxfoundation.org>
+Subject: [PATCH 6.6 228/393] arm64: dts: qcom: sa8775p-ride: Describe sgmii_phy1 irq
+Date: Wed,  5 Feb 2025 14:42:27 +0100
+Message-ID: <20250205134429.029128092@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -70,7 +70,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 1ff6569b0ffe7a2e311104cb3cd841983e484ac9 ]
+[ Upstream commit 454557d0032d088b4f467f0c541f98edb01fe431 ]
 
 There's an irq hooked up, so let's describe it.
 
@@ -85,7 +85,7 @@ Now that the IRQ is properly routed we can describe it.
 Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
 Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230817213815.638189-2-ahalaney@redhat.com
+Link: https://lore.kernel.org/r/20230817213815.638189-3-ahalaney@redhat.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Stable-dep-of: 30f7dfd2c489 ("arm64: dts: qcom: sa8775p: Update sleep_clk frequency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -94,15 +94,15 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-index 81a7eeb9cfcd2..8fde6935cd6ec 100644
+index 8fde6935cd6ec..9760bb4b468c4 100644
 --- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
 +++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dts
-@@ -285,6 +285,7 @@
+@@ -295,6 +295,7 @@
  			compatible = "ethernet-phy-id0141.0dd4";
- 			reg = <0x8>;
+ 			reg = <0xa>;
  			device_type = "ethernet-phy";
-+			interrupts-extended = <&tlmm 7 IRQ_TYPE_EDGE_FALLING>;
- 			reset-gpios = <&pmm8654au_2_gpios 8 GPIO_ACTIVE_LOW>;
++			interrupts-extended = <&tlmm 26 IRQ_TYPE_EDGE_FALLING>;
+ 			reset-gpios = <&pmm8654au_2_gpios 9 GPIO_ACTIVE_LOW>;
  			reset-assert-us = <11000>;
  			reset-deassert-us = <70000>;
 -- 
