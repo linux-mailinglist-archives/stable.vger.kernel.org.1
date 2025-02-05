@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8192A294A4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF3CA2946A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0886188F2E4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05F2188AE20
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FF2157465;
-	Wed,  5 Feb 2025 15:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871DB1925A6;
+	Wed,  5 Feb 2025 15:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsknAQDq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZNn5kp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C633EDF59;
-	Wed,  5 Feb 2025 15:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3957319259A;
+	Wed,  5 Feb 2025 15:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768579; cv=none; b=gm3w0eEEI+7tJR3H8rsXluzAHrB+snq3MsXLKgdqvyU3gqPybfFt9w0A0YtqNhZqjt4YAOFwaQLIQIim0F1WtaPVNmlgs8TAzyTtaP6yG4WEU2mRCuRCeAukvyLif5ihIhvUZl5icpmGvOiCH6n5tizy8q9Qf/pBVBdNtq9KPCk=
+	t=1738768332; cv=none; b=nQXRQ5Oj8IcVgXXVhEbAmPjdvISpKZeeqiBYcaXJkDQgs/+ElnRTqacJKOyD3hQ8lR2zL011LlwWK89usd1SDvAykj6S6djEoORbPoZ2jVIcQ4sBHPmK8TDeP66N4s8iGF46sc+CgNcUmWPdqUu1CZk1Z2Gnx+QhyhkckiSkxSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768579; c=relaxed/simple;
-	bh=//24MxUuKcUVc0ZOJ41Z4ZqfG20+aHyve3LD4zOW8n4=;
+	s=arc-20240116; t=1738768332; c=relaxed/simple;
+	bh=7+mybLEliGQjTK4PnAHueTdSxQ8BgbwkuOT/d98f+dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6hhWScTRXCVIPPWLHJn0Of1V9HAyccsB2QY1f/iWZt7kVvPV4W1wABlKHYQVGl18eo2p567zi+DDPL08RYO5fNpE89KiLMoalFUGHKHP9uzo0izPbEtBO6//LmEZnIa7ZrQSts/Q/FWdzKdt/6APoGGLN/wrBzltAfx1R+D0GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsknAQDq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFABC4CED1;
-	Wed,  5 Feb 2025 15:16:19 +0000 (UTC)
+	 MIME-Version; b=TnuYynbznNIw0c3XuRijZYOjMQq55WNpd4r5o7nsn1rMn/VEsVdibWIegcmsiV31++ExiUD/KxEd9laj1RQAiwVhxokRxFDAk6lticBZx/HK3KoF30cYtwT1WHHIaTATdHp8sM3EvUJoDhwbbdIJ4GSrzxgBog1RlVas63/qsng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZNn5kp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9771BC4CED1;
+	Wed,  5 Feb 2025 15:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768579;
-	bh=//24MxUuKcUVc0ZOJ41Z4ZqfG20+aHyve3LD4zOW8n4=;
+	s=korg; t=1738768332;
+	bh=7+mybLEliGQjTK4PnAHueTdSxQ8BgbwkuOT/d98f+dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsknAQDqMyzipc3Ne5wj2KW6mM34A2bUQw0DtYsFpvc9FEHvlGWYQ/RanAzmnauMM
-	 i3LjV6Gry31AV8TYY6T/gEia3xqZpqZLrz3IA6Yqw5IV9HMI9BsP1E2y0hTyDDe/kE
-	 eChxsWnNGO8f3cI7gdfc71qWcSMFLeHOjJp7Dkm4=
+	b=2ZNn5kp8L1gDlKD9x7uc1/As55MbBsl4tCB5Er6tr2N8R3U15LUmh3vogngRpE4I8
+	 uh+slxdFMTFvvv1YnHsEjprdxmsnh9RfLY/n/y7FVVU/iM6VFMqLD6T1eaRBw6MCiO
+	 aSwNWktyOSVuH0NF7UQ+AeZA2ptwo3TtYxsNHFa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.13 598/623] clk: qcom: gcc-x1e80100: Do not turn off usb_2 controller GDSC
+	Nathan Chancellor <nathan@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.12 585/590] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
 Date: Wed,  5 Feb 2025 14:45:40 +0100
-Message-ID: <20250205134519.100683031@linuxfoundation.org>
+Message-ID: <20250205134517.643720141@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit d26c4ad3fa53e76a602a9974ade171c8399f2a29 upstream.
+commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
 
-Allowing the usb_2 controller GDSC to be turned off during system suspend
-renders the controller unable to resume.
+GCC changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, there are certain
+places in the s390 code that use their own CFLAGS without a '-std='
+value, which break with this dialect change because of the kernel's own
+definitions of bool, false, and true conflicting with the C23 reserved
+keywords.
 
-So use PWRSTS_RET_ON instead in order to make sure this the GDSC doesn't
-go down.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Cc: stable@vger.kernel.org      # 6.8
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250107-x1e80100-clk-gcc-fix-usb2-gdsc-pwrsts-v1-1-e15d1a5e7d80@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+these errors and make the C standard version of these areas match the
+rest of the kernel.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/Makefile           |    2 +-
+ arch/s390/purgatory/Makefile |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -6083,7 +6083,7 @@ static struct gdsc gcc_usb20_prim_gdsc =
- 	.pd = {
- 		.name = "gcc_usb20_prim_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -22,7 +22,7 @@ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FL
+ ifndef CONFIG_AS_IS_LLVM
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+ endif
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -D__DECOMPRESSOR
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -13,7 +13,7 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS -
+ $(obj)/mem.o: $(srctree)/arch/s390/lib/mem.S FORCE
+ 	$(call if_changed_rule,as_o_S)
  
+-KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -Os -m64 -msoft-float -fno-common
 
 
 
