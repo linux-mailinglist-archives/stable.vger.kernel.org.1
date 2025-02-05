@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-113583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85408A292F6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2D2A29360
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C439F3AF203
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869E6162CF5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120E718B467;
-	Wed,  5 Feb 2025 14:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB9518F2CF;
+	Wed,  5 Feb 2025 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbf7knPd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo0xTyAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C308D376;
-	Wed,  5 Feb 2025 14:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3958718E02A;
+	Wed,  5 Feb 2025 15:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767456; cv=none; b=lrW94P/PdTiZ4jDI4rokwoU00Gz3CvJv5oK2ZI8qVskwwrl9xoSspqnYIkE+80ecBAF+G1mocO6dQyAzJM36SAExEiWOgpnC8rIIcEwLXTg3zjmj7411BpbmWYebzafPv1sI9nqEa3NBKPuNvHhjbpUbP7etiyz7pziRleqXzk4=
+	t=1738767829; cv=none; b=h+uIvOHNmC9+DnMSD5dIXvWcKNjVmuMUJrvItEnpI9OpamVZDVATG57UP2UYohWNVkwA52dk3FP1N7MaUDTmaWZ+4+5BVIDEn+t8gr5KTnWnIgIeYSKNS9ivtLF8KgRDlVdVdyYpdDo2GvnFUCtLz4pxo/pIzsEKL+nhuA9/8k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767456; c=relaxed/simple;
-	bh=OVGujhFut5u+El7C2/6kPIcatfkZ+Uj0dLxV2doK7ZE=;
+	s=arc-20240116; t=1738767829; c=relaxed/simple;
+	bh=Gc2R6DUgFAmDKCb4tHH7wgGpdDzMxkf75Cc81mzPmi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhXs2jSEcw+P/cXwCwhXTcKdVlKw6asBAXPkgO62a6sKYUPU8aSCL5GyrOVIpmAX/rZzrZBr4ofLXiLj3sHbIiUuK0v6mh82u1LZDiEjyhri7qto4UdMBPqArmMuSm9OsqmpiDbxonDQaG5DemCqNdGh/BkkjzdRzz8VGCIzQ1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbf7knPd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE59C4CED1;
-	Wed,  5 Feb 2025 14:57:35 +0000 (UTC)
+	 MIME-Version; b=GWjICxGZjO9CrDMHn6ygwhYam0qDFfTwdHjArqJqUWpIvZl0pc0r+7wmw0ddb8I8BI0gFFno859LS+xLfjgkG1Of94tYrMSw5lM8ljjEMJ9xdtdxQohl9S1V8teIMZTTvJeirK/qI8wpkWd6nwXk3VsmDbMXtcFteMGgkfxwY6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo0xTyAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973A7C4CED1;
+	Wed,  5 Feb 2025 15:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767456;
-	bh=OVGujhFut5u+El7C2/6kPIcatfkZ+Uj0dLxV2doK7ZE=;
+	s=korg; t=1738767829;
+	bh=Gc2R6DUgFAmDKCb4tHH7wgGpdDzMxkf75Cc81mzPmi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zbf7knPdmQCVVWIrDpfRzB8i/ND2rqZfZNEwuDEzxJoZeEI/jHitORTG7/UWT9hlt
-	 9uOwRfejHN9pdXlT1jPzGTIExRjpc1l3Ca4st5Dt7xQuTOp/u6jP2ubD1U6XQHfG+y
-	 NKx+13ZI/5mM0h8dyhN5sJZfjHkkTdqt3pyR5IIw=
+	b=Yo0xTyAIbiuYAMPbg9TafPGAiqt9aRKysqwllBcuCSY4ELNcCWvVT1eTxH18dzmM4
+	 QkaoMqdOHCTeejkMqReiakKnwVi4pBGf7OZWAkDzpRVRfNkwjcs6wYO3SWO/Jacdy6
+	 mJL14hByJyw3duYhFUUZguGbFWWMNQifQQPNMuJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com,
-	syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 446/590] nilfs2: handle errors that nilfs_prepare_chunk() may return
+Subject: [PATCH 6.13 459/623] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
 Date: Wed,  5 Feb 2025 14:43:21 +0100
-Message-ID: <20250205134512.332296353@linuxfoundation.org>
+Message-ID: <20250205134513.774503788@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit ee70999a988b8abc3490609142f50ebaa8344432 ]
+[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
 
-Patch series "nilfs2: fix issues with rename operations".
+imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
+obtained node to imx_media_of_add_csi(). The passed node is used in
+v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
+Therefore, while the current implementation only releases the node when
+imx_media_of_add_csi() fails, but should always release it. Call
+of_node_put() right after imx_media_of_add_csi().
 
-This series fixes BUG_ON check failures reported by syzbot around rename
-operations, and a minor behavioral issue where the mtime of a child
-directory changes when it is renamed instead of moved.
-
-This patch (of 2):
-
-The directory manipulation routines nilfs_set_link() and
-nilfs_delete_entry() rewrite the directory entry in the folio/page
-previously read by nilfs_find_entry(), so error handling is omitted on the
-assumption that nilfs_prepare_chunk(), which prepares the buffer for
-rewriting, will always succeed for these.  And if an error is returned, it
-triggers the legacy BUG_ON() checks in each routine.
-
-This assumption is wrong, as proven by syzbot: the buffer layer called by
-nilfs_prepare_chunk() may call nilfs_get_block() if necessary, which may
-fail due to metadata corruption or other reasons.  This has been there all
-along, but improved sanity checks and error handling may have made it more
-reproducible in fuzzing tests.
-
-Fix this issue by adding missing error paths in nilfs_set_link(),
-nilfs_delete_entry(), and their caller nilfs_rename().
-
-Link: https://lkml.kernel.org/r/20250111143518.7901-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250111143518.7901-2-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+32c3706ebf5d95046ea1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=32c3706ebf5d95046ea1
-Reported-by: syzbot+1097e95f134f37d9395c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1097e95f134f37d9395c
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c   | 13 ++++++++++---
- fs/nilfs2/namei.c | 29 +++++++++++++++--------------
- fs/nilfs2/nilfs.h |  4 ++--
- 3 files changed, 27 insertions(+), 19 deletions(-)
+ drivers/staging/media/imx/imx-media-of.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index f61c58fbf117d..0cc32e9c71cbf 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -400,7 +400,7 @@ int nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr, ino_t *ino)
- 	return 0;
- }
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index 118bff988bc7e..bb28daa4d7133 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -54,22 +54,18 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 			break;
  
--void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
- 		    struct folio *folio, struct inode *inode)
- {
- 	size_t from = offset_in_folio(folio, de);
-@@ -410,11 +410,15 @@ void nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
+ 		ret = imx_media_of_add_csi(imxmd, csi_np);
++		of_node_put(csi_np);
+ 		if (ret) {
+ 			/* unavailable or already added is not an error */
+ 			if (ret == -ENODEV || ret == -EEXIST) {
+-				of_node_put(csi_np);
+ 				continue;
+ 			}
  
- 	folio_lock(folio);
- 	err = nilfs_prepare_chunk(folio, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		folio_unlock(folio);
-+		return err;
-+	}
- 	de->inode = cpu_to_le64(inode->i_ino);
- 	de->file_type = fs_umode_to_ftype(inode->i_mode);
- 	nilfs_commit_chunk(folio, mapping, from, to);
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
-+	return 0;
- }
- 
- /*
-@@ -543,7 +547,10 @@ int nilfs_delete_entry(struct nilfs_dir_entry *dir, struct folio *folio)
- 		from = (char *)pde - kaddr;
- 	folio_lock(folio);
- 	err = nilfs_prepare_chunk(folio, from, to);
--	BUG_ON(err);
-+	if (unlikely(err)) {
-+		folio_unlock(folio);
-+		goto out;
-+	}
- 	if (pde)
- 		pde->rec_len = nilfs_rec_len_to_disk(to - from);
- 	dir->inode = 0;
-diff --git a/fs/nilfs2/namei.c b/fs/nilfs2/namei.c
-index 1d836a5540f3b..e02fae6757f12 100644
---- a/fs/nilfs2/namei.c
-+++ b/fs/nilfs2/namei.c
-@@ -406,8 +406,10 @@ static int nilfs_rename(struct mnt_idmap *idmap,
- 			err = PTR_ERR(new_de);
- 			goto out_dir;
+ 			/* other error, can't continue */
+-			goto err_out;
++			return ret;
  		}
--		nilfs_set_link(new_dir, new_de, new_folio, old_inode);
-+		err = nilfs_set_link(new_dir, new_de, new_folio, old_inode);
- 		folio_release_kmap(new_folio, new_de);
-+		if (unlikely(err))
-+			goto out_dir;
- 		nilfs_mark_inode_dirty(new_dir);
- 		inode_set_ctime_current(new_inode);
- 		if (dir_de)
-@@ -430,28 +432,27 @@ static int nilfs_rename(struct mnt_idmap *idmap,
- 	 */
- 	inode_set_ctime_current(old_inode);
- 
--	nilfs_delete_entry(old_de, old_folio);
--
--	if (dir_de) {
--		nilfs_set_link(old_inode, dir_de, dir_folio, new_dir);
--		folio_release_kmap(dir_folio, dir_de);
--		drop_nlink(old_dir);
-+	err = nilfs_delete_entry(old_de, old_folio);
-+	if (likely(!err)) {
-+		if (dir_de) {
-+			err = nilfs_set_link(old_inode, dir_de, dir_folio,
-+					     new_dir);
-+			drop_nlink(old_dir);
-+		}
-+		nilfs_mark_inode_dirty(old_dir);
  	}
--	folio_release_kmap(old_folio, old_de);
--
--	nilfs_mark_inode_dirty(old_dir);
- 	nilfs_mark_inode_dirty(old_inode);
  
--	err = nilfs_transaction_commit(old_dir->i_sb);
--	return err;
+ 	return 0;
 -
- out_dir:
- 	if (dir_de)
- 		folio_release_kmap(dir_folio, dir_de);
- out_old:
- 	folio_release_kmap(old_folio, old_de);
- out:
--	nilfs_transaction_abort(old_dir->i_sb);
-+	if (likely(!err))
-+		err = nilfs_transaction_commit(old_dir->i_sb);
-+	else
-+		nilfs_transaction_abort(old_dir->i_sb);
- 	return err;
+-err_out:
+-	of_node_put(csi_np);
+-	return ret;
  }
- 
-diff --git a/fs/nilfs2/nilfs.h b/fs/nilfs2/nilfs.h
-index dff241c53fc58..cb6ed54accd7b 100644
---- a/fs/nilfs2/nilfs.h
-+++ b/fs/nilfs2/nilfs.h
-@@ -261,8 +261,8 @@ struct nilfs_dir_entry *nilfs_find_entry(struct inode *, const struct qstr *,
- int nilfs_delete_entry(struct nilfs_dir_entry *, struct folio *);
- int nilfs_empty_dir(struct inode *);
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *, struct folio **);
--void nilfs_set_link(struct inode *, struct nilfs_dir_entry *,
--			   struct folio *, struct inode *);
-+int nilfs_set_link(struct inode *dir, struct nilfs_dir_entry *de,
-+		   struct folio *folio, struct inode *inode);
- 
- /* file.c */
- extern int nilfs_sync_file(struct file *, loff_t, loff_t, int);
+ EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
 -- 
 2.39.5
 
