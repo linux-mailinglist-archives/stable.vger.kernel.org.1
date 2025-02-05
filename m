@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-113536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26209A29294
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D9DA292BE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C5C4167732
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A7F3AE785
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84C21FC7DB;
-	Wed,  5 Feb 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A311FC7ED;
+	Wed,  5 Feb 2025 14:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VHuSkSiB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dT5yI4a8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E981FC7CE;
-	Wed,  5 Feb 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5319A155333;
+	Wed,  5 Feb 2025 14:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767292; cv=none; b=sQgKjLyIpaflUKQQjae7k8VEN9Dr6Tv5QlzttlHCaQrCwiJoGAGu+iW65t4FJsgRtn2LzBUSE6W4g9qhBrQgKS2OlbHc5Uuyo2KSvM+F/SLYg9s1FYNgE7dnEx4ufdFsk0ceC3ZzXFHsUxIwt83qtwphur4ZZaeqrBS7VAqCrdQ=
+	t=1738767299; cv=none; b=QEcI8w+J2EcrZ0SxEzzH5RiKmOf4NrMltC1QVbDvq0Rkg88AJZeGlDbx4+HNWBirX+vKyW1VRp5UrJe82Avwp6rc8QSFRbkp8z5VPu+Sw9dFJZE3j3orSvnP55xRg7JAiuKjJ+lf0KoBseT7isHK9sMtqN83pEYZhNmuKAI0Ln8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767292; c=relaxed/simple;
-	bh=AbUrYR9/VOpwVQAb5r5HL36Dx5UeAcvprIpzyashOo4=;
+	s=arc-20240116; t=1738767299; c=relaxed/simple;
+	bh=OLONQPg8e3IS7SFr3E/49DChGO8RArs/6LUe8IuFaFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIcDxVeixu1luf2FHjdinXtheD4aGlDdBb+6vCKeoUU8efdsV8qYlL0acGHJswAOqk/aqdEHujvUbsCztCf7Hd6n73VIK1VzosLQLbJEvFo96orohM1QBGq/mt8N+xi1NrZzKCYP0Z4mT4MFB/ojRwUY7aWVztGk3bA8Yq2syqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VHuSkSiB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5478C4CED1;
-	Wed,  5 Feb 2025 14:54:51 +0000 (UTC)
+	 MIME-Version; b=ctOZX4wEreY15RhRmiD7AB7rzrnppPuWzceK+Vvc4QUKON62g+IBuTB3Ms5/snpCkhuh2fod6bsUWeqPjay7OBTqat18xABkCGfkMJK9lYViXpuZN5ek9rV2lLltZZbm0LssGs5lyHTBM26PD8ZiUgkDCTiiiurb2itGYmT4CD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dT5yI4a8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3351C4CEDD;
+	Wed,  5 Feb 2025 14:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767292;
-	bh=AbUrYR9/VOpwVQAb5r5HL36Dx5UeAcvprIpzyashOo4=;
+	s=korg; t=1738767299;
+	bh=OLONQPg8e3IS7SFr3E/49DChGO8RArs/6LUe8IuFaFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHuSkSiB4zsZWvFxKkt+sz/8IOsJhH/Y3RsDs2Li2Fassz6jV9xjN2pgDNr3JX0r6
-	 fnqjvInEXMPly2sS+fi0yE4GS0L+c21HKKZOpMi1aFBTp+sACSA2kMKvzD0fIBl3QK
-	 n2qIEnOMxzzBl5JZHEWYWeJ8WJd3MeTBunmXWNDQ=
+	b=dT5yI4a84k/4WmdBMZgC/C6QteJyIArY/BXq249zYlWNIbHmn9Fr278OiTD5gK9eZ
+	 h3DUTW+bI8AWqx9ssVFx2Mfg9u9zXwQ1o9AFTYfizRyFS5iZ+L0T3D9jj0cnBbLYE8
+	 1xbfSwuhHADQJPpRAjaWmVH2qpKFW7TM7AEttugE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Avri Altman <avri.altman@wdc.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 435/590] scsi: mpt3sas: Set ioc->manu_pg11.EEDPTagMode directly to 1
-Date: Wed,  5 Feb 2025 14:43:10 +0100
-Message-ID: <20250205134511.910099708@linuxfoundation.org>
+Subject: [PATCH 6.12 436/590] scsi: ufs: bsg: Delete bsg_dev when setting up bsg fails
+Date: Wed,  5 Feb 2025 14:43:11 +0100
+Message-ID: <20250205134511.948199951@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,44 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit ad7c3c0cb8f61d6d5a48b83e62ca4a9fd2f26153 ]
+[ Upstream commit fcf247deb3c3e1c6be5774e3fa03bbd018eff1a9 ]
 
-Currently, the code does:
+We should remove the bsg device when bsg_setup_queue() fails to release the
+resources.
 
-    if (x == 0) {
-    	x &= ~0x3;
-	x |= 0x1;
-    }
-
-Zeroing bits 0 and 1 of a variable that is 0 is not necessary. So directly
-set the variable to 1.
-
-Cc: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-Fixes: f92363d12359 ("[SCSI] mpt3sas: add new driver supporting 12GB SAS")
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/r/20241212221817.78940-2-pmenzel@molgen.mpg.de
+Fixes: df032bf27a41 ("scsi: ufs: Add a bsg endpoint that supports UPIUs")
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241218014214.64533-2-kanie@linux.alibaba.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ufs/core/ufs_bsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 16ac2267c71e1..c1d8f2c91a5e5 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -5629,8 +5629,7 @@ _base_static_config_pages(struct MPT3SAS_ADAPTER *ioc)
- 	if (!ioc->is_gen35_ioc && ioc->manu_pg11.EEDPTagMode == 0) {
- 		pr_err("%s: overriding NVDATA EEDPTagMode setting\n",
- 		    ioc->name);
--		ioc->manu_pg11.EEDPTagMode &= ~0x3;
--		ioc->manu_pg11.EEDPTagMode |= 0x1;
-+		ioc->manu_pg11.EEDPTagMode = 0x1;
- 		mpt3sas_config_set_manufacturing_pg11(ioc, &mpi_reply,
- 		    &ioc->manu_pg11);
+diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
+index 6c09d97ae0065..58023f735c195 100644
+--- a/drivers/ufs/core/ufs_bsg.c
++++ b/drivers/ufs/core/ufs_bsg.c
+@@ -257,6 +257,7 @@ int ufs_bsg_probe(struct ufs_hba *hba)
+ 			NULL, 0);
+ 	if (IS_ERR(q)) {
+ 		ret = PTR_ERR(q);
++		device_del(bsg_dev);
+ 		goto out;
  	}
+ 
 -- 
 2.39.5
 
