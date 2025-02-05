@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-113330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8BA291D0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7E9A29183
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1611188D863
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86D387A219F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7E8195FEC;
-	Wed,  5 Feb 2025 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46348197A76;
+	Wed,  5 Feb 2025 14:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07k9U7eZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAOJjB57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F22F170A37;
-	Wed,  5 Feb 2025 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FCD1684B0;
+	Wed,  5 Feb 2025 14:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766595; cv=none; b=aWT64fd/9HqV/6iix8KADd5jbloS4gcjLVPUnCsycndP6ZSLn1I9MU5pNEoS+sLZH6oViIpCq4/+Y/c+CjDn7yqsku+KwJ8+Tdq9CIvWXUCH/i467XJuxFtnSs1zg2rcF+N3tcUl+j9jJVmET3d01t3YNADzn7xRWsf17dfe0Hg=
+	t=1738766609; cv=none; b=urtUsPH5Hn3RnLcAISMX/lzjd80bIwVD9ioYwvSMBVUjEB2be2DNvepqYcSDW1fpvZbJfvVUZUHID9i/EdiQuuVFFq/3+XMg0VfgdfW3XRyQVuoCgcnNSOj0t3m+/XtbQzBhMYWSTolxrKSQCugdwD2NAqICf8WVHA7K3s3VPzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766595; c=relaxed/simple;
-	bh=ivQeF5sVr7mKA4+9YQNJea5c42NHym7NdZn2iHtDYfM=;
+	s=arc-20240116; t=1738766609; c=relaxed/simple;
+	bh=q+BXet4NAClAhK7g7RutEheia3jm/RYDd64udsqvsXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkTJv/g+3hOKNR/6WsvGD2xAWhSYF9R1bFru7FWbFeG7nRF1w7M3YYSxXlAJshizvexrRoYOqSoIic9JpkkKEhJlVQwtZvijU4clDnkoI8B4mbR22PIwNsWa9DS2EgEa76Y000BuGFiUdYKnMwDBu9QLtRo8k067MAAtdkgRCxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07k9U7eZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29431C4CEE8;
-	Wed,  5 Feb 2025 14:43:13 +0000 (UTC)
+	 MIME-Version; b=EuY/h/9F279que14Igy457HxKiK9/G8PqPApde/rKG9dZ6OuC0bGsGCa2My602VDZ4DURF/mfUAKZ0v1hSUmV4WZBZ19rFIj3rqO7o55UjQE0jz89P8DNIHesiNExwhqnkUgm9l5FsgT6Lzaf54qfZ4WQBnVT851nrk8+4LTIcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAOJjB57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31337C4CED6;
+	Wed,  5 Feb 2025 14:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766594;
-	bh=ivQeF5sVr7mKA4+9YQNJea5c42NHym7NdZn2iHtDYfM=;
+	s=korg; t=1738766608;
+	bh=q+BXet4NAClAhK7g7RutEheia3jm/RYDd64udsqvsXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07k9U7eZL9rXHMoDdOZNEe4XcQ9j9HifEFz6ABkiJ9S7BocgCWXSxjy5RZjfC9L0T
-	 STVFQeVbzdfK4owriO0vP3rUse0Vny42qFbMm5XCYQeqGy+z42oHh0UI1Pvtdw68Xe
-	 6lckKMFC5QdWp2C30FGJod1uqIj+6lIEbspA1yBQ=
+	b=pAOJjB57wXFVUlLSKHF2h56e2SM9z+VZWfkaC6tpFLU6GbDL4/nEwJPZfng9em8TK
+	 lJnI6lHbXLH5pe2UXsowl0/S//WRc9v1urui4Km+NKWROYBOBg9FSGbOs+KcNwwoTZ
+	 0faOtzDlD67dVtYD3uFSljTwggHAH2qWfirCL0nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Taniya Das <quic_tdas@quicinc.com>,
+	Ross Burton <ross.burton@arm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 338/590] arm64: dts: qcom: sa8775p: Update sleep_clk frequency
-Date: Wed,  5 Feb 2025 14:41:33 +0100
-Message-ID: <20250205134508.206976828@linuxfoundation.org>
+Subject: [PATCH 6.12 339/590] arm64: defconfig: remove obsolete CONFIG_SM_DISPCC_8650
+Date: Wed,  5 Feb 2025 14:41:34 +0100
+Message-ID: <20250205134508.244097599@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,35 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Ross Burton <ross.burton@arm.com>
 
-[ Upstream commit 30f7dfd2c4899630becf477447e8bbe92683d2c6 ]
+[ Upstream commit 9be2923ff9641d6491b8ea43791382966505435f ]
 
-Fix the sleep_clk frequency is 32000 on SA8775P.
+This option was removed from the Kconfig in commit 802b83205519 ("clk:
+qcom: fold dispcc-sm8650 info dispcc-sm8550") but it was not removed
+from the defconfig.
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20241025-sa8775p-mm-v4-resend-patches-v6-1-329a2cac09ae@quicinc.com
+Fixes: 802b83205519 ("clk: qcom: fold dispcc-sm8650 info dispcc-sm8550")
+Signed-off-by: Ross Burton <ross.burton@arm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241213-clkmaster-v1-1-dcbf7fad37b1@arm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/configs/defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-index 0c1b21def4b62..adb71aeff339b 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p-ride.dtsi
-@@ -517,7 +517,7 @@
- };
- 
- &sleep_clk {
--	clock-frequency = <32764>;
-+	clock-frequency = <32000>;
- };
- 
- &spi16 {
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 5fdbfea7a5b29..8fe7dbae33bf9 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1347,7 +1347,6 @@ CONFIG_SM_DISPCC_6115=m
+ CONFIG_SM_DISPCC_8250=y
+ CONFIG_SM_DISPCC_8450=m
+ CONFIG_SM_DISPCC_8550=m
+-CONFIG_SM_DISPCC_8650=m
+ CONFIG_SM_GCC_4450=y
+ CONFIG_SM_GCC_6115=y
+ CONFIG_SM_GCC_8350=y
 -- 
 2.39.5
 
