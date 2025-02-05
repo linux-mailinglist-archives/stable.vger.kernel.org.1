@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEF1A293D7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3EEA293D3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334DA1891C8D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 503307A398D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674B018B460;
-	Wed,  5 Feb 2025 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0E1185E7F;
+	Wed,  5 Feb 2025 15:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Loo73Akv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMjJX/lZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232BADF59;
-	Wed,  5 Feb 2025 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E972F17B505;
+	Wed,  5 Feb 2025 15:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767795; cv=none; b=N//yqNhZmT43Ql3gXY7o2DOSu8MxAu2GUTHVUgrXWyflWXmRYfCfjfoMJDTAcs7hfwZozHNJlSm8OfAaJIHN3Pce9gcN3GzhxSpMSxeIcK2pfmyvPbNAXTlzE759B1FT1Vumu/rxLKZE0j209csBsPo/GeBV3Dd5I86vIOvZVRo=
+	t=1738768415; cv=none; b=MyD5fETOxvraZyf3bfbVHHtg5HypqL/wwYlhSov4n1fSM0vI5L2hvG6PSLtl9eD1MgF+mHze7lF8OnknTm5PS1BbYEwu4HV84oNznUdx1NOy57MpOxBnx75Ncp03bYehjhMdIevt3KMJXhVUFNjznQKqjg012HTq9KAgfLXkVRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767795; c=relaxed/simple;
-	bh=GViLDs6d5Njm/u1K2NuzxBQmnv/JOncR9bHnej6zmKM=;
+	s=arc-20240116; t=1738768415; c=relaxed/simple;
+	bh=WkM+0DPCsYnKq3I9ydY5mUChYxGUKAl+k1eHaGIlm5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GjetsQi7VIwAJMHgj6A/DrtcyCS7ys+yt2h68tsQrGd4M00E7KQodvDWm5DYa9+WXF3Oe1B2Ufe7FnqkzylPfJNQCWbzmEHdRbbg7DOfV7wlHqG86/RSCwew5ui07nyyMkqHaiRHBRZ3K8WRrgHpf7X1xTwl4xDA5i+/Pu9BCDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Loo73Akv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECFEC4CED1;
-	Wed,  5 Feb 2025 15:03:14 +0000 (UTC)
+	 MIME-Version; b=Or/8d8EO1KE/yrPMrM+RlUK08Ow1V8Zyl4OeodOLW+ahqd1YBNBw1q6/CY7/gaFNIJpe8Vqfp/Ce38sVOuaTOak4r7oXZjLFGUrrxYi6SFqQhVAp2q3OngLV/Tj+TSlbk42gaAA7aBSudbRlgVnX3DKptv18LMmzea2VhK7lYBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMjJX/lZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D46C4CED1;
+	Wed,  5 Feb 2025 15:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767795;
-	bh=GViLDs6d5Njm/u1K2NuzxBQmnv/JOncR9bHnej6zmKM=;
+	s=korg; t=1738768414;
+	bh=WkM+0DPCsYnKq3I9ydY5mUChYxGUKAl+k1eHaGIlm5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Loo73AkvkwwzQ/GA0jh3g0YZu0x8WW3JX2pEbFbGxzVItxJNWb4HxCIGOQCh97Kql
-	 9avfnNRs7VQDcd1Ihwsz6CldaE9MQgiPoiDrNBTDBKT6J//FOUSoidaH41gNVwNYhW
-	 2w6QmJPQWj/PQtc2cEbYaK4cHriWnHsmp2Ib2atw=
+	b=YMjJX/lZCgclKOX5qAUWdZZttZNYZsBNvKY/qfCEh4KrZVrqT0R7cDGc9lSlh/yVc
+	 xuRNxXv/KNNUqD4hEjKIWmNhSMGinsKI00VJoTQgr1uy5M7kOt0CPXSbURy1w3e+yG
+	 Vpm76OM/ti+uYSLm0j3CGHlVyShH2pbVh4HqGF1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+2e5de9e3ab986b71d2bf@syzkaller.appspotmail.com,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 510/590] Bluetooth: btusb: mediatek: Add locks for usb_driver_claim_interface()
+Subject: [PATCH 6.13 523/623] net: netdevsim: try to close UDP port harness races
 Date: Wed,  5 Feb 2025 14:44:25 +0100
-Message-ID: <20250205134514.778810155@linuxfoundation.org>
+Message-ID: <20250205134516.233781186@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e9087e828827e5a5c85e124ce77503f2b81c3491 ]
+[ Upstream commit 50bf398e1ceacb9a7f85bd3bdca065ebe5cb6159 ]
 
-The documentation for usb_driver_claim_interface() says that "the
-device lock" is needed when the function is called from places other
-than probe(). This appears to be the lock for the USB interface
-device. The Mediatek btusb code gets called via this path:
+syzbot discovered that we remove the debugfs files after we free
+the netdev. Try to clean up the relevant dir while the device
+is still around.
 
-  Workqueue: hci0 hci_power_on [bluetooth]
-  Call trace:
-   usb_driver_claim_interface
-   btusb_mtk_claim_iso_intf
-   btusb_mtk_setup
-   hci_dev_open_sync
-   hci_power_on
-   process_scheduled_works
-   worker_thread
-   kthread
-
-With the above call trace the device lock hasn't been claimed. Claim
-it.
-
-Without this fix, we'd sometimes see the error "Failed to claim iso
-interface". Sometimes we'd even see worse errors, like a NULL pointer
-dereference (where `intf->dev.driver` was NULL) with a trace like:
-
-  Call trace:
-   usb_suspend_both
-   usb_runtime_suspend
-   __rpm_callback
-   rpm_suspend
-   pm_runtime_work
-   process_scheduled_works
-
-Both errors appear to be fixed with the proper locking.
-
-Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+2e5de9e3ab986b71d2bf@syzkaller.appspotmail.com
+Fixes: 424be63ad831 ("netdevsim: add UDP tunnel port offload support")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250122224503.762705-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/netdevsim/netdevsim.h             |  1 +
+ drivers/net/netdevsim/udp_tunnels.c           | 23 +++++++++++--------
+ .../drivers/net/netdevsim/udp_tunnel_nic.sh   | 16 ++++++-------
+ 3 files changed, 23 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0c85c981a8334..258a5cb6f27af 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2632,8 +2632,15 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
- 	struct btmtk_data *btmtk_data = hci_get_priv(data->hdev);
- 	int err;
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index bf02efa10956a..84181dcb98831 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -129,6 +129,7 @@ struct netdevsim {
+ 		u32 sleep;
+ 		u32 __ports[2][NSIM_UDP_TUNNEL_N_PORTS];
+ 		u32 (*ports)[NSIM_UDP_TUNNEL_N_PORTS];
++		struct dentry *ddir;
+ 		struct debugfs_u32_array dfs_ports[2];
+ 	} udp_ports;
  
-+	/*
-+	 * The function usb_driver_claim_interface() is documented to need
-+	 * locks held if it's not called from a probe routine. The code here
-+	 * is called from the hci_power_on workqueue, so grab the lock.
-+	 */
-+	device_lock(&btmtk_data->isopkt_intf->dev);
- 	err = usb_driver_claim_interface(&btusb_driver,
- 					 btmtk_data->isopkt_intf, data);
-+	device_unlock(&btmtk_data->isopkt_intf->dev);
- 	if (err < 0) {
- 		btmtk_data->isopkt_intf = NULL;
- 		bt_dev_err(data->hdev, "Failed to claim iso interface");
+diff --git a/drivers/net/netdevsim/udp_tunnels.c b/drivers/net/netdevsim/udp_tunnels.c
+index 02dc3123eb6c1..640b4983a9a0d 100644
+--- a/drivers/net/netdevsim/udp_tunnels.c
++++ b/drivers/net/netdevsim/udp_tunnels.c
+@@ -112,9 +112,11 @@ nsim_udp_tunnels_info_reset_write(struct file *file, const char __user *data,
+ 	struct net_device *dev = file->private_data;
+ 	struct netdevsim *ns = netdev_priv(dev);
+ 
+-	memset(ns->udp_ports.ports, 0, sizeof(ns->udp_ports.__ports));
+ 	rtnl_lock();
+-	udp_tunnel_nic_reset_ntf(dev);
++	if (dev->reg_state == NETREG_REGISTERED) {
++		memset(ns->udp_ports.ports, 0, sizeof(ns->udp_ports.__ports));
++		udp_tunnel_nic_reset_ntf(dev);
++	}
+ 	rtnl_unlock();
+ 
+ 	return count;
+@@ -144,23 +146,23 @@ int nsim_udp_tunnels_info_create(struct nsim_dev *nsim_dev,
+ 	else
+ 		ns->udp_ports.ports = nsim_dev->udp_ports.__ports;
+ 
+-	debugfs_create_u32("udp_ports_inject_error", 0600,
+-			   ns->nsim_dev_port->ddir,
++	ns->udp_ports.ddir = debugfs_create_dir("udp_ports",
++						ns->nsim_dev_port->ddir);
++
++	debugfs_create_u32("inject_error", 0600, ns->udp_ports.ddir,
+ 			   &ns->udp_ports.inject_error);
+ 
+ 	ns->udp_ports.dfs_ports[0].array = ns->udp_ports.ports[0];
+ 	ns->udp_ports.dfs_ports[0].n_elements = NSIM_UDP_TUNNEL_N_PORTS;
+-	debugfs_create_u32_array("udp_ports_table0", 0400,
+-				 ns->nsim_dev_port->ddir,
++	debugfs_create_u32_array("table0", 0400, ns->udp_ports.ddir,
+ 				 &ns->udp_ports.dfs_ports[0]);
+ 
+ 	ns->udp_ports.dfs_ports[1].array = ns->udp_ports.ports[1];
+ 	ns->udp_ports.dfs_ports[1].n_elements = NSIM_UDP_TUNNEL_N_PORTS;
+-	debugfs_create_u32_array("udp_ports_table1", 0400,
+-				 ns->nsim_dev_port->ddir,
++	debugfs_create_u32_array("table1", 0400, ns->udp_ports.ddir,
+ 				 &ns->udp_ports.dfs_ports[1]);
+ 
+-	debugfs_create_file("udp_ports_reset", 0200, ns->nsim_dev_port->ddir,
++	debugfs_create_file("reset", 0200, ns->udp_ports.ddir,
+ 			    dev, &nsim_udp_tunnels_info_reset_fops);
+ 
+ 	/* Note: it's not normal to allocate the info struct like this!
+@@ -196,6 +198,9 @@ int nsim_udp_tunnels_info_create(struct nsim_dev *nsim_dev,
+ 
+ void nsim_udp_tunnels_info_destroy(struct net_device *dev)
+ {
++	struct netdevsim *ns = netdev_priv(dev);
++
++	debugfs_remove_recursive(ns->udp_ports.ddir);
+ 	kfree(dev->udp_tunnel_nic_info);
+ 	dev->udp_tunnel_nic_info = NULL;
+ }
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
+index 384cfa3d38a6c..92c2f0376c081 100755
+--- a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
++++ b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
+@@ -142,7 +142,7 @@ function pre_ethtool {
+ }
+ 
+ function check_table {
+-    local path=$NSIM_DEV_DFS/ports/$port/udp_ports_table$1
++    local path=$NSIM_DEV_DFS/ports/$port/udp_ports/table$1
+     local -n expected=$2
+     local last=$3
+ 
+@@ -212,7 +212,7 @@ function check_tables {
+ }
+ 
+ function print_table {
+-    local path=$NSIM_DEV_DFS/ports/$port/udp_ports_table$1
++    local path=$NSIM_DEV_DFS/ports/$port/udp_ports/table$1
+     read -a have < $path
+ 
+     tree $NSIM_DEV_DFS/
+@@ -641,7 +641,7 @@ for port in 0 1; do
+     NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ip link set dev $NSIM_NETDEV up
+ 
+-    echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
++    echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports/inject_error
+ 
+     msg="1 - create VxLANs v6"
+     exp0=( 0 0 0 0 )
+@@ -663,7 +663,7 @@ for port in 0 1; do
+     new_geneve gnv0 20000
+ 
+     msg="2 - destroy GENEVE"
+-    echo 2 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
++    echo 2 > $NSIM_DEV_DFS/ports/$port/udp_ports/inject_error
+     exp1=( `mke 20000 2` 0 0 0 )
+     del_dev gnv0
+ 
+@@ -764,7 +764,7 @@ for port in 0 1; do
+     msg="create VxLANs v4"
+     new_vxlan vxlan0 10000 $NSIM_NETDEV
+ 
+-    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
++    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
+     check_tables
+ 
+     msg="NIC device goes down"
+@@ -775,7 +775,7 @@ for port in 0 1; do
+     fi
+     check_tables
+ 
+-    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
++    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
+     check_tables
+ 
+     msg="NIC device goes up again"
+@@ -789,7 +789,7 @@ for port in 0 1; do
+     del_dev vxlan0
+     check_tables
+ 
+-    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
++    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
+     check_tables
+ 
+     msg="destroy NIC"
+@@ -896,7 +896,7 @@ msg="vacate VxLAN in overflow table"
+ exp0=( `mke 10000 1` `mke 10004 1` 0 `mke 10003 1` )
+ del_dev vxlan2
+ 
+-echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
++echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
+ check_tables
+ 
+ msg="tunnels destroyed 2"
 -- 
 2.39.5
 
