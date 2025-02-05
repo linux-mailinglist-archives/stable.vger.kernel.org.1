@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD04FA28F15
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B01A28EFB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3F9B3A6546
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A374D16046F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CCEF14B959;
-	Wed,  5 Feb 2025 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94C214B959;
+	Wed,  5 Feb 2025 14:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EitCV9gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCnTs04h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4978186348;
-	Wed,  5 Feb 2025 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C0013C3F6;
+	Wed,  5 Feb 2025 14:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765205; cv=none; b=BYno9J7nQDUxrjWzfsSQZBUHgRblnBtFmCMffJL6Mvlq6dwowV6YNChCaYaVk4frY6jez3OIu5fkQi6tCqfEWY9Gyp0hkj8ZSgv9bzT587qaHFE8ayi+2O4h0QTMPncm58rra3BrqLEpP9F7hciuGSWLvnkrL+1r+Ph4dtbdKFg=
+	t=1738765215; cv=none; b=cdlijt2KkLHhfvpJ+5kDFGTw5nRJrTr0XqQ2UnfIAmyx2WkRT/Pzaec26EDMi093aAOVi4tNYVbxJrr/BjtDEKBJdAZGgB0GKG+r0q65UUi/4+YLLkjnxZJAJpOGcoOWKfSRdInZADCBL9/td/e6BDfdsnVA8mA/lY+RsEtZ7xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765205; c=relaxed/simple;
-	bh=aA/IcsQwryif1TZgonu65Imlvbgm2Ai9LPMf86aQXWQ=;
+	s=arc-20240116; t=1738765215; c=relaxed/simple;
+	bh=2+ho2Pwyo7u6Y4hq4LRSo/f3S3f09DJIVuxumLuvA+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zu0K0CPZWDxWJqhthIqvbsk62mOjpqUvmNcJDZZHzOyQDeuAWKM6iZ+XU304AGgMRO5hyQwX27SzuFXuPQo17XUFzjgwsLA/oVARobDcq/SfW9ckC6rEWFP1u+pjSd7bzMkOMtBSVZTQhBmIYWAfTn6TRFqrFeK0wKrKdJpZWZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EitCV9gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9792C4CED1;
-	Wed,  5 Feb 2025 14:20:04 +0000 (UTC)
+	 MIME-Version; b=uIjNzb+D4abfFVlmV3mte6V4iaE4MkdEhbnevzyn6onxT85QmOt/cviPAngaHsUnP2ku6GiMUrKlYZW2xjmRfNrlv9JZvBEO54Ki1yWBc4P9TBbrhysZDYNY5sOy07n8W/TU12kIV0U36tFlhwccM3AkkejDR6JOT822IeLWWyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCnTs04h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC399C4CED1;
+	Wed,  5 Feb 2025 14:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765205;
-	bh=aA/IcsQwryif1TZgonu65Imlvbgm2Ai9LPMf86aQXWQ=;
+	s=korg; t=1738765215;
+	bh=2+ho2Pwyo7u6Y4hq4LRSo/f3S3f09DJIVuxumLuvA+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EitCV9gcZpgoNIoyJrVP8S7F6BCj0UJ9ZEZmivq+CBXY9AeyB1h2ifkCecq1aeV20
-	 7R4pK9z21g16N8eihvFPsPcUZT1jC1JT00Q0ZohFvfBp8eqKecN0Qd/Lk295w81ssN
-	 fBtpVM4gSAm6dXtHZXlDjy8b6yu/3MWqvRpPRzJQ=
+	b=VCnTs04hbwrHTN3cdnicCdEJ+16kpwjCBMMe5C9vRQfeAxWBW5C93s2mU1o/h8Ts6
+	 PCbED4wwe5WHlMkOjM1UlGcvHpVmtF/Tc1FjeRVEAqOvU4MYY5uFIXeuUaij3bq5Av
+	 ws6Etdth1Xzm2+GbCwTvWj81wbWgmNwJhIn/FeMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/393] arm64: dts: qcom: sm4450: correct sleep clock frequency
-Date: Wed,  5 Feb 2025 14:42:42 +0100
-Message-ID: <20250205134429.601969555@linuxfoundation.org>
+Subject: [PATCH 6.6 244/393] arm64: dts: qcom: sm6125: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:42:43 +0100
+Message-ID: <20250205134429.639420533@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -68,32 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 158e67cf3619dbb5b9914bb364889041f4b90eea ]
+[ Upstream commit b3c547e1507862f0e4d46432b665c5c6e61e14d6 ]
 
-The SM4450 platform uses PM4450 to provide sleep clock. According to the
+The SM6125 platform uses PM6125 to provide sleep clock. According to the
 documentation, that clock has 32.7645 kHz frequency. Correct the sleep
 clock definition.
 
-Fixes: 7a1fd03e7410 ("arm64: dts: qcom: Adds base SM4450 DTSI")
+Fixes: cff4bbaf2a2d ("arm64: dts: qcom: Add support for SM6125")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-10-e9b08fbeadd3@linaro.org
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-11-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm4450.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/sm6125.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm4450.dtsi b/arch/arm64/boot/dts/qcom/sm4450.dtsi
-index c4e5b33f5169c..51240f45c8e84 100644
---- a/arch/arm64/boot/dts/qcom/sm4450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm4450.dtsi
-@@ -23,7 +23,7 @@
- 
+diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+index 07081088ba146..2b2c55132f673 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+@@ -28,7 +28,7 @@
  		sleep_clk: sleep-clk {
  			compatible = "fixed-clock";
+ 			#clock-cells = <0>;
 -			clock-frequency = <32000>;
 +			clock-frequency = <32764>;
- 			#clock-cells = <0>;
+ 			clock-output-names = "sleep_clk";
  		};
  	};
 -- 
