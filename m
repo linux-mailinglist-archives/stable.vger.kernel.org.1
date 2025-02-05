@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-113334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7E9A29183
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD60A28E5C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86D387A219F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6B827A0590
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46348197A76;
-	Wed,  5 Feb 2025 14:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED79314D2A2;
+	Wed,  5 Feb 2025 14:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAOJjB57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSEI9Az5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FCD1684B0;
-	Wed,  5 Feb 2025 14:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB46A15198D;
+	Wed,  5 Feb 2025 14:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766609; cv=none; b=urtUsPH5Hn3RnLcAISMX/lzjd80bIwVD9ioYwvSMBVUjEB2be2DNvepqYcSDW1fpvZbJfvVUZUHID9i/EdiQuuVFFq/3+XMg0VfgdfW3XRyQVuoCgcnNSOj0t3m+/XtbQzBhMYWSTolxrKSQCugdwD2NAqICf8WVHA7K3s3VPzI=
+	t=1738764693; cv=none; b=STTL4ibnWaCXmhmhU+7FXBc5W99lXUfpCYUZZ00n3M1uuGZEtqaxGnWxApvyt+MY5wQjPLHyl5bvxIBOgeRhQJOHQPeqnLUhCg7XpUsVNuMV+YFyVztF/5VorhBcVXRrszMWS4DscJ12CMcJh5v/+LLWhcxEriyK7CrFCQDyWLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766609; c=relaxed/simple;
-	bh=q+BXet4NAClAhK7g7RutEheia3jm/RYDd64udsqvsXs=;
+	s=arc-20240116; t=1738764693; c=relaxed/simple;
+	bh=FyH55BMYbGrv8HcLmuHvOdnASara61BhkuyQEwsCI7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuY/h/9F279que14Igy457HxKiK9/G8PqPApde/rKG9dZ6OuC0bGsGCa2My602VDZ4DURF/mfUAKZ0v1hSUmV4WZBZ19rFIj3rqO7o55UjQE0jz89P8DNIHesiNExwhqnkUgm9l5FsgT6Lzaf54qfZ4WQBnVT851nrk8+4LTIcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAOJjB57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31337C4CED6;
-	Wed,  5 Feb 2025 14:43:27 +0000 (UTC)
+	 MIME-Version; b=LN3piB8/pUiFDyYPgBi9qPfXuf/c757qhw4Rcd8JddoCTbB2aAwbbmbd02Dq5TG2ZJ/hL1GImD7e1dQruMkSiEGosp2Dw7VK3DvmygQQ7oZpPfipVEc00efN2xpW5GBtkCxNrMRh1OL54Z1MAutmWalzefyKLcMfiPLrG4qZqmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSEI9Az5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5DDC4CED1;
+	Wed,  5 Feb 2025 14:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766608;
-	bh=q+BXet4NAClAhK7g7RutEheia3jm/RYDd64udsqvsXs=;
+	s=korg; t=1738764693;
+	bh=FyH55BMYbGrv8HcLmuHvOdnASara61BhkuyQEwsCI7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pAOJjB57wXFVUlLSKHF2h56e2SM9z+VZWfkaC6tpFLU6GbDL4/nEwJPZfng9em8TK
-	 lJnI6lHbXLH5pe2UXsowl0/S//WRc9v1urui4Km+NKWROYBOBg9FSGbOs+KcNwwoTZ
-	 0faOtzDlD67dVtYD3uFSljTwggHAH2qWfirCL0nw=
+	b=tSEI9Az59mH6oVv6oCXN+7+HyrQqvG9C2IBrv7TNdEQ12dz89agDz61aEZ13v+T7w
+	 YMK1jIvEbgeg2ITAHbHLZIhzVicW0q+VjNFPYn4FQhKKHXWgfy/LjVzXgpKeMSN0jE
+	 KQ2IMbtQtaUiXkqNU4xY4gGornw3S5iA9fSSyAvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Burton <ross.burton@arm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <songliubraving@fb.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 339/590] arm64: defconfig: remove obsolete CONFIG_SM_DISPCC_8650
+Subject: [PATCH 6.6 175/393] perf machine: Dont ignore _etext when not a text symbol
 Date: Wed,  5 Feb 2025 14:41:34 +0100
-Message-ID: <20250205134508.244097599@linuxfoundation.org>
+Message-ID: <20250205134426.990638038@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +73,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Burton <ross.burton@arm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 9be2923ff9641d6491b8ea43791382966505435f ]
+[ Upstream commit 7a93786c306296f15e728b1dbd949a319e4e3d19 ]
 
-This option was removed from the Kconfig in commit 802b83205519 ("clk:
-qcom: fold dispcc-sm8650 info dispcc-sm8550") but it was not removed
-from the defconfig.
+Depending on how vmlinux.lds is written, _etext might be the very first
+data symbol instead of the very last text symbol.
 
-Fixes: 802b83205519 ("clk: qcom: fold dispcc-sm8650 info dispcc-sm8550")
-Signed-off-by: Ross Burton <ross.burton@arm.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241213-clkmaster-v1-1-dcbf7fad37b1@arm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Don't require it to be a text symbol, accept any symbol type.
+
+Comitter notes:
+
+See the first Link for further discussion, but it all boils down to
+this:
+
+ ---
+  # grep -e _stext -e _etext -e _edata /proc/kallsyms
+  c0000000 T _stext
+  c08b8000 D _etext
+
+  So there is no _edata and _etext is not text
+
+  $ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
+  c0000000 g       .head.text	00000000 _stext
+  c08b8000 g       .rodata	00000000 _etext
+  c1378000 g       .sbss	00000000 _edata
+ ---
+
+Fixes: ed9adb2035b5be58 ("perf machine: Read also the end of the kernel")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Link: https://lore.kernel.org/r/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/configs/defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ tools/perf/util/machine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 5fdbfea7a5b29..8fe7dbae33bf9 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1347,7 +1347,6 @@ CONFIG_SM_DISPCC_6115=m
- CONFIG_SM_DISPCC_8250=y
- CONFIG_SM_DISPCC_8450=m
- CONFIG_SM_DISPCC_8550=m
--CONFIG_SM_DISPCC_8650=m
- CONFIG_SM_GCC_4450=y
- CONFIG_SM_GCC_6115=y
- CONFIG_SM_GCC_8350=y
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 7c6874804660e..e2a6facd1c4e2 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1217,7 +1217,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
+ 
+ 	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
+ 	if (err)
+-		err = kallsyms__get_function_start(filename, "_etext", &addr);
++		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
+ 	if (!err)
+ 		*end = addr;
+ 
 -- 
 2.39.5
 
