@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-112815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428D8A28E89
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC5AA28DF0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97AA53A22E0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1D51888214
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F3614A088;
-	Wed,  5 Feb 2025 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133E21547E9;
+	Wed,  5 Feb 2025 14:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1BgHrFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZQtQmj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFE31519AA;
-	Wed,  5 Feb 2025 14:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12441519AA;
+	Wed,  5 Feb 2025 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764850; cv=none; b=k454ny7hJAwSIQ8RbFtQFl8oKXjEBrbJEOlONjunHe7ZWGVAPJm7RhT5OBYDZw0m3AeFfaXVZwIeiZq7D/XaIFCpVTeV/Pnw5PlDdzU1ZgVlv7xp/z9KyjrJeB+Q8Mplln5ogEkGqlrWBGOecun9yXGTKHCEZ9/rt7XX9DhnOQ8=
+	t=1738764379; cv=none; b=JWro2jv0RUrHGiaRat0mfxObo0LArq3w4CnY4rgwIJt3mkzBD8k5zceVbhsagUfFqeu5WqH0rtmRCeZF3oWg33CqmdtgcBeZcI60be6Mk00Dh9drJElkut0RwznVNh50W9QaDWEh4Q+XVWATE/oE1LXWrCL2NPO6KWVCAFuER9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764850; c=relaxed/simple;
-	bh=iGdu366h5LqlRUxMgHwHMnqBFCnIvJjSu/M/2NilJD0=;
+	s=arc-20240116; t=1738764379; c=relaxed/simple;
+	bh=8eDq47HPxCf6jTybK5Kio0Esdiko9Of1OQuAIC2/iS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoR6Qt7bLD5VPZekdwktfzKtjmeD9x0+M8X1tRX1ZeqpRn4UCI3QHwsNhjzAPdoADTMruW+P7LVaRUsuOdRRLbHp/c7ee9hybSziiGgMILVyxKRcKvtZJKN6ZBkOkn8QbtajBcxkggHJ76nOZ6u9eX1pRkgcsVEHLxtUu7RydaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1BgHrFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC375C4CED1;
-	Wed,  5 Feb 2025 14:14:09 +0000 (UTC)
+	 MIME-Version; b=tvBArmbC9JiXp8YK/+evCN1bjQYaB8B6A4fVjuHDJZRfeHSP3L2GLmqYvALbvApMi7dcL+GsPaswJ8kmejuGQeLe4vsDyB5rXxpHVwWNd6qbwJkgpxkBNJGS+7Vr0K1axQjdlgx2nFQ9jLOyA5FcXaDwhql84rqqQUlurthLJfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZQtQmj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB47AC4CED1;
+	Wed,  5 Feb 2025 14:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764850;
-	bh=iGdu366h5LqlRUxMgHwHMnqBFCnIvJjSu/M/2NilJD0=;
+	s=korg; t=1738764379;
+	bh=8eDq47HPxCf6jTybK5Kio0Esdiko9Of1OQuAIC2/iS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1BgHrFfErrF9LhoSsT/m8UysjLrcaB5/9RJHv4H/cUNvxvStOcBCOkMhgVL+6QE5
-	 /5hshhiFrGgXNCmmP7vx59M/3CeBiBMZ68bT3GO3nER1Th65fnoeRUwrHnxSv2dZFk
-	 QmLdS9xvrKEd3v/J4A9RmqC9wl/8ZcQ0ANQaQ0tA=
+	b=lZQtQmj5o/hO9cDcPHcUxr/iwlfEPAuAxgpsMqo5FLirR9WzIdwa3Gow8/4gH3i5I
+	 ZXbvtY3X+CiRvSQv8MCoFOwPLiHLv3mRx9V/xaGqDu0VGgaqXl34JLNGDZxW0lr6SH
+	 uN5mflpkek14/XYsQ3VZcTjz807mkAyLyraVVgaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 119/623] inetpeer: update inetpeer timestamp in inet_getpeer()
+Subject: [PATCH 6.12 106/590] inetpeer: remove create argument of inet_getpeer_v[46]()
 Date: Wed,  5 Feb 2025 14:37:41 +0100
-Message-ID: <20250205134500.773829226@linuxfoundation.org>
+Message-ID: <20250205134459.313106302@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 50b362f21d6c10b0f7939c1482c6a1b43da82f1a ]
+[ Upstream commit 661cd8fc8e9039819ca0c22e0add52b632240a9e ]
 
-inet_putpeer() will be removed in the following patch,
-because we will no longer use refcounts.
-
-Update inetpeer timestamp (p->dtime) at lookup time.
+All callers of inet_getpeer_v4() and inet_getpeer_v6()
+want to create an inetpeer.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241215175629.1248773-4-edumazet@google.com
+Link: https://patch.msgid.link/20241215175629.1248773-2-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: a853c609504e ("inetpeer: do not get a refcount in inet_getpeer()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inetpeer.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ include/net/inetpeer.h | 9 ++++-----
+ net/ipv4/icmp.c        | 2 +-
+ net/ipv4/ip_fragment.c | 2 +-
+ net/ipv4/route.c       | 4 ++--
+ net/ipv6/icmp.c        | 2 +-
+ net/ipv6/ip6_output.c  | 2 +-
+ net/ipv6/ndisc.c       | 2 +-
+ 7 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
-index bc79cc9d13ebb..28c3ae5bc4a0b 100644
---- a/net/ipv4/inetpeer.c
-+++ b/net/ipv4/inetpeer.c
-@@ -95,6 +95,7 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
+diff --git a/include/net/inetpeer.h b/include/net/inetpeer.h
+index 74ff688568a0c..6f51f81d6cb19 100644
+--- a/include/net/inetpeer.h
++++ b/include/net/inetpeer.h
+@@ -101,25 +101,24 @@ struct inet_peer *inet_getpeer(struct inet_peer_base *base,
+ 
+ static inline struct inet_peer *inet_getpeer_v4(struct inet_peer_base *base,
+ 						__be32 v4daddr,
+-						int vif, int create)
++						int vif)
  {
- 	struct rb_node **pp, *parent, *next;
- 	struct inet_peer *p;
-+	u32 now;
+ 	struct inetpeer_addr daddr;
  
- 	pp = &base->rb_root.rb_node;
- 	parent = NULL;
-@@ -110,6 +111,9 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
- 		if (cmp == 0) {
- 			if (!refcount_inc_not_zero(&p->refcnt))
- 				break;
-+			now = jiffies;
-+			if (READ_ONCE(p->dtime) != now)
-+				WRITE_ONCE(p->dtime, now);
- 			return p;
- 		}
- 		if (gc_stack) {
-@@ -150,9 +154,6 @@ static void inet_peer_gc(struct inet_peer_base *base,
- 	for (i = 0; i < gc_cnt; i++) {
- 		p = gc_stack[i];
- 
--		/* The READ_ONCE() pairs with the WRITE_ONCE()
--		 * in inet_putpeer()
--		 */
- 		delta = (__u32)jiffies - READ_ONCE(p->dtime);
- 
- 		if (delta < ttl || !refcount_dec_if_one(&p->refcnt))
-@@ -224,11 +225,6 @@ EXPORT_SYMBOL_GPL(inet_getpeer);
- 
- void inet_putpeer(struct inet_peer *p)
- {
--	/* The WRITE_ONCE() pairs with itself (we run lockless)
--	 * and the READ_ONCE() in inet_peer_gc()
--	 */
--	WRITE_ONCE(p->dtime, (__u32)jiffies);
--
- 	if (refcount_dec_and_test(&p->refcnt))
- 		kfree_rcu(p, rcu);
+ 	daddr.a4.addr = v4daddr;
+ 	daddr.a4.vif = vif;
+ 	daddr.family = AF_INET;
+-	return inet_getpeer(base, &daddr, create);
++	return inet_getpeer(base, &daddr, 1);
  }
+ 
+ static inline struct inet_peer *inet_getpeer_v6(struct inet_peer_base *base,
+-						const struct in6_addr *v6daddr,
+-						int create)
++						const struct in6_addr *v6daddr)
+ {
+ 	struct inetpeer_addr daddr;
+ 
+ 	daddr.a6 = *v6daddr;
+ 	daddr.family = AF_INET6;
+-	return inet_getpeer(base, &daddr, create);
++	return inet_getpeer(base, &daddr, 1);
+ }
+ 
+ static inline int inetpeer_addr_cmp(const struct inetpeer_addr *a,
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index c3ad41573b33e..c9846159a4c3e 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -322,7 +322,7 @@ static bool icmpv4_xrlim_allow(struct net *net, struct rtable *rt,
+ 		goto out;
+ 
+ 	vif = l3mdev_master_ifindex(dst->dev);
+-	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr, vif, 1);
++	peer = inet_getpeer_v4(net->ipv4.peers, fl4->daddr, vif);
+ 	rc = inet_peer_xrlim_allow(peer,
+ 				   READ_ONCE(net->ipv4.sysctl_icmp_ratelimit));
+ 	if (peer)
+diff --git a/net/ipv4/ip_fragment.c b/net/ipv4/ip_fragment.c
+index a92664a5ef2ef..34f9dbc4ccb40 100644
+--- a/net/ipv4/ip_fragment.c
++++ b/net/ipv4/ip_fragment.c
+@@ -89,7 +89,7 @@ static void ip4_frag_init(struct inet_frag_queue *q, const void *a)
+ 	q->key.v4 = *key;
+ 	qp->ecn = 0;
+ 	qp->peer = q->fqdir->max_dist ?
+-		inet_getpeer_v4(net->ipv4.peers, key->saddr, key->vif, 1) :
++		inet_getpeer_v4(net->ipv4.peers, key->saddr, key->vif) :
+ 		NULL;
+ }
+ 
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 723ac9181558c..7a4cf60cece7c 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -873,7 +873,7 @@ void ip_rt_send_redirect(struct sk_buff *skb)
+ 	rcu_read_unlock();
+ 
+ 	net = dev_net(rt->dst.dev);
+-	peer = inet_getpeer_v4(net->ipv4.peers, ip_hdr(skb)->saddr, vif, 1);
++	peer = inet_getpeer_v4(net->ipv4.peers, ip_hdr(skb)->saddr, vif);
+ 	if (!peer) {
+ 		icmp_send(skb, ICMP_REDIRECT, ICMP_REDIR_HOST,
+ 			  rt_nexthop(rt, ip_hdr(skb)->daddr));
+@@ -976,7 +976,7 @@ static int ip_error(struct sk_buff *skb)
+ 	}
+ 
+ 	peer = inet_getpeer_v4(net->ipv4.peers, ip_hdr(skb)->saddr,
+-			       l3mdev_master_ifindex(skb->dev), 1);
++			       l3mdev_master_ifindex(skb->dev));
+ 
+ 	send = true;
+ 	if (peer) {
+diff --git a/net/ipv6/icmp.c b/net/ipv6/icmp.c
+index 071b0bc1179d8..4593e3992c67b 100644
+--- a/net/ipv6/icmp.c
++++ b/net/ipv6/icmp.c
+@@ -222,7 +222,7 @@ static bool icmpv6_xrlim_allow(struct sock *sk, u8 type,
+ 		if (rt->rt6i_dst.plen < 128)
+ 			tmo >>= ((128 - rt->rt6i_dst.plen)>>5);
+ 
+-		peer = inet_getpeer_v6(net->ipv6.peers, &fl6->daddr, 1);
++		peer = inet_getpeer_v6(net->ipv6.peers, &fl6->daddr);
+ 		res = inet_peer_xrlim_allow(peer, tmo);
+ 		if (peer)
+ 			inet_putpeer(peer);
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index f26841f1490f5..a66180a3eefe9 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -613,7 +613,7 @@ int ip6_forward(struct sk_buff *skb)
+ 		else
+ 			target = &hdr->daddr;
+ 
+-		peer = inet_getpeer_v6(net->ipv6.peers, &hdr->daddr, 1);
++		peer = inet_getpeer_v6(net->ipv6.peers, &hdr->daddr);
+ 
+ 		/* Limit redirects both by destination (here)
+ 		   and by source (inside ndisc_send_redirect)
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index aba94a3486737..f113554d13325 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1731,7 +1731,7 @@ void ndisc_send_redirect(struct sk_buff *skb, const struct in6_addr *target)
+ 			  "Redirect: destination is not a neighbour\n");
+ 		goto release;
+ 	}
+-	peer = inet_getpeer_v6(net->ipv6.peers, &ipv6_hdr(skb)->saddr, 1);
++	peer = inet_getpeer_v6(net->ipv6.peers, &ipv6_hdr(skb)->saddr);
+ 	ret = inet_peer_xrlim_allow(peer, 1*HZ);
+ 	if (peer)
+ 		inet_putpeer(peer);
 -- 
 2.39.5
 
