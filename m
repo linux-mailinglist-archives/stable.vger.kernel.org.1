@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9F6A292B4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE71A28F66
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707A93AC83D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC63E1888B22
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2E21547E9;
-	Wed,  5 Feb 2025 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064B0156C76;
+	Wed,  5 Feb 2025 14:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2syTNd1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBwBLejE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4BC33993;
-	Wed,  5 Feb 2025 14:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70A6156225;
+	Wed,  5 Feb 2025 14:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767248; cv=none; b=MJPfmFUszgfejvTpYzeO3Q+o8aZ5BaxIC9X7BwO5TqrnNS4wN81DvMoMfGm0eee1R7Aru1v6JQ7WVCdiVT9zWE2JInAGousU5HPXaw8f9XuHOccsZlWNWGi3QbMTjmCGhYzWuQXUdXJmHYXgkhCQVzxb3V5SeZcGtRoIr4kZieg=
+	t=1738765411; cv=none; b=KWmy9Kyl2Dc+3pl9Uog6lxkEbRvlwxz8FW23xF9zNzqzHpgiIjh1pBFdCPEVesZiKbVYSpojf3O7XIGcW2dgjCvN2K9b7JvK7zNsbs/H3atleHEY9SGWd106N+kqbkkFQQybb5cIFn14G5Mug0tuHE4rYdZIAXnw87/Q272B5Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767248; c=relaxed/simple;
-	bh=9nqX5HzN8GobDWVhUgNmTsms4vdtRuUg1Ki1fKc30sg=;
+	s=arc-20240116; t=1738765411; c=relaxed/simple;
+	bh=ZbthPkR9aLcM2Ahs7oDANN32V4KRQOoG7T5Ub2ephO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y+OJGYhRiOScY2gM9NTAGOb+GXjAlJPmKwchQqEg16Cgso8DBJYmCGLFkKXdZs2+idWUSB7prHiQGKnRYiJrx00oGnkVy1f3ckM155NMYcsCA/CjnizzOzw0zOt/cxshGPQ19j+A95kq7OC6a0J2APNtkmAIcykmlKVpPCuFxus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2syTNd1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02880C4CED1;
-	Wed,  5 Feb 2025 14:54:07 +0000 (UTC)
+	 MIME-Version; b=tysgPfnXEpTLZzAX160sLtbSTBJnuyDQQrJWHaRVt09TdafrrquwfWcACMI+/I+el+wyg6a6NQe/yYiTek0reS7l9gtbMqnn8kyMmT9tR7J/sIZDvUwtJpOvJd0z0ovUdbut03V4Ti1Fo/TnQX1W6nsEi4w3XcWeFfzJvZy8Ctk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBwBLejE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA1AC4CED1;
+	Wed,  5 Feb 2025 14:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767248;
-	bh=9nqX5HzN8GobDWVhUgNmTsms4vdtRuUg1Ki1fKc30sg=;
+	s=korg; t=1738765411;
+	bh=ZbthPkR9aLcM2Ahs7oDANN32V4KRQOoG7T5Ub2ephO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2syTNd1ygidaxCE4dlXr0kkoL12CYmYH/JQJ4fLY3O+DNB36rM63ER5AJmLw9MmZo
-	 zJwkY8NGAxdbBs7reURoYiXvdqCOIhW0sHVx/SX0MGcF0rKUnWY/EjpihqvXdFUUVX
-	 s3xr+QU9G4gC5OWF6EwYoICi8nlhpQDL6zf4cExU=
+	b=vBwBLejELojK4n56uCbLkEY9aDGR9HrAFBMPQOQWVPuVar945SnoI6we34Eie4XLy
+	 nXauNk9FvMe5JeGCXwn5Y+piJ4PJy89LHrTK9GKBO2FJ+8eBW7A6Y1VeRFRX7TtB35
+	 hEbIYtNpp3mvAZxt/zzzOvceWDRax3PYsLQzfFP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/590] PCI: qcom: Update ICC and OPP values after Link Up event
+Subject: [PATCH 6.6 265/393] arm64: dts: qcom: sc8280xp: Fix up remoteproc register space sizes
 Date: Wed,  5 Feb 2025 14:43:04 +0100
-Message-ID: <20250205134511.677914027@linuxfoundation.org>
+Message-ID: <20250205134430.450846590@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit f0639013d340580b72df95d012a93f35eeb0da64 ]
+[ Upstream commit 7ec7e327286182c65d0b5b81dff498d620fe9e8c ]
 
-4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in
-'global_irq' interrupt") added the Link Up-based enumeration support, but
-did not update the ICC/OPP vote once link is up. Before that, the update
-happened during probe and the endpoints may or may not be enumerated at
-that time, so the ICC/OPP vote was not guaranteed to be accurate.
+Make sure the remoteproc reg ranges reflect the entire register space
+they refer to.
 
-With Link Up-based enumeration support, the driver can request the accurate
-vote based on the PCIe link.
+Since they're unused by the driver, there's no functional change.
 
-Call qcom_pcie_icc_opp_update() in qcom_pcie_global_irq_thread() after
-enumerating the endpoints.
-
-Fixes: 4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in 'global_irq' interrupt")
-Link: https://lore.kernel.org/r/20241123-remove_wait2-v5-3-b5f9e6b794c2@quicinc.com
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20241212-topic-8280_rproc_reg-v1-1-bd1c696e91b0@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 6483e1874477e..4c141e05f84e9 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1559,6 +1559,8 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
- 		pci_lock_rescan_remove();
- 		pci_rescan_bus(pp->bridge->bus);
- 		pci_unlock_rescan_remove();
-+
-+		qcom_pcie_icc_opp_update(pcie);
- 	} else {
- 		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
- 			      status);
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index 6425c74edd60c..3e70e79ce24b0 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -2642,7 +2642,7 @@
+ 
+ 		remoteproc_adsp: remoteproc@3000000 {
+ 			compatible = "qcom,sc8280xp-adsp-pas";
+-			reg = <0 0x03000000 0 0x100>;
++			reg = <0 0x03000000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 162 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+@@ -4399,7 +4399,7 @@
+ 
+ 		remoteproc_nsp0: remoteproc@1b300000 {
+ 			compatible = "qcom,sc8280xp-nsp0-pas";
+-			reg = <0 0x1b300000 0 0x100>;
++			reg = <0 0x1b300000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_nsp0_in 0 IRQ_TYPE_EDGE_RISING>,
+@@ -4530,7 +4530,7 @@
+ 
+ 		remoteproc_nsp1: remoteproc@21300000 {
+ 			compatible = "qcom,sc8280xp-nsp1-pas";
+-			reg = <0 0x21300000 0 0x100>;
++			reg = <0 0x21300000 0 0x10000>;
+ 
+ 			interrupts-extended = <&intc GIC_SPI 887 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&smp2p_nsp1_in 0 IRQ_TYPE_EDGE_RISING>,
 -- 
 2.39.5
 
