@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 811E2A28C72
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16346A28F50
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4935D1882468
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E0E7A14D7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EBE13AD22;
-	Wed,  5 Feb 2025 13:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8176E14B080;
+	Wed,  5 Feb 2025 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwuqjX35"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GITLkS8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276C0126C18;
-	Wed,  5 Feb 2025 13:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0B31547D8;
+	Wed,  5 Feb 2025 14:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763396; cv=none; b=BtArDhvLTqwVGOFM7U8ZF6MKJZ+wXXTf2ZAgTOIR7RtA2Xz5SLgow3hdLLUl4sNF34FOCn3HgkJW4AujB4/nwIbIvB97JbCPTdGXG2x+RSAp5SWB30oECKler3Yw93oBn4kFGauA4qH54wtSf8PjvoQTIGmX6pG+j4AAx8XiNzQ=
+	t=1738765442; cv=none; b=FX9wnhZVyscaSm9XMm3CRfMJwaYUqxQjR7QE6BkuG7LDwsXAsAbIA/oHVjBBlm3hapwUrUnO21Wlh2LNH4yGjIcVN0vJ/an4rSAXQCJhVSkwFnNQdy5UDXJLXnAGt0skm1Xk/+rhUZMQDlVpN4FEbrj/letLEuAsLtLrYRToHQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763396; c=relaxed/simple;
-	bh=sYAkjZb+djFqN1q8sFx5G+TbrRV7w56wFYpNB9/AdIA=;
+	s=arc-20240116; t=1738765442; c=relaxed/simple;
+	bh=gW8lffTZ1tV9XAdkxhtG8C4vaStnfFuVpxJjnbMZM/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=spqKLBlUHek/+Qce2Y1sIemJgpGtRoY9W4rDyzB8iCJ6446XY9Ue4fhB5v6XO4yMRKpoJ0JzovPqpUfLt/7LtN0lMNVCYqNHY1ejWeJgrrGOFm5/SR10zAb8ceogN55Ki3yEi4iv6NC3AfiYUv3doqwPx/qB00hPGYBggv5kYMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EwuqjX35; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7E1C4CED1;
-	Wed,  5 Feb 2025 13:49:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RRl2sbCrMUhzLWkY4yWZbwEb2Ghvhb756FHFPy2Tu30a0o8YkCRTRfhBo+iwKfXCmA1jNweuPL2zKZa/6kbmshV4+B+ELObR31kEJU5EOxVwFFfXYLg0tIqzoUhbLFzD2hID1bQ8DxoTwwWxlpms362/8iT1aBh8Vgv7jnbFWIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GITLkS8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFF1C4CED6;
+	Wed,  5 Feb 2025 14:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763396;
-	bh=sYAkjZb+djFqN1q8sFx5G+TbrRV7w56wFYpNB9/AdIA=;
+	s=korg; t=1738765442;
+	bh=gW8lffTZ1tV9XAdkxhtG8C4vaStnfFuVpxJjnbMZM/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwuqjX350W0Mt0y6iThOGOyW7msHdoaqgjiUk91SgkKL6eMCtnkJKq0BoylEx/PXd
-	 axFCc2cQ57UDgPRdXE748L8Ts2xGYPQoOEtYyQlFQSTAotgWM87wFMtuVBFXbkGRpV
-	 UYWcYjunssTo7W5mc+WvKE1VN0YnmBut75WZiQn8=
+	b=GITLkS8OnLVqCd5sv/Set7+EO0sQAcV+NpPXJkLSZmGZAqiDPko6Iwa9oIsJxUIN2
+	 n2iPVI1r2tgLdIXnhCJpX4eoZRyBN2ziPydKiu3TFWSd1Qlr/B9uWjEc7H39179RwQ
+	 t3Gu/efiXjP0/AHVjAiLT2f7O5IrLA3e2lRglL2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tahera Fahimi <fahimitahera@gmail.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/393] net_sched: sch_sfq: handle bigger packets
+Subject: [PATCH 6.12 220/590] selftests/landlock: Fix build with non-default pthread linking
 Date: Wed,  5 Feb 2025 14:39:35 +0100
-Message-ID: <20250205134422.440477024@linuxfoundation.org>
+Message-ID: <20250205134503.702043151@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,166 +65,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit e4650d7ae4252f67e997a632adfae0dd74d3a99a ]
+[ Upstream commit 0e4db4f843c2c0115b5981bd6f6b75dea62e7d60 ]
 
-SFQ has an assumption on dealing with packets smaller than 64KB.
+Old toolchains require explicit -lpthread (e.g. on Debian 11).
 
-Even before BIG TCP, TCA_STAB can provide arbitrary big values
-in qdisc_pkt_len(skb)
-
-It is time to switch (struct sfq_slot)->allot to a 32bit field.
-
-sizeof(struct sfq_slot) is now 64 bytes, giving better cache locality.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20241008111603.653140-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Tahera Fahimi <fahimitahera@gmail.com>
+Fixes: c8994965013e ("selftests/landlock: Test signal scoping for threads")
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Link: https://lore.kernel.org/r/20250115145409.312226-1-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 39 +++++++++++++--------------------------
- 1 file changed, 13 insertions(+), 26 deletions(-)
+ tools/testing/selftests/landlock/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index ed362eefeea9a..7d4feae2fae36 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -77,12 +77,6 @@
- #define SFQ_EMPTY_SLOT		0xffff
- #define SFQ_DEFAULT_HASH_DIVISOR 1024
+diff --git a/tools/testing/selftests/landlock/Makefile b/tools/testing/selftests/landlock/Makefile
+index 348e2dbdb4e0b..480f13e77fcc4 100644
+--- a/tools/testing/selftests/landlock/Makefile
++++ b/tools/testing/selftests/landlock/Makefile
+@@ -13,11 +13,11 @@ TEST_GEN_PROGS := $(src_test:.c=)
+ TEST_GEN_PROGS_EXTENDED := true
  
--/* We use 16 bits to store allot, and want to handle packets up to 64K
-- * Scale allot by 8 (1<<3) so that no overflow occurs.
-- */
--#define SFQ_ALLOT_SHIFT		3
--#define SFQ_ALLOT_SIZE(X)	DIV_ROUND_UP(X, 1 << SFQ_ALLOT_SHIFT)
--
- /* This type should contain at least SFQ_MAX_DEPTH + 1 + SFQ_MAX_FLOWS values */
- typedef u16 sfq_index;
+ # Short targets:
+-$(TEST_GEN_PROGS): LDLIBS += -lcap
++$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
+ $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
  
-@@ -104,7 +98,7 @@ struct sfq_slot {
- 	sfq_index	next; /* next slot in sfq RR chain */
- 	struct sfq_head dep; /* anchor in dep[] chains */
- 	unsigned short	hash; /* hash value (index in ht[]) */
--	short		allot; /* credit for this slot */
-+	int		allot; /* credit for this slot */
+ include ../lib.mk
  
- 	unsigned int    backlog;
- 	struct red_vars vars;
-@@ -120,7 +114,6 @@ struct sfq_sched_data {
- 	siphash_key_t 	perturbation;
- 	u8		cur_depth;	/* depth of longest slot */
- 	u8		flags;
--	unsigned short  scaled_quantum; /* SFQ_ALLOT_SIZE(quantum) */
- 	struct tcf_proto __rcu *filter_list;
- 	struct tcf_block *block;
- 	sfq_index	*ht;		/* Hash table ('divisor' slots) */
-@@ -456,7 +449,7 @@ sfq_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		 */
- 		q->tail = slot;
- 		/* We could use a bigger initial quantum for new flows */
--		slot->allot = q->scaled_quantum;
-+		slot->allot = q->quantum;
- 	}
- 	if (++sch->q.qlen <= q->limit)
- 		return NET_XMIT_SUCCESS;
-@@ -493,7 +486,7 @@ sfq_dequeue(struct Qdisc *sch)
- 	slot = &q->slots[a];
- 	if (slot->allot <= 0) {
- 		q->tail = slot;
--		slot->allot += q->scaled_quantum;
-+		slot->allot += q->quantum;
- 		goto next_slot;
- 	}
- 	skb = slot_dequeue_head(slot);
-@@ -512,7 +505,7 @@ sfq_dequeue(struct Qdisc *sch)
- 		}
- 		q->tail->next = next_a;
- 	} else {
--		slot->allot -= SFQ_ALLOT_SIZE(qdisc_pkt_len(skb));
-+		slot->allot -= qdisc_pkt_len(skb);
- 	}
- 	return skb;
- }
-@@ -595,7 +588,7 @@ static void sfq_rehash(struct Qdisc *sch)
- 				q->tail->next = x;
- 			}
- 			q->tail = slot;
--			slot->allot = q->scaled_quantum;
-+			slot->allot = q->quantum;
- 		}
- 	}
- 	sch->q.qlen -= dropped;
-@@ -628,7 +621,8 @@ static void sfq_perturbation(struct timer_list *t)
- 	rcu_read_unlock();
- }
- 
--static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
-+static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
-+		      struct netlink_ext_ack *extack)
- {
- 	struct sfq_sched_data *q = qdisc_priv(sch);
- 	struct tc_sfq_qopt *ctl = nla_data(opt);
-@@ -646,14 +640,10 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
- 	    (!is_power_of_2(ctl->divisor) || ctl->divisor > 65536))
- 		return -EINVAL;
- 
--	/* slot->allot is a short, make sure quantum is not too big. */
--	if (ctl->quantum) {
--		unsigned int scaled = SFQ_ALLOT_SIZE(ctl->quantum);
--
--		if (scaled <= 0 || scaled > SHRT_MAX)
--			return -EINVAL;
-+	if ((int)ctl->quantum < 0) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
-+		return -EINVAL;
- 	}
--
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -663,10 +653,8 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
- 			return -ENOMEM;
- 	}
- 	sch_tree_lock(sch);
--	if (ctl->quantum) {
-+	if (ctl->quantum)
- 		q->quantum = ctl->quantum;
--		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
--	}
- 	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
- 	if (ctl->flows)
- 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-@@ -762,12 +750,11 @@ static int sfq_init(struct Qdisc *sch, struct nlattr *opt,
- 	q->divisor = SFQ_DEFAULT_HASH_DIVISOR;
- 	q->maxflows = SFQ_DEFAULT_FLOWS;
- 	q->quantum = psched_mtu(qdisc_dev(sch));
--	q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
- 	q->perturb_period = 0;
- 	get_random_bytes(&q->perturbation, sizeof(q->perturbation));
- 
- 	if (opt) {
--		int err = sfq_change(sch, opt);
-+		int err = sfq_change(sch, opt, extack);
- 		if (err)
- 			return err;
- 	}
-@@ -878,7 +865,7 @@ static int sfq_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 	if (idx != SFQ_EMPTY_SLOT) {
- 		const struct sfq_slot *slot = &q->slots[idx];
- 
--		xstats.allot = slot->allot << SFQ_ALLOT_SHIFT;
-+		xstats.allot = slot->allot;
- 		qs.qlen = slot->qlen;
- 		qs.backlog = slot->backlog;
- 	}
+ # Targets with $(OUTPUT)/ prefix:
+-$(TEST_GEN_PROGS): LDLIBS += -lcap
++$(TEST_GEN_PROGS): LDLIBS += -lcap -lpthread
+ $(TEST_GEN_PROGS_EXTENDED): LDFLAGS += -static
 -- 
 2.39.5
 
