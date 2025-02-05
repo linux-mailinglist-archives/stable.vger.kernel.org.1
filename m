@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EFFA28DA9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D241EA29089
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA673A3992
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2E5318851B8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08751547F2;
-	Wed,  5 Feb 2025 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2384B155747;
+	Wed,  5 Feb 2025 14:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6/4bMhl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMUbX74h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE3915198D;
-	Wed,  5 Feb 2025 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B0151988;
+	Wed,  5 Feb 2025 14:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764093; cv=none; b=PoaYcMGhOref//8cHVHIuL3iSEPFRURkRX1H4BduC63Vstf1B+pgidOmRh6IXCK/GHDo5bh6eY3n1dAu1qubzfg1s8zYZP8bJCsLKxRIvtYPdqU3jo1lxa7AETviyCNf0bVr/mra6eqBMd1vWmn28CZUTcFLG5IZ3vF2sqsSP7I=
+	t=1738766241; cv=none; b=DdmQiXehkL+D+vI8i8RmWhM8wvVaOxUSBi2wvPS634smdTlSj/PYjbrywR6Xb0l4n45kDFcRCGry6sw8fh6R9dpTjOway3zlQ2b0al+EpmxEwwMJbZoc7xHPxSeatR4RWhorv0Jbq1vAHi7rNRqKZ7RXfmV1trJDbaT9dizT0ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764093; c=relaxed/simple;
-	bh=H8Wi21QCKwaCUBajmHyD5ATIRRMnuXp+VQ+qxCu0a3I=;
+	s=arc-20240116; t=1738766241; c=relaxed/simple;
+	bh=cBgMKxViKgOerqMd3sFJg+7Ae9mZWjXuV/Tqz2u3SjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNZbt4ffncTKGNDpLmNNTngBy5kM9oUndFc5jP/XHN87j0DWtv3dS4xU+SKmQYHFGVVkcGBBaWFr80VkRqiPLXZ/4tEAuc4HCpo+num+8YJ+tjJYfjaTqfLLj0vJXR2B1HIgD6o8yAxsJIPs7Pyf6YUZ5Ezu9QzxzfqxqyEbMhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6/4bMhl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BEFC4CED1;
-	Wed,  5 Feb 2025 14:01:32 +0000 (UTC)
+	 MIME-Version; b=DrCDlM8o82o6ZoRjeMteAmAKg5f4CbxaIDRir3MH/8p7cIC0HYXEoOZfsT4LwxvxyTEDQRQk62ZnI4vX4O3YsTIIX0uCEItEIyfnoYMaXRDDB7HzTwUNu36VNxg/kkUdN5D9/JJ9UD8yiSZ/0mk9JfLWZEblA5RNsZykp61z5+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMUbX74h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BABC4CED1;
+	Wed,  5 Feb 2025 14:37:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764093;
-	bh=H8Wi21QCKwaCUBajmHyD5ATIRRMnuXp+VQ+qxCu0a3I=;
+	s=korg; t=1738766241;
+	bh=cBgMKxViKgOerqMd3sFJg+7Ae9mZWjXuV/Tqz2u3SjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6/4bMhlP+5HpoXa/USjabnoMLagQ9cpz906sgDfZ5Ey1xbiKibv5qpfrxWdYcJj5
-	 CwQZCS+qOVaCg9K3OdUs83u8lJmpjuu0ArUDPjc+vFCTsezLSn2yWHYEnEx+cWJVd1
-	 mu7IOBbzBjd+xbdnDMQrYnotvrDJQUItW9aNiDaI=
+	b=VMUbX74hLIMFaboo/eVRU2R33dY0OxKvL2d1o7Q0StrJeNNZq8+30QFL2ugGnDXck
+	 vCkjssKdcKAq3Fbc1NYzchnb+Uin+cSv8qePvLc66DbOE9uzBPKw2WyiNvJJZRLDmj
+	 RkjB3Qr90oElEntcy0aa+hBQiRMbYXybL/6t0eZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Markus Niebel <markus.niebel@ew.tq-group.com>,
+	Bruno Thomsen <bruno.thomsen@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/393] selftests/landlock: Fix error message
+Subject: [PATCH 6.12 303/590] ARM: dts: imx7-tqma7: add missing vs-supply for LM75A (rev. 01xxx)
 Date: Wed,  5 Feb 2025 14:40:58 +0100
-Message-ID: <20250205134425.623197107@linuxfoundation.org>
+Message-ID: <20250205134506.871016672@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
+[ Upstream commit 78e08cebfe41a99d12a3a79d3e3be913559182e2 ]
 
-The global variable errno may not be set in test_execute().  Do not use
-it in related error message.
+Add missing supply for LM75. Fixes the kernel warning:
+  lm75 0-0048: supply vs not found, using dummy regulator
 
-Cc: Günther Noack <gnoack@google.com>
-Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
-Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: c9d4affbe60a ("ARM: dts: imx: tqma7: add lm75a sensor (rev. 01xxx)")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Markus Niebel <markus.niebel@ew.tq-group.com>
+Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/landlock/fs_test.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
-index 720bafa0f87be..c239838c796a4 100644
---- a/tools/testing/selftests/landlock/fs_test.c
-+++ b/tools/testing/selftests/landlock/fs_test.c
-@@ -1861,8 +1861,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
- 	ASSERT_EQ(1, WIFEXITED(status));
- 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
- 	{
--		TH_LOG("Unexpected return code for \"%s\": %s", path,
--		       strerror(errno));
-+		TH_LOG("Unexpected return code for \"%s\"", path);
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
+index 028961eb71089..91ca23a66bf3c 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
+@@ -135,6 +135,7 @@
+ 	lm75a: temperature-sensor@48 {
+ 		compatible = "national,lm75a";
+ 		reg = <0x48>;
++		vs-supply = <&vgen4_reg>;
  	};
- }
  
+ 	/* NXP SE97BTP with temperature sensor + eeprom, TQMa7x 02xx */
 -- 
 2.39.5
 
