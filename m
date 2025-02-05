@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-113604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147C9A2930B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D19EA28FFF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE6816A242
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD5C1888463
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E678518E368;
-	Wed,  5 Feb 2025 14:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D53D14386D;
+	Wed,  5 Feb 2025 14:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7tL4MyS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jvXLwdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47F91E89C;
-	Wed,  5 Feb 2025 14:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A16B7DA6A;
+	Wed,  5 Feb 2025 14:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767528; cv=none; b=KezsOcm9AGRl2EZfjSUmWWFteCoy/5q9JPnOHR4iIm3czGo7HxAqT0NrUeNlvUvEGvE8JnmbCciYkMQEgWkqwOK85GnO8LHlV+Ih1jAuUSR8g8X7WZSMjdD9z+gVUhZlCyknJs3o7PZ1GyLmmSIlx3fcbchzQTdIxjFAxeu7vQs=
+	t=1738765845; cv=none; b=hIroiaaTA8bDEPAxRFspRuwDAS7EAwXDTVkgzMQnjH9ANUlO5bhSPNg84tkBj5JtwMZEP22qAEcWbo9rmv0N6cpmXCZvVzuEogUnXocdVZWpeQmQkXfS71Bh61z8jY7HP/L+GYIbJ3bPiPa2/4wvMoiZzkiQd2VxQU2kbHDYDfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767528; c=relaxed/simple;
-	bh=gm3vKusvIEWKzdsrZXFXaNnaroxPsMLr/7L4Xyt0d5U=;
+	s=arc-20240116; t=1738765845; c=relaxed/simple;
+	bh=0iPRKzKih1pquTPRbq7J62Hk/do/vdm/nr8K2CpdhNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZsDMM87Hs76QEaWrtjkDrx9O9Qh46NnwTYoEntufY6cv5p7fUa8i1RmxIRlcNnDXw/0q52WrD7YAFQgjGTBbjwffXWRO3JxIgfiUYk03RPTVfkHfiGDd7Yawsywiecu46Nwbh9QNacemIzhuNeLiT6OveIP8s42xNcCm/5rHyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7tL4MyS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109A2C4CED1;
-	Wed,  5 Feb 2025 14:58:47 +0000 (UTC)
+	 MIME-Version; b=lg2PHz0fmMMJlciFW3baF875HyQFJTFDdU/QoWLaZIIPWntt4epyiV3XdB9lL3vQOqUaa71rs+hDq0LF9W6fy9UnEUFRl5boZc17U48/0p7rMdEX4Gm7O37WNaEv+Sjtg1g+DtC7kR4ExZSgKVrotLZ2a20WQ1x+ALeYel5aKfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jvXLwdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92F1C4CED1;
+	Wed,  5 Feb 2025 14:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767528;
-	bh=gm3vKusvIEWKzdsrZXFXaNnaroxPsMLr/7L4Xyt0d5U=;
+	s=korg; t=1738765844;
+	bh=0iPRKzKih1pquTPRbq7J62Hk/do/vdm/nr8K2CpdhNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a7tL4MySgsE/5OhYxGharzVgDrFK2m1Fny64J7oVlC4Gu55/XnIVeDI5l4lik9z4t
-	 f0bJI8psQS374iXaj6uxjpZcJBVR84+LBdS9AmyQFaxAUTRS04EiZl8UKV6pVYQ1P9
-	 IoCJzKrCVAosCSyC/6tVDEefVgK2Eymi9FDLPAFw=
+	b=2jvXLwdLQuDv+6BXM8CPBQE7Z28LVtSnBK6TpeNrMp8KGDXRHLGCxFnhU6tQGcdD/
+	 4jZgUp5xbhpUUycZs06zaUVokgcH85Y5jcpppALKVkwEGOlp+QPRSArWTnA49MqK3W
+	 kffLkyLdTUTgZq4mUa+ZYsO9kgUTp+C0S3Q7884E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 469/590] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
+Subject: [PATCH 6.6 305/393] ocfs2: mark dquot as inactive if failed to start trans while releasing dquot
 Date: Wed,  5 Feb 2025 14:43:44 +0100
-Message-ID: <20250205134513.203003106@linuxfoundation.org>
+Message-ID: <20250205134431.979294561@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit 3ab8c5ed4f84fa20cd16794fe8dc31f633fbc70c ]
+[ Upstream commit 276c61385f6bc3223a5ecd307cf4aba2dfbb9a31 ]
 
-The nvmem interface supports variable buffer sizes, while the regmap
-interface operates with fixed-size storage. If an nvmem client uses a
-buffer size less than 4 bytes, regmap_read will write out of bounds
-as it expects the buffer to point at an unsigned int.
+While running fstests generic/329, the kernel workqueue
+quota_release_workfn is dead looping in calling ocfs2_release_dquot().
+The ocfs2 state is already readonly but ocfs2_release_dquot wants to
+start a transaction but fails and returns.
 
-Fix this by using an intermediary unsigned int to hold the value.
+=====================================================================
+[ 2918.123602 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+[ 2918.124034 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:765
+ERROR: status = -30
+[ 2918.124452 ][  T275 ] (kworker/u135:1,275,11):ocfs2_release_dquot:795
+ERROR: status = -30
+[ 2918.124883 ][  T275 ] (kworker/u135:1,275,11):ocfs2_start_trans:357
+ERROR: status = -30
+[ 2918.125276 ][  T275 ] OCFS2: abort (device dm-0): ocfs2_start_trans:
+Detected aborted journal
+[ 2918.125710 ][  T275 ] On-disk corruption discovered. Please run
+fsck.ocfs2 once the filesystem is unmounted.
+=====================================================================
 
-Fixes: fadfd092ee91 ("rtc: pcf85063: add nvram support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20241218-rtc-pcf85063-stack-corruption-v1-1-12fd0ee0f046@pengutronix.de
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+ocfs2_release_dquot() is much like dquot_release(), which is called by
+ext4 to handle similar situation.  So here fix it by marking the dquot as
+inactive like what dquot_release() does.
+
+Link: https://lkml.kernel.org/r/20250106140653.92292-1-glass.su@suse.com
+Fixes: 9e33d69f553a ("ocfs2: Implementation of local and global quota file handling")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85063.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/ocfs2/quota_global.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-index fdbc07f14036a..905986c616559 100644
---- a/drivers/rtc/rtc-pcf85063.c
-+++ b/drivers/rtc/rtc-pcf85063.c
-@@ -322,7 +322,16 @@ static const struct rtc_class_ops pcf85063_rtc_ops = {
- static int pcf85063_nvmem_read(void *priv, unsigned int offset,
- 			       void *val, size_t bytes)
- {
--	return regmap_read(priv, PCF85063_REG_RAM, val);
-+	unsigned int tmp;
-+	int ret;
-+
-+	ret = regmap_read(priv, PCF85063_REG_RAM, &tmp);
-+	if (ret < 0)
-+		return ret;
-+
-+	*(u8 *)val = tmp;
-+
-+	return 0;
- }
- 
- static int pcf85063_nvmem_write(void *priv, unsigned int offset,
+diff --git a/fs/ocfs2/quota_global.c b/fs/ocfs2/quota_global.c
+index 0dffd6a44d39d..24b031dc44ee1 100644
+--- a/fs/ocfs2/quota_global.c
++++ b/fs/ocfs2/quota_global.c
+@@ -749,6 +749,11 @@ static int ocfs2_release_dquot(struct dquot *dquot)
+ 	handle = ocfs2_start_trans(osb,
+ 		ocfs2_calc_qdel_credits(dquot->dq_sb, dquot->dq_id.type));
+ 	if (IS_ERR(handle)) {
++		/*
++		 * Mark dquot as inactive to avoid endless cycle in
++		 * quota_release_workfn().
++		 */
++		clear_bit(DQ_ACTIVE_B, &dquot->dq_flags);
+ 		status = PTR_ERR(handle);
+ 		mlog_errno(status);
+ 		goto out_ilock;
 -- 
 2.39.5
 
