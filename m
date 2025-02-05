@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-112956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0C7A28F53
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7CEA292AE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436E83A1B09
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790093AC7BE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BDF15696E;
-	Wed,  5 Feb 2025 14:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B421FC0FC;
+	Wed,  5 Feb 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsiLgVQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbvZT/JU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33E8155CBD;
-	Wed,  5 Feb 2025 14:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7618B18A6D7;
+	Wed,  5 Feb 2025 14:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765330; cv=none; b=b/lXjYrAE47dOCIDptVtlGNuDpn+JjlzdWJVQx9tJ/QsSTeXE/cah1nAQhHf7OxMQZ2Lci9Cy80VuiKJoYI1bcO0bZ8O+EyXMmivJtUbdjkFMnOA+6B6mp55TS2V7l4q39nHhGpNykWFEpG0ZHM7c+InOU1PSUq9H9ORUSFL4QU=
+	t=1738767238; cv=none; b=QMMeO1LCuyoejVocHY6U9iJ69fALyRmOWFp+CTzdD8g1lscrJe+80eUoC7zHIU/iPC61CTibgfUaw72/TZiokJp6stSKyeXYPTmVbcqG2fIFu2S/tU44TR7fpXibNUq93Sd+pFK7EMRjIDIVNVKwdzmFlT5Cb/+vQTmaJpLHhIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765330; c=relaxed/simple;
-	bh=ulqMjpW1uus8raRmV/cH61PHd7HhSOtb220PFR0tjg4=;
+	s=arc-20240116; t=1738767238; c=relaxed/simple;
+	bh=U3ZEWNgyZuQ6AzD1sLG9FP/YA1Y+Fcit5qTBPQiJQkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pf2RRvvdwG0FQOl5wb+6wsL3de7/NXNJgSxHMPoOit+pC0Kpc8r4v6B1Nbh1NcmyOw3wIpSVWyvylW3oE/AornbPFzhq2/AOMMKsx0DrSgJ0b79OoJMX2L6GKtw83KJBEnZP/KSGg54CW5Jqv9OctUKokdEWua3NPWXgLBBQHrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MsiLgVQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636B6C4CED1;
-	Wed,  5 Feb 2025 14:22:09 +0000 (UTC)
+	 MIME-Version; b=HUm1+YHCNRrXSDH8rtuQGAtXk7Ce6/cMnzlhz6RBHpLZfYux+7SeR7p9L35WWcP9nV9KNUSmwOP63YnIoraLdDpcWnttakOoeYcK+KC9E7kyDdIXd5CL+GlYEki0ZGkvhRPeQShNNdaZOAtOCvLWRBr66I+E4ELJCpMmve1H4AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbvZT/JU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E15C4CED1;
+	Wed,  5 Feb 2025 14:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765329;
-	bh=ulqMjpW1uus8raRmV/cH61PHd7HhSOtb220PFR0tjg4=;
+	s=korg; t=1738767238;
+	bh=U3ZEWNgyZuQ6AzD1sLG9FP/YA1Y+Fcit5qTBPQiJQkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsiLgVQ1J+/D4MHHpEzzarg9y2cqcnGzJIdTUGvR9uuRip9BEmRyBX9tcl2PfIyJy
-	 L3Bo7+m0z/f1pA62bPjLc/MnkdGZVOp1KMdsShT3+6pI2nyFG+YQUCR4xdkOzyK3cO
-	 CKVWs5Zr8cIOCu4r7W8kLGINwI/PT+sRYk3DfQgA=
+	b=YbvZT/JU9/8un58ntV7NpuP34aNYPW+haeMKuM9Yw6DFsQZTEKLnmNtHVQgRJkO10
+	 SIvhkNdEgQY4GMWRp4SZDKnmPqDbZFzKHlC9iokfgU5/H4ARWP+e4XcLCf2TuKESoN
+	 v0/KnnO2T1uHuVArVe+3Wr+4z9HkkTaTQDiMCu7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 254/393] RDMA/bnxt_re: Fix to drop reference to the mmap entry in case of error
-Date: Wed,  5 Feb 2025 14:42:53 +0100
-Message-ID: <20250205134430.026275858@linuxfoundation.org>
+Subject: [PATCH 6.12 419/590] mtd: hyperbus: hbmc-am654: fix an OF node reference leak
+Date: Wed,  5 Feb 2025 14:42:54 +0100
+Message-ID: <20250205134511.296701127@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit c84f0f4f49d81645f49c3269fdcc3b84ce61e795 ]
+[ Upstream commit bf5821909eb9c7f5d07d5c6e852ead2c373c94a0 ]
 
-In the error handling path of bnxt_re_mmap(), driver should invoke
-rdma_user_mmap_entry_put() to free the reference of mmap entry in case
-the error happens after rdma_user_mmap_entry_get was called.
+In am654_hbmc_platform_driver, .remove() and the error path of .probe()
+do not decrement the refcount of an OF node obtained by
+  of_get_next_child(). Fix this by adding of_node_put() calls.
 
-Fixes: ea2224857882 ("RDMA/bnxt_re: Update alloc_page uapi for pacing")
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20250104061519.2540178-1-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: aca31ce96814 ("mtd: hyperbus: hbmc-am654: Fix direct mapping setup flash access")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/mtd/hyperbus/hbmc-am654.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 08da793969ee5..f7345e4890a14 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -4278,9 +4278,10 @@ int bnxt_re_mmap(struct ib_ucontext *ib_uctx, struct vm_area_struct *vma)
- 	case BNXT_RE_MMAP_DBR_PAGE:
- 		/* Driver doesn't expect write access for user space */
- 		if (vma->vm_flags & VM_WRITE)
--			return -EFAULT;
--		ret = vm_insert_page(vma, vma->vm_start,
--				     virt_to_page((void *)bnxt_entry->mem_offset));
-+			ret = -EFAULT;
-+		else
-+			ret = vm_insert_page(vma, vma->vm_start,
-+					     virt_to_page((void *)bnxt_entry->mem_offset));
- 		break;
- 	default:
- 		ret = -EINVAL;
+diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
+index dbe3eb361cca2..4b6cbee23fe89 100644
+--- a/drivers/mtd/hyperbus/hbmc-am654.c
++++ b/drivers/mtd/hyperbus/hbmc-am654.c
+@@ -174,26 +174,30 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+ 	priv->hbdev.np = of_get_next_child(np, NULL);
+ 	ret = of_address_to_resource(priv->hbdev.np, 0, &res);
+ 	if (ret)
+-		return ret;
++		goto put_node;
+ 
+ 	if (of_property_read_bool(dev->of_node, "mux-controls")) {
+ 		struct mux_control *control = devm_mux_control_get(dev, NULL);
+ 
+-		if (IS_ERR(control))
+-			return PTR_ERR(control);
++		if (IS_ERR(control)) {
++			ret = PTR_ERR(control);
++			goto put_node;
++		}
+ 
+ 		ret = mux_control_select(control, 1);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to select HBMC mux\n");
+-			return ret;
++			goto put_node;
+ 		}
+ 		priv->mux_ctrl = control;
+ 	}
+ 
+ 	priv->hbdev.map.size = resource_size(&res);
+ 	priv->hbdev.map.virt = devm_ioremap_resource(dev, &res);
+-	if (IS_ERR(priv->hbdev.map.virt))
+-		return PTR_ERR(priv->hbdev.map.virt);
++	if (IS_ERR(priv->hbdev.map.virt)) {
++		ret = PTR_ERR(priv->hbdev.map.virt);
++		goto disable_mux;
++	}
+ 
+ 	priv->ctlr.dev = dev;
+ 	priv->ctlr.ops = &am654_hbmc_ops;
+@@ -226,6 +230,8 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+ disable_mux:
+ 	if (priv->mux_ctrl)
+ 		mux_control_deselect(priv->mux_ctrl);
++put_node:
++	of_node_put(priv->hbdev.np);
+ 	return ret;
+ }
+ 
+@@ -241,6 +247,7 @@ static void am654_hbmc_remove(struct platform_device *pdev)
+ 
+ 	if (dev_priv->rx_chan)
+ 		dma_release_channel(dev_priv->rx_chan);
++	of_node_put(priv->hbdev.np);
+ }
+ 
+ static const struct of_device_id am654_hbmc_dt_ids[] = {
 -- 
 2.39.5
 
