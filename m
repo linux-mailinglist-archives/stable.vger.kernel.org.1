@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DF3A28FA2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC19CA28C88
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7708A167B0E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F457A11D9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88E5155751;
-	Wed,  5 Feb 2025 14:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37FF1459EA;
+	Wed,  5 Feb 2025 13:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO7Q0A4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YL6SehaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F408634E;
-	Wed,  5 Feb 2025 14:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB24126C18;
+	Wed,  5 Feb 2025 13:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765638; cv=none; b=szOkaKV7RkgJhAEuZdfxQ3q/CX5gZHANTXn1SHkhm9BtzGwHL75Qo1/swyTzRmB3Y82sfI4MUJe+fdPhDVhR+1uGr0RDrZvmvjXiAbBCNhHRRMUoQMNeLjE85GxZ1slenqLxXJScYTSdUjzU74R0maLPRBUSvm8KpW03ga3vevc=
+	t=1738763261; cv=none; b=ahPseKlE8hxWHRwDnzvVINgWoyVkA/OuYcoCfLjrz+wiGpOOYQI2bgEZXOPR87bqwUUVrkpwdrClr7GUSrVQdSjMxy7x2idmcffV8uIeKNYuAxEsxXoei3lx2kyZfNi7Qq1ZMHDGQJQNalgf8SdX+oJ4uGo1RdqOl110oh+0rPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765638; c=relaxed/simple;
-	bh=rmBthefYviJ9KjTJHvRPwpypmz69lSCSKA1LlBLuyo4=;
+	s=arc-20240116; t=1738763261; c=relaxed/simple;
+	bh=rcPWaUiHeAKlxDardWCYtVdHABIpVE3bDLkuIdz2bwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBzqucdsAORkSNgNRAENrY+/Pn1Oh6yFQBpqjnj4BliOFfpjFY/J0PgTjBLPcc2QRCkx46Z6g9S2k+zxuQK+LZr0U1z5BG9plmfcjMDJfW44wZFz+vyUXu96Lb7IACGBMiOPdWDWE7HzN1gILYAx8yV5yMs7UAnz9VOznf0yfoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO7Q0A4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CB5C4CED1;
-	Wed,  5 Feb 2025 14:27:17 +0000 (UTC)
+	 MIME-Version; b=d2i6vOVF0CoMD/omnw2mLNHFbinqivUZ7J/ye04Hj5JLZCHYT3G8JgWY8znJ0rfZJ+bME8vhAVoQac3ibqTvlw4eUNTZTA4Qe05ixOnEcDFz1smH5NaGzTlrz+9iEiZCiffWuM7hIrtXVVH0BURFOexvpaN2EgazuEq2X36Aguw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YL6SehaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61288C4CED1;
+	Wed,  5 Feb 2025 13:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765638;
-	bh=rmBthefYviJ9KjTJHvRPwpypmz69lSCSKA1LlBLuyo4=;
+	s=korg; t=1738763260;
+	bh=rcPWaUiHeAKlxDardWCYtVdHABIpVE3bDLkuIdz2bwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO7Q0A4lRsUWMgLaWLKlwQe9li/cfKVuC04CrOoGWrAJaWSn/SrJpxZqnsLJpPbyZ
-	 Gxt11/bDkGwvAdRwDk4K7fu4ztIhHir7n03iYbP0Q7FJXLKr1q5f0BsQJJTa1s/nfn
-	 zXN8CXc+H93Cl/7BxcolYXJIQ0MhXQ/JDRYSfTUI=
+	b=YL6SehaLJq/GDWh2bozFmxeJl+ZnSjTexk7M0qA/lETTuQ6mJjYLpuamUVMgfPAfk
+	 JegfD4Dsqgdy7OnzvNGPwh7zizLC68G/f6jLriRe/peMc6DQ4h95jB+rauvLkISK9+
+	 wf6WEHddR7cj6ZgeowLgi7SZCNrvDVi83d40M5iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 200/623] wifi: mt76: mt7925: Update mt7925_mcu_uni_[tx,rx]_ba for MLO
+Subject: [PATCH 6.6 023/393] drm/etnaviv: Fix page property being used for non writecombine buffers
 Date: Wed,  5 Feb 2025 14:39:02 +0100
-Message-ID: <20250205134503.883179184@linuxfoundation.org>
+Message-ID: <20250205134421.188551666@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
 
-[ Upstream commit eb2a9a12c6092a26f632468d6610497d4f0e40da ]
+[ Upstream commit 834f304192834d6f0941954f3277ae0ba11a9a86 ]
 
-Update mt7925_mcu_uni_[tx,rx]_ba for MLO support in firmware.
+In the etnaviv_gem_vmap_impl() function, the driver vmap whatever buffers
+with write combine(WC) page property, this is incorrect. Cached buffers
+should be mapped with the cached page property and uncached buffers should
+be mapped with the uncached page property.
 
-Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-15-sean.wang@kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: a0a5ab3e99b8 ("drm/etnaviv: call correct function when trying to vmap a DMABUF")
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 10 ++--
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 50 +++++++++++++++----
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  2 +
- 3 files changed, 48 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index a2d1c43098d3c..a4ffa34d58a41 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1258,22 +1258,22 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	case IEEE80211_AMPDU_RX_START:
- 		mt76_rx_aggr_start(&dev->mt76, &msta->deflink.wcid, tid, ssn,
- 				   params->buf_size);
--		mt7925_mcu_uni_rx_ba(dev, params, true);
-+		mt7925_mcu_uni_rx_ba(dev, vif, params, true);
- 		break;
- 	case IEEE80211_AMPDU_RX_STOP:
- 		mt76_rx_aggr_stop(&dev->mt76, &msta->deflink.wcid, tid);
--		mt7925_mcu_uni_rx_ba(dev, params, false);
-+		mt7925_mcu_uni_rx_ba(dev, vif, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_OPERATIONAL:
- 		mtxq->aggr = true;
- 		mtxq->send_bar = false;
--		mt7925_mcu_uni_tx_ba(dev, params, true);
-+		mt7925_mcu_uni_tx_ba(dev, vif, params, true);
- 		break;
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH:
- 	case IEEE80211_AMPDU_TX_STOP_FLUSH_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		mt7925_mcu_uni_tx_ba(dev, params, false);
-+		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
- 		break;
- 	case IEEE80211_AMPDU_TX_START:
- 		set_bit(tid, &msta->deflink.wcid.ampdu_state);
-@@ -1282,7 +1282,7 @@ mt7925_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	case IEEE80211_AMPDU_TX_STOP_CONT:
- 		mtxq->aggr = false;
- 		clear_bit(tid, &msta->deflink.wcid.ampdu_state);
--		mt7925_mcu_uni_tx_ba(dev, params, false);
-+		mt7925_mcu_uni_tx_ba(dev, vif, params, false);
- 		ieee80211_stop_tx_ba_cb_irqsafe(vif, sta->addr, tid);
- 		break;
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 0976f3dffbe46..e4c0f234aeed2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -529,10 +529,10 @@ void mt7925_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 
- static int
- mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif *mvif,
-+		  struct mt76_wcid *wcid,
- 		  struct ieee80211_ampdu_params *params,
- 		  bool enable, bool tx)
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+index 69fccbcd92c62..84b7789454962 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+@@ -343,6 +343,7 @@ void *etnaviv_gem_vmap(struct drm_gem_object *obj)
+ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
  {
--	struct mt76_wcid *wcid = (struct mt76_wcid *)params->sta->drv_priv;
- 	struct sta_rec_ba_uni *ba;
- 	struct sk_buff *skb;
- 	struct tlv *tlv;
-@@ -560,28 +560,60 @@ mt7925_mcu_sta_ba(struct mt76_dev *dev, struct mt76_vif *mvif,
+ 	struct page **pages;
++	pgprot_t prot;
  
- /** starec & wtbl **/
- int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
-+			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable)
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
--	struct mt792x_vif *mvif = msta->vif;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct mt792x_link_sta *mlink;
-+	struct mt792x_bss_conf *mconf;
-+	unsigned long usable_links = ieee80211_vif_usable_links(vif);
-+	struct mt76_wcid *wcid;
-+	u8 link_id, ret;
+ 	lockdep_assert_held(&obj->lock);
  
--	if (enable && !params->amsdu)
--		msta->deflink.wcid.amsdu = false;
-+	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		mconf = mt792x_vif_to_link(mvif, link_id);
-+		mlink = mt792x_sta_to_link(msta, link_id);
-+		wcid = &mlink->wcid;
+@@ -350,8 +351,19 @@ static void *etnaviv_gem_vmap_impl(struct etnaviv_gem_object *obj)
+ 	if (IS_ERR(pages))
+ 		return NULL;
  
--	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
--				 enable, true);
-+		if (enable && !params->amsdu)
-+			mlink->wcid.amsdu = false;
-+
-+		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
-+					enable, true);
-+		if (ret < 0)
-+			break;
+-	return vmap(pages, obj->base.size >> PAGE_SHIFT,
+-			VM_MAP, pgprot_writecombine(PAGE_KERNEL));
++	switch (obj->flags & ETNA_BO_CACHE_MASK) {
++	case ETNA_BO_CACHED:
++		prot = PAGE_KERNEL;
++		break;
++	case ETNA_BO_UNCACHED:
++		prot = pgprot_noncached(PAGE_KERNEL);
++		break;
++	case ETNA_BO_WC:
++	default:
++		prot = pgprot_writecombine(PAGE_KERNEL);
 +	}
 +
-+	return ret;
++	return vmap(pages, obj->base.size >> PAGE_SHIFT, VM_MAP, prot);
  }
  
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
-+			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable)
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)params->sta->drv_priv;
--	struct mt792x_vif *mvif = msta->vif;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct mt792x_link_sta *mlink;
-+	struct mt792x_bss_conf *mconf;
-+	unsigned long usable_links = ieee80211_vif_usable_links(vif);
-+	struct mt76_wcid *wcid;
-+	u8 link_id, ret;
- 
--	return mt7925_mcu_sta_ba(&dev->mt76, &mvif->bss_conf.mt76, params,
--				 enable, false);
-+	for_each_set_bit(link_id, &usable_links, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		mconf = mt792x_vif_to_link(mvif, link_id);
-+		mlink = mt792x_sta_to_link(msta, link_id);
-+		wcid = &mlink->wcid;
-+
-+		ret = mt7925_mcu_sta_ba(&dev->mt76, &mconf->mt76, wcid, params,
-+					enable, false);
-+		if (ret < 0)
-+			break;
-+	}
-+
-+	return ret;
- }
- 
- static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index f5c02e5f50663..df3c705d1cb3f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -242,9 +242,11 @@ int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
- 				 struct ieee80211_vif *vif,
- 				 bool enable);
- int mt7925_mcu_uni_tx_ba(struct mt792x_dev *dev,
-+			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
- int mt7925_mcu_uni_rx_ba(struct mt792x_dev *dev,
-+			 struct ieee80211_vif *vif,
- 			 struct ieee80211_ampdu_params *params,
- 			 bool enable);
- void mt7925_scan_work(struct work_struct *work);
+ static inline enum dma_data_direction etnaviv_op_to_dma_dir(u32 op)
 -- 
 2.39.5
 
