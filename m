@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B02A2936E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9E4A290BC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5893C1892079
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F451887913
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B858215EFA1;
-	Wed,  5 Feb 2025 15:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1331684B0;
+	Wed,  5 Feb 2025 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyeYR9kA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MI3aGoqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567F1C6BE;
-	Wed,  5 Feb 2025 15:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CAF151988;
+	Wed,  5 Feb 2025 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767877; cv=none; b=qdfV3H38b+aDcaTaTv1F9eDwIkdGTl1rmQJlqnks9oVJhryTnKVSuYgwKdksqhzSq3XUuV1ZxXzyachqKFw3cFYr6nbJ3jgfPHVRkwiL/WOyt9gCE1NN2DrUL81VzDwI6015/4WOpONjd3K1LZlJTnMaPIQipppvTMqTlbCzaqA=
+	t=1738766377; cv=none; b=QmMsAE2CPJB5ycE/BYqOUms47OMlTvHsLx6cNNE9+MQYuaXm1FDbv82A4bZznKpE3Q/pSbu8hjvSwNXqQ7YEQCDQZKvyNCFdVAsd8nTxpAVr594ynnDaEalWRGC4RZ2tFsdoxm+xwVrj8ioE7q+TzHSmpv+FyOquv9CVcHa7DfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767877; c=relaxed/simple;
-	bh=9HTPRf3ODFdAHaC0KI1DStTtG1KHqwgfls3nATEiuSo=;
+	s=arc-20240116; t=1738766377; c=relaxed/simple;
+	bh=V51tno+ENlRNz4hJDNR6/JMf1TRXjdwchlNlroIXFhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qu60TR7/xiAO3pGTskPns8I/RDlwmSa0Wsz5AZ/Xa8OzOyRk2S/tftLe/YYUsFAB7cRmUGsv8XsGMbMSBN3/LQ8+/cA56oIlfymkM4hYixEfFk/LcwWwDRo3Ekc2XLr+b6oQpjDAqoBB0gNuwn9guOwliVe2TgeRLrCAziHek0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyeYR9kA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC5AC4CED1;
-	Wed,  5 Feb 2025 15:04:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WupaqMJy3TLHvvI/jJUQd3sxSXIQKvbG13/bMToZ5RSnLHIqihmJ497ehjW+BWD8pxospMkFX3v3GIianaiKYtYxRrgNyOgIe6fWAQ+lGUmUtuGiCl+yOpCouDUWDNk7cx8k7A0/d8SUPIKSfHuI8WcmkayzyU+QW3zFcdLSqLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MI3aGoqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E771C4CED1;
+	Wed,  5 Feb 2025 14:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767877;
-	bh=9HTPRf3ODFdAHaC0KI1DStTtG1KHqwgfls3nATEiuSo=;
+	s=korg; t=1738766377;
+	bh=V51tno+ENlRNz4hJDNR6/JMf1TRXjdwchlNlroIXFhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyeYR9kAYGe1gfAHYvsujn4O6h2PHpVn5hyuovgYrAuu6OYbPOtloYJ54vlGk1pTm
-	 gzxdH5lRHGHkxxwWsfQjCi5AbgzeHI3jCbUw7zNZJ+wKLayEOMXmMggt8fZ93npJmM
-	 GaI3gxDYSVVCjijAUxxkCXKuXagAty2+saM2XuuA=
+	b=MI3aGoqd8whTSQtDHEb1t9zA86YJkV/yi/2F8kd4v1HgUjSUyd4NHdVQeHMn80vfS
+	 vGCCeaBdAh7iCnl1zpJ7WjqJyzM5ktQht5yypuKamWm6+oWfoN67KlrePGGCeqEs3o
+	 1fRSVtZaiWBvkIwVfMJLTg998ulIC6z+VBeMkm34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 521/590] genksyms: fix memory leak when the same symbol is read from *.symref file
+Subject: [PATCH 6.6 357/393] cifs: Validate EAs for WSL reparse points
 Date: Wed,  5 Feb 2025 14:44:36 +0100
-Message-ID: <20250205134515.196239172@linuxfoundation.org>
+Message-ID: <20250205134433.961140089@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +60,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit be2fa44b5180a1f021efb40c55fdf63c249c3209 ]
+[ Upstream commit ef201e8759d20bf82b5943101147072de12bc524 ]
 
-When a symbol that is already registered is read again from *.symref
-file, __add_symbol() removes the previous one from the hash table without
-freeing it.
+Major and minor numbers for char and block devices are mandatory for stat.
+So check that the WSL EA $LXDEV is present for WSL CHR and BLK reparse
+points.
 
-[Test Case]
+WSL reparse point tag determinate type of the file. But file type is
+present also in the WSL EA $LXMOD. So check that both file types are same.
 
-  $ cat foo.c
-  #include <linux/export.h>
-  void foo(void);
-  void foo(void) {}
-  EXPORT_SYMBOL(foo);
-
-  $ cat foo.symref
-  foo void foo ( void )
-  foo void foo ( void )
-
-When a symbol is removed from the hash table, it must be freed along
-with its ->name and ->defn members. However, sym->name cannot be freed
-because it is sometimes shared with node->string, but not always. If
-sym->name and node->string share the same memory, free(sym->name) could
-lead to a double-free bug.
-
-To resolve this issue, always assign a strdup'ed string to sym->name.
-
-Fixes: 64e6c1e12372 ("genksyms: track symbol checksum changes")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 78e26bec4d6d ("smb: client: parse uid, gid, mode and dev from WSL reparse points")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/genksyms/genksyms.c | 8 ++++++--
- scripts/genksyms/genksyms.h | 2 +-
- scripts/genksyms/parse.y    | 4 ++--
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ fs/smb/client/reparse.c | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
-index 0077c96e526f0..bbc6b7d3088c1 100644
---- a/scripts/genksyms/genksyms.c
-+++ b/scripts/genksyms/genksyms.c
-@@ -272,11 +272,15 @@ static struct symbol *__add_symbol(const char *name, enum symbol_type type,
- 				break;
- 			}
- 		}
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index d3abb99cc9909..e56a8df23fec9 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -674,11 +674,12 @@ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
+ 	return parse_reparse_point(buf, plen, cifs_sb, full_path, true, data);
+ }
+ 
+-static void wsl_to_fattr(struct cifs_open_info_data *data,
++static bool wsl_to_fattr(struct cifs_open_info_data *data,
+ 			 struct cifs_sb_info *cifs_sb,
+ 			 u32 tag, struct cifs_fattr *fattr)
+ {
+ 	struct smb2_file_full_ea_info *ea;
++	bool have_xattr_dev = false;
+ 	u32 next = 0;
+ 
+ 	switch (tag) {
+@@ -721,13 +722,24 @@ static void wsl_to_fattr(struct cifs_open_info_data *data,
+ 			fattr->cf_uid = wsl_make_kuid(cifs_sb, v);
+ 		else if (!strncmp(name, SMB2_WSL_XATTR_GID, nlen))
+ 			fattr->cf_gid = wsl_make_kgid(cifs_sb, v);
+-		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen))
++		else if (!strncmp(name, SMB2_WSL_XATTR_MODE, nlen)) {
++			/* File type in reparse point tag and in xattr mode must match. */
++			if (S_DT(fattr->cf_mode) != S_DT(le32_to_cpu(*(__le32 *)v)))
++				return false;
+ 			fattr->cf_mode = (umode_t)le32_to_cpu(*(__le32 *)v);
+-		else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen))
++		} else if (!strncmp(name, SMB2_WSL_XATTR_DEV, nlen)) {
+ 			fattr->cf_rdev = reparse_mkdev(v);
++			have_xattr_dev = true;
++		}
+ 	} while (next);
+ out:
 +
-+		free_list(sym->defn, NULL);
-+		free(sym->name);
-+		free(sym);
- 		--nsyms;
- 	}
++	/* Major and minor numbers for char and block devices are mandatory. */
++	if (!have_xattr_dev && (tag == IO_REPARSE_TAG_LX_CHR || tag == IO_REPARSE_TAG_LX_BLK))
++		return false;
++
+ 	fattr->cf_dtype = S_DT(fattr->cf_mode);
++	return true;
+ }
  
- 	sym = xmalloc(sizeof(*sym));
--	sym->name = name;
-+	sym->name = xstrdup(name);
- 	sym->type = type;
- 	sym->defn = defn;
- 	sym->expansion_trail = NULL;
-@@ -483,7 +487,7 @@ static void read_reference(FILE *f)
- 			defn = def;
- 			def = read_node(f);
- 		}
--		subsym = add_reference_symbol(xstrdup(sym->string), sym->tag,
-+		subsym = add_reference_symbol(sym->string, sym->tag,
- 					      defn, is_extern);
- 		subsym->is_override = is_override;
- 		free_node(sym);
-diff --git a/scripts/genksyms/genksyms.h b/scripts/genksyms/genksyms.h
-index 21ed2ec2d98ca..5621533dcb8e4 100644
---- a/scripts/genksyms/genksyms.h
-+++ b/scripts/genksyms/genksyms.h
-@@ -32,7 +32,7 @@ struct string_list {
- 
- struct symbol {
- 	struct symbol *hash_next;
--	const char *name;
-+	char *name;
- 	enum symbol_type type;
- 	struct string_list *defn;
- 	struct symbol *expansion_trail;
-diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
-index 840371d01bf48..689cb6bb40b65 100644
---- a/scripts/genksyms/parse.y
-+++ b/scripts/genksyms/parse.y
-@@ -482,12 +482,12 @@ enumerator_list:
- enumerator:
- 	IDENT
- 		{
--			const char *name = strdup((*$1)->string);
-+			const char *name = (*$1)->string;
- 			add_symbol(name, SYM_ENUM_CONST, NULL, 0);
- 		}
- 	| IDENT '=' EXPRESSION_PHRASE
- 		{
--			const char *name = strdup((*$1)->string);
-+			const char *name = (*$1)->string;
- 			struct string_list *expr = copy_list_range(*$3, *$2);
- 			add_symbol(name, SYM_ENUM_CONST, expr, 0);
- 		}
+ static bool posix_reparse_to_fattr(struct cifs_sb_info *cifs_sb,
+@@ -801,7 +813,9 @@ bool cifs_reparse_point_to_fattr(struct cifs_sb_info *cifs_sb,
+ 	case IO_REPARSE_TAG_AF_UNIX:
+ 	case IO_REPARSE_TAG_LX_CHR:
+ 	case IO_REPARSE_TAG_LX_BLK:
+-		wsl_to_fattr(data, cifs_sb, tag, fattr);
++		ok = wsl_to_fattr(data, cifs_sb, tag, fattr);
++		if (!ok)
++			return false;
+ 		break;
+ 	case IO_REPARSE_TAG_NFS:
+ 		ok = posix_reparse_to_fattr(cifs_sb, fattr, data);
 -- 
 2.39.5
 
