@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0354DA294C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:32:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A350BA2947C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FB4188A540
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 112123AEF0E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90778192D86;
-	Wed,  5 Feb 2025 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76241953A9;
+	Wed,  5 Feb 2025 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/gzk1Pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwYzYvRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D459188CD8;
-	Wed,  5 Feb 2025 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643C616EB42;
+	Wed,  5 Feb 2025 15:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768600; cv=none; b=GaLwv7NlBf/dA2+9coPxZ6GfpwIa7rCo0kgrkYO8344BG/yxtQ6Hxj7WXXlmrMV41SNA5Q80qsUgazrtSHcplnccX74rPFI6CNgQe+01q1ro8CBd+NbQWmZWA7ngyFCj0Y4lsDDCXoMOTW0Qkbv5ybBdqCe9d6eJ3JMxvqMDJR8=
+	t=1738768370; cv=none; b=aGz3wJ9jDKuZkgA8E1kLVBWr+6BGivjmw0dFuJhouSlipODsEHrIJuFztrWP64Q4Fwsp1Cccpu+dBnw+USy+JccY8WwhPhg/BxQoHIm3ECMBwSXg7L37cOXH3kBbfI4ZWNRanZaJEYFLbxUc/GSRdjl85k2cFavjAQXwr+zo00E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768600; c=relaxed/simple;
-	bh=HDgfLj+WsYICB/30AKc9vitQgGQ5Lpq653WdUePvOMw=;
+	s=arc-20240116; t=1738768370; c=relaxed/simple;
+	bh=MQXEJz2jUXOkXHD3UHpbtDEGZ2NFGCCBd14aDjdYHv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nm/WkTHd35BuflxL0oJ8Fvwd0Kvu71LU9p5HzovcE2rgGLB7+h022XV5U4iP4zcxdaS2fVglMhkicQgcoFSjme9rxwYC3q2ZRxD4v9aeCT3s7Mciw+emXiLl9Hl0g5ULyWMFs41AuQ9L958r2x68nGsEvJUxdIDi5TEDFiwaLts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/gzk1Pj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FFCC4CED1;
-	Wed,  5 Feb 2025 15:16:39 +0000 (UTC)
+	 MIME-Version; b=bSdNwVJt3eab1336jF9u8YzxEUX7RTFJLd3cGlrTjd1jMsbuGezMmJ/h7j4mPoXPI7OysTAwSIZy5y/ygnFJgd/Pei3QAqozEcHQ7SqWJH544JIqBjacZ2QpquEjSBOvEly60bXmze1XmVoh/BEdS4K1IcFqSYJ4xydaLGUCyr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwYzYvRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A8DC4CEE4;
+	Wed,  5 Feb 2025 15:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768600;
-	bh=HDgfLj+WsYICB/30AKc9vitQgGQ5Lpq653WdUePvOMw=;
+	s=korg; t=1738768370;
+	bh=MQXEJz2jUXOkXHD3UHpbtDEGZ2NFGCCBd14aDjdYHv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/gzk1Pj461WXissXOT3Xa3PYaXSPdXroRf3QzhNMHWubFSeDYOBKWjrrmKNaMFUb
-	 fCuTMQQeQAaoo4evTw4IsR32A5MwUkXhP7gUK2AQ4R1iNcP6doStlHayffMN6bmxp2
-	 lRqH7HkiOUAJaiAyykmdDaiXdeu0dU7Lt7nMvCPs=
+	b=fwYzYvRmsV0e3UMfDtW8C5E/MWt6aDwErhVGEEdFcgNsf/rG6abWpJds9OP6L1OCr
+	 wsiaaSfqS9Dy3tY9mPOGR7Njno2FhLzsFG7BVcH0bxNzOJmMQRVZf5tmQrlgeQdHa9
+	 KiGPYyXwgbDyqJgLIREM+k4AHNk7zGMBn86ysgYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.13 603/623] RDMA/mlx5: Fix implicit ODP use after free
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 590/590] btrfs: do proper folio cleanup when run_delalloc_nocow() failed
 Date: Wed,  5 Feb 2025 14:45:45 +0100
-Message-ID: <20250205134519.291208331@linuxfoundation.org>
+Message-ID: <20250205134517.834681199@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,278 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit d3d930411ce390e532470194296658a960887773 upstream.
+commit c2b47df81c8e20a8e8cd94f0d7df211137ae94ed upstream.
 
-Prevent double queueing of implicit ODP mr destroy work by using
-__xa_cmpxchg() to make sure this is the only time we are destroying this
-specific mr.
+[BUG]
+With CONFIG_DEBUG_VM set, test case generic/476 has some chance to crash
+with the following VM_BUG_ON_FOLIO():
 
-Without this change, we could try to invalidate this mr twice, which in
-turn could result in queuing a MR work destroy twice, and eventually the
-second work could execute after the MR was freed due to the first work,
-causing a user after free and trace below.
+  BTRFS error (device dm-3): cow_file_range failed, start 1146880 end 1253375 len 106496 ret -28
+  BTRFS error (device dm-3): run_delalloc_nocow failed, start 1146880 end 1253375 len 106496 ret -28
+  page: refcount:4 mapcount:0 mapping:00000000592787cc index:0x12 pfn:0x10664
+  aops:btrfs_aops [btrfs] ino:101 dentry name(?):"f1774"
+  flags: 0x2fffff80004028(uptodate|lru|private|node=0|zone=2|lastcpupid=0xfffff)
+  page dumped because: VM_BUG_ON_FOLIO(!folio_test_locked(folio))
+  ------------[ cut here ]------------
+  kernel BUG at mm/page-writeback.c:2992!
+  Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  CPU: 2 UID: 0 PID: 3943513 Comm: kworker/u24:15 Tainted: G           OE      6.12.0-rc7-custom+ #87
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+  Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
+  pc : folio_clear_dirty_for_io+0x128/0x258
+  lr : folio_clear_dirty_for_io+0x128/0x258
+  Call trace:
+   folio_clear_dirty_for_io+0x128/0x258
+   btrfs_folio_clamp_clear_dirty+0x80/0xd0 [btrfs]
+   __process_folios_contig+0x154/0x268 [btrfs]
+   extent_clear_unlock_delalloc+0x5c/0x80 [btrfs]
+   run_delalloc_nocow+0x5f8/0x760 [btrfs]
+   btrfs_run_delalloc_range+0xa8/0x220 [btrfs]
+   writepage_delalloc+0x230/0x4c8 [btrfs]
+   extent_writepage+0xb8/0x358 [btrfs]
+   extent_write_cache_pages+0x21c/0x4e8 [btrfs]
+   btrfs_writepages+0x94/0x150 [btrfs]
+   do_writepages+0x74/0x190
+   filemap_fdatawrite_wbc+0x88/0xc8
+   start_delalloc_inodes+0x178/0x3a8 [btrfs]
+   btrfs_start_delalloc_roots+0x174/0x280 [btrfs]
+   shrink_delalloc+0x114/0x280 [btrfs]
+   flush_space+0x250/0x2f8 [btrfs]
+   btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+   process_one_work+0x164/0x408
+   worker_thread+0x25c/0x388
+   kthread+0x100/0x118
+   ret_from_fork+0x10/0x20
+  Code: 910a8021 a90363f7 a9046bf9 94012379 (d4210000)
+  ---[ end trace 0000000000000000 ]---
 
-   refcount_t: underflow; use-after-free.
-   WARNING: CPU: 2 PID: 12178 at lib/refcount.c:28 refcount_warn_saturate+0x12b/0x130
-   Modules linked in: bonding ib_ipoib vfio_pci ip_gre geneve nf_tables ip6_gre gre ip6_tunnel tunnel6 ipip tunnel4 ib_umad rdma_ucm mlx5_vfio_pci vfio_pci_core vfio_iommu_type1 mlx5_ib vfio ib_uverbs mlx5_core iptable_raw openvswitch nsh rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay zram zsmalloc fuse [last unloaded: ib_uverbs]
-   CPU: 2 PID: 12178 Comm: kworker/u20:5 Not tainted 6.5.0-rc1_net_next_mlx5_58c644e #1
-   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-   Workqueue: events_unbound free_implicit_child_mr_work [mlx5_ib]
-   RIP: 0010:refcount_warn_saturate+0x12b/0x130
-   Code: 48 c7 c7 38 95 2a 82 c6 05 bc c6 fe 00 01 e8 0c 66 aa ff 0f 0b 5b c3 48 c7 c7 e0 94 2a 82 c6 05 a7 c6 fe 00 01 e8 f5 65 aa ff <0f> 0b 5b c3 90 8b 07 3d 00 00 00 c0 74 12 83 f8 01 74 13 8d 50 ff
-   RSP: 0018:ffff8881008e3e40 EFLAGS: 00010286
-   RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-   RDX: ffff88852c91b5c8 RSI: 0000000000000001 RDI: ffff88852c91b5c0
-   RBP: ffff8881dacd4e00 R08: 00000000ffffffff R09: 0000000000000019
-   R10: 000000000000072e R11: 0000000063666572 R12: ffff88812bfd9e00
-   R13: ffff8881c792d200 R14: ffff88810011c005 R15: ffff8881002099c0
-   FS:  0000000000000000(0000) GS:ffff88852c900000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: 00007f5694b5e000 CR3: 00000001153f6003 CR4: 0000000000370ea0
-   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-   Call Trace:
-    <TASK>
-    ? refcount_warn_saturate+0x12b/0x130
-    free_implicit_child_mr_work+0x180/0x1b0 [mlx5_ib]
-    process_one_work+0x1cc/0x3c0
-    worker_thread+0x218/0x3c0
-    kthread+0xc6/0xf0
-    ret_from_fork+0x1f/0x30
-    </TASK>
+[CAUSE]
+The first two lines of extra debug messages show the problem is caused
+by the error handling of run_delalloc_nocow().
 
-Fixes: 5256edcb98a1 ("RDMA/mlx5: Rework implicit ODP destroy")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/r/c96b8645a81085abff739e6b06e286a350d1283d.1737274283.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+E.g. we have the following dirtied range (4K blocksize 4K page size):
+
+    0                 16K                  32K
+    |//////////////////////////////////////|
+    |  Pre-allocated  |
+
+And the range [0, 16K) has a preallocated extent.
+
+- Enter run_delalloc_nocow() for range [0, 16K)
+  Which found range [0, 16K) is preallocated, can do the proper NOCOW
+  write.
+
+- Enter fallback_to_fow() for range [16K, 32K)
+  Since the range [16K, 32K) is not backed by preallocated extent, we
+  have to go COW.
+
+- cow_file_range() failed for range [16K, 32K)
+  So cow_file_range() will do the clean up by clearing folio dirty,
+  unlock the folios.
+
+  Now the folios in range [16K, 32K) is unlocked.
+
+- Enter extent_clear_unlock_delalloc() from run_delalloc_nocow()
+  Which is called with PAGE_START_WRITEBACK to start page writeback.
+  But folios can only be marked writeback when it's properly locked,
+  thus this triggered the VM_BUG_ON_FOLIO().
+
+Furthermore there is another hidden but common bug that
+run_delalloc_nocow() is not clearing the folio dirty flags in its error
+handling path.
+This is the common bug shared between run_delalloc_nocow() and
+cow_file_range().
+
+[FIX]
+- Clear folio dirty for range [@start, @cur_offset)
+  Introduce a helper, cleanup_dirty_folios(), which
+  will find and lock the folio in the range, clear the dirty flag and
+  start/end the writeback, with the extra handling for the
+  @locked_folio.
+
+- Introduce a helper to clear folio dirty, start and end writeback
+
+- Introduce a helper to record the last failed COW range end
+  This is to trace which range we should skip, to avoid double
+  unlocking.
+
+- Skip the failed COW range for the error handling
+
+CC: stable@vger.kernel.org
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ fs/btrfs/inode.c   |   95 +++++++++++++++++++++++++++++++++++++++++++++++++----
+ fs/btrfs/subpage.h |   13 +++++++
+ 2 files changed, 102 insertions(+), 6 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -228,13 +228,27 @@ static void destroy_unused_implicit_chil
- 	unsigned long idx = ib_umem_start(odp) >> MLX5_IMR_MTT_SHIFT;
- 	struct mlx5_ib_mr *imr = mr->parent;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2002,6 +2002,53 @@ static int can_nocow_file_extent(struct
+ }
  
-+	/*
-+	 * If userspace is racing freeing the parent implicit ODP MR then we can
-+	 * loose the race with parent destruction. In this case
-+	 * mlx5_ib_free_odp_mr() will free everything in the implicit_children
-+	 * xarray so NOP is fine. This child MR cannot be destroyed here because
-+	 * we are under its umem_mutex.
-+	 */
- 	if (!refcount_inc_not_zero(&imr->mmkey.usecount))
- 		return;
- 
--	xa_erase(&imr->implicit_children, idx);
-+	xa_lock(&imr->implicit_children);
-+	if (__xa_cmpxchg(&imr->implicit_children, idx, mr, NULL, GFP_KERNEL) !=
-+	    mr) {
-+		xa_unlock(&imr->implicit_children);
-+		return;
-+	}
+ /*
++ * Cleanup the dirty folios which will never be submitted due to error.
++ *
++ * When running a delalloc range, we may need to split the ranges (due to
++ * fragmentation or NOCOW). If we hit an error in the later part, we will error
++ * out and previously successfully executed range will never be submitted, thus
++ * we have to cleanup those folios by clearing their dirty flag, starting and
++ * finishing the writeback.
++ */
++static void cleanup_dirty_folios(struct btrfs_inode *inode,
++				 struct folio *locked_folio,
++				 u64 start, u64 end, int error)
++{
++	struct btrfs_fs_info *fs_info = inode->root->fs_info;
++	struct address_space *mapping = inode->vfs_inode.i_mapping;
++	pgoff_t start_index = start >> PAGE_SHIFT;
++	pgoff_t end_index = end >> PAGE_SHIFT;
++	u32 len;
 +
- 	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
--		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
--			 mlx5_base_mkey(mr->mmkey.key));
-+		__xa_erase(&mr_to_mdev(mr)->odp_mkeys,
-+			   mlx5_base_mkey(mr->mmkey.key));
-+	xa_unlock(&imr->implicit_children);
++	ASSERT(end + 1 - start < U32_MAX);
++	ASSERT(IS_ALIGNED(start, fs_info->sectorsize) &&
++	       IS_ALIGNED(end + 1, fs_info->sectorsize));
++	len = end + 1 - start;
++
++	/*
++	 * Handle the locked folio first.
++	 * The btrfs_folio_clamp_*() helpers can handle range out of the folio case.
++	 */
++	btrfs_folio_clamp_finish_io(fs_info, locked_folio, start, len);
++
++	for (pgoff_t index = start_index; index <= end_index; index++) {
++		struct folio *folio;
++
++		/* Already handled at the beginning. */
++		if (index == locked_folio->index)
++			continue;
++		folio = __filemap_get_folio(mapping, index, FGP_LOCK, GFP_NOFS);
++		/* Cache already dropped, no need to do any cleanup. */
++		if (IS_ERR(folio))
++			continue;
++		btrfs_folio_clamp_finish_io(fs_info, locked_folio, start, len);
++		folio_unlock(folio);
++		folio_put(folio);
++	}
++	mapping_set_error(mapping, error);
++}
++
++/*
+  * when nowcow writeback call back.  This checks for snapshots or COW copies
+  * of the extents that exist in the file, and COWs the file as required.
+  *
+@@ -2016,6 +2063,11 @@ static noinline int run_delalloc_nocow(s
+ 	struct btrfs_root *root = inode->root;
+ 	struct btrfs_path *path;
+ 	u64 cow_start = (u64)-1;
++	/*
++	 * If not 0, represents the inclusive end of the last fallback_to_cow()
++	 * range. Only for error handling.
++	 */
++	u64 cow_end = 0;
+ 	u64 cur_offset = start;
+ 	int ret;
+ 	bool check_prev = true;
+@@ -2176,6 +2228,7 @@ must_cow:
+ 					      found_key.offset - 1);
+ 			cow_start = (u64)-1;
+ 			if (ret) {
++				cow_end = found_key.offset - 1;
+ 				btrfs_dec_nocow_writers(nocow_bg);
+ 				goto error;
+ 			}
+@@ -2249,11 +2302,12 @@ must_cow:
+ 		cow_start = cur_offset;
  
- 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
- 	INIT_WORK(&mr->odp_destroy.work, free_implicit_child_mr_work);
-@@ -500,18 +514,18 @@ static struct mlx5_ib_mr *implicit_get_c
- 		refcount_inc(&ret->mmkey.usecount);
- 		goto out_lock;
+ 	if (cow_start != (u64)-1) {
+-		cur_offset = end;
+ 		ret = fallback_to_cow(inode, locked_folio, cow_start, end);
+ 		cow_start = (u64)-1;
+-		if (ret)
++		if (ret) {
++			cow_end = end;
+ 			goto error;
++		}
  	}
--	xa_unlock(&imr->implicit_children);
  
- 	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
--		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
--			       &mr->mmkey, GFP_KERNEL);
-+		ret = __xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
-+				 &mr->mmkey, GFP_KERNEL);
- 		if (xa_is_err(ret)) {
- 			ret = ERR_PTR(xa_err(ret));
--			xa_erase(&imr->implicit_children, idx);
--			goto out_mr;
-+			__xa_erase(&imr->implicit_children, idx);
-+			goto out_lock;
- 		}
- 		mr->mmkey.type = MLX5_MKEY_IMPLICIT_CHILD;
- 	}
-+	xa_unlock(&imr->implicit_children);
- 	mlx5_ib_dbg(mr_to_mdev(imr), "key %x mr %p\n", mr->mmkey.key, mr);
- 	return mr;
+ 	btrfs_free_path(path);
+@@ -2261,12 +2315,41 @@ must_cow:
+ 
+ error:
+ 	/*
++	 * There are several error cases:
++	 *
++	 * 1) Failed without falling back to COW
++	 *    start         cur_offset             end
++	 *    |/////////////|                      |
++	 *
++	 *    For range [start, cur_offset) the folios are already unlocked (except
++	 *    @locked_folio), EXTENT_DELALLOC already removed.
++	 *    Only need to clear the dirty flag as they will never be submitted.
++	 *    Ordered extent and extent maps are handled by
++	 *    btrfs_mark_ordered_io_finished() inside run_delalloc_range().
++	 *
++	 * 2) Failed with error from fallback_to_cow()
++	 *    start         cur_offset  cow_end    end
++	 *    |/////////////|-----------|          |
++	 *
++	 *    For range [start, cur_offset) it's the same as case 1).
++	 *    But for range [cur_offset, cow_end), the folios have dirty flag
++	 *    cleared and unlocked, EXTENT_DEALLLOC cleared by cow_file_range().
++	 *
++	 *    Thus we should not call extent_clear_unlock_delalloc() on range
++	 *    [cur_offset, cow_end), as the folios are already unlocked.
++	 *
++	 * So clear the folio dirty flags for [start, cur_offset) first.
++	 */
++	if (cur_offset > start)
++		cleanup_dirty_folios(inode, locked_folio, start, cur_offset - 1, ret);
++
++	/*
+ 	 * If an error happened while a COW region is outstanding, cur_offset
+-	 * needs to be reset to cow_start to ensure the COW region is unlocked
+-	 * as well.
++	 * needs to be reset to @cow_end + 1 to skip the COW range, as
++	 * cow_file_range() will do the proper cleanup at error.
+ 	 */
+-	if (cow_start != (u64)-1)
+-		cur_offset = cow_start;
++	if (cow_end)
++		cur_offset = cow_end + 1;
+ 
+ 	/*
+ 	 * We need to lock the extent here because we're clearing DELALLOC and
+--- a/fs/btrfs/subpage.h
++++ b/fs/btrfs/subpage.h
+@@ -152,6 +152,19 @@ DECLARE_BTRFS_SUBPAGE_OPS(writeback);
+ DECLARE_BTRFS_SUBPAGE_OPS(ordered);
+ DECLARE_BTRFS_SUBPAGE_OPS(checked);
+ 
++/*
++ * Helper for error cleanup, where a folio will have its dirty flag cleared,
++ * with writeback started and finished.
++ */
++static inline void btrfs_folio_clamp_finish_io(struct btrfs_fs_info *fs_info,
++					       struct folio *locked_folio,
++					       u64 start, u32 len)
++{
++	btrfs_folio_clamp_clear_dirty(fs_info, locked_folio, start, len);
++	btrfs_folio_clamp_set_writeback(fs_info, locked_folio, start, len);
++	btrfs_folio_clamp_clear_writeback(fs_info, locked_folio, start, len);
++}
++
+ bool btrfs_subpage_clear_and_test_dirty(const struct btrfs_fs_info *fs_info,
+ 					struct folio *folio, u64 start, u32 len);
  
 
 
