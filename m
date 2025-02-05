@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965C6A28C5B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D047A29002
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D36F01689A0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CCE18833B5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6543414A4E9;
-	Wed,  5 Feb 2025 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D98414386D;
+	Wed,  5 Feb 2025 14:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8P1ulim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGItvwXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235EC14A4CC;
-	Wed,  5 Feb 2025 13:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC0C487BF;
+	Wed,  5 Feb 2025 14:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763330; cv=none; b=jwwaLYDefbJdOpicuAUJcvy63Y+2QlXATU3vPc0Kc8UMSnqeHiiVVMfs/XZURB7JJ8oXx3gwQmR/YcZTHpR35SoNO3162NfzSvEd7V+1JltGVEXfN+HVXMzhHXGbaT4bTcOU0w/m6Xna2Pxe9Zs9LXZcwmCcJSK8CPXMP62Qx/4=
+	t=1738765858; cv=none; b=g0fonZUuVJU2GqIUeGJGZ7HJQ9htYweNjye1T/glFAkuNt+td1DBvnu5get5W51Gy1ostjWmqKgqUIKarXKkpun3uhH0mO7vKlH2YAMxtjMgTgkjrGA3Ac5efuenscnSqIGl7EAvTgMARudK4iFhHomZUIRfx2Vz6/QmxY6RqlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763330; c=relaxed/simple;
-	bh=tHaMPafDCkHEhzF4Qc10lV5NK8LWaozxUNRPyNTTJVU=;
+	s=arc-20240116; t=1738765858; c=relaxed/simple;
+	bh=zBCWHrAqzjmogURmjEJA1M1x046Ux9k24EJm2ipqroc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXByJq7mUDZ01fhn95rpqxOJS2kVq4i6Gagy0bkmO7Ej53cmGpXCRgBqCrRjsKmXpN3d/pNppNqGO7HyeNfSGhepGx53AVU4AQzWUnUMPXtywBfXp4HRfBcvmsA5fWHj2a/nTwl3KDPUhORZpeGA1zwsDfwDFexO2rEzsx32HBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8P1ulim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F69BC4CED6;
-	Wed,  5 Feb 2025 13:48:49 +0000 (UTC)
+	 MIME-Version; b=rAwZw9jtXnuXXMwBDL/7F9O4hJGSFFds/wAflEvaLs8Yro9DNHifC0SiqXnT63rxjeOnO0XMqh7GAFZJuw+aHfSxPliqI/4M7E91klY+T0FDvoIkAndT5ygIG4RN0kIgJH9TBKGDNWZ8CudcOrHUUhadEN7K0wTzrQ+KOW8FXbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGItvwXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8FC4CED1;
+	Wed,  5 Feb 2025 14:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763330;
-	bh=tHaMPafDCkHEhzF4Qc10lV5NK8LWaozxUNRPyNTTJVU=;
+	s=korg; t=1738765857;
+	bh=zBCWHrAqzjmogURmjEJA1M1x046Ux9k24EJm2ipqroc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8P1ulimEj1NOYi3wqsh5lGvmLEW2St1E3gKQpsMzjw+Bcjta5DNp9LfSHiSEukgr
-	 3b8LkiVkpd72Dr5jVZis+fgZIpOIu//L9z9f7tRFFAhjm9MX9qY5TmdAYREEeKOllH
-	 dPALzAvRqOznezUmKUQ2k90V/Vr/ryw39RHt626I=
+	b=YGItvwXDq+0J/XSsXq/45iTfnoQnGCHUGYmHm4Ze1fVfCzR3In0nKcYwyctV1rm28
+	 LGmtyth5XW/AK3u475V8qjUCO7yMru1DsOYE5El89XvlayBWtyPLfaQVS9a8KWsCgi
+	 cHO0hwtF7Aq3Ond/Kl0vps6gs6mhlZPf1SCeleR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/393] drm/msm: Check return value of of_dma_configure()
+Subject: [PATCH 6.13 220/623] wifi: cfg80211: adjust allocation of colocated AP data
 Date: Wed,  5 Feb 2025 14:39:22 +0100
-Message-ID: <20250205134421.949909048@linuxfoundation.org>
+Message-ID: <20250205134504.642312714@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit b34a7401ffaee45354e81b38a4d072794079cfd6 ]
+[ Upstream commit 1a0d24775cdee2b8dc14bfa4f4418c930ab1ac57 ]
 
-Because the of_dma_configure() will returns '-EPROBE_DEFER' if the probe
-procedure of the specific platform IOMMU driver is not finished yet. It
-can also return other error code for various reasons.
+In 'cfg80211_scan_6ghz()', an instances of 'struct cfg80211_colocated_ap'
+are allocated as if they would have 'ssid' as trailing VLA member. Since
+this is not so, extra IEEE80211_MAX_SSID_LEN bytes are not needed.
+Briefly tested with KUnit.
 
-Stop pretending that it will always suceess, quit if it fail.
-
-Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Fixes: 29ac8979cdf7 ("drm/msm/a6xx: use msm_gem for GMU memory objects")
-Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/622782/
-Link: https://lore.kernel.org/r/20241104090738.529848-1-sui.jingfeng@linux.dev
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20250113155417.552587-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index c9edaa6d76369..9009442b543dd 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1510,7 +1510,9 @@ int a6xx_gmu_wrapper_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index ccdbeb6046399..abca3d7ff56c9 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -857,9 +857,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
+ 			if (ret)
+ 				continue;
  
- 	gmu->dev = &pdev->dev;
+-			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
+-					GFP_ATOMIC);
+-
++			entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+ 			if (!entry)
+ 				continue;
  
--	of_dma_configure(gmu->dev, node, true);
-+	ret = of_dma_configure(gmu->dev, node, true);
-+	if (ret)
-+		return ret;
- 
- 	pm_runtime_enable(gmu->dev);
- 
-@@ -1574,7 +1576,9 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
- 
- 	gmu->dev = &pdev->dev;
- 
--	of_dma_configure(gmu->dev, node, true);
-+	ret = of_dma_configure(gmu->dev, node, true);
-+	if (ret)
-+		return ret;
- 
- 	/* Fow now, don't do anything fancy until we get our feet under us */
- 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;
 -- 
 2.39.5
 
