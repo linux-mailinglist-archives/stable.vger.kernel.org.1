@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-112309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E05A28A1B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:19:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381ADA28A1D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8752818845A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:20:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0443118884BB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 12:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE50722B8B7;
-	Wed,  5 Feb 2025 12:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0A522B8CD;
+	Wed,  5 Feb 2025 12:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfyXzpYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0nPFSGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A07C21516B
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051D921516B
+	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 12:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738757995; cv=none; b=HjPDYio6GYwwIqnRYNWVS82S2K8crCh53IKgAN/iZX421QEcjU2+sC2cvQUKY6Mrf3w7YPWOljfuozkKbo/DXD/gs4K+AMrUw/l18ycUABZOsXCx2/M+R7LE9vNDQO275fADykugbvVDEh7P/yCFYyjnhHBVfjePzP103B988Xk=
+	t=1738757999; cv=none; b=eGdm4SVLte2fcypa/o/NvMQHQznQRqoNipH/1cgmbO5iylH0y6Jk5V0JjFyPtcRy+/EjfTTg5rDDaLKZnIvxRSQP5EJdr058AnEOKFdY2KBgCv5IC8GOFyPNyeL/jQEyRR6A0BDEcRPYXWI++sc/US3wh8y2+BG4u8eODaO/11A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738757995; c=relaxed/simple;
-	bh=+lyHxWdV11xNev+COYc1LLs3iMpJ1anBAo4qjJcOyI0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=elICr1ACLrWN2uw1AbPRHpqiFboYZfj+louosUcwUCqyKxilnhIxwNw/VcD8x8W0RGwWNN8v4Gp2m8GvYIq+vPws7TcvKgv5gfmyU9Mv1omIjfwTuqRA9ufM1nbSOr9nZJGIqPkZnJZoYao4/iTLTNUkSqqp4foAbvnCieQeXO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfyXzpYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EC9C4CEE2;
-	Wed,  5 Feb 2025 12:19:54 +0000 (UTC)
+	s=arc-20240116; t=1738757999; c=relaxed/simple;
+	bh=QDmvo5s4VoCRqWo3F38CxXsh+3qqKSmFfxyEo3Qt1DI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mgh3yY67Quc9f2VEHhAttg6jmTa1XLQ+wc0t3YmoOAZd4GcoKLXAIST9RwOAP62eTcz2qgHCwdkR80hq/GMFZTXzelVjE23sX9cv5lSw/1cIgmeLzkzgnbb1k9G2/eaV5vmPhLfieH6icBed9ar0fqZnaexHjAJEGRtpex7IQtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0nPFSGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C59C4CEE2;
+	Wed,  5 Feb 2025 12:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738757995;
-	bh=+lyHxWdV11xNev+COYc1LLs3iMpJ1anBAo4qjJcOyI0=;
+	s=korg; t=1738757998;
+	bh=QDmvo5s4VoCRqWo3F38CxXsh+3qqKSmFfxyEo3Qt1DI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zfyXzpYpAxP1nOBgcg5b50RgkdahkjtVWcL4f5y20kiu2XVpADQfGyFy2CBkrC+hJ
-	 15/XTrcs8YEhw6tzfILTJfRHUXuaSaj+AnTiHKl8WGiKPK94IMHAMxMFq3Z//JR9yk
-	 j7XE1HmUS0CZA5aDhVHM7TKyeYZiKhciqQa57mhc=
-Subject: FAILED: patch "[PATCH] btrfs: fix double accounting race when extent_writepage_io()" failed to apply to 5.4-stable tree
-To: wqu@suse.com,dsterba@suse.com
+	b=e0nPFSGUcu1J+rDN9zNrNOXrdmU35TTPlftLS35fz797q7SUZXJczdujotTlUiQN1
+	 YmjuXZUfdLJrf2HV2yZthFf+zwtz7hwAs0dZP9ZX2OJUXPDrRdvc0JKe/zc0KeedhD
+	 XP4snrzahELF9eOKOf4OUlkQr38cQiJgYtnr8L4Q=
+Subject: FAILED: patch "[PATCH] btrfs: fix double accounting race when" failed to apply to 6.13-stable tree
+To: wqu@suse.com,boris@bur.io,dsterba@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 05 Feb 2025 13:19:38 +0100
-Message-ID: <2025020538-unmoving-shelving-20de@gregkh>
+Date: Wed, 05 Feb 2025 13:19:44 +0100
+Message-ID: <2025020544-aftermath-monkhood-1fa2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.13-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8bf334beb3496da3c3fbf3daf3856f7eec70dacc
+git cherry-pick -x 72dad8e377afa50435940adfb697e070d3556670
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020538-unmoving-shelving-20de@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025020544-aftermath-monkhood-1fa2@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,151 +77,307 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8bf334beb3496da3c3fbf3daf3856f7eec70dacc Mon Sep 17 00:00:00 2001
+From 72dad8e377afa50435940adfb697e070d3556670 Mon Sep 17 00:00:00 2001
 From: Qu Wenruo <wqu@suse.com>
-Date: Thu, 12 Dec 2024 16:43:56 +1030
-Subject: [PATCH] btrfs: fix double accounting race when extent_writepage_io()
- failed
+Date: Thu, 12 Dec 2024 16:43:55 +1030
+Subject: [PATCH] btrfs: fix double accounting race when
+ btrfs_run_delalloc_range() failed
 
 [BUG]
-If submit_one_sector() failed inside extent_writepage_io() for sector
-size < page size cases (e.g. 4K sector size and 64K page size), then
-we can hit double ordered extent accounting error.
+When running btrfs with block size (4K) smaller than page size (64K,
+aarch64), there is a very high chance to crash the kernel at
+generic/750, with the following messages:
+(before the call traces, there are 3 extra debug messages added)
 
-This should be very rare, as submit_one_sector() only fails when we
-failed to grab the extent map, and such extent map should exist inside
-the memory and has been pinned.
+  BTRFS warning (device dm-3): read-write for sector size 4096 with page size 65536 is experimental
+  BTRFS info (device dm-3): checking UUID tree
+  hrtimer: interrupt took 5451385 ns
+  BTRFS error (device dm-3): cow_file_range failed, root=4957 inode=257 start=1605632 len=69632: -28
+  BTRFS error (device dm-3): run_delalloc_nocow failed, root=4957 inode=257 start=1605632 len=69632: -28
+  BTRFS error (device dm-3): failed to run delalloc range, root=4957 ino=257 folio=1572864 submit_bitmap=8-15 start=1605632 len=69632: -28
+  ------------[ cut here ]------------
+  WARNING: CPU: 2 PID: 3020984 at ordered-data.c:360 can_finish_ordered_extent+0x370/0x3b8 [btrfs]
+  CPU: 2 UID: 0 PID: 3020984 Comm: kworker/u24:1 Tainted: G           OE      6.13.0-rc1-custom+ #89
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+  Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
+  pc : can_finish_ordered_extent+0x370/0x3b8 [btrfs]
+  lr : can_finish_ordered_extent+0x1ec/0x3b8 [btrfs]
+  Call trace:
+   can_finish_ordered_extent+0x370/0x3b8 [btrfs] (P)
+   can_finish_ordered_extent+0x1ec/0x3b8 [btrfs] (L)
+   btrfs_mark_ordered_io_finished+0x130/0x2b8 [btrfs]
+   extent_writepage+0x10c/0x3b8 [btrfs]
+   extent_write_cache_pages+0x21c/0x4e8 [btrfs]
+   btrfs_writepages+0x94/0x160 [btrfs]
+   do_writepages+0x74/0x190
+   filemap_fdatawrite_wbc+0x74/0xa0
+   start_delalloc_inodes+0x17c/0x3b0 [btrfs]
+   btrfs_start_delalloc_roots+0x17c/0x288 [btrfs]
+   shrink_delalloc+0x11c/0x280 [btrfs]
+   flush_space+0x288/0x328 [btrfs]
+   btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+   process_one_work+0x228/0x680
+   worker_thread+0x1bc/0x360
+   kthread+0x100/0x118
+   ret_from_fork+0x10/0x20
+  ---[ end trace 0000000000000000 ]---
+  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1605632 OE len=16384 to_dec=16384 left=0
+  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1622016 OE len=12288 to_dec=12288 left=0
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+  BTRFS critical (device dm-3): bad ordered extent accounting, root=4957 ino=257 OE offset=1634304 OE len=8192 to_dec=4096 left=0
+  CPU: 1 UID: 0 PID: 3286940 Comm: kworker/u24:3 Tainted: G        W  OE      6.13.0-rc1-custom+ #89
+  Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+  Workqueue:  btrfs_work_helper [btrfs] (btrfs-endio-write)
+  pstate: 404000c5 (nZcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : process_one_work+0x110/0x680
+  lr : worker_thread+0x1bc/0x360
+  Call trace:
+   process_one_work+0x110/0x680 (P)
+   worker_thread+0x1bc/0x360 (L)
+   worker_thread+0x1bc/0x360
+   kthread+0x100/0x118
+   ret_from_fork+0x10/0x20
+  Code: f84086a1 f9000fe1 53041c21 b9003361 (f9400661)
+  ---[ end trace 0000000000000000 ]---
+  Kernel panic - not syncing: Oops: Fatal exception
+  SMP: stopping secondary CPUs
+  SMP: failed to stop secondary CPUs 2-3
+  Dumping ftrace buffer:
+     (ftrace buffer empty)
+  Kernel Offset: 0x275bb9540000 from 0xffff800080000000
+  PHYS_OFFSET: 0xffff8fbba0000000
+  CPU features: 0x100,00000070,00801250,8201720b
 
 [CAUSE]
-For example we have the following folio layout:
+The above warning is triggered immediately after the delalloc range
+failure, this happens in the following sequence:
 
-    0  4K          32K    48K   60K 64K
-    |//|           |//////|     |///|
+- Range [1568K, 1636K) is dirty
 
-Where |///| is the dirty range we need to writeback. The 3 different
-dirty ranges are submitted for regular COW.
+   1536K  1568K     1600K    1636K  1664K
+   |      |/////////|////////|      |
 
-Now we hit the following sequence:
+  Where 1536K, 1600K and 1664K are page boundaries (64K page size)
 
-- submit_one_sector() returned 0 for [0, 4K)
+- Enter extent_writepage() for page 1536K
 
-- submit_one_sector() returned 0 for [32K, 48K)
+- Enter run_delalloc_nocow() with locked page 1536K and range
+  [1568K, 1636K)
+  This is due to the inode having preallocated extents.
 
-- submit_one_sector() returned error for [60K, 64K)
+- Enter cow_file_range() with locked page 1536K and range
+  [1568K, 1636K)
 
-- btrfs_mark_ordered_io_finished() called for the whole folio
-  This will mark the following ranges as finished:
-  * [0, 4K)
-  * [32K, 48K)
-    Both ranges have their IO already submitted, this cleanup will
-    lead to double accounting.
+- btrfs_reserve_extent() only reserved two extents
+  The main loop of cow_file_range() only reserved two data extents,
 
-  * [60K, 64K)
-    That's the correct cleanup.
+  Now we have:
 
-The only good news is, this error is only theoretical, as the target
-extent map is always pinned, thus we should directly grab it from
-memory, other than reading it from the disk.
+   1536K  1568K        1600K    1636K  1664K
+   |      |<-->|<--->|/|///////|      |
+               1584K  1596K
+  Range [1568K, 1596K) has an ordered extent reserved.
+
+- btrfs_reserve_extent() failed inside cow_file_range() for file offset
+  1596K
+  This is already a bug in our space reservation code, but for now let's
+  focus on the error handling path.
+
+  Now cow_file_range() returned -ENOSPC.
+
+- btrfs_run_delalloc_range() do error cleanup <<< ROOT CAUSE
+  Call btrfs_cleanup_ordered_extents() with locked folio 1536K and range
+  [1568K, 1636K)
+
+  Function btrfs_cleanup_ordered_extents() normally needs to skip the
+  ranges inside the folio, as it will normally be cleaned up by
+  extent_writepage().
+
+  Such split error handling is already problematic in the first place.
+
+  What's worse is the folio range skipping itself, which is not taking
+  subpage cases into consideration at all, it will only skip the range
+  if the page start >= the range start.
+  In our case, the page start < the range start, since for subpage cases
+  we can have delalloc ranges inside the folio but not covering the
+  folio.
+
+  So it doesn't skip the page range at all.
+  This means all the ordered extents, both [1568K, 1584K) and
+  [1584K, 1596K) will be marked as IOERR.
+
+  And these two ordered extents have no more pending ios, they are marked
+  finished, and *QUEUED* to be deleted from the io tree.
+
+- extent_writepage() do error cleanup
+  Call btrfs_mark_ordered_io_finished() for the range [1536K, 1600K).
+
+  Although ranges [1568K, 1584K) and [1584K, 1596K) are finished, the
+  deletion from io tree is async, it may or may not happen at this
+  time.
+
+  If the ranges have not yet been removed, we will do double cleaning on
+  those ranges, triggering the above ordered extent warnings.
+
+In theory there are other bugs, like the cleanup in extent_writepage()
+can cause double accounting on ranges that are submitted asynchronously
+(compression for example).
+
+But that's much harder to trigger because normally we do not mix regular
+and compression delalloc ranges.
 
 [FIX]
-Instead of calling btrfs_mark_ordered_io_finished() for the whole folio
-range, which can touch ranges we should not touch, instead
-move the error handling inside extent_writepage_io().
+The folio range split is already buggy and not subpage compatible, it
+was introduced a long time ago where subpage support was not even considered.
 
-So that we can cleanup exact sectors that ought to be submitted but failed.
+So instead of splitting the ordered extents cleanup into the folio range
+and out of folio range, do all the cleanup inside writepage_delalloc().
 
-This provides much more accurate cleanup, avoiding the double accounting.
+- Pass @NULL as locked_folio for btrfs_cleanup_ordered_extents() in
+  btrfs_run_delalloc_range()
 
+- Skip the btrfs_cleanup_ordered_extents() if writepage_delalloc()
+  failed
+
+  So all ordered extents are only cleaned up by
+  btrfs_run_delalloc_range().
+
+- Handle the ranges that already have ordered extents allocated
+  If part of the folio already has ordered extent allocated, and
+  btrfs_run_delalloc_range() failed, we also need to cleanup that range.
+
+Now we have a concentrated error handling for ordered extents during
+btrfs_run_delalloc_range().
+
+Fixes: d1051d6ebf8e ("btrfs: Fix error handling in btrfs_cleanup_ordered_extents")
 CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Boris Burkov <boris@bur.io>
 Signed-off-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
 diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index bc2bd103c8cc..5014134b9aa2 100644
+index c068a442753c..bc2bd103c8cc 100644
 --- a/fs/btrfs/extent_io.c
 +++ b/fs/btrfs/extent_io.c
-@@ -1420,6 +1420,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
- 	unsigned long range_bitmap = 0;
- 	bool submitted_io = false;
-+	bool error = false;
- 	const u64 folio_start = folio_pos(folio);
- 	u64 cur;
- 	int bit;
-@@ -1462,11 +1463,26 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			break;
- 		}
- 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
--		if (ret < 0)
--			goto out;
-+		if (unlikely(ret < 0)) {
-+			/*
-+			 * bio_ctrl may contain a bio crossing several folios.
-+			 * Submit it immediately so that the bio has a chance
-+			 * to finish normally, other than marked as error.
-+			 */
-+			submit_one_bio(bio_ctrl);
-+			/*
-+			 * Failed to grab the extent map which should be very rare.
-+			 * Since there is no bio submitted to finish the ordered
-+			 * extent, we have to manually finish this sector.
-+			 */
-+			btrfs_mark_ordered_io_finished(inode, folio, cur,
-+						       fs_info->sectorsize, false);
-+			error = true;
-+			continue;
-+		}
- 		submitted_io = true;
- 	}
--out:
-+
- 	/*
- 	 * If we didn't submitted any sector (>= i_size), folio dirty get
- 	 * cleared but PAGECACHE_TAG_DIRTY is not cleared (only cleared
-@@ -1474,8 +1490,11 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 	 *
- 	 * Here we set writeback and clear for the range. If the full folio
- 	 * is no longer dirty then we clear the PAGECACHE_TAG_DIRTY tag.
-+	 *
-+	 * If we hit any error, the corresponding sector will still be dirty
-+	 * thus no need to clear PAGECACHE_TAG_DIRTY.
+@@ -1134,14 +1134,19 @@ static bool find_next_delalloc_bitmap(struct folio *folio,
+ }
+ 
+ /*
+- * helper for extent_writepage(), doing all of the delayed allocation setup.
++ * Do all of the delayed allocation setup.
+  *
+- * This returns 1 if btrfs_run_delalloc_range function did all the work required
+- * to write the page (copy into inline extent).  In this case the IO has
+- * been started and the page is already unlocked.
++ * Return >0 if all the dirty blocks are submitted async (compression) or inlined.
++ * The @folio should no longer be touched (treat it as already unlocked).
+  *
+- * This returns 0 if all went well (page still locked)
+- * This returns < 0 if there were errors (page still locked)
++ * Return 0 if there is still dirty block that needs to be submitted through
++ * extent_writepage_io().
++ * bio_ctrl->submit_bitmap will indicate which blocks of the folio should be
++ * submitted, and @folio is still kept locked.
++ *
++ * Return <0 if there is any error hit.
++ * Any allocated ordered extent range covering this folio will be marked
++ * finished (IOERR), and @folio is still kept locked.
+  */
+ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 						 struct folio *folio,
+@@ -1159,6 +1164,16 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 	 * last delalloc end.
  	 */
--	if (!submitted_io) {
-+	if (!submitted_io && !error) {
- 		btrfs_folio_set_writeback(fs_info, folio, start, len);
- 		btrfs_folio_clear_writeback(fs_info, folio, start, len);
+ 	u64 last_delalloc_end = 0;
++	/*
++	 * The range end (exclusive) of the last successfully finished delalloc
++	 * range.
++	 * Any range covered by ordered extent must either be manually marked
++	 * finished (error handling), or has IO submitted (and finish the
++	 * ordered extent normally).
++	 *
++	 * This records the end of ordered extent cleanup if we hit an error.
++	 */
++	u64 last_finished_delalloc_end = page_start;
+ 	u64 delalloc_start = page_start;
+ 	u64 delalloc_end = page_end;
+ 	u64 delalloc_to_write = 0;
+@@ -1227,11 +1242,19 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 			found_len = last_delalloc_end + 1 - found_start;
+ 
+ 		if (ret >= 0) {
++			/*
++			 * Some delalloc range may be created by previous folios.
++			 * Thus we still need to clean up this range during error
++			 * handling.
++			 */
++			last_finished_delalloc_end = found_start;
+ 			/* No errors hit so far, run the current delalloc range. */
+ 			ret = btrfs_run_delalloc_range(inode, folio,
+ 						       found_start,
+ 						       found_start + found_len - 1,
+ 						       wbc);
++			if (ret >= 0)
++				last_finished_delalloc_end = found_start + found_len;
+ 		} else {
+ 			/*
+ 			 * We've hit an error during previous delalloc range,
+@@ -1266,8 +1289,22 @@ static noinline_for_stack int writepage_delalloc(struct btrfs_inode *inode,
+ 
+ 		delalloc_start = found_start + found_len;
  	}
-@@ -1495,7 +1514,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
- {
- 	struct btrfs_inode *inode = BTRFS_I(folio->mapping->host);
- 	struct btrfs_fs_info *fs_info = inode->root->fs_info;
--	const u64 page_start = folio_pos(folio);
- 	int ret;
- 	size_t pg_offset;
- 	loff_t i_size = i_size_read(&inode->vfs_inode);
-@@ -1538,10 +1556,6 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
+-	if (ret < 0)
++	/*
++	 * It's possible we had some ordered extents created before we hit
++	 * an error, cleanup non-async successfully created delalloc ranges.
++	 */
++	if (unlikely(ret < 0)) {
++		unsigned int bitmap_size = min(
++				(last_finished_delalloc_end - page_start) >>
++				fs_info->sectorsize_bits,
++				fs_info->sectors_per_page);
++
++		for_each_set_bit(bit, &bio_ctrl->submit_bitmap, bitmap_size)
++			btrfs_mark_ordered_io_finished(inode, folio,
++				page_start + (bit << fs_info->sectorsize_bits),
++				fs_info->sectorsize, false);
+ 		return ret;
++	}
+ out:
+ 	if (last_delalloc_end)
+ 		delalloc_end = last_delalloc_end;
+@@ -1501,13 +1538,13 @@ static int extent_writepage(struct folio *folio, struct btrfs_bio_ctrl *bio_ctrl
  
  	bio_ctrl->wbc->nr_to_write--;
  
--	if (ret)
--		btrfs_mark_ordered_io_finished(inode, folio,
--					       page_start, PAGE_SIZE, !ret);
--
- done:
- 	if (ret < 0)
- 		mapping_set_error(folio->mapping, ret);
-@@ -2314,11 +2328,8 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
- 		if (ret == 1)
- 			goto next_page;
+-done:
+-	if (ret) {
++	if (ret)
+ 		btrfs_mark_ordered_io_finished(inode, folio,
+ 					       page_start, PAGE_SIZE, !ret);
+-		mapping_set_error(folio->mapping, ret);
+-	}
  
--		if (ret) {
--			btrfs_mark_ordered_io_finished(BTRFS_I(inode), folio,
--						       cur, cur_len, !ret);
-+		if (ret)
- 			mapping_set_error(mapping, ret);
--		}
- 		btrfs_folio_end_lock(fs_info, folio, cur, cur_len);
- 		if (ret < 0)
- 			found_error = true;
++done:
++	if (ret < 0)
++		mapping_set_error(folio->mapping, ret);
+ 	/*
+ 	 * Only unlock ranges that are submitted. As there can be some async
+ 	 * submitted ranges inside the folio.
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 1546f341f9a4..b81afe757f64 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2301,8 +2301,7 @@ int btrfs_run_delalloc_range(struct btrfs_inode *inode, struct folio *locked_fol
+ 
+ out:
+ 	if (ret < 0)
+-		btrfs_cleanup_ordered_extents(inode, locked_folio, start,
+-					      end - start + 1);
++		btrfs_cleanup_ordered_extents(inode, NULL, start, end - start + 1);
+ 	return ret;
+ }
+ 
 
 
