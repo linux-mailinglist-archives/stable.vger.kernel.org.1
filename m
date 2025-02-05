@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB4BA28C47
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D12BA28ECE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9C21882FF7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63CC167B20
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE23E142E86;
-	Wed,  5 Feb 2025 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74261519AA;
+	Wed,  5 Feb 2025 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGVxcXgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0awEUyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A9139CFA;
-	Wed,  5 Feb 2025 13:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53104A28;
+	Wed,  5 Feb 2025 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763271; cv=none; b=YrFWz5EqZsiucaFgYjfbUj15bHHRpNl7lHuYvA14K2movB9YBpUsjOGbTkG1MjpQLVRk8Hq+qh0wtBuBOQ4L7XCyIC0zlJSpIag0VkuMiN8/J1McpKzu7/SQ98QgV8HUfOol2jgUzf6x59G1rncthJUDgHfy2zH2sufLWlpiNy8=
+	t=1738765040; cv=none; b=CRH+sXlGSVEMkp0PjFUcMJYoDJmEoVFwePvjNS87NX+wQq7Z4fZpvViY21v7YHhMVOU9pW/fgIfZdba6ZVwkOe0zLGO3WGzl+GSMYrgEp3/E38Tyve5f3P87Mn0MDPr6JY3+11PDvOOBrosTB74K19nf9uCPoXq6oMN1UVResN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763271; c=relaxed/simple;
-	bh=LnImW4EvlwaQ1Mu9EWSLPlYBhlDz8zvCmUofz6qzutw=;
+	s=arc-20240116; t=1738765040; c=relaxed/simple;
+	bh=rT27cQsUM7HPKpNBibBzT9knr4hUwfFG7ckCDL/nrso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDfDU8LU6Dw6feesjJUSE4WEzmpkksBB9aQ1C7mwFkLmykYCMKKWgtXSe/2Ypod6sOlHlt8Cs8hzVxxJvj/4O1SZniJblNzpdk7LaxdhpM2Owq0x5t5BqcA0S593ElxsKplg3BspaAtFcdmuinkqfrHdn/cGTLeJELD02CW85UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGVxcXgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF1CC4CEDD;
-	Wed,  5 Feb 2025 13:47:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JAAvWClR82XSr3gqygX/l3bILrMiW6u/aZ+Ghewfz3Dcs3LRk25XNK+Q86B7sq9qmyIrian4D7M5Sgcoba1XEyWSsfDovj+zwSx0FRjWNxTOI7LaoidLqBMUAF5ga8+kX1xy8I5GfV+hV9oCv2veZ9JWWisAB3RhBMyUCdGeHvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0awEUyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD9CC4CED1;
+	Wed,  5 Feb 2025 14:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763271;
-	bh=LnImW4EvlwaQ1Mu9EWSLPlYBhlDz8zvCmUofz6qzutw=;
+	s=korg; t=1738765040;
+	bh=rT27cQsUM7HPKpNBibBzT9knr4hUwfFG7ckCDL/nrso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGVxcXgRD5ckre1RbHn/qbTrSgQOo9UlYLbTPWA1INGQ7n/VI055fLeZeEMh7zWdn
-	 Ne691uhv24SVqj3gl8lMQNpi+hCD9YvxLJAj4Q/k5KglQBJnfIBVD8tG3qTyTFGJXY
-	 hMkiVdyuCj1goNRL0ruy46arZTfKUsJEzecu6gIw=
+	b=z0awEUyQgUsDSRObrRPYvif4STWvsq6GLhQBR5AYdUWCXuE7J9hH64H+nmik6o/Fd
+	 30qpUQwDP/yt9j3VA4QWo5dkdSOf6H+MhUG8ciOI0hlMN+0lLgxtmAqn5rhMqae2sO
+	 ce5JXjjAKgrLU5tQNrm9BRlVt/B9L9F/1eU4bYCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com,
-	Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Xu Rao <raoxu@uniontech.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/393] nbd: dont allow reconnect after disconnect
+Subject: [PATCH 6.12 172/590] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
 Date: Wed,  5 Feb 2025 14:38:47 +0100
-Message-ID: <20250205134420.611132116@linuxfoundation.org>
+Message-ID: <20250205134501.863214016@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 844b8cdc681612ff24df62cdefddeab5772fadf1 ]
+[ Upstream commit f1b1e133a770fcdbd89551651232b034d2f7a27a ]
 
-Following process can cause nbd_config UAF:
+When initializing the network card, unplugging the device will
+trigger an -EPROTO error, resulting in a flood of error messages
+being printed frantically.
 
-1) grab nbd_config temporarily;
+The exception is printed as follows：
 
-2) nbd_genl_disconnect() flush all recv_work() and release the
-initial reference:
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
+         ...
 
-  nbd_genl_disconnect
-   nbd_disconnect_and_put
-    nbd_disconnect
-     flush_workqueue(nbd->recv_workq)
-    if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF, ...))
-     nbd_config_put
-     -> due to step 1), reference is still not zero
+It will continue to print more than 2000 times for about 5 minutes,
+causing the usb device to be unable to be disconnected. During this
+period, the usb port cannot recognize the new device because the old
+device has not disconnected.
 
-3) nbd_genl_reconfigure() queue recv_work() again;
+There may be other operating methods that cause -EPROTO, but -EPROTO is
+a low-level hardware error. It is unwise to repeat vendor requests
+expecting to read correct data. It is a better choice to treat -EPROTO
+and -ENODEV the same way.
 
-  nbd_genl_reconfigure
-   config = nbd_get_config_unlocked(nbd)
-   if (!config)
-   -> succeed
-   if (!test_bit(NBD_RT_BOUND, ...))
-   -> succeed
-   nbd_reconnect_socket
-    queue_work(nbd->recv_workq, &args->work)
+Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
+EPROTO properly") do no schedule rx_worker for urb marked with status
+set  -EPROTO. I also reproduced this situation when plugging and
+unplugging the device, and this patch is effective.
 
-4) step 1) release the reference;
+Just do not vendor request again for urb marked with status set -EPROTO.
 
-5) Finially, recv_work() will trigger UAF:
-
-  recv_work
-   nbd_config_put(nbd)
-   -> nbd_config is freed
-   atomic_dec(&config->recv_threads)
-   -> UAF
-
-Fix the problem by clearing NBD_RT_BOUND in nbd_genl_disconnect(), so
-that nbd_genl_reconfigure() will fail.
-
-Fixes: b7aa3d39385d ("nbd: add a reconfigure netlink command")
-Reported-by: syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/675bfb65.050a0220.1a2d0d.0006.GAE@google.com/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250103092859.3574648-1-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
+Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
+Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
+Co-developed-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://patch.msgid.link/9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 96b349148e578..2203686156bfe 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -2164,6 +2164,7 @@ static void nbd_disconnect_and_put(struct nbd_device *nbd)
- 	flush_workqueue(nbd->recv_workq);
- 	nbd_clear_que(nbd);
- 	nbd->task_setup = NULL;
-+	clear_bit(NBD_RT_BOUND, &nbd->config->runtime_flags);
- 	mutex_unlock(&nbd->config_lock);
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 58ff068233894..f9e67b8c3b3c8 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
  
- 	if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF,
+ 		ret = usb_control_msg(udev, pipe, req, req_type, val,
+ 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV || ret == -EPROTO)
+ 			set_bit(MT76_REMOVED, &dev->phy.state);
+-		if (ret >= 0 || ret == -ENODEV)
++		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+ 			return ret;
+ 		usleep_range(5000, 10000);
+ 	}
 -- 
 2.39.5
 
