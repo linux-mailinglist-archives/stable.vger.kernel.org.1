@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D672A28EA7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1EFA29310
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19B893A23B7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5507616ACE2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7808634E;
-	Wed,  5 Feb 2025 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEF017C7C4;
+	Wed,  5 Feb 2025 14:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vjc/Wv8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJecbg4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A24B1519AA;
-	Wed,  5 Feb 2025 14:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB151E89C;
+	Wed,  5 Feb 2025 14:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764939; cv=none; b=q5/LUFnKuurVcWWF/f2MaIdE8dNugHiA6ATBjgKb//ifQ6zfay2CN9zTORgOg4yLFDvU0eB79W9y5y9SayNIw/O+iva9Ja7y/KRWxCAseTGi0yEmEytmc8FLzRaW6zdufmi8Db/4T1AM1Y0U2f/S7tgM+OtAgGwRzagECTpjAMk=
+	t=1738767538; cv=none; b=gs46zVIVpSuEu8fSAR6pOWp3aPIpEOkGSxPUi9VeAcuMzPg9vuH4mE9DTZQRNdqt4ioMZTLvYohCyHBvd2PsclkpuBIBDsEPKsAb8q3ArpT6TYDY6Nh2+ZPEqs+P37UmO8zFXsouVf6YNGHO+wj5EJ0y76aKi0FFmDfpNDRsUjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764939; c=relaxed/simple;
-	bh=zeL7aHKWv0TdM8bSECDDuRRQt/Lbtbq5LE7dI4zAZeQ=;
+	s=arc-20240116; t=1738767538; c=relaxed/simple;
+	bh=FepK3vKzOdy0dNG/RFpTRI5Y0XabN8kpA+sHsTnw24A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoN/cjVUE4XzcuYn96xS7JcRDK4cidVXjcpPsndmRDJwp4AZ83lzGN3G4D5M4WBdD8VglHsdg7miG2CORtaTHWULg04d93UJ8D5e0pqcqgDR9iNRGG6NC9jUtJhTSvtNXx/JSnkBwjZWozea2tL3C0wQ3Nj0RT8HMnzmwoiqoxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vjc/Wv8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04361C4CED1;
-	Wed,  5 Feb 2025 14:15:38 +0000 (UTC)
+	 MIME-Version; b=fODLxQ1GE/Xbl4p75dHbHvj94w+G4hKCssDtHRc3DPAKTEA+zKlzy3P2pPxMZe0YZtryFvefvTP+6Wu8nz9qE7POpA9eQ35UNZ4/TmpxYJ8pH/IiWcmor0bmzpJpQKntHjym1Md0C0nKAGasNDiesvvlGCru9j4+ABito7TLs5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJecbg4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F35C4CED1;
+	Wed,  5 Feb 2025 14:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764939;
-	bh=zeL7aHKWv0TdM8bSECDDuRRQt/Lbtbq5LE7dI4zAZeQ=;
+	s=korg; t=1738767538;
+	bh=FepK3vKzOdy0dNG/RFpTRI5Y0XabN8kpA+sHsTnw24A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vjc/Wv8twp5zjcd221zsfiLH0HOALgg0iYaVpeygxHz3h/xPZpN4bnvx99CRGbE3E
-	 HPS2VPT89CPbDk3GIeqCrdL8AGV6op/p3ohFVUpsZnNauDlm1OhOOycPRUC6s6q1V0
-	 yYoBnzqXotLTn5O+Pr3mitG4IExhY1+9vnhSbjec=
+	b=JJecbg4yy3KPNEK+giYxZYGNHWbcUj23vsJ5GsfFUFhRA1miSs5D6G8jGf/JeStDT
+	 S0MJrKv+pVEP8O3nEpY7BFRTG2DZYWEobf+l/AbvhrotUcbW4vLpUtN6oDIvVwtq4i
+	 PzrVrUnjr3uR2wMWMH9Q8BKZkEWJjoJqgLfyZUu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: [PATCH 6.6 217/393] RDMA/rxe: Fix mismatched max_msg_sz
-Date: Wed,  5 Feb 2025 14:42:16 +0100
-Message-ID: <20250205134428.606383808@linuxfoundation.org>
+	Mihai Sain <mihai.sain@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 395/623] ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node
+Date: Wed,  5 Feb 2025 14:42:17 +0100
+Message-ID: <20250205134511.333674399@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-[ Upstream commit db03b70969aab4ef111a3369cfd90ea4da3a6aa0 ]
+[ Upstream commit 4d9e5965df04c0adf260c3009c55d5fe240f7286 ]
 
-User mode queries max_msg_sz as 0x800000 by command 'ibv_devinfo -v',
-however ibv_post_send/ibv_post_recv has a limit of 2^31. Fix this
-mismatched information.
+Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
+This property will stop the LDO regulator from switching to 1.8V when the
+MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
+SDMMC interface pins in GPIO mode (PA0 - PA13).
 
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Fixes: f605f26ea196 ("RDMA/rxe: Protect QP state with qp->state_lock")
-Fixes: 5bf944f24129 ("RDMA/rxe: Add error messages")
-Link: https://patch.msgid.link/20241216121953.765331-1-pizhenwei@bytedance.com
-Review-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+On this board, PA10 is used as GPIO to enable the power switch controlling
+USB Vbus for the USB Host. The change is needed to fix the PA10 voltage
+level to 3.3V instead of 1.8V.
+
+Fixes: 5d4c3cfb63fe ("ARM: dts: at91: sama5d27_wlsom1: add SAMA5D27 wlsom1 and wlsom1-ek")
+Suggested-by: Mihai Sain <mihai.sain@microchip.com>
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://lore.kernel.org/r/20241119160107.598411-3-cristian.birsan@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_param.h | 2 +-
- drivers/infiniband/sw/rxe/rxe_verbs.c | 5 ++---
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_param.h b/drivers/infiniband/sw/rxe/rxe_param.h
-index d2f57ead78ad1..003f681e5dc02 100644
---- a/drivers/infiniband/sw/rxe/rxe_param.h
-+++ b/drivers/infiniband/sw/rxe/rxe_param.h
-@@ -129,7 +129,7 @@ enum rxe_device_param {
- enum rxe_port_param {
- 	RXE_PORT_GID_TBL_LEN		= 1024,
- 	RXE_PORT_PORT_CAP_FLAGS		= IB_PORT_CM_SUP,
--	RXE_PORT_MAX_MSG_SZ		= 0x800000,
-+	RXE_PORT_MAX_MSG_SZ		= (1UL << 31),
- 	RXE_PORT_BAD_PKEY_CNTR		= 0,
- 	RXE_PORT_QKEY_VIOL_CNTR		= 0,
- 	RXE_PORT_LID			= 0,
-diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
-index b00d611857e0f..dbb9baa4ffd00 100644
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -688,7 +688,7 @@ static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
- 		for (i = 0; i < ibwr->num_sge; i++)
- 			length += ibwr->sg_list[i].length;
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+index 15239834d886e..35a933eec5738 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+@@ -197,6 +197,7 @@
  
--		if (length > (1UL << 31)) {
-+		if (length > RXE_PORT_MAX_MSG_SZ) {
- 			rxe_err_qp(qp, "message length too long\n");
- 			break;
- 		}
-@@ -977,8 +977,7 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
- 	for (i = 0; i < num_sge; i++)
- 		length += ibwr->sg_list[i].length;
- 
--	/* IBA max message size is 2^31 */
--	if (length >= (1UL<<31)) {
-+	if (length > RXE_PORT_MAX_MSG_SZ) {
- 		err = -EINVAL;
- 		rxe_dbg("message length too long\n");
- 		goto err_out;
+ &sdmmc0 {
+ 	bus-width = <4>;
++	no-1-8-v;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
+ 	status = "okay";
 -- 
 2.39.5
 
