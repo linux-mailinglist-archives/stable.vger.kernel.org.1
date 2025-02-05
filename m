@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A71EA2934A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206A1A28F4F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 596FD16BC8D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2C6188A1E5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722561DD88F;
-	Wed,  5 Feb 2025 15:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC04158870;
+	Wed,  5 Feb 2025 14:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGAxkXeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpUQGDh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3089E33993;
-	Wed,  5 Feb 2025 15:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69B615854F;
+	Wed,  5 Feb 2025 14:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767696; cv=none; b=NpbXnpvrE6zyQ0HENVWhl8Z48U7p8v63uWEyAdxo/I0gxG8GjkHbj3Zx8+zgpICV2SAhqFogIDpArc2Seym2jGaM/I4+CHJKV5maQoDWFqhmkG7c3WN5dlaLXtFb9UfGN2sp/ekgwEW6b9mUvpRbtbLA/Ca5E2ibCMm+V0T9W6g=
+	t=1738765388; cv=none; b=lbfyjAoBIDkvHFzqwYpIR4Tj37UHPmEIulXMoIP6crTR7TdepUJXrnIra8JKj8aEEB1oj9nGmzQZ3lokwa4y6mNNSA9tBb3SBNpVE/6a7x7UnplW8/J3koGAmelbwiEp9Zn4JtS8V5ktocn3PzGAgIQlHgbnAxvsEEbDA8NXSCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767696; c=relaxed/simple;
-	bh=h2+z3sBBRVmXjAUTZdZTq5+ouknO2W/JsKM3qjJsIuI=;
+	s=arc-20240116; t=1738765388; c=relaxed/simple;
+	bh=UVlInEnrdqm80bLsYXMhS8LyQTIqsFIO+6sP+OLQTAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPiTCkk1kkjU8HUR4YBpI+yMW0iSCkmalSDpGRXL8YXT4kbqNR+uya/+vNPpFHchpXerUCRLyYHURwmSOZRoZKgHKEBR9jMuhCCf39IKGkUrf1krEUJeN7+pfXJKw1iTxrYeje5yezuAH3n7gy29ErGwSLplDJbIbq5DkROllpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGAxkXeM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912FEC4CED1;
-	Wed,  5 Feb 2025 15:01:35 +0000 (UTC)
+	 MIME-Version; b=uP0xOt8kp/bePFRsUqd0/ovPfh3+sxZgJiozVlD3J+v2xCkVyP4qpeq+GNRaNCkDGQXgYGDud/RvqELrGPYwdGdW3wj6Z9VSQ5i//O0mfdC/XFLY5ZoPBHv3sc/wAD1L61HmhJd1sTiqrTvvFE5THc+qW6dtjKYhgmqg7QC/7ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpUQGDh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED01DC4CED6;
+	Wed,  5 Feb 2025 14:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767696;
-	bh=h2+z3sBBRVmXjAUTZdZTq5+ouknO2W/JsKM3qjJsIuI=;
+	s=korg; t=1738765387;
+	bh=UVlInEnrdqm80bLsYXMhS8LyQTIqsFIO+6sP+OLQTAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGAxkXeMIoyA2SLGhrIyXWD8eu3bG/GSADiWaJ4d4VbLt4cbcN9e0e8EQhl3NRFnl
-	 4+suKBP8JCxIfZV9W1lvsCBvM1qf3PK4nySPHIVxUA5NEwlX5PYmYxdTDHEDHOrArT
-	 VpvTTOvwyH3BOiil35+iLrZf8tQ4db6ogHpq+2fY=
+	b=XpUQGDh3jPtdE1Opw4sXt4o3JyUsK66u8LZCkArN0qWoPKL4AJLOwNaZDUoN8F16Z
+	 w0xcve7ckxZ1icUm8X8cqxOulJ2yFasDVwdM4RJeY48rUWFy0WGJRC6VrhKNRTMAyi
+	 1Kgtk7yqXJHq4eS9FDeEgLQob59drwWZVimgU3nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Pedersen <lapeddk@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 440/623] spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors
+Subject: [PATCH 6.6 263/393] arm64: dts: qcom: sc7180: fix psci power domain node names
 Date: Wed,  5 Feb 2025 14:43:02 +0100
-Message-ID: <20250205134513.050588959@linuxfoundation.org>
+Message-ID: <20250205134430.375699426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit a07eb4f67ed085f32002a1af2b6073546d67de3f ]
+[ Upstream commit 092febd32a99800902f865ed86b83314faa9c7e4 ]
 
-devm_clk_get_optional() returns NULL for missing clocks and a PTR_ERR()
-if there is a clock but we fail to get it, but currently we only handle
-the latter case and do so as though the clock was missing.  If we get an
-error back we should handle that as an error since the clock exists but
-we failed to get it, if we get NULL then the clock doesn't exist and we
-should handle that.
+Rename the psci power domain node names to match the bindings.
 
-Fixes: 4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()")
-Reported-by: Lars Pedersen <lapeddk@gmail.com>
-Link: https://patch.msgid.link/20250117-spi-fix-omap2-optional-v1-1-e77d4ac6db6e@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Tested-by: Lars Pedersen <lapeddk@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This Fixes:
+sc7180-acer-aspire1.dts: psci: 'cpu-cluster0', 'cpu0', 'cpu1', 'cpu2', 'cpu3', 'cpu4', 'cpu5', 'cpu6', 'cpu7' do not match any of the regexes: '^power-domain-', 'pinctrl-[0-9]+'
+
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-5-1e6880e9dda3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index add6247d34819..29c616e2c408c 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1561,10 +1561,15 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 5db7b3bce368b..7758136d71d64 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -580,55 +580,55 @@
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
  
- 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
--	if (IS_ERR(mcspi->ref_clk))
--		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
--	else
-+	if (IS_ERR(mcspi->ref_clk)) {
-+		status = PTR_ERR(mcspi->ref_clk);
-+		dev_err_probe(&pdev->dev, status, "Failed to get ref_clk");
-+		goto free_ctlr;
-+	}
-+	if (mcspi->ref_clk)
- 		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
-+	else
-+		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
- 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
- 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+-		cpu_pd0: cpu0 {
++		cpu_pd0: power-domain-cpu0 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
  
+-		cpu_pd1: cpu1 {
++		cpu_pd1: power-domain-cpu1 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd2: cpu2 {
++		cpu_pd2: power-domain-cpu2 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd3: cpu3 {
++		cpu_pd3: power-domain-cpu3 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd4: cpu4 {
++		cpu_pd4: power-domain-cpu4 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd5: cpu5 {
++		cpu_pd5: power-domain-cpu5 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&little_cpu_sleep_0 &little_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd6: cpu6 {
++		cpu_pd6: power-domain-cpu6 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+ 		};
+ 
+-		cpu_pd7: cpu7 {
++		cpu_pd7: power-domain-cpu7 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&cluster_pd>;
+ 			domain-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+ 		};
+ 
+-		cluster_pd: cpu-cluster0 {
++		cluster_pd: power-domain-cluster {
+ 			#power-domain-cells = <0>;
+ 			domain-idle-states = <&cluster_sleep_pc
+ 					      &cluster_sleep_cx_ret
 -- 
 2.39.5
 
