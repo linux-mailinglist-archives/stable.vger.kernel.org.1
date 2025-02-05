@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64F9A29046
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BEDA28C57
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716D4169F8E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 043DB3A289A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB1E155CBD;
-	Wed,  5 Feb 2025 14:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891F31487DC;
+	Wed,  5 Feb 2025 13:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEDAJW4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RN96AF2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E3E155756;
-	Wed,  5 Feb 2025 14:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473EB146A7A;
+	Wed,  5 Feb 2025 13:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766014; cv=none; b=LhY4DDrDkSzJukiEiRddC0l7VLZB+oyrCadgp0xh72eIB32SoXHZenYa5mmBums2akcJyZ4UbIcY3sSfkb4bT3Jcuzk7tpjsR8QJW2+8tsQVjjXvJz/OR5ss3n2n36uBJt7HHHNfXHgmIb3weXEBDyBMiQ3jbAqrBRg0qQ/qyYg=
+	t=1738763316; cv=none; b=D1Oz1XV8v1pS22rU2VXd1TrlQmn4mkPEPXVizplzjbIlIzAXtV028cRvl2SuoWfpb9s3FsUF3PR9VHVLRz91tNZlcvCnzjdUkSbS0CnjX3QdYYwZYWaWzzSZhrpPk48/Tj54hh6FxSZ2ub7hcN9B/3KCiFUhOLPpXUxRZe3XUX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766014; c=relaxed/simple;
-	bh=CYraQN8jaMBYQml7wsD7pl60+9lJzgL+MCL4MiT6IQw=;
+	s=arc-20240116; t=1738763316; c=relaxed/simple;
+	bh=sLzihlSVSSSHIThAa350FyNhDhyFWD+RSLcnfwDm8xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0ZKIGjdpu/QPLXjntCP14+iBjcE1wNuJIIBxCout0QgYrNffZvIPSZrKL4sqEZ/dBmUtIxt5ee9JxsxZuInHnLVJXtXEeRu5YeEmvJalNSKiNEJ9g0G4NzYD6R+0cllIdIDBftaH0Q07xquslVpVGHwZU5r30BFsssJrX6PSYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEDAJW4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3761C4CED1;
-	Wed,  5 Feb 2025 14:33:33 +0000 (UTC)
+	 MIME-Version; b=lZTjSa5MExRC6plzNLfOCRVZJ86qLPXy6dQA9cPHUaYcvXwBoY0R35LI0tdzSlbVSA9rz/4ZWVNptcfXmyQcyj5t5kP4mnlfZtF69VLYogjecSUIC0Tt7i3reCF5WbB5C1DrrhDMgZbzQWHlMZSzeN5/Zy7byjsOjCPpLX++GTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RN96AF2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90DEC4CED6;
+	Wed,  5 Feb 2025 13:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766014;
-	bh=CYraQN8jaMBYQml7wsD7pl60+9lJzgL+MCL4MiT6IQw=;
+	s=korg; t=1738763316;
+	bh=sLzihlSVSSSHIThAa350FyNhDhyFWD+RSLcnfwDm8xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEDAJW4S07iECbXeonrUxqAfaOsOGxVQ2u0qMzLQ8COaWdk1rCjzQOsqGPxWTb66h
-	 CzVM6svkzkDcdX45rbFLFHL4n1RXm9dGYUxUSfOomXmijtuTd4TUFEENCKkVyYVXQw
-	 Qd/2b8Wz7jQHa2ObzmZJ0l3XhXeu9dFlx9DJlmqA=
+	b=RN96AF2EXyVi7XmtmEfIDNnnHfuoxhKAe8lImEjrCMwYhsf46LS+vUWQyU91gulZK
+	 baBY3Sr93gV9M5/FBsq1kcBwUBYI5PrqLHv+OQ1NIO1OAwDM3JhL/mYEdcwCBuFzT3
+	 1KgaS5Msd8MzoShoNSqkrogbbM7OTdtpxsmw5Voo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 215/623] i2c: designware: Actually make use of the I2C_DW_COMMON and I2C_DW symbol namespaces
-Date: Wed,  5 Feb 2025 14:39:17 +0100
-Message-ID: <20250205134504.451526595@linuxfoundation.org>
+Subject: [PATCH 6.6 039/393] drm/msm/dpu: link DSPP_2/_3 blocks on SC8180X
+Date: Wed,  5 Feb 2025 14:39:18 +0100
+Message-ID: <20250205134421.797024947@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit f0a4e9fa656ceb3b2e4c296cf6226798d804fa22 ]
+[ Upstream commit 0986163245df6bece47113e506143a7e87b0097d ]
 
-DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
-is included. So move the define above the include block.
+Link DSPP_2 to the LM_2 and DSPP_3 to the LM_3 mixer blocks. This allows
+using colour transformation matrix (aka night mode) with more outputs at
+the same time.
 
-Fixes: fd57a3325a77 ("i2c: designware: Move exports to I2C_DW namespaces")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: f5abecfe339e ("drm/msm/dpu: enable DSPP and DSC on sc8180x")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/629954/
+Link: https://lore.kernel.org/r/20241220-dpu-fix-catalog-v2-3-38fa961ea992@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-common.c | 5 +++--
- drivers/i2c/busses/i2c-designware-master.c | 5 +++--
- drivers/i2c/busses/i2c-designware-slave.c  | 5 +++--
- 3 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
-index 183a35038eef9..8eb7bd640f8d3 100644
---- a/drivers/i2c/busses/i2c-designware-common.c
-+++ b/drivers/i2c/busses/i2c-designware-common.c
-@@ -8,6 +8,9 @@
-  * Copyright (C) 2007 MontaVista Software Inc.
-  * Copyright (C) 2009 Provigent Ltd.
-  */
-+
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW_COMMON"
-+
- #include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
-@@ -29,8 +32,6 @@
- #include <linux/types.h>
- #include <linux/units.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW_COMMON"
--
- #include "i2c-designware-core.h"
- 
- static const char *const abort_sources[] = {
-diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index c8cbe5b1aeb19..2569bf1a72e0e 100644
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -8,6 +8,9 @@
-  * Copyright (C) 2007 MontaVista Software Inc.
-  * Copyright (C) 2009 Provigent Ltd.
-  */
-+
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
-+
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/errno.h>
-@@ -22,8 +25,6 @@
- #include <linux/regmap.h>
- #include <linux/reset.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
--
- #include "i2c-designware-core.h"
- 
- #define AMD_TIMEOUT_MIN_US	25
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index dc2b788eac5bd..5cd4a5f7a472e 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -6,6 +6,9 @@
-  *
-  * Copyright (C) 2016 Synopsys Inc.
-  */
-+
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
-+
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/errno.h>
-@@ -16,8 +19,6 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
--
- #include "i2c-designware-core.h"
- 
- static void i2c_dw_configure_fifo_slave(struct dw_i2c_dev *dev)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index 47de71e71e310..427dec0cd1d36 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -163,6 +163,7 @@ static const struct dpu_lm_cfg sc8180x_lm[] = {
+ 		.sblk = &sdm845_lm_sblk,
+ 		.lm_pair = LM_3,
+ 		.pingpong = PINGPONG_2,
++		.dspp = DSPP_2,
+ 	}, {
+ 		.name = "lm_3", .id = LM_3,
+ 		.base = 0x47000, .len = 0x320,
+@@ -170,6 +171,7 @@ static const struct dpu_lm_cfg sc8180x_lm[] = {
+ 		.sblk = &sdm845_lm_sblk,
+ 		.lm_pair = LM_2,
+ 		.pingpong = PINGPONG_3,
++		.dspp = DSPP_3,
+ 	}, {
+ 		.name = "lm_4", .id = LM_4,
+ 		.base = 0x48000, .len = 0x320,
 -- 
 2.39.5
 
