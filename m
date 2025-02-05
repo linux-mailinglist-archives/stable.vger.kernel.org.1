@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E03A28CCE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25784A290D8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD221684EB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CA891694C7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9800714B088;
-	Wed,  5 Feb 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C42B1632C8;
+	Wed,  5 Feb 2025 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XzRFmUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUvlHUSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5318014A4E9;
-	Wed,  5 Feb 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38912188733;
+	Wed,  5 Feb 2025 14:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763650; cv=none; b=S1ambSp2MarfCfWUoJznsG1Yc6YL+rSwJ4rfZeJECMUecghZMM50oszv9zSpQYM/xH73FDgeyX88p+oKNHW0Y7NCe+q2F3E6cMF0BXDODE2Qf5cU8KFFR2wNUl43WwP1X6IuCPjllOBhqDyXYm8vLaH8FuXD6B6PWEURO+n8vUA=
+	t=1738766404; cv=none; b=okHfQpbt0WPX6n1PeGp3F4XKFXAEaAGrsw8kEyHHLpVFVOBVj48XWEJ0Kl4yZY02GkELBLReTvYlmUwi/CjFxkULWObDScJlJeIdl3A28gb1BLtWJyK3vNdRaktt0xvD5J9ndtvyKQQdI+hVaG8jzCZ9fXogMLHafVK/4pJxENU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763650; c=relaxed/simple;
-	bh=GIm9ZT/NeA0R2iakg/aJ+pBiuzbXcdbrlCmo8hkNE8Y=;
+	s=arc-20240116; t=1738766404; c=relaxed/simple;
+	bh=QK2gwCmizqchXYYFbeHpMz4+UzgBVlCOiH+9TXzh02E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmBRwWGI94Hi/7rOVKbhN/JWVmJTX+RjFQw0/LBrV4ny14UN0sJMUQNbfk/gzuVj/7oVqI4XqVxj+k4NH03TccnXdR2+dLE1PkoGQG1QtLSs6OpYvIxGciOmB1L7z5jWFwl0UZP5i3Vteymt80+uXpV3DPorQcmbGOc3XvlQNZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XzRFmUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B505DC4CED1;
-	Wed,  5 Feb 2025 13:54:09 +0000 (UTC)
+	 MIME-Version; b=gKITwOJS2O7G7GXLRuX/6mBOAXJTcpXMPjx37wo84XU9L0Ay+7d3K7pvJYk396O9ijtso9ryCB5ZFVne0FSxB1Gxqae8TLkOHogBM8S4yxL+5X4sZO5a/FhJ7i19kcz+3F+yjCpjhvNfFPsqE4M6VQaZBtdQQeBRAbxufkicLhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUvlHUSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9B5C4CED1;
+	Wed,  5 Feb 2025 14:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763650;
-	bh=GIm9ZT/NeA0R2iakg/aJ+pBiuzbXcdbrlCmo8hkNE8Y=;
+	s=korg; t=1738766404;
+	bh=QK2gwCmizqchXYYFbeHpMz4+UzgBVlCOiH+9TXzh02E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XzRFmUg7cETQDKAw38Gw1ZgE6S3vueZ/5CUK/9XbxwJVsH+zhnJa2nZ/vmOkQgre
-	 8L2OQdBkTVP5cqim2V2nZhBzkBv2q48S7Ee1OAE7U22kLq7ux4dabQMQC7m+6cmVip
-	 v0L6J2CqbuYFhG7BDb6wRB6XzBeGZWCDIOPA4MbY=
+	b=pUvlHUSGL9OoYGaoCj+5BDRY9n5QjJbciskVfdkaz8p+flODc6JyvHJ+asbHQpj1I
+	 9ntHCslirWwtjWg9f+1fp8pN/LvYwKstJrSOFIqDsO7yWt81PUvqXhKVlfVQ7+JbzJ
+	 V13b7J72HjC/akBtzp7XLJ/DRJyRokbPBa8DtDI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/393] regulator: of: Implement the unwind path of of_regulator_match()
+Subject: [PATCH 6.13 270/623] ASoC: renesas: rz-ssi: Use only the proper amount of dividers
 Date: Wed,  5 Feb 2025 14:40:12 +0100
-Message-ID: <20250205134423.854425670@linuxfoundation.org>
+Message-ID: <20250205134506.558680731@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit dddca3b2fc676113c58b04aaefe84bfb958ac83e ]
+[ Upstream commit 55c209cd4318c701e6e88e0b2512a0f12dd02a7d ]
 
-of_regulator_match() does not release the OF node reference in the error
-path, resulting in an OF node leak. Therefore, call of_node_put() on the
-obtained nodes before returning the EINVAL error.
+There is no need to populate the ckdv[] with invalid dividers as that
+part will not be indexed anyway. The ssi->audio_mck/bclk_rate should
+always be >= 0. While at it, change the ckdv type as u8, as the divider
+128 was previously using the s8 sign bit.
 
-Since it is possible that some drivers call this function and do not
-exit on failure, such as s2mps11_pmic_driver, clear the init_data and
-of_node in the error path.
-
-This was reported by an experimental verification tool that I am
-developing. As I do not have access to actual devices nor the QEMU board
-configuration to test drivers that call this function, no runtime test
-was able to be performed.
-
-Fixes: 1c8fa58f4750 ("regulator: Add generic DT parsing for regulators")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://patch.msgid.link/20250104080453.2153592-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 03e786bd43410fa9 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20241210170953.2936724-6-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/of_regulator.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ sound/soc/renesas/rz-ssi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
-index 59e71fd0db439..f23c12f4ffbfa 100644
---- a/drivers/regulator/of_regulator.c
-+++ b/drivers/regulator/of_regulator.c
-@@ -435,7 +435,7 @@ int of_regulator_match(struct device *dev, struct device_node *node,
- 					"failed to parse DT for regulator %pOFn\n",
- 					child);
- 				of_node_put(child);
--				return -EINVAL;
-+				goto err_put;
- 			}
- 			match->of_node = of_node_get(child);
- 			count++;
-@@ -444,6 +444,18 @@ int of_regulator_match(struct device *dev, struct device_node *node,
- 	}
- 
- 	return count;
-+
-+err_put:
-+	for (i = 0; i < num_matches; i++) {
-+		struct of_regulator_match *match = &matches[i];
-+
-+		match->init_data = NULL;
-+		if (match->of_node) {
-+			of_node_put(match->of_node);
-+			match->of_node = NULL;
-+		}
-+	}
-+	return -EINVAL;
- }
- EXPORT_SYMBOL_GPL(of_regulator_match);
- 
+diff --git a/sound/soc/renesas/rz-ssi.c b/sound/soc/renesas/rz-ssi.c
+index 6efd017aaa7fc..6b442b1014155 100644
+--- a/sound/soc/renesas/rz-ssi.c
++++ b/sound/soc/renesas/rz-ssi.c
+@@ -258,8 +258,7 @@ static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
+ static int rz_ssi_clk_setup(struct rz_ssi_priv *ssi, unsigned int rate,
+ 			    unsigned int channels)
+ {
+-	static s8 ckdv[16] = { 1,  2,  4,  8, 16, 32, 64, 128,
+-			       6, 12, 24, 48, 96, -1, -1, -1 };
++	static u8 ckdv[] = { 1,  2,  4,  8, 16, 32, 64, 128, 6, 12, 24, 48, 96 };
+ 	unsigned int channel_bits = 32;	/* System Word Length */
+ 	unsigned long bclk_rate = rate * channels * channel_bits;
+ 	unsigned int div;
 -- 
 2.39.5
 
