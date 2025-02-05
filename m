@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1643A28D7B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4B1A290E2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0FE1883DE3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FE761696E6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468E61547F2;
-	Wed,  5 Feb 2025 14:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A52155A30;
+	Wed,  5 Feb 2025 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuoT2P9V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vxe6DIpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035751519AA;
-	Wed,  5 Feb 2025 14:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625C97E792;
+	Wed,  5 Feb 2025 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764080; cv=none; b=RaXhBbve4QyHpdGfZrFD3vL5dukYb0I78tMT/z8iCphnZgnVSB5LygVZ9fm7sCj35N6hL3kxfCusPLczQ1mFpDv1y1G3gnfWqKJIuKgHLUalOcwKbAtI+IsvLsDB14YVTG0UJw3Kocf8IuiUjKoqB1Gii1XCv8dBbcs2Etd3HJ0=
+	t=1738766440; cv=none; b=kanZgRe0CMq8FgAOZVEVU72JFupHqCm6yUbrg1ISsjwBSNMPwDoKfgiHEHlE+nagqS91XWRnzpeebUiPqYcjaudW6f4eS2li/6Qy6did1cc+QvQQ1AZTIiT1GtfBCJW4wt1HJ/pFXboSKQ6p2URQiuWNiGISvwBxlJkwZjRBSB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764080; c=relaxed/simple;
-	bh=958lKAmpgfeWPYfDai4mxhAE1AoxwXNXYBE5RhnSHME=;
+	s=arc-20240116; t=1738766440; c=relaxed/simple;
+	bh=3QuaXJEGkwWFHQm6FK6TQ8J/4IAb62F60wMtQdQoP0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uvmJ1hyvWbI1QbA32CA6o2UWI3PRs2XJgIy9/ZeeBldK5EQa5/nNQUwau7hxBG/G7kOUHLkxsA0YfKy0+4ahaf1crw5xeWeQiWnAWwUbBxgxMhP7X0/VH8fReEn6w+roxBCDWx/8BnP2RZTd2xFVjQac/P6C5NdcAKJeBdp637Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuoT2P9V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C00C4CEDD;
-	Wed,  5 Feb 2025 14:01:19 +0000 (UTC)
+	 MIME-Version; b=njJXGUDPdfoWfY3ISe062gBfg0Gfw+bjN3QkvvR5vSmwCC7qkmv1dTfh64yCwj5ul5bcQSH25aQVIbvhF+q6FkxQ+iyUBYT/ys5OsZUe0LIjWHqqFqBEsu9vYyewhiy/OYx5fj9sFDgt1WYN3OzL11iV8ikB3p4RYOgfAD6syD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vxe6DIpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB88C4CED1;
+	Wed,  5 Feb 2025 14:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764079;
-	bh=958lKAmpgfeWPYfDai4mxhAE1AoxwXNXYBE5RhnSHME=;
+	s=korg; t=1738766440;
+	bh=3QuaXJEGkwWFHQm6FK6TQ8J/4IAb62F60wMtQdQoP0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuoT2P9VeM8UhgfuI9vnnkvWXeGSTv/RIXSS5H/EZw2/Z84N0R07IkCQNzH1s5lNQ
-	 /Pr/l9Cfa4fWJ1aIT4r0S3F1DsmLyCL+4RwJkmgxw6t30G73vo0P+UmZs5/Da1gaEq
-	 bT0FL4eJcBUWA6yf6/D83kA4SPyafAXnXfnht+EE=
+	b=Vxe6DIpRO4ZPosyoasUuN7MVk02XTRGJy0ynDCwFO60vl4uvo0IFsvZMAxBnDUQ0U
+	 70J3uC/qgmYL2CPiINynHtHVhMnVKRvBk8MYDEzPFKybw+HEL+fyjVrgAAfl/y4jPt
+	 +87hmz/3l81Si1j3NOoes3HNzGXl1VqPrcjSkSD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/393] pwm: stm32: Add check for clk_enable()
+Subject: [PATCH 6.12 302/590] ARM: at91: pm: change BU Power Switch to automatic mode
 Date: Wed,  5 Feb 2025 14:40:57 +0100
-Message-ID: <20250205134425.581997894@linuxfoundation.org>
+Message-ID: <20250205134506.833037398@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
+[ Upstream commit 6fc5bdfa872b7da51b5507a1327a17c3db2fcf95 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+Change how the Backup Unit Power is configured and force the
+automatic/hardware mode.
+This change eliminates the need for software management of the power
+switch, ensuring it transitions to the backup power source before
+entering low power modes.
 
-Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+This is done in the only location where this switch was configured. It's
+usually done in the bootloader.
+
+Previously, the loss of the VDDANA (or VDDIN33) power source was not
+automatically compensated by an alternative power source. This resulted
+in the loss of Backup Unit content, including Backup Self-refresh low
+power mode information, OTP emulation configuration, and boot
+configuration, for instance.
+
+Fixes: ac809e7879b1 ("ARM: at91: pm: switch backup area to vbat in backup mode")
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20241125165648.509162-1-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/mach-at91/pm.c | 31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index b91a14c895bea..67414b97ef4d2 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -635,8 +635,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
+diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
+index b9b995f8a36e1..05a1547642b60 100644
+--- a/arch/arm/mach-at91/pm.c
++++ b/arch/arm/mach-at91/pm.c
+@@ -598,7 +598,21 @@ static int at91_suspend_finish(unsigned long val)
+ 	return 0;
+ }
  
- 	/* Initialize clock refcount to number of enabled PWM channels. */
--	for (i = 0; i < num_enabled; i++)
--		clk_enable(priv->clk);
-+	for (i = 0; i < num_enabled; i++) {
-+		ret = clk_enable(priv->clk);
-+		if (ret)
-+			return ret;
-+	}
+-static void at91_pm_switch_ba_to_vbat(void)
++/**
++ * at91_pm_switch_ba_to_auto() - Configure Backup Unit Power Switch
++ * to automatic/hardware mode.
++ *
++ * The Backup Unit Power Switch can be managed either by software or hardware.
++ * Enabling hardware mode allows the automatic transition of power between
++ * VDDANA (or VDDIN33) and VDDBU (or VBAT, respectively), based on the
++ * availability of these power sources.
++ *
++ * If the Backup Unit Power Switch is already in automatic mode, no action is
++ * required. If it is in software-controlled mode, it is switched to automatic
++ * mode to enhance safety and eliminate the need for toggling between power
++ * sources.
++ */
++static void at91_pm_switch_ba_to_auto(void)
+ {
+ 	unsigned int offset = offsetof(struct at91_pm_sfrbu_regs, pswbu);
+ 	unsigned int val;
+@@ -609,24 +623,19 @@ static void at91_pm_switch_ba_to_vbat(void)
  
- 	ret = devm_pwmchip_add(dev, &priv->chip);
- 	if (ret < 0)
+ 	val = readl(soc_pm.data.sfrbu + offset);
+ 
+-	/* Already on VBAT. */
+-	if (!(val & soc_pm.sfrbu_regs.pswbu.state))
++	/* Already on auto/hardware. */
++	if (!(val & soc_pm.sfrbu_regs.pswbu.ctrl))
+ 		return;
+ 
+-	val &= ~soc_pm.sfrbu_regs.pswbu.softsw;
+-	val |= soc_pm.sfrbu_regs.pswbu.key | soc_pm.sfrbu_regs.pswbu.ctrl;
++	val &= ~soc_pm.sfrbu_regs.pswbu.ctrl;
++	val |= soc_pm.sfrbu_regs.pswbu.key;
+ 	writel(val, soc_pm.data.sfrbu + offset);
+-
+-	/* Wait for update. */
+-	val = readl(soc_pm.data.sfrbu + offset);
+-	while (val & soc_pm.sfrbu_regs.pswbu.state)
+-		val = readl(soc_pm.data.sfrbu + offset);
+ }
+ 
+ static void at91_pm_suspend(suspend_state_t state)
+ {
+ 	if (soc_pm.data.mode == AT91_PM_BACKUP) {
+-		at91_pm_switch_ba_to_vbat();
++		at91_pm_switch_ba_to_auto();
+ 
+ 		cpu_suspend(0, at91_suspend_finish);
+ 
 -- 
 2.39.5
 
