@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8959EA29330
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE4EA291E0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0A3188E17B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B0BD7A1194
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03321891A8;
-	Wed,  5 Feb 2025 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F911A01B0;
+	Wed,  5 Feb 2025 14:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1O7O6Vj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzrPi+2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B30C1E89C;
-	Wed,  5 Feb 2025 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F4E185E7F;
+	Wed,  5 Feb 2025 14:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767579; cv=none; b=GVshpK//IvcsPfDgNaxOj64QdMAkf+yNq1Je/XINndyhAAhMmyBTkiQPF9tnUdGvE96eSxK8iJxjoN5hVias5HJzWLj9fhSxuRj+K1oSgN/waMvv+4UIZP7nDYH+J/45pKbSrH4a4ladxkKrypaTiL6QODyxmh+25yUIynnkt0c=
+	t=1738767148; cv=none; b=awbOwYSw0aqa8b4AUO7xEgT2fgsAMuAn35krpancS+ahpzHM15WshXOaM+G6dflnt8UVbZ7haF2fRyaARstIz5qqfYHlofH+dqn4LD5p2++QgEW52Hw3E7AV7TMyc+JaEy+ZR95nWXUNOh32lYQyODevqjGEdV7Xh40uwCquiuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767579; c=relaxed/simple;
-	bh=CWlmG8xx784GCOI2QBgdRqGt0bmS13rHgRfyNnC8NsI=;
+	s=arc-20240116; t=1738767148; c=relaxed/simple;
+	bh=psuid+9uuSyVdrkAG+Fkol4/1W4qYkYEZMMfYTUD4Qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mG9RPXVOPFH3qtanHmiMzuubbPuv+sfErUgUi1h5DjfQGCg90wKWiT5gMWCqa90z5MozyqKDrm+kMO/gj4bLAlugzznGuGF7F5xsMYXbmbQkqrqeoLeHF2zhqq0mssYtGUeHk5S7bprgfSRMVUfoJPgsvAp31IHvlG1F+wI2NlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1O7O6Vj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DF1C4CEDD;
-	Wed,  5 Feb 2025 14:59:38 +0000 (UTC)
+	 MIME-Version; b=N7ZJhOqaVZdJiIKp8Zwo938l2KKYW+s2CTVf5stTfTaI21oo2Mtb7EGztfmfzrwfto1odubmQzW2X2I1tPGbYpT8o1g06WkbeM6gPl6qg29E3ZszxTLekiiZ29VkZcmG9ThT0G/JeoNZ9XB9MACid325K88m/Tu0Rd+pmwlVW0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzrPi+2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DACC4CED1;
+	Wed,  5 Feb 2025 14:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767578;
-	bh=CWlmG8xx784GCOI2QBgdRqGt0bmS13rHgRfyNnC8NsI=;
+	s=korg; t=1738767147;
+	bh=psuid+9uuSyVdrkAG+Fkol4/1W4qYkYEZMMfYTUD4Qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1O7O6Vjq9njRhkPzLFbgLavp6JBomlci8biDCrTxQ9qcUaUThk5g19DPcS+y5mOs
-	 3PXVj6Rw4zGFUP+DVw9+RF0Es+uAO8x0nYh0duOZB6kNIlUEAG0LeWledRjEE1Iort
-	 5uybZuWuVnhXAKnUHvDzAZiIH51Jw4C/JCabFWw8=
+	b=mzrPi+2JiAzDP1Yiwi/yz3efhGdwPp6hLB98KQW5IEOI/ThWFULCBO4+39M41anTP
+	 CZIcNLhAVMU+M0EZcSJD22kCXr/fksBL2YJ10UqBKpL4Kphsjy+g6OdLTisQ9kCqrU
+	 +/Qt7rghi8AWKoKdalCvs0hKj30WxmkPzid2VAMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Josua Mayer <josua@solid-run.com>,
-	Nishanth Menon <nm@ti.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 424/623] arm64: dts: ti: k3-am642-hummingboard-t: Convert overlay to board dts
-Date: Wed,  5 Feb 2025 14:42:46 +0100
-Message-ID: <20250205134512.445954709@linuxfoundation.org>
+Subject: [PATCH 6.12 412/590] media: i2c: imx290: Register 0x3011 varies between imx327 and imx290
+Date: Wed,  5 Feb 2025 14:42:47 +0100
+Message-ID: <20250205134511.029790509@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit e2b69180431968250bf3c0c581155f1b37d057c1 ]
+[ Upstream commit f2055c1d62d6dfd25a31d1d1923883f21305aea5 ]
 
-SolidRun HummingBoard-T has two options for M.2 connector, supporting
-either PCI-E or USB-3.1 Gen 1 - depending on configuration of a mux
-on the serdes lane.
-The required configurations in device-tree were modeled as overlays.
+Reviewing the datasheets, register 0x3011 is meant to be 0x02 on imx327
+and 0x00 on imx290.
 
-The USB-3.1 overlay uses /delete-property/ to unset a boolean property
-on the usb controller limiting it to USB-2.0 by default.
-Overlays can not delete a property from the base dtb, therefore this
-overlay is at this time useless.
+Move it out of the common registers, and set it appropriately in the
+sensor specific sections. (Included for imx290 to be explicit, rather
+than relying on the default value).
 
-Convert both overlays into full dts by including the base board dts.
-While the pcie overlay was functional, both are converted for a
-consistent user experience when selecting between the two mutually
-exclusive configurations.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/linux-devicetree/CAMuHMdXTgpTnJ9U7egC2XjFXXNZ5uiY1O+WxNd6LPJW5Rs5KTw@mail.gmail.com
-Fixes: bbef42084cc1 ("arm64: dts: ti: hummingboard-t: add overlays for m.2 pci-e and usb-3")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20250101-am64-hb-fix-overlay-v2-1-78143f5da28c@solid-run.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 2d41947ec2c0 ("media: i2c: imx290: Add support for imx327 variant")
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/Makefile                    |  4 ----
- ...-pcie.dtso => k3-am642-hummingboard-t-pcie.dts} | 14 ++++++++------
- ...-usb3.dtso => k3-am642-hummingboard-t-usb3.dts} | 13 ++++++++-----
- 3 files changed, 16 insertions(+), 15 deletions(-)
- rename arch/arm64/boot/dts/ti/{k3-am642-hummingboard-t-pcie.dtso => k3-am642-hummingboard-t-pcie.dts} (78%)
- rename arch/arm64/boot/dts/ti/{k3-am642-hummingboard-t-usb3.dtso => k3-am642-hummingboard-t-usb3.dts} (74%)
+ drivers/media/i2c/imx290.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 379bfa4425d49..2b3b48a9a8842 100644
---- a/arch/arm64/boot/dts/ti/Makefile
-+++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -42,10 +42,6 @@ dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-csi2-imx219.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-hdmi-audio.dtbo
+diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+index 458905dfb3e11..a87a265cd8395 100644
+--- a/drivers/media/i2c/imx290.c
++++ b/drivers/media/i2c/imx290.c
+@@ -269,7 +269,6 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
+ 	{ IMX290_WINWV, 1097 },
+ 	{ IMX290_XSOUTSEL, IMX290_XSOUTSEL_XVSOUTSEL_VSYNC |
+ 			   IMX290_XSOUTSEL_XHSOUTSEL_HSYNC },
+-	{ CCI_REG8(0x3011), 0x02 },
+ 	{ CCI_REG8(0x3012), 0x64 },
+ 	{ CCI_REG8(0x3013), 0x00 },
+ };
+@@ -277,6 +276,7 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
+ static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
+ 	{ CCI_REG8(0x300f), 0x00 },
+ 	{ CCI_REG8(0x3010), 0x21 },
++	{ CCI_REG8(0x3011), 0x00 },
+ 	{ CCI_REG8(0x3016), 0x09 },
+ 	{ CCI_REG8(0x3070), 0x02 },
+ 	{ CCI_REG8(0x3071), 0x11 },
+@@ -330,6 +330,7 @@ static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
+ };
  
- # Boards with AM64x SoC
--k3-am642-hummingboard-t-pcie-dtbs := \
--	k3-am642-hummingboard-t.dtb k3-am642-hummingboard-t-pcie.dtbo
--k3-am642-hummingboard-t-usb3-dtbs := \
--	k3-am642-hummingboard-t.dtb k3-am642-hummingboard-t-usb3.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm-icssg1-dualemac.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am642-evm-icssg1-dualemac-mii.dtbo
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-similarity index 78%
-rename from arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso
-rename to arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-index bd9a5caf20da5..023b2a6aaa566 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-pcie.dts
-@@ -2,17 +2,19 @@
- /*
-  * Copyright (C) 2023 Josua Mayer <josua@solid-run.com>
-  *
-- * Overlay for SolidRun AM642 HummingBoard-T to enable PCI-E.
-+ * DTS for SolidRun AM642 HummingBoard-T,
-+ * running on Cortex A53, with PCI-E.
-+ *
-  */
- 
--/dts-v1/;
--/plugin/;
--
--#include <dt-bindings/gpio/gpio.h>
--#include <dt-bindings/phy/phy.h>
-+#include "k3-am642-hummingboard-t.dts"
- 
- #include "k3-serdes.h"
- 
-+/ {
-+	model = "SolidRun AM642 HummingBoard-T with PCI-E";
-+};
-+
- &pcie0_rc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie0_default_pins>;
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-similarity index 74%
-rename from arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso
-rename to arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-index ffcc3bd3c7bc5..ee9bd618f3701 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-hummingboard-t-usb3.dts
-@@ -2,16 +2,19 @@
- /*
-  * Copyright (C) 2023 Josua Mayer <josua@solid-run.com>
-  *
-- * Overlay for SolidRun AM642 HummingBoard-T to enable USB-3.1.
-+ * DTS for SolidRun AM642 HummingBoard-T,
-+ * running on Cortex A53, with USB-3.1 Gen 1.
-+ *
-  */
- 
--/dts-v1/;
--/plugin/;
--
--#include <dt-bindings/phy/phy.h>
-+#include "k3-am642-hummingboard-t.dts"
- 
- #include "k3-serdes.h"
- 
-+/ {
-+	model = "SolidRun AM642 HummingBoard-T with USB-3.1 Gen 1";
-+};
-+
- &serdes0 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
+ static const struct cci_reg_sequence imx290_global_init_settings_327[] = {
++	{ CCI_REG8(0x3011), 0x02 },
+ 	{ CCI_REG8(0x309e), 0x4A },
+ 	{ CCI_REG8(0x309f), 0x4A },
+ 	{ CCI_REG8(0x313b), 0x61 },
 -- 
 2.39.5
 
