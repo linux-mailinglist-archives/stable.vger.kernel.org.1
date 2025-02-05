@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-113192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB20FA29066
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FFDA291AA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2196B7A280F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C78C16595D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50782155747;
-	Wed,  5 Feb 2025 14:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DEA19884C;
+	Wed,  5 Feb 2025 14:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMGPg0qa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b98A40d3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCB4151988;
-	Wed,  5 Feb 2025 14:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2523175D5D;
+	Wed,  5 Feb 2025 14:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766133; cv=none; b=J8ybwfnOJZGTMVb5YbiCfLxnVmNK1m6Y5r76CqFPhp6ib87JuDXkznQcvIqBvZkSSwFw/41sxOrIXgYWYZl2uE91aL01MmAFodvvXp6zYYJhYDRXWjY5Uhf7CARoboWdqX/12kOPO6bnTcMssRS4V8TfeiGY8HLLaxytMoB6Qpo=
+	t=1738766605; cv=none; b=TpK6f8yDXyLrrZV6mPOQnK36Qc+r/QCeKvAiaCvFh+ChG43j6Qz75bEfzw82jCDL4BJRAt2hLx8oEO3g9lyUtAAwwSrzBdEphKh7lqxdBH9Qbe/s20EbSXJxSTrnXwNDXFfWmjvTbqROOrjQp8QnCkSyyq/ge/irhC1IFvTewBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766133; c=relaxed/simple;
-	bh=dB/QCwemnRnKyfgwa3YUZgTeDq4yhkrWYdiAGekmLpM=;
+	s=arc-20240116; t=1738766605; c=relaxed/simple;
+	bh=w3eeQlXGFRlgzHZm0b1YPbu/d0jV5hCsfXTAVeZJUFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BlTMEqILTmKuZTO5td2qSzap7aykwJann7AmbQdBLgRdRc2vcqpdU0QMEWvfyeOLHdmRcgYpp8v/Yjbe5Ge9fmrkVbMI2BB4yvUOcECwbR8bgJWZ2TMr4XwJt8KTKjQIH9irgNJRmx6Kgreyymxr4AePggwx22EiulxnA3WUehU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMGPg0qa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86387C4CED1;
-	Wed,  5 Feb 2025 14:35:32 +0000 (UTC)
+	 MIME-Version; b=HrFtH+XivGe+Xaa8h6i6snPJt767po53q8siZufWALg04QrfTps4/OjMCGSYbtBiZOZe9jClNZYHYJYXsoQDCsH6ihl/9E6AZViks72i3DZOUHEGk+isCw+f/7M4fhHTFL+DTxfg+ossN9cHGsIgpBfhv2BY0QCnVu7NfWBHXjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b98A40d3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC6DC4CEDD;
+	Wed,  5 Feb 2025 14:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766132;
-	bh=dB/QCwemnRnKyfgwa3YUZgTeDq4yhkrWYdiAGekmLpM=;
+	s=korg; t=1738766604;
+	bh=w3eeQlXGFRlgzHZm0b1YPbu/d0jV5hCsfXTAVeZJUFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMGPg0qa5+Qxv3MPRx7Bqf019JWj/oOJYm7Qt7GsJjRemkuMKbDE3oWFX2NDPA8C8
-	 QoOY+/ZUn/okNwRL3ptCFiyFJwVkD80r05EZrLtLCMhY2acoCQgNLMcCIdjZjhMtYS
-	 pr7XskDVKnIZh600/f/svms3gdt5EDL+dTTrWMhg=
+	b=b98A40d3aDsIqAFMFEaGKMQDtdgruKoGh6rrh7GLhpWOwg409iHuxxRXc+enFt0Fq
+	 ldg5cXy+I1+kVh3vLdNOQu9IDCQPgqWVB2Cd6SL/HON5L4kiBaOm9VghSh8WGcBWRR
+	 AtmCF/4VbK22jONzwBf1UCGx2WilcUDev+tRszNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Francesco Nigro <fnigro@redhat.com>,
+	Ilan Green <igreen@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Clark Williams <williams@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Stephane Eranian <eranian@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 278/590] ALSA: hda: Fix compilation of snd_hdac_adsp_xxx() helpers
+Subject: [PATCH 6.13 291/623] perf namespaces: Introduce nsinfo__set_in_pidns()
 Date: Wed,  5 Feb 2025 14:40:33 +0100
-Message-ID: <20250205134505.914986834@linuxfoundation.org>
+Message-ID: <20250205134507.364498837@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,199 +74,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 7579790915387396e26041ceafbc07348658edef ]
+[ Upstream commit 9c6a585d257f6845731f4e36b45fe42b5c3162f5 ]
 
-The snd_hdac_adsp_xxx() wrap snd_hdac_reg_xxx() helpers to simplify
-register access for AudioDSP drivers e.g.: the avs-driver. Byte- and
-word-variants of said helps do not expand to bare readx/writex()
-operations but functions instead and, due to pointer type
-incompatibility, cause compilation to fail.
+When we're processing a perf.data file we will, for every thread in that
+file do a machine__findnew_thread(machine, pid, tid) that when that pid
+is seen for the first time will create a 'struct thread' representing
+it.
 
-As the macros are utilized by the avs-driver alone, relocate the code
-introduced with commit c19bd02e9029 ("ALSA: hda: Add helper macros for
-DSP capable devices") into the avs/ directory and update it to operate
-on 'adev' i.e.: the avs-driver-context directly to fix the issue.
+That in turn will call nsinfo__new() -> nsinfo__init() and there it will
+assume we're running live, which is wrong and will need to be addressed
+in a followup patch.
 
-Fixes: c19bd02e9029 ("ALSA: hda: Add helper macros for DSP capable devices")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250110113326.3809897-2-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The nsinfo__new() assumes that if we can't access that thread it has
+already finished and will ignore the -1 return from nsinfo__init(), just
+taking notes to avoid trying to enter in that namespace, since it isn't
+there anymore, a race.
+
+When doing this from 'perf inject', tho, we can fill in parts of that
+nsinfo from what we get from the PERF_RECORD_MMAP2 (pid, tid) and in the
+jitdump file name, that has the form of jit-<PID>.dump.
+
+So if the pid in the jitdump file name is not the one in the
+PERF_RECORD_MMAP2, we can assume that its the pid of the process
+_inside_ the namespace, and that perf was runing outside that namespace.
+
+This will be done in the following patch.
+
+Reported-by: Francesco Nigro <fnigro@redhat.com>
+Reported-by: Ilan Green <igreen@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Clark Williams <williams@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
+Link: https://lore.kernel.org/r/20241206204828.507527-4-acme@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 64a7617efd5a ("perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hdaudio_ext.h     | 45 ---------------------------------
- sound/soc/intel/avs/apl.c       |  1 +
- sound/soc/intel/avs/cnl.c       |  1 +
- sound/soc/intel/avs/registers.h | 45 +++++++++++++++++++++++++++++++++
- sound/soc/intel/avs/skl.c       |  1 +
- 5 files changed, 48 insertions(+), 45 deletions(-)
+ tools/perf/util/namespaces.c | 5 +++++
+ tools/perf/util/namespaces.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/include/sound/hdaudio_ext.h b/include/sound/hdaudio_ext.h
-index 957295364a5e3..4c7a40e149a59 100644
---- a/include/sound/hdaudio_ext.h
-+++ b/include/sound/hdaudio_ext.h
-@@ -2,8 +2,6 @@
- #ifndef __SOUND_HDAUDIO_EXT_H
- #define __SOUND_HDAUDIO_EXT_H
+diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
+index cb185c5659d6b..36047184d76e2 100644
+--- a/tools/perf/util/namespaces.c
++++ b/tools/perf/util/namespaces.c
+@@ -271,6 +271,11 @@ pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
+ 	return RC_CHK_ACCESS(nsi)->in_pidns;
+ }
  
--#include <linux/io-64-nonatomic-lo-hi.h>
--#include <linux/iopoll.h>
- #include <sound/hdaudio.h>
- 
- int snd_hdac_ext_bus_init(struct hdac_bus *bus, struct device *dev,
-@@ -119,49 +117,6 @@ int snd_hdac_ext_bus_link_put(struct hdac_bus *bus, struct hdac_ext_link *hlink)
- 
- void snd_hdac_ext_bus_link_power(struct hdac_device *codec, bool enable);
- 
--#define snd_hdac_adsp_writeb(chip, reg, value) \
--	snd_hdac_reg_writeb(chip, (chip)->dsp_ba + (reg), value)
--#define snd_hdac_adsp_readb(chip, reg) \
--	snd_hdac_reg_readb(chip, (chip)->dsp_ba + (reg))
--#define snd_hdac_adsp_writew(chip, reg, value) \
--	snd_hdac_reg_writew(chip, (chip)->dsp_ba + (reg), value)
--#define snd_hdac_adsp_readw(chip, reg) \
--	snd_hdac_reg_readw(chip, (chip)->dsp_ba + (reg))
--#define snd_hdac_adsp_writel(chip, reg, value) \
--	snd_hdac_reg_writel(chip, (chip)->dsp_ba + (reg), value)
--#define snd_hdac_adsp_readl(chip, reg) \
--	snd_hdac_reg_readl(chip, (chip)->dsp_ba + (reg))
--#define snd_hdac_adsp_writeq(chip, reg, value) \
--	snd_hdac_reg_writeq(chip, (chip)->dsp_ba + (reg), value)
--#define snd_hdac_adsp_readq(chip, reg) \
--	snd_hdac_reg_readq(chip, (chip)->dsp_ba + (reg))
--
--#define snd_hdac_adsp_updateb(chip, reg, mask, val) \
--	snd_hdac_adsp_writeb(chip, reg, \
--			(snd_hdac_adsp_readb(chip, reg) & ~(mask)) | (val))
--#define snd_hdac_adsp_updatew(chip, reg, mask, val) \
--	snd_hdac_adsp_writew(chip, reg, \
--			(snd_hdac_adsp_readw(chip, reg) & ~(mask)) | (val))
--#define snd_hdac_adsp_updatel(chip, reg, mask, val) \
--	snd_hdac_adsp_writel(chip, reg, \
--			(snd_hdac_adsp_readl(chip, reg) & ~(mask)) | (val))
--#define snd_hdac_adsp_updateq(chip, reg, mask, val) \
--	snd_hdac_adsp_writeq(chip, reg, \
--			(snd_hdac_adsp_readq(chip, reg) & ~(mask)) | (val))
--
--#define snd_hdac_adsp_readb_poll(chip, reg, val, cond, delay_us, timeout_us) \
--	readb_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
--			   delay_us, timeout_us)
--#define snd_hdac_adsp_readw_poll(chip, reg, val, cond, delay_us, timeout_us) \
--	readw_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
--			   delay_us, timeout_us)
--#define snd_hdac_adsp_readl_poll(chip, reg, val, cond, delay_us, timeout_us) \
--	readl_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
--			   delay_us, timeout_us)
--#define snd_hdac_adsp_readq_poll(chip, reg, val, cond, delay_us, timeout_us) \
--	readq_poll_timeout((chip)->dsp_ba + (reg), val, cond, \
--			   delay_us, timeout_us)
--
- struct hdac_ext_device;
- 
- /* ops common to all codec drivers */
-diff --git a/sound/soc/intel/avs/apl.c b/sound/soc/intel/avs/apl.c
-index d443fe8d51aee..3dccf0a57a3a1 100644
---- a/sound/soc/intel/avs/apl.c
-+++ b/sound/soc/intel/avs/apl.c
-@@ -12,6 +12,7 @@
- #include "avs.h"
- #include "messages.h"
- #include "path.h"
-+#include "registers.h"
- #include "topology.h"
- 
- static irqreturn_t avs_apl_dsp_interrupt(struct avs_dev *adev)
-diff --git a/sound/soc/intel/avs/cnl.c b/sound/soc/intel/avs/cnl.c
-index bd3c4bb8bf5a1..03f8fb0dc187f 100644
---- a/sound/soc/intel/avs/cnl.c
-+++ b/sound/soc/intel/avs/cnl.c
-@@ -9,6 +9,7 @@
- #include <sound/hdaudio_ext.h>
- #include "avs.h"
- #include "messages.h"
-+#include "registers.h"
- 
- static void avs_cnl_ipc_interrupt(struct avs_dev *adev)
++void nsinfo__set_in_pidns(struct nsinfo *nsi)
++{
++	RC_CHK_ACCESS(nsi)->in_pidns = true;
++}
++
+ void nsinfo__mountns_enter(struct nsinfo *nsi,
+ 				  struct nscookie *nc)
  {
-diff --git a/sound/soc/intel/avs/registers.h b/sound/soc/intel/avs/registers.h
-index f76e91cff2a9a..5b6d60eb3c18b 100644
---- a/sound/soc/intel/avs/registers.h
-+++ b/sound/soc/intel/avs/registers.h
-@@ -9,6 +9,8 @@
- #ifndef __SOUND_SOC_INTEL_AVS_REGS_H
- #define __SOUND_SOC_INTEL_AVS_REGS_H
+diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
+index 8c0731c6cbb7e..e014becb9cd8e 100644
+--- a/tools/perf/util/namespaces.h
++++ b/tools/perf/util/namespaces.h
+@@ -59,6 +59,7 @@ pid_t nsinfo__tgid(const struct nsinfo  *nsi);
+ pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
+ pid_t nsinfo__pid(const struct nsinfo  *nsi);
+ pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
++void nsinfo__set_in_pidns(struct nsinfo *nsi);
  
-+#include <linux/io-64-nonatomic-lo-hi.h>
-+#include <linux/iopoll.h>
- #include <linux/sizes.h>
- 
- #define AZX_PCIREG_PGCTL		0x44
-@@ -98,4 +100,47 @@
- #define avs_downlink_addr(adev) \
- 	avs_sram_addr(adev, AVS_DOWNLINK_WINDOW)
- 
-+#define snd_hdac_adsp_writeb(adev, reg, value) \
-+	snd_hdac_reg_writeb(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
-+#define snd_hdac_adsp_readb(adev, reg) \
-+	snd_hdac_reg_readb(&(adev)->base.core, (adev)->dsp_ba + (reg))
-+#define snd_hdac_adsp_writew(adev, reg, value) \
-+	snd_hdac_reg_writew(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
-+#define snd_hdac_adsp_readw(adev, reg) \
-+	snd_hdac_reg_readw(&(adev)->base.core, (adev)->dsp_ba + (reg))
-+#define snd_hdac_adsp_writel(adev, reg, value) \
-+	snd_hdac_reg_writel(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
-+#define snd_hdac_adsp_readl(adev, reg) \
-+	snd_hdac_reg_readl(&(adev)->base.core, (adev)->dsp_ba + (reg))
-+#define snd_hdac_adsp_writeq(adev, reg, value) \
-+	snd_hdac_reg_writeq(&(adev)->base.core, (adev)->dsp_ba + (reg), value)
-+#define snd_hdac_adsp_readq(adev, reg) \
-+	snd_hdac_reg_readq(&(adev)->base.core, (adev)->dsp_ba + (reg))
-+
-+#define snd_hdac_adsp_updateb(adev, reg, mask, val) \
-+	snd_hdac_adsp_writeb(adev, reg, \
-+			(snd_hdac_adsp_readb(adev, reg) & ~(mask)) | (val))
-+#define snd_hdac_adsp_updatew(adev, reg, mask, val) \
-+	snd_hdac_adsp_writew(adev, reg, \
-+			(snd_hdac_adsp_readw(adev, reg) & ~(mask)) | (val))
-+#define snd_hdac_adsp_updatel(adev, reg, mask, val) \
-+	snd_hdac_adsp_writel(adev, reg, \
-+			(snd_hdac_adsp_readl(adev, reg) & ~(mask)) | (val))
-+#define snd_hdac_adsp_updateq(adev, reg, mask, val) \
-+	snd_hdac_adsp_writeq(adev, reg, \
-+			(snd_hdac_adsp_readq(adev, reg) & ~(mask)) | (val))
-+
-+#define snd_hdac_adsp_readb_poll(adev, reg, val, cond, delay_us, timeout_us) \
-+	readb_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
-+			   delay_us, timeout_us)
-+#define snd_hdac_adsp_readw_poll(adev, reg, val, cond, delay_us, timeout_us) \
-+	readw_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
-+			   delay_us, timeout_us)
-+#define snd_hdac_adsp_readl_poll(adev, reg, val, cond, delay_us, timeout_us) \
-+	readl_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
-+			   delay_us, timeout_us)
-+#define snd_hdac_adsp_readq_poll(adev, reg, val, cond, delay_us, timeout_us) \
-+	readq_poll_timeout((adev)->dsp_ba + (reg), val, cond, \
-+			   delay_us, timeout_us)
-+
- #endif /* __SOUND_SOC_INTEL_AVS_REGS_H */
-diff --git a/sound/soc/intel/avs/skl.c b/sound/soc/intel/avs/skl.c
-index 34f859d6e5a49..d66ef000de9ee 100644
---- a/sound/soc/intel/avs/skl.c
-+++ b/sound/soc/intel/avs/skl.c
-@@ -12,6 +12,7 @@
- #include "avs.h"
- #include "cldma.h"
- #include "messages.h"
-+#include "registers.h"
- 
- void avs_skl_ipc_interrupt(struct avs_dev *adev)
- {
+ void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
+ void nsinfo__mountns_exit(struct nscookie *nc);
 -- 
 2.39.5
 
