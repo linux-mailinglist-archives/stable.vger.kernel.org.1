@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DEAA29286
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C22A28F20
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79B6D7A1F3A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846D018832C5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14025191F75;
-	Wed,  5 Feb 2025 14:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEAF13C3F6;
+	Wed,  5 Feb 2025 14:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YIcVTy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQt1ZVKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C3013C8E2;
-	Wed,  5 Feb 2025 14:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8B41519BE;
+	Wed,  5 Feb 2025 14:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767585; cv=none; b=qPaiZuEV7MB2lmipSMjVqxQzm+OIsuBegJYxgGZGeH7R/ui4TFrkUZOPEbF2Ni12HPPsJ9ZpuVvK0a5RAZyMp0pYa/qLDT3wIMFpTq9ywxjHikRlSKwB6ItB6Ci2DnQn8FYX/FHWWbuf0ZLrwPOnUIyStLy+5QFKbf1tbTECodM=
+	t=1738765275; cv=none; b=nUYxCiO6wHP/vVl3r3nEdX51uSquq8KYZ+CUWs0+QjWMLuGzvjjQydZ/X8ywk6WvzR7NwZwRFsk0XxWOK9JrliSCyjKP1PT2A7HsaktRcOuJkffnes42aHIfjPJUSDTsRuLfpzVKjj/O+VbMdML9PZr0oDLlhT3z+wL4ay90lvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767585; c=relaxed/simple;
-	bh=y50EIaukuFV8n2z+V/VqvnY/2LEEQe0Qki/x3IFN8O8=;
+	s=arc-20240116; t=1738765275; c=relaxed/simple;
+	bh=a/pXn9UsVwUjdjfjX4TSk0G77Wm3Z5Pjuvn42nhodLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXX+pdxsCMmbJHiVZoye5zBBwo0dSmicwf0ZWAvnRbE8O2Vk91sCUiUXFhXhI39E/1U0waAOFErzHcEFnxQUNOlRmEHgCtK3KM1BjawcC/PTFXjn9nU11NZs/l5mLFfYZXaGRVa/dLfZDK6RAKWM1GE8/5+sUbTCjF+s40TmCZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YIcVTy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319F8C4CED1;
-	Wed,  5 Feb 2025 14:59:45 +0000 (UTC)
+	 MIME-Version; b=TggP31E9t4Wr0Mjf3PRLIZeCPxBVYUbnNgHcMAzNfzA2Aiop78diuKXATlmVEP2PkT9V1Z7xrjTwi9s0t6rlYRTLh77TGCIt4J/QvAuaPA8ohlqt8OmfYZin9wBvuPmf7OJ3AsogYi+kbNf9IgzxADT0i9yWXSdHwt4pDocj/ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQt1ZVKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C699C4CED1;
+	Wed,  5 Feb 2025 14:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767585;
-	bh=y50EIaukuFV8n2z+V/VqvnY/2LEEQe0Qki/x3IFN8O8=;
+	s=korg; t=1738765275;
+	bh=a/pXn9UsVwUjdjfjX4TSk0G77Wm3Z5Pjuvn42nhodLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YIcVTy8gELcMT/KmTjoPGKUlF503aXLam3GXYp9EtmZ/vghCNHA3T3LsomA+8WHN
-	 QX10izac+zD3uEfPDqMKRHhaQ2MzZH7lh8V/V6HCrg1sUyFmznn4wWf/lXZNmIUq8a
-	 mo1HFkoRfSXSVA/8kfmWi8wdpUF5mbwQeq5pgu2Y=
+	b=eQt1ZVKYB0ZI8ghYnK5bRl7uGu627TDYcMnxmT9Y6NzJk2qnHKaDakjN0kbpuQYU9
+	 a0T5HJPNvKR/2WXzJvoW4/8yRzhLIdwzq3mH6YUd6DQZECPLjFOCpNqCRKLoTbC2C9
+	 qOkPSmTTAx3jgX5hjJDD2Mk2sTiMwQwXQcrW0W/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Helge Deller <deller@gmx.de>,
+	Mihai Sain <mihai.sain@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 425/623] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
-Date: Wed,  5 Feb 2025 14:42:47 +0100
-Message-ID: <20250205134512.483619567@linuxfoundation.org>
+Subject: [PATCH 6.6 249/393] ARM: dts: microchip: sama5d27_wlsom1_ek: Remove mmc-ddr-3_3v property from sdmmc0 node
+Date: Wed,  5 Feb 2025 14:42:48 +0100
+Message-ID: <20250205134429.834582579@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Mihai Sain <mihai.sain@microchip.com>
 
-[ Upstream commit de124b61e179e690277116e6be512e4f422b5dd8 ]
+[ Upstream commit 2a7f1848d9d65a4deb366726ff8f33c9c64ac43b ]
 
-dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
-and struct device_node *np is present. Since of_get_next_parent()
-obtains a reference of the returned OF node, call of_node_put() before
-returning NULL.
+On board the sdmmc0 interface is wired to a SD Card socket.
+According with mmc-controller bindings, the mmc-ddr-3_3v property
+is used for eMMC devices to enable high-speed DDR mode (3.3V I/O).
+Remove the mmc-ddr-3_3v property from sdmmc0 node.
 
-This was found by an experimental verifier that I am developing, and no
-runtime test was able to be performed due to that lack of actual
-devices.
-
-Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Mihai Sain <mihai.sain@microchip.com>
+Link: https://lore.kernel.org/r/20231204072537.2991-1-mihai.sain@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Stable-dep-of: 4d9e5965df04 ("ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-index c04cbe0ef173d..7c636db798825 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
-@@ -36,6 +36,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
- 		np = of_get_next_parent(np);
- 	}
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+index e055b9e2fe344..15239834d886e 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+@@ -197,7 +197,6 @@
  
-+	of_node_put(np);
- 	return NULL;
- }
- 
+ &sdmmc0 {
+ 	bus-width = <4>;
+-	mmc-ddr-3_3v;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
+ 	status = "okay";
 -- 
 2.39.5
 
