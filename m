@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-112482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898B1A28CE8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70712A28CEC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24E4C1888860
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A7EC3A7B93
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AA51527B4;
-	Wed,  5 Feb 2025 13:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EAF14A4E9;
+	Wed,  5 Feb 2025 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NyQ3Ap7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqJkWiW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ECEFC0B;
-	Wed,  5 Feb 2025 13:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F171519AA;
+	Wed,  5 Feb 2025 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763718; cv=none; b=TQdIK7zmTwpagbj7pzFZHQIP73YEYhMI4HQNxfjPibQFLArtv5FEGjc8dpAcL4acgywNTzwcsKAyMsz1lIbDQEnp73IW8nGxvccgQwB6UxhxEv7sKQ014ipVRD9TNmBL05MHM9j2KJMHlQgNiZ2E14QSsMM+teuuF3WaNiqCj3g=
+	t=1738763727; cv=none; b=SM44NJbrlb9eTjqVBP0dWZf4uXavUVMnG9cF418w/hZpV3wfpmbSQq5tG6sGCfQrj9mWFSHUxqVN770NyOJLpP+B6MsxFNdvnaQ/ogZbXPIKkpDsM74FXlONsC6CykeQQQqF+rH2yAnPhjr69v8L+C2JTjfAPKfyqcqe+flNFnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763718; c=relaxed/simple;
-	bh=xyi4Ly8C9KUDGfm8LxC0HMfu5AJbpHuSdmqEokxWuy0=;
+	s=arc-20240116; t=1738763727; c=relaxed/simple;
+	bh=AAy9Tz6yq+by6criQkW4neTnm+5mJ6+A03S0SzOo2qI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA4A0fcDa9wxqvPZw3pgb4P0miruzHEsaMEvxHk0kRu+umlAvchcQyyB/lrMJN5J2njbdXf1leDlnM5ohwSQdF6kuYInQDKZJ/RgLFXaPKzSmNQNEGuuKyZzBRDfJWYoQ2Nr+B9fzTNq8i7t2hCV9LBxWS0/couL4K0I0X64Fzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NyQ3Ap7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4ACC4CED6;
-	Wed,  5 Feb 2025 13:55:17 +0000 (UTC)
+	 MIME-Version; b=Iy4Y445knSb8NRdPvhTwmzt8RpHWboCri0o4jLcqwxiizRWvsOAApGSf59YTThI7hxb5FsGSuBR+G6s2G1U5cKx6c88YSG432Km/Fh3fA0YfgZ9ri3gsn9ixrXZkuLUH3t9KZWEOyzMbyzlsIW8vhC0VzOZXFxWQ5YxcrUOKMmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqJkWiW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25888C4CED1;
+	Wed,  5 Feb 2025 13:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763717;
-	bh=xyi4Ly8C9KUDGfm8LxC0HMfu5AJbpHuSdmqEokxWuy0=;
+	s=korg; t=1738763727;
+	bh=AAy9Tz6yq+by6criQkW4neTnm+5mJ6+A03S0SzOo2qI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NyQ3Ap7lVBPTFnCENM9tR0rQ0O73fZ/fcK55UJiIZuOgxfILo7jqmVzS9KvyEcNqv
-	 rGhRn+GbxNCPIZVMJg0hCa38F7454QnaW2ZRDhAhj0xkmjBsQ0UR4biH0h08gtCE4v
-	 4Gl7C7p+0MCg3nbQqbNBLXQUfGQ/g4W1sNKlqsxQ=
+	b=wqJkWiW1Y90mAYAqO0QItJedA/SpaH6JxUVxilwRoAlS5XpXfDI9viUIMVc5lGhVd
+	 nmysQf+DcVZHKCwH9VR2gRgvR4T9opNKZqHbjCQUoRzBYVF7mINFnDFRHJUf1G7kTV
+	 F7V00syOFnjmysoU57kXPKHTF+t8JqAC7LyYi07U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com,
-	Karol Przybylski <karprzy7@gmail.com>,
+	Terry Tritton <terry.tritton@linaro.org>,
+	Aseda Aboagye <aaboagye@chromium.org>,
+	Carlos Llamas <cmllamas@google.com>,
 	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/393] HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check
-Date: Wed,  5 Feb 2025 14:40:18 +0100
-Message-ID: <20250205134424.082577592@linuxfoundation.org>
+Subject: [PATCH 6.6 100/393] HID: fix generic desktop D-Pad controls
+Date: Wed,  5 Feb 2025 14:40:19 +0100
+Message-ID: <20250205134424.120351548@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -67,47 +68,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Karol Przybylski <karprzy7@gmail.com>
+From: Terry Tritton <terry.tritton@linaro.org>
 
-[ Upstream commit 50420d7c79c37a3efe4010ff9b1bb14bc61ebccf ]
+[ Upstream commit 80818fdc068eaab729bb793d790ae9fd053f7053 ]
 
-syzbot has found a type mismatch between a USB pipe and the transfer
-endpoint, which is triggered by the hid-thrustmaster driver[1].
-There is a number of similar, already fixed issues [2].
-In this case as in others, implementing check for endpoint type fixes the issue.
+The addition of the "System Do Not Disturb" event code caused the Generic
+Desktop D-Pad configuration to be skipped. This commit allows both to be
+configured without conflicting with each other.
 
-[1] https://syzkaller.appspot.com/bug?extid=040e8b3db6a96908d470
-[2] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
-
-Fixes: c49c33637802 ("HID: support for initialization of some Thrustmaster wheels")
-Reported-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Tested-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+Fixes: 22d6d060ac77 ("input: Add support for "Do Not Disturb"")
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Reviewed-by: Aseda Aboagye <aaboagye@chromium.org>
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-thrustmaster.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/hid/hid-input.c | 37 +++++++++++++++++--------------------
+ include/linux/hid.h     |  1 +
+ 2 files changed, 18 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
-index cf1679b0d4fbb..6c3e758bbb09e 100644
---- a/drivers/hid/hid-thrustmaster.c
-+++ b/drivers/hid/hid-thrustmaster.c
-@@ -170,6 +170,14 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
- 	ep = &usbif->cur_altsetting->endpoint[1];
- 	b_ep = ep->desc.bEndpointAddress;
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index fda9dce3da998..9d80635a91ebd 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -810,10 +810,23 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
+ 			break;
+ 		}
  
-+	/* Are the expected endpoints present? */
-+	u8 ep_addr[1] = {b_ep};
+-		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl*/
+-			switch (usage->hid & 0xf) {
+-			case 0xb: map_key_clear(KEY_DO_NOT_DISTURB); break;
+-			default: goto ignore;
++		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl & D-pad */
++			switch (usage->hid) {
++			case HID_GD_UP:	   usage->hat_dir = 1; break;
++			case HID_GD_DOWN:  usage->hat_dir = 5; break;
++			case HID_GD_RIGHT: usage->hat_dir = 3; break;
++			case HID_GD_LEFT:  usage->hat_dir = 7; break;
++			case HID_GD_DO_NOT_DISTURB:
++				map_key_clear(KEY_DO_NOT_DISTURB); break;
++			default: goto unknown;
++			}
 +
-+	if (!usb_check_int_endpoints(usbif, ep_addr)) {
-+		hid_err(hdev, "Unexpected non-int endpoint\n");
-+		return;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(setup_arr); ++i) {
- 		memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
++			if (usage->hid <= HID_GD_LEFT) {
++				if (field->dpad) {
++					map_abs(field->dpad);
++					goto ignore;
++				}
++				map_abs(ABS_HAT0X);
+ 			}
+ 			break;
+ 		}
+@@ -844,22 +857,6 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
+ 		if (field->application == HID_GD_SYSTEM_CONTROL)
+ 			goto ignore;
  
+-		if ((usage->hid & 0xf0) == 0x90) {	/* D-pad */
+-			switch (usage->hid) {
+-			case HID_GD_UP:	   usage->hat_dir = 1; break;
+-			case HID_GD_DOWN:  usage->hat_dir = 5; break;
+-			case HID_GD_RIGHT: usage->hat_dir = 3; break;
+-			case HID_GD_LEFT:  usage->hat_dir = 7; break;
+-			default: goto unknown;
+-			}
+-			if (field->dpad) {
+-				map_abs(field->dpad);
+-				goto ignore;
+-			}
+-			map_abs(ABS_HAT0X);
+-			break;
+-		}
+-
+ 		switch (usage->hid) {
+ 		/* These usage IDs map directly to the usage codes. */
+ 		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index af55a25db91b0..774cb25dec34c 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -218,6 +218,7 @@ struct hid_item {
+ #define HID_GD_DOWN		0x00010091
+ #define HID_GD_RIGHT		0x00010092
+ #define HID_GD_LEFT		0x00010093
++#define HID_GD_DO_NOT_DISTURB	0x0001009b
+ /* Microsoft Win8 Wireless Radio Controls CA usage codes */
+ #define HID_GD_RFKILL_BTN	0x000100c6
+ #define HID_GD_RFKILL_LED	0x000100c7
 -- 
 2.39.5
 
