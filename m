@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14F7BA28E33
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03588A291D8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCEE51887DE0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8399E3AB3F7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9C514F9E7;
-	Wed,  5 Feb 2025 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB4B1DC198;
+	Wed,  5 Feb 2025 14:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cq4BAy4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnGISxgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E1B1519AA;
-	Wed,  5 Feb 2025 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9F31DC19F;
+	Wed,  5 Feb 2025 14:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764592; cv=none; b=BNCSAJOPKaVKdP/GsZBhf9fWVR05+NnO49fqMNR3+R4Y8D4DHTEuBRjkdgeypip5LIUBGaG7rOkQemfAvw7wkbeqZcJRL4LrhFhtNZpozTIgPz9mkpOlbklVMm+sV124B4Lu4BZT0dvFJz8z1c9+tT9qK2pDAD4Q9Iw1o4x/HeY=
+	t=1738766682; cv=none; b=uCT66vA+1FuszJoIESFHMDaliseSe9ogd4+E1QkhNtVlzrQyDIO2+8YzJ+Zj7aV7uJv6cLHD/hig7ug+E87yMJcKxRflqSy3TOVTJ+dafWi5wpQENOJuaaVU67AKfizTTsYCIvNlcL6IDEHGMC6vPdSxu+9av7D39c0UZcghsHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764592; c=relaxed/simple;
-	bh=/mo+JzAeaLFCXX9BAGFyqJoYSibOF84kWE+a/BB/W2M=;
+	s=arc-20240116; t=1738766682; c=relaxed/simple;
+	bh=MeuSkcSyf7KeKFPuVf9qjXrwIW7XthFguqqhSjO+N1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNzAJWb1ui2+nvA9DcgdFkZftbBhD0eaivxozi1ukhsiKcHdlaZhcuhaHQPN00suLwgtegXOcjVmSOr3vB81J8oA1vkh1++u+gKNym8PJUJ3qEZzZEDXcYFEUDtP3cOqJTEWQhT1v3/GcuiFF9CFk1p0+57wWYYa0BQNjlR8pcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cq4BAy4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058F6C4CEDD;
-	Wed,  5 Feb 2025 14:09:51 +0000 (UTC)
+	 MIME-Version; b=ulMjubQJabgiGusxPY57H6CPFCaUNzEog/WCIEKwuQ9wi/XgXYAJHJt46OAT4hoyiCH+v90/RlIIDSKZURY1UtCaf54jf+QCym5FzgDyr7+jfCqTRktGySiNhEzSxiZshnhCRp2367XLhAZI79swMjmXmQKf1eDQIh4dKYhTtIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnGISxgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365AAC4CED6;
+	Wed,  5 Feb 2025 14:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764592;
-	bh=/mo+JzAeaLFCXX9BAGFyqJoYSibOF84kWE+a/BB/W2M=;
+	s=korg; t=1738766681;
+	bh=MeuSkcSyf7KeKFPuVf9qjXrwIW7XthFguqqhSjO+N1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cq4BAy4yu1cvN/+Rb9+1kIUrZSUHS75giiyVCpyZJH/cVZxeTbj/PeklBc95K+w7l
-	 IkG8EPxng+pTAKlAFiQ1NdgXn/61xgS5ohk+bHLSRyQ8Wz+kJCFC7NqkinGqCmzu1q
-	 MbeXUxGlAse9Bxazq36FIx0CBWwB4CuDZPxx0ZH0=
+	b=cnGISxgj6Lbs1c8Ymmu69GvTlRr/IFidAec9UhE29iTqtzL0IwVv7f62UKIiazQhc
+	 jr1nvTzpxQ1zlBJ84HrT8jWzJebPqMPtO/djU0Vi/YkpTUNIZbViQ3brbcrm+cKt/M
+	 zC9Nq0gCoj4/XNUgqw8/WpNFxI+vCbSfhUnDNI4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/393] bpf: Send signals asynchronously if !preemptible
-Date: Wed,  5 Feb 2025 14:41:44 +0100
-Message-ID: <20250205134427.377399634@linuxfoundation.org>
+Subject: [PATCH 6.12 350/590] arm64: dts: qcom: sdx75: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:41:45 +0100
+Message-ID: <20250205134508.662781287@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 87c544108b612512b254c8f79aa5c0a8546e2cc4 ]
+[ Upstream commit b8021da9ddc65fa041e12ea1e0ff2dfce5c926eb ]
 
-BPF programs can execute in all kinds of contexts and when a program
-running in a non-preemptible context uses the bpf_send_signal() kfunc,
-it will cause issues because this kfunc can sleep.
-Change `irqs_disabled()` to `!preemptible()`.
+The SDX75 platform uses PMK8550 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Reported-by: syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67486b09.050a0220.253251.0084.GAE@google.com/
-Fixes: 1bc7896e9ef4 ("bpf: Fix deadlock with rq_lock in bpf_send_signal()")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250115103647.38487-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 9181bb939984 ("arm64: dts: qcom: Add SDX75 platform and IDP board support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-9-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 +-
+ arch/arm64/boot/dts/qcom/sdx75.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 5f12bb727b850..9d8f60e0cb554 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -853,7 +853,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type)
- 	if (unlikely(is_global_init(current)))
- 		return -EPERM;
+diff --git a/arch/arm64/boot/dts/qcom/sdx75.dtsi b/arch/arm64/boot/dts/qcom/sdx75.dtsi
+index 7cf3fcb469a86..dcb925348e3f3 100644
+--- a/arch/arm64/boot/dts/qcom/sdx75.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdx75.dtsi
+@@ -34,7 +34,7 @@
  
--	if (irqs_disabled()) {
-+	if (!preemptible()) {
- 		/* Do an early check on signal validity. Otherwise,
- 		 * the error is lost in deferred irq_work.
- 		 */
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32000>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
