@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB915A28F98
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 602E1A29077
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A89164D37
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52D8A1883907
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CC3155335;
-	Wed,  5 Feb 2025 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06C1155747;
+	Wed,  5 Feb 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvUmDuC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUQGe6Yl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BB9522A;
-	Wed,  5 Feb 2025 14:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B641151988;
+	Wed,  5 Feb 2025 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765617; cv=none; b=cvrKvUpHWSaPAmzG7L4fEQZVDLF/CeoRBuIzicbQcy7EapGOSwGeOqE+kr6gMHDTf+urfZSqcRgAUZmh0vcRimoNAA/58B1gHebYwhzhAIDnP41Ufa9mEKUdRTiqGRVvndbucg1K4X91RhRb0Q4mJ0okCNQPoJivVz+/rmq3yN0=
+	t=1738766184; cv=none; b=QzxrPXaAajufuozllHfAsFnTUAfgM2DB0vDoUFRD+txYBRhtjtOqhiDz+pO1zDObVEzODOiHJCWNPD7vraYsDz5PLWydyqU4+HekZ9RTPfm3akQOkQAtwKQOHoQyNKLtZWz3e+nS3qqV6accR20FpYVxcWFWOze/H4fojBlusPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765617; c=relaxed/simple;
-	bh=KzYi5AlAL3+CJm/xBp3/csuTFwLkusp9olODe4Su2c4=;
+	s=arc-20240116; t=1738766184; c=relaxed/simple;
+	bh=iX2RghKIkoC8XYCfr2/4byAVXBCqfLv4/dohC4Npn84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bk1ju21piS6bhAejVXtGCF3OhPxp6gEehN3XPG2XDxSDC3hOJy9xWvko0ftWNP9wBKGKR0NFiiMAFRB1ltVBzH+aj48C5OcCcWhGe+PqTNvY/msqO+t3wamnFjIs/lFGJwI+NY26xi2/VKMlEAg88YeRBzMfDTMK1VCmjlCWm1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvUmDuC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE08C4CED1;
-	Wed,  5 Feb 2025 14:26:56 +0000 (UTC)
+	 MIME-Version; b=npQnUInUhJRArwRTPAcwTEKgFHI71OdFV+0dWd+6v11HXY6pTG6DZ8r2SJwKIItAIgFGTXRUQ9sxuZXELnPdqJ+D5IR/tP1UB2HAw3Aw9lInuFz8oOhN/sbRlgNgM38/5oP5LwD3b9yvrkxUJB5Z91EpZ8fk1vw7m4dxkhDqvHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUQGe6Yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9BBC4CED1;
+	Wed,  5 Feb 2025 14:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765617;
-	bh=KzYi5AlAL3+CJm/xBp3/csuTFwLkusp9olODe4Su2c4=;
+	s=korg; t=1738766184;
+	bh=iX2RghKIkoC8XYCfr2/4byAVXBCqfLv4/dohC4Npn84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hvUmDuC6CAA2laVqZc/KdRIJxokKq5VkAMrWS41gQHX+AlxPfxgbmTTA+xS23dHW5
-	 SUo4kLgEtmdwWaDtwt8E3X+AoMJGhumbDSHm8LncADjVJxinzRRh61QJ5zNr1LcF8t
-	 Q7DJAhy4NI+4l/cIYLWBR0RY68vPbLBm0Oi4Vws4=
+	b=iUQGe6Yl+gvw4hoiTRLfT45yvY7GoWuskB4G3yr3KIPtG6VDuZ2c7gWfLSLuPEghW
+	 LP+JiBLbpCKmftOvEsrk5Cqxm9f7pB232H1CEWbbbZjKuaNW3ZRdgn49yxefF1dkBg
+	 JlTRf4nFuo6z047xVLC1+4BidC3g19aNaHX0HhIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 237/590] libbpf: dont adjust USDT semaphore address if .stapsdt.base addr is missing
+Subject: [PATCH 6.13 250/623] ASoC: mediatek: mt8365: Use *-y for Makefile
 Date: Wed,  5 Feb 2025 14:39:52 +0100
-Message-ID: <20250205134504.348418099@linuxfoundation.org>
+Message-ID: <20250205134505.796257602@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 98ebe5ef6f5c4517ba92fb3e56f95827ebea83fd ]
+[ Upstream commit e9d2a2f49244d9737f0ec33f4b7f3580faecd805 ]
 
-USDT ELF note optionally can record an offset of .stapsdt.base, which is
-used to make adjustments to USDT target attach address. Currently,
-libbpf will do this address adjustment unconditionally if it finds
-.stapsdt.base ELF section in target binary. But there is a corner case
-where .stapsdt.base ELF section is present, but specific USDT note
-doesn't reference it. In such case, libbpf will basically just add base
-address and end up with absolutely incorrect USDT target address.
+We should use *-y instead of *-objs in Makefile for the module
+objects.  *-objs is used rather for host programs.
 
-This adjustment has to be done only if both .stapsdt.sema section is
-present and USDT note is recording a reference to it.
-
-Fixes: 74cc6311cec9 ("libbpf: Add USDT notes parsing and resolution logic")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20241121224558.796110-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 5bbfdad8cf8d ("ASoC: mediatek: Add MT8365 support")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241203141823.22393-3-tiwai@suse.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/usdt.c | 2 +-
+ sound/soc/mediatek/mt8365/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
-index 93794f01bb67c..6ff28e7bf5e3d 100644
---- a/tools/lib/bpf/usdt.c
-+++ b/tools/lib/bpf/usdt.c
-@@ -659,7 +659,7 @@ static int collect_usdt_targets(struct usdt_manager *man, Elf *elf, const char *
- 		 *   [0] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
- 		 */
- 		usdt_abs_ip = note.loc_addr;
--		if (base_addr)
-+		if (base_addr && note.base_addr)
- 			usdt_abs_ip += base_addr - note.base_addr;
+diff --git a/sound/soc/mediatek/mt8365/Makefile b/sound/soc/mediatek/mt8365/Makefile
+index 52ba45a8498a2..b197025e34bb8 100644
+--- a/sound/soc/mediatek/mt8365/Makefile
++++ b/sound/soc/mediatek/mt8365/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- 		/* When attaching uprobes (which is what USDTs basically are)
+ # MTK Platform driver
+-snd-soc-mt8365-pcm-objs := \
++snd-soc-mt8365-pcm-y := \
+ 	mt8365-afe-clk.o \
+ 	mt8365-afe-pcm.o \
+ 	mt8365-dai-adda.o \
 -- 
 2.39.5
 
