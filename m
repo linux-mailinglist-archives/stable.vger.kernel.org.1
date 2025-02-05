@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612FEA29166
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:50:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A81A293D2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B379188AEB4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEB9C7A3363
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADA1FF61D;
-	Wed,  5 Feb 2025 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A924198822;
+	Wed,  5 Feb 2025 15:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK6964mI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5shL34m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D87E1FE47E;
-	Wed,  5 Feb 2025 14:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EE61519B4;
+	Wed,  5 Feb 2025 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766510; cv=none; b=Lb9hmDhbN6n5xjlZSS1brBiWUOhQyA2Ay7l0JWq6GGfTQC3goSTWZEnhKd023+i+Y0BiOwg9ZJ+FA68TRu3g3rauawVMe7HhVhDJXdeQkAe77zYn6aHQZcbJ2rTcWVvpS43I0LwV5P4DSNXqUl8y7uzBgihi5qMNGmzyBSwaoik=
+	t=1738768408; cv=none; b=e3jA0wf8gIjoZCCa54AKYH9vMS7i4mWVWWcgY9NeLbXIlGd+vbGtX2eHFa2GQUzXULHJM3psOQLzoQDyZ+rSw8jyT8kcJHHr86ZbE313Dphi6kI9HB/sukPE/Y76JZzWhJKhqTu/ChgajX9EEA5yN/EWQvIQQ0XpUzQKW414m9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766510; c=relaxed/simple;
-	bh=YhAGcmNMExGba0RCFjSWkoOOpz9y3GuCAR7cMYWs2Zw=;
+	s=arc-20240116; t=1738768408; c=relaxed/simple;
+	bh=QS4feQpr8o3xs3gRtijwNnuOwAz6DEVCmgAqX5+7l4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWnzXp7JlF4fQchhuQF6FBih8JguYLuA0U8o8wav2288+dZurj32Y6Mhw6PEZdlONUydmXSFwYFMlJyiF/y1HoiewvXQgofsszz6zYgWOAi0U57sCH92CPv/QNKtgnJkzxmOwgCeAu6kKkFvANEfX0BEWWA+5o+VhhlARYMdcEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK6964mI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9358C4CEEA;
-	Wed,  5 Feb 2025 14:41:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sT8YqsTgFDv6QnnbG0fHnhDqmfiCCDSg0Y8D3xcxG/F2Em5JVOvwW8NGYw+BvBKOaCOrQ10wZ55GqjtLL86Q4jAMFsLnytIOCfT2MIps4Y9QF3XqhecE0j8S9Jr2wxpYXpMeqe0nZOiN6RmVyTrDFQDac7G+nf5nHo8uq++sV7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5shL34m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EEAC4CEDD;
+	Wed,  5 Feb 2025 15:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766510;
-	bh=YhAGcmNMExGba0RCFjSWkoOOpz9y3GuCAR7cMYWs2Zw=;
+	s=korg; t=1738768407;
+	bh=QS4feQpr8o3xs3gRtijwNnuOwAz6DEVCmgAqX5+7l4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pK6964mIFsDYwp4aj/Ca/9qdmuxt/dIFTfy+K6TG4O7sKKq3d0dmlBK0jZgme06iY
-	 oHvHqMeuv/Wc+CDPj9Y9Al1626kqIq+bBcNxx07DORHsTnSld7gw71+BjJhiWnIOmN
-	 bGzC+MxpWRuIyZVWHpPGpQHDQtEqEBlLxhtYMFEU=
+	b=D5shL34mBRvCX6jvDKW2IiFZWNH8rjiaI8Xwt6sPI/vjpmR0IbUZCljtW1LhmKlcg
+	 PZLanY1xfllWgmbr/9fN1VxmBEdQRv81aHMmE+2eH4m2oU/SBLXf6si3QFhp81ipTA
+	 ws3pTspSLdTYXCE+6BtluY94jyZDSnx1OnNILOe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Simon Horman <horms@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 369/393] Revert "SUNRPC: Reduce thread wake-up rate when receiving large RPC messages"
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 546/623] bgmac: reduce max frame size to support just MTU 1500
 Date: Wed,  5 Feb 2025 14:44:48 +0100
-Message-ID: <20250205134434.418160114@linuxfoundation.org>
+Message-ID: <20250205134517.110217623@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 966a675da844f1a764bb44557c21561cc3d09840 upstream.
+[ Upstream commit 752e5fcc2e77358936d36ef8e522d6439372e201 ]
 
-I noticed that a handful of NFSv3 fstests were taking an
-unexpectedly long time to run. Troubleshooting showed that the
-server's TCP window closed and never re-opened, which caused the
-client to trigger an RPC retransmit timeout after 180 seconds.
+bgmac allocates new replacement buffer before handling each received
+frame. Allocating & DMA-preparing 9724 B each time consumes a lot of CPU
+time. Ideally bgmac should just respect currently set MTU but it isn't
+the case right now. For now just revert back to the old limited frame
+size.
 
-The client's recovery action was to establish a fresh connection
-and retransmit the timed-out requests. This worked, but it adds a
-long delay.
+This change bumps NAT masquerade speed by ~95%.
 
-I tracked the problem to the commit that attempted to reduce the
-rate at which the network layer delivers TCP socket data_ready
-callbacks. Under most circumstances this change worked as expected,
-but for NFSv3, which has no session or other type of throttling, it
-can overwhelm the receiver on occasion.
+Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
+page_frag_alloc_align()"), the bgmac driver fails to open its network
+interface successfully and runs out of memory in the following call
+stack:
 
-I'm sure I could tweak the lowat settings, but the small benefit
-doesn't seem worth the bother. Just revert it.
+bgmac_open
+  -> bgmac_dma_init
+    -> bgmac_dma_rx_skb_for_slot
+      -> netdev_alloc_frag
 
-Fixes: 2b877fc53e97 ("SUNRPC: Reduce thread wake-up rate when receiving large RPC messages")
-Cc: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BGMAC_RX_ALLOC_SIZE = 10048 and PAGE_FRAG_CACHE_MAX_SIZE = 32768.
+
+Eventually we land into __page_frag_alloc_align() with the following
+parameters across multiple successive calls:
+
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=0
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=10048
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=20096
+__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=30144
+
+So in that case we do indeed have offset + fragsz (40192) > size (32768)
+and so we would eventually return NULL. Reverting to the older 1500
+bytes MTU allows the network driver to be usable again.
+
+Fixes: 8c7da63978f1 ("bgmac: configure MTU and add support for frames beyond 8192 byte size")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+[florian: expand commit message about recent commits]
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250127175159.1788246-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svcsock.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/bgmac.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1093,9 +1093,6 @@ static void svc_tcp_fragment_received(st
- 	/* If we have more data, signal svc_xprt_enqueue() to try again */
- 	svsk->sk_tcplen = 0;
- 	svsk->sk_marker = xdr_zero;
--
--	smp_wmb();
--	tcp_set_rcvlowat(svsk->sk_sk, 1);
- }
- 
- /**
-@@ -1185,17 +1182,10 @@ err_incomplete:
- 		goto err_delete;
- 	if (len == want)
- 		svc_tcp_fragment_received(svsk);
--	else {
--		/* Avoid more ->sk_data_ready() calls until the rest
--		 * of the message has arrived. This reduces service
--		 * thread wake-ups on large incoming messages. */
--		tcp_set_rcvlowat(svsk->sk_sk,
--				 svc_sock_reclen(svsk) - svsk->sk_tcplen);
--
-+	else
- 		trace_svcsock_tcp_recv_short(&svsk->sk_xprt,
- 				svc_sock_reclen(svsk),
- 				svsk->sk_tcplen - sizeof(rpc_fraghdr));
--	}
- 	goto err_noclose;
- error:
- 	if (len != -EAGAIN)
+diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
+index d73ef262991d6..6fee9a41839c0 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.h
++++ b/drivers/net/ethernet/broadcom/bgmac.h
+@@ -328,8 +328,7 @@
+ #define BGMAC_RX_FRAME_OFFSET			30		/* There are 2 unused bytes between header and real data */
+ #define BGMAC_RX_BUF_OFFSET			(NET_SKB_PAD + NET_IP_ALIGN - \
+ 						 BGMAC_RX_FRAME_OFFSET)
+-/* Jumbo frame size with FCS */
+-#define BGMAC_RX_MAX_FRAME_SIZE			9724
++#define BGMAC_RX_MAX_FRAME_SIZE			1536
+ #define BGMAC_RX_BUF_SIZE			(BGMAC_RX_FRAME_OFFSET + BGMAC_RX_MAX_FRAME_SIZE)
+ #define BGMAC_RX_ALLOC_SIZE			(SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) + \
+ 						 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+-- 
+2.39.5
+
 
 
 
