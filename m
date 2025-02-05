@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642BAA29327
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AE0A28F03
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58B61885034
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E10A3AA374
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186B11FC7E4;
-	Wed,  5 Feb 2025 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF1E8634E;
+	Wed,  5 Feb 2025 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1QVittg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyuULlba"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83681E89C;
-	Wed,  5 Feb 2025 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8035522A;
+	Wed,  5 Feb 2025 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767518; cv=none; b=YF4V9nsNQqK8FqgQ2OGchTehXzp9V5Zn+ESiTub6lNFvlPjoqli0PqVxynDHQgwWtSU9fg/iyp/gQi7OM1xvn+5j26R0bcL275BJn5zOJTnJtcrg0La0AT2kfc/BqxFEuJibcE2Z1LO8TXNW40g+wu41Oo69n4bgM+R9T19Fabc=
+	t=1738765149; cv=none; b=IxoMD5zPaKPnOxe+f1kf1XsWuHJZbmpUCtWdZeySKoiZUgICoFgufyvXmX2vL4v63xZ3TITKEpDkF9UWVQ6B9bfWSFy//Jf05oCKXolLRWlqmByXaXGnG/1thKmeavah6bzt6dMsx8iclGTgK8Q0oNOTUaOOlw0eV6m8Bwt7xJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767518; c=relaxed/simple;
-	bh=5ryCB8tSQcEjFfKRKsWpuM5eT/5qozylZc2/uCXcUgo=;
+	s=arc-20240116; t=1738765149; c=relaxed/simple;
+	bh=kJSy77rIMKAmPHX0VYr0iavw0f4o+nfcX5DTtobi/Fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnNZkF070Xhp/nm/HFewcVOi+P7lM9yAtdzndtB/U9agTnC9XwQ8+IWHHnT28Vv/HDy2umZwUoEnLlfdp0w2QduebOuiXIMuUQFF9jADTm2CZo474fToJb2UbawN2zef996JQB4O+ryWPsnkm6PTk+Tk5htut+a8W5XbshOXIw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1QVittg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2574C4CED1;
-	Wed,  5 Feb 2025 14:58:37 +0000 (UTC)
+	 MIME-Version; b=UhY8HLGX5wZneDH63muExUak2ZHhPv3EDQIQIyMc95UJ+VF68QzcOj/pAp+2I/KhXzOYpObiIbtvdHqYJBCHZ6pgP+VmQyNa3UkjuqSBm9wc7wx6BUT/oEBqVr7CBiR4gLB07YIfyuImi4IHYutFp2Hkn4rmW8sgt+VlNSvfmtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyuULlba; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1069DC4CEDD;
+	Wed,  5 Feb 2025 14:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767518;
-	bh=5ryCB8tSQcEjFfKRKsWpuM5eT/5qozylZc2/uCXcUgo=;
+	s=korg; t=1738765149;
+	bh=kJSy77rIMKAmPHX0VYr0iavw0f4o+nfcX5DTtobi/Fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V1QVittgInoGtaFXJ/qNhHkeDLLASsCHLdL38zZHly5jF0JUNkVPuUM9TUahA8Oeo
-	 Woq9XHjZ9HFsS8m8JRSHnF5k+26u1eWH6zYpWT5pj7dPkQPH3rSFVFaOCIoZNCtVwE
-	 7RrFovwRELDkjt3DLdkDO5tImXntUGkR9jcntNoo=
+	b=dyuULlbarytXBNOBni8yRgTtYLh7NeM3hgdV4NSkKglxlU/GbPf7ntVPX8F8QgBMl
+	 2T4WV/tdBlMGOOKOWDBxgcce/SmW1DbmvE/wOIn0jht2jGxlypHdjMG4P1YE7LzDKu
+	 oGYRjjv6TF8fleiNzTf+J4Tchg51cTJtn+nHgXtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 415/623] arm64: dts: mediatek: add per-SoC compatibles for keypad nodes
+Subject: [PATCH 6.6 238/393] arm64: dts: qcom: qcs404: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:37 +0100
-Message-ID: <20250205134512.100741077@linuxfoundation.org>
+Message-ID: <20250205134429.411755006@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6139d9e9e397dc9711cf10f8f548a8f9da3b5323 ]
+[ Upstream commit 1473ff0b69de68b23ce9874548cdabc64d72725e ]
 
-The mt6779-keypad binding specifies using a compatible for the
-actual SoC before the generic MT6779 one.
+The QCS40x platforms use PMS405 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fixes: a8013418d35c ("arm64: dts: mediatek: mt8183: add keyboard node")
-Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241225192631.25017-3-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 9181bb939984 ("arm64: dts: qcom: Add SDX75 platform and IDP board support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-4-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 3 ++-
- arch/arm64/boot/dts/mediatek/mt8365.dtsi | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs404.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 1afeeb1155f57..9af6349dbfcf1 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1024,7 +1024,8 @@
+diff --git a/arch/arm64/boot/dts/qcom/qcs404.dtsi b/arch/arm64/boot/dts/qcom/qcs404.dtsi
+index 2721f32dfb710..cbe469cc159e9 100644
+--- a/arch/arm64/boot/dts/qcom/qcs404.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs404.dtsi
+@@ -28,7 +28,7 @@
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+ 			#clock-cells = <0>;
+-			clock-frequency = <32768>;
++			clock-frequency = <32764>;
  		};
+ 	};
  
- 		keyboard: keyboard@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8183-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			interrupts = <GIC_SPI 186 IRQ_TYPE_EDGE_FALLING>;
- 			clocks = <&clk26m>;
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index 9c91fe8ea0f96..2bf8c9d02b6ee 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -449,7 +449,8 @@
- 		};
- 
- 		keypad: keypad@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8365-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			wakeup-source;
- 			interrupts = <GIC_SPI 124 IRQ_TYPE_EDGE_FALLING>;
 -- 
 2.39.5
 
