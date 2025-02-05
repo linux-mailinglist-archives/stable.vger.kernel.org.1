@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0ECAA292D8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B07A28F37
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 596CB3AD0FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA10168D04
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BC41925A6;
-	Wed,  5 Feb 2025 14:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330B214A088;
+	Wed,  5 Feb 2025 14:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUbHyTvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KVqqTPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B219D1662EF;
-	Wed,  5 Feb 2025 14:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ABD1898ED;
+	Wed,  5 Feb 2025 14:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767372; cv=none; b=eRaRaBmC6KqUwrIMlcHtXle5E4BM7rd6ihcxmyIlnIRd5zjuJ1owabAbxQp6DY8vPuEdl8DV9e+rTgvzSIbXX3L9b/DRpAm/YPaFHMpukTDoORSPCKXbUt7bGKWfKnLimRLZVkrduS1l9Nx31frbTqmc6jrjfJxC2Z/17632Lwk=
+	t=1738765320; cv=none; b=hVQNA2yGGtjEo048p7pwQYMfGsMQrfefOCWRYFTcer1WkIgcjSETKlbwZdchWMvz49GTvrZv8aZdtf6q8TfrjBBUXSVxIDUbMiIXdw3R8+/E0bGu+HjYEHSbSopvmJ4fcgLyxBCxee4jDY8gD/J4Z2ytDdwQRBf8vyNe53yvspI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767372; c=relaxed/simple;
-	bh=FfHM+ILN3Gn5C22gUaUrMLAS9dPYLNHvyAGXlaGjS7Q=;
+	s=arc-20240116; t=1738765320; c=relaxed/simple;
+	bh=/Tw+wCWWIVamwB+NkoHqdcFoEJsGaMRgAp35S9xtjYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCjV42HsSgMY61xTQKp3pbzrb/YJ7gbG/En0550zNoL0PxuLstqavRaE/lMaZTG9lPwtjICFPpx/4e5OY0rQULbX9zm6pgSIcqUSnU9o1loSwjieOKg1erw33WbztHGY9Fb28lyGv3nRVldMFzwjZOTZR3adq7BAd3FCcMgxpm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUbHyTvi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967BCC4CED1;
-	Wed,  5 Feb 2025 14:56:11 +0000 (UTC)
+	 MIME-Version; b=kxdEGU7L3pLVBKdU1utiVdUQ3qb8Px0hwolobl9STkxQyWSxm+SAjHsZb20SGnFhaO4GEIufmMst2ppidsqThD1UsuJE9lZVAqDNw9BNZDqoXVEJxiHiezALxWhJx+CrnqRtoeGSngzpL0OGAwGruOm9Ej9AYGVJwKFCFt+O50s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KVqqTPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE15C4CEDD;
+	Wed,  5 Feb 2025 14:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767372;
-	bh=FfHM+ILN3Gn5C22gUaUrMLAS9dPYLNHvyAGXlaGjS7Q=;
+	s=korg; t=1738765319;
+	bh=/Tw+wCWWIVamwB+NkoHqdcFoEJsGaMRgAp35S9xtjYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUbHyTvitlgXA61ShuuW7bjDKH8K7oen/H73eUy/Q8T4LvzCqhLpX5vBvY56Uxb22
-	 7vl3/hfhHPbAFy/SiwEhYzfMPU/jcxbcwuXF+MxWFopJTYg2DQRd60BV3coDJuEhkA
-	 b9RHmW21KM3Cp2YcxuJZTexygbbgvhh62P+vWkQQ=
+	b=1KVqqTPF5zybxRfvWcEYOY5/3D9kJ2/jjVVBktfvbFS50kOU3DN2VNeenruNuwvKm
+	 TqLWKETBVrcjhzy/t7+2iaQQhL45URgKcFyuvoWabb1vwbO6y4ZdRf2vUc/9/CptH8
+	 SqWGUqsBaebmOEH1NYS+eo78T5U1iIJ7z6ImNrlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 417/590] media: uvcvideo: Propagate buf->error to userspace
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.6 253/393] arm64: dts: allwinner: a64: explicitly assign clock parent for TCON0
 Date: Wed,  5 Feb 2025 14:42:52 +0100
-Message-ID: <20250205134511.219251848@linuxfoundation.org>
+Message-ID: <20250205134429.986444437@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
+[ Upstream commit 8715c91a836502929c637c76a26335ede8818acf ]
 
-Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
-the correct value, so the user can know if the frame is valid or not via
-struct v4l2_buffer->flags.
+TCON0 seems to need a different clock parent depending on output type.
+For RGB it has to be PLL-VIDEO0-2X, while for DSI it has to be PLL-MIPI,
+so select it explicitly.
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
-Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Video output doesn't work if incorrect clock is assigned.
+
+On my Pinebook I manually configured PLL-VIDEO0-2X and PLL-MIPI to the same
+rate, and while video output works fine with PLL-VIDEO0-2X, it doesn't
+work at all (as in no picture) with PLL-MIPI.
+
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-4-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts | 2 ++
+ arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts  | 2 ++
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi         | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-index 16fa17bbd15ea..83ed7821fa2a7 100644
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -483,7 +483,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
+index 50ed2e9f10ed0..6a69d00524944 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
+@@ -390,6 +390,8 @@
+ &tcon0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd_rgb666_pins>;
++	assigned-clocks = <&ccu CLK_TCON0>;
++	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
  
- 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
--	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
-+	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
-+							VB2_BUF_STATE_DONE);
- }
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
+index 1128030e4c25b..d3e5eed84f364 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
+@@ -369,6 +369,8 @@
+ &tcon0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&lcd_rgb666_pins>;
++	assigned-clocks = <&ccu CLK_TCON0>;
++	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
  
- /*
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+index 57ac18738c995..7103298f6a1c2 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
+@@ -410,6 +410,8 @@
+ 			clock-names = "ahb", "tcon-ch0";
+ 			clock-output-names = "tcon-data-clock";
+ 			#clock-cells = <0>;
++			assigned-clocks = <&ccu CLK_TCON0>;
++			assigned-clock-parents = <&ccu CLK_PLL_MIPI>;
+ 			resets = <&ccu RST_BUS_TCON0>, <&ccu RST_BUS_LVDS>;
+ 			reset-names = "lcd", "lvds";
+ 
 -- 
 2.39.5
 
