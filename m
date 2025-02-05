@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-112523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69C4A28D34
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C5BA28D31
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8523A4FA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3817E1888A7D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B15E152E02;
-	Wed,  5 Feb 2025 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0388114F9E7;
+	Wed,  5 Feb 2025 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbpplG8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fbQFpjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468141519AA;
-	Wed,  5 Feb 2025 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37CB15530B;
+	Wed,  5 Feb 2025 13:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763853; cv=none; b=bXil1IpTOs4wMAOqKTpaXRx9grPBNfZ+UJDggspMUjuO8muYwLJ++nFLVTzFnU/YBCRcojktF26DRp5R1NZRpZqeqzH/LVekj3oV5UssQbw+oSJHbsLEN43D5eijfItHEIIpSMgu5jCY4X/A+/GCa+qlH8Y7ux3pn2hvYGiehpo=
+	t=1738763863; cv=none; b=uNwfcgfgvM3MU+B0F3F9Pl1mfG2dzaiFhwX/8kTKlgAQnQRdMcdEmCFSd08WKJ+PnGPiG20URt+vTDBa05NuZNiJkyUh2+noOqVWLYaOwRcj8EhoMd9i48JzSglLA2I1PjuolcOXGqdzqXqom22WWaDd5HPG2nqFIfkFentx0uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763853; c=relaxed/simple;
-	bh=3i/jnRrzr/h8bXW5YYTDlCiMhOB8rxS3c0vElHXCMQ0=;
+	s=arc-20240116; t=1738763863; c=relaxed/simple;
+	bh=wrsKT0yUra+TEor7G0JDJjlDM/EA7ulfHnvYAN9TRDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BovyKoktZzHJC/nCyxQLNz71boRmYSOkoldiexS6fZLHBXMwObngadPQRFk/jUWDgGGV4ES/dGREvhscemD9eOw3UVpLaNtM2scMu6qLb2Hcm0xwZJEUwwwla8pUMdfEDV3yQlvVZB9aktAgG3aSD36uIX7ipxfWsek8iLt/Ny4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbpplG8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8266C4CEDD;
-	Wed,  5 Feb 2025 13:57:32 +0000 (UTC)
+	 MIME-Version; b=dBQackapBYVGhcl4zEwygw90LrPJTRDVfsDu/otn+CnOdD/cqSk1HXqEEh6Zpu/C6dKzc0UpuOlLH8DHLOqASwAk+dJkgzUj7UnzmnmbJthk02jHqdMCVb4B7myYE46ClguPX91G2mztVKQrsgSlRFmrvKp+ddTWkrKW2AcB40g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fbQFpjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2038EC4CED1;
+	Wed,  5 Feb 2025 13:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763853;
-	bh=3i/jnRrzr/h8bXW5YYTDlCiMhOB8rxS3c0vElHXCMQ0=;
+	s=korg; t=1738763863;
+	bh=wrsKT0yUra+TEor7G0JDJjlDM/EA7ulfHnvYAN9TRDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbpplG8jZhyIm82kzIJI+Dc4NL8bz6+V6+slSBJ1QyWzwuBY2nC4eglZ/hoGx89Db
-	 cUJ9qZaG+vSxnbFpWMOe2WwinJqlQlXYEwclzrIQj5YnCInqgHrhEipnHjKHzfAr99
-	 qCiE3guEh5HdhsXaJeC8zd4xXnhQa6AXceyVzJWY=
+	b=0fbQFpjBdJyODGfRXvKsoMHme+apOplaaHns1fbM4AAU70e3FpdQeu3UW8GA5YD4U
+	 iVTBFXngcU1erNQI/8nUL3dIvOh5H2uaO6RfSdS7/E7NIux4+jvGZ7e28UR82737xz
+	 TaT2OGEQ54HrPPSihoU5BG4hWcawzOS32/UaQfjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 024/623] nvme: Add error path for xa_store in nvme_init_effects
-Date: Wed,  5 Feb 2025 14:36:06 +0100
-Message-ID: <20250205134457.153166328@linuxfoundation.org>
+Subject: [PATCH 6.13 025/623] btrfs: improve the warning and error message for btrfs_remove_qgroup()
+Date: Wed,  5 Feb 2025 14:36:07 +0100
+Message-ID: <20250205134457.191256193@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,68 +66,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit d4a95adeabc6b5a39405e49c6d5ed14dd83682c4 ]
+[ Upstream commit c0def46dec9c547679a25fe7552c4bcbec0b0dd2 ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index NVME_CSI_NVM is already used. This fix
-introduces a new function to handle the error path.
+[WARNING]
+There are several warnings about the recently introduced qgroup
+auto-removal that it triggers WARN_ON() for the non-zero rfer/excl
+numbers, e.g:
 
-Fixes: cc115cbe12d9 ("nvme: always initialize known command effects")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+ ------------[ cut here ]------------
+ WARNING: CPU: 67 PID: 2882 at fs/btrfs/qgroup.c:1854 btrfs_remove_qgroup+0x3df/0x450
+ CPU: 67 UID: 0 PID: 2882 Comm: btrfs-cleaner Kdump: loaded Not tainted 6.11.6-300.fc41.x86_64 #1
+ RIP: 0010:btrfs_remove_qgroup+0x3df/0x450
+ Call Trace:
+  <TASK>
+  btrfs_qgroup_cleanup_dropped_subvolume+0x97/0xc0
+  btrfs_drop_snapshot+0x44e/0xa80
+  btrfs_clean_one_deleted_snapshot+0xc3/0x110
+  cleaner_kthread+0xd8/0x130
+  kthread+0xd2/0x100
+  ret_from_fork+0x34/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
+ BTRFS warning (device sda): to be deleted qgroup 0/319 has non-zero numbers, rfer 258478080 rfer_cmpr 258478080 excl 0 excl_cmpr 0
+
+[CAUSE]
+Although the root cause is still unclear, as if qgroup is consistent a
+fully dropped subvolume (with extra transaction committed) should lead
+to all zero numbers for the qgroup.
+
+My current guess is the subvolume drop triggered the new subtree drop
+threshold thus marked qgroup inconsistent, then rescan cleared it but
+some corner case is not properly handled during subvolume dropping.
+
+But at least for this particular case, since it's only the rfer/excl not
+properly reset to 0, and qgroup is already marked inconsistent, there is
+nothing to be worried for the end users.
+
+The user space tool utilizing qgroup would queue a rescan to handle
+everything, so the kernel wanring is a little overkilled.
+
+[ENHANCEMENT]
+Enhance the warning inside btrfs_remove_qgroup() by:
+
+- Only do WARN() if CONFIG_BTRFS_DEBUG is enabled
+  As explained the kernel can handle inconsistent qgroups by simply do a
+  rescan, there is nothing to bother the end users.
+
+- Treat the reserved space leak the same as non-zero numbers
+  By outputting the values and trigger a WARN() if it's a debug build.
+  So far I haven't experienced any case related to reserved space so I
+  hope we will never need to bother them.
+
+Fixes: 839d6ea4f86d ("btrfs: automatically remove the subvolume qgroup")
+Link: https://github.com/kdave/btrfs-progs/issues/922
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ fs/btrfs/qgroup.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 315692cb2e614..7c4a19f5c951a 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3175,6 +3175,25 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
- 	return ret;
- }
- 
-+static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
-+		u8 csi, struct nvme_effects_log **log)
-+{
-+	struct nvme_effects_log *effects, *old;
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index f9b214992212d..993b5e803699e 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1838,9 +1838,19 @@ int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+ 	 * Thus its reserved space should all be zero, no matter if qgroup
+ 	 * is consistent or the mode.
+ 	 */
+-	WARN_ON(qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] ||
+-		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] ||
+-		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]);
++	if (qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] ||
++	    qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] ||
++	    qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]) {
++		WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
++		btrfs_warn_rl(fs_info,
++"to be deleted qgroup %u/%llu has non-zero numbers, data %llu meta prealloc %llu meta pertrans %llu",
++			      btrfs_qgroup_level(qgroup->qgroupid),
++			      btrfs_qgroup_subvolid(qgroup->qgroupid),
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA],
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC],
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]);
 +
-+	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
-+	if (effects)
-+		return -ENOMEM;
-+
-+	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(effects);
-+		return xa_err(old);
 +	}
-+
-+	*log = effects;
-+	return 0;
-+}
-+
- static void nvme_init_known_nvm_effects(struct nvme_ctrl *ctrl)
- {
- 	struct nvme_effects_log	*log = ctrl->effects;
-@@ -3221,10 +3240,9 @@ static int nvme_init_effects(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
- 	}
- 
- 	if (!ctrl->effects) {
--		ctrl->effects = kzalloc(sizeof(*ctrl->effects), GFP_KERNEL);
--		if (!ctrl->effects)
--			return -ENOMEM;
--		xa_store(&ctrl->cels, NVME_CSI_NVM, ctrl->effects, GFP_KERNEL);
-+		ret = nvme_init_effects_log(ctrl, NVME_CSI_NVM, &ctrl->effects);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	nvme_init_known_nvm_effects(ctrl);
+ 	/*
+ 	 * The same for rfer/excl numbers, but that's only if our qgroup is
+ 	 * consistent and if it's in regular qgroup mode.
+@@ -1849,8 +1859,9 @@ int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+ 	 */
+ 	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_FULL &&
+ 	    !(fs_info->qgroup_flags & BTRFS_QGROUP_STATUS_FLAG_INCONSISTENT)) {
+-		if (WARN_ON(qgroup->rfer || qgroup->excl ||
+-			    qgroup->rfer_cmpr || qgroup->excl_cmpr)) {
++		if (qgroup->rfer || qgroup->excl ||
++		    qgroup->rfer_cmpr || qgroup->excl_cmpr) {
++			WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
+ 			btrfs_warn_rl(fs_info,
+ "to be deleted qgroup %u/%llu has non-zero numbers, rfer %llu rfer_cmpr %llu excl %llu excl_cmpr %llu",
+ 				      btrfs_qgroup_level(qgroup->qgroupid),
 -- 
 2.39.5
 
