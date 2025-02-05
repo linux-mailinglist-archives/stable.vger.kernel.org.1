@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36ECA28C6D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E40A29042
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A56616889C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D271C1699C1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815FB139D1B;
-	Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4370315CD74;
+	Wed,  5 Feb 2025 14:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOs/Coq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qv471GTg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C313AD22;
-	Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4BB15B984;
+	Wed,  5 Feb 2025 14:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763382; cv=none; b=LC4bbrz3ARXmqOAZP9RAIbTruD8Hx845sxkoWeCfKjbcmXnfIZZ/KFYNVYrpBKmdz/X0cDkN8PS9nDQg5qSxQ5iosp8fn2L+ExUIaBKiRdxwoloU+xW6UcNphKOm+q92KZACeoemVry6nntxzYFGF2kE8u7tBZRjdZ7F9vh/ERM=
+	t=1738765994; cv=none; b=hRwNfnqXB5bAbtVBAXS0a8JtPMbBjNo94nWdTTDVnvm8gIbl+gUIzWU9UxZzs5FTRPB/LI4S6ZkSWD1kyOfFZ0/rEFGO/GYkf5VM0L4BF3i95Tzp1JPbvCtjKlWSs1C/+kmjwJEOO+f8OU/OrOiaV9S/c6O6zLfIzEkRTOcZHsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763382; c=relaxed/simple;
-	bh=NEvgRo8kUJbXZXHOr7p72O1D9LlWkydjhs9VMQrPhp8=;
+	s=arc-20240116; t=1738765994; c=relaxed/simple;
+	bh=NFPodEiBmIzJOEwt+GZcarfny1fku8OYu1VYKLffwaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O88N3yd8fkVEylldluTEqDhoHXC53yOWVnao+LLk2wGvJYEYU+8p79NMdUzK3iJwOBHiydl6IbqRQPprOr/PdE2RMhCbktN+K2grfFJYhuKWbvsthuWACFYhSCoUsDJAWIDNyBSVkDtbTCcZ1W+m1b0/U8Mj0faIijSjMHBZcX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOs/Coq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB34C4CED1;
-	Wed,  5 Feb 2025 13:49:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XgKL91Jst2tZSVpDXg0jnnwfqKJqlf8ampX559XzpIoPEm3SA9SePKuXxThw/nlkjrgpBS2NQ9TbmI9DQvToUopZ5eUmLkwF0MLZ1iC9ObQhveTPo+RtTXZ+TgtaPBm+cGbM+F2VqsKqIMyMej5jV6eOQudCOEwnsdMJbLIMeSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qv471GTg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E34AC4CED1;
+	Wed,  5 Feb 2025 14:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763382;
-	bh=NEvgRo8kUJbXZXHOr7p72O1D9LlWkydjhs9VMQrPhp8=;
+	s=korg; t=1738765993;
+	bh=NFPodEiBmIzJOEwt+GZcarfny1fku8OYu1VYKLffwaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOs/Coq1X4m6gHwG4kBE1Ju2rvrptze2xw+R6viVGGt6ui2LURb7+wiSrqTBUm+j5
-	 RUkHpLrazfku0HZZISGFqxmEgvYl5QVM7FB2Yx1uqg8YaGoOP/sUjmbWGHrr7zxAhN
-	 MTqPV5UDXXW0tovCO+ATFmtIjly+qK1gL9kMDfu0=
+	b=qv471GTgcvDIXy6b309hu9umPhSEKAgf9o4A0dxHSeVDhDRdK5RxoZzNcjQEWHI8k
+	 IfA2HlDSknBUt2YM7EQzpA7uSZSOjbxo8OACIMTz+LSdXWjRXPveMWR17lAuWn6vAw
+	 99opZZqy5L9iPKPfMMeNYGa1jpvnrf8O26YUdiAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Loic Poulain <loic.poulain@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/393] wifi: wcn36xx: fix channel survey memory allocation size
-Date: Wed,  5 Feb 2025 14:39:33 +0100
-Message-ID: <20250205134422.365736557@linuxfoundation.org>
+Subject: [PATCH 6.13 232/623] selftests/landlock: Fix error message
+Date: Wed,  5 Feb 2025 14:39:34 +0100
+Message-ID: <20250205134505.101048882@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 6200d947f050efdba4090dfefd8a01981363d954 ]
+[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
 
-KASAN reported a memory allocation issue in wcn->chan_survey
-due to incorrect size calculation.
-This commit uses kcalloc to allocate memory for wcn->chan_survey,
-ensuring proper initialization and preventing the use of uninitialized
-values when there are no frames on the channel.
+The global variable errno may not be set in test_execute().  Do not use
+it in related error message.
 
-Fixes: 29696e0aa413 ("wcn36xx: Track SNR and RSSI for each RX frame")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Acked-by: Loic Poulain <loic.poulain@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://patch.msgid.link/20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Günther Noack <gnoack@google.com>
+Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
+Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wcn36xx/main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/landlock/fs_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-index 2bd1163177f08..9bbbc86fd2d93 100644
---- a/drivers/net/wireless/ath/wcn36xx/main.c
-+++ b/drivers/net/wireless/ath/wcn36xx/main.c
-@@ -1586,7 +1586,10 @@ static int wcn36xx_probe(struct platform_device *pdev)
- 	}
+diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
+index 6788762188fea..97d360eae4f69 100644
+--- a/tools/testing/selftests/landlock/fs_test.c
++++ b/tools/testing/selftests/landlock/fs_test.c
+@@ -2003,8 +2003,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
+ 	ASSERT_EQ(1, WIFEXITED(status));
+ 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
+ 	{
+-		TH_LOG("Unexpected return code for \"%s\": %s", path,
+-		       strerror(errno));
++		TH_LOG("Unexpected return code for \"%s\"", path);
+ 	};
+ }
  
- 	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
--	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
-+	wcn->chan_survey = devm_kcalloc(wcn->dev,
-+					n_channels,
-+					sizeof(struct wcn36xx_chan_survey),
-+					GFP_KERNEL);
- 	if (!wcn->chan_survey) {
- 		ret = -ENOMEM;
- 		goto out_wq;
 -- 
 2.39.5
 
