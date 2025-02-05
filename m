@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36188A29204
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37FAA293E0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603B4188DF1E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FF3B188BC32
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6251DF261;
-	Wed,  5 Feb 2025 14:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5B115854F;
+	Wed,  5 Feb 2025 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6+l6wZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WerBd2fB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC334189905;
-	Wed,  5 Feb 2025 14:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E1717C79;
+	Wed,  5 Feb 2025 15:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766744; cv=none; b=fUSLtka68pTvl0NEA7Bgm9obrQTKT2Od13QA7nVYeaMMiueqnGWgDrJnHxojDG5itoI/ag8HPB9BISy7mMq+2COaEQOgLK0iN2sPq9D9xEeieW9j1Ol6E97rp2HMvVuuE+HEA1QhNKmZQa4fLa516eu7U24a6KfcWvh4wwvbu0k=
+	t=1738768120; cv=none; b=gA/PhIRa6Zq5bmdPt41cKgeXVatSN9FvkluZKWa8m/DJGrlFfTQdlnVw+kzyNZFkAbCPxkwSI4HJuz6CywrLyTTQGi1F/d3tWEOhbzS7xTmAYbhzncRPIw5hu1rTEjhYWxNKPLWtoXf5MH/D6f3PQ6m8HRf1cNtRUg0s9mWxTeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766744; c=relaxed/simple;
-	bh=mLWYPtFDnMSh8f0fLzwDB1I43FI9KMSdQ5c3KXKeKcs=;
+	s=arc-20240116; t=1738768120; c=relaxed/simple;
+	bh=IMsqBtmAIh4Hhl6VA4OL9h43O9zOg0Sct6KUjCRXDwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igbGZuS4CQp6zcZ3zKXq2ULzbH/kxHYZc9eXJBV26w5ocy1S/A6++cUZNS3xC3FaHcCdIOnz3lW1LvJqIBc8qnFpwljCXdXaEQQZmSNyNGDX8TAO0ZtQmgbD5MqMajIbPgwEHOVpV7LnnXumDKTnnYm5bo9wmEmKENWEc2qP+ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6+l6wZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D8FC4CED1;
-	Wed,  5 Feb 2025 14:45:43 +0000 (UTC)
+	 MIME-Version; b=FXlY7V+vNBEQjtO6NSU36z/sMKVniF2yMXjHgdYIIbQhQDh8RSq7+217sKAG/WztGdEXJmI5C/RNigwBALBJslT57Qm2+R3e2coyARxVNP0ijARpE054mlSZIXOU0QB3mU5jswlUm3lPc0NKqL1RL8aBYDt40U45rRAfPbSe74A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WerBd2fB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E8DC4CED1;
+	Wed,  5 Feb 2025 15:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766743;
-	bh=mLWYPtFDnMSh8f0fLzwDB1I43FI9KMSdQ5c3KXKeKcs=;
+	s=korg; t=1738768120;
+	bh=IMsqBtmAIh4Hhl6VA4OL9h43O9zOg0Sct6KUjCRXDwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6+l6wZzE9Humj2l2vf/+m84tJYMuFSHr4ncxThXQqPCydrPgho/+mW6iUL+pVcm0
-	 nJuAIiOdVQTgX3yYlYmIwup7AB5WBph6/CM/DhQazr/CiTst7FLHuA124BnvuhGpNz
-	 uxPVWNqlpadLqMfrQd7xox7JneSfN3YO3UikYa1I=
+	b=WerBd2fB3j6+c8I7blopyOLdILWV4PUrNKoxhAg1So4j4Ok9R6UXoRbHpvZ/+m2qf
+	 QWOButVeGnCLgeCdGis6awNbP0WJLJZPnEYQRcGYPQqbLSlUn8Q67HLxUmjpj14oIy
+	 CTPl4RI5f1a3zhUDlWc1wiADafuZqmE3Mb9T3o8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.6 392/393] s390: Add -std=gnu11 to decompressor and purgatory CFLAGS
+	stable <stable@kernel.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 556/590] usb: dwc3-am62: Fix an OF node leak in phy_syscon_pll_refclk()
 Date: Wed,  5 Feb 2025 14:45:11 +0100
-Message-ID: <20250205134435.292327230@linuxfoundation.org>
+Message-ID: <20250205134516.541651659@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
+commit a266462b937beba065e934a563efe13dd246a164 upstream.
 
-GCC changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, there are certain
-places in the s390 code that use their own CFLAGS without a '-std='
-value, which break with this dialect change because of the kernel's own
-definitions of bool, false, and true conflicting with the C23 reserved
-keywords.
+phy_syscon_pll_refclk() leaks an OF node obtained by
+of_parse_phandle_with_fixed_args(), thus add an of_node_put() call.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
-
-Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
-these errors and make the C standard version of these areas match the
-rest of the kernel.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: stable <stable@kernel.org>
+Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250109001638.70033-1-joe@pf.is.s.u-tokyo.ac.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/Makefile           |    2 +-
- arch/s390/purgatory/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-am62.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/s390/Makefile
-+++ b/arch/s390/Makefile
-@@ -21,7 +21,7 @@ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FL
- ifndef CONFIG_AS_IS_LLVM
- KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
- endif
--KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack
-+KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
- KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float -mbackchain
- KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
---- a/arch/s390/purgatory/Makefile
-+++ b/arch/s390/purgatory/Makefile
-@@ -21,7 +21,7 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- KCSAN_SANITIZE := n
+--- a/drivers/usb/dwc3/dwc3-am62.c
++++ b/drivers/usb/dwc3/dwc3-am62.c
+@@ -166,6 +166,7 @@ static int phy_syscon_pll_refclk(struct
+ 	if (ret)
+ 		return ret;
  
--KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
-+KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
- KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
- KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
- KBUILD_CFLAGS += -Os -m64 -msoft-float -fno-common
++	of_node_put(args.np);
+ 	am62->offset = args.args[0];
+ 
+ 	/* Core voltage. PHY_CORE_VOLTAGE bit Recommended to be 0 always */
 
 
 
