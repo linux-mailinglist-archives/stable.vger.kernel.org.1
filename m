@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA627A28C80
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3782EA28F07
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C195F168ACE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D7E33A9016
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDB914A09A;
-	Wed,  5 Feb 2025 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BC9522A;
+	Wed,  5 Feb 2025 14:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdo80Wk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zksvklab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C47142E86;
-	Wed,  5 Feb 2025 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F61519BE;
+	Wed,  5 Feb 2025 14:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763429; cv=none; b=YWjTwZ4smVxXDzijj51cJLO7AsrdyfxeOW2KkG1ngU4jWZverAE82FmbvXG6JWvMv3JmEquRsItohHGoGZTnRux6BfHJ0oPnpfKdnQdJAcur594UCmYUJdboTUPY8l7MvgXEr305pN45AmKc5oRTIH3WBq+48L+yygpFifKrHag=
+	t=1738765167; cv=none; b=AHKYEoEjyF/KCJY7Gw6Xz8G1KzhLUrsKaIDMCngJq3GwBOXdU8rkJjaXWaEGTzD00cqsdCiQBcmoE4dct/biDBnvAgObA8bNOCNe6lIBm/9/VaAP30jlWYmjeUUzk78m583FKVVzFYn4XP3flvSLkuhRs9rJgE7crLxPmnpcgnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763429; c=relaxed/simple;
-	bh=q7t51iha14ddgDxUacYiWE3oE784cQYstbVb8pWx4K8=;
+	s=arc-20240116; t=1738765167; c=relaxed/simple;
+	bh=/d/IoqD2pO5mXETN9c7K1rcs3iROSXmsDk5UYqH4/i0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJvfpFtSgSP4+vi2/k1EL4fwMhRBsoTbCCTH5adKCbMci1FRLuZwpBxWl78ONRJGDML+RlVaq4xBWdUdnQt9+5ToeLX1GkAG04lZZQ0+hzoaWYUgTz8Dujxxbhpro4B54UfYESHuTjXQ/u7XALDtaHOuyuM6MQ9MO4eai8+/x3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdo80Wk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21949C4CED6;
-	Wed,  5 Feb 2025 13:50:28 +0000 (UTC)
+	 MIME-Version; b=mGzYJr+w97kXFdAiTNzrrEKzavzPF08PLe3B76wLvNusvTDhjDizYMusbpJVHDDY001iK2odlKFwG4Draq7W0g6VU2sBCFJaVxPM5p6aWpKb0oDGv56ZrcHNXHg4MMtq+Jh/VCH/XcB2Je2SYv6zCuFqUAys5hsBeiI5xAsIFWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zksvklab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C397EC4CEDD;
+	Wed,  5 Feb 2025 14:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763429;
-	bh=q7t51iha14ddgDxUacYiWE3oE784cQYstbVb8pWx4K8=;
+	s=korg; t=1738765167;
+	bh=/d/IoqD2pO5mXETN9c7K1rcs3iROSXmsDk5UYqH4/i0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdo80Wk9YSlc6hTfxAwuggIvPaQ2CbapOv3BN05xHJkhQgTrQeHsS+nAswC8poWHm
-	 KtN5xC4KiinQ/sV1dh/vT0zF30uk2Cv1O2CUx14aM0ybtoDHZ/+W8ZfAImJmw/VRpm
-	 vBO9TWrnY/jV42KKkxBHEwJA5sYA5P6cDeta8mGM=
+	b=ZksvklabHI8jaBc/hs89f3zh+6qtZKrRYnCTvxTQrAu/Sw/LeBclv18Yvpu/oMgin
+	 jLQLK+lOLFn6ia03MTyelIX2lpStBsSx5hXMw4+Ylv9Fywr9aAgBtP3fzIwHU1V6Lg
+	 pJX3bQnN5m4P75K8zFbxhCkBnw4FdgqkU7rkYxCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/393] drm/rockchip: vop2: Check linear format for Cluster windows on rk3566/8
+Subject: [PATCH 6.12 196/590] wifi: mt76: mt7925: Properly handle responses for commands with events
 Date: Wed,  5 Feb 2025 14:39:11 +0100
-Message-ID: <20250205134421.531425157@linuxfoundation.org>
+Message-ID: <20250205134502.777020656@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit df063c0b8ffbdca486ab2f802e716973985d8f86 ]
+[ Upstream commit 349460913a4d029cc37c9e3817b1903233b4a627 ]
 
-The Cluster windows on rk3566/8 only support afbc mode.
+Properly retrieve the response for commands with events. Ensure accurate
+handling of event-driven commands.
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-6-andyshrk@163.com
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-17-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c |  1 -
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 10 +++++-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 724b75cfb6b5b..abd88d2d7cabb 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -465,6 +465,16 @@ static bool rockchip_vop2_mod_supported(struct drm_plane *plane, u32 format,
- 	if (modifier == DRM_FORMAT_MOD_INVALID)
- 		return false;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 116b6980c7335..ddc67423efe2c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -1244,7 +1244,6 @@ void mt7925_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 		memcpy(dev_req.tlv.omac_addr, vif->addr, ETH_ALEN);
+ 		mt76_mcu_send_msg(mdev, MCU_UNI_CMD(DEV_INFO_UPDATE),
+ 				  &dev_req, sizeof(dev_req), true);
+-
+ 	}
  
-+	if (vop2->data->soc_id == 3568 || vop2->data->soc_id == 3566) {
-+		if (vop2_cluster_window(win)) {
-+			if (modifier == DRM_FORMAT_MOD_LINEAR) {
-+				drm_dbg_kms(vop2->drm,
-+					    "Cluster window only supports format with afbc\n");
-+				return false;
-+			}
-+		}
-+	}
-+
- 	if (modifier == DRM_FORMAT_MOD_LINEAR)
- 		return true;
+ 	if (vif->type == NL80211_IFTYPE_STATION) {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index c7dd263446c9e..ce3d8197b026a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1252,7 +1252,7 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+ 	}
  
+ 	return mt76_mcu_send_msg(&mvif->phy->dev->mt76, MCU_UNI_CMD(ROC),
+-				 &req, sizeof(req), false);
++				 &req, sizeof(req), true);
+ }
+ 
+ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+@@ -1301,7 +1301,7 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 	}
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(ROC),
+-				 &req, sizeof(req), false);
++				 &req, sizeof(req), true);
+ }
+ 
+ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+@@ -1331,7 +1331,7 @@ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 	};
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(ROC),
+-				 &req, sizeof(req), false);
++				 &req, sizeof(req), true);
+ }
+ 
+ int mt7925_mcu_set_eeprom(struct mt792x_dev *dev)
+@@ -1484,12 +1484,12 @@ mt7925_mcu_set_bss_pm(struct mt792x_dev *dev,
+ 	int err;
+ 
+ 	err = mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
+-				&req1, sizeof(req1), false);
++				&req1, sizeof(req1), true);
+ 	if (err < 0 || !enable)
+ 		return err;
+ 
+ 	return mt76_mcu_send_msg(&dev->mt76, MCU_UNI_CMD(BSS_INFO_UPDATE),
+-				 &req, sizeof(req), false);
++				 &req, sizeof(req), true);
+ }
+ 
+ static void
 -- 
 2.39.5
 
