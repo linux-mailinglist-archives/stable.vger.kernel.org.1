@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036E0A29259
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 290ACA28E16
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B34C188BD11
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 217C93A5B79
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F70F18C337;
-	Wed,  5 Feb 2025 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AD0FC0B;
+	Wed,  5 Feb 2025 14:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es0EODdb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GduzQiv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4879C18D656;
-	Wed,  5 Feb 2025 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEB213C9C4;
+	Wed,  5 Feb 2025 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766945; cv=none; b=apMWOqjcQT1+1IPR3DQhem4gj8RCAkJFsRb2owXe2Ktb5a6z+sxUjbHysM5td0usEYLeVFCSDKU2qLcl9/0mms7bLsYeg6ZwOIn+GPSny9PzcETSHCGx2AMKmEWNC84ibu+ZHqdWDMOxqsRgO8Q/+EAmnlcLP8gidpLulO/xIMA=
+	t=1738764467; cv=none; b=UlC6TMC52YC4YV5z4Aw+Cp9iTwxOlsEhEQB9TAr/FHNtzJ/PhiosZBvLmc+t18cK8IJYFULOECFlrd/iv/H9D0zT0pdiWXl5sRXMWR4Uo7USWzj4qTW7egmMP1lIiDCn3bI8A9otmQUCXNPug5eFriq9kRsE+COxet4fmVXFFqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766945; c=relaxed/simple;
-	bh=rqNB9L9Vy/JXDfEmUsdu/c/KdTgq9K7/HQAb1UK/xx0=;
+	s=arc-20240116; t=1738764467; c=relaxed/simple;
+	bh=93ernUaTr6kV46zLtCezpwwe86ixSvZuqRYDfxiXcwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYWB6EDZy89g4TqFCxPuL8tgltaxU6WLdi1eOAhgvWVadHXMoamwpAzTo3Jc9nBWi5B3OmSBHJRpT0rUZbRoXZXk6JSWhEAIlnCs5VhaVkVlemSIqGpWBUwOgBTzZ8W2zCgUaLXQ+V1QzvH4ZWgvfa1+6P9CP8yGC5BsCMD2IqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es0EODdb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0177C4CED1;
-	Wed,  5 Feb 2025 14:49:04 +0000 (UTC)
+	 MIME-Version; b=M8rGdkgBXtxIkNpoxNjMC7BiFXoz/BaArewhjyLzoQY7OKpce0LtR7QxbYfw8oTu/0l26ubAlJDFiuNywLl7xuIPHRW+HQ6uLQLyU5Ns/1I1FbQkign58NDErhC6U68XsGvSzxyW3KGa35Ucv4y/pZq7q/YrSNgaYqD1hc/uXhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GduzQiv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46AF5C4CED1;
+	Wed,  5 Feb 2025 14:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766945;
-	bh=rqNB9L9Vy/JXDfEmUsdu/c/KdTgq9K7/HQAb1UK/xx0=;
+	s=korg; t=1738764467;
+	bh=93ernUaTr6kV46zLtCezpwwe86ixSvZuqRYDfxiXcwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=es0EODdb+7LKbO3xNARx19bbvo9xZlIyaLWZ0QRj8pbZSEtdT4la9a9X2lP/91GwL
-	 Ij+7TVI0xPNIb6oVVV+Mo04E6J3NRmW3bDeuFdB0jTwpzo3xfWGaZpZU6Y/G3Qvxa3
-	 YLDAxzFogDplYwUzhfKhsVRLclJMbHdeaqPibOKg=
+	b=GduzQiv7Md8KMWukKC7+Hf7bZObW33XzzJhKNogBMx8BfsueS8ZfRFeJQKnt1Idsf
+	 nRconlVLhpw72fY7VdOQkqPnwCdPSxvgyfYNR2JvZupb0sxSWdoMUemDAVfzITcYle
+	 znHzScnXzizmXFddCarauZ6uvDtC/pCZtQYscqfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Markus Niebel <markus.niebel@ew.tq-group.com>,
-	Bruno Thomsen <bruno.thomsen@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	George Lander <lander@jagmn.com>,
+	Marcus Cooper <codekipper@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 332/623] ARM: dts: imx7-tqma7: add missing vs-supply for LM75A (rev. 01xxx)
-Date: Wed,  5 Feb 2025 14:41:14 +0100
-Message-ID: <20250205134508.924848237@linuxfoundation.org>
+Subject: [PATCH 6.6 156/393] ASoC: sun4i-spdif: Add clock multiplier settings
+Date: Wed,  5 Feb 2025 14:41:15 +0100
+Message-ID: <20250205134426.268598671@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: George Lander <lander@jagmn.com>
 
-[ Upstream commit 78e08cebfe41a99d12a3a79d3e3be913559182e2 ]
+[ Upstream commit 0a2319308de88b9e819c0b43d0fccd857123eb31 ]
 
-Add missing supply for LM75. Fixes the kernel warning:
-  lm75 0-0048: supply vs not found, using dummy regulator
+There have been intermittent issues with the SPDIF output on H3
+and H2+ devices which has been fixed by setting the s_clk to 4
+times the audio pll.
+Add a quirk for the clock multiplier as not every supported SoC
+requires it. Without the multiplier, the audio at normal sampling
+rates was distorted and did not play at higher sampling rates.
 
-Fixes: c9d4affbe60a ("ARM: dts: imx: tqma7: add lm75a sensor (rev. 01xxx)")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Markus Niebel <markus.niebel@ew.tq-group.com>
-Reviewed-by: Bruno Thomsen <bruno.thomsen@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 1bd92af877ab ("ASoC: sun4i-spdif: Add support for the H3 SoC")
+Signed-off-by: George Lander <lander@jagmn.com>
+Signed-off-by: Marcus Cooper <codekipper@gmail.com>
+Link: https://patch.msgid.link/20241111165600.57219-2-codekipper@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sunxi/sun4i-spdif.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-index 028961eb71089..91ca23a66bf3c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi
-@@ -135,6 +135,7 @@
- 	lm75a: temperature-sensor@48 {
- 		compatible = "national,lm75a";
- 		reg = <0x48>;
-+		vs-supply = <&vgen4_reg>;
- 	};
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index 2347aeb049bcc..e482238388de1 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -177,6 +177,7 @@ struct sun4i_spdif_quirks {
+ 	unsigned int reg_dac_txdata;
+ 	bool has_reset;
+ 	unsigned int val_fctl_ftx;
++	unsigned int mclk_multiplier;
+ };
  
- 	/* NXP SE97BTP with temperature sensor + eeprom, TQMa7x 02xx */
+ struct sun4i_spdif_dev {
+@@ -314,6 +315,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk *= host->quirks->mclk_multiplier;
+ 
+ 	ret = clk_set_rate(host->spdif_clk, mclk);
+ 	if (ret < 0) {
+@@ -348,6 +350,7 @@ static int sun4i_spdif_hw_params(struct snd_pcm_substream *substream,
+ 	default:
+ 		return -EINVAL;
+ 	}
++	mclk_div *= host->quirks->mclk_multiplier;
+ 
+ 	reg_val = 0;
+ 	reg_val |= SUN4I_SPDIF_TXCFG_ASS;
+@@ -541,24 +544,28 @@ static struct snd_soc_dai_driver sun4i_spdif_dai = {
+ static const struct sun4i_spdif_quirks sun4i_a10_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun6i_a31_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN4I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun8i_h3_spdif_quirks = {
+ 	.reg_dac_txdata	= SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN4I_SPDIF_FCTL_FTX,
+ 	.has_reset	= true,
++	.mclk_multiplier = 4,
+ };
+ 
+ static const struct sun4i_spdif_quirks sun50i_h6_spdif_quirks = {
+ 	.reg_dac_txdata = SUN8I_SPDIF_TXFIFO,
+ 	.val_fctl_ftx   = SUN50I_H6_SPDIF_FCTL_FTX,
+ 	.has_reset      = true,
++	.mclk_multiplier = 1,
+ };
+ 
+ static const struct of_device_id sun4i_spdif_of_match[] = {
 -- 
 2.39.5
 
