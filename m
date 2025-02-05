@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945D4A28F70
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC30A28C48
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C449162195
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13E281676D6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0215B155335;
-	Wed,  5 Feb 2025 14:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF48126C18;
+	Wed,  5 Feb 2025 13:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL2d1GCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3jKbrmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B422D14A088;
-	Wed,  5 Feb 2025 14:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAA7B640;
+	Wed,  5 Feb 2025 13:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765531; cv=none; b=FbQ9QqQwlkJxnIv6FQJsOKWQyMRi4+YCZ/1ANmCrfdJnK6viIHBtRYlUHIx7773QU6C54DNCG9Gvi74p4PNcgvGAdStoPfmkdihLN5E4FGzWSmikB+jlK9W/URWfS7ogOUOM8eJOFX4V0GQiazMxGUPsw1MQYx0TqCA50ixbAs0=
+	t=1738763278; cv=none; b=uWQ4DRrSWON5PvXQSxml3WiJLdQS/mqcPCUAKFfzvFei/gXd1WtAvjDvf5UfrNaL2VXOyOVOfhOj00bpjJMVtukQE4r0epR0YSrhd4XVCrVND6W9istphvRtCFXdWOUhUsyWJAlGAFKzJTY5BcSBluBKbf9vvlxMDIK3MizkW/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765531; c=relaxed/simple;
-	bh=GPgOpDosYClVExeFO5MNYx1wo40rg3AcLHRvvbA4IxU=;
+	s=arc-20240116; t=1738763278; c=relaxed/simple;
+	bh=Ho7JLYR+2LQB+R7YoIhJweWF0WpYJA/n7E4SVvIKiBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6P+9PqYLF9qdOudWD5Ir/E9aLnMLpPJ/i//6AUSkNWgkpBWgjV3OvMFv6QoMNlATOqu0KGiycvixCcBE2S5MSjSaXOz6Kr9KZQIoyGz+rWWwGX1quocjSHBS8XA24ZZyavm3SLi04HzQk/wAnGbYplgCYfVbC0waiF3jRoOM6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL2d1GCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248CDC4CED1;
-	Wed,  5 Feb 2025 14:25:30 +0000 (UTC)
+	 MIME-Version; b=FWOMp5/cuEb3OyQE4bxeJBbn9iFW0cfDgJdceUOr8xZ0Ur0iyPHWbMpVw5rky6VTnFjnMR0d4+mk3blKcLYtrb0khZ+nw4Ll+A06I/lVDABE9vTCanwVDCCuylwAfXAxaR30kuxenDVmg5ccSULkPnAgaUXPzbudZinxC2zSb1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3jKbrmC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DB8C4CED1;
+	Wed,  5 Feb 2025 13:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765531;
-	bh=GPgOpDosYClVExeFO5MNYx1wo40rg3AcLHRvvbA4IxU=;
+	s=korg; t=1738763278;
+	bh=Ho7JLYR+2LQB+R7YoIhJweWF0WpYJA/n7E4SVvIKiBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FL2d1GCias/WsuInpGSKGEfD7RecMvbNvQyJgoBOlIKKaolTXeoKhV7lxFvS5plre
-	 GPsVQp+ioMIA9kbEMdWehPvkNWKvivrKecs4DFMS/az0vkP1AFXVgAR+zma43RVpei
-	 ooPG3o7dqutYxxrP89gpF462IWYOqa9ZdcT44sK4=
+	b=O3jKbrmCRUl+zPediDRMEHSH+Bs7ewIdY0SJ5mdKGUJqfiGxFfwI3hBok2EVcvjBY
+	 KTmNUoef/gT1Af31E9CrTUIgJmswKgoQTOV4y91qE0+Rt9pX3Eu5Ho9aUnI/mPJ4zt
+	 UdQFWUCkECpALEZL8QawoNOJFjI0h47TOIB0HW4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
-	Felix Fietkau <nbd@nbd.name>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 186/623] wifi: mt76: mt7915: fix overflows seen when writing limit attributes
-Date: Wed,  5 Feb 2025 14:38:48 +0100
-Message-ID: <20250205134503.354437706@linuxfoundation.org>
+Subject: [PATCH 6.6 010/393] nvme: Add error check for xa_store in nvme_get_effects_log
+Date: Wed,  5 Feb 2025 14:38:49 +0100
+Message-ID: <20250205134420.689681767@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-[ Upstream commit 64d571742b0ae44eee5efd51e2d4a09d7f6782fc ]
+[ Upstream commit ac32057acc7f3d7a238dafaa9b2aa2bc9750080e ]
 
-DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
-number such as 18446744073709551615 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
-This commit was inspired by commit: 57ee12b6c514.
+The xa_store() may fail due to memory allocation failure because there
+is no guarantee that the index csi is already used. This fix adds an
+error check of the return value of xa_store() in nvme_get_effects_log().
 
-Fixes: 02ee68b95d81 ("mt76: mt7915: add control knobs for thermal throttling")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://patch.msgid.link/20241202031917.23741-3-luoxueqin@kylinos.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 1cf7a12e09aa ("nvme: use an xarray to lookup the Commands Supported and Effects log")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6bef96e3d2a3d..77d82ccd73079 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -82,7 +82,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 4aad16390d479..37485b8cc1281 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2853,7 +2853,7 @@ int nvme_get_log(struct nvme_ctrl *ctrl, u32 nsid, u8 log_page, u8 lsp, u8 csi,
+ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
+ 				struct nvme_effects_log **log)
+ {
+-	struct nvme_effects_log	*cel = xa_load(&ctrl->cels, csi);
++	struct nvme_effects_log *old, *cel = xa_load(&ctrl->cels, csi);
+ 	int ret;
+ 
+ 	if (cel)
+@@ -2870,7 +2870,11 @@ static int nvme_get_effects_log(struct nvme_ctrl *ctrl, u8 csi,
  		return ret;
+ 	}
  
- 	mutex_lock(&phy->dev->mt76.mutex);
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 60 * 1000, 130 * 1000), 1000);
- 
- 	if ((i - 1 == MT7915_CRIT_TEMP_IDX &&
- 	     val > phy->throttle_temp[MT7915_MAX_TEMP_IDX]) ||
+-	xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
++	old = xa_store(&ctrl->cels, csi, cel, GFP_KERNEL);
++	if (xa_is_err(old)) {
++		kfree(cel);
++		return xa_err(old);
++	}
+ out:
+ 	*log = cel;
+ 	return 0;
 -- 
 2.39.5
 
