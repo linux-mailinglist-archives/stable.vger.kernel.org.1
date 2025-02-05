@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C131A28DFB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7D3FA28D29
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CCC41666F6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102FF1696C6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC13913C9C4;
-	Wed,  5 Feb 2025 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE05814F136;
+	Wed,  5 Feb 2025 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoGAjVNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNDwv0W3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E35155756;
-	Wed,  5 Feb 2025 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D0114D28C;
+	Wed,  5 Feb 2025 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764447; cv=none; b=nsxh/7hsEBP6oddrStW2/Pb4ujrqDTLqQWoOCNS1g9p2lMGeChHRdMyGuzLmz7jstgcAfC2BX+5B1Gztq2KyMdMPEKdYSOx51G2TCCZZgm8IXEQcLP0nquzCz5q1eOgVXSZr0JkKYH+G9O1DopT97eV2vZoGljMBfa491WQGfa8=
+	t=1738763846; cv=none; b=owq1BtLW/T8IDMQfwX2Eh0q57VlgHUeadPyv04tHVRwtA3r8tCHRPNiLTGWa7xM2eaH6JgktG2aFDD0lcl9zPzHQ2jgJytJ0dSdCxbwQvHF5/iB+SlXsOnt+Gr+yqQQizsMHSh2jjOmrF6CJDF345KxCGjKBvQcQ+kISfLG9TAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764447; c=relaxed/simple;
-	bh=llkXQNKsEWJ9SQwIrhYyb04wZlHxQYxDv5xIijveFNE=;
+	s=arc-20240116; t=1738763846; c=relaxed/simple;
+	bh=xsZ7UqPuKGByM0oa2NHaD1Cv3dxz4Jw62g9JSnOBdk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1ary1mAlU4SgGQYRQyedKNtSW8VBcPVeYqQzHLO3Tk1V7FG5ZOG7BZnVXMQwIdhnbis11aYDSBcmMSgOr+szDXgbg/aNoRI0av1k7U/7ynSPW1YF8Y4+kEwtX2H1pEjl7KGEBPI+cJgWn8yw1brWK/n4bzGVJu/knKiQ1GyiwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoGAjVNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F40C4CED6;
-	Wed,  5 Feb 2025 14:07:26 +0000 (UTC)
+	 MIME-Version; b=Rf9yrVXJMw8d0mp416Cf8Y7m8bg8Xt1C/6oMHFPaLjIb+qTDlYrOnGXLyGMuQXGyP1vVONMpSummUhNnfOXY3hCpslHaW6LgeDwp2G/hD99aEwUyw/VvBuMfE+UbeR9VSQ3FkGYM6rFrjuNj+2cmrhtGYgD3WDk22zLSpkyRryQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNDwv0W3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C972AC4CED1;
+	Wed,  5 Feb 2025 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764447;
-	bh=llkXQNKsEWJ9SQwIrhYyb04wZlHxQYxDv5xIijveFNE=;
+	s=korg; t=1738763846;
+	bh=xsZ7UqPuKGByM0oa2NHaD1Cv3dxz4Jw62g9JSnOBdk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoGAjVNhMCijUsLr5UEn9b+eoL4rSWhP5HnGkl/7CsKS0ZrvpWrhAlshEbRIw88U1
-	 Si7xwfk2b2LL8679GmLmp+xayyNzQhKjIbZecB1jG+3zbwTA6QcziqYAdckjc5wn/2
-	 CrLEwPPZ9dg7LIGmuQiJFsV/1nj7tOfHKkxqzwW0=
+	b=LNDwv0W3cjQouJuZzlg9uzOShxvXCFLwt+8rm5N7FTwh/bODTHY6uGZA578jch/U+
+	 frZaCzfqPdMLZc/xhMNhyLkRFlke/k4YPQBzLXKr2zASLtwO7k6Ptiomls57hhC8mO
+	 /bkziMrKTHollFdjz4aJ8JESUGYG+dpSd1Otnfpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 079/623] drm/amdgpu: Fix shift type in amdgpu_debugfs_sdma_sched_mask_set()
+Subject: [PATCH 6.12 066/590] drm/msm: Check return value of of_dma_configure()
 Date: Wed,  5 Feb 2025 14:37:01 +0100
-Message-ID: <20250205134459.247799441@linuxfoundation.org>
+Message-ID: <20250205134457.782293401@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
 
-[ Upstream commit 6ec6cd9acbaa844391a1f75a824a3a9d18978fcb ]
+[ Upstream commit b34a7401ffaee45354e81b38a4d072794079cfd6 ]
 
-The "mask" and "val" variables are type u64.  The problem is that the
-BIT() macros are type unsigned long which is just 32 bits on 32bit
-systems.
+Because the of_dma_configure() will returns '-EPROBE_DEFER' if the probe
+procedure of the specific platform IOMMU driver is not finished yet. It
+can also return other error code for various reasons.
 
-It's unlikely that people will be using this driver on 32bit kernels
-and even if they did we only use the lower AMDGPU_MAX_SDMA_INSTANCES (16)
-bits.  So this bug does not affect anything in real life.
+Stop pretending that it will always suceess, quit if it fail.
 
-Still, for correctness sake, u64 bit masks should use BIT_ULL().
-
-Fixes: d2e3961ae371 ("drm/amdgpu: add amdgpu_sdma_sched_mask debugfs")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/d39a9325-87a4-4543-b6ec-1c61fca3a6fc@stanley.mountain
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 29ac8979cdf7 ("drm/msm/a6xx: use msm_gem for GMU memory objects")
+Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/622782/
+Link: https://lore.kernel.org/r/20241104090738.529848-1-sui.jingfeng@linux.dev
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-index 113f0d2426187..f40531fea11ad 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sdma.c
-@@ -358,13 +358,13 @@ static int amdgpu_debugfs_sdma_sched_mask_set(void *data, u64 val)
- 	if (!adev)
- 		return -ENODEV;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 14db7376c712d..e386b059187ac 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1603,7 +1603,9 @@ int a6xx_gmu_wrapper_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
  
--	mask = (1 << adev->sdma.num_instances) - 1;
-+	mask = BIT_ULL(adev->sdma.num_instances) - 1;
- 	if ((val & mask) == 0)
- 		return -EINVAL;
+ 	gmu->dev = &pdev->dev;
  
- 	for (i = 0; i < adev->sdma.num_instances; ++i) {
- 		ring = &adev->sdma.instance[i].ring;
--		if (val & (1 << i))
-+		if (val & BIT_ULL(i))
- 			ring->sched.ready = true;
- 		else
- 			ring->sched.ready = false;
+-	of_dma_configure(gmu->dev, node, true);
++	ret = of_dma_configure(gmu->dev, node, true);
++	if (ret)
++		return ret;
+ 
+ 	pm_runtime_enable(gmu->dev);
+ 
+@@ -1668,7 +1670,9 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
+ 
+ 	gmu->dev = &pdev->dev;
+ 
+-	of_dma_configure(gmu->dev, node, true);
++	ret = of_dma_configure(gmu->dev, node, true);
++	if (ret)
++		return ret;
+ 
+ 	/* Fow now, don't do anything fancy until we get our feet under us */
+ 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;
 -- 
 2.39.5
 
