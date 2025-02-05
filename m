@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FF9A28F48
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33234A29024
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15E831889849
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD28E1884A02
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1ED1591E3;
-	Wed,  5 Feb 2025 14:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1969715A86B;
+	Wed,  5 Feb 2025 14:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEPHehWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlNmBByy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224FA15990C;
-	Wed,  5 Feb 2025 14:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5EB186E56;
+	Wed,  5 Feb 2025 14:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765374; cv=none; b=ODuvv0M6h4czTE+4afJhTBaZVeHGXkVfvATcPBotey3Y7qWm/gG0UowqHkC87uBd3mpZHxUWenWCgVavvonSh+dXjxQZY/3HADQPZHRcShrVgSHcCdPUA4NYHqZuAUOxv6uslOGWXEiRLhQNkRfIuMlxksI0qsovYkKy2jWRPuU=
+	t=1738765935; cv=none; b=r3lW2QcBYgTCbC6JgqK29Xo2aYJ8Vid7SN5pwR89iMNBK54wdsiHK3QK1bHZcytCtvH+B+FR5Xn1vT42IIOMawSExDafCd4JzpjejvpqHUSuD/NTqSOpv1mDGbViyDSYmo0D3yVRi8np/RnhJqte532/E5ImrBaJ4bG5Izw6Gak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765374; c=relaxed/simple;
-	bh=nkyXBCqIaFO6Y/tpOgWLrrP6W7rB/YaSCBXTkxrxnRY=;
+	s=arc-20240116; t=1738765935; c=relaxed/simple;
+	bh=0PSNE/WMr7KGTEb7qlQjdRmtwTo3aLQqUa4oRmyERpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q56wo2DuhIk7DnRr1ajrD+Y77ROpbF3ez7zwF2NfqfSnReFFcurRpu8MIybWITp5P9vhHeIPvKBzhVTgnaMNNooRmA+vPIAUwOexenKW58dSAOtM2tRYcfV1xOuGNdWSCHX41kswaTVSmuCkcd2QFBBDlK/qX8lgkINRvQ2MyfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEPHehWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22415C4CED1;
-	Wed,  5 Feb 2025 14:22:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tz0L+1XFJBjOSadKsCccTnXRXw9vKldSQ+zZcqN2DaAR8HoIBVAGaDoAs1+WfPHuIdf1mPQASees8msyaUkY6e0SKgR1DItOGdyTN5i5+lwQJ43eFA07uQlsXt5FzQwFy8zCAnx1+HUsS/plCwsCgRKncIbwHiUcqhf42bn+71k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlNmBByy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A80C4CED6;
+	Wed,  5 Feb 2025 14:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765373;
-	bh=nkyXBCqIaFO6Y/tpOgWLrrP6W7rB/YaSCBXTkxrxnRY=;
+	s=korg; t=1738765935;
+	bh=0PSNE/WMr7KGTEb7qlQjdRmtwTo3aLQqUa4oRmyERpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEPHehWup/wnPCcT1WTPi1Ov1xPlEXAr5jLLzVw7+4+mifZsB3WcLWATIpkhhTnaa
-	 CaxQK5ZJ4nZVX//oEnUgXuXt00RPZpZAaZR/2kyoB+aPlYGZ41s0cerZRc7dZO9+/z
-	 g862Z2BAjnhjLaim5X5VJaB/vzQP7DQEstrKAZrE=
+	b=vlNmBByyVHUdf66H4xYubl2LZCl9kkAFJO0QX9N/UZWZ57bVOjShk2O8aGFuMtlq5
+	 GtZcF+n5h/PW8QJmEQEny5iWZ0CwjNy3YsizYiFyFBiN9AUJeyQy3e1c8tiOL8Rlz2
+	 x3xAOLvU+tGnfl0kwoi22IZh+oPIx499NQSDt9cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 214/590] Bluetooth: btbcm: Fix NULL deref in btbcm_get_board_name()
+Subject: [PATCH 6.13 227/623] pwm: stm32: Add check for clk_enable()
 Date: Wed,  5 Feb 2025 14:39:29 +0100
-Message-ID: <20250205134503.475198945@linuxfoundation.org>
+Message-ID: <20250205134504.908251288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Mingwei Zheng <zmw12306@gmail.com>
 
-[ Upstream commit b88655bc6593c6a7fdc1248b212d17e581c4334e ]
+[ Upstream commit e8c59791ebb60790c74b2c3ab520f04a8a57219a ]
 
-devm_kstrdup() can return a NULL pointer on failure,but this
-returned value in btbcm_get_board_name() is not checked.
-Add NULL check in btbcm_get_board_name(), to handle kernel NULL
-pointer dereference error.
+Add check for the return value of clk_enable() to catch the potential
+error.
 
-Fixes: f9183eaad915 ("Bluetooth: btbcm: Use devm_kstrdup()")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241215224752.220318-1-zmw12306@gmail.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btbcm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pwm/pwm-stm32.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btbcm.c b/drivers/bluetooth/btbcm.c
-index a1153ada74d20..0a60660fc8ce8 100644
---- a/drivers/bluetooth/btbcm.c
-+++ b/drivers/bluetooth/btbcm.c
-@@ -553,6 +553,9 @@ static const char *btbcm_get_board_name(struct device *dev)
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 17e591f61efb6..a59de4de18b6e 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -858,8 +858,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
+ 	chip->ops = &stm32pwm_ops;
  
- 	/* get rid of any '/' in the compatible string */
- 	board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
-+	if (!board_type)
-+		return NULL;
-+
- 	strreplace(board_type, '/', '-');
+ 	/* Initialize clock refcount to number of enabled PWM channels. */
+-	for (i = 0; i < num_enabled; i++)
+-		clk_enable(priv->clk);
++	for (i = 0; i < num_enabled; i++) {
++		ret = clk_enable(priv->clk);
++		if (ret)
++			return ret;
++	}
  
- 	return board_type;
+ 	ret = devm_pwmchip_add(dev, chip);
+ 	if (ret < 0)
 -- 
 2.39.5
 
