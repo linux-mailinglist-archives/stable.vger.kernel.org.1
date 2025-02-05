@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550D8A28EA2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E57A2928B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B11AE7A265B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC83416B508
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82519282EE;
-	Wed,  5 Feb 2025 14:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1738D18C006;
+	Wed,  5 Feb 2025 14:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lveGXW5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2DSlTNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D48C151980;
-	Wed,  5 Feb 2025 14:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C797E18A6D7;
+	Wed,  5 Feb 2025 14:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764926; cv=none; b=ESi2RBvTLonHTyLu3idUYCrDlzCRLeaLL/JeKrrc3aW0btlHUpzzzOmLQUbCj8Jn27n9L2ltz+z1kU8qfbU55x9IfXejm/1K2/6diHdhg7Yz5b7Kx4hJvPODxOoylAuMSeeNUtputbYhVEjCbmCBBvU30WjAXQ+ncn0mIgEGEr8=
+	t=1738767221; cv=none; b=ScxxjX+bYIttGSR8WAuX54bt8v4L31j2s8m6rxUVYZaiwrQ+2cJMBkHYcwDb8FpJBmskx7esLy+57k8qeROA342DBXsDhCP5OaQUC7koZ6+cD9tP6iIup2RBp4WVZ3QGKWDnjjLjFRVeuPRJg0305SOI0s5s665/9O5S0oP59ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764926; c=relaxed/simple;
-	bh=Z1VwCjF52JNoSdU923KMQlaM13wrZ/upOKs2ByagGfM=;
+	s=arc-20240116; t=1738767221; c=relaxed/simple;
+	bh=pFhx1I4Veh21DsepcyiJMX+8N4x8So4UYAnMRhSX8Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kx+QwGAYasAy662vqOyPagE/avEt5Gfvqs+gjMp3qIFUDjZAJr2K/ax0ShusWJyTH326HUflsXQ/PrpJMLG8ubuLNM88Pb3+LpqQC7liEh4CYy+eoWbGvh2KnMKQh40r6leKHLJh3hzfWXabrDRSHBUbbn7Asa3NYtjmW+svRC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lveGXW5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28FFC4CED1;
-	Wed,  5 Feb 2025 14:15:25 +0000 (UTC)
+	 MIME-Version; b=pVxDzWlt9JbRTfCYmfXvGgN6J6GsRKCw1J4M+EcJv4WODjX3473ofOKvwDQ4HEwqfqS1ulkkJ/Jn951T+TMmV6zw8MQkEAwP6XFKeCoz7pVMz2j+ITwQRbw22znqA/PAfvK0GjZyl+SU0eB6k1JSUzQ9dk3jZEscYgQ/ohc7TcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2DSlTNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396AFC4CED1;
+	Wed,  5 Feb 2025 14:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764926;
-	bh=Z1VwCjF52JNoSdU923KMQlaM13wrZ/upOKs2ByagGfM=;
+	s=korg; t=1738767221;
+	bh=pFhx1I4Veh21DsepcyiJMX+8N4x8So4UYAnMRhSX8Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lveGXW5WrlUom288+Mm01lHLnFGcIsimttnDGpuMr2tyw/H/oHyPjlDui2gF4Ocz+
-	 EIlda+qna9cebP3Qs0KU06aax51osY1QlL0/Ge/7j+vwDx6Z8/0C0M5NzUz5Dgwena
-	 Sj2velFVsN+PE5zpOFmyeRvU67prSOdWD8R6Zmfo=
+	b=Q2DSlTNN9dMg8BsnlIGn9iSWyIAFvLFJDBNiIyiabnaKn/4j/8gWl+SIADukCPqSV
+	 5ZgPayF6SYiW1FDDqBhF0o2FH0Nia5Yljd9O47k1RdpKRqvAViOus0oZnFCauqKiqL
+	 magD4/zr6nu4+c/GcWl7UKWXckULsos4QI7bGBAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Petr Vorel <petr.vorel@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/393] arm64: dts: mt8183: set DMIC one-wire mode on Damu
+Subject: [PATCH 6.13 374/623] arm64: dts: qcom: msm8994: Describe USB interrupts
 Date: Wed,  5 Feb 2025 14:41:56 +0100
-Message-ID: <20250205134427.836256584@linuxfoundation.org>
+Message-ID: <20250205134510.529306191@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 6c379e8b984815fc8f876e4bc78c4d563f13ddae ]
+[ Upstream commit c910544d2234709660d60f80345c285616e73b1c ]
 
-Sets DMIC one-wire mode on Damu.
+Previously the interrupt lanes were not described, fix that.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20241113-damu-v4-1-6911b69610dd@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: d9be0bc95f25 ("arm64: dts: qcom: msm8994: Add USB support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Tested-by: Petr Vorel <petr.vorel@gmail.com>
+Link: https://lore.kernel.org/r/20241129-topic-qcom_usb_dtb_fixup-v1-4-cba24120c058@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8994.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-index 9a166dccd727c..8f95b7270c3fa 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
-@@ -27,6 +27,10 @@
- 	hid-descr-addr = <0x0001>;
- };
+diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+index 1acb0f1595119..8c0b1e3a99a76 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+@@ -437,6 +437,15 @@
+ 			#size-cells = <1>;
+ 			ranges;
  
-+&mt6358codec {
-+	mediatek,dmic-mode = <1>; /* one-wire */
-+};
++			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 311 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 310 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "pwr_event",
++					  "qusb2_phy",
++					  "hs_phy_irq",
++					  "ss_phy_irq";
 +
- &qca_wifi {
- 	qcom,ath10k-calibration-variant = "GO_DAMU";
- };
+ 			clocks = <&gcc GCC_USB30_MASTER_CLK>,
+ 				 <&gcc GCC_SYS_NOC_USB3_AXI_CLK>,
+ 				 <&gcc GCC_USB30_SLEEP_CLK>,
 -- 
 2.39.5
 
