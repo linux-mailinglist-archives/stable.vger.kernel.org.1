@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-113132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AD5A2901D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDAE2A29039
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D926B1883872
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02A2D3A73F3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECFD155CBD;
-	Wed,  5 Feb 2025 14:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58212170A13;
+	Wed,  5 Feb 2025 14:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avhk+v+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC3b8uJg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0B2487BF;
-	Wed,  5 Feb 2025 14:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149F815CD74;
+	Wed,  5 Feb 2025 14:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765929; cv=none; b=pq+Zgm3dnBdH8GkhRw28i+1pLdaK29cY6eiFBx9fk5sBDroNFRz4GEXGLBXWCflC0OR+LW7QkbYAT2jdfmClcGcJheskImpk8SFvSdRb7GlliH/JSJD3vezQulol/SgsFCvkvqr9DAmjh5+RzKWkq+dkSrUpAJWwGdA1qU0UXj0=
+	t=1738765939; cv=none; b=TAWO5LQuLWcY/GYwUGioADU1hZ64otaRjQB4R546gfRm9zEVs+4atzJ4yjspna2HemJ/0Up3SNLnouie1ICOrolDT19C0jviWDP5hLZV4wZ93EKAvrMQABeCc40XLzs7bjs5YeFP+hzg9OB3K/8iPhJXwdqGas2pbGsFp1kCVeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765929; c=relaxed/simple;
-	bh=bEQlQnZeCGybdHrWxr40hLZnQ9EfGW0UA40iVN3ofyk=;
+	s=arc-20240116; t=1738765939; c=relaxed/simple;
+	bh=5D0kLIVzGFhiYwnyUi3d/WkxNnnu8WCgTJjqkOVWxac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjos+d5OCrkf1KGyUlLXrfR5ORSpHnlATct+5mvCPMqhGJx55bc6W/qMH1+rRYOOuGnVcsE3GqqW2L4lmgqmXyK8smiLXst1GzwyjhBxSdNwQ+O1NXjFA/ivF1OFE7oZ3cfmrUxStqusRT0YtmFqnUwZTjdX3i7ax3EDJdIn8i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avhk+v+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2635EC4CED1;
-	Wed,  5 Feb 2025 14:32:07 +0000 (UTC)
+	 MIME-Version; b=bjXdV5zY8bOc9efeOB4mijHXW27GIyS3wIm2+P+C2w73lzQhPRIoOFRkPw8a/jX3ooeqLsqaal94dF1QktM4MHQ00tMJc6ukzsf6nLu0csDAg/EW5a1InVwySROUV0y/HBXRnVRwALUFfRlsxmp3Vcd0ODMZE6l9lh5P3DaeeB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC3b8uJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484EEC4CED1;
+	Wed,  5 Feb 2025 14:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765928;
-	bh=bEQlQnZeCGybdHrWxr40hLZnQ9EfGW0UA40iVN3ofyk=;
+	s=korg; t=1738765939;
+	bh=5D0kLIVzGFhiYwnyUi3d/WkxNnnu8WCgTJjqkOVWxac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avhk+v+AiCUMzixr1aqGYlfhRz9jRLIbELBASvReZgXEVTwzIMDV9lu7a/JRJHmVs
-	 pGWxLWuqTKbw5VR/XcI75g6JOeFDQpkadb48+nwFp/b55uI76LktALDsNdur/gx0ZE
-	 MPXnG5FJ879tX5/h7kvlGEIzaOLVxcw9O2pVyqx8=
+	b=QC3b8uJgDL1k1xI/AXyNEWnsTKay57OCusYM3zo6Kvuv+Y0URp5FNTCDqp+LijCzb
+	 O0zhIsv2jRNH7qTyeTIaye3zCad/umk5D1bcrc4rew1R5HMdiU3zD4hoIKutNoYJHI
+	 MJYF9PppfbOsLzfxnBY0AMLtj0hlSx8hrIXHTmP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Ian Rogers <irogers@google.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	James Clark <james.clark@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
 	Jiri Olsa <jolsa@kernel.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 268/590] perf top: Dont complain about lack of vmlinux when not resolving some kernel samples
-Date: Wed,  5 Feb 2025 14:40:23 +0100
-Message-ID: <20250205134505.527447357@linuxfoundation.org>
+Subject: [PATCH 6.12 269/590] perf maps: Fix display of kernel symbols
+Date: Wed,  5 Feb 2025 14:40:24 +0100
+Message-ID: <20250205134505.565747500@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -72,61 +75,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 058b38ccd2af9e5c95590b018e8425fa148d7aca ]
+[ Upstream commit dae29277fddaaf6670d17dfcbb916a2ca29c912f ]
 
-Recently we got a case where a kernel sample wasn't being resolved due
-to a bug that was not setting the end address on kernel functions
-implemented in assembly (see Link: tag), and then those were not being
-found by machine__resolve() -> map__find_symbol().
+Since commit 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily
+sorted array for addresses"), perf doesn't display anymore kernel
+symbols on powerpc, allthough it still detects them as kernel addresses.
 
-So we ended up with:
+	# Overhead  Command     Shared Object  Symbol
+	# ........  ..........  ............. ......................................
+	#
+	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
+	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
+	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
+	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
+	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
+	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
+	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
 
-  # perf top --stdio
-  PerfTop: 0 irqs/s  kernel: 0%  exact: 0% lost: 0/0 drop: 0/0 [cycles/P]
-  -----------------------------------------------------------------------
+This is because function maps__find_next_entry() now returns current
+entry instead of next entry, leading to kernel map end address getting
+mis-configured with its own start address instead of the start address
+of the following map.
 
-  Warning:
-  A vmlinux file was not found.
-  Kernel samples will not be resolved.
-  ^Z
-  [1]+  Stopped                 perf top --stdio
-  #
+Fix it by really taking the next entry, also make sure that entry
+follows current one by making sure entries are sorted.
 
-But then resolving all other kernel symbols.
-
-So just fixup the logic to only print that warning when there are no
-symbols in the kernel map.
-
-Fixes: d88205db9caa0e9d ("perf dso: Add dso__has_symbols() method")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 659ad3492b913c90 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
+Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: James Clark <james.clark@linaro.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
 Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/lkml/Z3buKhcCsZi3_aGb@x1
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/maps.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 724a793863212..ca3e8eca6610e 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -809,7 +809,7 @@ static void perf_event__process_sample(const struct perf_tool *tool,
- 		 * invalid --vmlinux ;-)
- 		 */
- 		if (!machine->kptr_restrict_warned && !top->vmlinux_warned &&
--		    __map__is_kernel(al.map) && map__has_symbols(al.map)) {
-+		    __map__is_kernel(al.map) && !map__has_symbols(al.map)) {
- 			if (symbol_conf.vmlinux_name) {
- 				char serr[256];
+diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
+index 432399cbe5dd3..09c9cc326c08d 100644
+--- a/tools/perf/util/maps.c
++++ b/tools/perf/util/maps.c
+@@ -1136,8 +1136,13 @@ struct map *maps__find_next_entry(struct maps *maps, struct map *map)
+ 	struct map *result = NULL;
  
+ 	down_read(maps__lock(maps));
++	while (!maps__maps_by_address_sorted(maps)) {
++		up_read(maps__lock(maps));
++		maps__sort_by_address(maps);
++		down_read(maps__lock(maps));
++	}
+ 	i = maps__by_address_index(maps, map);
+-	if (i < maps__nr_maps(maps))
++	if (++i < maps__nr_maps(maps))
+ 		result = map__get(maps__maps_by_address(maps)[i]);
+ 
+ 	up_read(maps__lock(maps));
 -- 
 2.39.5
 
