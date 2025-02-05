@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D27A28EB4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F698A292D4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47663A40D4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD4BC3A84AF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1BA8632B;
-	Wed,  5 Feb 2025 14:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC8C194A45;
+	Wed,  5 Feb 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn/Hpwno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1Axrkh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079001519A4;
-	Wed,  5 Feb 2025 14:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729D19415E;
+	Wed,  5 Feb 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764973; cv=none; b=bQMc6Inm2kNqOsXN8YMEOqQOTJSeybKDy4bQnvf0mLVUY/0j0/icm0oGd7fNjHlx2h05XvX0r3Md/b/NWz1bn634HBNVuELZ5J8c+F7VR0tm32eSvovgI5sWyBV/cNCpzv/e4YAQXNRH9HE26SwmYVHVfDdoVOU2/lIDHMrq+es=
+	t=1738767384; cv=none; b=hDqfB7sn8zED0guaCxoLmqCvIjzLSGzXD2/SgidXUrD6ksX64P88GRa0JSDqT9iw0XJTizUFCKNmwny8pDceoMYYW1NdakGZGCUfJDFdqK0LYGsZo08JxExOWSF49Z2869Q8hYnO7gntlUUuKZCGq2UsILTVVvhiyTEwgkqJbW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764973; c=relaxed/simple;
-	bh=B2P2I5y7uit9LRNy8/alEIH+QiRX9kVVGB9O1ImkuEA=;
+	s=arc-20240116; t=1738767384; c=relaxed/simple;
+	bh=g9lUN+Q+3o2c5vQAwHs6YI47noNv2LGoyPwi54xWw8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IIwfHCo7GvWHEV3DYBPCpTnsZ6ctPtkaqcTUMEBFNov/0Z1BDkuGy4pcsRg9GXTDhVujHvCcex/cQgNldQContJdev9ChtOsHKXIw0BV4JWOIRb7sauYOX/adQxjOjcacgkrSRwb3FVnEmQuFJgtbtvT+t61rwKeLZc8tVbvj6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn/Hpwno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078BFC4CED6;
-	Wed,  5 Feb 2025 14:16:11 +0000 (UTC)
+	 MIME-Version; b=A0HjgXnKn4FgCmPMxH9Wq93qrPn/Pb8Zmv4+SLQDJhN4l582FlmfSKZgnctPa8NvdIhQ/l/G55VlWujyJLaA8rASN8j8SI9oovgEH2/qg3gCP2uhscoAbpciAd2bphKB47oVZfEKWZmqMno/09FgigjL/RyWuEH1qEJKP9rldUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1Axrkh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7734EC4CED6;
+	Wed,  5 Feb 2025 14:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764972;
-	bh=B2P2I5y7uit9LRNy8/alEIH+QiRX9kVVGB9O1ImkuEA=;
+	s=korg; t=1738767383;
+	bh=g9lUN+Q+3o2c5vQAwHs6YI47noNv2LGoyPwi54xWw8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cn/HpwnoUh6UuARMtxj//wwFveyBH3HaYycNCQAzXXpPb/+a6tUx/BueGj5hMKhgh
-	 cYSF6LhSx6YzQoXOMmZw38moIyoSxa+BZTmQE1xn3+IKHZYQsm86MyENOhHNfC+sQH
-	 qwJo5jHLiZMT8StBms8Mdb2mZGH936F46KxFhI6c=
+	b=h1Axrkh2UQbtG1LerJEEneYzNYo5fpyPRtQaxCCJi4ryyQc0lW0bxb+5O3SN2nM3c
+	 KojITjQrPo6Tz0S0lzLt35EyvFL0orfCuZkSjJYfQEW/FA+SWNSN11feAK0mietjhz
+	 9s9RhpILH+ZqOlv1HhOa/83iWE+VdXaZcPOJo5Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Bin Liu <b-liu@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/393] RDMA/srp: Fix error handling in srp_add_port
+Subject: [PATCH 6.13 397/623] arm64: dts: ti: k3-am62a: Remove duplicate GICR reg
 Date: Wed,  5 Feb 2025 14:42:19 +0100
-Message-ID: <20250205134428.721038116@linuxfoundation.org>
+Message-ID: <20250205134511.410094116@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Bryan Brattlof <bb@ti.com>
 
-[ Upstream commit a3cbf68c69611188cd304229e346bffdabfd4277 ]
+[ Upstream commit 6f0232577e260cdbc25508e27bb0b75ade7e7ebc ]
 
-As comment of device_add() says, if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count.
+The GIC Redistributor control range is mapped twice. Remove the extra
+entry from the reg range.
 
-Add a put_device() call before returning from the function to decrement
-reference count for cleanup.
-
-Found by code review.
-
-Fixes: c8e4c2397655 ("RDMA/srp: Rework the srp_add_port() error path")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Link: https://patch.msgid.link/20241217075538.2909996-1-make_ruc2021@163.com
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Reported-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-2-758b4d5b4a0a@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 1 -
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index 2916e77f589b8..7289ae0b83ace 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -3978,7 +3978,6 @@ static struct srp_host *srp_add_port(struct srp_device *device, u32 port)
- 	return host;
- 
- put_host:
--	device_del(&host->dev);
- 	put_device(&host->dev);
- 	return NULL;
- }
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index a93e2cd7b8c74..a1daba7b1fad5 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -18,7 +18,6 @@
+ 		compatible = "arm,gic-v3";
+ 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
+ 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
+-		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
+ 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
+ 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
+ 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
 -- 
 2.39.5
 
