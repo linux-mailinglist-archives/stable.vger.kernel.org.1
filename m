@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D047A29002
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0D9A28F2A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7CCE18833B5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0750318878B2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D98414386D;
-	Wed,  5 Feb 2025 14:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BCD14B959;
+	Wed,  5 Feb 2025 14:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGItvwXD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz9G5G89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC0C487BF;
-	Wed,  5 Feb 2025 14:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0B013C3F6;
+	Wed,  5 Feb 2025 14:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765858; cv=none; b=g0fonZUuVJU2GqIUeGJGZ7HJQ9htYweNjye1T/glFAkuNt+td1DBvnu5get5W51Gy1ostjWmqKgqUIKarXKkpun3uhH0mO7vKlH2YAMxtjMgTgkjrGA3Ac5efuenscnSqIGl7EAvTgMARudK4iFhHomZUIRfx2Vz6/QmxY6RqlI=
+	t=1738765292; cv=none; b=Xyc4zZgr4VtLpvC/1dVSkb8plgpoXCXlAqwuYtGBXlThdivbDhtjjnQnCaWy91zwmCk0ZnvQju1QFvkZgzCLSsXaPAI+JSegsWcRaOtJ9xFqYlSmWB6Uqun3ZN4jE5jnQSUzyMd5rAzKMWMh0DX6FCUwl3UyQrsbReVhkqsfdDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765858; c=relaxed/simple;
-	bh=zBCWHrAqzjmogURmjEJA1M1x046Ux9k24EJm2ipqroc=;
+	s=arc-20240116; t=1738765292; c=relaxed/simple;
+	bh=uTcUEpavy1zIxTev0jdxOtP4YV9IhH/GRpb1xmow/uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAwZw9jtXnuXXMwBDL/7F9O4hJGSFFds/wAflEvaLs8Yro9DNHifC0SiqXnT63rxjeOnO0XMqh7GAFZJuw+aHfSxPliqI/4M7E91klY+T0FDvoIkAndT5ygIG4RN0kIgJH9TBKGDNWZ8CudcOrHUUhadEN7K0wTzrQ+KOW8FXbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGItvwXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A8FC4CED1;
-	Wed,  5 Feb 2025 14:30:57 +0000 (UTC)
+	 MIME-Version; b=hwXOhz4aY8ZY/9kEg1VDb54Sz4BfnfEA4GiHG8UKMj7eEuGFGBsccFrMWVxvY5yAA3y7fLGqXsEDimAmhsgAfy9rKCuTkJ2lre7gK/1T91KtH/EfM147wdxukAp3QAKRd0RqbWASU4z1WXtCawuuwAQC0qM7zjJkGBR+SU7lC70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz9G5G89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 815B1C4CED1;
+	Wed,  5 Feb 2025 14:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765857;
-	bh=zBCWHrAqzjmogURmjEJA1M1x046Ux9k24EJm2ipqroc=;
+	s=korg; t=1738765292;
+	bh=uTcUEpavy1zIxTev0jdxOtP4YV9IhH/GRpb1xmow/uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGItvwXDq+0J/XSsXq/45iTfnoQnGCHUGYmHm4Ze1fVfCzR3In0nKcYwyctV1rm28
-	 LGmtyth5XW/AK3u475V8qjUCO7yMru1DsOYE5El89XvlayBWtyPLfaQVS9a8KWsCgi
-	 cHO0hwtF7Aq3Ond/Kl0vps6gs6mhlZPf1SCeleR4=
+	b=xz9G5G89f1qzTiCNcUyeb8RbFxlCONgPHa39GkVC/ZKVS8Lx3fI/HMlvbjM+LGHvR
+	 atwxmhnlX9DXs/hGt7S+dMEW424fmVq1Ao9fShLB5wj1kFn5lreV7fNGJteACrjE8U
+	 tqY6qEDJjchOslAQlXMbBQfRNNZvLNVV8LZ0nmQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 220/623] wifi: cfg80211: adjust allocation of colocated AP data
+Subject: [PATCH 6.12 207/590] wifi: mt76: mt7996: fix definition of tx descriptor
 Date: Wed,  5 Feb 2025 14:39:22 +0100
-Message-ID: <20250205134504.642312714@linuxfoundation.org>
+Message-ID: <20250205134503.202625937@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-[ Upstream commit 1a0d24775cdee2b8dc14bfa4f4418c930ab1ac57 ]
+[ Upstream commit 14749fe2ed360c92c1a2a76dac0b77f759234981 ]
 
-In 'cfg80211_scan_6ghz()', an instances of 'struct cfg80211_colocated_ap'
-are allocated as if they would have 'ssid' as trailing VLA member. Since
-this is not so, extra IEEE80211_MAX_SSID_LEN bytes are not needed.
-Briefly tested with KUnit.
+For mt7992 chipsets, the definition of TXD.DW6.BIT10~15 has different
+interpretations on different frame types. Driver only needs to fill
+MSDU_CNT for non-management frames.
 
-Fixes: c8cb5b854b40 ("nl80211/cfg80211: support 6 GHz scanning")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20250113155417.552587-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 408566db8cad ("wifi: mt76: connac: add new definition of tx descriptor")
+Co-developed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-6-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index ccdbeb6046399..abca3d7ff56c9 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -857,9 +857,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 			if (ret)
- 				continue;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index 0d21414e2c884..f590902fdeea3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -819,6 +819,7 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 			   struct ieee80211_key_conf *key, int pid,
+ 			   enum mt76_txq_id qid, u32 changed)
+ {
++	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_vif *vif = info->control.vif;
+ 	u8 band_idx = (info->hw_queue & MT_TX_HW_QUEUE_PHY) >> 2;
+@@ -886,8 +887,9 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 	val = MT_TXD6_DIS_MAT | MT_TXD6_DAS;
+ 	if (is_mt7996(&dev->mt76))
+ 		val |= FIELD_PREP(MT_TXD6_MSDU_CNT, 1);
+-	else
++	else if (is_8023 || !ieee80211_is_mgmt(hdr->frame_control))
+ 		val |= FIELD_PREP(MT_TXD6_MSDU_CNT_V2, 1);
++
+ 	txwi[6] = cpu_to_le32(val);
+ 	txwi[7] = 0;
  
--			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
--					GFP_ATOMIC);
--
-+			entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
- 			if (!entry)
- 				continue;
+@@ -897,7 +899,6 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
+ 		mt7996_mac_write_txwi_80211(dev, txwi, skb, key);
  
+ 	if (txwi[1] & cpu_to_le32(MT_TXD1_FIXED_RATE)) {
+-		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 		bool mcast = ieee80211_is_data(hdr->frame_control) &&
+ 			     is_multicast_ether_addr(hdr->addr1);
+ 		u8 idx = MT7996_BASIC_RATES_TBL;
 -- 
 2.39.5
 
