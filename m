@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-112522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5D7A28D19
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7340A29044
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89F207A05A8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E1B188188C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EA61537C8;
-	Wed,  5 Feb 2025 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2F4151988;
+	Wed,  5 Feb 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mb75YXPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfGeu0Ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C9014EC77;
-	Wed,  5 Feb 2025 13:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693EA7DA6A;
+	Wed,  5 Feb 2025 14:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763849; cv=none; b=AL9UcfHmh+In+cM29R4YtGehA7Ld70/9WqXwjDkwjn0Hai06a29URCPStikdNtncchFOkpBQgS/zghgGOJTt7KkVZKS8HEOt6lTZa6sGSTc5jQ9qTyJPhckxulbVpHP7tmg4nVKrsWkFcGFsKJ7pPu2QOpHV6gnybKORIQI6q3g=
+	t=1738766059; cv=none; b=ZGC3CXvuVIDbjlWbhTLYl//w8zMh6zoHFeiEC8/b9pEV4bP18QLt8gyEghAtWrHsLAp/EBj0FWpEqjfHf/odBlD0/dCln6ExjzLb0wEJ3xcWy4b89LMf24U8gRqdXTpiMrgJ5Ym8fmvXoXxBis3S6xbhzfRjIILIiHglTawJQX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763849; c=relaxed/simple;
-	bh=J+h/7B90OWCYmcrcllyq9BAwaEf90ajkO0INP3P+Ds0=;
+	s=arc-20240116; t=1738766059; c=relaxed/simple;
+	bh=Ry164LweK1e/7njCdzMWRTqirxkDZuQdtCI7V3Tj5fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpSwoIQwvW+RAglqrjiWpGmH79JJVZxOX4xF+a3A2eo1ijGPLU3pmdKd7GxgJMAxv05sm/8y6QA4dc9I4Bcfx8aWRXLjJiwQy3MgfICrQG7LDHJFH+x65onqM/k3MUyy9lYwuifUGd1GXmpxoj9bXvN5krDpmbnZyNUXV/L0nJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mb75YXPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FB3C4CED6;
-	Wed,  5 Feb 2025 13:57:29 +0000 (UTC)
+	 MIME-Version; b=jyzPSFgxIr461LlRRLXDoJ21Ju3RsBFj4gTiIIRKsSDeVVDermgSASqibBOhF0mAji7e9DsPOfPhiPzKxkkLZzaufgl34yal/GUc81+qetDb86sJpqSz+TssZ1xH5AQaMgOC//51gmomzjIRbIs7X5rvVI+PbLJ1AsUcUgyebNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfGeu0Ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE78C4CED1;
+	Wed,  5 Feb 2025 14:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763849;
-	bh=J+h/7B90OWCYmcrcllyq9BAwaEf90ajkO0INP3P+Ds0=;
+	s=korg; t=1738766059;
+	bh=Ry164LweK1e/7njCdzMWRTqirxkDZuQdtCI7V3Tj5fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mb75YXPSLymoSmQx57jB1vpEZBLwNgqjtjAY+a9UPdL4f/vGMSzhCGZJGUXkIF5AF
-	 riwQ9lvblq4SCI8ZxbUDDFJ0ksuy3gQHaogTT4WdFd3GfVrRiTO+L1ftAurBrzQGHR
-	 rsHhjhd2PefkP4P9zTFIoj0f3bq6oAAlTQ1WdXWI=
+	b=RfGeu0UlF31bFvGwfTxAuq7uzLBh0ta2Htd/JkPX02zwo0CHkTw1MyhaaWWQvwP3U
+	 1F2QxXJ/AVve6rQ/HH9qeAK362pLERGopvhzdT2Wa5S3lcnyFuxiGA2lvC0b1fadZl
+	 zamdbefHu3TY9hGvSDBRtNeMpPEP8LFayUshHHo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Michel Lind <michel@michel-slm.name>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/393] clk: ralink: mtmips: remove duplicated xtal clock for Ralink SoC RT3883
+Subject: [PATCH 6.12 277/590] perf MANIFEST: Add arch/*/include/uapi/asm/bpf_perf_event.h to the perf tarball
 Date: Wed,  5 Feb 2025 14:40:32 +0100
-Message-ID: <20250205134424.617232942@linuxfoundation.org>
+Message-ID: <20250205134505.874272288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +70,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
 
-[ Upstream commit 830d8062d25581cf0beaa334486eea06834044da ]
+[ Upstream commit 74c033b6aa650ea7280221a9e57b7318a120978c ]
 
-Ralink SoC RT3883 has already 'xtal' defined as a base clock so there is no
-need to redefine it again in fixed clocks section. Hence, remove the duplicate
-one from there.
+Needed to build tools/lib/bpf/ on various arches other than x86_64,
+notably arm64 when using the perf tarballs generated by:
 
-Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
-Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Link: https://lore.kernel.org/r/20250108093636.265033-1-sergio.paracuellos@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+  $ make help | grep perf-
+    perf-tar-src-pkg    - Build the perf source tarball with no compression
+    perf-targz-src-pkg  - Build the perf source tarball with gzip compression
+    perf-tarbz2-src-pkg - Build the perf source tarball with bz2 compression
+    perf-tarxz-src-pkg  - Build the perf source tarball with xz compression
+    perf-tarzst-src-pkg - Build the perf source tarball with zst compression
+  $
+
+Building with BPF support was opt-in in perf for a long time, and
+testing it via the tarball main kernel Makefile targets in an
+architecture other than x86_64 was an odd case.
+
+I had noticed this at some point earlier this year while cross building
+perf to some arches, including arm64, but it fell thru the cracks, see
+the Link tag below.
+
+Fix it now by adding those arch/*/include/uapi/asm/bpf_perf_event.h
+files to the MANIFEST file used in building the perf source tarball.
+
+Tested with:
+
+  perfbuilder@number:~$ time dm debian:experimental-x-arm64
+     1    21.60 debian:experimental-x-arm64   : Ok   aarch64-linux-gnu-gcc (Debian 14.1.0-5) 14.1.0  flex 2.6.4
+  BUILD_TARBALL_HEAD=d31a974f6edc576f84c35be9526fec549a3b3520
+  $
+  $ git log --oneline -1 d31a974f6edc576f84c35be9526fec549a3b3520
+  d31a974f6edc576f (HEAD -> perf-tools-next) perf MANIFEST: Add arch/*/include/uapi/asm/bpf_perf_event.h to the perf tarball
+  $
+
+That was previously failing:
+
+  perfbuilder@number:~$ grep debian:experimental-x-arm64 dm.log.old/summary
+  19     4.80 debian:experimental-x-arm64   : FAIL gcc version 14.1.0 (Debian 14.1.0-5)
+  $
+  perfbuilder@number:~$ grep -B6 'Error 1' dm.log.old/debian:experimental-x-arm64
+  In file included from /git/perf-6.12.0-rc6/tools/include/uapi/linux/bpf_perf_event.h:11,
+                   from libbpf.c:36:
+  /git/perf-6.12.0-rc6/tools/include/uapi/asm/bpf_perf_event.h:2:10: fatal error: ../../arch/arm64/include/uapi/asm/bpf_perf_event.h: No such file or directory
+      2 | #include "../../arch/arm64/include/uapi/asm/bpf_perf_event.h"
+        |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  compilation terminated.
+  make[4]: *** [/git/perf-6.12.0-rc6/tools/build/Makefile.build:105: /tmp/build/perf/libbpf/staticobjs/libbpf.o] Error 1
+  perfbuilder@number:~$
+
+Closes: https://lore.kernel.org/all/Z0UNRCRYKunbDYxP@hyperscale.parallels
+Fixes: 9eea8fafe33eb708 ("libbpf: fix __arg_ctx type enforcement for perf_event programs")
+Reported-by: Michel Lind <michel@michel-slm.name>
+Tested-by: Michel Lind <michel@michel-slm.name>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: 317c11923cf676437456e44a7f408d4ce589a9c0.camel@michel-slm.name
+Link: https://lore.kernel.org/bpf/ZfyEgoG3JFiOs2Fs@x1/
+Link: https://lore.kernel.org/r/Z0Yy5u42Q1hWoEzz@x1
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ralink/clk-mtmips.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/perf/MANIFEST | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
-index 76285fbbdeaa2..4b5d8b741e4e1 100644
---- a/drivers/clk/ralink/clk-mtmips.c
-+++ b/drivers/clk/ralink/clk-mtmips.c
-@@ -264,7 +264,6 @@ static int mtmips_register_pherip_clocks(struct device_node *np,
- 	}
- 
- static struct mtmips_clk_fixed rt3883_fixed_clocks[] = {
--	CLK_FIXED("xtal", NULL, 40000000),
- 	CLK_FIXED("periph", "xtal", 40000000)
- };
- 
+diff --git a/tools/perf/MANIFEST b/tools/perf/MANIFEST
+index dc42de1785cee..908165fcec7de 100644
+--- a/tools/perf/MANIFEST
++++ b/tools/perf/MANIFEST
+@@ -1,5 +1,6 @@
+ arch/arm64/tools/gen-sysreg.awk
+ arch/arm64/tools/sysreg
++arch/*/include/uapi/asm/bpf_perf_event.h
+ tools/perf
+ tools/arch
+ tools/scripts
 -- 
 2.39.5
 
