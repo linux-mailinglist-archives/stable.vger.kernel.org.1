@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15DE5A28C92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD7AA28F1B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEEE67A4929
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:47:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79B083A6EA5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27157142E86;
-	Wed,  5 Feb 2025 13:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8531459F6;
+	Wed,  5 Feb 2025 14:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx8RTjV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs/IWzjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FBF127E18;
-	Wed,  5 Feb 2025 13:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA8C282EE;
+	Wed,  5 Feb 2025 14:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763309; cv=none; b=ONMiOftTNell8JDnvyZjIc5oOpe+XTDroEafWJTzxYn6O9/f8Vk19kdKGjOFWi3CX5QLqV0pIwf2+ZSHrU2U9Mbd3QU1EOWcNA/DQneAFhYDgiGwR3BBrY6ZmIqZuOJ1WfnQyTRVt739froCp+8yCUu+HTI25P4sa0NOKG9LRBU=
+	t=1738765225; cv=none; b=qjGpl16urgzVW2xo531qKJMrpWaOfNBulekoemj90RhOwrLMpAVo85ZsqfGhcJhjI8y1Kk7A2J+6yjPnqNnWE9tGGlXisB4PFZSxRKYyIQdFHbUewU/kwMr6OGwmjkfeB53GvQBNBxWn1bNhrPt5Hhg2Qe2KoFTkCgnV2RliuXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763309; c=relaxed/simple;
-	bh=JsBqjrF2LE3sI0QjHUkwKS5Wm49i305+oYSMA5t4g44=;
+	s=arc-20240116; t=1738765225; c=relaxed/simple;
+	bh=HB6ddLAhoJclGfS/zxE9b/2wshvH6P8G1xqbjm4ei8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntyCa/l+PxWqS1/EMrrBxO8WuDHBgcxu+cdOLpBZg1Nv8JjgGlHddvX0ZFy6Y9iVsbrSn1Qgi/Ya6T+s9jE2YSuXoLcQb7wmWaDJ50Ayo40Ij1algP1MZnrtVA/PiubBF3vHdjOifUDcbwj0Q8RKrPgtohdlYnewOT+LAAHTzTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kx8RTjV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03D8C4CED6;
-	Wed,  5 Feb 2025 13:48:28 +0000 (UTC)
+	 MIME-Version; b=dZjluHhDG4DB0HWVRLw/xAw2HVCnFPCt9hFHg/IRaMQFddE8XkeubxFSZFiwyPZWr4NIayD7Hm7zun1Y7grLYVqMWRnNvCYBtO5TenuW0QS7y/i3qH41tyQuxymygZDa8Vh3/Yx57Tn/qNM+dxBcoY6uHnoD/ZSx7RJVedoOo8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs/IWzjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8786FC4CED1;
+	Wed,  5 Feb 2025 14:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763309;
-	bh=JsBqjrF2LE3sI0QjHUkwKS5Wm49i305+oYSMA5t4g44=;
+	s=korg; t=1738765224;
+	bh=HB6ddLAhoJclGfS/zxE9b/2wshvH6P8G1xqbjm4ei8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kx8RTjV0zifxun7qPWOuO5vCIWRXOTXngXobZRnCC8uJWytA/MzdDQIjAn4PzZGSZ
-	 68pe5We6r7PBxwEzoYROLGkKPknp9o59tLzTNUVQ/+YGaZ4il6UiyrkRT2MFsKdX57
-	 C3HpgUN2nBrHGPJbaS0dFz5iqRglx1kI256589wU=
+	b=rs/IWzjVQC0fJQ73Pi7QV0Irn0KGb86cr+Jcrjftac5zhWCPof6fThzCcSWNNyk0p
+	 hbXtFH1ByMGxWV06xCqHdELNoEs2w4DIp3ItTkDaTiluCJrEYzUIkjqaeqbodFVmMJ
+	 b3AojfTBS95W9gxpJuRSv7bz2mVYbjzrcvOP/rxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/393] OPP: fix dev_pm_opp_find_bw_*() when bandwidth table not initialized
+Subject: [PATCH 6.12 201/590] wifi: mt76: mt7915: fix register mapping
 Date: Wed,  5 Feb 2025 14:39:16 +0100
-Message-ID: <20250205134421.723273655@linuxfoundation.org>
+Message-ID: <20250205134502.970760774@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit b44b9bc7cab2967c3d6a791b1cd542c89fc07f0e ]
+[ Upstream commit dd1649ef966bb87053c17385ea2cfd1758f5385b ]
 
-If a driver calls dev_pm_opp_find_bw_ceil/floor() the retrieve bandwidth
-from the OPP table but the bandwidth table was not created because the
-interconnect properties were missing in the OPP consumer node, the
-kernel will crash with:
+Bypass the entry when ofs is equal to dev->reg.map[i].size.
+Without this patch, it would get incorrect register mapping when the CR
+address is located at the boundary of an entry.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
-...
-pc : _read_bw+0x8/0x10
-lr : _opp_table_find_key+0x9c/0x174
-...
-Call trace:
-  _read_bw+0x8/0x10 (P)
-  _opp_table_find_key+0x9c/0x174 (L)
-  _find_key+0x98/0x168
-  dev_pm_opp_find_bw_ceil+0x50/0x88
-...
-
-In order to fix the crash, create an assert function to check
-if the bandwidth table was created before trying to get a
-bandwidth with _read_bw().
-
-Fixes: add1dc094a74 ("OPP: Use generic key finding helpers for bandwidth key")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: cd4c314a65d3 ("mt76: mt7915: refine register definition")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Link: https://patch.msgid.link/OSZPR01MB843401EAA1DA6BD7AEF356F298132@OSZPR01MB8434.jpnprd01.prod.outlook.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 3c26130dc75e3..218cb2e7f3605 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -116,6 +116,15 @@ static bool assert_clk_index(struct opp_table *opp_table,
- 	return opp_table->clk_count > index;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index 44e112b8b5b36..2e7604eed27b0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -484,7 +484,7 @@ static u32 __mt7915_reg_addr(struct mt7915_dev *dev, u32 addr)
+ 			continue;
  
-+/*
-+ * Returns true if bandwidth table is large enough to contain the bandwidth index.
-+ */
-+static bool assert_bandwidth_index(struct opp_table *opp_table,
-+				   unsigned int index)
-+{
-+	return opp_table->path_count > index;
-+}
-+
- /**
-  * dev_pm_opp_get_voltage() - Gets the voltage corresponding to an opp
-  * @opp:	opp for which voltage has to be returned for
-@@ -850,7 +859,8 @@ struct dev_pm_opp *dev_pm_opp_find_bw_ceil(struct device *dev, unsigned int *bw,
- 	unsigned long temp = *bw;
- 	struct dev_pm_opp *opp;
+ 		ofs = addr - dev->reg.map[i].phys;
+-		if (ofs > dev->reg.map[i].size)
++		if (ofs >= dev->reg.map[i].size)
+ 			continue;
  
--	opp = _find_key_ceil(dev, &temp, index, true, _read_bw, NULL);
-+	opp = _find_key_ceil(dev, &temp, index, true, _read_bw,
-+			     assert_bandwidth_index);
- 	*bw = temp;
- 	return opp;
- }
-@@ -881,7 +891,8 @@ struct dev_pm_opp *dev_pm_opp_find_bw_floor(struct device *dev,
- 	unsigned long temp = *bw;
- 	struct dev_pm_opp *opp;
- 
--	opp = _find_key_floor(dev, &temp, index, true, _read_bw, NULL);
-+	opp = _find_key_floor(dev, &temp, index, true, _read_bw,
-+			      assert_bandwidth_index);
- 	*bw = temp;
- 	return opp;
- }
+ 		return dev->reg.map[i].maps + ofs;
 -- 
 2.39.5
 
