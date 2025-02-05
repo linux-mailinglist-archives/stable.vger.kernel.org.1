@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F25A28F3D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220B5A291F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C29CC3A2159
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9731E7A0751
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611681537AC;
-	Wed,  5 Feb 2025 14:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847921DC9AF;
+	Wed,  5 Feb 2025 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7YtVONK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SI79K5Rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F23913C3F6;
-	Wed,  5 Feb 2025 14:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EA2189B9D;
+	Wed,  5 Feb 2025 14:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765309; cv=none; b=MetIrMb59Joc8GAYHVLrxx6iUGWLKnV9cFZ9OVp+d+2KT8Uk1QS7zmXMEYTK14hCZdllFYl8t0IpE59GXCuAIqIlyzXG4/heilPR89nbwMZGZtoOWvZwv+Udw70PSyocGzxk1COg3N8f5rLEmiMIsZGfpQ2s+7bQivIh8gF62qw=
+	t=1738767175; cv=none; b=kytGJpfC0ck98MYVB2LZoprrAKzGCk1IY4+d2YJzbK4WS7VSgjY1SRqp+aWxuW/IxWJB14GcJ1uLZoxIelogPkxtunEVL9lamtcHBN85tMYt6q21WGN9BMmuSs6bnDH8u9XJRZlubw0FydrMUeOej/1JjM5PUCZN5pQ7KiSHBSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765309; c=relaxed/simple;
-	bh=OHrrl9wMpa6m6v3cfDRJ46ZZS+BDusO149XBCejwy0k=;
+	s=arc-20240116; t=1738767175; c=relaxed/simple;
+	bh=pzKsaQyFwi+kIo4dFquQn5/taMD4vdlk0+wq0l8ivOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhpOK81duG/wh52HnhLknca6Z2JGNL4uwyoBYYrP3avteuXn23leO0+5tG5mWCI/zthKzg1oFTDPumDiqvoUoxdV+Qx41HlECoGr3LW9QNmx/v/nJwbHfPLsmuiZsUWa8icBtGIGP2pyRe3XnsytggMYYQKM+xl52vFN4EMyKlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7YtVONK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80872C4CED1;
-	Wed,  5 Feb 2025 14:21:48 +0000 (UTC)
+	 MIME-Version; b=dWMMEhGuL4vcUjzYeIdRyv1oXtEYIX88nRTrrPq3TpUefdEK80wJGobbOlOsOK+3WsSzhJRvCgFjbDjyIj276GlNy709mqAxOEf76stR2M9QO7ffKr2L5B1nXwPkN+zdKdxW9WjTiYL7DGlwTElAmR4MSn5o3BQlRCu0wdowNMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SI79K5Rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6B5C4CED6;
+	Wed,  5 Feb 2025 14:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765309;
-	bh=OHrrl9wMpa6m6v3cfDRJ46ZZS+BDusO149XBCejwy0k=;
+	s=korg; t=1738767174;
+	bh=pzKsaQyFwi+kIo4dFquQn5/taMD4vdlk0+wq0l8ivOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7YtVONKdiAW+eSg01cCQYMDjmOoWJqExp/LDH9FxTPXK/NWqz62l/eSQczPT/uIM
-	 OXnCw2yiSaLczSxMLKiVg149my30mfSsKJHvgrg3dr3KKai3anr4W96St4JCarPb9t
-	 HVzmk4S04uwYutEjs8H7zUsricTAWGyX//Eieeq4=
+	b=SI79K5RnNIdNjHHBSH+YgPW1kb2HZwzit/efZZAUW8o5Xz4DJzrHgTVYCXwzYo5Fm
+	 ON6qKzNtCHa9uZ8yee+3yo0j+iFO8n3JV8bYjrrB0Bz9lPd+6O6FG0Jm0WakC1SWwY
+	 5ofuRi9smG/wf5dxf9mUufd2wSJCN2onVtdpFciQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/393] arm64: dts: ti: k3-am62a: Remove duplicate GICR reg
+Subject: [PATCH 6.12 416/590] media: camif-core: Add check for clk_enable()
 Date: Wed,  5 Feb 2025 14:42:51 +0100
-Message-ID: <20250205134429.948356723@linuxfoundation.org>
+Message-ID: <20250205134511.180212689@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan Brattlof <bb@ti.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 6f0232577e260cdbc25508e27bb0b75ade7e7ebc ]
+[ Upstream commit 77ed2470ac09c2b0a33cf3f98cc51d18ba9ed976 ]
 
-The GIC Redistributor control range is mapped twice. Remove the extra
-entry from the reg range.
+Add check for the return value of clk_enable() to gurantee the success.
 
-Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
-Reported-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-2-758b4d5b4a0a@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ .../media/platform/samsung/s3c-camif/camif-core.c   | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-index de36abb243f10..1497f7c8adfaf 100644
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -18,7 +18,6 @@
- 		compatible = "arm,gic-v3";
- 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
- 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
--		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
- 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
- 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
- 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
+diff --git a/drivers/media/platform/samsung/s3c-camif/camif-core.c b/drivers/media/platform/samsung/s3c-camif/camif-core.c
+index e4529f666e206..8c597dd01713a 100644
+--- a/drivers/media/platform/samsung/s3c-camif/camif-core.c
++++ b/drivers/media/platform/samsung/s3c-camif/camif-core.c
+@@ -527,10 +527,19 @@ static void s3c_camif_remove(struct platform_device *pdev)
+ static int s3c_camif_runtime_resume(struct device *dev)
+ {
+ 	struct camif_dev *camif = dev_get_drvdata(dev);
++	int ret;
++
++	ret = clk_enable(camif->clock[CLK_GATE]);
++	if (ret)
++		return ret;
+ 
+-	clk_enable(camif->clock[CLK_GATE]);
+ 	/* null op on s3c244x */
+-	clk_enable(camif->clock[CLK_CAM]);
++	ret = clk_enable(camif->clock[CLK_CAM]);
++	if (ret) {
++		clk_disable(camif->clock[CLK_GATE]);
++		return ret;
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
