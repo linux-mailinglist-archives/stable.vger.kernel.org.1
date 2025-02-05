@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C89A28F1C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398D9A28E4F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2781882BE4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B772A1689B1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C9814A088;
-	Wed,  5 Feb 2025 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD19815198D;
+	Wed,  5 Feb 2025 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/Yl4A/2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXlGoaG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6ED913C3F6;
-	Wed,  5 Feb 2025 14:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C00149C53;
+	Wed,  5 Feb 2025 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765256; cv=none; b=Zs6ALCm8QV5D1QsAH1F+5MffOwQHj9uGcZ8vCNGd099+t635TLrfDWdewW7qZ0h4RiUxuvbpEtTj0cpbTmElQxDmKWY9/kaKdbHqy6FkQ/dnEtJNuHbCMuCPt2duzudjW1KDdPybUwxW4j9A29rev91x4JKf+j5x/32JdZb3q/k=
+	t=1738764680; cv=none; b=EY7M+yHGWpBCAufNC51vPyinlwuvZJg385NBv/khSPIf57gAtITAsNqpnBo3MCfQPGrKcjGMExkz8PrZJwv4hPxt/QwYAKCrfae/icBDfl5KRVGUPXDGJZkG2ix3BS1nl8PsgReIIDXikKmQLbCfvBcyNn+6CZ0QOhlhIYlenQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765256; c=relaxed/simple;
-	bh=y8u3lP9UMTxeXtkTiWXQmfN3IGOm9eDHXcYdJGju+TE=;
+	s=arc-20240116; t=1738764680; c=relaxed/simple;
+	bh=c1pHGyeX+xQAuPMIgoXonB/y0YWpCUvUK+q1/TKXSgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndEntpyLHKquy0cNyO7nLpxh8XTOY1r4Bj70KQos2AClRy2oep1LU0FOdErrKobbWMnHGL+tVaXOAmx175JtvFB7TQljYqTnku0KTGo0G4g4TL2kdy2pprgbPVkNVucG0vDBE8JeW7hpZ2zLNPz75g1rl+3ufk5Xn7biGMftRvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/Yl4A/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C02BC4CED1;
-	Wed,  5 Feb 2025 14:20:55 +0000 (UTC)
+	 MIME-Version; b=VcKhmfByaiMm+qVRoQfXYiLf2KzFuhmVS8kDrKrXjLB6nlDOqYr6bDwVErq1sAN9p/uYjoKfirJjF5JLQlTXQ5TQGGkK21o2RSzko1p0I2hm3EwvDavfbn0cpsZaryFG1fjZC2eUhnbyeVvqi7Lhtey9lSKuS2UYZX249YulL+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXlGoaG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D5CC4CED1;
+	Wed,  5 Feb 2025 14:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765255;
-	bh=y8u3lP9UMTxeXtkTiWXQmfN3IGOm9eDHXcYdJGju+TE=;
+	s=korg; t=1738764680;
+	bh=c1pHGyeX+xQAuPMIgoXonB/y0YWpCUvUK+q1/TKXSgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/Yl4A/2K0SH32munXaGpewvSCnYGIwiJVtluR5NHb+oLEYM+sXhC5lAsgdF+wGt7
-	 Fd3MLxhtAfUac8VeQS5irbLuw+SOCMKITvXZtwQJxBX+Sk9DI39II8jK0BOBElgvDn
-	 6x4pDS+EzysWrJh61o2KaUZ+HJn1LiV4OYGhVV1Y=
+	b=VXlGoaG8LYVob9XHhW6B7yHlogghJxyT58LcjwBx2V256jSN64L4WZQvOpo4JmCjC
+	 dnyHUIZK9IHowI5JJcVwCQVyIsxCxq6XpyuBXX2o0Ixy0x3sjtnLMmQVnj+J9Us2Ai
+	 EP77EN8vRcjuB31RIA02ZwYjzpnDp9wtPBD23PYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 160/623] hwmon: Fix help text for aspeed-g6-pwm-tach
-Date: Wed,  5 Feb 2025 14:38:22 +0100
-Message-ID: <20250205134502.356787890@linuxfoundation.org>
+Subject: [PATCH 6.12 148/590] wifi: rtw89: chan: manage active interfaces
+Date: Wed,  5 Feb 2025 14:38:23 +0100
+Message-ID: <20250205134500.938295141@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,300 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit c8571eab11131cce6dcce76b3345c1524e074071 ]
+[ Upstream commit 68ec751b288178de7d19b71ea61648269a35b8cd ]
 
-The help text has the wrong module name mentioned, and the capitalisation
-of the title is inconsistent.
+To set channel well for combination of MCC (multi-channel concurrency) and
+impending MLO support, we need a method to manage relation between active
+interfaces and channel contexts. If an interface owns at least one active
+link, we call it an active interface. We add a list to manage active ones.
 
-Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20250110114737.64035-1-joel@jms.id.au
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Basically, the list follows the active order except for the below case. To
+be compatible with legacy behavior, the first interface that owns the first
+channel context will put at the first entry in the list when recalculating.
+
+Besides, MCC can also select and fill roles based on the above active list.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241022083106.149252-4-pkshih@realtek.com
+Stable-dep-of: e47f0a589854 ("wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.c     | 105 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  10 ++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +
+ 4 files changed, 108 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index dd376602f3f19..9afa70f877cc1 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -413,7 +413,7 @@ config SENSORS_ASPEED
- 	  will be called aspeed_pwm_tacho.
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index ba6332da8019c..2b7e6921ff9c6 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -10,6 +10,10 @@
+ #include "ps.h"
+ #include "util.h"
  
- config SENSORS_ASPEED_G6
--	tristate "ASPEED g6 PWM and Fan tach driver"
-+	tristate "ASPEED G6 PWM and Fan tach driver"
- 	depends on ARCH_ASPEED || COMPILE_TEST
- 	depends on PWM
- 	help
-@@ -421,7 +421,7 @@ config SENSORS_ASPEED_G6
- 	  controllers.
++static void rtw89_swap_chanctx(struct rtw89_dev *rtwdev,
++			       enum rtw89_chanctx_idx idx1,
++			       enum rtw89_chanctx_idx idx2);
++
+ static enum rtw89_subband rtw89_get_subband_type(enum rtw89_band band,
+ 						 u8 center_chan)
+ {
+@@ -226,11 +230,15 @@ static void rtw89_config_default_chandef(struct rtw89_dev *rtwdev)
+ void rtw89_entity_init(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
  
- 	  This driver can also be built as a module. If so, the module
--	  will be called aspeed_pwm_tacho.
-+	  will be called aspeed_g6_pwm_tach.
+ 	hal->entity_pause = false;
+ 	bitmap_zero(hal->entity_map, NUM_OF_RTW89_CHANCTX);
+ 	bitmap_zero(hal->changes, NUM_OF_RTW89_CHANCTX_CHANGES);
+ 	atomic_set(&hal->roc_chanctx_idx, RTW89_CHANCTX_IDLE);
++
++	INIT_LIST_HEAD(&mgnt->active_list);
++
+ 	rtw89_config_default_chandef(rtwdev);
+ }
  
- config SENSORS_ATXP1
- 	tristate "Attansic ATXP1 VID controller"
+@@ -272,6 +280,71 @@ static void rtw89_entity_calculate_weight(struct rtw89_dev *rtwdev,
+ 	}
+ }
+ 
++static void rtw89_normalize_link_chanctx(struct rtw89_dev *rtwdev,
++					 struct rtw89_vif_link *rtwvif_link)
++{
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
++	struct rtw89_vif_link *cur;
++
++	if (unlikely(!rtwvif_link->chanctx_assigned))
++		return;
++
++	cur = rtw89_vif_get_link_inst(rtwvif, 0);
++	if (!cur || !cur->chanctx_assigned)
++		return;
++
++	if (cur == rtwvif_link)
++		return;
++
++	rtw89_swap_chanctx(rtwdev, rtwvif_link->chanctx_idx, cur->chanctx_idx);
++}
++
++static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
++	struct rtw89_vif_link *link;
++	struct rtw89_vif *role;
++	u8 pos = 0;
++	int i;
++
++	lockdep_assert_held(&rtwdev->mutex);
++
++	for (i = 0; i < RTW89_MAX_INTERFACE_NUM; i++)
++		mgnt->active_roles[i] = NULL;
++
++	/* To be consistent with legacy behavior, expect the first active role
++	 * which uses RTW89_CHANCTX_0 to put at position 0, and make its first
++	 * link instance take RTW89_CHANCTX_0. (normalizing)
++	 */
++	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
++		for (i = 0; i < role->links_inst_valid_num; i++) {
++			link = rtw89_vif_get_link_inst(role, i);
++			if (!link || !link->chanctx_assigned)
++				continue;
++
++			if (link->chanctx_idx == RTW89_CHANCTX_0) {
++				rtw89_normalize_link_chanctx(rtwdev, link);
++
++				list_del(&role->mgnt_entry);
++				list_add(&role->mgnt_entry, &mgnt->active_list);
++				break;
++			}
++		}
++	}
++
++	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
++		if (unlikely(pos >= RTW89_MAX_INTERFACE_NUM)) {
++			rtw89_warn(rtwdev,
++				   "%s: active roles are over max iface num\n",
++				   __func__);
++			break;
++		}
++
++		mgnt->active_roles[pos++] = role;
++	}
++}
++
+ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
+ {
+ 	DECLARE_BITMAP(recalc_map, NUM_OF_RTW89_CHANCTX) = {};
+@@ -327,6 +400,8 @@ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
+ 		rtw89_assign_entity_chan(rtwdev, idx, &chan);
+ 	}
+ 
++	rtw89_entity_recalc_mgnt_roles(rtwdev);
++
+ 	if (hal->entity_pause)
+ 		return rtw89_get_entity_mode(rtwdev);
+ 
+@@ -716,6 +791,7 @@ struct rtw89_mcc_fill_role_selector {
+ };
+ 
+ static_assert((u8)NUM_OF_RTW89_CHANCTX >= NUM_OF_RTW89_MCC_ROLES);
++static_assert(RTW89_MAX_INTERFACE_NUM >= NUM_OF_RTW89_MCC_ROLES);
+ 
+ static int rtw89_mcc_fill_role_iterator(struct rtw89_dev *rtwdev,
+ 					struct rtw89_mcc_role *mcc_role,
+@@ -745,14 +821,18 @@ static int rtw89_mcc_fill_role_iterator(struct rtw89_dev *rtwdev,
+ 
+ static int rtw89_mcc_fill_all_roles(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
+ 	struct rtw89_mcc_fill_role_selector sel = {};
+ 	struct rtw89_vif_link *rtwvif_link;
+ 	struct rtw89_vif *rtwvif;
+ 	int ret;
++	int i;
+ 
+-	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
+-		if (!rtw89_vif_is_active_role(rtwvif))
+-			continue;
++	for (i = 0; i < NUM_OF_RTW89_MCC_ROLES; i++) {
++		rtwvif = mgnt->active_roles[i];
++		if (!rtwvif)
++			break;
+ 
+ 		rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
+ 		if (unlikely(!rtwvif_link)) {
+@@ -760,14 +840,7 @@ static int rtw89_mcc_fill_all_roles(struct rtw89_dev *rtwdev)
+ 			continue;
+ 		}
+ 
+-		if (sel.bind_vif[rtwvif_link->chanctx_idx]) {
+-			rtw89_warn(rtwdev,
+-				   "MCC skip extra vif <macid %d> on chanctx[%d]\n",
+-				   rtwvif_link->mac_id, rtwvif_link->chanctx_idx);
+-			continue;
+-		}
+-
+-		sel.bind_vif[rtwvif_link->chanctx_idx] = rtwvif_link;
++		sel.bind_vif[i] = rtwvif_link;
+ 	}
+ 
+ 	ret = rtw89_iterate_mcc_roles(rtwdev, rtw89_mcc_fill_role_iterator, &sel);
+@@ -2501,12 +2574,18 @@ int rtw89_chanctx_ops_assign_vif(struct rtw89_dev *rtwdev,
+ 				 struct ieee80211_chanctx_conf *ctx)
+ {
+ 	struct rtw89_chanctx_cfg *cfg = (struct rtw89_chanctx_cfg *)ctx->drv_priv;
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
+ 	struct rtw89_entity_weight w = {};
+ 
+ 	rtwvif_link->chanctx_idx = cfg->idx;
+ 	rtwvif_link->chanctx_assigned = true;
+ 	cfg->ref_count++;
+ 
++	if (list_empty(&rtwvif->mgnt_entry))
++		list_add_tail(&rtwvif->mgnt_entry, &mgnt->active_list);
++
+ 	if (cfg->idx == RTW89_CHANCTX_0)
+ 		goto out;
+ 
+@@ -2526,6 +2605,7 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
+ 				    struct ieee80211_chanctx_conf *ctx)
+ {
+ 	struct rtw89_chanctx_cfg *cfg = (struct rtw89_chanctx_cfg *)ctx->drv_priv;
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	enum rtw89_chanctx_idx roll;
+ 	enum rtw89_entity_mode cur;
+@@ -2536,6 +2616,9 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
+ 	rtwvif_link->chanctx_assigned = false;
+ 	cfg->ref_count--;
+ 
++	if (!rtw89_vif_is_active_role(rtwvif))
++		list_del_init(&rtwvif->mgnt_entry);
++
+ 	if (cfg->ref_count != 0)
+ 		goto out;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 37d2bcba1b315..e864da4d37519 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -192,13 +192,13 @@ static const struct ieee80211_iface_combination rtw89_iface_combs[] = {
+ 	{
+ 		.limits = rtw89_iface_limits,
+ 		.n_limits = ARRAY_SIZE(rtw89_iface_limits),
+-		.max_interfaces = 2,
++		.max_interfaces = RTW89_MAX_INTERFACE_NUM,
+ 		.num_different_channels = 1,
+ 	},
+ 	{
+ 		.limits = rtw89_iface_limits_mcc,
+ 		.n_limits = ARRAY_SIZE(rtw89_iface_limits_mcc),
+-		.max_interfaces = 2,
++		.max_interfaces = RTW89_MAX_INTERFACE_NUM,
+ 		.num_different_channels = 2,
+ 	},
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 0ed31b37d10fe..65ad3d03d0530 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4628,6 +4628,14 @@ enum rtw89_entity_mode {
+ 	RTW89_ENTITY_MODE_UNHANDLED = -ESRCH,
+ };
+ 
++#define RTW89_MAX_INTERFACE_NUM 2
++
++/* only valid when running with chanctx_ops */
++struct rtw89_entity_mgnt {
++	struct list_head active_list;
++	struct rtw89_vif *active_roles[RTW89_MAX_INTERFACE_NUM];
++};
++
+ struct rtw89_chanctx {
+ 	struct cfg80211_chan_def chandef;
+ 	struct rtw89_chan chan;
+@@ -4671,6 +4679,7 @@ struct rtw89_hal {
+ 	bool entity_active[RTW89_PHY_MAX];
+ 	bool entity_pause;
+ 	enum rtw89_entity_mode entity_mode;
++	struct rtw89_entity_mgnt entity_mgnt;
+ 
+ 	struct rtw89_edcca_bak edcca_bak;
+ 	u32 disabled_dm_bitmap; /* bitmap of enum rtw89_dm_type */
+@@ -5607,6 +5616,7 @@ struct rtw89_dev {
+ struct rtw89_vif {
+ 	struct rtw89_dev *rtwdev;
+ 	struct list_head list;
++	struct list_head mgnt_entry;
+ 
+ 	u8 mac_addr[ETH_ALEN];
+ 	__be32 ip_addr;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 13fb3cac27016..299566e2f612d 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -192,6 +192,8 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
+ 		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
+ 
++	INIT_LIST_HEAD(&rtwvif->mgnt_entry);
++
+ 	ether_addr_copy(rtwvif->mac_addr, vif->addr);
+ 
+ 	rtwvif->offchan = false;
 -- 
 2.39.5
 
