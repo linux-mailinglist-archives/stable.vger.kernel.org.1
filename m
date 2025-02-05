@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-112539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56411A28D4C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7345CA28D55
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C29169B74
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8CE16A2DE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE58156C76;
-	Wed,  5 Feb 2025 13:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02836155342;
+	Wed,  5 Feb 2025 13:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iH3M5S41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTKs9X4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE9B15990C;
-	Wed,  5 Feb 2025 13:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B415113C9C4;
+	Wed,  5 Feb 2025 13:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763908; cv=none; b=MIUF3EpZez39v1bC2X8hx/u6Ct3C2bmLgQZ37gHnoAQhM/OU6qZ9Xi0dDrZJnpO25e7G/WVmPj4gAwciRrfJK2oOZCYShBVNPORiAPE49UTmbUgrBlIQGv5r0sbbLiHE6V/U9Q8dUnsPJAgJIwBbWYtef1kA8vOKkFMaRDrGy/M=
+	t=1738763921; cv=none; b=TIvoIlE6mHGYcqng6Cm5t08Cri/ggOzAfJ4wwcaJS7nz57jjm7sAtvqwCgcy1jGVu+TsoZUj8QSEtIBZSLlwoSHF78XuPh9Rb3Z3G27IHpfaMr+/9gb4WHzIxbEK4M8cUMWDHiujjgNxNHGgvyGiqg6Cyt8GtTxeEvpSFqsiMXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763908; c=relaxed/simple;
-	bh=nsOHikgywB+6fEioPFanyDdz1D7kAD2Onhr9ZSIUsRg=;
+	s=arc-20240116; t=1738763921; c=relaxed/simple;
+	bh=GuQYsNOibIXK6+TPxFiBjsTwRIE+OWsCMANWTf8yHsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gof6pdCTeAFfUK0gnB1/WMNdY8NrB1dhjH9pLMyWWHpuHlhdiH1ThQzRQXm/EOCckCbZ28Nz6UcA5SqcAVkrwtgryIH3TDXIOiJDCL5w7DZjIq/5ASP2C8Gaxo0vsgk8nwXHHl6pp9mP9+Xor9CDX6NDSSp/a8eJ+vxhTho/Dxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iH3M5S41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC25C4CED1;
-	Wed,  5 Feb 2025 13:58:27 +0000 (UTC)
+	 MIME-Version; b=mySiIHdOQpvkJRz/X7oNwbhYE4nVoeYkCIiC219cy+vm9qdO1nD6rHpG+7NDvyciqrW9yOtr3Pdukuoyu1zwSJSh+TZcBwG5eGGMHQVN5kWTP8ETQQKRhyj2jmiLRaYDtX/HyQXNabykjBENVPFjnS4WwIUoooqbk9q7ZBxwJTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTKs9X4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0A5C4CED1;
+	Wed,  5 Feb 2025 13:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763907;
-	bh=nsOHikgywB+6fEioPFanyDdz1D7kAD2Onhr9ZSIUsRg=;
+	s=korg; t=1738763921;
+	bh=GuQYsNOibIXK6+TPxFiBjsTwRIE+OWsCMANWTf8yHsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iH3M5S41NW5bFDg2+M1uk+XRbxTCl9hqqJ+iU9dgtldFfLDtavE4abK+ujG1RL4FJ
-	 XX/PfkBi0BO8N033Vuq7LO76fr5yb99u2Trcvwp8FRdaybIfj1k2hGWeo6ymMVKjSP
-	 X9CBbS5w5w47dlC7Vkh2VLJz7WWmSbA2DFDre0ms=
+	b=FTKs9X4uAClhNvB4Kd3T19gEmatD5wQYcovtGPUWUzFbu/Qg98aPLs2gOeYPkONO1
+	 ztfgFmY/sqRiGbr7cP8y0dI6rsKGZGTqUtlRnQQ3kD+NyLi8CLqbgperlyRRoMPKFG
+	 x4Tsr+sNiNnoVuPtoCFUixJw1rcEQ3IixU0B4nZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 029/623] nvme: fix bogus kzalloc() return check in nvme_init_effects_log()
-Date: Wed,  5 Feb 2025 14:36:11 +0100
-Message-ID: <20250205134457.342918674@linuxfoundation.org>
+Subject: [PATCH 6.13 030/623] afs: Fix the fallback handling for the YFS.RemoveFile2 RPC call
+Date: Wed,  5 Feb 2025 14:36:12 +0100
+Message-ID: <20250205134457.380599490@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -65,34 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 170e086ad3997f816d1f551f178a03a626a130b7 ]
+[ Upstream commit e30458d690f35abb01de8b3cbc09285deb725d00 ]
 
-nvme_init_effects_log() returns failure when kzalloc() is successful,
-which is obviously wrong and causes failures to boot. Correct the
-check.
+Fix a pair of bugs in the fallback handling for the YFS.RemoveFile2 RPC
+call:
 
-Fixes: d4a95adeabc6 ("nvme: Add error path for xa_store in nvme_init_effects")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+ (1) Fix the abort code check to also look for RXGEN_OPCODE.  The lack of
+     this masks the second bug.
+
+ (2) call->server is now not used for ordinary filesystem RPC calls that
+     have an operation descriptor.  Fix to use call->op->server instead.
+
+Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/109541.1736865963@warthog.procyon.org.uk
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/yfsclient.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 7c4a19f5c951a..12e7ae1f99e20 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3181,7 +3181,7 @@ static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
- 	struct nvme_effects_log *effects, *old;
- 
- 	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
--	if (effects)
-+	if (!effects)
- 		return -ENOMEM;
- 
- 	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
+diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
+index 024227aba4cd5..362845f9aaaef 100644
+--- a/fs/afs/yfsclient.c
++++ b/fs/afs/yfsclient.c
+@@ -666,8 +666,9 @@ static int yfs_deliver_fs_remove_file2(struct afs_call *call)
+ static void yfs_done_fs_remove_file2(struct afs_call *call)
+ {
+ 	if (call->error == -ECONNABORTED &&
+-	    call->abort_code == RX_INVALID_OPERATION) {
+-		set_bit(AFS_SERVER_FL_NO_RM2, &call->server->flags);
++	    (call->abort_code == RX_INVALID_OPERATION ||
++	     call->abort_code == RXGEN_OPCODE)) {
++		set_bit(AFS_SERVER_FL_NO_RM2, &call->op->server->flags);
+ 		call->op->flags |= AFS_OPERATION_DOWNGRADE;
+ 	}
+ }
 -- 
 2.39.5
 
