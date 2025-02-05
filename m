@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CE6A291FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FC6CA2931F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAF8C7A064D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5CE16EEAE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360C818A6BD;
-	Wed,  5 Feb 2025 14:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5156E189F39;
+	Wed,  5 Feb 2025 15:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY0XAAuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VlAdhTkg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B24DF59;
-	Wed,  5 Feb 2025 14:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD96376;
+	Wed,  5 Feb 2025 15:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767202; cv=none; b=GpoVeBMZdVyX3UzoMKeWLfJqrZuvFyCzxmcyf3oxo0ziAmdLgRoCiScTzyUqmdCsSuS+/aLOZEcHZ7TOEv6qTWWqaU2fBsZjhAsAkjf0z8pmrt/2j5gUb/eWE/tXdEEBZPmd6s11sjYpw4suuaGsG3hVOMr8ffzQkcNHUBBKZo4=
+	t=1738767630; cv=none; b=qzYvrplLNdOMeaVBv5rgSb6xx3b2e/wC1QxrGDUbCBowgZdC3l/+FFTpwz4PNl0OWTqo5IVW2fynLh9rEPpI4gPL4McS7MlVp3mYplv1v7I8ji+VtuH2y+5EPhTSRKu6Otapdv2yZ48aCOCQ9FX7T3fGT3OUkUpk0CtkyIGzNLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767202; c=relaxed/simple;
-	bh=nDqsEHn+50BA2cB2H7eniHdlbXO8Q/vTn4UKESXNap0=;
+	s=arc-20240116; t=1738767630; c=relaxed/simple;
+	bh=OIQDxZqgJ74IRM9d3XHhhJ+isQMuF5hyXTE3JWGuFqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMpJzlgsDpSXi/eJ181wYUlntm177xN+mmlNnHJ//IOisM2NUNcjQvSsPMXMhk3mJBFelemDmN0bNuaECEmrp+a1HW4BM1Luk+onTgTo3RlBhtOBFZVGvb6Z3QQn37ZGa9KEboyanNilbbOcNAJyzrkyfRXZehSQVLUiKkIjeeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY0XAAuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C31FC4CED1;
-	Wed,  5 Feb 2025 14:53:21 +0000 (UTC)
+	 MIME-Version; b=B5IqZfD6kwqoePJsaaK15J6awGWpO00wjZKgrLmmF4+3+mdYa1gnSCw4+VRQNGgKFeUpSWT7SgsNRFKHyv5ETxcVTieLmjUq+uArQh8fb3Orc6gLyMpWDGYeJWnYT4XPw1TkQRVD7s1XKamFKEg1jRDNlFjhqnwOWzbr5yehRGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VlAdhTkg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DEECC4CED1;
+	Wed,  5 Feb 2025 15:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767201;
-	bh=nDqsEHn+50BA2cB2H7eniHdlbXO8Q/vTn4UKESXNap0=;
+	s=korg; t=1738767629;
+	bh=OIQDxZqgJ74IRM9d3XHhhJ+isQMuF5hyXTE3JWGuFqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vY0XAAuvGllGCIgI8HunPfOb+V85C3FOTO7ErV1J7iBYI73eHpgf+HNeUwbE7M8a9
-	 KEmzSY/ALfMid8Lj84UeEPX03GMOtGjpZGKLu4sVBNOIoexIub6IL0cd9gPcOLm43O
-	 R+6LPvMClhl5axNe8z2D1rGJe6XmtGXYl2ihwCjk=
+	b=VlAdhTkgy+CmXsnBluEWqQ9jQP8P2KxJ4x4XvdOx5vOGvfEeMFOhFrhUN2xS8ZQRN
+	 SO9A8/etYvfpb725DmoLmLNEm+qjJQsVd/icM5igr7oKxHemT0Zq+SbqnrHQQ/XSPG
+	 JY1Z5Kt1jUP+79sMZ2Wa/gUkwUibKmspkoKSS8jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	david regan <dregan@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 418/590] mtd: rawnand: brcmnand: fix status read of brcmnand_waitfunc
+Subject: [PATCH 6.13 431/623] of: reserved-memory: Do not make kmemleak ignore freed address
 Date: Wed,  5 Feb 2025 14:42:53 +0100
-Message-ID: <20250205134511.257526300@linuxfoundation.org>
+Message-ID: <20250205134512.711005779@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: david regan <dregan@broadcom.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 03271ea36ea7a58d30a4bde182eb2a0d46220467 ]
+[ Upstream commit 29091a52562bca4d6e678dd8f0085dac119d6a21 ]
 
-This change fixes an issue where an error return value may be mistakenly
-used as NAND status.
+early_init_dt_alloc_reserved_memory_arch() will free address @base when
+suffers memblock_mark_nomap() error, but it still makes kmemleak ignore
+the freed address @base via kmemleak_ignore_phys().
 
-Fixes: f504551b7f15 ("mtd: rawnand: Propagate error and simplify ternary operators for brcmstb_nand_wait_for_completion()")
-Signed-off-by: david regan <dregan@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+That is unnecessary, besides, also causes unnecessary warning messages:
+
+kmemleak_ignore_phys()
+ -> make_black_object()
+    -> paint_ptr()
+       -> kmemleak_warn() // warning message here.
+
+Fix by avoiding kmemleak_ignore_phys() when suffer the error.
+
+Fixes: 658aafc8139c ("memblock: exclude MEMBLOCK_NOMAP regions from kmemleak")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-10-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/of/of_reserved_mem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 1b2ec0fec60c7..e76df6a00ed4f 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2342,6 +2342,11 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 		brcmnand_send_cmd(host, CMD_PROGRAM_PAGE);
- 		status = brcmnand_waitfunc(chip);
+diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
+index 45517b9e57b1a..b47559f11f079 100644
+--- a/drivers/of/of_reserved_mem.c
++++ b/drivers/of/of_reserved_mem.c
+@@ -52,7 +52,8 @@ static int __init early_init_dt_alloc_reserved_memory_arch(phys_addr_t size,
+ 			memblock_phys_free(base, size);
+ 	}
  
-+		if (status < 0) {
-+			ret = status;
-+			goto out;
-+		}
-+
- 		if (status & NAND_STATUS_FAIL) {
- 			dev_info(ctrl->dev, "program failed at %llx\n",
- 				(unsigned long long)addr);
+-	kmemleak_ignore_phys(base);
++	if (!err)
++		kmemleak_ignore_phys(base);
+ 
+ 	return err;
+ }
 -- 
 2.39.5
 
