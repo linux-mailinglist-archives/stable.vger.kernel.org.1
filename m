@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-113367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE04A291D7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B6A291E6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E80167BF2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E723AC2D4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD031DD874;
-	Wed,  5 Feb 2025 14:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BDC1DE4EC;
+	Wed,  5 Feb 2025 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlz9o53H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CHG+2Fq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA161C6BE;
-	Wed,  5 Feb 2025 14:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246B91C6BE;
+	Wed,  5 Feb 2025 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766720; cv=none; b=kthjnbHnbUg0EonUpjiKuQqcz0RnvZK0LJcKDUWfreb8I8sUgeY4XAGCioauILzrdVo2YIV0LXK5D32FL93z+CsLftjzubBK6HOLbaPPi/N0FOgCWRr9n7vhP1NKUeK3fgltkld/jPSdWFQhY12j9pk4ifTCjf/iF8tu8w+z2Q8=
+	t=1738766730; cv=none; b=m/LeTnTUEj6vbmx7CQlPcXIvTLyWySFFPhPcNutWgsGX3Z/zntex9GAWxQnP5zZFd9V5En2aqsYC0S2tryC0Kad5ncj7irt2V8pdkxLE3xYy08zQvhAFUyiZ38n2F4qAv4hdcDWAA9a2fAarW4PnL+rStWctke0ILfIXC8IxTJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766720; c=relaxed/simple;
-	bh=M0E3M2C6RH/guAGc5XCPjNBXe/+5sT/Ianfv6aoxVno=;
+	s=arc-20240116; t=1738766730; c=relaxed/simple;
+	bh=17UT+OddHlcRbaidDBrjqfWED6otH3vvBUDpGRz7n5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eve9z5Uhmz8kx1nP+LH5Cio0aUMRbTi67DeLBIxKKUztd4DXekIYsEcXZ5x/+hnzQwx4V64yeJIXtgqSrX3IHHgNKQt1SNFP4GhoiJhDnylYA+j79czlm+Nh1QfhPpSt+c4UjfC7Gm1c2Gtz/q8lbo7LXpEP++e8bB+men3UMpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlz9o53H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D8AC4CED1;
-	Wed,  5 Feb 2025 14:45:20 +0000 (UTC)
+	 MIME-Version; b=GEIeFvhPYFQPvZ+hYX2yVgt1BTyKNvQe6sktk+GJ5ID5A8ALzTT2uGbHziT5Ps18LCTp0y5ojb707mur7101mhvAhwIzMX2tN7LxLQqkf3iKkxyz0ZOmPNwdhorPO/zndMQmqL3yzxnft/o8cC7BwP2lO2BoCG7EIPRPzeYo6K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CHG+2Fq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97576C4CED1;
+	Wed,  5 Feb 2025 14:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766720;
-	bh=M0E3M2C6RH/guAGc5XCPjNBXe/+5sT/Ianfv6aoxVno=;
+	s=korg; t=1738766730;
+	bh=17UT+OddHlcRbaidDBrjqfWED6otH3vvBUDpGRz7n5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vlz9o53HcD+Wqq8ugwDZ9CZI900MuN8qrZDnEFO55LssjAJ3Ui7+AMenkaX3hcHbf
-	 HKNelI2FBAo9X6d6AMp9uz3P/+9LDuaRg5t8hfbPCIqJdgSPzomRA6E24Zd00om52v
-	 ftFXMBaYM3ThRJlU7ka3iYNwkuDdO4TRrkedQzv0=
+	b=1CHG+2FqX6jPIJ07JGiErkYfEAUzcCSWBSBCohAsiaoF6Oxut0cVcwym3w2jfGotG
+	 XXujdnj1Q10HIJcN4Y8VMPWV9/8V9YQMTIDd+uwHIAwp4UlZLZKVpsXxrGfkKuxE2z
+	 9zEHtJaKpWiZRkaye87yyNqwrFEk+pC8hbLFvBrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ming Qian <ming.qian@nxp.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 390/393] media: imx-jpeg: Fix potential error pointer dereference in detach_pm()
-Date: Wed,  5 Feb 2025 14:45:09 +0100
-Message-ID: <20250205134435.217145426@linuxfoundation.org>
+	Christoph Anton Mitterer <calestyo@scientia.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 391/393] btrfs: output the reason for open_ctree() failure
+Date: Wed,  5 Feb 2025 14:45:10 +0100
+Message-ID: <20250205134435.255099051@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -66,47 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 1378ffec30367233152b7dbf4fa6a25ee98585d1 upstream.
+commit d0f038104fa37380e2a725e669508e43d0c503e9 upstream.
 
-The proble is on the first line:
+There is a recent ML report that mounting a large fs backed by hardware
+RAID56 controller (with one device missing) took too much time, and
+systemd seems to kill the mount attempt.
 
-	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
+In that case, the only error message is:
 
-If jpeg->pd_dev[i] is an error pointer, then passing it to
-pm_runtime_suspended() will lead to an Oops.  The other conditions
-check for both error pointers and NULL, but it would be more clear to
-use the IS_ERR_OR_NULL() check for that.
+  BTRFS error (device sdj): open_ctree failed
 
-Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+There is no reason on why the failure happened, making it very hard to
+understand the reason.
+
+At least output the error number (in the particular case it should be
+-EINTR) to provide some clue.
+
+Link: https://lore.kernel.org/linux-btrfs/9b9c4d2810abcca2f9f76e32220ed9a90febb235.camel@scientia.org/
+Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/btrfs/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -2674,11 +2674,12 @@ static void mxc_jpeg_detach_pm_domains(s
- 	int i;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1162,7 +1162,7 @@ static int btrfs_fill_super(struct super
  
- 	for (i = 0; i < jpeg->num_domains; i++) {
--		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
-+		    !pm_runtime_suspended(jpeg->pd_dev[i]))
- 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
--		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
- 			device_link_del(jpeg->pd_link[i]);
--		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
-+		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
- 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
- 		jpeg->pd_dev[i] = NULL;
- 		jpeg->pd_link[i] = NULL;
+ 	err = open_ctree(sb, fs_devices, (char *)data);
+ 	if (err) {
+-		btrfs_err(fs_info, "open_ctree failed");
++		btrfs_err(fs_info, "open_ctree failed: %d", err);
+ 		return err;
+ 	}
+ 
 
 
 
