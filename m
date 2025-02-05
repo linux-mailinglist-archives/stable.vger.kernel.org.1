@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C50A2931C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F27A28F24
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9074D16E16E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CDBF160EF1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC8E192D97;
-	Wed,  5 Feb 2025 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8415573F;
+	Wed,  5 Feb 2025 14:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn96qDUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qb7yvprC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F7F1898F8;
-	Wed,  5 Feb 2025 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E331519BE;
+	Wed,  5 Feb 2025 14:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767610; cv=none; b=c8J8T1rY0FiMDeQeBv28LOG2qs5vg9IAbaKEm4Iv60IJNARJtks5fOTdP7cFxZCK13R3wMLI1aC6lEKz9Ipajw1DNe3XrXqaJRdBIRpuoPByeEVDZPyAtdUBFyaLKSTmi7hOrkbfF1dYwQoLDEQdRSVFTeUGUNOpJWjD9DSIOrU=
+	t=1738765295; cv=none; b=d4tCLkjps2o2rUiKnVY+atICKE2LvZiVop+++LPzzhPKosEw0iqRRImwi8M0wP4GKoI+RjG0d5taGwvnUqiut5TjWVySPTXYExOzoXlHD/LrwF06dacz6w/xF6Xce75oyA/Mfr0gKog858697srGDXwKUMtco3qCTyZ++gXuw5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767610; c=relaxed/simple;
-	bh=aPISWEpci008E8jDwPYx62m/pUVVb+yqrduiUHoi8YE=;
+	s=arc-20240116; t=1738765295; c=relaxed/simple;
+	bh=ro0x+kjc90rOVUNwaRsdSSpu/mSNE4mR+OGiFfjz7h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+sMr5b3J0eAwS2SYbfQcHsL/ob3brv5j2I+UrKRSBT+BqsGoulxsyntViqzD/8M1Oy/A7vKju19omKH3UdVotF8+ZHME59dmW4XKYxyrlwBmbSbhEhU2j9Jizja4RfaZKtME3Ueas8O/i7EL4J0VUpArETZzzG3DvHF6mPKTKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn96qDUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7561DC4CED1;
-	Wed,  5 Feb 2025 15:00:09 +0000 (UTC)
+	 MIME-Version; b=iF0sxTYByIiVTXs01ZxQneNC8ITuKmcskfTvxO2Jx2pPovrO5vZGcV94ZGJULdsmqmjO1jpBWuyjzYVtAWLkVwpeArkhW9sY/3CBnCR5B9/IQIt2k1T4IHEutMfHCP3CXmls9ON4hfaSvyUOVpQIR5qVylUS8omReovcKudWYSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qb7yvprC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BEC4CED1;
+	Wed,  5 Feb 2025 14:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767609;
-	bh=aPISWEpci008E8jDwPYx62m/pUVVb+yqrduiUHoi8YE=;
+	s=korg; t=1738765295;
+	bh=ro0x+kjc90rOVUNwaRsdSSpu/mSNE4mR+OGiFfjz7h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn96qDUcKdGKMJ70Tn7bNPqJsUQr3gI4EfOAvV3ioNEDWtfRyvc5jwJnssRn9abM5
-	 8aKEfXo4d6Bbnu5TegE9i6p/QRuzWrFjLltu0eHfzJFuVZgqaSyZzzQtP5yhBanxjN
-	 QOxdPe7m5hFJx8+a1yvlaKlerj8cStiugxMQa89w=
+	b=Qb7yvprC5u/j06EO9DIbYt2QfAoK2lsC3VJuznhicmdwRr34I85TdiBpjyeUqIF6b
+	 zwhnStVcE8KpOmae8gUtgvrfDZDA2eRBZaiWkkTrPxruFmdu+qG1OaXD6Y1vn/p6pA
+	 Qd0HjC86tJgEol92llvSkieXRjVP2JODpitjDCHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Bin Liu <b-liu@ti.com>,
+	Bryan Brattlof <bb@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 428/623] i3c: dw: Fix use-after-free in dw_i3c_master driver due to race condition
+Subject: [PATCH 6.6 251/393] arm64: dts: ti: k3-am62: Remove duplicate GICR reg
 Date: Wed,  5 Feb 2025 14:42:50 +0100
-Message-ID: <20250205134512.597374933@linuxfoundation.org>
+Message-ID: <20250205134429.909930812@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Bryan Brattlof <bb@ti.com>
 
-[ Upstream commit b75439c945b94dd8a2b645355bdb56f948052601 ]
+[ Upstream commit 72c691d77ea5d0c4636fd3e9f0ad80d813c7d1a7 ]
 
-In dw_i3c_common_probe, &master->hj_work is bound with
-dw_i3c_hj_work. And dw_i3c_master_irq_handler can call
-dw_i3c_master_irq_handle_ibis function to start the work.
+The GIC Redistributor control register range is mapped twice. Remove
+the extra entry from the reg range.
 
-If we remove the module which will call dw_i3c_common_remove to
-make cleanup, it will free master->base through i3c_master_unregister
-while the work mentioned above will be used. The sequence of operations
-that may lead to a UAF bug is as follows:
-
-CPU0                                      CPU1
-
-                                     | dw_i3c_hj_work
-dw_i3c_common_remove                 |
-i3c_master_unregister(&master->base) |
-device_unregister(&master->dev)      |
-device_release                       |
-//free master->base                  |
-                                     | i3c_master_do_daa(&master->base)
-                                     | //use master->base
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in dw_i3c_common_remove.
-
-Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/bfc49c9527be5b513e7ceafeba314ca40a5be4bc.1732703537.git.xiaopei01@kylinos.cn
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
+Reported-by: Bin Liu <b-liu@ti.com>
+Signed-off-by: Bryan Brattlof <bb@ti.com>
+Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-1-758b4d5b4a0a@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/dw-i3c-master.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-index d4b80eb8cecdf..343b2f9ca63c3 100644
---- a/drivers/i3c/master/dw-i3c-master.c
-+++ b/drivers/i3c/master/dw-i3c-master.c
-@@ -1647,6 +1647,7 @@ EXPORT_SYMBOL_GPL(dw_i3c_common_probe);
- 
- void dw_i3c_common_remove(struct dw_i3c_master *master)
- {
-+	cancel_work_sync(&master->hj_work);
- 	i3c_master_unregister(&master->base);
- 
- 	pm_runtime_disable(master->dev);
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+index a9b47ab92a02c..f156167b4e8a7 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+@@ -23,7 +23,6 @@
+ 		interrupt-controller;
+ 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
+ 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
+-		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
+ 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
+ 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
+ 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
 -- 
 2.39.5
 
