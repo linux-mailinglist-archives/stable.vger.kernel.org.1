@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6580A29090
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463C0A29353
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C321885D76
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C49116CA4D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28BD155A21;
-	Wed,  5 Feb 2025 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9D818C006;
+	Wed,  5 Feb 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEVezL3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgGF1JI/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF774151988;
-	Wed,  5 Feb 2025 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F01DF59;
+	Wed,  5 Feb 2025 15:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766265; cv=none; b=QKDITm3sXX/3LB82pA//P3c95bw8MWT1XIZ+KNTJ5k7EUor/zQdmpWnfTXmFaqbCId+tAtVNA5RDuoqhxK1kx2aYlWkJIjcnjyd4AEazZeYg8y1ZlvrUM0L4wi3WemVa1+dxa5ZVFyRdNg7sbd3kLQWN4q63HjWhA4mE/A6ruWI=
+	t=1738767802; cv=none; b=qELV85E5q2xwVgR8vLtNKR8G2lOIrOp5VUab3zCeJEUcFj70pex91glbEmmVZqyNM6azwtZWGgMbTeHhtUm9FK4auOYmTb7LXRd04aVkz2JATbgwVv7y0ESoGxSNmUpYfHWozQ9MXIaMQzOgogMol/BBBOj7hHEgbFkchnbMgnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766265; c=relaxed/simple;
-	bh=S4f4g569sKLMJd48WcfXJ0vKEL/0bo4HtPHo2bpPwqQ=;
+	s=arc-20240116; t=1738767802; c=relaxed/simple;
+	bh=qgwZbc7uvK0MukDj52mvVMk72MWtfu4MGhYEq9KlokY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jf/fUm6avEssFQbaS9iM35h1Tp0OUnMtI2QM5K1qEOTmMwqpXQW9N5yr6CZli8htDczVgNUu7HyPpc7TkeUWnfWE0SpcVt6w/b4LhsJ64UtTR+w2AmFQEwCA1xR7C1cVGHGFxT1SH9ceE2eVL4vPgwZdB6tHMy2XHWE00UgXeOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEVezL3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B918CC4CED1;
-	Wed,  5 Feb 2025 14:37:44 +0000 (UTC)
+	 MIME-Version; b=CgjFk8UturP8x3aUVdTHahlPiqVx9WNROgQkEljT/7uuHV0hI85S6uPnsI7Ww7d3K6o4SIRAe5gaW0C+8XwCLLnFO51EkWEl3HEtnmsFYsHo3SdtOdrstf+P5Wdd18MZhGkdH+r904JmPRQovVzalGetuA6I6dyQcJg8y5yHYdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgGF1JI/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76871C4CED1;
+	Wed,  5 Feb 2025 15:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766265;
-	bh=S4f4g569sKLMJd48WcfXJ0vKEL/0bo4HtPHo2bpPwqQ=;
+	s=korg; t=1738767802;
+	bh=qgwZbc7uvK0MukDj52mvVMk72MWtfu4MGhYEq9KlokY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEVezL3FRJcPD1e5WfLM5OuWdCm4v4M84Pz5B/XqyFplQk4EZ8SOJDWI0PXiwyvnz
-	 aTjhdsGadz3xauDTL7Y9zdTQUue4SspET/lSsjJf1i0cCVxbs9BLw7oX+rFR1UsLLB
-	 xaFyUF+USW+lUa0Mf7fmu9KHiXznhg417fskosVU=
+	b=SgGF1JI/yc5YKVeSjSGgV1nkPc+Z/HwBgcRvpgfpYTfbVVWxeErcUCvp9GAZaAZ/y
+	 2bnGdv1F1KcjwJtKNcCpN1shXGIPoq7O83wc2X35Ut73NijbhYLP1xQwfDcCcNWgjT
+	 R2PtHnhVnKu0yLH3o8F2FlvivYBDEBcbFQaiTPos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Wurm <stephan.wurm@a-eberle.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 347/393] net: hsr: fix fill_frame_info() regression vs VLAN packets
+Subject: [PATCH 6.12 511/590] Bluetooth: btnxpuart: Fix glitches seen in dual A2DP streaming
 Date: Wed,  5 Feb 2025 14:44:26 +0100
-Message-ID: <20250205134433.585237570@linuxfoundation.org>
+Message-ID: <20250205134514.817827293@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
 
-[ Upstream commit 0f5697f1a3f99bc2b674b8aa3c5da822c5673c11 ]
+[ Upstream commit 7de119bb79a63f6a1959b83117a98734914fb0b0 ]
 
-Stephan Wurm reported that my recent patch broke VLAN support.
+This fixes a regression caused by previous commit for fixing truncated
+ACL data, which is causing some intermittent glitches when running two
+A2DP streams.
 
-Apparently skb->mac_len is not correct for VLAN traffic as
-shown by debug traces [1].
+serdev_device_write_buf() is the root cause of the glitch, which is
+reverted, and the TX work will continue to write until the queue is empty.
 
-Use instead pskb_may_pull() to make sure the expected header
-is present in skb->head.
+This change fixes both issues. No A2DP streaming glitches or truncated
+ACL data issue observed.
 
-Many thanks to Stephan for his help.
-
-[1]
-kernel: skb len=170 headroom=2 headlen=170 tailroom=20
-        mac=(2,14) mac_len=14 net=(16,-1) trans=-1
-        shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-        csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-        hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
-        priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-        encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-kernel: dev name=prp0 feat=0x0000000000007000
-kernel: sk family=17 type=3 proto=0
-kernel: skb headroom: 00000000: 74 00
-kernel: skb linear:   00000000: 01 0c cd 01 00 01 00 d0 93 53 9c cb 81 00 80 00
-kernel: skb linear:   00000010: 88 b8 00 01 00 98 00 00 00 00 61 81 8d 80 16 52
-kernel: skb linear:   00000020: 45 47 44 4e 43 54 52 4c 2f 4c 4c 4e 30 24 47 4f
-kernel: skb linear:   00000030: 24 47 6f 43 62 81 01 14 82 16 52 45 47 44 4e 43
-kernel: skb linear:   00000040: 54 52 4c 2f 4c 4c 4e 30 24 44 73 47 6f 6f 73 65
-kernel: skb linear:   00000050: 83 07 47 6f 49 64 65 6e 74 84 08 67 8d f5 93 7e
-kernel: skb linear:   00000060: 76 c8 00 85 01 01 86 01 00 87 01 00 88 01 01 89
-kernel: skb linear:   00000070: 01 00 8a 01 02 ab 33 a2 15 83 01 00 84 03 03 00
-kernel: skb linear:   00000080: 00 91 08 67 8d f5 92 77 4b c6 1f 83 01 00 a2 1a
-kernel: skb linear:   00000090: a2 06 85 01 00 83 01 00 84 03 03 00 00 91 08 67
-kernel: skb linear:   000000a0: 8d f5 92 77 4b c6 1f 83 01 00
-kernel: skb tailroom: 00000000: 80 18 02 00 fe 4e 00 00 01 01 08 0a 4f fd 5e d1
-kernel: skb tailroom: 00000010: 4f fd 5e cd
-
-Fixes: b9653d19e556 ("net: hsr: avoid potential out-of-bound access in fill_frame_info()")
-Reported-by: Stephan Wurm <stephan.wurm@a-eberle.de>
-Tested-by: Stephan Wurm <stephan.wurm@a-eberle.de>
-Closes: https://lore.kernel.org/netdev/Z4o_UC0HweBHJ_cw@PC-LX-SteWu/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250129130007.644084-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8023dd220425 ("Bluetooth: btnxpuart: Fix driver sending truncated data")
+Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
+Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btnxpuart.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 2790f3964d6bd..9317f96127c1b 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -588,9 +588,12 @@ static int fill_frame_info(struct hsr_frame_info *frame,
- 		frame->is_vlan = true;
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index a028984f27829..84a1ad61c4ad5 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -1336,13 +1336,12 @@ static void btnxpuart_tx_work(struct work_struct *work)
  
- 	if (frame->is_vlan) {
--		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
-+		/* Note: skb->mac_len might be wrong here. */
-+		if (!pskb_may_pull(skb,
-+				   skb_mac_offset(skb) +
-+				   offsetofend(struct hsr_vlan_ethhdr, vlanhdr)))
- 			return -EINVAL;
--		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
-+		vlan_hdr = (struct hsr_vlan_ethhdr *)skb_mac_header(skb);
- 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
- 		/* FIXME: */
- 		netdev_warn_once(skb->dev, "VLAN not yet supported");
+ 	while ((skb = nxp_dequeue(nxpdev))) {
+ 		len = serdev_device_write_buf(serdev, skb->data, skb->len);
+-		serdev_device_wait_until_sent(serdev, 0);
+ 		hdev->stat.byte_tx += len;
+ 
+ 		skb_pull(skb, len);
+ 		if (skb->len > 0) {
+ 			skb_queue_head(&nxpdev->txq, skb);
+-			break;
++			continue;
+ 		}
+ 
+ 		switch (hci_skb_pkt_type(skb)) {
 -- 
 2.39.5
 
