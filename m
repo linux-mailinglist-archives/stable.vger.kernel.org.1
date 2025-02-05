@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C053CA29338
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084B1A2928C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6304E166482
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27CF5188D875
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24C81D7E31;
-	Wed,  5 Feb 2025 15:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7E1192D9D;
+	Wed,  5 Feb 2025 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zq8cV7pJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLxRck+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE8A1607B7;
-	Wed,  5 Feb 2025 15:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3A2192D83;
+	Wed,  5 Feb 2025 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767673; cv=none; b=WHN9zZXJD5waojQu8QukqxudJfC6RxjNYiUXHebF/EPSgnlvpEe6CMOYydEkAnd6vjztilWPJpEf6gUTJoJd8rvpst7xrUs3n7dfNtYFbxgl1sVkwJPF/bUS5dmZzXweg9QItWlwWAdxxbTRSOA9Vk4hLJEGBijiUbgaCMgE/vk=
+	t=1738767099; cv=none; b=eEmdP4Wf4VDeUZxuQ5XOFXC3kIxwbG1hNgYEbZ+sGiymSZsQV7pR+TnB2IZMVU/8yF3AEAtcXJkfsn3guUFpusv1o9nXnoF+oihLDBmNlbeZ3ACW8ADj15D7T0c1ywCI10A4mqSdM+0cFKO5KRN2/j147Xq5LykLy40kTYfJc98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767673; c=relaxed/simple;
-	bh=8ZGHpF678Ild9F7KlfnLRlo4RP8DYH1cOBSH7VvW9ZE=;
+	s=arc-20240116; t=1738767099; c=relaxed/simple;
+	bh=eaqoMV9Y3NzVGb32II8kXTki+MNXs86a/CYtWaBmt50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eouvKi2hbpEYWEHLiF5L1+g0WTI8z+OtVEF9lwb0TQ46kWKjPvapzVwqSQhH5w0dwMrJB9D+gOITW5bZ3X6Kiulv9kv71Rtq+ImHFwCvzw8LWKcLf6cgHNdf1ia1fQhZkSNdM/KGYGOkJMCfVEaC3iTtGIRvSEA6dLsf6jYXHxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zq8cV7pJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B13C4CED1;
-	Wed,  5 Feb 2025 15:01:12 +0000 (UTC)
+	 MIME-Version; b=LOLz4EnxJy38MPcAyBVyvcGRqPLXronWZxL7bhg0WNeaCtvPkGX57StNkJ/9oEXopmVWweAFGEKqI1sMzd9WgYAjOJYXLK/SHxHYwarI7g2HT2uow1+lC4cFk+p30Rthw8oS6ti0G3pN+z3fZBSw5tZPa5LIV+Mp+mixPYN4DGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLxRck+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4B7C4CED1;
+	Wed,  5 Feb 2025 14:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767673;
-	bh=8ZGHpF678Ild9F7KlfnLRlo4RP8DYH1cOBSH7VvW9ZE=;
+	s=korg; t=1738767099;
+	bh=eaqoMV9Y3NzVGb32II8kXTki+MNXs86a/CYtWaBmt50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zq8cV7pJwu85yyuqD2jyjdZx8G49YZ7gVhH4pQil4HYle5K5so2tmmtbL0sxqJ/uT
-	 oDtg4WrVGRFZOZ7rpnQi77rAKeFIL7cOEPOcIQ87/cUeusyNWlYjwmc5+kQSvr4xBB
-	 5+2jmLHBhlfm7SZpKi5qPQOw8pRS/nbr8RpzOa20=
+	b=GLxRck+FG261zVLje2ovsNaEO8z4cxo95+as0+ORrHYnNNd5/rZ4mrkXsJzqfL6F5
+	 ZvycspIqqICwjXxcbrNU4nP0niOiVJm8c7Fhrbos1TFHE12VKlo87kieAB5lBWjavr
+	 c4rln5KVvqVA7jKMCGJU0rMqfH4gsfzybVyIvRdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josua Mayer <josua@solid-run.com>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com,
+	Sean Young <sean@mess.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 419/623] arm64: dts: marvell: cn9131-cf-solidwan: fix cp1 comphy links
+Subject: [PATCH 6.12 406/590] media: rc: iguanair: handle timeouts
 Date: Wed,  5 Feb 2025 14:42:41 +0100
-Message-ID: <20250205134512.255916865@linuxfoundation.org>
+Message-ID: <20250205134510.801872030@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 09cdb973afa7a18ce8e66807daff94609cc4b8a4 ]
+[ Upstream commit b98d5000c50544f14bacb248c34e5219fbe81287 ]
 
-Marvell CN913x platforms use common phy framework for configuring and
-linking serdes lanes according to their usage.
-Each CP (X) features 5 serdes lanes (Y) represented by cpX_comphyY
-nodes.
+In case of a timeout the IO must be cancelled or
+the next IO using the URB will fail and/or overwrite
+an operational URB.
 
-CN9131 SolidWAN uses CP1 serdes lanes 3 and 5 for eth1 and eth2 of CP1
-respectively. Devicetree however wrongly links from these ports to the
-comphy of CP0.
+The automatic bisection fails because it arrives
+at a commit that correctly lets the test case run
+without an error.
 
-Replace the wrong links to cp0_comphy with cp1_comphy inside cp1_eth1,
-cp1_eth2.
-
-Fixes: 1280840d2030 ("arm64: dts: add description for solidrun cn9131 solidwan board")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: e99a7cfe93fd ("[media] iguanair: reuse existing urb callback for command responses")
+Reported-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/66f5cc9a.050a0220.46d20.0004.GAE@google.com/
+Tested-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/rc/iguanair.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-index b1ea7dcaed17d..47234d0858dd2 100644
---- a/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-+++ b/arch/arm64/boot/dts/marvell/cn9131-cf-solidwan.dts
-@@ -435,7 +435,7 @@
- 	managed = "in-band-status";
- 	phy-mode = "sgmii";
- 	phy = <&cp1_phy0>;
--	phys = <&cp0_comphy3 1>;
-+	phys = <&cp1_comphy3 1>;
- 	status = "okay";
- };
+diff --git a/drivers/media/rc/iguanair.c b/drivers/media/rc/iguanair.c
+index 276bf3c8a8cb4..8af94246e5916 100644
+--- a/drivers/media/rc/iguanair.c
++++ b/drivers/media/rc/iguanair.c
+@@ -194,8 +194,10 @@ static int iguanair_send(struct iguanair *ir, unsigned size)
+ 	if (rc)
+ 		return rc;
  
-@@ -444,7 +444,7 @@
- 	managed = "in-band-status";
- 	phy-mode = "sgmii";
- 	phy = <&cp1_phy1>;
--	phys = <&cp0_comphy5 2>;
-+	phys = <&cp1_comphy5 2>;
- 	status = "okay";
- };
+-	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0)
++	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0) {
++		usb_kill_urb(ir->urb_out);
+ 		return -ETIMEDOUT;
++	}
  
+ 	return rc;
+ }
 -- 
 2.39.5
 
