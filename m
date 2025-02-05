@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-113712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13025A293E9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D61A293BD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 578051892173
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7B79164CB9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21F817BEC5;
-	Wed,  5 Feb 2025 15:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91761C6BE;
+	Wed,  5 Feb 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkzh3Ri3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9jm080Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4BCDF59;
-	Wed,  5 Feb 2025 15:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745631519B4;
+	Wed,  5 Feb 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767901; cv=none; b=BBp9f6q2lxXYaUL532InZpEl4Z9wqMXj+bvnuVWqT2BIJioIj4xC2lCGX/7o0s0Z1gXcQsQM/3Kxc7QnOt8H6rpyd5h8oRUMgNk3WVF7xiUID3nO/Uk+HPWhEky3i9xyF3MJ7hZnkJ2+6v++qesTm5oeQcopYlFz3UIXaWCMcUU=
+	t=1738768223; cv=none; b=U0YlVJsm4RP/hSUjtw2TRAjjmaBxuQ8kSg9Z+flu3msc8wjdayzh/jFd3GXWDgrP+umvaD45RcHZZ0zN3MsEkH1fU9BoXuivjxehmXVSWI29mb4dJ+j7MFwNHCIJKyXOLv9mVA0F5mIZJcGeFbARVBb7FtIh37gBRZ06/bKaAnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767901; c=relaxed/simple;
-	bh=3kw+nRjdC/e+V+2dcFlKLNmIxnSddSYZQpCq1lr33ZY=;
+	s=arc-20240116; t=1738768223; c=relaxed/simple;
+	bh=gKp7aeH3WH593NMbRMvZiD5oeC3uRHtxAtVi3fiBGNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R3ntQ24HtnC+j2pQV+iJuLHshky9dshnrAoR0t3u3KKoYw9xfQUIpBvDu5xvrYpEoi9KM1ft3EmCEKBuaot+4kDbAPyWgpHmRXd5aG+Wk1f2ZxiQb/EiDb7OrukSG8cgHS0x7zvU3E2A0MAOGnB5DGEvlQtFTnVmik6MBwQ8qmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkzh3Ri3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0545C4CED1;
-	Wed,  5 Feb 2025 15:05:00 +0000 (UTC)
+	 MIME-Version; b=jtNN9QQ3zLCbc3MBJXeEnJ83tJXjU87mvWnWybek7z5mZ9n77NsKf9ADMEfi0wTFBYAVvdjYs0LXd4OLiFz4WpvHxS0syW1L5et0Gw+oiJo6GpQa2LCOWAwDu03EOyWsOo6h2qcCRY5D60iPHgPdRM19EHjyDeyxr86K3u7/kAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9jm080Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A56C4CED1;
+	Wed,  5 Feb 2025 15:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767901;
-	bh=3kw+nRjdC/e+V+2dcFlKLNmIxnSddSYZQpCq1lr33ZY=;
+	s=korg; t=1738768223;
+	bh=gKp7aeH3WH593NMbRMvZiD5oeC3uRHtxAtVi3fiBGNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vkzh3Ri3og5PehbabJ7lkDzl9lsiqCXZNUBXdQeHpB5QfwyQMkSvr0W9t8H+hhiH9
-	 KQZFN0euXcXy4oDz4AekgYM+lMvKs5Kd52rnafqmnGPld+e9hWXHYTkceymKdEQe2O
-	 SJnEIIq9MtZqFLXedrdK6xFIUsYpqKn/2H7cCM+c=
+	b=n9jm080Y3i2o0geWEErJhx4eKv6qkw7UFLAkT7+zRuCQGZc2g0OCj0zUfs2Dez/0/
+	 t36cpDFSfX+jaNS5/j9HyxEN8xPzAV4piESzeEPxBHW1HjgLlZ6wMWRe4GdXtd6WkW
+	 zBGTLJayco+eXbJEQ7xnV41tetIYHhQny2nZNNZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 501/590] ptp: Properly handle compat ioctls
+Subject: [PATCH 6.13 514/623] idpf: fix transaction timeouts on reset
 Date: Wed,  5 Feb 2025 14:44:16 +0100
-Message-ID: <20250205134514.436169055@linuxfoundation.org>
+Message-ID: <20250205134515.890299922@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 19ae40f572a9ce1ade9954990af709a03fd37010 ]
+[ Upstream commit 137da75ba72593598898a4e79da34f4b2da5d151 ]
 
-Pointer arguments passed to ioctls need to pass through compat_ptr() to
-work correctly on s390; as explained in Documentation/driver-api/ioctl.rst.
-Detect compat mode at runtime and call compat_ptr() for those commands
-which do take pointer arguments.
+Restore the call to idpf_vc_xn_shutdown() at the beginning of
+idpf_vc_core_deinit() provided the function is not called on remove.
+In the reset path the mailbox is destroyed, leading to all transactions
+timing out.
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/lkml/1ba5d3a4-7931-455b-a3ce-85a968a7cb10@app.fastmail.com/
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20250125-posix-clock-compat_ioctl-v2-1-11c865c500eb@weissschuh.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 09d0fb5cb30e ("idpf: deinit virtchnl transaction manager after vport and vectors")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index ea96a14d72d14..bf6468c56419c 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -4,6 +4,7 @@
-  *
-  * Copyright (C) 2010 OMICRON electronics GmbH
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index d46c95f91b0d8..7639d520b8063 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3077,12 +3077,21 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
   */
-+#include <linux/compat.h>
- #include <linux/module.h>
- #include <linux/posix-clock.h>
- #include <linux/poll.h>
-@@ -176,6 +177,9 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
- 	struct timespec64 ts;
- 	int enable, err = 0;
- 
-+	if (in_compat_syscall() && cmd != PTP_ENABLE_PPS && cmd != PTP_ENABLE_PPS2)
-+		arg = (unsigned long)compat_ptr(arg);
+ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ {
++	bool remove_in_prog;
 +
- 	tsevq = pccontext->private_clkdata;
+ 	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+ 		return;
  
- 	switch (cmd) {
++	/* Avoid transaction timeouts when called during reset */
++	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
++	if (!remove_in_prog)
++		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
++
+ 	idpf_deinit_task(adapter);
+ 	idpf_intr_rel(adapter);
+-	idpf_vc_xn_shutdown(adapter->vcxn_mngr);
++
++	if (remove_in_prog)
++		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+ 
+ 	cancel_delayed_work_sync(&adapter->serv_task);
+ 	cancel_delayed_work_sync(&adapter->mbx_task);
 -- 
 2.39.5
 
