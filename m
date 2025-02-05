@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-112592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C3DA28DA1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2E6A28D7D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6309B3A9EF8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B3631887994
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF2F154C1D;
-	Wed,  5 Feb 2025 14:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51351519AA;
+	Wed,  5 Feb 2025 14:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ripBiHiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK4UTpwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D66C1509BD;
-	Wed,  5 Feb 2025 14:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03105228;
+	Wed,  5 Feb 2025 14:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764087; cv=none; b=ohQywbVayrVuRK+TsVaKc5OPD7WCh1byy1LhiTuunCKMxt+x42Qtb84prEHFsufYd/TDPC3xXQnSyhzfLQMipFb3W9/oo7c52fAyi428P9lQy34E8c7hV0J3Z7i1LHpS8pSh4xe9GqNsbhr19lGcKDj+3WcEuWyfot3m0frqLNw=
+	t=1738764100; cv=none; b=BZJYEv7NPTOVzCyaRbjZeJWsLSOZb0HmTZFGZF0lhlrUgvv2e1IjBworpuN642xr9O3eVZV1U98Aj4Lxr0Zn534FCXmL/xuMifyOc9zH1X/TFIl74y8Y8kf2A83apQ3bOZpf1t2F8wpKB8Z08WRMywxe8NsZW8IO68bQhw1Y2M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764087; c=relaxed/simple;
-	bh=he4t0Afv21ZEif7DCI9NVYkamlkAM61z8Vip2XECKGM=;
+	s=arc-20240116; t=1738764100; c=relaxed/simple;
+	bh=tF1qP6auBSUY2z8wj3KIsavOlWj7Bh6r3EwFI35LEco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrxTlWfP/RYgbfwL6Ldtt7tuk9AXeg2AUQgLmdQVY3dE0bt3plmneQdiFTxa1NKbsT3gbO8t4YYcqAkLvTr4yO+hwg+1vY0u7QhYoyuU1SErPMCyh8MHJE655HkWETZUZkDFYTgx/Mj9R0pVnPpF8fmfS2KbRkxk5o9UP9lpoJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ripBiHiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3FFC4CED1;
-	Wed,  5 Feb 2025 14:01:25 +0000 (UTC)
+	 MIME-Version; b=RWj+WaQmSystvjvZJQgxecoyOob8c9CaHkJFSR0hRnlpX2QIVGyiWm0JcuZag9od5CFJ7aSvA0UoAr5gatvAkJ2n6cx8psVsVWwfQIShVqbsnQdtUG6bhW5C2vruXV3lavjj+dt8zSS3YUngDXXoWh3snov8i/limUaVTG1UZDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qK4UTpwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0D3C4CED1;
+	Wed,  5 Feb 2025 14:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764086;
-	bh=he4t0Afv21ZEif7DCI9NVYkamlkAM61z8Vip2XECKGM=;
+	s=korg; t=1738764100;
+	bh=tF1qP6auBSUY2z8wj3KIsavOlWj7Bh6r3EwFI35LEco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ripBiHiNYzAGMM2TvAWeK60ZAbVUTFVpCyUajbEpQxVRCyxr4LMobK+hWnVNV/4ym
-	 +lB1gBrF4dMB0TqRiLbzG81418Uu3TuJv2AVr5fci5Kx4V+O2AjfEqgEi/Uh/Iv9OJ
-	 OPGg5srqEzOlKsX1aPOKihIB+4DBqgme4PfDCOH8=
+	b=qK4UTpwzZt8SfvXMC5L/nE+qsN1AFANnqlg/SWdFKP7wIVlfcnLdRrFUUsf/VATDg
+	 8YoiT+VrpgE3R5wYaNshwg8OY5PrvVWUX9dWmfdA/YC9aPxFVbUi8vp1YD7qJnAAbf
+	 nePk7lxJ3LSGxPKHO9sODpqVPhuQoo/lbpgIxpsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/590] spi: zynq-qspi: Add check for clk_enable()
-Date: Wed,  5 Feb 2025 14:37:23 +0100
-Message-ID: <20250205134458.618603589@linuxfoundation.org>
+Subject: [PATCH 6.12 089/590] rxrpc: Fix handling of received connection abort
+Date: Wed,  5 Feb 2025 14:37:24 +0100
+Message-ID: <20250205134458.656433386@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,51 +68,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 8332e667099712e05ec87ba2058af394b51ebdc9 ]
+[ Upstream commit 0e56ebde245e4799ce74d38419426f2a80d39950 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+Fix the handling of a connection abort that we've received.  Though the
+abort is at the connection level, it needs propagating to the calls on that
+connection.  Whilst the propagation bit is performed, the calls aren't then
+woken up to go and process their termination, and as no further input is
+forthcoming, they just hang.
 
-Fixes: c618a90dcaf3 ("spi: zynq-qspi: Drop GPIO header")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20241207015206.3689364-1-zmw12306@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also add some tracing for the logging of connection aborts.
+
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20241204074710.990092-3-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynq-qspi.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ include/trace/events/rxrpc.h | 25 +++++++++++++++++++++++++
+ net/rxrpc/conn_event.c       | 12 ++++++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-zynq-qspi.c b/drivers/spi/spi-zynq-qspi.c
-index b67455bda972b..de4c182474329 100644
---- a/drivers/spi/spi-zynq-qspi.c
-+++ b/drivers/spi/spi-zynq-qspi.c
-@@ -379,12 +379,21 @@ static int zynq_qspi_setup_op(struct spi_device *spi)
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index cc22596c7250c..666fe1779ccc6 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -117,6 +117,7 @@
+ #define rxrpc_call_poke_traces \
+ 	EM(rxrpc_call_poke_abort,		"Abort")	\
+ 	EM(rxrpc_call_poke_complete,		"Compl")	\
++	EM(rxrpc_call_poke_conn_abort,		"Conn-abort")	\
+ 	EM(rxrpc_call_poke_error,		"Error")	\
+ 	EM(rxrpc_call_poke_idle,		"Idle")		\
+ 	EM(rxrpc_call_poke_set_timeout,		"Set-timo")	\
+@@ -282,6 +283,7 @@
+ 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
+ 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
+ 	EM(rxrpc_call_see_connected,		"SEE connect ") \
++	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
+@@ -956,6 +958,29 @@ TRACE_EVENT(rxrpc_rx_abort,
+ 		      __entry->abort_code)
+ 	    );
+ 
++TRACE_EVENT(rxrpc_rx_conn_abort,
++	    TP_PROTO(const struct rxrpc_connection *conn, const struct sk_buff *skb),
++
++	    TP_ARGS(conn, skb),
++
++	    TP_STRUCT__entry(
++		    __field(unsigned int,	conn)
++		    __field(rxrpc_serial_t,	serial)
++		    __field(u32,		abort_code)
++			     ),
++
++	    TP_fast_assign(
++		    __entry->conn = conn->debug_id;
++		    __entry->serial = rxrpc_skb(skb)->hdr.serial;
++		    __entry->abort_code = skb->priority;
++			   ),
++
++	    TP_printk("C=%08x ABORT %08x ac=%d",
++		      __entry->conn,
++		      __entry->serial,
++		      __entry->abort_code)
++	    );
++
+ TRACE_EVENT(rxrpc_rx_challenge,
+ 	    TP_PROTO(struct rxrpc_connection *conn, rxrpc_serial_t serial,
+ 		     u32 version, u32 nonce, u32 min_level),
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 598b4ee389fc1..2a1396cd892f3 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -63,11 +63,12 @@ int rxrpc_abort_conn(struct rxrpc_connection *conn, struct sk_buff *skb,
+ /*
+  * Mark a connection as being remotely aborted.
+  */
+-static bool rxrpc_input_conn_abort(struct rxrpc_connection *conn,
++static void rxrpc_input_conn_abort(struct rxrpc_connection *conn,
+ 				   struct sk_buff *skb)
  {
- 	struct spi_controller *ctlr = spi->controller;
- 	struct zynq_qspi *qspi = spi_controller_get_devdata(ctlr);
-+	int ret;
+-	return rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
+-				      RXRPC_CALL_REMOTELY_ABORTED);
++	trace_rxrpc_rx_conn_abort(conn, skb);
++	rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
++			       RXRPC_CALL_REMOTELY_ABORTED);
+ }
  
- 	if (ctlr->busy)
- 		return -EBUSY;
+ /*
+@@ -202,11 +203,14 @@ static void rxrpc_abort_calls(struct rxrpc_connection *conn)
  
--	clk_enable(qspi->refclk);
--	clk_enable(qspi->pclk);
-+	ret = clk_enable(qspi->refclk);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_enable(qspi->pclk);
-+	if (ret) {
-+		clk_disable(qspi->refclk);
-+		return ret;
-+	}
-+
- 	zynq_qspi_write(qspi, ZYNQ_QSPI_ENABLE_OFFSET,
- 			ZYNQ_QSPI_ENABLE_ENABLE_MASK);
+ 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
+ 		call = conn->channels[i].call;
+-		if (call)
++		if (call) {
++			rxrpc_see_call(call, rxrpc_call_see_conn_abort);
+ 			rxrpc_set_call_completion(call,
+ 						  conn->completion,
+ 						  conn->abort_code,
+ 						  conn->error);
++			rxrpc_poke_call(call, rxrpc_call_poke_conn_abort);
++		}
+ 	}
  
+ 	_leave("");
 -- 
 2.39.5
 
