@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70937A292F4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:07:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688C8A291C5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9A6F7A20C8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B45BE3AB24E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC87B15B122;
-	Wed,  5 Feb 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088C717C21C;
+	Wed,  5 Feb 2025 14:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kht/Gml7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij/dS7dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69738155A30;
-	Wed,  5 Feb 2025 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2C1779AE;
+	Wed,  5 Feb 2025 14:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768021; cv=none; b=AbJx5bV/uY8PVu2vmxM14l0xSpDUaz5wyW4BhuJLMWxOxcCL4Dmmv0fJofwUj128uFq+59DG2H+Etb7qFQBzwr+4JT6wN75EegIwwR4XFabSKbw30kp0PuEw3GTPuaCwzSRKKHaG63PHEFLc60b4fd+Up59iqI49hoAjhago6aE=
+	t=1738766633; cv=none; b=ZLbyjGkr8moZfi2AHkPxai/67i6Lyt0PIl+ExaOyAQvDeCF3AZpH6Xv5gi5PAodLmhjBOVC63y9Mg5bvtKYc+CHSeRlsNDHXotdPDA4n5xRGpjzsMjXc7kSlRs/8HJDr/EHw6U0jYciPABhIkgoipibv9cfn/JCBOgnXpGNdDGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768021; c=relaxed/simple;
-	bh=YSc3EH6FYmTe9/rZ1wLyjpgmXysfSP5DPKzQb915pKI=;
+	s=arc-20240116; t=1738766633; c=relaxed/simple;
+	bh=w3jeCt59HhBnpo6Go5lAj23tPqE8cZp0FnUAOEMGz44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6Nr9hST5D9k1H0niQKDMTWvnZ9wDticCfIiOmG+O5I2J05fmHM9BnTODg02ml/0iZBFqu35MQO275vvqYTy5g0zQ87h78zRHkzAog1qYHmrXc/EPde2bYt9kptinsxEn3/KGl6l91Yj4y7CKz9rXm3Zph4ls00/kmHPES5rPME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kht/Gml7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5D7C4CEE2;
-	Wed,  5 Feb 2025 15:07:00 +0000 (UTC)
+	 MIME-Version; b=B8iXzKRwFcHrKywBA9VVtbFAeFIkK5k3DOmteCVQSDPMsC+LRV952m/KlVHGhCzdPcBZIUKfQt/HqQx9O0xbY9FjvpGcMvAhGUL80RrWDxihY+h0brolZIOpMTzKt4qLYppLcx6hL7JAwtCsE2KILOJwq1c5mUCwwFymfYraf0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij/dS7dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D90C4CED1;
+	Wed,  5 Feb 2025 14:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768021;
-	bh=YSc3EH6FYmTe9/rZ1wLyjpgmXysfSP5DPKzQb915pKI=;
+	s=korg; t=1738766632;
+	bh=w3jeCt59HhBnpo6Go5lAj23tPqE8cZp0FnUAOEMGz44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kht/Gml7Oku53FT1aizI6fy8tMnitbD0Lic6b64HhqAQJ9R/CNgQe5bEj/mx3irPV
-	 h+CEpQdPdRVoUy0DLI/LB9PWTKbRnZnjKjtyIAO1M2ScCWfqDJO0J0XqexNaew1kqf
-	 MOnwEOmay0CwBGBx1NagAgb0wKoEITCTD5P7wUlw=
+	b=Ij/dS7dwGEBJaB3HxbVHosOsP7g8KdzAtxxZlihZvOhVyD2ZAKYZmp3OEnYL0CMNC
+	 o2fJbp+R5YK1otRtJ9CDvhAadxX4IT7buZUCCd4SDs7iiBv4uGYMRFqlGSoJ9zEuvI
+	 6J66bPmViCCh5tChDGYdVbDFgzk/UgUrHdksGZRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Parth Pancholi <parth.pancholi@toradex.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 6.12 543/590] kbuild: switch from lz4c to lz4 for compression
-Date: Wed,  5 Feb 2025 14:44:58 +0100
-Message-ID: <20250205134516.045962397@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Kyle Tso <kyletso@google.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 380/393] usb: dwc3: core: Defer the probe until USB power supply ready
+Date: Wed,  5 Feb 2025 14:44:59 +0100
+Message-ID: <20250205134434.833960025@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parth Pancholi <parth.pancholi@toradex.com>
+From: Kyle Tso <kyletso@google.com>
 
-commit e397a603e49cc7c7c113fad9f55a09637f290c34 upstream.
+commit 66e0ea341a2a78d14336117f19763bd9be26d45d upstream.
 
-Replace lz4c with lz4 for kernel image compression.
-Although lz4 and lz4c are functionally similar, lz4c has been deprecated
-upstream since 2018. Since as early as Ubuntu 16.04 and Fedora 25, lz4
-and lz4c have been packaged together, making it safe to update the
-requirement from lz4c to lz4.
+Currently, DWC3 driver attempts to acquire the USB power supply only
+once during the probe. If the USB power supply is not ready at that
+time, the driver simply ignores the failure and continues the probe,
+leading to permanent non-functioning of the gadget vbus_draw callback.
 
-Consequently, some distributions and build systems, such as OpenEmbedded,
-have fully transitioned to using lz4. OpenEmbedded core adopted this
-change in commit fe167e082cbd ("bitbake.conf: require lz4 instead of
-lz4c"), causing compatibility issues when building the mainline kernel
-in the latest OpenEmbedded environment, as seen in the errors below.
+Address this problem by delaying the dwc3 driver initialization until
+the USB power supply is registered.
 
-This change also updates the LZ4 compression commands to make it backward
-compatible by replacing stdin and stdout with the '-' option, due to some
-unclear reason, the stdout keyword does not work for lz4 and '-' works for
-both. In addition, this modifies the legacy '-c1' with '-9' which is also
-compatible with both. This fixes the mainline kernel build failures with
-the latest master OpenEmbedded builds associated with the mentioned
-compatibility issues.
-
-LZ4     arch/arm/boot/compressed/piggy_data
-/bin/sh: 1: lz4c: not found
-...
-...
-ERROR: oe_runmake failed
-
-Link: https://github.com/lz4/lz4/pull/553
-Suggested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
+Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250115044548.2701138-1-kyletso@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile             |    2 +-
- scripts/Makefile.lib |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/core.c |   30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -509,7 +509,7 @@ KGZIP		= gzip
- KBZIP2		= bzip2
- KLZOP		= lzop
- LZMA		= lzma
--LZ4		= lz4c
-+LZ4		= lz4
- XZ		= xz
- ZSTD		= zstd
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1505,8 +1505,6 @@ static void dwc3_get_properties(struct d
+ 	u8			tx_thr_num_pkt_prd = 0;
+ 	u8			tx_max_burst_prd = 0;
+ 	u8			tx_fifo_resize_max_num;
+-	const char		*usb_psy_name;
+-	int			ret;
  
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -371,10 +371,10 @@ quiet_cmd_lzo_with_size = LZO     $@
-       cmd_lzo_with_size = { cat $(real-prereqs) | $(KLZOP) -9; $(size_append); } > $@
+ 	/* default to highest possible threshold */
+ 	lpm_nyet_threshold = 0xf;
+@@ -1541,13 +1539,6 @@ static void dwc3_get_properties(struct d
  
- quiet_cmd_lz4 = LZ4     $@
--      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout > $@
-+      cmd_lz4 = cat $(real-prereqs) | $(LZ4) -l -9 - - > $@
+ 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
  
- quiet_cmd_lz4_with_size = LZ4     $@
--      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -c1 stdin stdout; \
-+      cmd_lz4_with_size = { cat $(real-prereqs) | $(LZ4) -l -9 - -; \
-                   $(size_append); } > $@
+-	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
+-	if (ret >= 0) {
+-		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
+-		if (!dwc->usb_psy)
+-			dev_err(dev, "couldn't get usb power supply\n");
+-	}
+-
+ 	dwc->has_lpm_erratum = device_property_read_bool(dev,
+ 				"snps,has-lpm-erratum");
+ 	device_property_read_u8(dev, "snps,lpm-nyet-threshold",
+@@ -1887,6 +1878,23 @@ static int dwc3_get_clocks(struct dwc3 *
+ 	return 0;
+ }
  
- # U-Boot mkimage
++static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
++{
++	struct power_supply *usb_psy;
++	const char *usb_psy_name;
++	int ret;
++
++	ret = device_property_read_string(dwc->dev, "usb-psy-name", &usb_psy_name);
++	if (ret < 0)
++		return NULL;
++
++	usb_psy = power_supply_get_by_name(usb_psy_name);
++	if (!usb_psy)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	return usb_psy;
++}
++
+ static int dwc3_probe(struct platform_device *pdev)
+ {
+ 	struct device		*dev = &pdev->dev;
+@@ -1940,6 +1948,10 @@ static int dwc3_probe(struct platform_de
+ 
+ 	dwc3_get_properties(dwc);
+ 
++	dwc->usb_psy = dwc3_get_usb_power_supply(dwc);
++	if (IS_ERR(dwc->usb_psy))
++		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
++
+ 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
+ 	if (IS_ERR(dwc->reset)) {
+ 		ret = PTR_ERR(dwc->reset);
 
 
 
