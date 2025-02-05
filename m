@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC03EA292AC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A71EA2934A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B5803AA524
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 596FD16BC8D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EB81FC0EE;
-	Wed,  5 Feb 2025 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722561DD88F;
+	Wed,  5 Feb 2025 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcaqZK3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGAxkXeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D5618A6D7;
-	Wed,  5 Feb 2025 14:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3089E33993;
+	Wed,  5 Feb 2025 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767232; cv=none; b=oDmnpoSkeCTFw/rASW5tOtMoiKTyicyl+Emt51CmE6a1X8+r0fByESy2Darj0I0v36pM/NUEFymSf/518Uc0dyTa+P3lmXTHkJxye3EGQLxEtv1Gc6tLV69nMjvPljWOvXxhijuMx1Q2AqrIh/bXUC5BTgSeiA2LzXDNzGi0604=
+	t=1738767696; cv=none; b=NpbXnpvrE6zyQ0HENVWhl8Z48U7p8v63uWEyAdxo/I0gxG8GjkHbj3Zx8+zgpICV2SAhqFogIDpArc2Seym2jGaM/I4+CHJKV5maQoDWFqhmkG7c3WN5dlaLXtFb9UfGN2sp/ekgwEW6b9mUvpRbtbLA/Ca5E2ibCMm+V0T9W6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767232; c=relaxed/simple;
-	bh=ZmUwcjh3s0vgxXfgt/VY/Te+b1oNtWSN/gUKACgiw6o=;
+	s=arc-20240116; t=1738767696; c=relaxed/simple;
+	bh=h2+z3sBBRVmXjAUTZdZTq5+ouknO2W/JsKM3qjJsIuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QaEN8GjlAm6H3x1s7et9seBcXhcJufQg/IDxkSSmWvc22i1r8TzV0T5RuIHOGBZgR/3TPa7R/qy9C9M8unCs/JXptG+I0Gmc2LD7gL3tV0V06Lnfc7PNsM0HVyJteK1CUar8VceTNxZfbbi7WuTNNBkczOOnZcGLjqWOsWlO3wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcaqZK3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE5FC4CED1;
-	Wed,  5 Feb 2025 14:53:51 +0000 (UTC)
+	 MIME-Version; b=iPiTCkk1kkjU8HUR4YBpI+yMW0iSCkmalSDpGRXL8YXT4kbqNR+uya/+vNPpFHchpXerUCRLyYHURwmSOZRoZKgHKEBR9jMuhCCf39IKGkUrf1krEUJeN7+pfXJKw1iTxrYeje5yezuAH3n7gy29ErGwSLplDJbIbq5DkROllpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGAxkXeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912FEC4CED1;
+	Wed,  5 Feb 2025 15:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767232;
-	bh=ZmUwcjh3s0vgxXfgt/VY/Te+b1oNtWSN/gUKACgiw6o=;
+	s=korg; t=1738767696;
+	bh=h2+z3sBBRVmXjAUTZdZTq5+ouknO2W/JsKM3qjJsIuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcaqZK3o9g3cl4nSqao0a2f3UqOaRfbfJ7brVH7Dk+Y7tfvL5LrZ+dfzqjBQvxJLG
-	 PeDG3BDKIKO6mxgCFsyG+XGi2ign5JO4KLjJd2V+fTXM63Sr8jKpP+vDHtH4VXZwP6
-	 ZJdIQdJLu5uLjQpTtp2NZTTAkM7GxBYY4pK3uSPs=
+	b=CGAxkXeMIoyA2SLGhrIyXWD8eu3bG/GSADiWaJ4d4VbLt4cbcN9e0e8EQhl3NRFnl
+	 4+suKBP8JCxIfZV9W1lvsCBvM1qf3PK4nySPHIVxUA5NEwlX5PYmYxdTDHEDHOrArT
+	 VpvTTOvwyH3BOiil35+iLrZf8tQ4db6ogHpq+2fY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Lars Pedersen <lapeddk@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 427/590] PCI: imx6: Deassert apps_reset in imx_pcie_deassert_core_reset()
+Subject: [PATCH 6.13 440/623] spi: omap2-mcspi: Correctly handle devm_clk_get_optional() errors
 Date: Wed,  5 Feb 2025 14:43:02 +0100
-Message-ID: <20250205134511.601149772@linuxfoundation.org>
+Message-ID: <20250205134513.050588959@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit ef61c7d8d032adb467f99d03ccfaa293b417ac75 ]
+[ Upstream commit a07eb4f67ed085f32002a1af2b6073546d67de3f ]
 
-Since the apps_reset is asserted in imx_pcie_assert_core_reset(), it should
-be deasserted in imx_pcie_deassert_core_reset().
+devm_clk_get_optional() returns NULL for missing clocks and a PTR_ERR()
+if there is a clock but we fail to get it, but currently we only handle
+the latter case and do so as though the clock was missing.  If we get an
+error back we should handle that as an error since the clock exists but
+we failed to get it, if we get NULL then the clock doesn't exist and we
+should handle that.
 
-Fixes: 9b3fe6796d7c ("PCI: imx6: Add code to support i.MX7D")
-Link: https://lore.kernel.org/r/20241126075702.4099164-6-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Fixes: 4c6ac5446d06 ("spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()")
+Reported-by: Lars Pedersen <lapeddk@gmail.com>
+Link: https://patch.msgid.link/20250117-spi-fix-omap2-optional-v1-1-e77d4ac6db6e@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Tested-by: Lars Pedersen <lapeddk@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/spi/spi-omap2-mcspi.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 22bf21846b79d..94f5246b3a720 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -775,6 +775,7 @@ static void imx_pcie_assert_core_reset(struct imx_pcie *imx_pcie)
- static int imx_pcie_deassert_core_reset(struct imx_pcie *imx_pcie)
- {
- 	reset_control_deassert(imx_pcie->pciephy_reset);
-+	reset_control_deassert(imx_pcie->apps_reset);
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index add6247d34819..29c616e2c408c 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1561,10 +1561,15 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
  
- 	if (imx_pcie->drvdata->core_reset)
- 		imx_pcie->drvdata->core_reset(imx_pcie, false);
+ 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	if (IS_ERR(mcspi->ref_clk))
+-		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
+-	else
++	if (IS_ERR(mcspi->ref_clk)) {
++		status = PTR_ERR(mcspi->ref_clk);
++		dev_err_probe(&pdev->dev, status, "Failed to get ref_clk");
++		goto free_ctlr;
++	}
++	if (mcspi->ref_clk)
+ 		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
++	else
++		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
+ 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
+ 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 
 -- 
 2.39.5
 
