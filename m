@@ -1,192 +1,136 @@
-Return-Path: <stable+bounces-113958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5504FA298FE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 19:28:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8A2A29A4A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 20:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 712CB3A291F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 18:27:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4120188A477
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 19:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323101FF7BB;
-	Wed,  5 Feb 2025 18:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA7F207E0E;
+	Wed,  5 Feb 2025 19:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="ApoHtq05"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="gEriVhBj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366391FDE08
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 18:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C261FF1B3;
+	Wed,  5 Feb 2025 19:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738779934; cv=none; b=s3DwF/X4G63o9IWBIfvF4MDMLBNUklVIryQMfZcwlBkxOVXIqIF7q0j2RyOTYNqtSYTEtp5LcKHzb2LZ+HigCm4Tkiv8aqnDWTddI8QtvTym095vvhpOF79dHJxAtkAKoCaapDtJg7FxKcPDg6c3plOdUsCjm538GEaUUHXxZrw=
+	t=1738784359; cv=none; b=Wp2wN6ya3Dgjie0dnTtDlC+KtsZsGVlmec3xzN+vBHvlfI3qhEb0l50E7TxXupAlXGL9npjKSa0NEJqlATw51758jyHKmSAZvxnkeBdfX4hmNbKdsBdfQkNeq7jk+2MidISEol6TILxzoPVIv32Uo7Myd/TvpIJHPwVwnUwF1cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738779934; c=relaxed/simple;
-	bh=tH6lLMrQ/gj5po0e0sG6QtkzB5Kxsj+lFXBtzxF6SIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OVU+DfWHhIng3jzASnt9CUlwLNSZ2WN4MZ6XCAg7t0K8s5tGGVXPA55Zo8RLugqfcrZhgQj+qG9Rr56/X297qFbdxmQ2uN85jhm7OTTiOznqnqBBjYbEcvXmu90hXr3JDoec4Q1VoJMPjODZhbfXDcRJ3/4X/Ad8iUefZC6drnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=ApoHtq05; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-467a37a2a53so1415781cf.2
-        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 10:25:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1738779931; x=1739384731; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mCzyuBHVhuQj4Umta0/LqBnv3QQgsYQwEwtnRHH8YVM=;
-        b=ApoHtq05eDSi3/wXc75BudIKOhgeXgT1Xwxx8EmX68Z5uBqUh6n0Y9gWB1QCVhW6wq
-         A8VBkj/2FprcxeVdJeGhCCnvScm3cxnb54oBxswBBV3pldZMNUOG5HlNmhbhnzDcQkVV
-         cXtDk+f2jbYrtzQCSwDZnE8A5gU4QCAjwCdmPJ23DE9ZEx0rGXr1EDdApJ8pLtg43le+
-         prPEqM3x5t+NJwYSL8OiavFy5GraKuVwYtzR0KUMhCAylKfDG2c//13dRTFJxNN4JtXY
-         tQYysHfbOz3ZHZTp9dkNEKGusz80rxP4X3X1ymePPG5r0uKql6aXqyNj77M3cQQ4ZhGH
-         bbiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738779931; x=1739384731;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mCzyuBHVhuQj4Umta0/LqBnv3QQgsYQwEwtnRHH8YVM=;
-        b=o8nbrVZKcTZB1mP8XOzJu9NeZ0RwwzrHqJWwVj5Qh7lcjL9+CIyaOrvmoCXUslB/al
-         UTserjGr9KRj4zKl9nG39RhLh2/CVI2Ru7SnqQVM2oYZbGKUUfXf0xjNs98z1z0dFAAa
-         uVsGRTunZbZ8BYcFkA7urr71I7AHDaCz9SLChwr2Zc1mkkm1v8gJLCpZbbDHmdBnieS0
-         HCZo8/xL+gyf5rsiAWwIWjvXuINaWfWbqqz+1Tb/frLlqPgQoMvtuj2Mo0LzWZoxMyyF
-         Du0ZPU7CkdfSwILYLMy/41ilctiKHfp0pMsqZn4RqkhPgDOXUFPmaTxE2/mOeKbJJmt0
-         sZow==
-X-Forwarded-Encrypted: i=1; AJvYcCVAeNEv1MbQ2MZffspXOILc4bSLYkoYLsC5s/jNDaJQMIEXLteQEqNwURQnnbUC75CqFYUzZF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywjp2hE5RvwCDfjwL1vH0TRJcUb1YpwVBzOYsZazhKlzmfhp+s9
-	H+kG7LK94E99kA07O1/0c0LZsuwPNu2R4zzj01M462kek+K76v3APu2ktFNzyw==
-X-Gm-Gg: ASbGncv/VkWYaPpVIhKxoCnpjFWj4T5jIbuCxhqp4g1LchAEXX9Q3ndMMz7FIRdvbeZ
-	ye+WV4/GNvrZz+sysLJMFveHoaJfVvV/HJrJT+mQw9PA8z7dG9k1mQotfuAOAgCfLokUQb8SASQ
-	4TahCICkIueMv1bvo8kYjBodiGw8bplE9JA3DCZcK0ILoNnXryzrKr+ZRTyznCm//GLymNQyj16
-	hxUuJg3zWq8EoBDc7Df0mZah0eD6jfp1RWXDtzE12Cw6JKUFOIpI20nnSEXno5fTtRNdtEVaGob
-	nN/yx+P5nvnqyoWnDcsjSenVhIGOINogaHq2XgtwGAyk70JUtanX8YiXiZzgZcPRj+HZMi2TLcs
-	FymtEBH8a
-X-Google-Smtp-Source: AGHT+IHbLHNE3cQEhE10HA2TKNk7wuNggVxGPfO7kUIpeSaRqAIv7hAuT4QUnco0X4ZYtMz7WP94AA==
-X-Received: by 2002:a05:622a:50:b0:46f:cc2e:3b54 with SMTP id d75a77b69052e-4702818e2e4mr39924271cf.12.1738779931018;
-        Wed, 05 Feb 2025 10:25:31 -0800 (PST)
-Received: from rowland.harvard.edu (nat-65-112-8-21.harvard-secure.wrls.harvard.edu. [65.112.8.21])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46fdf0ce770sm72153931cf.19.2025.02.05.10.25.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 10:25:30 -0800 (PST)
-Date: Wed, 5 Feb 2025 13:25:27 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Mingcong Bai <jeffbai@aosc.io>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Kexy Biscuit <kexybiscuit@aosc.io>
-Subject: Re: [PATCH] USB: core: Enable root_hub's remote wakeup for wakeup
- sources
-Message-ID: <6363c5ba-c576-42a8-8a09-31d55768618c@rowland.harvard.edu>
-References: <20250131100630.342995-1-chenhuacai@loongson.cn>
- <2f583e59-5322-4cac-aaaf-02163084c32c@rowland.harvard.edu>
- <CAAhV-H7Dt1bEo8qcwfVfcjTOgXSKW71D19k3+418J6CtV3pVsQ@mail.gmail.com>
- <fbe4a6c4-f8ba-4b5b-b20f-9a2598934c42@rowland.harvard.edu>
- <61fecc0b-d5ac-4fcb-aca7-aa84d8219493@rowland.harvard.edu>
- <2a8d65f4-6832-49c5-9d61-f8c0d0552ed4@aosc.io>
- <06c81c97-7e5f-412b-b6af-04368dd644c9@rowland.harvard.edu>
- <6838de5f-2984-4722-9ee5-c4c62d13911b@aosc.io>
+	s=arc-20240116; t=1738784359; c=relaxed/simple;
+	bh=zKOiOlHpbUp4kXpTzvoyfe5HyGDtgYP/N9y2FM6xobo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=C8aAHBLOAhR33NXFuhmIigO8NhXnJ1+PgbiX5POzBhfmzm49n41PqNNZCP8xXRviLMI9H7Mo0iqQjn0dwpPNh5cbfN9xlEUnDXSEBqFd07lRzHqF1AZCYNRgn33uHnmUPX7kBgJrcdt+WzrnHlBQXqlGYdddTx6GZL+o4YSSrEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=gEriVhBj; arc=none smtp.client-ip=198.47.19.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 515Jd8GQ3413358
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Feb 2025 13:39:08 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1738784348;
+	bh=ZyjPaBbnb1ioUY1aZ/qbMWRhtW3CaVcbfAm0oTsy96M=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=gEriVhBjDKj6EJRF31VLgY0WLSgAG1iIbPaw4ULEj3TnywsHi2f5SKEE7UmorA8LL
+	 04aBEDy+Dw09lYoaLUJZb/ZCSG4ZHWkL8kaEPqw8yuHnjsSo5G9qIwgldrq1HX/fr7
+	 FzbYUnYqWr8ED1NhbtbB/hLfaR0OaeYv9CmmgWGI=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 515Jd8r0056138
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 5 Feb 2025 13:39:08 -0600
+Received: from lewvowa01.ent.ti.com (10.180.75.79) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
+ Feb 2025 13:39:08 -0600
+Received: from DLEE115.ent.ti.com (157.170.170.26) by lewvowa01.ent.ti.com
+ (10.180.75.79) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Wed, 5 Feb
+ 2025 13:39:08 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 5 Feb 2025 13:39:07 -0600
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 515Jd8Bk032794;
+	Wed, 5 Feb 2025 13:39:08 -0600
+Message-ID: <93d7e958-be62-45b3-ba8f-d3e4cf2839bf@ti.com>
+Date: Wed, 5 Feb 2025 13:39:07 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6838de5f-2984-4722-9ee5-c4c62d13911b@aosc.io>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Revert "mmc: sdhci_am654: Add
+ sdhci_am654_start_signal_voltage_switch"
+To: Josua Mayer <josua@solid-run.com>,
+        Adrian Hunter
+	<adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <rabeeh@solid-run.com>, <jon@solid-run.com>, <stable@vger.kernel.org>
+References: <20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com>
+Content-Language: en-US
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-On Wed, Feb 05, 2025 at 01:59:24PM +0800, Mingcong Bai wrote:
-> 在 2025/2/4 00:15, Alan Stern 写道:
-> > What sort of USB controller does the X200s have?  Is the controller
-> > enabled for wakeup?
-> > 
-> > What happens with runtime suspend rather than S3 suspend?
+Hi all,
+
+On 1/27/25 2:12 PM, Josua Mayer wrote:
+> This reverts commit 941a7abd4666912b84ab209396fdb54b0dae685d.
 > 
-> It has the Intel Corporation 82801I (ICH9 Family) USB UCHI/USB2 EHCI
-
-UHCI, not UCHI.
-
-> controller with PCI IDs 17aa:20f0/17aa:20f1. The hub is a Genesys Logic,
-> Inc. Hub with an ID of 05e3:0610 - this is an xHCI hub.
-
-There is no such thing as an xHCI hub -- xHCI is a host controller 
-technology, not a hub technology.  Perhaps you mean that it is a USB-3 
-hub.
-
-> Sorry but the record here is going to get a bit messy... But let's start
-> with a kernel with Huacai's patch.
+> This commit uses presence of device-tree properties vmmc-supply and
+> vqmmc-supply for deciding whether to enable a quirk affecting timing of
+> clock and data.
+> The intention was to address issues observed with eMMC and SD on AM62
+> platforms.
 > 
-> === Kernel + Huacai's Patch ===
+> This new quirk is however also enabled for AM64 breaking microSD access
+> on the SolidRun HimmingBoard-T which is supported in-tree since v6.11,
+> causing a regression. During boot microSD initialization now fails with
+> the error below:
 > 
-> 1. If I plug in the external keyboard via the hub,
-> /sys/bus/usb/devices/usb1,
-
-/sys/bus/usb/devices/usb1 is the root hub, which is an emulated device 
-that is closely tied to the host controller.  The external Genesys Logic 
-hub is /sys/bus/usb/devices/1-1.
-
->  power/state is set to enabled. For the hub,
-
-You mean power/wakeup, not power/state.  In fact, there is no 
-power/state file for USB devices in sysfs.
-
-> corresponding to usb1/1-1, power/wakeup is set to disabled.
+> [    2.008520] mmc1: SDHCI controller on fa00000.mmc [fa00000.mmc] using ADMA 64-bit
+> [    2.115348] mmc1: error -110 whilst initialising SD card
 > 
-> 2. If I plug the keyboard directly into the chassis, usb1/power/wakeup is
-> set to disabled, but usb1/1-1/power/wakeup is set to enabled.
-
-Why is usb1/power/wakeup set to disabled?  Doesn't Huacai's patch set it 
-to enabled?
-
-Is 1-1 the keyboard device?  That is, did you plug the keyboard into the 
-port that the Genesys Logic hub was using previously?
-
-> The system wakes up via external keyboard plugged directly into the chassis
-> **or** the hub either way, regardless if I used S3 or runtime suspend (which
-> I assume to be echo freeze > /sys/power/state).
-
-No.  Runtime suspend has no relation to /sys/power.  It is controlled by 
-/sys/bus/usb/devices/.../power/control.  If you write "auto" to this 
-file for the device and for all the hubs above it (including the root 
-hub) then they will be put into runtime suspend a few seconds after you 
-stop using them, assuming no other USB devices are plugged into the same 
-hubs.
-
-> === Kernel w/o Huacai's Patch ===
+> The heuristics for enabling the quirk are clearly not correct as they
+> break at least one but potentially many existing boards.
 > 
-> The controller where I plugged in the USB hub, /sys/bus/usb/devices/usb1 and
+> Revert the change and restore original behaviour until a more
+> appropriate method of selecting the quirk is derived.
 
-/sys/bus/usb/devices/usb1 is the root hub, not the controller.  The two 
-are related but they are not the same thing.  The controller is the 
-parent device of the root hub; it lies under /sys/bus/pci/devices/.
 
-> the hub, corresponding to usb1/1-1, their power/wakeup entries are both set
-> to disabled. Same for when I have the patch applied.
-> 
-> However, if I plug the external keyboard into the chassis, it would fail to
-> wakeup regardless of S3/runtime suspend (freeze). If I plug the external
-> keyboard via that USB Hub though, it would wake up the machine. The findings
-> are consistent between S3/freeze.
+Somehow I missed these emails, apologies.
 
-This means there's something different between the way the keyboard 
-sends its wakeup signal and the way the Genesys Logic hub sends its 
-wakeup signal.
+Thanks for reporting this issue Josua.
 
-Can you post the output from "lsusb -t" for this system?
+We do need this patch for am62x devices since it fixes timing issues
+with a variety of SD cards on those boards, but if there is a
+regression, too bad, patch had to be reverted.
 
-Also, can you enable dynamic debugging for usbcore by doing:
+I will look again into how to implement this quirk, I think using the
+voltage regulator nodes to discover if we need this quirk might not have
+been a good idea, based on your explanation. I believe I did test the
+patch on am64x SK and am64x EVM boards and saw no boot issue there,
+so the issue seems related to the voltage regulator nodes existing in DT
+(the heuristics for enabling the quirk) as you call it.
 
-	echo module usbcore =p >/sys/kernel/debug/dynamic_debug/control
+Again, thanks for reporting, will look into fixing this issue for am62x
+again soon.
 
-and then post the dmesg log for a suspend/resume cycle?
+~ Judith
 
-Alan Stern
+
 
