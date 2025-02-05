@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D553EA28D96
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCECA28D24
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68985188764A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95C83A9396
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9035BF510;
-	Wed,  5 Feb 2025 14:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E8814EC77;
+	Wed,  5 Feb 2025 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cqdboz+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI/tWTiN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA5515198D;
-	Wed,  5 Feb 2025 14:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6961519AA;
+	Wed,  5 Feb 2025 13:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764162; cv=none; b=PmfvefV9di5o2dZSaRsYQ9cHvm/ji4h6vgM0lvq/smP+4eHGjTA/w7KJ7C9uDvYRWJKNYx9DQZWndG+EBC0HdZ4nrSKg5h+yjPw5x+kJ9dopeD7m2YzCwl0bgmdp0yvEmJojENYhB4Odc4JbMakM/2awA1BCT5kLBrRjuWG2h9Y=
+	t=1738763809; cv=none; b=PturXzL9drNIYOmerL4eUDAcp9yvaHgxHpkaYXyHl4FlbZHmhzDt4ndvX6v2RDyuqhufWoetOZbDwiFpwOvz1YAZtgD1rkyDdnSlHSIOHyYSKP1Qa7Xdmx/oX91qOddB8MtfMG2FRrHMbn1mDgK0p85J2lW/BUsjiNnDfFcC+/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764162; c=relaxed/simple;
-	bh=2isLC3BhsbvnWbvxwcFsXDG4ruIk79yHdXwB6t+HypU=;
+	s=arc-20240116; t=1738763809; c=relaxed/simple;
+	bh=7kvtPkjDNKZw9WqwmawjBnDJ8BCYNmfr+ZcQRQUjo+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVYa1yV4ENdw/ppMmWpiXjQl1NO2PTOtKgxh6fVN7hr+NX8ATw8+2QRskkwjnPVcSJw8PgrGOsAg5uKJpac+ueI5dGpOeTPKB6vj8OJdkwEyKbCeTcvuM3+tfoIXOiOBWuKHr5OTkzvNz2f4v/iswSlPkxZiODANSh1Ocn3dAtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cqdboz+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA3DC4CED6;
-	Wed,  5 Feb 2025 14:02:41 +0000 (UTC)
+	 MIME-Version; b=LsbF5f25JaEzo+9ud9aV8qG1sWb2r/UlFLSAD/D0GDdnSW0za94Wn6E3YBNXY7HlnU1SnCNKKfznQvyRbp+2LcPdUHhK41wcLTb1OuXnlEQyFcszCuEvEK22LyMRJl+H0bVmsaOwdv333qJwAlBYbXg9Ok9/0aHE5kw67q0idQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI/tWTiN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232B8C4CED1;
+	Wed,  5 Feb 2025 13:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764162;
-	bh=2isLC3BhsbvnWbvxwcFsXDG4ruIk79yHdXwB6t+HypU=;
+	s=korg; t=1738763808;
+	bh=7kvtPkjDNKZw9WqwmawjBnDJ8BCYNmfr+ZcQRQUjo+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cqdboz+co99tFptQxczU664krRWEBdPdLzv0+0+I5/IIlDYulz1PC0X/8A61QvY35
-	 NXNpx8utB1ti9VC/ZPNdY03ezi2AqdDbqtdyumQoZvWafINtYyPB4uU1fBAEsfA6a2
-	 jOyVecDy9QjJuIaKKutIUxnc0ZpbEebMxJvOMbMI=
+	b=FI/tWTiNkTatPLprPZzuMsX3ANb4epQOlj/ns9rarI/7BiKdv5NY7rHUzN4c3BcKf
+	 NIMOZW53nUrzlTF2B2gfwjHTQjjPoWAvHGbnMWn4r+Twv04OVNPp+chvesZKfTc4KX
+	 ehj5nADuV11Oa4NCGTqX9i+sSYN/kCoe6d5bo3kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 053/623] drm/msm/dp: disable the opp table request even for dp_ctrl_off_link()
-Date: Wed,  5 Feb 2025 14:36:35 +0100
-Message-ID: <20250205134458.258527450@linuxfoundation.org>
+	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 041/590] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+Date: Wed,  5 Feb 2025 14:36:36 +0100
+Message-ID: <20250205134456.823046718@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit a3dd01375a6a21ed3e5dbc58f7004d48561f0977 ]
+commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
 
-dp_ctrl_off_link() was created to handle a case where we received
-a cable connect and then get a cable disconnect without the corresponding
-dp_display_enable(). For such cases the pixel clock will be off but the
-link clock will still be on. dp_ctrl_off_link() handles this case by
-turning off the link clock only.
+A report in 2019 by the syzbot fuzzer was found to be connected to two
+errors in the HID core associated with Resolution Multipliers.  One of
+the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
+in hid_apply_multiplier."), but the other has not been fixed.
 
-However, the vote removal to the opp table for this case was missed.
-Remove the opp table vote in dp_ctrl_off_link().
+This error arises because hid_apply_multipler() assumes that every
+Resolution Multiplier control is contained in a Logical Collection,
+i.e., there's no way the routine can ever set multiplier_collection to
+NULL.  This is in spite of the fact that the function starts with a
+big comment saying:
 
-Fixes: 375a126090b9 ("drm/msm/dp: tear down main link at unplug handle immediately")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/627487/
-Link: https://lore.kernel.org/r/20241205-dp_mst-v1-2-f8618d42a99a@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	 * "The Resolution Multiplier control must be contained in the same
+	 * Logical Collection as the control(s) to which it is to be applied.
+	   ...
+	 *  If no Logical Collection is
+	 * defined, the Resolution Multiplier is associated with all
+	 * controls in the report."
+	 * HID Usage Table, v1.12, Section 4.3.1, p30
+	 *
+	 * Thus, search from the current collection upwards until we find a
+	 * logical collection...
+
+The comment and the code overlook the possibility that none of the
+collections found may be a Logical Collection.
+
+The fix is to set the multiplier_collection pointer to NULL if the
+collection found isn't a Logical Collection.
+
+Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Peter Hutterer <peter.hutterer@who-t.net>
+Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index a8069f7c4773f..9c463ae2f8fae 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -2070,6 +2070,7 @@ void msm_dp_ctrl_off_link(struct msm_dp_ctrl *msm_dp_ctrl)
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1125,6 +1125,8 @@ static void hid_apply_multiplier(struct
+ 	while (multiplier_collection->parent_idx != -1 &&
+ 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
+ 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
++	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
++		multiplier_collection = NULL;
  
- 	msm_dp_catalog_ctrl_mainlink_ctrl(ctrl->catalog, false);
+ 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
  
-+	dev_pm_opp_set_rate(ctrl->dev, 0);
- 	msm_dp_ctrl_link_clk_disable(&ctrl->msm_dp_ctrl);
- 
- 	DRM_DEBUG_DP("Before, phy=%p init_count=%d power_on=%d\n",
--- 
-2.39.5
-
 
 
 
