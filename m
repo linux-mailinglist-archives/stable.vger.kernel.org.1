@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5072A2934F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27900A290BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA42216BFAE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6A018868A3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB6516DC28;
-	Wed,  5 Feb 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEED1802AB;
+	Wed,  5 Feb 2025 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZE08Jxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txVxwb/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881582A1BB;
-	Wed,  5 Feb 2025 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B11380BFF;
+	Wed,  5 Feb 2025 14:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767863; cv=none; b=fw7N4yNFOBlNqwdP9PyT03C4nlQPYBfSL50td6+vRr8Go0sqdPneJJwYr5MsWxVFaZGWxKdwdr/eAo27Fi6GoAc19Vd7F2tHNG+LQhY5FnUwvVKOXUo7wSvKOuFuxH0LH2hrC5uYc5Ac54p8GQpXtZ98wfPWb7ZTEDTa87JtEe8=
+	t=1738766357; cv=none; b=QQ4eHpZVCZ67zwDuOkCttDtlWufYYMCpIdqAoKVWhkIRUGH7dgMPw9g1Tyg8+xFONLAyckbRBRjBPHRHYYOAKS3WJdI7LLPnIrp7ZfNAKT/vZzmo6ur8v8QEw7EOQp3azb/MnyVz6AvijSYzSjMramwAKnBosS5PLASl1B260I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767863; c=relaxed/simple;
-	bh=OJ7T60d9FfCpRndp8kntcB8/Yak1MF4gznbALM+pjM8=;
+	s=arc-20240116; t=1738766357; c=relaxed/simple;
+	bh=DRvffZOAYSucdbZCOMfK1qGFJqdWp46WYeouMpPVOq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nDfdSG9B8NHbczQ/Eoy1LTiwsmSMKU6CT6RcDrdNMEWzJrPyqce/iu7Ll+G3XgmMUhkCXDoKQlvL9xphvlhz0m6zmq7LVdlfsF7eUt5mwbpqdYpwqYC1+iW+OFX2r9WKZKV2eIHuitlVDssQjfPml6E2A7HTlc6+GI4gG2c8v5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZE08Jxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B0BC4CED1;
-	Wed,  5 Feb 2025 15:04:22 +0000 (UTC)
+	 MIME-Version; b=GRW5cm3leI/b0P3NakvW8UlKJ/h9EFZeVphQU5wj15qKLdFqOtsVTeGQbWRMxAjPuE7JUc1FK+gM90vVWq1hPKPPi91Gdp4ymGD4mZ1p05MgZfQNDclcQ+Fh+I+aZTAs57Ltf7J//dQ0F++4yV283hlFYjLGP7HKkHbnP0T0KHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txVxwb/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F17C4CEE4;
+	Wed,  5 Feb 2025 14:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767863;
-	bh=OJ7T60d9FfCpRndp8kntcB8/Yak1MF4gznbALM+pjM8=;
+	s=korg; t=1738766357;
+	bh=DRvffZOAYSucdbZCOMfK1qGFJqdWp46WYeouMpPVOq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZE08JxcZOikTU6PFjXC8hhhcOIVrmV5dDLeI1zqv1FFOXu6I2IbSuhSiPwLH/ETt
-	 j00NLY0OslFf6cre0t1FzLm7XtRs+eoej59YKNxQ6KB4B0gJry5Fl4dtVKV75yzGT5
-	 Cez/9kE4TyEtG/ZWBvefi0bCyT7oNc3xsNd1cZEQ=
+	b=txVxwb/rOx21JAtIEtGExY0TBEvNqSB074NNb3DDfZoZpQzKqMU5/cgBb9Ps9oxog
+	 IQbTjoHgg4Wzocsobo/aNQ2niRjI2qnsPAbm1IckdE6kzmWSx11Pl58YF7rJXXXHYL
+	 04+qO8alrgL8f628s0RjdO9Wqmn2ETgLd0Levw/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Wurm <stephan.wurm@a-eberle.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 519/590] net: hsr: fix fill_frame_info() regression vs VLAN packets
+Subject: [PATCH 6.6 355/393] ASoC: rockchip: i2s_tdm: Re-add the set_sysclk callback
 Date: Wed,  5 Feb 2025 14:44:34 +0100
-Message-ID: <20250205134515.120785579@linuxfoundation.org>
+Message-ID: <20250205134433.884991432@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Detlev Casanova <detlev.casanova@collabora.com>
 
-[ Upstream commit 0f5697f1a3f99bc2b674b8aa3c5da822c5673c11 ]
+[ Upstream commit 5323186e2e8d33c073fad51e24f18e2d6dbae2da ]
 
-Stephan Wurm reported that my recent patch broke VLAN support.
+In commit
+9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates"),
+the set_sysclk callback was removed as considered unused as the mclk rate
+can be set in the hw_params callback.
+The difference between hw_params and set_sysclk is that the former is
+called with the audio sampling rate set in the params (e.g.: 48000 Hz)
+while the latter is called with a clock rate already computed with
+  sampling_rate * mclk-fs (e.g.: 48000 * 256)
 
-Apparently skb->mac_len is not correct for VLAN traffic as
-shown by debug traces [1].
+For HDMI audio using the Rockchip I2S TDM driver, the mclk-fs value must
+be set to 128 instead of the default 256, and that value is set in the
+device tree at the machine driver level (like a simple-audio-card
+compatible node).
+Therefore, the i2s_tdm driver has no idea that another mclk-fs value can
+be configured and simply computes the mclk rate in the hw_params callback
+with DEFAULT_MCLK_FS * params_rate(params), which is wrong for HDMI
+audio.
 
-Use instead pskb_may_pull() to make sure the expected header
-is present in skb->head.
+Re-add the set_sysclk callback so that the mclk rate is computed by the
+machine driver which has the correct mclk-fs value set in its device tree
+node.
 
-Many thanks to Stephan for his help.
-
-[1]
-kernel: skb len=170 headroom=2 headlen=170 tailroom=20
-        mac=(2,14) mac_len=14 net=(16,-1) trans=-1
-        shinfo(txflags=0 nr_frags=0 gso(size=0 type=0 segs=0))
-        csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-        hash(0x0 sw=0 l4=0) proto=0x0000 pkttype=0 iif=0
-        priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-        encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-kernel: dev name=prp0 feat=0x0000000000007000
-kernel: sk family=17 type=3 proto=0
-kernel: skb headroom: 00000000: 74 00
-kernel: skb linear:   00000000: 01 0c cd 01 00 01 00 d0 93 53 9c cb 81 00 80 00
-kernel: skb linear:   00000010: 88 b8 00 01 00 98 00 00 00 00 61 81 8d 80 16 52
-kernel: skb linear:   00000020: 45 47 44 4e 43 54 52 4c 2f 4c 4c 4e 30 24 47 4f
-kernel: skb linear:   00000030: 24 47 6f 43 62 81 01 14 82 16 52 45 47 44 4e 43
-kernel: skb linear:   00000040: 54 52 4c 2f 4c 4c 4e 30 24 44 73 47 6f 6f 73 65
-kernel: skb linear:   00000050: 83 07 47 6f 49 64 65 6e 74 84 08 67 8d f5 93 7e
-kernel: skb linear:   00000060: 76 c8 00 85 01 01 86 01 00 87 01 00 88 01 01 89
-kernel: skb linear:   00000070: 01 00 8a 01 02 ab 33 a2 15 83 01 00 84 03 03 00
-kernel: skb linear:   00000080: 00 91 08 67 8d f5 92 77 4b c6 1f 83 01 00 a2 1a
-kernel: skb linear:   00000090: a2 06 85 01 00 83 01 00 84 03 03 00 00 91 08 67
-kernel: skb linear:   000000a0: 8d f5 92 77 4b c6 1f 83 01 00
-kernel: skb tailroom: 00000000: 80 18 02 00 fe 4e 00 00 01 01 08 0a 4f fd 5e d1
-kernel: skb tailroom: 00000010: 4f fd 5e cd
-
-Fixes: b9653d19e556 ("net: hsr: avoid potential out-of-bound access in fill_frame_info()")
-Reported-by: Stephan Wurm <stephan.wurm@a-eberle.de>
-Tested-by: Stephan Wurm <stephan.wurm@a-eberle.de>
-Closes: https://lore.kernel.org/netdev/Z4o_UC0HweBHJ_cw@PC-LX-SteWu/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250129130007.644084-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates")
+Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
+Link: https://patch.msgid.link/20250117163102.65807-1-detlev.casanova@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/rockchip/rockchip_i2s_tdm.c | 31 +++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 40c5fbbd155d6..c0217476eb17f 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -688,9 +688,12 @@ static int fill_frame_info(struct hsr_frame_info *frame,
- 		frame->is_vlan = true;
+diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
+index e6a6eabc47e5b..14e5c53e697b0 100644
+--- a/sound/soc/rockchip/rockchip_i2s_tdm.c
++++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
+@@ -24,7 +24,6 @@
  
- 	if (frame->is_vlan) {
--		if (skb->mac_len < offsetofend(struct hsr_vlan_ethhdr, vlanhdr))
-+		/* Note: skb->mac_len might be wrong here. */
-+		if (!pskb_may_pull(skb,
-+				   skb_mac_offset(skb) +
-+				   offsetofend(struct hsr_vlan_ethhdr, vlanhdr)))
- 			return -EINVAL;
--		vlan_hdr = (struct hsr_vlan_ethhdr *)ethhdr;
-+		vlan_hdr = (struct hsr_vlan_ethhdr *)skb_mac_header(skb);
- 		proto = vlan_hdr->vlanhdr.h_vlan_encapsulated_proto;
- 		/* FIXME: */
- 		netdev_warn_once(skb->dev, "VLAN not yet supported");
+ #define DRV_NAME "rockchip-i2s-tdm"
+ 
+-#define DEFAULT_MCLK_FS				256
+ #define CH_GRP_MAX				4  /* The max channel 8 / 2 */
+ #define MULTIPLEX_CH_MAX			10
+ 
+@@ -72,6 +71,8 @@ struct rk_i2s_tdm_dev {
+ 	bool has_playback;
+ 	bool has_capture;
+ 	struct snd_soc_dai_driver *dai;
++	unsigned int mclk_rx_freq;
++	unsigned int mclk_tx_freq;
+ };
+ 
+ static int to_ch_num(unsigned int val)
+@@ -647,6 +648,27 @@ static int rockchip_i2s_trcm_mode(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
+ 
++static int rockchip_i2s_tdm_set_sysclk(struct snd_soc_dai *cpu_dai, int stream,
++				       unsigned int freq, int dir)
++{
++	struct rk_i2s_tdm_dev *i2s_tdm = to_info(cpu_dai);
++
++	if (i2s_tdm->clk_trcm) {
++		i2s_tdm->mclk_tx_freq = freq;
++		i2s_tdm->mclk_rx_freq = freq;
++	} else {
++		if (stream == SNDRV_PCM_STREAM_PLAYBACK)
++			i2s_tdm->mclk_tx_freq = freq;
++		else
++			i2s_tdm->mclk_rx_freq = freq;
++	}
++
++	dev_dbg(i2s_tdm->dev, "The target mclk_%s freq is: %d\n",
++		stream ? "rx" : "tx", freq);
++
++	return 0;
++}
++
+ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ 				      struct snd_pcm_hw_params *params,
+ 				      struct snd_soc_dai *dai)
+@@ -661,15 +683,19 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ 
+ 		if (i2s_tdm->clk_trcm == TRCM_TX) {
+ 			mclk = i2s_tdm->mclk_tx;
++			mclk_rate = i2s_tdm->mclk_tx_freq;
+ 		} else if (i2s_tdm->clk_trcm == TRCM_RX) {
+ 			mclk = i2s_tdm->mclk_rx;
++			mclk_rate = i2s_tdm->mclk_rx_freq;
+ 		} else if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 			mclk = i2s_tdm->mclk_tx;
++			mclk_rate = i2s_tdm->mclk_tx_freq;
+ 		} else {
+ 			mclk = i2s_tdm->mclk_rx;
++			mclk_rate = i2s_tdm->mclk_rx_freq;
+ 		}
+ 
+-		err = clk_set_rate(mclk, DEFAULT_MCLK_FS * params_rate(params));
++		err = clk_set_rate(mclk, mclk_rate);
+ 		if (err)
+ 			return err;
+ 
+@@ -829,6 +855,7 @@ static const struct snd_soc_dai_ops rockchip_i2s_tdm_dai_ops = {
+ 	.hw_params = rockchip_i2s_tdm_hw_params,
+ 	.set_bclk_ratio	= rockchip_i2s_tdm_set_bclk_ratio,
+ 	.set_fmt = rockchip_i2s_tdm_set_fmt,
++	.set_sysclk = rockchip_i2s_tdm_set_sysclk,
+ 	.set_tdm_slot = rockchip_dai_tdm_slot,
+ 	.trigger = rockchip_i2s_tdm_trigger,
+ };
 -- 
 2.39.5
 
