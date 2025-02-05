@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FCBA29216
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7510FA28E9A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26A0616B700
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE4516234B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB11D1FCFE7;
-	Wed,  5 Feb 2025 14:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07F7173;
+	Wed,  5 Feb 2025 14:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dd0xxDdM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mchNAlZe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BC718C93C;
-	Wed,  5 Feb 2025 14:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEEDEED7;
+	Wed,  5 Feb 2025 14:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766904; cv=none; b=TO1Y6vjd+YEQ+reI4f354xnaYLclZ6PZGeSxVsCK7jEc8DbFRya3yJ3KVWnZk32XST3m2wS15TYOMHB8pPg3oHjS683TDF5i0SThTIDqpfeTX0Gm+vQCs2r4vMg6Z7W8slrLxSRx0YNvhpV5LGgO41pDnfy+iUbpxd6/pMeninA=
+	t=1738764906; cv=none; b=Fju3SDs1Hg8FrSjvdo1Nb0tviOc6hlCjSSh7/ZQURFt5ldIb2cd0GwMHh/UDAVqJ0jUyh6Rccgs2RTO9dFI3nQjDwFKjasd6TiL2pffHtp4vA/XQv4ESvkn79OQnVWAHUqv2qJQUE5GaRWWmUZY8/w1HNEoOhShgJGstrVZETSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766904; c=relaxed/simple;
-	bh=cXMC1IJ9POuQh7QFU/Px355ZxqY1WdE0MXA48S17qPE=;
+	s=arc-20240116; t=1738764906; c=relaxed/simple;
+	bh=UJBBMJ9oE6fcYHJeu5sXt4sSg87fADNPkiBU7t8WyxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+lz0p1D30ODHUHuk9bwXyL++pMWcyIW29YOohooHwez3/coAGS9oLRKYDcXa7m6WAaz9xkwzIdS4jOxSvNrOdeOkjyVOIAsBj9w4/tF/igCrmkX7CXOMy/9k/e5YMFOPDkNjBfBhmH1/LuW8/veEJuX+PUBqhZPSM96Md0eNyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dd0xxDdM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58DBC4CED1;
-	Wed,  5 Feb 2025 14:48:23 +0000 (UTC)
+	 MIME-Version; b=B/ZS2v4EQImD34fMTt67rAwYvTuS2n4eWGvLyJcTwyzEJl1KXFPoGXbryZ0EII0CU6+0mfyj8shJZkxrn4xhr2PFb7XGw53iXv/DU8arIFIx/WO7Ln9EPRSN3W6Gb118/xAiuMCz5RrX5FBs84YezG0wxIsYelLJbETg4C1g/W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mchNAlZe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF529C4CED1;
+	Wed,  5 Feb 2025 14:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766904;
-	bh=cXMC1IJ9POuQh7QFU/Px355ZxqY1WdE0MXA48S17qPE=;
+	s=korg; t=1738764906;
+	bh=UJBBMJ9oE6fcYHJeu5sXt4sSg87fADNPkiBU7t8WyxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dd0xxDdM9TmPkvIrcOtXu1Br4uTHSx9QiKQoSxAttjexWqqr54aYphi3YhlIaobeG
-	 CfgFvXMjBucMPaYuQS6Wh8jM2cWVQhh6Adg/nmPtTd6TlyHldUGPKmnTW3ixqAh8QL
-	 HQT4cfI93r9nQL+LDZgFUvBMnR87fs2cu6BS28XI=
+	b=mchNAlZeISpuOVT7wB2aXsJmnpoxJjBgMvXrA/pnOoF1Wf4MGo0ruUJ4d+mU9aDcV
+	 aO8M3bqcw1kAMF0DmhFrrmFTZ5eUnJkNnCQVOy2etWSSuja6nLKu2ZysCkO64zFAy0
+	 Md3GYTX9x5kcRJ9rH3wLnAyJvEO6FMsSsQR6/P80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>,
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 378/590] arm64: dts: qcom: sm8150-microsoft-surface-duo: fix typos in da7280 properties
+Subject: [PATCH 6.6 214/393] ARM: dts: aspeed: yosemite4: correct the compatible string for max31790
 Date: Wed,  5 Feb 2025 14:42:13 +0100
-Message-ID: <20250205134509.731903516@linuxfoundation.org>
+Message-ID: <20250205134428.487688308@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
 
-[ Upstream commit 9875adffb87da5c40f4013e55104f5e2fc071c2a ]
+[ Upstream commit b1a1ecb669bfa763ee5e86a038d7c9363eee7548 ]
 
-The dlg,const-op-mode & dlg,periodic-op-mode were mis-names with twice
-the "dlg," prefix, drop one to match the bindings.
+Fix the compatible string for max31790 to match the binding document.
 
-This fixes:
-sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,const-op-mode' is a required property
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
-m8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,periodic-op-mode' is a required property
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
-sm8150-microsoft-surface-duo.dtb: da7280@4a: 'dlg,dlg,const-op-mode', 'dlg,dlg,periodic-op-mode' do not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/input/dlg,da7280.yaml#
-
-With the dlg,da7280.yaml converted from dlg,da7280.txt at [1].
-
-[1] https://lore.kernel.org/all/20241206-topic-misc-da7280-convert-v2-1-1c3539f75604@linaro.org/
-
-Fixes: d1f781db47a8 ("arm64: dts: qcom: add initial device-tree for Microsoft Surface Duo")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-6-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2b8d94f4b4a4 ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
+Signed-off-by: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
+Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Link: https://patch.msgid.link/20241003074251.3818101-6-Delphine_CC_Chiu@wiwynn.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../dts/aspeed/aspeed-bmc-facebook-yosemite4.dts | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-index b039773c44653..a1323a8b8e6bf 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts
-@@ -376,8 +376,8 @@
- 		pinctrl-0 = <&da7280_intr_default>;
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+index e9eaffa9b504e..f5d38a9f47638 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+@@ -454,10 +454,8 @@
+ 			};
  
- 		dlg,actuator-type = "LRA";
--		dlg,dlg,const-op-mode = <1>;
--		dlg,dlg,periodic-op-mode = <1>;
-+		dlg,const-op-mode = <1>;
-+		dlg,periodic-op-mode = <1>;
- 		dlg,nom-microvolt = <2000000>;
- 		dlg,abs-max-microvolt = <2000000>;
- 		dlg,imax-microamp = <129000>;
+ 			pwm@20{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x20>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			gpio@22{
+@@ -468,10 +466,8 @@
+ 			};
+ 
+ 			pwm@23{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x23>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			adc@33 {
+@@ -506,10 +502,8 @@
+ 			};
+ 
+ 			pwm@20{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x20>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			gpio@22{
+@@ -520,10 +514,8 @@
+ 			};
+ 
+ 			pwm@23{
+-				compatible = "max31790";
++				compatible = "maxim,max31790";
+ 				reg = <0x23>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 			};
+ 
+ 			adc@33 {
 -- 
 2.39.5
 
