@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF15A29267
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE779A29321
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B85F716D579
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8F853AE2AB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D135A1990B7;
-	Wed,  5 Feb 2025 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD41418732B;
+	Wed,  5 Feb 2025 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXOJTeom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukZ41PR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2CE198A17;
-	Wed,  5 Feb 2025 14:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0B61E89C;
+	Wed,  5 Feb 2025 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767123; cv=none; b=D6kpJ2XCiLJctQ6NQYyIZ9TBGWhyymo1Vbc4x1Z5OmWB82/N8lEe8vkGwkvxEfcxD0LKyV/LqBvRCU1npfirxka0Oipo1Xj06lA+IhcFjRLyeh7CIj4qOOvuLIuvOKL4Gr5OMeq9xW3K7jOC6QA32Zc98MudgJ411KV9rs7MdSQ=
+	t=1738767565; cv=none; b=BDousirUZ9EJEJhvoEE7LT8RxoDJMunv19/wks1CNHCno4F6w/BiTre+HB4wOGjG23Uw/UeZ1piEKpddxpAyUlGUOkjLpYacjRUJh9e7voQI1kO9JqMU2yyXGxiCaPvRhgO5KkYyqtwbNm6b0SmHbppgcp3uZs7XPDippEO1Krk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767123; c=relaxed/simple;
-	bh=ujubaZC9NfdyqnUKQHSKdu4W1KPQvScYIuJvOlSn8CU=;
+	s=arc-20240116; t=1738767565; c=relaxed/simple;
+	bh=rnZN/PPYkeSyU2Y3Sr0aqqscC6G49PEsKh7Rw3t9lHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STXcU7aRBK8rp8acRIY5Jj7Xk7Yyl47XpWh4I7smD80WHFh/aSbfwAs+lXYu0yjwi9r1uxAPMKNkrXkf30OIeHpTGT97xDRGrwHjnxWRtYJaMZpsPKHKKYwR9qBMCp7t60WgxLMJwWHG5HswzQFyvRIsk+NFaY/0rT9g9KMUEjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXOJTeom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE790C4CED1;
-	Wed,  5 Feb 2025 14:52:02 +0000 (UTC)
+	 MIME-Version; b=UNnXtdLItIi4mDKJiOj6gXCBj3jRhboNfbtTwC5DGsm+yJBecqJ764gVOWQIa08aHSOC1S/VqPfbF5fPi6P1QUfBw/dDOqSUISvcjRztrs0W5pOVZb8zuKgKYl/3w8I61IsNeqb2plYjRxx3QqXDHds0AT6FVR+CjEfY46gtEtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukZ41PR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07455C4CEDD;
+	Wed,  5 Feb 2025 14:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767123;
-	bh=ujubaZC9NfdyqnUKQHSKdu4W1KPQvScYIuJvOlSn8CU=;
+	s=korg; t=1738767564;
+	bh=rnZN/PPYkeSyU2Y3Sr0aqqscC6G49PEsKh7Rw3t9lHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXOJTeom3Hp/Ill6SlRSMatRvCI1XELJAEB6SYJEEoJmvKymkpm1ACuKMrMrrCtMw
-	 EPogQETTAJrGdLG8zRNSGptDFjuXLuL+hob3R/Dowup5wr6lTBRqoXjNr6M3P6wdLk
-	 H0Ifs0oDuHmUy1YZkpS1wRIBba37ePL5qOAUT+F4=
+	b=ukZ41PR0UNjCPKUUMye5R1IGPsT6o9ZB5vzElXL6hpdzuafe9RlIorKJermzQSAL1
+	 KpGSxdMIbY6Hxy46IasoYZKaCdZPiXYf/jDwp4Y1s4sor6eZvZa7R2qiAYIsO13Mql
+	 /WCAPZoOCfkzFzKr7UOeqRjpS78PLlqTIYvRwOOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 409/590] PCI/ASPM: Save parent L1SS config in pci_save_aspm_l1ss_state()
+Subject: [PATCH 6.13 422/623] arm64: dts: rockchip: fix num-channels property of wolfvision pf5 mic
 Date: Wed,  5 Feb 2025 14:42:44 +0100
-Message-ID: <20250205134510.914319105@linuxfoundation.org>
+Message-ID: <20250205134512.370189018@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Michael Riesch <michael.riesch@wolfvision.net>
 
-[ Upstream commit 1db806ec06b7c6e08e8af57088da067963ddf117 ]
+[ Upstream commit 11d07966c83f5eccf6b927cb32862aef58488e23 ]
 
-After 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for
-suspend/resume"), pci_save_aspm_l1ss_state(dev) saves the L1SS state for
-"dev", and pci_restore_aspm_l1ss_state(dev) restores the state for both
-"dev" and its parent.
+The Rockchip RK3568 PDM block always considers stereo inputs. Therefore,
+the number of channels must be always an even number, even if a single
+mono microphone is attached.
 
-The problem is that unless pci_save_state() has been used in some other
-path and has already saved the parent L1SS state, we will restore junk to
-the parent, which means the L1 Substates likely won't work correctly.
-
-Save the L1SS config for both the device and its parent in
-pci_save_aspm_l1ss_state().  When restoring, we need both because L1SS must
-be enabled at the parent (the Downstream Port) before being enabled at the
-child (the Upstream Port).
-
-Link: https://lore.kernel.org/r/20241115072200.37509-3-jhp@endlessos.org
-Fixes: 17423360a27a ("PCI/ASPM: Save L1 PM Substates Capability for suspend/resume")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218394
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-[bhelgaas: parallel save/restore structure, simplify commit log, patch at
-https://lore.kernel.org/r/20241212230340.GA3267194@bhelgaas]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Jian-Hong Pan <jhp@endlessos.org> # Asus B1400CEAE
+Fixes: 0be29f76633a ("arm64: dts: rockchip: add wolfvision pf5 mainboard")
+Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
+Link: https://lore.kernel.org/r/20241218-b4-wolfvision-pf5-update-v1-1-1d1959858708@wolfvision.net
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index cee2365e54b8b..9bbcfc91a491e 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -81,24 +81,47 @@ void pci_configure_aspm_l1ss(struct pci_dev *pdev)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
+index e8243c9085427..c6e4137312410 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5.dts
+@@ -53,7 +53,7 @@
  
- void pci_save_aspm_l1ss_state(struct pci_dev *pdev)
- {
-+	struct pci_dev *parent = pdev->bus->self;
- 	struct pci_cap_saved_state *save_state;
--	u16 l1ss = pdev->l1ss;
- 	u32 *cap;
+ 	pdm_codec: pdm-codec {
+ 		compatible = "dmic-codec";
+-		num-channels = <1>;
++		num-channels = <2>;
+ 		#sound-dai-cells = <0>;
+ 	};
  
-+	/*
-+	 * If this is a Downstream Port, we never restore the L1SS state
-+	 * directly; we only restore it when we restore the state of the
-+	 * Upstream Port below it.
-+	 */
-+	if (pcie_downstream_port(pdev) || !parent)
-+		return;
-+
-+	if (!pdev->l1ss || !parent->l1ss)
-+		return;
-+
- 	/*
- 	 * Save L1 substate configuration. The ASPM L0s/L1 configuration
- 	 * in PCI_EXP_LNKCTL_ASPMC is saved by pci_save_pcie_state().
- 	 */
--	if (!l1ss)
-+	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
-+	if (!save_state)
- 		return;
- 
--	save_state = pci_find_saved_ext_cap(pdev, PCI_EXT_CAP_ID_L1SS);
-+	cap = &save_state->cap.data[0];
-+	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL2, cap++);
-+	pci_read_config_dword(pdev, pdev->l1ss + PCI_L1SS_CTL1, cap++);
-+
-+	if (parent->state_saved)
-+		return;
-+
-+	/*
-+	 * Save parent's L1 substate configuration so we have it for
-+	 * pci_restore_aspm_l1ss_state(pdev) to restore.
-+	 */
-+	save_state = pci_find_saved_ext_cap(parent, PCI_EXT_CAP_ID_L1SS);
- 	if (!save_state)
- 		return;
- 
- 	cap = &save_state->cap.data[0];
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL2, cap++);
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, cap++);
-+	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL2, cap++);
-+	pci_read_config_dword(parent, parent->l1ss + PCI_L1SS_CTL1, cap++);
- }
- 
- void pci_restore_aspm_l1ss_state(struct pci_dev *pdev)
 -- 
 2.39.5
 
