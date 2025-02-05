@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60217A2901B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB642A28C64
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A4131883706
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C6E3A32D8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8590F14B075;
-	Wed,  5 Feb 2025 14:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7CD143759;
+	Wed,  5 Feb 2025 13:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDIJ70uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcnR3x83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FA7151988;
-	Wed,  5 Feb 2025 14:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29726132111;
+	Wed,  5 Feb 2025 13:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765925; cv=none; b=vEsOtYkO62dy6E6k43rsju9+MFcfSNDF3ZzaJAPLl2eZruNtRDh3niUN/fRnLJ+nEO7n4XwOnU1H8QV/uFZa2gfHtH4ddr6aOAOOH8zEAe+rhIhvowhzJNuKQIawkMQkDPAZ+pdhPP3aG8aHFlsIurTyPEmSKzrKh/Ua3gaycm0=
+	t=1738763358; cv=none; b=PhGp5nHZm6cqp5M6zInQLVtCRNSbiXkjGCo2aJFbf0NpJNuLpgu2sMmLYlH2VBJwxXzAH/gJe5TaP6dKkAOQa0rrD4UTf6VsC98FM03B8hKPxSibSvbbaJBzXRqHkKhAxApZPXBUDrpzVIEj7EdjLQ/SLN1/OZv1r2y+lDxJeXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765925; c=relaxed/simple;
-	bh=uZfcU1VOIuiddUQeOhoqxcgVKEdT1MO0S9czkR1WNY0=;
+	s=arc-20240116; t=1738763358; c=relaxed/simple;
+	bh=gYc0OIfLG6yWYBA/CWEkNGeUWtKcK1bGK2i5BrcmBX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBFtCgjwmLyO21t468NBhQRFohffYPfk57xWPuS2mWDT5xjKbulCNsKq/gw+LqFyTRJJt0HdpJdfTNFOkvmCxE+OIvMpaASI9R+Zhwl014eh9S2d1v8igPXJPx+ftyn0EXjpAq7FFj9ECCRqTqIqilA/+GCfrrSFn0tNhuKrbR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDIJ70uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A53C4CED6;
-	Wed,  5 Feb 2025 14:32:04 +0000 (UTC)
+	 MIME-Version; b=GZhTlPd5jmQy5QR8PeLgAWmcnemnueSeA95n8midDZcE1efxLZlUiMOVFsb63kB6EQ2PTCdTr0yYxWthBqKtS5WipZ2uNilbU1faxht4Zf4qyqN5KdjObMUp0ZcEYSF0J2atIpW8mthmUn+hMhR9JcylmUs7UMqCsUziPVl0lBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcnR3x83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D320C4CED1;
+	Wed,  5 Feb 2025 13:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765925;
-	bh=uZfcU1VOIuiddUQeOhoqxcgVKEdT1MO0S9czkR1WNY0=;
+	s=korg; t=1738763358;
+	bh=gYc0OIfLG6yWYBA/CWEkNGeUWtKcK1bGK2i5BrcmBX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDIJ70uzDsSpUo9aEMfg73O0QvIAmNwFHXYEPYTi8e41EzIMG8mSmAJNc+r2ZSjmC
-	 u5GIWLQh6VQDJQoKRwhgadIVZJd3sXL7s9HlUc5z1x1zk4leg36An149feCEUQQyv8
-	 zET71zycMsAFsXiPFXxOaGvU4aU7jcfTsbX0mEmQ=
+	b=bcnR3x83OyRJVqIisWwJtu6GG4g91Kj4UovwuR4MEjr30anzfShmXj+o6tdjAAASQ
+	 MKUfjXP+aGhquC6NQT1AYIQXwhyUxWhYg71175ssrTGXAUXZJrIG+/DLJH3n3h0T18
+	 DeyHWysa8MnctgqC7T2bCzS/SxBi7E7jBLBNTmzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 226/623] dev: Acquire netdev_rename_lock before restoring dev->name in dev_change_name().
-Date: Wed,  5 Feb 2025 14:39:28 +0100
-Message-ID: <20250205134504.870327761@linuxfoundation.org>
+Subject: [PATCH 6.6 050/393] wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
+Date: Wed,  5 Feb 2025 14:39:29 +0100
+Message-ID: <20250205134422.214859932@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit e361560a7912958ba3059f51e7dd21612d119169 ]
+[ Upstream commit 8559a9e0c457729fe3edb3176bbf7c7874f482b0 ]
 
-The cited commit forgot to add netdev_rename_lock in one of the
-error paths in dev_change_name().
+Just like in commit 4dfde294b979 ("rtlwifi: rise completion at the last
+step of firmware callback"), only signal completion once the function is
+finished. Otherwise, the module removal waiting for the completion could
+free the memory that the callback will still use before returning.
 
-Let's hold netdev_rename_lock before restoring the old dev->name.
-
-Fixes: 0840556e5a3a ("net: Protect dev->name by seqlock.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250115095545.52709-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241107133322.855112-3-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a9f62f5aeb840..7600820bed6bd 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1279,7 +1279,9 @@ int dev_change_name(struct net_device *dev, const char *newname)
- rollback:
- 	ret = device_rename(&dev->dev, dev->name);
- 	if (ret) {
-+		write_seqlock_bh(&netdev_rename_lock);
- 		memcpy(dev->name, oldname, IFNAMSIZ);
-+		write_sequnlock_bh(&netdev_rename_lock);
- 		WRITE_ONCE(dev->name_assign_type, old_assign_type);
- 		up_write(&devnet_rename_sem);
- 		return ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
+index 30bce381c3bb7..d7dae4488f69b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
+@@ -67,22 +67,23 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
+ 
+ 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
+ 		"Firmware callback routine entered!\n");
+-	complete(&rtlpriv->firmware_loading_complete);
+ 	if (!firmware) {
+ 		pr_err("Firmware %s not available\n", fw_name);
+ 		rtlpriv->max_fw_size = 0;
+-		return;
++		goto exit;
+ 	}
+ 	if (firmware->size > rtlpriv->max_fw_size) {
+ 		pr_err("Firmware is too big!\n");
+ 		rtlpriv->max_fw_size = 0;
+ 		release_firmware(firmware);
+-		return;
++		goto exit;
+ 	}
+ 	pfirmware = (struct rt_firmware *)rtlpriv->rtlhal.pfirmware;
+ 	memcpy(pfirmware->sz_fw_tmpbuffer, firmware->data, firmware->size);
+ 	pfirmware->sz_fw_tmpbufferlen = firmware->size;
+ 	release_firmware(firmware);
++exit:
++	complete(&rtlpriv->firmware_loading_complete);
+ }
+ 
+ static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
 -- 
 2.39.5
 
