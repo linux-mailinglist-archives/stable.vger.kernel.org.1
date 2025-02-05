@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA36A29289
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:02:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DE1A29197
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 574FB16ADE1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D86B7A144D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969FF1FC0E3;
-	Wed,  5 Feb 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79E376;
+	Wed,  5 Feb 2025 14:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6fDwWsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK2NwO6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501861FBEBC;
-	Wed,  5 Feb 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E5818B460;
+	Wed,  5 Feb 2025 14:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767215; cv=none; b=fTeuizeaKaNDmf7XIg13vRPtKdQ9KhDqDWtkKtT0pe97njiPZtXhb8OyhD61nlQK6odvuoRuAFTmlIV14zMTsXOQE/IG4MWsNkdrO8GWd+2UoEiljRUH8gH8wVWfGyPZin7ObB6skNpxlPc52Nny4Labf0lKUzVq7LBtRQLAdH8=
+	t=1738766790; cv=none; b=ApZkbr4q2MhaDSTMGvVaGZU7DCGcgjoVrS/79aN9lhF83PECZeyfJudgzGlC3h86iHO9fq5AnpMt32pQKJ6XRPKPo4XYfVcs3TbPX1HOQkGjPVHAvExuTBg53vx76bTcRwEEU6mUV67OzHi9uXmPpJRUm2EpS8kd5Yq0usJftwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767215; c=relaxed/simple;
-	bh=/rkWRLw0yB0phPepySA4gDKmta099bMOIhAA3u82f9Y=;
+	s=arc-20240116; t=1738766790; c=relaxed/simple;
+	bh=ctZKat2qf0gZzoSpb4eypkaDIq6mWQmxjDrqvDKdpnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cm4+zr4/wNcLa8UJfQQ4Zqk/2ua+ZXYzOlFLAP20C8flaQn/jX2TjTPEs8YpmWtA9jbhjuQchm3tEU7auXCbMQImv0k/gGK+MQA39KBtPxDfSZ6ZpYP1M7Uzf81nPYTfZD1z5fAKi4SKrKtUGH9fmvUwPkCporvFkAdGtqKBQw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6fDwWsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0860C4CED1;
-	Wed,  5 Feb 2025 14:53:34 +0000 (UTC)
+	 MIME-Version; b=ACCGg7DObQ8OdZs9Z10ntvAzkYeT/SBkmKOt3/szQwUKXBHUM1u+DfOn1mKNld8UZI5nhg3+77+mrIRjMOutXQ7VhBXQn4vPdFIKSNgyWKRhsTEwFBsmgUYpuvPzO9Zy/EULUD8U4UQu7PEznaeklGQ4kLJ2jZXkGCTOTfEYVWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK2NwO6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87558C4CED1;
+	Wed,  5 Feb 2025 14:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767215;
-	bh=/rkWRLw0yB0phPepySA4gDKmta099bMOIhAA3u82f9Y=;
+	s=korg; t=1738766790;
+	bh=ctZKat2qf0gZzoSpb4eypkaDIq6mWQmxjDrqvDKdpnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6fDwWsaj6CZf48ZsdqqjhoVnRzgaXPWgnyC3dbBS16VzbHBH9ScHrYv7FDd8Iu9A
-	 N57c+Y9c0KfW+rKdNZeVK2v08ClwROgyO4gB+ewVSKcbUBKL6BphBL/By8MWdq3dRP
-	 oPGASJVvLLEIDH67ufLAmfak77wyzk/RCNxJOflY=
+	b=pK2NwO6SPiinnFApBR1gjY/JlIEqsvd/icNZ47GJXmbSOaHjVut9IUj3J+oZ2g2DP
+	 5uFGMbtqgN750DIil3RLM2aT9K+dhEZ2IP5ISdiEpcT2qCCJEFZUc1+9qXJK/eZHIU
+	 LN6i1+qvrnIUC+KCBBAyQ2A+++xhH2csNcn2U6R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mihai Sain <mihai.sain@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 373/623] arm64: dts: qcom: msm8996: Fix up USB3 interrupts
-Date: Wed,  5 Feb 2025 14:41:55 +0100
-Message-ID: <20250205134510.490997327@linuxfoundation.org>
+Subject: [PATCH 6.12 361/590] ARM: dts: microchip: sama5d29_curiosity: Add no-1-8-v property to sdmmc0 node
+Date: Wed,  5 Feb 2025 14:41:56 +0100
+Message-ID: <20250205134509.081321236@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-[ Upstream commit 9cb9c9f4e1380da317a056afd26d66a835c5796c ]
+[ Upstream commit c21c23a0f2e9869676eff0d53fb89e151e14c873 ]
 
-Add the missing interrupt lines and fix qusb2_phy being an impostor
-of hs_phy_irq.
+Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
+This property will stop the LDO regulator from switching to 1.8V when the
+MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
+SDMMC interface pins in GPIO mode (PA0 - PA13).
 
-This happens to also fix warnings such as:
+On this board, PA6 is used as GPIO to enable the power switch controlling
+USB Vbus for the USB Host. The change is needed to fix the PA6 voltage
+level to 3.3V instead of 1.8V.
 
-usb@6af8800: interrupt-names: ['hs_phy_irq', 'ss_phy_irq'] is too short
-
-Fixes: 4753492de9df ("arm64: dts: qcom: msm8996: Add usb3 interrupts")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241129-topic-qcom_usb_dtb_fixup-v1-3-cba24120c058@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d85c4229e925 ("ARM: dts: at91: sama5d29_curiosity: Add device tree for sama5d29_curiosity board")
+Suggested-by: Mihai Sain <mihai.sain@microchip.com>
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://lore.kernel.org/r/20241119160107.598411-2-cristian.birsan@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index b379623c1b8a0..4719e1fc70d2c 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -3065,9 +3065,14 @@
- 			#size-cells = <1>;
- 			ranges;
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts b/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
+index 951a0c97d3c6b..5933840bb8f7e 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
+@@ -514,6 +514,7 @@
  
--			interrupts = <GIC_SPI 347 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 347 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 133 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 243 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "hs_phy_irq", "ss_phy_irq";
-+			interrupt-names = "pwr_event",
-+					  "qusb2_phy",
-+					  "hs_phy_irq",
-+					  "ss_phy_irq";
- 
- 			clocks = <&gcc GCC_SYS_NOC_USB3_AXI_CLK>,
- 				 <&gcc GCC_USB30_MASTER_CLK>,
+ &sdmmc0 {
+ 	bus-width = <4>;
++	no-1-8-v;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
+ 	disable-wp;
 -- 
 2.39.5
 
