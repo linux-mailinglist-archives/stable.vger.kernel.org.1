@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C6BA28FAE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9A1A28C84
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41B1B1665DA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42069168A7A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A43155382;
-	Wed,  5 Feb 2025 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192E1494DF;
+	Wed,  5 Feb 2025 13:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cH1KRRqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3bxYfPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E7522A;
-	Wed,  5 Feb 2025 14:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D49B146A63;
+	Wed,  5 Feb 2025 13:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765673; cv=none; b=P0hvmw9Gj1+QgD7BdtAdui6fwxEUaK9T07Z+rxWq6vS3SEYXieXHqSvjnHplI+aG+Uug1x88Grk2RbUdrxzQFwmJKIQf7zO7f1p52QVT4M5gfBmyXWlTN9oaPzsz920UusyOnfzjOYlAE7PBynOm/0B+EsoloeOWQb5RUHi7goQ=
+	t=1738763444; cv=none; b=FvwCm4dwPNSZQqURF0VvCpUkq7FjcT/k7W/+GVFuYpv6LGa8Z+Xy1VrxN+1CYOAaqzcsk+XQFQgrlb6vxcPuzyIZqjSh+3dK1JmLU2I3J71Pt1d+gPCXLVWueEx9IshIRhTvoDWGGlMiDwJ/KpbIka7PFTpMFwet2SkzW9eBoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765673; c=relaxed/simple;
-	bh=5WYzwRmXB3e1+SG1vAFwDvM8aayFKCBT368H+DHJ3u8=;
+	s=arc-20240116; t=1738763444; c=relaxed/simple;
+	bh=RMk/oFScoXX337VGNpBgNiPlbN7v1DqoGWDyIK8qEdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pT57w7/t2BvNk10WjjgsVfE++Ssz55BVhN0xfvYI/zrlEKAi9J39l5toBr62E2gNyuTZKKzVE9YDJzhWXTuTTmWWc/YD5p7rBqzVuFKx9Solr/+gRB0F9BEjG7PwsKeY7qdsnm37xJ1RxxgMXt74+Y5JAu8kg5ZavleMlC2xJHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cH1KRRqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F27C4CED1;
-	Wed,  5 Feb 2025 14:27:51 +0000 (UTC)
+	 MIME-Version; b=LcuU8XhA2KMS1jowOjqZz9FQPpjU971Phn+2ykn7Q0nb/pSw6BKmAK5EP+uS9+o0YFgmATZ0qIoErR6cqT8kbnign6X0mnEEDOlhiixCNQYbcNtckmaZNk+eSKiIsT3fIzfvIIBudKtB5MQ/LR9qyI9R3vJsBdqJGjBGM6NU8+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3bxYfPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA0BC4CED1;
+	Wed,  5 Feb 2025 13:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765672;
-	bh=5WYzwRmXB3e1+SG1vAFwDvM8aayFKCBT368H+DHJ3u8=;
+	s=korg; t=1738763442;
+	bh=RMk/oFScoXX337VGNpBgNiPlbN7v1DqoGWDyIK8qEdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cH1KRRqXA2sIRGicN21v8tjIaNhESfvRWg48SyRSRPNCU+LMOvp1zP09aCcYwgreH
-	 1b2Q36AiBLhQaFlvniEbCLHutMa618DvjT/5uxzJmy0LOHAyEh4CwfS3Ng8iqMy1xb
-	 RHintJExwVI78fKHsTQJSYUhY9Cbd0h1Dyh58uqU=
+	b=u3bxYfPBozl5zTTXX5LyeXNQEWgxV/iIZzbn2qaM3je/dqKMu/CyITawXHSjtKYce
+	 Ilvdca8FWZpiAMWJGGpIQeII4Bu4pWJ6rQowuAMYVaK3lbILwsUe8t2lgqzN/WD+ye
+	 tXDX9EUtmQeJf+5xa3ut/4e3rO62vM5mLRnIth+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Ivan Stepchenko <sid@itb.spb.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 203/623] wifi: mt76: mt7996: fix rx filter setting for bfee functionality
+Subject: [PATCH 6.6 026/393] drm/amdgpu: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
 Date: Wed,  5 Feb 2025 14:39:05 +0100
-Message-ID: <20250205134503.996015496@linuxfoundation.org>
+Message-ID: <20250205134421.301643375@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Ivan Stepchenko <sid@itb.spb.ru>
 
-[ Upstream commit 858fd2a53877b2e8b1d991a5a861ac34a0f55ef8 ]
+[ Upstream commit 357445e28ff004d7f10967aa93ddb4bffa5c3688 ]
 
-Fix rx filter setting to prevent dropping NDPA frames. Without this
-change, bfee functionality may behave abnormally.
+The function atomctrl_get_smc_sclk_range_table() does not check the return
+value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
+retrieve SMU_Info table, it returns NULL which is later dereferenced.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Link: https://patch.msgid.link/20241230194202.95065-5-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+In practice this should never happen as this code only gets called
+on polaris chips and the vbios data table will always be present on
+those chips.
+
+Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
+Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 2b34ae5e0cb57..cc4c010d28b83 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -496,8 +496,7 @@ static void mt7996_configure_filter(struct ieee80211_hw *hw,
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index cc3b62f733941..1fbd23922082a 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -1420,6 +1420,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
+ 			GetIndexIntoMasterTable(DATA, SMU_Info),
+ 			&size, &frev, &crev);
  
- 	MT76_FILTER(CONTROL, MT_WF_RFCR_DROP_CTS |
- 			     MT_WF_RFCR_DROP_RTS |
--			     MT_WF_RFCR_DROP_CTL_RSV |
--			     MT_WF_RFCR_DROP_NDPA);
-+			     MT_WF_RFCR_DROP_CTL_RSV);
++	if (!psmu_info)
++		return -EINVAL;
  
- 	*total_flags = flags;
- 	mt76_wr(dev, MT_WF_RFCR(phy->mt76->band_idx), phy->rxfilter);
+ 	for (i = 0; i < psmu_info->ucSclkEntryNum; i++) {
+ 		table->entry[i].ucVco_setting = psmu_info->asSclkFcwRangeEntry[i].ucVco_setting;
 -- 
 2.39.5
 
