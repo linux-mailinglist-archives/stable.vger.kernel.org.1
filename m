@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6DCA28D84
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA81A29244
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7B6C7A2D9D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664D2188ABBC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605E6F510;
-	Wed,  5 Feb 2025 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5BF91FCF57;
+	Wed,  5 Feb 2025 14:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZgTF+/Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc5hT5+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCCB15198D;
-	Wed,  5 Feb 2025 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C7D18CBFB;
+	Wed,  5 Feb 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764148; cv=none; b=C6Rk5/uWaVqe2dQSd+iBTBGT31E/u8OA7K0smWDHJVerGJ8mnj5RY47pDcMTxJ+FuNFj6IEVnL/4EylyiuxOOn7kpytQWlwDQVfU0mzQU4qkjvQFTWd6MrqhWYnF7VqWU6quljhiuSoxkHAFadAhVH/CWOFCe3BgklRNxpvYcow=
+	t=1738766869; cv=none; b=UZ7P0wnSn9BoN6LJ2ubGdNLPfd6u1GIzGaaSxpDrB7y7DwrlabIyWq+0FCI2deW6AONpYlRXY99vDAQq8vhHyFE5HLLqZrJu7FRswKtLaj+E9sp6e5tL8EkT6tAxNNOcIutcJO8l1AQcDhDn4mdwRl3h81gMtWH3mUa0huI0vR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764148; c=relaxed/simple;
-	bh=5DfxxpGdoIChal6SN6Dt2xbozRF+XdSNtFQwrauVHqE=;
+	s=arc-20240116; t=1738766869; c=relaxed/simple;
+	bh=9pz0X81Ci+a0nNaFZsYePP9/MMXypdeDMa+WfJWcmtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPvSJM3MJ7e/qOuSJep324qKNCmY0rlshzye8nMDdHmjSOZKqMK45xBcjHzMjlmfmaxuLnyNcNw0YZDsQ49dZX7J9spIQRF+53BsH2S7mqq7LK0hdrIMRBDXVTOgpdVCdcuXvpDN62ZJ5j/c1aG4/mhn0BGIslztqzGu+hraD/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZgTF+/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795C0C4CED6;
-	Wed,  5 Feb 2025 14:02:27 +0000 (UTC)
+	 MIME-Version; b=hyRIKRQK7/nbRIpWkTaV1RTkKd7yir+B4lCzgRDydUcP3A0UMjppW5HqcCWI9zkOMdn/IMg4nNFaWXyUwmXdEcT4cnGhgh+QgVN82s3BUaOg5l09OelxBImG/MurLmrdRwLPS8jXg5kXeFOWvRP2Ggk42W81J3rmcoFEvYb3auw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc5hT5+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630F5C4CED1;
+	Wed,  5 Feb 2025 14:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764148;
-	bh=5DfxxpGdoIChal6SN6Dt2xbozRF+XdSNtFQwrauVHqE=;
+	s=korg; t=1738766868;
+	bh=9pz0X81Ci+a0nNaFZsYePP9/MMXypdeDMa+WfJWcmtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZgTF+/YRWdSTQm8DP0T29YU5xj/SboYZnjPVqjCQBVix4jc2lTjD+2YUae/gB30z
-	 z5c+mj2J+qjLyHu3Ru1mwa2OO3CoeZdppw4yCYFxe7896jYEPdga//o8YPUBhH/fpW
-	 WDfg82DIMFadSZWoKNpk2kZYDJDgcFONBrTpMb70=
+	b=tc5hT5+IGygbd6GynR5OX/TjbinFol2R5yh+oMV0AbYitU2/feZqmazSeNPdommmv
+	 7M/01zwduB++i1KKaVABZfHh65ghNxx3XBw3o7TtXuaH8cNcee5gYQOWixDdLTPH0S
+	 OQ0uXtPtfjcjNRSumcwWDlJKZCK9scCPP0HMDAtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Chun-Tse Shao <ctshao@google.com>,
+	nick.forrington@arm.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/393] net: sched: Disallow replacing of child qdisc from one parent to another
-Date: Wed,  5 Feb 2025 14:41:03 +0100
-Message-ID: <20250205134425.814891356@linuxfoundation.org>
+Subject: [PATCH 6.13 322/623] perf lock: Fix parse_lock_type which only retrieve one lock flag
+Date: Wed,  5 Feb 2025 14:41:04 +0100
+Message-ID: <20250205134508.539352175@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Chun-Tse Shao <ctshao@google.com>
 
-[ Upstream commit bc50835e83f60f56e9bec2b392fb5544f250fb6f ]
+[ Upstream commit 1be9264158ef4818393e5d8144887a1a5d3cc480 ]
 
-Lion Ackermann was able to create a UAF which can be abused for privilege
-escalation with the following script
+`parse_lock_type` can only add the first lock flag in `lock_type_table`
+given input `str`. For example, for `Y rwlock`, it only adds `rwlock:R`
+into this perf session. Another example is for `-Y mutex`, it only adds
+the mutex without `LCB_F_SPIN` flag. The patch fixes this issue, makes
+sure both `rwlock:R` and `rwlock:W` will be added with `-Y rwlock`, and
+so on.
 
-Step 1. create root qdisc
-tc qdisc add dev lo root handle 1:0 drr
+Testing:
+  $ ./perf lock con -ab -Y mutex,rwlock -- perf bench sched pipe
+  # Running 'sched/pipe' benchmark:
+  # Executed 1000000 pipe operations between two processes
 
-step2. a class for packet aggregation do demonstrate uaf
-tc class add dev lo classid 1:1 drr
+       Total time: 9.313 [sec]
 
-step3. a class for nesting
-tc class add dev lo classid 1:2 drr
+         9.313976 usecs/op
+           107365 ops/sec
+   contended   total wait     max wait     avg wait         type   caller
 
-step4. a class to graft qdisc to
-tc class add dev lo classid 1:3 drr
+         176      1.65 ms     19.43 us      9.38 us        mutex   pipe_read+0x57
+          34    180.14 us     10.93 us      5.30 us        mutex   pipe_write+0x50
+           7     77.48 us     16.09 us     11.07 us        mutex   do_epoll_wait+0x24d
+           7     74.70 us     13.50 us     10.67 us        mutex   do_epoll_wait+0x24d
+           3     35.97 us     14.44 us     11.99 us     rwlock:W   ep_done_scan+0x2d
+           3     35.00 us     12.23 us     11.66 us     rwlock:W   do_epoll_wait+0x255
+           2     15.88 us     11.96 us      7.94 us     rwlock:W   do_epoll_wait+0x47c
+           1     15.23 us     15.23 us     15.23 us     rwlock:W   do_epoll_wait+0x4d0
+           1     14.26 us     14.26 us     14.26 us     rwlock:W   ep_done_scan+0x2d
+           2     14.00 us      7.99 us      7.00 us        mutex   pipe_read+0x282
+           1     12.29 us     12.29 us     12.29 us     rwlock:R   ep_poll_callback+0x35
+           1     12.02 us     12.02 us     12.02 us     rwlock:W   do_epoll_ctl+0xb65
+           1     10.25 us     10.25 us     10.25 us     rwlock:R   ep_poll_callback+0x35
+           1      7.86 us      7.86 us      7.86 us        mutex   do_epoll_ctl+0x6c1
+           1      5.04 us      5.04 us      5.04 us        mutex   do_epoll_ctl+0x3d4
 
-step5.
-tc qdisc add dev lo parent 1:1 handle 2:0 plug limit 1024
+[namhyung: Add a comment and rename to 'mutex:spin' for consistency
 
-step6.
-tc qdisc add dev lo parent 1:2 handle 3:0 drr
-
-step7.
-tc class add dev lo classid 3:1 drr
-
-step 8.
-tc qdisc add dev lo parent 3:1 handle 4:0 pfifo
-
-step 9. Display the class/qdisc layout
-
-tc class ls dev lo
- class drr 1:1 root leaf 2: quantum 64Kb
- class drr 1:2 root leaf 3: quantum 64Kb
- class drr 3:1 root leaf 4: quantum 64Kb
-
-tc qdisc ls
- qdisc drr 1: dev lo root refcnt 2
- qdisc plug 2: dev lo parent 1:1
- qdisc pfifo 4: dev lo parent 3:1 limit 1000p
- qdisc drr 3: dev lo parent 1:2
-
-step10. trigger the bug <=== prevented by this patch
-tc qdisc replace dev lo parent 1:3 handle 4:0
-
-step 11. Redisplay again the qdiscs/classes
-
-tc class ls dev lo
- class drr 1:1 root leaf 2: quantum 64Kb
- class drr 1:2 root leaf 3: quantum 64Kb
- class drr 1:3 root leaf 4: quantum 64Kb
- class drr 3:1 root leaf 4: quantum 64Kb
-
-tc qdisc ls
- qdisc drr 1: dev lo root refcnt 2
- qdisc plug 2: dev lo parent 1:1
- qdisc pfifo 4: dev lo parent 3:1 refcnt 2 limit 1000p
- qdisc drr 3: dev lo parent 1:2
-
-Observe that a) parent for 4:0 does not change despite the replace request.
-There can only be one parent.  b) refcount has gone up by two for 4:0 and
-c) both class 1:3 and 3:1 are pointing to it.
-
-Step 12.  send one packet to plug
-echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10001))
-step13.  send one packet to the grafted fifo
-echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10003))
-
-step14. lets trigger the uaf
-tc class delete dev lo classid 1:3
-tc class delete dev lo classid 1:1
-
-The semantics of "replace" is for a del/add _on the same node_ and not
-a delete from one node(3:1) and add to another node (1:3) as in step10.
-While we could "fix" with a more complex approach there could be
-consequences to expectations so the patch takes the preventive approach of
-"disallow such config".
-
-Joint work with Lion Ackermann <nnamrec@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250116013713.900000-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d783ea8f62c4 ("perf lock contention: Simplify parse_lock_type()")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Chun-Tse Shao <ctshao@google.com>
+Cc: nick.forrington@arm.com
+Link: https://lore.kernel.org/r/20250116235838.2769691-1-ctshao@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/builtin-lock.c | 66 ++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 25 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 00f95e7d1b911..7cddaa6321c7c 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1635,6 +1635,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 				q = qdisc_lookup(dev, tcm->tcm_handle);
- 				if (!q)
- 					goto create_n_graft;
-+				if (q->parent != tcm->tcm_parent) {
-+					NL_SET_ERR_MSG(extack, "Cannot move an existing qdisc to a different parent");
-+					return -EINVAL;
+diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+index 062e2b56a2ab5..33a456980664a 100644
+--- a/tools/perf/builtin-lock.c
++++ b/tools/perf/builtin-lock.c
+@@ -1591,8 +1591,8 @@ static const struct {
+ 	{ LCB_F_PERCPU | LCB_F_WRITE,	"pcpu-sem:W",	"percpu-rwsem" },
+ 	{ LCB_F_MUTEX,			"mutex",	"mutex" },
+ 	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex",	"mutex" },
+-	/* alias for get_type_flag() */
+-	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex-spin",	"mutex" },
++	/* alias for optimistic spinning only */
++	{ LCB_F_MUTEX | LCB_F_SPIN,	"mutex:spin",	"mutex-spin" },
+ };
+ 
+ static const char *get_type_str(unsigned int flags)
+@@ -1617,19 +1617,6 @@ static const char *get_type_name(unsigned int flags)
+ 	return "unknown";
+ }
+ 
+-static unsigned int get_type_flag(const char *str)
+-{
+-	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
+-		if (!strcmp(lock_type_table[i].name, str))
+-			return lock_type_table[i].flags;
+-	}
+-	for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
+-		if (!strcmp(lock_type_table[i].str, str))
+-			return lock_type_table[i].flags;
+-	}
+-	return UINT_MAX;
+-}
+-
+ static void lock_filter_finish(void)
+ {
+ 	zfree(&filters.types);
+@@ -2350,29 +2337,58 @@ static int parse_lock_type(const struct option *opt __maybe_unused, const char *
+ 			   int unset __maybe_unused)
+ {
+ 	char *s, *tmp, *tok;
+-	int ret = 0;
+ 
+ 	s = strdup(str);
+ 	if (s == NULL)
+ 		return -1;
+ 
+ 	for (tok = strtok_r(s, ", ", &tmp); tok; tok = strtok_r(NULL, ", ", &tmp)) {
+-		unsigned int flags = get_type_flag(tok);
++		bool found = false;
+ 
+-		if (flags == -1U) {
+-			pr_err("Unknown lock flags: %s\n", tok);
+-			ret = -1;
+-			break;
++		/* `tok` is `str` in `lock_type_table` if it contains ':'. */
++		if (strchr(tok, ':')) {
++			for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
++				if (!strcmp(lock_type_table[i].str, tok) &&
++				    add_lock_type(lock_type_table[i].flags)) {
++					found = true;
++					break;
 +				}
- 				if (n->nlmsg_flags & NLM_F_EXCL) {
- 					NL_SET_ERR_MSG(extack, "Exclusivity flag on, cannot override");
- 					return -EEXIST;
++			}
++
++			if (!found) {
++				pr_err("Unknown lock flags name: %s\n", tok);
++				free(s);
++				return -1;
++			}
++
++			continue;
+ 		}
+ 
+-		if (!add_lock_type(flags)) {
+-			ret = -1;
+-			break;
++		/*
++		 * Otherwise `tok` is `name` in `lock_type_table`.
++		 * Single lock name could contain multiple flags.
++		 */
++		for (unsigned int i = 0; i < ARRAY_SIZE(lock_type_table); i++) {
++			if (!strcmp(lock_type_table[i].name, tok)) {
++				if (add_lock_type(lock_type_table[i].flags)) {
++					found = true;
++				} else {
++					free(s);
++					return -1;
++				}
++			}
+ 		}
++
++		if (!found) {
++			pr_err("Unknown lock name: %s\n", tok);
++			free(s);
++			return -1;
++		}
++
+ 	}
+ 
+ 	free(s);
+-	return ret;
++	return 0;
+ }
+ 
+ static bool add_lock_addr(unsigned long addr)
 -- 
 2.39.5
 
