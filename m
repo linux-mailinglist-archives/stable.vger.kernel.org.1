@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-113833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FCFA2948D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:27:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16484A29413
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001FB188FE98
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D9E0168C2D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0547F191F60;
-	Wed,  5 Feb 2025 15:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854BF156225;
+	Wed,  5 Feb 2025 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ntucLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vr4xOU+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55BF191F66;
-	Wed,  5 Feb 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416821519B4;
+	Wed,  5 Feb 2025 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768318; cv=none; b=PS22pwiWaF8j7B+hQK1VE5xWRy2NnJ92vkesFAfJLTY1nx5bSRfmXG6L2tnPOsQHGY3hvg1IUC4+qsbDRv2f6iMXEeJDapDCnqEqmZLO0QUnJ2EBgxqGhN4i4cRojrus+dmpAFNpfqYGMitklyrc1k5dtF0mAw8jMBPNj4Dn6jo=
+	t=1738768394; cv=none; b=EuhdB3X83lgTRMxfY2sML8TWBtkvsdI8POHe7vTQOeiQKHtBNGViWDK3ZDZ9+SIlJaDP/FZLR3zfWqyISAL+fREjpFrsqq8kE/fYlXuuR14HEetedRe3oSb8EqnkJUa2t3pTPQCXKgHbdf19oxVDmZClgPO+TaJGkUT0xHNflEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768318; c=relaxed/simple;
-	bh=CqjqD7ln1E+HIVbRakTwJy10FJdh6s32syw/+b0PDpE=;
+	s=arc-20240116; t=1738768394; c=relaxed/simple;
+	bh=6ifo1ABKk78/Ey3ZHqhqsM3w6JBWw/bfSyvZ22MOdGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuWha1f996RBbwHNPq+n81LBhNjilck7wwNybVWdV6va3j14znDaMuppylVBhZqfBzRiAYKqSVMU63zNRMFdRQsTnChYRzOuvvZjPVQ/aBRFdy6jd8yfrudRmTz49g71UCbIe7+njdtrFKbnlijdzOPX7M+uEsDqtCGbKjPt4vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7ntucLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1628AC4CED6;
-	Wed,  5 Feb 2025 15:11:57 +0000 (UTC)
+	 MIME-Version; b=kW95i9xcS8//PLQOUH6CccZi+BJoyfrX9YPAnIqC1UvMCJsKT5cH3iKruSXR00b8B9jugwmuAXY76ZHd3mQ3EMZ7eLES9fLuQFLPYv8P+0x3Yz/+gj7Yuy15LYIhWSh74a/JZ7VzKqeHJKQPBRSONc43XzFE7w4gJt3KGpJOWho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vr4xOU+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D71C4CED1;
+	Wed,  5 Feb 2025 15:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768318;
-	bh=CqjqD7ln1E+HIVbRakTwJy10FJdh6s32syw/+b0PDpE=;
+	s=korg; t=1738768394;
+	bh=6ifo1ABKk78/Ey3ZHqhqsM3w6JBWw/bfSyvZ22MOdGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7ntucLmon3J/ipr/li1/8kKPdYA+5XGdhGVs0p/jqgeqX+s3942QsYgpPc4VJvYs
-	 bKYQwuQVmFAKu/3dnJ9ZOCaHkipzJ9uDcapkB/N7uyJi+H68g8NqtZQf60YAlrnx4n
-	 aqa48xNFOuornJOmkNSRrbzr1HJZMI24I6LNmI+I=
+	b=Vr4xOU+BxHp0vUUFtfFz/4NKXR+qJfxWAFjuSbYFN5nG9ltOyHFgyDxsUZe9sqvr2
+	 f58Iahl7n8u0tDChsLUqD/2Q3n+jd8cVUUi4Q0V/yiPgbtBacb0u2zieOrB6uXo544
+	 8yl6HH/G3laJOTKm6GKv/AJAuMBaJLWEbkTC6RvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Fertser <fercerpav@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 521/623] net/ncsi: use dev_set_mac_address() for Get MC MAC Address handling
-Date: Wed,  5 Feb 2025 14:44:23 +0100
-Message-ID: <20250205134516.158008024@linuxfoundation.org>
+Subject: [PATCH 6.13 522/623] net: rose: fix timer races against user threads
+Date: Wed,  5 Feb 2025 14:44:24 +0100
+Message-ID: <20250205134516.195620303@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,85 +67,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Fertser <fercerpav@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 05d91cdb1f9108426b14975ef4eeddf15875ca05 ]
+[ Upstream commit 5de7665e0a0746b5ad7943554b34db8f8614a196 ]
 
-Copy of the rationale from 790071347a0a1a89e618eedcd51c687ea783aeb3:
+Rose timers only acquire the socket spinlock, without
+checking if the socket is owned by one user thread.
 
-Change ndo_set_mac_address to dev_set_mac_address because
-dev_set_mac_address provides a way to notify network layer about MAC
-change. In other case, services may not aware about MAC change and keep
-using old one which set from network adapter driver.
+Add a check and rearm the timers if needed.
 
-As example, DHCP client from systemd do not update MAC address without
-notification from net subsystem which leads to the problem with acquiring
-the right address from DHCP server.
+BUG: KASAN: slab-use-after-free in rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+Read of size 2 at addr ffff88802f09b82a by task swapper/0/0
 
-Since dev_set_mac_address requires RTNL lock the operation can not be
-performed directly in the response handler, see
-9e2bbab94b88295dcc57c7580393c9ee08d7314d.
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0x169/0x550 mm/kasan/report.c:489
+  kasan_report+0x143/0x180 mm/kasan/report.c:602
+  rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+  call_timer_fn+0x187/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2430
+  run_timer_base kernel/time/timer.c:2439 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2449
+  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+  __do_softirq kernel/softirq.c:595 [inline]
+  invoke_softirq kernel/softirq.c:435 [inline]
+  __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
 
-The way of selecting the first suitable MAC address from the list is
-changed, instead of having the driver check it this patch just assumes
-any valid MAC should be good.
-
-Fixes: b8291cf3d118 ("net/ncsi: Add NC-SI 1.2 Get MC MAC Address command")
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250122180244.1861468-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-rsp.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ net/rose/rose_timer.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 14bd66909ca45..4a8ce2949faea 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1089,14 +1089,12 @@ static int ncsi_rsp_handler_netlink(struct ncsi_request *nr)
- static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
-+	struct sockaddr *saddr = &ndp->pending_mac;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	struct ncsi_rsp_gmcma_pkt *rsp;
--	struct sockaddr saddr;
--	int ret = -1;
- 	int i;
+diff --git a/net/rose/rose_timer.c b/net/rose/rose_timer.c
+index f06ddbed3fed6..1525773e94aa1 100644
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -122,6 +122,10 @@ static void rose_heartbeat_expiry(struct timer_list *t)
+ 	struct rose_sock *rose = rose_sk(sk);
  
- 	rsp = (struct ncsi_rsp_gmcma_pkt *)skb_network_header(nr->rsp);
--	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 
- 	netdev_info(ndev, "NCSI: Received %d provisioned MAC addresses\n",
-@@ -1108,20 +1106,20 @@ static int ncsi_rsp_handler_gmcma(struct ncsi_request *nr)
- 			    rsp->addresses[i][4], rsp->addresses[i][5]);
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &sk->sk_timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_0:
+ 		/* Magic here: If we listen() and a new link dies before it
+@@ -152,6 +156,7 @@ static void rose_heartbeat_expiry(struct timer_list *t)
  	}
  
-+	saddr->sa_family = ndev->type;
- 	for (i = 0; i < rsp->address_count; i++) {
--		memcpy(saddr.sa_data, &rsp->addresses[i], ETH_ALEN);
--		ret = ndev->netdev_ops->ndo_set_mac_address(ndev, &saddr);
--		if (ret < 0) {
-+		if (!is_valid_ether_addr(rsp->addresses[i])) {
- 			netdev_warn(ndev, "NCSI: Unable to assign %pM to device\n",
--				    saddr.sa_data);
-+				    rsp->addresses[i]);
- 			continue;
+ 	rose_start_heartbeat(sk);
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+@@ -162,6 +167,10 @@ static void rose_timer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
+ 
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_1:	/* T1 */
+ 	case ROSE_STATE_4:	/* T2 */
+@@ -182,6 +191,7 @@ static void rose_timer_expiry(struct timer_list *t)
  		}
--		netdev_warn(ndev, "NCSI: Set MAC address to %pM\n", saddr.sa_data);
-+		memcpy(saddr->sa_data, rsp->addresses[i], ETH_ALEN);
-+		netdev_warn(ndev, "NCSI: Will set MAC address to %pM\n", saddr->sa_data);
  		break;
  	}
- 
--	ndp->gma_flag = ret == 0;
--	return ret;
-+	ndp->gma_flag = 1;
-+	return 0;
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
  }
+@@ -192,6 +202,10 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
  
- static struct ncsi_rsp_handler {
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->idletimer, jiffies + HZ/20);
++		goto out;
++	}
+ 	rose_clear_queues(sk);
+ 
+ 	rose_write_internal(sk, ROSE_CLEAR_REQUEST);
+@@ -207,6 +221,7 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 		sk->sk_state_change(sk);
+ 		sock_set_flag(sk, SOCK_DEAD);
+ 	}
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
 -- 
 2.39.5
 
