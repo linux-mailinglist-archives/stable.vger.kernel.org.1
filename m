@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790FBA290A9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AF1A28D9B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC53416984C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 470431881A8A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9086E158536;
-	Wed,  5 Feb 2025 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CDDF510;
+	Wed,  5 Feb 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTeIbQ4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjZ0dwlq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1557E792;
-	Wed,  5 Feb 2025 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479DA1519AA;
+	Wed,  5 Feb 2025 14:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766306; cv=none; b=N/Z3C30OJ4BuBKGEBl3u/sH8lcMS+2vFh23cvuWvDjeNzjBS/6gRGhK0BAgG/KtnNjihO+k6bri9rZFp9RO1mNpFQB07cHaM1b7mlKi8dQaD44P9qTPWWzgUYYPFgYlHeHszoVuQAv9GlO7AV+H6viLmH+cWWW6frn67w8E/NIQ=
+	t=1738764173; cv=none; b=PaBVODdOsDacSo+KTJ7KP35SqAPMlg4nOORRHEZW+QM/s7wYeVIGSmPFCZ5YzN2ul2FKJQZ3O+MCBhJLJHR++3sIfGTe+zFM2ZOL8dw4U2GJ9WwuDvww1yiSFWyugqACLdk0syvfldPsPdlsY2g8/YwU21w6+YbQaYBsJYk4gxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766306; c=relaxed/simple;
-	bh=npuT5Cq+rh9SvMvYLQeOVQD/YZuLY8zIgsgSBheDAxE=;
+	s=arc-20240116; t=1738764173; c=relaxed/simple;
+	bh=1Pt50D20RzQZJjFdqLETBFAQJ0bDCTx1KYr/fC7NChc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EF4hiCaZIRnCNSuC1aRuuOGsSuqHUWjvxw+jVYGlxmA1ilSj0CVNsdM3FlmNiZ3TPgH6IxEt7SFYtj7APVnx8MZPwu7uoCWEAE8g5DMEUXg49wVllqgIr0eWFFLIIAkSmnOImpfW8L7i+iCS2/hC/1YF1ZnlRM1xFJmvbbA2DiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTeIbQ4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC870C4CED1;
-	Wed,  5 Feb 2025 14:38:25 +0000 (UTC)
+	 MIME-Version; b=j1xa1qVFCPg2qSSVJpZQNanqaVldWxdzROEEcpPOrZX7akIOUZR8QEarquV71Xc73I5kAVPmyGVUM1413pbNXHOq0mlaRLsSWl/W0jY7rmMkL8neY6NMWnkrFF7Un/2aV8kSkHpyyfjExmug3LW7xpg71WDFVLd9lWkds1kH+MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjZ0dwlq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8693C4CED6;
+	Wed,  5 Feb 2025 14:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766306;
-	bh=npuT5Cq+rh9SvMvYLQeOVQD/YZuLY8zIgsgSBheDAxE=;
+	s=korg; t=1738764173;
+	bh=1Pt50D20RzQZJjFdqLETBFAQJ0bDCTx1KYr/fC7NChc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTeIbQ4HMqgkxt/Jqzsldynnbc9eaNcRjqZFTVe6bbSIUtXr17JienDAfSrL0Bbo0
-	 16cpbnHImfMXUhXUA1aFRv2lIrIDxQSc4icDEKkK+hEL3g5UVtzHly2U5YQQ4Ktumf
-	 J6FYE+CHu/1vH/p01yZDP+ZTX0THid532DaLXhOs=
+	b=kjZ0dwlq1lB7Ur5IRPden3a6yuRwVk8DRVqSjZ0ctyOmBJOK6A2/8Dz95q3RmOYVE
+	 VD4m/A2gyVR4w7fPJ2y/8G3ISsGFXYId7gK/SdChVlZcfpRfE30WiQfmjuzaIHh+qX
+	 NK6fbBVRbo91ilJUW5XVJKOljVxjh7snvbNdrSLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 309/590] arm64: dts: mediatek: mt8516: reserve 192 KiB for TF-A
-Date: Wed,  5 Feb 2025 14:41:04 +0100
-Message-ID: <20250205134507.097677909@linuxfoundation.org>
+Subject: [PATCH 6.6 146/393] netfilter: nft_set_rbtree: rename gc deactivate+erase function
+Date: Wed,  5 Feb 2025 14:41:05 +0100
+Message-ID: <20250205134425.889302195@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2561c7d5d497b988deccc36fe5eac7fd50b937f8 ]
+[ Upstream commit 8079fc30f79799e59d9602e7e080d434936a482d ]
 
-The Android DTB for the related MT8167 reserves 0x30000. This is likely
-correct for MT8516 Android devices as well, and there's never any harm
-in reserving 64KiB more.
+Next patch adds a cllaer that doesn't hold the priv->write lock and
+will need a similar function.
 
-Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241204190524.21862-5-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Rename the existing function to make it clear that it can only
+be used for opportunistic gc during insertion.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 8d738c1869f6 ("netfilter: nf_tables: fix set size with rbtree backend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index dd17d8a88c190..e30623ebac0e1 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -144,10 +144,10 @@
- 		#size-cells = <2>;
- 		ranges;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index afbda7e3fd048..896a9a7024b04 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -221,14 +221,15 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 	return rbe;
+ }
  
--		/* 128 KiB reserved for ARM Trusted Firmware (BL31) */
-+		/* 192 KiB reserved for ARM Trusted Firmware (BL31) */
- 		bl31_secmon_reserved: secmon@43000000 {
- 			no-map;
--			reg = <0 0x43000000 0 0x20000>;
-+			reg = <0 0x43000000 0 0x30000>;
- 		};
+-static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
+-				 struct nft_rbtree *priv,
+-				 struct nft_rbtree_elem *rbe)
++static void nft_rbtree_gc_elem_remove(struct net *net, struct nft_set *set,
++				      struct nft_rbtree *priv,
++				      struct nft_rbtree_elem *rbe)
+ {
+ 	struct nft_set_elem elem = {
+ 		.priv	= rbe,
  	};
  
++	lockdep_assert_held_write(&priv->lock);
+ 	nft_setelem_data_deactivate(net, set, &elem);
+ 	rb_erase(&rbe->node, &priv->root);
+ }
+@@ -263,7 +264,7 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
+ 	rbe_prev = NULL;
+ 	if (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+-		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
++		nft_rbtree_gc_elem_remove(net, set, priv, rbe_prev);
+ 
+ 		/* There is always room in this trans gc for this element,
+ 		 * memory allocation never actually happens, hence, the warning
+@@ -277,7 +278,7 @@ nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
+ 		nft_trans_gc_elem_add(gc, rbe_prev);
+ 	}
+ 
+-	nft_rbtree_gc_remove(net, set, priv, rbe);
++	nft_rbtree_gc_elem_remove(net, set, priv, rbe);
+ 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+ 	if (WARN_ON_ONCE(!gc))
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.39.5
 
