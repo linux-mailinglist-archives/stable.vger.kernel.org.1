@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCECA28D24
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A252AA28DBE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A95C83A9396
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A363A3A4339
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E8814EC77;
-	Wed,  5 Feb 2025 13:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1548614EC77;
+	Wed,  5 Feb 2025 14:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI/tWTiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arZkuuid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6961519AA;
-	Wed,  5 Feb 2025 13:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C423E15198D;
+	Wed,  5 Feb 2025 14:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763809; cv=none; b=PturXzL9drNIYOmerL4eUDAcp9yvaHgxHpkaYXyHl4FlbZHmhzDt4ndvX6v2RDyuqhufWoetOZbDwiFpwOvz1YAZtgD1rkyDdnSlHSIOHyYSKP1Qa7Xdmx/oX91qOddB8MtfMG2FRrHMbn1mDgK0p85J2lW/BUsjiNnDfFcC+/E=
+	t=1738764176; cv=none; b=lW8jZBy3yxKWpvuFLO9Rk7jd7WQufJe8GCVsZT2uWv4fuBxXU7ofpL74U53pZSm+geQ3u21xak5NuelsqEBynoYvln0Wm4Z2Spjshzf2l1/piyu5UYif/pCNBZIbyyAziuzNSaE9WOwRl/s+Y/fiIxfgLCcIQrU9tJj3f0DSP+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763809; c=relaxed/simple;
-	bh=7kvtPkjDNKZw9WqwmawjBnDJ8BCYNmfr+ZcQRQUjo+g=;
+	s=arc-20240116; t=1738764176; c=relaxed/simple;
+	bh=UbDmymL9tsfU1d2h2hVFjWqaJkg9wG/B+cupSZcH+n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsbF5f25JaEzo+9ud9aV8qG1sWb2r/UlFLSAD/D0GDdnSW0za94Wn6E3YBNXY7HlnU1SnCNKKfznQvyRbp+2LcPdUHhK41wcLTb1OuXnlEQyFcszCuEvEK22LyMRJl+H0bVmsaOwdv333qJwAlBYbXg9Ok9/0aHE5kw67q0idQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI/tWTiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232B8C4CED1;
-	Wed,  5 Feb 2025 13:56:47 +0000 (UTC)
+	 MIME-Version; b=iyk0mqBPTGQ1+ZLdIvqApo9pty5v2MAFe431XE9MnbNJvBcsVoFxb/ChcdZI+2GFq0t3FCa/zsYLCXoNmL/yYV0NSL26EWPonUxoJ2qmGxsUpzpQ1ED0/Kkdxr/9Uvx9HjvIH+WTOZinroNYB99/ZXdLT6+USLe3OGs9Cttw0PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arZkuuid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966EC4CEDD;
+	Wed,  5 Feb 2025 14:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763808;
-	bh=7kvtPkjDNKZw9WqwmawjBnDJ8BCYNmfr+ZcQRQUjo+g=;
+	s=korg; t=1738764176;
+	bh=UbDmymL9tsfU1d2h2hVFjWqaJkg9wG/B+cupSZcH+n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI/tWTiNkTatPLprPZzuMsX3ANb4epQOlj/ns9rarI/7BiKdv5NY7rHUzN4c3BcKf
-	 NIMOZW53nUrzlTF2B2gfwjHTQjjPoWAvHGbnMWn4r+Twv04OVNPp+chvesZKfTc4KX
-	 ehj5nADuV11Oa4NCGTqX9i+sSYN/kCoe6d5bo3kQ=
+	b=arZkuuidIF/wAHx0jrGXCjy1oOWeX1N+C9ikq0WlQfA2urT77GI4pWKMHFaDgvL+U
+	 lrgOb/+J7JqWLvmzlI8t1elEEo1BPm/XEkI2kenvnbEFKj8S+tAhw+GeH8oJzOyNw9
+	 golkZojMwqLPwP7rar+HvopiLpTvXp+mMMRR+X+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 041/590] HID: core: Fix assumption that Resolution Multipliers must be in Logical Collections
+	Stephen Boyd <swboyd@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 054/623] drm/msm/dpu: check dpu_plane_atomic_print_state() for valid sspp
 Date: Wed,  5 Feb 2025 14:36:36 +0100
-Message-ID: <20250205134456.823046718@linuxfoundation.org>
+Message-ID: <20250205134458.296583434@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-commit 64f2657b579343cf923aa933f08074e6258eb07b upstream.
+[ Upstream commit 789384eb1437aed94155dc0eac8a8a6ba1baf578 ]
 
-A report in 2019 by the syzbot fuzzer was found to be connected to two
-errors in the HID core associated with Resolution Multipliers.  One of
-the errors was fixed by commit ea427a222d8b ("HID: core: Fix deadloop
-in hid_apply_multiplier."), but the other has not been fixed.
+Similar to the r_pipe sspp protect, add a check to protect
+the pipe state prints to avoid NULL ptr dereference for cases when
+the state is dumped without a corresponding atomic_check() where the
+pipe->sspp is assigned.
 
-This error arises because hid_apply_multipler() assumes that every
-Resolution Multiplier control is contained in a Logical Collection,
-i.e., there's no way the routine can ever set multiplier_collection to
-NULL.  This is in spite of the fact that the function starts with a
-big comment saying:
-
-	 * "The Resolution Multiplier control must be contained in the same
-	 * Logical Collection as the control(s) to which it is to be applied.
-	   ...
-	 *  If no Logical Collection is
-	 * defined, the Resolution Multiplier is associated with all
-	 * controls in the report."
-	 * HID Usage Table, v1.12, Section 4.3.1, p30
-	 *
-	 * Thus, search from the current collection upwards until we find a
-	 * logical collection...
-
-The comment and the code overlook the possibility that none of the
-collections found may be a Logical Collection.
-
-The fix is to set the multiplier_collection pointer to NULL if the
-collection found isn't a Logical Collection.
-
-Reported-by: syzbot+ec5f884c4a135aa0dbb9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000109c040597dc5843@google.com/
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: Peter Hutterer <peter.hutterer@who-t.net>
-Fixes: 5a4abb36f312 ("HID: core: process the Resolution Multiplier")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31f7148fd370 ("drm/msm/dpu: move pstate->pipe initialization to dpu_plane_atomic_check")
+Reported-by: Stephen Boyd <swboyd@chromium.org>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/67
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Stephen Boyd <swboyd@chromium.org> # sc7180-trogdor
+Patchwork: https://patchwork.freedesktop.org/patch/628404/
+Link: https://lore.kernel.org/r/20241211-check-state-before-dump-v2-1-62647a501e8c@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -1125,6 +1125,8 @@ static void hid_apply_multiplier(struct
- 	while (multiplier_collection->parent_idx != -1 &&
- 	       multiplier_collection->type != HID_COLLECTION_LOGICAL)
- 		multiplier_collection = &hid->collection[multiplier_collection->parent_idx];
-+	if (multiplier_collection->type != HID_COLLECTION_LOGICAL)
-+		multiplier_collection = NULL;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index 3ffac24333a2a..703e58901d53f 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -1335,12 +1335,15 @@ static void dpu_plane_atomic_print_state(struct drm_printer *p,
  
- 	effective_multiplier = hid_calculate_multiplier(hid, multiplier);
+ 	drm_printf(p, "\tstage=%d\n", pstate->stage);
  
+-	drm_printf(p, "\tsspp[0]=%s\n", pipe->sspp->cap->name);
+-	drm_printf(p, "\tmultirect_mode[0]=%s\n", dpu_get_multirect_mode(pipe->multirect_mode));
+-	drm_printf(p, "\tmultirect_index[0]=%s\n",
+-		   dpu_get_multirect_index(pipe->multirect_index));
+-	drm_printf(p, "\tsrc[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->src_rect));
+-	drm_printf(p, "\tdst[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->dst_rect));
++	if (pipe->sspp) {
++		drm_printf(p, "\tsspp[0]=%s\n", pipe->sspp->cap->name);
++		drm_printf(p, "\tmultirect_mode[0]=%s\n",
++			   dpu_get_multirect_mode(pipe->multirect_mode));
++		drm_printf(p, "\tmultirect_index[0]=%s\n",
++			   dpu_get_multirect_index(pipe->multirect_index));
++		drm_printf(p, "\tsrc[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->src_rect));
++		drm_printf(p, "\tdst[0]=" DRM_RECT_FMT "\n", DRM_RECT_ARG(&pipe_cfg->dst_rect));
++	}
+ 
+ 	if (r_pipe->sspp) {
+ 		drm_printf(p, "\tsspp[1]=%s\n", r_pipe->sspp->cap->name);
+-- 
+2.39.5
+
 
 
 
