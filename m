@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5C7A28F6F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBDEA28EF3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4241606AD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBA73AA97B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FED1553AB;
-	Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B652D8634E;
+	Wed,  5 Feb 2025 14:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVSQe7er"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnNqxZtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD451459F6;
-	Wed,  5 Feb 2025 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D49522A;
+	Wed,  5 Feb 2025 14:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765518; cv=none; b=V+MYXmP49DWk7XO5peiNS3FECyi10KFHN7scJd5x6FR5xgHQU80quHGIwfYooRwcOQ2rMp7hqm8eoWIpZ+NQsqJFikR72pcEtjZDJUI+j/XVt8ciKId/J30XYVHv/oW88KtHyVovhn3Qlp+ZriuOKycoqjmKE9t4tm1rw3WYkkE=
+	t=1738765113; cv=none; b=pyUqtM9NdaFPRFVvxW06qF9MUjbVSF43Fevv5FN6EAMXPMEh+Oo6vxzxMpTd3yiMYtlSEp5iys/fvlVb8k6sHBRxYhPN7tB2myGjjwEQ/mgnHkjFNLBQzM1Hn5/lkOiXxxwVJ+aksj5/Q+8fanepM5fcuEZTYxKMHWPMiyCm9KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765518; c=relaxed/simple;
-	bh=QdvqxqjowOnyStB6Qhb9JeTy9pFEh4JZ3D8g/Wrz/wU=;
+	s=arc-20240116; t=1738765113; c=relaxed/simple;
+	bh=nLrcwQnJFr4/l6AikL3Rf9eHI2Tg5IDOuoF39xsIwSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPMtWcshwlxNPcQtGn4+9Saj+l4XF0lUi3ZhryJbAvKdi1rh5RJ1j7AWqQ5LtKmxdLOLCZRTqvhuk5yLWrE01tx62BF2Jo3SZK5Psylrh5tMMoecLc5ipkeusE5wbDtJRC5KlBWXGcfkjNFxOoZfx3b+6sdyKLEXJh+Qj5aeZcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVSQe7er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2097C4CED1;
-	Wed,  5 Feb 2025 14:25:17 +0000 (UTC)
+	 MIME-Version; b=RpheoFMD1Lfdb7avGRoKmoO3w41VCCys9ota6tZ8Je+AUy58JlHTh8vCiIc2AB0wncOGgRLreD3PkjTrhNLnAtJMSoJEce9OAtnNNtRY2T0PoGIcY8/RpLFXqRcSgEMsInJb+LsemS3TbFHz5t3ucnnipLU2zN6FTndsNZWUXUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnNqxZtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69119C4CED1;
+	Wed,  5 Feb 2025 14:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765518;
-	bh=QdvqxqjowOnyStB6Qhb9JeTy9pFEh4JZ3D8g/Wrz/wU=;
+	s=korg; t=1738765113;
+	bh=nLrcwQnJFr4/l6AikL3Rf9eHI2Tg5IDOuoF39xsIwSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVSQe7erpJ/jJLpBX8FW7GwgCdajEel3T0oQF8rsjs2K8CHn7dAPZMiA1i+muHAZC
-	 lloCl7BszK1dR9lLOqd27t5XZzWpYL/B9q+xtBautQsuks51NXyjZOYtRRbfT/UWM2
-	 u1sWo/qiWBiYrZuZoC3dJ/Eu7z3aVOhDsm7SJeg4=
+	b=OnNqxZtDF8xVUla0zaKclTgKV+ztgPGlaVem/AaKMSr3VdXgjQnz0JErVMcSD58a9
+	 75SaWorTHim3ERoL8+0DLljvoaaQ+LL/m2/LlD6G4K2I+zB5BY6RdGTeqq84OnbQ1n
+	 mTT+j3AZAZRW97Dbj4UGPmk3tRm1ckCzO5EhTuCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
+	Michael Lo <michael.lo@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	David Ruth <druth@chromium.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 185/623] wifi: mt76: mt7996: fix overflows seen when writing limit attributes
-Date: Wed,  5 Feb 2025 14:38:47 +0100
-Message-ID: <20250205134503.314657014@linuxfoundation.org>
+Subject: [PATCH 6.12 173/590] wifi: mt76: mt7921: fix using incorrect group cipher after disconnection.
+Date: Wed,  5 Feb 2025 14:38:48 +0100
+Message-ID: <20250205134501.900962543@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Michael Lo <michael.lo@mediatek.com>
 
-[ Upstream commit 5adbc8ce5bbe7e311e2600b7d7d998a958873e98 ]
+[ Upstream commit aa566ac6b7272e7ea5359cb682bdca36d2fc7e73 ]
 
-DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
-number such as 18446744073709551615 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
-This commit was inspired by commit: 57ee12b6c514.
+To avoid incorrect cipher after disconnection, we should
+do the key deletion process in this case.
 
-Fixes: 6879b2e94172 ("wifi: mt76: mt7996: add thermal sensor device support")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://patch.msgid.link/20241202031917.23741-2-luoxueqin@kylinos.cn
+Fixes: e6db67fa871d ("wifi: mt76: ignore key disable commands")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20240801024335.12981-1-mingyen.hsieh@mediatek.com
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index efa7b0697a406..d5f53abc4dcb4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -82,7 +82,7 @@ static ssize_t mt7996_thermal_temp_store(struct device *dev,
- 		return ret;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index a7f5bfbc02ed1..0641538968e6f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -531,7 +531,13 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	} else {
+ 		if (idx == *wcid_keyidx)
+ 			*wcid_keyidx = -1;
+-		goto out;
++
++		/* For security issue we don't trigger the key deletion when
++		 * reassociating. But we should trigger the deletion process
++		 * to avoid using incorrect cipher after disconnection,
++		 */
++		if (vif->type != NL80211_IFTYPE_STATION || vif->cfg.assoc)
++			goto out;
+ 	}
  
- 	mutex_lock(&phy->dev->mt76.mutex);
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 40, 130);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 40 * 1000, 130 * 1000), 1000);
- 
- 	/* add a safety margin ~10 */
- 	if ((i - 1 == MT7996_CRIT_TEMP_IDX &&
+ 	mt76_wcid_key_setup(&dev->mt76, wcid, key);
 -- 
 2.39.5
 
