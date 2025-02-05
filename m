@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C80A2914A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:48:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0002A28DE4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85BDB7A3BF8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF59165D7E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AA821A44F;
-	Wed,  5 Feb 2025 14:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AC01547E9;
+	Wed,  5 Feb 2025 14:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO7gnuPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3JW7i7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD3A202F83;
-	Wed,  5 Feb 2025 14:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77A2FC0B;
+	Wed,  5 Feb 2025 14:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766517; cv=none; b=Uppav05P00ZT0MrjcaUcSKh/bGhKSjCHZIpeLA54DNjI4xGZjmer8RL+NhHh3/SF963ZEVPjsNPcmveAWkFI9XxvBpMUGVvf8+h9Om0yAmAOCKqfWbSAko8OinDDwigqvVLfTnit1zogdnB56KVVrM3UjtUE5BOR4XML9+1U6T8=
+	t=1738764385; cv=none; b=UnZ6Xm9RVRrkYoGp9YUTv9Ga0qefFmw7YzloHt/YEpg3gqr+7WL7Wv/ifRhHTEYSVi3iLFdBKSuPmJAiM9nmLHPv0eLqQ+uZIareZraa2ado4gGbe2klGgTHV8fXaYUsaFrIUvRO8gFP21ipPWWf1iN3pKvkx0GIo16g11Js3a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766517; c=relaxed/simple;
-	bh=QSxoIHs2aqgAyQMoEUZ4uU0zY76qdKQiNcw3uFvL0XY=;
+	s=arc-20240116; t=1738764385; c=relaxed/simple;
+	bh=Qx2RvgbNITCMaiGr6NQY4j4L3lkalAVeXak+jfys0wE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0ZSsGU8oJRYW6J+G1l3LyMnlRUXOAsHqUkcsRFeF63N42Ci5ayPLzonLXi91WMePmIcUsUyfPB0eYckKSFZXIiLMTHrXziFeIDU/wMAWSQC4fct2cBX07fDQs3SSI+ACCYbEMbYN1TlRV1/hkujAL0lpW5S4tIhkqQlZZSBiYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO7gnuPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8693FC4CED6;
-	Wed,  5 Feb 2025 14:41:56 +0000 (UTC)
+	 MIME-Version; b=qqHlAqyXZsIuQQDZx5EAObQsesLL23PIEc6ZKYyVks2DNWinA/qAhGmle3QzyNf0G+cVvn1qJspHPNth5TfesIsmyUgZBu2oskRyTVeYxeDx7aFpatZ1jMCna8AN/uVIzl3UGshuyTmsmEuIDA9f2XJh0MIVa02b+XQMYeEE4sQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3JW7i7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DBDC4CED1;
+	Wed,  5 Feb 2025 14:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766517;
-	bh=QSxoIHs2aqgAyQMoEUZ4uU0zY76qdKQiNcw3uFvL0XY=;
+	s=korg; t=1738764385;
+	bh=Qx2RvgbNITCMaiGr6NQY4j4L3lkalAVeXak+jfys0wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO7gnuPXKZvK0n7cktqMVZUDhNCkP2YZ9Qr2UCU28w0vZMvb/pKis+th07CnHzkZd
-	 vfRflDXOAQTNxwwWWULVSWA3m7fQ93aC4WIVZEvf3DcvyOq19+ebxvS9IF2vAOKCzD
-	 mdq3g/wd8u7hFNKffMt6UtMawEoasN1A2xDTtZnk=
+	b=S3JW7i7/+jjnGe28wRDwEWrOEiph34xbbEclNR/hniVVRXriFDk9jJGPsi3KeH7N1
+	 Y4RbXBdKUcJobarme1ltp1ExO3zk+gV2RgfL76SLW1HrBpLatYTLS5LgIOZm5LD1f7
+	 o7ta6umPe9/QGG3F3lw6CjHcGPXzTZ5D1jxaLPOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 331/590] RDMA/srp: Fix error handling in srp_add_port
+Subject: [PATCH 6.6 167/393] crypto: hisilicon/sec2 - optimize the error return process
 Date: Wed,  5 Feb 2025 14:41:26 +0100
-Message-ID: <20250205134507.940466628@linuxfoundation.org>
+Message-ID: <20250205134426.685691302@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit a3cbf68c69611188cd304229e346bffdabfd4277 ]
+[ Upstream commit 1bed82257b1881b689ee41f14ecb4c20a273cac0 ]
 
-As comment of device_add() says, if device_add() succeeds, you should
-call device_del() when you want to get rid of it. If device_add() has
-not succeeded, use only put_device() to drop the reference count.
+Add the printf of an error message and optimized the handling
+process of ret.
 
-Add a put_device() call before returning from the function to decrement
-reference count for cleanup.
-
-Found by code review.
-
-Fixes: c8e4c2397655 ("RDMA/srp: Rework the srp_add_port() error path")
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Link: https://patch.msgid.link/20241217075538.2909996-1-make_ruc2021@163.com
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: fd337f852b26 ("crypto: hisilicon/sec2 - fix for aead icv error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index 2916e77f589b8..7289ae0b83ace 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -3978,7 +3978,6 @@ static struct srp_host *srp_add_port(struct srp_device *device, u32 port)
- 	return host;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index 932cc277eb3a5..7b5012cf1ffac 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -849,6 +849,7 @@ static int sec_skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 		ret = sec_skcipher_aes_sm4_setkey(c_ctx, keylen, c_mode);
+ 		break;
+ 	default:
++		dev_err(dev, "sec c_alg err!\n");
+ 		return -EINVAL;
+ 	}
  
- put_host:
--	device_del(&host->dev);
- 	put_device(&host->dev);
- 	return NULL;
+@@ -1174,7 +1175,8 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 		return 0;
+ 	}
+ 
+-	if (crypto_authenc_extractkeys(&keys, key, keylen))
++	ret = crypto_authenc_extractkeys(&keys, key, keylen);
++	if (ret)
+ 		goto bad_key;
+ 
+ 	ret = sec_aead_aes_set_key(c_ctx, &keys);
+@@ -1191,6 +1193,7 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 
+ 	if ((ctx->a_ctx.mac_len & SEC_SQE_LEN_RATE_MASK)  ||
+ 	    (ctx->a_ctx.a_key_len & SEC_SQE_LEN_RATE_MASK)) {
++		ret = -EINVAL;
+ 		dev_err(dev, "MAC or AUTH key length error!\n");
+ 		goto bad_key;
+ 	}
+@@ -1199,7 +1202,7 @@ static int sec_aead_setkey(struct crypto_aead *tfm, const u8 *key,
+ 
+ bad_key:
+ 	memzero_explicit(&keys, sizeof(struct crypto_authenc_keys));
+-	return -EINVAL;
++	return ret;
  }
+ 
+ 
 -- 
 2.39.5
 
