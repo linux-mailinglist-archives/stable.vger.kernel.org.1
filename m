@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-112747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352A5A28E3D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E59DA28E39
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005E27A440F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF15D3A132B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C541509BD;
-	Wed,  5 Feb 2025 14:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE3C1494DF;
+	Wed,  5 Feb 2025 14:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0BrOq4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAmdIm1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD2149C53;
-	Wed,  5 Feb 2025 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0936F15198D;
+	Wed,  5 Feb 2025 14:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764613; cv=none; b=f72Qh3TZKdtSD+GGjdQrXhLTO1/x2ZAh7uFRcYQfAooo7Yb96DXrZ+uSwVV8WnaBy4Q8/S6WBDmkjMSXjUB3EqbAjlSAFLNthq1S5nrPcGbiI649KfykJVQ+KZl8ZlEQM1SejF4xLs4ojwepSaHnS7THGVVXstFRaWEEI9X4OxA=
+	t=1738764623; cv=none; b=ERWRH4mzuttsLO0ssPMkUvZsJ/EVHNx3oOWAhvzWoRX7YvWHjV8nUkMRv5hKw5Or+44cTx+/pSWKQ+0u3wlHnzoDCqZQ3woSPXhKVZPr+rt3DfDedzJ+8hkDfJl/DPuDjjoVRqsfx9XA6QG6uBeJicVzgTX7Zc/qQnlkqInqJiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764613; c=relaxed/simple;
-	bh=vkXsnzlrZlNaobZhFq57aZZFuZcNkzim3MXhWOF8BQQ=;
+	s=arc-20240116; t=1738764623; c=relaxed/simple;
+	bh=gXpf5UAuYYzp4JkFkuzvD95ZCET708SLtjogSC+Awt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aakm7wc0r4m+ck5d5T5zHaQbyoibMw4kIpyT8Cdxig1pCpVdohI19ESEtW3Zf3RNKBW92scMqql1QoVPhJy4VlXN7TpRBj7pjv8Xoou7LH9IVzabRXRVmP2EQ9gXjkZCcDEOZ03Ohftdue02sero17/V/FOQO4dkbsPHILP3tuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0BrOq4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED61C4CED1;
-	Wed,  5 Feb 2025 14:10:12 +0000 (UTC)
+	 MIME-Version; b=M+QHD3h+M++X/zD1WOvP3QO5bppdWwjzq41TUclrBAAMmNwkSI8ykYR6ySQe0IWXUULew3pFMTCGExQwWCJ0QxKdtIMzWe4bG0ypfE47E15gEHXgguHFhKYUR6MbnTCYRwHz/U2ySHsK042Ep1QZ1jLtG76NTGRuUB+EnEBt8IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAmdIm1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8C3C4CED1;
+	Wed,  5 Feb 2025 14:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764613;
-	bh=vkXsnzlrZlNaobZhFq57aZZFuZcNkzim3MXhWOF8BQQ=;
+	s=korg; t=1738764622;
+	bh=gXpf5UAuYYzp4JkFkuzvD95ZCET708SLtjogSC+Awt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0BrOq4qo2yHH9R2qgeCwZcmxhPCkx91Whe8iQQerTwx+Bhabnt+NU9HA8RuYH0FP
-	 IsqSbDSm4a3S50lRRAaYfeNSO9B8vSpiPOAHJdf62XGC4CXcDxWrmVzegEhS1gq3i8
-	 mQZwMW8ZEKfNfxbbrIKf3OS+7XdvhAvu3Et7gtx4=
+	b=pAmdIm1Rupu/0xM2jThfPvGm+xikt+/rMNnzPwsAQdNW2H6OTa/I6BmEULNrvipP5
+	 +kCGHSI+hkyxcT8RiDCzujYy7ShE2UUz7e4ORZyLZRGTShawoByfbPefcth00+ONmZ
+	 RDvFA182taHymCM91QHN+uvlegZfeevuihmZYBvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 095/623] clk: mmp: pxa1908-apbc: Fix NULL vs IS_ERR() check
-Date: Wed,  5 Feb 2025 14:37:17 +0100
-Message-ID: <20250205134459.858725645@linuxfoundation.org>
+Subject: [PATCH 6.13 096/623] wifi: cfg80211: tests: Fix potential NULL dereference in test_cfg80211_parse_colocated_ap()
+Date: Wed,  5 Feb 2025 14:37:18 +0100
+Message-ID: <20250205134459.896033335@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -61,45 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit e5ca5d7b4d7c29246d957dc45d63610584ae3a54 ]
+[ Upstream commit 13c4f7714c6a1ecf748a2f22099447c14fe6ed8c ]
 
-The devm_kzalloc() function returns NULL on error, not error pointers.
-Fix the check.
+kunit_kzalloc() may return NULL, dereferencing it without NULL check may
+lead to NULL dereference.
+Add a NULL check for ies.
 
-Fixes: 51ce55919273 ("clk: mmp: Add Marvell PXA1908 APBC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/d7078eb7-a7d6-4753-b453-8fce15245c34@stanley.mountain
-Acked-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 45d43937a44c ("wifi: cfg80211: add a kunit test for 6 GHz colocated AP parsing")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Link: https://patch.msgid.link/20241115063835.5888-1-zichenxie0106@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mmp/clk-pxa1908-apbc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/tests/scan.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/mmp/clk-pxa1908-apbc.c b/drivers/clk/mmp/clk-pxa1908-apbc.c
-index b93d084661985..3fd7b5e644f3b 100644
---- a/drivers/clk/mmp/clk-pxa1908-apbc.c
-+++ b/drivers/clk/mmp/clk-pxa1908-apbc.c
-@@ -96,8 +96,8 @@ static int pxa1908_apbc_probe(struct platform_device *pdev)
- 	struct pxa1908_clk_unit *pxa_unit;
+diff --git a/net/wireless/tests/scan.c b/net/wireless/tests/scan.c
+index e12f620b5f424..b1a9c1466d6cb 100644
+--- a/net/wireless/tests/scan.c
++++ b/net/wireless/tests/scan.c
+@@ -810,6 +810,8 @@ static void test_cfg80211_parse_colocated_ap(struct kunit *test)
+ 		skb_put_data(input, "123", 3);
  
- 	pxa_unit = devm_kzalloc(&pdev->dev, sizeof(*pxa_unit), GFP_KERNEL);
--	if (IS_ERR(pxa_unit))
--		return PTR_ERR(pxa_unit);
-+	if (!pxa_unit)
-+		return -ENOMEM;
+ 	ies = kunit_kzalloc(test, struct_size(ies, data, input->len), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, ies);
++
+ 	ies->len = input->len;
+ 	memcpy(ies->data, input->data, input->len);
  
- 	pxa_unit->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(pxa_unit->base))
 -- 
 2.39.5
 
