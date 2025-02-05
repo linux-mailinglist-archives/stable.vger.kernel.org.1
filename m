@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B770BA28E62
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2C7A291EB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F043168A75
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74F62166134
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD80C1494DF;
-	Wed,  5 Feb 2025 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E026915EFA1;
+	Wed,  5 Feb 2025 14:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4sJwV0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhYOc6w6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8774913C9C4;
-	Wed,  5 Feb 2025 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A31FBEAF;
+	Wed,  5 Feb 2025 14:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764745; cv=none; b=iOvUGH7f2Z3UN806+RcO8B9m+7SGMjB1bpITRqKwxK2vTzmLO+epP262uqrQEgqfcZS58Oh8ZK4b4Kqictj2RgtMEBy4J/OIY/4pTm+JINZZmk21LQmSUzFuUWrsKaY3dyZAVmRq6CSavZB4BwPcnGKFmvyKaV2JqAr7TSgGcyk=
+	t=1738766766; cv=none; b=YAP4k/3Tr2GztnqX9pm4w1gR+g3NWffdfoSSIELBMTe5nTVzS53yWF8p/0mxI3kBiRqy++uBsZY4daRzAsjj1HVKLwnqC52b3KUjTtWESEobnX+Bjprh4cD1kYXi/x6KquT2HWRUhwCXzVIMAgc3ZXGkNyTwx58LmhGiPL80K+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764745; c=relaxed/simple;
-	bh=VTuaufDvVhY2u54/qC8UTck05SEIQ/843agIvetbXSA=;
+	s=arc-20240116; t=1738766766; c=relaxed/simple;
+	bh=PXn1fvyj326SKCEOWIXgA+5/EWtQ4D/Y/3K1lSwdkfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkCKOHPJqPR2JG2I+XVVWwePwAwPyLYnxrcVG8g8WJNErT0P4CLWUuD6rP5sNn8JenMpVf5iMHrTRFOaxprpROSGTqJXs86pwi9bzQDmpCu0Z65TAkSDbvM4b770Bk7u1KthWNendOTWliL6yKiO1Rd9kD5V0+UpIUTz+MVvfQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4sJwV0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EAAC4CED1;
-	Wed,  5 Feb 2025 14:12:24 +0000 (UTC)
+	 MIME-Version; b=qTxtN2VwPH+pndhEaDuyAsxN0A21QpzHjOL13/PW5Ew6YVceM0JUNfoa9PRY6hMjp+G/ExPFU2xn/QY9nyyDn5vh/koAhNabX4GdgDh1hpiT0PNm/4fLdymebCxuktS7Z1ODN3FrJTPNrw8hlhXmxdR3n8gY7kUskOdTYz5giv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhYOc6w6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123A7C4CED6;
+	Wed,  5 Feb 2025 14:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764745;
-	bh=VTuaufDvVhY2u54/qC8UTck05SEIQ/843agIvetbXSA=;
+	s=korg; t=1738766766;
+	bh=PXn1fvyj326SKCEOWIXgA+5/EWtQ4D/Y/3K1lSwdkfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4sJwV0mCom13JUA6Np9KY6mEXZYfqj5fZoEMqolGy9XFGBZdmTg/Uyk9PcA6sKLq
-	 YX6DCtYbnbuTYs+bcouuXC2aF9rJrvp+xspioVv6+SXpgtskGE1XqkYTOcQrTwF+Ci
-	 BPTK5vB/5ahuZ++yzViL5XfkyBuTmQq2uovJ7ZhQ=
+	b=xhYOc6w656HAU8nEj6dSTZMBT90RCjrhmEQEUaBYwl5+85CFWhPJDXmPnFCqOqeiC
+	 l0FiPRLOFVOBpj9actyyWBvZpZhSF5lHNTrngNj03hiiGiBE5lGDf6Ds79mBgPAF8A
+	 KTAG9A8eqN/20rf+OC6Cp8pia1BbqPzbWNTVBFJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/393] soc: atmel: fix device_node release in atmel_soc_device_init()
+Subject: [PATCH 6.12 358/590] arm64: dts: qcom: sm8650: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:41:53 +0100
-Message-ID: <20250205134427.717165276@linuxfoundation.org>
+Message-ID: <20250205134508.964552469@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit d3455ab798100f40af77123e7c2443ec979c546b ]
+[ Upstream commit 448db0ba6ad2aafee2cbd91b491246749f6a6abc ]
 
-A device_node acquired via of_find_node_by_path() requires explicit
-calls to of_node_put() when it is no longer needed to avoid leaking the
-resource.
+The SM8650 platform uses PMK8550 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Instead of adding the missing calls to of_node_put() in all execution
-paths, use the cleanup attribute for 'np' by means of the __free()
-macro, which automatically calls of_node_put() when the variable goes
-out of scope.
-
-Fixes: 960ddf70cc11 ("drivers: soc: atmel: Avoid calling at91_soc_init on non AT91 SoCs")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241031-soc-atmel-soc-cleanup-v2-1-73f2d235fd98@gmail.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 6fbdb3c1fac7 ("arm64: dts: qcom: sm8650: add initial SM8650 MTP dts")
+Fixes: a834911d50c1 ("arm64: dts: qcom: sm8650: add initial SM8650 QRD dts")
+Fixes: 01061441029e ("arm64: dts: qcom: sm8650: add support for the SM8650-HDK board")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-17-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/atmel/soc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8650-hdk.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sm8650-mtp.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sm8650-qrd.dts | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/atmel/soc.c b/drivers/soc/atmel/soc.c
-index cc9a3e107479a..c892c7083ecc9 100644
---- a/drivers/soc/atmel/soc.c
-+++ b/drivers/soc/atmel/soc.c
-@@ -376,7 +376,7 @@ static const struct of_device_id at91_soc_allowed_list[] __initconst = {
+diff --git a/arch/arm64/boot/dts/qcom/sm8650-hdk.dts b/arch/arm64/boot/dts/qcom/sm8650-hdk.dts
+index 127c7aacd4fc3..59363267d2e0a 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650-hdk.dts
++++ b/arch/arm64/boot/dts/qcom/sm8650-hdk.dts
+@@ -1117,7 +1117,7 @@
+ };
  
- static int __init atmel_soc_device_init(void)
- {
--	struct device_node *np = of_find_node_by_path("/");
-+	struct device_node *np __free(device_node) = of_find_node_by_path("/");
+ &sleep_clk {
+-	clock-frequency = <32000>;
++	clock-frequency = <32764>;
+ };
  
- 	if (!of_match_node(at91_soc_allowed_list, np))
- 		return 0;
+ &swr0 {
+diff --git a/arch/arm64/boot/dts/qcom/sm8650-mtp.dts b/arch/arm64/boot/dts/qcom/sm8650-mtp.dts
+index c63822f5b1278..74275ca668c76 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/sm8650-mtp.dts
+@@ -734,7 +734,7 @@
+ };
+ 
+ &sleep_clk {
+-	clock-frequency = <32000>;
++	clock-frequency = <32764>;
+ };
+ 
+ &swr0 {
+diff --git a/arch/arm64/boot/dts/qcom/sm8650-qrd.dts b/arch/arm64/boot/dts/qcom/sm8650-qrd.dts
+index 8ca0d28eba9bd..1689699d6de71 100644
+--- a/arch/arm64/boot/dts/qcom/sm8650-qrd.dts
++++ b/arch/arm64/boot/dts/qcom/sm8650-qrd.dts
+@@ -1045,7 +1045,7 @@
+ };
+ 
+ &sleep_clk {
+-	clock-frequency = <32000>;
++	clock-frequency = <32764>;
+ };
+ 
+ &spi4 {
 -- 
 2.39.5
 
