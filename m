@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-113860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2687DA29449
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43757A2944A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 681A21894872
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3A55161CB1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFA419884C;
-	Wed,  5 Feb 2025 15:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDB618CBFC;
+	Wed,  5 Feb 2025 15:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhJLzba0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZpGmRxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B7A1519B4;
-	Wed,  5 Feb 2025 15:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389F718A922;
+	Wed,  5 Feb 2025 15:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768411; cv=none; b=JNckOrlCq576oycgwYW9IssrNkQoyyWN+rktJMjMV6ZmG3sRxOkE9UJOILpTMT1dwYinpmAglc5aY+qr8ISFz03jZt23HQiRpchEAF545ceJGwsWhOF19agThs1vTixIsgZ8BrLCS7XpObzLLbkS8z5lmnOA5zCwJm9ClXG68yQ=
+	t=1738768664; cv=none; b=Ovdcb2nh8gzAgruv8spZpbUZLXnBETjuj3rxMohZmozL1avTuGmLxeebGyUau6NXRCyAK3T9yNx+ElTqwsyIQp9/OFjrgEZ5aK+3Qk+7AweGqh/GxQ9eAxVuXJiw8GwOgkTqqxUPFGLseVJLHtdGpBBzDb7GV9jRvWKv69Jt3tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768411; c=relaxed/simple;
-	bh=EazvEnzGDVLkcbByGAPfabpcjyrfxKBsYiMQWZly7Bc=;
+	s=arc-20240116; t=1738768664; c=relaxed/simple;
+	bh=k/XyO6itLjIKqRsnKTRPe5LLWbHhGz57HSgUZfqaZwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUqqb/OfoTbdPj6kMLiTu+GLZPwncKuZ1m0dpRKEpVoOYBuHzi/H0bQbCJ+C9IxdEg2TGlpdAevi/GiDkWnN9I9hkcLA0zLGBLF/Qq8C7Y6WwYJLPoQ6uzbxBDd7lbjPxN5juPaO84QuSV9iHPlRhOyRnigMPYyN7yv/ZsIZHXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhJLzba0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72F1C4CED1;
-	Wed,  5 Feb 2025 15:13:30 +0000 (UTC)
+	 MIME-Version; b=BDUxmNUMdQbuaAK9SWduqsxynhw0/AonxpU1w0iF6Aqgw0jOyJZ7JMoWBl7i2Ux34Ek82meA55drVLsLtBK6TnTLg8BKE21tMfJFDoIC9PgnSp2PkbHROJSuYJEgp5Bt7f09GVax9MqiwA8NAuzQ/oep5cLyYaUAzdkKu9+70Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZpGmRxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9E2C4CED1;
+	Wed,  5 Feb 2025 15:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768411;
-	bh=EazvEnzGDVLkcbByGAPfabpcjyrfxKBsYiMQWZly7Bc=;
+	s=korg; t=1738768663;
+	bh=k/XyO6itLjIKqRsnKTRPe5LLWbHhGz57HSgUZfqaZwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhJLzba0YmabPl1V721lsc0V0uOjFQ3qNFou1lravyuIGHO71+dXCcI+EccDeKrxR
-	 ktOAVjNFAj6VrVdV1xUPw4Z/hCnyulHO1sqcKY35bWKESpzvMEibKK/MYVqKzRoGM6
-	 DaRx0ajJADQAjZF/O/kuSe7t/qni4Zjvu24mCKVg=
+	b=MZpGmRxPyX5SWmIGyTLWxfiCV8inJm+mDlxPXTcoiymR2Rrntm5NPjJByfEnEcAgi
+	 +ziUPX/c8Outk9nV2TSXkA25c+Idcltyds7wbTgwTsrgpCZCvFO9MimaKSUKIXVXLV
+	 q95F+y4h46UCxSnYZYPVmCM0XUYz/QGs/Y0CxkpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 576/590] of: reserved-memory: Warn for missing static reserved memory regions
-Date: Wed,  5 Feb 2025 14:45:31 +0100
-Message-ID: <20250205134517.303517224@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.13 590/623] usb: xhci: Fix NULL pointer dereference on certain command aborts
+Date: Wed,  5 Feb 2025 14:45:32 +0100
+Message-ID: <20250205134518.797616145@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-commit 81dfedd5234b42df11a473eefe7328ea4a0416ad upstream.
+commit 1e0a19912adb68a4b2b74fd77001c96cd83eb073 upstream.
 
-For child node of /reserved-memory, its property 'reg' may contain
-multiple regions, but fdt_scan_reserved_mem_reg_nodes() only takes
-into account the first region, and miss remaining regions.
+If a command is queued to the final usable TRB of a ring segment, the
+enqueue pointer is advanced to the subsequent link TRB and no further.
+If the command is later aborted, when the abort completion is handled
+the dequeue pointer is advanced to the first TRB of the next segment.
 
-But there are no simple approach to fix it, so give user warning
-message when miss remaining regions.
+If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
+the ring pointers unequal and assumes that there is a pending command,
+so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
 
-Fixes: 8a6e02d0c00e ("of: reserved_mem: Restructure how the reserved memory regions are processed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/20250114-of_core_fix-v5-2-b8bafd00a86f@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
+ring likely is unnecessary too, but it's harmless. Leave it alone.
+
+This is probably Bug 219532, but no confirmation has been received.
+
+The issue has been independently reproduced and confirmed fixed using
+a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
+Everything continued working normally after several prevented crashes.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
+Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241227120142.1035206-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/of_reserved_mem.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/xhci-ring.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/of/of_reserved_mem.c
-+++ b/drivers/of/of_reserved_mem.c
-@@ -214,6 +214,11 @@ void __init fdt_scan_reserved_mem_reg_no
- 			       uname);
- 			continue;
- 		}
-+
-+		if (len > t_len)
-+			pr_warn("%s() ignores %d regions in node '%s'\n",
-+				__func__, len / t_len - 1, uname);
-+
- 		base = dt_mem_next_cell(dt_root_addr_cells, &prop);
- 		size = dt_mem_next_cell(dt_root_size_cells, &prop);
- 
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -422,7 +422,8 @@ static void xhci_handle_stopped_cmd_ring
+ 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
+ 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
+ 		xhci->current_cmd = cur_cmd;
+-		xhci_mod_cmd_timer(xhci);
++		if (cur_cmd)
++			xhci_mod_cmd_timer(xhci);
+ 		xhci_ring_cmd_db(xhci);
+ 	}
+ }
 
 
 
