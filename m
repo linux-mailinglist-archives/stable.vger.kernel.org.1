@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-112595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D01A28D7E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1860DA28DAD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4601886FE7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F813A531F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B5F1509BD;
-	Wed,  5 Feb 2025 14:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895405228;
+	Wed,  5 Feb 2025 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLq+8pfE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVnggDaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36CDF510;
-	Wed,  5 Feb 2025 14:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D9115198D;
+	Wed,  5 Feb 2025 14:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764096; cv=none; b=ukGi6NpAVDZtutY82blqmiT4hVh2DZ74Y8X6zPoBrDKB7zWDONY6MxDlYxe/kptsmxi3lwrMAYKiOirSShHoj7RY2yctu0ycBlWaI4HMCU36s0mwt/+yE92708wFFg/IvdBLgpz/g8IlBV4cgkKmo98OstGPwFUh2ulJZz9VKgQ=
+	t=1738764107; cv=none; b=qLELf3K5PK+MyHGBGcU3f2JPUlqYNJKg/OES3xY27t1+kZFfVKpEQ2E6mgqrB4+hY+PcN46SUF8WvMaCjMQvXARoUc4QtdxMfU0c1NM5/TAozPfx8sVrq5STwsI9lOvVnwR5DPXvqbN4ip9MXYgnjd9NKAyuq+J+TnsYra1DjKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764096; c=relaxed/simple;
-	bh=90sd+mVOvfc50vTU8kq2cMJp7kfHbuj1s7RZR+iNwUM=;
+	s=arc-20240116; t=1738764107; c=relaxed/simple;
+	bh=jsNFxSmmNL+RvC/fyDaCvynMymAWALUD8NO+vLS7w4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyQLxq47arcDpmGpGPWy8xn3VLoYQxd7spO0aKQOfIOqzdWN7sZU46xZoYzIzJeV8wuF2OkQOrthLUnLBfskER1I2hk60GNIo49ibu37isKvYtpqklebOu5uamr4pKcb+mRlT0w0EwU2QyYyUUiRttzlMolI1G5LrK6ZONaOwTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLq+8pfE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1820EC4CED1;
-	Wed,  5 Feb 2025 14:01:35 +0000 (UTC)
+	 MIME-Version; b=pPk6TUPzc1tIu/PxvwI2xOqqEuDErTNvawpfBp+cyi2NeHzwd96V2cVxgUJ/jstYBYE0MS12fJ3/ZKVOujGn4RDrRJWUKJ2Agq31fELEWI7FcME7H9z5Fk0soZaiZ1y2lb4pjNvnx9cDCOvaepFNHigywXhgJPomzN5R8Ywho4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVnggDaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843B6C4CED1;
+	Wed,  5 Feb 2025 14:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764096;
-	bh=90sd+mVOvfc50vTU8kq2cMJp7kfHbuj1s7RZR+iNwUM=;
+	s=korg; t=1738764107;
+	bh=jsNFxSmmNL+RvC/fyDaCvynMymAWALUD8NO+vLS7w4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLq+8pfEhP+OEj1BNGbyAnzhNu/GRabHYQD5DbWYUOksIanvw5A8G92ZR9BJiHccJ
-	 bYIZLQWIZbQj0ZA9FkDbz01M2l3QjKYqnoOHxEvvwv1nz/448vBOOSQS97IjKx2Qr7
-	 Z5ztVQQcqbqwztUQ6JWBAv5s365a/6qLxTOi277Y=
+	b=CVnggDaONnGM4XI46S9WroSzyYcKVxnAYAoAgiYdrbMIblJDtIEh1Xz0RjfIKEnte
+	 17Lo1ijvZM1k4IDwhWqQu+n9oXmav5jCF8B23WzJCVyqTCMpT96Cmjkh0xNGYeOAhG
+	 XOaqcN5uLNGm8P9oNWAMvpr9Vr2WV4RnTreeVrFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 047/623] drm/amdgpu: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
-Date: Wed,  5 Feb 2025 14:36:29 +0100
-Message-ID: <20250205134458.030054585@linuxfoundation.org>
+Subject: [PATCH 6.13 048/623] drm/rockchip: vop2: Fix cluster windows alpha ctrl regsiters offset
+Date: Wed,  5 Feb 2025 14:36:30 +0100
+Message-ID: <20250205134458.067987631@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,41 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 357445e28ff004d7f10967aa93ddb4bffa5c3688 ]
+[ Upstream commit 17b4b10a0df1a1421d5fbdc03bad0bd3799bc966 ]
 
-The function atomctrl_get_smc_sclk_range_table() does not check the return
-value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
-retrieve SMU_Info table, it returns NULL which is later dereferenced.
+The phy_id of cluster windws are not increase one for each window.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-In practice this should never happen as this code only gets called
-on polaris chips and the vbios data table will always be present on
-those chips.
-
-Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
+Tested-by: Derek Foreman <derek.foreman@collabora.com>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-6-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index fe24219c3bf48..4bd92fd782be6 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -992,6 +992,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
- 			GetIndexIntoMasterTable(DATA, SMU_Info),
- 			&size, &frev, &crev);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index 30d03ff6c01f0..594923303a850 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -2159,7 +2159,6 @@ static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
  
-+	if (!psmu_info)
-+		return -EINVAL;
+ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_win)
+ {
+-	u32 offset = (main_win->data->phys_id * 0x10);
+ 	struct vop2_alpha_config alpha_config;
+ 	struct vop2_alpha alpha;
+ 	struct drm_plane_state *bottom_win_pstate;
+@@ -2167,6 +2166,7 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
+ 	u16 src_glb_alpha_val, dst_glb_alpha_val;
+ 	bool premulti_en = false;
+ 	bool swap = false;
++	u32 offset = 0;
  
- 	for (i = 0; i < psmu_info->ucSclkEntryNum; i++) {
- 		table->entry[i].ucVco_setting = psmu_info->asSclkFcwRangeEntry[i].ucVco_setting;
+ 	/* At one win mode, win0 is dst/bottom win, and win1 is a all zero src/top win */
+ 	bottom_win_pstate = main_win->base.state;
+@@ -2185,6 +2185,22 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
+ 	vop2_parse_alpha(&alpha_config, &alpha);
+ 
+ 	alpha.src_color_ctrl.bits.src_dst_swap = swap;
++
++	switch (main_win->data->phys_id) {
++	case ROCKCHIP_VOP2_CLUSTER0:
++		offset = 0x0;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER1:
++		offset = 0x10;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER2:
++		offset = 0x20;
++		break;
++	case ROCKCHIP_VOP2_CLUSTER3:
++		offset = 0x30;
++		break;
++	}
++
+ 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_SRC_COLOR_CTRL + offset,
+ 		    alpha.src_color_ctrl.val);
+ 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_DST_COLOR_CTRL + offset,
 -- 
 2.39.5
 
