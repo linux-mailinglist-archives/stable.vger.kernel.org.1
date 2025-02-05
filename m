@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-112393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43721A28C7E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69C4A28D34
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE804168ADB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8523A4FA5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447B8149C64;
-	Wed,  5 Feb 2025 13:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B15E152E02;
+	Wed,  5 Feb 2025 13:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqUPSvYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbpplG8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F213413AD22;
-	Wed,  5 Feb 2025 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468141519AA;
+	Wed,  5 Feb 2025 13:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763423; cv=none; b=i8eC+OaOR78LEAqXciGB4qfz7m1tBt9JJoGQPnyt4uU/vNO0chEo2rdjDnggua8PINjmypmL+7f+Lld4L0+Qt1n0WNzXDWPK1rJoajWPD0YJ5pD6Zmij6OUk13r4Gq4bz/FdOTLyg50T2UkFVH5sf9KFBP+HGsH/6UXExAAR0cg=
+	t=1738763853; cv=none; b=bXil1IpTOs4wMAOqKTpaXRx9grPBNfZ+UJDggspMUjuO8muYwLJ++nFLVTzFnU/YBCRcojktF26DRp5R1NZRpZqeqzH/LVekj3oV5UssQbw+oSJHbsLEN43D5eijfItHEIIpSMgu5jCY4X/A+/GCa+qlH8Y7ux3pn2hvYGiehpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763423; c=relaxed/simple;
-	bh=3Iuegy77MXwS5si7LozJWKm5NQ4MGiYQR6OBdWmWAiI=;
+	s=arc-20240116; t=1738763853; c=relaxed/simple;
+	bh=3i/jnRrzr/h8bXW5YYTDlCiMhOB8rxS3c0vElHXCMQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRvWn9Fn6L+J7F+2uCwBIdDFhgNVCoxWjdpJmRlJ+/WKidySPoutWoUsdlOUJqHS12Aj81SHJPmqFR3P/OiDkYmyr3nW9vwLidaK2mRY87/CiWhEkxvpV/vYwzCX/D2ctilBJ05FjiLNomvXOv4j0In5qjTf5D1Zml3h0COssR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqUPSvYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608F6C4CED1;
-	Wed,  5 Feb 2025 13:50:22 +0000 (UTC)
+	 MIME-Version; b=BovyKoktZzHJC/nCyxQLNz71boRmYSOkoldiexS6fZLHBXMwObngadPQRFk/jUWDgGGV4ES/dGREvhscemD9eOw3UVpLaNtM2scMu6qLb2Hcm0xwZJEUwwwla8pUMdfEDV3yQlvVZB9aktAgG3aSD36uIX7ipxfWsek8iLt/Ny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbpplG8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8266C4CEDD;
+	Wed,  5 Feb 2025 13:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763422;
-	bh=3Iuegy77MXwS5si7LozJWKm5NQ4MGiYQR6OBdWmWAiI=;
+	s=korg; t=1738763853;
+	bh=3i/jnRrzr/h8bXW5YYTDlCiMhOB8rxS3c0vElHXCMQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqUPSvYWCTWpwj7iTcMHMS26flglSXTKIs207sZgHcRGm21n6Sa2GNKZMG4UsVKTX
-	 tEsOjxReHpCOMwQIFRTT/aaHMNQ8EOgfyWHEf0kJldXYDRkkzqhk/QhI/8MAkEci7K
-	 jHTGGEbscLdNJqkVElgT16e2T8Q74rogyIwO/0ww=
+	b=rbpplG8jZhyIm82kzIJI+Dc4NL8bz6+V6+slSBJ1QyWzwuBY2nC4eglZ/hoGx89Db
+	 cUJ9qZaG+vSxnbFpWMOe2WwinJqlQlXYEwclzrIQj5YnCInqgHrhEipnHjKHzfAr99
+	 qCiE3guEh5HdhsXaJeC8zd4xXnhQa6AXceyVzJWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Hortmann <philipp.g.hortmann@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
+	Sagi Grimberg <sagi@grimberg.me>,
 	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/590] ps3disk: Do not use dev->bounce_size before it is set
+Subject: [PATCH 6.13 024/623] nvme: Add error path for xa_store in nvme_init_effects
 Date: Wed,  5 Feb 2025 14:36:06 +0100
-Message-ID: <20250205134455.665495238@linuxfoundation.org>
+Message-ID: <20250205134457.153166328@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
 
-[ Upstream commit c2398e6d5f16e15598d3a37e17107fea477e3f91 ]
+[ Upstream commit d4a95adeabc6b5a39405e49c6d5ed14dd83682c4 ]
 
-dev->bounce_size is only initialized after it is used to set the queue
-limits.  Fix this by using BOUNCE_SIZE instead.
+The xa_store() may fail due to memory allocation failure because there
+is no guarantee that the index NVME_CSI_NVM is already used. This fix
+introduces a new function to handle the error path.
 
-Fixes: a7f18b74dbe17162 ("ps3disk: pass queue_limits to blk_mq_alloc_disk")
-Reported-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Closes: https://lore.kernel.org/39256db9-3d73-4e86-a49b-300dfd670212@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: cc115cbe12d9 ("nvme: always initialize known command effects")
+Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ps3disk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
-index ff45ed7664695..226ffc743238e 100644
---- a/drivers/block/ps3disk.c
-+++ b/drivers/block/ps3disk.c
-@@ -384,9 +384,9 @@ static int ps3disk_probe(struct ps3_system_bus_device *_dev)
- 	unsigned int devidx;
- 	struct queue_limits lim = {
- 		.logical_block_size	= dev->blk_size,
--		.max_hw_sectors		= dev->bounce_size >> 9,
-+		.max_hw_sectors		= BOUNCE_SIZE >> 9,
- 		.max_segments		= -1,
--		.max_segment_size	= dev->bounce_size,
-+		.max_segment_size	= BOUNCE_SIZE,
- 		.dma_alignment		= dev->blk_size - 1,
- 		.features		= BLK_FEAT_WRITE_CACHE |
- 					  BLK_FEAT_ROTATIONAL,
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 315692cb2e614..7c4a19f5c951a 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3175,6 +3175,25 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
+ 	return ret;
+ }
+ 
++static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
++		u8 csi, struct nvme_effects_log **log)
++{
++	struct nvme_effects_log *effects, *old;
++
++	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
++	if (effects)
++		return -ENOMEM;
++
++	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
++	if (xa_is_err(old)) {
++		kfree(effects);
++		return xa_err(old);
++	}
++
++	*log = effects;
++	return 0;
++}
++
+ static void nvme_init_known_nvm_effects(struct nvme_ctrl *ctrl)
+ {
+ 	struct nvme_effects_log	*log = ctrl->effects;
+@@ -3221,10 +3240,9 @@ static int nvme_init_effects(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
+ 	}
+ 
+ 	if (!ctrl->effects) {
+-		ctrl->effects = kzalloc(sizeof(*ctrl->effects), GFP_KERNEL);
+-		if (!ctrl->effects)
+-			return -ENOMEM;
+-		xa_store(&ctrl->cels, NVME_CSI_NVM, ctrl->effects, GFP_KERNEL);
++		ret = nvme_init_effects_log(ctrl, NVME_CSI_NVM, &ctrl->effects);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+ 	nvme_init_known_nvm_effects(ctrl);
 -- 
 2.39.5
 
