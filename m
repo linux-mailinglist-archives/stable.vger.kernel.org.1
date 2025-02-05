@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789F2A28DBA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B243A28CE4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C146616778F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E50A03A898A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51C32E634;
-	Wed,  5 Feb 2025 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1DE14A088;
+	Wed,  5 Feb 2025 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN+3mbrU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDCHVCR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8421715198D;
-	Wed,  5 Feb 2025 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA60142E86;
+	Wed,  5 Feb 2025 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764255; cv=none; b=spBkiaHdyWmsFWSGlGNxyOgpg1tRcbbt5BjhMBQ5TCvY3IgAz+W4WsgZ9kYxQZiPCXOZ99tqXVwa2lYQwfa+za2zeeX8r9/I5aYidD+gbqypwNzUc2ji6wwn+sQEXeTbA1Gp53xSz8QeohILhJWAEOcvXPi0u+MlmDxRERkuY8s=
+	t=1738763704; cv=none; b=SD89OAA6jDjwK4FZCysbjFxzGgccdh/+AGc2cYif5brDah8KMUJBoBrYSF+d5Z+oSyzRATCw7avcuN4FHmdG5W/ztVfL11k0A5j2CNrmoSvvAJFNdeEScZ705/wm/7soHACfnQv1rTmsrnS+5a3yvV8HElWZ7kP44k33wcPMUFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764255; c=relaxed/simple;
-	bh=o0d/A51K327xyZPGI+PygNacquggYB6qgTZAafxxynM=;
+	s=arc-20240116; t=1738763704; c=relaxed/simple;
+	bh=aWkSnKtcWeqcJWR/stZ2ifqknDLsce1LpFP42lQxy1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=psgrI4WIkhrOP6aXDoid1++zeBZi5bLDRrUcBe1HNTR30BH1saO7w0IZvAJChR7KlsqN715zcV9xtL6/lodEETkMhx+g3KAXtsBnImhU9zgPn3DsXW6o6/n2FfKPVb5ukndweDJrCVKzoHuwPsQyiCnBVkWCeqXfaHkfWpIKWmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN+3mbrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EACC4CED1;
-	Wed,  5 Feb 2025 14:04:14 +0000 (UTC)
+	 MIME-Version; b=d0b3szIQar2uIPwk6hFsR9zkuxgZPojut/DovVn9nYyd25EERg98m/mzFwFL9KwPY6Gk4Q39hrh2AdpeXCWhXXnH2sEbmhxnvUxouxewXapiaQDEp+n3bCZME0u0oTnRb30TvpxvOWdmlRp6hvRvX4fPelVbYFypze66hL/w3Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDCHVCR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6C6C4CED1;
+	Wed,  5 Feb 2025 13:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764255;
-	bh=o0d/A51K327xyZPGI+PygNacquggYB6qgTZAafxxynM=;
+	s=korg; t=1738763704;
+	bh=aWkSnKtcWeqcJWR/stZ2ifqknDLsce1LpFP42lQxy1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dN+3mbrU8EYGnU4Z3c4S2/oX/Y44pqGnoKhmGJcLQhicycX58lyen22iVLG2YLwkf
-	 i5gEoRQ4CuVPr7FeHWEJfoeVw1j/PO38cDqcZka5NLjhKsoVv5W5KgSy1qO+SzYsRS
-	 IpziHr+ILkmsiUEAotp9Mv5KtcOuxbaGGnivcUbc=
+	b=hDCHVCR/BPn4saW7LLJurN3m78XzxSKD8UvF4NWXxzethiMhJTo0+VNJ0/pgeW3o1
+	 67VKfCD0+XaFkXHBCv/a10NyewH5nj+77R2Oq5LIY+7Fe9GCZe6a1HXaQ3HxdTMJxR
+	 faXGmlGKYSzXFJJHPDX7XAw037eiDrrA2u1+PqQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 061/623] drm/rockchip: vop2: Add check for 32 bpp format for rk3588
-Date: Wed,  5 Feb 2025 14:36:43 +0100
-Message-ID: <20250205134458.560364111@linuxfoundation.org>
+Subject: [PATCH 6.12 049/590] drm/connector: Allow clearing HDMI infoframes
+Date: Wed,  5 Feb 2025 14:36:44 +0100
+Message-ID: <20250205134457.132214620@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Derek Foreman <derek.foreman@collabora.com>
 
-[ Upstream commit 7e8a56c703c67bfa8d3f71a0c1c297bb1252b897 ]
+[ Upstream commit d34357743b360c99903b5a59daab08f55b2f41a1 ]
 
-RK3588 only support DRM_FORMAT_XRGB2101010/XBGR2101010 in afbc mode.
+Our infoframe setting code currently lacks the ability to clear
+infoframes. For some of the infoframes, we only need to replace them,
+so if an error occurred when generating a new infoframe we would leave
+a stale frame instead of clearing the frame.
 
-Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-7-andyshrk@163.com
+However, the Dynamic Range and Mastering (DRM) infoframe should only
+be present when displaying HDR content (ie: the HDR_OUTPUT_METADATA blob
+is set). If we can't clear infoframes, the stale DRM infoframe will
+remain and we can never set the display back to SDR mode.
+
+With this change, we clear infoframes when they can not, or should not,
+be generated. This fixes switching to an SDR mode from an HDR one.
+
+Fixes: f378b77227bc ("drm/connector: hdmi: Add Infoframes generation")
+Signed-off-by: Derek Foreman <derek.foreman@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241202181939.724011-1-derek.foreman@collabora.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/display/drm_hdmi_state_helper.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 2abc68fe2d1ff..6082b1c179aeb 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -560,6 +560,15 @@ static bool rockchip_vop2_mod_supported(struct drm_plane *plane, u32 format,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/display/drm_hdmi_state_helper.c b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
+index feb7a3a759811..936a8f95d80f7 100644
+--- a/drivers/gpu/drm/display/drm_hdmi_state_helper.c
++++ b/drivers/gpu/drm/display/drm_hdmi_state_helper.c
+@@ -347,6 +347,8 @@ static int hdmi_generate_avi_infoframe(const struct drm_connector *connector,
+ 		is_limited_range ? HDMI_QUANTIZATION_RANGE_LIMITED : HDMI_QUANTIZATION_RANGE_FULL;
+ 	int ret;
  
-+	if (format == DRM_FORMAT_XRGB2101010 || format == DRM_FORMAT_XBGR2101010) {
-+		if (vop2->data->soc_id == 3588) {
-+			if (!rockchip_afbc(plane, modifier)) {
-+				drm_dbg_kms(vop2->drm, "Only support 32 bpp format with afbc\n");
-+				return false;
-+			}
-+		}
-+	}
++	infoframe->set = false;
 +
- 	if (modifier == DRM_FORMAT_MOD_LINEAR)
- 		return true;
+ 	ret = drm_hdmi_avi_infoframe_from_display_mode(frame, connector, mode);
+ 	if (ret)
+ 		return ret;
+@@ -376,6 +378,8 @@ static int hdmi_generate_spd_infoframe(const struct drm_connector *connector,
+ 		&infoframe->data.spd;
+ 	int ret;
+ 
++	infoframe->set = false;
++
+ 	ret = hdmi_spd_infoframe_init(frame,
+ 				      connector->hdmi.vendor,
+ 				      connector->hdmi.product);
+@@ -398,6 +402,8 @@ static int hdmi_generate_hdr_infoframe(const struct drm_connector *connector,
+ 		&infoframe->data.drm;
+ 	int ret;
+ 
++	infoframe->set = false;
++
+ 	if (connector->max_bpc < 10)
+ 		return 0;
+ 
+@@ -425,6 +431,8 @@ static int hdmi_generate_hdmi_vendor_infoframe(const struct drm_connector *conne
+ 		&infoframe->data.vendor.hdmi;
+ 	int ret;
+ 
++	infoframe->set = false;
++
+ 	if (!info->has_hdmi_infoframe)
+ 		return 0;
  
 -- 
 2.39.5
