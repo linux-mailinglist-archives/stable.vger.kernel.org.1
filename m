@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0569BA29257
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D82A28EB2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49889188BB08
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63EEA3A3C10
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F01FDA8A;
-	Wed,  5 Feb 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FABB8632B;
+	Wed,  5 Feb 2025 14:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ac4o4YTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6X+38/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B1218D65C;
-	Wed,  5 Feb 2025 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE971EED7;
+	Wed,  5 Feb 2025 14:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766935; cv=none; b=GrMiY6zkb8alDAVBuFQ3mvPhKIFGwXdhq0u5Sg16d7kWi7xA46Uv/5BQWdDljtKdn0RaTOGU3c0yys0rESFzquC2tKPaEMbYBOPrTA5k511VFllzqEnxioZnUouMkhr3GajP7zrvBHfe+qCpbF9Zr1o9D9VT2JVuKapR+ZKiDN8=
+	t=1738764959; cv=none; b=AM3pHZtY9jdVemwucKU+inaoptIMwn6ZcGLYaeJjoMPBnNDjp63cj2PNJKZ/f2WQFtQc65jbO9iyjOxB8Lb3BVBG+XguFr+RtABfdx6QuSg6KP/8H9i3VcL/ldTKI6JWp0vMc5kQOzwb+iHmyjySpinj20mVUMNMrIIKw30XZiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766935; c=relaxed/simple;
-	bh=k790IJ/DZ5IDEdtcyIHAWAcoAkHw/yKozuRr2iXbEgY=;
+	s=arc-20240116; t=1738764959; c=relaxed/simple;
+	bh=x71wErcU0Vw2WMOfFsJGmrpJgZlft+Oe1GGVk3eGWgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyqfzMmz2rRTGsZ6CyTwpRwZrH3oEx1Ds0IcfmjtIJCpx6sRs/ptqLgoXm0t/VocnNVCcr/A0vPboJTaS+yDvOPdjFWp4BA2EW7QHSKblWXORXHBXMIPfItJ2c+i90o4MHSIapEMd0G611reA1/HLDJc9HIQAPb8bHZoPlhCI5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ac4o4YTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A0CC4CED1;
-	Wed,  5 Feb 2025 14:48:54 +0000 (UTC)
+	 MIME-Version; b=ez8LLYusU4gdFMj9yQlE9K3oVTuHnyZIRyvp9CgCrrFH2yfVK84c0gFqRDGoY2QguHEnwUcZEnaTmNMo3aSYq8AvOuupe0mjQqxIvgq8EZXm067DcSOMbkFTBvQr8n/jUFg28R+eltpvLFEr+rzTv0sSjTqLXvcI3CMr3iuviVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6X+38/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C620C4CED1;
+	Wed,  5 Feb 2025 14:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766935;
-	bh=k790IJ/DZ5IDEdtcyIHAWAcoAkHw/yKozuRr2iXbEgY=;
+	s=korg; t=1738764958;
+	bh=x71wErcU0Vw2WMOfFsJGmrpJgZlft+Oe1GGVk3eGWgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ac4o4YTKN3PSmtVyJK3OPlyZFjrtNbQzwSM2vCTxEwPdUdPsFb9mAhAiQE059arNn
-	 t+tFRENmHnqYbcmFaWu2V2dUu2sf7P+5zyl+j8ePYCRpiXlHLQHo4K8003JbXrDEWY
-	 eAj8aJgN7rA1WS8FnwkSQrCvwVTET1Ll152+YXxE=
+	b=J6X+38/0IqxpdXN4JOJtni7y7IywqCChH8BkhuSj7SM4Te/2rfEIUWrwiGUww0V7J
+	 /oB/ISMlnCRAcSE7rwslBOn94AjzrU1IE0TtAVPNGyQcqRJ2E0xnx5rIy3yTN6Qzyi
+	 UIPc6ZY2ZLE0lqLtUOA9a871F3npFHmM7XX/p3WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/590] dts: arm64: mediatek: mt8195: Remove MT8183 compatible for OVL
-Date: Wed,  5 Feb 2025 14:42:17 +0100
-Message-ID: <20250205134509.882426814@linuxfoundation.org>
+Subject: [PATCH 6.6 219/393] arm64: dts: mediatek: mt8183: willow: Support second source touchscreen
+Date: Wed,  5 Feb 2025 14:42:18 +0100
+Message-ID: <20250205134428.682811374@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit ce3dbc46d7e30a84b8e99c730e3172dd5efbf094 ]
+[ Upstream commit 9594935260d76bffe200bea6cfab6ba0752e70d9 ]
 
-The OVL hardware capabilities have changed starting from MT8195,
-making the MT8183 compatible no longer applicable.
-Therefore, it is necessary to remove the MT8183 compatible for OVL.
+Some willow devices use second source touchscreen.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
-Link: https://lore.kernel.org/r/20241219181531.4282-5-jason-jh.lin@mediatek.com
+Fixes: f006bcf1c972 ("arm64: dts: mt8183: Add kukui-jacuzzi-willow board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Link: https://lore.kernel.org/r/20241213-touchscreen-v3-2-7c1f670913f9@chromium.org
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 04e41b557d448..f013dbad9dc4e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -3135,7 +3135,7 @@
- 		};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
+index 76d33540166f9..c942e461a177e 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
+@@ -6,6 +6,21 @@
+ /dts-v1/;
+ #include "mt8183-kukui-jacuzzi.dtsi"
  
- 		ovl0: ovl@1c000000 {
--			compatible = "mediatek,mt8195-disp-ovl", "mediatek,mt8183-disp-ovl";
-+			compatible = "mediatek,mt8195-disp-ovl";
- 			reg = <0 0x1c000000 0 0x1000>;
- 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
++&i2c0 {
++	touchscreen@40 {
++		compatible = "hid-over-i2c";
++		reg = <0x40>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&touchscreen_pins>;
++
++		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
++
++		post-power-on-delay-ms = <70>;
++		hid-descr-addr = <0x0001>;
++	};
++};
++
+ &i2c2 {
+ 	trackpad@2c {
+ 		compatible = "hid-over-i2c";
 -- 
 2.39.5
 
