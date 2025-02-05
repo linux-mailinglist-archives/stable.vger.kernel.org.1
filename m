@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F49A29078
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31312A2936A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0743163374
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9C5C188AD0F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B6C155756;
-	Wed,  5 Feb 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6258E17BEC5;
+	Wed,  5 Feb 2025 15:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNWQgoG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qTBajRFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92595151988;
-	Wed,  5 Feb 2025 14:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1581662EF;
+	Wed,  5 Feb 2025 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766190; cv=none; b=i63huYaOQXcV7BJxA5AZJK2tgaedG+udAg5JSx/3Cl/yY4NL9lIkiHvaCfi2lVEenETfu/pqj4cqCja+B+KgjLXzlD6tKItlRF/dZGxnWy04LLXP35TAM1H04H2yXA8sfaQYOde7T7JZa6e8I0dNKGXKFOFOwPNWzDcaPKs4iTU=
+	t=1738767737; cv=none; b=QiQ97xu0AqteChCyDJ5hTjmY/6ypjr+FCJc3VGjYzxWhicjZ6v1gqfTKdYQJUNRtIzzFN+Iy3T62SDtJHrSCCF013zSS5iSEJ00rtEstsNTkpn0WdFNtIw2OHfD+iVvoHVK8GwMh0O7t8QPRa0O3dFwQ7/EozEcB+Vcq4lsevkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766190; c=relaxed/simple;
-	bh=1XercFH3SZM1q0fMVBbHtXGfbrL7WP6jRWlICoUAPUY=;
+	s=arc-20240116; t=1738767737; c=relaxed/simple;
+	bh=B9Kj5EVI0wtUQiY4dVODVeq2D45/CEeA5/SVP+TFhvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk9ifKby50BDsfiXXqRrEWwLcpFumFlQWo62flJVOKhbVa/SC86KcRGWRM0mwyRyUfu3/wC5v11PiBhSGi7kanWgmosb7t1DperHRqbLveE6xui8KSgUhBpXD6LD1jZtJzKpn1hn7NBARP+z4r6zlBtPwEdTUCZV8EgzqdiYOfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNWQgoG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BC3C4CED6;
-	Wed,  5 Feb 2025 14:36:29 +0000 (UTC)
+	 MIME-Version; b=phUqYtaRnrqpPiXKaWEtcSBwCiWKhZjHsI5TzgYNUNiaqYOn/G0EMnhzFC4aF9borrDn2gwCEk45Wfhm0k1pmvko+8eT3ZVSde3eNU7v0abn+/zZD64zgN8DDJcZGV4P03NuaLj+L/d9IFYX3h05d5fecoQOiD7z5zhtt9a29AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qTBajRFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B24C4CED1;
+	Wed,  5 Feb 2025 15:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766190;
-	bh=1XercFH3SZM1q0fMVBbHtXGfbrL7WP6jRWlICoUAPUY=;
+	s=korg; t=1738767736;
+	bh=B9Kj5EVI0wtUQiY4dVODVeq2D45/CEeA5/SVP+TFhvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNWQgoG3SUd6eLd+F2DJxxR7RsNklrHVk8Fqn5Eoip1hpmTgEKWJBAcTpBRhFImag
-	 eYOWfAIowQpJjBgxRGs1MCsJqIpH/+3A/irwmiFnfWOQOw0KIOH+mmVBNHrDiNvh9e
-	 ft86a4s+ySt2KosbhRZaYUIE80Rif3sbTYsUkV/k=
+	b=qTBajRFMgdXlDA/OtxcWIBhOVCa1OtjsS0eK5x5TEuPCEG06lGg2vot/EoS2/V36s
+	 /4jcIDj5rw3hLN8JB6I8vVjgfd062O61o7qMdWTnOK2DH892nEJ4NC9c5wNcUmr+un
+	 OCZzC2CVKXL+bF7sB/sGkfHQgS5uqPTLj9LW37Zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Martin Habets <habetsm.xilinx@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/393] PM: sleep: Use bool for all 1-bit fields in struct dev_pm_info
+Subject: [PATCH 6.12 502/590] net: ethtool: only allow set_rxnfc with rss + ring_cookie if driver opts in
 Date: Wed,  5 Feb 2025 14:44:17 +0100
-Message-ID: <20250205134433.242843565@linuxfoundation.org>
+Message-ID: <20250205134514.474132731@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Edward Cree <ecree.xilinx@gmail.com>
 
-[ Upstream commit b017500ab53c06441ff7d3a681484e37039b4f57 ]
+[ Upstream commit 9e43ad7a1edef268acac603e1975c8f50a20d02f ]
 
-For some 1-bit fields in struct dev_pm_info the data type is bool, while
-for some other 1-bit fields in there it is unsigned int, and these
-differences are somewhat arbitrary.
+Ethtool ntuple filters with FLOW_RSS were originally defined as adding
+ the base queue ID (ring_cookie) to the value from the indirection table,
+ so that the same table could distribute over more than one set of queues
+ when used by different filters.
+However, some drivers / hardware ignore the ring_cookie, and simply use
+ the indirection table entries as queue IDs directly.  Thus, for drivers
+ which have not opted in by setting ethtool_ops.cap_rss_rxnfc_adds to
+ declare that they support the original (addition) semantics, reject in
+ ethtool_set_rxnfc any filter which combines FLOW_RSS and a nonzero ring.
+(For a ring_cookie of zero, both behaviours are equivalent.)
+Set the cap bit in sfc, as it is known to support this feature.
 
-For consistency, change the data type of the latter to bool, so that all
-of the 1-bit fields in struct dev_pm_info fields are bool.
-
-No intentional functional impact.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 3775fc538f53 ("PM: sleep: core: Synchronize runtime PM status of parents and children")
+Signed-off-by: Edward Cree <ecree.xilinx@gmail.com>
+Reviewed-by: Martin Habets <habetsm.xilinx@gmail.com>
+Link: https://patch.msgid.link/cc3da0844083b0e301a33092a6299e4042b65221.1731499022.git.ecree.xilinx@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4f5a52adeb1a ("ethtool: Fix set RXNFC command with symmetric RSS hash")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm.h | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/sfc/ef100_ethtool.c | 1 +
+ drivers/net/ethernet/sfc/ethtool.c       | 1 +
+ include/linux/ethtool.h                  | 4 ++++
+ net/ethtool/ioctl.c                      | 5 +++++
+ 4 files changed, 11 insertions(+)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 943b553720f82..9e1c60cd60e5a 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -662,8 +662,8 @@ struct pm_subsys_data {
+diff --git a/drivers/net/ethernet/sfc/ef100_ethtool.c b/drivers/net/ethernet/sfc/ef100_ethtool.c
+index 5c2551369812c..6c3b74000d3b6 100644
+--- a/drivers/net/ethernet/sfc/ef100_ethtool.c
++++ b/drivers/net/ethernet/sfc/ef100_ethtool.c
+@@ -59,6 +59,7 @@ const struct ethtool_ops ef100_ethtool_ops = {
+ 	.get_rxfh_indir_size	= efx_ethtool_get_rxfh_indir_size,
+ 	.get_rxfh_key_size	= efx_ethtool_get_rxfh_key_size,
+ 	.rxfh_per_ctx_key	= true,
++	.cap_rss_rxnfc_adds	= true,
+ 	.rxfh_priv_size		= sizeof(struct efx_rss_context_priv),
+ 	.get_rxfh		= efx_ethtool_get_rxfh,
+ 	.set_rxfh		= efx_ethtool_set_rxfh,
+diff --git a/drivers/net/ethernet/sfc/ethtool.c b/drivers/net/ethernet/sfc/ethtool.c
+index bb1930818beba..83d715544f7fb 100644
+--- a/drivers/net/ethernet/sfc/ethtool.c
++++ b/drivers/net/ethernet/sfc/ethtool.c
+@@ -263,6 +263,7 @@ const struct ethtool_ops efx_ethtool_ops = {
+ 	.get_rxfh_indir_size	= efx_ethtool_get_rxfh_indir_size,
+ 	.get_rxfh_key_size	= efx_ethtool_get_rxfh_key_size,
+ 	.rxfh_per_ctx_key	= true,
++	.cap_rss_rxnfc_adds	= true,
+ 	.rxfh_priv_size		= sizeof(struct efx_rss_context_priv),
+ 	.get_rxfh		= efx_ethtool_get_rxfh,
+ 	.set_rxfh		= efx_ethtool_set_rxfh,
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 12f6dc5675987..b8b935b526033 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -734,6 +734,9 @@ struct kernel_ethtool_ts_info {
+  * @rxfh_per_ctx_key: device supports setting different RSS key for each
+  *	additional context. Netlink API should report hfunc, key, and input_xfrm
+  *	for every context, not just context 0.
++ * @cap_rss_rxnfc_adds: device supports nonzero ring_cookie in filters with
++ *	%FLOW_RSS flag; the queue ID from the filter is added to the value from
++ *	the indirection table to determine the delivery queue.
+  * @rxfh_indir_space: max size of RSS indirection tables, if indirection table
+  *	size as returned by @get_rxfh_indir_size may change during lifetime
+  *	of the device. Leave as 0 if the table size is constant.
+@@ -956,6 +959,7 @@ struct ethtool_ops {
+ 	u32     cap_rss_ctx_supported:1;
+ 	u32	cap_rss_sym_xor_supported:1;
+ 	u32	rxfh_per_ctx_key:1;
++	u32	cap_rss_rxnfc_adds:1;
+ 	u32	rxfh_indir_space;
+ 	u16	rxfh_key_space;
+ 	u16	rxfh_priv_size;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 65cfe76dafbe2..8b28347039b50 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -992,6 +992,11 @@ static noinline_for_stack int ethtool_set_rxnfc(struct net_device *dev,
+ 	if (rc)
+ 		return rc;
  
- struct dev_pm_info {
- 	pm_message_t		power_state;
--	unsigned int		can_wakeup:1;
--	unsigned int		async_suspend:1;
-+	bool			can_wakeup:1;
-+	bool			async_suspend:1;
- 	bool			in_dpm_list:1;	/* Owned by the PM core */
- 	bool			is_prepared:1;	/* Owned by the PM core */
- 	bool			is_suspended:1;	/* Ditto */
-@@ -682,10 +682,10 @@ struct dev_pm_info {
- 	bool			syscore:1;
- 	bool			no_pm_callbacks:1;	/* Owned by the PM core */
- 	bool			async_in_progress:1;	/* Owned by the PM core */
--	unsigned int		must_resume:1;	/* Owned by the PM core */
--	unsigned int		may_skip_resume:1;	/* Set by subsystems */
-+	bool			must_resume:1;		/* Owned by the PM core */
-+	bool			may_skip_resume:1;	/* Set by subsystems */
- #else
--	unsigned int		should_wakeup:1;
-+	bool			should_wakeup:1;
- #endif
- #ifdef CONFIG_PM
- 	struct hrtimer		suspend_timer;
-@@ -696,17 +696,17 @@ struct dev_pm_info {
- 	atomic_t		usage_count;
- 	atomic_t		child_count;
- 	unsigned int		disable_depth:3;
--	unsigned int		idle_notification:1;
--	unsigned int		request_pending:1;
--	unsigned int		deferred_resume:1;
--	unsigned int		needs_force_resume:1;
--	unsigned int		runtime_auto:1;
-+	bool			idle_notification:1;
-+	bool			request_pending:1;
-+	bool			deferred_resume:1;
-+	bool			needs_force_resume:1;
-+	bool			runtime_auto:1;
- 	bool			ignore_children:1;
--	unsigned int		no_callbacks:1;
--	unsigned int		irq_safe:1;
--	unsigned int		use_autosuspend:1;
--	unsigned int		timer_autosuspends:1;
--	unsigned int		memalloc_noio:1;
-+	bool			no_callbacks:1;
-+	bool			irq_safe:1;
-+	bool			use_autosuspend:1;
-+	bool			timer_autosuspends:1;
-+	bool			memalloc_noio:1;
- 	unsigned int		links_count;
- 	enum rpm_request	request;
- 	enum rpm_status		runtime_status;
++	/* Nonzero ring with RSS only makes sense if NIC adds them together */
++	if (info.flow_type & FLOW_RSS && !ops->cap_rss_rxnfc_adds &&
++	    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
++		return -EINVAL;
++
+ 	if (ops->get_rxfh) {
+ 		struct ethtool_rxfh_param rxfh = {};
+ 
 -- 
 2.39.5
 
