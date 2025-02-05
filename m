@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC28A29029
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F53A28CA6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45E54188391B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F093A7A28C9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6180B156C5E;
-	Wed,  5 Feb 2025 14:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F69143759;
+	Wed,  5 Feb 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od7OHMbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ig3XbCZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7DE347CC;
-	Wed,  5 Feb 2025 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20894132111;
+	Wed,  5 Feb 2025 13:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765960; cv=none; b=ExEU0XXJcSzdEZuHZ+6he8SoM7wjsOuz4rHNWkfjXFiucywFfI7C0n2esWUCMCAagylbqapjWhF+OjFX2WriTiDlF0iYtSHl/Xd7Q5kg8tyeU29wcXv5QLw6/UPMtDiShXmVqcCX/rBSfFlR5SL9f29RE9VgLzwmabA7LkNFYss=
+	t=1738763365; cv=none; b=um58Jsu9KQhczWo5XQZohN5A00S22bAmNJuK0Jn2ocRn4ZsfiS/DNkLycm/4CRvpuIxO/ckZqcC1YfA/0m6OF9KuvGNUFaFyz0Gmg3MLMyXNZi4gg/JfQyu+eJoiUQva3ZXWoxYsG0kbZjjpSuY14SqhdGBf3fTylgAr5jVFzVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765960; c=relaxed/simple;
-	bh=7lvHNEABLXscASu+bPpNKzkSHGxs3JQa3+6s5t/MUDs=;
+	s=arc-20240116; t=1738763365; c=relaxed/simple;
+	bh=IYWHa2dEJHV+vlKLIVxBFyp7UeTvCdwSyXSmwDFvNJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BihuIhMlpNMNnXS+tFCXaLXCq2mRe5dUUk2q36ZcExUAmBk/8tQGP2Z6lGjJ7Qp32nF2FIuD0dmymTewxmDlXth18PdzQA1HpDg3G+KJ9ZPt3phEdH1bHC69sMgM/v6ssFcA7qBb7nxaY+Kn3wSbTzevGNsKAlMSmY9SCj2/BFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od7OHMbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159C0C4CED1;
-	Wed,  5 Feb 2025 14:32:38 +0000 (UTC)
+	 MIME-Version; b=r1HUmjRbmwq/CaMjmpkQ9XwbQEJyHIPz10X/UOrQxwtBPAZmy38dptQNmWfmVMUur1+BL+3RbfdZtixsGsxXr5ZWXOA2Nx1Jl1t1CldixGzhNXOQV8DMH9n+I3VDChDZRo6/JRMclgckyV9ArEWdqfjv/T+VlHsSH9ZJJWCF1uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ig3XbCZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DD4C4CED1;
+	Wed,  5 Feb 2025 13:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765959;
-	bh=7lvHNEABLXscASu+bPpNKzkSHGxs3JQa3+6s5t/MUDs=;
+	s=korg; t=1738763365;
+	bh=IYWHa2dEJHV+vlKLIVxBFyp7UeTvCdwSyXSmwDFvNJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=od7OHMbP3jbRhJFsHsKNnZlxb5XsRw5qG6wZuzVKFwJGHRI0JL+Doxv/OKUKsXa+l
-	 qMtXl14EXZO6PZX+VNQ4PPkqz4tG0hxP5DXDAAExPKY2r1EX9Kqa6KJhwGddTvA0TE
-	 7tMfoJH0vk5Q6DQnN4jt7MZ4xY1GFFmqAL1tmEgg=
+	b=Ig3XbCZuFIvvZ+nFI04IoHjWaL7aO3sM/6FXIUgVaUEgkuvfSzSYmvwOPKH5AhGRy
+	 kWJuI7WoTk1XJV2R7ZNW8t/kD51wz6+4tB2F58YljfGJwYg8Pw3WEt5jRfxZuvtXYQ
+	 A4eV8S/UO8svNgew0LjdeG32cm356FYDCTtcklLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 229/623] net: phy: realtek: clear master_slave_state if link is down
+Subject: [PATCH 6.6 052/393] wifi: rtlwifi: fix init_sw_vars leak when probe fails
 Date: Wed,  5 Feb 2025 14:39:31 +0100
-Message-ID: <20250205134504.983645780@linuxfoundation.org>
+Message-ID: <20250205134422.291377947@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit ea8318cb33e593bbfc59d637eae45a69732c5387 ]
+[ Upstream commit 00260350aed80c002df270c805ca443ec9a719a6 ]
 
-rtlgen_decode_physr() which sets master_slave_state isn't called in case
-the link is down and other than rtlgen_read_status(),
-rtl822x_c45_read_status() doesn't implicitely clear master_slave_state.
+If ieee80211_register_hw fails, the memory allocated for the firmware will
+not be released. Call deinit_sw_vars as the function that undoes the
+allocationes done by init_sw_vars.
 
-Avoid stale master_slave_state by always setting it to
-MASTER_SLAVE_STATE_UNKNOWN in rtl822x_c45_read_status() in case the link
-is down.
-
-Fixes: 081c9c0265c9 ("net: phy: realtek: read duplex and gbit master from PHYSR register")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: cefe3dfdb9f5 ("rtl8192cu: Call ieee80211_register_hw from rtl_usb_probe")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241107133322.855112-5-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 26b324ab0f90f..93704abb67878 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -1038,8 +1038,10 @@ static int rtl822x_c45_read_status(struct phy_device *phydev)
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index e2948732a16cb..0a934adcef012 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -1063,6 +1063,7 @@ int rtl_usb_probe(struct usb_interface *intf,
  
--	if (!phydev->link)
-+	if (!phydev->link) {
-+		phydev->master_slave_state = MASTER_SLAVE_STATE_UNKNOWN;
- 		return 0;
-+	}
- 
- 	/* Read actual speed from vendor register. */
- 	val = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL_VND2_PHYSR);
+ error_init_vars:
+ 	wait_for_completion(&rtlpriv->firmware_loading_complete);
++	rtlpriv->cfg->ops->deinit_sw_vars(hw);
+ error_out:
+ 	rtl_deinit_core(hw);
+ error_out2:
 -- 
 2.39.5
 
