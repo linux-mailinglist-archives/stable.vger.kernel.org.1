@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-112869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A9DA28ED7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B792A28ED1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17183A80FC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9341661AE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEB986348;
-	Wed,  5 Feb 2025 14:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C9515667B;
+	Wed,  5 Feb 2025 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiW7m5Nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THtWIgsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F81519AA;
-	Wed,  5 Feb 2025 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F27F1519A4;
+	Wed,  5 Feb 2025 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765031; cv=none; b=NIXdNOFyaoj0M+ShomLz3fnRRXKtdtjXe7dOXojsAA1WrRtnCcFt8vd0Hvjej2OI9RhCtDhahGK6CTk9exVAWqGTrRGEeB6h0/lRn8L3SsmU/GAmj+iOj+zPE5JT8iD0VtBkwV3vTah1jSBaqC3K4yK2URKxRtv/1cnZVxx+NQU=
+	t=1738765044; cv=none; b=l/dUaIxV50vG5CnlbrLU0/j3xXCxkbWju2j8r867UTGHw3OV/f49NE7da6zqOlywy72SSX+4OYok7r/IM6tHDC5cVS8SlZ4gHHcXiP+ABxOar2ysrPYBOBEK/6M63fFzjaZxjN/hi+9kRfamt4T5lXb0dxm1/yKIi5/0yeq51GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765031; c=relaxed/simple;
-	bh=/nMDwY/5duLAXEJZJvxotu2jYEUkpP2AllbUXFCC+cE=;
+	s=arc-20240116; t=1738765044; c=relaxed/simple;
+	bh=is/9JzPBWkJ0DXFTFGvbQwOn4+/17i1AK0jCkJh8PnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q56+ZjcVV9HSb5iHqcto5/cAatT9G9z4nDyOsKh5JrS71OPKeSGgHdcqPS+kUOM6bw+2G6E84GQsup7ZbnJ9hm1Mns7WO1PXvqZpAeQTnzN8qU15Tj8Rg4GiZHO1mcsItZgHmYu2rW8Cx+vfTs9d4Yo7xfrusv44Ip6nP8zvxHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiW7m5Nf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0F6C4CED6;
-	Wed,  5 Feb 2025 14:17:10 +0000 (UTC)
+	 MIME-Version; b=MXU3YR9Md8kgsHqNgZvgT35UHO7qomF3i4mLKEPW6iA1X4yZjYzCeCUd36ZPPUvmPyG7ioJ7kGDoG5dLt1lHL9Nzz9XAzgNF65KJuNcSD9b760C8X3J6qggU5bsopBUt02tUnP2LQ7UdMhRTfdSLv5xjs4ShxipX6XdTqWZtsEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THtWIgsK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D69C4CED6;
+	Wed,  5 Feb 2025 14:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765030;
-	bh=/nMDwY/5duLAXEJZJvxotu2jYEUkpP2AllbUXFCC+cE=;
+	s=korg; t=1738765044;
+	bh=is/9JzPBWkJ0DXFTFGvbQwOn4+/17i1AK0jCkJh8PnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CiW7m5Nf6vQxACwoSvnTcPROkpYrxhPPi5vQ7z32LkOV4AgLwWLKVN/ZW7o6csHMc
-	 19MG+MvnkLQOYr+lkfRxDb5Xqgndb1pwEeXe11cNkhyWAGeA54JeBNtK7vQb4xGO3v
-	 I37SOTffb32SnKqlUaHNcyWG0dWZ7dqmuU5Uz2Wo=
+	b=THtWIgsKLchsI7fnJBKWU783N5xgnpMSAmIiw9Mx+/BXDdmYe87KRooALW35yZ1aE
+	 EFZ7XLQdGn5azPtf2wnVTu9jZKUxKJ0G1QSHkL0CGXVK4WcgcvI3BJPvfKyJPxuPln
+	 0nS9vn+5dpKkXf4v28YSRf+i0KiKu5frQhMVhY9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Sebastian <sobrus@gmail.com>
-Subject: [PATCH 6.13 137/623] cpufreq/amd-pstate: Fix prefcore rankings
-Date: Wed,  5 Feb 2025 14:37:59 +0100
-Message-ID: <20250205134501.474614588@linuxfoundation.org>
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Stuart Gathman <stuart@gathman.org>
+Subject: [PATCH 6.13 138/623] clk: sunxi-ng: a64: stop force-selecting PLL-MIPI as TCON0 parent
+Date: Wed,  5 Feb 2025 14:38:00 +0100
+Message-ID: <20250205134501.512523883@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,42 +69,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit fd604ae6c261c5a56bb977ae99f875bbd7264a3f ]
+[ Upstream commit 383ca7bee8a93be9ff5a072936981c2710d2856b ]
 
-commit 50a062a76200 ("cpufreq/amd-pstate: Store the boost numerator as
-highest perf again") updated the value stored for highest perf to no longer
-store the highest perf value but instead the boost numerator.
+Stop force-selecting PLL-MIPI as TCON0 parent, since it breaks video
+output on Pinebook that uses RGB to eDP bridge.
 
-This is a fixed value for systems with preferred cores and not appropriate
-for use ITMT rankings. Update the value used for ITMT rankings to be the
-preferred core ranking.
+Partially revert commit ca1170b69968 ("clk: sunxi-ng: a64: force
+select PLL_MIPI in TCON0 mux"), while still leaving
+CLK_SET_RATE_NO_REPARENT flag set, since we do not want the clock to
+be reparented.
 
-Reported-and-tested-by: Sebastian <sobrus@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219640
-Fixes: 50a062a76200 ("cpufreq/amd-pstate: Store the boost numerator as highest perf again")
-Reviewed-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Link: https://lore.kernel.org/r/20250102141204.3413202-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The issue is that apparently different TCON0 outputs require a different
+clock, or the mux might be selecting the output type.
+
+I did an experiment: I manually configured PLL_MIPI and PLL_VIDEO0_2X
+to the same clock rate and flipped the switch with devmem. Experiment
+clearly showed that whenever PLL_MIPI is selected as TCON0 clock parent,
+the video output stops working.
+
+Therefore, TCON0 clock parent corresponding to the output type must be
+assigned in the device tree.
+
+Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
+Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Link: https://patch.msgid.link/20250104074035.1611136-5-anarsoul@gmail.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 66e5dfc711c0c..f6d04eb40af94 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -802,7 +802,7 @@ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
- 	 * sched_set_itmt_support(true) has been called and it is valid to
- 	 * update them at any time after it has been called.
- 	 */
--	sched_set_itmt_core_prio((int)READ_ONCE(cpudata->highest_perf), cpudata->cpu);
-+	sched_set_itmt_core_prio((int)READ_ONCE(cpudata->prefcore_ranking), cpudata->cpu);
+diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+index 3a7d61c816672..ba1ad267f1233 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
++++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
+@@ -535,11 +535,11 @@ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
+ 				 CLK_SET_RATE_PARENT);
  
- 	schedule_work(&sched_prefcore_work);
- }
+ /*
+- * DSI output seems to work only when PLL_MIPI selected. Set it and prevent
+- * the mux from reparenting.
++ * Experiments showed that RGB output requires pll-video0-2x, while DSI
++ * requires pll-mipi. It will not work with incorrect clock, the screen will
++ * be blank.
++ * sun50i-a64.dtsi assigns pll-mipi as TCON0 parent by default
+  */
+-#define SUN50I_A64_TCON0_CLK_REG	0x118
+-
+ static const char * const tcon0_parents[] = { "pll-mipi", "pll-video0-2x" };
+ static const u8 tcon0_table[] = { 0, 2, };
+ static SUNXI_CCU_MUX_TABLE_WITH_GATE_CLOSEST(tcon0_clk, "tcon0", tcon0_parents,
+@@ -959,11 +959,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
+ 
+ 	writel(0x515, reg + SUN50I_A64_PLL_MIPI_REG);
+ 
+-	/* Set PLL MIPI as parent for TCON0 */
+-	val = readl(reg + SUN50I_A64_TCON0_CLK_REG);
+-	val &= ~GENMASK(26, 24);
+-	writel(val | (0 << 24), reg + SUN50I_A64_TCON0_CLK_REG);
+-
+ 	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_a64_ccu_desc);
+ 	if (ret)
+ 		return ret;
 -- 
 2.39.5
 
