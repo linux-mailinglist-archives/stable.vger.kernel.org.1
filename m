@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B850A29222
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEACEA28E6D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1055188DFD6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40F3D7A3EE8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492DB1FC10D;
-	Wed,  5 Feb 2025 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ED914D2A2;
+	Wed,  5 Feb 2025 14:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elh6Dgkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exLP04Au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FFA18A6D7;
-	Wed,  5 Feb 2025 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B713C9C4;
+	Wed,  5 Feb 2025 14:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766810; cv=none; b=jZ+bLrpFwnUJyHk+q5CIt4bDBesD7qR0aDUwcF4O6TUEsm+qXdeqBsvqH3qdrDLm3zDOXJKOA5I5x6R1qXKwIoKuI4EgTfrYOM2JnYa8BWNd1imMMgQdIw1fN8W77/5sYTuogNUvSxiI7DEeUxkxylth40qucfrG/SPwqkSovoU=
+	t=1738764738; cv=none; b=svjjIj6X+3DuNIFKqv3H4F5fhDqihVY2l4Hv7rmLUUrKtxkemrnI8zOmKiD6qCrvDRq1WQqxRRiufytIzzMAQNZs5SQeBLolBdG8wUgMrbnw8pZFhqZdGLNCbKH3vEDXNhKmApUDl5HiQC1xAYHZQnqEV89QUIG2o6ijSUjsBDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766810; c=relaxed/simple;
-	bh=bw2Cqr+HFtsfEu6E44MC8VRjrbTuOGH2rB9QX2RCDA8=;
+	s=arc-20240116; t=1738764738; c=relaxed/simple;
+	bh=5w8d0bylbo/j/o45WxWaSfF7g0N7vro4RAxg4Q0y2kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SiWXh9zY/AElxmNjompyaYfB5GgIZGoeAa7VN2TerrbYuB0HFkj81roNB463fzzx0B/k9+VC4zRjukv6HEMcPhpQsuQaRWDMO4IS3hg8qwEdSVT/Ek7Lhmbfs756jmdE/LV6Ri1/hjoigeq7nrsNVUS8ef8l3jHJHxB+UDSdxWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elh6Dgkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692E8C4CED1;
-	Wed,  5 Feb 2025 14:46:49 +0000 (UTC)
+	 MIME-Version; b=N1pIVqs6D1cycu4sccut50/Zw1tUwGX3XVOYbEdbWyL/YvLSki07YrKgJCKW1rpyiOXpMY7Um2YsWF7v/dgnjkOe+MmUlqk+DYCjvTAgN5rxOahW/CCosD6aAp2Fb6unV34IjKNfkBr+fBB8F/o+iqTkNZs2hneXSyuovtUL56I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exLP04Au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B8DC4CED1;
+	Wed,  5 Feb 2025 14:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766809;
-	bh=bw2Cqr+HFtsfEu6E44MC8VRjrbTuOGH2rB9QX2RCDA8=;
+	s=korg; t=1738764738;
+	bh=5w8d0bylbo/j/o45WxWaSfF7g0N7vro4RAxg4Q0y2kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elh6DgkmbnSqDHCRvzlEr4XZ/XPa7qx0uQfnSh1UxE8vKwuHQEr52TN+SVr1o9vD3
-	 OhcXNvls5m3LLkbarvQ9qFQiIa/QtGtCQajRbqvlA7JNyMv5eJegr5yqqlemJo5x2K
-	 SRLcZGh8vBNt4L7U4iHiNzmE2/WskmCHydG1i3l4=
+	b=exLP04AukgXKvSl+b4dIVPzAlo8u4MsxNEiyl0556nfohYOIJA8TcIr/yBbBb0PyY
+	 ilI4Mt5VoSzdBaEPGKh7AgwxwhX+CmsLVc7eoi4OXnzNZUGCB351W1el6Sz24H/biu
+	 8IOKkgvOdYGViWlKRA+wevF4Czs6n893+dVfuuHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/590] arm64: dts: ti: k3-am62a: Remove duplicate GICR reg
+Subject: [PATCH 6.6 200/393] arm64: dts: mediatek: mt8516: add i2c clock-div property
 Date: Wed,  5 Feb 2025 14:41:59 +0100
-Message-ID: <20250205134509.196285184@linuxfoundation.org>
+Message-ID: <20250205134427.951095780@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan Brattlof <bb@ti.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 6f0232577e260cdbc25508e27bb0b75ade7e7ebc ]
+[ Upstream commit eb72341fd92b7af510d236e5a8554d855ed38d3c ]
 
-The GIC Redistributor control range is mapped twice. Remove the extra
-entry from the reg range.
+Move the clock-div property from the pumpkin board dtsi to the SoC's
+since it belongs to the SoC itself and is required on other devices.
 
-Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
-Reported-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-2-758b4d5b4a0a@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-4-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi         | 3 +++
+ arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi | 2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-index 16a578ae2b412..56945d29e0150 100644
---- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
-@@ -18,7 +18,6 @@
- 		compatible = "arm,gic-v3";
- 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
- 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
--		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
- 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
- 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
- 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index 576be8363ec1c..1ca1393fcc593 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -344,6 +344,7 @@
+ 			reg = <0 0x11009000 0 0x90>,
+ 			      <0 0x11000180 0 0x80>;
+ 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C0>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+@@ -358,6 +359,7 @@
+ 			reg = <0 0x1100a000 0 0x90>,
+ 			      <0 0x11000200 0 0x80>;
+ 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C1>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+@@ -372,6 +374,7 @@
+ 			reg = <0 0x1100b000 0 0x90>,
+ 			      <0 0x11000280 0 0x80>;
+ 			interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_LOW>;
++			clock-div = <2>;
+ 			clocks = <&topckgen CLK_TOP_I2C2>,
+ 				 <&topckgen CLK_TOP_APDMA>;
+ 			clock-names = "main", "dma";
+diff --git a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
+index ec8dfb3d1c6d6..a356db5fcc5f3 100644
+--- a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
++++ b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
+@@ -47,7 +47,6 @@
+ };
+ 
+ &i2c0 {
+-	clock-div = <2>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c0_pins_a>;
+ 	status = "okay";
+@@ -156,7 +155,6 @@
+ };
+ 
+ &i2c2 {
+-	clock-div = <2>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&i2c2_pins_a>;
+ 	status = "okay";
 -- 
 2.39.5
 
