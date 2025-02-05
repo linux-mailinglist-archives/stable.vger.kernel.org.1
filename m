@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-113633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B76CA2937E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB88EA29071
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E89E2189129D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18AB77A2F00
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6577D18A6D7;
-	Wed,  5 Feb 2025 15:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7671155747;
+	Wed,  5 Feb 2025 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m14Zf2Ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tbs2ZTpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A1C376;
-	Wed,  5 Feb 2025 15:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B27151988;
+	Wed,  5 Feb 2025 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767633; cv=none; b=XgDkGvOvTyIeefkMaAegTOubdtiQKfQMkkCfIpAvfw4NXMhVNTTjV36g71WWEb8Q0e9hmgE8kXqWQxZYpeY6DWY/udja81dYP86hswMjPK+uahMJTGPHuxrfn3o6naUhV8I3poevUNhYiqB6X91cviPyfr4bzo72eQHepP+ZYQs=
+	t=1738766168; cv=none; b=UXUWuy0ChvcSL07lABktLEdzHmxEvTdk7fkAASy6zUsd9KYryYHsYS1Ew9vFxAdxdN9JaNzawUt1eqDAKl6QFapZQGOS72OBF7Xy7t66OJyw6XZZVs7/1eXJKkozBxPQtMv0laY5kMV5v+4/K+AjdhyMJE/6n3aWCQ3Iwjuxfwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767633; c=relaxed/simple;
-	bh=2mxkKCO7YhmsNsSWGfVlHTGJPm7BKX4mRSgJJdq3PgQ=;
+	s=arc-20240116; t=1738766168; c=relaxed/simple;
+	bh=pjtqb7pFt+bPzvsBHSPZu8tVuaxmiNlVJ0Vj28mfmL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFgT/MCQCv6cvBvJxRMvr/WU0rr3df+gLm8skhR9m6mkL5QavFV3BQSq++ohp2qpCGD0rEFpTewpa5VoKkY5GggGb0L7jPCgjus3N/G3dXNbdxMGwAIJY5oaW2P0W41TN9VknRsmGww84QB7P22yFhgOmgCxWAsdgMYKFMCAemI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m14Zf2Ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F520C4CED1;
-	Wed,  5 Feb 2025 15:00:32 +0000 (UTC)
+	 MIME-Version; b=ku++2uPe+iPV0wEi2UdkFlnvAnnsEk3k1JJQuZlTdXtn1UTaGtDpa8tDQeTSdlq3ZSAlMgN9AovRb3awCfkH4Lu3QUHtZy/1Dwl4/s/2+DqSlClVzo35NozoJphN2UJc1G03yipxHrg8spRvGEB8k9F9djL67NGtsDY0LkLRfac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tbs2ZTpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C30C4CED1;
+	Wed,  5 Feb 2025 14:36:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767633;
-	bh=2mxkKCO7YhmsNsSWGfVlHTGJPm7BKX4mRSgJJdq3PgQ=;
+	s=korg; t=1738766168;
+	bh=pjtqb7pFt+bPzvsBHSPZu8tVuaxmiNlVJ0Vj28mfmL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m14Zf2CkomfRe+HnrlZOGfaqLmxHLVBU2Wb4MN8YQ5FkCUgahJosSQjCkmcI/OXcK
-	 2bZaKQnsUYH6E9U1uuZ9wxqTUVh11mFxEXev9ZMCwJgprb0iKsgGzW2em4a8YKSjmw
-	 +QaRbI1DV+9R23Cn/x/lpCZ5ZStQLGh6da0iORfI=
+	b=Tbs2ZTpGjLRGvb6YNQwTPcgD+vsj+5S9zUyuT0B3C7D3r/alwG+CBzwgVQ6NMwqLG
+	 dxNAdzbBy8iHLRg5DnaAtmxuatt/qfEGvg622TTJNRd9S+2nDyb47ccRexvrU87+6o
+	 wlkp+q+Ph9TVy/gI1ZDUshizFDQM/ybjXourAj2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Leogrande <leogrande@google.com>,
-	Manoj Vishwanathan <manojvishy@google.com>,
-	Brian Vazquez <brianvv@google.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Krishneil Singh <krishneil.k.singh@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	pangliyuan <pangliyuan1@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 485/590] idpf: convert workqueues to unbound
+Subject: [PATCH 6.6 321/393] ubifs: skip dumping tnc tree when zroot is null
 Date: Wed,  5 Feb 2025 14:44:00 +0100
-Message-ID: <20250205134513.816226329@linuxfoundation.org>
+Message-ID: <20250205134432.596687884@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Leogrande <leogrande@google.com>
+From: pangliyuan <pangliyuan1@huawei.com>
 
-[ Upstream commit 9a5b021cb8186f1854bac2812bd4f396bb1e881c ]
+[ Upstream commit bdb0ca39e0acccf6771db49c3f94ed787d05f2d7 ]
 
-When a workqueue is created with `WQ_UNBOUND`, its work items are
-served by special worker-pools, whose host workers are not bound to
-any specific CPU. In the default configuration (i.e. when
-`queue_delayed_work` and friends do not specify which CPU to run the
-work item on), `WQ_UNBOUND` allows the work item to be executed on any
-CPU in the same node of the CPU it was enqueued on. While this
-solution potentially sacrifices locality, it avoids contention with
-other processes that might dominate the CPU time of the processor the
-work item was scheduled on.
+Clearing slab cache will free all znode in memory and make
+c->zroot.znode = NULL, then dumping tnc tree will access
+c->zroot.znode which cause null pointer dereference.
 
-This is not just a theoretical problem: in a particular scenario
-misconfigured process was hogging most of the time from CPU0, leaving
-less than 0.5% of its CPU time to the kworker. The IDPF workqueues
-that were using the kworker on CPU0 suffered large completion delays
-as a result, causing performance degradation, timeouts and eventual
-system crash.
-
-Tested:
-
-* I have also run a manual test to gauge the performance
-  improvement. The test consists of an antagonist process
-  (`./stress --cpu 2`) consuming as much of CPU 0 as possible. This
-  process is run under `taskset 01` to bind it to CPU0, and its
-  priority is changed with `chrt -pQ 9900 10000 ${pid}` and
-  `renice -n -20 ${pid}` after start.
-
-  Then, the IDPF driver is forced to prefer CPU0 by editing all calls
-  to `queue_delayed_work`, `mod_delayed_work`, etc... to use CPU 0.
-
-  Finally, `ktraces` for the workqueue events are collected.
-
-  Without the current patch, the antagonist process can force
-  arbitrary delays between `workqueue_queue_work` and
-  `workqueue_execute_start`, that in my tests were as high as
-  `30ms`. With the current patch applied, the workqueue can be
-  migrated to another unloaded CPU in the same node, and, keeping
-  everything else equal, the maximum delay I could see was `6us`.
-
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Signed-off-by: Marco Leogrande <leogrande@google.com>
-Signed-off-by: Manoj Vishwanathan <manojvishy@google.com>
-Signed-off-by: Brian Vazquez <brianvv@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219624#c0
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ fs/ubifs/debug.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index db476b3314c8a..dfd56fc5ff655 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -174,7 +174,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	pci_set_master(pdev);
- 	pci_set_drvdata(pdev, adapter);
+diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
+index eef9e527d9ff9..ff9e574c07a87 100644
+--- a/fs/ubifs/debug.c
++++ b/fs/ubifs/debug.c
+@@ -946,16 +946,20 @@ void ubifs_dump_tnc(struct ubifs_info *c)
  
--	adapter->init_wq = alloc_workqueue("%s-%s-init", 0, 0,
-+	adapter->init_wq = alloc_workqueue("%s-%s-init",
-+					   WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
- 					   dev_driver_string(dev),
- 					   dev_name(dev));
- 	if (!adapter->init_wq) {
-@@ -183,7 +184,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_free;
+ 	pr_err("\n");
+ 	pr_err("(pid %d) start dumping TNC tree\n", current->pid);
+-	znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
+-	level = znode->level;
+-	pr_err("== Level %d ==\n", level);
+-	while (znode) {
+-		if (level != znode->level) {
+-			level = znode->level;
+-			pr_err("== Level %d ==\n", level);
++	if (c->zroot.znode) {
++		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, NULL);
++		level = znode->level;
++		pr_err("== Level %d ==\n", level);
++		while (znode) {
++			if (level != znode->level) {
++				level = znode->level;
++				pr_err("== Level %d ==\n", level);
++			}
++			ubifs_dump_znode(c, znode);
++			znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
+ 		}
+-		ubifs_dump_znode(c, znode);
+-		znode = ubifs_tnc_levelorder_next(c, c->zroot.znode, znode);
++	} else {
++		pr_err("empty TNC tree in memory\n");
  	}
- 
--	adapter->serv_wq = alloc_workqueue("%s-%s-service", 0, 0,
-+	adapter->serv_wq = alloc_workqueue("%s-%s-service",
-+					   WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
- 					   dev_driver_string(dev),
- 					   dev_name(dev));
- 	if (!adapter->serv_wq) {
-@@ -192,7 +194,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_serv_wq_alloc;
- 	}
- 
--	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx", 0, 0,
-+	adapter->mbx_wq = alloc_workqueue("%s-%s-mbx",
-+					  WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
- 					  dev_driver_string(dev),
- 					  dev_name(dev));
- 	if (!adapter->mbx_wq) {
-@@ -201,7 +204,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_mbx_wq_alloc;
- 	}
- 
--	adapter->stats_wq = alloc_workqueue("%s-%s-stats", 0, 0,
-+	adapter->stats_wq = alloc_workqueue("%s-%s-stats",
-+					    WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
- 					    dev_driver_string(dev),
- 					    dev_name(dev));
- 	if (!adapter->stats_wq) {
-@@ -210,7 +214,8 @@ static int idpf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err_stats_wq_alloc;
- 	}
- 
--	adapter->vc_event_wq = alloc_workqueue("%s-%s-vc_event", 0, 0,
-+	adapter->vc_event_wq = alloc_workqueue("%s-%s-vc_event",
-+					       WQ_UNBOUND | WQ_MEM_RECLAIM, 0,
- 					       dev_driver_string(dev),
- 					       dev_name(dev));
- 	if (!adapter->vc_event_wq) {
+ 	pr_err("(pid %d) finish dumping TNC tree\n", current->pid);
+ }
 -- 
 2.39.5
 
