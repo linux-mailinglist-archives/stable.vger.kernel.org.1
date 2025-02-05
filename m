@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3E8A29135
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:46:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6203CA28DE2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376337A145B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:45:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803A8168348
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3B41FE47B;
-	Wed,  5 Feb 2025 14:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FE7156225;
+	Wed,  5 Feb 2025 14:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Cny9qC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8ZCNTPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57ACC1FE474;
-	Wed,  5 Feb 2025 14:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9ABE1519AA;
+	Wed,  5 Feb 2025 14:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766507; cv=none; b=dQxoM3pi9AnybtzWMZv7mZpEelUZqTWFTi4sHIgzapEtvnXjTaw4lN5GU4t1KY/LLArkdy+W4/piy2svFmKiCEwifoN/xjh4RcAgP0TQocJriD6AWGUJ29Lp/itB4zdUeXS7pXQhPdNmwgKabBOzHHr0jEP4la5vMqIW343wMnQ=
+	t=1738764372; cv=none; b=lCIug2BEXJazmHuaEPK0oXsE2yDnC3eSmetyh1fY6dNpWTpVzFDeP/vX7Gi2HfihzvifFxz9bPme/P+AKkowmiIwQWLMzQwV/QknfYICHbgvTFwouQvvLaMUwTEMsGQAimOlr+zNJ7veR//wJ2MNo81hTZNVjQpfF1O0B64fLbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766507; c=relaxed/simple;
-	bh=wSl/hMyr4Ac03tQIsuq0AUjpYWe3xg6I8MJKQuI84V0=;
+	s=arc-20240116; t=1738764372; c=relaxed/simple;
+	bh=FkdQQ9exju06rL+subgLkSJrxeXQMMHoDCojEOq1v0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJLeC2EPBkgFL0lXgsAjMwmK5vHzg7MJYB6eAu7dzotORfHd791YMOJ8Yd0d97cBURCUUAE/BB8xOviR0i8zF7XMSz+Pq+DSt/B85WpgUBnZS7lBexOFqtG67zqeFmRmmCGraFrJeXLMCLDXvhYTsfZ68a1vqY6Yw35Pel9VOjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Cny9qC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFDCC4CED1;
-	Wed,  5 Feb 2025 14:41:46 +0000 (UTC)
+	 MIME-Version; b=H5VEULw2Jh3AvwwnYBjc598MSfH8ZSvOWbzjA2zc2Ks26Njti7cD11BPU47t1eLWaS/Ed44zR1NvGNWXXo9ZPpw6gmQpXXdsEEL4/yYOpHp4ibtI31FcKXX3aAKb3ROBcmnIZtvteUwBJT96xwxM37p5czLAZtFPoWl+QmFk0AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8ZCNTPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F1BC4CED1;
+	Wed,  5 Feb 2025 14:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766507;
-	bh=wSl/hMyr4Ac03tQIsuq0AUjpYWe3xg6I8MJKQuI84V0=;
+	s=korg; t=1738764372;
+	bh=FkdQQ9exju06rL+subgLkSJrxeXQMMHoDCojEOq1v0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Cny9qC3gXrEbuUEgj6EDzkkl6PKruITMFL+dy1Rae9uqQu76Pekoum7TApixhoo7
-	 f/Sh3FmsydnOapVbjfP6iwM7WVo2SLCM3J3mgyK9Bs1+M+n8xsjCGSyO4nFLtrdDT8
-	 aAGCLvxnY/nMuqS95/D2FQPxTKZsNGwf/FKA3r98=
+	b=F8ZCNTPJtDKrFNoWQ60QKsPwp8u13XDXoQNse68aJVBIYAXRqRUMtcKsavSiGXpS0
+	 at1SFpVStPP4AnPnK4FGO7Zuoj9gUf830VzixSyVRRfLjX87YgMME4KcNU2qIHz0ls
+	 mHwVBiIOttg0a74wBH9A4x3mUGK74TtHdv49mlSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/590] arm64: dts: mediatek: mt8183: willow: Support second source touchscreen
+Subject: [PATCH 6.6 166/393] bpf: bpf_local_storage: Always use bpf_mem_alloc in PREEMPT_RT
 Date: Wed,  5 Feb 2025 14:41:25 +0100
-Message-ID: <20250205134507.902759852@linuxfoundation.org>
+Message-ID: <20250205134426.647842656@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 9594935260d76bffe200bea6cfab6ba0752e70d9 ]
+[ Upstream commit 8eef6ac4d70eb1f0099fff93321d90ce8fa49ee1 ]
 
-Some willow devices use second source touchscreen.
+In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non preemptible
+context. bpf_mem_alloc must be used in PREEMPT_RT. This patch is
+to enforce bpf_mem_alloc in the bpf_local_storage when CONFIG_PREEMPT_RT
+is enabled.
 
-Fixes: f006bcf1c972 ("arm64: dts: mt8183: Add kukui-jacuzzi-willow board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Link: https://lore.kernel.org/r/20241213-touchscreen-v3-2-7c1f670913f9@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+[   35.118559] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[   35.118566] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1832, name: test_progs
+[   35.118569] preempt_count: 1, expected: 0
+[   35.118571] RCU nest depth: 1, expected: 1
+[   35.118577] INFO: lockdep is turned off.
+    ...
+[   35.118647]  __might_resched+0x433/0x5b0
+[   35.118677]  rt_spin_lock+0xc3/0x290
+[   35.118700]  ___slab_alloc+0x72/0xc40
+[   35.118723]  __kmalloc_noprof+0x13f/0x4e0
+[   35.118732]  bpf_map_kzalloc+0xe5/0x220
+[   35.118740]  bpf_selem_alloc+0x1d2/0x7b0
+[   35.118755]  bpf_local_storage_update+0x2fa/0x8b0
+[   35.118784]  bpf_sk_storage_get_tracing+0x15a/0x1d0
+[   35.118791]  bpf_prog_9a118d86fca78ebb_trace_inet_sock_set_state+0x44/0x66
+[   35.118795]  bpf_trace_run3+0x222/0x400
+[   35.118820]  __bpf_trace_inet_sock_set_state+0x11/0x20
+[   35.118824]  trace_inet_sock_set_state+0x112/0x130
+[   35.118830]  inet_sk_state_store+0x41/0x90
+[   35.118836]  tcp_set_state+0x3b3/0x640
+
+There is no need to adjust the gfp_flags passing to the
+bpf_mem_cache_alloc_flags() which only honors the GFP_KERNEL.
+The verifier has ensured GFP_KERNEL is passed only in sleepable context.
+
+It has been an old issue since the first introduction of the
+bpf_local_storage ~5 years ago, so this patch targets the bpf-next.
+
+bpf_mem_alloc is needed to solve it, so the Fixes tag is set
+to the commit when bpf_mem_alloc was first used in the bpf_local_storage.
+
+Fixes: 08a7ce384e33 ("bpf: Use bpf_mem_cache_alloc/free in bpf_local_storage_elem")
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20241218193000.2084281-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ kernel/bpf/bpf_local_storage.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
-index 76d33540166f9..c942e461a177e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow.dtsi
-@@ -6,6 +6,21 @@
- /dts-v1/;
- #include "mt8183-kukui-jacuzzi.dtsi"
+diff --git a/kernel/bpf/bpf_local_storage.c b/kernel/bpf/bpf_local_storage.c
+index e8d02212da703..b4c6b9b3cb421 100644
+--- a/kernel/bpf/bpf_local_storage.c
++++ b/kernel/bpf/bpf_local_storage.c
+@@ -823,8 +823,12 @@ bpf_local_storage_map_alloc(union bpf_attr *attr,
+ 	smap->elem_size = offsetof(struct bpf_local_storage_elem,
+ 				   sdata.data[attr->value_size]);
  
-+&i2c0 {
-+	touchscreen@40 {
-+		compatible = "hid-over-i2c";
-+		reg = <0x40>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&touchscreen_pins>;
-+
-+		interrupts-extended = <&pio 155 IRQ_TYPE_LEVEL_LOW>;
-+
-+		post-power-on-delay-ms = <70>;
-+		hid-descr-addr = <0x0001>;
-+	};
-+};
-+
- &i2c2 {
- 	trackpad@2c {
- 		compatible = "hid-over-i2c";
+-	smap->bpf_ma = bpf_ma;
+-	if (bpf_ma) {
++	/* In PREEMPT_RT, kmalloc(GFP_ATOMIC) is still not safe in non
++	 * preemptible context. Thus, enforce all storages to use
++	 * bpf_mem_alloc when CONFIG_PREEMPT_RT is enabled.
++	 */
++	smap->bpf_ma = IS_ENABLED(CONFIG_PREEMPT_RT) ? true : bpf_ma;
++	if (smap->bpf_ma) {
+ 		err = bpf_mem_alloc_init(&smap->selem_ma, smap->elem_size, false);
+ 		if (err)
+ 			goto free_smap;
 -- 
 2.39.5
 
