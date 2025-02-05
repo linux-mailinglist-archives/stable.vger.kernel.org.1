@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84337A28DAB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D233A29088
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 680081888ACF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9A17A1A85
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4895A2E634;
-	Wed,  5 Feb 2025 14:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAF4155756;
+	Wed,  5 Feb 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo6NQVmW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gKQu1XrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C4F15198D;
-	Wed,  5 Feb 2025 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985E77DA6A;
+	Wed,  5 Feb 2025 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764204; cv=none; b=GYxvStUe/NdnbWcRNBEwYAuM2lfjac3yTIPriJo3zCFwnvTN2gufjW8cH3ET2l1vV+Q+BtqQ2VW/ooi+faTSdKymekYgvssF4R/koZdrJIuospjRp2s+IQWgLQHXZHgTLbJKwWW4d+If5Z/cOJt+K0SQ4kvcpX5LbpSX8mP19Vc=
+	t=1738766234; cv=none; b=r6IvRstFp0P45/xPwZ8srGKBEbD9JLO2vWbsOWlW2SzSOQgFZpFEfOqnjRaGjn/SeBCIK39TAAH2rxgU1n4M34XVZHByX+O99mvqOIMu036/JPU8QzOrb5WZpvjcwj3/8RS6rzLDTXkTZ7sQRe8grD15QuWjUwc9fFP/R8LZvDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764204; c=relaxed/simple;
-	bh=BK0asVENmBEi0OVNJYM0Hl5/vQ6yntgBwwt+Z6YXXog=;
+	s=arc-20240116; t=1738766234; c=relaxed/simple;
+	bh=aaRHTCQ/sI5zEOiCiq7Sx511z8OKP19ATsFG4XZ4NJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ci2v0xIw4U+EIyiO3RkzJoGwNj41nToNgkiigRWY9qag/1wL4Ogay74aCUbnIQVOOgHpVOv7zi0ghchW8CX0DqKFQNYW4HD2qG7FM8VGNiv6kqiANJzXjXfzt3OmnVPavxVfpK+EOWpO3KgSrluTiy56vCCxcpURhtXWUbk04JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo6NQVmW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02701C4CED6;
-	Wed,  5 Feb 2025 14:03:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jv5I7T/MVmjk7p1o2R2CW5Gxx1+k3UBgKsSz27fSvpYGPaO9uSvhxcMb0zgcdN9UMRzMuGnLisn5tagtGdbyDxq2jD3vfdlhWgOxRBStKHZUHEPVw3/ipZ2V/8TOV0ss12g5WMd4vYZi5IaFxgRK8oDKiEInUamg1S+wdpGfYgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gKQu1XrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079F2C4CED1;
+	Wed,  5 Feb 2025 14:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764203;
-	bh=BK0asVENmBEi0OVNJYM0Hl5/vQ6yntgBwwt+Z6YXXog=;
+	s=korg; t=1738766234;
+	bh=aaRHTCQ/sI5zEOiCiq7Sx511z8OKP19ATsFG4XZ4NJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eo6NQVmWbIRXmPcXbavTKpfEetSTgLzQaf42fp9OaxYCPBuzZe83mMyR/VcShFXyO
-	 jXs1caj22sUS0xGfjP7ZBlIeyWtrdrKRsHOXWJ0fyBgNympTABvV+Jql6U55SCogEC
-	 zXecRBcsIsOQF8o9Y9OdCOya9hTRmbVTp4AxRcko=
+	b=gKQu1XrK+tVq4py/eyBulWCG7b43DvhlzfdxvY0IDBn1/YmxER+z8IY9h12vgLCC4
+	 2RycjoozGvHrLD/tQcojUuleXwdzAY8iiRPHMaQsR75XpLDsTqtm4/rUEk2uvCrNXI
+	 LA4/ULr4KP9CH3fehrK0esOYLWyGV3delD2rrux8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/393] wifi: cfg80211: Handle specific BSSID in 6GHz scanning
-Date: Wed,  5 Feb 2025 14:40:53 +0100
-Message-ID: <20250205134425.424608815@linuxfoundation.org>
+Subject: [PATCH 6.12 299/590] cifs: Use cifs_autodisable_serverino() for disabling CIFS_MOUNT_SERVER_INUM in readdir.c
+Date: Wed,  5 Feb 2025 14:40:54 +0100
+Message-ID: <20250205134506.716201861@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 0fca7784b7a14d4ede64f479662afb98876ec7f8 ]
+[ Upstream commit 015683d4ed0d23698c71f2194f09bd17dbfad044 ]
 
-When the scan parameters for a 6GHz scan specify a unicast
-BSSID address, and the corresponding AP is found in the scan
-list, add a corresponding entry in the collocated AP list,
-so this AP would be directly probed even if it was not
-advertised as a collocated AP.
+In all other places is used function cifs_autodisable_serverino() for
+disabling CIFS_MOUNT_SERVER_INUM mount flag. So use is also in readir.c
+_initiate_cifs_search() function. Benefit of cifs_autodisable_serverino()
+is that it also prints dmesg message that server inode numbers are being
+disabled.
 
-This is needed for handling a scan request that is intended
-for a ML probe flow, where user space can requests a scan
-to retrieve information for other links in the AP MLD.
-
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230928172905.54b954bc02ad.I1c072793d3d77a4c8fbbc64b4db5cce1bbb00382@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 1a0d24775cde ("wifi: cfg80211: adjust allocation of colocated AP data")
+Fixes: ec06aedd4454 ("cifs: clean up handling when server doesn't consistently support inode numbers")
+Fixes: f534dc994397 ("cifs: clear server inode number flag while autodisabling")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ fs/smb/client/readdir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 4fc6279750ea1..c76ac1959fe8d 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -831,10 +831,47 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		list_for_each_entry(intbss, &rdev->bss_list, list) {
- 			struct cfg80211_bss *res = &intbss->pub;
- 			const struct cfg80211_bss_ies *ies;
-+			const struct element *ssid_elem;
-+			struct cfg80211_colocated_ap *entry;
-+			u32 s_ssid_tmp;
-+			int ret;
- 
- 			ies = rcu_access_pointer(res->ies);
- 			count += cfg80211_parse_colocated_ap(ies,
- 							     &coloc_ap_list);
-+
-+			/* In case the scan request specified a specific BSSID
-+			 * and the BSS is found and operating on 6GHz band then
-+			 * add this AP to the collocated APs list.
-+			 * This is relevant for ML probe requests when the lower
-+			 * band APs have not been discovered.
-+			 */
-+			if (is_broadcast_ether_addr(rdev_req->bssid) ||
-+			    !ether_addr_equal(rdev_req->bssid, res->bssid) ||
-+			    res->channel->band != NL80211_BAND_6GHZ)
-+				continue;
-+
-+			ret = cfg80211_calc_short_ssid(ies, &ssid_elem,
-+						       &s_ssid_tmp);
-+			if (ret)
-+				continue;
-+
-+			entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN,
-+					GFP_ATOMIC);
-+
-+			if (!entry)
-+				continue;
-+
-+			memcpy(entry->bssid, res->bssid, ETH_ALEN);
-+			entry->short_ssid = s_ssid_tmp;
-+			memcpy(entry->ssid, ssid_elem->data,
-+			       ssid_elem->datalen);
-+			entry->ssid_len = ssid_elem->datalen;
-+			entry->short_ssid_valid = true;
-+			entry->center_freq = res->channel->center_freq;
-+
-+			list_add_tail(&entry->list, &coloc_ap_list);
-+			count++;
- 		}
- 		spin_unlock_bh(&rdev->bss_lock);
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index 273358d20a46c..50f96259d9adc 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -413,7 +413,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
+ 		cifsFile->invalidHandle = false;
+ 	} else if ((rc == -EOPNOTSUPP) &&
+ 		   (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_SERVER_INUM)) {
+-		cifs_sb->mnt_cifs_flags &= ~CIFS_MOUNT_SERVER_INUM;
++		cifs_autodisable_serverino(cifs_sb);
+ 		goto ffirst_retry;
  	}
+ error_exit:
 -- 
 2.39.5
 
