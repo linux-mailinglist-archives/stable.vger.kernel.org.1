@@ -1,118 +1,234 @@
-Return-Path: <stable+bounces-113995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAE6A29C35
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:57:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A0FA29C4E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 23:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 139A51884ABA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 21:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847C43A233B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B40215F48;
-	Wed,  5 Feb 2025 21:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2055F213227;
+	Wed,  5 Feb 2025 22:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Me7r6H5x"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="iVqlA+1F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666221FFC4B
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 21:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0609E1DD526;
+	Wed,  5 Feb 2025 22:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738792620; cv=none; b=jtizywLQt2nkPmZcXTWur3xN+OgTZT8VIO8m3r3VczKUdikhWmYJsblu2KktTXPysNWbGgLYt3zFB5qBh8BQxTxL+/uwhzsjNkcSG70EtnzguI0oJaTIKb7jn/BW1SReOEeAzzroPOdL5CwRdg+CBItd378osh4/KfPsXqPVwjg=
+	t=1738793100; cv=none; b=ou1bnV8beGstrmbgu9WDeJ0GSWzQpaXazKZXv4ymTlUqc58fneOqtKNFOgu0ZTxtTyYPgi4A835AmnHsJcRQdiHCRy7Zpj5E28UH4h/G5ZGVtSFN665E9vEbIIWw1sTyhjqljwmcza0DDFeuJy0SAZku2DUvYpCnB+JrC4yB5Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738792620; c=relaxed/simple;
-	bh=+ozLHxhArw7MVnLnODmfn31z73WbsqHrsJgwqe4g1D8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MJD/2vH5MczSkO/9EsD20YpbcpvtXehJ6O4k34AZtxTs9GGodgvN2MI0lRoO+tKgdMzS8ykKNuRUUxbVediPGyL/V/Zc+eyawqeXkXzmOyuAVgRPtRxP5rJGHwe/9ZV8pT52CrEdtWImDwgDW4exJ6hPR+jDYWT8GeLm+rHfgIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Me7r6H5x; arc=none smtp.client-ip=209.85.166.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-844df397754so9329439f.2
-        for <stable@vger.kernel.org>; Wed, 05 Feb 2025 13:56:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1738792618; x=1739397418; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p+RqOTSnSPXG1MBUyv0qD+rReSmeSDZ6Q4z10LKFiFE=;
-        b=Me7r6H5xKo6A9lk2prsnDneiin0O04ZKQoU5d1kmhwNVvsCXZ2vCihdrMLtoJJd3A8
-         xwzrYRgxdeWnnwVN78gnD8CTy5+tZCjdHzKCJsQlS7BjQt8KUlDHMXOcCeAHA6+kB2W0
-         V2P9j+z5zeSqAGuECxCFEXpbedT8aGyBr4K38=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738792618; x=1739397418;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p+RqOTSnSPXG1MBUyv0qD+rReSmeSDZ6Q4z10LKFiFE=;
-        b=crQhhIj26Q/uL09VohWQN2EpKMvtz9pRB9xMu/zrqfiPdvtK4TzhS8evKrmu8I6C/F
-         avWeoWyQmChohT8gIVVORoXa2mUDmocGXYUZNMqB0sDBfWpxA3q5yWxkO86VMF0/GDd1
-         bWCqA+MV8VEffXUQCYJ2OJB1+Hrd4Uy56fz3hP9i6IV84toC8GnTC/ngRu7ENukjbmA8
-         mTRoLS/1XGwB2glt+UEkLZYuhSC/UmNJ57JvvBUnjAFT9iPNkn6QoFAKTX9/qv9mJGyE
-         l0z1ho0ZoMIWrZRrOG8klZ5JRqRNwPKI89/14G8gzKgRGvqT5RDpmvmPz7XC9lBznUkr
-         UkSQ==
-X-Gm-Message-State: AOJu0Yy/yV7n4bf4ldkUP3N0zNJ2DbHmnq9bebxD1DhULRtEONvo2ydq
-	hFbpB7sAiFEZt+p0mAhfFqwyzOSh2pkTn7LBWuc3XlJ0yM7sPg7ZQdI73seEnA==
-X-Gm-Gg: ASbGncuR3DcdDae7fKVgB0qdGfh6O9LF2ZvvcLzgBLKHcsi/+GQ61OTHCpu+u8b2Ztq
-	1K73q7ht6EC8RE4anQyYtsrGQJA7aOENuEg0FSolz4mhiqRPSckERFkwyZpAFymSe4o1BGqAguN
-	gSnSwPMyiui49ScyaGHl0/uZNaG0DqSF0/OYWkqH1/Ri7F+Gxo+VXPFdPnO8gAh7Y695mfGJ2Ks
-	2Y282T+Gmg5VFoIaJVaXYWs5+uPRD4Akgeqp+/UEqJ4ZBVCVCCIsm+JfpdVd4058yw5KlSG3bre
-	dkCTYiD97L3IigFz4ZVgsZ0Ev8v1kHPR
-X-Google-Smtp-Source: AGHT+IEWlXmXQnDihwBVnSYlw2n6wPB+KmNglO3Os1wffGg3OKOkA12y/hS3Nmj7qmF2gTqtJ9Wcjw==
-X-Received: by 2002:a05:6602:388f:b0:84f:54df:dde4 with SMTP id ca18e2360f4ac-854ea43465dmr545587639f.6.1738792618515;
-        Wed, 05 Feb 2025 13:56:58 -0800 (PST)
-Received: from fedora64.linuxtx.org ([72.42.103.70])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ec7458ecf8sm3421542173.6.2025.02.05.13.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 13:56:57 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 5 Feb 2025 14:56:55 -0700
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.13 000/623] 6.13.2-rc1 review
-Message-ID: <Z6Pep0H4X7Nty9tu@fedora64.linuxtx.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+	s=arc-20240116; t=1738793100; c=relaxed/simple;
+	bh=yJMg2ZBvwkT3zCgdqcKmlAIgezVEOkoh2lo+NtL4bC0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ChfanbknwtAsqDXVHoGBuGYyz/GSzOlLOUAHR/NnxnKz8uTHdqjJKv2/77ezdc864jBBtAV4qkDJd8KS4OKa3NAGUvH5f0J6fBD8qEOFopI4F3OlX+DTxhSV9ogmQYvgfnCC/XGgKuoQQTkjr+h7YGRQGYBlg4/lFe/uL/rXALI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=iVqlA+1F; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4YpDcS2VFtz9tHd;
+	Wed,  5 Feb 2025 22:57:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1738792664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UqYbUTh8thO1AlbZZU210FEG8uNuLp5a4wrA84GCEUU=;
+	b=iVqlA+1FcQ0qOauiP54x9hx2FgR/4JDjt4pR4+p+zXtb8+1UP/0I9QuCMRG4GnkJ6+i/zU
+	s0swWuQaSUkAx1huBElbhzvFjDQEM8vTVj4kDxgxUACqi4J8C29xrdv8+2aefIr8C2bXlk
+	xjzUhhJgbFXdb5nDxkK81sNscg13x/t8vik/QCaD4ihEOLOLF2m3U8F0hVJKD+E3r0V7Mm
+	yKrndRbj1ghuXDiwYMUA0o2tZeD8xPoGajsTVJZ+O3MS63BJKccyg7H6vnSFWIIbPPJWIV
+	H66EAfIVj4amcxRAiSulEq+0vWBVxYsWl94zZpqb8piJVcZisECJdoN2sZBQFg==
+From: Frank Oltmanns <frank@oltmanns.dev>
+Date: Wed, 05 Feb 2025 22:57:11 +0100
+Subject: [PATCH] soc: qcom: pd-mapper: defer probing on sdm845
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250205-qcom_pdm_defer-v1-1-a2e9a39ea9b9@oltmanns.dev>
+X-B4-Tracking: v=1; b=H4sIALfeo2cC/x3MQQqAIBBA0avErBPUEqmrREg4U81CK4UIpLsnL
+ d/i/wKZElOGsSmQ6ObMR6xQbQN+X+JGgrEatNRGamnE5Y/gTgwOaaUkOvRKW4W2xwFqdCZa+fm
+ H0/y+HwJiKqBgAAAA
+X-Change-ID: 20250205-qcom_pdm_defer-3dc1271d74d9
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Chris Lew <quic_clew@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Stephan Gerhold <stephan.gerhold@linaro.org>, 
+ Johan Hovold <johan+linaro@kernel.org>, 
+ Caleb Connolly <caleb.connolly@linaro.org>, 
+ Joel Selvaraj <joelselvaraj.oss@gmail.com>, 
+ Alexey Minnekhanov <alexeymin@postmarketos.org>, stable@vger.kernel.org, 
+ Frank Oltmanns <frank@oltmanns.dev>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4891; i=frank@oltmanns.dev;
+ h=from:subject:message-id; bh=yJMg2ZBvwkT3zCgdqcKmlAIgezVEOkoh2lo+NtL4bC0=;
+ b=owEB7QES/pANAwAIAZppogiUStPHAcsmYgBno97UhiqS0YfoUn/Md4OCAQxlqZQUxMpJJwzI9
+ BYJchr+87eJAbMEAAEIAB0WIQQC/SV7f5DmuaVET5aaaaIIlErTxwUCZ6Pe1AAKCRCaaaIIlErT
+ x6suC/9QFZ2bDJNbCGtWKcq7JLqZaTGViklx9ojelt08o9MrZopv/oEWBbVddXIprhZkAWsCqKJ
+ tl28fk+o0+jEMsFR7eTV83MKpec0Njs/W/e9NA0QTbD5wk/NVdbr5QE+notw+cO5B9zFZyhubW2
+ U9zuMp4yc+6mraMXoiTUkOJBaOcvfNjUOfOGHSZFTTd0l9UJ44ZF1qefx/8HwE7m1fHB+yhOIqr
+ BT0fxz7sxyOx26myEGjFh2dttFsnsCC8Z1jqc0YeVtlTfVOQeObQ2igWV5Yyf81F033YD2DyyEL
+ eWvxyrpTu4KPk/045rW7zhAQfMPgsFFDZ5sQprAbnEGbA5+Fnna1TWzelpNpbkHM/HLEsiG5d9+
+ x3DIetzaAhMFFv3GNGHCzUmMYbEVXvf7euVomBKnuHV0gfikWbAgoxuoFostaXoQH085I47oFRI
+ nxTZfWYi50AjoSaY5IqF5X1Jna12G57pKCdnzajGUz9mzZf8lJjOWeIP0DtV/iQO8BW6k=
+X-Developer-Key: i=frank@oltmanns.dev; a=openpgp;
+ fpr=02FD257B7F90E6B9A5444F969A69A208944AD3C7
+X-Rspamd-Queue-Id: 4YpDcS2VFtz9tHd
 
-On Wed, Feb 05, 2025 at 02:35:42PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.2 release.
-> There are 623 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 07 Feb 2025 13:42:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On xiaomi-beryllium and oneplus-enchilada audio does not work reliably
+with the in-kernel pd-mapper. Deferring the probe solves these issues.
+Specifically, audio only works reliably with the in-kernel pd-mapper, if
+the probe succeeds when remoteproc3 triggers the first successful probe.
+I.e., probes from remoteproc0, 1, and 2 need to be deferred until
+remoteproc3 has been probed.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Introduce a device specific quirk that lists the first auxdev for which
+the probe must be executed. Until then, defer probes from other auxdevs.
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+---
+The in-kernel pd-mapper has been causing audio issues on sdm845
+devices (specifically, xiaomi-beryllium and oneplus-enchilada). I
+observed that Stephan’s approach [1] - which defers module probing by
+blocklisting the module and triggering a later probe - works reliably.
+
+Inspired by this, I experimented with delaying the probe within the
+module itself by returning -EPROBE_DEFER in qcom_pdm_probe() until a
+certain time (13.9 seconds after boot, based on ktime_get()) had
+elapsed. This method also restored audio functionality.
+
+Further logging of auxdev->id in qcom_pdm_probe() led to an interesting
+discovery: audio only works reliably with the in-kernel pd-mapper when
+the first successful probe is triggered by remoteproc3. In other words,
+probes from remoteproc0, 1, and 2 must be deferred until remoteproc3 has
+been probed.
+
+To address this, I propose introducing a quirk table (which currently
+only contains sdm845) to defer probing until the correct auxiliary
+device (remoteproc3) initiates the probe.
+
+I look forward to your feedback.
+
+Thanks,
+  Frank
+
+[1]: https://lore.kernel.org/linux-arm-msm/Zwj3jDhc9fRoCCn6@linaro.org/
+---
+ drivers/soc/qcom/qcom_pd_mapper.c | 43 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
+index 154ca5beb47160cc404a46a27840818fe3187420..34b26df665a888ac4872f56e948e73b561ae3b6b 100644
+--- a/drivers/soc/qcom/qcom_pd_mapper.c
++++ b/drivers/soc/qcom/qcom_pd_mapper.c
+@@ -46,6 +46,11 @@ struct qcom_pdm_data {
+ 	struct list_head services;
+ };
+ 
++struct qcom_pdm_probe_first_dev_quirk {
++	const char *name;
++	u32 id;
++};
++
+ static DEFINE_MUTEX(qcom_pdm_mutex); /* protects __qcom_pdm_data */
+ static struct qcom_pdm_data *__qcom_pdm_data;
+ 
+@@ -526,6 +531,11 @@ static const struct qcom_pdm_domain_data *x1e80100_domains[] = {
+ 	NULL,
+ };
+ 
++static const struct qcom_pdm_probe_first_dev_quirk first_dev_remoteproc3 = {
++	.id = 3,
++	.name = "pd-mapper"
++};
++
+ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+ 	{ .compatible = "qcom,apq8016", .data = NULL, },
+ 	{ .compatible = "qcom,apq8064", .data = NULL, },
+@@ -566,6 +576,10 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
+ 	{},
+ };
+ 
++static const struct of_device_id qcom_pdm_defer[] __maybe_unused = {
++	{ .compatible = "qcom,sdm845", .data = &first_dev_remoteproc3, },
++	{},
++};
+ static void qcom_pdm_stop(struct qcom_pdm_data *data)
+ {
+ 	qcom_pdm_free_domains(data);
+@@ -637,6 +651,25 @@ static struct qcom_pdm_data *qcom_pdm_start(void)
+ 	return ERR_PTR(ret);
+ }
+ 
++static bool qcom_pdm_ready(struct auxiliary_device *auxdev)
++{
++	const struct of_device_id *match;
++	struct device_node *root;
++	struct qcom_pdm_probe_first_dev_quirk *first_dev;
++
++	root = of_find_node_by_path("/");
++	if (!root)
++		return true;
++
++	match = of_match_node(qcom_pdm_defer, root);
++	of_node_put(root);
++	if (!match)
++		return true;
++
++	first_dev = (struct qcom_pdm_probe_first_dev_quirk *) match->data;
++	return (auxdev->id == first_dev->id) && !strcmp(auxdev->name, first_dev->name);
++}
++
+ static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+ 			  const struct auxiliary_device_id *id)
+ 
+@@ -647,6 +680,15 @@ static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+ 	mutex_lock(&qcom_pdm_mutex);
+ 
+ 	if (!__qcom_pdm_data) {
++		if (!qcom_pdm_ready(auxdev)) {
++			pr_debug("%s: Deferring probe for device %s (id: %u)\n",
++				__func__, auxdev->name, auxdev->id);
++			ret = -EPROBE_DEFER;
++			goto probe_stop;
++		}
++		pr_debug("%s: Probing for device %s (id: %u), starting pdm\n",
++			__func__, auxdev->name, auxdev->id);
++
+ 		data = qcom_pdm_start();
+ 
+ 		if (IS_ERR(data))
+@@ -659,6 +701,7 @@ static int qcom_pdm_probe(struct auxiliary_device *auxdev,
+ 
+ 	auxiliary_set_drvdata(auxdev, __qcom_pdm_data);
+ 
++probe_stop:
+ 	mutex_unlock(&qcom_pdm_mutex);
+ 
+ 	return ret;
+
+---
+base-commit: 7f048b202333b967782a98aa21bb3354dc379bbf
+change-id: 20250205-qcom_pdm_defer-3dc1271d74d9
+
+Best regards,
+-- 
+Frank Oltmanns <frank@oltmanns.dev>
+
 
