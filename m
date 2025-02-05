@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1997A28FF3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A4FA28CD1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 563AA18832A7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AF513A7FD3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12AE7E792;
-	Wed,  5 Feb 2025 14:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F1C149C64;
+	Wed,  5 Feb 2025 13:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/l58/pQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXyaScPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2B61519AF;
-	Wed,  5 Feb 2025 14:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D5B13C9C4;
+	Wed,  5 Feb 2025 13:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765817; cv=none; b=smPzbGAEm/DYGymRr2f9ghS9NmlTQelJGP44nDDu4B1ir0Z+Wizp6D8U7uW8TjmRolVVhS9Z8FMSNvTIl/u05pR019TUk1rN9RuRozAV1eArXNzFacEeCqa9UEwZ8an012AWu33aq6fXPv7vEvSR/whcTVNUYgakvIPlnOQoT/g=
+	t=1738763661; cv=none; b=Cz4DAyUnsJB2qtwQ5zeSK2aLIrHnnraOimRvg4N1oZO+fYNzPaYhoHVPTlxm0dRjTysA9yIKAyEShD+f8JbQsi+sIHYWX2H6R80/8LDrIub2FstTtBipYaabLAdywwey4Xjdipklg6KwQjrfhIX7ofqe1+DhiMxBclJ2DUvJvhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765817; c=relaxed/simple;
-	bh=1j6mDns2GoaBzU4vCJOmYgZh3AInNrWQxXJDPqjRaP0=;
+	s=arc-20240116; t=1738763661; c=relaxed/simple;
+	bh=6ZtU6J2ddH45mKW+3KE+yrRZEQ6LY/MpytPpkyTJCDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6c5HPojNvveXN132/eSwLwv2T6bbpjqjPGRl1u06LXk/Zoy1rarr5KwjKqJ/DPSzkJP4gBGkOiOUhEN7HXm1nbHk9SkbiWdW4l+FlN/fti5o404php270V/HCGMNyiMh7xsSq4pA9r7sB9dcqbNRmqRnrf/3a0M0xCMPm01eRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/l58/pQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF532C4CED1;
-	Wed,  5 Feb 2025 14:30:16 +0000 (UTC)
+	 MIME-Version; b=rtmYfAcHpBNuIQNHOmqFjIJ2R6fw15Dh28C8NzV9xBPfWTp5akNSwvWM71yD0fjcBX0XlzsBRtEKY0MJEjXWY9TRjVtzL6CL9Lgc8bW6F9GsKwu6bGBxugM3rFGSFIMndLJwdgTyb5PHeXcF2EnvijSeLnsVVu18AiZIxfP6iHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXyaScPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BE5C4CED1;
+	Wed,  5 Feb 2025 13:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765817;
-	bh=1j6mDns2GoaBzU4vCJOmYgZh3AInNrWQxXJDPqjRaP0=;
+	s=korg; t=1738763660;
+	bh=6ZtU6J2ddH45mKW+3KE+yrRZEQ6LY/MpytPpkyTJCDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/l58/pQFOc4dWgENSDmAz1cR7TnbeGepS2dkEN690I2HpEHmEgQssm+ZFMJSr0SE
-	 d5gHn3WKYRe3PiSsWxEZH4wfoxdMPYiHElgObaG6STrm8ZfLI969DiN4kgYKlJvNtE
-	 l5RRN63z8WXKZHZmJ778sPlDaK2ZqaCvqdeMmEcA=
+	b=DXyaScPt9vGIUdAZWyw3R1L3FZM6wWYNmvZvSISWhCf5eEIzmgLkgQ5IZd2iA4+zX
+	 5/SLCLuzooJjaaddvANa0nesmLMnBCqJG055h4n97LElxD6aJkqA4LFZHbHztIuHLJ
+	 5/xLuSsqMdoolh+D+QaugBdmdyfsVX6STkv1UhtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/590] rhashtable: Fix potential deadlock by moving schedule_work outside lock
+Subject: [PATCH 6.6 094/393] ax25: rcu protect dev->ax25_ptr
 Date: Wed,  5 Feb 2025 14:40:13 +0100
-Message-ID: <20250205134505.149929023@linuxfoundation.org>
+Message-ID: <20250205134423.892366194@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,342 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e1d3422c95f003eba241c176adfe593c33e8a8f6 ]
+[ Upstream commit 95fc45d1dea8e1253f8ec58abc5befb71553d666 ]
 
-Move the hash table growth check and work scheduling outside the
-rht lock to prevent a possible circular locking dependency.
+syzbot found a lockdep issue [1].
 
-The original implementation could trigger a lockdep warning due to
-a potential deadlock scenario involving nested locks between
-rhashtable bucket, rq lock, and dsq lock. By relocating the
-growth check and work scheduling after releasing the rth lock, we break
-this potential deadlock chain.
+We should remove ax25 RTNL dependency in ax25_setsockopt()
 
-This change expands the flexibility of rhashtable by removing
-restrictive locking that previously limited its use in scheduler
-and workqueue contexts.
+This should also fix a variety of possible UAF in ax25.
 
-Import to say that this calls rht_grow_above_75(), which reads from
-struct rhashtable without holding the lock, if this is a problem, we can
-move the check to the lock, and schedule the workqueue after the lock.
+[1]
 
-Fixes: f0e1a0643a59 ("sched_ext: Implement BPF extensible scheduler class")
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
+WARNING: possible circular locking dependency detected
+6.13.0-rc3-syzkaller-00762-g9268abe611b0 #0 Not tainted
+------------------------------------------------------
+syz.5.1818/12806 is trying to acquire lock:
+ ffffffff8fcb3988 (rtnl_mutex){+.+.}-{4:4}, at: ax25_setsockopt+0xa55/0xe90 net/ax25/af_ax25.c:680
 
-Modified so that atomic_inc is also moved outside of the bucket
-lock along with the growth above 75% check.
+but task is already holding lock:
+ ffff8880617ac258 (sk_lock-AF_AX25){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1618 [inline]
+ ffff8880617ac258 (sk_lock-AF_AX25){+.+.}-{0:0}, at: ax25_setsockopt+0x209/0xe90 net/ax25/af_ax25.c:574
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (sk_lock-AF_AX25){+.+.}-{0:0}:
+        lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
+        lock_sock_nested+0x48/0x100 net/core/sock.c:3642
+        lock_sock include/net/sock.h:1618 [inline]
+        ax25_kill_by_device net/ax25/af_ax25.c:101 [inline]
+        ax25_device_event+0x24d/0x580 net/ax25/af_ax25.c:146
+        notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+       __dev_notify_flags+0x207/0x400
+        dev_change_flags+0xf0/0x1a0 net/core/dev.c:9026
+        dev_ifsioc+0x7c8/0xe70 net/core/dev_ioctl.c:563
+        dev_ioctl+0x719/0x1340 net/core/dev_ioctl.c:820
+        sock_do_ioctl+0x240/0x460 net/socket.c:1234
+        sock_ioctl+0x626/0x8e0 net/socket.c:1339
+        vfs_ioctl fs/ioctl.c:51 [inline]
+        __do_sys_ioctl fs/ioctl.c:906 [inline]
+        __se_sys_ioctl+0xf5/0x170 fs/ioctl.c:892
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (rtnl_mutex){+.+.}-{4:4}:
+        check_prev_add kernel/locking/lockdep.c:3161 [inline]
+        check_prevs_add kernel/locking/lockdep.c:3280 [inline]
+        validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
+        __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
+        lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
+        __mutex_lock_common kernel/locking/mutex.c:585 [inline]
+        __mutex_lock+0x1ac/0xee0 kernel/locking/mutex.c:735
+        ax25_setsockopt+0xa55/0xe90 net/ax25/af_ax25.c:680
+        do_sock_setsockopt+0x3af/0x720 net/socket.c:2324
+        __sys_setsockopt net/socket.c:2349 [inline]
+        __do_sys_setsockopt net/socket.c:2355 [inline]
+        __se_sys_setsockopt net/socket.c:2352 [inline]
+        __x64_sys_setsockopt+0x1ee/0x280 net/socket.c:2352
+        do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+        do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(sk_lock-AF_AX25);
+                               lock(rtnl_mutex);
+                               lock(sk_lock-AF_AX25);
+  lock(rtnl_mutex);
+
+ *** DEADLOCK ***
+
+1 lock held by syz.5.1818/12806:
+  #0: ffff8880617ac258 (sk_lock-AF_AX25){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1618 [inline]
+  #0: ffff8880617ac258 (sk_lock-AF_AX25){+.+.}-{0:0}, at: ax25_setsockopt+0x209/0xe90 net/ax25/af_ax25.c:574
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 12806 Comm: syz.5.1818 Not tainted 6.13.0-rc3-syzkaller-00762-g9268abe611b0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+  print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
+  check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2206
+  check_prev_add kernel/locking/lockdep.c:3161 [inline]
+  check_prevs_add kernel/locking/lockdep.c:3280 [inline]
+  validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3904
+  __lock_acquire+0x1397/0x2100 kernel/locking/lockdep.c:5226
+  lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5849
+  __mutex_lock_common kernel/locking/mutex.c:585 [inline]
+  __mutex_lock+0x1ac/0xee0 kernel/locking/mutex.c:735
+  ax25_setsockopt+0xa55/0xe90 net/ax25/af_ax25.c:680
+  do_sock_setsockopt+0x3af/0x720 net/socket.c:2324
+  __sys_setsockopt net/socket.c:2349 [inline]
+  __do_sys_setsockopt net/socket.c:2355 [inline]
+  __se_sys_setsockopt net/socket.c:2352 [inline]
+  __x64_sys_setsockopt+0x1ee/0x280 net/socket.c:2352
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7b62385d29
+
+Fixes: c433570458e4 ("ax25: fix a use-after-free in ax25_fillin_cb()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250103210514.87290-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/rhashtable.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/netdevice.h |  2 +-
+ include/net/ax25.h        | 10 +++++-----
+ net/ax25/af_ax25.c        | 12 ++++++------
+ net/ax25/ax25_dev.c       |  4 ++--
+ net/ax25/ax25_ip.c        |  3 ++-
+ net/ax25/ax25_out.c       | 22 +++++++++++++++++-----
+ net/ax25/ax25_route.c     |  2 ++
+ 7 files changed, 35 insertions(+), 20 deletions(-)
 
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index 6c902639728b7..bf956b85455ab 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -584,10 +584,6 @@ static struct bucket_table *rhashtable_insert_one(
- 	 */
- 	rht_assign_locked(bkt, obj);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 1576e7443eee5..8b5121eb8757e 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2217,7 +2217,7 @@ struct net_device {
+ 	void 			*atalk_ptr;
+ #endif
+ #if IS_ENABLED(CONFIG_AX25)
+-	void			*ax25_ptr;
++	struct ax25_dev	__rcu	*ax25_ptr;
+ #endif
+ #if IS_ENABLED(CONFIG_CFG80211)
+ 	struct wireless_dev	*ieee80211_ptr;
+diff --git a/include/net/ax25.h b/include/net/ax25.h
+index c2a85fd3f5ea4..ef79023f1a286 100644
+--- a/include/net/ax25.h
++++ b/include/net/ax25.h
+@@ -229,6 +229,7 @@ typedef struct ax25_dev {
+ #endif
+ 	refcount_t		refcount;
+ 	bool device_up;
++	struct rcu_head		rcu;
+ } ax25_dev;
  
--	atomic_inc(&ht->nelems);
--	if (rht_grow_above_75(ht, tbl))
--		schedule_work(&ht->run_work);
--
- 	return NULL;
+ typedef struct ax25_cb {
+@@ -288,9 +289,8 @@ static inline void ax25_dev_hold(ax25_dev *ax25_dev)
+ 
+ static inline void ax25_dev_put(ax25_dev *ax25_dev)
+ {
+-	if (refcount_dec_and_test(&ax25_dev->refcount)) {
+-		kfree(ax25_dev);
+-	}
++	if (refcount_dec_and_test(&ax25_dev->refcount))
++		kfree_rcu(ax25_dev, rcu);
+ }
+ static inline __be16 ax25_type_trans(struct sk_buff *skb, struct net_device *dev)
+ {
+@@ -333,9 +333,9 @@ void ax25_digi_invert(const ax25_digi *, ax25_digi *);
+ extern spinlock_t ax25_dev_lock;
+ 
+ #if IS_ENABLED(CONFIG_AX25)
+-static inline ax25_dev *ax25_dev_ax25dev(struct net_device *dev)
++static inline ax25_dev *ax25_dev_ax25dev(const struct net_device *dev)
+ {
+-	return dev->ax25_ptr;
++	return rcu_dereference_rtnl(dev->ax25_ptr);
+ }
+ #endif
+ 
+diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
+index 26a3095bec462..0f66dd8715bd8 100644
+--- a/net/ax25/af_ax25.c
++++ b/net/ax25/af_ax25.c
+@@ -467,7 +467,7 @@ static int ax25_ctl_ioctl(const unsigned int cmd, void __user *arg)
+ 	goto out_put;
  }
  
-@@ -624,6 +620,12 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
- 				data = ERR_CAST(new_tbl);
- 
- 			rht_unlock(tbl, bkt, flags);
-+
-+			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
-+				atomic_inc(&ht->nelems);
-+				if (rht_grow_above_75(ht, tbl))
-+					schedule_work(&ht->run_work);
-+			}
+-static void ax25_fillin_cb_from_dev(ax25_cb *ax25, ax25_dev *ax25_dev)
++static void ax25_fillin_cb_from_dev(ax25_cb *ax25, const ax25_dev *ax25_dev)
+ {
+ 	ax25->rtt     = msecs_to_jiffies(ax25_dev->values[AX25_VALUES_T1]) / 2;
+ 	ax25->t1      = msecs_to_jiffies(ax25_dev->values[AX25_VALUES_T1]);
+@@ -677,22 +677,22 @@ static int ax25_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
  		}
- 	} while (!IS_ERR_OR_NULL(new_tbl));
  
+-		rtnl_lock();
+-		dev = __dev_get_by_name(&init_net, devname);
++		rcu_read_lock();
++		dev = dev_get_by_name_rcu(&init_net, devname);
+ 		if (!dev) {
+-			rtnl_unlock();
++			rcu_read_unlock();
+ 			res = -ENODEV;
+ 			break;
+ 		}
+ 
+ 		ax25->ax25_dev = ax25_dev_ax25dev(dev);
+ 		if (!ax25->ax25_dev) {
+-			rtnl_unlock();
++			rcu_read_unlock();
+ 			res = -ENODEV;
+ 			break;
+ 		}
+ 		ax25_fillin_cb(ax25, ax25->ax25_dev);
+-		rtnl_unlock();
++		rcu_read_unlock();
+ 		break;
+ 
+ 	default:
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index 67ae6b8c52989..0715f9b152756 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -87,7 +87,7 @@ void ax25_dev_device_up(struct net_device *dev)
+ 
+ 	spin_lock_bh(&ax25_dev_lock);
+ 	list_add(&ax25_dev->list, &ax25_dev_list);
+-	dev->ax25_ptr     = ax25_dev;
++	rcu_assign_pointer(dev->ax25_ptr, ax25_dev);
+ 	spin_unlock_bh(&ax25_dev_lock);
+ 
+ 	ax25_register_dev_sysctl(ax25_dev);
+@@ -122,7 +122,7 @@ void ax25_dev_device_down(struct net_device *dev)
+ 		}
+ 	}
+ 
+-	dev->ax25_ptr = NULL;
++	RCU_INIT_POINTER(dev->ax25_ptr, NULL);
+ 	spin_unlock_bh(&ax25_dev_lock);
+ 	netdev_put(dev, &ax25_dev->dev_tracker);
+ 	ax25_dev_put(ax25_dev);
+diff --git a/net/ax25/ax25_ip.c b/net/ax25/ax25_ip.c
+index 36249776c021e..215d4ccf12b91 100644
+--- a/net/ax25/ax25_ip.c
++++ b/net/ax25/ax25_ip.c
+@@ -122,6 +122,7 @@ netdev_tx_t ax25_ip_xmit(struct sk_buff *skb)
+ 	if (dev == NULL)
+ 		dev = skb->dev;
+ 
++	rcu_read_lock();
+ 	if ((ax25_dev = ax25_dev_ax25dev(dev)) == NULL) {
+ 		kfree_skb(skb);
+ 		goto put;
+@@ -202,7 +203,7 @@ netdev_tx_t ax25_ip_xmit(struct sk_buff *skb)
+ 	ax25_queue_xmit(skb, dev);
+ 
+ put:
+-
++	rcu_read_unlock();
+ 	ax25_route_lock_unuse();
+ 	return NETDEV_TX_OK;
+ }
+diff --git a/net/ax25/ax25_out.c b/net/ax25/ax25_out.c
+index 3db76d2470e95..8bca2ace98e51 100644
+--- a/net/ax25/ax25_out.c
++++ b/net/ax25/ax25_out.c
+@@ -39,10 +39,14 @@ ax25_cb *ax25_send_frame(struct sk_buff *skb, int paclen, const ax25_address *sr
+ 	 * specified.
+ 	 */
+ 	if (paclen == 0) {
+-		if ((ax25_dev = ax25_dev_ax25dev(dev)) == NULL)
++		rcu_read_lock();
++		ax25_dev = ax25_dev_ax25dev(dev);
++		if (!ax25_dev) {
++			rcu_read_unlock();
+ 			return NULL;
+-
++		}
+ 		paclen = ax25_dev->values[AX25_VALUES_PACLEN];
++		rcu_read_unlock();
+ 	}
+ 
+ 	/*
+@@ -53,13 +57,19 @@ ax25_cb *ax25_send_frame(struct sk_buff *skb, int paclen, const ax25_address *sr
+ 		return ax25;		/* It already existed */
+ 	}
+ 
+-	if ((ax25_dev = ax25_dev_ax25dev(dev)) == NULL)
++	rcu_read_lock();
++	ax25_dev = ax25_dev_ax25dev(dev);
++	if (!ax25_dev) {
++		rcu_read_unlock();
+ 		return NULL;
++	}
+ 
+-	if ((ax25 = ax25_create_cb()) == NULL)
++	if ((ax25 = ax25_create_cb()) == NULL) {
++		rcu_read_unlock();
+ 		return NULL;
+-
++	}
+ 	ax25_fillin_cb(ax25, ax25_dev);
++	rcu_read_unlock();
+ 
+ 	ax25->source_addr = *src;
+ 	ax25->dest_addr   = *dest;
+@@ -358,7 +368,9 @@ void ax25_queue_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	unsigned char *ptr;
+ 
++	rcu_read_lock();
+ 	skb->protocol = ax25_type_trans(skb, ax25_fwd_dev(dev));
++	rcu_read_unlock();
+ 
+ 	ptr  = skb_push(skb, 1);
+ 	*ptr = 0x00;			/* KISS */
+diff --git a/net/ax25/ax25_route.c b/net/ax25/ax25_route.c
+index b7c4d656a94b7..69de75db0c9c2 100644
+--- a/net/ax25/ax25_route.c
++++ b/net/ax25/ax25_route.c
+@@ -406,6 +406,7 @@ int ax25_rt_autobind(ax25_cb *ax25, ax25_address *addr)
+ 		ax25_route_lock_unuse();
+ 		return -EHOSTUNREACH;
+ 	}
++	rcu_read_lock();
+ 	if ((ax25->ax25_dev = ax25_dev_ax25dev(ax25_rt->dev)) == NULL) {
+ 		err = -EHOSTUNREACH;
+ 		goto put;
+@@ -442,6 +443,7 @@ int ax25_rt_autobind(ax25_cb *ax25, ax25_address *addr)
+ 	}
+ 
+ put:
++	rcu_read_unlock();
+ 	ax25_route_lock_unuse();
+ 	return err;
+ }
 -- 
 2.39.5
 
