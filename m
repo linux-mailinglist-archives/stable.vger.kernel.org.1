@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BCEA28CEE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A98EA28DBB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 738A11676C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75E6B3A637B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1054C14A630;
-	Wed,  5 Feb 2025 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECC11547E9;
+	Wed,  5 Feb 2025 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nq1U7Rdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfSe5qwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5EC1519AA;
-	Wed,  5 Feb 2025 13:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2811519AA;
+	Wed,  5 Feb 2025 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763737; cv=none; b=EDGKBjpel469Zov++ZSLaeNVZ5YB2KqucLbIejY9Ug3rT+1L4qwwIDLNO0TbwDyUaxGKDFmV0yVk6w2x/cQHv8IA2TVFcinZXqI/9i/Q51DqOybnZ3bEormpiKP+vTvw9RbfI7wJGziwi56GlyVV2jk6rIyZy9ahbHnYAWizYdM=
+	t=1738764151; cv=none; b=lMxaO5qaADWOV2Yg2qCpFWflDNqtURK2Yx3IoBFjca4YUb4vYKsHpx3g88bkO5Nvn7bcj8j4Jgy0EBJZD+NLgLi5dt1+KvYueFVKu0aWvSwvMyHoIVi8MCJPHMVeuDa3ssbXGVfbKVj7SkTJG8bGMYK4SeKaQbQt24fOXqlpEEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763737; c=relaxed/simple;
-	bh=9M0i7zQaLJ4BEp7Qs4PUE/qxnawlLiCHX4eTDP9TV8s=;
+	s=arc-20240116; t=1738764151; c=relaxed/simple;
+	bh=rG2FPAYK60pBFcwVvqKpprHElkwfs/s2fVw2sWlcPCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNv+QvleAEu5xJUkbYDWCmHps4nySP6/W4+EA1/7K4SWmikUhPDRcTeozstA69XksAD6T0DWjWok8cXWjEZLF+C37OU4a9i+QILZ4fjmJKCrCPyVM0itTe3nMlHrwhC74flS8HEZK2k5ZsB+4hHGsJNZ8HRUZdWPu26Yw62qVXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nq1U7Rdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449FFC4CEE2;
-	Wed,  5 Feb 2025 13:55:37 +0000 (UTC)
+	 MIME-Version; b=pF0AuSx2MiQPrsblcSdmAxoYVcraWBju2wTYp2qD0Ka+30DUF3D8XYyKpYLTTi/vFMCzluPdreJQd9wMHrV0GDqbATDwBAq6p9a2zhZBS9aQRDkDWI+KQvXvAajpu7spJdxUULmosQXpmb/ZvZfxwygTYjIUW+xhijzur4VW5H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfSe5qwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3CCC4CED6;
+	Wed,  5 Feb 2025 14:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763737;
-	bh=9M0i7zQaLJ4BEp7Qs4PUE/qxnawlLiCHX4eTDP9TV8s=;
+	s=korg; t=1738764151;
+	bh=rG2FPAYK60pBFcwVvqKpprHElkwfs/s2fVw2sWlcPCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nq1U7RduxzYN7ErEKPPQTQGFGJRVVN+zZo8W2fYa9Om4iUWUXvpvwVkzU9/FnsS7+
-	 YBw/+1XojXI/Tz5EHDpNJnJkqmPJ6nIfrhFRmcTRBO8dXAwjGZoItj3JCCM5/uZFYm
-	 1CYdeqq2HW6lMZSvTbc5O2agTbLPZW9SFgZUCJpc=
+	b=GfSe5qwT0w7JU0zeUmfM2UJUET4g5bGZk4PNlY4GpyYiaTGW3tWu/mEuP8OqOCDit
+	 8o+cNjUxYCwBJWOI5DxSHvimb4V07dE/9EOBoeXqr/nMkRrTXHcvFP0WmCxKptEeN0
+	 rW3pQ/vDvDVu3VjMSUOF2xARzpfd28AID41/aOL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Nie <rex.nie@jaguarmicro.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/590] drm/msm/hdmi: simplify code in pll_get_integloop_gain
+Subject: [PATCH 6.13 052/623] drm/msm/dp: dont call dp_catalog_ctrl_mainlink_ctrl in dp_ctrl_configure_source_params()
 Date: Wed,  5 Feb 2025 14:36:34 +0100
-Message-ID: <20250205134456.746851981@linuxfoundation.org>
+Message-ID: <20250205134458.220491666@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rex Nie <rex.nie@jaguarmicro.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit c1beb6f75d5e60e4e57a837c665a52eb79eb19ba ]
+[ Upstream commit 50e608d166ba68faacf81a5ce17c09b0c697eefd ]
 
-In pll_get_integloop_gain(), digclk_divsel=1 or 2, base=63 or 196ULL,
-so the base may be 63, 126, 196, 392. The condition base <= 2046
-always true.
+Once the link has already been setup there is no need to call
+dp_catalog_ctrl_mainlink_ctrl() as this does a reset on the mainlink
+thereby tearing down the link briefly.
 
-Fixes: caedbf17c48d ("drm/msm: add msm8998 hdmi phy/pll support")
-Signed-off-by: Rex Nie <rex.nie@jaguarmicro.com>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/624153/
-Link: https://lore.kernel.org/r/20241112074101.2206-1-rex.nie@jaguarmicro.com
+Patchwork: https://patchwork.freedesktop.org/patch/627479/
+Link: https://lore.kernel.org/r/20241205-dp_mst-v1-1-f8618d42a99a@quicinc.com
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c b/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
-index e6ffaf92d26d3..1c4211cfa2a47 100644
---- a/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
-+++ b/drivers/gpu/drm/msm/hdmi/hdmi_phy_8998.c
-@@ -137,7 +137,7 @@ static inline u32 pll_get_integloop_gain(u64 frac_start, u64 bclk, u32 ref_clk,
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index bc2ca8133b790..a8069f7c4773f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -178,7 +178,6 @@ static void msm_dp_ctrl_configure_source_params(struct msm_dp_ctrl_private *ctrl
+ 	u32 cc, tb;
  
- 	base <<= (digclk_divsel == 2 ? 1 : 0);
+ 	msm_dp_catalog_ctrl_lane_mapping(ctrl->catalog);
+-	msm_dp_catalog_ctrl_mainlink_ctrl(ctrl->catalog, true);
+ 	msm_dp_catalog_setup_peripheral_flush(ctrl->catalog);
  
--	return (base <= 2046 ? base : 2046);
-+	return base;
- }
- 
- static inline u32 pll_get_pll_cmp(u64 fdata, unsigned long ref_clk)
+ 	msm_dp_ctrl_config_ctrl(ctrl);
 -- 
 2.39.5
 
