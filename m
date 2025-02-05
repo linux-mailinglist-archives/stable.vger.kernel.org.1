@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-112726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06B7A28E23
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D278A28F3A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37D963A15BC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947043A64C4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B6C1509BD;
-	Wed,  5 Feb 2025 14:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E02F155725;
+	Wed,  5 Feb 2025 14:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2b9Ecj/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVzDrdbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FD9149C53;
-	Wed,  5 Feb 2025 14:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D0413C3F6;
+	Wed,  5 Feb 2025 14:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764538; cv=none; b=ri88jS73LBMLfnRe2HH2njQGsAEsaDc+oi4AQR8CWU8evESJ29Bsr2tickFA1ZbHngjrDw7wRBobT/PKuuUzX+TmWvebCthVHQbfDhx/7NFlzYF9ve7nRHGjqgLqT1yi9eDxJfUvGj73pjlgB2BTbdaXXfseHhpfayuGIowfnuo=
+	t=1738765299; cv=none; b=a9Zgd/cyAzZsudm0cNdEftT+3ZJVm9o7vp8XusfG9CySJ8yVAr4+5RUsOK+LZ71l1Sto1V6FJOZKB/3vFz3t48b0BETvA+Jd6J240lRXVey7rxz47laV8fDWRFmqta0I3pJGyFgTf/uBgd/tZjlLUmv5ZWHVZcelgPBfRASwFTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764538; c=relaxed/simple;
-	bh=81OwuTKgF+vb7Gxw+n7ay7WoBqUB0iV0y3RGwphP/z4=;
+	s=arc-20240116; t=1738765299; c=relaxed/simple;
+	bh=JRQJCi0r+G9T3B9J+VGYjJhZ7rPeKedrxmpfkV4H7Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCF+qxjr68M07nVOBdwaOhBOOwyPwgxeKGST6hNdXR25xXuigKBXSW6I3omrVUZSvd0Obm++Sp/pP8hvLFUg8UrQyjvJcbOABYy8oS9kJbl8DCPdD0/2q5qrVmf0cGm3YrwXde5XGSWExybVfIrEnlShCj1eYl+6LLz50ah644U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2b9Ecj/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598EDC4CED6;
-	Wed,  5 Feb 2025 14:08:58 +0000 (UTC)
+	 MIME-Version; b=OUSbhnaQcO38tidl5zYwfGA5HaORZxLQ4jzJm7vKjQR29U35BIgCGSbCiiDKcIHklXCHP8mx/cmg+mClLX+4UZ38D0PzKJo5yqReAbt5WeYgL8UjCih2v3sdpXG6QQKHnBc46nIICgRHdbl7ZwpyRUjygAIDHMxVEITPaFx5n2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVzDrdbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D4BC4CED1;
+	Wed,  5 Feb 2025 14:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764538;
-	bh=81OwuTKgF+vb7Gxw+n7ay7WoBqUB0iV0y3RGwphP/z4=;
+	s=korg; t=1738765298;
+	bh=JRQJCi0r+G9T3B9J+VGYjJhZ7rPeKedrxmpfkV4H7Lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2b9Ecj/g5sCr5W/miscxvWv0aivR+RlBD8GCz8w7NRsH6XwqsNxI89D/mMvY4E00G
-	 eBGBTnWmJ9LOFoCP3LVZ73yCX8qwAxswFeCug29K02pEaGUQfpwF3E6DDi4xMu7ZAi
-	 jOstIovJCQRd1vAKt3QguNJzd3fGgawI9nA+qtMQ=
+	b=qVzDrdbOlHJP5tui3S25gXZW2FWb5J9AngEnV2nHHekkwI+ozz5umo1UcFwd+oaUC
+	 5LdgV7ovAYy/X5LhZWz28+BFPsNDR/6bAKDjWnEK35O9IClkx/gEwfl3KkTk3OVZ+w
+	 daIol+lMFoSoHuXP8knJJ1fnzfrNt3bO5jzDc+mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Will McVicker <willmcvicker@google.com>,
+	Pankaj Dubey <pankaj.dubey@samsung.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/590] OPP: OF: Fix an OF node leak in _opp_add_static_v2()
+Subject: [PATCH 6.13 149/623] mfd: syscon: Fix race in device_node_get_regmap()
 Date: Wed,  5 Feb 2025 14:38:11 +0100
-Message-ID: <20250205134500.472140933@linuxfoundation.org>
+Message-ID: <20250205134501.935750459@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit 1d38eb7f7b26261a0b642f6e0923269c7c000a97 ]
+[ Upstream commit 805f7aaf7fee14a57b56af01d270edf6c10765e8 ]
 
-_opp_add_static_v2() leaks the obtained OF node reference when
-_of_opp_alloc_required_opps() fails. Add an of_node_put() call in the
-error path.
+It is possible for multiple, simultaneous callers calling
+device_node_get_regmap() with the same node to fail to find an entry in
+the syscon_list. There is a period of time while the first caller is
+calling of_syscon_register() that subsequent callers also fail to find
+an entry in the syscon_list and then call of_syscon_register() a second
+time.
 
-Fixes: 3466ea2cd6b6 ("OPP: Don't drop opp->np reference while it is still in use")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fix this by keeping the lock held until after of_syscon_register()
+completes and adds the node to syscon_list. Convert the spinlock to a
+mutex as many of the functions called in of_syscon_register() such as
+kzalloc() and of_clk_get() may sleep.
+
+Fixes: bdb0066df96e ("mfd: syscon: Decouple syscon interface from platform devices")
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Will McVicker <willmcvicker@google.com>
+Tested-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+Link: https://lore.kernel.org/r/20241217-syscon-fixes-v2-1-4f56d750541d@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/of.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/syscon.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/opp/of.c b/drivers/opp/of.c
-index 55c8cfef97d48..dcab0e7ace106 100644
---- a/drivers/opp/of.c
-+++ b/drivers/opp/of.c
-@@ -959,7 +959,7 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 3e1d699ba9340..72f20de9652da 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -15,6 +15,7 @@
+ #include <linux/io.h>
+ #include <linux/init.h>
+ #include <linux/list.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_platform.h>
+@@ -27,7 +28,7 @@
  
- 	ret = _of_opp_alloc_required_opps(opp_table, new_opp);
- 	if (ret)
--		goto free_opp;
-+		goto put_node;
+ static struct platform_driver syscon_driver;
  
- 	if (!of_property_read_u32(np, "clock-latency-ns", &val))
- 		new_opp->clock_latency_ns = val;
-@@ -1009,6 +1009,8 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
+-static DEFINE_SPINLOCK(syscon_list_slock);
++static DEFINE_MUTEX(syscon_list_lock);
+ static LIST_HEAD(syscon_list);
  
- free_required_opps:
- 	_of_opp_free_required_opps(opp_table, new_opp);
-+put_node:
-+	of_node_put(np);
- free_opp:
- 	_opp_free(new_opp);
+ struct syscon {
+@@ -54,6 +55,8 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	struct resource res;
+ 	struct reset_control *reset;
  
++	WARN_ON(!mutex_is_locked(&syscon_list_lock));
++
+ 	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
+ 	if (!syscon)
+ 		return ERR_PTR(-ENOMEM);
+@@ -146,9 +149,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	syscon->regmap = regmap;
+ 	syscon->np = np;
+ 
+-	spin_lock(&syscon_list_slock);
+ 	list_add_tail(&syscon->list, &syscon_list);
+-	spin_unlock(&syscon_list_slock);
+ 
+ 	return_ptr(syscon);
+ 
+@@ -169,7 +170,7 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
+ {
+ 	struct syscon *entry, *syscon = NULL;
+ 
+-	spin_lock(&syscon_list_slock);
++	mutex_lock(&syscon_list_lock);
+ 
+ 	list_for_each_entry(entry, &syscon_list, list)
+ 		if (entry->np == np) {
+@@ -177,11 +178,11 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
+ 			break;
+ 		}
+ 
+-	spin_unlock(&syscon_list_slock);
+-
+ 	if (!syscon)
+ 		syscon = of_syscon_register(np, check_res);
+ 
++	mutex_unlock(&syscon_list_lock);
++
+ 	if (IS_ERR(syscon))
+ 		return ERR_CAST(syscon);
+ 
+@@ -212,7 +213,7 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
+ 		return -ENOMEM;
+ 
+ 	/* check if syscon entry already exists */
+-	spin_lock(&syscon_list_slock);
++	mutex_lock(&syscon_list_lock);
+ 
+ 	list_for_each_entry(entry, &syscon_list, list)
+ 		if (entry->np == np) {
+@@ -225,12 +226,12 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
+ 
+ 	/* register the regmap in syscon list */
+ 	list_add_tail(&syscon->list, &syscon_list);
+-	spin_unlock(&syscon_list_slock);
++	mutex_unlock(&syscon_list_lock);
+ 
+ 	return 0;
+ 
+ err_unlock:
+-	spin_unlock(&syscon_list_slock);
++	mutex_unlock(&syscon_list_lock);
+ 	kfree(syscon);
+ 	return ret;
+ }
 -- 
 2.39.5
 
