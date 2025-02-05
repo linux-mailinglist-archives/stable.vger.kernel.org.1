@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29382A28F62
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE832A293C4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3732C168163
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5729188ACA0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D0F155335;
-	Wed,  5 Feb 2025 14:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623BD188736;
+	Wed,  5 Feb 2025 15:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11cEKcK9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKom/8cD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0488634E;
-	Wed,  5 Feb 2025 14:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C21215B122;
+	Wed,  5 Feb 2025 15:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765470; cv=none; b=GAEg2A2ZjI5dp4Kl+asv8BeTgCmBeymqU049xBgxmAhUTvIQQbixzqZWSbLu7A/iqrXPOcEZ85V9i9q+9aIF7eo9K/JD8a0lloQQvcpUtkMJQb1bt72SmUdHXqJ6sul3HhEDpgct/MKsmwqXw3mg94vErsxb1W9DhBnhz3fCq4o=
+	t=1738767747; cv=none; b=r0mLaUtYgEY9kZJkxqABSwP45yYU7mWyqbsb7BNAlCvW4A2zmkFkqy1tsQeTJStixX3ZceHGkuOuPPV1sbR8sm0UPoBsK8nvg1ameD3kDKcoxYRVISPSk/aRNzExvwD36utbRqTiE2aAtfn4Rps+VV7Baz22+Mfz4+MHJw53ONc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765470; c=relaxed/simple;
-	bh=77hd6zPQM0xfe8ZJQK/a0hoYl+21UUDNPA0+xPBqbTQ=;
+	s=arc-20240116; t=1738767747; c=relaxed/simple;
+	bh=rBIzhm5StiZlhM1QH4kwMoo/sPct7OH6SsrmN9HdGBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=edPrK92EBRAc6R/01UghV+cb8EY4YBiiX+WSaJ8kOfWA9CHLIqHHKFoqPyILn+p7J3NE1LqKcD1JSfUplk3msw82us2fnqSlvV5F2LwFUkZZfZlCNdVLeIOKH4saISLjkLKkLUq60yF0hTPinPdi1IqH8P7rvkwSFeDiSiPa5Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11cEKcK9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E74AC4CED1;
-	Wed,  5 Feb 2025 14:24:29 +0000 (UTC)
+	 MIME-Version; b=scjLGb5UtLZB/qqLKEgVx23vVh6NhqvhaOVjqgEwyZEH4GMG6duu0+/GV4N1Qkf1UlbwQqeWJwnM290au3MOs+SN4Lyi6TaO5TaZoLGqAndkOB/jKrMoazZur95dMxlNXSy0T0ovV8/aam76A533w1f2lCH2Y2mVnfoQaaPxvdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKom/8cD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EE4C4CED1;
+	Wed,  5 Feb 2025 15:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765470;
-	bh=77hd6zPQM0xfe8ZJQK/a0hoYl+21UUDNPA0+xPBqbTQ=;
+	s=korg; t=1738767747;
+	bh=rBIzhm5StiZlhM1QH4kwMoo/sPct7OH6SsrmN9HdGBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11cEKcK9KqtYNEFE3N2Y8qxat0i3iEqhYiIBqWocMwUd4JliJ02nsvgEeEIghSp5d
-	 0Kdmz4JK6mF4wWJP1hR8BpUB0yOOo/BA4XJgeg9+NOqeFp2xQySjdElrsUSUyYaDTY
-	 IhDtpgwetKzBghd3OS6SXi0zPC//4DlhrS2WHjpA=
+	b=IKom/8cDchtKgnPtcw50Pb6+iPeMy69x0UUP1KrfvxZ+kop5/xVFW732FZHotEgMO
+	 bIJgJNEZsD3H6pVO+7JxTBnU+XVjosZfnv8m10xA/4RUZ7MJrFATSeljZ47s4lhBdy
+	 K35LEqAsAQddARI+9+rhPN5YUOrl8GhSYCfxohGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/393] ARM: dts: mediatek: mt7623: fix IR nodename
-Date: Wed,  5 Feb 2025 14:43:09 +0100
-Message-ID: <20250205134430.641368827@linuxfoundation.org>
+Subject: [PATCH 6.13 448/623] media: i2c: imx290: Register 0x3011 varies between imx327 and imx290
+Date: Wed,  5 Feb 2025 14:43:10 +0100
+Message-ID: <20250205134513.356822973@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 90234cf9b37c57201a24b78c217a91a8af774109 ]
+[ Upstream commit f2055c1d62d6dfd25a31d1d1923883f21305aea5 ]
 
-Fix following validation error:
-arch/arm/boot/dts/mediatek/mt7623a-rfb-emmc.dtb: cir@10013000: $nodename:0: 'cir@10013000' does not match '^ir(-receiver)?(@[a-f0-9]+)?$'
-        from schema $id: http://devicetree.org/schemas/media/mediatek,mt7622-cir.yaml#
+Reviewing the datasheets, register 0x3011 is meant to be 0x02 on imx327
+and 0x00 on imx290.
 
-Fixes: 91044f38dae7 ("arm: dts: mt7623: add ir nodes to the mt7623.dtsi file")
-Cc: linux-media@vger.kernel.org
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20240617094634.23173-1-zajec5@gmail.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Move it out of the common registers, and set it appropriately in the
+sensor specific sections. (Included for imx290 to be explicit, rather
+than relying on the default value).
+
+Fixes: 2d41947ec2c0 ("media: i2c: imx290: Add support for imx327 variant")
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/mediatek/mt7623.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx290.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/mediatek/mt7623.dtsi b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-index f0b4a09004b31..9c5a52ce9351a 100644
---- a/arch/arm/boot/dts/mediatek/mt7623.dtsi
-+++ b/arch/arm/boot/dts/mediatek/mt7623.dtsi
-@@ -308,7 +308,7 @@
- 		clock-names = "spi", "wrap";
- 	};
+diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+index f5ee6bd3b52d6..c3a707deee3f5 100644
+--- a/drivers/media/i2c/imx290.c
++++ b/drivers/media/i2c/imx290.c
+@@ -267,7 +267,6 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
+ 	{ IMX290_WINWV, 1097 },
+ 	{ IMX290_XSOUTSEL, IMX290_XSOUTSEL_XVSOUTSEL_VSYNC |
+ 			   IMX290_XSOUTSEL_XHSOUTSEL_HSYNC },
+-	{ CCI_REG8(0x3011), 0x02 },
+ 	{ CCI_REG8(0x3012), 0x64 },
+ 	{ CCI_REG8(0x3013), 0x00 },
+ };
+@@ -275,6 +274,7 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
+ static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
+ 	{ CCI_REG8(0x300f), 0x00 },
+ 	{ CCI_REG8(0x3010), 0x21 },
++	{ CCI_REG8(0x3011), 0x00 },
+ 	{ CCI_REG8(0x3016), 0x09 },
+ 	{ CCI_REG8(0x3070), 0x02 },
+ 	{ CCI_REG8(0x3071), 0x11 },
+@@ -328,6 +328,7 @@ static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
+ };
  
--	cir: cir@10013000 {
-+	cir: ir-receiver@10013000 {
- 		compatible = "mediatek,mt7623-cir";
- 		reg = <0 0x10013000 0 0x1000>;
- 		interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_LOW>;
+ static const struct cci_reg_sequence imx290_global_init_settings_327[] = {
++	{ CCI_REG8(0x3011), 0x02 },
+ 	{ CCI_REG8(0x309e), 0x4A },
+ 	{ CCI_REG8(0x309f), 0x4A },
+ 	{ CCI_REG8(0x313b), 0x61 },
 -- 
 2.39.5
 
