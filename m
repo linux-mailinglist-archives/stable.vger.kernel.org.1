@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CEAA29457
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92475A29418
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C04DA3B1A1A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86C6189261C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CB518732B;
-	Wed,  5 Feb 2025 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D81E35946;
+	Wed,  5 Feb 2025 15:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFORp4bz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrHxOXRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C6735946;
-	Wed,  5 Feb 2025 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076111519BF;
+	Wed,  5 Feb 2025 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768439; cv=none; b=lVvrbMU+yDy0Z2qZzS3Kp88OT0Gx5++IJWnqcNAERAdm84aBjE54JZ9a8q7fvj8E15PP5Izs035paDB0ISrJmGYDL0qjRvrsiHavMmkv0yHKGoaIX8r3X6Craq8diRr5mt1KzvgfIYqodVhAT/Y6D4PpDZb/7SKcUz13vxwHVg4=
+	t=1738768044; cv=none; b=Q8gd6QFTrNOP45LxQt4ZGervaZEf3iXrc/6UAMFA9gTnKPkY7SFHtsbclyIbQ1DH+KyCzmZGzsIZH/9RlTCKR75fEkE2yLjOUbX0//MSfq+7cibFI7LMc5ShSUKGKwd8ya2Cj+kt+HTluHH5ZUp42HBVc6hdz6nfb6LgknHL91c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768439; c=relaxed/simple;
-	bh=OeXTDC2geiTCGDHlGrq2xPjSYBaAbINqOLGPitxGuxY=;
+	s=arc-20240116; t=1738768044; c=relaxed/simple;
+	bh=AG+vnkaTa4yJNMPlNKpcGv7fy8qVP1SujnPnH/fbcaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO7mRBw0n7wTTfUujO1buf/oF8hFYJH8OPosWvrNmuJppXwF9eKl9j5JMdfGST7wYGjoheNSYjxe1A2UO+6vDZnT+2bjT1uHeOERRpy8DjOEr9C6AXS+yyGWahyGZH45hhoWXyyqbjCymWw6cffRVoSNMkYd8FW00OqCurRNMm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFORp4bz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC541C4CED6;
-	Wed,  5 Feb 2025 15:13:58 +0000 (UTC)
+	 MIME-Version; b=BBj5mPq55efZ8E9JdGZzMGFITBB5teAA1h4Hy/HP7ncQB5iesU8jfP+bnF082V5x+xyZPcny3b4hf33++WLixIm26t5NvmDX2RVpXyxkg/1TnDKXJYMCIV61+OJOoI5xivzO4huO1qG9I7OteysJiKoowv9Gz38WVObrBmiPHkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrHxOXRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B96BC4CED1;
+	Wed,  5 Feb 2025 15:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768439;
-	bh=OeXTDC2geiTCGDHlGrq2xPjSYBaAbINqOLGPitxGuxY=;
+	s=korg; t=1738768043;
+	bh=AG+vnkaTa4yJNMPlNKpcGv7fy8qVP1SujnPnH/fbcaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFORp4bzhvrFd59OvF6Jp3bmmh9Z7qaC8zTN77lnl5D5khDdrbkyfffn+Q3B0ZdxZ
-	 AtUoDuB+EN+gkUCnDgjIKW5iMftL/s7Uq0TSwl+0ZqQ8A71BCblxv/DGvx1HCl53fT
-	 NtkC1lpKFnI9CjXVT/T4a6KmGfOxSaDYsYJSdggM=
+	b=CrHxOXRu6TPY7w5VR/SCpKYevvwK+IgUMZtJeBSPWNiyCrbj7ePm1dFdyOVTHzZl3
+	 mnCxgFcqBmiol9m2BqPyjhpXW/v9GeAfsUDY9ASiALf6putwciJcYYJggWDmLuHur2
+	 88USrkq6thkhKd9h3A8BUp5F8z5n1XKs5N8qI0MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 558/623] ASoC: rockchip: i2s_tdm: Re-add the set_sysclk callback
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 545/590] drm/amd/display: Reduce accessing remote DPCD overhead
 Date: Wed,  5 Feb 2025 14:45:00 +0100
-Message-ID: <20250205134517.567224325@linuxfoundation.org>
+Message-ID: <20250205134516.122457854@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +65,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Detlev Casanova <detlev.casanova@collabora.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit 5323186e2e8d33c073fad51e24f18e2d6dbae2da ]
+commit adb4998f4928a17d91be054218a902ba9f8c1f93 upstream.
 
-In commit
-9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates"),
-the set_sysclk callback was removed as considered unused as the mclk rate
-can be set in the hw_params callback.
-The difference between hw_params and set_sysclk is that the former is
-called with the audio sampling rate set in the params (e.g.: 48000 Hz)
-while the latter is called with a clock rate already computed with
-  sampling_rate * mclk-fs (e.g.: 48000 * 256)
+[Why]
+Observed frame rate get dropped by tool like glxgear. Even though the
+output to monitor is 60Hz, the rendered frame rate drops to 30Hz lower.
 
-For HDMI audio using the Rockchip I2S TDM driver, the mclk-fs value must
-be set to 128 instead of the default 256, and that value is set in the
-device tree at the machine driver level (like a simple-audio-card
-compatible node).
-Therefore, the i2s_tdm driver has no idea that another mclk-fs value can
-be configured and simply computes the mclk rate in the hw_params callback
-with DEFAULT_MCLK_FS * params_rate(params), which is wrong for HDMI
-audio.
+It's due to code path in some cases will trigger
+dm_dp_mst_is_port_support_mode() to read out remote Link status to
+assess the available bandwidth for dsc maniplation. Overhead of keep
+reading remote DPCD is considerable.
 
-Re-add the set_sysclk callback so that the mclk rate is computed by the
-machine driver which has the correct mclk-fs value set in its device tree
-node.
+[How]
+Store the remote link BW in mst_local_bw and use end-to-end full_pbn
+as an indicator to decide whether update the remote link bw or not.
 
-Fixes: 9e2ab4b18ebd ("ASoC: rockchip: i2s-tdm: Fix inaccurate sampling rates")
-Signed-off-by: Detlev Casanova <detlev.casanova@collabora.com>
-Link: https://patch.msgid.link/20250117163102.65807-1-detlev.casanova@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Whenever we need the info to assess the BW, visit the stored one first.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3720
+Fixes: fa57924c76d9 ("drm/amd/display: Refactor function dm_dp_mst_is_port_support_mode()")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4a9a918545455a5979c6232fcf61ed3d8f0db3ae)
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/rockchip/rockchip_i2s_tdm.c | 31 +++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h           |    2 
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   34 ++++++++----
+ 2 files changed, 27 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/rockchip/rockchip_i2s_tdm.c b/sound/soc/rockchip/rockchip_i2s_tdm.c
-index d1f28699652fe..acd75e48851fc 100644
---- a/sound/soc/rockchip/rockchip_i2s_tdm.c
-+++ b/sound/soc/rockchip/rockchip_i2s_tdm.c
-@@ -22,7 +22,6 @@
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -697,6 +697,8 @@ struct amdgpu_dm_connector {
+ 	struct drm_dp_mst_port *mst_output_port;
+ 	struct amdgpu_dm_connector *mst_root;
+ 	struct drm_dp_aux *dsc_aux;
++	uint32_t mst_local_bw;
++	uint16_t vc_full_pbn;
+ 	struct mutex handle_mst_msg_ready;
  
- #define DRV_NAME "rockchip-i2s-tdm"
- 
--#define DEFAULT_MCLK_FS				256
- #define CH_GRP_MAX				4  /* The max channel 8 / 2 */
- #define MULTIPLEX_CH_MAX			10
- 
-@@ -70,6 +69,8 @@ struct rk_i2s_tdm_dev {
- 	bool has_playback;
- 	bool has_capture;
- 	struct snd_soc_dai_driver *dai;
-+	unsigned int mclk_rx_freq;
-+	unsigned int mclk_tx_freq;
- };
- 
- static int to_ch_num(unsigned int val)
-@@ -645,6 +646,27 @@ static int rockchip_i2s_trcm_mode(struct snd_pcm_substream *substream,
+ 	/* TODO see if we can merge with ddc_bus or make a dm_connector */
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -155,6 +155,17 @@ amdgpu_dm_mst_connector_late_register(st
  	return 0;
  }
  
-+static int rockchip_i2s_tdm_set_sysclk(struct snd_soc_dai *cpu_dai, int stream,
-+				       unsigned int freq, int dir)
++
++static inline void
++amdgpu_dm_mst_reset_mst_connector_setting(struct amdgpu_dm_connector *aconnector)
 +{
-+	struct rk_i2s_tdm_dev *i2s_tdm = to_info(cpu_dai);
-+
-+	if (i2s_tdm->clk_trcm) {
-+		i2s_tdm->mclk_tx_freq = freq;
-+		i2s_tdm->mclk_rx_freq = freq;
-+	} else {
-+		if (stream == SNDRV_PCM_STREAM_PLAYBACK)
-+			i2s_tdm->mclk_tx_freq = freq;
-+		else
-+			i2s_tdm->mclk_rx_freq = freq;
-+	}
-+
-+	dev_dbg(i2s_tdm->dev, "The target mclk_%s freq is: %d\n",
-+		stream ? "rx" : "tx", freq);
-+
-+	return 0;
++	aconnector->edid = NULL;
++	aconnector->dsc_aux = NULL;
++	aconnector->mst_output_port->passthrough_aux = NULL;
++	aconnector->mst_local_bw = 0;
++	aconnector->vc_full_pbn = 0;
 +}
 +
- static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
- 				      struct snd_pcm_hw_params *params,
- 				      struct snd_soc_dai *dai)
-@@ -659,15 +681,19 @@ static int rockchip_i2s_tdm_hw_params(struct snd_pcm_substream *substream,
+ static void
+ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ {
+@@ -182,9 +193,7 @@ amdgpu_dm_mst_connector_early_unregister
  
- 		if (i2s_tdm->clk_trcm == TRCM_TX) {
- 			mclk = i2s_tdm->mclk_tx;
-+			mclk_rate = i2s_tdm->mclk_tx_freq;
- 		} else if (i2s_tdm->clk_trcm == TRCM_RX) {
- 			mclk = i2s_tdm->mclk_rx;
-+			mclk_rate = i2s_tdm->mclk_rx_freq;
- 		} else if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
- 			mclk = i2s_tdm->mclk_tx;
-+			mclk_rate = i2s_tdm->mclk_tx_freq;
- 		} else {
- 			mclk = i2s_tdm->mclk_rx;
-+			mclk_rate = i2s_tdm->mclk_rx_freq;
- 		}
+ 		dc_sink_release(dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 	}
  
--		err = clk_set_rate(mclk, DEFAULT_MCLK_FS * params_rate(params));
-+		err = clk_set_rate(mclk, mclk_rate);
- 		if (err)
- 			return err;
+ 	aconnector->mst_status = MST_STATUS_DEFAULT;
+@@ -500,9 +509,7 @@ dm_dp_mst_detect(struct drm_connector *c
  
-@@ -827,6 +853,7 @@ static const struct snd_soc_dai_ops rockchip_i2s_tdm_dai_ops = {
- 	.hw_params = rockchip_i2s_tdm_hw_params,
- 	.set_bclk_ratio	= rockchip_i2s_tdm_set_bclk_ratio,
- 	.set_fmt = rockchip_i2s_tdm_set_fmt,
-+	.set_sysclk = rockchip_i2s_tdm_set_sysclk,
- 	.set_tdm_slot = rockchip_dai_tdm_slot,
- 	.trigger = rockchip_i2s_tdm_trigger,
- };
--- 
-2.39.5
-
+ 		dc_sink_release(aconnector->dc_sink);
+ 		aconnector->dc_sink = NULL;
+-		aconnector->edid = NULL;
+-		aconnector->dsc_aux = NULL;
+-		port->passthrough_aux = NULL;
++		amdgpu_dm_mst_reset_mst_connector_setting(aconnector);
+ 
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+ 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
+@@ -1815,9 +1822,18 @@ enum dc_status dm_dp_mst_is_port_support
+ 			struct drm_dp_mst_port *immediate_upstream_port = NULL;
+ 			uint32_t end_link_bw = 0;
+ 
+-			/*Get last DP link BW capability*/
+-			if (dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw)) {
+-				if (stream_kbps > end_link_bw) {
++			/*Get last DP link BW capability. Mode shall be supported by Legacy peer*/
++			if (aconnector->mst_output_port->pdt != DP_PEER_DEVICE_DP_LEGACY_CONV &&
++				aconnector->mst_output_port->pdt != DP_PEER_DEVICE_NONE) {
++				if (aconnector->vc_full_pbn != aconnector->mst_output_port->full_pbn) {
++					dp_get_link_current_set_bw(&aconnector->mst_output_port->aux, &end_link_bw);
++					aconnector->vc_full_pbn = aconnector->mst_output_port->full_pbn;
++					aconnector->mst_local_bw = end_link_bw;
++				} else {
++					end_link_bw = aconnector->mst_local_bw;
++				}
++
++				if (end_link_bw > 0 && stream_kbps > end_link_bw) {
+ 					DRM_DEBUG_DRIVER("MST_DSC dsc decode at last link."
+ 							 "Mode required bw can't fit into last link\n");
+ 					return DC_FAIL_BANDWIDTH_VALIDATE;
 
 
 
