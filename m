@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-112505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29C3A28D14
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA96FA2903B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069B81889BB3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 598AD3AA404
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0361531C1;
-	Wed,  5 Feb 2025 13:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA852155747;
+	Wed,  5 Feb 2025 14:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbcEArwD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfHFbtYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621B14D28C;
-	Wed,  5 Feb 2025 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96429347CC;
+	Wed,  5 Feb 2025 14:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763792; cv=none; b=OlCkYNUfmvZ9PIqC5OKIF250A59uWmf0uooBCK9ylnFKxNyRHQtNbwq1l2RLYT9SbQ3ivwJEMCFhJfz2v3YlJNwDsG0hyVf5/YUfICnx2RjvvBs64ZCrsGnF+Xe/1oszGNK+pSguCoOCUmgGSAQWBdEWGBpmSXcoliUC9xHwrag=
+	t=1738765949; cv=none; b=DlY4o6nupxl9AFHPXrRiEkwNMSgUnSLg2ry6p5b6kwdnl/tnp7RKO5U5iyTDiTuea6X0VyCY+C2ygTiYJbA0OQC8xjo5TyMaRumEMGSaJxp+O+WPzKf7Y2U8jdhGAx3LKTUkowz58T381eHwtnpLBj7ed8P/8w6Hsv6csgQd04E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763792; c=relaxed/simple;
-	bh=XpNo7ZKDXk9bAgEW52BvE8quhoVMcOYWAWAV5Hd0FwY=;
+	s=arc-20240116; t=1738765949; c=relaxed/simple;
+	bh=sgg1ktQLV5/V2rSwnYMaMJmvjkWDMlls7oM0dhDcbhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mVSw4G6/s1KW/oVz6jwzMh66tK2+W4gyT4EG64Zpa0VMxcxnDQH2V4RXjRja2bAOE2OE8CyxWYMEI4oFfVVIJREN6jeXmAJFznEl6zJrjyYu/rX1cKvmECLy6luAaLkrOJDTzxdUm5UePq4IYAwhVXvKvyF9XEvkUiweFT0aa9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbcEArwD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E60FC4CED1;
-	Wed,  5 Feb 2025 13:56:31 +0000 (UTC)
+	 MIME-Version; b=lXXHkMbXsEqBacildPYpaUBA4EuQsm3X4Ky2bBr9dJ/segb//i6m0W1jg2KUUa1GXaf9OU0YAyWZkHvOLEQTHnTtmk7aDaZeVCKS0DTyNFrU3b+3LbibmRyrkF2AGCI/UppbO4k2Tv8UudtBaGNYjYfH3qKIFmYqwE3tACnL7AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfHFbtYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D8FC4CED1;
+	Wed,  5 Feb 2025 14:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763791;
-	bh=XpNo7ZKDXk9bAgEW52BvE8quhoVMcOYWAWAV5Hd0FwY=;
+	s=korg; t=1738765949;
+	bh=sgg1ktQLV5/V2rSwnYMaMJmvjkWDMlls7oM0dhDcbhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbcEArwDGe/ijMoSHM/NVjIxd7RA8ac3pIM5llW57ftPQtFLedGfKRvZw0yTRNIDy
-	 QtDDeQ1CGUXgpcF/i5UZxGbXdjBERBH3W3rMkLTJ8q17xIG6RtKD/GWRpdafPYkBbQ
-	 MUl0/zYE46VTOHd7NykBSjygdnzkSiaQgCkZLqzI=
+	b=kfHFbtYOA3WDuH9jfQ14Ql1+E0q9FZW66bR3nF0pjyYx9ZItcCUrV29O5gRJQ00eS
+	 ro07cHxikyK3KTcciH7tcml4Zaz4lPbvk/GTtrDQUMUrUIP5uxe+zjXGhwyldzTQIQ
+	 XEK8V/R4KVyZPs9EZW5udwsWymsil9tXgZL5+8U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <songliubraving@fb.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/393] samples/landlock: Fix possible NULL dereference in parse_path()
+Subject: [PATCH 6.12 270/590] perf machine: Dont ignore _etext when not a text symbol
 Date: Wed,  5 Feb 2025 14:40:25 +0100
-Message-ID: <20250205134424.347729737@linuxfoundation.org>
+Message-ID: <20250205134505.603797915@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +71,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 078bf9438a31567e2c0587159ccefde835fb1ced ]
+[ Upstream commit 7a93786c306296f15e728b1dbd949a319e4e3d19 ]
 
-malloc() may return NULL, leading to NULL dereference.  Add a NULL
-check.
+Depending on how vmlinux.lds is written, _etext might be the very first
+data symbol instead of the very last text symbol.
 
-Fixes: ba84b0bf5a16 ("samples/landlock: Add a sandbox manager example")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Link: https://lore.kernel.org/r/20241128032955.11711-1-zichenxie0106@gmail.com
-[mic: Simplify fix]
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Don't require it to be a text symbol, accept any symbol type.
+
+Comitter notes:
+
+See the first Link for further discussion, but it all boils down to
+this:
+
+ ---
+  # grep -e _stext -e _etext -e _edata /proc/kallsyms
+  c0000000 T _stext
+  c08b8000 D _etext
+
+  So there is no _edata and _etext is not text
+
+  $ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
+  c0000000 g       .head.text	00000000 _stext
+  c08b8000 g       .rodata	00000000 _etext
+  c1378000 g       .sbss	00000000 _edata
+ ---
+
+Fixes: ed9adb2035b5be58 ("perf machine: Read also the end of the kernel")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Link: https://lore.kernel.org/r/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/landlock/sandboxer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/machine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/landlock/sandboxer.c b/samples/landlock/sandboxer.c
-index e2056c8b902c5..be4fec95c4601 100644
---- a/samples/landlock/sandboxer.c
-+++ b/samples/landlock/sandboxer.c
-@@ -65,6 +65,9 @@ static int parse_path(char *env_path, const char ***const path_list)
- 		}
- 	}
- 	*path_list = malloc(num_paths * sizeof(**path_list));
-+	if (!*path_list)
-+		return -1;
-+
- 	for (i = 0; i < num_paths; i++)
- 		(*path_list)[i] = strsep(&env_path, ENV_PATH_TOKEN);
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 27d5345d2b307..9be2f4479f525 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -1003,7 +1003,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
  
-@@ -100,6 +103,10 @@ static int populate_ruleset(const char *const env_var, const int ruleset_fd,
- 	env_path_name = strdup(env_path_name);
- 	unsetenv(env_var);
- 	num_paths = parse_path(env_path_name, &path_list);
-+	if (num_paths < 0) {
-+		fprintf(stderr, "Failed to allocate memory\n");
-+		goto out_free_name;
-+	}
- 	if (num_paths == 1 && path_list[0][0] == '\0') {
- 		/*
- 		 * Allows to not use all possible restrictions (e.g. use
+ 	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
+ 	if (err)
+-		err = kallsyms__get_function_start(filename, "_etext", &addr);
++		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
+ 	if (!err)
+ 		*end = addr;
+ 
 -- 
 2.39.5
 
