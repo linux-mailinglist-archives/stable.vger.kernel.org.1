@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AC3A28D7A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 128FCA28C98
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA2C3A3379
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A75168859
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C22D152E12;
-	Wed,  5 Feb 2025 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61F61442F3;
+	Wed,  5 Feb 2025 13:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8RgypD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORowt0DY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD3113C9C4;
-	Wed,  5 Feb 2025 13:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8285413C9C4;
+	Wed,  5 Feb 2025 13:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763966; cv=none; b=rVRiK+y9pwTV7NgNFcideVA8bx8HlUkAL9kvxtMNcHIdjbtiripWQWF05OsDyNDAL04QwMYnkigM3MxTmuJTAbapQ7WxfCCqVAko0xZ72imHnV1awuAxwmyAXs2L8fopnqTGz86ZmD69Wt+FnSlDPRmHUUCXIEjsOy/b0RmwSwY=
+	t=1738763493; cv=none; b=h0nn4GPGF254WehLEqv0cdPDJtMGonnRnp8R3rEYL9ve8UsZuql7UhLx8x+J1jgaOXzsk5idZI2Z2RopkSQVoNQMlhaHsBxr1L/+kzu6LFvF3kkCTGt1WseQOFjgL1GJ0B5wI9LC1FiUn/+PMB33QUJjo2Amr7JNlUWo/J0EZH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763966; c=relaxed/simple;
-	bh=ka0HRkiaiYhsqpxF8e43F987xLzn54dG++VoG1wNfvk=;
+	s=arc-20240116; t=1738763493; c=relaxed/simple;
+	bh=K05YBfvO3WWlRJ956iLJhfJ63tlXAeN/5LRbRF/nj0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCyXg+WkKhlDnKCkUH+EUcM2eARWzFRW7QoawIeWDAh1GMhluUCL0GwgQW3+EJmRM6/CByJ79c5OEwWs1p6QjwlYHcD5jty6zmddOQSSdx6eVKYiqoF8z8Y8uwVCUI/D5l15Yj58bj3Tkl1PBNZUjpeJslR9OTIEHYRk8a2cSaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8RgypD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB6DC4CED1;
-	Wed,  5 Feb 2025 13:59:25 +0000 (UTC)
+	 MIME-Version; b=K1aKpAFO983J2I4myl7b6jUCldjIou2rg1AIG/L5DVtDigJQm9l1Xq+/7qFCbsFLO2g8rjMB6ihvh2NIg45CA/MOCLbLVtpMGn2Rxg+XCPsjaqNxVskLN5Z0HP/NpPOMrytkvKsek0upTxaZ25oYtcJzkvkTt/VlTfXda9KJNU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORowt0DY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B1DC4CED1;
+	Wed,  5 Feb 2025 13:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763966;
-	bh=ka0HRkiaiYhsqpxF8e43F987xLzn54dG++VoG1wNfvk=;
+	s=korg; t=1738763493;
+	bh=K05YBfvO3WWlRJ956iLJhfJ63tlXAeN/5LRbRF/nj0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8RgypD7QdiJuW5mKZS7EoaD2Hld8PlXh6e92ywtfV8eWA/jhYVg9XfwTs7GR9pQD
-	 RBH6dNK8hXbZFioyVuj2sn+Mlak2zIC3F4OOc4kV+aNqgp86PQFCTB+v4s5TN8jb2r
-	 9rWFL1ghRpCldPiU+1h1hVqFeTHBMlCPLTxeH0zY=
+	b=ORowt0DYmDFwjT1+DYDSG7K2n/4DV5zH492998HlTo76HHx0IQ5BvQVTYAicv2JRk
+	 nnNWy+Q27BiehfiAy9BSeo1KTU2ujFUyEKfdXvzcn483NYMmgxA2A+fJLWVggaNzWZ
+	 t3QttTtlwa6D1kd1Gi/uPvmSdlxa399FcpaxDHa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 034/623] sched/fair: Fix value reported by hot tasks pulled in /proc/schedstat
+Subject: [PATCH 6.12 021/590] btrfs: improve the warning and error message for btrfs_remove_qgroup()
 Date: Wed,  5 Feb 2025 14:36:16 +0100
-Message-ID: <20250205134457.533134635@linuxfoundation.org>
+Message-ID: <20250205134456.053039063@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit a430d99e349026d53e2557b7b22bd2ebd61fe12a ]
+[ Upstream commit c0def46dec9c547679a25fe7552c4bcbec0b0dd2 ]
 
-In /proc/schedstat, lb_hot_gained reports the number hot tasks pulled
-during load balance. This value is incremented in can_migrate_task()
-if the task is migratable and hot. After incrementing the value,
-load balancer can still decide not to migrate this task leading to wrong
-accounting. Fix this by incrementing stats when hot tasks are detached.
-This issue only exists in detach_tasks() where we can decide to not
-migrate hot task even if it is migratable. However, in detach_one_task(),
-we migrate it unconditionally.
+[WARNING]
+There are several warnings about the recently introduced qgroup
+auto-removal that it triggers WARN_ON() for the non-zero rfer/excl
+numbers, e.g:
 
-[Swapnil: Handled the case where nr_failed_migrations_hot was not accounted properly and wrote commit log]
+ ------------[ cut here ]------------
+ WARNING: CPU: 67 PID: 2882 at fs/btrfs/qgroup.c:1854 btrfs_remove_qgroup+0x3df/0x450
+ CPU: 67 UID: 0 PID: 2882 Comm: btrfs-cleaner Kdump: loaded Not tainted 6.11.6-300.fc41.x86_64 #1
+ RIP: 0010:btrfs_remove_qgroup+0x3df/0x450
+ Call Trace:
+  <TASK>
+  btrfs_qgroup_cleanup_dropped_subvolume+0x97/0xc0
+  btrfs_drop_snapshot+0x44e/0xa80
+  btrfs_clean_one_deleted_snapshot+0xc3/0x110
+  cleaner_kthread+0xd8/0x130
+  kthread+0xd2/0x100
+  ret_from_fork+0x34/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
+ BTRFS warning (device sda): to be deleted qgroup 0/319 has non-zero numbers, rfer 258478080 rfer_cmpr 258478080 excl 0 excl_cmpr 0
 
-Fixes: d31980846f96 ("sched: Move up affinity check to mitigate useless redoing overhead")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reported-by: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Not-yet-signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241220063224.17767-2-swapnil.sapkal@amd.com
+[CAUSE]
+Although the root cause is still unclear, as if qgroup is consistent a
+fully dropped subvolume (with extra transaction committed) should lead
+to all zero numbers for the qgroup.
+
+My current guess is the subvolume drop triggered the new subtree drop
+threshold thus marked qgroup inconsistent, then rescan cleared it but
+some corner case is not properly handled during subvolume dropping.
+
+But at least for this particular case, since it's only the rfer/excl not
+properly reset to 0, and qgroup is already marked inconsistent, there is
+nothing to be worried for the end users.
+
+The user space tool utilizing qgroup would queue a rescan to handle
+everything, so the kernel wanring is a little overkilled.
+
+[ENHANCEMENT]
+Enhance the warning inside btrfs_remove_qgroup() by:
+
+- Only do WARN() if CONFIG_BTRFS_DEBUG is enabled
+  As explained the kernel can handle inconsistent qgroups by simply do a
+  rescan, there is nothing to bother the end users.
+
+- Treat the reserved space leak the same as non-zero numbers
+  By outputting the values and trigger a WARN() if it's a debug build.
+  So far I haven't experienced any case related to reserved space so I
+  hope we will never need to bother them.
+
+Fixes: 839d6ea4f86d ("btrfs: automatically remove the subvolume qgroup")
+Link: https://github.com/kdave/btrfs-progs/issues/922
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h |  1 +
- kernel/sched/fair.c   | 17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ fs/btrfs/qgroup.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 64934e0830af3..949b53e0accf2 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -944,6 +944,7 @@ struct task_struct {
- 	unsigned			sched_reset_on_fork:1;
- 	unsigned			sched_contributes_to_load:1;
- 	unsigned			sched_migrated:1;
-+	unsigned			sched_task_hot:1;
- 
- 	/* Force alignment to the next boundary: */
- 	unsigned			:0;
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 808010430a16e..8800679b508d9 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9303,6 +9303,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 	int tsk_cache_hot;
- 
- 	lockdep_assert_rq_held(env->src_rq);
-+	if (p->sched_task_hot)
-+		p->sched_task_hot = 0;
- 
- 	/*
- 	 * We do not migrate tasks that are:
-@@ -9375,10 +9377,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 
- 	if (tsk_cache_hot <= 0 ||
- 	    env->sd->nr_balance_failed > env->sd->cache_nice_tries) {
--		if (tsk_cache_hot == 1) {
--			schedstat_inc(env->sd->lb_hot_gained[env->idle]);
--			schedstat_inc(p->stats.nr_forced_migrations);
--		}
-+		if (tsk_cache_hot == 1)
-+			p->sched_task_hot = 1;
- 		return 1;
- 	}
- 
-@@ -9393,6 +9393,12 @@ static void detach_task(struct task_struct *p, struct lb_env *env)
- {
- 	lockdep_assert_rq_held(env->src_rq);
- 
-+	if (p->sched_task_hot) {
-+		p->sched_task_hot = 0;
-+		schedstat_inc(env->sd->lb_hot_gained[env->idle]);
-+		schedstat_inc(p->stats.nr_forced_migrations);
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index e70ed857fc743..4fcd6cd4c1c24 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -1839,9 +1839,19 @@ int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+ 	 * Thus its reserved space should all be zero, no matter if qgroup
+ 	 * is consistent or the mode.
+ 	 */
+-	WARN_ON(qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] ||
+-		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] ||
+-		qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]);
++	if (qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA] ||
++	    qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC] ||
++	    qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]) {
++		WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
++		btrfs_warn_rl(fs_info,
++"to be deleted qgroup %u/%llu has non-zero numbers, data %llu meta prealloc %llu meta pertrans %llu",
++			      btrfs_qgroup_level(qgroup->qgroupid),
++			      btrfs_qgroup_subvolid(qgroup->qgroupid),
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_DATA],
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PREALLOC],
++			      qgroup->rsv.values[BTRFS_QGROUP_RSV_META_PERTRANS]);
++
 +	}
-+
- 	deactivate_task(env->src_rq, p, DEQUEUE_NOCLOCK);
- 	set_task_cpu(p, env->dst_cpu);
- }
-@@ -9553,6 +9559,9 @@ static int detach_tasks(struct lb_env *env)
- 
- 		continue;
- next:
-+		if (p->sched_task_hot)
-+			schedstat_inc(p->stats.nr_failed_migrations_hot);
-+
- 		list_move(&p->se.group_node, tasks);
- 	}
- 
+ 	/*
+ 	 * The same for rfer/excl numbers, but that's only if our qgroup is
+ 	 * consistent and if it's in regular qgroup mode.
+@@ -1850,8 +1860,9 @@ int btrfs_remove_qgroup(struct btrfs_trans_handle *trans, u64 qgroupid)
+ 	 */
+ 	if (btrfs_qgroup_mode(fs_info) == BTRFS_QGROUP_MODE_FULL &&
+ 	    !(fs_info->qgroup_flags & BTRFS_QGROUP_STATUS_FLAG_INCONSISTENT)) {
+-		if (WARN_ON(qgroup->rfer || qgroup->excl ||
+-			    qgroup->rfer_cmpr || qgroup->excl_cmpr)) {
++		if (qgroup->rfer || qgroup->excl ||
++		    qgroup->rfer_cmpr || qgroup->excl_cmpr) {
++			WARN_ON(IS_ENABLED(CONFIG_BTRFS_DEBUG));
+ 			btrfs_warn_rl(fs_info,
+ "to be deleted qgroup %u/%llu has non-zero numbers, rfer %llu rfer_cmpr %llu excl %llu excl_cmpr %llu",
+ 				      btrfs_qgroup_level(qgroup->qgroupid),
 -- 
 2.39.5
 
