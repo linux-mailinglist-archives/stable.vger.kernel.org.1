@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-112854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5ADA28EB7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B648A28C4E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2E457A10FB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 887AC1882361
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C59BEED7;
-	Wed,  5 Feb 2025 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A548213D52B;
+	Wed,  5 Feb 2025 13:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvhxf+CC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcyKfQQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5351519AA;
-	Wed,  5 Feb 2025 14:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61004126C18;
+	Wed,  5 Feb 2025 13:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764987; cv=none; b=mv1rAptijgNYz9TqTYY14CvLXpIjxnfoqm9PiAyjfyRv7auOMBzxrCGwQ7+54IaSit54bw+reeiZ3oylNItMdaROeOdMyevqDQzIDIcenIXw0W5ylGMMju7I3yhtfI3D66JXy5r+caH5gaXV9ldt3DQrLCOYYEvaulwisPj5DDg=
+	t=1738763296; cv=none; b=eGdXY7XGw8Xw6lMnQJpsNNQPaB7kCSa13yM7wANDvZYjqdXXZHwnv5V0pYWYFmjNKRJbgcnFb/GTRzd/s3XRAuZxB1mXXSIRrlypxmHi0Kwr1P0ffVW1o6O6KrVhJyO3g0NXTYsxRUcxj3ojDvcedMfebHuGkqP7kZts/YtawJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764987; c=relaxed/simple;
-	bh=mQ+0ReDtVF9zHANBiexpvGI5EMiO7Zik2zf2sVWHoug=;
+	s=arc-20240116; t=1738763296; c=relaxed/simple;
+	bh=UQFZH9VlcLRlNPKq9UlrIKpKRIO9Wf1w0/+WaFy15sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4PKHBqAPDq5OjFnZqr1lwTvHHGwEVu4Eq0TIUv81bXoJqjks9peMi+iKZT0WErdw0ukNPEGpBSt31+0dtHIqidNVKMX/6BoGEqb6+H69QPd/EtkjtxYoKcwkFOsRnMlW8UFsWK0bN0OEbD+SGN74/sl+1ECjIVMaIm2qiQYzyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvhxf+CC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE496C4CED1;
-	Wed,  5 Feb 2025 14:16:25 +0000 (UTC)
+	 MIME-Version; b=GKTKiXmqSVYUB5bXgByIXMcoLJXPNgfnInzeiSUHPfvSjoqT1pdfBlCIt+MVfOVm5qbsG3xgWuodYU8zIq6Q2cN3PtuM7Ex5yzP5XaPG8vgFwMvYNsmwbr1QTQeurNLWv7sfIEECtvo6ws5Bkivdc4w3EOUWSnaKp+IrMxd0P4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcyKfQQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6182DC4CED1;
+	Wed,  5 Feb 2025 13:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764986;
-	bh=mQ+0ReDtVF9zHANBiexpvGI5EMiO7Zik2zf2sVWHoug=;
+	s=korg; t=1738763295;
+	bh=UQFZH9VlcLRlNPKq9UlrIKpKRIO9Wf1w0/+WaFy15sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvhxf+CC3qKLnMkYAHHFXI5YnQPddijNs31WnTxliJLUG9n/pe+9DnNjHrzYnE/mF
-	 QY7BW80qfcvfI33Ni8mhWqdbqjojZBm1NpYbpa+uX894T45khJ9PCpS0kZHLNyk4Y+
-	 E/Bjv0NA1Kb8YB6zpjt0BhOjLhua6RwX35/KPpM4=
+	b=tcyKfQQNOfMM0yfr05yQC6EMNZ+DVFK6ML0xDiyQMAdpUg+Cb3wM6N+8KnX2kDMGh
+	 2so83D33od10Ja+y04NGxxbwunRGU1a/xd5ImXcAz84t5pPe61pv5Xtx4m8/ClQ0ph
+	 mBSzqzqNj79bOKubbtckzV/+7o5vMKLb0QLciXOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xueqin Luo <luoxueqin@kylinos.cn>,
-	Felix Fietkau <nbd@nbd.name>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/590] wifi: mt76: mt7996: fix overflows seen when writing limit attributes
+Subject: [PATCH 6.6 015/393] nvme: fix bogus kzalloc() return check in nvme_init_effects_log()
 Date: Wed,  5 Feb 2025 14:38:54 +0100
-Message-ID: <20250205134502.129213139@linuxfoundation.org>
+Message-ID: <20250205134420.878130288@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xueqin Luo <luoxueqin@kylinos.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 5adbc8ce5bbe7e311e2600b7d7d998a958873e98 ]
+[ Upstream commit 170e086ad3997f816d1f551f178a03a626a130b7 ]
 
-DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
-number such as 18446744073709551615 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
-This commit was inspired by commit: 57ee12b6c514.
+nvme_init_effects_log() returns failure when kzalloc() is successful,
+which is obviously wrong and causes failures to boot. Correct the
+check.
 
-Fixes: 6879b2e94172 ("wifi: mt76: mt7996: add thermal sensor device support")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
-Link: https://patch.msgid.link/20241202031917.23741-2-luoxueqin@kylinos.cn
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: d4a95adeabc6 ("nvme: Add error path for xa_store in nvme_init_effects")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 2 +-
+ drivers/nvme/host/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index efa7b0697a406..d5f53abc4dcb4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -82,7 +82,7 @@ static ssize_t mt7996_thermal_temp_store(struct device *dev,
- 		return ret;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 75ea4795188f2..26e3f1896dc39 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2951,7 +2951,7 @@ static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
+ 	struct nvme_effects_log *effects, *old;
  
- 	mutex_lock(&phy->dev->mt76.mutex);
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 40, 130);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 40 * 1000, 130 * 1000), 1000);
+ 	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
+-	if (effects)
++	if (!effects)
+ 		return -ENOMEM;
  
- 	/* add a safety margin ~10 */
- 	if ((i - 1 == MT7996_CRIT_TEMP_IDX &&
+ 	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
 -- 
 2.39.5
 
