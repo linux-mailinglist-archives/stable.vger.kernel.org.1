@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5711A29081
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA22A291F3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C57923A5F87
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B8F16A3CC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBB414B959;
-	Wed,  5 Feb 2025 14:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5B31FC10A;
+	Wed,  5 Feb 2025 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3AtRnGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCKU8yBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F3A151988;
-	Wed,  5 Feb 2025 14:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CA31FC0FC;
+	Wed,  5 Feb 2025 14:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766210; cv=none; b=MHMCYvzA/PLadnfvORDMXMF0ceAiyGePhIOL2vhQV2pUH+nrnRJ64AXk9+kTcCUHNViyOweQWPpZRbQW3fbowo92h+p4+QbJirztHkkcaxkSksKihlemM1HqTuyO/Nb6cmNuXVT19c4zPdvUh9K5RQ0pZUEGk5ocTAkP78dLib8=
+	t=1738766800; cv=none; b=FcIW4yU/raLPqyLZ3hinWFGQo3LDIC9VLC47NUyLekZ/jYwcjpz9F2B7Bc6ueotE1CJGY8xBG6Jyn92oxObL4CsQhBjWuI2nbTHPREoEPFINpw2stDnfVZBBkrHcTUaoqQrQAobfwQk0PV2A76SootGGMH4DyBp1PVIy6N5QmvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766210; c=relaxed/simple;
-	bh=R6D7pGiWtKmiFN08p6/wsAVrCrjjxVXIkOB29p7ZLOw=;
+	s=arc-20240116; t=1738766800; c=relaxed/simple;
+	bh=AKDRLVwBXAlNfulqasyB9sH5vnmy1wmOo33ZkFHxIZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhDVOBIGy6Qj3XGzlVLveGDrR3HFffvH229qaUiFKIm06eTgQa9e26Sc/SfgqFPmO003ujPuGaTql2VqIm4GgEGTFo8I4wdJQo4jRQ8tNei5qGtnvisvzRhA+bH2YZMwSjapcoTJiE1wCg1EM5txhw81ntwRe8TgtdFTzXbph4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3AtRnGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9DEC4CED1;
-	Wed,  5 Feb 2025 14:36:49 +0000 (UTC)
+	 MIME-Version; b=ZLHpteNu3PC0rH2JvrL4xE6kCNgZH7VH4DM41Xhaywu8nOX64K2kL43rQ/ZYvjrhwJQLP2rmX5kitdFHvp1pDi4pTpqPpyrvsS3GA7kzcuO4QzsrbjA83qM/6kiOWo4q/7ijvXwaaQmQ/+W7PH1uNv7jrD3LgLSKQPIvxGVXH5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCKU8yBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762F9C4CED1;
+	Wed,  5 Feb 2025 14:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766210;
-	bh=R6D7pGiWtKmiFN08p6/wsAVrCrjjxVXIkOB29p7ZLOw=;
+	s=korg; t=1738766799;
+	bh=AKDRLVwBXAlNfulqasyB9sH5vnmy1wmOo33ZkFHxIZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3AtRnGANvnKW3zbSZKiQW6RLcziW8hVr5gIU3LIZfxp5Vuh2Of7ryGooXeuuwOS+
-	 QAdJkEp9wbGBoBY1DOrFM/WGRAWfmrJ2JYD5fcZJqS+tlJCRvzxtI4kwQPexii61po
-	 BP7mjhMcjROe1CiiFnmQquTwhj7QtK3FXFUUmey8=
+	b=nCKU8yBnWdOwZFxRmPiiYAj7hkqvY61OqDkh9BPLtOsYwlremAiWaGXeJsj2liP8I
+	 rGHrFXVfjhdVz9GOyXu6jcVI7RZPEpG5NhzhqaeosNhJYi0m3Ftt1CA0Me1hN8qvY8
+	 AQLCGQFdedlxOGTLFlAGMurJ44I88YehGo1xhJHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Breno Leitao <leitao@debian.org>,
-	Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+	Pu Lehui <pulehui@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 297/590] rhashtable: Fix rhashtable_try_insert test
+Subject: [PATCH 6.13 310/623] libbpf: Fix return zero when elf_begin failed
 Date: Wed,  5 Feb 2025 14:40:52 +0100
-Message-ID: <20250205134506.639138979@linuxfoundation.org>
+Message-ID: <20250205134508.085870582@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Pu Lehui <pulehui@huawei.com>
 
-[ Upstream commit 9d4f8e54cef2c42e23ef258833dbd06a1eaff89b ]
+[ Upstream commit 5436a54332c19df0acbef2b87cbf9f7cba56f2dd ]
 
-The test on whether rhashtable_insert_one did an insertion relies
-on the value returned by rhashtable_lookup_one.  Unfortunately that
-value is overwritten after rhashtable_insert_one returns.  Fix this
-by moving the test before data gets overwritten.
+The error number of elf_begin is omitted when encapsulating the
+btf_find_elf_sections function.
 
-Simplify the test as only data == NULL matters.
-
-Finally move atomic_inc back within the lock as otherwise it may
-be reordered with the atomic_dec on the removal side, potentially
-leading to an underflow.
-
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Fixes: e1d3422c95f0 ("rhashtable: Fix potential deadlock by moving schedule_work outside lock")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c86f180ffc99 ("libbpf: Make btf_parse_elf process .BTF.base transparently")
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250115100241.4171581-2-pulehui@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/rhashtable.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/lib/bpf/btf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-index bf956b85455ab..0e9a1d4cf89be 100644
---- a/lib/rhashtable.c
-+++ b/lib/rhashtable.c
-@@ -611,21 +611,23 @@ static void *rhashtable_try_insert(struct rhashtable *ht, const void *key,
- 			new_tbl = rht_dereference_rcu(tbl->future_tbl, ht);
- 			data = ERR_PTR(-EAGAIN);
- 		} else {
-+			bool inserted;
-+
- 			flags = rht_lock(tbl, bkt);
- 			data = rhashtable_lookup_one(ht, bkt, tbl,
- 						     hash, key, obj);
- 			new_tbl = rhashtable_insert_one(ht, bkt, tbl,
- 							hash, obj, data);
-+			inserted = data && !new_tbl;
-+			if (inserted)
-+				atomic_inc(&ht->nelems);
- 			if (PTR_ERR(new_tbl) != -EEXIST)
- 				data = ERR_CAST(new_tbl);
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 12468ae0d573d..7e810fa468eaa 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -1186,6 +1186,7 @@ static struct btf *btf_parse_elf(const char *path, struct btf *base_btf,
  
- 			rht_unlock(tbl, bkt, flags);
- 
--			if (PTR_ERR(data) == -ENOENT && !new_tbl) {
--				atomic_inc(&ht->nelems);
--				if (rht_grow_above_75(ht, tbl))
--					schedule_work(&ht->run_work);
--			}
-+			if (inserted && rht_grow_above_75(ht, tbl))
-+				schedule_work(&ht->run_work);
- 		}
- 	} while (!IS_ERR_OR_NULL(new_tbl));
- 
+ 	elf = elf_begin(fd, ELF_C_READ, NULL);
+ 	if (!elf) {
++		err = -LIBBPF_ERRNO__FORMAT;
+ 		pr_warn("failed to open %s as ELF file\n", path);
+ 		goto done;
+ 	}
 -- 
 2.39.5
 
