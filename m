@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE832A293C4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34847A28F8D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5729188ACA0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 463AC3AACF8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623BD188736;
-	Wed,  5 Feb 2025 15:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A349155333;
+	Wed,  5 Feb 2025 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKom/8cD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBZJYOSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C21215B122;
-	Wed,  5 Feb 2025 15:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAAC8634E;
+	Wed,  5 Feb 2025 14:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767747; cv=none; b=r0mLaUtYgEY9kZJkxqABSwP45yYU7mWyqbsb7BNAlCvW4A2zmkFkqy1tsQeTJStixX3ZceHGkuOuPPV1sbR8sm0UPoBsK8nvg1ameD3kDKcoxYRVISPSk/aRNzExvwD36utbRqTiE2aAtfn4Rps+VV7Baz22+Mfz4+MHJw53ONc=
+	t=1738765480; cv=none; b=aQ6GrDW+i4dzGH/oAa9WaZ+0hNwwPLM+fFeWpAxjWcQG69USZtZNOhOIcX4G6iqIKYCK0nWE59ju0YhJhULmV57qaM3gh25xefBovwnnFGj0cdyYroUt8PX9y/Ci7/uYyuxjbZEmAl76L6Ynk0p0Ue5MSrKUgj2AB5UhMMSWgdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767747; c=relaxed/simple;
-	bh=rBIzhm5StiZlhM1QH4kwMoo/sPct7OH6SsrmN9HdGBg=;
+	s=arc-20240116; t=1738765480; c=relaxed/simple;
+	bh=jCGpPNl/Hd0+E8pjxj+SMCVpJeWBK84OYOXIB9w4KV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scjLGb5UtLZB/qqLKEgVx23vVh6NhqvhaOVjqgEwyZEH4GMG6duu0+/GV4N1Qkf1UlbwQqeWJwnM290au3MOs+SN4Lyi6TaO5TaZoLGqAndkOB/jKrMoazZur95dMxlNXSy0T0ovV8/aam76A533w1f2lCH2Y2mVnfoQaaPxvdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKom/8cD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EE4C4CED1;
-	Wed,  5 Feb 2025 15:02:26 +0000 (UTC)
+	 MIME-Version; b=NYAUzRTOrm4Ilxj2FcNVCmc7NIfRlss6tTJ+4cPNj0GoPNJnTYZ7YvkPDaklgTTeQMM43TxaCmRfbpizcJAslhQkutUX9dN19dsuXibSHIxU0sm4740dqsa5Z1/RP3P5VWAAxtx3cDqhywjRiUvpnXE2HB/N7bOlcH+r3Alzgrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBZJYOSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BECC4CED1;
+	Wed,  5 Feb 2025 14:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767747;
-	bh=rBIzhm5StiZlhM1QH4kwMoo/sPct7OH6SsrmN9HdGBg=;
+	s=korg; t=1738765480;
+	bh=jCGpPNl/Hd0+E8pjxj+SMCVpJeWBK84OYOXIB9w4KV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKom/8cDchtKgnPtcw50Pb6+iPeMy69x0UUP1KrfvxZ+kop5/xVFW732FZHotEgMO
-	 bIJgJNEZsD3H6pVO+7JxTBnU+XVjosZfnv8m10xA/4RUZ7MJrFATSeljZ47s4lhBdy
-	 K35LEqAsAQddARI+9+rhPN5YUOrl8GhSYCfxohGY=
+	b=lBZJYOSAs1XA49MRaxmC/tVBPxHNlWiSZ/PErknL8qWsKDAbdHAXydymlS/AB4sCX
+	 ybYtBdxAC5X9PLTaVv2HVvXdxzRXqGO7GYri/q6riTLJESsCzH98gd5/l/U6Jz0Rnl
+	 oQuvODVEarMoyaHUD1j6i5CoIYdRoK+yD0fGBawA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 448/623] media: i2c: imx290: Register 0x3011 varies between imx327 and imx290
+Subject: [PATCH 6.6 271/393] fbdev: omapfb: Fix an OF node leak in dss_of_port_get_parent_device()
 Date: Wed,  5 Feb 2025 14:43:10 +0100
-Message-ID: <20250205134513.356822973@linuxfoundation.org>
+Message-ID: <20250205134430.681390378@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit f2055c1d62d6dfd25a31d1d1923883f21305aea5 ]
+[ Upstream commit de124b61e179e690277116e6be512e4f422b5dd8 ]
 
-Reviewing the datasheets, register 0x3011 is meant to be 0x02 on imx327
-and 0x00 on imx290.
+dss_of_port_get_parent_device() leaks an OF node reference when i >= 2
+and struct device_node *np is present. Since of_get_next_parent()
+obtains a reference of the returned OF node, call of_node_put() before
+returning NULL.
 
-Move it out of the common registers, and set it appropriately in the
-sensor specific sections. (Included for imx290 to be explicit, rather
-than relying on the default value).
+This was found by an experimental verifier that I am developing, and no
+runtime test was able to be performed due to that lack of actual
+devices.
 
-Fixes: 2d41947ec2c0 ("media: i2c: imx290: Add support for imx327 variant")
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes: f76ee892a99e ("omapfb: copy omapdss & displays for omapfb")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx290.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dss-of.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index f5ee6bd3b52d6..c3a707deee3f5 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -267,7 +267,6 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
- 	{ IMX290_WINWV, 1097 },
- 	{ IMX290_XSOUTSEL, IMX290_XSOUTSEL_XVSOUTSEL_VSYNC |
- 			   IMX290_XSOUTSEL_XHSOUTSEL_HSYNC },
--	{ CCI_REG8(0x3011), 0x02 },
- 	{ CCI_REG8(0x3012), 0x64 },
- 	{ CCI_REG8(0x3013), 0x00 },
- };
-@@ -275,6 +274,7 @@ static const struct cci_reg_sequence imx290_global_init_settings[] = {
- static const struct cci_reg_sequence imx290_global_init_settings_290[] = {
- 	{ CCI_REG8(0x300f), 0x00 },
- 	{ CCI_REG8(0x3010), 0x21 },
-+	{ CCI_REG8(0x3011), 0x00 },
- 	{ CCI_REG8(0x3016), 0x09 },
- 	{ CCI_REG8(0x3070), 0x02 },
- 	{ CCI_REG8(0x3071), 0x11 },
-@@ -328,6 +328,7 @@ static const struct cci_reg_sequence xclk_regs[][IMX290_NUM_CLK_REGS] = {
- };
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+index 0282d4eef139d..3b16c3342cb77 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dss-of.c
+@@ -102,6 +102,7 @@ struct device_node *dss_of_port_get_parent_device(struct device_node *port)
+ 		np = of_get_next_parent(np);
+ 	}
  
- static const struct cci_reg_sequence imx290_global_init_settings_327[] = {
-+	{ CCI_REG8(0x3011), 0x02 },
- 	{ CCI_REG8(0x309e), 0x4A },
- 	{ CCI_REG8(0x309f), 0x4A },
- 	{ CCI_REG8(0x313b), 0x61 },
++	of_node_put(np);
+ 	return NULL;
+ }
+ 
 -- 
 2.39.5
 
