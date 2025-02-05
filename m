@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-112953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B07A28F37
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6371FA29334
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FA10168D04
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB8963AFC2A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330B214A088;
-	Wed,  5 Feb 2025 14:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1457C189F5C;
+	Wed,  5 Feb 2025 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KVqqTPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDswLxLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2ABD1898ED;
-	Wed,  5 Feb 2025 14:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C486CDF59;
+	Wed,  5 Feb 2025 15:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765320; cv=none; b=hVQNA2yGGtjEo048p7pwQYMfGsMQrfefOCWRYFTcer1WkIgcjSETKlbwZdchWMvz49GTvrZv8aZdtf6q8TfrjBBUXSVxIDUbMiIXdw3R8+/E0bGu+HjYEHSbSopvmJ4fcgLyxBCxee4jDY8gD/J4Z2ytDdwQRBf8vyNe53yvspI=
+	t=1738767623; cv=none; b=qblVtgB0QUeb1N1TMEnVMMHv4wqW1VtC97f/lglCINNqCYhWIWdCrPbj2sezCCf7bIBq7g/eHf+bw5sT09w9SzVDn4wY9N1MLzBXnhkKAxnOw1aa1H1Pl8KPwS1kL/3Gyb6PmMZvKVTqsyjrdq6V0uqujwf4BogtKRItAO6a7uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765320; c=relaxed/simple;
-	bh=/Tw+wCWWIVamwB+NkoHqdcFoEJsGaMRgAp35S9xtjYs=;
+	s=arc-20240116; t=1738767623; c=relaxed/simple;
+	bh=t8uFL6n98acZ7YtiPsn/xehZQY7A2HB5rXY9Z/TfCdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxdEGU7L3pLVBKdU1utiVdUQ3qb8Px0hwolobl9STkxQyWSxm+SAjHsZb20SGnFhaO4GEIufmMst2ppidsqThD1UsuJE9lZVAqDNw9BNZDqoXVEJxiHiezALxWhJx+CrnqRtoeGSngzpL0OGAwGruOm9Ej9AYGVJwKFCFt+O50s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KVqqTPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE15C4CEDD;
-	Wed,  5 Feb 2025 14:21:58 +0000 (UTC)
+	 MIME-Version; b=EIa3Zs/0YPlsibJ8Bb1uUi450pbMOCtH8HTPBTm1ttzxNBmjztjh1na35N7V4+Eor8X7yIOglR9hlWcFsS6IuSaQ/1Ox9TUBFqwhLBnCPg+B63az/TXKfKrV3pya9hvOFchkjGY9ZmQh4TNyJj9LPOcLpiEDS3MUKnUb9jfPaLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDswLxLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323D5C4CED1;
+	Wed,  5 Feb 2025 15:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765319;
-	bh=/Tw+wCWWIVamwB+NkoHqdcFoEJsGaMRgAp35S9xtjYs=;
+	s=korg; t=1738767623;
+	bh=t8uFL6n98acZ7YtiPsn/xehZQY7A2HB5rXY9Z/TfCdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KVqqTPF5zybxRfvWcEYOY5/3D9kJ2/jjVVBktfvbFS50kOU3DN2VNeenruNuwvKm
-	 TqLWKETBVrcjhzy/t7+2iaQQhL45URgKcFyuvoWabb1vwbO6y4ZdRf2vUc/9/CptH8
-	 SqWGUqsBaebmOEH1NYS+eo78T5U1iIJ7z6ImNrlQ=
+	b=IDswLxLI9zP6wG6f+LjlMVoxUjhzvDOdYe8aZVmAlO5w19YUOYoOy5h6r88DtvFjS
+	 betgXQ4m4OekcfFG3l3A/nyZlGwptXlZ6GzAJfseNkCCEX0MOQ5na57DIc17PWNWXF
+	 5U0BsPWtzF8iL9bAyi68G5pk8l39N+YqEDjXnXUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank Oltmanns <frank@oltmanns.dev>,
-	Stuart Gathman <stuart@gathman.org>
-Subject: [PATCH 6.6 253/393] arm64: dts: allwinner: a64: explicitly assign clock parent for TCON0
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 430/623] of: property: Avoiding using uninitialized variable @imaplen in parse_interrupt_map()
 Date: Wed,  5 Feb 2025 14:42:52 +0100
-Message-ID: <20250205134429.986444437@linuxfoundation.org>
+Message-ID: <20250205134512.672930625@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 8715c91a836502929c637c76a26335ede8818acf ]
+[ Upstream commit f73780e772c06901e99b2ad114b7f0f3fbe73ad4 ]
 
-TCON0 seems to need a different clock parent depending on output type.
-For RGB it has to be PLL-VIDEO0-2X, while for DSI it has to be PLL-MIPI,
-so select it explicitly.
+parse_interrupt_map() will use uninitialized variable @imaplen if fails
+to get property 'interrupt-map'.
 
-Video output doesn't work if incorrect clock is assigned.
+Fix by using the variable after successfully getting the property.
 
-On my Pinebook I manually configured PLL-VIDEO0-2X and PLL-MIPI to the same
-rate, and while video output works fine with PLL-VIDEO0-2X, it doesn't
-work at all (as in no picture) with PLL-MIPI.
-
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
-Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Link: https://patch.msgid.link/20250104074035.1611136-4-anarsoul@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: e7985f43609c ("of: property: Fix fw_devlink handling of interrupt-map")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20250109-of_core_fix-v4-6-db8a72415b8c@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts | 2 ++
- arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts  | 2 ++
- arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi         | 2 ++
- 3 files changed, 6 insertions(+)
+ drivers/of/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-index 50ed2e9f10ed0..6a69d00524944 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinebook.dts
-@@ -390,6 +390,8 @@
- &tcon0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&lcd_rgb666_pins>;
-+	assigned-clocks = <&ccu CLK_TCON0>;
-+	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index cfc8aea002e43..b0633f3589de8 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1390,9 +1390,9 @@ static struct device_node *parse_interrupt_map(struct device_node *np,
+ 	addrcells = of_bus_n_addr_cells(np);
  
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-index 1128030e4c25b..d3e5eed84f364 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-teres-i.dts
-@@ -369,6 +369,8 @@
- &tcon0 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&lcd_rgb666_pins>;
-+	assigned-clocks = <&ccu CLK_TCON0>;
-+	assigned-clock-parents = <&ccu CLK_PLL_VIDEO0_2X>;
+ 	imap = of_get_property(np, "interrupt-map", &imaplen);
+-	imaplen /= sizeof(*imap);
+ 	if (!imap)
+ 		return NULL;
++	imaplen /= sizeof(*imap);
  
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-index 57ac18738c995..7103298f6a1c2 100644
---- a/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-+++ b/arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi
-@@ -410,6 +410,8 @@
- 			clock-names = "ahb", "tcon-ch0";
- 			clock-output-names = "tcon-data-clock";
- 			#clock-cells = <0>;
-+			assigned-clocks = <&ccu CLK_TCON0>;
-+			assigned-clock-parents = <&ccu CLK_PLL_MIPI>;
- 			resets = <&ccu RST_BUS_TCON0>, <&ccu RST_BUS_LVDS>;
- 			reset-names = "lcd", "lvds";
+ 	imap_end = imap + imaplen;
  
 -- 
 2.39.5
