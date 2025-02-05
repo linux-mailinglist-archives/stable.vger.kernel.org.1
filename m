@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC090A28F7C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BE6A29058
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08CEA1884982
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0A0D3A6C88
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662D0154C08;
-	Wed,  5 Feb 2025 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC84155CB3;
+	Wed,  5 Feb 2025 14:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNxKeXiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j44L4D3M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DDC1459F6;
-	Wed,  5 Feb 2025 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5662C7E792;
+	Wed,  5 Feb 2025 14:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765501; cv=none; b=TN/7t/K6QctzHJdNbL9umdU4wHjEarpZ/0bjXNHjvLbm8r8byYVs7/ooI+uFUqbVlox8TZX7V+hyolc++lgKT9JghI1pC5KJz/bettu47fRfXqgOsoAbwGsjjozpxCfyToOhk8x+/Ys00Jsu+zfHCz0BzBjqfh6HtySrlXKMygY=
+	t=1738766052; cv=none; b=P4MrETJOcKfcvJOwrIz0K+Mun+hLSwjH/46KNrzLVtyeRL/m3yjJQEoI82yXD2XcI00Vh1awU4I0mjJqR6DEmdeTb8S/E/SrQvXt6b8gl7EQ+5DmjI8yhbxbb/IqzWWIj2jQt7I89F2Y7KjnK5hYss7yONZ3ZLiPLEvEXBc9i+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765501; c=relaxed/simple;
-	bh=BovE5gFBqd5kFvfgpO8N7ABWXjzvj3g+Zzu/bmWkDbQ=;
+	s=arc-20240116; t=1738766052; c=relaxed/simple;
+	bh=843MH68/L4pDuJNBkKNrP/qHMj/xMn9Y1x2yQG02fKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6C8q754akLW7DsPK92ZoLrYhm/szag3cu0GMNXm4nQpK73bXfQGaOBCeOrC/PyN2mXqdJrNJ8tzZxX8Qf4/wPibDaijZLdFDvNboPHno+c03FjJY3ATNBcFq3s/5Ka72jQnWZ+JEkLA3l3uuXDtM4NIbORaICobDV7SnR7Bkk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNxKeXiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A552C4CED6;
-	Wed,  5 Feb 2025 14:25:00 +0000 (UTC)
+	 MIME-Version; b=R9+RcMqQ9yp+hm1zLIMxQAZnsq9TK5UPhfFiprcRet+xFU59KiJcBCJ6pMqg2lX5vPaL94Mjuac1DtkulYFEk+KvzOXRCxoWHsAMW9MWuSD9v2nn7J0f8fdZWe6FxXqzDfbr9+nQeOr1IC0YnO3cNxMn3yyFTnBQoM8uBYSomUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j44L4D3M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5862C4CED1;
+	Wed,  5 Feb 2025 14:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765501;
-	bh=BovE5gFBqd5kFvfgpO8N7ABWXjzvj3g+Zzu/bmWkDbQ=;
+	s=korg; t=1738766052;
+	bh=843MH68/L4pDuJNBkKNrP/qHMj/xMn9Y1x2yQG02fKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XNxKeXiKJ7WN25KTU9E+6hUHb1eefbLPc96ahZCjd9vqpO5l4ZLyufCM5BgE2PNrZ
-	 FBfFMq76IHtXHcya4LDeFxiNP+aXUC6HulprqpVb5TR3tWV0E1HqQwDMEjp5czZYQP
-	 F2Rc/Duf4jV6braJ1I2nPnlAb+x+9j1SCnn3CMzs=
+	b=j44L4D3MP9Q2qNGl+3O/ot8riRmeRy1kz4jgixfpdj8/moz+mi8qBRxoW99eUofxJ
+	 fsmfVay3IKuO119L2VsZRKSRg4KTrSryzFhxc7QHxLiCQY/boE89SXrTiapUMqfFPc
+	 BrT3s/AVSjwLnPAa0EGhgrecnh5PQHBn4lieAgHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinas Rasheed <srasheed@marvell.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/590] octeon_ep_vf: remove firmware stats fetch in ndo_get_stats64
+Subject: [PATCH 6.13 238/623] net: sched: Disallow replacing of child qdisc from one parent to another
 Date: Wed,  5 Feb 2025 14:39:40 +0100
-Message-ID: <20250205134503.893182266@linuxfoundation.org>
+Message-ID: <20250205134505.334214185@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shinas Rasheed <srasheed@marvell.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit cc0e510cc89fe0a6479203bc20cd964962dc6a43 ]
+[ Upstream commit bc50835e83f60f56e9bec2b392fb5544f250fb6f ]
 
-The firmware stats fetch call that happens in ndo_get_stats64()
-is currently not required, and causes a warning to issue.
+Lion Ackermann was able to create a UAF which can be abused for privilege
+escalation with the following script
 
-The corresponding warn log for the PF is given below:
+Step 1. create root qdisc
+tc qdisc add dev lo root handle 1:0 drr
 
-[  123.316837] ------------[ cut here ]------------
-[  123.316840] Voluntary context switch within RCU read-side critical section!
-[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
-[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
-[  123.316947] Call trace:
-[  123.316949]  rcu_note_context_switch+0x2e4/0x300
-[  123.316952]  __schedule+0x84/0x584
-[  123.316955]  schedule+0x38/0x90
-[  123.316956]  schedule_timeout+0xa0/0x1d4
-[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
-[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
-[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
-[  123.316975]  dev_get_stats+0x4c/0x114
-[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
-[  123.316980]  dev_seq_show+0x1c/0x40
-[  123.316982]  seq_read_iter+0x3cc/0x4e0
-[  123.316985]  seq_read+0xc8/0x110
-[  123.316987]  proc_reg_read+0x9c/0xec
-[  123.316990]  vfs_read+0xc8/0x2ec
-[  123.316993]  ksys_read+0x70/0x100
-[  123.316995]  __arm64_sys_read+0x20/0x30
-[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
-[  123.317000]  do_el0_svc+0xb4/0xd0
-[  123.317002]  el0_svc+0xe8/0x1f4
-[  123.317005]  el0t_64_sync_handler+0x134/0x150
-[  123.317006]  el0t_64_sync+0x17c/0x180
-[  123.317008] ---[ end trace 63399811432ab69b ]---
+step2. a class for packet aggregation do demonstrate uaf
+tc class add dev lo classid 1:1 drr
 
-Fixes: c3fad23cdc06 ("octeon_ep_vf: add support for ndo ops")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Link: https://patch.msgid.link/20250117094653.2588578-4-srasheed@marvell.com
+step3. a class for nesting
+tc class add dev lo classid 1:2 drr
+
+step4. a class to graft qdisc to
+tc class add dev lo classid 1:3 drr
+
+step5.
+tc qdisc add dev lo parent 1:1 handle 2:0 plug limit 1024
+
+step6.
+tc qdisc add dev lo parent 1:2 handle 3:0 drr
+
+step7.
+tc class add dev lo classid 3:1 drr
+
+step 8.
+tc qdisc add dev lo parent 3:1 handle 4:0 pfifo
+
+step 9. Display the class/qdisc layout
+
+tc class ls dev lo
+ class drr 1:1 root leaf 2: quantum 64Kb
+ class drr 1:2 root leaf 3: quantum 64Kb
+ class drr 3:1 root leaf 4: quantum 64Kb
+
+tc qdisc ls
+ qdisc drr 1: dev lo root refcnt 2
+ qdisc plug 2: dev lo parent 1:1
+ qdisc pfifo 4: dev lo parent 3:1 limit 1000p
+ qdisc drr 3: dev lo parent 1:2
+
+step10. trigger the bug <=== prevented by this patch
+tc qdisc replace dev lo parent 1:3 handle 4:0
+
+step 11. Redisplay again the qdiscs/classes
+
+tc class ls dev lo
+ class drr 1:1 root leaf 2: quantum 64Kb
+ class drr 1:2 root leaf 3: quantum 64Kb
+ class drr 1:3 root leaf 4: quantum 64Kb
+ class drr 3:1 root leaf 4: quantum 64Kb
+
+tc qdisc ls
+ qdisc drr 1: dev lo root refcnt 2
+ qdisc plug 2: dev lo parent 1:1
+ qdisc pfifo 4: dev lo parent 3:1 refcnt 2 limit 1000p
+ qdisc drr 3: dev lo parent 1:2
+
+Observe that a) parent for 4:0 does not change despite the replace request.
+There can only be one parent.  b) refcount has gone up by two for 4:0 and
+c) both class 1:3 and 3:1 are pointing to it.
+
+Step 12.  send one packet to plug
+echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10001))
+step13.  send one packet to the grafted fifo
+echo "" | socat -u STDIN UDP4-DATAGRAM:127.0.0.1:8888,priority=$((0x10003))
+
+step14. lets trigger the uaf
+tc class delete dev lo classid 1:3
+tc class delete dev lo classid 1:1
+
+The semantics of "replace" is for a del/add _on the same node_ and not
+a delete from one node(3:1) and add to another node (1:3) as in step10.
+While we could "fix" with a more complex approach there could be
+consequences to expectations so the patch takes the preventive approach of
+"disallow such config".
+
+Joint work with Lion Ackermann <nnamrec@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250116013713.900000-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 8 --------
- 1 file changed, 8 deletions(-)
+ net/sched/sch_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 7e6771c9cdbba..4c699514fd57a 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -799,14 +799,6 @@ static void octep_vf_get_stats64(struct net_device *netdev,
- 	stats->tx_bytes = tx_bytes;
- 	stats->rx_packets = rx_packets;
- 	stats->rx_bytes = rx_bytes;
--	if (!octep_vf_get_if_stats(oct)) {
--		stats->multicast = oct->iface_rx_stats.mcast_pkts;
--		stats->rx_errors = oct->iface_rx_stats.err_pkts;
--		stats->rx_dropped = oct->iface_rx_stats.dropped_pkts_fifo_full +
--				    oct->iface_rx_stats.err_pkts;
--		stats->rx_missed_errors = oct->iface_rx_stats.dropped_pkts_fifo_full;
--		stats->tx_dropped = oct->iface_tx_stats.dropped;
--	}
- }
- 
- /**
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 300430b8c4d22..fac9c946a4c75 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1664,6 +1664,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 				q = qdisc_lookup(dev, tcm->tcm_handle);
+ 				if (!q)
+ 					goto create_n_graft;
++				if (q->parent != tcm->tcm_parent) {
++					NL_SET_ERR_MSG(extack, "Cannot move an existing qdisc to a different parent");
++					return -EINVAL;
++				}
+ 				if (n->nlmsg_flags & NLM_F_EXCL) {
+ 					NL_SET_ERR_MSG(extack, "Exclusivity flag on, cannot override");
+ 					return -EEXIST;
 -- 
 2.39.5
 
