@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C042A293E4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3321BA29377
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1335C188EEA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A62169324
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08D2172BB9;
-	Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1871519BF;
+	Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNMw8gqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sSDPmhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5DF1519BF;
-	Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06810DF59;
+	Wed,  5 Feb 2025 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767891; cv=none; b=d9BVqqdb45kgHr5UqqrFnkcPm4qT53HI2ayZKqzhGCCrrxyYBx5t1XkMlEZbTxTxWzkmKDNZOTF8XVtJe2aTGZVngUEvMCe8mrjfLxSU6SrKZNPQhkKEpP+2z+oIErmUvdzMOrkTu28hh5nC/rJL3wQTImY7hMgOr9wh/nyXY/Y=
+	t=1738767991; cv=none; b=NIn2WD28CFOo+e9403UCitxNCFwfQlwrDdACLYPe7n7NsHRxLH7Ol6hxyr+BdHcmneJvh4cjuURHoBkz93UEIGMp+oeXJkqfxThfhG3+QLYbzXhMyleOHhQ6HZZMDt/IUBUk8UXYyHzGSrry+pRK1nIPoa6/oyk+Sk9sZGX0qXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767891; c=relaxed/simple;
-	bh=grWjjj+s8Q1JCP9bvUeuCpdNyBqKh1ESSNaYvqbS1zw=;
+	s=arc-20240116; t=1738767991; c=relaxed/simple;
+	bh=78clmqIj4ljUzyAFGeeSoXMAQt1PrwoV/3O7V2gsZFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UFkSJf10Bbs0rqxPUwXrx2vE/OUp+R5/1ILbWhqp9V5MGdwmxzaq18F4+kZWXazCboSr+1i9T2yP+acZPAcxWlRClJt50PX9upataTkRXd64RnLa2gHeJZrdplt4yCgUxuWl9D4H3vYhJkZaIU6+gc02kDnbY43J0KSH7SHbV2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNMw8gqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6CBC4CED1;
-	Wed,  5 Feb 2025 15:04:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I27wFepM3NeAyBRjbrO+0icxTHRQ55P3JABsq/cFegzAaw8K13M3dNrWNZ9r1YqASeCSnku6GeBRUrOVJOsW8j5hpMBy6NdwW1irX9I39Y7Yt1qVa6EHc668c+7A9HGUEhZAdquYZ0b/lYV1BXwA1Kpb0glrtty3V1Hb8JYx1tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sSDPmhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EEDC4CED6;
+	Wed,  5 Feb 2025 15:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767891;
-	bh=grWjjj+s8Q1JCP9bvUeuCpdNyBqKh1ESSNaYvqbS1zw=;
+	s=korg; t=1738767990;
+	bh=78clmqIj4ljUzyAFGeeSoXMAQt1PrwoV/3O7V2gsZFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nNMw8gqgj5Al7KnQDutPzui8aTmMOIj0EmTmubF23YMWEJlYTiL9j+wZVLJlxaU3O
-	 fkafnpmoIGYpNRc9OuxdWZZt4FZ3uQwLQAWNtd0nbrApEByiYD65wTYbqqX8wJgLFZ
-	 gyuhX0k2jJwQ6t43nB9ETwZSICbfwPl+6FRw+Fcs=
+	b=0sSDPmhlUDtzUN2xMuBqcb6uVficjpb1uBi1iiAbULHQEc1EqBQ8BEz81ExmPQFxq
+	 DUFkiWazP3LSKSskRCcgdhHOmR6ARYzJLtxJmEdKiCfzG2RkA3YS5OzNfeSDd5mNUa
+	 2e86zpZ1TOxDSM114gMKsMGb4J1GCravye1f1Rnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 467/623] PCI: imx6: Add missing reference clock disable logic
-Date: Wed,  5 Feb 2025 14:43:29 +0100
-Message-ID: <20250205134514.083451604@linuxfoundation.org>
+Subject: [PATCH 6.13 468/623] PCI: qcom: Update ICC and OPP values after Link Up event
+Date: Wed,  5 Feb 2025 14:43:30 +0100
+Message-ID: <20250205134514.123414075@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -70,72 +70,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-[ Upstream commit 93d883f89063744a92006fc356b1c767eb62d950 ]
+[ Upstream commit f0639013d340580b72df95d012a93f35eeb0da64 ]
 
-Ensure the *_enable_ref_clk() function is symmetric by addressing missing
-disable parts on some platforms.
+4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in
+'global_irq' interrupt") added the Link Up-based enumeration support, but
+did not update the ICC/OPP vote once link is up. Before that, the update
+happened during probe and the endpoints may or may not be enumerated at
+that time, so the ICC/OPP vote was not guaranteed to be accurate.
 
-Fixes: d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match enable")
-Link: https://lore.kernel.org/r/20241126075702.4099164-7-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+With Link Up-based enumeration support, the driver can request the accurate
+vote based on the PCIe link.
+
+Call qcom_pcie_icc_opp_update() in qcom_pcie_global_irq_thread() after
+enumerating the endpoints.
+
+Fixes: 4581403f6792 ("PCI: qcom: Enumerate endpoints based on Link up event in 'global_irq' interrupt")
+Link: https://lore.kernel.org/r/20241123-remove_wait2-v5-3-b5f9e6b794c2@quicinc.com
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+[kwilczynski: commit log]
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 94f5246b3a720..ad3028b755d16 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -598,10 +598,9 @@ static int imx_pcie_attach_pd(struct device *dev)
- 
- static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
--	if (enable)
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
--				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
--
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-+			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
-+			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
- 	return 0;
- }
- 
-@@ -630,19 +629,20 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
- 	int offset = imx_pcie_grp_offset(imx_pcie);
- 
--	if (enable) {
--		regmap_clear_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
--		regmap_set_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
--	}
--
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
-+			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
-+			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
-+			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
-+			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
- 	return 0;
- }
- 
- static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
- {
--	if (!enable)
--		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
--				IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
-+	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
-+			   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
-+			   enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
- 	return 0;
- }
- 
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index dc102d8bd58c6..91b7f9ec78bcc 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1569,6 +1569,8 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
+ 		pci_lock_rescan_remove();
+ 		pci_rescan_bus(pp->bridge->bus);
+ 		pci_unlock_rescan_remove();
++
++		qcom_pcie_icc_opp_update(pcie);
+ 	} else {
+ 		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
+ 			      status);
 -- 
 2.39.5
 
