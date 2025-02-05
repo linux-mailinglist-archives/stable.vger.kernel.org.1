@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE15A28F58
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16579A28E93
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 944FA7A0498
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E4263A243E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F8714A088;
-	Wed,  5 Feb 2025 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DA41547F2;
+	Wed,  5 Feb 2025 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dK2kykwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0VhaJUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7521814B080;
-	Wed,  5 Feb 2025 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326C8149C53;
+	Wed,  5 Feb 2025 14:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765452; cv=none; b=GspS3AbspI+X8xlPtztAb4bL+0nX6SAh00ZuxSQmH7vjwoIwqPy6hW7jjJ/lbmMqiU6R55sUDEHqiZ9/gDAS4IIZ6h2aoRGUkvb/VgRqVnGWc89HlWruOHu/uT8p2Bc+P841hFMVfHUvdt3VQyrEEgRF52iSo/X1h7tScOoqtTA=
+	t=1738764886; cv=none; b=uk7yofZe69FA6YttQiG+R9+Os1SA86tpdr3WR+kQxEOXIp7UkYp3Fx3EAHWWx0EIjFT2IILNXV6l7+TmY3AzXAauFCBvFjb80459/EFDsjCdO5+k65/6C2hmJg42LtPZ2GdgJBOZjMq72ZxoNcCYOWPeambM2DE/jIAUvf2l1Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765452; c=relaxed/simple;
-	bh=pjkuBPFoi6NmzA+pKgEDqy9D9KYLAe0j8cSiVjSeiPs=;
+	s=arc-20240116; t=1738764886; c=relaxed/simple;
+	bh=qQYyA0rvYavuxddvyRrIM5UVXCFmH8x7bEtXnru7s8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZdUFiEfGuNN2UN8RKDqWiN5vYnADmhx/eneaXFR88auLD4kPUWd3xX32k3StxJ4+aLzKiSSjtysYC7i4n8LmiCNz5eUOs1BSfwQa5C8TMdEzdlCLncI0oDTl8RiEVfWna/pO5EoKB4f4j2SalDyDM7PupJeJf70L7x8q1mKc+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dK2kykwK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8AB9C4CED1;
-	Wed,  5 Feb 2025 14:24:11 +0000 (UTC)
+	 MIME-Version; b=NNFv75o/4GnzoAUTxiXICdifqVqKZPfX8j1M0rqyc1/9MrODZwk438Ongi21Smojfm9bcC2vAflidhi21YOJnLwlD9v8hyZJhYW4mgfx9MdA36WHHAY7o6suPMVUWbr+U0sXLi9txgx6+G8qLJ2e0M+KeGxr7Mg987yEbib2EO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0VhaJUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9777CC4CED1;
+	Wed,  5 Feb 2025 14:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765452;
-	bh=pjkuBPFoi6NmzA+pKgEDqy9D9KYLAe0j8cSiVjSeiPs=;
+	s=korg; t=1738764886;
+	bh=qQYyA0rvYavuxddvyRrIM5UVXCFmH8x7bEtXnru7s8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dK2kykwKkZcVOJCDhUKA/r6vYOe/FiCFzaIC2LN7aBBgJwaYd44ryNFgEGh+TBIsM
-	 Y5Iyisei1ZWFypeR0grmm/wm/GlxmqylBKrP83kwUs6TkzndsFsGAVM6rdDXKEQrVT
-	 Pj9FBq86slYjuw5HxXoy/WDyI3EQD5UCqJNgU3BE=
+	b=Y0VhaJUANS7wVuy4mihPakIhFH0QQqVS4bJh9IOp7BKhQUL6QSV7MW6qsdPODfCov
+	 HzxRE4m4+x/8UvUoJCTKHBkETxlt1ZH+bL2ww6B0teqzJgDjW8Ey6GaIJT9VYPC0Xg
+	 u2pC7c2S+uHIejKw9MTWDL/XD8ALpfhoa8jDUYo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	David Ruth <druth@chromium.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 179/623] wifi: mt76: mt7921: fix using incorrect group cipher after disconnection.
+Subject: [PATCH 6.12 166/590] clk: ralink: mtmips: remove duplicated xtal clock for Ralink SoC RT3883
 Date: Wed,  5 Feb 2025 14:38:41 +0100
-Message-ID: <20250205134503.081692668@linuxfoundation.org>
+Message-ID: <20250205134501.633659808@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit aa566ac6b7272e7ea5359cb682bdca36d2fc7e73 ]
+[ Upstream commit 830d8062d25581cf0beaa334486eea06834044da ]
 
-To avoid incorrect cipher after disconnection, we should
-do the key deletion process in this case.
+Ralink SoC RT3883 has already 'xtal' defined as a base clock so there is no
+need to redefine it again in fixed clocks section. Hence, remove the duplicate
+one from there.
 
-Fixes: e6db67fa871d ("wifi: mt76: ignore key disable commands")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20240801024335.12981-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: d34db686a3d7 ("clk: ralink: mtmips: fix clocks probe order in oldest ralink SoCs")
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20250108093636.265033-1-sergio.paracuellos@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/clk/ralink/clk-mtmips.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index a7f5bfbc02ed1..0641538968e6f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -531,7 +531,13 @@ static int mt7921_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	} else {
- 		if (idx == *wcid_keyidx)
- 			*wcid_keyidx = -1;
--		goto out;
-+
-+		/* For security issue we don't trigger the key deletion when
-+		 * reassociating. But we should trigger the deletion process
-+		 * to avoid using incorrect cipher after disconnection,
-+		 */
-+		if (vif->type != NL80211_IFTYPE_STATION || vif->cfg.assoc)
-+			goto out;
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 76285fbbdeaa2..4b5d8b741e4e1 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -264,7 +264,6 @@ static int mtmips_register_pherip_clocks(struct device_node *np,
  	}
  
- 	mt76_wcid_key_setup(&dev->mt76, wcid, key);
+ static struct mtmips_clk_fixed rt3883_fixed_clocks[] = {
+-	CLK_FIXED("xtal", NULL, 40000000),
+ 	CLK_FIXED("periph", "xtal", 40000000)
+ };
+ 
 -- 
 2.39.5
 
