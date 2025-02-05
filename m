@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-113700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F346A293FD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A777BA293F8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 322E0188EE18
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20AC8188B263
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F714165F16;
-	Wed,  5 Feb 2025 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FD7188736;
+	Wed,  5 Feb 2025 15:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isVQc+jE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US5YJ32m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C9E2A1BB;
-	Wed,  5 Feb 2025 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D6115DBA3;
+	Wed,  5 Feb 2025 15:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767860; cv=none; b=G3TVeXuG+P3NSM/BPZBkeZEpELHhmOj1GksItMDkrzYYEG77qfPMiyUcJVUKMk9woE2bKb+y1ehhWAFlAZ1YN2mBvT0EPTY4arU4M8/8yBOKo5QuMRIzzfpEW75VJ9Si28pu0i+vl067ify+r4rqQPm4UsaNE4+GM8FKQgBU+og=
+	t=1738768070; cv=none; b=uH/s+ogxH77adbZYPPiSC6cfzywWRvo809tV3bi0cwwT2iM4UgjsMSc/Ti9Qp6YKRWy/r8/FkrwXx5On5UBQufEv7XBAP4jjwQGPzGfdlN98lrQLMaUdH/EOVpy3eODUPdd224ve7f5cfVRQbx+AXsQ+2sBrTWxiPKjzv22y7Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767860; c=relaxed/simple;
-	bh=vBkq/0vZfYXSmA0WtLU2bPEvU4kvXSKaiRNFbiOz5Uw=;
+	s=arc-20240116; t=1738768070; c=relaxed/simple;
+	bh=Cwp5wz4qoNoSDqNdvFFAs8YOKRwnhf8Eg9NDFjfSBZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B/qz2l9VNRLDbtPnq7tv4fLDzVZXtyfiCWOSMTm0UFmd/5D2f5qawhpH2kkfi6OUr9V3tV0o8+ENfgdmh2qMfhJmNwEZVFZAcI5T6GP3cEPdi0aSgKa/ZBVllYl7F5HCk+cSEUqpPAYzZzZdBo13z47CC5B5fNOLbge9UZ/CQg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isVQc+jE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81073C4CED1;
-	Wed,  5 Feb 2025 15:04:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SbAvuODVkVgg2Lf+MN1kC0XhgCKR6lJVYBqCsLc3iczRwCB2YTF7T9YU+OyViFroNHDyd4hXa/wIGLlXXMUMJKfqtMZTsV03ysVJ60DY6VH6RaYJffiFt8EpvCaeM8/fvPNDdw1V/Xu5JYce+C3B6JnwL2miQHn1JWh0TBDP67U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US5YJ32m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F50EC4CED1;
+	Wed,  5 Feb 2025 15:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767859;
-	bh=vBkq/0vZfYXSmA0WtLU2bPEvU4kvXSKaiRNFbiOz5Uw=;
+	s=korg; t=1738768070;
+	bh=Cwp5wz4qoNoSDqNdvFFAs8YOKRwnhf8Eg9NDFjfSBZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isVQc+jEFkIDpAJF06sSXJ2FfbFl5tAeq31+G0k477RqjIuk7ltHtPWM4HMeMfBMx
-	 g79ewIAFjeVjDxDzEJwYKiGoNveIallov5jKMdnyPcPqzm/ENJKxgdue7J1cTu+NH0
-	 ZfHHpTC2Ihf15MkRYvaE3Wa99DnvBmNwBVhzp3rI=
+	b=US5YJ32mUU7kpZGTcUJwyGeg+ZL5T2bC7QTdxNyfyHY+b6Qj1WnNjXHyERso4yC5h
+	 7Q46W/uENML5Yt6ckBEx3Eaysgw+6+Ka/2zUHpbwAEX8DMha0136EkcfMUE+vI6mpM
+	 jDtaCAtbp9J6ZY7z9Rfccu5nRozmb1QzMNs2/MDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 463/623] PCI: rockchip-ep: Fix error code in rockchip_pcie_ep_init_ob_mem()
-Date: Wed,  5 Feb 2025 14:43:25 +0100
-Message-ID: <20250205134513.930942448@linuxfoundation.org>
+Subject: [PATCH 6.13 469/623] PCI: dwc: Always stop link in the dw_pcie_suspend_noirq
+Date: Wed,  5 Feb 2025 14:43:31 +0100
+Message-ID: <20250205134514.161728268@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -71,36 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 7ca288760007cab6588dc17f5b6fecf52c83a945 ]
+[ Upstream commit 86a016e278b78cc2281edd4ffaddbc011c87a593 ]
 
-Return -ENOMEM if pci_epc_mem_alloc_addr() fails.  Don't return success.
+On the i.MX8QM, PCIe link can't be re-established again in
+dw_pcie_resume_noirq(), if the LTSSM_EN bit is not cleared
+properly in dw_pcie_suspend_noirq().
 
-Link: https://lore.kernel.org/r/Z014ylYz_xrrgI4W@stanley.mountain
-Fixes: 945648019466 ("PCI: rockchip-ep: Refactor rockchip_pcie_ep_probe() memory allocations")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+So, add dw_pcie_stop_link() to dw_pcie_suspend_noirq() to fix
+this issue and to align the suspend/resume functions since there
+is dw_pcie_start_link() in dw_pcie_resume_noirq() already.
+
+Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
+Link: https://lore.kernel.org/r/20241210081557.163555-2-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+[kwilczynski: commit log]
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c | 1 +
+ drivers/pci/controller/dwc/pcie-designware-host.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-index 4f978a17fdbba..85ea36df2f59a 100644
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -788,6 +788,7 @@ static int rockchip_pcie_ep_init_ob_mem(struct rockchip_pcie_ep *ep)
- 						  SZ_1M);
- 	if (!ep->irq_cpu_addr) {
- 		dev_err(dev, "failed to reserve memory space for MSI\n");
-+		err = -ENOMEM;
- 		goto err_epc_mem_exit;
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index d2291c3ceb8be..cf146ff6a3ea8 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -946,6 +946,7 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+ 		return ret;
  	}
+ 
++	dw_pcie_stop_link(pci);
+ 	if (pci->pp.ops->deinit)
+ 		pci->pp.ops->deinit(&pci->pp);
  
 -- 
 2.39.5
