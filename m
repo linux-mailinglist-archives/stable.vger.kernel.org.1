@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B813A291F5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79031A28E5E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0EB16ACC3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1047516885F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9D1FC0FC;
-	Wed,  5 Feb 2025 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D701D149C53;
+	Wed,  5 Feb 2025 14:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhVApn41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+KnFDwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EC3157465;
-	Wed,  5 Feb 2025 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A501519AA;
+	Wed,  5 Feb 2025 14:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766803; cv=none; b=XKmSqVdWVqwBbooV2uNQznXWpwuMLA5Yr9qFb0ws5Znn3xGOSkqJmSkCO0I+7DQsJfdgiwnUivqk/KKx7kszMEQ9DCihdBcqCdGEp+jscOzUWwp1yfQWy5w+ahJODuPb94QVOxHreUYh1MN18RYYkfhREtur0MQNQv0fG0QYObY=
+	t=1738764727; cv=none; b=C/kCc4Gw5+YuPhp8l7Vyg2brnKD42qxlDXoNakPnIVvJYUtaOaVLn+2DvYRc3XeUkuuuusoKc4sxO35YzEwLl/vopDDcu13tK3Gjhv1oMrQ7YywIDHvxnZpbHOE7pgjGZKzySas0FOx+Cea5240lMKVGiTudlCPEI5+rFlO/xHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766803; c=relaxed/simple;
-	bh=HT0ZgNUV6QEyvICRlTLvBc1olqbPTFn5MPzNcDg6AHM=;
+	s=arc-20240116; t=1738764727; c=relaxed/simple;
+	bh=cks5aMIyqVAdbjfgpt4a2+pNq+mhDBCjr+MBZklyDac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/xLxIZ3Av122IsuoA1mjbk7N6siyOfgYLjR4P9K/1lqgZrgnD/8y+zfm59C3L/UtdAzMo8QwYAqgwnLI0KK51WeutZYP+qYcAstwXV103vxocDEUTu/jdkxuHM2NnebbiVWsO6ZJO7mCv00RLv9VEQkxH6h/83r5k8lJYyece4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhVApn41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC3FC4CED1;
-	Wed,  5 Feb 2025 14:46:42 +0000 (UTC)
+	 MIME-Version; b=fmqHIu40iHQuF/kHTHClb8uUwYrLaqUMPjCrmQIvqgBlyLstuL6jzP9HG/eIPdtv8ktlYKKyQo9C/bpDvV8sGzfsFJGkcC+dzQ0hv9o0lxTUNVhtKqTJ5+ERmK5R0eaM2P/mRUpJHSOGjNutgqC61rK7oIxAmMqC17plQ4XPIQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+KnFDwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F162AC4CED1;
+	Wed,  5 Feb 2025 14:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766803;
-	bh=HT0ZgNUV6QEyvICRlTLvBc1olqbPTFn5MPzNcDg6AHM=;
+	s=korg; t=1738764727;
+	bh=cks5aMIyqVAdbjfgpt4a2+pNq+mhDBCjr+MBZklyDac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhVApn41IT4Fdc50+FDmLASi+wqnJlsddV5xHQZ+JVG6yP9FA8AavLGWWNY/K1wAe
-	 Mf7NPGPcHJdZmReUl5qESkJxe/0Yyo7MunNDHlKL7N4+olmU3H7yKQuuF8n0zxzPd6
-	 EHz9XLYk66UgY6HtuPhcILUMJ3aHOtwmCPMxx/I0=
+	b=L+KnFDwk5wZAFR7FVoD9ucC3JfKewwz2hv2YERqoFUFQhwKwHES7jmsA4hq0qRcrd
+	 QDcnktgFW0s/CdL31VX8F43AGoqyrdAKJDkLRY4zMnZvTRvaWJ4S/5TSxNcGF3gMby
+	 qcnq0aVKEy4ko56l9tyCRXP3XHZT+r1iTPqzzn4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 363/590] arm64: dts: ti: k3-am62: Remove duplicate GICR reg
+Subject: [PATCH 6.6 199/393] arm64: dts: mediatek: mt8516: fix wdt irq type
 Date: Wed,  5 Feb 2025 14:41:58 +0100
-Message-ID: <20250205134509.158765285@linuxfoundation.org>
+Message-ID: <20250205134427.913450774@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan Brattlof <bb@ti.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 72c691d77ea5d0c4636fd3e9f0ad80d813c7d1a7 ]
+[ Upstream commit 03a80442030e7147391738fb6cbe5fa0b3b91bb1 ]
 
-The GIC Redistributor control register range is mapped twice. Remove
-the extra entry from the reg range.
+The GICv2 does not support EDGE_FALLING interrupts, so the watchdog
+would refuse to attach due to a failing check coming from the GIC driver.
 
-Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
-Reported-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-1-758b4d5b4a0a@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-3-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index 5b92aef5b284b..60c6814206a1f 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-@@ -23,7 +23,6 @@
- 		interrupt-controller;
- 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
- 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
--		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
- 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
- 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
- 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index 1520c4caa1605..576be8363ec1c 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -206,7 +206,7 @@
+ 			compatible = "mediatek,mt8516-wdt",
+ 				     "mediatek,mt6589-wdt";
+ 			reg = <0 0x10007000 0 0x1000>;
+-			interrupts = <GIC_SPI 198 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <GIC_SPI 198 IRQ_TYPE_LEVEL_LOW>;
+ 			#reset-cells = <1>;
+ 		};
+ 
 -- 
 2.39.5
 
