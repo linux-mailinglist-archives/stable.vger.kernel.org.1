@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-113794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A505A2942A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:21:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 508E5A2948E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0A018900E2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5CF01894C71
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA4413C8E2;
-	Wed,  5 Feb 2025 15:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891B41DC9BA;
+	Wed,  5 Feb 2025 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6p/g6pE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0avVyEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADA817C79;
-	Wed,  5 Feb 2025 15:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAEB1607B7;
+	Wed,  5 Feb 2025 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768195; cv=none; b=iO3kfrIB/0juOdgl6yWatfhdNr84kxfpux+1FkFSVIbTp2WMKOer02UgF7ffk4vTJwlTCd9NXR6DdVIOpA74vpdwECnDK9W5Z6eNBGMvNwf/+tqExt6uZO/7mOdbI3UphWwtgrmBYIOzq8CgQK7n+z3towsY8Bsr/RahahCukjE=
+	t=1738768521; cv=none; b=Ms7foagddH5Q8zLWwuszg9TJrMJyb7ZLxkZA5nUme54DZA+w5UFzg10igVKHmWBqCDah5FL6PqyfqV5jfeOIaUUSnK//304qqvbrKNZaNxs+vEKjipHqj8/xrhsWw3PVQJ3nO0arYzJhrrDXf+gPeWBgrv3PDVJ8hY8jagIpqeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768195; c=relaxed/simple;
-	bh=YUuKCDLhxLP5Pbci10U+hwsWofp6p5WSv5LexlVmkBM=;
+	s=arc-20240116; t=1738768521; c=relaxed/simple;
+	bh=hFRNwc+yb3gXXTSRUdlu2btQf1s2Y+RpMFmE8fcgT5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2uIHWKvVK4HrduZTsXfeKpWnFebkGLbSZNFap178kkYbWGqU2YUvy6nRWTeiBtJulhgwxJPF8G15n/IpSvlc2jK7Xl4mheGn/LKculIkX06ERIUkJ63ea3vIq4Uk3S/OiHm10FLrvpw+J0KRxSsUwxYt6NFHpLC/zRYQJhrqBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6p/g6pE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C669C4CEDD;
-	Wed,  5 Feb 2025 15:09:54 +0000 (UTC)
+	 MIME-Version; b=t4PbdlDr1Z0zWplcziXqap8gDoIzcpumk2OaB97yT9OvimmpJg8ObTnd4PTpngWykeHV16rRBwmkdkJNHJl283fRAG91UjKQTp2NqDSD+fMlKfGDZVQJpW2ysYaLHGfGBvO5+W11VhlR5IOSglJtW8F2Q79jDM61zu73NFt49Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0avVyEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87176C4CED1;
+	Wed,  5 Feb 2025 15:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768195;
-	bh=YUuKCDLhxLP5Pbci10U+hwsWofp6p5WSv5LexlVmkBM=;
+	s=korg; t=1738768521;
+	bh=hFRNwc+yb3gXXTSRUdlu2btQf1s2Y+RpMFmE8fcgT5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6p/g6pEUpxFeglQhkCzypF/Pvl3tkvvuyxmamkh4GZbSSpnTfMe1GmcnhKDjvxsb
-	 odY9ScuktHfx50br2fAf9PPJUuRaoOvkCSs2torhEIWUAS2w8iy5/QHiFzA0KpxKsz
-	 bOijPCXiOfpiF9hh+JwJjoGQBPBCucWlL+tinIDE=
+	b=F0avVyElnRpZ+QWrIeR3KnyMFC8iD11gWfC65eXH7nqVn+2c6Xzi6mWA3D+HuBUGI
+	 rQ25o1jgkbqI28/68tAhpBfxidunG8TS7pVeccHxayHyJgYmEdJadwhslxcrhDnn89
+	 LeKlTtfLXHowan+TMSLGvh6uy351mK9gmqJdohr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.12 566/590] RDMA/mlx5: Fix implicit ODP use after free
-Date: Wed,  5 Feb 2025 14:45:21 +0100
-Message-ID: <20250205134516.920691324@linuxfoundation.org>
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Carlos ODonell <carlos@redhat.com>,
+	Florian Weimer <fweimer@redhat.com>,
+	Michael Jeanson <mjeanson@efficios.com>,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 6.13 580/623] selftests/rseq: Fix handling of glibc without rseq support
+Date: Wed,  5 Feb 2025 14:45:22 +0100
+Message-ID: <20250205134518.409977197@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +69,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-commit d3d930411ce390e532470194296658a960887773 upstream.
+commit 336d02bc4c6bec5c3d933e5d470a94970f830957 upstream.
 
-Prevent double queueing of implicit ODP mr destroy work by using
-__xa_cmpxchg() to make sure this is the only time we are destroying this
-specific mr.
+When porting librseq commit:
 
-Without this change, we could try to invalidate this mr twice, which in
-turn could result in queuing a MR work destroy twice, and eventually the
-second work could execute after the MR was freed due to the first work,
-causing a user after free and trace below.
+commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
 
-   refcount_t: underflow; use-after-free.
-   WARNING: CPU: 2 PID: 12178 at lib/refcount.c:28 refcount_warn_saturate+0x12b/0x130
-   Modules linked in: bonding ib_ipoib vfio_pci ip_gre geneve nf_tables ip6_gre gre ip6_tunnel tunnel6 ipip tunnel4 ib_umad rdma_ucm mlx5_vfio_pci vfio_pci_core vfio_iommu_type1 mlx5_ib vfio ib_uverbs mlx5_core iptable_raw openvswitch nsh rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay zram zsmalloc fuse [last unloaded: ib_uverbs]
-   CPU: 2 PID: 12178 Comm: kworker/u20:5 Not tainted 6.5.0-rc1_net_next_mlx5_58c644e #1
-   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-   Workqueue: events_unbound free_implicit_child_mr_work [mlx5_ib]
-   RIP: 0010:refcount_warn_saturate+0x12b/0x130
-   Code: 48 c7 c7 38 95 2a 82 c6 05 bc c6 fe 00 01 e8 0c 66 aa ff 0f 0b 5b c3 48 c7 c7 e0 94 2a 82 c6 05 a7 c6 fe 00 01 e8 f5 65 aa ff <0f> 0b 5b c3 90 8b 07 3d 00 00 00 c0 74 12 83 f8 01 74 13 8d 50 ff
-   RSP: 0018:ffff8881008e3e40 EFLAGS: 00010286
-   RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-   RDX: ffff88852c91b5c8 RSI: 0000000000000001 RDI: ffff88852c91b5c0
-   RBP: ffff8881dacd4e00 R08: 00000000ffffffff R09: 0000000000000019
-   R10: 000000000000072e R11: 0000000063666572 R12: ffff88812bfd9e00
-   R13: ffff8881c792d200 R14: ffff88810011c005 R15: ffff8881002099c0
-   FS:  0000000000000000(0000) GS:ffff88852c900000(0000) knlGS:0000000000000000
-   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-   CR2: 00007f5694b5e000 CR3: 00000001153f6003 CR4: 0000000000370ea0
-   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-   Call Trace:
-    <TASK>
-    ? refcount_warn_saturate+0x12b/0x130
-    free_implicit_child_mr_work+0x180/0x1b0 [mlx5_ib]
-    process_one_work+0x1cc/0x3c0
-    worker_thread+0x218/0x3c0
-    kthread+0xc6/0xf0
-    ret_from_fork+0x1f/0x30
-    </TASK>
+from librseq to the kernel selftests, the following line was missed
+at the end of rseq_init():
 
-Fixes: 5256edcb98a1 ("RDMA/mlx5: Rework implicit ODP destroy")
+  rseq_size = get_rseq_kernel_feature_size();
+
+which effectively leaves rseq_size initialized to -1U when glibc does not
+have rseq support. glibc supports rseq from version 2.35 onwards.
+
+In a following librseq commit
+
+commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+
+to mimic the libc behavior, a new approach is taken: don't set the
+feature size in 'rseq_size' until at least one thread has successfully
+registered. This allows using 'rseq_size' in fast-paths to test for both
+registration status and available features. The caveat is that on libc
+either all threads are registered or none are, while with bare librseq
+it is the responsability of the user to register all threads using rseq.
+
+This combines the changes from the following librseq git commits:
+
+commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
+commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
+
+Fixes: a0cc649353bb ("selftests/rseq: Fix mm_cid test failure")
+Reported-by: Raghavendra Rao Ananta <rananta@google.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Carlos O'Donell <carlos@redhat.com>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: Michael Jeanson <mjeanson@efficios.com>
+Cc: linux-kselftest@vger.kernel.org
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/r/c96b8645a81085abff739e6b06e286a350d1283d.1737274283.git.leon@kernel.org
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/odp.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ tools/testing/selftests/rseq/rseq.c |   32 +++++++++++++++++++++++++-------
+ tools/testing/selftests/rseq/rseq.h |    9 ++++++++-
+ 2 files changed, 33 insertions(+), 8 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/odp.c
-+++ b/drivers/infiniband/hw/mlx5/odp.c
-@@ -228,13 +228,27 @@ static void destroy_unused_implicit_chil
- 	unsigned long idx = ib_umem_start(odp) >> MLX5_IMR_MTT_SHIFT;
- 	struct mlx5_ib_mr *imr = mr->parent;
+--- a/tools/testing/selftests/rseq/rseq.c
++++ b/tools/testing/selftests/rseq/rseq.c
+@@ -61,7 +61,6 @@ unsigned int rseq_size = -1U;
+ unsigned int rseq_flags;
  
+ static int rseq_ownership;
+-static int rseq_reg_success;	/* At least one rseq registration has succeded. */
+ 
+ /* Allocate a large area for the TLS. */
+ #define RSEQ_THREAD_AREA_ALLOC_SIZE	1024
+@@ -152,14 +151,27 @@ int rseq_register_current_thread(void)
+ 	}
+ 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
+ 	if (rc) {
+-		if (RSEQ_READ_ONCE(rseq_reg_success)) {
++		/*
++		 * After at least one thread has registered successfully
++		 * (rseq_size > 0), the registration of other threads should
++		 * never fail.
++		 */
++		if (RSEQ_READ_ONCE(rseq_size) > 0) {
+ 			/* Incoherent success/failure within process. */
+ 			abort();
+ 		}
+ 		return -1;
+ 	}
+ 	assert(rseq_current_cpu_raw() >= 0);
+-	RSEQ_WRITE_ONCE(rseq_reg_success, 1);
++
 +	/*
-+	 * If userspace is racing freeing the parent implicit ODP MR then we can
-+	 * loose the race with parent destruction. In this case
-+	 * mlx5_ib_free_odp_mr() will free everything in the implicit_children
-+	 * xarray so NOP is fine. This child MR cannot be destroyed here because
-+	 * we are under its umem_mutex.
++	 * The first thread to register sets the rseq_size to mimic the libc
++	 * behavior.
 +	 */
- 	if (!refcount_inc_not_zero(&imr->mmkey.usecount))
- 		return;
- 
--	xa_erase(&imr->implicit_children, idx);
-+	xa_lock(&imr->implicit_children);
-+	if (__xa_cmpxchg(&imr->implicit_children, idx, mr, NULL, GFP_KERNEL) !=
-+	    mr) {
-+		xa_unlock(&imr->implicit_children);
-+		return;
++	if (RSEQ_READ_ONCE(rseq_size) == 0) {
++		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
 +	}
 +
- 	if (MLX5_CAP_ODP(mr_to_mdev(mr)->mdev, mem_page_fault))
--		xa_erase(&mr_to_mdev(mr)->odp_mkeys,
--			 mlx5_base_mkey(mr->mmkey.key));
-+		__xa_erase(&mr_to_mdev(mr)->odp_mkeys,
-+			   mlx5_base_mkey(mr->mmkey.key));
-+	xa_unlock(&imr->implicit_children);
+ 	return 0;
+ }
  
- 	/* Freeing a MR is a sleeping operation, so bounce to a work queue */
- 	INIT_WORK(&mr->odp_destroy.work, free_implicit_child_mr_work);
-@@ -500,18 +514,18 @@ static struct mlx5_ib_mr *implicit_get_c
- 		refcount_inc(&ret->mmkey.usecount);
- 		goto out_lock;
+@@ -235,12 +247,18 @@ void rseq_init(void)
+ 		return;
  	}
--	xa_unlock(&imr->implicit_children);
+ 	rseq_ownership = 1;
+-	if (!rseq_available()) {
+-		rseq_size = 0;
+-		return;
+-	}
++
++	/* Calculate the offset of the rseq area from the thread pointer. */
+ 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
++
++	/* rseq flags are deprecated, always set to 0. */
+ 	rseq_flags = 0;
++
++	/*
++	 * Set the size to 0 until at least one thread registers to mimic the
++	 * libc behavior.
++	 */
++	rseq_size = 0;
+ }
  
- 	if (MLX5_CAP_ODP(dev->mdev, mem_page_fault)) {
--		ret = xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
--			       &mr->mmkey, GFP_KERNEL);
-+		ret = __xa_store(&dev->odp_mkeys, mlx5_base_mkey(mr->mmkey.key),
-+				 &mr->mmkey, GFP_KERNEL);
- 		if (xa_is_err(ret)) {
- 			ret = ERR_PTR(xa_err(ret));
--			xa_erase(&imr->implicit_children, idx);
--			goto out_mr;
-+			__xa_erase(&imr->implicit_children, idx);
-+			goto out_lock;
- 		}
- 		mr->mmkey.type = MLX5_MKEY_IMPLICIT_CHILD;
- 	}
-+	xa_unlock(&imr->implicit_children);
- 	mlx5_ib_dbg(mr_to_mdev(imr), "key %x mr %p\n", mr->mmkey.key, mr);
- 	return mr;
+ static __attribute__((destructor))
+--- a/tools/testing/selftests/rseq/rseq.h
++++ b/tools/testing/selftests/rseq/rseq.h
+@@ -60,7 +60,14 @@
+ extern ptrdiff_t rseq_offset;
  
+ /*
+- * Size of the registered rseq area. 0 if the registration was
++ * The rseq ABI is composed of extensible feature fields. The extensions
++ * are done by appending additional fields at the end of the structure.
++ * The rseq_size defines the size of the active feature set which can be
++ * used by the application for the current rseq registration. Features
++ * starting at offset >= rseq_size are inactive and should not be used.
++ *
++ * The rseq_size is the intersection between the available allocation
++ * size for the rseq area and the feature size supported by the kernel.
+  * unsuccessful.
+  */
+ extern unsigned int rseq_size;
 
 
 
