@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BB1A29256
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A78A1A28D8E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E02613AD73E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272F51888B60
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B18B1FECBE;
-	Wed,  5 Feb 2025 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1D414EC77;
+	Wed,  5 Feb 2025 14:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ8AL5AY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jry1Xd5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D9B1FECB9;
-	Wed,  5 Feb 2025 14:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382D915198D;
+	Wed,  5 Feb 2025 14:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767018; cv=none; b=YxGJnzKIzSIzzdXs3GmDmNcdSUHqgiclZMcfCeciV/UJFTNxSgkKfYykE63pXe/g3Mj1NZebJbNGZzPEtras64FQfcQTZO0NzSKZ0+uETO3quxqpWVujPXJnuYJ7OVXjuFzar+EYwV+1WQYCeUIh6+o3IbMz59In6cF+bIz5Ogw=
+	t=1738764124; cv=none; b=VAjxx6luLa1YaACgopPAqY3dfN0XRBGRL4X40tLPRnxmeWZNblvhdSnpRLgSyBQfZ0qc+Cm8ZTsJffvG4/8QniMd0zeIK9gO7uqKwlCcuS0lPl+e87IasUYRro2teKgnsOvICSpvkiiSrBzePIxeMbMOq4zgZTSPpRsYXP9PbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767018; c=relaxed/simple;
-	bh=YqeBScewC32V41dnUitZ36JQbiVbVX5Q0k9FUeP7y/w=;
+	s=arc-20240116; t=1738764124; c=relaxed/simple;
+	bh=4eNAcc7pm7fwesMP9GX7XUejqbHlZIOp8hcIqgvPEK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Avh6U5lVI0cMQcOPLge/Ck2sx3RasCSwkhsrDFb+CwPAnqnTZH7XtGAOuy5cvMpf7+ZNBTHNeigiEvTe+fW8POLoKH+ckwlvZNXn5fxy50kU9mu5g6kvqNJpi5oxaKQP48X1Z53GAY7Y86XuopESlHbBc63sTE3scwGWRp6Z104=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ8AL5AY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16F4C4CED1;
-	Wed,  5 Feb 2025 14:50:16 +0000 (UTC)
+	 MIME-Version; b=vGjMW6zDPYg4W7lTuPuzaMmnVCNEM6zhyAMT/2rzm+U5lswOL4JPIGhh3KjnhVFKxlnJ5K+0GXCpDMVwXwC1ctrx8MjKuqD8NgEJr9HE9QdH1Sy9D+xnuWNa/MBxsG54mGtG1AJJPq1Vu418f6moSh3Ekx6PjzB2hH8kyymd/aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jry1Xd5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5475C4CED1;
+	Wed,  5 Feb 2025 14:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767017;
-	bh=YqeBScewC32V41dnUitZ36JQbiVbVX5Q0k9FUeP7y/w=;
+	s=korg; t=1738764124;
+	bh=4eNAcc7pm7fwesMP9GX7XUejqbHlZIOp8hcIqgvPEK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQ8AL5AYSXnIHIBcfuiiyjTxpUdDhI8IYwjwg9iD7O3onyUG+WviPDRO7tTZabIaI
-	 CqQBGCo6mL8clT4HAtCyhQ+5Zc0xaODchvUa1IW1F1t3eTsQV34AgWn7k2xv08Q1Kc
-	 1TCeTEACg88CR6hluJN+/Eyzg4xJf7oZdwhAv94I=
+	b=Jry1Xd5OoAhSPDHEkUxluNAPOudpMJAI3Qyme/o3VVjN8thSI4sP3dYbmGQCem5jX
+	 i0OdC5/8FOH8M3hXtis5C1XNZji0Vx5/d3Fx8BnMPgXhGBeTg/WhwdwEPLeUJaMAji
+	 PI8NTFclD76jirFhJ3RB34ejdmZE9w28qCsjtA4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 319/623] iommu/amd: Fully decode all combinations of alloc_paging_flags
+Subject: [PATCH 6.6 142/393] octeon_ep: remove firmware stats fetch in ndo_get_stats64
 Date: Wed,  5 Feb 2025 14:41:01 +0100
-Message-ID: <20250205134508.426471793@linuxfoundation.org>
+Message-ID: <20250205134425.739131646@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Shinas Rasheed <srasheed@marvell.com>
 
-[ Upstream commit 082f1bcae8d1b5f76e92e369091176b8d61120ec ]
+[ Upstream commit 1f64255bb76c11d0c41a7d81d7cec68e49d5362d ]
 
-Currently AMD does not support
- IOMMU_HWPT_ALLOC_PASID | IOMMU_HWPT_ALLOC_DIRTY_TRACKING
+The firmware stats fetch call that happens in ndo_get_stats64()
+is currently not required, and causes a warning to issue.
 
-It should be rejected. Instead it creates a V1 domain without dirty
-tracking support.
+The warn log is given below:
 
-Use a switch to fully decode the flags.
+[  123.316837] ------------[ cut here ]------------
+[  123.316840] Voluntary context switch within RCU read-side critical section!
+[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
+[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
+[  123.316947] Call trace:
+[  123.316949]  rcu_note_context_switch+0x2e4/0x300
+[  123.316952]  __schedule+0x84/0x584
+[  123.316955]  schedule+0x38/0x90
+[  123.316956]  schedule_timeout+0xa0/0x1d4
+[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
+[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
+[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
+[  123.316975]  dev_get_stats+0x4c/0x114
+[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
+[  123.316980]  dev_seq_show+0x1c/0x40
+[  123.316982]  seq_read_iter+0x3cc/0x4e0
+[  123.316985]  seq_read+0xc8/0x110
+[  123.316987]  proc_reg_read+0x9c/0xec
+[  123.316990]  vfs_read+0xc8/0x2ec
+[  123.316993]  ksys_read+0x70/0x100
+[  123.316995]  __arm64_sys_read+0x20/0x30
+[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
+[  123.317000]  do_el0_svc+0xb4/0xd0
+[  123.317002]  el0_svc+0xe8/0x1f4
+[  123.317005]  el0t_64_sync_handler+0x134/0x150
+[  123.317006]  el0t_64_sync+0x17c/0x180
+[  123.317008] ---[ end trace 63399811432ab69b ]---
 
-Fixes: ce2cd175469f ("iommu/amd: Enhance amd_iommu_domain_alloc_user()")
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/7-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Link: https://patch.msgid.link/20250117094653.2588578-2-srasheed@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index e0c12dc44340c..80b2c9eb438f2 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2379,24 +2379,24 @@ amd_iommu_domain_alloc_paging_flags(struct device *dev, u32 flags,
- 	if ((flags & ~supported_flags) || user_data)
- 		return ERR_PTR(-EOPNOTSUPP);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index 2ee1374db4c06..6f1fe7e283d4e 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -761,12 +761,6 @@ static void octep_get_stats64(struct net_device *netdev,
+ 	struct octep_device *oct = netdev_priv(netdev);
+ 	int q;
  
--	/* Allocate domain with v2 page table if IOMMU supports PASID. */
--	if (flags & IOMMU_HWPT_ALLOC_PASID) {
-+	switch (flags & supported_flags) {
-+	case IOMMU_HWPT_ALLOC_DIRTY_TRACKING:
-+		/* Allocate domain with v1 page table for dirty tracking */
-+		if (!amd_iommu_hd_support(iommu))
-+			break;
-+		return do_iommu_domain_alloc(dev, flags, PD_MODE_V1);
-+	case IOMMU_HWPT_ALLOC_PASID:
-+		/* Allocate domain with v2 page table if IOMMU supports PASID. */
- 		if (!amd_iommu_pasid_supported())
--			return ERR_PTR(-EOPNOTSUPP);
+-	if (netif_running(netdev))
+-		octep_ctrl_net_get_if_stats(oct,
+-					    OCTEP_CTRL_NET_INVALID_VFID,
+-					    &oct->iface_rx_stats,
+-					    &oct->iface_tx_stats);
 -
-+			break;
- 		return do_iommu_domain_alloc(dev, flags, PD_MODE_V2);
-+	case 0:
-+		/* If nothing specific is required use the kernel commandline default */
-+		return do_iommu_domain_alloc(dev, 0, amd_iommu_pgtable);
-+	default:
-+		break;
- 	}
--
--	/* Allocate domain with v1 page table for dirty tracking */
--	if (flags & IOMMU_HWPT_ALLOC_DIRTY_TRACKING) {
--		if (amd_iommu_hd_support(iommu))
--			return do_iommu_domain_alloc(dev, flags, PD_MODE_V1);
--
--		return ERR_PTR(-EOPNOTSUPP);
--	}
--
--	/* If nothing specific is required use the kernel commandline default */
--	return do_iommu_domain_alloc(dev, 0, amd_iommu_pgtable);
-+	return ERR_PTR(-EOPNOTSUPP);
+ 	tx_packets = 0;
+ 	tx_bytes = 0;
+ 	rx_packets = 0;
+@@ -784,10 +778,6 @@ static void octep_get_stats64(struct net_device *netdev,
+ 	stats->tx_bytes = tx_bytes;
+ 	stats->rx_packets = rx_packets;
+ 	stats->rx_bytes = rx_bytes;
+-	stats->multicast = oct->iface_rx_stats.mcast_pkts;
+-	stats->rx_errors = oct->iface_rx_stats.err_pkts;
+-	stats->collisions = oct->iface_tx_stats.xscol;
+-	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
  }
  
- void amd_iommu_domain_free(struct iommu_domain *dom)
+ /**
 -- 
 2.39.5
 
