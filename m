@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-112998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53871A28F64
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E347BA28C7D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A78B97A069B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60F6168B8B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E8A155747;
-	Wed,  5 Feb 2025 14:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AEE1494DF;
+	Wed,  5 Feb 2025 13:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs6CzLnO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXFT3P86"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B8614B080;
-	Wed,  5 Feb 2025 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA3C126C18;
+	Wed,  5 Feb 2025 13:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765476; cv=none; b=lRrEpwGcmSbfccu00oTCDri+rXhNQ4EYLKu+dW9HpJHd0KKVPjD/uj2kcQI9o4zlM1IQAwiE8KNYaSYgsKvFpQmC3MJRaYqSjxKB48JqImwNMqgYSRDTuwK3gTzzUzW7nrgowex8zuBpypS/9rFqCyJXb2cxvOrkrBx8W3rA3so=
+	t=1738763420; cv=none; b=tVUDN4mum3l6CAy3Zkg4+8lyIdZzRiwvUH6I3WXu4m/tfJuPxdMrbUxXYyqAOlBxhu9Fzes+PfNh7GQdJdPPwuzXE6MiiHglpA3bxsN9IDrBFJY2tly/LIVpn5ooH03ySDCXWsz+v0wl9mAmcgmybyJCJ3QV1bfYMe9xbwY1vfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765476; c=relaxed/simple;
-	bh=39JSK4Iz6h3u7Ax5GVS8VZW3CgqvC3dXSLy9TfImukc=;
+	s=arc-20240116; t=1738763420; c=relaxed/simple;
+	bh=jcV7gu+jnOMc1qszcGQV5NOye3r211rbQd3RjFlc2yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMigO3enEyFf70Usl7Xt9ALSuCCuJTNMPrB3lYAIGj33aOJ8KxSSU7hTC4Ndr4+vJS9blHdDP7++x+wLj5qAuI7jV+QnpbNqMEDVrAlm/mne11mGroSC4L0n7FB9RnJeq2uVWubfKQYRDhgI6CNFYggXVtrJTzqT+DQel/wO08M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs6CzLnO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7ECC4CED1;
-	Wed,  5 Feb 2025 14:24:36 +0000 (UTC)
+	 MIME-Version; b=Pc6Uzt5HvbXvCC4bvlwKpVPEJ+ZodiR4Uj18ZjWoxByPBOLgmyxR4gT3svTaKHkhjZiMAfiqaRH2jGskJOl3+Gjw/zYMMF+JqRBVp1Dm1TRAhVTJUMr15YV5ms0JrxuV9tPQS1Ea9ZM+iY9dhDEMyJ0UtnrItYki0M1/iNEmcmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXFT3P86; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF4CC4CED1;
+	Wed,  5 Feb 2025 13:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765476;
-	bh=39JSK4Iz6h3u7Ax5GVS8VZW3CgqvC3dXSLy9TfImukc=;
+	s=korg; t=1738763419;
+	bh=jcV7gu+jnOMc1qszcGQV5NOye3r211rbQd3RjFlc2yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gs6CzLnOGnXl+vBvjlMwvHasizJeS527U5GOBwyCruMkFUHNsQKB2a7j+xWQH3+b9
-	 xo/64Y/ivHq6LMDjqLYHXaqu/BltCgCCOb/vo7SGzAJt3zEwHOCihoeY7Shh+oToHt
-	 21zPV1GeI1ZbY7b4rOMiV98qYxJsu42i1kDOxdp8=
+	b=lXFT3P869nRqEwAWSWWCGrGq/GyKplHHrrStPp8MKbyQU0xAXyfAsHXPTUEEA9HIO
+	 ZqZlCTZ/OF2gkckKjEO7Mpi+Q1lNMA5p3oiI7SfnUn7ib4uc3IexruxOGVDJMU5Orq
+	 M/aBviQwnJMrfv+wctZT6kIt7OjR5azglGgJBMvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/590] net/mlxfw: Drop hard coded max FW flash image size
+Subject: [PATCH 6.6 059/393] rxrpc: Fix handling of received connection abort
 Date: Wed,  5 Feb 2025 14:39:38 +0100
-Message-ID: <20250205134503.815526758@linuxfoundation.org>
+Message-ID: <20250205134422.553747190@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +64,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 70d81f25cc92cc4e914516c9935ae752f27d78ad ]
+[ Upstream commit 0e56ebde245e4799ce74d38419426f2a80d39950 ]
 
-Currently, mlxfw kernel module limits FW flash image size to be
-10MB at most, preventing the ability to burn recent BlueField-3
-FW that exceeds the said size limit.
+Fix the handling of a connection abort that we've received.  Though the
+abort is at the connection level, it needs propagating to the calls on that
+connection.  Whilst the propagation bit is performed, the calls aren't then
+woken up to go and process their termination, and as no further input is
+forthcoming, they just hang.
 
-Thus, drop the hard coded limit. Instead, rely on FW's
-max_component_size threshold that is reported in MCQI register
-as the size limit for FW image.
+Also add some tracing for the logging of connection aborts.
 
-Fixes: 410ed13cae39 ("Add the mlxfw module for Mellanox firmware flash process")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1737030796-1441634-1-git-send-email-moshe@nvidia.com
+Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/20241204074710.990092-3-dhowells@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/trace/events/rxrpc.h | 25 +++++++++++++++++++++++++
+ net/rxrpc/conn_event.c       | 12 ++++++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-index 46245e0b24623..43c84900369a3 100644
---- a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-+++ b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-@@ -14,7 +14,6 @@
- #define MLXFW_FSM_STATE_WAIT_TIMEOUT_MS 30000
- #define MLXFW_FSM_STATE_WAIT_ROUNDS \
- 	(MLXFW_FSM_STATE_WAIT_TIMEOUT_MS / MLXFW_FSM_STATE_WAIT_CYCLE_MS)
--#define MLXFW_FSM_MAX_COMPONENT_SIZE (10 * (1 << 20))
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index ed36f5f577a9d..252bb90aca599 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -117,6 +117,7 @@
+ #define rxrpc_call_poke_traces \
+ 	EM(rxrpc_call_poke_abort,		"Abort")	\
+ 	EM(rxrpc_call_poke_complete,		"Compl")	\
++	EM(rxrpc_call_poke_conn_abort,		"Conn-abort")	\
+ 	EM(rxrpc_call_poke_error,		"Error")	\
+ 	EM(rxrpc_call_poke_idle,		"Idle")		\
+ 	EM(rxrpc_call_poke_start,		"Start")	\
+@@ -278,6 +279,7 @@
+ 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
+ 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
+ 	EM(rxrpc_call_see_connected,		"SEE connect ") \
++	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
+ 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
+@@ -961,6 +963,29 @@ TRACE_EVENT(rxrpc_rx_abort,
+ 		      __entry->abort_code)
+ 	    );
  
- static const int mlxfw_fsm_state_errno[] = {
- 	[MLXFW_FSM_STATE_ERR_ERROR] = -EIO,
-@@ -229,7 +228,6 @@ static int mlxfw_flash_component(struct mlxfw_dev *mlxfw_dev,
- 		return err;
++TRACE_EVENT(rxrpc_rx_conn_abort,
++	    TP_PROTO(const struct rxrpc_connection *conn, const struct sk_buff *skb),
++
++	    TP_ARGS(conn, skb),
++
++	    TP_STRUCT__entry(
++		    __field(unsigned int,	conn)
++		    __field(rxrpc_serial_t,	serial)
++		    __field(u32,		abort_code)
++			     ),
++
++	    TP_fast_assign(
++		    __entry->conn = conn->debug_id;
++		    __entry->serial = rxrpc_skb(skb)->hdr.serial;
++		    __entry->abort_code = skb->priority;
++			   ),
++
++	    TP_printk("C=%08x ABORT %08x ac=%d",
++		      __entry->conn,
++		      __entry->serial,
++		      __entry->abort_code)
++	    );
++
+ TRACE_EVENT(rxrpc_rx_challenge,
+ 	    TP_PROTO(struct rxrpc_connection *conn, rxrpc_serial_t serial,
+ 		     u32 version, u32 nonce, u32 min_level),
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 598b4ee389fc1..2a1396cd892f3 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -63,11 +63,12 @@ int rxrpc_abort_conn(struct rxrpc_connection *conn, struct sk_buff *skb,
+ /*
+  * Mark a connection as being remotely aborted.
+  */
+-static bool rxrpc_input_conn_abort(struct rxrpc_connection *conn,
++static void rxrpc_input_conn_abort(struct rxrpc_connection *conn,
+ 				   struct sk_buff *skb)
+ {
+-	return rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
+-				      RXRPC_CALL_REMOTELY_ABORTED);
++	trace_rxrpc_rx_conn_abort(conn, skb);
++	rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
++			       RXRPC_CALL_REMOTELY_ABORTED);
+ }
+ 
+ /*
+@@ -202,11 +203,14 @@ static void rxrpc_abort_calls(struct rxrpc_connection *conn)
+ 
+ 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
+ 		call = conn->channels[i].call;
+-		if (call)
++		if (call) {
++			rxrpc_see_call(call, rxrpc_call_see_conn_abort);
+ 			rxrpc_set_call_completion(call,
+ 						  conn->completion,
+ 						  conn->abort_code,
+ 						  conn->error);
++			rxrpc_poke_call(call, rxrpc_call_poke_conn_abort);
++		}
  	}
  
--	comp_max_size = min_t(u32, comp_max_size, MLXFW_FSM_MAX_COMPONENT_SIZE);
- 	if (comp->data_size > comp_max_size) {
- 		MLXFW_ERR_MSG(mlxfw_dev, extack,
- 			      "Component size is bigger than limit", -EINVAL);
+ 	_leave("");
 -- 
 2.39.5
 
