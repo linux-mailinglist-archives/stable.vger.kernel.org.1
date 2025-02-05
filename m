@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B89BA2935A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE42FA292A0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9367616C8B4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C80F16C5FA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F48718A6B5;
-	Wed,  5 Feb 2025 15:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF711FCD09;
+	Wed,  5 Feb 2025 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+qNavFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLux0LQE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CB5DF71;
-	Wed,  5 Feb 2025 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199F81FCD05;
+	Wed,  5 Feb 2025 14:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767777; cv=none; b=Fuw9D0K3/72gMFJ7EN79J8vZ5K9QMax36VSsI3irunbJIfsffRWD11j4Uip/mMS2AH9ZnL3OACBip2QTeD+72QI6C64pbqFrHoEMlSfMGl1XruGZ0079ranhxqlKYB6kWs5gqlaoHcaboqh0MBJQY/8ZnjVEzAtQ4mpfGTav1nY=
+	t=1738767323; cv=none; b=Tg/AytoupVwDrU3GWLEIM+36AgNxPT6BzQGK4duusLnZW+RldDnD39Ftjw8zuVFpuH9CPaw9em10PSophFg6C2M5SNX345Hbp4OpA2CD4Tb590mfJsWlQO+tp4BDiXmFiKHZu61vQpHbf3oGCbg6CJzIx8joAkmHev/9GqnWFFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767777; c=relaxed/simple;
-	bh=0sBno1v49j39QQIOOTWLVUCJ3+HSkwN2QWYWoO+kY5Q=;
+	s=arc-20240116; t=1738767323; c=relaxed/simple;
+	bh=IlxsqQ+6XefBJ0UbQOjSXCh2L3i8u1VWNxTNnjWxwMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKboH2AH5Z5MEsv1hXfy2uT6+mCr/PLLvHqMmGL/DUcUlSlyh5gnJ0T6sdokWtMrCjcboZgZPzU8wnttJW+vYLqDBHhiU7qg47TKLOBHVahAX6ZUpeXanVSBljXGBI/fU+UfAqPnTm360Ku3YukX1bJRjLZA2rsBbKRoMwPl0wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+qNavFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346D0C4CED1;
-	Wed,  5 Feb 2025 15:02:57 +0000 (UTC)
+	 MIME-Version; b=ipFHfkMjJZKykKNW4VDB/86aGR7CF9iNyT8Ct+pZdVH0KCSBVNFCDAIGINEi4nSv81j78TnzhUOfHGg1f403BoaMLCuAi4TRvqwDdmB7ClfGEUY642SSSUXi5e2ms5LbN9EzWOZKYvvxDJdCdNjndO7kh5BDItcjQ8RdSPsOIQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLux0LQE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A84CC4CED1;
+	Wed,  5 Feb 2025 14:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767777;
-	bh=0sBno1v49j39QQIOOTWLVUCJ3+HSkwN2QWYWoO+kY5Q=;
+	s=korg; t=1738767322;
+	bh=IlxsqQ+6XefBJ0UbQOjSXCh2L3i8u1VWNxTNnjWxwMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+qNavFKJ386nY9OMNslTbs79Qy9JYw0ogcZ/Y0Rbmeie/OVoDVM/07FdqQJpKnRd
-	 mZc5gL9lXZj7dFBrHPfbHjMDgxu21ekNEt3/Qo3RshW+afsEo8314E0yLTmfbtNu9e
-	 ArQGsAfk0ez3lfNQPnedQTSGC9GQNRb9S4mbn9hQ=
+	b=ZLux0LQETpfNYuj4vYe0oAWU5tTW7mKL2dNkTVTZ3CWArFFm7lhxwIjPeyhut/sBc
+	 IUpLzMEVHiHBBg0AwsVitIRN6ugi5x58XNfO6W7DEGTrI96563nZvHcVXLlhkL2qcA
+	 TWwWQnWuEtmHHvocKGfSZ95989BMnMmrKR2oD85g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 452/623] media: camif-core: Add check for clk_enable()
+Subject: [PATCH 6.12 439/590] erofs: get rid of erofs_{find,insert}_workgroup
 Date: Wed,  5 Feb 2025 14:43:14 +0100
-Message-ID: <20250205134513.508410965@linuxfoundation.org>
+Message-ID: <20250205134512.062766463@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 77ed2470ac09c2b0a33cf3f98cc51d18ba9ed976 ]
+[ Upstream commit b091e8ed24b7965953147a389bac1dc7c3e8a11c ]
 
-Add check for the return value of clk_enable() to gurantee the success.
+Just fold them into the only two callers since
+they are simple enough.
 
-Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241021035323.3280682-1-hsiangkao@linux.alibaba.com
+Stable-dep-of: db902986dee4 ("erofs: fix potential return value overflow of z_erofs_shrink_scan()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/samsung/s3c-camif/camif-core.c   | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/erofs/internal.h |  5 +----
+ fs/erofs/zdata.c    | 38 +++++++++++++++++++++++++---------
+ fs/erofs/zutil.c    | 50 +--------------------------------------------
+ 3 files changed, 30 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/media/platform/samsung/s3c-camif/camif-core.c b/drivers/media/platform/samsung/s3c-camif/camif-core.c
-index de6e8f1518496..221e3c447f361 100644
---- a/drivers/media/platform/samsung/s3c-camif/camif-core.c
-+++ b/drivers/media/platform/samsung/s3c-camif/camif-core.c
-@@ -527,10 +527,19 @@ static void s3c_camif_remove(struct platform_device *pdev)
- static int s3c_camif_runtime_resume(struct device *dev)
- {
- 	struct camif_dev *camif = dev_get_drvdata(dev);
-+	int ret;
-+
-+	ret = clk_enable(camif->clock[CLK_GATE]);
-+	if (ret)
-+		return ret;
+diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+index 77e785a6dfa7f..b9649e3b2dd56 100644
+--- a/fs/erofs/internal.h
++++ b/fs/erofs/internal.h
+@@ -453,10 +453,7 @@ void erofs_release_pages(struct page **pagepool);
  
--	clk_enable(camif->clock[CLK_GATE]);
- 	/* null op on s3c244x */
--	clk_enable(camif->clock[CLK_CAM]);
-+	ret = clk_enable(camif->clock[CLK_CAM]);
-+	if (ret) {
-+		clk_disable(camif->clock[CLK_GATE]);
-+		return ret;
-+	}
-+
- 	return 0;
+ #ifdef CONFIG_EROFS_FS_ZIP
+ void erofs_workgroup_put(struct erofs_workgroup *grp);
+-struct erofs_workgroup *erofs_find_workgroup(struct super_block *sb,
+-					     pgoff_t index);
+-struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
+-					       struct erofs_workgroup *grp);
++bool erofs_workgroup_get(struct erofs_workgroup *grp);
+ void erofs_workgroup_free_rcu(struct erofs_workgroup *grp);
+ void erofs_shrinker_register(struct super_block *sb);
+ void erofs_shrinker_unregister(struct super_block *sb);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 1a00f061798a3..8c6082fc86b29 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -714,9 +714,10 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+ {
+ 	struct erofs_map_blocks *map = &fe->map;
+ 	struct super_block *sb = fe->inode->i_sb;
++	struct erofs_sb_info *sbi = EROFS_SB(sb);
+ 	bool ztailpacking = map->m_flags & EROFS_MAP_META;
+ 	struct z_erofs_pcluster *pcl;
+-	struct erofs_workgroup *grp;
++	struct erofs_workgroup *grp, *pre;
+ 	int err;
+ 
+ 	if (!(map->m_flags & EROFS_MAP_ENCODED) ||
+@@ -752,15 +753,23 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+ 		pcl->obj.index = 0;	/* which indicates ztailpacking */
+ 	} else {
+ 		pcl->obj.index = erofs_blknr(sb, map->m_pa);
+-
+-		grp = erofs_insert_workgroup(fe->inode->i_sb, &pcl->obj);
+-		if (IS_ERR(grp)) {
+-			err = PTR_ERR(grp);
+-			goto err_out;
++		while (1) {
++			xa_lock(&sbi->managed_pslots);
++			pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
++					   NULL, grp, GFP_KERNEL);
++			if (!pre || xa_is_err(pre) || erofs_workgroup_get(pre)) {
++				xa_unlock(&sbi->managed_pslots);
++				break;
++			}
++			/* try to legitimize the current in-tree one */
++			xa_unlock(&sbi->managed_pslots);
++			cond_resched();
+ 		}
+-
+-		if (grp != &pcl->obj) {
+-			fe->pcl = container_of(grp,
++		if (xa_is_err(pre)) {
++			err = xa_err(pre);
++			goto err_out;
++		} else if (pre) {
++			fe->pcl = container_of(pre,
+ 					struct z_erofs_pcluster, obj);
+ 			err = -EEXIST;
+ 			goto err_out;
+@@ -789,7 +798,16 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
+ 	DBG_BUGON(fe->owned_head == Z_EROFS_PCLUSTER_NIL);
+ 
+ 	if (!(map->m_flags & EROFS_MAP_META)) {
+-		grp = erofs_find_workgroup(sb, blknr);
++		while (1) {
++			rcu_read_lock();
++			grp = xa_load(&EROFS_SB(sb)->managed_pslots, blknr);
++			if (!grp || erofs_workgroup_get(grp)) {
++				DBG_BUGON(grp && blknr != grp->index);
++				rcu_read_unlock();
++				break;
++			}
++			rcu_read_unlock();
++		}
+ 	} else if ((map->m_pa & ~PAGE_MASK) + map->m_plen > PAGE_SIZE) {
+ 		DBG_BUGON(1);
+ 		return -EFSCORRUPTED;
+diff --git a/fs/erofs/zutil.c b/fs/erofs/zutil.c
+index 37afe20248409..218b0249a4822 100644
+--- a/fs/erofs/zutil.c
++++ b/fs/erofs/zutil.c
+@@ -214,7 +214,7 @@ void erofs_release_pages(struct page **pagepool)
+ 	}
  }
  
+-static bool erofs_workgroup_get(struct erofs_workgroup *grp)
++bool erofs_workgroup_get(struct erofs_workgroup *grp)
+ {
+ 	if (lockref_get_not_zero(&grp->lockref))
+ 		return true;
+@@ -231,54 +231,6 @@ static bool erofs_workgroup_get(struct erofs_workgroup *grp)
+ 	return true;
+ }
+ 
+-struct erofs_workgroup *erofs_find_workgroup(struct super_block *sb,
+-					     pgoff_t index)
+-{
+-	struct erofs_sb_info *sbi = EROFS_SB(sb);
+-	struct erofs_workgroup *grp;
+-
+-repeat:
+-	rcu_read_lock();
+-	grp = xa_load(&sbi->managed_pslots, index);
+-	if (grp) {
+-		if (!erofs_workgroup_get(grp)) {
+-			/* prefer to relax rcu read side */
+-			rcu_read_unlock();
+-			goto repeat;
+-		}
+-
+-		DBG_BUGON(index != grp->index);
+-	}
+-	rcu_read_unlock();
+-	return grp;
+-}
+-
+-struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
+-					       struct erofs_workgroup *grp)
+-{
+-	struct erofs_sb_info *const sbi = EROFS_SB(sb);
+-	struct erofs_workgroup *pre;
+-
+-	DBG_BUGON(grp->lockref.count < 1);
+-repeat:
+-	xa_lock(&sbi->managed_pslots);
+-	pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
+-			   NULL, grp, GFP_KERNEL);
+-	if (pre) {
+-		if (xa_is_err(pre)) {
+-			pre = ERR_PTR(xa_err(pre));
+-		} else if (!erofs_workgroup_get(pre)) {
+-			/* try to legitimize the current in-tree one */
+-			xa_unlock(&sbi->managed_pslots);
+-			cond_resched();
+-			goto repeat;
+-		}
+-		grp = pre;
+-	}
+-	xa_unlock(&sbi->managed_pslots);
+-	return grp;
+-}
+-
+ static void  __erofs_workgroup_free(struct erofs_workgroup *grp)
+ {
+ 	atomic_long_dec(&erofs_global_shrink_cnt);
 -- 
 2.39.5
 
