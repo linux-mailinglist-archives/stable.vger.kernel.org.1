@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-113385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA202A291FA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B27A29075
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817F83AC59B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78D543A1D46
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7F81FC0ED;
-	Wed,  5 Feb 2025 14:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4728D155A30;
+	Wed,  5 Feb 2025 14:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR7SjDrA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvXil6e5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCE7155725;
-	Wed,  5 Feb 2025 14:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053AF151988;
+	Wed,  5 Feb 2025 14:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766780; cv=none; b=ax8cGZxiShXqDOW6+7VbuEpdtumbwctI/rl0vVK+m87g2O3hBwZvsl/ji1LH/Ov75SL9R+/XPrLGStuOgLlk3UhSfMqaVbSK4ZZXzIH/pnB4AZ7qVesjmQiOTZ888prA4TtUiskeJ0vPHq4nsCTDl9pOMmcpFPW5jczmlE4O4vs=
+	t=1738766178; cv=none; b=E6MPdlP/w4Za1GimaLM5dwrn/CyHAqeMJFdi0/zt2bp02Rn0OEtlYxH4rO6rx8oVyITw4K23sl7SXvVuPsJKoGbGOGdAbqUFz18tIpx9PclGP06d7T63YG5vDxMPgL589DPcUmSJSpqO+ZX5QbdwAKIjUkKgLAxjc8cboYd5iaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766780; c=relaxed/simple;
-	bh=k9PEhOU1X1fdVdPMUZjwELSYmLWn+3WntLxFkaEpSIc=;
+	s=arc-20240116; t=1738766178; c=relaxed/simple;
+	bh=52r+JlhetmPg0ghRr438q+qVBYYUlcYvQ0d8+3ih9NI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FzcJ8MDnJxGUpSb0WRD8oT0Lm4gXYlXpKHSiP4EmSnhY7IXSKJ6AyrbGjMlONrfpHT0PnPBUJrUjK9U5X3InZmOshp7KiwPPONVVOigOBMpy5X73GFNrx9jTTtShL3IRoTW5yiQYpnpdCjrgzZIT6WQfB3xu4LLaTgJHVuLrtu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR7SjDrA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F246C4CED6;
-	Wed,  5 Feb 2025 14:46:19 +0000 (UTC)
+	 MIME-Version; b=GtcgfIREJ1v6aYIq5o8yufEDluNKDoOHO8hKfg3jp1D6VGGw+/ziK/6oTqRSTdsvCuc68oyszlOipRwa9aYBtB3Z+6BMf3bZbi1bpXmAlZDyfJH9pSxR07UV6MgiscWTIIMOsG3e0ppaiGPfdBwtRw+Zl/I1lj9beXnVdkr7JJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvXil6e5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760B4C4CED1;
+	Wed,  5 Feb 2025 14:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766780;
-	bh=k9PEhOU1X1fdVdPMUZjwELSYmLWn+3WntLxFkaEpSIc=;
+	s=korg; t=1738766177;
+	bh=52r+JlhetmPg0ghRr438q+qVBYYUlcYvQ0d8+3ih9NI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tR7SjDrAgbcERQHIRZpo/zRC1zpS/G9YAQw5cojN8QbH0ONxdeC3HVYTCSXDrrb4U
-	 j4i2O3YOVJp1a00yq33Tde7xd2vZVOmIZkpcMMHC1dYDRVBfO6N6yfT8898gr6z51z
-	 NMZHSkQOEjJbYY8SygS2a6D2zUEhpLOfZ54SIHqk=
+	b=FvXil6e5eg1FCBHPYn1rZI4VppmCnkmAO8ap3zxfsolwJpe5dvH6Dl6DQRVtpSdFm
+	 MQh7OLEB/IlqZjRZGdtlP5IPJ56ykiH/5Krc9jiCVUiyp6MuHIyqeZEY1hsJX1/Fhe
+	 DuhqXpLpkTza/2B1fhZudQzorLSOuF74OCJXVX7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Qu Zicheng <quzicheng@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 307/623] bpf: Send signals asynchronously if !preemptible
+Subject: [PATCH 6.12 294/590] padata: fix UAF in padata_reorder
 Date: Wed,  5 Feb 2025 14:40:49 +0100
-Message-ID: <20250205134507.971911667@linuxfoundation.org>
+Message-ID: <20250205134506.525099255@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puranjay Mohan <puranjay@kernel.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 87c544108b612512b254c8f79aa5c0a8546e2cc4 ]
+[ Upstream commit e01780ea4661172734118d2a5f41bc9720765668 ]
 
-BPF programs can execute in all kinds of contexts and when a program
-running in a non-preemptible context uses the bpf_send_signal() kfunc,
-it will cause issues because this kfunc can sleep.
-Change `irqs_disabled()` to `!preemptible()`.
+A bug was found when run ltp test:
 
-Reported-by: syzbot+97da3d7e0112d59971de@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67486b09.050a0220.253251.0084.GAE@google.com/
-Fixes: 1bc7896e9ef4 ("bpf: Fix deadlock with rq_lock in bpf_send_signal()")
-Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250115103647.38487-1-puranjay@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+BUG: KASAN: slab-use-after-free in padata_find_next+0x29/0x1a0
+Read of size 4 at addr ffff88bbfe003524 by task kworker/u113:2/3039206
+
+CPU: 0 PID: 3039206 Comm: kworker/u113:2 Kdump: loaded Not tainted 6.6.0+
+Workqueue: pdecrypt_parallel padata_parallel_worker
+Call Trace:
+<TASK>
+dump_stack_lvl+0x32/0x50
+print_address_description.constprop.0+0x6b/0x3d0
+print_report+0xdd/0x2c0
+kasan_report+0xa5/0xd0
+padata_find_next+0x29/0x1a0
+padata_reorder+0x131/0x220
+padata_parallel_worker+0x3d/0xc0
+process_one_work+0x2ec/0x5a0
+
+If 'mdelay(10)' is added before calling 'padata_find_next' in the
+'padata_reorder' function, this issue could be reproduced easily with
+ltp test (pcrypt_aead01).
+
+This can be explained as bellow:
+
+pcrypt_aead_encrypt
+...
+padata_do_parallel
+refcount_inc(&pd->refcnt); // add refcnt
+...
+padata_do_serial
+padata_reorder // pd
+while (1) {
+padata_find_next(pd, true); // using pd
+queue_work_on
+...
+padata_serial_worker				crypto_del_alg
+padata_put_pd_cnt // sub refcnt
+						padata_free_shell
+						padata_put_pd(ps->pd);
+						// pd is freed
+// loop again, but pd is freed
+// call padata_find_next, UAF
+}
+
+In the padata_reorder function, when it loops in 'while', if the alg is
+deleted, the refcnt may be decreased to 0 before entering
+'padata_find_next', which leads to UAF.
+
+As mentioned in [1], do_serial is supposed to be called with BHs disabled
+and always happen under RCU protection, to address this issue, add
+synchronize_rcu() in 'padata_free_shell' wait for all _do_serial calls
+to finish.
+
+[1] https://lore.kernel.org/all/20221028160401.cccypv4euxikusiq@parnassus.localdomain/
+[2] https://lore.kernel.org/linux-kernel/jfjz5d7zwbytztackem7ibzalm5lnxldi2eofeiczqmqs2m7o6@fq426cwnjtkm/
+Fixes: b128a3040935 ("padata: allocate workqueue internally")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Qu Zicheng <quzicheng@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 9f2f65767639d..2c2205e91fee9 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -854,7 +854,7 @@ static int bpf_send_signal_common(u32 sig, enum pid_type type, struct task_struc
- 	if (unlikely(is_global_init(task)))
- 		return -EPERM;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index ada4a0d137d9b..e2ae2c3747a85 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -1128,6 +1128,12 @@ void padata_free_shell(struct padata_shell *ps)
+ 	if (!ps)
+ 		return;
  
--	if (irqs_disabled()) {
-+	if (!preemptible()) {
- 		/* Do an early check on signal validity. Otherwise,
- 		 * the error is lost in deferred irq_work.
- 		 */
++	/*
++	 * Wait for all _do_serial calls to finish to avoid touching
++	 * freed pd's and ps's.
++	 */
++	synchronize_rcu();
++
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+ 	pd = rcu_dereference_protected(ps->pd, 1);
 -- 
 2.39.5
 
