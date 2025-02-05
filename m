@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DCDA28F6A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17BAA28C52
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC19F1889A46
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BFC97A49A3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BB5155725;
-	Wed,  5 Feb 2025 14:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76F14A630;
+	Wed,  5 Feb 2025 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHBvIJrr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YoDHLkBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0891547D8;
-	Wed,  5 Feb 2025 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D9014B080;
+	Wed,  5 Feb 2025 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765439; cv=none; b=cs+ccWsuOfEz/jrYm8fnvyJ4ovNXO7NN/cDUHmT5m9iDFWCjTsGFRuU3XMGqV/q/U6EwEARMDnUXaMERtQBfBxq8w8msMuF2bnzNbtSCYKQHQ5RTb41nsGsdM29tQw9xmF9FL3sVL2zlegLXnOWcf7k5KbrpiCjzdTcnn9a/nl0=
+	t=1738763129; cv=none; b=gMtuvc4VzcSjj3guAxbsnCdcyGkVO+fzYiBuWTP/uWjSQjdJ/J8Urfc9rqDqf37fmBGYwrhRHaeGaesiwmFUUbutPopQzcAIQ0m+L7rspVM13HNLS5DM6Hfo8RKxNCeN3rqUg3NLQXNS8XKWE9PzgMfMxfgNh5Y26RaJaUC9sXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765439; c=relaxed/simple;
-	bh=aGsScEKeX/Urbc22KJyEdoNaJz8oEQ+uVi/FtPx1EYQ=;
+	s=arc-20240116; t=1738763129; c=relaxed/simple;
+	bh=ij/ZxVh3CHnNGzXO/GSPd3fYYZkvu6FlsG0lrdcVM04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IexXG2d0Jy80uZZUsH1dHkF7fMY1jHPVK0Qhi4hRnPdlfUfdbBbiuoGaD/FnU+Aj3N5uO9+0sbK3eLitaMTt0rf7bMAz+8vxTmNXRelElpE2uoOqyIuq8VOBnA7dk9itWclFbAMKZ5O/tHhFsWle80juwTw2Zk6XmhY6rYvCucM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHBvIJrr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AE8C4CED1;
-	Wed,  5 Feb 2025 14:23:58 +0000 (UTC)
+	 MIME-Version; b=kkPtCZzUBVVYKI1tKgalgC4l8QEYYS8X4JhkizQvJsOudZb3BcBxoZnObKPTIPCf4G/2PbNZUf65xErFts0VA4gDXMjDSc9IhWaxUWBCBoFKjU6yKyoe2cu/UlufPLWWdjpNI1o5eoKCsDKGN2TO1soFhDlTg7xz4eIDP0NTA/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YoDHLkBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3974C4CED1;
+	Wed,  5 Feb 2025 13:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765438;
-	bh=aGsScEKeX/Urbc22KJyEdoNaJz8oEQ+uVi/FtPx1EYQ=;
+	s=korg; t=1738763129;
+	bh=ij/ZxVh3CHnNGzXO/GSPd3fYYZkvu6FlsG0lrdcVM04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHBvIJrrpkFE2jR1qTl/SgiZMB5g7s9dZMp9abHK/PHv9Hs2IjbvSGdcWVVuESLUM
-	 onA3K5NUV9anhK1Dumm9h7nWl98n4/O1uqvZdt8KjPwXlQgf9zWZQUDtt+G7h66+Ul
-	 ygs65uAGmJb5svNkTBnz3EEhl0ighnqYEXm6zXr0=
+	b=YoDHLkBGCZwJQJNsWSo17G9xjbCwzJgtEHobDgdl46Sw+Nyv09wqMLUvCxlTagx/a
+	 qESkAwMaJ866i6WDe0SC8cgMjjTjHROn2Y+WbjG71dKkAa1EJaJaS9T8ZqQ/bHWQt+
+	 GYgwES8OFdC6S3lexh9Bs7LAaPg9o305dHitMdP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Rao <raoxu@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 178/623] wifi: mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
-Date: Wed,  5 Feb 2025 14:38:40 +0100
-Message-ID: <20250205134503.044017952@linuxfoundation.org>
+Subject: [PATCH 6.6 002/393] dlm: fix srcu_read_lock() return type to int
+Date: Wed,  5 Feb 2025 14:38:41 +0100
+Message-ID: <20250205134420.381958140@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit f1b1e133a770fcdbd89551651232b034d2f7a27a ]
+[ Upstream commit 57cdd1a1cf1464199678f9338049b63fb5d5b41c ]
 
-When initializing the network card, unplugging the device will
-trigger an -EPROTO error, resulting in a flood of error messages
-being printed frantically.
+The return type of srcu_read_lock() is int and not bool. Whereas we
+using the ret variable only to evaluate a bool type of
+dlm_lowcomms_con_has_addr() to check if an address is already being set.
 
-The exception is printed as follows：
-
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         mt76x2u 2-2.4:1.0: vendor request req:47 off:9018 failed:-71
-         ...
-
-It will continue to print more than 2000 times for about 5 minutes,
-causing the usb device to be unable to be disconnected. During this
-period, the usb port cannot recognize the new device because the old
-device has not disconnected.
-
-There may be other operating methods that cause -EPROTO, but -EPROTO is
-a low-level hardware error. It is unwise to repeat vendor requests
-expecting to read correct data. It is a better choice to treat -EPROTO
-and -ENODEV the same way.
-
-Similar to commit 9b0f100c1970 ("mt76: usb: process URBs with status
-EPROTO properly") do no schedule rx_worker for urb marked with status
-set  -EPROTO. I also reproduced this situation when plugging and
-unplugging the device, and this patch is effective.
-
-Just do not vendor request again for urb marked with status set -EPROTO.
-
-Link: https://lore.kernel.org/all/531681bd-30f5-4a70-a156-bf8754b8e072@intel.com/
-Link: https://lore.kernel.org/all/D4B9CC1FFC0CBAC3+20250105040607.154706-1-wangyuli@uniontech.com/
-Fixes: b40b15e1521f ("mt76: add usb support to mt76 layer")
-Co-developed-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: Xu Rao <raoxu@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://patch.msgid.link/9DD7DE7AAB497CB7+20250113070241.63590-1-wangyuli@uniontech.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 6f0b0b5d7ae7 ("fs: dlm: remove dlm_node_addrs lookup list")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dlm/lowcomms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
-index 58ff068233894..f9e67b8c3b3c8 100644
---- a/drivers/net/wireless/mediatek/mt76/usb.c
-+++ b/drivers/net/wireless/mediatek/mt76/usb.c
-@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 32dbd1a828d01..0618af36f5506 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -460,7 +460,8 @@ static bool dlm_lowcomms_con_has_addr(const struct connection *con,
+ int dlm_lowcomms_addr(int nodeid, struct sockaddr_storage *addr, int len)
+ {
+ 	struct connection *con;
+-	bool ret, idx;
++	bool ret;
++	int idx;
  
- 		ret = usb_control_msg(udev, pipe, req, req_type, val,
- 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
--		if (ret == -ENODEV)
-+		if (ret == -ENODEV || ret == -EPROTO)
- 			set_bit(MT76_REMOVED, &dev->phy.state);
--		if (ret >= 0 || ret == -ENODEV)
-+		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
- 			return ret;
- 		usleep_range(5000, 10000);
- 	}
+ 	idx = srcu_read_lock(&connections_srcu);
+ 	con = nodeid2con(nodeid, GFP_NOFS);
 -- 
 2.39.5
 
