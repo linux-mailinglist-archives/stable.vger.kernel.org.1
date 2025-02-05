@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-112428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D637A28CAA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F1E7A28FB1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3173168C61
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3DE87A060C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D091527B4;
-	Wed,  5 Feb 2025 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D89B155747;
+	Wed,  5 Feb 2025 14:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2mrwPJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3+z36na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51B9FC0B;
-	Wed,  5 Feb 2025 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B24D8634E;
+	Wed,  5 Feb 2025 14:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763541; cv=none; b=g9PSvlbNV1VywZqfcqD1DIs2AJLDVc9xtA2laVk5hzjueA0BYY8AaqEoBQMinO0Yf6OFxhTURorehJlatsDY9pWIBcGUdJhXiyVE5+wcsKg0ANLr3i97MwhMw0N+YGrTxrXEx+oPxszxK+lnxeH3pHoGZTuYhTIM19CakYe86mM=
+	t=1738765686; cv=none; b=b6Q2wKB6Qj5UjsaScg13arABH5opipyissjRY8dwfcJhySpCwPMYdupJiwNWLFcOPWv6zk7+XW+ZqaQ3qXwkFMgiUouGKlA7mAlQk47XfpKQeEiVgNbVDEPOfupnWjuPGnPPMjHv18/Ymi7rsPubKdAGa0kIVI5ETGRqeNz0Pgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763541; c=relaxed/simple;
-	bh=lNKt98lz4oiwu4F7ANTbtNd0VuEZCf8HHBX7lBE0U8Q=;
+	s=arc-20240116; t=1738765686; c=relaxed/simple;
+	bh=BpXtsj9wBFB/wxkxAzWqNgI5MJ9NfWEVLN2Y0V/gawk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVO4B3EKkkGlIajay6pzya8fZjUUd2vO5uVFu2VDYaZlNPCRmM5xreI3Kadd/+b2n4gWhtyzkuk962XZ7LiwempZ7VYZSNCZ/bOWfGDjmX0jpWgOlbJ0b5L6P1zDCwTz7yZMLkK5ASI4wZ6WYq18yKyPCueXbk7s165ndfAFmnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2mrwPJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1214EC4CED1;
-	Wed,  5 Feb 2025 13:52:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uryuf9xEt8MnFtGj2sB0ujZGYoS84Suaa36OOPCG7PEu8LSD/rDAPz5R8JJxS1+Mdv0NrYljl5OhwzFxvRoTTXrwUZ9xeIWoeimxSZeAjpkI3S3LcO0VRJpBKNnfLpkDNGBERsx2LVw4kHB23DdVKbTNI0ciMREjLa4226oWNeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3+z36na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD51C4CED1;
+	Wed,  5 Feb 2025 14:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763541;
-	bh=lNKt98lz4oiwu4F7ANTbtNd0VuEZCf8HHBX7lBE0U8Q=;
+	s=korg; t=1738765686;
+	bh=BpXtsj9wBFB/wxkxAzWqNgI5MJ9NfWEVLN2Y0V/gawk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2mrwPJdVxQovg+UvQhEqvkUjpvXqO6Li9e52JWa0ajKKWZ2EODdonEFbtNgDPSH0
-	 jOr4JnXnSDrXDeCY4YXo4mx6P2GnfepHCEUrY0XA1AVf/WLENMn0HY9C8FEyh/YMeU
-	 9VJMcGAxk1xKpXb798Lb4mPjn0Sv60oVwtOvBhJQ=
+	b=r3+z36naIC+uWCx/GkOGyVC800Q3fbNATsnHXoyWkBu1G3O8WYY7o4soKB+pKZd/3
+	 4SAOe0wXBfhh5/elF9BXdzziEGM0pwsP8N2YiVN9lGg/NgWfoZ8GjZRMAQUXP1mhf7
+	 SdDV3lirIowfWtxL+JRQY8nRUBWB5m/WDpH83SYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/393] inetpeer: update inetpeer timestamp in inet_getpeer()
+Subject: [PATCH 6.12 243/590] ASoC: Intel: sof_sdw: correct mach_params->dmic_num
 Date: Wed,  5 Feb 2025 14:39:58 +0100
-Message-ID: <20250205134423.317711455@linuxfoundation.org>
+Message-ID: <20250205134504.578861950@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +64,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 50b362f21d6c10b0f7939c1482c6a1b43da82f1a ]
+[ Upstream commit 4ab80a2961c75562ffbac1f80de151a978c31659 ]
 
-inet_putpeer() will be removed in the following patch,
-because we will no longer use refcounts.
+mach_params->dmic_num will be used to set the cfg-mics value of
+card->components string which should be the dmic channels. However
+dmic_num is dmic link number and could be set due to the SOC_SDW_PCH_DMIC
+quirk. Set mach_params->dmic_num to the default value if the dmic link
+is created due to the SOC_SDW_PCH_DMIC quirk.
 
-Update inetpeer timestamp (p->dtime) at lookup time.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241215175629.1248773-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a853c609504e ("inetpeer: do not get a refcount in inet_getpeer()")
+Fixes: 7db9f6361170 ("ASoC: Intel: sof_sdw: overwrite mach_params->dmic_num")
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://patch.msgid.link/20241206075903.195730-2-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inetpeer.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ sound/soc/intel/boards/sof_sdw.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/net/ipv4/inetpeer.c b/net/ipv4/inetpeer.c
-index 5670571ee5fbe..596e2c3a8551f 100644
---- a/net/ipv4/inetpeer.c
-+++ b/net/ipv4/inetpeer.c
-@@ -98,6 +98,7 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 41042259f2b26..b6f9e5ee7e347 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -22,6 +22,8 @@ static int quirk_override = -1;
+ module_param_named(quirk, quirk_override, int, 0444);
+ MODULE_PARM_DESC(quirk, "Board-specific quirk override");
+ 
++#define DMIC_DEFAULT_CHANNELS 2
++
+ static void log_quirks(struct device *dev)
  {
- 	struct rb_node **pp, *parent, *next;
- 	struct inet_peer *p;
-+	u32 now;
+ 	if (SOC_SDW_JACK_JDSRC(sof_sdw_quirk))
+@@ -1063,17 +1065,19 @@ static int sof_card_dai_links_create(struct snd_soc_card *card)
+ 		hdmi_num = SOF_PRE_TGL_HDMI_COUNT;
  
- 	pp = &base->rb_root.rb_node;
- 	parent = NULL;
-@@ -113,6 +114,9 @@ static struct inet_peer *lookup(const struct inetpeer_addr *daddr,
- 		if (cmp == 0) {
- 			if (!refcount_inc_not_zero(&p->refcnt))
- 				break;
-+			now = jiffies;
-+			if (READ_ONCE(p->dtime) != now)
-+				WRITE_ONCE(p->dtime, now);
- 			return p;
- 		}
- 		if (gc_stack) {
-@@ -158,9 +162,6 @@ static void inet_peer_gc(struct inet_peer_base *base,
- 	for (i = 0; i < gc_cnt; i++) {
- 		p = gc_stack[i];
- 
--		/* The READ_ONCE() pairs with the WRITE_ONCE()
--		 * in inet_putpeer()
--		 */
- 		delta = (__u32)jiffies - READ_ONCE(p->dtime);
- 
- 		if (delta < ttl || !refcount_dec_if_one(&p->refcnt))
-@@ -232,11 +233,6 @@ EXPORT_SYMBOL_GPL(inet_getpeer);
- 
- void inet_putpeer(struct inet_peer *p)
- {
--	/* The WRITE_ONCE() pairs with itself (we run lockless)
--	 * and the READ_ONCE() in inet_peer_gc()
+ 	/* enable dmic01 & dmic16k */
+-	if (sof_sdw_quirk & SOC_SDW_PCH_DMIC || mach_params->dmic_num) {
+-		if (ctx->ignore_internal_dmic)
+-			dev_warn(dev, "Ignoring PCH DMIC\n");
+-		else
+-			dmic_num = 2;
++	if (ctx->ignore_internal_dmic) {
++		dev_warn(dev, "Ignoring internal DMIC\n");
++		mach_params->dmic_num = 0;
++	} else if (mach_params->dmic_num) {
++		dmic_num = 2;
++	} else if (sof_sdw_quirk & SOC_SDW_PCH_DMIC) {
++		dmic_num = 2;
++		/*
++		 * mach_params->dmic_num will be used to set the cfg-mics value of
++		 * card->components string. Set it to the default value.
++		 */
++		mach_params->dmic_num = DMIC_DEFAULT_CHANNELS;
+ 	}
+-	/*
+-	 * mach_params->dmic_num will be used to set the cfg-mics value of card->components
+-	 * string. Overwrite it to the actual number of PCH DMICs used in the device.
 -	 */
--	WRITE_ONCE(p->dtime, (__u32)jiffies);
--
- 	if (refcount_dec_and_test(&p->refcnt))
- 		call_rcu(&p->rcu, inetpeer_free_rcu);
- }
+-	mach_params->dmic_num = dmic_num;
+ 
+ 	if (sof_sdw_quirk & SOF_SSP_BT_OFFLOAD_PRESENT)
+ 		bt_num = 1;
 -- 
 2.39.5
 
