@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A05A293BB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE04A291D7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CC813AD87E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E80167BF2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23899155333;
-	Wed,  5 Feb 2025 15:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD031DD874;
+	Wed,  5 Feb 2025 14:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IabFZYqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlz9o53H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43081519BF;
-	Wed,  5 Feb 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA161C6BE;
+	Wed,  5 Feb 2025 14:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768106; cv=none; b=uMkCtVPg7BbAhSLfV6A827+S9c5B+Epci2RRY/plAe95BBDLk2fTXY8TI5l1EDcE9Ub2mkbfzYSllQQGuwFdrOd3zhXaC4SKk9Xfb8zyRBxYr3eJ6F7ITQYJuG7rXi0g6D6JPWklu7b8zS+qPk65xwT3zmOPwvtYq1mnh7Ps+Gc=
+	t=1738766720; cv=none; b=kthjnbHnbUg0EonUpjiKuQqcz0RnvZK0LJcKDUWfreb8I8sUgeY4XAGCioauILzrdVo2YIV0LXK5D32FL93z+CsLftjzubBK6HOLbaPPi/N0FOgCWRr9n7vhP1NKUeK3fgltkld/jPSdWFQhY12j9pk4ifTCjf/iF8tu8w+z2Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768106; c=relaxed/simple;
-	bh=/FQTdvLsDmzGYafsJWeTgNX6ijSuAzxJG6XqyC4FDZc=;
+	s=arc-20240116; t=1738766720; c=relaxed/simple;
+	bh=M0E3M2C6RH/guAGc5XCPjNBXe/+5sT/Ianfv6aoxVno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EA7cbYerMkKHTho+GGZGnh+baZbgJ3BeO5xLCi2rJhdEB5I50jWp5QQT2l08bw2UD1Ydfbc7csKhulOfva10FpORc6BeL0Elpm0i0vCRPNmV16S7Gdwhs/KPquhSqTbrRLUhH2DJYgyZm/QLCclYT2n7Z9tu78zB/Tv1TkIw/8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IabFZYqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A8EC4CED1;
-	Wed,  5 Feb 2025 15:08:26 +0000 (UTC)
+	 MIME-Version; b=Eve9z5Uhmz8kx1nP+LH5Cio0aUMRbTi67DeLBIxKKUztd4DXekIYsEcXZ5x/+hnzQwx4V64yeJIXtgqSrX3IHHgNKQt1SNFP4GhoiJhDnylYA+j79czlm+Nh1QfhPpSt+c4UjfC7Gm1c2Gtz/q8lbo7LXpEP++e8bB+men3UMpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlz9o53H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D8AC4CED1;
+	Wed,  5 Feb 2025 14:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768106;
-	bh=/FQTdvLsDmzGYafsJWeTgNX6ijSuAzxJG6XqyC4FDZc=;
+	s=korg; t=1738766720;
+	bh=M0E3M2C6RH/guAGc5XCPjNBXe/+5sT/Ianfv6aoxVno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IabFZYqXpOlez1Ym7RI2PDqwF6BtX2oBDwh/khKFKRtLYg/ZG8aml+J/DYrq/L5Uv
-	 3u0Tw/SIliJJjOmXouAsYNHgQPomyswrNIJeeM0txlRF2vr+Aoa214JJqs8dYcUNXF
-	 /ZxAwVSsAEIJv6iHS7nBgIMX/hwz9anoQBxTOxHk=
+	b=vlz9o53HcD+Wqq8ugwDZ9CZI900MuN8qrZDnEFO55LssjAJ3Ui7+AMenkaX3hcHbf
+	 HKNelI2FBAo9X6d6AMp9uz3P/+9LDuaRg5t8hfbPCIqJdgSPzomRA6E24Zd00om52v
+	 ftFXMBaYM3ThRJlU7ka3iYNwkuDdO4TRrkedQzv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sean Rhodes <sean@starlabs.systems>
-Subject: [PATCH 6.12 554/590] drivers/card_reader/rtsx_usb: Restore interrupt based detection
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ming Qian <ming.qian@nxp.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 390/393] media: imx-jpeg: Fix potential error pointer dereference in detach_pm()
 Date: Wed,  5 Feb 2025 14:45:09 +0100
-Message-ID: <20250205134516.465882118@linuxfoundation.org>
+Message-ID: <20250205134435.217145426@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 235b630eda072d7e7b102ab346d6b8a2c028a772 upstream.
+commit 1378ffec30367233152b7dbf4fa6a25ee98585d1 upstream.
 
-This commit reintroduces interrupt-based card detection previously
-used in the rts5139 driver. This functionality was removed in commit
-00d8521dcd23 ("staging: remove rts5139 driver code").
+The proble is on the first line:
 
-Reintroducing this mechanism fixes presence detection for certain card
-readers, which with the current driver, will taken approximately 20
-seconds to enter S3 as `mmc_rescan` has to be frozen.
+	if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
 
-Fixes: 00d8521dcd23 ("staging: remove rts5139 driver code")
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://lore.kernel.org/r/20241119085815.11769-1-sean@starlabs.systems
+If jpeg->pd_dev[i] is an error pointer, then passing it to
+pm_runtime_suspended() will lead to an Oops.  The other conditions
+check for both error pointers and NULL, but it would be more clear to
+use the IS_ERR_OR_NULL() check for that.
+
+Fixes: fd0af4cd35da ("media: imx-jpeg: Ensure power suppliers be suspended before detach them")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rtsx_usb.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/cardreader/rtsx_usb.c
-+++ b/drivers/misc/cardreader/rtsx_usb.c
-@@ -286,6 +286,7 @@ static int rtsx_usb_get_status_with_bulk
- int rtsx_usb_get_card_status(struct rtsx_ucr *ucr, u16 *status)
- {
- 	int ret;
-+	u8 interrupt_val = 0;
- 	u16 *buf;
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -2674,11 +2674,12 @@ static void mxc_jpeg_detach_pm_domains(s
+ 	int i;
  
- 	if (!status)
-@@ -308,6 +309,20 @@ int rtsx_usb_get_card_status(struct rtsx
- 		ret = rtsx_usb_get_status_with_bulk(ucr, status);
- 	}
- 
-+	rtsx_usb_read_register(ucr, CARD_INT_PEND, &interrupt_val);
-+	/* Cross check presence with interrupts */
-+	if (*status & XD_CD)
-+		if (!(interrupt_val & XD_INT))
-+			*status &= ~XD_CD;
-+
-+	if (*status & SD_CD)
-+		if (!(interrupt_val & SD_INT))
-+			*status &= ~SD_CD;
-+
-+	if (*status & MS_CD)
-+		if (!(interrupt_val & MS_INT))
-+			*status &= ~MS_CD;
-+
- 	/* usb_control_msg may return positive when success */
- 	if (ret < 0)
- 		return ret;
+ 	for (i = 0; i < jpeg->num_domains; i++) {
+-		if (jpeg->pd_dev[i] && !pm_runtime_suspended(jpeg->pd_dev[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]) &&
++		    !pm_runtime_suspended(jpeg->pd_dev[i]))
+ 			pm_runtime_force_suspend(jpeg->pd_dev[i]);
+-		if (jpeg->pd_link[i] && !IS_ERR(jpeg->pd_link[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_link[i]))
+ 			device_link_del(jpeg->pd_link[i]);
+-		if (jpeg->pd_dev[i] && !IS_ERR(jpeg->pd_dev[i]))
++		if (!IS_ERR_OR_NULL(jpeg->pd_dev[i]))
+ 			dev_pm_domain_detach(jpeg->pd_dev[i], true);
+ 		jpeg->pd_dev[i] = NULL;
+ 		jpeg->pd_link[i] = NULL;
 
 
 
