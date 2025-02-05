@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56307A28F8F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D41A29053
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 139E43AAD80
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A1B3A6381
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F343B14B080;
-	Wed,  5 Feb 2025 14:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784A4155747;
+	Wed,  5 Feb 2025 14:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDk5NF5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUmZ0y+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0628634E;
-	Wed,  5 Feb 2025 14:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F83151988;
+	Wed,  5 Feb 2025 14:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765490; cv=none; b=o1gqk6G9kn9ciDJRkCKy5x4z4sqUTIRz5QDwjCGDBIke/WWVtWUxn1b5QOMKv+tSH3Rr7fZkXn1POlH1WgB3XOIYy9lvVPeCOqiLXNrPpYak2RxaWvUCpQ3q4D/ZgyordnYrAprd+gKOzHYLlMWz94sOoDi4Szo5C9u7QagX9q4=
+	t=1738766042; cv=none; b=P5Ocix3D7zj0bkQw76v/1/d+SZoD7gmVgCRdDdcIyDaaPq1m6gTPnR4ZYffeNf0JGeWyasxsuB/RFz6yCS7fNdtKmh5qtBe4Y3zxnKu24/t936PaoTZZlZvIjqbtbVHz5kcj/RqvjL/UoNkIN/UVZQd5TkA2qfTAkEnrK62JBYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765490; c=relaxed/simple;
-	bh=KLVNfbjW8JJrPmXi9P7ma4NcXd427AqCDkfpp4JmIBM=;
+	s=arc-20240116; t=1738766042; c=relaxed/simple;
+	bh=kJ2Kg5PX/np29ztHwrhqkkpI5TSMa/RRceo7lMHaJdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkXQX1U8BHyPinTfBd8WR3iUQdlh4yAYs+hmHhB/hb/W5Oq+ZZr7t1j1hjzOMTPXlaFuXBL+gBiNkkWxt91vt/fhwPeHBWgZLTNeKq+UBD0/Zo+vX8vmnEQK8KVrk5XGonGXflKG6fwo+cD9fdqLGDvJeDdT+Zm7ZMflhaLbk+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDk5NF5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13157C4CED1;
-	Wed,  5 Feb 2025 14:24:49 +0000 (UTC)
+	 MIME-Version; b=uRmJs8w0iVyl0GZTtEDEImRCCNYDyjH+dBXPixOFXUOBInAcsOP7h3mLcskc3fxyGdChGrwlXSWd1ZwKwfuMAUioFFIEIX25RpkA1DevSBIvn5i6IPWoVZqZQ7pAbC0nNj7jkLgHz1QZNcAIXpIxLOrAx74BK/tnqBVb9TVYVjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUmZ0y+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9877CC4CED1;
+	Wed,  5 Feb 2025 14:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765490;
-	bh=KLVNfbjW8JJrPmXi9P7ma4NcXd427AqCDkfpp4JmIBM=;
+	s=korg; t=1738766042;
+	bh=kJ2Kg5PX/np29ztHwrhqkkpI5TSMa/RRceo7lMHaJdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDk5NF5PjG+RX92xIHHRkttDTIkvJnCN/wlLi2tpuGB+6xW4BrUKuI3KJ4XEG1I6R
-	 Wd6LPWo4mHKqm4tJBgnf3yJUndn5iaDP9wvlQgqt02+QdCCfOt3vK28WumO0aLqtPN
-	 xoNQDEzFqQkx9RmrszneNmrJqO/FE1CAYmrEO/F0=
+	b=DUmZ0y+yn2F69ha/UIU0Xcu1Ucd4e0AEh5QdLtSVqfSM2mFJnkxHpTNRoiQkhwg/R
+	 qBHN/s30ZbMz/JGNYEcQ17mMbsGTzvZvUpCMiGS55xTdW8fvoB9qG+ZUeDuTdMxwR9
+	 0LqqGQJuUuxFFw6bj/rrs/cbs3pmFhRLHdlvUhX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinas Rasheed <srasheed@marvell.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Edward Cree <ecree.xilinx@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 224/590] octeon_ep: remove firmware stats fetch in ndo_get_stats64
+Subject: [PATCH 6.13 237/623] net: avoid race between device unregistration and ethnl ops
 Date: Wed,  5 Feb 2025 14:39:39 +0100
-Message-ID: <20250205134503.855926677@linuxfoundation.org>
+Message-ID: <20250205134505.296589199@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shinas Rasheed <srasheed@marvell.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 1f64255bb76c11d0c41a7d81d7cec68e49d5362d ]
+[ Upstream commit 12e070eb6964b341b41677fd260af5a305316a1f ]
 
-The firmware stats fetch call that happens in ndo_get_stats64()
-is currently not required, and causes a warning to issue.
+The following trace can be seen if a device is being unregistered while
+its number of channels are being modified.
 
-The warn log is given below:
+  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+  WARNING: CPU: 3 PID: 3754 at kernel/locking/mutex.c:564 __mutex_lock+0xc8a/0x1120
+  CPU: 3 UID: 0 PID: 3754 Comm: ethtool Not tainted 6.13.0-rc6+ #771
+  RIP: 0010:__mutex_lock+0xc8a/0x1120
+  Call Trace:
+   <TASK>
+   ethtool_check_max_channel+0x1ea/0x880
+   ethnl_set_channels+0x3c3/0xb10
+   ethnl_default_set_doit+0x306/0x650
+   genl_family_rcv_msg_doit+0x1e3/0x2c0
+   genl_rcv_msg+0x432/0x6f0
+   netlink_rcv_skb+0x13d/0x3b0
+   genl_rcv+0x28/0x40
+   netlink_unicast+0x42e/0x720
+   netlink_sendmsg+0x765/0xc20
+   __sys_sendto+0x3ac/0x420
+   __x64_sys_sendto+0xe0/0x1c0
+   do_syscall_64+0x95/0x180
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-[  123.316837] ------------[ cut here ]------------
-[  123.316840] Voluntary context switch within RCU read-side critical section!
-[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
-[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
-[  123.316947] Call trace:
-[  123.316949]  rcu_note_context_switch+0x2e4/0x300
-[  123.316952]  __schedule+0x84/0x584
-[  123.316955]  schedule+0x38/0x90
-[  123.316956]  schedule_timeout+0xa0/0x1d4
-[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
-[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
-[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
-[  123.316975]  dev_get_stats+0x4c/0x114
-[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
-[  123.316980]  dev_seq_show+0x1c/0x40
-[  123.316982]  seq_read_iter+0x3cc/0x4e0
-[  123.316985]  seq_read+0xc8/0x110
-[  123.316987]  proc_reg_read+0x9c/0xec
-[  123.316990]  vfs_read+0xc8/0x2ec
-[  123.316993]  ksys_read+0x70/0x100
-[  123.316995]  __arm64_sys_read+0x20/0x30
-[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
-[  123.317000]  do_el0_svc+0xb4/0xd0
-[  123.317002]  el0_svc+0xe8/0x1f4
-[  123.317005]  el0t_64_sync_handler+0x134/0x150
-[  123.317006]  el0t_64_sync+0x17c/0x180
-[  123.317008] ---[ end trace 63399811432ab69b ]---
+This is because unregister_netdevice_many_notify might run before the
+rtnl lock section of ethnl operations, eg. set_channels in the above
+example. In this example the rss lock would be destroyed by the device
+unregistration path before being used again, but in general running
+ethnl operations while dismantle has started is not a good idea.
 
-Fixes: 6a610a46bad1 ("octeon_ep: add support for ndo ops")
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Link: https://patch.msgid.link/20250117094653.2588578-2-srasheed@marvell.com
+Fix this by denying any operation on devices being unregistered. A check
+was already there in ethnl_ops_begin, but not wide enough.
+
+Note that the same issue cannot be seen on the ioctl version
+(__dev_ethtool) because the device reference is retrieved from within
+the rtnl lock section there. Once dismantle started, the net device is
+unlisted and no reference will be found.
+
+Fixes: dde91ccfa25f ("ethtool: do not perform operations on net devices being unregistered")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Link: https://patch.msgid.link/20250116092159.50890-1-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ net/ethtool/netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index 549436efc2048..730aa5632ccee 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -995,12 +995,6 @@ static void octep_get_stats64(struct net_device *netdev,
- 	struct octep_device *oct = netdev_priv(netdev);
- 	int q;
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index e3f0ef6b851bb..4d18dc29b3043 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -90,7 +90,7 @@ int ethnl_ops_begin(struct net_device *dev)
+ 		pm_runtime_get_sync(dev->dev.parent);
  
--	if (netif_running(netdev))
--		octep_ctrl_net_get_if_stats(oct,
--					    OCTEP_CTRL_NET_INVALID_VFID,
--					    &oct->iface_rx_stats,
--					    &oct->iface_tx_stats);
--
- 	tx_packets = 0;
- 	tx_bytes = 0;
- 	rx_packets = 0;
-@@ -1018,10 +1012,6 @@ static void octep_get_stats64(struct net_device *netdev,
- 	stats->tx_bytes = tx_bytes;
- 	stats->rx_packets = rx_packets;
- 	stats->rx_bytes = rx_bytes;
--	stats->multicast = oct->iface_rx_stats.mcast_pkts;
--	stats->rx_errors = oct->iface_rx_stats.err_pkts;
--	stats->collisions = oct->iface_tx_stats.xscol;
--	stats->tx_fifo_errors = oct->iface_tx_stats.undflw;
- }
- 
- /**
+ 	if (!netif_device_present(dev) ||
+-	    dev->reg_state == NETREG_UNREGISTERING) {
++	    dev->reg_state >= NETREG_UNREGISTERING) {
+ 		ret = -ENODEV;
+ 		goto err;
+ 	}
 -- 
 2.39.5
 
