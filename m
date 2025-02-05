@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AE4A28F80
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B47A2937D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D641F7A0F51
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E1E3AC458
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C34155333;
-	Wed,  5 Feb 2025 14:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963AC1DD0F6;
+	Wed,  5 Feb 2025 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU5BXxvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LiDf8J6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B518634E;
-	Wed,  5 Feb 2025 14:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D1D1DC9B3;
+	Wed,  5 Feb 2025 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765558; cv=none; b=CZzB9jgqFwOFj+DvZdBqrwfkynvScbtO8WCndCVR0i7yfUO1Si6h+hLHccyTIoRZOzYyTCtqvofifh0cNHJS3YoUC4EUDNlidK+0ChZb1EpA62rafLep4YhJkIfVHYlAtZoV6VM2y0BlX6xXejKcQsYY6pfcT/ndm3XQiThrDlg=
+	t=1738767683; cv=none; b=Z63aMFkkoUqCgsOFBoQRyUBVjDcUyTG2zJEanINy3cplb4sJaM1F65GLLr87sW7nIIy+ODHMieLkjksRe52ebwORE3tAqDX5+JtsQxzknttB+d5pyMgLEmVeVfYXxrLjog7LN2e6kZzk21ByL9Hyp+3E4hn8rjc32ZlsooblFro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765558; c=relaxed/simple;
-	bh=55hFzPckFSmXqi0GmusrSnzS+k61plCTIA2XYTOOvNM=;
+	s=arc-20240116; t=1738767683; c=relaxed/simple;
+	bh=EBQ1z2JXzgja3MEMpQwHRbxpPHiPf+W+B8al+i7Vsts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eb0EOeao4JVkkw8YFOSp4kmQszuGWobMZ9uI5sDJ/oEPTZKVM1i9Bh/H/cHCZTvEQx3qy0TSkLJzKFib/q/Ge5cOw+4zX9XRqUtkkW8nEOJgcZTGjc8R7uERlMLWV7L5dFEk0Op2QmjkVk94x61H3o2879h3Obrb92tmFgAukak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU5BXxvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0B0C4CED1;
-	Wed,  5 Feb 2025 14:25:57 +0000 (UTC)
+	 MIME-Version; b=VdhG4JCMr9+ycEecwoD5BiIXly9ff+wH7l20vOWyvY0Ch8x9ujr48c/yvZM5YFGPgw2NONA+WraQrZB4orIwzRcBQ7oFQQKFyIBgcUrPHoaa6z+LvLMm/1DUwjbLFxcfjzsomTUiYBM/wJHt2KdvNofjpgqOdEyzhidibyVH6N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LiDf8J6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF49FC4CED1;
+	Wed,  5 Feb 2025 15:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765558;
-	bh=55hFzPckFSmXqi0GmusrSnzS+k61plCTIA2XYTOOvNM=;
+	s=korg; t=1738767683;
+	bh=EBQ1z2JXzgja3MEMpQwHRbxpPHiPf+W+B8al+i7Vsts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU5BXxvNmfM20dhQYAIHsp7VsKbHimM4tPgQN+tJR3einO55cgNnTsJ9QeuxaQJon
-	 ynlz0gu4ddaQAP/U6TVoTuRXDlT0jdO05YqECAz5YBb1+yEurxP/Lg/xWFOPCg7iid
-	 JISkNC3INTU+NprznO1gjhlQgk+c8btwI20f/uN8=
+	b=LiDf8J6i5WyPMenWpIrHN02DNNM6Rd5rB1/nh8F3O1z0YEfeAukR+4V9q/1DC6Kd3
+	 mHfOZ3EbK3X9bJOSA7w8hUzs7IGnotvcT9Z/0wGemSgh4qbHT4qAkxgiNOqfPgFyIL
+	 F1xA+zVc9GueHIE0bNlEdTMcaaPsONIyvDDGDb/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 260/393] arm64: dts: qcom: sc7180-trogdor-pompom: rename 5v-choke thermal zone
-Date: Wed,  5 Feb 2025 14:42:59 +0100
-Message-ID: <20250205134430.259134981@linuxfoundation.org>
+Subject: [PATCH 6.13 438/623] mailbox: mpfs: fix copy and paste bug in probe
+Date: Wed,  5 Feb 2025 14:43:00 +0100
+Message-ID: <20250205134512.973834704@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 9180b38d706c29ed212181a77999c35ae9ff6879 ]
+[ Upstream commit f055feb49c1c4333abb80ce1e9d93841cf74ea84 ]
 
-Rename the 5v-choke thermal zone to satisfy the bindings.
+This code accidentally checks ->ctrl_base instead of ->mbox_base so the
+error handling can never be triggered.
 
-This fixes:
-sc7180-trogdor-pompom-r2-lte.dts: thermal-zones: '5v-choke-thermal' does not match any of the regexes: '^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/thermal/thermal-zones.yaml#
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-4-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: a4123ffab9ec ("mailbox: mpfs: support new, syscon based, devicetree configuration")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox-mpfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-index b5ef846e2191e..7a05d502620f3 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi
-@@ -12,11 +12,11 @@
+diff --git a/drivers/mailbox/mailbox-mpfs.c b/drivers/mailbox/mailbox-mpfs.c
+index 4df546e3b7eae..d5d9effece979 100644
+--- a/drivers/mailbox/mailbox-mpfs.c
++++ b/drivers/mailbox/mailbox-mpfs.c
+@@ -251,7 +251,7 @@ static inline int mpfs_mbox_syscon_probe(struct mpfs_mbox *mbox, struct platform
+ 		return PTR_ERR(mbox->sysreg_scb);
  
- / {
- 	thermal-zones {
--		5v-choke-thermal {
-+		choke-5v-thermal {
- 			thermal-sensors = <&pm6150_adc_tm 1>;
+ 	mbox->mbox_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(mbox->ctrl_base))
++	if (IS_ERR(mbox->mbox_base))
+ 		return PTR_ERR(mbox->mbox_base);
  
- 			trips {
--				5v-choke-crit {
-+				choke-5v-crit {
- 					temperature = <125000>;
- 					hysteresis = <1000>;
- 					type = "critical";
+ 	return 0;
 -- 
 2.39.5
 
