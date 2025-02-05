@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF23A28F4A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E9CA28E82
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29BB21888119
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 999E17A471E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D5A14B080;
-	Wed,  5 Feb 2025 14:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009F715198D;
+	Wed,  5 Feb 2025 14:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKO1fNG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVULitpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC817155725;
-	Wed,  5 Feb 2025 14:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053214D2A2;
+	Wed,  5 Feb 2025 14:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765380; cv=none; b=umpFWB04r2d60IUmx2K1c8IpjntL/cfolDwV6mXGG/JzydEFDB0mWoCJrA+cXzTW7776NxrDP6Cmv7nUPYpRZXj5OzefeDfr4e2gKOxsLQzBnG5ro1w3BIE1c5zBparKQk9XFEfWC47J+dF0vqk2B2kDPQxtaqj/79+gq+QSS4Y=
+	t=1738764812; cv=none; b=NT6VksiecM2KrDqM9fPpMPiDspM/oOcTpSsRv3vRtNbCAgGuKaMdW2VXDCwas0bLfNG7/TTcQU80ftqei2lYQ5hp4GgHM4VPBmsfd/5jQT/sMsgoZEAsuT8Od351Z1meyMjeddGbzH2S3iXScCNRrKV4hJuiB4oNGmowsXd7TbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765380; c=relaxed/simple;
-	bh=PKr0qlaBTkeWSfvikZFSJTd2oW+B39A0ML0yHOgfN10=;
+	s=arc-20240116; t=1738764812; c=relaxed/simple;
+	bh=x6rTJQ9NN0n/UlO9nP7auI0YAefnaiHuBibs8xjDDLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtmlAn9HXTGBF8IjH7U49847mKNDptcoRJtqen1Sb1i5qTLmvKXSgKT9puOvL7SU3sCfVhxlU48ww/COduaA7dmF+YNUPmRiDvfuqb1wBo6fGrY2kBs8bW9V7rLfaw5FPM/njlRx4UH0J1OJ6bKo4bW8Eb/qllPT9wZd1VoA15E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKO1fNG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1998AC4CED1;
-	Wed,  5 Feb 2025 14:22:59 +0000 (UTC)
+	 MIME-Version; b=EHK66v4Y628lVP45HcK3ViP3ENqXCk/uwTxsC+WsnWRM3VPIKCJXGGOjNa8P1G1sMg9MJCmrtqh9797YtY6/802pmd80GKH7UXAjlwgCtHY6RTwOpMgCc4ZNfDz3cLmMpCGoJH4lPInRba574lJZ/MZZg7JN7oZeFjG9XnunUzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVULitpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EA1C4CED1;
+	Wed,  5 Feb 2025 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765380;
-	bh=PKr0qlaBTkeWSfvikZFSJTd2oW+B39A0ML0yHOgfN10=;
+	s=korg; t=1738764812;
+	bh=x6rTJQ9NN0n/UlO9nP7auI0YAefnaiHuBibs8xjDDLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKO1fNG2O5bjSz84c1+aCBJ22iY6ilKPPhy26Jn5OMa9WDHXKLorYQiRZJhLH07od
-	 wEZd8xJdn6Ruw4zmD0x77jkBwPvGPuVbVHazVPCANydHTkS32/WEkDqUtcvH+IWtZ0
-	 ROVIZvtYkAA32bjCchMFEGmoaAdf1wIHVLPW1Jec=
+	b=NVULitpF8SVkX3jEwoOIeKXBFyXxyJmJ/Jan8CnR0WBiSxmNh3AwwckMx3DRibK6w
+	 Tbsb0+tDSDQBc+YILbfWwasx/Atat4GfPCyUTBWzx7h7OSPVPk4pyJpno52Syt8Yma
+	 Jxn9/q/ddJyrCvpShx9vM8dba8/LjBMe9ehTgW7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Drew Fustini <dfustini@tenstorrent.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 173/623] clk: thead: Fix clk gate registration to pass flags
+Subject: [PATCH 6.12 160/590] wifi: iwlwifi: mvm: dont count mgmt frames as MPDU
 Date: Wed,  5 Feb 2025 14:38:35 +0100
-Message-ID: <20250205134502.854035588@linuxfoundation.org>
+Message-ID: <20250205134501.406085497@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Fustini <dfustini@tenstorrent.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit a826e53fd78c7f07b8ff83446c44b227b2181920 ]
+[ Upstream commit 76260267ba26a6e513acefa5e7de1200fbeb5b5d ]
 
-Modify the call to devm_clk_hw_register_gate_parent_data() to actually
-pass the clk flags from hw.init instead of just 0. This is necessary to
-allow individual clk gates to specify their own clk flags.
+When handling TX_CMD notification, for mgmt frames tid is equal
+to IWL_MAX_TID_COUNT, so with the current logic we'll count
+that as MPDU, fix that.
 
-Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
-Signed-off-by: Drew Fustini <dfustini@tenstorrent.com>
-Link: https://lore.kernel.org/r/20250113-th1520-clk_ignore_unused-v1-1-0b08fb813438@tenstorrent.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: ec0d43d26f2c ("wifi: iwlwifi: mvm: Activate EMLSR based on traffic volume")
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241229164246.80b119bb5d08.I31b1e8ba25cce15819225e5ac80332e4eaa20c13@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 1015fab952515..c95b6e26ca531 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -1048,7 +1048,8 @@ static int th1520_clk_probe(struct platform_device *pdev)
- 		hw = devm_clk_hw_register_gate_parent_data(dev,
- 							   cg->common.hw.init->name,
- 							   cg->common.hw.init->parent_data,
--							   0, base + cg->common.cfg0,
-+							   cg->common.hw.init->flags,
-+							   base + cg->common.cfg0,
- 							   ffs(cg->enable) - 1, 0, NULL);
- 		if (IS_ERR(hw))
- 			return PTR_ERR(hw);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index ca026b5256ce3..5f4942f6cc68e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1880,7 +1880,9 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+ 				IWL_DEBUG_TX_REPLY(mvm,
+ 						   "Next reclaimed packet:%d\n",
+ 						   next_reclaimed);
+-				iwl_mvm_count_mpdu(mvmsta, sta_id, 1, true, 0);
++				if (tid < IWL_MAX_TID_COUNT)
++					iwl_mvm_count_mpdu(mvmsta, sta_id, 1,
++							   true, 0);
+ 			} else {
+ 				IWL_DEBUG_TX_REPLY(mvm,
+ 						   "NDP - don't update next_reclaimed\n");
 -- 
 2.39.5
 
