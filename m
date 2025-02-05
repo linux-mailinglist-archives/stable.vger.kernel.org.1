@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEACA28E61
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE42A291FE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51FC81881FCD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5B353AC60F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD8F1537AC;
-	Wed,  5 Feb 2025 14:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2741FC104;
+	Wed,  5 Feb 2025 14:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtmDaBMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBZobzX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F3313C9C4;
-	Wed,  5 Feb 2025 14:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD085157465;
+	Wed,  5 Feb 2025 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764717; cv=none; b=fRy0Vn8/tpp0cLhySBNLmwMAyeCtiL21WQ0fbsZgvPAjY6LStqmSBajhY5GffoPlAeD413oM1t/uJfsZ3HQnP+lGzD9cxVogeEw+V6RWYmCEnlgcLT2yhzTT1EkXjPBNoR6G69yDEbPr6/WQA6AkfJZfA+RBFZdUWT2Xjc2tc0k=
+	t=1738766796; cv=none; b=ALx8PmzGhR8dcUCzFEPKERqSYaMdPV6ZEJx+2DXPFp1GJ9bSBoucD9cns7nwzAbHl3SdwQ1+nfxY6kxKq42IIlkl4nNwubkgE8a7sgnMgN5jTWmQM2ZpNTyW96PaGUs0ZKY94aKfhcvEn3ZQVNjwmQ1CgWUZLuQZVUQ3ObgWuyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764717; c=relaxed/simple;
-	bh=jT1Gsp37Hn71P0mNS+bagwqvK3MOrWxqXh51H+nmgI4=;
+	s=arc-20240116; t=1738766796; c=relaxed/simple;
+	bh=TX4ZnJFmY6whwAFMv3U5aCm/euirC8WI2L1ikrWRfw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htnSsxrL6VEWD5rE/ss8Uie6okNeN+ObxYeokof0xDASJ7R+eK0NCH5Fnirv64FhkpUnO2NT/mjoazSex3goYJVVkOdPSWbTo/SJ9weW6RXn6QPwzCMPicECUuRv6Sp6hy2Uh0urboL/HBX01m6al0/3Nb7WtIFSmwTVgZfVNq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtmDaBMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3124C4CED1;
-	Wed,  5 Feb 2025 14:11:56 +0000 (UTC)
+	 MIME-Version; b=tr5MVkX34kpbAG4utvVZnmycULGNsVoWV3letkyO6G/rQrEoVQXMPZBwNDo39O6i/SYFuiTkQ2mXdPYTCHPx/n8NH10PxVk+HNwI+yKLaJTxfZBzgikGsdtSM8SME9b32ZxyHP/eD1NlXqNLZjwG3LEzW+YaRdINSu8f1Jt2q78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBZobzX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354D0C4CED1;
+	Wed,  5 Feb 2025 14:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764717;
-	bh=jT1Gsp37Hn71P0mNS+bagwqvK3MOrWxqXh51H+nmgI4=;
+	s=korg; t=1738766796;
+	bh=TX4ZnJFmY6whwAFMv3U5aCm/euirC8WI2L1ikrWRfw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YtmDaBMF+C+F8XtlW3/H/4zjjZWfokhms2Iybni4pgcesX5OM18wbMIZLlDFy+KZM
-	 kBvJ5kebR+G23TmAhvdOxOhDGsod0t5cKgYzVWQBvCFU7WbyaVo9f+a01lstfRg/cN
-	 hirAIXNE7Ndrxlk9pyDf4TzipFKh/7tg4gaO8isY=
+	b=WBZobzX6UfNmfUwdZyA8onTk6YpZ3tlKJRSYrxG7FtpfJA6fiWc2POR68t5/mGWbe
+	 z9V2vmqinsM499a2LWS9nV/8gYj3zZjNVFVMyENTVU3qE9Hz7TdzNHVu3JTYobbKdk
+	 EHEkh09AqwJOQN+WFbYOrduOfu4xwewFvWUZg/C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mihai Sain <mihai.sain@microchip.com>,
+	Cristian Birsan <cristian.birsan@microchip.com>,
+	Andrei Simion <andrei.simion@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/393] arm64: dts: mediatek: mt8516: fix GICv2 range
+Subject: [PATCH 6.12 362/590] ARM: dts: microchip: sama5d27_wlsom1_ek: Add no-1-8-v property to sdmmc0 node
 Date: Wed,  5 Feb 2025 14:41:57 +0100
-Message-ID: <20250205134427.873974210@linuxfoundation.org>
+Message-ID: <20250205134509.120052175@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Cristian Birsan <cristian.birsan@microchip.com>
 
-[ Upstream commit e3ee31e4409f051c021a30122f3c470f093a7386 ]
+[ Upstream commit 4d9e5965df04c0adf260c3009c55d5fe240f7286 ]
 
-On the MT8167 which is based on the MT8516 DTS, the following error
-was appearing on boot, breaking interrupt operation:
+Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
+This property will stop the LDO regulator from switching to 1.8V when the
+MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
+SDMMC interface pins in GPIO mode (PA0 - PA13).
 
-GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+On this board, PA10 is used as GPIO to enable the power switch controlling
+USB Vbus for the USB Host. The change is needed to fix the PA10 voltage
+level to 3.3V instead of 1.8V.
 
-Similar to what's been proposed for MT7622 which has the same issue,
-fix by using the range reported by force_probe.
-
-Link: https://lore.kernel.org/all/YmhNSLgp%2Fyg8Vr1F@makrotopia.org/
-Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241204190524.21862-2-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 5d4c3cfb63fe ("ARM: dts: at91: sama5d27_wlsom1: add SAMA5D27 wlsom1 and wlsom1-ek")
+Suggested-by: Mihai Sain <mihai.sain@microchip.com>
+Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
+Tested-by: Andrei Simion <andrei.simion@microchip.com>
+Link: https://lore.kernel.org/r/20241119160107.598411-3-cristian.birsan@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index 9cbd6dd8f671a..1520c4caa1605 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -268,7 +268,7 @@
- 			interrupt-parent = <&gic>;
- 			interrupt-controller;
- 			reg = <0 0x10310000 0 0x1000>,
--			      <0 0x10320000 0 0x1000>,
-+			      <0 0x1032f000 0 0x2000>,
- 			      <0 0x10340000 0 0x2000>,
- 			      <0 0x10360000 0 0x2000>;
- 			interrupts = <GIC_PPI 9
+diff --git a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+index 15239834d886e..35a933eec5738 100644
+--- a/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
++++ b/arch/arm/boot/dts/microchip/at91-sama5d27_wlsom1_ek.dts
+@@ -197,6 +197,7 @@
+ 
+ &sdmmc0 {
+ 	bus-width = <4>;
++	no-1-8-v;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
+ 	status = "okay";
 -- 
 2.39.5
 
