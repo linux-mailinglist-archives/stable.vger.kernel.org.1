@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35241A29393
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5ABAA28FF9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94E5188CAE1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3905C7A1BFB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D4D35946;
-	Wed,  5 Feb 2025 15:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C03C8634E;
+	Wed,  5 Feb 2025 14:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYxlHAiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IS5rehtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DC91519BF;
-	Wed,  5 Feb 2025 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267361519AF;
+	Wed,  5 Feb 2025 14:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768011; cv=none; b=DNR10LPpvch8wcuGwVVkiveDb7Qt2fmRdgQqFr+eErmbqAl1rDJe9slI3X67PgKpV7PGCIvmaftbZQOrgf9gFx6bBNXW2JsgiX8XTz4wxK3Vv08EmKSaoIec2V6vUa1+CkhDl3TkVQ9ARMbgwO1zPPbFI/0nxjyjz/h78rzWhD8=
+	t=1738765865; cv=none; b=qMlAC5MxTMDdJMyW5eURmeEz/Lscch5lZs3pZQOsJCjE558PMzLoxUPpCSFEBjFNnFBJQ9+tXm80MigWO8mt0eRPVQW784evBL2RGjpkLuTsOoZVkH7cY5gtOrjdo5A/KjXW/ID5BFSG/CW2afKLWS19hd4qC9MQcuMhc3mHI+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768011; c=relaxed/simple;
-	bh=dejaLlQ9PaZaWX3kJ36CXtzimgYL5S8kyI1pC5ElmFU=;
+	s=arc-20240116; t=1738765865; c=relaxed/simple;
+	bh=iNYRitCvQ8fMzjkWjEYUQRAUonrjDSls6koYYF9IKYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=roOi5uvcacIO34i/KBbSLLptD3rvOkGAveFZjn9VRRaYd53mpKU+ItsBOb+seSKKYRqOgVWrfQ/YYQRzqR4Cn52gjDQIwlTE29oHHZ9VP0lKW8SV2IMDyZuNCBDDvMZQWZV7ZQIJ7QU7i4N7Qo+4YvWKFFbFXNpS50cMLgQEPZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYxlHAiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9E5C4CED1;
-	Wed,  5 Feb 2025 15:06:50 +0000 (UTC)
+	 MIME-Version; b=MC9n1kP3NTzHtsT2mRxECEaeZ4PlOqAuhK82ejyjkMGdBAcKfp1s7k/kT7OoVqKMSMbAFUUJv7mSfNWn9djiGiH5QT9hYN99sox3+La9r606fpo8uPbDt8dgO2aICHYuQsRUhyLEzm23XrUCmgGN/mQhg8K5/IgsJY7l8LhVuVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IS5rehtf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219DEC4CED1;
+	Wed,  5 Feb 2025 14:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768010;
-	bh=dejaLlQ9PaZaWX3kJ36CXtzimgYL5S8kyI1pC5ElmFU=;
+	s=korg; t=1738765864;
+	bh=iNYRitCvQ8fMzjkWjEYUQRAUonrjDSls6koYYF9IKYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYxlHAiK3lVZklnYSMgVEM2Uvmke6DM1h/uAjVUz5AJXsQxcpT97xdqIB509zBsoS
-	 fV8h5aovNquycM2FmENBclZRHCFn+N36W8Pgz2eUM6JUKE/Ov2TsnUkTHcEVDIGvXn
-	 aiC/Fs2gOiZLGr2gsRhjajt9WGO94MsedfK6oKis=
+	b=IS5rehtfv75rJvuI/NybcfuOSo7w6Mz+nzu/jU3n4tfIb0/UzrTTpLCOqVS4strrl
+	 bUPAcqhl+GAvIKyB7u29X5WT27E8012YTYti6UN03JPA3ZfY/otiHP2vJjy4gsKHbb
+	 uGbVEQvM6PMt+FolBBt3rczZxqHuGGlMC3mku15Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 484/623] module: Dont fail module loading when setting ro_after_init section RO failed
+Subject: [PATCH 6.6 307/393] nilfs2: convert nilfs_lookup_dirty_data_buffers to use folio_create_empty_buffers
 Date: Wed,  5 Feb 2025 14:43:46 +0100
-Message-ID: <20250205134514.733897916@linuxfoundation.org>
+Message-ID: <20250205134432.055134500@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 110b1e070f1d50f5217bd2c758db094998bb7b77 ]
+[ Upstream commit 922b12eff0b293fc13ae4045c7d7264e18938878 ]
 
-Once module init has succeded it is too late to cancel loading.
-If setting ro_after_init data section to read-only fails, all we
-can do is to inform the user through a warning.
+This function was already using a folio, so this update to the new API
+removes a single folio->page->folio conversion.
 
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Closes: https://lore.kernel.org/all/20230915082126.4187913-1-ruanjinjie@huawei.com/
-Fixes: d1909c022173 ("module: Don't ignore errors from set_memory_XX()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/d6c81f38da76092de8aacc8c93c4c65cb0fe48b8.1733427536.git.christophe.leroy@csgroup.eu
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Link: https://lkml.kernel.org/r/20231016201114.1928083-17-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Pankaj Raghav <p.raghav@samsung.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 367a9bffabe0 ("nilfs2: protect access to buffers with no active references")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/nilfs2/segment.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 5399c182b3cbe..c740d208b52aa 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -2950,7 +2950,10 @@ static noinline int do_init_module(struct module *mod)
- #endif
- 	ret = module_enable_rodata_ro(mod, true);
- 	if (ret)
--		goto fail_mutex_unlock;
-+		pr_warn("%s: module_enable_rodata_ro_after_init() returned %d, "
-+			"ro_after_init data might still be writable\n",
-+			mod->name, ret);
-+
- 	mod_tree_remove_init(mod);
- 	module_arch_freeing_init(mod);
- 	for_class_mod_mem_type(type, init) {
-@@ -2989,8 +2992,6 @@ static noinline int do_init_module(struct module *mod)
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 0610cb12c11ca..57b535921a73b 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -731,10 +731,9 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
+ 			continue;
+ 		}
+ 		head = folio_buffers(folio);
+-		if (!head) {
+-			create_empty_buffers(&folio->page, i_blocksize(inode), 0);
+-			head = folio_buffers(folio);
+-		}
++		if (!head)
++			head = folio_create_empty_buffers(folio,
++					i_blocksize(inode), 0);
+ 		folio_unlock(folio);
  
- 	return 0;
- 
--fail_mutex_unlock:
--	mutex_unlock(&module_mutex);
- fail_free_freeinit:
- 	kfree(freeinit);
- fail:
+ 		bh = head;
 -- 
 2.39.5
 
