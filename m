@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-113825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E3EA29432
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:21:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A343A2948A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 386063ADA40
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5BD73A8854
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9947418C03B;
-	Wed,  5 Feb 2025 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E167190063;
+	Wed,  5 Feb 2025 15:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTx+m9nR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFNRJ9JV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5695918BBBB;
-	Wed,  5 Feb 2025 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC3118FDDA;
+	Wed,  5 Feb 2025 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768291; cv=none; b=UBKlCWmUxyTjNmXLFUesTxvyePGW9xfnX9okjeo2BqI4PP/E+Z9Bs/rahkZav7epFnVrSFZTb11JpxzjNQgM35njQdYGiZv+5KXcn3Fl3aAPBmugISf4Bl5gIBwkWJY74PxPDarFXgloToJ08GmNdSaw8iXqrPiP/pUXmXrHqB4=
+	t=1738768311; cv=none; b=L9oAoVA2WMsCiedqu5LSJ7Ew+bdsFLTXqyIxG62ldNg9uCSZ8vAJGgtAdB8EXMdo6ACOPLSVIN2ZHWI+EYyStmo+DB7wbBOa/RRtppXjWngGVq+H+b8z9DkAom7B+WOSIhGjW2lETI2WHAC66+lsxsK9Fa3c0Ift1S7Y9dQKklc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768291; c=relaxed/simple;
-	bh=D8FZexhvTdUqqdpFpPjw2t64KTM5Ii7S5xs8KgeygSk=;
+	s=arc-20240116; t=1738768311; c=relaxed/simple;
+	bh=tKfMy8BddGnjhqUT2B3zvx7IYwh731szXMWXhBsKO/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZgqucZe3Lzd1WcKw4cYWXzl7WphNWcxzh/j7x/CG5q6tIadRJobTI4niP14TrIGuRw6rdmpd961PhqzJ7O5g6Me33ts0becvkmWifpNfldAf2MoVB71rc5qg2cHY+VwjPRt3AgsF3BIGVg+b72q9LFfltYP2DDBBCNvZzHxMFFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTx+m9nR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5312EC4CED1;
-	Wed,  5 Feb 2025 15:11:30 +0000 (UTC)
+	 MIME-Version; b=jY8XDPgDB7VEfxw9W8o0WPWlyUrlQf1QKiRSMVpW0me8VP8yR7HButDqOgHAT5+7ZhlcXm/YTN26+N/VQqvd50mOD7dwfL6elIrpmkFoA7zhWPyOQ2pgpNnqSl5LLlbgSeh0imfNTD5d3HA+RYh+boB4X4/jt3hF17ZjTYE6CWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFNRJ9JV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3C1C4CED6;
+	Wed,  5 Feb 2025 15:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768290;
-	bh=D8FZexhvTdUqqdpFpPjw2t64KTM5Ii7S5xs8KgeygSk=;
+	s=korg; t=1738768311;
+	bh=tKfMy8BddGnjhqUT2B3zvx7IYwh731szXMWXhBsKO/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTx+m9nRFZKCi3sVzdYANOomKj8aJkkiUn7Suclrik7TJjhwVPQ3BRBzMGUik2lOx
-	 j/vWhaOs9xapDqgsLXtScB5Pd/IHXgJc7W46BG87suiBx2PsR3LI85MiGdTVkcNati
-	 FvZ1FwOtZaSqLUVs6inrmSqZPEj3iZMCqxNG7OIE=
+	b=MFNRJ9JVN3J6uoXl3j3qXJKut7nF+TN+nR5R8lv26nTxX5vhx07s95Y88r4tZZzFz
+	 hBXoOIblUMs0bijaI2qCOMldKUHNJm/0i5B6H3ToQFgyFTwdyA/K65onEPIi03fNhp
+	 nZA9Ra9LlTeJb1VhxwYuY5ZTxEZZ0+jw4OO+kQEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 526/623] net: page_pool: dont try to stash the napi id
-Date: Wed,  5 Feb 2025 14:44:28 +0100
-Message-ID: <20250205134516.348642905@linuxfoundation.org>
+Subject: [PATCH 6.13 529/623] rxrpc, afs: Fix peer hash locking vs RCU callback
+Date: Wed,  5 Feb 2025 14:44:31 +0100
+Message-ID: <20250205134516.464436617@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -61,170 +63,217 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 67e4bb2ced0f2d8fbd414f932daea94ba63ae4c4 ]
+[ Upstream commit 79d458c13056559d49b5e41fbc4b6890e68cf65b ]
 
-Page ppol tried to cache the NAPI ID in page pool info to avoid
-having a dependency on the life cycle of the NAPI instance.
-Since commit under Fixes the NAPI ID is not populated until
-napi_enable() and there's a good chance that page pool is
-created before NAPI gets enabled.
+In its address list, afs now retains pointers to and refs on one or more
+rxrpc_peer objects.  The address list is freed under RCU and at this time,
+it puts the refs on those peers.
 
-Protect the NAPI pointer with the existing page pool mutex,
-the reading path already holds it. napi_id itself we need
-to READ_ONCE(), it's protected by netdev_lock() which are
-not holding in page pool.
+Now, when an rxrpc_peer object runs out of refs, it gets removed from the
+peer hash table and, for that, rxrpc has to take a spinlock.  However, it
+is now being called from afs's RCU cleanup, which takes place in BH
+context - but it is just taking an ordinary spinlock.
 
-Before this patch napi IDs were missing for mlx5:
+The put may also be called from non-BH context, and so there exists the
+possibility of deadlock if the BH-based RCU cleanup happens whilst the hash
+spinlock is held.  This led to the attached lockdep complaint.
 
- # ./cli.py --spec netlink/specs/netdev.yaml --dump page-pool-get
+Fix this by changing spinlocks of rxnet->peer_hash_lock back to
+BH-disabling locks.
 
- [{'id': 144, 'ifindex': 2, 'inflight': 3072, 'inflight-mem': 12582912},
-  {'id': 143, 'ifindex': 2, 'inflight': 5568, 'inflight-mem': 22806528},
-  {'id': 142, 'ifindex': 2, 'inflight': 5120, 'inflight-mem': 20971520},
-  {'id': 141, 'ifindex': 2, 'inflight': 4992, 'inflight-mem': 20447232},
-  ...
+    ================================
+    WARNING: inconsistent lock state
+    6.13.0-rc5-build2+ #1223 Tainted: G            E
+    --------------------------------
+    inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+    swapper/1/0 [HC0[0]:SC1[1]:HE1:SE0] takes:
+    ffff88810babe228 (&rxnet->peer_hash_lock){+.?.}-{3:3}, at: rxrpc_put_peer+0xcb/0x180
+    {SOFTIRQ-ON-W} state was registered at:
+      mark_usage+0x164/0x180
+      __lock_acquire+0x544/0x990
+      lock_acquire.part.0+0x103/0x280
+      _raw_spin_lock+0x2f/0x40
+      rxrpc_peer_keepalive_worker+0x144/0x440
+      process_one_work+0x486/0x7c0
+      process_scheduled_works+0x73/0x90
+      worker_thread+0x1c8/0x2a0
+      kthread+0x19b/0x1b0
+      ret_from_fork+0x24/0x40
+      ret_from_fork_asm+0x1a/0x30
+    irq event stamp: 972402
+    hardirqs last  enabled at (972402): [<ffffffff8244360e>] _raw_spin_unlock_irqrestore+0x2e/0x50
+    hardirqs last disabled at (972401): [<ffffffff82443328>] _raw_spin_lock_irqsave+0x18/0x60
+    softirqs last  enabled at (972300): [<ffffffff810ffbbe>] handle_softirqs+0x3ee/0x430
+    softirqs last disabled at (972313): [<ffffffff810ffc54>] __irq_exit_rcu+0x44/0x110
 
-After:
+    other info that might help us debug this:
+     Possible unsafe locking scenario:
+           CPU0
+           ----
+      lock(&rxnet->peer_hash_lock);
+      <Interrupt>
+        lock(&rxnet->peer_hash_lock);
 
- [{'id': 144, 'ifindex': 2, 'inflight': 3072, 'inflight-mem': 12582912,
-   'napi-id': 565},
-  {'id': 143, 'ifindex': 2, 'inflight': 4224, 'inflight-mem': 17301504,
-   'napi-id': 525},
-  {'id': 142, 'ifindex': 2, 'inflight': 4288, 'inflight-mem': 17563648,
-   'napi-id': 524},
-  ...
+     *** DEADLOCK ***
+    1 lock held by swapper/1/0:
+     #0: ffffffff83576be0 (rcu_callback){....}-{0:0}, at: rcu_lock_acquire+0x7/0x30
 
-Fixes: 86e25f40aa1e ("net: napi: Add napi_config")
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250123231620.1086401-1-kuba@kernel.org
+    stack backtrace:
+    CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G            E      6.13.0-rc5-build2+ #1223
+    Tainted: [E]=UNSIGNED_MODULE
+    Hardware name: ASUS All Series/H97-PLUS, BIOS 2306 10/09/2014
+    Call Trace:
+     <IRQ>
+     dump_stack_lvl+0x57/0x80
+     print_usage_bug.part.0+0x227/0x240
+     valid_state+0x53/0x70
+     mark_lock_irq+0xa5/0x2f0
+     mark_lock+0xf7/0x170
+     mark_usage+0xe1/0x180
+     __lock_acquire+0x544/0x990
+     lock_acquire.part.0+0x103/0x280
+     _raw_spin_lock+0x2f/0x40
+     rxrpc_put_peer+0xcb/0x180
+     afs_free_addrlist+0x46/0x90 [kafs]
+     rcu_do_batch+0x2d2/0x640
+     rcu_core+0x2f7/0x350
+     handle_softirqs+0x1ee/0x430
+     __irq_exit_rcu+0x44/0x110
+     irq_exit_rcu+0xa/0x30
+     sysvec_apic_timer_interrupt+0x7f/0xa0
+     </IRQ>
+
+Fixes: 72904d7b9bfb ("rxrpc, afs: Allow afs to pin rxrpc_peer objects")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+Link: https://patch.msgid.link/2095618.1737622752@warthog.procyon.org.uk
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/page_pool/types.h |  1 -
- net/core/dev.c                |  2 +-
- net/core/page_pool.c          |  2 ++
- net/core/page_pool_priv.h     |  2 ++
- net/core/page_pool_user.c     | 15 +++++++++------
- 5 files changed, 14 insertions(+), 8 deletions(-)
+ net/rxrpc/peer_event.c  | 16 ++++++++--------
+ net/rxrpc/peer_object.c | 12 ++++++------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index c022c410abe39..386efddd2aac0 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -236,7 +236,6 @@ struct page_pool {
- 	struct {
- 		struct hlist_node list;
- 		u64 detach_time;
--		u32 napi_id;
- 		u32 id;
- 	} user;
- };
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 71988f2f484b2..a994b1c725098 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6573,7 +6573,7 @@ void napi_resume_irqs(unsigned int napi_id)
- static void __napi_hash_add_with_id(struct napi_struct *napi,
- 				    unsigned int napi_id)
- {
--	napi->napi_id = napi_id;
-+	WRITE_ONCE(napi->napi_id, napi_id);
- 	hlist_add_head_rcu(&napi->napi_hash_node,
- 			   &napi_hash[napi->napi_id % HASH_SIZE(napi_hash)]);
- }
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index f89cf93f6eb45..32570333068d8 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -1108,7 +1108,9 @@ void page_pool_disable_direct_recycling(struct page_pool *pool)
- 	WARN_ON(!test_bit(NAPI_STATE_SCHED, &pool->p.napi->state));
- 	WARN_ON(READ_ONCE(pool->p.napi->list_owner) != -1);
+diff --git a/net/rxrpc/peer_event.c b/net/rxrpc/peer_event.c
+index 552ba84a255c4..5d0842efde69f 100644
+--- a/net/rxrpc/peer_event.c
++++ b/net/rxrpc/peer_event.c
+@@ -238,7 +238,7 @@ static void rxrpc_peer_keepalive_dispatch(struct rxrpc_net *rxnet,
+ 	bool use;
+ 	int slot;
  
-+	mutex_lock(&page_pools_lock);
- 	WRITE_ONCE(pool->p.napi, NULL);
-+	mutex_unlock(&page_pools_lock);
- }
- EXPORT_SYMBOL(page_pool_disable_direct_recycling);
+-	spin_lock(&rxnet->peer_hash_lock);
++	spin_lock_bh(&rxnet->peer_hash_lock);
  
-diff --git a/net/core/page_pool_priv.h b/net/core/page_pool_priv.h
-index 57439787b9c2b..2fb06d5f6d559 100644
---- a/net/core/page_pool_priv.h
-+++ b/net/core/page_pool_priv.h
-@@ -7,6 +7,8 @@
+ 	while (!list_empty(collector)) {
+ 		peer = list_entry(collector->next,
+@@ -249,7 +249,7 @@ static void rxrpc_peer_keepalive_dispatch(struct rxrpc_net *rxnet,
+ 			continue;
  
- #include "netmem_priv.h"
+ 		use = __rxrpc_use_local(peer->local, rxrpc_local_use_peer_keepalive);
+-		spin_unlock(&rxnet->peer_hash_lock);
++		spin_unlock_bh(&rxnet->peer_hash_lock);
  
-+extern struct mutex page_pools_lock;
-+
- s32 page_pool_inflight(const struct page_pool *pool, bool strict);
- 
- int page_pool_list(struct page_pool *pool);
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 48335766c1bfd..6677e0c2e2565 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -3,6 +3,7 @@
- #include <linux/mutex.h>
- #include <linux/netdevice.h>
- #include <linux/xarray.h>
-+#include <net/busy_poll.h>
- #include <net/net_debug.h>
- #include <net/netdev_rx_queue.h>
- #include <net/page_pool/helpers.h>
-@@ -14,10 +15,11 @@
- #include "netdev-genl-gen.h"
- 
- static DEFINE_XARRAY_FLAGS(page_pools, XA_FLAGS_ALLOC1);
--/* Protects: page_pools, netdevice->page_pools, pool->slow.netdev, pool->user.
-+/* Protects: page_pools, netdevice->page_pools, pool->p.napi, pool->slow.netdev,
-+ *	pool->user.
-  * Ordering: inside rtnl_lock
-  */
--static DEFINE_MUTEX(page_pools_lock);
-+DEFINE_MUTEX(page_pools_lock);
- 
- /* Page pools are only reachable from user space (via netlink) if they are
-  * linked to a netdev at creation time. Following page pool "visibility"
-@@ -216,6 +218,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- {
- 	struct net_devmem_dmabuf_binding *binding = pool->mp_priv;
- 	size_t inflight, refsz;
-+	unsigned int napi_id;
- 	void *hdr;
- 
- 	hdr = genlmsg_iput(rsp, info);
-@@ -229,8 +232,10 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 	    nla_put_u32(rsp, NETDEV_A_PAGE_POOL_IFINDEX,
- 			pool->slow.netdev->ifindex))
- 		goto err_cancel;
--	if (pool->user.napi_id &&
--	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_NAPI_ID, pool->user.napi_id))
-+
-+	napi_id = pool->p.napi ? READ_ONCE(pool->p.napi->napi_id) : 0;
-+	if (napi_id >= MIN_NAPI_ID &&
-+	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_NAPI_ID, napi_id))
- 		goto err_cancel;
- 
- 	inflight = page_pool_inflight(pool, false);
-@@ -319,8 +324,6 @@ int page_pool_list(struct page_pool *pool)
- 	if (pool->slow.netdev) {
- 		hlist_add_head(&pool->user.list,
- 			       &pool->slow.netdev->page_pools);
--		pool->user.napi_id = pool->p.napi ? pool->p.napi->napi_id : 0;
--
- 		netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_ADD_NTF);
+ 		if (use) {
+ 			keepalive_at = peer->last_tx_at + RXRPC_KEEPALIVE_TIME;
+@@ -269,17 +269,17 @@ static void rxrpc_peer_keepalive_dispatch(struct rxrpc_net *rxnet,
+ 			 */
+ 			slot += cursor;
+ 			slot &= mask;
+-			spin_lock(&rxnet->peer_hash_lock);
++			spin_lock_bh(&rxnet->peer_hash_lock);
+ 			list_add_tail(&peer->keepalive_link,
+ 				      &rxnet->peer_keepalive[slot & mask]);
+-			spin_unlock(&rxnet->peer_hash_lock);
++			spin_unlock_bh(&rxnet->peer_hash_lock);
+ 			rxrpc_unuse_local(peer->local, rxrpc_local_unuse_peer_keepalive);
+ 		}
+ 		rxrpc_put_peer(peer, rxrpc_peer_put_keepalive);
+-		spin_lock(&rxnet->peer_hash_lock);
++		spin_lock_bh(&rxnet->peer_hash_lock);
  	}
  
+-	spin_unlock(&rxnet->peer_hash_lock);
++	spin_unlock_bh(&rxnet->peer_hash_lock);
+ }
+ 
+ /*
+@@ -309,7 +309,7 @@ void rxrpc_peer_keepalive_worker(struct work_struct *work)
+ 	 * second; the bucket at cursor + 1 goes at now + 1s and so
+ 	 * on...
+ 	 */
+-	spin_lock(&rxnet->peer_hash_lock);
++	spin_lock_bh(&rxnet->peer_hash_lock);
+ 	list_splice_init(&rxnet->peer_keepalive_new, &collector);
+ 
+ 	stop = cursor + ARRAY_SIZE(rxnet->peer_keepalive);
+@@ -321,7 +321,7 @@ void rxrpc_peer_keepalive_worker(struct work_struct *work)
+ 	}
+ 
+ 	base = now;
+-	spin_unlock(&rxnet->peer_hash_lock);
++	spin_unlock_bh(&rxnet->peer_hash_lock);
+ 
+ 	rxnet->peer_keepalive_base = base;
+ 	rxnet->peer_keepalive_cursor = cursor;
+diff --git a/net/rxrpc/peer_object.c b/net/rxrpc/peer_object.c
+index 49dcda67a0d59..956fc7ea4b734 100644
+--- a/net/rxrpc/peer_object.c
++++ b/net/rxrpc/peer_object.c
+@@ -313,10 +313,10 @@ void rxrpc_new_incoming_peer(struct rxrpc_local *local, struct rxrpc_peer *peer)
+ 	hash_key = rxrpc_peer_hash_key(local, &peer->srx);
+ 	rxrpc_init_peer(local, peer, hash_key);
+ 
+-	spin_lock(&rxnet->peer_hash_lock);
++	spin_lock_bh(&rxnet->peer_hash_lock);
+ 	hash_add_rcu(rxnet->peer_hash, &peer->hash_link, hash_key);
+ 	list_add_tail(&peer->keepalive_link, &rxnet->peer_keepalive_new);
+-	spin_unlock(&rxnet->peer_hash_lock);
++	spin_unlock_bh(&rxnet->peer_hash_lock);
+ }
+ 
+ /*
+@@ -348,7 +348,7 @@ struct rxrpc_peer *rxrpc_lookup_peer(struct rxrpc_local *local,
+ 			return NULL;
+ 		}
+ 
+-		spin_lock(&rxnet->peer_hash_lock);
++		spin_lock_bh(&rxnet->peer_hash_lock);
+ 
+ 		/* Need to check that we aren't racing with someone else */
+ 		peer = __rxrpc_lookup_peer_rcu(local, srx, hash_key);
+@@ -361,7 +361,7 @@ struct rxrpc_peer *rxrpc_lookup_peer(struct rxrpc_local *local,
+ 				      &rxnet->peer_keepalive_new);
+ 		}
+ 
+-		spin_unlock(&rxnet->peer_hash_lock);
++		spin_unlock_bh(&rxnet->peer_hash_lock);
+ 
+ 		if (peer)
+ 			rxrpc_free_peer(candidate);
+@@ -411,10 +411,10 @@ static void __rxrpc_put_peer(struct rxrpc_peer *peer)
+ 
+ 	ASSERT(hlist_empty(&peer->error_targets));
+ 
+-	spin_lock(&rxnet->peer_hash_lock);
++	spin_lock_bh(&rxnet->peer_hash_lock);
+ 	hash_del_rcu(&peer->hash_link);
+ 	list_del_init(&peer->keepalive_link);
+-	spin_unlock(&rxnet->peer_hash_lock);
++	spin_unlock_bh(&rxnet->peer_hash_lock);
+ 
+ 	rxrpc_free_peer(peer);
+ }
 -- 
 2.39.5
 
