@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-112714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623CFA28E0A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4136A2925D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C84D77A365A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F2CB169327
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC44149C53;
-	Wed,  5 Feb 2025 14:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F63D192D86;
+	Wed,  5 Feb 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2i7sNkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sh9Qxozt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED47FF510;
-	Wed,  5 Feb 2025 14:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B20416CD1D;
+	Wed,  5 Feb 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764496; cv=none; b=dMRMMv7NEN7uQiXKWsRxkf1XQjI1XJUUdDBcp4tqZxqTjvP0QwDUqFEM1xeFaeVjD8LNly7OSBv6lRB7kkDILnJaa/QS+OxsPGMzcAa2fOSeQtpe0OGoFBVb+MP4Iu0h3gz2I7ZwjYqgYOT3JjSvmpeCL29TC5OJJOvIhrJIAc8=
+	t=1738767089; cv=none; b=A+ARCGv7uem4V5sBTNHWeu2s1W7635V6QznVaHMCsFtgVFxv253fK9yABTvnFl03df9H71YGBuuj8C/Meg1zLURJz7O47rNTwCp9dIyg2vuR7r6aMn+v1fJSTTgpn/6OmOxmDdAM/s1ZyDrWaq5/+/kLvI0Yr78NxcqBWvp2v0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764496; c=relaxed/simple;
-	bh=VXxuC8TSGs3nczTIePN17vtAHlrDaLQdteJbJdI3Yh8=;
+	s=arc-20240116; t=1738767089; c=relaxed/simple;
+	bh=vQIDfsskSjDItqdWd6+vgxIGWjhaS6vplW63VITOP8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ed43jedC5UMLxoXyvBV/cYd4uKE8Zpf7enC6PyrGYecGKa8Q52Hk5GOXSqmPP4w9jQlciJiZ8de7Jwm9i35HXaDrFt9ZGpgxfvdmp7w2NU7H74BaBdNXCG0zNhpIcht5rkbDxXHQN6yXv9ZGxQ0bOcxDMtothgYyUc82e1FoJbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2i7sNkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66F9C4CED1;
-	Wed,  5 Feb 2025 14:08:14 +0000 (UTC)
+	 MIME-Version; b=j01iph6QeObb8F+nBsMXdB7+sQ9jblxZmEYD4xDO5Xm+/oVlbPLpH3hMF7EfEQlYKoyxEdiC6cJsVHxODiMiO2CvZ1OLGvgK93r1SAd/00fMyielVQ0ajeG10DfCO/XsTkfg0hAuralLRSh5qMimD/uqOLwcd6rQbHGtII+aWPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sh9Qxozt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC95C4CED6;
+	Wed,  5 Feb 2025 14:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764495;
-	bh=VXxuC8TSGs3nczTIePN17vtAHlrDaLQdteJbJdI3Yh8=;
+	s=korg; t=1738767089;
+	bh=vQIDfsskSjDItqdWd6+vgxIGWjhaS6vplW63VITOP8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2i7sNkX0LsDf8uFbaxiX5MLfU/Pwk8HzIjjU2Q/2mha+0VTRL2gubV+7cVtnhfNH
-	 5RgasCCV+LPpNDDGylmeInme1c1pCmLUpHENWOeY9k8QwLWr+3lbeG80fmr1r4S9u0
-	 dGu0/xzVYtpe5zPEzmlJRMnX/aapGbEihgKuVSck=
+	b=sh9Qxoztof30s5yrrvQrvJNQCaMQ889QUQBL6OupkFzoaTezSKn+kTGoRpeSnPqMh
+	 2BrEySTykPBowgXH1urYSPw3K4gTUaoNjwXWdGkodqDvQqCFQnFRu+0iP5JQXRLSuM
+	 IjO3fwALyvs06eFTxkSppodNj0EVajBcdvjDHk7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Nigro <fnigro@redhat.com>,
-	Ilan Green <igreen@redhat.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Clark Williams <williams@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>,
+	Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/393] perf namespaces: Fixup the nsinfo__in_pidns() return type, its bool
-Date: Wed,  5 Feb 2025 14:41:36 +0100
-Message-ID: <20250205134427.070256822@linuxfoundation.org>
+Subject: [PATCH 6.13 355/623] ARM: dts: aspeed: yosemite4: Add required properties for IOE on fan boards
+Date: Wed,  5 Feb 2025 14:41:37 +0100
+Message-ID: <20250205134509.807328040@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,66 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
 
-[ Upstream commit 64a7617efd5ae1d57a75e464d7134eec947c3fe3 ]
+[ Upstream commit c64ac96f8f8d957cdc6ec3c93dd9a6c4e6d78506 ]
 
-When adding support for refconunt checking a cut'n'paste made this
-function, that is just an accessor to a bool member of 'struct nsinfo',
-return a pid_t, when that member is a boolean, fix it.
+Add the required properties for IO expander on fan boards.
 
-Fixes: bcaf0a97858de7ab ("perf namespaces: Add functions to access nsinfo")
-Reported-by: Francesco Nigro <fnigro@redhat.com>
-Reported-by: Ilan Green <igreen@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Clark Williams <williams@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Stephane Eranian <eranian@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Yonatan Goldschmidt <yonatan.goldschmidt@granulate.io>
-Link: https://lore.kernel.org/r/20241206204828.507527-6-acme@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 2b8d94f4b4a4 ("ARM: dts: aspeed: yosemite4: add Facebook Yosemite 4 BMC")
+Signed-off-by: Ricky CX Wu <ricky.cx.wu.wiwynn@gmail.com>
+Signed-off-by: Delphine CC Chiu <Delphine_CC_Chiu@wiwynn.com>
+Link: https://patch.msgid.link/20241003074251.3818101-5-Delphine_CC_Chiu@wiwynn.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/namespaces.c | 2 +-
- tools/perf/util/namespaces.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/util/namespaces.c b/tools/perf/util/namespaces.c
-index 36047184d76e2..68f5de2d79c72 100644
---- a/tools/perf/util/namespaces.c
-+++ b/tools/perf/util/namespaces.c
-@@ -266,7 +266,7 @@ pid_t nsinfo__pid(const struct nsinfo  *nsi)
- 	return RC_CHK_ACCESS(nsi)->pid;
- }
+diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+index 7ed76cd4fd2d0..331578b24c204 100644
+--- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
++++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yosemite4.dts
+@@ -470,6 +470,8 @@
+ 			gpio@22{
+ 				compatible = "ti,tca6424";
+ 				reg = <0x22>;
++				gpio-controller;
++				#gpio-cells = <2>;
+ 			};
  
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi)
-+bool nsinfo__in_pidns(const struct nsinfo *nsi)
- {
- 	return RC_CHK_ACCESS(nsi)->in_pidns;
- }
-diff --git a/tools/perf/util/namespaces.h b/tools/perf/util/namespaces.h
-index e014becb9cd8e..e95c79b80e27c 100644
---- a/tools/perf/util/namespaces.h
-+++ b/tools/perf/util/namespaces.h
-@@ -58,7 +58,7 @@ void nsinfo__clear_need_setns(struct nsinfo *nsi);
- pid_t nsinfo__tgid(const struct nsinfo  *nsi);
- pid_t nsinfo__nstgid(const struct nsinfo  *nsi);
- pid_t nsinfo__pid(const struct nsinfo  *nsi);
--pid_t nsinfo__in_pidns(const struct nsinfo  *nsi);
-+bool nsinfo__in_pidns(const struct nsinfo  *nsi);
- void nsinfo__set_in_pidns(struct nsinfo *nsi);
+ 			pwm@23{
+@@ -520,6 +522,8 @@
+ 			gpio@22{
+ 				compatible = "ti,tca6424";
+ 				reg = <0x22>;
++				gpio-controller;
++				#gpio-cells = <2>;
+ 			};
  
- void nsinfo__mountns_enter(struct nsinfo *nsi, struct nscookie *nc);
+ 			pwm@23{
 -- 
 2.39.5
 
