@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D2CA29307
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D97A28FDC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CBC37A0736
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B9D3A6244
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FFA1591E3;
-	Wed,  5 Feb 2025 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E617015B99E;
+	Wed,  5 Feb 2025 14:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivl7jx17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jinQMgd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE8F21345;
-	Wed,  5 Feb 2025 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD27158D96;
+	Wed,  5 Feb 2025 14:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768088; cv=none; b=FOG/YKs4O0gbKuwl3WfLViJT5IAXvWp0nx4Ctq6jRy4P71Ws1c7BncL5CCB1kO7tIainnE9R4HYMHrlPIbO2EifDnPfl8CgP0NYR4/82eSx1rVQ4wV1tR3ymuRF4Ww2WBtKhM/veKMnEWtbMBE6kp+F1P+eJ9pwPGICdObVRRjA=
+	t=1738765734; cv=none; b=cvYYwOJobHh9CHNWaNrew9ZnWbkAj7tpifBaoAaeg42eRl1lZ0Ytfw0YnlGp9m4IZQbzTR3AWllPND21vI3dnaYZ4RDKfvI3kAAayCsdtlvcBCG4RqVjvJ0glQ8CveY+KT9qPphMBBozuqHgjVq5MwpoHKD3tNb+bfYPyyHr4eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768088; c=relaxed/simple;
-	bh=rvHGMpk1xMx4u/7e4CeSdKe+W2iVTGhs6mznBlK3BAE=;
+	s=arc-20240116; t=1738765734; c=relaxed/simple;
+	bh=9KsoTer+z4PtAd66NSDPJo1tqs33o60fve+27smN2yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hd/nIEfSVXwuRovS0sRLUnp+ycH6LZyZEQJXizLVs5BlJBV4piGNvCNIW/SSaIHZuaDPJhEyChj6oPur7PHEJ2f2MFjx4G36AEe/4/R4Mx8mAnAFtii3tkUls+ZDFl1mfBhF3N1HUlwPV7COJ8rmZT2sSefzttQ4rIwbfek1HBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivl7jx17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA0EC4CED1;
-	Wed,  5 Feb 2025 15:08:07 +0000 (UTC)
+	 MIME-Version; b=tEWXZLLbdgXuZxpCU53dw0YWhvKiXEgCvQQicfQuURuJC6+X48O/IxTGqgFZfkauQW1g7nwKFT095yRMdavL8LMC6Rmusv3fm3h9DT61nJHzIbQ3BUh88UxekpxBxK3qXfj8FcJ1mULTk4MSopZ5nUx0GnAcvsIfvC9gaSaFj1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jinQMgd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D4CC4CEE8;
+	Wed,  5 Feb 2025 14:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768087;
-	bh=rvHGMpk1xMx4u/7e4CeSdKe+W2iVTGhs6mznBlK3BAE=;
+	s=korg; t=1738765734;
+	bh=9KsoTer+z4PtAd66NSDPJo1tqs33o60fve+27smN2yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivl7jx17EHTXIyZaVHb+6q0TXyURC8r6vZB0qBFDGDqiLy6bpJYlhCFe4iA5O6xWh
-	 nEtwwHTcLN04Y1qBxfqwbOAr8jtRwN3Xj5pwJbNzLxY9VVNwyid3a8cqWA7y7Yd7Y2
-	 pfYLQiybrqQTHcdsCfQflOmq3MFz2g/hU6B+YwYk=
+	b=jinQMgd10oqbpTSWdAKWG8wqYzsl3ZB3j5Gq/zECytwiR1tUWhi8C08TSwxG1Atq1
+	 2s4Q2BhuGNQ1KdoBWN7gIvV9Jr9EJb3TqJRS2QlrltcgGvhMF9RspdNZIoOZFGhXzj
+	 RPjgu1m3G9tTae06hXOfPsKkB1rvYxyUr/JsJhtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 471/623] PCI: endpoint: pci-epf-test: Fix check for DMA MEMCPY test
+Subject: [PATCH 6.6 294/393] media: nxp: imx8-isi: fix v4l2-compliance test errors
 Date: Wed,  5 Feb 2025 14:43:33 +0100
-Message-ID: <20250205134514.237349061@linuxfoundation.org>
+Message-ID: <20250205134431.563171752@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
 
-[ Upstream commit 235c2b197a8de2887f13990094a3343d2392155b ]
+[ Upstream commit 7b12ab055edef2f51733d155617a401a05237bcc ]
 
-Currently, if DMA MEMCPY test is requested by the host, and if the endpoint
-DMA controller supports DMA_PRIVATE, the test will fail. This is not
-correct since there is no check for DMA_MEMCPY capability and the DMA
-controller can support both DMA_PRIVATE and DMA_MEMCPY.
+Running the v4l2-compliance (1.27.0-5208, SHA: af114250d48d) on the m2m
+device fails on the MMAP streaming tests, with the following messages:
 
-Fix the check and also reword the error message.
+fail: v4l2-test-buffers.cpp(240): g_field() == V4L2_FIELD_ANY
+fail: v4l2-test-buffers.cpp(1508): buf.qbuf(node)
 
-Link: https://lore.kernel.org/r/20250116171650.33585-2-manivannan.sadhasivam@linaro.org
-Fixes: 8353813c88ef ("PCI: endpoint: Enable DMA tests for endpoints with DMA capabilities")
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-pci/Z3QtEihbiKIGogWA@ryzen
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Apparently, the driver does not properly set the field member of
+vb2_v4l2_buffer struct, returning the default V4L2_FIELD_ANY value which
+is against the guidelines.
+
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240924103304.124085-1-laurentiu.palcu@oss.nxp.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-test.c b/drivers/pci/endpoint/functions/pci-epf-test.c
-index d90c8be7371e0..b2fdd8c82c438 100644
---- a/drivers/pci/endpoint/functions/pci-epf-test.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-test.c
-@@ -328,8 +328,8 @@ static void pci_epf_test_copy(struct pci_epf_test *epf_test,
- 	void *copy_buf = NULL, *buf;
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+index 10840c9a0912b..111be77eca1ca 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-video.c
+@@ -861,6 +861,7 @@ int mxc_isi_video_buffer_prepare(struct mxc_isi_dev *isi, struct vb2_buffer *vb2
+ 				 const struct mxc_isi_format_info *info,
+ 				 const struct v4l2_pix_format_mplane *pix)
+ {
++	struct vb2_v4l2_buffer *v4l2_buf = to_vb2_v4l2_buffer(vb2);
+ 	unsigned int i;
  
- 	if (reg->flags & FLAG_USE_DMA) {
--		if (epf_test->dma_private) {
--			dev_err(dev, "Cannot transfer data using DMA\n");
-+		if (!dma_has_cap(DMA_MEMCPY, epf_test->dma_chan_tx->device->cap_mask)) {
-+			dev_err(dev, "DMA controller doesn't support MEMCPY\n");
- 			ret = -EINVAL;
- 			goto set_status;
- 		}
+ 	for (i = 0; i < info->mem_planes; i++) {
+@@ -875,6 +876,8 @@ int mxc_isi_video_buffer_prepare(struct mxc_isi_dev *isi, struct vb2_buffer *vb2
+ 		vb2_set_plane_payload(vb2, i, size);
+ 	}
+ 
++	v4l2_buf->field = pix->field;
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
