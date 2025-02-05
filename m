@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D54A28E97
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFEBEA28F60
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F348162A73
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C00B163792
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D807E14B959;
-	Wed,  5 Feb 2025 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9900F154C08;
+	Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvNb6LXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdzBWWu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B7B15198D;
-	Wed,  5 Feb 2025 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512B14A088;
+	Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764896; cv=none; b=qbCNR002GrQ2fcbNkhYMTNZe9AGuBMoHFjx5jS6JM2Ntc4f2/+8VWVrOXdNHbXHkSTq7wD3UrINrAyxwtmjZNUe4r+x2jFDoThlAtiy2/GC5dd5kd+OEIDZW50loKi3QWgu7oI2fqaWUZHfsoN+bq7ePwInEe4IqBdYrYPbQEYs=
+	t=1738765463; cv=none; b=SscvMmpTKMTeeiNEE1T7VpYg3d1zMLc3P1S08MWaCnfklacHOQprFjSBzZc7wTRj5HI/P0kNsEn8EAT64wJiozpMrkBeZWAm1EhlmtrtTjb2gwOFUpZPC/VDsZMfQntO29f6gEYgK3ef5UfqEdxDlLnmAOFzFIS5ITLBuqXoYGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764896; c=relaxed/simple;
-	bh=nBIAJB15vB47iKQquxarG/dN2TdfENBtRUKcw767JSg=;
+	s=arc-20240116; t=1738765463; c=relaxed/simple;
+	bh=7D4+eenryfWlG3QQ04/ccRhgpPPi7V+dcUi/Ekj8HHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6SzSpQfdTf2OwXnrJoAqI9jINFkR9EHun8f6DoZNCXBHI61KJg94Y/PbGFRARiA21R0YLg678xQGAt1cWEHKDQkuJCl6HCQZidBzF7vil9O06KoPiBafIJT7s4+nlJlXIik5PAOrlpMBrk0qHHs4EvM6PVMR20E5PO2hTIxU0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvNb6LXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E713DC4CED1;
-	Wed,  5 Feb 2025 14:14:55 +0000 (UTC)
+	 MIME-Version; b=FOJa6Vfh2mai1d5a1nj8TOUgCr+3a29PbE9WATS4lmuglv4o+8bHSo/70hj11ZN8IsZBLRr8Qc/HmzaJg0DKxhs8J+wj5UXzCWZhSJ4Ob21VcGT2RzsATEyGb+wL+TCPgMBLjNBzpi7rXQZNA9Gww9kR4FWalDptqC0s+fCg2Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdzBWWu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54DFC4CED1;
+	Wed,  5 Feb 2025 14:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764896;
-	bh=nBIAJB15vB47iKQquxarG/dN2TdfENBtRUKcw767JSg=;
+	s=korg; t=1738765463;
+	bh=7D4+eenryfWlG3QQ04/ccRhgpPPi7V+dcUi/Ekj8HHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvNb6LXEHknWeTRS7nX6q/BE9h+ZHul9Qw7PIMhLBy8RtBueHkQ14Z6W/jmekpZXs
-	 9SOsAd7NuvNU2qwlIUCa12relTTI+5xUc3jaYES0BtumdgU/oikXz+4QVUxHRUZy6V
-	 sta1O+vU3s3Nv2zIoUsr3vUY9ifgmyntABShf9z0=
+	b=KdzBWWu3ImETw1AE0Fr/t0cNW3I8Fd9mfv3jXJrkT6NNh4tWmzjj385evHFCpiCam
+	 89hI1tu1aySJmVlTCatln8dGZQRZanOV3hh4xEC3K/G2+/n9EEaixlI8mM8iziYxJ2
+	 E4k6EValz+3j35M3BFG5QCdMGiPhHCU7vP7vhrKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Drew Fustini <dfustini@tenstorrent.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/590] clk: thead: Fix clk gate registration to pass flags
+Subject: [PATCH 6.13 180/623] wifi: mt76: mt7915: Fix an error handling path in mt7915_add_interface()
 Date: Wed,  5 Feb 2025 14:38:42 +0100
-Message-ID: <20250205134501.671246555@linuxfoundation.org>
+Message-ID: <20250205134503.121516272@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Drew Fustini <dfustini@tenstorrent.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a826e53fd78c7f07b8ff83446c44b227b2181920 ]
+[ Upstream commit 126a516fe30639708e759678bcb10178938cc718 ]
 
-Modify the call to devm_clk_hw_register_gate_parent_data() to actually
-pass the clk flags from hw.init instead of just 0. This is necessary to
-allow individual clk gates to specify their own clk flags.
+If mt76_wcid_alloc() fails, the "mt76.mutex" mutex needs to be released as
+done in the other error handling paths of mt7915_add_interface().
 
-Fixes: ae81b69fd2b1 ("clk: thead: Add support for T-Head TH1520 AP_SUBSYS clocks")
-Signed-off-by: Drew Fustini <dfustini@tenstorrent.com>
-Link: https://lore.kernel.org/r/20250113-th1520-clk_ignore_unused-v1-1-0b08fb813438@tenstorrent.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: f3049b88b2b3 ("wifi: mt76: mt7915: allocate vif wcid in the same range as stations")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://patch.msgid.link/b9d8fbfc19360bfe60b9cea1cb0f735ab3b4bc26.1727639596.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/thead/clk-th1520-ap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-index 1015fab952515..c95b6e26ca531 100644
---- a/drivers/clk/thead/clk-th1520-ap.c
-+++ b/drivers/clk/thead/clk-th1520-ap.c
-@@ -1048,7 +1048,8 @@ static int th1520_clk_probe(struct platform_device *pdev)
- 		hw = devm_clk_hw_register_gate_parent_data(dev,
- 							   cg->common.hw.init->name,
- 							   cg->common.hw.init->parent_data,
--							   0, base + cg->common.cfg0,
-+							   cg->common.hw.init->flags,
-+							   base + cg->common.cfg0,
- 							   ffs(cg->enable) - 1, 0, NULL);
- 		if (IS_ERR(hw))
- 			return PTR_ERR(hw);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 8183708a9b355..351285daac99f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -246,8 +246,10 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+ 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
+ 
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
+-	if (idx < 0)
+-		return -ENOSPC;
++	if (idx < 0) {
++		ret = -ENOSPC;
++		goto out;
++	}
+ 
+ 	INIT_LIST_HEAD(&mvif->sta.rc_list);
+ 	INIT_LIST_HEAD(&mvif->sta.wcid.poll_list);
 -- 
 2.39.5
 
