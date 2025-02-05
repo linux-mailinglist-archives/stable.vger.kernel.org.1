@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC8AA291C9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EE8A28E01
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6FCE188D5C3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ABD3188898A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA051953A2;
-	Wed,  5 Feb 2025 14:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D099514A088;
+	Wed,  5 Feb 2025 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yd7g+v0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOH18ugN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0107194A75;
-	Wed,  5 Feb 2025 14:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0AAF510;
+	Wed,  5 Feb 2025 14:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766584; cv=none; b=j2hWtxYbZAN9eELSug4X2KIm6ZW3rMqJqrvZfmeIw5Uqoqo/yUglkynsU3oteFAkUy10lSLjDMPtndlD6akur/UNe7tDuDwUJ4pHYyKeDoVn1N4Oj1+nTLgq9EoIi8YaUskuxnO1P/UDuAaBl8DQZIxA3/CfuxcHmCpW9ZOwZjA=
+	t=1738764450; cv=none; b=bakQTeE6YOYclJvM7xrzHge7Wcx11yPqGseCrYR21MfKu9vh/uQnMNd17GUhodr57UuCVpXwgJmSo6RAvr498G/0pp6hlzltORX4tk1obYfy0x10+so6bPv7fVHH/Ci229L9WykAoSIZUpmCMC7q1x/7pDXAPCrR3DIkp56vyZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766584; c=relaxed/simple;
-	bh=8QGXhGHmkQTiJ7GzxHiAI7vlIhToj4qAa++phIbk+RA=;
+	s=arc-20240116; t=1738764450; c=relaxed/simple;
+	bh=ojB36FLa+3Vhxp5CqE+p7CMYS3Igzi0GuXgFU6jVOsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQm3QyakTb4fTSUaX+0aNC8b/EVchBI4k/QHzL/U/VY6g3iPOADvb7XG4l5YZCCHQGlj0nyzUTP1junVoKFgWYFs3YsONaU0DMCwqz5NxowyE8CRizoSMSpskQW/fI3Z8DWC2SFjBOB6SPSeQ7wdfBHm8j+V9xX4wio2ihnRFnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yd7g+v0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCCAC4CEE3;
-	Wed,  5 Feb 2025 14:43:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qjh4nJvZ2W0PPq64/8TFeUo91nGOYcZbLCL9mXoVrBupSXRfRPskeHwLAcQAOO16YY95+FX0+qjWvVndkyhoOhiCN2L4mpZ6IBHEttyaGBPHfR2zkHoT3nIMd5c/QY2k0kO8DrhifTpjpGOOyGCDgnaFpSPO/kFvFPAmpEZQs6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOH18ugN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE73C4CED1;
+	Wed,  5 Feb 2025 14:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766583;
-	bh=8QGXhGHmkQTiJ7GzxHiAI7vlIhToj4qAa++phIbk+RA=;
+	s=korg; t=1738764450;
+	bh=ojB36FLa+3Vhxp5CqE+p7CMYS3Igzi0GuXgFU6jVOsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yd7g+v0ei3ujD7V6gmoM+UmTau8t44e8snLp5gZ2aRghvtSPFilH9eu46DH4UsDkR
-	 9IVACzSPsbhDxHIKDr6TRn0yQm8hkpfvMFBdCyacTEVuzBSvfiYYy3onf+iA189sGK
-	 2x3RCof9iKmwxZZBvEJlwrh404CIY/omWCL3fJwA=
+	b=HOH18ugNvsVApcIRH4HJ2xcXkMnm+7FNFGep3d2hmTu/dTjnSnAM1Tttb2YabcB94
+	 amPJ9CVUyFdLrAbK32GhPWSIZydlkkcAMqnJ5HbZRDbVefvwKDsYRlaUCniWEIRFSN
+	 F23gX8g1dfNj2ssIGJ8D5o+PWcMAZpJds+Ix3HG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 337/590] arm64: dts: qcom: msm8996-xiaomi-gemini: Fix LP5562 LED1 reg property
+Subject: [PATCH 6.6 173/393] padata: fix sysfs store callback check
 Date: Wed,  5 Feb 2025 14:41:32 +0100
-Message-ID: <20250205134508.169645629@linuxfoundation.org>
+Message-ID: <20250205134426.912380315@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 02e784c5023232c48c6ec79b52ac8929d4e4db34 ]
+[ Upstream commit 9ff6e943bce67d125781fe4780a5d6f072dc44c0 ]
 
-The LP5562 led@1 reg property should likely be set to 1 to match
-the unit. Fix it.
+padata_sysfs_store() was copied from padata_sysfs_show() but this check
+was not adapted. Today there is no attribute which can fail this
+check, but if there is one it may as well be correct.
 
-Fixes: 4ac46b3682c5 ("arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241006022012.366601-1-marex@denx.de
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5e017dc3f8bc ("padata: Added sysfs primitives to padata subsystem")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts | 2 +-
+ kernel/padata.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index f8e9d90afab00..dbad8f57f2fa3 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -64,7 +64,7 @@
- 		};
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 9bf77b58ee08d..427f28db6b259 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -967,7 +967,7 @@ static ssize_t padata_sysfs_store(struct kobject *kobj, struct attribute *attr,
  
- 		led@1 {
--			reg = <0>;
-+			reg = <1>;
- 			chan-name = "button-backlight1";
- 			led-cur = /bits/ 8 <0x32>;
- 			max-cur = /bits/ 8 <0xc8>;
+ 	pinst = kobj2pinst(kobj);
+ 	pentry = attr2pentry(attr);
+-	if (pentry->show)
++	if (pentry->store)
+ 		ret = pentry->store(pinst, attr, buf, count);
+ 
+ 	return ret;
 -- 
 2.39.5
 
