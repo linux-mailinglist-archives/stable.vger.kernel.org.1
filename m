@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-112873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B792A28ED1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E53AA28DFD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B9341661AE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83DD167764
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C9515667B;
-	Wed,  5 Feb 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975F51519AA;
+	Wed,  5 Feb 2025 14:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THtWIgsK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pFdKDD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F27F1519A4;
-	Wed,  5 Feb 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5452714F9E7;
+	Wed,  5 Feb 2025 14:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765044; cv=none; b=l/dUaIxV50vG5CnlbrLU0/j3xXCxkbWju2j8r867UTGHw3OV/f49NE7da6zqOlywy72SSX+4OYok7r/IM6tHDC5cVS8SlZ4gHHcXiP+ABxOar2ysrPYBOBEK/6M63fFzjaZxjN/hi+9kRfamt4T5lXb0dxm1/yKIi5/0yeq51GE=
+	t=1738764457; cv=none; b=WUYaHh7OShELpz13v5rEDlIgXbxxilwqnGaEmKbjCp117Y9TBIKJQxGOqsNKxUc/6CcfeUXIetGrG2FPwVjOu/+bu4TqVlZXJhXI3/2Q1ztSptIMJeh2sYiljFkElzc2GQ10HifJlYd+KEpwx9GUtPw9lAv22T8QiR8/qHznwes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765044; c=relaxed/simple;
-	bh=is/9JzPBWkJ0DXFTFGvbQwOn4+/17i1AK0jCkJh8PnA=;
+	s=arc-20240116; t=1738764457; c=relaxed/simple;
+	bh=HeL8VraQeo+2d8/U/AnhPxnoDlvZN720i+jY2ejMf2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXU3YR9Md8kgsHqNgZvgT35UHO7qomF3i4mLKEPW6iA1X4yZjYzCeCUd36ZPPUvmPyG7ioJ7kGDoG5dLt1lHL9Nzz9XAzgNF65KJuNcSD9b760C8X3J6qggU5bsopBUt02tUnP2LQ7UdMhRTfdSLv5xjs4ShxipX6XdTqWZtsEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THtWIgsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D69C4CED6;
-	Wed,  5 Feb 2025 14:17:23 +0000 (UTC)
+	 MIME-Version; b=AcRweJrD510pUUDl5pCw7GB81TETNdlVo5bwMCU4TF/9994CaTfTBQdIDg5d7icu24CywJYZOqnFS09KKKsJtPIuJOiLtekzHpnNB8CWtt0lly3LgtmcNRC8HQKOCT772HbJp4PDB0dHhzOSgP9dRhSDekU0euFidHIrNRq9bPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pFdKDD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90ABC4CED1;
+	Wed,  5 Feb 2025 14:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765044;
-	bh=is/9JzPBWkJ0DXFTFGvbQwOn4+/17i1AK0jCkJh8PnA=;
+	s=korg; t=1738764457;
+	bh=HeL8VraQeo+2d8/U/AnhPxnoDlvZN720i+jY2ejMf2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THtWIgsKLchsI7fnJBKWU783N5xgnpMSAmIiw9Mx+/BXDdmYe87KRooALW35yZ1aE
-	 EFZ7XLQdGn5azPtf2wnVTu9jZKUxKJ0G1QSHkL0CGXVK4WcgcvI3BJPvfKyJPxuPln
-	 0nS9vn+5dpKkXf4v28YSRf+i0KiKu5frQhMVhY9Y=
+	b=2pFdKDD78CCHqWpydR5R0adt7aYMmluGmTBqTnSJpfgo7CiCjaH+obHpfoBO8GzHN
+	 aRvwWYTM7n2V1CIpfOStG4noxSnfmQTbPoxWn05fXkU7hj5HHKyxtNvMbwLforDkGj
+	 KmDHxwdVVcVe1+1AX4iDPITGaq61XHLqOZoWdCBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank Oltmanns <frank@oltmanns.dev>,
-	Stuart Gathman <stuart@gathman.org>
-Subject: [PATCH 6.13 138/623] clk: sunxi-ng: a64: stop force-selecting PLL-MIPI as TCON0 parent
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 125/590] clk: imx93: Add IMX93_CLK_SPDIF_IPG clock
 Date: Wed,  5 Feb 2025 14:38:00 +0100
-Message-ID: <20250205134501.512523883@linuxfoundation.org>
+Message-ID: <20250205134500.043656564@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 383ca7bee8a93be9ff5a072936981c2710d2856b ]
+[ Upstream commit 6a7853544482e2336b5b8bb9a4b964f9d687f290 ]
 
-Stop force-selecting PLL-MIPI as TCON0 parent, since it breaks video
-output on Pinebook that uses RGB to eDP bridge.
+Split IMX93_CLK_SPDIF_IPG from IMX93_CLK_SPDIF_GATE
+because the IMX93_CLK_SPDIF_GATE controls the gate
+of IPG clock and root clock. Without this change,
+disabling IMX93_CLK_SPDIF_GATE would also disable
+the IPG clock, causing register access failures.
 
-Partially revert commit ca1170b69968 ("clk: sunxi-ng: a64: force
-select PLL_MIPI in TCON0 mux"), while still leaving
-CLK_SET_RATE_NO_REPARENT flag set, since we do not want the clock to
-be reparented.
-
-The issue is that apparently different TCON0 outputs require a different
-clock, or the mux might be selecting the output type.
-
-I did an experiment: I manually configured PLL_MIPI and PLL_VIDEO0_2X
-to the same clock rate and flipped the switch with devmem. Experiment
-clearly showed that whenever PLL_MIPI is selected as TCON0 clock parent,
-the video output stops working.
-
-Therefore, TCON0 clock parent corresponding to the output type must be
-assigned in the device tree.
-
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
-Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Link: https://patch.msgid.link/20250104074035.1611136-5-anarsoul@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241119015805.3840606-3-shengjiu.wang@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/clk/imx/clk-imx93.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-index 3a7d61c816672..ba1ad267f1233 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-@@ -535,11 +535,11 @@ static SUNXI_CCU_M_WITH_MUX_GATE(de_clk, "de", de_parents,
- 				 CLK_SET_RATE_PARENT);
+diff --git a/drivers/clk/imx/clk-imx93.c b/drivers/clk/imx/clk-imx93.c
+index 58a516dd385bf..eb818db008fb6 100644
+--- a/drivers/clk/imx/clk-imx93.c
++++ b/drivers/clk/imx/clk-imx93.c
+@@ -15,7 +15,7 @@
  
- /*
-- * DSI output seems to work only when PLL_MIPI selected. Set it and prevent
-- * the mux from reparenting.
-+ * Experiments showed that RGB output requires pll-video0-2x, while DSI
-+ * requires pll-mipi. It will not work with incorrect clock, the screen will
-+ * be blank.
-+ * sun50i-a64.dtsi assigns pll-mipi as TCON0 parent by default
-  */
--#define SUN50I_A64_TCON0_CLK_REG	0x118
--
- static const char * const tcon0_parents[] = { "pll-mipi", "pll-video0-2x" };
- static const u8 tcon0_table[] = { 0, 2, };
- static SUNXI_CCU_MUX_TABLE_WITH_GATE_CLOSEST(tcon0_clk, "tcon0", tcon0_parents,
-@@ -959,11 +959,6 @@ static int sun50i_a64_ccu_probe(struct platform_device *pdev)
+ #include "clk.h"
  
- 	writel(0x515, reg + SUN50I_A64_PLL_MIPI_REG);
+-#define IMX93_CLK_END 207
++#define IMX93_CLK_END 208
  
--	/* Set PLL MIPI as parent for TCON0 */
--	val = readl(reg + SUN50I_A64_TCON0_CLK_REG);
--	val &= ~GENMASK(26, 24);
--	writel(val | (0 << 24), reg + SUN50I_A64_TCON0_CLK_REG);
--
- 	ret = devm_sunxi_ccu_probe(&pdev->dev, reg, &sun50i_a64_ccu_desc);
- 	if (ret)
- 		return ret;
+ #define PLAT_IMX93 BIT(0)
+ #define PLAT_IMX91 BIT(1)
+@@ -38,6 +38,7 @@ static u32 share_count_sai2;
+ static u32 share_count_sai3;
+ static u32 share_count_mub;
+ static u32 share_count_pdm;
++static u32 share_count_spdif;
+ 
+ static const char * const a55_core_sels[] = {"a55_alt", "arm_pll"};
+ static const char *parent_names[MAX_SEL][4] = {
+@@ -252,7 +253,8 @@ static const struct imx93_clk_ccgr {
+ 	{ IMX93_CLK_MQS1_GATE,		"mqs1",		"sai1_root",		0x9b00, },
+ 	{ IMX93_CLK_MQS2_GATE,		"mqs2",		"sai3_root",		0x9b40, },
+ 	{ IMX93_CLK_AUD_XCVR_GATE,	"aud_xcvr",	"audio_xcvr_root",	0x9b80, },
+-	{ IMX93_CLK_SPDIF_GATE,		"spdif",	"spdif_root",		0x9c00, },
++	{ IMX93_CLK_SPDIF_IPG,		"spdif_ipg_clk", "bus_wakeup_root",	0x9c00, 0, &share_count_spdif},
++	{ IMX93_CLK_SPDIF_GATE,		"spdif",	"spdif_root",		0x9c00, 0, &share_count_spdif},
+ 	{ IMX93_CLK_HSIO_32K_GATE,	"hsio_32k",	"osc_32k",		0x9dc0, },
+ 	{ IMX93_CLK_ENET1_GATE,		"enet1",	"wakeup_axi_root",	0x9e00, 0, NULL, PLAT_IMX93, },
+ 	{ IMX93_CLK_ENET_QOS_GATE,	"enet_qos",	"wakeup_axi_root",	0x9e40, 0, NULL, PLAT_IMX93, },
 -- 
 2.39.5
 
