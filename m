@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC342A28D8F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13935A28E0D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C04E3A3E9E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1213A28BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C767D155382;
-	Wed,  5 Feb 2025 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BEB1459F6;
+	Wed,  5 Feb 2025 14:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC6xwjly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnnfSaKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836C1155327;
-	Wed,  5 Feb 2025 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5D6F510;
+	Wed,  5 Feb 2025 14:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764024; cv=none; b=bBukGVKEG7KO9WR+4iX6DLK7oHdKSaGQg64bG9P8gqVFSOlysnI6RlOCG/c4wuv1uIyAifAzWUGaI5ekcQzks5BTWmo1qCdiKzGNhb/cT5/6aRXiVX68dgImSkKYEical6uwTytVJcBwXg3EPXwOJZC8MoIr7PIC8I44fGr4O3k=
+	t=1738764436; cv=none; b=MTkZ1QQl0fKqmW7pOydL9yVrp/XbiuHFb0wKOEe2myCSLCw8hpBKUtsCTOJa6MqQiLYUYSHj3EXh8bjMidvlkI6JDmWNujPDC0gqSGLAaHeOLbxabTTFSmqbKwVOYXz+4amWD0VyHBO8wIa0FVsOrSNlx+i9krCEPzl+BTp4QK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764024; c=relaxed/simple;
-	bh=JcQ1qezCeCe5wLD6mZE4dyZUTENwCKaN38laOUQRmlI=;
+	s=arc-20240116; t=1738764436; c=relaxed/simple;
+	bh=tNsUcXFzmt0QykcNrFTI7jgyiqMB22Mb6lJ61fcPr+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hh1sqSWDrtM63sbQ5kIDCEP/VzgERUSc/oZkGhzqySICYthEuOueQfWBiT9HuAt/cOorr7t1P53dZX8MDby4xp1czAngRPNbIJ6n5GAI99rxT3MXjbADXFIOm/N+4buiHNIjDIJT/qOtOSzyqii3xB+Xnjl3gZc9sJuqod4jmeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC6xwjly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03349C4CED1;
-	Wed,  5 Feb 2025 14:00:23 +0000 (UTC)
+	 MIME-Version; b=oRtucJM69UzFgFTkZUHOQd5FzQUThGwJMdw0QXpKrPW1t/ZVB+Bfm6NmxqdpywCVNEOwBhHG7L8DHzGukeB+GhecEY+e0MeGGqDM6YNuBi8Eg9FZjksyAOJXoToC18U38gwBjFAMyB3mvGtXEWM40XqoZqcCj3TCj7gOAH9O51Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnnfSaKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE8C4CEDD;
+	Wed,  5 Feb 2025 14:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764024;
-	bh=JcQ1qezCeCe5wLD6mZE4dyZUTENwCKaN38laOUQRmlI=;
+	s=korg; t=1738764436;
+	bh=tNsUcXFzmt0QykcNrFTI7jgyiqMB22Mb6lJ61fcPr+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC6xwjlyxwX1ldkbWdX2UZYyUf1iWn3QBj2Wqb+WynpKI2/G+KUG2V1XLROuKt8sU
-	 vS68VpyNMnbVIg2LW4i5+VC9nRsII6oz7X36R2houqaQRJ0FBYve/ppJ71lMb+TIua
-	 zOxrlmkAK4ukvQxA7WykLYxn91JZ+a9+U77DXXkY=
+	b=TnnfSaKM5iwtfLyqCs7M5Iytn/TZjYw/uzSrLdc008wNi4DJaCaNNHhfItlK+hoix
+	 uinOqjyqUofaOd5Fpnap9KjQx+Mz/KPe6PDPO8WtODfdBR+PdQaSoPk6g6MMYlrHMX
+	 gXkOE6wM2Tkg9R9UezU6yT06ZP6iytEzpUxaWUUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hermes Wu <hermes.wu@ite.com.tw>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/590] drm/msm/dpu: link DSPP_2/_3 blocks on SM8650
-Date: Wed,  5 Feb 2025 14:36:59 +0100
-Message-ID: <20250205134457.705300668@linuxfoundation.org>
+Subject: [PATCH 6.13 078/623] drm/bridge: it6505: Change definition of AUX_FIFO_MAX_SIZE
+Date: Wed,  5 Feb 2025 14:37:00 +0100
+Message-ID: <20250205134459.209886696@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Hermes Wu <hermes.wu@ite.com.tw>
 
-[ Upstream commit 3d3ca0915aa3692a837f7235ca9d12db26f09911 ]
+[ Upstream commit c14870218c14532b0f0a7805b96a4d3c92d06fb2 ]
 
-Link DSPP_2 to the LM_2 and DSPP_3 to the LM_3 mixer blocks. This allows
-using colour transformation matrix (aka night mode) with more outputs at
-the same time.
+The hardware AUX FIFO is 16 bytes
+Change definition of AUX_FIFO_MAX_SIZE to 16
 
-Fixes: b94747f7d8c7 ("drm/msm/dpu: add support for SM8650 DPU")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/629962/
-Link: https://lore.kernel.org/r/20241220-dpu-fix-catalog-v2-7-38fa961ea992@linaro.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-1-e0fdd4844703@ite.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_10_0_sm8650.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_10_0_sm8650.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_10_0_sm8650.h
-index eb5dfff2ec4f4..e187e7b1cef16 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_10_0_sm8650.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_10_0_sm8650.h
-@@ -160,6 +160,7 @@ static const struct dpu_lm_cfg sm8650_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_3,
- 		.pingpong = PINGPONG_2,
-+		.dspp = DSPP_2,
- 	}, {
- 		.name = "lm_3", .id = LM_3,
- 		.base = 0x47000, .len = 0x400,
-@@ -167,6 +168,7 @@ static const struct dpu_lm_cfg sm8650_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_2,
- 		.pingpong = PINGPONG_3,
-+		.dspp = DSPP_3,
- 	}, {
- 		.name = "lm_4", .id = LM_4,
- 		.base = 0x48000, .len = 0x400,
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 008d86cc562af..cf891e7677c0e 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -300,7 +300,7 @@
+ #define MAX_CR_LEVEL 0x03
+ #define MAX_EQ_LEVEL 0x03
+ #define AUX_WAIT_TIMEOUT_MS 15
+-#define AUX_FIFO_MAX_SIZE 32
++#define AUX_FIFO_MAX_SIZE 16
+ #define PIXEL_CLK_DELAY 1
+ #define PIXEL_CLK_INVERSE 0
+ #define ADJUST_PHASE_THRESHOLD 80000
 -- 
 2.39.5
 
