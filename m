@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-113249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8736BA290AC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421B8A29367
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C27B1886612
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC15F3AE6BA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67DA15854F;
-	Wed,  5 Feb 2025 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD17818FDB1;
+	Wed,  5 Feb 2025 15:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTLEoU2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naZhONY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644DE1632C8;
-	Wed,  5 Feb 2025 14:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BC118E368;
+	Wed,  5 Feb 2025 15:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766323; cv=none; b=OVO127V5yLGibD435RIZSSun6eRHk7yhDT0oP5/sKJsOeh4l083cI3XptMIMqTUX//r0WjmB7zyCpXOselXhAgL7EKOBBRCMpZv2XDo+P+ev38LH5yFjn6aO7MXgQoJfcMnEN+Q/xfrKSqxCYXrwIbxPmspZv+P0RyW6lbVALz4=
+	t=1738767839; cv=none; b=eeDLXV89LJBabAcNzcIQZPCAe2MfEhm4gRS9Gr5aDOgnCT0dbZ72IospJlh3ERFmNwB2aLWBb+EbOlNI8KSmXK71ZHs89NzwJMDFcJ6bIkL6xPMgA3TnqqlzpG4sz0YkwNphTNCYLYTfjXMnhb+F7945sipz0BJMkHTVfrgro3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766323; c=relaxed/simple;
-	bh=pNNzTnHvwL7m4TvQeQzmRCmby/bGgatwk8V2m5KJR9I=;
+	s=arc-20240116; t=1738767839; c=relaxed/simple;
+	bh=YNvH35D7KuM0SQPHksmQWtuwtvodKrkyToF3wWwJUpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQCYuiWJoa2L2qpBpfk6ZbS86TS2+TxQf3x157PjNOQqweJEZLbSt+90RBphuT6r3GdSUrepHnUX9g3pXFEhXUpeDX9BhPz+A4iiwNZ0A8bLMJ5Vf20gAPmmHDwuvltHfR9T+pOjdpynu8SvGrd7ZKWsdbzHPi5cvDJkCzmUHpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTLEoU2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BEBC4CED1;
-	Wed,  5 Feb 2025 14:38:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ueHktW/PBAhcypELoythCy1tSrZAuhVg0vkHIh//j2ylrNw5QlfTe4uDbaSNo4Fo7d37IujZq9DgMOH04pKwoY93X9DZabuktFrPUDlO3Z/SrZx8u5125IpqHFoIVRdfHQHO8fD477nfk50nQudHfyh+e0stm0Wb3o5TtT9HH7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naZhONY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BA6C4CED1;
+	Wed,  5 Feb 2025 15:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766323;
-	bh=pNNzTnHvwL7m4TvQeQzmRCmby/bGgatwk8V2m5KJR9I=;
+	s=korg; t=1738767839;
+	bh=YNvH35D7KuM0SQPHksmQWtuwtvodKrkyToF3wWwJUpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTLEoU2TM+ddZMh5k08qxGV0RmB7Yy1dAa/N3piDM0/8/Je68+gdNuRZScoBBqjYZ
-	 xaKB3xW/idb5WdcGGPGxuAAzi53MvTrhb/g5IvM7mVvEBJKTARMBnlXGNLBQyGP82D
-	 ztV2auTHSpd2L/C0iznLpGDauwDv8kqrqTr6lpcY=
+	b=naZhONY/6bhMHis0mDG/TsJ/eAaLj8IjEkjcj4cJKunamHjcFt3Vcw1qT60akWANk
+	 fAUb8A4WAxxepXfocqhOR70ZC5EsVXXGKp9EnFTb9SihTGZGH1YQL5on59mgNtmwRQ
+	 scHuqLlsIDIZEmBaOmAIv5+5sPo87Y+UxyrTGXDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 352/393] hostfs: Add const qualifier to host_root in hostfs_fill_super()
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 516/590] net: xdp: Disallow attaching device-bound programs in generic mode
 Date: Wed,  5 Feb 2025 14:44:31 +0100
-Message-ID: <20250205134433.773810540@linuxfoundation.org>
+Message-ID: <20250205134515.006858224@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +64,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-commit 104eef133fd9c17e4dc28bf43f592a86f26d8a59 upstream.
+[ Upstream commit 3595599fa8360bb3c7afa7ee50c810b4a64106ea ]
 
-After the recent conversion to the new mount API, there is a warning
-when building hostfs (which may be upgraded to an error via
-CONFIG_WERROR=y):
+Device-bound programs are used to support RX metadata kfuncs. These
+kfuncs are driver-specific and rely on the driver context to read the
+metadata. This means they can't work in generic XDP mode. However, there
+is no check to disallow such programs from being attached in generic
+mode, in which case the metadata kfuncs will be called in an invalid
+context, leading to crashes.
 
-  fs/hostfs/hostfs_kern.c: In function 'hostfs_fill_super':
-  fs/hostfs/hostfs_kern.c:942:27: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
-    942 |         char *host_root = fc->source;
-        |                           ^~
+Fix this by adding a check to disallow attaching device-bound programs
+in generic mode.
 
-Add the 'const' qualifier, as host_root will not be modified after its
-assignment. Move the assignment to keep the existing reverse Christmas
-tree order intact.
-
-Fixes: cd140ce9f611 ("hostfs: convert hostfs to use the new mount API")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20240611-hostfs-fix-mount-api-conversion-v1-1-ef75bbc77f44@kernel.org
-Acked-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/r/dae862ec-43b5-41a0-8edf-46c59071cdda@hetzner-cloud.de
+Tested-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250127131344.238147-1-toke@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -925,8 +925,8 @@ static const struct inode_operations hos
- static int hostfs_fill_super(struct super_block *sb, struct fs_context *fc)
- {
- 	struct hostfs_fs_info *fsi = sb->s_fs_info;
-+	const char *host_root = fc->source;
- 	struct inode *root_inode;
--	char *host_root = fc->source;
- 	int err;
- 
- 	sb->s_blocksize = 1024;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 7c3e2a448e5c6..2e0fe38d0e877 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9595,6 +9595,10 @@ static int dev_xdp_attach(struct net_device *dev, struct netlink_ext_ack *extack
+ 			NL_SET_ERR_MSG(extack, "Program bound to different device");
+ 			return -EINVAL;
+ 		}
++		if (bpf_prog_is_dev_bound(new_prog->aux) && mode == XDP_MODE_SKB) {
++			NL_SET_ERR_MSG(extack, "Can't attach device-bound programs in generic mode");
++			return -EINVAL;
++		}
+ 		if (new_prog->expected_attach_type == BPF_XDP_DEVMAP) {
+ 			NL_SET_ERR_MSG(extack, "BPF_XDP_DEVMAP programs can not be attached to a device");
+ 			return -EINVAL;
+-- 
+2.39.5
+
 
 
 
