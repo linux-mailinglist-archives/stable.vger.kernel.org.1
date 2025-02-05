@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-113566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1BAA292C1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBBCA28EB9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE15116CE5E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCCD43A31F9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C8B1991CF;
-	Wed,  5 Feb 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B728691;
+	Wed,  5 Feb 2025 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9+ybnAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIUmy9FR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910D3198E7B;
-	Wed,  5 Feb 2025 14:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6344FEED7;
+	Wed,  5 Feb 2025 14:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767397; cv=none; b=p/J5YOszXGKR2Ocf6NDC+ZZVrIO7TUq2u6Yg8MrkR5a+dZmCQh6eumlv/Q/morFSvT1ED2mi3/QCV0+TUqamffTqLguP5Ox1Y6zhlPYCiSJd4Fhs8eoCz52IsN26oYXCSlQHtVle8cdPb6CpqeebVDx2RsMXB8v+93C2FwVduYU=
+	t=1738764992; cv=none; b=CGrqGR1nOfg0fmGmWA2vLvTMbRRxoADp9kq3tg7Z9YrqWIDtoUkaz8Hg5pUtiClmYw36ZjqoOy2HqEeefklTJq88X52sbV7YHJ9i0Mw3meTR8FGSJnfi0/8LuCnhXNC08fBb9MkztwptALvJm2M3zwxQ3OqG5IP4ksQJiJw6798=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767397; c=relaxed/simple;
-	bh=v5VzlRnki/aqmq6u+dqrJeoX4f5mI0KiIsp/ouHS31c=;
+	s=arc-20240116; t=1738764992; c=relaxed/simple;
+	bh=aeelVvg2e6V404OvoJUHaVK/5AdzPU3DmW5mU84SaF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6j/Od5LkNmDGNXaI7ylyMr/NYS19OPyofjoMFbzsOUUF+qlcJnPI0QWxgPcwvLhL5LmyBT0giK42gmHWOoNJdlGuSL4QPCN3Zl4HEMWRK08VVPHF/4g5sDD3WkMDYN8A0tklv8Cy0/nPR0+SSjAFVIEXFP6TqLHVfRasQqhEMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9+ybnAC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00247C4CED1;
-	Wed,  5 Feb 2025 14:56:36 +0000 (UTC)
+	 MIME-Version; b=iBIIE9mzscexn2+67VpZp7YMFJKSvl6XZjgoxQpbdSoqWEncfN1wjYTqxcYd6KSJooAScCOkGOfvcTvNJAxQS+hYE8PMAiq1gsv7VratpE754mv7iMkLsNUBeAzmJ7dPwxOYCZyTT/S0GXo0OJRlj8JZcu7Tan9YLgpVHZeA5PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIUmy9FR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4795C4CED1;
+	Wed,  5 Feb 2025 14:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767397;
-	bh=v5VzlRnki/aqmq6u+dqrJeoX4f5mI0KiIsp/ouHS31c=;
+	s=korg; t=1738764992;
+	bh=aeelVvg2e6V404OvoJUHaVK/5AdzPU3DmW5mU84SaF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9+ybnACR5fYAedVEqjozqoFT7DCj8/rZEq5SB3gNtF9+Pz3PqMkwHZFgadWuAIbP
-	 Yf3kFD9LyhlVWVH31P6lqOIWXuLEjIZjNU4OiUxTf+oUEak9IdZMFz+QxW29pXh3jQ
-	 UgaHiR9tEusLnmL03XWG9gUBee8TGSzhoPsw9XTo=
+	b=hIUmy9FRXYZVWDNqRlNv5itZOeJaHpdfN53oTYOBu19NEJDsjWpesvkqn4jiiIF0U
+	 VtPOPupMYirN1vXHpJj0qfpAS6lUelTR2latSY/JwKdsZStDXyVXJp1fp3j4Eo6JyS
+	 FA23rClK3p9hYcoIrv902GUV6O0Gm84IPPtK9/mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 399/623] RDMA/bnxt_re: Fix to drop reference to the mmap entry in case of error
+Subject: [PATCH 6.6 222/393] ARM: dts: stm32: Deduplicate serial aliases and chosen node for STM32MP15xx DHCOM SoM
 Date: Wed,  5 Feb 2025 14:42:21 +0100
-Message-ID: <20250205134511.485720218@linuxfoundation.org>
+Message-ID: <20250205134428.800988468@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit c84f0f4f49d81645f49c3269fdcc3b84ce61e795 ]
+[ Upstream commit 73317d327123472cb70e9ecbe050310f1d235e93 ]
 
-In the error handling path of bnxt_re_mmap(), driver should invoke
-rdma_user_mmap_entry_put() to free the reference of mmap entry in case
-the error happens after rdma_user_mmap_entry_get was called.
+Deduplicate /aliases { serialN = ... } and /chosen node into
+stm32mp15xx-dhcom-som.dtsi , since the content is identical
+on all carrier boards using the STM32MP15xx DHCOM SoM. No
+functional change.
 
-Fixes: ea2224857882 ("RDMA/bnxt_re: Update alloc_page uapi for pacing")
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20250104061519.2540178-1-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Stable-dep-of: 479b8227ffc4 ("ARM: dts: stm32: Swap USART3 and UART8 alias on STM32MP15xx DHCOM SoM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/st/stm32mp15xx-dhcom-drc02.dtsi   | 12 ------------
+ arch/arm/boot/dts/st/stm32mp15xx-dhcom-pdk2.dtsi    | 10 ----------
+ arch/arm/boot/dts/st/stm32mp15xx-dhcom-picoitx.dtsi | 10 ----------
+ arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi     |  7 +++++++
+ 4 files changed, 7 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index e3d26bd6de05a..1ff2e176b0369 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -4467,9 +4467,10 @@ int bnxt_re_mmap(struct ib_ucontext *ib_uctx, struct vm_area_struct *vma)
- 	case BNXT_RE_MMAP_TOGGLE_PAGE:
- 		/* Driver doesn't expect write access for user space */
- 		if (vma->vm_flags & VM_WRITE)
--			return -EFAULT;
--		ret = vm_insert_page(vma, vma->vm_start,
--				     virt_to_page((void *)bnxt_entry->mem_offset));
-+			ret = -EFAULT;
-+		else
-+			ret = vm_insert_page(vma, vma->vm_start,
-+					     virt_to_page((void *)bnxt_entry->mem_offset));
- 		break;
- 	default:
- 		ret = -EINVAL;
+diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-drc02.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-drc02.dtsi
+index 35b1034aa3cf6..e4e114d8c3371 100644
+--- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-drc02.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-drc02.dtsi
+@@ -6,18 +6,6 @@
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/pwm/pwm.h>
+ 
+-/ {
+-	aliases {
+-		serial0 = &uart4;
+-		serial1 = &usart3;
+-		serial2 = &uart8;
+-	};
+-
+-	chosen {
+-		stdout-path = "serial0:115200n8";
+-	};
+-};
+-
+ &adc {
+ 	status = "disabled";
+ };
+diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-pdk2.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-pdk2.dtsi
+index 46b87a27d8b37..7050582837d58 100644
+--- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-pdk2.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-pdk2.dtsi
+@@ -7,16 +7,6 @@
+ #include <dt-bindings/pwm/pwm.h>
+ 
+ / {
+-	aliases {
+-		serial0 = &uart4;
+-		serial1 = &usart3;
+-		serial2 = &uart8;
+-	};
+-
+-	chosen {
+-		stdout-path = "serial0:115200n8";
+-	};
+-
+ 	clk_ext_audio_codec: clock-codec {
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-picoitx.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-picoitx.dtsi
+index abc595350e71a..81743a448607b 100644
+--- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-picoitx.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-picoitx.dtsi
+@@ -7,16 +7,6 @@
+ #include <dt-bindings/pwm/pwm.h>
+ 
+ / {
+-	aliases {
+-		serial0 = &uart4;
+-		serial1 = &usart3;
+-		serial2 = &uart8;
+-	};
+-
+-	chosen {
+-		stdout-path = "serial0:115200n8";
+-	};
+-
+ 	led {
+ 		compatible = "gpio-leds";
+ 
+diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
+index 74a11ccc5333f..086d3a60ccce2 100644
+--- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
+@@ -14,6 +14,13 @@
+ 		ethernet1 = &ksz8851;
+ 		rtc0 = &hwrtc;
+ 		rtc1 = &rtc;
++		serial0 = &uart4;
++		serial1 = &usart3;
++		serial2 = &uart8;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
+ 	};
+ 
+ 	memory@c0000000 {
 -- 
 2.39.5
 
