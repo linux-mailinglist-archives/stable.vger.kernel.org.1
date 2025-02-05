@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F6A28FE0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43605A29370
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F000A168C79
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA4116CFFA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEF0158870;
-	Wed,  5 Feb 2025 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D6D15CD74;
+	Wed,  5 Feb 2025 15:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3kRwJ1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWANiKLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898BE14B959;
-	Wed,  5 Feb 2025 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613AB1519BF;
+	Wed,  5 Feb 2025 15:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765770; cv=none; b=jXoMv3tTycuqDt+SIpXiqRHVSWZqmHgZaavy7jkp3ZFgiOiyobaBMj1MakWjAakIUVvN/uuT7tUCLgup//oDraVuQ4u/ZN2uOtcwEopjBsfdtXntZFkUdqYi3vZrWjl8QUZnZkpSDkFjUyzmHeGtF2rdnWmmjOWQyTrGiKoHQ+Q=
+	t=1738767934; cv=none; b=gYjiPVbEyu0ymbfal4whX+uROzlzMCx0fpzR4txaQFKUTGaNE4ytRqkJMq6e55LM2vBnyS4Q/cNrE9ih9LoPC8wO4VgUZsZnePCZ757kk7JZJJmrkCWK5NsldtdXCLjrZebwSfRVQJvBBlC4KJWyriWSQ6dwm7epPQGcFW9cV+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765770; c=relaxed/simple;
-	bh=7q21dvIFbvssZmzMhahlzCh9Ydl1kl3xTHD1yg+wBOw=;
+	s=arc-20240116; t=1738767934; c=relaxed/simple;
+	bh=HmPcAUieQ0/w4zcxs1tFQgewLkE7PLPV5dZ1bzxkhKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrw0jmxfNJr+OOFLPIPRE31UjQjqanjvsJyDC2rNvQQzhZEchSDNmtb4gip2rWrngNiwGENPqPmSula6PSUwwVyqg+0p5sfDiZb3Dpuu/x+OBvU+v4d/yK+PE8kb1Z/vPULNF3e5kora9bdTvCE2JEYj6NeUdhLwxs+UmS+pi6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3kRwJ1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832EFC4CED1;
-	Wed,  5 Feb 2025 14:29:29 +0000 (UTC)
+	 MIME-Version; b=ObMxyTznD8iKx8o6SHIaqiNroe9gFE+pCZBbMFqof3OfzQsINa/CBhJdh9Gxd8OyeEDivcYs2d4m34yvadfL7wNTQUcrLEsZs676L518hjlnacrICZu4W4VoozsBx4My0mq/5W4+wA2yTYxA7JxmmiJrAAyO9h4oOoUVWOkRLy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWANiKLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98E3C4CED1;
+	Wed,  5 Feb 2025 15:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765770;
-	bh=7q21dvIFbvssZmzMhahlzCh9Ydl1kl3xTHD1yg+wBOw=;
+	s=korg; t=1738767934;
+	bh=HmPcAUieQ0/w4zcxs1tFQgewLkE7PLPV5dZ1bzxkhKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3kRwJ1hT99SF7rhs3vD7Ih/0sE1qHdAmj3ueU9Zz8XhwrXNOEO/LfpdM3S6mOn9w
-	 iAMYMG3o2RNrZdj4f//e/MKZj+itNwyVrNcUyMz7uKaH1q8F/tylDBBTwT4DwrUy3u
-	 JKw+UOBrkdzCSq5C/OtbFY4S9+KjV89zk2mrUmRo=
+	b=IWANiKLrPlDTmAX0f3NR9mIoJXUW3YRBqmWAJxbd5dQUUrDkFQ9Pz8Ltuv073vzHy
+	 gMXTAsn9XEMd0Wj9Aseo+j68psSDDdKhAVaWvUfl1baT9A8xJ6tgbALpDMLfkGCVSi
+	 PAYx2S+gF3JXkecxkLRizr2o7JIxq17AHV+SzUIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Desnes Nunes <desnesn@redhat.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 297/393] media: dvb-usb-v2: af9035: fix ISO C90 compilation error on af9035_i2c_master_xfer
+Subject: [PATCH 6.13 474/623] scsi: ufs: bsg: Delete bsg_dev when setting up bsg fails
 Date: Wed,  5 Feb 2025 14:43:36 +0100
-Message-ID: <20250205134431.675686025@linuxfoundation.org>
+Message-ID: <20250205134514.351690732@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Desnes Nunes <desnesn@redhat.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit c36b9ad1a8add3c114e25fe167efa217a813b0c7 ]
+[ Upstream commit fcf247deb3c3e1c6be5774e3fa03bbd018eff1a9 ]
 
-This fixes a 'ISO C90 forbids mixed declarations and code' compilation
-error on af9035_i2c_master_xfer, which is caused by the sanity check added
-on user controlled msg[i], before declaring the demodulator register.
+We should remove the bsg device when bsg_setup_queue() fails to release the
+resources.
 
-Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
-Signed-off-by: Desnes Nunes <desnesn@redhat.com>
-Link: https://lore.kernel.org/r/20240919172755.196907-1-desnesn@redhat.com
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: df032bf27a41 ("scsi: ufs: Add a bsg endpoint that supports UPIUs")
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241218014214.64533-2-kanie@linux.alibaba.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/af9035.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/ufs/core/ufs_bsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
-index 4eb7dd4599b7e..7caf5e90721a4 100644
---- a/drivers/media/usb/dvb-usb-v2/af9035.c
-+++ b/drivers/media/usb/dvb-usb-v2/af9035.c
-@@ -322,13 +322,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			/* demod access via firmware interface */
-+			u32 reg;
-+
- 			if (msg[0].len < 3 || msg[1].len < 1) {
- 				ret = -EOPNOTSUPP;
- 				goto unlock;
- 			}
--			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
--					msg[0].buf[2];
-+
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+				msg[0].buf[2];
+diff --git a/drivers/ufs/core/ufs_bsg.c b/drivers/ufs/core/ufs_bsg.c
+index 6c09d97ae0065..58023f735c195 100644
+--- a/drivers/ufs/core/ufs_bsg.c
++++ b/drivers/ufs/core/ufs_bsg.c
+@@ -257,6 +257,7 @@ int ufs_bsg_probe(struct ufs_hba *hba)
+ 			NULL, 0);
+ 	if (IS_ERR(q)) {
+ 		ret = PTR_ERR(q);
++		device_del(bsg_dev);
+ 		goto out;
+ 	}
  
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
- 				reg |= 0x100000;
-@@ -385,13 +388,16 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
-+			/* demod access via firmware interface */
-+			u32 reg;
-+
- 			if (msg[0].len < 3) {
- 				ret = -EOPNOTSUPP;
- 				goto unlock;
- 			}
--			/* demod access via firmware interface */
--			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
--					msg[0].buf[2];
-+
-+			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
-+				msg[0].buf[2];
- 
- 			if (msg[0].addr == state->af9033_i2c_addr[1])
- 				reg |= 0x100000;
 -- 
 2.39.5
 
