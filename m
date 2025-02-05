@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1F7A28FD4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2AEA290A2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC3A51881735
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:29:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 955607A3CA9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6055B156F44;
-	Wed,  5 Feb 2025 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AF6158218;
+	Wed,  5 Feb 2025 14:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGffvrw7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1OwHUC1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18856155A21;
-	Wed,  5 Feb 2025 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFDE155A21;
+	Wed,  5 Feb 2025 14:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765745; cv=none; b=F2ozADKxpSlhHz1SuR1qdFQM3pRJaBP9TqPGnc4f+r6b876oS5MOaivZ31t5uDsvGrFVWb912MdMq1BfietgEhuLyqjvv2xGx26rRQI8FTuy9h1j6LCcIWnrXfdHijUAk+5U6klyz9jAyrbJySbyeuOpK0Agj1UmLHrsSNE59xU=
+	t=1738766316; cv=none; b=bS2zLvqOfQaEDcHiijhePUOb8nXSDo7jz+rN3DuL16yC6Wt06wktOCXysRxHKcZwy6gvi9aykQLTxFo28dkwoCEoMMLEZvgQV2oi02Iz+GcckqID4ofUIVIFeEr4s2DduXEwQWp6Ce8Cu1KqfiuUWtUAx3SDNFnFhybemj8cmGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765745; c=relaxed/simple;
-	bh=IWEZwvNmtgAqKHTsY+o8WIvJy/YC2KfJL7OAGYCOgW0=;
+	s=arc-20240116; t=1738766316; c=relaxed/simple;
+	bh=jcRvdZesKUBUriztB3ROgexnUi8x2WDApZU51ecIjLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ufyg+nw+0pKi2haTuzfs45Ny9R4bs9hlYtYm0bKOyViv+bqggADkx87TL0I0m3vLZ8qg3Naq4GDbJB90H+/TJrd3Lg/buqElIM/W39ubbQatI18n2F3Ox2lr5eTUOJRXx9Qm5yCwYbEPTnCke+2hAwUh/rFrwcuedv1j7swKgyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGffvrw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9F8C4CED1;
-	Wed,  5 Feb 2025 14:29:04 +0000 (UTC)
+	 MIME-Version; b=k6IqQ8D2h/qqWpqLIGBIAOonpzDLKJucA/q4YUC05cPHRybuFZSeu+Av6HRNRod3pZSZqjUBH66CTmd3FQ/49gD5R7ejU4HIpSf0qRhl/zjwvCxnkA95J536ejEQkuBwT6dDEcWnAzTs+61l2WaaWQh8THx/j9Ybgml3ZTySrI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1OwHUC1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA62C4CEE7;
+	Wed,  5 Feb 2025 14:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765744;
-	bh=IWEZwvNmtgAqKHTsY+o8WIvJy/YC2KfJL7OAGYCOgW0=;
+	s=korg; t=1738766316;
+	bh=jcRvdZesKUBUriztB3ROgexnUi8x2WDApZU51ecIjLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGffvrw7e2orw7Sw9Y6Rxe1zUOso9oQOiCtHCNknuAXWgetjnoJoPpiwhAOzymrhs
-	 JzSekIgel31kW+8sj1egb+n1U4zvoErYUTL9xJn2mEvIUssqoWpL0G3iq1PU3w1sKD
-	 KAnbHg+qoLquJ9o5FYQJc96/hywnUilkpX9vmX7w=
+	b=e1OwHUC1jjYNdjMhgdPOo0rRBspRxIOvqfP8k0pVl8cxKg40AQS9N34LdupLDFmFI
+	 X5JnwEumdq4IKQ2sL9UgsD85raOq8ngJNlVdFgk63vJjbQqmR/aYnvrYiqO15LXWhZ
+	 xLDlPuloBf3eST8l/VSVB/nvidMCmxXSrJ5NDaio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert.xu@redhat.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 248/590] crypto: api - Fix boot-up self-test race
-Date: Wed,  5 Feb 2025 14:40:03 +0100
-Message-ID: <20250205134504.768262198@linuxfoundation.org>
+Subject: [PATCH 6.13 262/623] crypto: tegra - do not transfer req when tegra init fails
+Date: Wed,  5 Feb 2025 14:40:04 +0100
+Message-ID: <20250205134506.253826148@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 8dd458cbc5be9ce4427ffce7a9dcdbff4dfc4ac9 ]
+[ Upstream commit 15589bda46830695a3261518bb7627afac61f519 ]
 
-During the boot process self-tests are postponed so that all
-algorithms are registered when the test starts.  In the event
-that algorithms are still being registered during these tests,
-which can occur either because the algorithm is registered at
-late_initcall, or because a self-test itself triggers the creation
-of an instance, some self-tests may never start at all.
+The tegra_cmac_init or tegra_sha_init function may return an error when
+memory is exhausted. It should not transfer the request when they return
+an error.
 
-Fix this by setting the flag at the start of crypto_start_tests.
-
-Note that this race is theoretical and has never been observed
-in practice.
-
-Fixes: adad556efcdd ("crypto: api - Fix built-in testing dependency failures")
-Signed-off-by: Herbert Xu <herbert.xu@redhat.com>
+Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Akhil R <akhilrajeev@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c  | 7 +++++--
+ drivers/crypto/tegra/tegra-se-hash.c | 7 +++++--
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index 004d27e41315f..c067412d909a1 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -1022,6 +1022,8 @@ static void __init crypto_start_tests(void)
- 	if (IS_ENABLED(CONFIG_CRYPTO_MANAGER_DISABLE_TESTS))
- 		return;
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index 9d130592cc0ac..d734c9a567868 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -1750,10 +1750,13 @@ static int tegra_cmac_digest(struct ahash_request *req)
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+ 	struct tegra_cmac_ctx *ctx = crypto_ahash_ctx(tfm);
+ 	struct tegra_cmac_reqctx *rctx = ahash_request_ctx(req);
++	int ret;
  
-+	set_crypto_boot_test_finished();
-+
- 	for (;;) {
- 		struct crypto_larval *larval = NULL;
- 		struct crypto_alg *q;
-@@ -1053,8 +1055,6 @@ static void __init crypto_start_tests(void)
- 		if (!larval)
- 			break;
- 	}
--
--	set_crypto_boot_test_finished();
+-	tegra_cmac_init(req);
+-	rctx->task |= SHA_UPDATE | SHA_FINAL;
++	ret = tegra_cmac_init(req);
++	if (ret)
++		return ret;
+ 
++	rctx->task |= SHA_UPDATE | SHA_FINAL;
+ 	return crypto_transfer_hash_request_to_engine(ctx->se->engine, req);
  }
  
- static int __init crypto_algapi_init(void)
+diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
+index 4d4bd727f4986..0b5cdd5676b17 100644
+--- a/drivers/crypto/tegra/tegra-se-hash.c
++++ b/drivers/crypto/tegra/tegra-se-hash.c
+@@ -615,13 +615,16 @@ static int tegra_sha_digest(struct ahash_request *req)
+ 	struct tegra_sha_reqctx *rctx = ahash_request_ctx(req);
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+ 	struct tegra_sha_ctx *ctx = crypto_ahash_ctx(tfm);
++	int ret;
+ 
+ 	if (ctx->fallback)
+ 		return tegra_sha_fallback_digest(req);
+ 
+-	tegra_sha_init(req);
+-	rctx->task |= SHA_UPDATE | SHA_FINAL;
++	ret = tegra_sha_init(req);
++	if (ret)
++		return ret;
+ 
++	rctx->task |= SHA_UPDATE | SHA_FINAL;
+ 	return crypto_transfer_hash_request_to_engine(ctx->se->engine, req);
+ }
+ 
 -- 
 2.39.5
 
