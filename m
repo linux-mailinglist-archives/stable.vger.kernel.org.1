@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB653A28F42
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08922A28E0C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18E0D163CF2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94D1E164A0E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD9214A088;
-	Wed,  5 Feb 2025 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990801494DF;
+	Wed,  5 Feb 2025 14:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVzZBAcg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6jUIF61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F331459F6;
-	Wed,  5 Feb 2025 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FC71519AA;
+	Wed,  5 Feb 2025 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765363; cv=none; b=rfl7LTJANHFznkcLgHcKrvLrhYT4OnBiWOWdunUiwyRoO8kkEXc3ZA/98563gYRWysh+2zduwZ9N4aew+m1jDMdflOv1kOFpbqNxmcMU2U9mSfjZZ7sU9Q5HA7C1j0BeMEGxWS+awcPHuXtZgzY/gcdD5oYBej5swa3eXUkWAmA=
+	t=1738764503; cv=none; b=t84nBENP9soWSQGiUrlypWyj5xfgeocIsKbcf9V7exhE+pGit3WOuY/YaLE2WhsG6h7c/deXIYT4hQHvAx4SVoG2s8Fdjn3iblVrTBtIQesqYxSkXjqZtzJs3/mOTV7sdFu4IYcggdbC3gJrcpOd43f+ugnX4tkfHP6Ky8qrxYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765363; c=relaxed/simple;
-	bh=xYE9CAWgpNg5k2gbf9peWZHa+atz664j424j2AF3qVU=;
+	s=arc-20240116; t=1738764503; c=relaxed/simple;
+	bh=y2zmzusKzEOXtXxpNeyVhflbYCoz8nMqQ/h4hxgHolM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1J6MronkhbkFc+R0pFbJq8jqzbBq7yI6X6OZg4/Aswx23AfKtAhYlSotdcGrEoZ8MzQyzN/0kheRG9aF5ym68wTG8/habJP4ZSkp/kaGY51uFaxVugtvmcdA+srOJywRFKBsHvpVbkEuaiRNh5gRfuKbpZP/SJhvupyt4vyL4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVzZBAcg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C237BC4CED1;
-	Wed,  5 Feb 2025 14:22:42 +0000 (UTC)
+	 MIME-Version; b=TuPTFslvRt+gZEMo+UjyLx4snc/yUZ4ExHrPZmuXZxRaq37rHRTg3biYpCi4f7nw1Q33QgoJiHEjyH+4uYU1SzyEntbE812agLKx9rN6A8vSmapzVcgObnFWiOoXjBJ6Q3vA9E/bT3Prg501+SrIh4n1GVAc5/jFiVv2guLNBnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6jUIF61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E106BC4CED1;
+	Wed,  5 Feb 2025 14:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765363;
-	bh=xYE9CAWgpNg5k2gbf9peWZHa+atz664j424j2AF3qVU=;
+	s=korg; t=1738764502;
+	bh=y2zmzusKzEOXtXxpNeyVhflbYCoz8nMqQ/h4hxgHolM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVzZBAcg/nM+1fUyI1ZtuujPsonRMfeAHQICkyIDkCEEklAoP8hREzfIRKS+6wZ2z
-	 VwPbuvjzdwrFn3e1rrepZHHtD0RwBnHpJTL3iN2ZO4ca6ipA7leky6PKW0SAHPbTBF
-	 i+7IUTuPiJQ/KjY8Vr1kUKQtEOM5X46d9hX1+o7c=
+	b=M6jUIF61wpST13Efqu56Kr3VUB7xDfkqgJvPyc5xTektd0ks69aNJrU3g5WsP7ymn
+	 Zs8EeUi0OeEoWsz+SxbqkKpHAiMyEMyLf7sdFLuJTnOKftaueCf3AO4+Cqfw7J5j2A
+	 iq5LbTz2TubPnS03Sjai11yQtrZPl9eEkARFRIt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com,
-	Karol Przybylski <karprzy7@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 146/623] HID: hid-thrustmaster: Fix warning in thrustmaster_probe by adding endpoint check
+Subject: [PATCH 6.12 133/590] regulator: of: Implement the unwind path of of_regulator_match()
 Date: Wed,  5 Feb 2025 14:38:08 +0100
-Message-ID: <20250205134501.819891868@linuxfoundation.org>
+Message-ID: <20250205134500.355502917@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Przybylski <karprzy7@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 50420d7c79c37a3efe4010ff9b1bb14bc61ebccf ]
+[ Upstream commit dddca3b2fc676113c58b04aaefe84bfb958ac83e ]
 
-syzbot has found a type mismatch between a USB pipe and the transfer
-endpoint, which is triggered by the hid-thrustmaster driver[1].
-There is a number of similar, already fixed issues [2].
-In this case as in others, implementing check for endpoint type fixes the issue.
+of_regulator_match() does not release the OF node reference in the error
+path, resulting in an OF node leak. Therefore, call of_node_put() on the
+obtained nodes before returning the EINVAL error.
 
-[1] https://syzkaller.appspot.com/bug?extid=040e8b3db6a96908d470
-[2] https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622
+Since it is possible that some drivers call this function and do not
+exit on failure, such as s2mps11_pmic_driver, clear the init_data and
+of_node in the error path.
 
-Fixes: c49c33637802 ("HID: support for initialization of some Thrustmaster wheels")
-Reported-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Tested-by: syzbot+040e8b3db6a96908d470@syzkaller.appspotmail.com
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This was reported by an experimental verification tool that I am
+developing. As I do not have access to actual devices nor the QEMU board
+configuration to test drivers that call this function, no runtime test
+was able to be performed.
+
+Fixes: 1c8fa58f4750 ("regulator: Add generic DT parsing for regulators")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250104080453.2153592-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-thrustmaster.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/regulator/of_regulator.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-thrustmaster.c b/drivers/hid/hid-thrustmaster.c
-index cf1679b0d4fbb..6c3e758bbb09e 100644
---- a/drivers/hid/hid-thrustmaster.c
-+++ b/drivers/hid/hid-thrustmaster.c
-@@ -170,6 +170,14 @@ static void thrustmaster_interrupts(struct hid_device *hdev)
- 	ep = &usbif->cur_altsetting->endpoint[1];
- 	b_ep = ep->desc.bEndpointAddress;
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index 3f490d81abc28..deab0b95b6637 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -446,7 +446,7 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 					"failed to parse DT for regulator %pOFn\n",
+ 					child);
+ 				of_node_put(child);
+-				return -EINVAL;
++				goto err_put;
+ 			}
+ 			match->of_node = of_node_get(child);
+ 			count++;
+@@ -455,6 +455,18 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 	}
  
-+	/* Are the expected endpoints present? */
-+	u8 ep_addr[1] = {b_ep};
+ 	return count;
 +
-+	if (!usb_check_int_endpoints(usbif, ep_addr)) {
-+		hid_err(hdev, "Unexpected non-int endpoint\n");
-+		return;
++err_put:
++	for (i = 0; i < num_matches; i++) {
++		struct of_regulator_match *match = &matches[i];
++
++		match->init_data = NULL;
++		if (match->of_node) {
++			of_node_put(match->of_node);
++			match->of_node = NULL;
++		}
 +	}
-+
- 	for (i = 0; i < ARRAY_SIZE(setup_arr); ++i) {
- 		memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
++	return -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(of_regulator_match);
  
 -- 
 2.39.5
