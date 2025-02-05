@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100D0A293EC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC8BA29207
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9598F3ADEFE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81CB91889D86
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910FD155333;
-	Wed,  5 Feb 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D8E18A6A8;
+	Wed,  5 Feb 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXJbBzHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuiNa/1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6A51519B4;
-	Wed,  5 Feb 2025 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E69F189F57;
+	Wed,  5 Feb 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768127; cv=none; b=BYqN52mJOVMYJ6tsIYDTkta3nX9Y6NOBLYGqkcqMLopwZFSlr1fpZGivsl9VY9W5KedlP9NuNBo1iGLMXncwUiBrISHpUHmqFzq3B5kF+dz0kUaTVnZhB4yL4XYmihrvgJgrM95PT+2ieeya01FIoncRb4xRoyw1BHF3+gcjvUw=
+	t=1738766753; cv=none; b=RrzTZ/u7MNvvvNDzDU0Njcpcdr9gzpjIzcbw2x54F4WbDHJ30nOBeBUIi02dQe6xpsBfNM0yMkujaHghRECdWrSFTny7M7d7U1bk3ogaLl7SoNcc2N9qWuzKqv64BJaCjjjUjmx03GNN2VoSXVCkybgZTYegI5SenpSAZrqzzsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768127; c=relaxed/simple;
-	bh=jsN8NzJnh8MHkXA3lc+7LAMYZbb1DuBcDPEEpsFJrX4=;
+	s=arc-20240116; t=1738766753; c=relaxed/simple;
+	bh=gJsW59BvgJNLDabZ3KhEbUcqHaocmDrp8SFqEIGE5eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoKTwXbIMpbQw+iSXZ8AMM6RuAOROcWU4in2t044rNcy9Z051i1e8rAvpAzLybzF2g7z3Clq6xK7b0y9z0j/wF8/pf1Y+Jhy4Tx5EA33xJy83ec7dKmlTptMyFvEsieRDnfHKZv5tHB0kbwMSJAErdm/YydL0BbaJowybEZwDFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXJbBzHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0138C4CED1;
-	Wed,  5 Feb 2025 15:08:46 +0000 (UTC)
+	 MIME-Version; b=qzV3hma51txnK5aXioCZ5BP1uoiI84f90Rp87E8EHvdm/FQFUpWeO8B2uMQcC346HuOed/ydwicAxSk5jpnqBy6JFanQhWSTwUlTOCJyGShDXUPkZBq+ioVLNB6W3praFUNo0IL+sMhyWPi8pPFKgcWIPQ0E2lUaiCY9S3YDCiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuiNa/1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28C1C4CED1;
+	Wed,  5 Feb 2025 14:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768127;
-	bh=jsN8NzJnh8MHkXA3lc+7LAMYZbb1DuBcDPEEpsFJrX4=;
+	s=korg; t=1738766753;
+	bh=gJsW59BvgJNLDabZ3KhEbUcqHaocmDrp8SFqEIGE5eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXJbBzHznmpSve1YF02ShhnQAUFyMbk3Tcd6fn3iNrURZyFT/Y3KjrIlz0GVsGS+t
-	 j5/9A78htdIaYStF9Y9lClucVWB1a6Tg/8KETf+E8Gn5DfRwauP3ra1CGjAosyNMeE
-	 WCaE/aWOY0rzKct54oAex0eqW5fEITrBLTWsnn0Y=
+	b=UuiNa/1JvojRYvtkYZDIWCgH+1mWGRFEgnYzvZUK6IFMZe6XP81ty8jD/mG/9Dy58
+	 oC8F8CBIDLzqn3Hc7pQto+a37fexbMMhrnFV7ikDDcTFeDq3tz1HbAx64VJPQt4r0z
+	 eb/Und+J2l3gkIcajx/r26r2RQMG3SsEhMar79zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Kyle Tso <kyletso@google.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 557/590] usb: dwc3: core: Defer the probe until USB power supply ready
+	WANG Xuerui <git@xen0n.name>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 393/393] LoongArch: Change 8 to 14 for LOONGARCH_MAX_{BRP,WRP}
 Date: Wed,  5 Feb 2025 14:45:12 +0100
-Message-ID: <20250205134516.579400576@linuxfoundation.org>
+Message-ID: <20250205134435.329395771@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 66e0ea341a2a78d14336117f19763bd9be26d45d upstream.
+commit f502ea618bf16d615d7dc6138c8988d3118fe750 upstream.
 
-Currently, DWC3 driver attempts to acquire the USB power supply only
-once during the probe. If the USB power supply is not ready at that
-time, the driver simply ignores the failure and continues the probe,
-leading to permanent non-functioning of the gadget vbus_draw callback.
+The maximum number of load/store watchpoints and fetch instruction
+watchpoints is 14 each according to LoongArch Reference Manual, so
+change 8 to 14 for the related code.
 
-Address this problem by delaying the dwc3 driver initialization until
-the USB power supply is registered.
-
-Fixes: 6f0764b5adea ("usb: dwc3: add a power supply for current control")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250115044548.2701138-1-kyletso@google.com
+Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#control-and-status-registers-related-to-watchpoints
+Cc: stable@vger.kernel.org
+Fixes: edffa33c7bb5 ("LoongArch: Add hardware breakpoints/watchpoints support")
+Reviewed-by: WANG Xuerui <git@xen0n.name>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ arch/loongarch/include/asm/hw_breakpoint.h |    4 -
+ arch/loongarch/include/asm/loongarch.h     |   60 +++++++++++++++++++++++++++++
+ arch/loongarch/kernel/hw_breakpoint.c      |   16 ++++++-
+ 3 files changed, 76 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1660,8 +1660,6 @@ static void dwc3_get_properties(struct d
- 	u8			tx_thr_num_pkt_prd = 0;
- 	u8			tx_max_burst_prd = 0;
- 	u8			tx_fifo_resize_max_num;
--	const char		*usb_psy_name;
--	int			ret;
+--- a/arch/loongarch/include/asm/hw_breakpoint.h
++++ b/arch/loongarch/include/asm/hw_breakpoint.h
+@@ -38,8 +38,8 @@ struct arch_hw_breakpoint {
+  * Limits.
+  * Changing these will require modifications to the register accessors.
+  */
+-#define LOONGARCH_MAX_BRP		8
+-#define LOONGARCH_MAX_WRP		8
++#define LOONGARCH_MAX_BRP		14
++#define LOONGARCH_MAX_WRP		14
  
- 	/* default to highest possible threshold */
- 	lpm_nyet_threshold = 0xf;
-@@ -1696,13 +1694,6 @@ static void dwc3_get_properties(struct d
+ /* Virtual debug register bases. */
+ #define CSR_CFG_ADDR	0
+--- a/arch/loongarch/include/asm/loongarch.h
++++ b/arch/loongarch/include/asm/loongarch.h
+@@ -928,6 +928,36 @@
+ #define LOONGARCH_CSR_DB7CTRL		0x34a	/* data breakpoint 7 control */
+ #define LOONGARCH_CSR_DB7ASID		0x34b	/* data breakpoint 7 asid */
  
- 	dwc->sys_wakeup = device_may_wakeup(dwc->sysdev);
++#define LOONGARCH_CSR_DB8ADDR		0x350	/* data breakpoint 8 address */
++#define LOONGARCH_CSR_DB8MASK		0x351	/* data breakpoint 8 mask */
++#define LOONGARCH_CSR_DB8CTRL		0x352	/* data breakpoint 8 control */
++#define LOONGARCH_CSR_DB8ASID		0x353	/* data breakpoint 8 asid */
++
++#define LOONGARCH_CSR_DB9ADDR		0x358	/* data breakpoint 9 address */
++#define LOONGARCH_CSR_DB9MASK		0x359	/* data breakpoint 9 mask */
++#define LOONGARCH_CSR_DB9CTRL		0x35a	/* data breakpoint 9 control */
++#define LOONGARCH_CSR_DB9ASID		0x35b	/* data breakpoint 9 asid */
++
++#define LOONGARCH_CSR_DB10ADDR		0x360	/* data breakpoint 10 address */
++#define LOONGARCH_CSR_DB10MASK		0x361	/* data breakpoint 10 mask */
++#define LOONGARCH_CSR_DB10CTRL		0x362	/* data breakpoint 10 control */
++#define LOONGARCH_CSR_DB10ASID		0x363	/* data breakpoint 10 asid */
++
++#define LOONGARCH_CSR_DB11ADDR		0x368	/* data breakpoint 11 address */
++#define LOONGARCH_CSR_DB11MASK		0x369	/* data breakpoint 11 mask */
++#define LOONGARCH_CSR_DB11CTRL		0x36a	/* data breakpoint 11 control */
++#define LOONGARCH_CSR_DB11ASID		0x36b	/* data breakpoint 11 asid */
++
++#define LOONGARCH_CSR_DB12ADDR		0x370	/* data breakpoint 12 address */
++#define LOONGARCH_CSR_DB12MASK		0x371	/* data breakpoint 12 mask */
++#define LOONGARCH_CSR_DB12CTRL		0x372	/* data breakpoint 12 control */
++#define LOONGARCH_CSR_DB12ASID		0x373	/* data breakpoint 12 asid */
++
++#define LOONGARCH_CSR_DB13ADDR		0x378	/* data breakpoint 13 address */
++#define LOONGARCH_CSR_DB13MASK		0x379	/* data breakpoint 13 mask */
++#define LOONGARCH_CSR_DB13CTRL		0x37a	/* data breakpoint 13 control */
++#define LOONGARCH_CSR_DB13ASID		0x37b	/* data breakpoint 13 asid */
++
+ #define LOONGARCH_CSR_FWPC		0x380	/* instruction breakpoint config */
+ #define LOONGARCH_CSR_FWPS		0x381	/* instruction breakpoint status */
  
--	ret = device_property_read_string(dev, "usb-psy-name", &usb_psy_name);
--	if (ret >= 0) {
--		dwc->usb_psy = power_supply_get_by_name(usb_psy_name);
--		if (!dwc->usb_psy)
--			dev_err(dev, "couldn't get usb power supply\n");
--	}
--
- 	dwc->has_lpm_erratum = device_property_read_bool(dev,
- 				"snps,has-lpm-erratum");
- 	device_property_read_u8(dev, "snps,lpm-nyet-threshold",
-@@ -2105,6 +2096,23 @@ static int dwc3_get_num_ports(struct dwc
- 	return 0;
- }
+@@ -971,6 +1001,36 @@
+ #define LOONGARCH_CSR_IB7CTRL		0x3ca	/* inst breakpoint 7 control */
+ #define LOONGARCH_CSR_IB7ASID		0x3cb	/* inst breakpoint 7 asid */
  
-+static struct power_supply *dwc3_get_usb_power_supply(struct dwc3 *dwc)
-+{
-+	struct power_supply *usb_psy;
-+	const char *usb_psy_name;
-+	int ret;
++#define LOONGARCH_CSR_IB8ADDR		0x3d0	/* inst breakpoint 8 address */
++#define LOONGARCH_CSR_IB8MASK		0x3d1	/* inst breakpoint 8 mask */
++#define LOONGARCH_CSR_IB8CTRL		0x3d2	/* inst breakpoint 8 control */
++#define LOONGARCH_CSR_IB8ASID		0x3d3	/* inst breakpoint 8 asid */
 +
-+	ret = device_property_read_string(dwc->dev, "usb-psy-name", &usb_psy_name);
-+	if (ret < 0)
-+		return NULL;
++#define LOONGARCH_CSR_IB9ADDR		0x3d8	/* inst breakpoint 9 address */
++#define LOONGARCH_CSR_IB9MASK		0x3d9	/* inst breakpoint 9 mask */
++#define LOONGARCH_CSR_IB9CTRL		0x3da	/* inst breakpoint 9 control */
++#define LOONGARCH_CSR_IB9ASID		0x3db	/* inst breakpoint 9 asid */
 +
-+	usb_psy = power_supply_get_by_name(usb_psy_name);
-+	if (!usb_psy)
-+		return ERR_PTR(-EPROBE_DEFER);
++#define LOONGARCH_CSR_IB10ADDR		0x3e0	/* inst breakpoint 10 address */
++#define LOONGARCH_CSR_IB10MASK		0x3e1	/* inst breakpoint 10 mask */
++#define LOONGARCH_CSR_IB10CTRL		0x3e2	/* inst breakpoint 10 control */
++#define LOONGARCH_CSR_IB10ASID		0x3e3	/* inst breakpoint 10 asid */
 +
-+	return usb_psy;
-+}
++#define LOONGARCH_CSR_IB11ADDR		0x3e8	/* inst breakpoint 11 address */
++#define LOONGARCH_CSR_IB11MASK		0x3e9	/* inst breakpoint 11 mask */
++#define LOONGARCH_CSR_IB11CTRL		0x3ea	/* inst breakpoint 11 control */
++#define LOONGARCH_CSR_IB11ASID		0x3eb	/* inst breakpoint 11 asid */
 +
- static int dwc3_probe(struct platform_device *pdev)
++#define LOONGARCH_CSR_IB12ADDR		0x3f0	/* inst breakpoint 12 address */
++#define LOONGARCH_CSR_IB12MASK		0x3f1	/* inst breakpoint 12 mask */
++#define LOONGARCH_CSR_IB12CTRL		0x3f2	/* inst breakpoint 12 control */
++#define LOONGARCH_CSR_IB12ASID		0x3f3	/* inst breakpoint 12 asid */
++
++#define LOONGARCH_CSR_IB13ADDR		0x3f8	/* inst breakpoint 13 address */
++#define LOONGARCH_CSR_IB13MASK		0x3f9	/* inst breakpoint 13 mask */
++#define LOONGARCH_CSR_IB13CTRL		0x3fa	/* inst breakpoint 13 control */
++#define LOONGARCH_CSR_IB13ASID		0x3fb	/* inst breakpoint 13 asid */
++
+ #define LOONGARCH_CSR_DEBUG		0x500	/* debug config */
+ #define LOONGARCH_CSR_DERA		0x501	/* debug era */
+ #define LOONGARCH_CSR_DESAVE		0x502	/* debug save */
+--- a/arch/loongarch/kernel/hw_breakpoint.c
++++ b/arch/loongarch/kernel/hw_breakpoint.c
+@@ -51,7 +51,13 @@ int hw_breakpoint_slots(int type)
+ 	READ_WB_REG_CASE(OFF, 4, REG, T, VAL);		\
+ 	READ_WB_REG_CASE(OFF, 5, REG, T, VAL);		\
+ 	READ_WB_REG_CASE(OFF, 6, REG, T, VAL);		\
+-	READ_WB_REG_CASE(OFF, 7, REG, T, VAL);
++	READ_WB_REG_CASE(OFF, 7, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 8, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 9, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 10, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 11, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 12, REG, T, VAL);		\
++	READ_WB_REG_CASE(OFF, 13, REG, T, VAL);
+ 
+ #define GEN_WRITE_WB_REG_CASES(OFF, REG, T, VAL)	\
+ 	WRITE_WB_REG_CASE(OFF, 0, REG, T, VAL);		\
+@@ -61,7 +67,13 @@ int hw_breakpoint_slots(int type)
+ 	WRITE_WB_REG_CASE(OFF, 4, REG, T, VAL);		\
+ 	WRITE_WB_REG_CASE(OFF, 5, REG, T, VAL);		\
+ 	WRITE_WB_REG_CASE(OFF, 6, REG, T, VAL);		\
+-	WRITE_WB_REG_CASE(OFF, 7, REG, T, VAL);
++	WRITE_WB_REG_CASE(OFF, 7, REG, T, VAL);		\
++	WRITE_WB_REG_CASE(OFF, 8, REG, T, VAL);		\
++	WRITE_WB_REG_CASE(OFF, 9, REG, T, VAL);		\
++	WRITE_WB_REG_CASE(OFF, 10, REG, T, VAL);	\
++	WRITE_WB_REG_CASE(OFF, 11, REG, T, VAL);	\
++	WRITE_WB_REG_CASE(OFF, 12, REG, T, VAL);	\
++	WRITE_WB_REG_CASE(OFF, 13, REG, T, VAL);
+ 
+ static u64 read_wb_reg(int reg, int n, int t)
  {
- 	struct device		*dev = &pdev->dev;
-@@ -2161,6 +2169,10 @@ static int dwc3_probe(struct platform_de
- 
- 	dwc3_get_software_properties(dwc);
- 
-+	dwc->usb_psy = dwc3_get_usb_power_supply(dwc);
-+	if (IS_ERR(dwc->usb_psy))
-+		return dev_err_probe(dev, PTR_ERR(dwc->usb_psy), "couldn't get usb power supply\n");
-+
- 	dwc->reset = devm_reset_control_array_get_optional_shared(dev);
- 	if (IS_ERR(dwc->reset)) {
- 		ret = PTR_ERR(dwc->reset);
 
 
 
