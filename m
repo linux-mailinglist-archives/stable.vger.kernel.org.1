@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-113859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A81A293D2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A707A293B2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEB9C7A3363
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBACF3AE9DB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A924198822;
-	Wed,  5 Feb 2025 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980DC155327;
+	Wed,  5 Feb 2025 15:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5shL34m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYLP+Akj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EE61519B4;
-	Wed,  5 Feb 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53014DF59;
+	Wed,  5 Feb 2025 15:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768408; cv=none; b=e3jA0wf8gIjoZCCa54AKYH9vMS7i4mWVWWcgY9NeLbXIlGd+vbGtX2eHFa2GQUzXULHJM3psOQLzoQDyZ+rSw8jyT8kcJHHr86ZbE313Dphi6kI9HB/sukPE/Y76JZzWhJKhqTu/ChgajX9EEA5yN/EWQvIQQ0XpUzQKW414m9s=
+	t=1738767945; cv=none; b=J0cbPKdH/QjIuZO7GkboZKkyBoxwszJzcFUjYX8nXVLGdbp85687aL2eqPujwvcD82IR47OmpKqYDF8uS2xbJ7/1Ckh4IOxv2figBnsUyjjSnqdE/HWUkf+1a9Vpc7GXKpcWS17bWIvjLOBxVIqAmfqMa92rxQ8RY84HH/cDkn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768408; c=relaxed/simple;
-	bh=QS4feQpr8o3xs3gRtijwNnuOwAz6DEVCmgAqX5+7l4w=;
+	s=arc-20240116; t=1738767945; c=relaxed/simple;
+	bh=gn/Wyfc2ikI4wwwkrfF/g6zj+3U/1V9C8xYTYRYOfLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sT8YqsTgFDv6QnnbG0fHnhDqmfiCCDSg0Y8D3xcxG/F2Em5JVOvwW8NGYw+BvBKOaCOrQ10wZ55GqjtLL86Q4jAMFsLnytIOCfT2MIps4Y9QF3XqhecE0j8S9Jr2wxpYXpMeqe0nZOiN6RmVyTrDFQDac7G+nf5nHo8uq++sV7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5shL34m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EEAC4CEDD;
-	Wed,  5 Feb 2025 15:13:27 +0000 (UTC)
+	 MIME-Version; b=hxiJSrrDuOWhXbkQ3gDLbwSHXLb5VP5AsJW2TgBs/cl/9oqGlsRhA27U1VqsCDQmQLfBnp4bwBoRmRxejD4RGpdXvbWqKPMqxjO/SnYIINc6FUoQPw3RfrHL6fmRcy5psCuP40+QvoAJiDYpUgDrhsx2OllqEM1ouLsBp2mQpfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYLP+Akj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0FCC4CED1;
+	Wed,  5 Feb 2025 15:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768407;
-	bh=QS4feQpr8o3xs3gRtijwNnuOwAz6DEVCmgAqX5+7l4w=;
+	s=korg; t=1738767943;
+	bh=gn/Wyfc2ikI4wwwkrfF/g6zj+3U/1V9C8xYTYRYOfLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5shL34mBRvCX6jvDKW2IiFZWNH8rjiaI8Xwt6sPI/vjpmR0IbUZCljtW1LhmKlcg
-	 PZLanY1xfllWgmbr/9fN1VxmBEdQRv81aHMmE+2eH4m2oU/SBLXf6si3QFhp81ipTA
-	 ws3pTspSLdTYXCE+6BtluY94jyZDSnx1OnNILOe8=
+	b=qYLP+AkjCOAnnpmPfleKWqndlZGX09kTLIqH6RBZFuYNiPTnDNY7quNAbXCfW4Vav
+	 aowfw+tub5LCACvjSFDmteqCr0d3wZav7WNttbil+l0NevPWuEmfLEldM2aaKYX04k
+	 9cPQi5p2HoqXIZ5Hl7r35v9fvusIFuaCwlaDHQhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Simon Horman <horms@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Petr Vorel <pvorel@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 546/623] bgmac: reduce max frame size to support just MTU 1500
+Subject: [PATCH 6.12 533/590] kconfig: fix memory leak in sym_warn_unmet_dep()
 Date: Wed,  5 Feb 2025 14:44:48 +0100
-Message-ID: <20250205134517.110217623@linuxfoundation.org>
+Message-ID: <20250205134515.658096971@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 752e5fcc2e77358936d36ef8e522d6439372e201 ]
+[ Upstream commit a409fc1463d664002ea9bf700ae4674df03de111 ]
 
-bgmac allocates new replacement buffer before handling each received
-frame. Allocating & DMA-preparing 9724 B each time consumes a lot of CPU
-time. Ideally bgmac should just respect currently set MTU but it isn't
-the case right now. For now just revert back to the old limited frame
-size.
+The string allocated in sym_warn_unmet_dep() is never freed, leading
+to a memory leak when an unmet dependency is detected.
 
-This change bumps NAT masquerade speed by ~95%.
-
-Since commit 8218f62c9c9b ("mm: page_frag: use initial zero offset for
-page_frag_alloc_align()"), the bgmac driver fails to open its network
-interface successfully and runs out of memory in the following call
-stack:
-
-bgmac_open
-  -> bgmac_dma_init
-    -> bgmac_dma_rx_skb_for_slot
-      -> netdev_alloc_frag
-
-BGMAC_RX_ALLOC_SIZE = 10048 and PAGE_FRAG_CACHE_MAX_SIZE = 32768.
-
-Eventually we land into __page_frag_alloc_align() with the following
-parameters across multiple successive calls:
-
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=0
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=10048
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=20096
-__page_frag_alloc_align: fragsz=10048, align_mask=-1, size=32768, offset=30144
-
-So in that case we do indeed have offset + fragsz (40192) > size (32768)
-and so we would eventually return NULL. Reverting to the older 1500
-bytes MTU allows the network driver to be usable again.
-
-Fixes: 8c7da63978f1 ("bgmac: configure MTU and add support for frames beyond 8192 byte size")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-[florian: expand commit message about recent commits]
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250127175159.1788246-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f8f69dc0b4e0 ("kconfig: make unmet dependency warnings readable")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ scripts/kconfig/symbol.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac.h b/drivers/net/ethernet/broadcom/bgmac.h
-index d73ef262991d6..6fee9a41839c0 100644
---- a/drivers/net/ethernet/broadcom/bgmac.h
-+++ b/drivers/net/ethernet/broadcom/bgmac.h
-@@ -328,8 +328,7 @@
- #define BGMAC_RX_FRAME_OFFSET			30		/* There are 2 unused bytes between header and real data */
- #define BGMAC_RX_BUF_OFFSET			(NET_SKB_PAD + NET_IP_ALIGN - \
- 						 BGMAC_RX_FRAME_OFFSET)
--/* Jumbo frame size with FCS */
--#define BGMAC_RX_MAX_FRAME_SIZE			9724
-+#define BGMAC_RX_MAX_FRAME_SIZE			1536
- #define BGMAC_RX_BUF_SIZE			(BGMAC_RX_FRAME_OFFSET + BGMAC_RX_MAX_FRAME_SIZE)
- #define BGMAC_RX_ALLOC_SIZE			(SKB_DATA_ALIGN(BGMAC_RX_BUF_SIZE + BGMAC_RX_BUF_OFFSET) + \
- 						 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index a3af93aaaf32a..453721e66c4eb 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -376,6 +376,7 @@ static void sym_warn_unmet_dep(const struct symbol *sym)
+ 			       "  Selected by [m]:\n");
+ 
+ 	fputs(str_get(&gs), stderr);
++	str_free(&gs);
+ 	sym_warnings++;
+ }
+ 
 -- 
 2.39.5
 
