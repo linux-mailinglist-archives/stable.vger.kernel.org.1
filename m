@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF09A2907F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:36:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930F2A28F6C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50D8A3A4D69
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D52188A63C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0206D8634E;
-	Wed,  5 Feb 2025 14:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F2B14A088;
+	Wed,  5 Feb 2025 14:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RfCvJzhy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZyisqxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28B5151988;
-	Wed,  5 Feb 2025 14:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179A8634E;
+	Wed,  5 Feb 2025 14:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766203; cv=none; b=CWrOCkWSejjOgQXgFaaWGm9fuVAu1vSD2hQuOLSc0XSXkk4Eo2WVaJl049N+wyWibY11FBky/ZdrSzJpryUk1/aCQvMbk94L+UX6phWoHl6uzgDSXrSbYJShGcYluMjopjHgBBQDKHSVtkBwpu4qatqIv4pkh4Lz8Q2qondjv54=
+	t=1738765457; cv=none; b=gprdxfeYi/VB4AeM5IyKSDH0vA8sm1m7lnUJbxGwNXkGbNRWR9Zj+lTTnIPK6CL4jvpm4uFaCjBIp8BG6Zy+9lszFnudHHeTb23KMHe2839bg0J57fU0C/sEu/TuiHEQbsN+Zj5Q0T54YkxZgVER6yK0e7FdXIY/g4W6pzQEktw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766203; c=relaxed/simple;
-	bh=isx3sx9eiCoGXWQRCr5SIDTAxN9xTULs9pZCwijIq5I=;
+	s=arc-20240116; t=1738765457; c=relaxed/simple;
+	bh=DbmAQf5j3DppfLGI+GshXXjR91AwCqXeKZSN6fTo6MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnDYjpiDSueegQr96xE6BUQW9p2KMIylqAPo/co9O7m4jRLx4eRe98GYopba5qQ12hKZNT9ZgspV/7SnFtScAV33srRN+kWid0GSLAqfjo9qjYqrjnfyYlQWg5SEoKXZY9iRJ5vhtMmknc18Zo+jMOOmuVulZqTRyb7cwBUDiq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RfCvJzhy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A251C4CEE3;
-	Wed,  5 Feb 2025 14:36:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T7m9bspJf6vKtzgq5ojqc6qjqDNbvbI7ZY3NSnY13BYMCF/ruuoMuhRH0HPaKwiuiFuzMY5uko+MTuuIjbgUdxoFmBg4xopaLmPQ5Im0dHToSfOjxDcmnqLeCnVO/r1ItRLESqRLFDVo+JgRqmJBPD7ghXaGGoxuFuiLu2afIZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZyisqxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBB1C4CED1;
+	Wed,  5 Feb 2025 14:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766203;
-	bh=isx3sx9eiCoGXWQRCr5SIDTAxN9xTULs9pZCwijIq5I=;
+	s=korg; t=1738765456;
+	bh=DbmAQf5j3DppfLGI+GshXXjR91AwCqXeKZSN6fTo6MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RfCvJzhyh2VU5TtvCoNN6npx28spTP7jEVL2n0pELsBioG7htivJuOz4eXYIiu6Ks
-	 iy2efSygNvU9+seeV3GqxMWtMMJVfBCgvrN7erZGQtLUA42CANOFUkSfpp4caMbquX
-	 Aj4P2fs+AfO20ZUr3W7E1LFXX2wnkdfEA1U5oRkE=
+	b=gZyisqxawkkrwoqOtG0N3kmg7OHJuCoxYrYeLUx69F8hJQIgiPY60GXOoZkHTvjuc
+	 DWRhXhnnSggJRm7uN1pudVt1zfDe6WhqXaqo5zLSiPW+BhrrjNMFh5Qqgc1IPNrDbD
+	 MUeW8Bmd2CEEs5NHXnNN4lQabAsSvqbwgnT3zAsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 234/623] net/mlxfw: Drop hard coded max FW flash image size
+Subject: [PATCH 6.12 221/590] selftests/landlock: Fix error message
 Date: Wed,  5 Feb 2025 14:39:36 +0100
-Message-ID: <20250205134505.178057344@linuxfoundation.org>
+Message-ID: <20250205134503.739015183@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 70d81f25cc92cc4e914516c9935ae752f27d78ad ]
+[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
 
-Currently, mlxfw kernel module limits FW flash image size to be
-10MB at most, preventing the ability to burn recent BlueField-3
-FW that exceeds the said size limit.
+The global variable errno may not be set in test_execute().  Do not use
+it in related error message.
 
-Thus, drop the hard coded limit. Instead, rely on FW's
-max_component_size threshold that is reported in MCQI register
-as the size limit for FW image.
-
-Fixes: 410ed13cae39 ("Add the mlxfw module for Mellanox firmware flash process")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/1737030796-1441634-1-git-send-email-moshe@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
+Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/landlock/fs_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-index 46245e0b24623..43c84900369a3 100644
---- a/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-+++ b/drivers/net/ethernet/mellanox/mlxfw/mlxfw_fsm.c
-@@ -14,7 +14,6 @@
- #define MLXFW_FSM_STATE_WAIT_TIMEOUT_MS 30000
- #define MLXFW_FSM_STATE_WAIT_ROUNDS \
- 	(MLXFW_FSM_STATE_WAIT_TIMEOUT_MS / MLXFW_FSM_STATE_WAIT_CYCLE_MS)
--#define MLXFW_FSM_MAX_COMPONENT_SIZE (10 * (1 << 20))
+diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
+index 6788762188fea..97d360eae4f69 100644
+--- a/tools/testing/selftests/landlock/fs_test.c
++++ b/tools/testing/selftests/landlock/fs_test.c
+@@ -2003,8 +2003,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
+ 	ASSERT_EQ(1, WIFEXITED(status));
+ 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
+ 	{
+-		TH_LOG("Unexpected return code for \"%s\": %s", path,
+-		       strerror(errno));
++		TH_LOG("Unexpected return code for \"%s\"", path);
+ 	};
+ }
  
- static const int mlxfw_fsm_state_errno[] = {
- 	[MLXFW_FSM_STATE_ERR_ERROR] = -EIO,
-@@ -229,7 +228,6 @@ static int mlxfw_flash_component(struct mlxfw_dev *mlxfw_dev,
- 		return err;
- 	}
- 
--	comp_max_size = min_t(u32, comp_max_size, MLXFW_FSM_MAX_COMPONENT_SIZE);
- 	if (comp->data_size > comp_max_size) {
- 		MLXFW_ERR_MSG(mlxfw_dev, extack,
- 			      "Component size is bigger than limit", -EINVAL);
 -- 
 2.39.5
 
