@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35937A28D69
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03097A28CA4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6F0160B0A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E513168A7E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD681547F2;
-	Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956E5149C53;
+	Wed,  5 Feb 2025 13:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIMOBZ2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/MQCyIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6715B14EC77;
-	Wed,  5 Feb 2025 14:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B6A142E86;
+	Wed,  5 Feb 2025 13:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764021; cv=none; b=Kt85PhJZycAK4swVoiQ7NBxGxo9/sFOLQswCdKTb8xm2lU3T51DoTIr7xrz+g1efAyRPd1WyOIKlapFcqGsObXJdNAV8BWXWBhHsuDT8XYChYrwGsfoQPxX9p/yCQDPT8m1Mz10bxM97u/7mMT9tiPocweejiU8kg2ENvhxg7bA=
+	t=1738763531; cv=none; b=iXMW4MPX06Uzs4yL4uov58hyK+CQs2JQciveXwIExrSquddjnhrVwvrhG5kf6kZjurdIkY6j9g76gqe94YFuZYN/E6fx21YNse+oMwTyhtTiCTvLaQWX6m6suAw57Q7PMzZmj14z9LoFd5ThIDjww6dzpLX4IRnpcauhIAEU81A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764021; c=relaxed/simple;
-	bh=7htLj/aH+/RZhpdG0QBAHElZ3By77dUWxRdn5eP658M=;
+	s=arc-20240116; t=1738763531; c=relaxed/simple;
+	bh=hULc9IEk4xjBf+jFvmwwdcHgHEYgItah3aY0Jt01To8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JFszzJhDP2810Vj8BylkASxtYncgiJTbaBLE+cfkTMR7nE0ZP5IxXhBD3kobX4nceRVgjDBmd/elHWYKGaEraweC1F3XKdFYHAWVgVTRtfnTkgRGOevxs5wLnJGFV61g/MmR4Y6+7sCzV77C52HqDSdKE/zN3hiWbzQY2CNpfQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIMOBZ2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8991C4CED1;
-	Wed,  5 Feb 2025 14:00:20 +0000 (UTC)
+	 MIME-Version; b=VJ7u8Eo+gGmpbH/HCHBKKICp5aXNm3w40XSbAHFrg8h3isjvOa2ER9hscDInWxjXBRIG7pO2bf3c9HA+XJ2JWGATWoGlr5l69qyAWMclMHblzZd9eiNwuY7moBhSw1ppVqFM+Dd731InzfJ5sOYuq7bvOw8mM3BqMHmdK0/Pw0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/MQCyIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BDCC4CED1;
+	Wed,  5 Feb 2025 13:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764021;
-	bh=7htLj/aH+/RZhpdG0QBAHElZ3By77dUWxRdn5eP658M=;
+	s=korg; t=1738763531;
+	bh=hULc9IEk4xjBf+jFvmwwdcHgHEYgItah3aY0Jt01To8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIMOBZ2avAtShc1EVVukZlNF5yrc5MxIV9hu721P5dd4WZr5XQlXtpgAkGppDwW9Y
-	 u/giNu4wuwIqK+qJUkYY1cLXkLdIyb6MxIZdSi3+DI6yQK816QiubKnVRhcmXeVpLJ
-	 OoIgEdQ4i657wIPjudPXzSrYzkPNIANu57on9BQY=
+	b=O/MQCyIl//GVVcnJsSEMmElgKCr6QqUZhwJcBnypAiwbtqegYw+CRZ5y4d5k3dbHD
+	 26Vqe+N31YDsy2rNBC1jCFJ0XjYJKL5cIMN10a2pjt2dNsaVJvEllx5ttnDWXcav7w
+	 6qrkL33oUAK3p8Nq3tr+gqmJwv2mr2iKhGQJxip8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 039/623] drm/i915: Grab intel_display from the encoder to avoid potential oopsies
+Subject: [PATCH 6.12 026/590] afs: Fix the fallback handling for the YFS.RemoveFile2 RPC call
 Date: Wed,  5 Feb 2025 14:36:21 +0100
-Message-ID: <20250205134457.724613738@linuxfoundation.org>
+Message-ID: <20250205134456.246952170@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit dc3806d9eb66d0105f8d55d462d4ef681d9eac59 ]
+[ Upstream commit e30458d690f35abb01de8b3cbc09285deb725d00 ]
 
-Grab the intel_display from 'encoder' rather than 'state'
-in the encoder hooks to avoid the massive footgun that is
-intel_sanitize_encoder(), which passes NULL as the 'state'
-argument to encoder .disable() and .post_disable().
+Fix a pair of bugs in the fallback handling for the YFS.RemoveFile2 RPC
+call:
 
-TODO: figure out how to actually fix intel_sanitize_encoder()...
+ (1) Fix the abort code check to also look for RXGEN_OPCODE.  The lack of
+     this masks the second bug.
 
-Fixes: 40eb34c3f491 ("drm/i915/crt: convert to struct intel_display")
-Fixes: ab0b0eb5c85c ("drm/i915/tv: convert to struct intel_display")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241107161123.16269-2-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+ (2) call->server is now not used for ordinary filesystem RPC calls that
+     have an operation descriptor.  Fix to use call->op->server instead.
+
+Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/109541.1736865963@warthog.procyon.org.uk
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_crt.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/afs/yfsclient.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_crt.c b/drivers/gpu/drm/i915/display/intel_crt.c
-index 74c1983fe07ea..1be55bdb48b96 100644
---- a/drivers/gpu/drm/i915/display/intel_crt.c
-+++ b/drivers/gpu/drm/i915/display/intel_crt.c
-@@ -244,7 +244,7 @@ static void hsw_disable_crt(struct intel_atomic_state *state,
- 			    const struct intel_crtc_state *old_crtc_state,
- 			    const struct drm_connector_state *old_conn_state)
+diff --git a/fs/afs/yfsclient.c b/fs/afs/yfsclient.c
+index 024227aba4cd5..362845f9aaaef 100644
+--- a/fs/afs/yfsclient.c
++++ b/fs/afs/yfsclient.c
+@@ -666,8 +666,9 @@ static int yfs_deliver_fs_remove_file2(struct afs_call *call)
+ static void yfs_done_fs_remove_file2(struct afs_call *call)
  {
--	struct intel_display *display = to_intel_display(state);
-+	struct intel_display *display = to_intel_display(encoder);
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 
- 	drm_WARN_ON(display->drm, !old_crtc_state->has_pch_encoder);
-@@ -257,7 +257,7 @@ static void hsw_post_disable_crt(struct intel_atomic_state *state,
- 				 const struct intel_crtc_state *old_crtc_state,
- 				 const struct drm_connector_state *old_conn_state)
- {
--	struct intel_display *display = to_intel_display(state);
-+	struct intel_display *display = to_intel_display(encoder);
- 	struct intel_crtc *crtc = to_intel_crtc(old_crtc_state->uapi.crtc);
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 
-@@ -287,7 +287,7 @@ static void hsw_pre_pll_enable_crt(struct intel_atomic_state *state,
- 				   const struct intel_crtc_state *crtc_state,
- 				   const struct drm_connector_state *conn_state)
- {
--	struct intel_display *display = to_intel_display(state);
-+	struct intel_display *display = to_intel_display(encoder);
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 
- 	drm_WARN_ON(display->drm, !crtc_state->has_pch_encoder);
-@@ -300,7 +300,7 @@ static void hsw_pre_enable_crt(struct intel_atomic_state *state,
- 			       const struct intel_crtc_state *crtc_state,
- 			       const struct drm_connector_state *conn_state)
- {
--	struct intel_display *display = to_intel_display(state);
-+	struct intel_display *display = to_intel_display(encoder);
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
- 	enum pipe pipe = crtc->pipe;
-@@ -319,7 +319,7 @@ static void hsw_enable_crt(struct intel_atomic_state *state,
- 			   const struct intel_crtc_state *crtc_state,
- 			   const struct drm_connector_state *conn_state)
- {
--	struct intel_display *display = to_intel_display(state);
-+	struct intel_display *display = to_intel_display(encoder);
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
- 	enum pipe pipe = crtc->pipe;
+ 	if (call->error == -ECONNABORTED &&
+-	    call->abort_code == RX_INVALID_OPERATION) {
+-		set_bit(AFS_SERVER_FL_NO_RM2, &call->server->flags);
++	    (call->abort_code == RX_INVALID_OPERATION ||
++	     call->abort_code == RXGEN_OPCODE)) {
++		set_bit(AFS_SERVER_FL_NO_RM2, &call->op->server->flags);
+ 		call->op->flags |= AFS_OPERATION_DOWNGRADE;
+ 	}
+ }
 -- 
 2.39.5
 
