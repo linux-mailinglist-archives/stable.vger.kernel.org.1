@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-113128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A83AA29016
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:32:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E128A290CB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA837188301C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:32:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75C291697D6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F577E792;
-	Wed,  5 Feb 2025 14:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C967F15A86B;
+	Wed,  5 Feb 2025 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opUuDzR0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z95UbogR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4DC156C5E;
-	Wed,  5 Feb 2025 14:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83722151988;
+	Wed,  5 Feb 2025 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765915; cv=none; b=eiPh6MsHObJW09kffC+zTfDW5HI0uu5cWRC+4Y5HufkEiFqjj/XYST7Mj6Kbe937cbOMxs1uvat8Gpwc34Tgj7US9nTiN79eJRnwv9JvpAowBx1/l88oDBjvIKguYuR5co6v2FgbEw8MJQl8AHwCiWNXZovxtYGxrO6JukNbjUA=
+	t=1738766380; cv=none; b=NycqocM5a+mnSaPv2NT8gZpF/n8YJx4wSQ1JRW931XQSsvmbD9J4fS3m43iPa7FlnB2QqCWJc25+Wu//OjrbnxfFafJRKHFpRA9Z7PUKWw67/AiJJllYCF5O/NGvPuWZk59MIWt70zDtLw7gtPTNGhdu68VWLAy0hP3AtBhJhhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765915; c=relaxed/simple;
-	bh=SwaDl78scIBvXzl1vcfJX6yilmNX0eVQsTV8Skrm7O8=;
+	s=arc-20240116; t=1738766380; c=relaxed/simple;
+	bh=oNsf0sJhEcRqRcuYD4d2fkw4qsV29foR9FgftHAB7JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owWBKWF1SMoKRCa1DxOic+2mefsluqtdrd2SPzlXCMK3x+LHr6IsgRyKUhGece0GD6Wdd9hbyl/cJx6lIiN+1c06VYiJNqZ5TxKe0QP07dolp2aUSlQBORyXG2Ybr2gVylIc8TQMGKdrQIN9FJJ03YdJQ/nSQBnz2Y+OGoul1JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opUuDzR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DE8C4CED1;
-	Wed,  5 Feb 2025 14:31:54 +0000 (UTC)
+	 MIME-Version; b=kNVVslsvNqohbe+se703G/PZSBLjpvZTp6PE2TkEoBGrzhwQIh5tlyqf9j5gKtLe8/wxa9zqputBxcwXei6mnH45/8YS4dcqTgxxDYh9giV+Eu2xZ/O3j50OUqLz3ILVbuA/yWaVbn0QFdBAk/N7nCbLi8pGOj0yC4708FLF0Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z95UbogR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D398EC4CED1;
+	Wed,  5 Feb 2025 14:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765914;
-	bh=SwaDl78scIBvXzl1vcfJX6yilmNX0eVQsTV8Skrm7O8=;
+	s=korg; t=1738766380;
+	bh=oNsf0sJhEcRqRcuYD4d2fkw4qsV29foR9FgftHAB7JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opUuDzR0TIzu1qEFTEJBUk85R9xAFraWi39P+B4gf943oS9JDiTyU2NizvnD4Tegq
-	 PQkjL/CAJjSJZcXuCkcfCtXtpG5LnA55fe/4Lrg0XEnpuMH1aVVirE4rUpKJKPrQBK
-	 uEppezxO/JszRNkK1RbBT/V0cqeOEE8VHassATyo=
+	b=z95UbogRvwqn3tM9fPQJtH5hmRWoo0NsmCgYHcRZ9HPqy3vwG85ld4zfLepQCDP5E
+	 s1B9IF+s8oD9aLCBzZOduzTQb8p3EjJ96xe5tr+eIuW2u/6tb1NfXDJxka8hcatEeH
+	 LhOnyA4lkD9RfyuynCp3SjJUYdxto4yrMft5CKMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Song Liu <song@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/590] pinctrl: nomadik: Add check for clk_enable()
+Subject: [PATCH 6.13 268/623] perf header: Fix one memory leakage in process_bpf_prog_info()
 Date: Wed,  5 Feb 2025 14:40:10 +0100
-Message-ID: <20250205134505.035374933@linuxfoundation.org>
+Message-ID: <20250205134506.482044565@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,129 +74,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 5c4bfbb21dedf5d56a55cb0e129ccb1fd5083d14 ]
+[ Upstream commit a7da6c7030e1aec32f0a41c7b4fa70ec96042019 ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
-Disable success clks in the error handling.
-Change return type of nmk_gpio_glitch_slpm_init casade.
+Function __perf_env__insert_bpf_prog_info() will return without inserting
+bpf prog info node into perf env again due to a duplicate bpf prog info
+node insertion, causing the temporary info_linear and info_node memory to
+leak. Modify the return type of this function to bool and add a check to
+ensure the memory is freed if the function returns false.
 
-Fixes: 3a19805920f1 ("pinctrl: nomadik: move all Nomadik drivers to subdir")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/20241206221618.3453159-1-zmw12306@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 606f972b1361f477 ("perf bpf: Save bpf_prog_info information as headers to perf.data")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20241205084500.823660-3-quic_zhonhan@quicinc.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/nomadik/pinctrl-nomadik.c | 35 ++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ tools/perf/util/env.c    | 5 +++--
+ tools/perf/util/env.h    | 2 +-
+ tools/perf/util/header.c | 5 ++++-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/nomadik/pinctrl-nomadik.c b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
-index f4f10c60c1d23..dcc662be08000 100644
---- a/drivers/pinctrl/nomadik/pinctrl-nomadik.c
-+++ b/drivers/pinctrl/nomadik/pinctrl-nomadik.c
-@@ -438,9 +438,9 @@ static void nmk_prcm_altcx_set_mode(struct nmk_pinctrl *npct,
-  *  - Any spurious wake up event during switch sequence to be ignored and
-  *    cleared
-  */
--static void nmk_gpio_glitch_slpm_init(unsigned int *slpm)
-+static int nmk_gpio_glitch_slpm_init(unsigned int *slpm)
- {
--	int i;
-+	int i, j, ret;
- 
- 	for (i = 0; i < NMK_MAX_BANKS; i++) {
- 		struct nmk_gpio_chip *chip = nmk_gpio_chips[i];
-@@ -449,11 +449,21 @@ static void nmk_gpio_glitch_slpm_init(unsigned int *slpm)
- 		if (!chip)
- 			break;
- 
--		clk_enable(chip->clk);
-+		ret = clk_enable(chip->clk);
-+		if (ret) {
-+			for (j = 0; j < i; j++) {
-+				chip = nmk_gpio_chips[j];
-+				clk_disable(chip->clk);
-+			}
-+
-+			return ret;
-+		}
- 
- 		slpm[i] = readl(chip->addr + NMK_GPIO_SLPC);
- 		writel(temp, chip->addr + NMK_GPIO_SLPC);
- 	}
-+
-+	return 0;
+diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
+index e2843ca2edd92..d7865ae5f8f55 100644
+--- a/tools/perf/util/env.c
++++ b/tools/perf/util/env.c
+@@ -32,7 +32,7 @@ void perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 	up_write(&env->bpf_progs.lock);
  }
  
- static void nmk_gpio_glitch_slpm_restore(unsigned int *slpm)
-@@ -923,7 +933,9 @@ static int nmk_pmx_set(struct pinctrl_dev *pctldev, unsigned int function,
- 
- 			slpm[nmk_chip->bank] &= ~BIT(bit);
+-void __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
++bool __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
+ {
+ 	__u32 prog_id = info_node->info_linear->info.id;
+ 	struct bpf_prog_info_node *node;
+@@ -50,13 +50,14 @@ void __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info
+ 			p = &(*p)->rb_right;
+ 		} else {
+ 			pr_debug("duplicated bpf prog info %u\n", prog_id);
+-			return;
++			return false;
  		}
--		nmk_gpio_glitch_slpm_init(slpm);
-+		ret = nmk_gpio_glitch_slpm_init(slpm);
-+		if (ret)
-+			goto out_pre_slpm_init;
  	}
  
- 	for (i = 0; i < g->grp.npins; i++) {
-@@ -940,7 +952,10 @@ static int nmk_pmx_set(struct pinctrl_dev *pctldev, unsigned int function,
- 		dev_dbg(npct->dev, "setting pin %d to altsetting %d\n",
- 			g->grp.pins[i], g->altsetting);
+ 	rb_link_node(&info_node->rb_node, parent, p);
+ 	rb_insert_color(&info_node->rb_node, &env->bpf_progs.infos);
+ 	env->bpf_progs.infos_cnt++;
++	return true;
+ }
  
--		clk_enable(nmk_chip->clk);
-+		ret = clk_enable(nmk_chip->clk);
-+		if (ret)
-+			goto out_glitch;
-+
- 		/*
- 		 * If the pin is switching to altfunc, and there was an
- 		 * interrupt installed on it which has been lazy disabled,
-@@ -988,6 +1003,7 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
- 	struct nmk_gpio_chip *nmk_chip;
- 	struct gpio_chip *chip;
- 	unsigned int bit;
-+	int ret;
+ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
+index ae604c4edbb7e..9db2e5a625ede 100644
+--- a/tools/perf/util/env.h
++++ b/tools/perf/util/env.h
+@@ -176,7 +176,7 @@ const char *perf_env__raw_arch(struct perf_env *env);
+ int perf_env__nr_cpus_avail(struct perf_env *env);
  
- 	if (!range) {
- 		dev_err(npct->dev, "invalid range\n");
-@@ -1004,7 +1020,9 @@ static int nmk_gpio_request_enable(struct pinctrl_dev *pctldev,
+ void perf_env__init(struct perf_env *env);
+-void __perf_env__insert_bpf_prog_info(struct perf_env *env,
++bool __perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				      struct bpf_prog_info_node *info_node);
+ void perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				    struct bpf_prog_info_node *info_node);
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index fbba6ffafec4a..d06aa86352d3c 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -3158,7 +3158,10 @@ static int process_bpf_prog_info(struct feat_fd *ff, void *data __maybe_unused)
+ 		/* after reading from file, translate offset to address */
+ 		bpil_offs_to_addr(info_linear);
+ 		info_node->info_linear = info_linear;
+-		__perf_env__insert_bpf_prog_info(env, info_node);
++		if (!__perf_env__insert_bpf_prog_info(env, info_node)) {
++			free(info_linear);
++			free(info_node);
++		}
+ 	}
  
- 	find_nmk_gpio_from_pin(pin, &bit);
- 
--	clk_enable(nmk_chip->clk);
-+	ret = clk_enable(nmk_chip->clk);
-+	if (ret)
-+		return ret;
- 	/* There is no glitch when converting any pin to GPIO */
- 	__nmk_gpio_set_mode(nmk_chip, bit, NMK_GPIO_ALT_GPIO);
- 	clk_disable(nmk_chip->clk);
-@@ -1058,6 +1076,7 @@ static int nmk_pin_config_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 	unsigned long cfg;
- 	int pull, slpm, output, val, i;
- 	bool lowemi, gpiomode, sleep;
-+	int ret;
- 
- 	nmk_chip = find_nmk_gpio_from_pin(pin, &bit);
- 	if (!nmk_chip) {
-@@ -1116,7 +1135,9 @@ static int nmk_pin_config_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 			output ? (val ? "high" : "low") : "",
- 			lowemi ? "on" : "off");
- 
--		clk_enable(nmk_chip->clk);
-+		ret = clk_enable(nmk_chip->clk);
-+		if (ret)
-+			return ret;
- 		if (gpiomode)
- 			/* No glitch when going to GPIO mode */
- 			__nmk_gpio_set_mode(nmk_chip, bit, NMK_GPIO_ALT_GPIO);
+ 	up_write(&env->bpf_progs.lock);
 -- 
 2.39.5
 
