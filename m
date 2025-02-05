@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-113870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B961A294A3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:28:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C0FA2945D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:24:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B89A188F532
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB85F3ABDFE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB04219F489;
-	Wed,  5 Feb 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED35915854F;
+	Wed,  5 Feb 2025 15:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNrF/BqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVALwXDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7823A19DF41;
-	Wed,  5 Feb 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03BE19DF41;
+	Wed,  5 Feb 2025 15:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768446; cv=none; b=ErZ7eb1+a5kBfqLJRXJYxeH243FaA4b34fEYa6uZ1KhcJs4cV96KeB9OMIjqvYW499zFuCH+BPDbVcpxsj2aS9pZ7PP1Zw17I7EQdOf87Qs5rBY9De/GqANIMoYux/3R+LmUckZNSrtXkgUbFHpkg5H4wlyH2OqdjQ5REruJ2UM=
+	t=1738768453; cv=none; b=gFmVjRjJEGr0P0xnkKM/B7C1cxWgg1hDg5lUEUzWAuva9haQ9I6wqSPGu04HokgfViiMYYrn691evz1UxR9sXNIHjoST8Lhtr0kU1J+d4hFIyZu/E8w4y2APQ8QFKCDpcdfFDKw4Rko4zuPhTdfcjiMB7rVkXLl4obVXUn7Ke7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768446; c=relaxed/simple;
-	bh=AZCmEN1LrnJcO7+tWskRfc4lJuygSYv2yOM1cRPDjq0=;
+	s=arc-20240116; t=1738768453; c=relaxed/simple;
+	bh=ftkbrEl863TRcoOPlX8Yr1oSiSkwxb22E1S1Zvb0u/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vsjw5nta+bdqx/qjXwU5LPE0L2nF+qxpT+wSjmywmOMIpiBZezIEOKI6HJntCrc+AFoo57Jv/QYXX5wrQh5dyEOL6tKYLxMJ89ipL2NoMvkAdThfBbl66UiTGwBC5KRelr5eaoS+/BfiFRMgSpX1sjXuhOWS16uUm+itM60C0UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNrF/BqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC337C4CED1;
-	Wed,  5 Feb 2025 15:14:05 +0000 (UTC)
+	 MIME-Version; b=SokT7AVqRa1ChA9lLpCzBqe2Qbr9zyNqmfZhIqLoIMWZv2G8/935d9cRGOFmMFH563GA3KPL+2fqOlHXWuZ7wI9zG4rUr5GsdXkA71lZen10zyDRWix8+dCeNpxR/yYB9TQPQA4sadJtul/ShKhWOlNCU7F+w7uPJKoqYVV47YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVALwXDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D9DC4CED1;
+	Wed,  5 Feb 2025 15:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768446;
-	bh=AZCmEN1LrnJcO7+tWskRfc4lJuygSYv2yOM1cRPDjq0=;
+	s=korg; t=1738768453;
+	bh=ftkbrEl863TRcoOPlX8Yr1oSiSkwxb22E1S1Zvb0u/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNrF/BqZjD7H2irHGebPtQMLXKIiV8dqS4+GaFTKmij59gzDQmhbg+b3S9lPSNniV
-	 IF9HZ4O5yulyv2ar5rdFaFaviezveM3JihGOGrQ0WJcExzRUmMcLNB2rr1W2bymzob
-	 7ONG2WLj98q+FWq4j4ar0Z3y9BlRZlXGac5GOapM=
+	b=cVALwXDsOkvUmhOAh2kpgq7LfGvCs80A3PywLCKQjEEfcIis35HT9ZYI1RcuoyujX
+	 LOFEFlvf/z6U+IhS7A4MhwOBphHOa8CO0/CQqs9GsonIk9n+Gcspq0rAV7uRkO82c6
+	 Zd+EQYMi39XqonybzDwc14tglNu+clFonazvza08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 560/623] io_uring/uring_cmd: use cached cmd_op in io_uring_cmd_sock()
-Date: Wed,  5 Feb 2025 14:45:02 +0100
-Message-ID: <20250205134517.642598819@linuxfoundation.org>
+Subject: [PATCH 6.13 562/623] ASoC: amd: acp: Fix possible deadlock
+Date: Wed,  5 Feb 2025 14:45:04 +0100
+Message-ID: <20250205134517.718523119@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -65,36 +69,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Daniel Baluta <daniel.baluta@nxp.com>
 
-[ Upstream commit d58d82bd0efd6c8edd452fc2f6c6dd052ec57cb2 ]
+[ Upstream commit 3ff53862c322aa7bb115d84348d5a641dc905d87 ]
 
-io_uring_cmd_sock() does a normal read of cmd->sqe->cmd_op, where it
-really should be using a READ_ONCE() as ->sqe may still be pointing to
-the original SQE. Since the prep side already does this READ_ONCE() and
-stores it locally, use that value rather than re-read it.
+On error path, function acp_i2s_set_tdm_slot returns without releasing
+the lock and this could result in potential deadlocks in the future.
 
-Fixes: 8e9fad0e70b7b ("io_uring: Add io_uring command support for sockets")
-Link: https://lore.kernel.org/r/20250121-uring-sockcmd-fix-v1-1-add742802a29@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Error reported by sparse:
+sound/soc/amd/acp/acp-i2s.c:95:12: error: context imbalance in
+'acp_i2s_set_tdm_slot' - different lock contexts for basic block
+
+Fixes: cd60dec8994c ("ASoC: amd: acp: Refactor TDM slots selction based on acp revision id")
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250127083422.20406-1-daniel.baluta@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/uring_cmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-i2s.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-index ce7726a048834..25cae9f5575be 100644
---- a/io_uring/uring_cmd.c
-+++ b/io_uring/uring_cmd.c
-@@ -362,7 +362,7 @@ int io_uring_cmd_sock(struct io_uring_cmd *cmd, unsigned int issue_flags)
- 	if (!prot || !prot->ioctl)
- 		return -EOPNOTSUPP;
- 
--	switch (cmd->sqe->cmd_op) {
-+	switch (cmd->cmd_op) {
- 	case SOCKET_URING_OP_SIOCINQ:
- 		ret = prot->ioctl(sk, SIOCINQ, &arg);
- 		if (ret)
+diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
+index 1f59ee248771c..89e99ed4275a2 100644
+--- a/sound/soc/amd/acp/acp-i2s.c
++++ b/sound/soc/amd/acp/acp-i2s.c
+@@ -181,6 +181,7 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
+ 			break;
+ 		default:
+ 			dev_err(dev, "Unknown chip revision %d\n", chip->acp_rev);
++			spin_unlock_irq(&adata->acp_lock);
+ 			return -EINVAL;
+ 		}
+ 	}
 -- 
 2.39.5
 
