@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D75A29220
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B46A290C6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E9FA16C7BF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E03A84E4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B121FDA85;
-	Wed,  5 Feb 2025 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3ADB158870;
+	Wed,  5 Feb 2025 14:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQYO0Btn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlFXVsg5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DA71FC100;
-	Wed,  5 Feb 2025 14:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4F7E792;
+	Wed,  5 Feb 2025 14:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766939; cv=none; b=seqtHKR6n5AZHpuueLM1m6ZESh88ya5560nwX9TwAahL9BKEYq3SIuAjAF4FxDqmdn/94TTM9lhhbODWLPdvP63AMcziAIkt1ghfH+cUn3rxZNg7hYt9UGDQKYDK/MOJb+Ke1ILqrGFSl5H2+3NvhDLyWRFhY3SRPQoi8JwU78c=
+	t=1738766417; cv=none; b=GpSkRGJb0411/iEOVBoIBiFF7+6Q/itk4EqFc1Fz2DjuRvZeP043y9maQadiiOOz5d32z+9G+05kcUL1BBZjLzZWB3rHEHzsdqkYzIROxylShXn+Soi5q9fRiCjjKP7/hojzh8y/1w7fTcyCZmb39mTGyMHoRmZIc9jH+sVP8js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766939; c=relaxed/simple;
-	bh=yAKCj0MhBVkT6mzSt6COoBNFepHUB9l/aZROav9VYN4=;
+	s=arc-20240116; t=1738766417; c=relaxed/simple;
+	bh=l3s55san/rYjFYjwasEsNTjbayQn2zYAOQlO8oanStM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxXFZtu0vs6w8I9yXPBDNwwOSVemIsjPEzP8xbeIYQoxO94bg+zLGt6KbeWzA/GMfoC8iZsd/jGdikT4Z4wOrE9ezwrdTzQt2cB8gDP+Y00ZUanYz7CBK+McmQq85mNwrFr5qaEezjd44Qtu0kCxZOVmFkC8FrCzFP40djh/iDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQYO0Btn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF85CC4CED1;
-	Wed,  5 Feb 2025 14:48:57 +0000 (UTC)
+	 MIME-Version; b=A4BXBxnblqv+d6ZysMHJmEfuFOKMXqm415EhR20Z2Jjc+i0XPpdorUqsRsnHvA3LWyy0R0eTATGsM2bcszGf0wZbXNnSXYeGWDjN8ja4WR5bRI1s5rDON8nmheRm6Vdio9/MNazIc83+SaPj0rAlRv1xr13qPwVViKfc2Vye3+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlFXVsg5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0388C4CEE2;
+	Wed,  5 Feb 2025 14:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766938;
-	bh=yAKCj0MhBVkT6mzSt6COoBNFepHUB9l/aZROav9VYN4=;
+	s=korg; t=1738766417;
+	bh=l3s55san/rYjFYjwasEsNTjbayQn2zYAOQlO8oanStM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQYO0Btn1PqWV2ZYZNw0T3hCDXQDvWN/1TVjzGvTMeZsXOUo35Zqw6aLu0ZDx8g0Y
-	 fvJleIiNY6Rk3dT4g6Ac1SJpgVUxD/UjHIk/CE5L9OthbPtNoNgTzhYpMnJh0b7o1N
-	 18PJyRAfHraFxlr4IMpid8fu51op5dt+9xYDmAME=
+	b=TlFXVsg5ddVl2gY/gLU2ukeS9S8EQFzY06t+24LmupA9Jb93MJOFk0TcxMXtL7OrK
+	 tA5a1x9a3HlPpgMxPISe/9QKg/IB7IkRwLDU9AXk5pN5XnzkOMAnKdfVAABMwDomtl
+	 nEifWyBPa0LahVTdxSOxRWJ7ewpzvR38FOpg0LmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 331/623] ARM: at91: pm: change BU Power Switch to automatic mode
-Date: Wed,  5 Feb 2025 14:41:13 +0100
-Message-ID: <20250205134508.886363144@linuxfoundation.org>
+Subject: [PATCH 6.12 319/590] arm64: dts: mediatek: mt8195-demo: Drop regulator-compatible property
+Date: Wed,  5 Feb 2025 14:41:14 +0100
+Message-ID: <20250205134507.479781962@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 6fc5bdfa872b7da51b5507a1327a17c3db2fcf95 ]
+[ Upstream commit 2a8af9b95f504260a6d8200a11f0ae5c90e9f787 ]
 
-Change how the Backup Unit Power is configured and force the
-automatic/hardware mode.
-This change eliminates the need for software management of the power
-switch, ensuring it transitions to the backup power source before
-entering low power modes.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It is also not listed in the MT6360
+regulator and charger bindings.
 
-This is done in the only location where this switch was configured. It's
-usually done in the bootloader.
+Drop the "regulator-compatible" property from the board dts. The MT6360
+bindings actually require the lowercase name, so with the property
+present the regulators were likely not actually working.
 
-Previously, the loss of the VDDANA (or VDDIN33) power source was not
-automatically compensated by an alternative power source. This resulted
-in the loss of Backup Unit content, including Backup Self-refresh low
-power mode information, OTP emulation configuration, and boot
-configuration, for instance.
-
-Fixes: ac809e7879b1 ("ARM: at91: pm: switch backup area to vbat in backup mode")
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20241125165648.509162-1-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: 6147314aeedc ("arm64: dts: mediatek: Add device-tree for MT8195 Demo board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-7-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-demo.dts | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
-index b9b995f8a36e1..05a1547642b60 100644
---- a/arch/arm/mach-at91/pm.c
-+++ b/arch/arm/mach-at91/pm.c
-@@ -598,7 +598,21 @@ static int at91_suspend_finish(unsigned long val)
- 	return 0;
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
+index 31d424b8fc7ce..bfb75296795c3 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
+@@ -137,7 +137,6 @@
+ 			richtek,vinovp-microvolt = <14500000>;
  
--static void at91_pm_switch_ba_to_vbat(void)
-+/**
-+ * at91_pm_switch_ba_to_auto() - Configure Backup Unit Power Switch
-+ * to automatic/hardware mode.
-+ *
-+ * The Backup Unit Power Switch can be managed either by software or hardware.
-+ * Enabling hardware mode allows the automatic transition of power between
-+ * VDDANA (or VDDIN33) and VDDBU (or VBAT, respectively), based on the
-+ * availability of these power sources.
-+ *
-+ * If the Backup Unit Power Switch is already in automatic mode, no action is
-+ * required. If it is in software-controlled mode, it is switched to automatic
-+ * mode to enhance safety and eliminate the need for toggling between power
-+ * sources.
-+ */
-+static void at91_pm_switch_ba_to_auto(void)
- {
- 	unsigned int offset = offsetof(struct at91_pm_sfrbu_regs, pswbu);
- 	unsigned int val;
-@@ -609,24 +623,19 @@ static void at91_pm_switch_ba_to_vbat(void)
+ 			otg_vbus_regulator: usb-otg-vbus-regulator {
+-				regulator-compatible = "usb-otg-vbus";
+ 				regulator-name = "usb-otg-vbus";
+ 				regulator-min-microvolt = <4425000>;
+ 				regulator-max-microvolt = <5825000>;
+@@ -149,7 +148,6 @@
+ 			LDO_VIN3-supply = <&mt6360_buck2>;
  
- 	val = readl(soc_pm.data.sfrbu + offset);
+ 			mt6360_buck1: buck1 {
+-				regulator-compatible = "BUCK1";
+ 				regulator-name = "mt6360,buck1";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1300000>;
+@@ -160,7 +158,6 @@
+ 			};
  
--	/* Already on VBAT. */
--	if (!(val & soc_pm.sfrbu_regs.pswbu.state))
-+	/* Already on auto/hardware. */
-+	if (!(val & soc_pm.sfrbu_regs.pswbu.ctrl))
- 		return;
+ 			mt6360_buck2: buck2 {
+-				regulator-compatible = "BUCK2";
+ 				regulator-name = "mt6360,buck2";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1300000>;
+@@ -171,7 +168,6 @@
+ 			};
  
--	val &= ~soc_pm.sfrbu_regs.pswbu.softsw;
--	val |= soc_pm.sfrbu_regs.pswbu.key | soc_pm.sfrbu_regs.pswbu.ctrl;
-+	val &= ~soc_pm.sfrbu_regs.pswbu.ctrl;
-+	val |= soc_pm.sfrbu_regs.pswbu.key;
- 	writel(val, soc_pm.data.sfrbu + offset);
--
--	/* Wait for update. */
--	val = readl(soc_pm.data.sfrbu + offset);
--	while (val & soc_pm.sfrbu_regs.pswbu.state)
--		val = readl(soc_pm.data.sfrbu + offset);
- }
+ 			mt6360_ldo1: ldo1 {
+-				regulator-compatible = "LDO1";
+ 				regulator-name = "mt6360,ldo1";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3600000>;
+@@ -180,7 +176,6 @@
+ 			};
  
- static void at91_pm_suspend(suspend_state_t state)
- {
- 	if (soc_pm.data.mode == AT91_PM_BACKUP) {
--		at91_pm_switch_ba_to_vbat();
-+		at91_pm_switch_ba_to_auto();
+ 			mt6360_ldo2: ldo2 {
+-				regulator-compatible = "LDO2";
+ 				regulator-name = "mt6360,ldo2";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3600000>;
+@@ -189,7 +184,6 @@
+ 			};
  
- 		cpu_suspend(0, at91_suspend_finish);
+ 			mt6360_ldo3: ldo3 {
+-				regulator-compatible = "LDO3";
+ 				regulator-name = "mt6360,ldo3";
+ 				regulator-min-microvolt = <1200000>;
+ 				regulator-max-microvolt = <3600000>;
+@@ -198,7 +192,6 @@
+ 			};
  
+ 			mt6360_ldo5: ldo5 {
+-				regulator-compatible = "LDO5";
+ 				regulator-name = "mt6360,ldo5";
+ 				regulator-min-microvolt = <2700000>;
+ 				regulator-max-microvolt = <3600000>;
+@@ -207,7 +200,6 @@
+ 			};
+ 
+ 			mt6360_ldo6: ldo6 {
+-				regulator-compatible = "LDO6";
+ 				regulator-name = "mt6360,ldo6";
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <2100000>;
+@@ -216,7 +208,6 @@
+ 			};
+ 
+ 			mt6360_ldo7: ldo7 {
+-				regulator-compatible = "LDO7";
+ 				regulator-name = "mt6360,ldo7";
+ 				regulator-min-microvolt = <500000>;
+ 				regulator-max-microvolt = <2100000>;
 -- 
 2.39.5
 
