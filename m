@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2E7A291C7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5946A28D48
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC5043ABEC6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4AF81696B4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5391DA634;
-	Wed,  5 Feb 2025 14:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4785155756;
+	Wed,  5 Feb 2025 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sfi6VdWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4oD8Uuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA03175D5D;
-	Wed,  5 Feb 2025 14:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774961537AC;
+	Wed,  5 Feb 2025 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766638; cv=none; b=SUw++h2li5fBlzCrZWWZL2UbtDOWsLALE9L8NR9ecnq4q8LPsRtWdTz3q63DZkLWHSjjc4hBl3Wx9/lw5/SEu1l6CmAL9a9tABcECv31ZHhogrjrxNCijuqr0ysJuWDpgmlvvhO41wHvElObinjRm4KZCJ3Q4h1t3c+UCjHhL4A=
+	t=1738763904; cv=none; b=fuqXpXzTvQSzdc8t/q1WYuDcORYn3zpbXdxXqTaO62xed2r/jpABVATcuexhZPTic9lsBBlECNcHjMDc+G4X4omS42zTPoiMfROhS74zMd2QnP3Ri7yqpzFZ9qewKSTBvhTNVlTIm6JeGlvtRxG2qXIEbDbwkGKnSnPygk66nxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766638; c=relaxed/simple;
-	bh=oJgV2tXRkNpw4BJURoICWTPF1U7xMa5h50NHcEKtKI8=;
+	s=arc-20240116; t=1738763904; c=relaxed/simple;
+	bh=tSpLGOLlpxN/nXWUUEh93rZ3i2zjHOu0/A9142M49m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmcFm9IaR7xQvDJWqEkbMDY5rEsrSJQ2AKH7sevguztymuvrhlSx2cQ6l6aWj3qQVcmnhcwZXN6obV1YHGBp2/1CdJa19yu72+ZwfCN82l1UFVTCjcRc6TiMfhAjVzZmCI43eQXn0T9QB9ejHdODDmFrWM9vfXQId4z22DwnQEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sfi6VdWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4530EC4CED1;
-	Wed,  5 Feb 2025 14:43:58 +0000 (UTC)
+	 MIME-Version; b=BkHP8eUeLoA/hhZoq0DOR5mnyu0UFeynL7EbkXyOcYKbW2Vvoh68+XGOB7qekMINyXYqezg8b5HRNOm/EQ4A1Ev9+SGrMmclx1KfwdGhEIm2Ue2l5u6LuaRggbhijNScUpOwy1+YnPIh+JVlMw+Ai3cggbJrDFGrifwEaE5V07I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4oD8Uuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D850DC4CED1;
+	Wed,  5 Feb 2025 13:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766638;
-	bh=oJgV2tXRkNpw4BJURoICWTPF1U7xMa5h50NHcEKtKI8=;
+	s=korg; t=1738763904;
+	bh=tSpLGOLlpxN/nXWUUEh93rZ3i2zjHOu0/A9142M49m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sfi6VdWgoDVAGav8WUUovt5AMsir7anx9PnbcNJnyoaXRzjlFtoeKsU5iKTXwg1nR
-	 MFP4DTGt56Et5RE5KNUliSJyPlnRd5cxuFyTzP5Ozo5vIAIdu0mgkfy1vpOW5sSTCL
-	 3CMfTpNF336zLLQVLT7EjINSKXtKK0dISm0r4ENk=
+	b=h4oD8UuumeOKG9+09D3PKXKZFKXtgyokjRACZwq7436eRns4KrXipuN189386b2xN
+	 KXI83jlC0NmN6SSWNOKOW/jwA305m24qXL2U7X76RkEW3dK02AXMyypn70I4KY9066
+	 TWchVl6MzAV9+p/h0bn5Ono9knWHxVUonuyw+0zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	xueqin Luo <luoxueqin@kylinos.cn>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 294/623] ASoC: Intel: avs: Fix the minimum firmware version numbers
-Date: Wed,  5 Feb 2025 14:40:36 +0100
-Message-ID: <20250205134507.478041954@linuxfoundation.org>
+Subject: [PATCH 6.6 118/393] wifi: mt76: mt7915: fix overflows seen when writing limit attributes
+Date: Wed,  5 Feb 2025 14:40:37 +0100
+Message-ID: <20250205134424.805064406@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: xueqin Luo <luoxueqin@kylinos.cn>
 
-[ Upstream commit dbda5c35b88794f6e5efe1b5b20044b0b3a340d4 ]
+[ Upstream commit 64d571742b0ae44eee5efd51e2d4a09d7f6782fc ]
 
-For few TGL-based platforms the minor version number for AudioDSP
-firmware is incorrect forcing users to utilize ignore_fw_version module
-parameter.
+DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
+number such as 18446744073709551615 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+This commit was inspired by commit: 57ee12b6c514.
 
-Fixes: 5acb19ecd198 ("ASoC: Intel: avs: TGL-based platforms support")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250109122216.3667847-3-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 02ee68b95d81 ("mt76: mt7915: add control knobs for thermal throttling")
+Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
+Link: https://patch.msgid.link/20241202031917.23741-3-luoxueqin@kylinos.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/core.c b/sound/soc/intel/avs/core.c
-index 73d4bde9b2f78..82839d0994ee3 100644
---- a/sound/soc/intel/avs/core.c
-+++ b/sound/soc/intel/avs/core.c
-@@ -829,10 +829,10 @@ static const struct avs_spec jsl_desc = {
- 	.hipc = &cnl_hipc_spec,
- };
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 5ff260319282c..28f84220d50f0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -82,7 +82,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+ 		return ret;
  
--#define AVS_TGL_BASED_SPEC(sname)		\
-+#define AVS_TGL_BASED_SPEC(sname, min)		\
- static const struct avs_spec sname##_desc = {	\
- 	.name = #sname,				\
--	.min_fw_version = { 10,	29, 0, 5646 },	\
-+	.min_fw_version = { 10,	min, 0, 5646 },	\
- 	.dsp_ops = &avs_tgl_dsp_ops,		\
- 	.core_init_mask = 1,			\
- 	.attributes = AVS_PLATATTR_IMR,		\
-@@ -840,11 +840,11 @@ static const struct avs_spec sname##_desc = {	\
- 	.hipc = &cnl_hipc_spec,			\
- }
+ 	mutex_lock(&phy->dev->mt76.mutex);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 60 * 1000, 130 * 1000), 1000);
  
--AVS_TGL_BASED_SPEC(lkf);
--AVS_TGL_BASED_SPEC(tgl);
--AVS_TGL_BASED_SPEC(ehl);
--AVS_TGL_BASED_SPEC(adl);
--AVS_TGL_BASED_SPEC(adl_n);
-+AVS_TGL_BASED_SPEC(lkf, 28);
-+AVS_TGL_BASED_SPEC(tgl, 29);
-+AVS_TGL_BASED_SPEC(ehl, 30);
-+AVS_TGL_BASED_SPEC(adl, 35);
-+AVS_TGL_BASED_SPEC(adl_n, 35);
- 
- static const struct pci_device_id avs_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_SKL_LP, &skl_desc) },
+ 	if ((i - 1 == MT7915_CRIT_TEMP_IDX &&
+ 	     val > phy->throttle_temp[MT7915_MAX_TEMP_IDX]) ||
 -- 
 2.39.5
 
