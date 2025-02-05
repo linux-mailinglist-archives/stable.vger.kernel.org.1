@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA80A29300
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE292A28FBA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78613AF092
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C7316505D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EA71DC9AF;
-	Wed,  5 Feb 2025 14:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A07615B984;
+	Wed,  5 Feb 2025 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6hyQyLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJ8T0rrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B9FDF71;
-	Wed,  5 Feb 2025 14:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4159F156C76;
+	Wed,  5 Feb 2025 14:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767432; cv=none; b=fjA0EefNea3MXFrhXZRIHGqX3mvs/05TJZOixCRbq1WoDeqAYo2/FEQ/mxo/FR+cZMfNKBnObBogISBs3GatldqX+cW1OqICukju7SH2LZVA48Ulp57rJ9s8QLxyl58FUuW/dT7o14uXcnQckOxvwa8A8/mz5vhUXZDKrPkuCRY=
+	t=1738765714; cv=none; b=qhySeFsbfBbpbNTbie6PwO9W2jRYhKTEKOT+YsPKEonVEVBFW+vC4SE2BnfZFnSeEXABzCwXg8kUPAHIp7YR94ZQB1wEqjwrY+A25k6eKUIrnlfDk3PR6BlpIEkXz/RALqlWgWTEBcUAPF5QVqGky5/nBS38apqTFKJ6binhJcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767432; c=relaxed/simple;
-	bh=WX3SF22+tZWLyK7AReY9YfoAUOc9OAVCG7h9nPsibwI=;
+	s=arc-20240116; t=1738765714; c=relaxed/simple;
+	bh=P4bqZLSvZrfmvwjRexe1l61wq1vLZFB8KqxxDEcieLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eg3NT4CBo70y+wjoLyEhMXETsdTpPMayOm66ePLKTDAqGaL8hSaTaLdj4fNtNn+ksCvgyn1kETbLCWfP/62LuPaywWs/JOZKdygVIgdzylDktNFpt8vIcwAtLVSRIKSaLodf71wyElZtPkTWte4KJxFFLYdC8mjB1hJSXYYOIY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6hyQyLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6CEC4CED1;
-	Wed,  5 Feb 2025 14:57:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BCyci2BCzpw4Ty2emEa20R6XAIcBaZ9xXGiqRrLUymvl3seEecnd2goq1k7qpZvkIADq2cWylHl62f8UhdjtR98WNSDDkmc2E5P9MMXKd4zpWg0oxwMfZL9wMlR0XMc+QdGOgV9I5kTfXrdipDB6zFLt8qUI6c0pXhuvTMyB720=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJ8T0rrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350CCC4CED1;
+	Wed,  5 Feb 2025 14:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767432;
-	bh=WX3SF22+tZWLyK7AReY9YfoAUOc9OAVCG7h9nPsibwI=;
+	s=korg; t=1738765713;
+	bh=P4bqZLSvZrfmvwjRexe1l61wq1vLZFB8KqxxDEcieLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6hyQyLOWMifKf6B5vz2gAMCG/bA+EI+VTQx8tY2GG9z6kqg2Y0e9r2UmUaFRAHlU
-	 tlUVmMiCizCdxBD+bNXahZYmLed/oH6YNgBuj0IzVZm5NeugJqsKUHSg59hcXjIML7
-	 438DwL3WpknsxvLFQXbIZPAzF861hySCb8T1AS8k=
+	b=pJ8T0rrxLPp5diRKgifd30CToD2copLXYS7NtJVNXN+dLyFT9jt4c8Eeqn5GDP8vO
+	 Tq0h5+g4aHB0J0r/pkuhjpFCwNZh15XMdYAVviCj/DpY2dqezIv7IG6pFmRkpCm6r/
+	 UtK3yz5MHDDtmH6HtvjsX6bhwOIEGIzv4ZH+QzxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Yifan <luoyifan@cmss.chinamobile.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 456/590] tools/bootconfig: Fix the wrong format specifier
+Subject: [PATCH 6.6 292/393] mtd: hyperbus: hbmc-am654: Convert to platform remove callback returning void
 Date: Wed,  5 Feb 2025 14:43:31 +0100
-Message-ID: <20250205134512.710049745@linuxfoundation.org>
+Message-ID: <20250205134431.485341156@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Yifan <luoyifan@cmss.chinamobile.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit f6ab7384d554ba80ff4793259d75535874b366f5 ]
+[ Upstream commit 59bd56760df17506bc2f828f19b40a2243edd0d0 ]
 
-Use '%u' instead of '%d' for unsigned int.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Link: https://lore.kernel.org/all/20241105011048.201629-1-luoyifan@cmss.chinamobile.com/
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Fixes: 973780011106 ("tools/bootconfig: Suppress non-error messages")
-Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/linux-mtd/20231008200143.196369-10-u.kleine-koenig@pengutronix.de
+Stable-dep-of: bf5821909eb9 ("mtd: hyperbus: hbmc-am654: fix an OF node reference leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/hyperbus/hbmc-am654.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 156b62a163c5a..8a48cc2536f56 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -226,7 +226,7 @@ static int load_xbc_from_initrd(int fd, char **buf)
- 	/* Wrong Checksum */
- 	rcsum = xbc_calc_checksum(*buf, size);
- 	if (csum != rcsum) {
--		pr_err("checksum error: %d != %d\n", csum, rcsum);
-+		pr_err("checksum error: %u != %u\n", csum, rcsum);
- 		return -EINVAL;
- 	}
+diff --git a/drivers/mtd/hyperbus/hbmc-am654.c b/drivers/mtd/hyperbus/hbmc-am654.c
+index a6161ce340d4e..dbe3eb361cca2 100644
+--- a/drivers/mtd/hyperbus/hbmc-am654.c
++++ b/drivers/mtd/hyperbus/hbmc-am654.c
+@@ -229,7 +229,7 @@ static int am654_hbmc_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
-@@ -395,7 +395,7 @@ static int apply_xbc(const char *path, const char *xbc_path)
- 	xbc_get_info(&ret, NULL);
- 	printf("\tNumber of nodes: %d\n", ret);
- 	printf("\tSize: %u bytes\n", (unsigned int)size);
--	printf("\tChecksum: %d\n", (unsigned int)csum);
-+	printf("\tChecksum: %u\n", (unsigned int)csum);
+-static int am654_hbmc_remove(struct platform_device *pdev)
++static void am654_hbmc_remove(struct platform_device *pdev)
+ {
+ 	struct am654_hbmc_priv *priv = platform_get_drvdata(pdev);
+ 	struct am654_hbmc_device_priv *dev_priv = priv->hbdev.priv;
+@@ -241,8 +241,6 @@ static int am654_hbmc_remove(struct platform_device *pdev)
  
- 	/* TODO: Check the options by schema */
- 	xbc_exit();
+ 	if (dev_priv->rx_chan)
+ 		dma_release_channel(dev_priv->rx_chan);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id am654_hbmc_dt_ids[] = {
+@@ -256,7 +254,7 @@ MODULE_DEVICE_TABLE(of, am654_hbmc_dt_ids);
+ 
+ static struct platform_driver am654_hbmc_platform_driver = {
+ 	.probe = am654_hbmc_probe,
+-	.remove = am654_hbmc_remove,
++	.remove_new = am654_hbmc_remove,
+ 	.driver = {
+ 		.name = "hbmc-am654",
+ 		.of_match_table = am654_hbmc_dt_ids,
 -- 
 2.39.5
 
