@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-112765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C278A28E4E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE76AA28EE3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769593A1700
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892291889DD3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584C814F9E7;
-	Wed,  5 Feb 2025 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9F413C9C4;
+	Wed,  5 Feb 2025 14:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvit0hlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/zVAtPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B1915198D;
-	Wed,  5 Feb 2025 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB9A1519A4;
+	Wed,  5 Feb 2025 14:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764677; cv=none; b=Z5N6XfHR77yVZ58ZrUm43fw/QlIjuIQdKksKWuETgqE/+IQqD60NvHCJ4X8anUrNs9Zm/RtefyJ1yWo9pqhgnt6hQoxUjUcvDVbjDDpEJ4momlEV2Wlqoa5+Bx/mg9AqRSB3AW5nBBKHddhLo+ux6f1rYlkgkECOi9fn65mK+PY=
+	t=1738765097; cv=none; b=Ko/GLefvFWuAR5fiJkGlxOMpgJ6SwW0IJI+1JbwE8V/7NbxU/+/i1tqKNXp6thLkvmWb8aqZMsTRIniXPLMSyf+GkOzJjZ0QDsvXY2O2IubCpzfeTB/ZGmn6/pSiaf9tbsAZBBXqOP6ArLob6qyjp/PMQKZYsUKNPpF2mwh9zTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764677; c=relaxed/simple;
-	bh=vbJCSLmJqQ3rtPvUCqMGNHsEi0n4CvqMRkDbrWEbeSQ=;
+	s=arc-20240116; t=1738765097; c=relaxed/simple;
+	bh=AWXY/sgSs3xZaMn/ui4xfOdQn7HKjqNQp1lZLv74xXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgJPWQXUuClHYfccweSOXhlkRHqQKJ0ehs1Sx+YRfvXhxnwlxvILOKt9h0juj+cRkOV3VnQR8GUyx2wFlCfK87jO31LHrd5jlLyqqtgG6pw8KbcWb5CrobbNIgNn7cnYLJ4Wx/7GGFVsqPdnuNQspjc/W6MAoKFgsOp7OBURNhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvit0hlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB14C4CEE3;
-	Wed,  5 Feb 2025 14:11:16 +0000 (UTC)
+	 MIME-Version; b=d1NKkMfXv8unO1HsxBSo6euC9EEbtU7w4BgF3/GGJVWYCjXzgoWbkt5uC4B88Ii9KurMAjT8O+JZ8ExHKgWDdrRiDVrWAKyJGdDjyzTe2MZ/tIW5KPnypZWbIXGFBbo9wVQ78kJ0zG/f1ECI2wv5FXqg3dTRP+u/zXrY84b7kk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/zVAtPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E380C4CED6;
+	Wed,  5 Feb 2025 14:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764677;
-	bh=vbJCSLmJqQ3rtPvUCqMGNHsEi0n4CvqMRkDbrWEbeSQ=;
+	s=korg; t=1738765096;
+	bh=AWXY/sgSs3xZaMn/ui4xfOdQn7HKjqNQp1lZLv74xXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvit0hlZAipDiZFdVX2LUOPsRhvvSioqQDN7aZZUltbH65htox1ssSvNuxc1gfWcz
-	 T5Q88enBRlOQdUBU2fnS0qhTeakihTjqL2s0co4a5IdrXwPUSk3HxKUp2mKDytBwqK
-	 H+feG6s/zFSSQBFlnrrKjC3qunpAVY6gnf145Qec=
+	b=B/zVAtPbRso1EhxlTHlOvyqNsff7jgsQg63XpXtrh5xdcb95hwuHM2kR1T8PWpc6S
+	 Cavbfcj8c0J8Umud+EoU97O+YOsLPvFiei6KviblAei+fmVPFevr1l/Y9OwGAVmK4/
+	 ko5vSTXjJn9Y/EHHdhWC3YIS8+axEvNqPgwHdLEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank Oltmanns <frank@oltmanns.dev>,
-	Stuart Gathman <stuart@gathman.org>
-Subject: [PATCH 6.12 130/590] dt-bindings: clock: sunxi: Export PLL_VIDEO_2X and PLL_MIPI
+	Cosmo Chou <chou.cosmo@gmail.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 143/623] ipmi: ssif_bmc: Fix new request loss when bmc ready for a response
 Date: Wed,  5 Feb 2025 14:38:05 +0100
-Message-ID: <20250205134500.234814028@linuxfoundation.org>
+Message-ID: <20250205134501.704115326@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Quan Nguyen <quan@os.amperecomputing.com>
 
-[ Upstream commit 9897831de614f1d8d5184547f0e7bf7665eed436 ]
+[ Upstream commit 83d8c79aa958e37724ed9c14dc7d0f66a48ad864 ]
 
-Export PLL_VIDEO_2X and PLL_MIPI, these will be used to explicitly
-select TCON0 clock parent in dts
+Cosmo found that when there is a new request comes in while BMC is
+ready for a response, the complete_response(), which is called to
+complete the pending response, would accidentally clear out that new
+request and force ssif_bmc to move back to abort state again.
 
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Tested-by: Frank Oltmanns <frank@oltmanns.dev> # on PinePhone
-Tested-by: Stuart Gathman <stuart@gathman.org> # on OG Pinebook
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://patch.msgid.link/20250104074035.1611136-2-anarsoul@gmail.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Stable-dep-of: 0f368cb7ef10 ("clk: sunxi-ng: a64: drop redundant CLK_PLL_VIDEO0_2X and CLK_PLL_MIPI")
+This commit is to address that issue.
+
+Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
+Reported-by: Cosmo Chou <chou.cosmo@gmail.com>
+Closes: https://lore.kernel.org/lkml/20250101165431.2113407-1-chou.cosmo@gmail.com/
+Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
+Message-ID: <20250107034734.1842247-1-quan@os.amperecomputing.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/sun50i-a64-ccu.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/ipmi/ssif_bmc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/dt-bindings/clock/sun50i-a64-ccu.h b/include/dt-bindings/clock/sun50i-a64-ccu.h
-index 175892189e9dc..4f220ea7a23cc 100644
---- a/include/dt-bindings/clock/sun50i-a64-ccu.h
-+++ b/include/dt-bindings/clock/sun50i-a64-ccu.h
-@@ -44,7 +44,9 @@
- #define _DT_BINDINGS_CLK_SUN50I_A64_H_
+diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
+index a14fafc583d4d..310f17dd9511a 100644
+--- a/drivers/char/ipmi/ssif_bmc.c
++++ b/drivers/char/ipmi/ssif_bmc.c
+@@ -292,7 +292,6 @@ static void complete_response(struct ssif_bmc_ctx *ssif_bmc)
+ 	ssif_bmc->nbytes_processed = 0;
+ 	ssif_bmc->remain_len = 0;
+ 	ssif_bmc->busy = false;
+-	memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
+ 	wake_up_all(&ssif_bmc->wait_queue);
+ }
  
- #define CLK_PLL_VIDEO0		7
-+#define CLK_PLL_VIDEO0_2X	8
- #define CLK_PLL_PERIPH0		11
-+#define CLK_PLL_MIPI		17
+@@ -744,9 +743,11 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 			ssif_bmc->aborting = true;
+ 		}
+ 	} else if (ssif_bmc->state == SSIF_RES_SENDING) {
+-		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF)
++		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF) {
++			memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
+ 			/* Invalidate response buffer to denote it is sent */
+ 			complete_response(ssif_bmc);
++		}
+ 		ssif_bmc->state = SSIF_READY;
+ 	}
  
- #define CLK_CPUX		21
- #define CLK_BUS_MIPI_DSI	28
 -- 
 2.39.5
 
