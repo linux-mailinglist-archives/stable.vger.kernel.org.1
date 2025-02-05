@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196FFA292C3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D09A28EC3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0AD916E2F3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 251C11886FA1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE3F19DF41;
-	Wed,  5 Feb 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB338634E;
+	Wed,  5 Feb 2025 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8lxk18D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN6uLKyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8965D1891AA;
-	Wed,  5 Feb 2025 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9F228691;
+	Wed,  5 Feb 2025 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767404; cv=none; b=IH9tcyLEPke1alewZjgDMeDLLQhBbDhnBolEIgcm2g2bjz65lseSpTokdHbIUNTb5a4p5PTwhXbKlrU/mTecZRuacroDEqTLmFU1OkixpYj304eGTec1I9G/pCDZXHW+AlAaRYB1B4Y8bHSuHzZQAH4jnzr5RWZYax5Vuum7N0A=
+	t=1738765001; cv=none; b=SJNiSdf/KIQMayHCQWjIP7HT3mlGtK2KPBhOj5PVJSbiCIGj1NwE7NZ5hJPOdSw0ziWPn0q/OCvODy3P0rxs8DMG0OAZ+fd73utZbO8iT9ZsPHTRftkBGW6kD+sHSWrw2tWX9k7spXBrJq0foQ9Qya62ogUTQThriqYq5TfvQBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767404; c=relaxed/simple;
-	bh=Cq5tJb+9GA1wNIKdi1g7JjvjRAQ29Rh1kYhn4fFf7ZA=;
+	s=arc-20240116; t=1738765001; c=relaxed/simple;
+	bh=Iprxw9PeJGxvLRe92A+rJXK6yhdhvW90Xx8byhSwkyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlkBIf0kW2ieO6fdJvs4iPmsXayqRIQqPrbkWPKfzkKrffUdhKi9u15fwRTe/61CJnOKWbeOHlCdma2QO/KxCoGpG/vihOs1QuX6hmf9+qMaAu/V47c2T1kImmC1AeL+jPAQ5MunnhkLdj+L9qyjo+b4mbBAEXq0yCCwB/YK55M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8lxk18D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB198C4CED1;
-	Wed,  5 Feb 2025 14:56:43 +0000 (UTC)
+	 MIME-Version; b=ZF/uKWljbSixC8YjZB4VizvKoXSbpMBQc4tqju7UhPgxrmULhp9gGLeN+w8Jiob+NN0PsHbuSY4Du3uxJlX8rRdc0dwIsY5wfDImLchyhcYNGM800Fok8BZ7802TLqX9A4oJeMTPjd9UQqbgQ9Spb8UO+P2bi9ho9qeH5qfj5Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN6uLKyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E03C4CED1;
+	Wed,  5 Feb 2025 14:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767404;
-	bh=Cq5tJb+9GA1wNIKdi1g7JjvjRAQ29Rh1kYhn4fFf7ZA=;
+	s=korg; t=1738765001;
+	bh=Iprxw9PeJGxvLRe92A+rJXK6yhdhvW90Xx8byhSwkyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8lxk18D8HCHyYg1hI5dwPguknU4nMcBlu15Lrbr0eAFz+iR5fo4WY252EQsoJ5qL
-	 7QggoHxGuKHemtBDRCxqT1HMVL9ZJNXgnPRLAirtdfUd2XPib4meoN8Ir7mHImoh/n
-	 qza0KudwQHgQ6t5Pxpa8v4ghPg8S02dFst6UUGp0=
+	b=GN6uLKyEBSoCfo1IbIHVlF7+vyHeQxytFONumopYNEhyGv6w2Y2TlBrrQ+niD+SxP
+	 8QqU6W32EhaUPkHD/ZFnCst+DsdhPhZqipGxi+mVEmEjboRhevj6xcI9bDLn5OG7Oc
+	 zisw/G+B+XgJce57HCAl8bn8Uj8845MFStmS1QW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinpu Wang <jinpu.wang@ionos.com>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Marek Vasut <marex@denx.de>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 400/623] RDMA/rtrs: Add missing deinit() call
+Subject: [PATCH 6.6 223/393] ARM: dts: stm32: Swap USART3 and UART8 alias on STM32MP15xx DHCOM SoM
 Date: Wed,  5 Feb 2025 14:42:22 +0100
-Message-ID: <20250205134511.524788735@linuxfoundation.org>
+Message-ID: <20250205134428.838381486@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 81468c4058a62e84e475433b83b3edc613294f5e ]
+[ Upstream commit 479b8227ffc433929ba49200182b6383569f9615 ]
 
-A warning is triggered when repeatedly connecting and disconnecting the
-rnbd:
- list_add corruption. prev->next should be next (ffff88800b13e480), but was ffff88801ecd1338. (prev=ffff88801ecd1340).
- WARNING: CPU: 1 PID: 36562 at lib/list_debug.c:32 __list_add_valid_or_report+0x7f/0xa0
- Workqueue: ib_cm cm_work_handler [ib_cm]
- RIP: 0010:__list_add_valid_or_report+0x7f/0xa0
-  ? __list_add_valid_or_report+0x7f/0xa0
-  ib_register_event_handler+0x65/0x93 [ib_core]
-  rtrs_srv_ib_dev_init+0x29/0x30 [rtrs_server]
-  rtrs_ib_dev_find_or_add+0x124/0x1d0 [rtrs_core]
-  __alloc_path+0x46c/0x680 [rtrs_server]
-  ? rtrs_rdma_connect+0xa6/0x2d0 [rtrs_server]
-  ? rcu_is_watching+0xd/0x40
-  ? __mutex_lock+0x312/0xcf0
-  ? get_or_create_srv+0xad/0x310 [rtrs_server]
-  ? rtrs_rdma_connect+0xa6/0x2d0 [rtrs_server]
-  rtrs_rdma_connect+0x23c/0x2d0 [rtrs_server]
-  ? __lock_release+0x1b1/0x2d0
-  cma_cm_event_handler+0x4a/0x1a0 [rdma_cm]
-  cma_ib_req_handler+0x3a0/0x7e0 [rdma_cm]
-  cm_process_work+0x28/0x1a0 [ib_cm]
-  ? _raw_spin_unlock_irq+0x2f/0x50
-  cm_req_handler+0x618/0xa60 [ib_cm]
-  cm_work_handler+0x71/0x520 [ib_cm]
+Swap USART3 and UART8 aliases on STM32MP15xx DHCOM SoM,
+make sure UART8 is listed first, USART3 second, because
+the UART8 is labeled as UART2 on the SoM pinout, while
+USART3 is labeled as UART3 on the SoM pinout.
 
-Commit 667db86bcbe8 ("RDMA/rtrs: Register ib event handler") introduced a
-new element .deinit but never used it at all. Fix it by invoking the
-`deinit()` to appropriately unregister the IB event handler.
-
-Cc: Jinpu Wang <jinpu.wang@ionos.com>
-Fixes: 667db86bcbe8 ("RDMA/rtrs: Register ib event handler")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://patch.msgid.link/20250106004516.16611-1-lizhijian@fujitsu.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 34e0c7847dcf ("ARM: dts: stm32: Add DH Electronics DHCOM STM32MP1 SoM and PDK2 board")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
-index 4e17d546d4ccf..bf38ac6f87c47 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs.c
-@@ -584,6 +584,9 @@ static void dev_free(struct kref *ref)
- 	list_del(&dev->entry);
- 	mutex_unlock(&pool->mutex);
+diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
+index 086d3a60ccce2..142d4a8731f8d 100644
+--- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
+@@ -15,8 +15,8 @@
+ 		rtc0 = &hwrtc;
+ 		rtc1 = &rtc;
+ 		serial0 = &uart4;
+-		serial1 = &usart3;
+-		serial2 = &uart8;
++		serial1 = &uart8;
++		serial2 = &usart3;
+ 	};
  
-+	if (pool->ops && pool->ops->deinit)
-+		pool->ops->deinit(dev);
-+
- 	ib_dealloc_pd(dev->ib_pd);
- 	kfree(dev);
- }
+ 	chosen {
 -- 
 2.39.5
 
