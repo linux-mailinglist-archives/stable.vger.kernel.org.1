@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-112265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7305CA281CF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:31:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBD0A281D1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:32:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6CD164711
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA0B3A37D8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEF534545;
-	Wed,  5 Feb 2025 02:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E6B211A10;
+	Wed,  5 Feb 2025 02:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4r2WuL2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzHApj+L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D970125A65D;
-	Wed,  5 Feb 2025 02:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89957200A3;
+	Wed,  5 Feb 2025 02:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738722707; cv=none; b=Hc82UrMre/wRt39PH+7VLU9D+l6PWME9jEdUAlF/aIQgdh2mjNZiSVI5vz6dy3BnQ3M9hxKtfFFdxffRyWIk+qbLCIgP+ccwjFvpSJrpEct9eB2LG/HL7tjngnMqZ+YAW01VG8SGEqwvU1JlDQb0zlxjohA+qI7gnmPw9MvnM14=
+	t=1738722709; cv=none; b=NRdZekCctJvRbcGph+QQx4Jx/cZw+B+THJiSdVfrRWJTp2crW+YBmrGCri99Awm7OHkE2m0hjt6Ef8L/27cinvi0OEdJoEico46TbK7n39svy7MCUTyrUeK4YaNaDroHcZkSyhDBJQdECeCDSKks/TrXqDR2RJtB8q4G0syM4wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738722707; c=relaxed/simple;
-	bh=JZJXpwS+xoCT6XiBnJVHG4CZf+80Tv6gEp9DVIKPYN4=;
+	s=arc-20240116; t=1738722709; c=relaxed/simple;
+	bh=6FhjmrY29YgOj5ORMTKfXimWuMq2SCPv6geZKtdHuB4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WDYJOPFRXZrlqtPZYiXywuuEMRcw07zRRLjmAgA+1xLP2vRrt9z+PCN+v7mipUgLOWVl/Y8iUgLfgNdFy1EpOa0N5xRGCeeAFiJVHDiQJ9WSrHAv8+eaayQ/mbUUIw9p+ptwoxbYTLy5aHpptJNJ1P97IK3Qf+ETs/n/C4xvCXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4r2WuL2; arc=none smtp.client-ip=209.85.219.52
+	 MIME-Version; b=Up2lfxpIWtYfHd/XIgITPL4Z4seLbj/vp/NW/VDYyBnsSvoA+wFNxeLb7UuFfYafL7/RQj0MoZeCvtegO7w1W32Jfg3QPGph0etUAnbCHdGc8QtuCGC5F6Z5u2+iEng3h6k4HpCs+aAaPCEY6lU8BBzEzNBGOXvTj7U/5sd/aNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzHApj+L; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6d888fc8300so30213666d6.3;
-        Tue, 04 Feb 2025 18:31:45 -0800 (PST)
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6d8f75b31bfso51399826d6.3;
+        Tue, 04 Feb 2025 18:31:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738722704; x=1739327504; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738722706; x=1739327506; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fWJ3+/U5udNqpfJpR2/uzHJvQHNbsouaJRdWxi3SJj0=;
-        b=W4r2WuL2z0aZK7SPX1T6hm9b+ih6pMDJAaG0hCW0UucUqOMG6ltDtmlBRfh6KcgBvf
-         +X7yVOAxwNm35/TFU7flEjqERRL1hU1ISa74VcJRGO5VB6iu5aio1ctmPWEgaXgOX7zc
-         fIF1YF0MRpLBm6T4sTtNHmjpdrXnfN+2AOPkD1e7WqCzPLB7aBrIzg/6qpI+QFdUZHGO
-         hTA+QkyxRN0sTZr47IdRtydPmkRTNHWbmnkq+vllLmlZNPacNxI5Des6pgdmgk0fxZF1
-         UJzkdqL7E9Pz+LEIH0q6suWeflKS31i7n85xvMXGMuSNBGXIPkxZWa0kxSkWHqCmowP6
-         iAvQ==
+        bh=Q0nndVOelB0GZZn73pGujC/UiwJRPbAJWARFJMrXRho=;
+        b=PzHApj+Likha2yaGhOS5ZJMCTCLZKPG68I9opq2Sc4YU2Jc7ejA+RUnoGmsNhDkx3m
+         7e4qpEyxQCt5BNeu/Kc2WFW5qQUtEdx1ZcFhPg0hkRniaKyYTYEyvxQrhHPvzCZT1lSW
+         rqj80UUbq0MmGidPVDWxIrZKmCnSQrOB8xWYfTJZ12uVwDoe/yLXj/b5nLsqPoCCLHK0
+         mXUzTgZ+5b34omNpzqNyx67n9+YjtAcZLQqw2LvgVFTilA6jt42kPiaApGZUUvd/eiAc
+         uR+XBOZrLHoNjTW+CS9lUVNF+30/+Li6r5xRCML0CiVJo3RgxbuSUybAdDSnpJFg8fLd
+         1VrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738722704; x=1739327504;
+        d=1e100.net; s=20230601; t=1738722706; x=1739327506;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fWJ3+/U5udNqpfJpR2/uzHJvQHNbsouaJRdWxi3SJj0=;
-        b=QnnLRg6h50aECgCifmGhYUK3kJi/Vbtin+FQQzY9tTDfuNVQrdYe8WVKITRL25f0wF
-         XnWidcLfkSWwOe0+yrGf64ZG5vgSkR3ItJzvEaKqF4CqiqeWJ6M+EkvIU6QVmqFxe7vx
-         jc6xeDMQwe/+yO749Fip3govu9bIVQ/S7x0GtWwNQ/ZluAGN2QKJQ/yGmc8h2AE7iUeR
-         PJa9LsmEB6U0xIN6DBH6bhY0lf4rAiq40SYfqLDCx/hEQqruYqpqDQWLb4G5JGs9FxP/
-         nvkslauLKQGQzLnTS4bBZZkMAfu5H/ajlPC1d1qAljIAJJwyzQEi+8MmG5P7o80kzeNy
-         knvw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1tgl7s0Q8vhdbdbcipCbDHhwNANIx6nRgJEfRqyLc+CDbv4hxu3iHat3pSyunQYxOJl4s960cXe3lMSY=@vger.kernel.org, AJvYcCWZULERMSO+FgHse+DzuDQqHEAJN9mL/uT1YjE1kKcFDY24zR+pZ6XEmEfCVsRZz4EYCozjN2Th@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3xHfCqii4RFkUTfzDboTqnIx8WXGS6YJVZTNw+nl8w3fuqqw6
-	sKxxmkVMi0MkwKFrIKw4nf5lUUpfTcdTQyZDrPcAl/5vREB7SFABoQ5yQg==
-X-Gm-Gg: ASbGnctuIeYRKGmcMpXTR3otQjRJLxc3l1ZhsCBXlRQyiIEu5VdoKuVopAB/F26fHGK
-	yH39HY9OxTy+txM5d41uzNZsFiQLp/s0IS9cbeoq/jjZJMkUgzdCNmEy1e7sD0xWECdMJ10g4u5
-	XMvxVW4HsXgKtJo4Y7tZrPYfbYA8zz9BwC8ykksnsB73PUi2wtj8cT6k/ktWgr5i7UWvJJJw9YK
-	/hlsSX0q9m5cZN7BQ/k/Xni9s0B+Z5S9nPD1fxeVB5OkEgPoFgYpL8NCoPbPzQmATnBO8UV9GIU
-	1rnB06tWcMfLuewH41+AUOrZ6hfmZgjAIpfN4A==
-X-Google-Smtp-Source: AGHT+IF5cIIkftGw4WwRHKqTtt8+I6sIv48dAqRnLodKyaijhaIOt3OFLc/uyoQLFQAexUGZekPcbw==
-X-Received: by 2002:ad4:5ec6:0:b0:6d4:b1e:5418 with SMTP id 6a1803df08f44-6e42fc6e390mr18830106d6.33.1738722704642;
-        Tue, 04 Feb 2025 18:31:44 -0800 (PST)
+        bh=Q0nndVOelB0GZZn73pGujC/UiwJRPbAJWARFJMrXRho=;
+        b=ikQgs+84R0FJF5kk8SapupKsvh8YhRwEd2uXYvJiC5yf5nqsGfyY0iwsp3uqpP2Jl4
+         grXEb2gAvD16aFFm/W55d5VVsFrHtOMnDO1zjR2W0xxRiF78Qlr/iYEWQ96v6b/fTyMF
+         hAQ11iYpUbQxl0A4Y45x1Q808mKMxFkVvuAb2gcKohk3AQNjMHt4AxeqUGUV03NhFd82
+         qncyOgO51a2FIcJtUxFQP/uZOhOTcaqYvJezKa/Wrv8isy5dL+l6SWa4cnZOLphvBYMC
+         cVXH/DfYMFuZoq2ik5+XMotdGLwyFG0js9+LslyXRMHolbCBckJajNAsjdL7E/fl2sjO
+         DT5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVhitf9AooKoBOTCue9lBK8dYft9Lg186kkqt1/ZD1H9bR8GQkh9kwOkE42MMDmYRBGKjbPu+3t@vger.kernel.org, AJvYcCX5IlDTmRgDBdomtjs/FonY2T3q9I/FliZ0xsYf03/nEdqPgH+oEFOANSVILLogNL7lhVCBo5N7hkdupJg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPOM1YCbR13qN/Q0gc5IX85PYxJbg+g+WDDdQ37QKjDTWt/vpo
+	bVwOWND5Clmuw484Vz+D0uTbNbA47fagm13IFkqGm6mud5ksPLOX
+X-Gm-Gg: ASbGncsGNLHhyEQjx65MiV22UkWwKNwLAAk3n3CcygiQn0QCPrt7O33cQctaWnjrNVn
+	+RCIkM9VJGAe8R0uCWhoaPHNNLO0c9ERzi6ukRtIRu6VyAqcmiBMVC4xBUF3KGQj63FagK2kMhq
+	KmtgAPlrvJOO6PAP+ERH09brI2AEIg3fxb4QKYUCDU4sTGYpoMG3pzdD4SpEF0lK01gOclmhOQi
+	dwewQbJApGjvOh5iOiAfq4cR2U8zy5xrQZbFXAaUDrb/RumMhBK0ffE5h1cYoXGeib/xyCrItnr
+	8FeRb7bIRTSB+wkVDP6VvKo20VJGqfd57+Mq5w==
+X-Google-Smtp-Source: AGHT+IFS+kn2ZGB2pFJiLdc5JmZU8Ll8iIHRaRz39Sw1icfJkjZHfXf8rJhLmct3iVykW6xS2xt6kA==
+X-Received: by 2002:ad4:5f45:0:b0:6e2:4911:cd8a with SMTP id 6a1803df08f44-6e42fbef337mr17367796d6.26.1738722706299;
+        Tue, 04 Feb 2025 18:31:46 -0800 (PST)
 Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e25492254esm68579306d6.90.2025.02.04.18.31.43
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6e25492254esm68579306d6.90.2025.02.04.18.31.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 18:31:44 -0800 (PST)
+        Tue, 04 Feb 2025 18:31:46 -0800 (PST)
 From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 To: christophe.jaillet@wanadoo.fr
 Cc: gmpy.liaowx@gmail.com,
@@ -84,12 +84,13 @@ Cc: gmpy.liaowx@gmail.com,
 	richard@nod.at,
 	stable@vger.kernel.org,
 	vigneshr@ti.com
-Subject: [PATCH v3 1/2] mtd: Replace kcalloc() with devm_kcalloc()
-Date: Wed,  5 Feb 2025 02:31:40 +0000
-Message-Id: <20250205023141.26195-1-jiashengjiangcool@gmail.com>
+Subject: [PATCH v3 2/2] mtd: Add check for devm_kcalloc()
+Date: Wed,  5 Feb 2025 02:31:41 +0000
+Message-Id: <20250205023141.26195-2-jiashengjiangcool@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
+In-Reply-To: <20250205023141.26195-1-jiashengjiangcool@gmail.com>
 References: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
+ <20250205023141.26195-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,8 +99,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+Add a check for devm_kcalloc() to ensure successful allocation.
 
 Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
 Cc: <stable@vger.kernel.org> # v5.10+
@@ -109,47 +109,29 @@ Changelog:
 
 v2 -> v3:
 
-1. Replace kcalloc() with devm_kcalloc().
-2. Remove kfree().
-3. Remove checks.
+1. No change.
 
 v1 -> v2:
 
-1. Remove redundant logging.
-2. Add kfree() in the error-handling path.
+1. No change.
 ---
- drivers/mtd/mtdpstore.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/mtd/mtdpstore.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
-index 7ac8ac901306..2d004d41cf75 100644
+index 2d004d41cf75..9cf3872e37ae 100644
 --- a/drivers/mtd/mtdpstore.c
 +++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
- 	}
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
+@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct mtd_info *mtd)
  	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
  
++	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
++		return;
++
  	/* just support dmesg right now */
  	cxt->dev.flags = PSTORE_FLAGS_DMESG;
-@@ -527,9 +527,6 @@ static void mtdpstore_notify_remove(struct mtd_info *mtd)
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
- }
+ 	cxt->dev.zone.read = mtdpstore_read;
 -- 
 2.25.1
 
