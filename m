@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-112473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E33FA28CDB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC262A28CE1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15D897A2954
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 620AA3A4527
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4782E1509BD;
-	Wed,  5 Feb 2025 13:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8285514A088;
+	Wed,  5 Feb 2025 13:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9+r7KmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hoBoiQyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA3B14F9E7;
-	Wed,  5 Feb 2025 13:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4057F142E86;
+	Wed,  5 Feb 2025 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763688; cv=none; b=lF1s9IwSvTIBEDQCXYhhNUd+qFVJqzl8Zosr4po0AjQKKaCw5pWcuM5jIukyMDQ6JvFDdsWmepoYT20S+2ri845WBZGXLu4tMjxbzsFYd+8W2GshnnYBFrC18adT9TKfHbtod37Jy4GkSYvCUjjJgGpTPOwISxhlRbHneQJKaZ4=
+	t=1738763698; cv=none; b=NjdYTtNIMPiXbKEp6k8LPjHVRsYkqgx9OzavTaq9AIMJThV3wbpVnZYbkHo5lam8A0rQF1n/nf3BDTQhPDsTgEwlJTnci+Lz26v/FtKH9R3fR1MR+z2N7b/4pagMw+JJDy2PxZVuUeQ59cBDEPh9Ezz9eoPqS2BPUaekfP7WI8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763688; c=relaxed/simple;
-	bh=ErUzmZZbPBwJKjFr0YomQmzS8czQfl8dsoi7OrKNfn0=;
+	s=arc-20240116; t=1738763698; c=relaxed/simple;
+	bh=UG2vyZwI2YroaGwwp5GNzpT1R8V9kZ1MPV3umKRAzGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7/OrY9sxfTTXMDwrpFhaIqZZvYg4Xm3jo8Qp7cda+hOydC2RQa6D68G3zWM0I58LMIhBlQ88okcC5QbsYONofL/ZJOyE0Mh/pC1aaCJ01+0yLTHP8PSkNkDhrBBWvgV2CQXZgzWkFxcr5swWnnHkyI/AXPnAE4GWWTjDltpTAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9+r7KmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D661C4CED6;
-	Wed,  5 Feb 2025 13:54:47 +0000 (UTC)
+	 MIME-Version; b=GU62CaQiHvtPOhsMlHkJIEB65/gJTYvygDTSpKSKlM5R8mY4r8bvauMPF6HWtVU/mlbiG8BbGqtOSy4IWPpVTpsCSIxyPeAVN9FuVLQhzA3g0dHE5E2V2Tl4vuqy7zlbg5R8m7uyvtvTxPTRijPGkqtmXMGm/uLoNHDw2+ma3GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hoBoiQyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5680EC4CED1;
+	Wed,  5 Feb 2025 13:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763687;
-	bh=ErUzmZZbPBwJKjFr0YomQmzS8czQfl8dsoi7OrKNfn0=;
+	s=korg; t=1738763697;
+	bh=UG2vyZwI2YroaGwwp5GNzpT1R8V9kZ1MPV3umKRAzGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9+r7KmEdDA6jF3AMGq3scChjW+HuuZIFzilhvSGvsglqCfNzm/v8o7H/JgT5C8Vj
-	 V2+g0V9EupAiaOWzwQmrbhgOVvEEnwGrc2xPlLM6/tTSGFyiSEXKa/oFMRKp+oKjdI
-	 HumdlMkTN9z/iV61h7VVcYsHWwMRRA6vSyhIvWyI=
+	b=hoBoiQyfb0J6Wb5qHtUQ5bsAMBXSJFRSF3WwYlBCjbkt1Lc1LgGNVZITz4t4/929D
+	 MwsbQrGdts4p/77IIT6vKHPo6HcTsuzNGzSsJKXkpqg35UJXnE9LDol/WZvvm8ugkB
+	 HWWCyDNu14BXEpwWb0peCsE80g1N0BP2O0PRUteg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Pavel Begunkov <asml.silence@gmail.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 009/623] block: copy back bounce buffer to user-space correctly in case of split
-Date: Wed,  5 Feb 2025 14:35:51 +0100
-Message-ID: <20250205134456.587063924@linuxfoundation.org>
+Subject: [PATCH 6.13 010/623] io_uring: prevent reg-wait speculations
+Date: Wed,  5 Feb 2025 14:35:52 +0100
+Message-ID: <20250205134456.623977036@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,57 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 031141976be0bd5f385775727a4ed3cc845eb7ba ]
+[ Upstream commit 29b95ac917927ce9f95bf38797e16333ecb489b1 ]
 
-Copy back the bounce buffer to user-space in entirety when the parent
-bio completes. The existing code uses bip_iter.bi_size for sizing the
-copy, which can be modified. So move away from that and fetch it from
-the vector passed to the block layer. While at it, switch to using
-better variable names.
+With *ENTER_EXT_ARG_REG instead of passing a user pointer with arguments
+for the waiting loop the user can specify an offset into a pre-mapped
+region of memory, in which case the
+[offset, offset + sizeof(io_uring_reg_wait)) will be intepreted as the
+argument.
 
-Fixes: 492c5d455969f ("block: bio-integrity: directly map user buffers")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20241128112240.8867-3-anuj20.g@samsung.com
+As we address a kernel array using a user given index, it'd be a subject
+to speculation type of exploits. Use array_index_nospec() to prevent
+that. Make sure to pass not the full region size but truncate by the
+maximum offset allowed considering the structure size.
+
+Fixes: d617b3147d54c ("io_uring: restore back registered wait arguments")
+Fixes: aa00f67adc2c0 ("io_uring: add support for fixed wait regions")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/1e3d9da7c43d619de7bcf41d1cd277ab2688c443.1733694126.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ io_uring/io_uring.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/bio-integrity.c b/block/bio-integrity.c
-index 2a4bd66116920..e73d8ed34235e 100644
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -118,17 +118,18 @@ static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 4758f1ba902b9..d062c5c69211b 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3233,6 +3233,7 @@ static struct io_uring_reg_wait *io_get_ext_arg_reg(struct io_ring_ctx *ctx,
+ 		     end > ctx->cq_wait_size))
+ 		return ERR_PTR(-EFAULT);
  
- static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
- {
--	unsigned short nr_vecs = bip->bip_max_vcnt - 1;
--	struct bio_vec *copy = &bip->bip_vec[1];
--	size_t bytes = bip->bip_iter.bi_size;
--	struct iov_iter iter;
-+	unsigned short orig_nr_vecs = bip->bip_max_vcnt - 1;
-+	struct bio_vec *orig_bvecs = &bip->bip_vec[1];
-+	struct bio_vec *bounce_bvec = &bip->bip_vec[0];
-+	size_t bytes = bounce_bvec->bv_len;
-+	struct iov_iter orig_iter;
- 	int ret;
- 
--	iov_iter_bvec(&iter, ITER_DEST, copy, nr_vecs, bytes);
--	ret = copy_to_iter(bvec_virt(bip->bip_vec), bytes, &iter);
-+	iov_iter_bvec(&orig_iter, ITER_DEST, orig_bvecs, orig_nr_vecs, bytes);
-+	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
- 	WARN_ON_ONCE(ret != bytes);
- 
--	bio_integrity_unpin_bvec(copy, nr_vecs, true);
-+	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
++	offset = array_index_nospec(offset, ctx->cq_wait_size - size);
+ 	return ctx->cq_wait_arg + offset;
  }
  
- /**
 -- 
 2.39.5
 
