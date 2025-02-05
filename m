@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-112620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E8DA28D9D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E9EA290AB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 098E21884455
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BCB83A717E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68FD14EC77;
-	Wed,  5 Feb 2025 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09C6158870;
+	Wed,  5 Feb 2025 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FatZdOTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ITrwa4xK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E3415198D;
-	Wed,  5 Feb 2025 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD6D80BFF;
+	Wed,  5 Feb 2025 14:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764183; cv=none; b=l8x/Rq+gBh3nVhwuyfqnNfGXuuzn769y4B91z48HY71OOsRuTgPQlzmYzkpC7PxLNaxMiWxNMv6hcPehFIUkC2OcDQxWi06/Jw/9079hfVoDeaQGVpAG70A9VZ1QHP+Y/pM+9uSOtoqMpjbUVGI1C09I9jHqOoBnfqDrZwjxZ6M=
+	t=1738766340; cv=none; b=aIy5WuEIoBXE1VLbz6nXvuAciVGPvx2sCcjh0OKlJAAx0Br/0QzjDV1tj9nlenpo6kUIF4VfsO4vNdsdPxpXg/EK81hlDpnODrizdQy3goTFnTIZHoc3ve2bJXeuLNrLIJFiBe0EHBTzn8I1jIWiaUrMyA77eCSeWx7Sn14drIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764183; c=relaxed/simple;
-	bh=efanxkhi+a32k/TFP0cZ5uBZC4T6HxzxhzIEmY+4yCs=;
+	s=arc-20240116; t=1738766340; c=relaxed/simple;
+	bh=BwvSjlSWARJPaChgEvriJEeXSvFVL5VCF/t9qi4aciI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPZXjq2WQl9onAtYdWwJ9+hpS3AuwK8XA+UEzZlxyaDA4N54uUDYDyAJitSLr5LEp3cKQF801I5AQyt9GBeYwwJOuGpP6K5Sb7CCw7YQtHkeqVHM0dx/5mFANnu8N/Ci4iOrpsCeRhLudq7upIeWdhH67rCXXXwQsMnnZPLOFfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FatZdOTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E51C4CEE3;
-	Wed,  5 Feb 2025 14:03:02 +0000 (UTC)
+	 MIME-Version; b=K0/O/Q1htBjcDHnEWoTm9Nc1BLgAE/oQhtuHg60KIFDgxGT+Dwejj8UwtQ6Hsk2FLLyQjE+AxNx81D+7qBs9qudFKgMBw0L+uUacXbia1T3y96EXOdhN0tZAhtA95QW8TQ5f94RqKDnopfzLuC7r8ErjLJAbc3ek/fRHXN/+PTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ITrwa4xK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE96CC4CED1;
+	Wed,  5 Feb 2025 14:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764183;
-	bh=efanxkhi+a32k/TFP0cZ5uBZC4T6HxzxhzIEmY+4yCs=;
+	s=korg; t=1738766340;
+	bh=BwvSjlSWARJPaChgEvriJEeXSvFVL5VCF/t9qi4aciI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FatZdOTI2l6nRsQNG2BaUDARJi3XeMN3lV9yxfsttexftV7uxJpmZolXGMMyL2teX
-	 hx1jEZDHWWDOwNN9ZZV07th9asKUrivri6c5QFMLgBpGdVAtG9RfeCWBpJhe89La/R
-	 NvQrkQu71De4V575MrdcSTWUfIht51/q6JFqKGes=
+	b=ITrwa4xKxAeLDGRRxEG63nHAHvRpHSuioN4oo9KChmfdQPhtLNRomkARzSXpD04Xx
+	 MLyttJyOjkAY+QsKSM/QPs0xq+JNvj7KDD19alDlK+0rX6NmK3FnghaiLPc6Mb1Q07
+	 1oDpnUGOQRNlmpDTYblSdfKNJYArdhGrjmhBXaV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/393] netfilter: nft_set_rbtree: prefer sync gc to async worker
-Date: Wed,  5 Feb 2025 14:41:06 +0100
-Message-ID: <20250205134425.927193640@linuxfoundation.org>
+Subject: [PATCH 6.12 312/590] RDMA/mlx4: Avoid false error about access to uninitialized gids array
+Date: Wed,  5 Feb 2025 14:41:07 +0100
+Message-ID: <20250205134507.210802979@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,256 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 7d259f021aaa78904b6c836d975e8e00d83a182a ]
+[ Upstream commit 1f53d88cbb0dcc7df235bf6611ae632b254fccd8 ]
 
-There is no need for asynchronous garbage collection, rbtree inserts
-can only happen from the netlink control plane.
+Smatch generates the following false error report:
+drivers/infiniband/hw/mlx4/main.c:393 mlx4_ib_del_gid() error: uninitialized symbol 'gids'.
 
-We already perform on-demand gc on insertion, in the area of the
-tree where the insertion takes place, but we don't do a full tree
-walk there for performance reasons.
+Traditionally, we are not changing kernel code and asking people to fix
+the tools. However in this case, the fix can be done by simply rearranging
+the code to be more clear.
 
-Do a full gc walk at the end of the transaction instead and
-remove the async worker.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 8d738c1869f6 ("netfilter: nf_tables: fix set size with rbtree backend")
+Fixes: e26be1bfef81 ("IB/mlx4: Implement ib_device callbacks")
+Link: https://patch.msgid.link/6a3a1577463da16962463fcf62883a87506e9b62.1733233426.git.leonro@nvidia.com
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 124 +++++++++++++++++----------------
- 1 file changed, 65 insertions(+), 59 deletions(-)
+ drivers/infiniband/hw/mlx4/main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 896a9a7024b04..26af6008861a6 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -19,7 +19,7 @@ struct nft_rbtree {
- 	struct rb_root		root;
- 	rwlock_t		lock;
- 	seqcount_rwlock_t	count;
--	struct delayed_work	gc_work;
-+	unsigned long		last_gc;
- };
+diff --git a/drivers/infiniband/hw/mlx4/main.c b/drivers/infiniband/hw/mlx4/main.c
+index 529db874d67c6..b1bbdcff631d5 100644
+--- a/drivers/infiniband/hw/mlx4/main.c
++++ b/drivers/infiniband/hw/mlx4/main.c
+@@ -351,7 +351,7 @@ static int mlx4_ib_del_gid(const struct ib_gid_attr *attr, void **context)
+ 	struct mlx4_port_gid_table   *port_gid_table;
+ 	int ret = 0;
+ 	int hw_update = 0;
+-	struct gid_entry *gids;
++	struct gid_entry *gids = NULL;
  
- struct nft_rbtree_elem {
-@@ -48,8 +48,7 @@ static int nft_rbtree_cmp(const struct nft_set *set,
- 
- static bool nft_rbtree_elem_expired(const struct nft_rbtree_elem *rbe)
- {
--	return nft_set_elem_expired(&rbe->ext) ||
--	       nft_set_elem_is_dead(&rbe->ext);
-+	return nft_set_elem_expired(&rbe->ext);
- }
- 
- static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
-@@ -508,6 +507,15 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	return err;
- }
- 
-+static void nft_rbtree_erase(struct nft_rbtree *priv, struct nft_rbtree_elem *rbe)
-+{
-+	write_lock_bh(&priv->lock);
-+	write_seqcount_begin(&priv->count);
-+	rb_erase(&rbe->node, &priv->root);
-+	write_seqcount_end(&priv->count);
-+	write_unlock_bh(&priv->lock);
-+}
-+
- static void nft_rbtree_remove(const struct net *net,
- 			      const struct nft_set *set,
- 			      const struct nft_set_elem *elem)
-@@ -515,11 +523,7 @@ static void nft_rbtree_remove(const struct net *net,
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	struct nft_rbtree_elem *rbe = elem->priv;
- 
--	write_lock_bh(&priv->lock);
--	write_seqcount_begin(&priv->count);
--	rb_erase(&rbe->node, &priv->root);
--	write_seqcount_end(&priv->count);
--	write_unlock_bh(&priv->lock);
-+	nft_rbtree_erase(priv, rbe);
- }
- 
- static void nft_rbtree_activate(const struct net *net,
-@@ -611,45 +615,40 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
- 	read_unlock_bh(&priv->lock);
- }
- 
--static void nft_rbtree_gc(struct work_struct *work)
-+static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
-+				 struct nft_rbtree *priv,
-+				 struct nft_rbtree_elem *rbe)
- {
-+	struct nft_set_elem elem = {
-+		.priv	= rbe,
-+	};
-+
-+	nft_setelem_data_deactivate(net, set, &elem);
-+	nft_rbtree_erase(priv, rbe);
-+}
-+
-+static void nft_rbtree_gc(struct nft_set *set)
-+{
-+	struct nft_rbtree *priv = nft_set_priv(set);
- 	struct nft_rbtree_elem *rbe, *rbe_end = NULL;
- 	struct nftables_pernet *nft_net;
--	struct nft_rbtree *priv;
-+	struct rb_node *node, *next;
- 	struct nft_trans_gc *gc;
--	struct rb_node *node;
--	struct nft_set *set;
--	unsigned int gc_seq;
- 	struct net *net;
- 
--	priv = container_of(work, struct nft_rbtree, gc_work.work);
- 	set  = nft_set_container_of(priv);
- 	net  = read_pnet(&set->net);
- 	nft_net = nft_pernet(net);
--	gc_seq  = READ_ONCE(nft_net->gc_seq);
- 
--	if (nft_set_gc_is_pending(set))
--		goto done;
--
--	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
-+	gc = nft_trans_gc_alloc(set, 0, GFP_KERNEL);
- 	if (!gc)
--		goto done;
--
--	read_lock_bh(&priv->lock);
--	for (node = rb_first(&priv->root); node != NULL; node = rb_next(node)) {
-+		return;
- 
--		/* Ruleset has been updated, try later. */
--		if (READ_ONCE(nft_net->gc_seq) != gc_seq) {
--			nft_trans_gc_destroy(gc);
--			gc = NULL;
--			goto try_later;
--		}
-+	for (node = rb_first(&priv->root); node ; node = next) {
-+		next = rb_next(node);
- 
- 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
- 
--		if (nft_set_elem_is_dead(&rbe->ext))
--			goto dead_elem;
--
- 		/* elements are reversed in the rbtree for historical reasons,
- 		 * from highest to lowest value, that is why end element is
- 		 * always visited before the start element.
-@@ -661,37 +660,34 @@ static void nft_rbtree_gc(struct work_struct *work)
- 		if (!nft_set_elem_expired(&rbe->ext))
- 			continue;
- 
--		nft_set_elem_dead(&rbe->ext);
--
--		if (!rbe_end)
--			continue;
--
--		nft_set_elem_dead(&rbe_end->ext);
--
--		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
-+		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
- 		if (!gc)
- 			goto try_later;
- 
--		nft_trans_gc_elem_add(gc, rbe_end);
--		rbe_end = NULL;
--dead_elem:
--		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
-+		/* end element needs to be removed first, it has
-+		 * no timeout extension.
-+		 */
-+		if (rbe_end) {
-+			nft_rbtree_gc_remove(net, set, priv, rbe_end);
-+			nft_trans_gc_elem_add(gc, rbe_end);
-+			rbe_end = NULL;
-+		}
-+
-+		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
- 		if (!gc)
- 			goto try_later;
- 
-+		nft_rbtree_gc_remove(net, set, priv, rbe);
- 		nft_trans_gc_elem_add(gc, rbe);
+ 	if (!rdma_cap_roce_gid_table(attr->device, attr->port_num))
+ 		return -EINVAL;
+@@ -389,10 +389,10 @@ static int mlx4_ib_del_gid(const struct ib_gid_attr *attr, void **context)
  	}
+ 	spin_unlock_bh(&iboe->lock);
  
--	gc = nft_trans_gc_catchall_async(gc, gc_seq);
--
- try_later:
--	read_unlock_bh(&priv->lock);
- 
--	if (gc)
--		nft_trans_gc_queue_async_done(gc);
--done:
--	queue_delayed_work(system_power_efficient_wq, &priv->gc_work,
--			   nft_set_gc_interval(set));
-+	if (gc) {
-+		gc = nft_trans_gc_catchall_sync(gc);
-+		nft_trans_gc_queue_sync_done(gc);
-+		priv->last_gc = jiffies;
-+	}
+-	if (!ret && hw_update) {
++	if (gids)
+ 		ret = mlx4_ib_update_gids(gids, ibdev, attr->port_num);
+-		kfree(gids);
+-	}
++
++	kfree(gids);
+ 	return ret;
  }
  
- static u64 nft_rbtree_privsize(const struct nlattr * const nla[],
-@@ -710,11 +706,6 @@ static int nft_rbtree_init(const struct nft_set *set,
- 	seqcount_rwlock_init(&priv->count, &priv->lock);
- 	priv->root = RB_ROOT;
- 
--	INIT_DEFERRABLE_WORK(&priv->gc_work, nft_rbtree_gc);
--	if (set->flags & NFT_SET_TIMEOUT)
--		queue_delayed_work(system_power_efficient_wq, &priv->gc_work,
--				   nft_set_gc_interval(set));
--
- 	return 0;
- }
- 
-@@ -725,8 +716,6 @@ static void nft_rbtree_destroy(const struct nft_ctx *ctx,
- 	struct nft_rbtree_elem *rbe;
- 	struct rb_node *node;
- 
--	cancel_delayed_work_sync(&priv->gc_work);
--	rcu_barrier();
- 	while ((node = priv->root.rb_node) != NULL) {
- 		rb_erase(node, &priv->root);
- 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
-@@ -752,6 +741,21 @@ static bool nft_rbtree_estimate(const struct nft_set_desc *desc, u32 features,
- 	return true;
- }
- 
-+static void nft_rbtree_commit(struct nft_set *set)
-+{
-+	struct nft_rbtree *priv = nft_set_priv(set);
-+
-+	if (time_after_eq(jiffies, priv->last_gc + nft_set_gc_interval(set)))
-+		nft_rbtree_gc(set);
-+}
-+
-+static void nft_rbtree_gc_init(const struct nft_set *set)
-+{
-+	struct nft_rbtree *priv = nft_set_priv(set);
-+
-+	priv->last_gc = jiffies;
-+}
-+
- const struct nft_set_type nft_set_rbtree_type = {
- 	.features	= NFT_SET_INTERVAL | NFT_SET_MAP | NFT_SET_OBJECT | NFT_SET_TIMEOUT,
- 	.ops		= {
-@@ -765,6 +769,8 @@ const struct nft_set_type nft_set_rbtree_type = {
- 		.deactivate	= nft_rbtree_deactivate,
- 		.flush		= nft_rbtree_flush,
- 		.activate	= nft_rbtree_activate,
-+		.commit		= nft_rbtree_commit,
-+		.gc_init	= nft_rbtree_gc_init,
- 		.lookup		= nft_rbtree_lookup,
- 		.walk		= nft_rbtree_walk,
- 		.get		= nft_rbtree_get,
 -- 
 2.39.5
 
