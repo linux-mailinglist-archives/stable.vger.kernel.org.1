@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-113401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A14A2923F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B24BA28E70
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C66B188501F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFBDF16257C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2091FC7FE;
-	Wed,  5 Feb 2025 14:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AF9149C53;
+	Wed,  5 Feb 2025 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZouVz6t8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ct4Dix3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A04B1FCCE9;
-	Wed,  5 Feb 2025 14:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A202E1519AA;
+	Wed,  5 Feb 2025 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766834; cv=none; b=mChpvqxINaiI1en8qmR4jQ2BSilFQzPmtsI40Y8Swv1aeQ3QfH8AdUkt6o3vPZihb538ii//lNI01IzO/qrUziPRIT2CRI3HWxUpnXfsUeiWHhY35YEF4d95Yn/KvxJQivNqK9c7Gzxu8xJY+ZkWt+H0XAg1vXqa1znOw59BOi4=
+	t=1738764788; cv=none; b=oyvR0HIoTWgcu5uA2F5VjSZwBbQ5lkeqQPLkmb1exdzf5ImUS5J/dn46yBcqkSwrmHTytEPoajyC2WuIQZhqrw2L0dERwlPH5jvZ81OVjBKE/D6CZojWdUoVndHOL4yBlobhTNWcioq1nxODUT2MBaxEeMJrHPo4OIQA/ffoLNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766834; c=relaxed/simple;
-	bh=bj9MdxXqE8O9OBujwZ0qNja43FhUc5m5oRaGP81uG2Y=;
+	s=arc-20240116; t=1738764788; c=relaxed/simple;
+	bh=ji4HZjwaHv8uBbjyD6QIU0qaDKGecF3H37XkUiB4mOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrfc2IFeMbUDUJ+/afPSp2WX06ldtKtO2v721VZdIqxVKy+LQx2EfR2O3orzMhdVaCwNxz+E6kg4AyESuChvRdFLcmGRUOnBr4o3S17wHfnLMQqT8hxEXlmnMGz6vG1joHkISzN7r4n/fgaP0k08JPWZsfwrOEOMQuY0VOYEfCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZouVz6t8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21ABC4CED1;
-	Wed,  5 Feb 2025 14:47:13 +0000 (UTC)
+	 MIME-Version; b=O0fhz10GoXMyAyFmFePRwkkQmKrAqonSob9CYLVzXE8/qfQ61U8WCPRW9+CyvnHUqEBKSiqYGNadj3LUhnbImm9Yk0Qcd3ZhASln1EBrifLhArK4HF7iFwMIVPFk/HcKHxtWxBeqHqbfCeQQt0wI9uRkFSr3UDruHMpJyY2rOjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ct4Dix3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FE1C4CED1;
+	Wed,  5 Feb 2025 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766834;
-	bh=bj9MdxXqE8O9OBujwZ0qNja43FhUc5m5oRaGP81uG2Y=;
+	s=korg; t=1738764788;
+	bh=ji4HZjwaHv8uBbjyD6QIU0qaDKGecF3H37XkUiB4mOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZouVz6t8oGMTN4zUGpE6tr2kR4B5Y5CXYM0qA4elbh68+U9eQehVjphwKNL6JpcTP
-	 CkXWAcfQUjpKJhyFY9amkWlXEWwp59BGaN9Hza+pnkiSTlhhszv0Z36rdeuAiknXQX
-	 OGRFy4deybM/8Fm9RgzhTXIeWA9EY+Uqp7XE2dIQ=
+	b=Ct4Dix3uTU6+GS4TQUMVAmrV5+9WonkJonIfzNy6fd4eJ+f7X5jr2z6CbBgXRBuem
+	 ZWfOE68WANjZGVksGXxELwRtUCibYk/YFPtQ8J3fJaommM26d3OvozkxbBRA8m4LV5
+	 ewnEl7rnTkInvyRDGXqmoWrMUwj1VwgorJ4W4lgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 367/590] RDMA/bnxt_re: Fix to drop reference to the mmap entry in case of error
-Date: Wed,  5 Feb 2025 14:42:02 +0100
-Message-ID: <20250205134509.312901760@linuxfoundation.org>
+Subject: [PATCH 6.6 204/393] rdma/cxgb4: Prevent potential integer overflow on 32bit
+Date: Wed,  5 Feb 2025 14:42:03 +0100
+Message-ID: <20250205134428.110507477@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c84f0f4f49d81645f49c3269fdcc3b84ce61e795 ]
+[ Upstream commit bd96a3935e89486304461a21752f824fc25e0f0b ]
 
-In the error handling path of bnxt_re_mmap(), driver should invoke
-rdma_user_mmap_entry_put() to free the reference of mmap entry in case
-the error happens after rdma_user_mmap_entry_get was called.
+The "gl->tot_len" variable is controlled by the user.  It comes from
+process_responses().  On 32bit systems, the "gl->tot_len + sizeof(struct
+cpl_pass_accept_req) + sizeof(struct rss_header)" addition could have an
+integer wrapping bug.  Use size_add() to prevent this.
 
-Fixes: ea2224857882 ("RDMA/bnxt_re: Update alloc_page uapi for pacing")
-Reviewed-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/20250104061519.2540178-1-kalesh-anakkur.purayil@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 1cab775c3e75 ("RDMA/cxgb4: Fix LE hash collision bug for passive open connection")
+Link: https://patch.msgid.link/r/86b404e1-4a75-4a35-a34e-e3054fa554c7@stanley.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/cxgb4/device.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 14e434ff51ede..a7067c3c06797 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -4395,9 +4395,10 @@ int bnxt_re_mmap(struct ib_ucontext *ib_uctx, struct vm_area_struct *vma)
- 	case BNXT_RE_MMAP_TOGGLE_PAGE:
- 		/* Driver doesn't expect write access for user space */
- 		if (vma->vm_flags & VM_WRITE)
--			return -EFAULT;
--		ret = vm_insert_page(vma, vma->vm_start,
--				     virt_to_page((void *)bnxt_entry->mem_offset));
-+			ret = -EFAULT;
-+		else
-+			ret = vm_insert_page(vma, vma->vm_start,
-+					     virt_to_page((void *)bnxt_entry->mem_offset));
- 		break;
- 	default:
- 		ret = -EINVAL;
+diff --git a/drivers/infiniband/hw/cxgb4/device.c b/drivers/infiniband/hw/cxgb4/device.c
+index 80970a1738f8a..034b85c422555 100644
+--- a/drivers/infiniband/hw/cxgb4/device.c
++++ b/drivers/infiniband/hw/cxgb4/device.c
+@@ -1114,8 +1114,10 @@ static inline struct sk_buff *copy_gl_to_skb_pkt(const struct pkt_gl *gl,
+ 	 * The math here assumes sizeof cpl_pass_accept_req >= sizeof
+ 	 * cpl_rx_pkt.
+ 	 */
+-	skb = alloc_skb(gl->tot_len + sizeof(struct cpl_pass_accept_req) +
+-			sizeof(struct rss_header) - pktshift, GFP_ATOMIC);
++	skb = alloc_skb(size_add(gl->tot_len,
++				 sizeof(struct cpl_pass_accept_req) +
++				 sizeof(struct rss_header)) - pktshift,
++			GFP_ATOMIC);
+ 	if (unlikely(!skb))
+ 		return NULL;
+ 
 -- 
 2.39.5
 
