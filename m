@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A95A28E6B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B533EA28D9C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09AD47A3E2E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C325E18839B4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA631537AC;
-	Wed,  5 Feb 2025 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA40F510;
+	Wed,  5 Feb 2025 14:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pViTCLCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ooDZYo2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9674149C53;
-	Wed,  5 Feb 2025 14:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F3115198D;
+	Wed,  5 Feb 2025 14:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764734; cv=none; b=WyBIb5LYi1bG4EV6J3OOiPmiszIMbA+MYFYjnytKKZmQQhy/m1kOIZQ7cc5dfhA2jsTASF3Jt13w1Pb8AH6Rrkm1R1WT4oWnj6thEJkioVB/WfyO2aWJs95mJjeOlizy1RO/9qZZXvdYyOZQDt2oNHL1XLUHoSxKeU/UsNNNKkA=
+	t=1738764180; cv=none; b=LgyIeXYEeLthLV58aOPqx7GkK9CABhyJX0s2iMhkqiNm5SU3wx3jE/jl/i/iMNgmzLE/MvYOQAzA+5H2ufH59AGx5NxeeiPcLvdlszwH0Y0+3R/jwYsHOpPn0tE9pTdr+xF3910/F2dsPzBlSgB1FYrXOrN1eXj9U6K2ZUvHsNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764734; c=relaxed/simple;
-	bh=VH39SUO52Oq6eb7BB0qxw65Finmxw3Oq23YUk6Yr+7U=;
+	s=arc-20240116; t=1738764180; c=relaxed/simple;
+	bh=o93doGUJB9Cciokxh3QHgfbTwbjsxhYfxfozd7kUo80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItKkr0BUFk2CbHu7ryrBkpAiB1RcJv1P5SEt7MuEXdEjHNyb3+Ddu9Ht0rsjO0oTPfiCxhXoy5q2A8xkHHLVd8WF59tWsM/Lz6k+rT+MSA/Nhw4Ud700JaRtuKS1zA8EnT4A66za5nBoX525xIGQN9HZS4ecyxSt7BxUVc/+WZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pViTCLCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB0AC4CED1;
-	Wed,  5 Feb 2025 14:12:13 +0000 (UTC)
+	 MIME-Version; b=aL4CDdtPim8VGwZsNuCK0D34DJeKHUXDCoNg6K2HXsMiT72UhZrua4qC43l582Xt8JK4pOchaHCpcCZB5IX1PT5v5/95/fnh5GC+E14hsrupBIPreUJKK4hWm+0CpmC/IgDA/3UZY50sxGct02pyzWIhvF+yq84fXbmW1yhp8PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ooDZYo2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F01C4CED6;
+	Wed,  5 Feb 2025 14:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764734;
-	bh=VH39SUO52Oq6eb7BB0qxw65Finmxw3Oq23YUk6Yr+7U=;
+	s=korg; t=1738764180;
+	bh=o93doGUJB9Cciokxh3QHgfbTwbjsxhYfxfozd7kUo80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pViTCLCLjZFyOHhXWQwvlig+u80JtqDUUslcTd0FLT58D9zAVD+TGd95pvgff/X1h
-	 YRTLrHllcABaBnze2ugTQ9uLxS5jGrFMiHldviIvUpxi/RZHdSjgGZewkLVd6nZINS
-	 jlXQ7juCPxgdA62RCrTysIXVMuvIWxtoJsQDcYYM=
+	b=ooDZYo2zr73BmACDdh9HWFfZbF4WjOcekNuXaC45DyNnvqgc+I0bTurNl7/1HDX26
+	 W7zw5wIzSJasmDy/HhS8swisaoo7VQtesPzuS5Zlkcbd3jMflKzqb4rUT8FoBKijd1
+	 ik2iLvE9SDX4x7iQTf6w414nAZ0CLsjgMHREB9u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 109/623] regulator: dt-bindings: mt6315: Drop regulator-compatible property
+Subject: [PATCH 6.12 096/590] wifi: rtlwifi: pci: wait for firmware loading before releasing memory
 Date: Wed,  5 Feb 2025 14:37:31 +0100
-Message-ID: <20250205134500.385749064@linuxfoundation.org>
+Message-ID: <20250205134458.929258482@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 08242719a8af603db54a2a79234a8fe600680105 ]
+[ Upstream commit b59b86c5d08be7d761c04affcbcec8184738c200 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+At probe error path, the firmware loading work may have already been
+queued. In such a case, it will try to access memory allocated by the probe
+function, which is about to be released. In such paths, wait for the
+firmware worker to finish before releasing memory.
 
-Drop the property from the MT6315 regulator binding and its examples.
-
-Fixes: 977fb5b58469 ("regulator: document binding for MT6315 regulator")
-Fixes: 6d435a94ba5b ("regulator: mt6315: Enforce regulator-compatible, not name")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20241211052427.4178367-2-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3d86b93064c7 ("rtlwifi: Fix PCI probe error path orphaned memory")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241206173713.3222187-5-cascardo@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/regulator/mt6315-regulator.yaml     | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-index cd4aa27218a1b..fa6743bb269d4 100644
---- a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-@@ -35,10 +35,6 @@ properties:
-         $ref: regulator.yaml#
-         unevaluatedProperties: false
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index a870117cf12af..0eafc4d125f91 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -2218,6 +2218,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ fail4:
+ 	rtl_deinit_core(hw);
+ fail3:
++	wait_for_completion(&rtlpriv->firmware_loading_complete);
+ 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
  
--        properties:
--          regulator-compatible:
--            pattern: "^vbuck[1-4]$"
--
-     additionalProperties: false
- 
- required:
-@@ -56,7 +52,6 @@ examples:
- 
-       regulators {
-         vbuck1 {
--          regulator-compatible = "vbuck1";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
-@@ -64,7 +59,6 @@ examples:
-         };
- 
-         vbuck3 {
--          regulator-compatible = "vbuck3";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
+ fail2:
 -- 
 2.39.5
 
