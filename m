@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0C8A293F1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:18:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F06BA29379
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:13:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A3087A350D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A4D16B963
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB6821345;
-	Wed,  5 Feb 2025 15:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C4721345;
+	Wed,  5 Feb 2025 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0HOyS3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1dyv03B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A69C18EFD4;
-	Wed,  5 Feb 2025 15:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745431519BF;
+	Wed,  5 Feb 2025 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768538; cv=none; b=lhM0RB5m7Ha5SD+qmxIGGrTh89dYHfoHBLPXWqsnowtj6nl4Zefi/vQJrI8JQI+J39t3Ygi7WxF2La4G8+AopAEUGDGUUaQElN9lCtCEesfWL48XyGVpnV/PWgsIUUMu6EK8CIA0V7PjH0nixnzqctSlbDk2CMl84Qjz4/hKw9I=
+	t=1738768014; cv=none; b=mcqT6hfxbNNp6rdhG0BpQrBD9mvYVGT6dk9g+e170263Jxk4Q8q0OqWQJY3i21EhvLXZ3gOvOTtkIOZYPFqXl1d2j/emWibrcvlfbqEuAKpMzl8cQ+7BJzhJBnOb92+zRoIDXBGgHO1+X6fXgjuqP4+77a2GWuw62waAKSFoIWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768538; c=relaxed/simple;
-	bh=p+D4nms3EoX5ehbYSmQ1LUkSlUoUGA7DGF2FjehZPss=;
+	s=arc-20240116; t=1738768014; c=relaxed/simple;
+	bh=rAKyGmigLr84BWmXp15RmllqIwyyxqAly/DtaBMk1BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a33NaZctv69seBOZS8F++HvFbmk+C5gPg85i6LkRfFin0FHDlGQreaxqePYnF7lXFcRhVI26iaAmusQ1M2+BG10f2XU1ER1ov3qZ/F0qkcG3GqIqxDRBbYB7Wvb6eALAI3FRm1gDjTkRZb497HEd6TqwQg7iOYZlcREnsCxsVxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0HOyS3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1A2C4CED1;
-	Wed,  5 Feb 2025 15:15:37 +0000 (UTC)
+	 MIME-Version; b=rx8mU0i/bPqA7BIjzI1FIZ+rkLBqlA2FHTbZLpPTrD/0iqOTWbVqU2HTTJdP8KvnEgViMpE22qO3xAUXdaRPBKJIS9wwztsirrU21+HzRD3u8WZaW+dHU3u8UWtfDQKUT32BLV8FxSbW/u0gIj4ca8ksq3ID23STZkNp8iyMi4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1dyv03B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EA9C4CED1;
+	Wed,  5 Feb 2025 15:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768538;
-	bh=p+D4nms3EoX5ehbYSmQ1LUkSlUoUGA7DGF2FjehZPss=;
+	s=korg; t=1738768014;
+	bh=rAKyGmigLr84BWmXp15RmllqIwyyxqAly/DtaBMk1BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0HOyS3ol+of2PaDIMSNONzFvGFjr0PP86nBCrWx5Sze9qiP8TNlGdkIlpsvW18Se
-	 VkolPWo26V8PBuRvh+9VyZHM5xXIi0YTcLYO1Tl6mQ3fd0sZW4oNsdFouCY5MUhde+
-	 xblYoMMJf4RtcsXHR9ZrG5CRyXvxp9ardLzRZgms=
+	b=j1dyv03Bp0c3OJ1S2CzWXDchF1B90mBALupvd5hFoKrguEvTkBY598jGxb7CM+gsU
+	 oKvCBwrm1Hj9fSIz/6ij2JUGLIMyYjLao908EuG71gZwzkREjXvQT2Rb9qyljl1zI5
+	 +yma4rRHExfAUOfG3MLI7pU6LIykQSZMqOiu3VfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 555/623] tools/power turbostat: Fix PMT mmaped file size rounding
+	Jakub Kicinski <kuba@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 542/590] Revert "SUNRPC: Reduce thread wake-up rate when receiving large RPC messages"
 Date: Wed,  5 Feb 2025 14:44:57 +0100
-Message-ID: <20250205134517.450192890@linuxfoundation.org>
+Message-ID: <20250205134516.008794177@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 2f60f03934a50bc1fb69bb4f47a25cddd6807b0b ]
+commit 966a675da844f1a764bb44557c21561cc3d09840 upstream.
 
-This (the old code) is just not how you round up to a page size.
-Noticed on a recent Intel platform. Previous ones must have been
-reporting sizes already aligned to a page and so the bug was missed when
-testing.
+I noticed that a handful of NFSv3 fstests were taking an
+unexpectedly long time to run. Troubleshooting showed that the
+server's TCP window closed and never re-opened, which caused the
+client to trigger an RPC retransmit timeout after 180 seconds.
 
-Fixes: f0e4ed752fda ("tools/power turbostat: Add early support for PMT counters")
-Signed-off-by: Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The client's recovery action was to establish a fresh connection
+and retransmit the timed-out requests. This worked, but it adds a
+long delay.
+
+I tracked the problem to the commit that attempted to reduce the
+rate at which the network layer delivers TCP socket data_ready
+callbacks. Under most circumstances this change worked as expected,
+but for NFSv3, which has no session or other type of throttling, it
+can overwhelm the receiver on occasion.
+
+I'm sure I could tweak the lowat settings, but the small benefit
+doesn't seem worth the bother. Just revert it.
+
+Fixes: 2b877fc53e97 ("SUNRPC: Reduce thread wake-up rate when receiving large RPC messages")
+Cc: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sunrpc/svcsock.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 58a487c225a73..82e427d597f0f 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -95,6 +95,8 @@
- #define INTEL_ECORE_TYPE	0x20
- #define INTEL_PCORE_TYPE	0x40
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -1083,9 +1083,6 @@ static void svc_tcp_fragment_received(st
+ 	/* If we have more data, signal svc_xprt_enqueue() to try again */
+ 	svsk->sk_tcplen = 0;
+ 	svsk->sk_marker = xdr_zero;
+-
+-	smp_wmb();
+-	tcp_set_rcvlowat(svsk->sk_sk, 1);
+ }
  
-+#define ROUND_UP_TO_PAGE_SIZE(n) (((n) + 0x1000UL-1UL) & ~(0x1000UL-1UL))
-+
- enum counter_scope { SCOPE_CPU, SCOPE_CORE, SCOPE_PACKAGE };
- enum counter_type { COUNTER_ITEMS, COUNTER_CYCLES, COUNTER_SECONDS, COUNTER_USEC, COUNTER_K2M };
- enum counter_format { FORMAT_RAW, FORMAT_DELTA, FORMAT_PERCENT, FORMAT_AVERAGE };
-@@ -8924,7 +8926,7 @@ struct pmt_mmio *pmt_mmio_open(unsigned int target_guid)
- 		if (fd_pmt == -1)
- 			goto loop_cleanup_and_break;
- 
--		mmap_size = (size + 0x1000UL) & (~0x1000UL);
-+		mmap_size = ROUND_UP_TO_PAGE_SIZE(size);
- 		mmio = mmap(0, mmap_size, PROT_READ, MAP_SHARED, fd_pmt, 0);
- 		if (mmio != MAP_FAILED) {
- 
--- 
-2.39.5
-
+ /**
+@@ -1175,17 +1172,10 @@ err_incomplete:
+ 		goto err_delete;
+ 	if (len == want)
+ 		svc_tcp_fragment_received(svsk);
+-	else {
+-		/* Avoid more ->sk_data_ready() calls until the rest
+-		 * of the message has arrived. This reduces service
+-		 * thread wake-ups on large incoming messages. */
+-		tcp_set_rcvlowat(svsk->sk_sk,
+-				 svc_sock_reclen(svsk) - svsk->sk_tcplen);
+-
++	else
+ 		trace_svcsock_tcp_recv_short(&svsk->sk_xprt,
+ 				svc_sock_reclen(svsk),
+ 				svsk->sk_tcplen - sizeof(rpc_fraghdr));
+-	}
+ 	goto err_noclose;
+ error:
+ 	if (len != -EAGAIN)
 
 
 
