@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-113189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8711A29063
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A400A29067
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5825162917
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A36D188181A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3EF155747;
-	Wed,  5 Feb 2025 14:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EF214B075;
+	Wed,  5 Feb 2025 14:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYSZTnTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMoPJo6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693DC151988;
-	Wed,  5 Feb 2025 14:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFFB151988;
+	Wed,  5 Feb 2025 14:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766123; cv=none; b=uxHR/TDxIH7xtpaNbDu/eCDFX7aIMp+VwDe0WRWvAHyS5Q6lZPf1pT80+eP8qTXFk2DYDa2GQHC2ZIymN7VNnXcejmeJwK8TSgMlnyat/r2E9rJ0Kmd3XvuWqxxPf3l8Deq2N2rlzOaOdyVZahFkWJxQmRvrIFS0spFUivT0zwI=
+	t=1738766136; cv=none; b=EC2WelNEBmIwx4/jpDLvdSewWZdNgWaBYG6+VAhd1dktVdZnmBz4gz8Y7f66zy/7ZRUzNOs5PcKsmMzLHq0YFX4UZB05CEHsIMq6E6UzJSgQhPa5a7s/khRoOWVxGCu7lnHjxir01fvCsxtRT4nkf+SA0VTwPT5irI489Jftj9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766123; c=relaxed/simple;
-	bh=iF9qAu9PYZQ6GYZ+5N5uEUuZTyy672RqwUAxcAPLpu4=;
+	s=arc-20240116; t=1738766136; c=relaxed/simple;
+	bh=HOaJ7y5SaHK50TiXViDDsnldon0Stz/W6qQJ2KnTAWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co8Rck3VkXaqrCal1x7gZ2W6y5B6KejN6WFAvUn203I2eXuMZdOpflzHgNgjXh/6YAakgj4SjuO43QOuuF1ZIoEudWKwDNjOBCT86yy5vGM+3rHCYasbbzFMaROP94FIcVkjxTlKLn0kGqK/dIDNXSROTaED08IsWCDkUC/16ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYSZTnTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C77C4CEDD;
-	Wed,  5 Feb 2025 14:35:22 +0000 (UTC)
+	 MIME-Version; b=qXu9aqOLY+/kEBBsGIUeBbb4mmZ3rBi7n+tR/P4yAU326BTFsmNScL0bOpYVvAAx4LvChHirfn15qo7UiC21MeYJ7mbuoDIz2vOZ6F6C7xlh/Ff+aeYo8t5csz5r7B/FLez/FZpXK8SvOJmDZCHnkW1Uxg9zlOwDNA++PbN53hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMoPJo6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B298AC4CED1;
+	Wed,  5 Feb 2025 14:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766123;
-	bh=iF9qAu9PYZQ6GYZ+5N5uEUuZTyy672RqwUAxcAPLpu4=;
+	s=korg; t=1738766136;
+	bh=HOaJ7y5SaHK50TiXViDDsnldon0Stz/W6qQJ2KnTAWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYSZTnTkVSi2c2/uf3g+aHQu/pqtuqr0LvOX/qaAd3Kx3AG9Ed37BQJfPBQJjCeV/
-	 xoqUkLrHI/ewCxHa4tM9hok7HMGM2fceqsFsSY6VAfzW3s+LcxmlCxkb/M+D3a4Ido
-	 oP0khd8GRZwUBEwvTMSEmXrWn7+CCjG2yVxGJjG0=
+	b=QMoPJo6xkZqFYpYyBFlFwp/eFvbMv0usHINpQtnHWqF6/16QK3rHZwFMFfxa4OJRX
+	 ypMtDxpKCS+HuYCqrSFhkCsu4gzx6Po/Kw1crIvDK/wxqsyv0v+jPIYzUNPQ8F3L4w
+	 MIHt1QhW4HLIBcxEqRGfAwm10EZYzb92dmuo/oZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/590] bpf: tcp: Mark bpf_load_hdr_opt() arg2 as read-write
-Date: Wed,  5 Feb 2025 14:40:44 +0100
-Message-ID: <20250205134506.333759840@linuxfoundation.org>
+Subject: [PATCH 6.12 290/590] iommu/amd: Remove unused amd_iommu_domain_update()
+Date: Wed,  5 Feb 2025 14:40:45 +0100
+Message-ID: <20250205134506.371503468@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,42 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Xu <dxu@dxuuu.xyz>
+From: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
 
-[ Upstream commit 8ac412a3361173e3000b16167af3d1f6f90af613 ]
+[ Upstream commit 1a684b099fac9a37e6fe2f0e594adbb1eff5181a ]
 
-MEM_WRITE attribute is defined as: "Non-presence of MEM_WRITE means that
-MEM is only being read". bpf_load_hdr_opt() both reads and writes from
-its arg2 - void *search_res.
+All the callers have been removed by the below commit, remove the
+implementation and prototypes.
 
-This matters a lot for the next commit where we more precisely track
-stack accesses. Without this annotation, the verifier will make false
-assumptions about the contents of memory written to by helpers and
-possibly prune valid branches.
-
-Fixes: 6fad274f06f0 ("bpf: Add MEM_WRITE attribute")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-Link: https://lore.kernel.org/r/730e45f8c39be2a5f3d8c4406cceca9d574cbf14.1736886479.git.dxu@dxuuu.xyz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 322d889ae7d3 ("iommu/amd: Remove amd_iommu_domain_update() from page table freeing")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/1-v2-9776c53c2966+1c7-amd_paging_flags_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/amd_iommu.h | 1 -
+ drivers/iommu/amd/iommu.c     | 9 ---------
+ 2 files changed, 10 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 46da488ff0703..a2f990bf51e5e 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7662,7 +7662,7 @@ static const struct bpf_func_proto bpf_sock_ops_load_hdr_opt_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type	= ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
+diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
+index 6386fa4556d9b..6fac9ee8dd3ed 100644
+--- a/drivers/iommu/amd/amd_iommu.h
++++ b/drivers/iommu/amd/amd_iommu.h
+@@ -87,7 +87,6 @@ int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag);
+  */
+ void amd_iommu_flush_all_caches(struct amd_iommu *iommu);
+ void amd_iommu_update_and_flush_device_table(struct protection_domain *domain);
+-void amd_iommu_domain_update(struct protection_domain *domain);
+ void amd_iommu_domain_flush_pages(struct protection_domain *domain,
+ 				  u64 address, size_t size);
+ void amd_iommu_dev_flush_pasid_pages(struct iommu_dev_data *dev_data,
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 8364cd6fa47d0..a24a97a2c6469 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1606,15 +1606,6 @@ void amd_iommu_update_and_flush_device_table(struct protection_domain *domain)
+ 	domain_flush_complete(domain);
+ }
+ 
+-void amd_iommu_domain_update(struct protection_domain *domain)
+-{
+-	/* Update device table */
+-	amd_iommu_update_and_flush_device_table(domain);
+-
+-	/* Flush domain TLB(s) and wait for completion */
+-	amd_iommu_domain_flush_all(domain);
+-}
+-
+ int amd_iommu_complete_ppr(struct device *dev, u32 pasid, int status, int tag)
+ {
+ 	struct iommu_dev_data *dev_data;
 -- 
 2.39.5
 
