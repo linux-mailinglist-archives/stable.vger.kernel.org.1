@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-113739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5D7A293B8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 147C9A2930B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB2E8188B5BD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE6816A242
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E787F155327;
-	Wed,  5 Feb 2025 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E678518E368;
+	Wed,  5 Feb 2025 14:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phPD6bp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7tL4MyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58B11519B4;
-	Wed,  5 Feb 2025 15:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47F91E89C;
+	Wed,  5 Feb 2025 14:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767997; cv=none; b=UuapjNvPGND1YEJ/Cz4N+DNWZKSZVZZq/OYCABoNcaBItPnwwik4MAr314mgi2MlbbdgNiokqzVg0RMju8+BykTpDoVnkKOlbxQv7C3ogpjO1xfK+w23du2HgXZE+yZzVY9wUyKjCllKFqw1sBhZ9tZgR5aCgU9UXl1xpD0JhPU=
+	t=1738767528; cv=none; b=KezsOcm9AGRl2EZfjSUmWWFteCoy/5q9JPnOHR4iIm3czGo7HxAqT0NrUeNlvUvEGvE8JnmbCciYkMQEgWkqwOK85GnO8LHlV+Ih1jAuUSR8g8X7WZSMjdD9z+gVUhZlCyknJs3o7PZ1GyLmmSIlx3fcbchzQTdIxjFAxeu7vQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767997; c=relaxed/simple;
-	bh=GYZ7n37zGUU7VE1AtKQsz+M3Xq9Z1F3C41/1/AuYtEM=;
+	s=arc-20240116; t=1738767528; c=relaxed/simple;
+	bh=gm3vKusvIEWKzdsrZXFXaNnaroxPsMLr/7L4Xyt0d5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8YmXd52J94mtaCBUlpSD2ImD2V7W9mjXwWSUuxDpqO2vwKt82BJTzqtIwdPerOYkUcrtZYNsSshlDgWFtdXdbSTvbdRmPNLwmDjQW70rT9dS2qQq4nIF5fFxq8Axxaf74NLIssgvz4gbLbMDep+qPLjwC3oB3eA0nESlLJALf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phPD6bp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D7BC4CED6;
-	Wed,  5 Feb 2025 15:06:36 +0000 (UTC)
+	 MIME-Version; b=XZsDMM87Hs76QEaWrtjkDrx9O9Qh46NnwTYoEntufY6cv5p7fUa8i1RmxIRlcNnDXw/0q52WrD7YAFQgjGTBbjwffXWRO3JxIgfiUYk03RPTVfkHfiGDd7Yawsywiecu46Nwbh9QNacemIzhuNeLiT6OveIP8s42xNcCm/5rHyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7tL4MyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109A2C4CED1;
+	Wed,  5 Feb 2025 14:58:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767997;
-	bh=GYZ7n37zGUU7VE1AtKQsz+M3Xq9Z1F3C41/1/AuYtEM=;
+	s=korg; t=1738767528;
+	bh=gm3vKusvIEWKzdsrZXFXaNnaroxPsMLr/7L4Xyt0d5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phPD6bp6VtwCBGRBmYDkgeG2YVqlIopnNjzd7eAWE5BlKhRp9XysLwwbJNMt6sJgx
-	 VbUdnR2auPUCv/4ntBqlCnpjj71ZZix/+m+A2s+JSkf3ZOJGYscGH5sbB+IC/FY8aD
-	 vnS5Ykl28Pguh76nnfpO6whf5G/wDsuO8O9mD3Yc=
+	b=a7tL4MySgsE/5OhYxGharzVgDrFK2m1Fny64J7oVlC4Gu55/XnIVeDI5l4lik9z4t
+	 f0bJI8psQS374iXaj6uxjpZcJBVR84+LBdS9AmyQFaxAUTRS04EiZl8UKV6pVYQ1P9
+	 IoCJzKrCVAosCSyC/6tVDEefVgK2Eymi9FDLPAFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Wang <00107082@163.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Yu Zhao <yuzhao@google.com>,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 482/623] alloc_tag: avoid current->alloc_tag manipulations when profiling is disabled
+Subject: [PATCH 6.12 469/590] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
 Date: Wed,  5 Feb 2025 14:43:44 +0100
-Message-ID: <20250205134514.657690718@linuxfoundation.org>
+Message-ID: <20250205134513.203003106@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 07438779313caafe52ac1a1a6958d735a5938988 ]
+[ Upstream commit 3ab8c5ed4f84fa20cd16794fe8dc31f633fbc70c ]
 
-When memory allocation profiling is disabled there is no need to update
-current->alloc_tag and these manipulations add unnecessary overhead.  Fix
-the overhead by skipping these extra updates.
+The nvmem interface supports variable buffer sizes, while the regmap
+interface operates with fixed-size storage. If an nvmem client uses a
+buffer size less than 4 bytes, regmap_read will write out of bounds
+as it expects the buffer to point at an unsigned int.
 
-I ran comprehensive testing on Pixel 6 on Big, Medium and Little cores:
+Fix this by using an intermediary unsigned int to hold the value.
 
-                 Overhead before fixes            Overhead after fixes
-                 slab alloc      page alloc          slab alloc      page alloc
-Big               6.21%           5.32%                3.31%          4.93%
-Medium            4.51%           5.05%                3.79%          4.39%
-Little            7.62%           1.82%                6.68%          1.02%
-
-This is an allocation microbenchmark doing allocations in a tight loop.
-Not a really realistic scenario and useful only to make performance
-comparisons.
-
-Link: https://lkml.kernel.org/r/20241226211639.1357704-1-surenb@google.com
-Fixes: b951aaff5035 ("mm: enable page allocation tagging")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: David Wang <00107082@163.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: fadfd092ee91 ("rtc: pcf85063: add nvram support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/20241218-rtc-pcf85063-stack-corruption-v1-1-12fd0ee0f046@pengutronix.de
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/alloc_tag.h | 11 ++++++++---
- lib/alloc_tag.c           |  2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-pcf85063.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-index 0bbbe537c5f9f..a946e0203e6d6 100644
---- a/include/linux/alloc_tag.h
-+++ b/include/linux/alloc_tag.h
-@@ -224,9 +224,14 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
- 
- #define alloc_hooks_tag(_tag, _do_alloc)				\
- ({									\
--	struct alloc_tag * __maybe_unused _old = alloc_tag_save(_tag);	\
--	typeof(_do_alloc) _res = _do_alloc;				\
--	alloc_tag_restore(_tag, _old);					\
-+	typeof(_do_alloc) _res;						\
-+	if (mem_alloc_profiling_enabled()) {				\
-+		struct alloc_tag * __maybe_unused _old;			\
-+		_old = alloc_tag_save(_tag);				\
-+		_res = _do_alloc;					\
-+		alloc_tag_restore(_tag, _old);				\
-+	} else								\
-+		_res = _do_alloc;					\
- 	_res;								\
- })
- 
-diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-index 65e706e1bc199..4e5d7af3eaa22 100644
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -29,6 +29,8 @@ EXPORT_SYMBOL(_shared_alloc_tag);
- 
- DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
- 			mem_alloc_profiling_key);
-+EXPORT_SYMBOL(mem_alloc_profiling_key);
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index fdbc07f14036a..905986c616559 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -322,7 +322,16 @@ static const struct rtc_class_ops pcf85063_rtc_ops = {
+ static int pcf85063_nvmem_read(void *priv, unsigned int offset,
+ 			       void *val, size_t bytes)
+ {
+-	return regmap_read(priv, PCF85063_REG_RAM, val);
++	unsigned int tmp;
++	int ret;
 +
- DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
++	ret = regmap_read(priv, PCF85063_REG_RAM, &tmp);
++	if (ret < 0)
++		return ret;
++
++	*(u8 *)val = tmp;
++
++	return 0;
+ }
  
- struct alloc_tag_kernel_section kernel_tags = { NULL, 0 };
+ static int pcf85063_nvmem_write(void *priv, unsigned int offset,
 -- 
 2.39.5
 
