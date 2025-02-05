@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5469FA28E83
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5D7A28DFF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04E821888346
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E678F7A2361
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD9E14F9E7;
-	Wed,  5 Feb 2025 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A988B1494DF;
+	Wed,  5 Feb 2025 14:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoIhFVpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0ga2s9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288E8149C53;
-	Wed,  5 Feb 2025 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650E4FC0B;
+	Wed,  5 Feb 2025 14:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764816; cv=none; b=QqIf6T6SftRTgcd+iog3I81qmWPFGHxiIPDoeiFWe6l5xbUrCvsTZ5xTftYqvXzUW3rHeGswl0LB39cpxDA4QVKIltC2PWvdN8TdFT1WFFror7o2d3JISx9TWYAxylhHMY8Eqj3yvtfbZsneEAtcE/bB3L9bbGd4Ie4xBeoA/rk=
+	t=1738764478; cv=none; b=L11CVUEJImfvnSP/MLPG2DuSvCrpoAjWSazjZ1tYdIjjlkL6pjxPJA78XgIW5jqj/ATAfEQO7nDUb56zL8fDmeuPeJwfh1bnIUvQZiSBBE9Ou7j8dNQwOXMhWGxdCIR81XTLBWTeKE34LmvyIqFz8XDLW3A1eNCjzwM0IGeJLGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764816; c=relaxed/simple;
-	bh=tc8GA8gVw2kh5cGVKDP+61qi/SkszBLsi2MQx/jXMzc=;
+	s=arc-20240116; t=1738764478; c=relaxed/simple;
+	bh=N6n1ddx0Yya0e5CINZLTFz0SbJUHEfGWq8BDtyEObwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D26/RojmCV5F4uazYBmWORt2cMWaeKKPh0wZN0ewX14/1eoBAdJC0UAVQxRPgV4G9qjEdfxf1CfTgpCL5H3YdNiaNRTL5CJCn8peoVMHZ9fLt9Qk+j7MO43pHUBGvEutW/o8z8Ctx1NUbjZITYU5U8Z5POwNDdoBHR2zvTr85ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoIhFVpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5C4C4CED6;
-	Wed,  5 Feb 2025 14:13:35 +0000 (UTC)
+	 MIME-Version; b=sQre5M00mVbnxAEoBgDkDn9yOTPS0j4ldtyeQHXNvwyPbKMx+ZOCRbzpLf5yJcriUGbX9lnnJYvxOmHrVR3x5TvgDR48pmwRZYt8uFrYbwIkBfBNclklIHSMrhntleqAP6fxmN/qKYKJ75l6OXnJpDBJr173lwmzanJtu5Jl4ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0ga2s9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521BFC4CED1;
+	Wed,  5 Feb 2025 14:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764816;
-	bh=tc8GA8gVw2kh5cGVKDP+61qi/SkszBLsi2MQx/jXMzc=;
+	s=korg; t=1738764477;
+	bh=N6n1ddx0Yya0e5CINZLTFz0SbJUHEfGWq8BDtyEObwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoIhFVpueQ/GmGvO18hT/n+AprApy1uGSCYkJ6Tv1gXa44SSvE+zm2uq92gDgCzWq
-	 VAUcUZzVqBo/5D6Za0u8ZuMjT+LtjM5bQhX5M3Wnh7ekea8mIh4l9cXNj5xCocClC2
-	 nqV7lUsb8S4M5+KzEyCYKA5y94CRJyPWXsPz0gws=
+	b=Z0ga2s9eJIuxs4Ij2szKfwIvp97FQQOkSWBtMnpmG+irRB0kHlB2DKcMhmLI2Nj2Z
+	 NHgyVdaeW1yyf+K43GC21OLtbLDbqSIplogG7d6IU6roJgAtX+i81HxHbBYm6x/7yd
+	 YgvUFZJq/v0BAb1zMHedscKxgJOo20nt4QXUNPe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Lee Jones <lee@kernel.org>,
+	He Rongguang <herongguang@linux.alibaba.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 116/623] leds: netxbig: Fix an OF node reference leak in netxbig_leds_get_of_pdata()
+Subject: [PATCH 6.12 103/590] cpupower: fix TSC MHz calculation
 Date: Wed,  5 Feb 2025 14:37:38 +0100
-Message-ID: <20250205134500.657343839@linuxfoundation.org>
+Message-ID: <20250205134459.199297137@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: He Rongguang <herongguang@linux.alibaba.com>
 
-[ Upstream commit 0508316be63bb735f59bdc8fe4527cadb62210ca ]
+[ Upstream commit 9d6c0e58514f8b57cd9c2c755e41623d6a966025 ]
 
-netxbig_leds_get_of_pdata() does not release the OF node obtained by
-of_parse_phandle() when of_find_device_by_node() fails. Add an
-of_node_put() call to fix the leak.
+Commit 'cpupower: Make TSC read per CPU for Mperf monitor' (c2adb1877b7)
+changes TSC counter reads per cpu, but left time diff global (from start
+of all cpus to end of all cpus), thus diff(time) is too large for a
+cpu's tsc counting, resulting in far less than acutal TSC_Mhz and thus
+`cpupower monitor` showing far less than actual cpu realtime frequency.
 
-This bug was found by an experimental static analysis tool that I am
-developing.
+/proc/cpuinfo shows frequency:
+cat /proc/cpuinfo | egrep -e 'processor' -e 'MHz'
+...
+processor : 171
+cpu MHz   : 4108.498
+...
 
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/20241216074923.628509-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Lee Jones <lee@kernel.org>
+before fix (System 100% busy):
+    | Mperf              || Idle_Stats
+ CPU| C0   | Cx   | Freq  || POLL | C1   | C2
+ 171|  0.77| 99.23|  2279||  0.00|  0.00|  0.00
+
+after fix (System 100% busy):
+    | Mperf              || Idle_Stats
+ CPU| C0   | Cx   | Freq  || POLL | C1   | C2
+ 171|  0.46| 99.54|  4095||  0.00|  0.00|  0.00
+
+Fixes: c2adb1877b76 ("cpupower: Make TSC read per CPU for Mperf monitor")
+Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-netxbig.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../cpupower/utils/idle_monitor/mperf_monitor.c   | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index af5a908b8d9ed..e95287416ef87 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -439,6 +439,7 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
+diff --git a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+index ae6af354a81db..08a399b0be286 100644
+--- a/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
++++ b/tools/power/cpupower/utils/idle_monitor/mperf_monitor.c
+@@ -33,7 +33,7 @@ static int mperf_get_count_percent(unsigned int self_id, double *percent,
+ 				   unsigned int cpu);
+ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ 				unsigned int cpu);
+-static struct timespec time_start, time_end;
++static struct timespec *time_start, *time_end;
+ 
+ static cstate_t mperf_cstates[MPERF_CSTATE_COUNT] = {
+ 	{
+@@ -174,7 +174,7 @@ static int mperf_get_count_percent(unsigned int id, double *percent,
+ 		dprint("%s: TSC Ref - mperf_diff: %llu, tsc_diff: %llu\n",
+ 		       mperf_cstates[id].name, mperf_diff, tsc_diff);
+ 	} else if (max_freq_mode == MAX_FREQ_SYSFS) {
+-		timediff = max_frequency * timespec_diff_us(time_start, time_end);
++		timediff = max_frequency * timespec_diff_us(time_start[cpu], time_end[cpu]);
+ 		*percent = 100.0 * mperf_diff / timediff;
+ 		dprint("%s: MAXFREQ - mperf_diff: %llu, time_diff: %llu\n",
+ 		       mperf_cstates[id].name, mperf_diff, timediff);
+@@ -207,7 +207,7 @@ static int mperf_get_count_freq(unsigned int id, unsigned long long *count,
+ 	if (max_freq_mode == MAX_FREQ_TSC_REF) {
+ 		/* Calculate max_freq from TSC count */
+ 		tsc_diff = tsc_at_measure_end[cpu] - tsc_at_measure_start[cpu];
+-		time_diff = timespec_diff_us(time_start, time_end);
++		time_diff = timespec_diff_us(time_start[cpu], time_end[cpu]);
+ 		max_frequency = tsc_diff / time_diff;
  	}
- 	gpio_ext_pdev = of_find_device_by_node(gpio_ext_np);
- 	if (!gpio_ext_pdev) {
-+		of_node_put(gpio_ext_np);
- 		dev_err(dev, "Failed to find platform device for gpio-ext\n");
- 		return -ENODEV;
+ 
+@@ -226,9 +226,8 @@ static int mperf_start(void)
+ {
+ 	int cpu;
+ 
+-	clock_gettime(CLOCK_REALTIME, &time_start);
+-
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
++		clock_gettime(CLOCK_REALTIME, &time_start[cpu]);
+ 		mperf_get_tsc(&tsc_at_measure_start[cpu]);
+ 		mperf_init_stats(cpu);
  	}
+@@ -243,9 +242,9 @@ static int mperf_stop(void)
+ 	for (cpu = 0; cpu < cpu_count; cpu++) {
+ 		mperf_measure_stats(cpu);
+ 		mperf_get_tsc(&tsc_at_measure_end[cpu]);
++		clock_gettime(CLOCK_REALTIME, &time_end[cpu]);
+ 	}
+ 
+-	clock_gettime(CLOCK_REALTIME, &time_end);
+ 	return 0;
+ }
+ 
+@@ -349,6 +348,8 @@ struct cpuidle_monitor *mperf_register(void)
+ 	aperf_current_count = calloc(cpu_count, sizeof(unsigned long long));
+ 	tsc_at_measure_start = calloc(cpu_count, sizeof(unsigned long long));
+ 	tsc_at_measure_end = calloc(cpu_count, sizeof(unsigned long long));
++	time_start = calloc(cpu_count, sizeof(struct timespec));
++	time_end = calloc(cpu_count, sizeof(struct timespec));
+ 	mperf_monitor.name_len = strlen(mperf_monitor.name);
+ 	return &mperf_monitor;
+ }
+@@ -361,6 +362,8 @@ void mperf_unregister(void)
+ 	free(aperf_current_count);
+ 	free(tsc_at_measure_start);
+ 	free(tsc_at_measure_end);
++	free(time_start);
++	free(time_end);
+ 	free(is_valid);
+ }
+ 
 -- 
 2.39.5
 
