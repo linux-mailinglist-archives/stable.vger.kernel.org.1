@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C710BA28D37
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C73A28DE6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4749168859
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09C8D164CCA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C3B152196;
-	Wed,  5 Feb 2025 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5AB149C53;
+	Wed,  5 Feb 2025 14:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bURrGW/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAL11fu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E13614D28C;
-	Wed,  5 Feb 2025 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEABE1519AA;
+	Wed,  5 Feb 2025 14:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763874; cv=none; b=HA8p4CGDupYVkBeyLSNpkwQuUwC/fMUQGUhsAy3GIbac8OgyWT3ewEH7bbVuDP9dI56TBpWEd+47zFPzecDh/8HUvV0o+B3clXEBEC9Fp4TXAzLH+ls35fjAHE2PDTW/Fv75NsmkmbV4Zx+NqtRmna9C31xzkAwJBOAlfEFN2Sg=
+	t=1738764401; cv=none; b=evdb5erle8sjMiQS6vIYIu+Sh1hFyU+G41F/cUhM0l5Q0Iq9e/mZ3/Y6jZ2AKVb8OGDrVdvFIAfSBqvagc4DU8HN3C9mLjaUzjEXioFSzYQ2dGvfzknkSS0aMo037bNfyLwRcWt2sU2byrO0WY/FLBKeKoqjt96bhYPOPh0gJDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763874; c=relaxed/simple;
-	bh=zZDfu6Zj0/ojkkhk+zeekD9cwqYKUQluwNKbUyrpr60=;
+	s=arc-20240116; t=1738764401; c=relaxed/simple;
+	bh=oOahCVCsc333TuG0vS2dSnKN8BMQYlqy/rfzOtwRFTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl1S3MX42d9HbXlWhb4nHV1tEK7pKk7rIX+gKQZQw2K8vyIwE5wSWN3vDHjQqRu1w1vAafwqKSODjvMbDiZxwziAwghgJjMCMhurPQdzxIkbw48tVu1wsFaqRhpVCJ9pqeLVOaw5S1MOyPbxZgIBSEwJIDzSps1zRmWhPwJLjEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bURrGW/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D234C4CED6;
-	Wed,  5 Feb 2025 13:57:53 +0000 (UTC)
+	 MIME-Version; b=aiWPfsV0v666Yw0UpH6dP8dy0lgCUnXXV4Mn9WQQbdFl32Yw4pvkmok+GUfvDJ16T8kK5TJt9pj6QUW+9ojvIbyS1sPM5pqQ16U1w5Sor9L+MkjrC9f/4PXQ3sJMtJI0B7r/UYri09vxQLf2SwwPBhpn+xfFqnDRGWtpe19YEhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAL11fu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253E2C4CED1;
+	Wed,  5 Feb 2025 14:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763874;
-	bh=zZDfu6Zj0/ojkkhk+zeekD9cwqYKUQluwNKbUyrpr60=;
+	s=korg; t=1738764401;
+	bh=oOahCVCsc333TuG0vS2dSnKN8BMQYlqy/rfzOtwRFTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bURrGW/J8C55s24fwJix3CBFnrUMBhOXb1LOMmQc6e/JoFY9qymQvIyXyCgh0mqco
-	 xxN/HdervnDpGvnRTTu2wTVeoLdv1TpkbPapmUiyCDvhOWWxUYaqEXKuMpB8MWm0gk
-	 w/twRACfZi4+vr9uviVKMROVah6TVWEmC0lLNP8o=
+	b=vAL11fu7GdFN7NMhBgIaIIdo9M0owYTN77bGhMJtQphMoGETYWsLhrYKwEdj9uubr
+	 v8GZ85JNoBZX3laWXit1rTl4h0jGFRBcPhgSBNd5ym1PEmc4glUhsQ9WSrs1GaLMzn
+	 JL8SQZfA82Y/i3LWr/+aiqk1rajMNxG9HhYZ9cc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/590] drm/msm/dpu: link DSPP_2/_3 blocks on SM8350
+Subject: [PATCH 6.13 075/623] drm/msm: Check return value of of_dma_configure()
 Date: Wed,  5 Feb 2025 14:36:57 +0100
-Message-ID: <20250205134457.630144484@linuxfoundation.org>
+Message-ID: <20250205134459.096077291@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
 
-[ Upstream commit 42323d3c9e04c725d27606c31663b80a7cc30218 ]
+[ Upstream commit b34a7401ffaee45354e81b38a4d072794079cfd6 ]
 
-Link DSPP_2 to the LM_2 and DSPP_3 to the LM_3 mixer blocks. This allows
-using colour transformation matrix (aka night mode) with more outputs at
-the same time.
+Because the of_dma_configure() will returns '-EPROBE_DEFER' if the probe
+procedure of the specific platform IOMMU driver is not finished yet. It
+can also return other error code for various reasons.
 
-Fixes: 0e91bcbb0016 ("drm/msm/dpu: Add SM8350 to hw catalog")
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Stop pretending that it will always suceess, quit if it fail.
+
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Fixes: 29ac8979cdf7 ("drm/msm/a6xx: use msm_gem for GMU memory objects")
+Fixes: 5a903a44a984 ("drm/msm/a6xx: Introduce GMU wrapper support")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/622782/
+Link: https://lore.kernel.org/r/20241104090738.529848-1-sui.jingfeng@linux.dev
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/629959/
-Link: https://lore.kernel.org/r/20241220-dpu-fix-catalog-v2-5-38fa961ea992@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-index aced16e350daa..f7c08e89c8820 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-@@ -162,6 +162,7 @@ static const struct dpu_lm_cfg sm8350_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_3,
- 		.pingpong = PINGPONG_2,
-+		.dspp = DSPP_2,
- 	}, {
- 		.name = "lm_3", .id = LM_3,
- 		.base = 0x47000, .len = 0x320,
-@@ -169,6 +170,7 @@ static const struct dpu_lm_cfg sm8350_lm[] = {
- 		.sblk = &sdm845_lm_sblk,
- 		.lm_pair = LM_2,
- 		.pingpong = PINGPONG_3,
-+		.dspp = DSPP_3,
- 	}, {
- 		.name = "lm_4", .id = LM_4,
- 		.base = 0x48000, .len = 0x320,
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+index 14db7376c712d..e386b059187ac 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1603,7 +1603,9 @@ int a6xx_gmu_wrapper_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
+ 
+ 	gmu->dev = &pdev->dev;
+ 
+-	of_dma_configure(gmu->dev, node, true);
++	ret = of_dma_configure(gmu->dev, node, true);
++	if (ret)
++		return ret;
+ 
+ 	pm_runtime_enable(gmu->dev);
+ 
+@@ -1668,7 +1670,9 @@ int a6xx_gmu_init(struct a6xx_gpu *a6xx_gpu, struct device_node *node)
+ 
+ 	gmu->dev = &pdev->dev;
+ 
+-	of_dma_configure(gmu->dev, node, true);
++	ret = of_dma_configure(gmu->dev, node, true);
++	if (ret)
++		return ret;
+ 
+ 	/* Fow now, don't do anything fancy until we get our feet under us */
+ 	gmu->idle_level = GMU_IDLE_STATE_ACTIVE;
 -- 
 2.39.5
 
