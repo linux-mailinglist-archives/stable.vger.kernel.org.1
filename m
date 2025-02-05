@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCF0A28F8A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA21A28E6F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4147318846BA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446F1162FBB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99658155382;
-	Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D56E14B959;
+	Wed,  5 Feb 2025 14:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PGk7A5NK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxskQQtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5635614A088;
-	Wed,  5 Feb 2025 14:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002FF15198D;
+	Wed,  5 Feb 2025 14:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765574; cv=none; b=Qc+jHho1c0AAaZuVMuBUOD5F5YvIoWRZ8BWlTbRAP6udxYwoXe0Qif/WhfyA5l+CxWVEu2iEhF04j4G5T6mvMKxHmSfApKBCF65kailpQn4lGR5ZHvBxhAejFEcmZ1H5NRW8gJE3xjAuEwOnq2OP5KpYInh3aGF8yw8DnjhKk2E=
+	t=1738764792; cv=none; b=UkUKMN4pwfrBmBy/FSLqWe9Cj+R8zESkrG4Gh99AcGToGF0TQstQOGcxh79w91QyukeRtPh3FYOPGG02BPkNUmTOdm5K1ccE3fNpm3AZZOsoVliFUV4umn7xBTK4F9ClROQ4y3usZ8UaD9cT+w7SvwoOx1dA0vyPihMtlhG2Fjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765574; c=relaxed/simple;
-	bh=CBgYBFcQ0fUKLakHV1mpTJdRbtrPQiTYJfXquD7D3BI=;
+	s=arc-20240116; t=1738764792; c=relaxed/simple;
+	bh=Tc4wIudJznJ1PqLhuutOrTFoTIwfDDrTDb3ByZeFArg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxhrxr6RZbebWqgnKWx4m4jH+CG3B5Wy/V2Vd/6ZDV7v9vnYSkUsbp/d9z/pnoF/cEdZmujoQh6Yg9KYKen7Lutl/jVZaSIHr4gS7ag3uwjLTE1lWGHTUzIPDXCWT9qbYw8MwGuQxdfdJHb5IwsAZtBEOssPsB7cZGMNXYGYsIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PGk7A5NK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A56C4CED1;
-	Wed,  5 Feb 2025 14:26:13 +0000 (UTC)
+	 MIME-Version; b=kgkg0S8biQt/rRTSC4ehTrBVzl/FARaVwGIu1+D/VwmkLhfp+XqiVFz5ZlP7HrrWq1Kzi+0ZI2g+Bbswo6Ndvzs/BNIkQXPtNJiThcv+R0HshycnQb96SyF2JyW1bMFK7uwp64Xfhmo9JR1chYqhElAlQfjRZYZO39f6ZiqHvdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxskQQtf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 601CCC4CED1;
+	Wed,  5 Feb 2025 14:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765574;
-	bh=CBgYBFcQ0fUKLakHV1mpTJdRbtrPQiTYJfXquD7D3BI=;
+	s=korg; t=1738764791;
+	bh=Tc4wIudJznJ1PqLhuutOrTFoTIwfDDrTDb3ByZeFArg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGk7A5NK+QHVN+p7k6o8c3EklfrucdaL4dNg1ubTrULUGZgTrkLkPpL7ReMZxjkhU
-	 Ld3JHX/TgoPy6PuY50vHGJJMpo7fSKAj0n0JxjoTxUhQxxw6wJPnmcvaW+TfPsWTJH
-	 cR4cNjM2BobqlnZUsAfg6h+D4UK2XXE0PUoc8e/U=
+	b=BxskQQtf3Hjf1mIsErfkW3hnK3kyL/7WMSXxnW2Gj/PcTy/C7SHgPNv4ROBY7aB/e
+	 cFcsJ2B9W677jKNjADJB5xhbnwSBiYhwcj49ZSS6MSJ3N7bMHg+mANGzqoUbc0h1b6
+	 Js+AB7NbySO7xhBVWFCBChAgkRVHuJrbbkafjGBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johannes Berg <johannes.berg@intel.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 171/623] wifi: mac80211: dont flush non-uploaded STAs
+Subject: [PATCH 6.12 158/590] wifi: iwlwifi: fw: read STEP table from correct UEFI var
 Date: Wed,  5 Feb 2025 14:38:33 +0100
-Message-ID: <20250205134502.777136745@linuxfoundation.org>
+Message-ID: <20250205134501.328947656@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit aa3ce3f8fafa0b8fb062f28024855ea8cb3f3450 ]
+[ Upstream commit 80c2b651fe7fc82e1d1b3e4f9651095896a095f0 ]
 
-If STA state is pre-moved to AUTHORIZED (such as in IBSS
-scenarios) and insertion fails, the station is freed.
-In this case, the driver never knew about the station,
-so trying to flush it is unexpected and may crash.
+This variable exists for the "common" (WiFi/BT) GUID, not the
+WiFi-only GUID. Fix that by passing the GUID to the function.
+A short-cut for the wifi-only version remains so not all code
+must be updated.
 
-Check if the sta was uploaded to the driver before and
-fix this.
+However, rename the GUID defines to be clearer.
 
-Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
+Fixes: 09b4c35d73a5 ("wifi: iwlwifi: mvm: Support STEP equalizer settings from BIOS.")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.e3d10970a7c7.I491bbcccc46f835ade07df0640a75f6ed92f20a3@changeid
+Link: https://patch.msgid.link/20241227095718.89a5ad921b6d.Idae95a70ff69d2ba1b610e8eced826961ce7de98@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c | 44 +++++++++++++-------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index edd1e4d4ad9d2..ca04f2ff9f44e 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -724,6 +724,9 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
- 	if (sdata && !check_sdata_in_driver(sdata))
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index 091fb6fd7c787..834f7c9bb9e92 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -13,9 +13,12 @@
+ #include <linux/efi.h>
+ #include "fw/runtime.h"
+ 
+-#define IWL_EFI_VAR_GUID EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
+-				  0xb2, 0xec, 0xf5, 0xa3,	\
+-				  0x59, 0x4f, 0x4a, 0xea)
++#define IWL_EFI_WIFI_GUID	EFI_GUID(0x92daaf2f, 0xc02b, 0x455b,	\
++					 0xb2, 0xec, 0xf5, 0xa3,	\
++					 0x59, 0x4f, 0x4a, 0xea)
++#define IWL_EFI_WIFI_BT_GUID	EFI_GUID(0xe65d8884, 0xd4af, 0x4b20,	\
++					 0x8d, 0x03, 0x77, 0x2e,	\
++					 0xcc, 0x3d, 0xa5, 0x31)
+ 
+ struct iwl_uefi_pnvm_mem_desc {
+ 	__le32 addr;
+@@ -61,7 +64,7 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
+ 
+ 	*len = 0;
+ 
+-	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_VAR_GUID,
++	data = iwl_uefi_get_variable(IWL_UEFI_OEM_PNVM_NAME, &IWL_EFI_WIFI_GUID,
+ 				     &package_size);
+ 	if (IS_ERR(data)) {
+ 		IWL_DEBUG_FW(trans,
+@@ -76,18 +79,18 @@ void *iwl_uefi_get_pnvm(struct iwl_trans *trans, size_t *len)
+ 	return data;
+ }
+ 
+-static
+-void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
+-				     efi_char16_t *uefi_var_name,
+-				     char *var_name,
+-				     unsigned int expected_size,
+-				     unsigned long *size)
++static void *
++iwl_uefi_get_verified_variable_guid(struct iwl_trans *trans,
++				    efi_guid_t *guid,
++				    efi_char16_t *uefi_var_name,
++				    char *var_name,
++				    unsigned int expected_size,
++				    unsigned long *size)
+ {
+ 	void *var;
+ 	unsigned long var_size;
+ 
+-	var = iwl_uefi_get_variable(uefi_var_name, &IWL_EFI_VAR_GUID,
+-				    &var_size);
++	var = iwl_uefi_get_variable(uefi_var_name, guid, &var_size);
+ 
+ 	if (IS_ERR(var)) {
+ 		IWL_DEBUG_RADIO(trans,
+@@ -112,6 +115,18 @@ void *iwl_uefi_get_verified_variable(struct iwl_trans *trans,
+ 	return var;
+ }
+ 
++static void *
++iwl_uefi_get_verified_variable(struct iwl_trans *trans,
++			       efi_char16_t *uefi_var_name,
++			       char *var_name,
++			       unsigned int expected_size,
++			       unsigned long *size)
++{
++	return iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_GUID,
++						   uefi_var_name, var_name,
++						   expected_size, size);
++}
++
+ int iwl_uefi_handle_tlv_mem_desc(struct iwl_trans *trans, const u8 *data,
+ 				 u32 tlv_len, struct iwl_pnvm_image *pnvm_data)
+ {
+@@ -311,8 +326,9 @@ void iwl_uefi_get_step_table(struct iwl_trans *trans)
+ 	if (trans->trans_cfg->device_family < IWL_DEVICE_FAMILY_AX210)
  		return;
  
-+	if (!sta->uploaded)
-+		return;
-+
- 	trace_drv_flush_sta(local, sdata, &sta->sta);
- 	if (local->ops->flush_sta)
- 		local->ops->flush_sta(&local->hw, &sdata->vif, &sta->sta);
+-	data = iwl_uefi_get_verified_variable(trans, IWL_UEFI_STEP_NAME,
+-					      "STEP", sizeof(*data), NULL);
++	data = iwl_uefi_get_verified_variable_guid(trans, &IWL_EFI_WIFI_BT_GUID,
++						   IWL_UEFI_STEP_NAME,
++						   "STEP", sizeof(*data), NULL);
+ 	if (IS_ERR(data))
+ 		return;
+ 
 -- 
 2.39.5
 
