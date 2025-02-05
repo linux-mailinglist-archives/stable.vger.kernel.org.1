@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-112333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FECFA28C30
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A761A28CFC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93CA91881F11
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:46:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A5A418892D5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1301614B080;
-	Wed,  5 Feb 2025 13:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AC8154C08;
+	Wed,  5 Feb 2025 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/A43TV/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4r6wwv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C135C142E86;
-	Wed,  5 Feb 2025 13:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18821547F3;
+	Wed,  5 Feb 2025 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763163; cv=none; b=L+SO8mnJB73DAlzgYD5zmCzPpzBDP2Bnm2YckzRvtVec5ffOv/mjmoiiyslaawHLfIN+RLzLVZghBJeENMDmog/+u8BAgBHpWnRUKvg/tRIkzWv7gTlfqG8X7oxCqLFnPQgj80g4WfJV+NVwzlrzziC2yj7uWumWz+uzJtF+Qng=
+	t=1738763763; cv=none; b=OUHatC5+4+OR0clv2aPp2HrJ+9FDh+NnRVjrwfijquNYQnozbZUTv6VQpXfOXZL6VOK6RAbTs87NoZ++2xyUHdz0Sf9jOtuJKxU2l3LyXphMF4RcWrCrmnK78RGAtt0qJXSjiYPyFOw1b1wdzRrJ36DuxsywAqF9p17TZUKSr7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763163; c=relaxed/simple;
-	bh=XhKS0Y9bZ5hjPCLxmNj9LHxC8osaSApd0XSnDvVX/dQ=;
+	s=arc-20240116; t=1738763763; c=relaxed/simple;
+	bh=TEg/krt7f9SjZG0obP2gXdobjNflGFiiSrZ0MY6+06o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b3PzCCgIr3fWKR61V9w1y3RxlLgYBaI3Z7vwYWEDDhjswpQb1Lkkdzk4qoI5KR7K12yGD9468YA02SyxRNwLkQ0QxkXg/lUrhU0VF0S0H3rC6q/Ciq+kkLcRnZnBdJdtRlENOQLB/H1QLZNCn0zWazNibnFMfstuBGB36kuSCoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/A43TV/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4638FC4CED1;
-	Wed,  5 Feb 2025 13:46:03 +0000 (UTC)
+	 MIME-Version; b=UsiYRo9waIv6lOLoozS9gfbZY66MRJ00mDtXfGQAiDHUchMge4pTfqDlsMljRaLuc+RYk+YVO7yqVt5iM1UwwCw+t5sEoGYHKwrkGVsqmC50uiw6UnGGPh8hdKOHSO8jtTNw3YAY5BVi7orl8XMV9UYe79nrrZ1jzgA9htgX2Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4r6wwv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE21C4CEE2;
+	Wed,  5 Feb 2025 13:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763163;
-	bh=XhKS0Y9bZ5hjPCLxmNj9LHxC8osaSApd0XSnDvVX/dQ=;
+	s=korg; t=1738763763;
+	bh=TEg/krt7f9SjZG0obP2gXdobjNflGFiiSrZ0MY6+06o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/A43TV/dMnYarw2sfv5ZmfdL18EwsqfXQQJ4sqXT3qgexCAZ6ziK4wOgsZ3xdUKC
-	 E/xYbj6Y5nYg1Sj3XDvwwCbUlIsd91IO6cbSukl40vPOX1NIax/aaXUTkASoDCOOpE
-	 7LoFuD0BMBxYATbTXGQIa7K7esbtpXk/4bRbtguQ=
+	b=D4r6wwv7L1kxu4iHs/b2Q0UnEhg2cAGVP8tfUoej5h54D+yASYHoEbn0vRRtiRP6m
+	 1+7Tn4CKvK7q/gah/MN99OO2I7vWKqhp/GWULMfNRoYorBqOovoufPVccVZwEQDw0X
+	 NMvpQCpuQJ3kjSBAIKz0n2rNnLRWqYq4YNKWbsPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/590] dlm: fix removal of rsb struct that is master and dir record
+Subject: [PATCH 6.13 016/623] block: dont update BLK_FEAT_POLL in __blk_mq_update_nr_hw_queues
 Date: Wed,  5 Feb 2025 14:35:58 +0100
-Message-ID: <20250205134455.360981555@linuxfoundation.org>
+Message-ID: <20250205134456.849927497@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +67,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 134129520beaf3339482c557361ea0bde709cf36 ]
+[ Upstream commit d432c817c21a48c3baaa0d28e4d3e74b6aa238a0 ]
 
-An rsb struct was not being removed in the case where it
-was both the master and the dir record.  This case (master
-and dir node) was missed in the condition for doing add_scan()
-from deactivate_rsb().  Fixing this triggers a related WARN_ON
-that needs to be fixed, and requires adjusting where two
-del_scan() calls are made.
+When __blk_mq_update_nr_hw_queues changes the number of tag sets, it
+might have to disable poll queues.  Currently it does so by adjusting
+the BLK_FEAT_POLL, which is a bit against the intent of features that
+describe hardware / driver capabilities, but more importantly causes
+nasty lock order problems with the broadly held freeze when updating the
+number of hardware queues and the limits lock.  Fix this by leaving
+BLK_FEAT_POLL alone, and instead check for the number of poll queues in
+the bio submission and poll handlers.  While this adds extra work to the
+fast path, the variables are in cache lines used by these operations
+anyway, so it should be cheap enough.
 
-Fixes: c217adfc8caa ("dlm: fix add_scan and del_scan usage")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: 8023e144f9d6 ("block: move the poll flag to queue_limits")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250110054726.1499538-5-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lock.c | 46 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+ block/blk-core.c  |  7 +++----
+ block/blk-mq.c    | 26 +++++---------------------
+ block/blk-mq.h    |  6 ++++++
+ block/blk-sysfs.c |  9 ++++++++-
+ 4 files changed, 22 insertions(+), 26 deletions(-)
 
-diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
-index dddedaef5e93d..0c01e4423ee2a 100644
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -824,9 +824,12 @@ static int find_rsb_dir(struct dlm_ls *ls, const void *name, int len,
- 		r->res_first_lkid = 0;
- 	}
- 
--	/* A dir record will not be on the scan list. */
--	if (r->res_dir_nodeid != our_nodeid)
--		del_scan(ls, r);
-+	/* we always deactivate scan timer for the rsb, when
-+	 * we move it out of the inactive state as rsb state
-+	 * can be changed and scan timers are only for inactive
-+	 * rsbs.
-+	 */
-+	del_scan(ls, r);
- 	list_move(&r->res_slow_list, &ls->ls_slow_active);
- 	rsb_clear_flag(r, RSB_INACTIVE);
- 	kref_init(&r->res_ref); /* ref is now used in active state */
-@@ -989,10 +992,10 @@ static int find_rsb_nodir(struct dlm_ls *ls, const void *name, int len,
- 		r->res_nodeid = 0;
- 	}
- 
-+	del_scan(ls, r);
- 	list_move(&r->res_slow_list, &ls->ls_slow_active);
- 	rsb_clear_flag(r, RSB_INACTIVE);
- 	kref_init(&r->res_ref);
--	del_scan(ls, r);
- 	write_unlock_bh(&ls->ls_rsbtbl_lock);
- 
- 	goto out;
-@@ -1337,9 +1340,13 @@ static int _dlm_master_lookup(struct dlm_ls *ls, int from_nodeid, const char *na
- 	__dlm_master_lookup(ls, r, our_nodeid, from_nodeid, true, flags,
- 			    r_nodeid, result);
- 
--	/* A dir record rsb should never be on scan list. */
--	/* Try to fix this with del_scan? */
--	WARN_ON(!list_empty(&r->res_scan_list));
-+	/* A dir record rsb should never be on scan list.
-+	 * Except when we are the dir and master node.
-+	 * This function should only be called by the dir
-+	 * node.
-+	 */
-+	WARN_ON(!list_empty(&r->res_scan_list) &&
-+		r->res_master_nodeid != our_nodeid);
- 
- 	write_unlock_bh(&ls->ls_rsbtbl_lock);
- 
-@@ -1430,16 +1437,23 @@ static void deactivate_rsb(struct kref *kref)
- 	list_move(&r->res_slow_list, &ls->ls_slow_inactive);
- 
- 	/*
--	 * When the rsb becomes unused:
--	 * - If it's not a dir record for a remote master rsb,
--	 *   then it is put on the scan list to be freed.
--	 * - If it's a dir record for a remote master rsb,
--	 *   then it is kept in the inactive state until
--	 *   receive_remove() from the master node.
-+	 * When the rsb becomes unused, there are two possibilities:
-+	 * 1. Leave the inactive rsb in place (don't remove it).
-+	 * 2. Add it to the scan list to be removed.
-+	 *
-+	 * 1 is done when the rsb is acting as the dir record
-+	 * for a remotely mastered rsb.  The rsb must be left
-+	 * in place as an inactive rsb to act as the dir record.
-+	 *
-+	 * 2 is done when a) the rsb is not the master and not the
-+	 * dir record, b) when the rsb is both the master and the
-+	 * dir record, c) when the rsb is master but not dir record.
-+	 *
-+	 * (If no directory is used, the rsb can always be removed.)
+diff --git a/block/blk-core.c b/block/blk-core.c
+index 6309b3f5a89dc..32fb28a6372cd 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -951,14 +951,13 @@ int bio_poll(struct bio *bio, struct io_comp_batch *iob, unsigned int flags)
  	 */
--	if (!dlm_no_directory(ls) &&
--	    (r->res_master_nodeid != our_nodeid) &&
--	    (dlm_dir_nodeid(r) != our_nodeid))
-+	if (dlm_no_directory(ls) ||
-+	    (r->res_master_nodeid == our_nodeid ||
-+	     dlm_dir_nodeid(r) != our_nodeid))
- 		add_scan(ls, r);
+ 	if (!percpu_ref_tryget(&q->q_usage_counter))
+ 		return 0;
+-	if (!(q->limits.features & BLK_FEAT_POLL)) {
+-		ret = 0;
+-	} else if (queue_is_mq(q)) {
++	if (queue_is_mq(q)) {
+ 		ret = blk_mq_poll(q, cookie, iob, flags);
+ 	} else {
+ 		struct gendisk *disk = q->disk;
  
- 	if (r->res_lvbptr) {
+-		if (disk && disk->fops->poll_bio)
++		if ((q->limits.features & BLK_FEAT_POLL) && disk &&
++		    disk->fops->poll_bio)
+ 			ret = disk->fops->poll_bio(bio, iob, flags);
+ 	}
+ 	blk_queue_exit(q);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 0137a995b9f37..23968c02be0d6 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3101,8 +3101,7 @@ void blk_mq_submit_bio(struct bio *bio)
+ 		goto queue_exit;
+ 	}
+ 
+-	if ((bio->bi_opf & REQ_POLLED) &&
+-	    !(q->limits.features & BLK_FEAT_POLL)) {
++	if ((bio->bi_opf & REQ_POLLED) && !blk_mq_can_poll(q)) {
+ 		bio->bi_status = BLK_STS_NOTSUPP;
+ 		bio_endio(bio);
+ 		goto queue_exit;
+@@ -4325,12 +4324,6 @@ void blk_mq_release(struct request_queue *q)
+ 	blk_mq_sysfs_deinit(q);
+ }
+ 
+-static bool blk_mq_can_poll(struct blk_mq_tag_set *set)
+-{
+-	return set->nr_maps > HCTX_TYPE_POLL &&
+-		set->map[HCTX_TYPE_POLL].nr_queues;
+-}
+-
+ struct request_queue *blk_mq_alloc_queue(struct blk_mq_tag_set *set,
+ 		struct queue_limits *lim, void *queuedata)
+ {
+@@ -4341,7 +4334,7 @@ struct request_queue *blk_mq_alloc_queue(struct blk_mq_tag_set *set,
+ 	if (!lim)
+ 		lim = &default_lim;
+ 	lim->features |= BLK_FEAT_IO_STAT | BLK_FEAT_NOWAIT;
+-	if (blk_mq_can_poll(set))
++	if (set->nr_maps > HCTX_TYPE_POLL)
+ 		lim->features |= BLK_FEAT_POLL;
+ 
+ 	q = blk_alloc_queue(lim, set->numa_node);
+@@ -5029,8 +5022,6 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ fallback:
+ 	blk_mq_update_queue_map(set);
+ 	list_for_each_entry(q, &set->tag_list, tag_set_list) {
+-		struct queue_limits lim;
+-
+ 		blk_mq_realloc_hw_ctxs(set, q);
+ 
+ 		if (q->nr_hw_queues != set->nr_hw_queues) {
+@@ -5044,13 +5035,6 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
+ 			set->nr_hw_queues = prev_nr_hw_queues;
+ 			goto fallback;
+ 		}
+-		lim = queue_limits_start_update(q);
+-		if (blk_mq_can_poll(set))
+-			lim.features |= BLK_FEAT_POLL;
+-		else
+-			lim.features &= ~BLK_FEAT_POLL;
+-		if (queue_limits_commit_update(q, &lim) < 0)
+-			pr_warn("updating the poll flag failed\n");
+ 		blk_mq_map_swqueue(q);
+ 	}
+ 
+@@ -5110,9 +5094,9 @@ static int blk_hctx_poll(struct request_queue *q, struct blk_mq_hw_ctx *hctx,
+ int blk_mq_poll(struct request_queue *q, blk_qc_t cookie,
+ 		struct io_comp_batch *iob, unsigned int flags)
+ {
+-	struct blk_mq_hw_ctx *hctx = xa_load(&q->hctx_table, cookie);
+-
+-	return blk_hctx_poll(q, hctx, iob, flags);
++	if (!blk_mq_can_poll(q))
++		return 0;
++	return blk_hctx_poll(q, xa_load(&q->hctx_table, cookie), iob, flags);
+ }
+ 
+ int blk_rq_poll(struct request *rq, struct io_comp_batch *iob,
+diff --git a/block/blk-mq.h b/block/blk-mq.h
+index 89a20fffa4b1c..a80d3b3105f9e 100644
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -451,4 +451,10 @@ do {								\
+ #define blk_mq_run_dispatch_ops(q, dispatch_ops)		\
+ 	__blk_mq_run_dispatch_ops(q, true, dispatch_ops)	\
+ 
++static inline bool blk_mq_can_poll(struct request_queue *q)
++{
++	return (q->limits.features & BLK_FEAT_POLL) &&
++		q->tag_set->map[HCTX_TYPE_POLL].nr_queues;
++}
++
+ #endif
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 767598e719ab0..e9f1c82b2f3e3 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -245,10 +245,17 @@ static ssize_t queue_##_name##_show(struct gendisk *disk, char *page)	\
+ 		!!(disk->queue->limits.features & _feature));		\
+ }
+ 
+-QUEUE_SYSFS_FEATURE_SHOW(poll, BLK_FEAT_POLL);
+ QUEUE_SYSFS_FEATURE_SHOW(fua, BLK_FEAT_FUA);
+ QUEUE_SYSFS_FEATURE_SHOW(dax, BLK_FEAT_DAX);
+ 
++static ssize_t queue_poll_show(struct gendisk *disk, char *page)
++{
++	if (queue_is_mq(disk->queue))
++		return sysfs_emit(page, "%u\n", blk_mq_can_poll(disk->queue));
++	return sysfs_emit(page, "%u\n",
++		!!(disk->queue->limits.features & BLK_FEAT_POLL));
++}
++
+ static ssize_t queue_zoned_show(struct gendisk *disk, char *page)
+ {
+ 	if (blk_queue_is_zoned(disk->queue))
 -- 
 2.39.5
 
