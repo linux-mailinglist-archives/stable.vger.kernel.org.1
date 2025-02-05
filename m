@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-113396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6306DA29224
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A588A29232
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E998A18898B5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2C01882E5E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3161FC113;
-	Wed,  5 Feb 2025 14:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8645018C006;
+	Wed,  5 Feb 2025 14:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyrTeam2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYXfclUm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F181FC111;
-	Wed,  5 Feb 2025 14:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431EC1FC7C4;
+	Wed,  5 Feb 2025 14:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766817; cv=none; b=hGzS097vSSa3K5qhihtIpVXG04VhusrXt8RAGTUvpMzM+LjzBaQ1ldoKZJ83gvcBNPb1fZRxrHffvraw96K+GEEwjy/fg1bubEEkRVZ+/V0JM3jThIoE9iZCMCbqkBl14BAjL1974tqelyZa89YaKCWpFbA0j2a25rRGYMwcsB4=
+	t=1738766824; cv=none; b=oXXMC2e5j5HZy7RaUMbuLhVdwBYhigym1CvI9EYpLMMCtOCieb/6NMmaU/a5KSLkFPGoJjxCnZrwrg1+h/yX5zqUw2AIPs1i+RofggPNM1ewcHWnbuKosbEy8IffNTe0eLzw5QZIiLuHABQFRKC3SevaZeI24SRvzEDsY/XV20I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766817; c=relaxed/simple;
-	bh=OLEXA/vreJ7AQ8omtBTxqt6NKgiSO5ijgH2Dbv9AT98=;
+	s=arc-20240116; t=1738766824; c=relaxed/simple;
+	bh=G28laikxOylY1kCG6fb8bKeb0Su6trUQ7a65Y3imjhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9OHE5QoPc+pmNyEwrwZsKGz+qyZpeiNkJ1qK9siLa5jBA+04DrXTmbPfPltNWRwt9sddiKvgoDWno0Hfc30vFU/WG4cnA9QuC5zrJx47Y0hx1j1QsI93tYoOLS3PhxXb2EhhLtvWFZWm3b4xeF5Nboe+OCE59prwK/XDvckCUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyrTeam2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B97C4CED1;
-	Wed,  5 Feb 2025 14:46:56 +0000 (UTC)
+	 MIME-Version; b=pjLp4dCEmiiGYrSNz0RNMoFaybAxL6dwB3/nxwMc7i9djCT+JdPrtgMyuWmzLA3zH/GWk/5kkg4Hj/r6Ica+ev4+hjGcYHs12gUIK//lJMrgkrzc1yJQ9YaWVcC0HZcDMiLZttqGIK6PPBhsaEnfmgTGmhSxPN9lxZKVZ8vzisY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYXfclUm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E9C4C4CED1;
+	Wed,  5 Feb 2025 14:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766817;
-	bh=OLEXA/vreJ7AQ8omtBTxqt6NKgiSO5ijgH2Dbv9AT98=;
+	s=korg; t=1738766823;
+	bh=G28laikxOylY1kCG6fb8bKeb0Su6trUQ7a65Y3imjhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyrTeam2bntU3aMp/Z1Fg69eau83xFeaQN6tYvzMQl2oPmqOpZZu6D7T63UyZx4RG
-	 6e1xNnmKqlx4pU38WzVUES4+Q7vd+7Rfa5KXcW3hX9aa66TSzpcqEJcsNUeELiHZ/p
-	 U/dabWY48qP5xswBKpyCt3Ybcvh0KpQeQ4m0JtMw=
+	b=cYXfclUm+vgLZEfkIzRzI4OO6agPYJORu6W30lVQGwQhPx1tffdOsrXUiWM73jHIF
+	 u/KKE6j1gH4QCKcuYQnbMsEJcUIIOkz1bFoyM5XbU9p2/YFFM2qfEmYs2xr/sBYSTz
+	 zUBG4h05b9nWDMTZmRqK24M175gIKq4kV6eJAMxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Guo Ren <guoren@linux.alibaba.com>,
+	Guo Ren <guoren@kernel.org>,
+	Tomasz Jeznach <tjeznach@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 312/623] bpf: tcp: Mark bpf_load_hdr_opt() arg2 as read-write
-Date: Wed,  5 Feb 2025 14:40:54 +0100
-Message-ID: <20250205134508.160194612@linuxfoundation.org>
+Subject: [PATCH 6.13 313/623] iommu/riscv: Fixup compile warning
+Date: Wed,  5 Feb 2025 14:40:55 +0100
+Message-ID: <20250205134508.198692514@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -67,42 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Xu <dxu@dxuuu.xyz>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-[ Upstream commit 8ac412a3361173e3000b16167af3d1f6f90af613 ]
+[ Upstream commit 10c62c38b073ecea775b7e23fa7c7a3995a84ff3 ]
 
-MEM_WRITE attribute is defined as: "Non-presence of MEM_WRITE means that
-MEM is only being read". bpf_load_hdr_opt() both reads and writes from
-its arg2 - void *search_res.
+When __BITS_PER_LONG == 32, size_t is defined as unsigned int rather
+than unsigned long. Therefore, we should use size_t to avoid
+type-checking errors.
 
-This matters a lot for the next commit where we more precisely track
-stack accesses. Without this annotation, the verifier will make false
-assumptions about the contents of memory written to by helpers and
-possibly prune valid branches.
-
-Fixes: 6fad274f06f0 ("bpf: Add MEM_WRITE attribute")
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
-Link: https://lore.kernel.org/r/730e45f8c39be2a5f3d8c4406cceca9d574cbf14.1736886479.git.dxu@dxuuu.xyz
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 488ffbf18171 ("iommu/riscv: Paging domain support")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Cc: Tomasz Jeznach <tjeznach@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Tomasz Jeznach <tjeznach@rivosinc.com>
+Link: https://lore.kernel.org/r/20250103024616.3359159-1-guoren@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 2 +-
+ drivers/iommu/riscv/iommu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 2fb45a86f3ddb..d59a7ea646cad 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7652,7 +7652,7 @@ static const struct bpf_func_proto bpf_sock_ops_load_hdr_opt_proto = {
- 	.gpl_only	= false,
- 	.ret_type	= RET_INTEGER,
- 	.arg1_type	= ARG_PTR_TO_CTX,
--	.arg2_type	= ARG_PTR_TO_MEM,
-+	.arg2_type	= ARG_PTR_TO_MEM | MEM_WRITE,
- 	.arg3_type	= ARG_CONST_SIZE,
- 	.arg4_type	= ARG_ANYTHING,
- };
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index 8a05def774bdb..38d381164385a 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -1270,7 +1270,7 @@ static phys_addr_t riscv_iommu_iova_to_phys(struct iommu_domain *iommu_domain,
+ 					    dma_addr_t iova)
+ {
+ 	struct riscv_iommu_domain *domain = iommu_domain_to_riscv(iommu_domain);
+-	unsigned long pte_size;
++	size_t pte_size;
+ 	unsigned long *ptr;
+ 
+ 	ptr = riscv_iommu_pte_fetch(domain, iova, &pte_size);
 -- 
 2.39.5
 
