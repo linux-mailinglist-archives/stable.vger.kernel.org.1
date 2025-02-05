@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-113892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508E5A2948E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:27:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615BCA2942E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:21:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5CF01894C71
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69ACF189031D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891B41DC9BA;
-	Wed,  5 Feb 2025 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60CC21345;
+	Wed,  5 Feb 2025 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0avVyEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkozs4W9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAEB1607B7;
-	Wed,  5 Feb 2025 15:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F8835946;
+	Wed,  5 Feb 2025 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768521; cv=none; b=Ms7foagddH5Q8zLWwuszg9TJrMJyb7ZLxkZA5nUme54DZA+w5UFzg10igVKHmWBqCDah5FL6PqyfqV5jfeOIaUUSnK//304qqvbrKNZaNxs+vEKjipHqj8/xrhsWw3PVQJ3nO0arYzJhrrDXf+gPeWBgrv3PDVJ8hY8jagIpqeA=
+	t=1738768202; cv=none; b=kA4C+/vkaiQm4y3GTHlTKdBq4nTQTahbyXOAGsBV+a1Gdw0O9q3CtQaW+lFx2EMk1aIT0Al6GRVKJ24VCvor06WKC9qWUhCCss5E0sMf46ckdHptbK3R5vtqS8zLQvwxmuVVxynqoKM3CdR+oT/u3v+U4Te9JXz/DnCzz+Wjpt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768521; c=relaxed/simple;
-	bh=hFRNwc+yb3gXXTSRUdlu2btQf1s2Y+RpMFmE8fcgT5E=;
+	s=arc-20240116; t=1738768202; c=relaxed/simple;
+	bh=EHiDViOAvp4vHd9hZeKgvFCmFzexJjx21U8nrTKLIKs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4PbdlDr1Z0zWplcziXqap8gDoIzcpumk2OaB97yT9OvimmpJg8ObTnd4PTpngWykeHV16rRBwmkdkJNHJl283fRAG91UjKQTp2NqDSD+fMlKfGDZVQJpW2ysYaLHGfGBvO5+W11VhlR5IOSglJtW8F2Q79jDM61zu73NFt49Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0avVyEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87176C4CED1;
-	Wed,  5 Feb 2025 15:15:20 +0000 (UTC)
+	 MIME-Version; b=hnFH7j3kFx+I1ZvdJzAMI3TEc863hX9K06sEXwwyHoqrmzdXpUY/mdquohiURQA5Y21rqzUdNyirR3kSGnHVGlRwZKGzTNZCoSk88mXC4FXA7JaAIqXpPKnS36PTl8JxvwcDTdcsFX8R+OYMAFNlpv4ZyrT6QooH7plEKzyCyfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkozs4W9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6880C4CED1;
+	Wed,  5 Feb 2025 15:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768521;
-	bh=hFRNwc+yb3gXXTSRUdlu2btQf1s2Y+RpMFmE8fcgT5E=;
+	s=korg; t=1738768202;
+	bh=EHiDViOAvp4vHd9hZeKgvFCmFzexJjx21U8nrTKLIKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0avVyElnRpZ+QWrIeR3KnyMFC8iD11gWfC65eXH7nqVn+2c6Xzi6mWA3D+HuBUGI
-	 rQ25o1jgkbqI28/68tAhpBfxidunG8TS7pVeccHxayHyJgYmEdJadwhslxcrhDnn89
-	 LeKlTtfLXHowan+TMSLGvh6uy351mK9gmqJdohr8=
+	b=fkozs4W9lNSFMpVzd5sL0kgmV4+3m1KuVm0grrwwzOwQE9WBxFB/XAh2V3BJPxdmx
+	 x+ZfR7uTWSZbVePZFjholB5xwGT1XGKekx/H7dkFRp+WYRmABH6JDaMmmdxg99kN/P
+	 m4gA6yOv4qPI5BCXhr8vEUdZDBgTlVPlJvrib08A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Carlos ODonell <carlos@redhat.com>,
-	Florian Weimer <fweimer@redhat.com>,
-	Michael Jeanson <mjeanson@efficios.com>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH 6.13 580/623] selftests/rseq: Fix handling of glibc without rseq support
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.12 567/590] remoteproc: core: Fix ida_free call while not allocated
 Date: Wed,  5 Feb 2025 14:45:22 +0100
-Message-ID: <20250205134518.409977197@linuxfoundation.org>
+Message-ID: <20250205134516.959659773@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 
-commit 336d02bc4c6bec5c3d933e5d470a94970f830957 upstream.
+commit 7378aeb664e5ebc396950b36a1f2dedf5aabec20 upstream.
 
-When porting librseq commit:
+In the rproc_alloc() function, on error, put_device(&rproc->dev) is
+called, leading to the call of the rproc_type_release() function.
+An error can occurs before ida_alloc is called.
 
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
+In such case in rproc_type_release(), the condition (rproc->index >= 0) is
+true as rproc->index has been  initialized to 0.
+ida_free() is called reporting a warning:
+[    4.181906] WARNING: CPU: 1 PID: 24 at lib/idr.c:525 ida_free+0x100/0x164
+[    4.186378] stm32-display-dsi 5a000000.dsi: Fixed dependency cycle(s) with /soc/dsi@5a000000/panel@0
+[    4.188854] ida_free called for id=0 which is not allocated.
+[    4.198256] mipi-dsi 5a000000.dsi.0: Fixed dependency cycle(s) with /soc/dsi@5a000000
+[    4.203556] Modules linked in: panel_orisetech_otm8009a dw_mipi_dsi_stm(+) gpu_sched dw_mipi_dsi stm32_rproc stm32_crc32 stm32_ipcc(+) optee(+)
+[    4.224307] CPU: 1 UID: 0 PID: 24 Comm: kworker/u10:0 Not tainted 6.12.0 #442
+[    4.231481] Hardware name: STM32 (Device Tree Support)
+[    4.236627] Workqueue: events_unbound deferred_probe_work_func
+[    4.242504] Call trace:
+[    4.242522]  unwind_backtrace from show_stack+0x10/0x14
+[    4.250218]  show_stack from dump_stack_lvl+0x50/0x64
+[    4.255274]  dump_stack_lvl from __warn+0x80/0x12c
+[    4.260134]  __warn from warn_slowpath_fmt+0x114/0x188
+[    4.265199]  warn_slowpath_fmt from ida_free+0x100/0x164
+[    4.270565]  ida_free from rproc_type_release+0x38/0x60
+[    4.275832]  rproc_type_release from device_release+0x30/0xa0
+[    4.281601]  device_release from kobject_put+0xc4/0x294
+[    4.286762]  kobject_put from rproc_alloc.part.0+0x208/0x28c
+[    4.292430]  rproc_alloc.part.0 from devm_rproc_alloc+0x80/0xc4
+[    4.298393]  devm_rproc_alloc from stm32_rproc_probe+0xd0/0x844 [stm32_rproc]
+[    4.305575]  stm32_rproc_probe [stm32_rproc] from platform_probe+0x5c/0xbc
 
-from librseq to the kernel selftests, the following line was missed
-at the end of rseq_init():
+Calling ida_alloc earlier in rproc_alloc ensures that the rproc->index is
+properly set.
 
-  rseq_size = get_rseq_kernel_feature_size();
-
-which effectively leaves rseq_size initialized to -1U when glibc does not
-have rseq support. glibc supports rseq from version 2.35 onwards.
-
-In a following librseq commit
-
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-
-to mimic the libc behavior, a new approach is taken: don't set the
-feature size in 'rseq_size' until at least one thread has successfully
-registered. This allows using 'rseq_size' in fast-paths to test for both
-registration status and available features. The caveat is that on libc
-either all threads are registered or none are, while with bare librseq
-it is the responsability of the user to register all threads using rseq.
-
-This combines the changes from the following librseq git commits:
-
-commit c7b45750fa85 ("Adapt to glibc __rseq_size feature detection")
-commit c67d198627c2 ("Only set 'rseq_size' on first thread registration")
-
-Fixes: a0cc649353bb ("selftests/rseq: Fix mm_cid test failure")
-Reported-by: Raghavendra Rao Ananta <rananta@google.com>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Carlos O'Donell <carlos@redhat.com>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Michael Jeanson <mjeanson@efficios.com>
-Cc: linux-kselftest@vger.kernel.org
+Fixes: 08333b911f01 ("remoteproc: Directly use ida_alloc()/free()")
+Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20241122175127.2188037-1-arnaud.pouliquen@foss.st.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/rseq/rseq.c |   32 +++++++++++++++++++++++++-------
- tools/testing/selftests/rseq/rseq.h |    9 ++++++++-
- 2 files changed, 33 insertions(+), 8 deletions(-)
+ drivers/remoteproc/remoteproc_core.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -61,7 +61,6 @@ unsigned int rseq_size = -1U;
- unsigned int rseq_flags;
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -2486,6 +2486,13 @@ struct rproc *rproc_alloc(struct device
+ 	rproc->dev.driver_data = rproc;
+ 	idr_init(&rproc->notifyids);
  
- static int rseq_ownership;
--static int rseq_reg_success;	/* At least one rseq registration has succeded. */
- 
- /* Allocate a large area for the TLS. */
- #define RSEQ_THREAD_AREA_ALLOC_SIZE	1024
-@@ -152,14 +151,27 @@ int rseq_register_current_thread(void)
- 	}
- 	rc = sys_rseq(&__rseq_abi, get_rseq_min_alloc_size(), 0, RSEQ_SIG);
- 	if (rc) {
--		if (RSEQ_READ_ONCE(rseq_reg_success)) {
-+		/*
-+		 * After at least one thread has registered successfully
-+		 * (rseq_size > 0), the registration of other threads should
-+		 * never fail.
-+		 */
-+		if (RSEQ_READ_ONCE(rseq_size) > 0) {
- 			/* Incoherent success/failure within process. */
- 			abort();
- 		}
- 		return -1;
- 	}
- 	assert(rseq_current_cpu_raw() >= 0);
--	RSEQ_WRITE_ONCE(rseq_reg_success, 1);
-+
-+	/*
-+	 * The first thread to register sets the rseq_size to mimic the libc
-+	 * behavior.
-+	 */
-+	if (RSEQ_READ_ONCE(rseq_size) == 0) {
-+		RSEQ_WRITE_ONCE(rseq_size, get_rseq_kernel_feature_size());
++	/* Assign a unique device index and name */
++	rproc->index = ida_alloc(&rproc_dev_index, GFP_KERNEL);
++	if (rproc->index < 0) {
++		dev_err(dev, "ida_alloc failed: %d\n", rproc->index);
++		goto put_device;
 +	}
 +
- 	return 0;
- }
+ 	rproc->name = kstrdup_const(name, GFP_KERNEL);
+ 	if (!rproc->name)
+ 		goto put_device;
+@@ -2496,13 +2503,6 @@ struct rproc *rproc_alloc(struct device
+ 	if (rproc_alloc_ops(rproc, ops))
+ 		goto put_device;
  
-@@ -235,12 +247,18 @@ void rseq_init(void)
- 		return;
- 	}
- 	rseq_ownership = 1;
--	if (!rseq_available()) {
--		rseq_size = 0;
--		return;
+-	/* Assign a unique device index and name */
+-	rproc->index = ida_alloc(&rproc_dev_index, GFP_KERNEL);
+-	if (rproc->index < 0) {
+-		dev_err(dev, "ida_alloc failed: %d\n", rproc->index);
+-		goto put_device;
 -	}
-+
-+	/* Calculate the offset of the rseq area from the thread pointer. */
- 	rseq_offset = (void *)&__rseq_abi - rseq_thread_pointer();
-+
-+	/* rseq flags are deprecated, always set to 0. */
- 	rseq_flags = 0;
-+
-+	/*
-+	 * Set the size to 0 until at least one thread registers to mimic the
-+	 * libc behavior.
-+	 */
-+	rseq_size = 0;
- }
+-
+ 	dev_set_name(&rproc->dev, "remoteproc%d", rproc->index);
  
- static __attribute__((destructor))
---- a/tools/testing/selftests/rseq/rseq.h
-+++ b/tools/testing/selftests/rseq/rseq.h
-@@ -60,7 +60,14 @@
- extern ptrdiff_t rseq_offset;
- 
- /*
-- * Size of the registered rseq area. 0 if the registration was
-+ * The rseq ABI is composed of extensible feature fields. The extensions
-+ * are done by appending additional fields at the end of the structure.
-+ * The rseq_size defines the size of the active feature set which can be
-+ * used by the application for the current rseq registration. Features
-+ * starting at offset >= rseq_size are inactive and should not be used.
-+ *
-+ * The rseq_size is the intersection between the available allocation
-+ * size for the rseq area and the feature size supported by the kernel.
-  * unsuccessful.
-  */
- extern unsigned int rseq_size;
+ 	atomic_set(&rproc->power, 0);
 
 
 
