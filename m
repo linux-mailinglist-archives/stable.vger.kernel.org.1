@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4B1A290E2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EFFA28DA9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FE761696E6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA673A3992
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A52155A30;
-	Wed,  5 Feb 2025 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08751547F2;
+	Wed,  5 Feb 2025 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vxe6DIpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6/4bMhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625C97E792;
-	Wed,  5 Feb 2025 14:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE3915198D;
+	Wed,  5 Feb 2025 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766440; cv=none; b=kanZgRe0CMq8FgAOZVEVU72JFupHqCm6yUbrg1ISsjwBSNMPwDoKfgiHEHlE+nagqS91XWRnzpeebUiPqYcjaudW6f4eS2li/6Qy6did1cc+QvQQ1AZTIiT1GtfBCJW4wt1HJ/pFXboSKQ6p2URQiuWNiGISvwBxlJkwZjRBSB8=
+	t=1738764093; cv=none; b=PoaYcMGhOref//8cHVHIuL3iSEPFRURkRX1H4BduC63Vstf1B+pgidOmRh6IXCK/GHDo5bh6eY3n1dAu1qubzfg1s8zYZP8bJCsLKxRIvtYPdqU3jo1lxa7AETviyCNf0bVr/mra6eqBMd1vWmn28CZUTcFLG5IZ3vF2sqsSP7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766440; c=relaxed/simple;
-	bh=3QuaXJEGkwWFHQm6FK6TQ8J/4IAb62F60wMtQdQoP0I=;
+	s=arc-20240116; t=1738764093; c=relaxed/simple;
+	bh=H8Wi21QCKwaCUBajmHyD5ATIRRMnuXp+VQ+qxCu0a3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njJXGUDPdfoWfY3ISe062gBfg0Gfw+bjN3QkvvR5vSmwCC7qkmv1dTfh64yCwj5ul5bcQSH25aQVIbvhF+q6FkxQ+iyUBYT/ys5OsZUe0LIjWHqqFqBEsu9vYyewhiy/OYx5fj9sFDgt1WYN3OzL11iV8ikB3p4RYOgfAD6syD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vxe6DIpR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB88C4CED1;
-	Wed,  5 Feb 2025 14:40:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qNZbt4ffncTKGNDpLmNNTngBy5kM9oUndFc5jP/XHN87j0DWtv3dS4xU+SKmQYHFGVVkcGBBaWFr80VkRqiPLXZ/4tEAuc4HCpo+num+8YJ+tjJYfjaTqfLLj0vJXR2B1HIgD6o8yAxsJIPs7Pyf6YUZ5Ezu9QzxzfqxqyEbMhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6/4bMhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BEFC4CED1;
+	Wed,  5 Feb 2025 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766440;
-	bh=3QuaXJEGkwWFHQm6FK6TQ8J/4IAb62F60wMtQdQoP0I=;
+	s=korg; t=1738764093;
+	bh=H8Wi21QCKwaCUBajmHyD5ATIRRMnuXp+VQ+qxCu0a3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vxe6DIpRO4ZPosyoasUuN7MVk02XTRGJy0ynDCwFO60vl4uvo0IFsvZMAxBnDUQ0U
-	 70J3uC/qgmYL2CPiINynHtHVhMnVKRvBk8MYDEzPFKybw+HEL+fyjVrgAAfl/y4jPt
-	 +87hmz/3l81Si1j3NOoes3HNzGXl1VqPrcjSkSD8=
+	b=C6/4bMhlP+5HpoXa/USjabnoMLagQ9cpz906sgDfZ5Ey1xbiKibv5qpfrxWdYcJj5
+	 CwQZCS+qOVaCg9K3OdUs83u8lJmpjuu0ArUDPjc+vFCTsezLSn2yWHYEnEx+cWJVd1
+	 mu7IOBbzBjd+xbdnDMQrYnotvrDJQUItW9aNiDaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 302/590] ARM: at91: pm: change BU Power Switch to automatic mode
-Date: Wed,  5 Feb 2025 14:40:57 +0100
-Message-ID: <20250205134506.833037398@linuxfoundation.org>
+Subject: [PATCH 6.6 139/393] selftests/landlock: Fix error message
+Date: Wed,  5 Feb 2025 14:40:58 +0100
+Message-ID: <20250205134425.623197107@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 6fc5bdfa872b7da51b5507a1327a17c3db2fcf95 ]
+[ Upstream commit 2107c35128ad751b201eb92fe91443450d9e5c37 ]
 
-Change how the Backup Unit Power is configured and force the
-automatic/hardware mode.
-This change eliminates the need for software management of the power
-switch, ensuring it transitions to the backup power source before
-entering low power modes.
+The global variable errno may not be set in test_execute().  Do not use
+it in related error message.
 
-This is done in the only location where this switch was configured. It's
-usually done in the bootloader.
-
-Previously, the loss of the VDDANA (or VDDIN33) power source was not
-automatically compensated by an alternative power source. This resulted
-in the loss of Backup Unit content, including Backup Self-refresh low
-power mode information, OTP emulation configuration, and boot
-configuration, for instance.
-
-Fixes: ac809e7879b1 ("ARM: at91: pm: switch backup area to vbat in backup mode")
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20241125165648.509162-1-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Günther Noack <gnoack@google.com>
+Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
+Link: https://lore.kernel.org/r/20250108154338.1129069-21-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ tools/testing/selftests/landlock/fs_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
-index b9b995f8a36e1..05a1547642b60 100644
---- a/arch/arm/mach-at91/pm.c
-+++ b/arch/arm/mach-at91/pm.c
-@@ -598,7 +598,21 @@ static int at91_suspend_finish(unsigned long val)
- 	return 0;
+diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
+index 720bafa0f87be..c239838c796a4 100644
+--- a/tools/testing/selftests/landlock/fs_test.c
++++ b/tools/testing/selftests/landlock/fs_test.c
+@@ -1861,8 +1861,7 @@ static void test_execute(struct __test_metadata *const _metadata, const int err,
+ 	ASSERT_EQ(1, WIFEXITED(status));
+ 	ASSERT_EQ(err ? 2 : 0, WEXITSTATUS(status))
+ 	{
+-		TH_LOG("Unexpected return code for \"%s\": %s", path,
+-		       strerror(errno));
++		TH_LOG("Unexpected return code for \"%s\"", path);
+ 	};
  }
- 
--static void at91_pm_switch_ba_to_vbat(void)
-+/**
-+ * at91_pm_switch_ba_to_auto() - Configure Backup Unit Power Switch
-+ * to automatic/hardware mode.
-+ *
-+ * The Backup Unit Power Switch can be managed either by software or hardware.
-+ * Enabling hardware mode allows the automatic transition of power between
-+ * VDDANA (or VDDIN33) and VDDBU (or VBAT, respectively), based on the
-+ * availability of these power sources.
-+ *
-+ * If the Backup Unit Power Switch is already in automatic mode, no action is
-+ * required. If it is in software-controlled mode, it is switched to automatic
-+ * mode to enhance safety and eliminate the need for toggling between power
-+ * sources.
-+ */
-+static void at91_pm_switch_ba_to_auto(void)
- {
- 	unsigned int offset = offsetof(struct at91_pm_sfrbu_regs, pswbu);
- 	unsigned int val;
-@@ -609,24 +623,19 @@ static void at91_pm_switch_ba_to_vbat(void)
- 
- 	val = readl(soc_pm.data.sfrbu + offset);
- 
--	/* Already on VBAT. */
--	if (!(val & soc_pm.sfrbu_regs.pswbu.state))
-+	/* Already on auto/hardware. */
-+	if (!(val & soc_pm.sfrbu_regs.pswbu.ctrl))
- 		return;
- 
--	val &= ~soc_pm.sfrbu_regs.pswbu.softsw;
--	val |= soc_pm.sfrbu_regs.pswbu.key | soc_pm.sfrbu_regs.pswbu.ctrl;
-+	val &= ~soc_pm.sfrbu_regs.pswbu.ctrl;
-+	val |= soc_pm.sfrbu_regs.pswbu.key;
- 	writel(val, soc_pm.data.sfrbu + offset);
--
--	/* Wait for update. */
--	val = readl(soc_pm.data.sfrbu + offset);
--	while (val & soc_pm.sfrbu_regs.pswbu.state)
--		val = readl(soc_pm.data.sfrbu + offset);
- }
- 
- static void at91_pm_suspend(suspend_state_t state)
- {
- 	if (soc_pm.data.mode == AT91_PM_BACKUP) {
--		at91_pm_switch_ba_to_vbat();
-+		at91_pm_switch_ba_to_auto();
- 
- 		cpu_suspend(0, at91_suspend_finish);
  
 -- 
 2.39.5
