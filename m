@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9A1A28C84
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345AEA28EF2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42069168A7A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BDC3A978C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192E1494DF;
-	Wed,  5 Feb 2025 13:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47088634E;
+	Wed,  5 Feb 2025 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3bxYfPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5QlHCLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D49B146A63;
-	Wed,  5 Feb 2025 13:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE11519AA;
+	Wed,  5 Feb 2025 14:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763444; cv=none; b=FvwCm4dwPNSZQqURF0VvCpUkq7FjcT/k7W/+GVFuYpv6LGa8Z+Xy1VrxN+1CYOAaqzcsk+XQFQgrlb6vxcPuzyIZqjSh+3dK1JmLU2I3J71Pt1d+gPCXLVWueEx9IshIRhTvoDWGGlMiDwJ/KpbIka7PFTpMFwet2SkzW9eBoWw=
+	t=1738765103; cv=none; b=JnWPvixRYbD/PtFN3fTAM+QKKmNQw+Q28p13zZiWk5z7br/QU+UOoyVadWHZlhrk/uPom12tBSbJ0ZyqyfE7Ui80f0HUeg4GXARk/4rLSc8ARt32v9FAFpVOrAZCYQIlu/dsJUoZqttCJZMLEPb0OfG2+C8XFGCfSKd7vFJoJrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763444; c=relaxed/simple;
-	bh=RMk/oFScoXX337VGNpBgNiPlbN7v1DqoGWDyIK8qEdU=;
+	s=arc-20240116; t=1738765103; c=relaxed/simple;
+	bh=kKGnngo1EVJIQ2S/OvlJSghuipdycGQVWXXGLyzwY8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcuU8XhA2KMS1jowOjqZz9FQPpjU971Phn+2ykn7Q0nb/pSw6BKmAK5EP+uS9+o0YFgmATZ0qIoErR6cqT8kbnign6X0mnEEDOlhiixCNQYbcNtckmaZNk+eSKiIsT3fIzfvIIBudKtB5MQ/LR9qyI9R3vJsBdqJGjBGM6NU8+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3bxYfPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA0BC4CED1;
-	Wed,  5 Feb 2025 13:50:42 +0000 (UTC)
+	 MIME-Version; b=NAGOoDSAPrm9iFUXzI4nL0iINijN4Z8jkbRQjyIX3jvA4bMezW3lltZpAKvX0Uzd28+oXuVZpNJiXGIL1hXCU94QkhNkgSkZq2tX0dPWlAd2CK29mxKIY6jfYCP3WoDws0fPPp+HepZO/JAkKcsNSoT4EdGIS+ak3fCaowgxzNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5QlHCLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F608C4CED1;
+	Wed,  5 Feb 2025 14:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763442;
-	bh=RMk/oFScoXX337VGNpBgNiPlbN7v1DqoGWDyIK8qEdU=;
+	s=korg; t=1738765103;
+	bh=kKGnngo1EVJIQ2S/OvlJSghuipdycGQVWXXGLyzwY8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u3bxYfPBozl5zTTXX5LyeXNQEWgxV/iIZzbn2qaM3je/dqKMu/CyITawXHSjtKYce
-	 Ilvdca8FWZpiAMWJGGpIQeII4Bu4pWJ6rQowuAMYVaK3lbILwsUe8t2lgqzN/WD+ye
-	 tXDX9EUtmQeJf+5xa3ut/4e3rO62vM5mLRnIth+Y=
+	b=A5QlHCLo2hWidLr2QTRJB7V6rz4huj8wm6JIZoLQoUx5/NTHttWqJcaws5L110c+9
+	 Xsd1KYhu/gvjIVE5Bz+t2fb9PrPD1zDAifvU8ZtrA0JxfVuokDAhp2PqOjPty6x1BJ
+	 oIbN7Vc3A8QW4TYbyAPhDWL9FFJnpA2QC0rA3g/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Stepchenko <sid@itb.spb.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/393] drm/amdgpu: Fix potential NULL pointer dereference in atomctrl_get_smc_sclk_range_table
+Subject: [PATCH 6.12 190/590] wifi: mt76: mt7925: Update mt792x_rx_get_wcid for per-link STA
 Date: Wed,  5 Feb 2025 14:39:05 +0100
-Message-ID: <20250205134421.301643375@linuxfoundation.org>
+Message-ID: <20250205134502.549141897@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Stepchenko <sid@itb.spb.ru>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 357445e28ff004d7f10967aa93ddb4bffa5c3688 ]
+[ Upstream commit 90c10286b176421068b136da51ed83059a68e322 ]
 
-The function atomctrl_get_smc_sclk_range_table() does not check the return
-value of smu_atom_get_data_table(). If smu_atom_get_data_table() fails to
-retrieve SMU_Info table, it returns NULL which is later dereferenced.
+Update mt792x_rx_get_wcid to support per-link STA.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-In practice this should never happen as this code only gets called
-on polaris chips and the vbios data table will always be present on
-those chips.
-
-Fixes: a23eefa2f461 ("drm/amd/powerplay: enable dpm for baffin.")
-Signed-off-by: Ivan Stepchenko <sid@itb.spb.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-11-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt792x_mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-index cc3b62f733941..1fbd23922082a 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
-@@ -1420,6 +1420,8 @@ int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctr
- 			GetIndexIntoMasterTable(DATA, SMU_Info),
- 			&size, &frev, &crev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+index 106273935b267..05978d9c7b916 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_mac.c
+@@ -153,7 +153,7 @@ struct mt76_wcid *mt792x_rx_get_wcid(struct mt792x_dev *dev, u16 idx,
+ 		return NULL;
  
-+	if (!psmu_info)
-+		return -EINVAL;
+ 	link = container_of(wcid, struct mt792x_link_sta, wcid);
+-	sta = container_of(link, struct mt792x_sta, deflink);
++	sta = link->sta;
+ 	if (!sta->vif)
+ 		return NULL;
  
- 	for (i = 0; i < psmu_info->ucSclkEntryNum; i++) {
- 		table->entry[i].ucVco_setting = psmu_info->asSclkFcwRangeEntry[i].ucVco_setting;
 -- 
 2.39.5
 
