@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB35A28E66
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE508A28F57
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727ED1688EA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF4143AAC24
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF6F14B959;
-	Wed,  5 Feb 2025 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1685158D96;
+	Wed,  5 Feb 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8mB6p5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMT0whQG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E66713C9C4;
-	Wed,  5 Feb 2025 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD54D14B959;
+	Wed,  5 Feb 2025 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764755; cv=none; b=FR8JIeHb+8c5E4Q2/V/y6KryBcGQ1hJKsc5Rhnmp/RGHjfK66JZtlDjSeVHvakQo1lp5Wx7Y+6+0VadsYyVG0LkX6ERwN/vKpcrXh8vQgpA+nd1rVnkOhltQOn+Vo5a8O/XW+JqOJLQfOjq8oqEMJuGqPZ6iv2Dtx/H1cG89bak=
+	t=1738765346; cv=none; b=bIUaa7lxoR1apmseK/FNqQM4YTTiztDxuQQad6+B5x8X0asGNMFkTp97zbevA0NOFsMU5gXTdUX1F924CzBqCZfsGEE6pDYJeB23VtGrpTfC+UhHCeoMvhxJKYQXsRm0xVjMcQ0zEI14hIM91xJufy08fQdNcVnskS3SSV1oWeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764755; c=relaxed/simple;
-	bh=zc6QAxHXSQu6tFhOnwwWemlGWyJMnj3HFkgxLNlzbow=;
+	s=arc-20240116; t=1738765346; c=relaxed/simple;
+	bh=+nW9E0YRM+TRkiQk0+dUR3h5p13ZzJoOsx4pIAnkttY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKHN5e88F+h5j9js12YDvuxc6PsKLSiF5uHq2swoYRDwJIUeIMAv1Qcr9OcAMGGX6JEFX7iJA+LQIEYIu0u3YucmclR6VwJqjpYrswHb1WY7pmEWDoSxAxYgcXrc44xN3vS2L9Re+OT7E394JR4zEceYd5RMvQflnvU1NCYrZX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8mB6p5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCFCC4CED1;
-	Wed,  5 Feb 2025 14:12:34 +0000 (UTC)
+	 MIME-Version; b=flWsPxv0O3nit6bfXeTTwPpzI+ZU5u9ltuDkPKgKK+tWml340PQ/oYRozlC+0fiEyIYnscuqTPKwZw5d7O9uaWm9ZF4DM4P3eLAo/yoZoiDWaX+mSFdMA0aDc11JmuYktLXpE+ncs3VgbUElW6Npb+bXfVThwQVwaaLSxvWq3TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMT0whQG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B155C4CED1;
+	Wed,  5 Feb 2025 14:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764754;
-	bh=zc6QAxHXSQu6tFhOnwwWemlGWyJMnj3HFkgxLNlzbow=;
+	s=korg; t=1738765346;
+	bh=+nW9E0YRM+TRkiQk0+dUR3h5p13ZzJoOsx4pIAnkttY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8mB6p5x9rmkKdXbwUHUfakGGZzBZoEdm6xP0qcpx21vxR/ja8dpuhSypKyOJw+Kg
-	 iq4L9zlVR//dj1J+QrJm3C5v4h/fVwoc20XgRpnTa4KM2+aQYaydUYTKahipJqqpO3
-	 0AC0NOEfSiaGSRPb38dFzxwEUEYu/OcTisRlT7xo=
+	b=pMT0whQG1vIt5GW7KJt4eynsPrkpISTALBMR8xAYzfvKXla5Tl30taWfA+jK+zw2q
+	 W6cIxZn2MPGA1C2oLwCSXBxGKOj8w1RxoFLknwNOBjAq/i5iWMCxu6AKS4yesG7Zj+
+	 tpbv5PbUVBMJmTXtXQ9tyQBdgOjht/P3eR5EaBGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Stanley <joel@jms.id.au>,
-	Guenter Roeck <linux@roeck-us.net>,
+	John Rowley <lkml@johnrowley.me>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/590] hwmon: Fix help text for aspeed-g6-pwm-tach
+Subject: [PATCH 6.13 168/623] wifi: cfg80211: Move cfg80211_scan_req_add_chan() n_channels increment earlier
 Date: Wed,  5 Feb 2025 14:38:30 +0100
-Message-ID: <20250205134501.215135860@linuxfoundation.org>
+Message-ID: <20250205134502.662247037@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Stanley <joel@jms.id.au>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit c8571eab11131cce6dcce76b3345c1524e074071 ]
+[ Upstream commit 3a0168626c138734490bc52c4105ce8e79d2f923 ]
 
-The help text has the wrong module name mentioned, and the capitalisation
-of the title is inconsistent.
+Since adding __counted_by(n_channels) to struct cfg80211_scan_request,
+anything adding to the channels array must increment n_channels first.
+Move n_channels increment earlier.
 
-Fixes: 7e1449cd15d1 ("hwmon: (aspeed-g6-pwm-tacho): Support for ASPEED g6 PWM/Fan tach")
-Signed-off-by: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20250110114737.64035-1-joel@jms.id.au
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://lore.kernel.org/stable/1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain/
+Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20241230183610.work.680-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index 08a3c863f80a2..58480a3f4683f 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -413,7 +413,7 @@ config SENSORS_ASPEED
- 	  will be called aspeed_pwm_tacho.
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 1c6fd45aa8093..ccdbeb6046399 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -763,12 +763,11 @@ static  void cfg80211_scan_req_add_chan(struct cfg80211_scan_request *request,
+ 		}
+ 	}
  
- config SENSORS_ASPEED_G6
--	tristate "ASPEED g6 PWM and Fan tach driver"
-+	tristate "ASPEED G6 PWM and Fan tach driver"
- 	depends on ARCH_ASPEED || COMPILE_TEST
- 	depends on PWM
- 	help
-@@ -421,7 +421,7 @@ config SENSORS_ASPEED_G6
- 	  controllers.
++	request->n_channels++;
+ 	request->channels[n_channels] = chan;
+ 	if (add_to_6ghz)
+ 		request->scan_6ghz_params[request->n_6ghz_params].channel_idx =
+ 			n_channels;
+-
+-	request->n_channels++;
+ }
  
- 	  This driver can also be built as a module. If so, the module
--	  will be called aspeed_pwm_tacho.
-+	  will be called aspeed_g6_pwm_tach.
- 
- config SENSORS_ATXP1
- 	tristate "Attansic ATXP1 VID controller"
+ static bool cfg80211_find_ssid_match(struct cfg80211_colocated_ap *ap,
 -- 
 2.39.5
 
