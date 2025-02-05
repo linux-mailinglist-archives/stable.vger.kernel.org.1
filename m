@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CA5A291C8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:55:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E644FA29264
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C0A16C1A2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999AD16D4FF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050FB1DB924;
-	Wed,  5 Feb 2025 14:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85948198822;
+	Wed,  5 Feb 2025 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BZvHeBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfhiWYoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24091DB15F;
-	Wed,  5 Feb 2025 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43224197A76;
+	Wed,  5 Feb 2025 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766666; cv=none; b=KqujefPsXKIdlxLJG9Yc5Y+fxBy4yxhadk6vLrf8Vn5defYu8sqt6RLmZd0aOSbRn5zDZINua5M3MyatLzWJ+PALJgQvrqLLJoLHwXQRBrKzQqT3kdwACArpaGZ0ll8uUm5TnGeZ/M7tZyMjll5s1WHnGsM4Q6rw2V1e6aP8Lzc=
+	t=1738767113; cv=none; b=fqQF7j0gbMyTZBIAnQDecqOKrF0OqsTNxzPDPqq+od7pW/Cpv39qw/2M1NHynS9wyYY6qOqop0MT5flrCwu6YJt8PStmLGygxbTZ6iiSCuavGlPjA5I/Wg2OUm/vlJPZ8wx/yyNCHvAFmkjpMGAFM7kJXKt9uyraZzVXLP0guz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766666; c=relaxed/simple;
-	bh=BHSMzjVVpQLv3RKViSJ7WjTqr5AIx2I5CBX8evWbBfo=;
+	s=arc-20240116; t=1738767113; c=relaxed/simple;
+	bh=L6Icux2Zy+68DVZJrDgORvBxVDmmty0OEG5GMUaqWzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJNAFV/R79sOmuSqdULcLzSouhgbdvObUQ4C0l1xbGlDJhoq/GYTe7TKh20CR3RJc3+bs9ro+KMRR6iVFKJLFvf9TJg6Tiry2pEC2bUVCsRteOLD1+SFTPtX+HbfzbuEueG1kv1xMlj3XZZ3RtWldOiOLmwD5/wPYBI/pCR1d50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BZvHeBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7792C4CED1;
-	Wed,  5 Feb 2025 14:44:25 +0000 (UTC)
+	 MIME-Version; b=XfgfUaeam+p2tOuNdeU6DYYotmVDwh58/v9oWPnnWq57YsQcyk7dNcIcc8v22emqjUCAvshsEfZ/wfK0jABznkx9h0pgso5quNZ6QTyOA6tWyXEp+yYp2DFJycKsslKyFYHgOPP1vveqyg6bzp3mppIMjhzfXrJnlrF8TXy+I1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DfhiWYoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF6BC4CEE3;
+	Wed,  5 Feb 2025 14:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766666;
-	bh=BHSMzjVVpQLv3RKViSJ7WjTqr5AIx2I5CBX8evWbBfo=;
+	s=korg; t=1738767113;
+	bh=L6Icux2Zy+68DVZJrDgORvBxVDmmty0OEG5GMUaqWzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BZvHeBJcSwfKKi/pNjTRJQN/sy4P2b8nsj8juOQ96PtgC5SpWIwKB/lwm7iA8Li1
-	 Iz3jWxrUmEExRAy+Dq9ZFmm73ZzoeeRL+t06cWMGLIt0Yeqi3IyfNCmBFPVAHihqLZ
-	 UiJ3QXPEuf796t1jH1+0XNapJA3lERUMMJzilNbA=
+	b=DfhiWYoRIxHcGhyTX8EtBu62S15OFARqIFddroecuD8f+bo4R/WL3S8FA9dksMIz+
+	 ChMddj9igO/iltroMFJuOzBTiR2DMKgjK5ZWHlOCw5t1ASg/cS5IkXC84/tW401wOb
+	 i04hAs41cpaGSx3qorm4tWruCeZs2lzqZ0NydN0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 344/590] arm64: dts: qcom: msm8939: correct sleep clock frequency
-Date: Wed,  5 Feb 2025 14:41:39 +0100
-Message-ID: <20250205134508.432791031@linuxfoundation.org>
+	zhenwei pi <pizhenwei@bytedance.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: [PATCH 6.13 358/623] RDMA/rxe: Fix mismatched max_msg_sz
+Date: Wed,  5 Feb 2025 14:41:40 +0100
+Message-ID: <20250205134509.920302971@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit 5c775f586cde4fca3c5591c43b6dc8b243bc304c ]
+[ Upstream commit db03b70969aab4ef111a3369cfd90ea4da3a6aa0 ]
 
-The MSM8939 platform uses PM8916 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+User mode queries max_msg_sz as 0x800000 by command 'ibv_devinfo -v',
+however ibv_post_send/ibv_post_recv has a limit of 2^31. Fix this
+mismatched information.
 
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-2-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Fixes: f605f26ea196 ("RDMA/rxe: Protect QP state with qp->state_lock")
+Fixes: 5bf944f24129 ("RDMA/rxe: Add error messages")
+Link: https://patch.msgid.link/20241216121953.765331-1-pizhenwei@bytedance.com
+Review-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_param.h | 2 +-
+ drivers/infiniband/sw/rxe/rxe_verbs.c | 5 ++---
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 7af210789879a..effa3aaeb2505 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -34,7 +34,7 @@
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
- 			#clock-cells = <0>;
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 		};
- 	};
+diff --git a/drivers/infiniband/sw/rxe/rxe_param.h b/drivers/infiniband/sw/rxe/rxe_param.h
+index d2f57ead78ad1..003f681e5dc02 100644
+--- a/drivers/infiniband/sw/rxe/rxe_param.h
++++ b/drivers/infiniband/sw/rxe/rxe_param.h
+@@ -129,7 +129,7 @@ enum rxe_device_param {
+ enum rxe_port_param {
+ 	RXE_PORT_GID_TBL_LEN		= 1024,
+ 	RXE_PORT_PORT_CAP_FLAGS		= IB_PORT_CM_SUP,
+-	RXE_PORT_MAX_MSG_SZ		= 0x800000,
++	RXE_PORT_MAX_MSG_SZ		= (1UL << 31),
+ 	RXE_PORT_BAD_PKEY_CNTR		= 0,
+ 	RXE_PORT_QKEY_VIOL_CNTR		= 0,
+ 	RXE_PORT_LID			= 0,
+diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
+index 8a5fc20fd1869..589ac0d8489db 100644
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -696,7 +696,7 @@ static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
+ 		for (i = 0; i < ibwr->num_sge; i++)
+ 			length += ibwr->sg_list[i].length;
  
+-		if (length > (1UL << 31)) {
++		if (length > RXE_PORT_MAX_MSG_SZ) {
+ 			rxe_err_qp(qp, "message length too long\n");
+ 			break;
+ 		}
+@@ -980,8 +980,7 @@ static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
+ 	for (i = 0; i < num_sge; i++)
+ 		length += ibwr->sg_list[i].length;
+ 
+-	/* IBA max message size is 2^31 */
+-	if (length >= (1UL<<31)) {
++	if (length > RXE_PORT_MAX_MSG_SZ) {
+ 		err = -EINVAL;
+ 		rxe_dbg("message length too long\n");
+ 		goto err_out;
 -- 
 2.39.5
 
