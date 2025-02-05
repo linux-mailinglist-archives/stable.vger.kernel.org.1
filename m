@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B57EEA29306
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3BD4A28F39
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05E1169CFE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15FCF7A1C03
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA55A18FDDE;
-	Wed,  5 Feb 2025 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6926A1591E3;
+	Wed,  5 Feb 2025 14:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZhFg6Q+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBVwZtN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DFF146A7A;
-	Wed,  5 Feb 2025 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254AE14B959;
+	Wed,  5 Feb 2025 14:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767511; cv=none; b=GOF1ok2tmk+2tIBGmkaZ+ZTgBJdFSnNV0srE7lWBi37ej8Bn1WZalyh/a84IiIN9H24uuvFO40hcODavXYlisLmLeceNetMoaQIzIPvjH3BnGq0ldd2h9nsMmS1W7sbLK0JDWt5HywljIAuFgotGFvG1Z3kKIG1rY5vYBZS4168=
+	t=1738765353; cv=none; b=IhJKnLbADZFVZNobSzfDobBdzZJEUIk+6UUC5TxzrQwrQ2LUXP40Belxq+yKbnhPzGURfmhjRWgaDDlRU8hxkiHXtPA5zAvmEFHlBaMWkV+/I3OZrHIXnqyAgESKVQhorRU3guEGmzzrpM+shrAH9un4whk5Xh9e+BNNdnQZ9IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767511; c=relaxed/simple;
-	bh=SUtrT8JEh81SP3FnXBNDaGdv8YB9BKt5eLyMXU+BRK4=;
+	s=arc-20240116; t=1738765353; c=relaxed/simple;
+	bh=sDGxqtBTCj60WyZDy+ABk3ft0mOdvnkdSVCbsUC1b/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIQ1XH4y0CMxERcPIEQXnvGzetYZsGBhin3mwNK3ZDI9NexCeJ+JcElAh0YyrMzt7aP8rVvMwoNUluogGqw3/Qx1ZWJAOOcno8fMA2GK2OvQVrSq3AYMMx2Jt2NDuoglRr4yDyByeWfD9HRuT3QmAAKkD1Yji9UlVs3N1FteJ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZhFg6Q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C837C4CED1;
-	Wed,  5 Feb 2025 14:58:30 +0000 (UTC)
+	 MIME-Version; b=i5D3JmhPj0/eWxWeGX+lU8jJhjgVZYKgmA0EEtuUsXsmUIDqlPs0Z0OWqWt+tyRgbZEIgdkwTdoczP3vkVBenHaPBFCStgoTn1ZTAKgVkXq2G67KQ6XjUZyXCCvLSn3bTtksikncPBaMIJ1NyoN69uVOzeHhYzjK6QgGPGmb3EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBVwZtN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89ECCC4CED1;
+	Wed,  5 Feb 2025 14:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767511;
-	bh=SUtrT8JEh81SP3FnXBNDaGdv8YB9BKt5eLyMXU+BRK4=;
+	s=korg; t=1738765353;
+	bh=sDGxqtBTCj60WyZDy+ABk3ft0mOdvnkdSVCbsUC1b/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZhFg6Q+S6GCCWOiTCGa4mzHUAgKHYY5UKXCf+AI/nYw+f/Re8VPnpIn8kTlYtpEO
-	 PlukS9iwqjwMqYX9wSieOFfmQ2j4RGIsIGDiRi1jFAO4ohVZYzt455wjLF2isKHzMX
-	 R295m+tKeTYT8Ti7aVmWzt41U/qJU03Tt3Kpq/mk=
+	b=vBVwZtN3nLbzJrXJR8ioNT/RadJIs/18yQHJHXO7N+PX2VWYflPr+4xlYrsXCEOqK
+	 1/Ux4JjcZAEltp7NNuryKhI5iQYJOB0uGs9j2RFqpMX1kR4wr2mICtCaFZZTCjmgjR
+	 RB1+c7d3UmpWN+DSDqFSYm9PjSudO4e1mpZW2ta4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 414/623] dts: arm64: mediatek: mt8195: Remove MT8183 compatible for OVL
+Subject: [PATCH 6.6 237/393] arm64: dts: qcom: msm8994: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:36 +0100
-Message-ID: <20250205134512.062736313@linuxfoundation.org>
+Message-ID: <20250205134429.374805515@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ce3dbc46d7e30a84b8e99c730e3172dd5efbf094 ]
+[ Upstream commit a4148d869d47d8c86da0291dd95d411a5ebe90c8 ]
 
-The OVL hardware capabilities have changed starting from MT8195,
-making the MT8183 compatible no longer applicable.
-Therefore, it is necessary to remove the MT8183 compatible for OVL.
+The MSM8994 platform uses PM8994/6 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Fixes: b852ee68fd72 ("arm64: dts: mt8195: Add display node for vdosys0")
-Link: https://lore.kernel.org/r/20241219181531.4282-5-jason-jh.lin@mediatek.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: feeaf56ac78d ("arm64: dts: msm8994 SoC and Huawei Angler (Nexus 6P) support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-3-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/msm8994.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-index 04e41b557d448..f013dbad9dc4e 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
-@@ -3135,7 +3135,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8994.dtsi b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+index 875d50c574e95..a7f9259dda6de 100644
+--- a/arch/arm64/boot/dts/qcom/msm8994.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8994.dtsi
+@@ -34,7 +34,7 @@
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+ 			#clock-cells = <0>;
+-			clock-frequency = <32768>;
++			clock-frequency = <32764>;
+ 			clock-output-names = "sleep_clk";
  		};
- 
- 		ovl0: ovl@1c000000 {
--			compatible = "mediatek,mt8195-disp-ovl", "mediatek,mt8183-disp-ovl";
-+			compatible = "mediatek,mt8195-disp-ovl";
- 			reg = <0 0x1c000000 0 0x1000>;
- 			interrupts = <GIC_SPI 636 IRQ_TYPE_LEVEL_HIGH 0>;
- 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS0>;
+ 	};
 -- 
 2.39.5
 
