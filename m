@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F00B1A2926A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:00:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179EEA28F1F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A31F216D5EA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F363A8C37
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3281991CF;
-	Wed,  5 Feb 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA6913C3F6;
+	Wed,  5 Feb 2025 14:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAwxV6BD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPz9JhSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F281632C8;
-	Wed,  5 Feb 2025 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE85B1519BE;
+	Wed,  5 Feb 2025 14:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767130; cv=none; b=Uf3AlXj2i3FXm8gJcy+/j6z0dshJkkQsMR4VlpygQ23odwoLsdDuzF3jUE5mrxTHCgWDJvzcFf7hzMnRmGputBq8GALEXlSiHrtJkE/9mh8dF41cEc4Cf4/dqQYovvsIizJDY4u8Dx8dxmUfv5mp5aAPP7IUpGi6F4agtwgnYC4=
+	t=1738765237; cv=none; b=R6s+JiTfJr2yoF4+uphDXZIzy1rYEsuYHtV8F7UX+5m1p2oHP7xJa640rluO8ss3OKZwxev0nuWUCneuSCVQtEDsrvTaU9Xkk4gL5S54WGum90MEtlJahlhZ2iDb3QERyPTFgBx+n4626TtZ1JWo5D76S+egeE7SxijQwt1DrVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767130; c=relaxed/simple;
-	bh=U/nD9DftISFG85QxFmYTPhX5E4DqD1871l4iy9OaLmo=;
+	s=arc-20240116; t=1738765237; c=relaxed/simple;
+	bh=NyXTl0VOoOrQrtnaFBxqUxOa7uNb0JFVwJSBHYHQnCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzUPnTI19syQ1EBCZkIvcVTJl/AS77z7tEpdO8H2foemiklPH9wQSP5fFZLeAiaodu0P6X2NMbFR3RrfzNlot07YrX2gR/sppkV3WCuNvSrO+1LXp7vYGT8Em43U0VYWPCfOobksfNqMOpDDHYEAX2gaB3u8vKChi4d2lAf1qoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAwxV6BD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38D7C4CED1;
-	Wed,  5 Feb 2025 14:52:09 +0000 (UTC)
+	 MIME-Version; b=vC3VLlCnX8mbU0bs2kpt+bIzj0fjTipTDwuJOFJd4ykAdX+6k6S4yWu5h9MJnoeiP6P21fMPQwMQYntpv9eOF2laIIEqlPdHQhAREji6WyOOb37PC9RAT3xzy1jh6/pd94OH+iB+4t5p92mlkIKXX7/QWHQ30pwVbgB5e7gn6ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPz9JhSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F242C4CED1;
+	Wed,  5 Feb 2025 14:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767130;
-	bh=U/nD9DftISFG85QxFmYTPhX5E4DqD1871l4iy9OaLmo=;
+	s=korg; t=1738765237;
+	bh=NyXTl0VOoOrQrtnaFBxqUxOa7uNb0JFVwJSBHYHQnCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAwxV6BD7Sh2iUqF/Hn/3b1ps4l3A/h6Rh6i/SuQRJqH3sEoK3MBSTWhuYlgIqj4F
-	 w+pcew3DjT1MXDcAaGkdJm+daqJ9B/vx63Ha+ucYNJQd0BQpGkwwBqa+SHRUuF6p8V
-	 OKj9SPgSVl5Z2GH1DaNa5ZSxLrCsgtaP/ac5XncQ=
+	b=NPz9JhSAyzlPm4KpavCQ1qNqFRIwEtcN4EhXBZLDXLMQ4Zwqrzwxz0s16e6c+y6r7
+	 0YuV3MSNovhAwKjRMJ43smyY34nIy8kbIV+J/C7P8FrloMraLsFWPzQWEYh5XUWfQU
+	 T5uEvFc0iw1TiWezWpG9dY9MUy1vEmYgn9FFAp60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tinghan Shen <tinghan.shen@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 410/590] remoteproc: mtk_scp: Only populate devices for SCP cores
+Subject: [PATCH 6.6 246/393] arm64: dts: qcom: sm8250: correct sleep clock frequency
 Date: Wed,  5 Feb 2025 14:42:45 +0100
-Message-ID: <20250205134510.953981669@linuxfoundation.org>
+Message-ID: <20250205134429.719859701@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit dbb9c372555c0b2a5a9264418bfba6d017752808 ]
+[ Upstream commit 75420e437eed69fa95d1d7c339dad86dea35319a ]
 
-When multi-core SCP support was added, the driver was made to populate
-platform devices for all the sub-nodes. This ended up adding platform
-devices for the rpmsg sub-nodes as well, which never actually get used,
-since rpmsg devices are registered through the rpmsg interface.
+The SM8250 platform uses PM8150 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Limit of_platform_populate() to just populating the SCP cores with a
-compatible string match list.
-
-Fixes: 1fdbf0cdde98 ("remoteproc: mediatek: Probe SCP cluster on multi-core SCP")
-Cc: Tinghan Shen <tinghan.shen@mediatek.com>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241211072009.120511-1-wenst@chromium.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 9ff8b0591fcf ("arm64: dts: qcom: sm8250: use the right clock-freqency for sleep-clk")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-13-e9b08fbeadd3@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/mtk_scp.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index e744c07507eed..f98a11d4cf292 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1326,6 +1326,11 @@ static int scp_cluster_init(struct platform_device *pdev, struct mtk_scp_of_clus
- 	return ret;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index b522d19f3a132..88e8f0437e938 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -85,7 +85,7 @@
  
-+static const struct of_device_id scp_core_match[] = {
-+	{ .compatible = "mediatek,scp-core" },
-+	{}
-+};
-+
- static int scp_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1357,13 +1362,15 @@ static int scp_probe(struct platform_device *pdev)
- 	INIT_LIST_HEAD(&scp_cluster->mtk_scp_list);
- 	mutex_init(&scp_cluster->cluster_lock);
- 
--	ret = devm_of_platform_populate(dev);
-+	ret = of_platform_populate(dev_of_node(dev), scp_core_match, NULL, dev);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to populate platform devices\n");
- 
- 	ret = scp_cluster_init(pdev, scp_cluster);
--	if (ret)
-+	if (ret) {
-+		of_platform_depopulate(dev);
- 		return ret;
-+	}
- 
- 	return 0;
- }
-@@ -1379,6 +1386,7 @@ static void scp_remove(struct platform_device *pdev)
- 		rproc_del(scp->rproc);
- 		scp_free(scp);
- 	}
-+	of_platform_depopulate(&pdev->dev);
- 	mutex_destroy(&scp_cluster->cluster_lock);
- }
- 
+ 		sleep_clk: sleep-clk {
+ 			compatible = "fixed-clock";
+-			clock-frequency = <32768>;
++			clock-frequency = <32764>;
+ 			#clock-cells = <0>;
+ 		};
+ 	};
 -- 
 2.39.5
 
