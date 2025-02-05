@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-112495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40D9A28CF6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:56:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB65A29121
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2028F3A8C08
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22F117A1C64
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4372314EC77;
-	Wed,  5 Feb 2025 13:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97879189F3F;
+	Wed,  5 Feb 2025 14:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLpllBMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFh6r20L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F379D1519AA;
-	Wed,  5 Feb 2025 13:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529FF1FCD12;
+	Wed,  5 Feb 2025 14:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763760; cv=none; b=rR19ocyhKs2diW79xNhPnweireDcIzjfrCrRTsVCpzVI75k/AuTfyxz6ZQJT2SUDyk6HUtoaqKg3t/XvC6OsqVWek3YfLjNQgnGQfoLaXP1+xw5TZq48HJLRt+aPZlaNjtDbIkI2njO6wDOKK27OZPeT//Rqf0dIU1ICIOQhHlE=
+	t=1738766493; cv=none; b=l4c2J/X2qfvPAr9C/C91KPZvsm1lBxz0IITIvh+dpeJzg9OKvR3t4fAGBs6I1Cp0vDO9DSo2DRnv5DmB28lcZYk8aRnOq4fCRJYabTQvHAkdxggHmtujPcFdM4XepAgW2StX8MiiJ4Qy5YjfEUOJWS5mnvHlfPVT53fiafJl558=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763760; c=relaxed/simple;
-	bh=WvYCoT05xbAAlksCzw0QGsUdeGO4d/ZByaWixRHR0vo=;
+	s=arc-20240116; t=1738766493; c=relaxed/simple;
+	bh=gDP0G9wTKk369XR6mQosV65cK7RqTUQWAB3U6R/7Lz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N404JhIy4S7Qaap9iGiqYLEf9b1kQGk1XbxwfIs9E+gw1hmPb6uzlQ5lLKt62md1XNMfoeM7o5JhJwQl1+gpLkmkdIB/vZXGYDk18St9wKbWvgWBBfR5RKz0/makjEX0X7FngyY0uJMZGzOe47xQ4hPu9VGjmUpbMsUOX58RiMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLpllBMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612F5C4CED1;
-	Wed,  5 Feb 2025 13:55:59 +0000 (UTC)
+	 MIME-Version; b=KbucRMiiAxTVjG9UwwFHxOsvELuDUsAAwdjHvlYuZqtBRdPgFt4o1KnEOnN7h/7Is5k/UoIcMct5pDzqmSaqNWp226gg/2Lmoeg1Iq54ITptEPvlIy2aNz8OoMzKeTCyUEVkjyzE4wTqr5jNPf3fwbNOmFaj3qnOiHGvFCVe1Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFh6r20L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5C4C4CED1;
+	Wed,  5 Feb 2025 14:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763759;
-	bh=WvYCoT05xbAAlksCzw0QGsUdeGO4d/ZByaWixRHR0vo=;
+	s=korg; t=1738766493;
+	bh=gDP0G9wTKk369XR6mQosV65cK7RqTUQWAB3U6R/7Lz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLpllBMzXfBRdVjW31vG6m8B73dpSoWpdjEXyHRK90oSaDlFI0hxnYFn5ksjsUP5C
-	 Fs1bLuiDdB8lBB7LmLzYkMhCw4gQXq+olj8CpB5mUcsvuinmeMw17PpTbXqtf3w6FA
-	 RbPx0cRHqUMUMa+cjLE2PnysHTGM2t0I2ZVYLg8E=
+	b=yFh6r20LhzY8ZvO3FOVT4bw502z0TFJ61bRz+mF1gqGXSx8cFCBmj8maM3lcVSMTN
+	 4zq9x+2LKlB+89dMT6th4NsQSyr9a42qGUL1RKjqQk7YfSV0sS+qsMBhbhfFDTrjOU
+	 ba52KhjK38AJ8SZ0+4u7ral7xX8sOyUCmi+m55ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/393] mfd: syscon: Add of_syscon_register_regmap() API
-Date: Wed,  5 Feb 2025 14:40:22 +0100
-Message-ID: <20250205134424.233732084@linuxfoundation.org>
+Subject: [PATCH 6.13 281/623] crypto: iaa - Fix IAA disabling that occurs when sync_mode is set to async
+Date: Wed,  5 Feb 2025 14:40:23 +0100
+Message-ID: <20250205134506.981058673@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,126 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 
-[ Upstream commit 769cb63166d90f1fadafa4352f180cbd96b6cb77 ]
+[ Upstream commit 4ebd9a5ca478673cfbb38795cc5b3adb4f35fe04 ]
 
-The of_syscon_register_regmap() API allows an externally created regmap
-to be registered with syscon. This regmap can then be returned to client
-drivers using the syscon_regmap_lookup_by_phandle() APIs.
+With the latest mm-unstable, setting the iaa_crypto sync_mode to 'async'
+causes crypto testmgr.c test_acomp() failure and dmesg call traces, and
+zswap being unable to use 'deflate-iaa' as a compressor:
 
-The API is used by platforms where mmio access to the syscon registers is
-not possible, and a underlying soc driver like exynos-pmu provides a SoC
-specific regmap that can issue a SMC or hypervisor call to write the
-register.
+echo async > /sys/bus/dsa/drivers/crypto/sync_mode
 
-This approach keeps the SoC complexities out of syscon, but allows common
-drivers such as  syscon-poweroff, syscon-reboot and friends that are used
-by many SoCs already to be re-used.
+[  255.271030] zswap: compressor deflate-iaa not available
+[  369.960673] INFO: task cryptomgr_test:4889 blocked for more than 122 seconds.
+[  369.970127]       Not tainted 6.13.0-rc1-mm-unstable-12-16-2024+ #324
+[  369.977411] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  369.986246] task:cryptomgr_test  state:D stack:0     pid:4889  tgid:4889  ppid:2      flags:0x00004000
+[  369.986253] Call Trace:
+[  369.986256]  <TASK>
+[  369.986260]  __schedule+0x45c/0xfa0
+[  369.986273]  schedule+0x2e/0xb0
+[  369.986277]  schedule_timeout+0xe7/0x100
+[  369.986284]  ? __prepare_to_swait+0x4e/0x70
+[  369.986290]  wait_for_completion+0x8d/0x120
+[  369.986293]  test_acomp+0x284/0x670
+[  369.986305]  ? __pfx_cryptomgr_test+0x10/0x10
+[  369.986312]  alg_test_comp+0x263/0x440
+[  369.986315]  ? sched_balance_newidle+0x259/0x430
+[  369.986320]  ? __pfx_cryptomgr_test+0x10/0x10
+[  369.986323]  alg_test.part.27+0x103/0x410
+[  369.986326]  ? __schedule+0x464/0xfa0
+[  369.986330]  ? __pfx_cryptomgr_test+0x10/0x10
+[  369.986333]  cryptomgr_test+0x20/0x40
+[  369.986336]  kthread+0xda/0x110
+[  369.986344]  ? __pfx_kthread+0x10/0x10
+[  369.986346]  ret_from_fork+0x2d/0x40
+[  369.986355]  ? __pfx_kthread+0x10/0x10
+[  369.986358]  ret_from_fork_asm+0x1a/0x30
+[  369.986365]  </TASK>
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240621115544.1655458-2-peter.griffin@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 805f7aaf7fee ("mfd: syscon: Fix race in device_node_get_regmap()")
+This happens because the only async polling without interrupts that
+iaa_crypto currently implements is with the 'sync' mode. With 'async',
+iaa_crypto calls to compress/decompress submit the descriptor and return
+-EINPROGRESS, without any mechanism in the driver to poll for
+completions. Hence callers such as test_acomp() in crypto/testmgr.c or
+zswap, that wrap the calls to crypto_acomp_compress() and
+crypto_acomp_decompress() in synchronous wrappers, will block
+indefinitely. Even before zswap can notice this problem, the crypto
+testmgr.c's test_acomp() will fail and prevent registration of
+"deflate-iaa" as a valid crypto acomp algorithm, thereby disallowing the
+use of "deflate-iaa" as a zswap compress (zswap will fall-back to the
+default compressor in this case).
+
+To fix this issue, this patch modifies the iaa_crypto sync_mode set
+function to treat 'async' equivalent to 'sync', so that the correct and
+only supported driver async polling without interrupts implementation is
+enabled, and zswap can use 'deflate-iaa' as the compressor.
+
+Hence, with this patch, this is what will happen:
+
+echo async > /sys/bus/dsa/drivers/crypto/sync_mode
+cat /sys/bus/dsa/drivers/crypto/sync_mode
+sync
+
+There are no crypto/testmgr.c test_acomp() errors, no call traces and zswap
+can use 'deflate-iaa' without any errors. The iaa_crypto documentation has
+also been updated to mention this caveat with 'async' and what to expect
+with this fix.
+
+True iaa_crypto async polling without interrupts is enabled in patch
+"crypto: iaa - Implement batch_compress(), batch_decompress() API in
+iaa_crypto." [1] which is under review as part of the "zswap IAA compress
+batching" patch-series [2]. Until this is merged, we would appreciate it if
+this current patch can be considered for a hotfix.
+
+[1]: https://patchwork.kernel.org/project/linux-mm/patch/20241221063119.29140-5-kanchana.p.sridhar@intel.com/
+[2]: https://patchwork.kernel.org/project/linux-mm/list/?series=920084
+
+Fixes: 09646c98d ("crypto: iaa - Add irq support for the crypto async interface")
+Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c       | 48 ++++++++++++++++++++++++++++++++++++++
- include/linux/mfd/syscon.h |  8 +++++++
- 2 files changed, 56 insertions(+)
+ Documentation/driver-api/crypto/iaa/iaa-crypto.rst | 9 ++++++++-
+ drivers/crypto/intel/iaa/iaa_crypto_main.c         | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 7d0e91164cbaa..33f1e07ab24dc 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -192,6 +192,54 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- 	return syscon->regmap;
- }
+diff --git a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+index bba40158dd5c5..8e50b900d51c2 100644
+--- a/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
++++ b/Documentation/driver-api/crypto/iaa/iaa-crypto.rst
+@@ -272,7 +272,7 @@ The available attributes are:
+       echo async_irq > /sys/bus/dsa/drivers/crypto/sync_mode
  
-+/**
-+ * of_syscon_register_regmap() - Register regmap for specified device node
-+ * @np: Device tree node
-+ * @regmap: Pointer to regmap object
-+ *
-+ * Register an externally created regmap object with syscon for the specified
-+ * device tree node. This regmap will then be returned to client drivers using
-+ * the syscon_regmap_lookup_by_phandle() API.
-+ *
-+ * Return: 0 on success, negative error code on failure.
-+ */
-+int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
-+{
-+	struct syscon *entry, *syscon = NULL;
-+	int ret;
-+
-+	if (!np || !regmap)
-+		return -EINVAL;
-+
-+	syscon = kzalloc(sizeof(*syscon), GFP_KERNEL);
-+	if (!syscon)
-+		return -ENOMEM;
-+
-+	/* check if syscon entry already exists */
-+	spin_lock(&syscon_list_slock);
-+
-+	list_for_each_entry(entry, &syscon_list, list)
-+		if (entry->np == np) {
-+			ret = -EEXIST;
-+			goto err_unlock;
-+		}
-+
-+	syscon->regmap = regmap;
-+	syscon->np = np;
-+
-+	/* register the regmap in syscon list */
-+	list_add_tail(&syscon->list, &syscon_list);
-+	spin_unlock(&syscon_list_slock);
-+
-+	return 0;
-+
-+err_unlock:
-+	spin_unlock(&syscon_list_slock);
-+	kfree(syscon);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_syscon_register_regmap);
-+
- struct regmap *device_node_to_regmap(struct device_node *np)
- {
- 	return device_node_get_regmap(np, false);
-diff --git a/include/linux/mfd/syscon.h b/include/linux/mfd/syscon.h
-index c315903f6dab3..aad9c6b504636 100644
---- a/include/linux/mfd/syscon.h
-+++ b/include/linux/mfd/syscon.h
-@@ -28,6 +28,8 @@ struct regmap *syscon_regmap_lookup_by_phandle_args(struct device_node *np,
- 						    unsigned int *out_args);
- struct regmap *syscon_regmap_lookup_by_phandle_optional(struct device_node *np,
- 							const char *property);
-+int of_syscon_register_regmap(struct device_node *np,
-+			      struct regmap *regmap);
- #else
- static inline struct regmap *device_node_to_regmap(struct device_node *np)
- {
-@@ -67,6 +69,12 @@ static inline struct regmap *syscon_regmap_lookup_by_phandle_optional(
- 	return NULL;
- }
+     Async mode without interrupts (caller must poll) can be enabled by
+-    writing 'async' to it::
++    writing 'async' to it (please see Caveat)::
  
-+static inline int of_syscon_register_regmap(struct device_node *np,
-+					struct regmap *regmap)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- #endif
+       echo async > /sys/bus/dsa/drivers/crypto/sync_mode
  
- #endif /* __LINUX_MFD_SYSCON_H__ */
+@@ -283,6 +283,13 @@ The available attributes are:
+ 
+     The default mode is 'sync'.
+ 
++    Caveat: since the only mechanism that iaa_crypto currently implements
++    for async polling without interrupts is via the 'sync' mode as
++    described earlier, writing 'async' to
++    '/sys/bus/dsa/drivers/crypto/sync_mode' will internally enable the
++    'sync' mode. This is to ensure correct iaa_crypto behavior until true
++    async polling without interrupts is enabled in iaa_crypto.
++
+ .. _iaa_default_config:
+ 
+ IAA Default Configuration
+diff --git a/drivers/crypto/intel/iaa/iaa_crypto_main.c b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+index 9e557649e5d08..c3776b0de51d7 100644
+--- a/drivers/crypto/intel/iaa/iaa_crypto_main.c
++++ b/drivers/crypto/intel/iaa/iaa_crypto_main.c
+@@ -173,7 +173,7 @@ static int set_iaa_sync_mode(const char *name)
+ 		async_mode = false;
+ 		use_irq = false;
+ 	} else if (sysfs_streq(name, "async")) {
+-		async_mode = true;
++		async_mode = false;
+ 		use_irq = false;
+ 	} else if (sysfs_streq(name, "async_irq")) {
+ 		async_mode = true;
 -- 
 2.39.5
 
