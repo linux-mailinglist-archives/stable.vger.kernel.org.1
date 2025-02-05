@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-112732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7C1A28E24
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49204A28E3F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8D216854D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8C6F3A1A0A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6440FC0B;
-	Wed,  5 Feb 2025 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBB9155A21;
+	Wed,  5 Feb 2025 14:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkwK56eY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEchbN5/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1152149C53;
-	Wed,  5 Feb 2025 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBE11553AB;
+	Wed,  5 Feb 2025 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764561; cv=none; b=i4YtNscd0+9/qa4Sq8UXhb/dMxBX+x8KUwZEX965O/xSFA8b6N2nKUOYfGGsRbNcCSk637X2fuEJb86z3YhlM/Dj7DXddvggShiOeKqBcWsfxMpzia86fbwSveiFoKQyFXQdSEwJ5laq1Ijo5uzmhX8DlVfKyx7BuupHIJP/MmM=
+	t=1738764636; cv=none; b=uxCjF/TxEC0X8hMv5Sx0CM1Vcl7kNGU74H41OcbvWW7wAn1zMbdea2ZcDmiMCM8Hp7KfNWwVRH3dAYwS3MxVruhd0tX99gjJhu/bQtVTQSpIp5wiBiFEE7qQ400eOkl3ggvufhZctPUi+GaqjdMgY7vV52azSOw6tpyXdLWL4lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764561; c=relaxed/simple;
-	bh=2cCGfyxVuUtfUPZNUH2gOGRGeaecxVuj95ZyGrvoNCs=;
+	s=arc-20240116; t=1738764636; c=relaxed/simple;
+	bh=tt+tuTojqaXoY60uWCusBZDD6RP51vZTl6zroAL11UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rfEaPcON/txsq34cmXC7eFXyGp+nHL9M0iuHpyb+kRu5nVq3USM7cGjRL26yMT/JXfPUnyr+J38/1HAfoZsUbrZtSRhZJMPAo2DGWun0+YJlGtB1LLxGhHgFGhIiG1jkdj6yrqdNc6V0/eryVPoZjBMu42TmWuCV6e9wZ3qP7KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkwK56eY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91395C4CED1;
-	Wed,  5 Feb 2025 14:09:20 +0000 (UTC)
+	 MIME-Version; b=NYnJNDfkS2Y2ASTIYJIMxnE0IG1RunHHOJvrtS8HLAGlmUqfbF7CDBndcHM4zQwlzHHW7pZ+VeaUgpgYsibIolHx76+f/ubEZSltI5D5WDchAXseTTEXO4oDS6qE+ApBw5xhr1MVnCyt7Zld79UQwUsboaKRmGkMvqoB2k5K6lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEchbN5/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CB2C4CED1;
+	Wed,  5 Feb 2025 14:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764561;
-	bh=2cCGfyxVuUtfUPZNUH2gOGRGeaecxVuj95ZyGrvoNCs=;
+	s=korg; t=1738764635;
+	bh=tt+tuTojqaXoY60uWCusBZDD6RP51vZTl6zroAL11UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkwK56eYjhaYeXh5DWziDOthat//rqOHu37SDfgvDwbgdh4jzTF2lbxarnKNcEpy1
-	 GYl/ITY3R2T0xu1oZlicLIWVGmECGLew7ayiTiEpeiBRNAV2DGshFfQwcuFIrM5Vmk
-	 cqgcQADTlSj4sPrwNOTxXef5HkIxF9RgRJhSDzuY=
+	b=kEchbN5/VHIuBCC0FTI5TpE/wMZN3zky1pi2rXUHxv/rIJ38SeUjcfr+9BL8eap19
+	 fBuTSrJMSKofAZKQuFhb/GPHnmUH1hUWI2jzqOJ5DLrl02W5EQjAjdOJyPDEpftn84
+	 E5147H5iCSAS3mU7G6pQamSZFrzHlN7Pm+TVB8L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 081/623] drm/amdgpu: fix gpu recovery disable with per queue reset
-Date: Wed,  5 Feb 2025 14:37:03 +0100
-Message-ID: <20250205134459.322443900@linuxfoundation.org>
+Subject: [PATCH 6.13 082/623] genirq: Make handle_enforce_irqctx() unconditionally available
+Date: Wed,  5 Feb 2025 14:37:04 +0100
+Message-ID: <20250205134459.361145150@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -66,46 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 86bde64cb7957be393f84e5d35fb8dfc91e4ae7e ]
+[ Upstream commit 8d187a77f04c14fb459a5301d69f733a5a1396bc ]
 
-Per queue reset should be bypassed when gpu recovery is disabled
-with module parameter.
+Commit 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
+sett the flag which enforces interrupt handling in interrupt context and
+prevents software base resends for ARM GIC v2/v3.
 
-Fixes: ee0a469cf917 ("drm/amdkfd: support per-queue reset on gfx9")
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+But it missed that the helper function which checks the flag was hidden
+behind CONFIG_GENERIC_PENDING_IRQ, which is not set by ARM[64].
+
+Make the helper unconditionally available so that the enforcement actually
+works.
+
+Fixes: 1b57d91b969c ("irqchip/gic-v2, v3: Prevent SW resends entirely")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241210101811.497716609@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v9.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/irq/internals.h | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v9.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v9.c
-index cc66ebb7bae15..441568163e20e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v9.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gfx_v9.c
-@@ -1131,6 +1131,9 @@ uint64_t kgd_gfx_v9_hqd_get_pq_addr(struct amdgpu_device *adev,
- 	uint32_t low, high;
- 	uint64_t queue_addr = 0;
- 
-+	if (!amdgpu_gpu_recovery)
-+		return 0;
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index fe0272cd84a51..a29df4b02a2ed 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -441,10 +441,6 @@ static inline struct cpumask *irq_desc_get_pending_mask(struct irq_desc *desc)
+ {
+ 	return desc->pending_mask;
+ }
+-static inline bool handle_enforce_irqctx(struct irq_data *data)
+-{
+-	return irqd_is_handle_enforce_irqctx(data);
+-}
+ bool irq_fixup_move_pending(struct irq_desc *desc, bool force_clear);
+ #else /* CONFIG_GENERIC_PENDING_IRQ */
+ static inline bool irq_can_move_pcntxt(struct irq_data *data)
+@@ -471,11 +467,12 @@ static inline bool irq_fixup_move_pending(struct irq_desc *desc, bool fclear)
+ {
+ 	return false;
+ }
++#endif /* !CONFIG_GENERIC_PENDING_IRQ */
 +
- 	kgd_gfx_v9_acquire_queue(adev, pipe_id, queue_id, inst);
- 	amdgpu_gfx_rlc_enter_safe_mode(adev, inst);
+ static inline bool handle_enforce_irqctx(struct irq_data *data)
+ {
+-	return false;
++	return irqd_is_handle_enforce_irqctx(data);
+ }
+-#endif /* !CONFIG_GENERIC_PENDING_IRQ */
  
-@@ -1179,6 +1182,9 @@ uint64_t kgd_gfx_v9_hqd_reset(struct amdgpu_device *adev,
- 	uint32_t low, high, pipe_reset_data = 0;
- 	uint64_t queue_addr = 0;
- 
-+	if (!amdgpu_gpu_recovery)
-+		return 0;
-+
- 	kgd_gfx_v9_acquire_queue(adev, pipe_id, queue_id, inst);
- 	amdgpu_gfx_rlc_enter_safe_mode(adev, inst);
- 
+ #if !defined(CONFIG_IRQ_DOMAIN) || !defined(CONFIG_IRQ_DOMAIN_HIERARCHY)
+ static inline int irq_domain_activate_irq(struct irq_data *data, bool reserve)
 -- 
 2.39.5
 
