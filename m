@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B6AA2919C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C01A2926F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3101C3ABA4D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1748E188C436
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDF819258B;
-	Wed,  5 Feb 2025 14:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C29E1FECDC;
+	Wed,  5 Feb 2025 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPNPVsF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8EDDVW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB0C18FDA5;
-	Wed,  5 Feb 2025 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCBB18D65F;
+	Wed,  5 Feb 2025 14:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766549; cv=none; b=SW8h23y/Y+NqkwsbXAdbwEb+A9H2TK75fpV35NQmVG0wmEmENPmdrZEaFziElgSp1DEUdWNlA9YN+qs0eUa3GXPscmkovrGERsOIke3C0sRApn6f1NdRLgZ82mxv3hndUWPmpaaWSm+eVdX890xQTv9o/U/8yDbsZem1EWbrT14=
+	t=1738767040; cv=none; b=O+G2NNCSiHosAFtZZ+1pVudzXCWPC8m90FakxGNXNmyVY7Lm8Z+PvWhk3az4wi3AJGJFWHlqDmp2MVFEAfCIqw8iz4K0YhwRypDAgisSBO2m4kbOKrMvNPjpDyxr4rOlsN+68OYt6vMgjGfA6WH5E5c1pXiGaf769LYzGcqcnfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766549; c=relaxed/simple;
-	bh=YAiMKh5m4dyLF36mTjiZ3TTb6oF+iqFH0LVgS23Yo/w=;
+	s=arc-20240116; t=1738767040; c=relaxed/simple;
+	bh=+QYvefDN345C6wRU6BmBw/7Eb2Z713lqbG5JgOr6K1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DO4AOziadE5611Pp3egWa8AN/3lnD/CiSTlip9nXMlISsGdBn6DkHUhJ2VMC5ksnbgSY5x54vnskQdUN/B4gFfe5qW3eTLY0tgbCQ9SABbLxXJV268On+TNH6SC/LUQwfX+renQOS4XZysXUWwaA2h3R145BXDL7N67Crm9xt7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPNPVsF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40364C4CED1;
-	Wed,  5 Feb 2025 14:42:29 +0000 (UTC)
+	 MIME-Version; b=Y3Z3Z5upq+8f0NHPsLBqLbAAkooLfQRXq8ovyPDnLfUWNHRE4tzrIc1SpDxGwiF2YIP66ignrR0wF+mGSZWRUgy0abES0sy9FUAz9v/QlQqiBV2mBNolIMtf+dqhxbNYPFpCE3CKTr1ji1AOcuu14U8oi08zNMaf0HXjO8upaLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8EDDVW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAD9C4CED1;
+	Wed,  5 Feb 2025 14:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766549;
-	bh=YAiMKh5m4dyLF36mTjiZ3TTb6oF+iqFH0LVgS23Yo/w=;
+	s=korg; t=1738767039;
+	bh=+QYvefDN345C6wRU6BmBw/7Eb2Z713lqbG5JgOr6K1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPNPVsF3uCPm2ZPWczC9V2Lbn65ODXhknE+xfFVXts1OiKp1mMAwzoCegwblD+Aj6
-	 jcjazteL3Lq9VhlsbkiouaQtvbhrBlV8L4KzR/ZHU9XO6GzMBCdkfiOF6db1AqRG2G
-	 VNdlOSLs2bMVM3kYQgAJElal3YEKcaSw+4nI5MsA=
+	b=p8EDDVW6RDzfE/Wxb8Fp1MyCh0yuifAJuBoGc8w9qKRZ9UwCye4pDs4w81aFFQnP8
+	 1Fo0cXWDfQlLm2YOlCs0K/qA6LwEVocLL+XFsLB8L0W/JMuOYN2HCzez2ukL8enSW6
+	 h8G+VPq4LTxoVRQdaimcsnuvhY87u4Rog1iiNtPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 334/590] ARM: dts: stm32: Swap USART3 and UART8 alias on STM32MP15xx DHCOM SoM
-Date: Wed,  5 Feb 2025 14:41:29 +0100
-Message-ID: <20250205134508.056673528@linuxfoundation.org>
+Subject: [PATCH 6.13 348/623] arm64: dts: mediatek: mt8195-cherry: Drop regulator-compatible property
+Date: Wed,  5 Feb 2025 14:41:30 +0100
+Message-ID: <20250205134509.539670278@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 479b8227ffc433929ba49200182b6383569f9615 ]
+[ Upstream commit 4dbaa5d5def2c49e44efaa5e796c23d9b904be09 ]
 
-Swap USART3 and UART8 aliases on STM32MP15xx DHCOM SoM,
-make sure UART8 is listed first, USART3 second, because
-the UART8 is labeled as UART2 on the SoM pinout, while
-USART3 is labeled as UART3 on the SoM pinout.
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-Fixes: 34e0c7847dcf ("ARM: dts: stm32: Add DH Electronics DHCOM STM32MP1 SoM and PDK2 board")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
+
+Fixes: 260c04d425eb ("arm64: dts: mediatek: cherry: Enable MT6315 regulators on SPMI bus")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-6-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-index 086d3a60ccce2..142d4a8731f8d 100644
---- a/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcom-som.dtsi
-@@ -15,8 +15,8 @@
- 		rtc0 = &hwrtc;
- 		rtc1 = &rtc;
- 		serial0 = &uart4;
--		serial1 = &usart3;
--		serial2 = &uart8;
-+		serial1 = &uart8;
-+		serial2 = &usart3;
- 	};
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+index 2c7b2223ee76b..5056e07399e23 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
+@@ -1285,7 +1285,6 @@
  
- 	chosen {
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -1303,7 +1302,6 @@
+ 
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <400000>;
+ 				regulator-max-microvolt = <1193750>;
 -- 
 2.39.5
 
