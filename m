@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863CBA2905D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:35:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CB5A293AE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC9637A1AFC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B65165CBB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E6E8634E;
-	Wed,  5 Feb 2025 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751AE21345;
+	Wed,  5 Feb 2025 15:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2nOA2dl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEUt94aw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242CF151988;
-	Wed,  5 Feb 2025 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302AEDF59;
+	Wed,  5 Feb 2025 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766107; cv=none; b=REoG2/kXijdFuYRoezaf9YtlVDuNSGR1pmf8xQOxMQEDS9AfsXZZkk7KZRIhVu0b/uVI8PbpGiCAvd0GBSg76/HDSTk+nZgSgq7V02fGW6EVVvOKTRXwoszWaMFYUHBb1TPTlqIoDNSs5UgXz0S8ON0K9+obN3vqU+L8rJB28z8=
+	t=1738768179; cv=none; b=ts4FFfGGDKSWvMb7W5re6Kb/Ss85W9gApCgVkAwGwRuXe0w2o0sAJHlK8pDHFuJr04UpmLRH21w05FUeInLpo4yc9qkCnTFP7Ha0un6AtbFpXE53m5d6lV1OfFFMtShcmhnTV/YezQ27fNLTQHlD2rdSMp1slghN8ZAGMxODTqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766107; c=relaxed/simple;
-	bh=UqLAA1o5/fb2MmgCCEhj68EtnbHu9S413BainDcamTA=;
+	s=arc-20240116; t=1738768179; c=relaxed/simple;
+	bh=snUfOgxdXxUp76H+xEI2OV6VcPyq+3fsmNPwhc5HEg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFnzLM6Kab7qBKEiOsVQSqSAuAVnMf9l21MHrKGuf1jDpTALN10Iy8Ax328l6lroVryQHE127zSg4P1JP9qoJ9dDvDUBWzsEliuZdAx1qOd72KYehxEEX9EvFY/VMapN/Ok44/MkBopCT/hz1VtqE8oie89rTMAQlrhSJgQGw3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2nOA2dl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A54C4CED1;
-	Wed,  5 Feb 2025 14:35:06 +0000 (UTC)
+	 MIME-Version; b=mObEo2iTDc6J4j19eYptIptIn5weDAMXa11R7L4v+1lfJdUyuYFtPMXCS1PXTGthHu5841tFbLr1hl6xLaIPmQnDOBNQXofBw40v9WyWiK0m5hL6U6vap2o4llY5780aNYNSm4e/M1AWGNvhuqcwhTZfn7LOa0DNnI+13OW04DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEUt94aw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C20FC4CED1;
+	Wed,  5 Feb 2025 15:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766107;
-	bh=UqLAA1o5/fb2MmgCCEhj68EtnbHu9S413BainDcamTA=;
+	s=korg; t=1738768178;
+	bh=snUfOgxdXxUp76H+xEI2OV6VcPyq+3fsmNPwhc5HEg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2nOA2dlx1u95Z5jIwdXNs88ZoNZB0vI9J2LPTlXKfvzfNzgcCsU+a4xocu5h2Rlx
-	 nlop/oAtX0sNsnIH+jY14VuhFwWe4SXAyt1r05ADTnTm9Yr1EFBPo/SB4emls/JE7V
-	 2FsAwf7EMFi5nKO/Wm9JOFvK99IveKRwgizqBrCw=
+	b=vEUt94awamOYCwdmZXI68UCHoHuZ8wrGHSZdwB6RCK2302W1lTuB0Sz7SUH7trYad
+	 a06KELuaR0SPsZE6NvxTG1uSg7MwB1kPrqcp6761jWD5RQRLcZYaK5iHDHkXrnhRnH
+	 FnLrMU2qrDWKQjZnXb1k0AaWyMoe/sX/+ejG7ybU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2e5de9e3ab986b71d2bf@syzkaller.appspotmail.com,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 330/393] net: netdevsim: try to close UDP port harness races
-Date: Wed,  5 Feb 2025 14:44:09 +0100
-Message-ID: <20250205134432.940027734@linuxfoundation.org>
+Subject: [PATCH 6.13 508/623] net: fec: implement TSO descriptor cleanup
+Date: Wed,  5 Feb 2025 14:44:10 +0100
+Message-ID: <20250205134515.653571872@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,177 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
 
-[ Upstream commit 50bf398e1ceacb9a7f85bd3bdca065ebe5cb6159 ]
+[ Upstream commit 61dc1fd9205bc9d9918aa933a847b08e80b4dc20 ]
 
-syzbot discovered that we remove the debugfs files after we free
-the netdev. Try to clean up the relevant dir while the device
-is still around.
+Implement cleanup of descriptors in the TSO error path of
+fec_enet_txq_submit_tso(). The cleanup
 
-Reported-by: syzbot+2e5de9e3ab986b71d2bf@syzkaller.appspotmail.com
-Fixes: 424be63ad831 ("netdevsim: add UDP tunnel port offload support")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250122224503.762705-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- Unmaps DMA buffers for data descriptors skipping TSO header
+- Clears all buffer descriptors
+- Handles extended descriptors by clearing cbd_esc when enabled
+
+Fixes: 79f339125ea3 ("net: fec: Add software TSO support")
+Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250120085430.99318-1-dheeraj.linuxdev@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/netdevsim.h             |  1 +
- drivers/net/netdevsim/udp_tunnels.c           | 23 +++++++++++--------
- .../drivers/net/netdevsim/udp_tunnel_nic.sh   | 16 ++++++-------
- 3 files changed, 23 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 31 ++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index 028c825b86db1..dfc6e00b718e3 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -121,6 +121,7 @@ struct netdevsim {
- 		u32 sleep;
- 		u32 __ports[2][NSIM_UDP_TUNNEL_N_PORTS];
- 		u32 (*ports)[NSIM_UDP_TUNNEL_N_PORTS];
-+		struct dentry *ddir;
- 		struct debugfs_u32_array dfs_ports[2];
- 	} udp_ports;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 4566848e1d7c6..2f706d0848199 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -840,6 +840,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+ 	int hdr_len, total_len, data_left;
+ 	struct bufdesc *bdp = txq->bd.cur;
++	struct bufdesc *tmp_bdp;
++	struct bufdesc_ex *ebdp;
+ 	struct tso_t tso;
+ 	unsigned int index = 0;
+ 	int ret;
+@@ -913,7 +915,34 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
+ 	return 0;
  
-diff --git a/drivers/net/netdevsim/udp_tunnels.c b/drivers/net/netdevsim/udp_tunnels.c
-index 02dc3123eb6c1..640b4983a9a0d 100644
---- a/drivers/net/netdevsim/udp_tunnels.c
-+++ b/drivers/net/netdevsim/udp_tunnels.c
-@@ -112,9 +112,11 @@ nsim_udp_tunnels_info_reset_write(struct file *file, const char __user *data,
- 	struct net_device *dev = file->private_data;
- 	struct netdevsim *ns = netdev_priv(dev);
- 
--	memset(ns->udp_ports.ports, 0, sizeof(ns->udp_ports.__ports));
- 	rtnl_lock();
--	udp_tunnel_nic_reset_ntf(dev);
-+	if (dev->reg_state == NETREG_REGISTERED) {
-+		memset(ns->udp_ports.ports, 0, sizeof(ns->udp_ports.__ports));
-+		udp_tunnel_nic_reset_ntf(dev);
+ err_release:
+-	/* TODO: Release all used data descriptors for TSO */
++	/* Release all used data descriptors for TSO */
++	tmp_bdp = txq->bd.cur;
++
++	while (tmp_bdp != bdp) {
++		/* Unmap data buffers */
++		if (tmp_bdp->cbd_bufaddr &&
++		    !IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
++			dma_unmap_single(&fep->pdev->dev,
++					 fec32_to_cpu(tmp_bdp->cbd_bufaddr),
++					 fec16_to_cpu(tmp_bdp->cbd_datlen),
++					 DMA_TO_DEVICE);
++
++		/* Clear standard buffer descriptor fields */
++		tmp_bdp->cbd_sc = 0;
++		tmp_bdp->cbd_datlen = 0;
++		tmp_bdp->cbd_bufaddr = 0;
++
++		/* Handle extended descriptor if enabled */
++		if (fep->bufdesc_ex) {
++			ebdp = (struct bufdesc_ex *)tmp_bdp;
++			ebdp->cbd_esc = 0;
++		}
++
++		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
 +	}
- 	rtnl_unlock();
- 
- 	return count;
-@@ -144,23 +146,23 @@ int nsim_udp_tunnels_info_create(struct nsim_dev *nsim_dev,
- 	else
- 		ns->udp_ports.ports = nsim_dev->udp_ports.__ports;
- 
--	debugfs_create_u32("udp_ports_inject_error", 0600,
--			   ns->nsim_dev_port->ddir,
-+	ns->udp_ports.ddir = debugfs_create_dir("udp_ports",
-+						ns->nsim_dev_port->ddir);
 +
-+	debugfs_create_u32("inject_error", 0600, ns->udp_ports.ddir,
- 			   &ns->udp_ports.inject_error);
- 
- 	ns->udp_ports.dfs_ports[0].array = ns->udp_ports.ports[0];
- 	ns->udp_ports.dfs_ports[0].n_elements = NSIM_UDP_TUNNEL_N_PORTS;
--	debugfs_create_u32_array("udp_ports_table0", 0400,
--				 ns->nsim_dev_port->ddir,
-+	debugfs_create_u32_array("table0", 0400, ns->udp_ports.ddir,
- 				 &ns->udp_ports.dfs_ports[0]);
- 
- 	ns->udp_ports.dfs_ports[1].array = ns->udp_ports.ports[1];
- 	ns->udp_ports.dfs_ports[1].n_elements = NSIM_UDP_TUNNEL_N_PORTS;
--	debugfs_create_u32_array("udp_ports_table1", 0400,
--				 ns->nsim_dev_port->ddir,
-+	debugfs_create_u32_array("table1", 0400, ns->udp_ports.ddir,
- 				 &ns->udp_ports.dfs_ports[1]);
- 
--	debugfs_create_file("udp_ports_reset", 0200, ns->nsim_dev_port->ddir,
-+	debugfs_create_file("reset", 0200, ns->udp_ports.ddir,
- 			    dev, &nsim_udp_tunnels_info_reset_fops);
- 
- 	/* Note: it's not normal to allocate the info struct like this!
-@@ -196,6 +198,9 @@ int nsim_udp_tunnels_info_create(struct nsim_dev *nsim_dev,
- 
- void nsim_udp_tunnels_info_destroy(struct net_device *dev)
- {
-+	struct netdevsim *ns = netdev_priv(dev);
++	dev_kfree_skb_any(skb);
 +
-+	debugfs_remove_recursive(ns->udp_ports.ddir);
- 	kfree(dev->udp_tunnel_nic_info);
- 	dev->udp_tunnel_nic_info = NULL;
- }
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-index 185b02d2d4cd1..7af78990b5bb6 100755
---- a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-+++ b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-@@ -142,7 +142,7 @@ function pre_ethtool {
+ 	return ret;
  }
  
- function check_table {
--    local path=$NSIM_DEV_DFS/ports/$port/udp_ports_table$1
-+    local path=$NSIM_DEV_DFS/ports/$port/udp_ports/table$1
-     local -n expected=$2
-     local last=$3
- 
-@@ -212,7 +212,7 @@ function check_tables {
- }
- 
- function print_table {
--    local path=$NSIM_DEV_DFS/ports/$port/udp_ports_table$1
-+    local path=$NSIM_DEV_DFS/ports/$port/udp_ports/table$1
-     read -a have < $path
- 
-     tree $NSIM_DEV_DFS/
-@@ -640,7 +640,7 @@ for port in 0 1; do
-     NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
--    echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
-+    echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports/inject_error
- 
-     msg="1 - create VxLANs v6"
-     exp0=( 0 0 0 0 )
-@@ -662,7 +662,7 @@ for port in 0 1; do
-     new_geneve gnv0 20000
- 
-     msg="2 - destroy GENEVE"
--    echo 2 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
-+    echo 2 > $NSIM_DEV_DFS/ports/$port/udp_ports/inject_error
-     exp1=( `mke 20000 2` 0 0 0 )
-     del_dev gnv0
- 
-@@ -763,7 +763,7 @@ for port in 0 1; do
-     msg="create VxLANs v4"
-     new_vxlan vxlan0 10000 $NSIM_NETDEV
- 
--    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
-+    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
-     check_tables
- 
-     msg="NIC device goes down"
-@@ -774,7 +774,7 @@ for port in 0 1; do
-     fi
-     check_tables
- 
--    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
-+    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
-     check_tables
- 
-     msg="NIC device goes up again"
-@@ -788,7 +788,7 @@ for port in 0 1; do
-     del_dev vxlan0
-     check_tables
- 
--    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
-+    echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
-     check_tables
- 
-     msg="destroy NIC"
-@@ -895,7 +895,7 @@ msg="vacate VxLAN in overflow table"
- exp0=( `mke 10000 1` `mke 10004 1` 0 `mke 10003 1` )
- del_dev vxlan2
- 
--echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports_reset
-+echo 1 > $NSIM_DEV_DFS/ports/$port/udp_ports/reset
- check_tables
- 
- msg="tunnels destroyed 2"
 -- 
 2.39.5
 
