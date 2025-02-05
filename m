@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DB7A28C97
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:51:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB915A28F98
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B41018825A6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:51:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A89164D37
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55170146A63;
-	Wed,  5 Feb 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CC3155335;
+	Wed,  5 Feb 2025 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJWA6SRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvUmDuC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1355213C9C4;
-	Wed,  5 Feb 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BB9522A;
+	Wed,  5 Feb 2025 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763490; cv=none; b=eSYZjuxbYMNXFIMZS9upKzgcTRurFP3cgf2YjXN1Uc6pN21RjBRPLcM4tw6Qv0icYw+BdYmi3kbr/gJXMvghAavnecow7+KWsqimnTQ/m9eCyfALdioV6r/ysZEBl8VmOdeSujklC3sYlnlMir1kVeEC3mkUDyCmN/TtgtQ+w74=
+	t=1738765617; cv=none; b=cvrKvUpHWSaPAmzG7L4fEQZVDLF/CeoRBuIzicbQcy7EapGOSwGeOqE+kr6gMHDTf+urfZSqcRgAUZmh0vcRimoNAA/58B1gHebYwhzhAIDnP41Ufa9mEKUdRTiqGRVvndbucg1K4X91RhRb0Q4mJ0okCNQPoJivVz+/rmq3yN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763490; c=relaxed/simple;
-	bh=iIhOwqwsT8nFNaGI9bgfrhKu4jIVKpmkPDqwm1h1+M0=;
+	s=arc-20240116; t=1738765617; c=relaxed/simple;
+	bh=KzYi5AlAL3+CJm/xBp3/csuTFwLkusp9olODe4Su2c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e3XmyoRgfOBCOftcSA/xZw64GQnVTBFtqeYOmsStj3Pe2eZhEVBEBZ8zx2HG7wUqev3WrA6fdEG7T4TFmSlz2HgHURIYGt/EOtiCvMKoBIk4PVt2H3micC9Xrv1pCa3niQJfb/l3Okfti39msp2Q46dpdUCKkl0Ohk5mtHcJm4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJWA6SRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730FEC4CED6;
-	Wed,  5 Feb 2025 13:51:29 +0000 (UTC)
+	 MIME-Version; b=Bk1ju21piS6bhAejVXtGCF3OhPxp6gEehN3XPG2XDxSDC3hOJy9xWvko0ftWNP9wBKGKR0NFiiMAFRB1ltVBzH+aj48C5OcCcWhGe+PqTNvY/msqO+t3wamnFjIs/lFGJwI+NY26xi2/VKMlEAg88YeRBzMfDTMK1VCmjlCWm1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvUmDuC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE08C4CED1;
+	Wed,  5 Feb 2025 14:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763489;
-	bh=iIhOwqwsT8nFNaGI9bgfrhKu4jIVKpmkPDqwm1h1+M0=;
+	s=korg; t=1738765617;
+	bh=KzYi5AlAL3+CJm/xBp3/csuTFwLkusp9olODe4Su2c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJWA6SRBAbToPHJV30m9586B0Ol3dlpfnhTZ4oGpF/a+nUSsnFj/t8NE2dFfkzDYk
-	 r3oQA4Yez9PRkqJldXuf+Rf6j9wimryMnrPqpX/0mnOf6W7u67V/xz6s5kBKTTjfGP
-	 S7dPV7dexZL/yuvYpsLHGXS27lFWvVtRTMm3fkcs=
+	b=hvUmDuC6CAA2laVqZc/KdRIJxokKq5VkAMrWS41gQHX+AlxPfxgbmTTA+xS23dHW5
+	 SUo4kLgEtmdwWaDtwt8E3X+AoMJGhumbDSHm8LncADjVJxinzRRh61QJ5zNr1LcF8t
+	 Q7DJAhy4NI+4l/cIYLWBR0RY68vPbLBm0Oi4Vws4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcel Hamer <marcel.hamer@windriver.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/393] wifi: brcmfmac: add missing header include for brcmf_dbg
-Date: Wed,  5 Feb 2025 14:39:51 +0100
-Message-ID: <20250205134423.046893228@linuxfoundation.org>
+Subject: [PATCH 6.12 237/590] libbpf: dont adjust USDT semaphore address if .stapsdt.base addr is missing
+Date: Wed,  5 Feb 2025 14:39:52 +0100
+Message-ID: <20250205134504.348418099@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcel Hamer <marcel.hamer@windriver.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit b05d30c2b6df7e2172b18bf1baee9b202f9c6b53 ]
+[ Upstream commit 98ebe5ef6f5c4517ba92fb3e56f95827ebea83fd ]
 
-Including the fwil.h header file can lead to a build error:
+USDT ELF note optionally can record an offset of .stapsdt.base, which is
+used to make adjustments to USDT target attach address. Currently,
+libbpf will do this address adjustment unconditionally if it finds
+.stapsdt.base ELF section in target binary. But there is a corner case
+where .stapsdt.base ELF section is present, but specific USDT note
+doesn't reference it. In such case, libbpf will basically just add base
+address and end up with absolutely incorrect USDT target address.
 
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h: \
-	In function ‘brcmf_fil_cmd_int_set’:
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h:90:9: error: implicit \
-	declaration of function ‘brcmf_dbg’ [-Werror=implicit-function-declaration]
-   90 |         brcmf_dbg(FIL, "ifidx=%d, cmd=%d, value=%d\n", ifp->ifidx, cmd, data);
-      |         ^~~~~~~~~
+This adjustment has to be done only if both .stapsdt.sema section is
+present and USDT note is recording a reference to it.
 
-The error is often avoided because the debug.h header file is included
-before the fwil.h header file.
-
-This makes sure the header include order is irrelevant by explicitly adding the
-debug.h header.
-
-Fixes: 31343230abb1 ("wifi: brcmfmac: export firmware interface functions")
-Signed-off-by: Marcel Hamer <marcel.hamer@windriver.com>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241211133618.2014083-1-marcel.hamer@windriver.com
+Fixes: 74cc6311cec9 ("libbpf: Add USDT notes parsing and resolution logic")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20241121224558.796110-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/lib/bpf/usdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-index 31e080e4da669..ab3d6cfcb02bd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h
-@@ -6,6 +6,8 @@
- #ifndef _fwil_h_
- #define _fwil_h_
+diff --git a/tools/lib/bpf/usdt.c b/tools/lib/bpf/usdt.c
+index 93794f01bb67c..6ff28e7bf5e3d 100644
+--- a/tools/lib/bpf/usdt.c
++++ b/tools/lib/bpf/usdt.c
+@@ -659,7 +659,7 @@ static int collect_usdt_targets(struct usdt_manager *man, Elf *elf, const char *
+ 		 *   [0] https://sourceware.org/systemtap/wiki/UserSpaceProbeImplementation
+ 		 */
+ 		usdt_abs_ip = note.loc_addr;
+-		if (base_addr)
++		if (base_addr && note.base_addr)
+ 			usdt_abs_ip += base_addr - note.base_addr;
  
-+#include "debug.h"
-+
- /*******************************************************************************
-  * Dongle command codes that are interpreted by firmware
-  ******************************************************************************/
+ 		/* When attaching uprobes (which is what USDTs basically are)
 -- 
 2.39.5
 
