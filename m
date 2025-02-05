@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-113370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B6A291E6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82D4A293A9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97E723AC2D4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4923216AD6E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BDC1DE4EC;
-	Wed,  5 Feb 2025 14:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256E156C5E;
+	Wed,  5 Feb 2025 15:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1CHG+2Fq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD2CQ9/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246B91C6BE;
-	Wed,  5 Feb 2025 14:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5DE17C79;
+	Wed,  5 Feb 2025 15:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766730; cv=none; b=m/LeTnTUEj6vbmx7CQlPcXIvTLyWySFFPhPcNutWgsGX3Z/zntex9GAWxQnP5zZFd9V5En2aqsYC0S2tryC0Kad5ncj7irt2V8pdkxLE3xYy08zQvhAFUyiZ38n2F4qAv4hdcDWAA9a2fAarW4PnL+rStWctke0ILfIXC8IxTJU=
+	t=1738768113; cv=none; b=PmObdI0Pd6TwzYLuCPELShHYNVvXRysa/N9ODQRlb9IRfb1uCxYyoPInkExpmCip9kkIjjZn6t17i14DGq/v9o+dolhMHPSx1WzdU7AuURnugUONlfebQpAXgKZ8D1lLmtHl8SH1R+0wuV9SVG47F9328VA8MsEJNbHYn9YhNeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766730; c=relaxed/simple;
-	bh=17UT+OddHlcRbaidDBrjqfWED6otH3vvBUDpGRz7n5o=;
+	s=arc-20240116; t=1738768113; c=relaxed/simple;
+	bh=xwbmvnYY6lnkot7OCQwTYtIyLxpCFteBpd7J0xG2bc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEIeFvhPYFQPvZ+hYX2yVgt1BTyKNvQe6sktk+GJ5ID5A8ALzTT2uGbHziT5Ps18LCTp0y5ojb707mur7101mhvAhwIzMX2tN7LxLQqkf3iKkxyz0ZOmPNwdhorPO/zndMQmqL3yzxnft/o8cC7BwP2lO2BoCG7EIPRPzeYo6K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1CHG+2Fq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97576C4CED1;
-	Wed,  5 Feb 2025 14:45:29 +0000 (UTC)
+	 MIME-Version; b=NiXhsrtuC9nMjCggD/aGAgpTyhNvzVgkKBxhlIkyfDg24x10MqTRZ41MI0YNkkTho0stoJsADuP1kpQ2gczGYkPtPWydvnbygqmqwQ6sToGBDxFefv0nZ/idMGKeK/PbFKiPMfudyxrX31vvqRZM6iTHzzDIUPivrvMovCFv8H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD2CQ9/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9E7C4CED1;
+	Wed,  5 Feb 2025 15:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766730;
-	bh=17UT+OddHlcRbaidDBrjqfWED6otH3vvBUDpGRz7n5o=;
+	s=korg; t=1738768113;
+	bh=xwbmvnYY6lnkot7OCQwTYtIyLxpCFteBpd7J0xG2bc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1CHG+2FqX6jPIJ07JGiErkYfEAUzcCSWBSBCohAsiaoF6Oxut0cVcwym3w2jfGotG
-	 XXujdnj1Q10HIJcN4Y8VMPWV9/8V9YQMTIDd+uwHIAwp4UlZLZKVpsXxrGfkKuxE2z
-	 9zEHtJaKpWiZRkaye87yyNqwrFEk+pC8hbLFvBrY=
+	b=KD2CQ9/4V1kqTZ7uhOb7N0iGJDseDuCvySpobWpwtPt/y5aavCc1KF1F62Xf0aor/
+	 NqUo+uEudYMcQ7RwiKvAYQENUykZvC0U+KPkSnmgNAkMJiYLlKwNh+vWTFjnSgrnc3
+	 tcnNG1jM3nBUfR3nVqrPWZE/aurmG9lRoeQ0Nknc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Anton Mitterer <calestyo@scientia.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 391/393] btrfs: output the reason for open_ctree() failure
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 555/590] usb: gadget: f_tcm: Fix Get/SetInterface return value
 Date: Wed,  5 Feb 2025 14:45:10 +0100
-Message-ID: <20250205134435.255099051@linuxfoundation.org>
+Message-ID: <20250205134516.503810704@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit d0f038104fa37380e2a725e669508e43d0c503e9 upstream.
+commit 3b997089903b909684114aca6f79d683e5c64a0e upstream.
 
-There is a recent ML report that mounting a large fs backed by hardware
-RAID56 controller (with one device missing) took too much time, and
-systemd seems to kill the mount attempt.
+Check to make sure that the GetInterface and SetInterface are for valid
+interface. Return proper alternate setting number on GetInterface.
 
-In that case, the only error message is:
-
-  BTRFS error (device sdj): open_ctree failed
-
-There is no reason on why the failure happened, making it very hard to
-understand the reason.
-
-At least output the error number (in the particular case it should be
--EINTR) to provide some clue.
-
-Link: https://lore.kernel.org/linux-btrfs/9b9c4d2810abcca2f9f76e32220ed9a90febb235.camel@scientia.org/
-Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
+Fixes: 0b8b1a1fede0 ("usb: gadget: f_tcm: Provide support to get alternate setting in tcm function")
 Cc: stable@vger.kernel.org
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/ffd91b4640945ea4d3b4f4091cf1abbdbd9cf4fc.1733876548.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_tcm.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1162,7 +1162,7 @@ static int btrfs_fill_super(struct super
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -2051,9 +2051,14 @@ static void tcm_delayed_set_alt(struct w
  
- 	err = open_ctree(sb, fs_devices, (char *)data);
- 	if (err) {
--		btrfs_err(fs_info, "open_ctree failed");
-+		btrfs_err(fs_info, "open_ctree failed: %d", err);
- 		return err;
- 	}
+ static int tcm_get_alt(struct usb_function *f, unsigned intf)
+ {
+-	if (intf == bot_intf_desc.bInterfaceNumber)
++	struct f_uas *fu = to_f_uas(f);
++
++	if (fu->iface != intf)
++		return -EOPNOTSUPP;
++
++	if (fu->flags & USBG_IS_BOT)
+ 		return USB_G_ALT_INT_BBB;
+-	if (intf == uasp_intf_desc.bInterfaceNumber)
++	else if (fu->flags & USBG_IS_UAS)
+ 		return USB_G_ALT_INT_UAS;
+ 
+ 	return -EOPNOTSUPP;
+@@ -2063,6 +2068,9 @@ static int tcm_set_alt(struct usb_functi
+ {
+ 	struct f_uas *fu = to_f_uas(f);
+ 
++	if (fu->iface != intf)
++		return -EOPNOTSUPP;
++
+ 	if ((alt == USB_G_ALT_INT_BBB) || (alt == USB_G_ALT_INT_UAS)) {
+ 		struct guas_setup_wq *work;
  
 
 
