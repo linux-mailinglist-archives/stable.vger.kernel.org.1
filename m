@@ -1,201 +1,113 @@
-Return-Path: <stable+bounces-112267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FC6A281D9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:35:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0640CA281DC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 03:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 532557A163A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:34:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9449E16571D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 02:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6685E20C03F;
-	Wed,  5 Feb 2025 02:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2088020FA98;
+	Wed,  5 Feb 2025 02:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvWnWZXx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YK7U9Y3U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F1942077;
-	Wed,  5 Feb 2025 02:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D945CEAD0;
+	Wed,  5 Feb 2025 02:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738722935; cv=none; b=E+85sjIXdi4++hENap1hRdex0H2VNyc9ndTfWa/grPIuyWlxkj1/et74fd6W2FykU960AfwmAPu5XVDFsC5w3AQB/IZ/hbQOnChUq9SqQoLXSjvNbWPOLAFi09OUjpeRofeiC5xo2hfeAzyvtPvTme005TP9IIONV22Az9bRs+s=
+	t=1738722972; cv=none; b=kXOGWH7UFHmQIYcdRx9C2pVTq5HHStEH+AIqKRucIkwpT0yA93MzY6y1jOgrJggQdyEcT42gh1m2Jd+TgLjIJwupQOpZnRBU+sgCMNBZCtfpT/7VqeouxjbljjcnKGAZfrTM0RSyRp3mYbL64nbVUyVF0AbgtLqhTc1GXRtM9pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738722935; c=relaxed/simple;
-	bh=WOtdLbsfrE+PGA+dCq1gfe3hKpLA4ftoZsKiTg1xh78=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hN24jua2JY7SvMOYGRpOBJNHcO7dEqaoq+KQBWHHcZANI3hNwkctC8X7P82+U5ZvQF/nMcqmFTwI/IxiekTSKb6J4iV2q/ddWs3QKLgGRVR1onJsThWgo0bHNU0peknXTTyT5afRenYN52XKP1qHeQNLfXOnwTMLF7y+teYyywc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvWnWZXx; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4678cd314b6so58874251cf.3;
-        Tue, 04 Feb 2025 18:35:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738722932; x=1739327732; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1N+4rW3SsekYEUc8nzCVlrVQkaioSvtxJiN6kI5HrK0=;
-        b=kvWnWZXxccvz4GpTZGhv7UJhwtuapBrHQXnHdOnKiaP9+BEGGSZdXtXDE15yecWKM4
-         3yh9LtwYoLs8tuhbkHmyWfvUbLqMjECGLaidFQXynZBoxpWuOdiPhcfWdVYk/Jhfp1dp
-         2XyOIQbFSjiRZDBlHOjOZEvNRXcZFMT30z1rxTWiNwNeGeBIak2rMj+raOPOxPsjtH8s
-         VgVTj8waI8SCa/FyhH0/UWlPIEtXqbIm/UTbYFko8vEgrVX/nyKV97jx6z6liPvNMQOe
-         jk/x1KjnER2GP1CcAuZCWtg1e5qHZf9J2IR+gBzC75MnS8PAu/ZvWKPPrcOSk8Y4NagH
-         ixKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738722932; x=1739327732;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1N+4rW3SsekYEUc8nzCVlrVQkaioSvtxJiN6kI5HrK0=;
-        b=JUzBSsB8Xnk5QAMsr2vhBTkxJ6Oxvj56Sf2LFzmzzuU0HXTHu14fIy28fqlWPsqS0t
-         8WMVVCEWyzUExc1P4sJxWCIp6CzCDJkc8Tnb43bUBiC3dOfs2aGfCaZKFIOV9nieISoq
-         0t89P9C9udbf5iZT5gKHlt/iYodzFqQIZmLOeiJgbK6DxNx/AvqKZiW64agxBea6o/3W
-         8kcnOdXooIDWWtL8/JOMTwnToxGPlObQeJuBqv1fMaMJHSzJigMcbrP/U8x2UXtNs77X
-         n+a04kPcalxYvPjzZRDLsu1vhualh+8/XnV9gk/65atBluAvrPQf8cy3SC40lwJ6G3Ov
-         KmRw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5fq9uZxLcoNxu4TD/O0uSbeT1Kkp/YjLemDMQp0Go7eYK1TRTZuokRXQSKvlnqKFN/SkPll1cosACzBY=@vger.kernel.org, AJvYcCXhaRwoA7CrZrG63FzQe3OwksJgeybdpjh+RkcBWfo009cuI0hr6ZnxwuWbk//B4HU+F8daBKEm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj7w4z/A6q/fPZ2k4Y07Be7YZhcXqFwgyGGApx4d7WIjmhuIlz
-	S3IIes8SCWV4xRr8J/sOqWMUDOn2T4r9S8ZxMfgcuHJgysmfnu5CEJYNMYGwp5WwMKtt6uyVCHR
-	LPLE6gdX8lCzJ0cX/0DVN1I8nWZx1omAC
-X-Gm-Gg: ASbGncsZC36WO0lZgJcOPb7Jp51fcFOAs9wUgH1655IJmyOvOqAHZXf9qjLlztqyO5a
-	kH8lv9CGp3iVas7eSCmEAMTnUl/BuT267lNDU+0Q+u1Eid+wN2FofZKdfQ1LEY9/AOqQ+MMgr
-X-Google-Smtp-Source: AGHT+IE063EYM4tWEE7WYPrDhbceSvU1oIFvALHqQjqTvkhDse0m/DanubcApO0WLJidamuFwaSloVjnb4AUFeQhGIE=
-X-Received: by 2002:a05:622a:1a9a:b0:462:e827:c11a with SMTP id
- d75a77b69052e-470281ba564mr19695661cf.19.1738722932180; Tue, 04 Feb 2025
- 18:35:32 -0800 (PST)
+	s=arc-20240116; t=1738722972; c=relaxed/simple;
+	bh=HhCIS7TjDEYPBJlyHuTw26lt0WykU+1bGAGU6W+Mqco=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mrxMNF6KN+X3rSL0zy+RA3RsLlcrdVrQN9vuwZBvwmX42b9TeRtDpK8FX0tIWMUFIxJArO/YoHzuo59CPmEqFDpslQ2NUTdFj4G5ObDZt+Ro2nsleFz0hc+FRyIrKG39xXSYC8WPQT5T3n31dubO1DkSzLKEw+c5SPHtDPKP8ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YK7U9Y3U; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738722971; x=1770258971;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HhCIS7TjDEYPBJlyHuTw26lt0WykU+1bGAGU6W+Mqco=;
+  b=YK7U9Y3UdUX3A8t77/ndcTkujrZq4Fti+GlcPTDoXQHphD7N6Yz9F60Y
+   d3dJTENcx6wmtcklTuLMBVzqVHYPZ3DVMRD5jB/NAtfiX3s07//cuWfdX
+   r4EH4cPjGeF/MvHyXwxXzQiuyrfTG1GGMSMRcUho+RarwIm2Rt2pChDCU
+   2SB1UZKZsfczc9XaRyLrpMpCInRQ+YGB7corHjBgmD9/8NJmpTRArx86o
+   bI7cL+qk4eRSdl0oOBzzddh2pSz3qmYU9d2zbOFtjuZpFqKiyNmo3fCb/
+   Xatd3EYprva0zayL88ON+pVOaRtmyhoOW9nKgatlrCpI+4h4Szy+te0O5
+   Q==;
+X-CSE-ConnectionGUID: kuDXCEVpTcOfrEYp4a2e9Q==
+X-CSE-MsgGUID: 0I0SZ9Z/TZCR3IGJMVHA6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50265591"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="50265591"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 18:36:10 -0800
+X-CSE-ConnectionGUID: Y4AIYHQJRZeWzE+Xt9rY5Q==
+X-CSE-MsgGUID: 5p4O0Ya+S1ibxn2bhXFbGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="111351076"
+Received: from p12ill20yoongsia.png.intel.com ([10.88.227.38])
+  by fmviesa009.fm.intel.com with ESMTP; 04 Feb 2025 18:36:06 -0800
+From: Song Yoong Siang <yoong.siang.song@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Malli C <mallikarjuna.chilakala@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v1 1/1] igc: Set buffer type for empty frames in igc_init_empty_frame
+Date: Wed,  5 Feb 2025 10:36:03 +0800
+Message-Id: <20250205023603.798819-1-yoong.siang.song@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <30ad77af-4a7b-4a15-9c0b-b0c70d9e1643@wanadoo.fr>
- <20250204023323.14213-1-jiashengjiangcool@gmail.com> <e41d9378-e5e5-478d-bead-aa50a9f79d4d@wanadoo.fr>
- <48ad8f05-a90b-499d-9e73-8e5ff032824a@kernel.org> <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
-In-Reply-To: <f9a35a4f-b774-4480-910a-cdcf926df41b@wanadoo.fr>
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Date: Tue, 4 Feb 2025 21:35:21 -0500
-X-Gm-Features: AWEUYZkirK4j39ugQSeyxuqN18Ew0eSAiZ7kK5iwAMUijihh2awqnAb3jDJsyJM
-Message-ID: <CANeGvZUzHVnQdwTkam4HE9EVfEf8xY4L7Y20vj5v_N-vbD9kzQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mtd: Add check and kfree() for kcalloc()
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Jiri Slaby <jirislaby@kernel.org>, gmpy.liaowx@gmail.com, kees@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	miquel.raynal@bootlin.com, richard@nod.at, vigneshr@ti.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Christophe,
+Set the buffer type to IGC_TX_BUFFER_TYPE_SKB for empty frame in the
+igc_init_empty_frame function. This ensures that the buffer type is
+correctly identified and handled during Tx ring cleanup.
 
-On Tue, Feb 4, 2025 at 3:50=E2=80=AFPM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
->
-> Le 04/02/2025 =C3=A0 07:36, Jiri Slaby a =C3=A9crit :
-> > On 04. 02. 25, 7:17, Christophe JAILLET wrote:
-> >> Le 04/02/2025 =C3=A0 03:33, Jiasheng Jiang a =C3=A9crit :
-> >>> Add a check for kcalloc() to ensure successful allocation.
-> >>> Moreover, add kfree() in the error-handling path to prevent memory
-> >>> leaks.
-> >>>
-> >>> Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-> >>> Cc: <stable@vger.kernel.org> # v5.10+
-> >>> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-> >>> ---
-> >>> Changelog:
-> >>>
-> >>> v1 -> v2:
-> >>>
-> >>> 1. Remove redundant logging.
-> >>> 2. Add kfree() in the error-handling path.
-> >>> ---
-> >>>   drivers/mtd/mtdpstore.c | 19 ++++++++++++++++++-
-> >>>   1 file changed, 18 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/mtd/mtdpstore.c b/drivers/mtd/mtdpstore.c
-> >>> index 7ac8ac901306..2d8e330dd215 100644
-> >>> --- a/drivers/mtd/mtdpstore.c
-> >>> +++ b/drivers/mtd/mtdpstore.c
-> >>> @@ -418,10 +418,17 @@ static void mtdpstore_notify_add(struct
-> >>> mtd_info *mtd)
-> >>>       longcnt =3D BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
-> >>>       cxt->rmmap =3D kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> >>> +    if (!cxt->rmmap)
-> >>> +        goto end;
-> >>
-> >> Nitpick: Could be a direct return.
-> >>
-> >>> +
-> >>>       cxt->usedmap =3D kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> >>> +    if (!cxt->usedmap)
-> >>> +        goto free_rmmap;
-> >>>       longcnt =3D BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
-> >>>       cxt->badmap =3D kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-> >>> +    if (!cxt->badmap)
-> >>> +        goto free_usedmap;
-> >>>       /* just support dmesg right now */
-> >>>       cxt->dev.flags =3D PSTORE_FLAGS_DMESG;
-> >>> @@ -435,10 +442,20 @@ static void mtdpstore_notify_add(struct
-> >>> mtd_info *mtd)
-> >>>       if (ret) {
-> >>>           dev_err(&mtd->dev, "mtd%d register to psblk failed\n",
-> >>>                   mtd->index);
-> >>> -        return;
-> >>> +        goto free_badmap;
-> >>>       }
-> >>>       cxt->mtd =3D mtd;
-> >>>       dev_info(&mtd->dev, "Attached to MTD device %d\n", mtd->index);
-> >>> +    goto end;
-> >>
-> >> Mater of taste, but I think that having an explicit return here would
-> >> be clearer that a goto end;
-> >
-> > Yes, drop the whole end.
-> >
-> >>> +free_badmap:
-> >>> +    kfree(cxt->badmap);
-> >>> +free_usedmap:
-> >>> +    kfree(cxt->usedmap);
-> >>> +free_rmmap:
-> >>> +    kfree(cxt->rmmap);
-> >>
-> >> I think that in all these paths, you should also have
-> >>      cxt->XXXmap =3D NULL;
-> >> after the kfree().
-> >>
-> >> otherwise when mtdpstore_notify_remove() is called, you could have a
-> >> double free.
-> >
-> > Right, and this is already a problem for failing
-> > register_pstore_device() in _add() -- there is unconditional
-> > unregister_pstore_device() in _remove(). Should _remove() check cxt->mt=
-d
-> > first?
->
-> Not sure it is needed.
-> IIUC, [1] would not match in this case, because [2] would not have been
-> executed. Agreed?
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Cc: stable@vger.kernel.org # 6.2+
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+---
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks for your advice.
-I have submitted a v3 to replace kcalloc() with devm_kcalloc() to
-prevent memory leaks.
-Moreover, I moved the return value check to another patch, so that
-each patch does only one thing.
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 56a35d58e7a6..7daa7f8f81ca 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1096,6 +1096,7 @@ static int igc_init_empty_frame(struct igc_ring *ring,
+ 		return -ENOMEM;
+ 	}
+ 
++	buffer->type = IGC_TX_BUFFER_TYPE_SKB;
+ 	buffer->skb = skb;
+ 	buffer->protocol = 0;
+ 	buffer->bytecount = skb->len;
+-- 
+2.34.1
 
--Jiasheng
-
->
-> CJ
->
->
-> [1]: https://elixir.bootlin.com/linux/v6.13/source/fs/pstore/blk.c#L169
-> [2]: https://elixir.bootlin.com/linux/v6.13/source/fs/pstore/blk.c#L141
->
-> >
-> > thanks,
->
 
