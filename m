@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-112483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27BFA28CE9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC891A28CEB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 677893A909B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C468D1887BC2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AD814B080;
-	Wed,  5 Feb 2025 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F40414B080;
+	Wed,  5 Feb 2025 13:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwAvKmBS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9b2IZgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4649DFC0B;
-	Wed,  5 Feb 2025 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BCC149DE8;
+	Wed,  5 Feb 2025 13:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763721; cv=none; b=YoDFxTT6eSoL2Yl/hBPu3cU7DWHcGYotU1ZRVwZnkj3aYfWZAGEL9Y3dzwp//Vzm3hpNek2PfjlLL4fpN++Gj18HuWpZiWfRH+yEEDyawgofviL70ogRS93jTdqXoV0S+F1sw2oTPaHwfDHn8P4f0NRYt54HzqiiOSY782LDSfw=
+	t=1738763731; cv=none; b=oN/Lk3XvzQBWHKLpn3NFDNCHmd+ukY3kuXE2VKpzL2081WSS1saCmIWToEt3t67mraJHLPr8qLnzj9+Fz1XiVV0Kerd9+5ZJBywlpe5uDomatiOfZkQ3bFMhpvnAJlgwL4/qkdv1U2h29NWLgCw0jNhDV2MbA/obhXLhaXYaeNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763721; c=relaxed/simple;
-	bh=JKEzVxiPs6diUxIMa7dmIZEycWDm+AUlPzyUn4PVh78=;
+	s=arc-20240116; t=1738763731; c=relaxed/simple;
+	bh=RzRV+MqLwuwEmu7ykTnW7McPtqrozOToc+BeBVmq15U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ew6Qtu8wWeN1WktDwb+DAotInWw4Ed3jUpwrkDJhYqZjdYP+2hJLy5cqlViK5MnyepS7Lm0LuKQ4ygQoaIBR39SGBwTQdDKAmoVXflzeifGlyvNQc145nM1kNgZrQYesp/y921gGZcYtcTjHh6cnd7vpBKltvUEjWMk8xNfwwng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwAvKmBS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE99C4CED1;
-	Wed,  5 Feb 2025 13:55:20 +0000 (UTC)
+	 MIME-Version; b=L9oyMWN7PpP8QkICmabzdLXC/TAaO2OMOnQ4FJU0JCSLlmCEZABzvzbjmI93piKoBZIieZIsTRSF1udgRVyG9Cj52q7HEhAMIfLifxpq+i2leVwVYkCFlzflkY2OAuoaRrFa39Jxl3qoGfQjia9bygqt11uGu2lgB72xkEHW03M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9b2IZgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668EFC4CED1;
+	Wed,  5 Feb 2025 13:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763721;
-	bh=JKEzVxiPs6diUxIMa7dmIZEycWDm+AUlPzyUn4PVh78=;
+	s=korg; t=1738763730;
+	bh=RzRV+MqLwuwEmu7ykTnW7McPtqrozOToc+BeBVmq15U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NwAvKmBSZa7valeg+UNiojlm/FPLiuJ/T7e7AdraBxJhVE7tAHMMWoVG4G6Xvb03q
-	 /cbLm76SmK4GfnPpVKScEasrf/CnYxo6tuz4r3XFmxoOzU1119XX1rmXyVsELjcHfr
-	 Rr1sdNgb64+sT4FJlqeOSuZUAejmreGhLXKe3c40=
+	b=a9b2IZgFh6e8nb5QjEELuTCppQ+qPa92PvMfd/8DjCLb293MWH2Lzylmhvmg5W6Lu
+	 RL0gfzsC+dRmjKM44yc2yoSPyie0FelO0VTruS5AlnBIqOJdzpCvqQ3pZ7HapW1l7m
+	 1ZPJ+dUaEzWU4KN7UtL7h5PcyabjvcDELK6Ya12o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Hortmann <philipp.g.hortmann@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com,
+	Yu Kuai <yukuai3@huawei.com>,
 	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 012/623] ps3disk: Do not use dev->bounce_size before it is set
-Date: Wed,  5 Feb 2025 14:35:54 +0100
-Message-ID: <20250205134456.700385042@linuxfoundation.org>
+Subject: [PATCH 6.13 013/623] nbd: dont allow reconnect after disconnect
+Date: Wed,  5 Feb 2025 14:35:55 +0100
+Message-ID: <20250205134456.737834080@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
 References: <20250205134456.221272033@linuxfoundation.org>
@@ -68,41 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit c2398e6d5f16e15598d3a37e17107fea477e3f91 ]
+[ Upstream commit 844b8cdc681612ff24df62cdefddeab5772fadf1 ]
 
-dev->bounce_size is only initialized after it is used to set the queue
-limits.  Fix this by using BOUNCE_SIZE instead.
+Following process can cause nbd_config UAF:
 
-Fixes: a7f18b74dbe17162 ("ps3disk: pass queue_limits to blk_mq_alloc_disk")
-Reported-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Closes: https://lore.kernel.org/39256db9-3d73-4e86-a49b-300dfd670212@gmail.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+1) grab nbd_config temporarily;
+
+2) nbd_genl_disconnect() flush all recv_work() and release the
+initial reference:
+
+  nbd_genl_disconnect
+   nbd_disconnect_and_put
+    nbd_disconnect
+     flush_workqueue(nbd->recv_workq)
+    if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF, ...))
+     nbd_config_put
+     -> due to step 1), reference is still not zero
+
+3) nbd_genl_reconfigure() queue recv_work() again;
+
+  nbd_genl_reconfigure
+   config = nbd_get_config_unlocked(nbd)
+   if (!config)
+   -> succeed
+   if (!test_bit(NBD_RT_BOUND, ...))
+   -> succeed
+   nbd_reconnect_socket
+    queue_work(nbd->recv_workq, &args->work)
+
+4) step 1) release the reference;
+
+5) Finially, recv_work() will trigger UAF:
+
+  recv_work
+   nbd_config_put(nbd)
+   -> nbd_config is freed
+   atomic_dec(&config->recv_threads)
+   -> UAF
+
+Fix the problem by clearing NBD_RT_BOUND in nbd_genl_disconnect(), so
+that nbd_genl_reconfigure() will fail.
+
+Fixes: b7aa3d39385d ("nbd: add a reconfigure netlink command")
+Reported-by: syzbot+6b0df248918b92c33e6a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/675bfb65.050a0220.1a2d0d.0006.GAE@google.com/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be
+Link: https://lore.kernel.org/r/20250103092859.3574648-1-yukuai1@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ps3disk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
-index ff45ed7664695..226ffc743238e 100644
---- a/drivers/block/ps3disk.c
-+++ b/drivers/block/ps3disk.c
-@@ -384,9 +384,9 @@ static int ps3disk_probe(struct ps3_system_bus_device *_dev)
- 	unsigned int devidx;
- 	struct queue_limits lim = {
- 		.logical_block_size	= dev->blk_size,
--		.max_hw_sectors		= dev->bounce_size >> 9,
-+		.max_hw_sectors		= BOUNCE_SIZE >> 9,
- 		.max_segments		= -1,
--		.max_segment_size	= dev->bounce_size,
-+		.max_segment_size	= BOUNCE_SIZE,
- 		.dma_alignment		= dev->blk_size - 1,
- 		.features		= BLK_FEAT_WRITE_CACHE |
- 					  BLK_FEAT_ROTATIONAL,
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index b852050d8a966..450458267e6e6 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2180,6 +2180,7 @@ static void nbd_disconnect_and_put(struct nbd_device *nbd)
+ 	flush_workqueue(nbd->recv_workq);
+ 	nbd_clear_que(nbd);
+ 	nbd->task_setup = NULL;
++	clear_bit(NBD_RT_BOUND, &nbd->config->runtime_flags);
+ 	mutex_unlock(&nbd->config_lock);
+ 
+ 	if (test_and_clear_bit(NBD_RT_HAS_CONFIG_REF,
 -- 
 2.39.5
 
