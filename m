@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-113903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57043A29479
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:25:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A4EA294B3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62F113AE248
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0A4318945EF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CDE155747;
-	Wed,  5 Feb 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC4A1632D9;
+	Wed,  5 Feb 2025 15:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwrq+5xg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T21xexfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A9C17C79;
-	Wed,  5 Feb 2025 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB9218D621;
+	Wed,  5 Feb 2025 15:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768564; cv=none; b=rjrKlAIPMkcyP0a/U72tGncOdJEPevVHX75atTvQijWVwBfjQ7owYQrF4HwTjaxX+s+fxEtltzHrJCmef+nD3f1OEdA6U8+Y6yPDLcG3iv5zAHNruYOIWZaSfnaslTz/F5Iz/12qCsUMmNlkTPto/YmC53fB3S0CvHhq29LTmcU=
+	t=1738768301; cv=none; b=kJChtriXVrkpGoh3FOHqzVWwGMjlq8l4vfkVwC8yQj3MgCmFoHEXiAlesdXYbDZe4d32QNl/7dLQQ2dXAGx3esqRJBajRhCHDn6+cKda4GtX+MolI+44V/i0ThWle4IOIAQKdCVOwbKvZXFit15N0p+iOt0xAqtDpXvd5jkxTCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768564; c=relaxed/simple;
-	bh=sZ2Dlzmb1Il/SKkvDrs/RqvG9mTFlaz27EUp+X/cpKM=;
+	s=arc-20240116; t=1738768301; c=relaxed/simple;
+	bh=UnUitE+wq+O4muRtjKnH0PO19ioY1tXmW1ZEEY1isdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDAugbOfrhsvfH4M/zsMR3UifuLCRceWzuV0x9NIgGQWCqC6e/sjoPvlLW+V/Qwty5LCfWTlnpsnf8m6Vlt+3OtRG1AOnczxhAMIA3xUF8rj6ltnDiqcseCjGqU75weMV8cw8tDHY6g6j4TnqBjotNHKb1+xs7AvhZjEsWr1/nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dwrq+5xg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3C5C4CED1;
-	Wed,  5 Feb 2025 15:16:03 +0000 (UTC)
+	 MIME-Version; b=uuMTFHW8oRuQi4YRZehd9EaKKkxyR+4tkNSd2eB1cYm48WNYiJfMslwnKB8G4gIzK5XOP8IZt6Pi+ncVg/Pp6Tt+fWv0ANL5np+/4jAoyjD2l/nQQsUc2XJqrTrFfbCYmuXL2X2yL+5tFUsEHtXsfWZwrN0ydvADWNxDhB+YHCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T21xexfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E4FC4CED1;
+	Wed,  5 Feb 2025 15:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768564;
-	bh=sZ2Dlzmb1Il/SKkvDrs/RqvG9mTFlaz27EUp+X/cpKM=;
+	s=korg; t=1738768301;
+	bh=UnUitE+wq+O4muRtjKnH0PO19ioY1tXmW1ZEEY1isdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dwrq+5xghVBS9px4I5g/cJHblfL9SKQH3JxHxZ6LKUrNx4+PfVkoeJm7AmCw3otj5
-	 r2d9H0ff0CZJm3In7CD9KYiY2KhB2W2aa7/4rz5mKIn5ZGtO9pBi6U5ymf/fn4OE4K
-	 4OnEhbyrv4TjZJ8A5aBWwF7ockot0PAgumvcunWs=
+	b=T21xexfCnX0QWhVEBnb8GllKpRspB9ylwsKjr2JSWqypKd10Ud00LmTwdMz12BhXv
+	 fqgkif6iguGIwzeD9oBwSRYhnL2i4Yehtj8oW+BgYunsKvikx7L9JnRyGXQl2Yyhcs
+	 OUp+2voem9xuuH43skEHKteBm7ebanjE1KVZUSWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.13 593/623] usb: dwc3-am62: Fix an OF node leak in phy_syscon_pll_refclk()
-Date: Wed,  5 Feb 2025 14:45:35 +0100
-Message-ID: <20250205134518.912425024@linuxfoundation.org>
+	Adam Ford <aford173@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 581/590] phy: freescale: fsl-samsung-hdmi: Fix 64-by-32 division cocci warnings
+Date: Wed,  5 Feb 2025 14:45:36 +0100
+Message-ID: <20250205134517.492276038@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Adam Ford <aford173@gmail.com>
 
-commit a266462b937beba065e934a563efe13dd246a164 upstream.
+commit 739214dd1c209e34323814fb815fb17cccb9f95b upstream.
 
-phy_syscon_pll_refclk() leaks an OF node obtained by
-of_parse_phandle_with_fixed_args(), thus add an of_node_put() call.
+The Kernel test robot returns the following warning:
+ do_div() does a 64-by-32 division, please consider using div64_ul instead.
 
-Cc: stable <stable@kernel.org>
-Fixes: e8784c0aec03 ("drivers: usb: dwc3: Add AM62 USB wrapper driver")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250109001638.70033-1-joe@pf.is.s.u-tokyo.ac.jp
+To prevent the 64-by-32 divsion, consolidate both the multiplication
+and the do_div into one line which explicitly uses u64 sizes.
+
+Fixes: 1951dbb41d1d ("phy: freescale: fsl-samsung-hdmi: Support dynamic integer")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412091243.fSObwwPi-lkp@intel.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/usb/dwc3/dwc3-am62.c |    1 +
- 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -166,6 +166,7 @@ static int phy_syscon_pll_refclk(struct
- 	if (ret)
- 		return ret;
- 
-+	of_node_put(args.np);
- 	am62->offset = args.args[0];
- 
- 	/* Core voltage. PHY_CORE_VOLTAGE bit Recommended to be 0 always */
+Link: https://lore.kernel.org/r/20241215220555.99113-1-aford173@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+---
+ drivers/phy/freescale/phy-fsl-samsung-hdmi.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+--- a/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
++++ b/drivers/phy/freescale/phy-fsl-samsung-hdmi.c
+@@ -471,8 +471,7 @@ static unsigned long fsl_samsung_hdmi_ph
+ 			 * Fvco = (M * f_ref) / P,
+ 			 * where f_ref is 24MHz.
+ 			 */
+-			tmp = (u64)_m * 24 * MHZ;
+-			do_div(tmp, _p);
++			tmp = div64_ul((u64)_m * 24 * MHZ, _p);
+ 			if (tmp < 750 * MHZ ||
+ 			    tmp > 3000 * MHZ)
+ 				continue;
 
 
 
