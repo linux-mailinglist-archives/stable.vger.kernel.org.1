@@ -1,62 +1,66 @@
-Return-Path: <stable+bounces-112528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B4CA28D47
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89944A29083
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91823A9644
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:58:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21ECC163509
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02776154BE5;
-	Wed,  5 Feb 2025 13:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB6A155747;
+	Wed,  5 Feb 2025 14:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQxPiw/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvibNuDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150F14A4E9;
-	Wed,  5 Feb 2025 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7F9151988;
+	Wed,  5 Feb 2025 14:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763870; cv=none; b=Uo2mYxgBSzL7MLnfQU6QSNPJQUMcRvOpBvr+CAdjOyDelgyxRawDUbMqz1QtzGDtQ7FgauJyWfCfUtwZmSdTVDEW1Bq9Eg/YKcpAIlzc6MX/vcubyzhVHras2hK3PJ1HcUdnFVVVLv1i8Stdwcn9pQgUPBQ7K8b1XfC1HjUFOEE=
+	t=1738766220; cv=none; b=udbOfs0sWpJZoVuOGolNHrNkW+9MasUQp0UeZv0S/CFUBaZArhL505KFxiG+qfFM6fOOZZj/GwZrG/p4kM8k92co1+yhEkD/1+thoEHv+zrVJI2liMRVy/H5Z7JnRHKF5IkAAolTe/hGG1xRjAXvjLJZ+Pry7DvAnTtTqrZBQbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763870; c=relaxed/simple;
-	bh=rP7J5jgS4SnvPQdAQIgjfTTCiTz7jI/aC/JxtA1tSW8=;
+	s=arc-20240116; t=1738766220; c=relaxed/simple;
+	bh=qGFjyhotWqOE1Uzf8Bwt7m734i009cyEBG2br9+rDX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fs5g7WHp1bAztjolgHR3AzT98qGu+l1Cy3LkwyrW06MO/2xm9y5BQ1k4RwgjH3IQGK+dRJ1n8c0W6eX3PGpqeJrNgt4QQRJ9Wkim224JQM5Wafo836k1OOE7sgESZBOXbqySk4SLmJ/JK1+a7f1NfMYTFjtHIcMN75wl1sUWNn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQxPiw/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02786C4CED1;
-	Wed,  5 Feb 2025 13:57:50 +0000 (UTC)
+	 MIME-Version; b=ghslq1jiBJvtbh3d6cS0BrPgVQkG3/lPJ/bfkks0hLT8Qp1+qQ1bgoAns6WXbypQMbZYW5SLsMIg8F83rxUis/LYRGTtSoZDv7zO2DGOBeKWlkUMkM/chmaH6XVNNlDSCxP0rUv5zRBmHVBn8OncLz1mjh8eFFD3vMF42h7waTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvibNuDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C8EC4CED1;
+	Wed,  5 Feb 2025 14:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763870;
-	bh=rP7J5jgS4SnvPQdAQIgjfTTCiTz7jI/aC/JxtA1tSW8=;
+	s=korg; t=1738766220;
+	bh=qGFjyhotWqOE1Uzf8Bwt7m734i009cyEBG2br9+rDX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQxPiw/gDGsGvU15gSB3vQrsZlIEC2f1zIDc3Kkw1G4SkBtWORGLFUwtcVOEQkyCj
-	 VJ/oCopYyP3T2EdrfkGjFUm9/pyM62TkU9rJdscUalFWHV6Hmk0935+Xq065Xzj/qZ
-	 xNg86oaj+NmREh5WTVSIxAku30h6Mo5RPnXVYjcQ=
+	b=lvibNuDbIf0MRRS7YCINiLtEx1eVBACLvyNI5DoSglNkhbKlH6U9Lm9n7M0JV5OaE
+	 mGeGXWdWMC94XSW5miScaF7kohd8zzcDbwQvx+4waLg81bJ/EoW0lgmrCP/ZylDfrP
+	 x5GATqRCn4aBkUr2kxu1iZukrNuLWY/VGUp23xf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Paul Moore <paul@paul-moore.com>,
-	syzbot+34b68f850391452207df@syzkaller.appspotmail.com,
-	syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com,
-	Ubisectech Sirius <bugreport@ubisectech.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Jiachen Zhang <me@jcix.top>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/393] landlock: Handle weird files
+Subject: [PATCH 6.12 279/590] perf report: Fix misleading help message about --demangle
 Date: Wed,  5 Feb 2025 14:40:34 +0100
-Message-ID: <20250205134424.692953452@linuxfoundation.org>
+Message-ID: <20250205134505.953831933@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +70,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Jiachen Zhang <me@jcix.top>
 
-[ Upstream commit 49440290a0935f428a1e43a5ac8dc275a647ff80 ]
+[ Upstream commit ac0ac75189a4d6a29a2765a7adbb62bc6cc650c7 ]
 
-A corrupted filesystem (e.g. bcachefs) might return weird files.
-Instead of throwing a warning and allowing access to such file, treat
-them as regular files.
+The wrong help message may mislead users. This commit fixes it.
 
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Paul Moore <paul@paul-moore.com>
-Reported-by: syzbot+34b68f850391452207df@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/000000000000a65b35061cffca61@google.com
-Reported-by: syzbot+360866a59e3c80510a62@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67379b3f.050a0220.85a0.0001.GAE@google.com
-Reported-by: Ubisectech Sirius <bugreport@ubisectech.com>
-Closes: https://lore.kernel.org/r/c426821d-8380-46c4-a494-7008bbd7dd13.bugreport@ubisectech.com
-Fixes: cb2c7d1a1776 ("landlock: Support filesystem access-control")
-Reviewed-by: Günther Noack <gnoack3000@gmail.com>
-Link: https://lore.kernel.org/r/20250110153918.241810-1-mic@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Fixes: 328ccdace8855289 ("perf report: Add --no-demangle option")
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Jiachen Zhang <me@jcix.top>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250109152220.1869581-1-me@jcix.top
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/landlock/fs.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ tools/perf/builtin-report.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/landlock/fs.c b/security/landlock/fs.c
-index 1bdd049e3d636..fe4622d88eb15 100644
---- a/security/landlock/fs.c
-+++ b/security/landlock/fs.c
-@@ -664,10 +664,6 @@ static inline access_mask_t get_mode_access(const umode_t mode)
- 	switch (mode & S_IFMT) {
- 	case S_IFLNK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SYM;
--	case 0:
--		/* A zero mode translates to S_IFREG. */
--	case S_IFREG:
--		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	case S_IFDIR:
- 		return LANDLOCK_ACCESS_FS_MAKE_DIR;
- 	case S_IFCHR:
-@@ -678,9 +674,12 @@ static inline access_mask_t get_mode_access(const umode_t mode)
- 		return LANDLOCK_ACCESS_FS_MAKE_FIFO;
- 	case S_IFSOCK:
- 		return LANDLOCK_ACCESS_FS_MAKE_SOCK;
-+	case S_IFREG:
-+	case 0:
-+		/* A zero mode translates to S_IFREG. */
- 	default:
--		WARN_ON_ONCE(1);
--		return 0;
-+		/* Treats weird files as regular files. */
-+		return LANDLOCK_ACCESS_FS_MAKE_REG;
- 	}
- }
- 
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 5dc17ffee27a2..645deec294c84 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -1418,7 +1418,7 @@ int cmd_report(int argc, const char **argv)
+ 	OPT_STRING(0, "addr2line", &addr2line_path, "path",
+ 		   "addr2line binary to use for line numbers"),
+ 	OPT_BOOLEAN(0, "demangle", &symbol_conf.demangle,
+-		    "Disable symbol demangling"),
++		    "Symbol demangling. Enabled by default, use --no-demangle to disable."),
+ 	OPT_BOOLEAN(0, "demangle-kernel", &symbol_conf.demangle_kernel,
+ 		    "Enable kernel symbol demangling"),
+ 	OPT_BOOLEAN(0, "mem-mode", &report.mem_mode, "mem access profile"),
 -- 
 2.39.5
 
