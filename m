@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3026EA29371
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF73EA29031
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAE7188DB27
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FAA3188423E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6FD196D90;
-	Wed,  5 Feb 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EED155A21;
+	Wed,  5 Feb 2025 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2UGQK3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wfyk58Tf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0001957FC;
-	Wed,  5 Feb 2025 15:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D363770825;
+	Wed,  5 Feb 2025 14:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767606; cv=none; b=IQ1RNO0CZzoqAv9SvI0sOXRGeduLRJWtovgSaej6C/QcDDUUHX4aoeFQdU07HDQp1mRTFPWAB2qsE+Tzya0gUQs/dI+/Z6zFSB3Ayljx75tYPw9QuM9FXK/46vHUxriVNqaCTO8MKfrOFuzoJLPNJ+JyWYb+XD+xL2t21qSOfPY=
+	t=1738765976; cv=none; b=TafV6tODDvFEFaFnnp1nIT1dvfM4sXnpJpVLcqh3+TG0K80e7J97Dqczp+44JZp8a6VG8nmisFPlnuFqAy8ACOBr66u73MT2i7qHieMnPZR4gSz6L2P1AK+sy89yqtmOwDgLdfbFCnxtSVaY1cmd2WZeWQyPKeE6JXTusyDBkI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767606; c=relaxed/simple;
-	bh=x7tOIT5v+6vo7PZvYRVcEGyoncc8pb4WKUyFpVp4ql0=;
+	s=arc-20240116; t=1738765976; c=relaxed/simple;
+	bh=uqfDunJxGxYzxh0fKejcCg4IFFEnKUm8CxMZQ63JFwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ciw4MF78eVFwX7rhmRn247igt29Ba+zqHOGWtEjiMXPk8ppySQ9/0txree0ujrynO9G2vJ0BisugtHrxElUFe0+tieKD1xTiB/tmdKGAdciGON/JAGurLmSe/ap6i5fU/8dLm7Xjb/vv7sdmOKfdiA4HohTscg5BTSvKXpoeoio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2UGQK3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DFC4CED1;
-	Wed,  5 Feb 2025 15:00:05 +0000 (UTC)
+	 MIME-Version; b=FUpkA90+uqYQCFTmUplAeyL8TDDY90kzRstp/xAU5eAy25tfR/2Ipvj3pXgHAZ3628AJWXDgJ0ZQ2YucADZwtnON22U48DpJOS/i3Hu+z++trsVKv39oQdrOad45SrX5xe9ski3VLLTjfpOGCJNuW2eaXk1eqxq305qBp9+3aw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wfyk58Tf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475D0C4CED1;
+	Wed,  5 Feb 2025 14:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767606;
-	bh=x7tOIT5v+6vo7PZvYRVcEGyoncc8pb4WKUyFpVp4ql0=;
+	s=korg; t=1738765976;
+	bh=uqfDunJxGxYzxh0fKejcCg4IFFEnKUm8CxMZQ63JFwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2UGQK3r3tqm8SxyZI5Bkz0IuzRNNl3GHjgCVTflNjymeM4BBZI3wOQHQrjFoVRnq
-	 N7Saghc45jbCEJEG0rPpVqliV01EsFpew0RvBllnagPu1N8TvIkJOgJYpoWssRpdP7
-	 Zf0ZEDLnTdgJ9veqOXWkTP4uf8gFR2gDW3mLWN7w=
+	b=Wfyk58TfcT+YwElKxB4RFV1Ja07oFa5/MwfJQ6geZDI0oFn9HUIX51v3bYEkGcFwg
+	 bXiDds+48wAV0HFMbk75970CVqeycLY9BGAD2EDOASyODxkNckk4sDQmqdiv4InNJg
+	 j2i5aCswGvHrBU2TnKaNSj9oEgdJZ3zFMNUH3vF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 481/590] xfrm: Dont disable preemption while looking up cache state.
+Subject: [PATCH 6.6 317/393] dmaengine: ti: edma: fix OF node reference leaks in edma_driver
 Date: Wed,  5 Feb 2025 14:43:56 +0100
-Message-ID: <20250205134513.662981387@linuxfoundation.org>
+Message-ID: <20250205134432.443937792@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Sewior <bigeasy@linutronix.de>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 6c9b7db96db62ee9ad8d359d90ff468d462518c4 ]
+[ Upstream commit e883c64778e5a9905fce955681f8ee38c7197e0f ]
 
-For the state cache lookup xfrm_input_state_lookup() first disables
-preemption, to remain on the CPU and then retrieves a per-CPU pointer.
-Within the preempt-disable section it also acquires
-netns_xfrm::xfrm_state_lock, a spinlock_t. This lock must not be
-acquired with explicit disabled preemption (such as by get_cpu())
-because this lock becomes a sleeping lock on PREEMPT_RT.
+The .probe() of edma_driver calls of_parse_phandle_with_fixed_args() but
+does not release the obtained OF nodes. Thus add a of_node_put() call.
 
-To remain on the same CPU is just an optimisation for the CPU local
-lookup. The actual modification of the per-CPU variable happens with
-netns_xfrm::xfrm_state_lock acquired.
+This bug was found by an experimental verification tool that I am
+developing.
 
-Remove get_cpu() and use the state_cache_input on the current CPU.
-
-Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Closes: https://lore.kernel.org/all/CAADnVQKkCLaj=roayH=Mjiiqz_svdf1tsC3OE4EC0E=mAD+L1A@mail.gmail.com/
-Fixes: 81a331a0e72dd ("xfrm: Add an inbound percpu state cache.")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 1be5336bc7ba ("dmaengine: edma: New device tree binding")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20241219020507.1983124-3-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/dma/ti/edma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 567f02ff88597..6441e94233daa 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -1150,9 +1150,8 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
- 	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct hlist_head *state_cache_input;
- 	struct xfrm_state *x = NULL;
--	int cpu = get_cpu();
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 155c409d2b434..c0fa541324675 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -208,7 +208,6 @@ struct edma_desc {
+ struct edma_cc;
  
--	state_cache_input =  per_cpu_ptr(net->xfrm.state_cache_input, cpu);
-+	state_cache_input = raw_cpu_ptr(net->xfrm.state_cache_input);
+ struct edma_tc {
+-	struct device_node		*node;
+ 	u16				id;
+ };
  
- 	rcu_read_lock();
- 	hlist_for_each_entry_rcu(x, state_cache_input, state_cache_input) {
-@@ -1186,7 +1185,6 @@ struct xfrm_state *xfrm_input_state_lookup(struct net *net, u32 mark,
+@@ -2466,13 +2465,13 @@ static int edma_probe(struct platform_device *pdev)
+ 			if (ret || i == ecc->num_tc)
+ 				break;
  
- out:
- 	rcu_read_unlock();
--	put_cpu();
- 	return x;
- }
- EXPORT_SYMBOL(xfrm_input_state_lookup);
+-			ecc->tc_list[i].node = tc_args.np;
+ 			ecc->tc_list[i].id = i;
+ 			queue_priority_mapping[i][1] = tc_args.args[0];
+ 			if (queue_priority_mapping[i][1] > lowest_priority) {
+ 				lowest_priority = queue_priority_mapping[i][1];
+ 				info->default_queue = i;
+ 			}
++			of_node_put(tc_args.np);
+ 		}
+ 
+ 		/* See if we have optional dma-channel-mask array */
 -- 
 2.39.5
 
