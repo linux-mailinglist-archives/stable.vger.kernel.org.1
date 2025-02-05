@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-113255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5CCA290B3
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECFFA29374
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B321888F49
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB0011891F73
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4667616DC28;
-	Wed,  5 Feb 2025 14:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A9B155747;
+	Wed,  5 Feb 2025 15:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIJwabXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqOWJJlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F197E1632DA;
-	Wed,  5 Feb 2025 14:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC812A1BB;
+	Wed,  5 Feb 2025 15:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766344; cv=none; b=k2LAYt/vHEFVhM3PttimOpjgf5SRgerjLb7SepIWSYwt4YHd+9dpWKsLGGDpHEdLUszW9DBs8iu70vdLoHP+mjllQS4LErXo4sbAd9TJBrCffLQ724qMuw1/8RrPWQa6bLbjGjUpMJEA1SXAy6yfiuLoywybbbzVu66SZYhu1Vw=
+	t=1738767856; cv=none; b=vD0nTCgk07Al955PVArHNAq7SJOlS8yl3w5NQJedY5kH4ZIPnGxIL3c0g+vLb/Y07eGYbP6dmD3UIzUuPHYA7ZC6nkqZPQgF64Iq8RUnEvBawe1EPgkeDI1n1ZTE1lfewqQ/HvwAiMnyp2MZn6/Qlz9FxtWLHTDyiPi7VCjiT6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766344; c=relaxed/simple;
-	bh=LqP2VUzPkhKs6zFsAdYQq3kIXmq8jrY1KKjt065LMLo=;
+	s=arc-20240116; t=1738767856; c=relaxed/simple;
+	bh=9OyBvEHpjHnH2MkREDS4bfF+IGxh9ETX1vo2dE/PA9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDzfMbq9kmtw1MVixq+i36slE9eMGCZYNqq6ldrnOMUHTW4Cib+D5cyeU6aYpRmh/k7H2MDn2L8RQCY/PJdhbr06psB7GO5ffMsWyDY8lALeS7kYp5RSLxxUhzTzuuMzJT0pIP0xL1INDfxXFeNtMwJnnyY1keUbh5yBueM3cVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIJwabXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F35C4CED1;
-	Wed,  5 Feb 2025 14:39:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tkvgShkp7kr5/VDgE3poN4FaGhvglA6fRRAelORcby7onymbZy6WI9joGpsXZ48k5qZFv4b9usShtGk3gG3ZvYxfdQ+HthfKeyYelW6DMTGVfk1FWZGDZJqgUe7T+Pp3XwhabTqw57p8A9e7NQil+HDJGAREdZtYBad/tp2DeSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqOWJJlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140E5C4CED1;
+	Wed,  5 Feb 2025 15:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766343;
-	bh=LqP2VUzPkhKs6zFsAdYQq3kIXmq8jrY1KKjt065LMLo=;
+	s=korg; t=1738767856;
+	bh=9OyBvEHpjHnH2MkREDS4bfF+IGxh9ETX1vo2dE/PA9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIJwabXC6lDUDiHWc+I7VtPw8PXPV4+jKePMqJjvzYULtghCG6bKlkDa0JWIHpH1T
-	 X5NDGpFgAbyulWzu4KGoaze+nZt6MuZBwD5x+eZxSLAGqK+GdFH+ALfVNPPl+adwrr
-	 30I09Zv1lNCDCEyiPm9IZ68VJDONlH4DUbiLYC7g=
+	b=rqOWJJlP5vkSR5F8AeqVgK3uhdTJH73co3gEyi/92jPacQ2/JGMtFZ4mZs7A978yO
+	 ur6aGv0Mz7KFPyLgQ/PcnNjQlLNEccAzVHG/xfFT18OSycw/gy5JMpqKZ2Ii0M6ybt
+	 54AJaMLUr5yoQ/DJxbaTWIIw+tO9qmZto8/t3H/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 354/393] RISC-V: Mark riscv_v_init() as __init
+Subject: [PATCH 6.12 518/590] net: sh_eth: Fix missing rtnl lock in suspend/resume path
 Date: Wed,  5 Feb 2025 14:44:33 +0100
-Message-ID: <20250205134433.847588404@linuxfoundation.org>
+Message-ID: <20250205134515.082420456@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 9d87cf525fd2e1a5fcbbb40ee3df216d1d266c88 ]
+[ Upstream commit b95102215a8d0987789715ce11c0d4ec031cbfbe ]
 
-This trips up with Xtheadvector enabled, but as far as I can tell it's
-just been an issue since the original patchset.
+Fix the suspend/resume path by ensuring the rtnl lock is held where
+required. Calls to sh_eth_close, sh_eth_open and wol operations must be
+performed under the rtnl lock to prevent conflicts with ongoing ndo
+operations.
 
-Fixes: 7ca7a7b9b635 ("riscv: Add sysctl to set the default vector rule for new processes")
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20250115180251.31444-1-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: b71af04676e9 ("sh_eth: add more PM methods")
+Tested-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/vector.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/sh_eth.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/riscv/kernel/vector.c b/arch/riscv/kernel/vector.c
-index 8d92fb6c522cc..81886fc36ed6a 100644
---- a/arch/riscv/kernel/vector.c
-+++ b/arch/riscv/kernel/vector.c
-@@ -270,7 +270,7 @@ static int __init riscv_v_sysctl_init(void)
- static int __init riscv_v_sysctl_init(void) { return 0; }
- #endif /* ! CONFIG_SYSCTL */
+diff --git a/drivers/net/ethernet/renesas/sh_eth.c b/drivers/net/ethernet/renesas/sh_eth.c
+index 7a25903e35c30..bc12c0c7347f6 100644
+--- a/drivers/net/ethernet/renesas/sh_eth.c
++++ b/drivers/net/ethernet/renesas/sh_eth.c
+@@ -3494,10 +3494,12 @@ static int sh_eth_suspend(struct device *dev)
  
--static int riscv_v_init(void)
-+static int __init riscv_v_init(void)
- {
- 	return riscv_v_sysctl_init();
+ 	netif_device_detach(ndev);
+ 
++	rtnl_lock();
+ 	if (mdp->wol_enabled)
+ 		ret = sh_eth_wol_setup(ndev);
+ 	else
+ 		ret = sh_eth_close(ndev);
++	rtnl_unlock();
+ 
+ 	return ret;
  }
+@@ -3511,10 +3513,12 @@ static int sh_eth_resume(struct device *dev)
+ 	if (!netif_running(ndev))
+ 		return 0;
+ 
++	rtnl_lock();
+ 	if (mdp->wol_enabled)
+ 		ret = sh_eth_wol_restore(ndev);
+ 	else
+ 		ret = sh_eth_open(ndev);
++	rtnl_unlock();
+ 
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.39.5
 
