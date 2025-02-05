@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-112367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D296A28C5C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F613A28F3C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F673A2FA0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27D33A640E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B1A14A4CC;
-	Wed,  5 Feb 2025 13:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05A31519BE;
+	Wed,  5 Feb 2025 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7fPVHtM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQY5hfZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927EB13D52B;
-	Wed,  5 Feb 2025 13:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B85F1459F6;
+	Wed,  5 Feb 2025 14:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763333; cv=none; b=C2R2BaFsoOtIBEuuBnBbWEsol/ffXeQgufwBj0d5pDJEv29hw6yY0OKoONtX7haKG25omQuAyNUK2cJ3pPTqsQwRXxbNWplDJOqtqrBkO9xCtcQvcj47nwQ6Gu6s/wA9qKo5xVJcenfyStt/1UHdUR9hrYAqKQ9R+RjIy0dfzEo=
+	t=1738765305; cv=none; b=LYHgYVbV5Xxhbh71EZLgH1IH1majEeb/loeoOg35E2iwwV/eAJVUJzjIP3TK+kbhL60hAblKiGc14/nx9Cvkvd5WR2q+VK+pFLY5sdhi+yqYIlMjyvZNqaIApKHrSlSvEjiDVVrJes9qengSVQu61vBshpfTWdxLpnKUhYpZtvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763333; c=relaxed/simple;
-	bh=6HEbxa3hjIKdKzHY8sS20HVJWLvbzuF6wLrCsLSPeR4=;
+	s=arc-20240116; t=1738765305; c=relaxed/simple;
+	bh=NY7TNak3BcL689FgxuikWxDpjuVmlR7wWKJTgP/xQEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A5dALMMDwe3wdRAljGxJ16IxNZVJeEvdadbmq2ud3pXmCBRdWEkBW/IRtvUzIXaeHEcHuSo4Jo+3kQCKwt+bBxP+yLPO/n6UeLyfIl3vZx/MOgOCsRvBExip+5fHcess+0BkFp4OWbnxc5SI46K1JdmEIi/9osGktTpw1HAzAzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7fPVHtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0268CC4CED6;
-	Wed,  5 Feb 2025 13:48:52 +0000 (UTC)
+	 MIME-Version; b=GTZAjcziU66aM+3rpTU4d9vTyUSfuuoxv76niLGCyEjp9w8oqmR2zgUVA42zRuKH1kYzTkRsjmx3qD0U1x2nnHuvsTTuKYAE7VkkUo6/202JBKRDiz4Sn50V2ANBOZZvJHBQy1mE9ygOfXmVsVz90tfGaM0ZfQxDGOpYda+P+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQY5hfZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A758C4CED1;
+	Wed,  5 Feb 2025 14:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763333;
-	bh=6HEbxa3hjIKdKzHY8sS20HVJWLvbzuF6wLrCsLSPeR4=;
+	s=korg; t=1738765305;
+	bh=NY7TNak3BcL689FgxuikWxDpjuVmlR7wWKJTgP/xQEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7fPVHtMqfq3b1Pufk9oR7yBIT5ee28ArXnj1+iwsQFZ2IefDPZBz8cyxF/BrZ2kG
-	 Mx9Z7zRSvRk+uBZvfta2imsAlkFB06eze0oDwI0Ar+CTLHFK7ORBhzQNRAa+GYOwUV
-	 XeSRV0O88B6Jk2yi5sW6qTMQf2Hb/yOhCjVv2Zzk=
+	b=PQY5hfZslIk/9MxKnhUrcvtRGUtZPvD1O6wEeumdiK0xt+5mkq7IpKbhUrBbladeh
+	 K5DtR1gCd8h2iVn/CRAZf4gf9EtSYNFZY7VYbwBR2E82B2F7rzDiY0GmMOQ47W3GRf
+	 Ibjpduvl3BnZZkeMPlKkTyFfwZkynvVi2FGD/cho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hermes Wu <hermes.wu@ite.com.tw>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/393] drm/bridge: it6505: Change definition of AUX_FIFO_MAX_SIZE
+Subject: [PATCH 6.12 208/590] wifi: mt76: mt7996: fix ldpc setting
 Date: Wed,  5 Feb 2025 14:39:23 +0100
-Message-ID: <20250205134421.988109960@linuxfoundation.org>
+Message-ID: <20250205134503.240773700@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hermes Wu <hermes.wu@ite.com.tw>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit c14870218c14532b0f0a7805b96a4d3c92d06fb2 ]
+[ Upstream commit da8352da1e4f476fdbf549a4efce4f3c618fde3b ]
 
-The hardware AUX FIFO is 16 bytes
-Change definition of AUX_FIFO_MAX_SIZE to 16
+The non-AP interfaces would not use conf->vht_ldpc so they never set
+STA_CAP_VHT_LDPC even if peer-station support LDPC.
+Check conf->vht_ldpc only for AP interface.
 
-Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Hermes Wu <hermes.wu@ite.com.tw>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241230-v7-upstream-v7-1-e0fdd4844703@ite.corp-partner.google.com
+Without this patch, station only uses BCC to transmit packet in VHT mode.
+
+Fixes: dda423dd65c3 ("wifi: mt76: mt7996: remove mt7996_mcu_beacon_check_caps()")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250114101026.3587702-7-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it6505.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 26d3b9b843267..24c5a926af8d1 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -299,7 +299,7 @@
- #define MAX_CR_LEVEL 0x03
- #define MAX_EQ_LEVEL 0x03
- #define AUX_WAIT_TIMEOUT_MS 15
--#define AUX_FIFO_MAX_SIZE 32
-+#define AUX_FIFO_MAX_SIZE 16
- #define PIXEL_CLK_DELAY 1
- #define PIXEL_CLK_INVERSE 0
- #define ADJUST_PHASE_THRESHOLD 80000
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index d6d80b1b2d697..265958f7b7871 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2070,7 +2070,7 @@ mt7996_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb, struct mt7996_dev *dev,
+ 			cap |= STA_CAP_VHT_TX_STBC;
+ 		if (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXSTBC_1)
+ 			cap |= STA_CAP_VHT_RX_STBC;
+-		if (vif->bss_conf.vht_ldpc &&
++		if ((vif->type != NL80211_IFTYPE_AP || vif->bss_conf.vht_ldpc) &&
+ 		    (sta->deflink.vht_cap.cap & IEEE80211_VHT_CAP_RXLDPC))
+ 			cap |= STA_CAP_VHT_LDPC;
+ 
 -- 
 2.39.5
 
