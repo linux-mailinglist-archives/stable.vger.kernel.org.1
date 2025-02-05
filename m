@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-112705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0505A28E03
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6517CA29278
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E73818830B9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFA3188D55A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF07149C53;
-	Wed,  5 Feb 2025 14:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827ED1FF5FC;
+	Wed,  5 Feb 2025 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnQJCBBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrTMTx8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6647B1519AA;
-	Wed,  5 Feb 2025 14:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E79519924D;
+	Wed,  5 Feb 2025 14:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764464; cv=none; b=sSX9JlxaHw5+N5LgdnKiVPhW9jmWMn89tOMH1Tktayq1pp7YljJyj0scqzvDRlQ81W20hHxYAql3x/RsWqN0HPA56TaP6wfg4DzD4c15wDhkN4eFUjutsqN4WkIAhjEP6g6zcFYC0KV8UJwaN/RTCUoy4s4WTfc7LOmWAl2ecHs=
+	t=1738767060; cv=none; b=eJp3FoIjn4uFloP0xKH1fHT2ELk3+7I54P9Uph9H+sfTxuLHld6YJl/XT9Y7IEu6PhS9N3QDozLATcC7rN5VKsKQI35Vfuo9XRS+TvUPUZ1PBibYRKsZq380u6kM4ab+ZTAP6poxMF/ICKFc8KwGn5hyRMugJgYuxxVyixiiBMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764464; c=relaxed/simple;
-	bh=3Edg0QUh7PusFh7nDkzXJ9eTDSJNDI4MD4iBjDV4LnY=;
+	s=arc-20240116; t=1738767060; c=relaxed/simple;
+	bh=J2BQ4DyKTLojt0K/+4FhGMqYb7Aaeh8lVnKPwLru0sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zb6SWmMsXjpV+cQpaZx52rwDIkw9UUfXc2uuSgZmpejwyxaqISzjRldSrIrrp1JvygK3ugn0mxo+M0Gg2t/mY43iOHVx0QCdRGVfvC7WopA6IjdSRIZ4hxLnQYnd3/jxMLkhXm2Rdj8XBo6rtBiY5h2eTMQZiLdFdWajyX90p0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnQJCBBQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A9EC4CED6;
-	Wed,  5 Feb 2025 14:07:43 +0000 (UTC)
+	 MIME-Version; b=UnOyHeh9oqmLAC6L0rN1gR3DxkUV0tTJDPrVhDuELXdItmZ3PBBwMrkqQSzHwhaoEAeerJm+OTL5S0Y2hhHEE0o2bDY1S4G5hRxVcrrxCBT1qWXbbJ04t7jkqmxy/CwnxEFAUS7dZXIhuu6dIZUtWHPAZBRuPyUwlI8Rk1v3WO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrTMTx8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D868C4CED1;
+	Wed,  5 Feb 2025 14:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764464;
-	bh=3Edg0QUh7PusFh7nDkzXJ9eTDSJNDI4MD4iBjDV4LnY=;
+	s=korg; t=1738767059;
+	bh=J2BQ4DyKTLojt0K/+4FhGMqYb7Aaeh8lVnKPwLru0sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnQJCBBQBNLY5ymFQKRrKv9EnHDL8jtpiaSYtlwRMCAV9fZcClmcPxwHJFfwVjIKV
-	 iPfEnJlX3Pcf1r/EWpQp08O+/nNykofo9Tnx6r69+BepO41yTIwWKSkC7rejYnp/9O
-	 Bt7glLLEEycdGJB32sxbHc+g51AeXuP2DCOC+Ars=
+	b=vrTMTx8KK8AV9q5JZ29uJvzeFTTZkd6UndZJc9+x4xRKCu2iD1Yy/eukDS69EuF6p
+	 dLC1PR/bvPJ50AICNqpipM/a89vmVX1XsfXhc8PiNAigdT0x6DsL3Dv2LubYZhoA/g
+	 gqubCF0rj0hkaVC4VwkORppeKNpUkATH3Q4T9eO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/393] perf top: Dont complain about lack of vmlinux when not resolving some kernel samples
+Subject: [PATCH 6.13 351/623] arm64: dts: mediatek: mt8395-genio-1200-evk: Drop regulator-compatible property
 Date: Wed,  5 Feb 2025 14:41:33 +0100
-Message-ID: <20250205134426.951186274@linuxfoundation.org>
+Message-ID: <20250205134509.654030029@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 058b38ccd2af9e5c95590b018e8425fa148d7aca ]
+[ Upstream commit b99bf07c2c8b3c85c1935ddca2a73bc686f8d847 ]
 
-Recently we got a case where a kernel sample wasn't being resolved due
-to a bug that was not setting the end address on kernel functions
-implemented in assembly (see Link: tag), and then those were not being
-found by machine__resolve() -> map__find_symbol().
+The "regulator-compatible" property has been deprecated since 2012 in
+commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
+property"), which is so old it's not even mentioned in the converted
+regulator bindings YAML file. It should not have been used for new
+submissions such as the MT6315.
 
-So we ended up with:
+Drop the "regulator-compatible" property from the board dts. The
+property values are the same as the node name, so everything should
+continue to work.
 
-  # perf top --stdio
-  PerfTop: 0 irqs/s  kernel: 0%  exact: 0% lost: 0/0 drop: 0/0 [cycles/P]
-  -----------------------------------------------------------------------
-
-  Warning:
-  A vmlinux file was not found.
-  Kernel samples will not be resolved.
-  ^Z
-  [1]+  Stopped                 perf top --stdio
-  #
-
-But then resolving all other kernel symbols.
-
-So just fixup the logic to only print that warning when there are no
-symbols in the kernel map.
-
-Fixes: d88205db9caa0e9d ("perf dso: Add dso__has_symbols() method")
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/lkml/Z3buKhcCsZi3_aGb@x1
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: f2b543a191b6 ("arm64: dts: mediatek: add device-tree for Genio 1200 EVK board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241211052427.4178367-9-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
-index 1c1ec444d501e..381274c70a9af 100644
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -809,7 +809,7 @@ static void perf_event__process_sample(struct perf_tool *tool,
- 		 * invalid --vmlinux ;-)
- 		 */
- 		if (!machine->kptr_restrict_warned && !top->vmlinux_warned &&
--		    __map__is_kernel(al.map) && map__has_symbols(al.map)) {
-+		    __map__is_kernel(al.map) && !map__has_symbols(al.map)) {
- 			if (symbol_conf.vmlinux_name) {
- 				char serr[256];
+diff --git a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+index 5f16fb8205805..5950194c9ccb2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-genio-1200-evk.dts
+@@ -835,7 +835,6 @@
  
+ 		regulators {
+ 			mt6315_6_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vbcpu";
+ 				regulator-min-microvolt = <300000>;
+ 				regulator-max-microvolt = <1193750>;
+@@ -852,7 +851,6 @@
+ 
+ 		regulators {
+ 			mt6315_7_vbuck1: vbuck1 {
+-				regulator-compatible = "vbuck1";
+ 				regulator-name = "Vgpu";
+ 				regulator-min-microvolt = <546000>;
+ 				regulator-max-microvolt = <787000>;
 -- 
 2.39.5
 
