@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C31A28D92
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10030A29086
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7B3D3A9928
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:00:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EA14188513B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D219B1509BD;
-	Wed,  5 Feb 2025 14:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662678634E;
+	Wed,  5 Feb 2025 14:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nijIgOpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gq4n59nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D82BF510;
-	Wed,  5 Feb 2025 14:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21852151988;
+	Wed,  5 Feb 2025 14:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764040; cv=none; b=J4f6OUwaM87jDXcHjlCh0nA93wYG6AUXvbF8Vrd0lL7d94hm3yZOu/i6s33OSJZCS7wZICm+VQtYj/dkvEaNyxEQvr1nIs6i1cdT8zLIhi8UCtNXvFg5qbF+HMaPiIO7w/OrSJTTvntwrNEgAn1VSYdfpw70fx+c7Go+BlUmQis=
+	t=1738766231; cv=none; b=OmcCErB+unJaGElt+irHfWcK0DZdSC3RLW44sMTOaxUZ1A0pzmKQodyZ6ZIl9b0oGW0uuBnO9I/eMDcqDsKCVoUR7WPIZ2ODUJ/bMVdIKCQduN9eN0ZBA5RCJPjQ0gmL0kRItmo5xkoNx03qLyQnPQ+iqqGAgMxo9dcs3GgbHic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764040; c=relaxed/simple;
-	bh=ZRWxGg3Uh36JnEFgOYM+WzubxLDiAd4H5LhZBxbgS4c=;
+	s=arc-20240116; t=1738766231; c=relaxed/simple;
+	bh=6dKbylZiir/mVSo2Y/IhZK9M64402ymhy9w2JiFklh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odIHn+9WGPzJcS1mgL1X9D1HLT1VPyNmyvuBD9+smLgbw8NHH8rxK9XHUdan0hFjqM1AJxyxZ51Y0lpwM79Q/GxEHXWd5v68L5xEoxoiyRQnZk7pQSocdq3SmoSjQF3VAxi93w7daXBHOjRVkcdionKtB47ADgpY8DLr1npzZiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nijIgOpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8197C4CED1;
-	Wed,  5 Feb 2025 14:00:39 +0000 (UTC)
+	 MIME-Version; b=a9iBa+TOKLc5ro7L/eSw9jl6Lqkbzn/uPqldaaHZh0Mnb7EKK2Hu50x/lT8bfsaeC5U0aOrDxFTI/2RnKgNlndLI8yXOaCEfoS+mMwsjt6CGDmlaui9/pm9inx5lLsAw/Ao4ED3D0IX5G2+Okh4N7cVdGfruyvUIlZTVZSNFGno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gq4n59nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8536EC4CED1;
+	Wed,  5 Feb 2025 14:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764040;
-	bh=ZRWxGg3Uh36JnEFgOYM+WzubxLDiAd4H5LhZBxbgS4c=;
+	s=korg; t=1738766231;
+	bh=6dKbylZiir/mVSo2Y/IhZK9M64402ymhy9w2JiFklh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nijIgOpt49oh6lkABvUDUx//ekdrKkh2GIWU1Ms20ZTOKRVdBpVfG//QFnAgr92TM
-	 Z8yCLknpLO8u8wrGdlFogHwbwAxK0rJbK/2W19o9SXmzsGC4tKI3j3m3stTA8llEoE
-	 m8Mh8LefgGD3GqYHj81nS9XmbnUEIUm5qxXGuurc=
+	b=gq4n59nxVH2w19lnPfNZrtRVRe5UOuB74ZdY1t498AdtaQ3G5+63RhjNCfk5ixx/y
+	 eX5ieQxmpVCPfem9jzCVQxebePdJ+BPH/b9pslJ4+RnR0kZlz7ORFPgSJzVDspY3Jw
+	 cEwUN47WgcQkeUW4mwZbTNU/ixQceoti9XolJGGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/393] wifi: mac80211: Fix common size calculation for ML element
+Subject: [PATCH 6.12 275/590] ASoC: Intel: avs: Fix theoretical infinite loop
 Date: Wed,  5 Feb 2025 14:40:30 +0100
-Message-ID: <20250205134424.541663751@linuxfoundation.org>
+Message-ID: <20250205134505.797280915@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 19aa842dcbb5860509b7e1b7745dbae0b791f6c4 ]
+[ Upstream commit cf4d74256fe103ece7b2647550e6c063048e5682 ]
 
-When the ML type is EPCS the control bitmap is reserved, the length
-is always 7 and is captured by the 1st octet after the control.
+While 'stack_dump_size' is a u32 bitfield of 16 bits, u32 has a bigger
+upper bound than the type u16 of loop counter 'offset' what in theory
+may lead to infinite loop condition.
 
-Fixes: 0f48b8b88aa9 ("wifi: ieee80211: add definitions for multi-link element")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250102161730.5790376754a7.I381208cbb72b1be2a88239509294099e9337e254@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Found out by Coverity static analyzer.
+
+Fixes: c8c960c10971 ("ASoC: Intel: avs: APL-based platforms support")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://patch.msgid.link/20250109122216.3667847-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ sound/soc/intel/avs/apl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 5f1e5a16d7b2c..0ff10007eb1a5 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -4826,28 +4826,24 @@ static inline u8 ieee80211_mle_common_size(const u8 *data)
- {
- 	const struct ieee80211_multi_link_elem *mle = (const void *)data;
- 	u16 control = le16_to_cpu(mle->control);
--	u8 common = 0;
+diff --git a/sound/soc/intel/avs/apl.c b/sound/soc/intel/avs/apl.c
+index 27516ef571859..d443fe8d51aee 100644
+--- a/sound/soc/intel/avs/apl.c
++++ b/sound/soc/intel/avs/apl.c
+@@ -125,7 +125,7 @@ int avs_apl_coredump(struct avs_dev *adev, union avs_notify_msg *msg)
+ 	struct avs_apl_log_buffer_layout layout;
+ 	void __iomem *addr, *buf;
+ 	size_t dump_size;
+-	u16 offset = 0;
++	u32 offset = 0;
+ 	u8 *dump, *pos;
  
- 	switch (u16_get_bits(control, IEEE80211_ML_CONTROL_TYPE)) {
- 	case IEEE80211_ML_CONTROL_TYPE_BASIC:
- 	case IEEE80211_ML_CONTROL_TYPE_PREQ:
- 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
- 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
-+	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
- 		/*
- 		 * The length is the first octet pointed by mle->variable so no
- 		 * need to add anything
- 		 */
- 		break;
--	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
--		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
--			common += ETH_ALEN;
--		return common;
- 	default:
- 		WARN_ON(1);
- 		return 0;
- 	}
- 
--	return sizeof(*mle) + common + mle->variable[0];
-+	return sizeof(*mle) + mle->variable[0];
- }
- 
- /**
-@@ -4989,8 +4985,7 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 		check_common_len = true;
- 		break;
- 	case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
--		if (control & IEEE80211_MLC_PRIO_ACCESS_PRES_AP_MLD_MAC_ADDR)
--			common += ETH_ALEN;
-+		common = ETH_ALEN + 1;
- 		break;
- 	default:
- 		/* we don't know this type */
+ 	dump_size = AVS_FW_REGS_SIZE + msg->ext.coredump.stack_dump_size;
 -- 
 2.39.5
 
