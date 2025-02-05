@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884A7A292C9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:05:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEACA28E61
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05F7188C921
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51FC81881FCD
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38E11FC0F3;
-	Wed,  5 Feb 2025 14:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD8F1537AC;
+	Wed,  5 Feb 2025 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTmNFYKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtmDaBMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD6518A6D7;
-	Wed,  5 Feb 2025 14:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F3313C9C4;
+	Wed,  5 Feb 2025 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767228; cv=none; b=gsmyEDzIKmZTpbgHNq6jK3AHqaMuvIRD2pFlyKy7mh+HrzawXihGuQ2Ulw3bb8n5pjYoFqVMOO2qID45oIgiqXCmc+3m8alsRsANgi+kxPmA6eMRjT98SXuEDaKdkGCuk2oCuSkqry5M1/jc2DY31sM3ehmAdWVKw0eJrEPWxBY=
+	t=1738764717; cv=none; b=fRy0Vn8/tpp0cLhySBNLmwMAyeCtiL21WQ0fbsZgvPAjY6LStqmSBajhY5GffoPlAeD413oM1t/uJfsZ3HQnP+lGzD9cxVogeEw+V6RWYmCEnlgcLT2yhzTT1EkXjPBNoR6G69yDEbPr6/WQA6AkfJZfA+RBFZdUWT2Xjc2tc0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767228; c=relaxed/simple;
-	bh=IvHLA+JBW9+ikkUX+Ciyx21sAbmvfr+rTAooO3Obifo=;
+	s=arc-20240116; t=1738764717; c=relaxed/simple;
+	bh=jT1Gsp37Hn71P0mNS+bagwqvK3MOrWxqXh51H+nmgI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GC3510TsIi/p74ifYoE58a4P/0910KV5B3LUvwjufK1ONghzhSCMlK4V7WLv9bXESjiv9tsH5+17PyXf+qCvTFWp6FS5yxH+feToQ2H3tcszY0zZ4U55YQ1C3t5Wa6DY84UtYAKJfeUEldmszALmeW+aJ6QwagzGlBTh3tmcyvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTmNFYKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E199CC4CED1;
-	Wed,  5 Feb 2025 14:53:47 +0000 (UTC)
+	 MIME-Version; b=htnSsxrL6VEWD5rE/ss8Uie6okNeN+ObxYeokof0xDASJ7R+eK0NCH5Fnirv64FhkpUnO2NT/mjoazSex3goYJVVkOdPSWbTo/SJ9weW6RXn6QPwzCMPicECUuRv6Sp6hy2Uh0urboL/HBX01m6al0/3Nb7WtIFSmwTVgZfVNq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtmDaBMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3124C4CED1;
+	Wed,  5 Feb 2025 14:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767228;
-	bh=IvHLA+JBW9+ikkUX+Ciyx21sAbmvfr+rTAooO3Obifo=;
+	s=korg; t=1738764717;
+	bh=jT1Gsp37Hn71P0mNS+bagwqvK3MOrWxqXh51H+nmgI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTmNFYKwlTf+PZsKCBwThWgO9cH2PdnMWadoKpmvPPo2V1ybU865MskIwrpuzhPYL
-	 SmndZPA7I1Kv0ibSP/jWDMx2McvI74K5X2tHAQgmo9OUED8xy1IU7GTrj3afLA+rMN
-	 uzKd8NCbsE0HUXE8lAXS0b4rONKIrN5RxqY4Gey8=
+	b=YtmDaBMF+C+F8XtlW3/H/4zjjZWfokhms2Iybni4pgcesX5OM18wbMIZLlDFy+KZM
+	 kBvJ5kebR+G23TmAhvdOxOhDGsod0t5cKgYzVWQBvCFU7WbyaVo9f+a01lstfRg/cN
+	 hirAIXNE7Ndrxlk9pyDf4TzipFKh/7tg4gaO8isY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Val Packett <val@packett.cool>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 375/623] arm64: dts: qcom: sm7225-fairphone-fp4: Drop extra qcom,msm-id value
+Subject: [PATCH 6.6 198/393] arm64: dts: mediatek: mt8516: fix GICv2 range
 Date: Wed,  5 Feb 2025 14:41:57 +0100
-Message-ID: <20250205134510.566669420@linuxfoundation.org>
+Message-ID: <20250205134427.873974210@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 7fb88e0d4dc1a40a29d49b603faa1484334c60f3 ]
+[ Upstream commit e3ee31e4409f051c021a30122f3c470f093a7386 ]
 
-The ID 434 is for SM6350 while 459 is for SM7225. Fairphone 4 is only
-SM7225, so drop the unused 434 entry.
+On the MT8167 which is based on the MT8516 DTS, the following error
+was appearing on boot, breaking interrupt operation:
 
-Fixes: 4cbea668767d ("arm64: dts: qcom: sm7225: Add device tree for Fairphone 4")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241220-fp4-msm-id-v1-1-2b75af02032a@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+GICv2 detected, but range too small and irqchip.gicv2_force_probe not set
+
+Similar to what's been proposed for MT7622 which has the same issue,
+fix by using the range reported by force_probe.
+
+Link: https://lore.kernel.org/all/YmhNSLgp%2Fyg8Vr1F@makrotopia.org/
+Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241204190524.21862-2-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 2 +-
+ arch/arm64/boot/dts/mediatek/mt8516.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 2ee2561b57b1d..52b16a4fdc432 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -32,7 +32,7 @@
- 	chassis-type = "handset";
- 
- 	/* required for bootloader to select correct board */
--	qcom,msm-id = <434 0x10000>, <459 0x10000>;
-+	qcom,msm-id = <459 0x10000>;
- 	qcom,board-id = <8 32>;
- 
- 	aliases {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+index 9cbd6dd8f671a..1520c4caa1605 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
+@@ -268,7 +268,7 @@
+ 			interrupt-parent = <&gic>;
+ 			interrupt-controller;
+ 			reg = <0 0x10310000 0 0x1000>,
+-			      <0 0x10320000 0 0x1000>,
++			      <0 0x1032f000 0 0x2000>,
+ 			      <0 0x10340000 0 0x2000>,
+ 			      <0 0x10360000 0 0x2000>;
+ 			interrupts = <GIC_PPI 9
 -- 
 2.39.5
 
