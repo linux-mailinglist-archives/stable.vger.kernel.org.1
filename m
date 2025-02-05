@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-113177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8508DA29050
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D2FA29342
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 658211881235
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D708C16F6AC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7481151988;
-	Wed,  5 Feb 2025 14:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4828C1DD87D;
+	Wed,  5 Feb 2025 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvZ0KPTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlf09iQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7494E7DA6A;
-	Wed,  5 Feb 2025 14:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0646C33993;
+	Wed,  5 Feb 2025 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766083; cv=none; b=S3UM8WoMvRAj3pah4OYqZRId1XvNcbFKOPTCZZ1Q0CmealkTunqi55ay3NdHSSI4EZI/eOTgL7uTQFxgRKYx3OTofGuADY4gYILej3LMR1bxXuC2MVaBMj6tqmb8GtTK4LojGjH9sIJfNdgy2TlW8QQjEXrvkc5b5JYw6unWhoI=
+	t=1738767693; cv=none; b=gxMcklTMSaX1gQgzPtRIuvgTPNvAOm0TrPeNfOwA1veSDD2vkJI863cXxce3XIsfRJ4ee02fvwClgmXDVm+2hFBI6EaoLbhGQNYZ08AZqOMAzqK1glowJLPY+K/rGEZvT1V39xEd0/6epzz9Xbrk+5Q05ycoXICjeG8IlingQZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766083; c=relaxed/simple;
-	bh=mMt4MB1QoL0YGcnbgHtbJXYIO7lakq2C93yfGUvJhqc=;
+	s=arc-20240116; t=1738767693; c=relaxed/simple;
+	bh=Fzv+X0hdPSdXTygdlzX6mB/O07+tQuWmzmC0H/yA6C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZGRURwntTnlSCdQJtWb3xPjvX/43WqjH8hDgVjd4OW2Jz4t9Km5Hc8T2j6NevqhKUFn8lBBRXOdckiGPAMY+rHTiCzyv8m0LtP83EQJWO6BpStDcJHBGPHwTvvIeQ6s6dbIZQA881qtPTleuYyGZOXI4Kb2Zt2s1OZcCt8swr/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvZ0KPTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B60C4CED1;
-	Wed,  5 Feb 2025 14:34:42 +0000 (UTC)
+	 MIME-Version; b=aLGpvOX3ybPPH/4Yqy3eUOdt1WTdgaGCNLj1pq1joKKGPZXY/BTB3hwYswaBaEf9dZOdMhLvlA/SqttzkNi0sVTu3xNrz2Ut3nQ0zlEFJvJr5xcKSM+5LO7nZllSDbS3/oVxbGjg/yBAQ1ofzf0GQ+aTaFk9BB1B03mOed0RqLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qlf09iQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6715BC4CED1;
+	Wed,  5 Feb 2025 15:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766082;
-	bh=mMt4MB1QoL0YGcnbgHtbJXYIO7lakq2C93yfGUvJhqc=;
+	s=korg; t=1738767692;
+	bh=Fzv+X0hdPSdXTygdlzX6mB/O07+tQuWmzmC0H/yA6C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MvZ0KPTnIg9/3qCXue1x6L3aflKC34JF4fMk68usVX30kzoS4cezjsaE1zCt2Wz5F
-	 3dIF9hy8y0swijEsa/yqBenPxPJwww6MEOHY2BJvcWMNyo1E8CEk2dugHBEnH/MKWN
-	 YKbe8RvtL5qq6qjhu3twSlJTQ0+jOeVfrD5F2saw=
+	b=qlf09iQZ0rVP+U6Gfzgg8XA/TssBUlmWhLzrsPM4M3zIVIHvuf8W5qlWu7AhkI9PR
+	 CZHZ4UEcQp+hrtQ7HAlCt9/Y5riGhp7bpBlVCzWGeMN/M728evb9eXWxiiVmX9hO8h
+	 dsNLNM+fiAgRYyzIfCkGgfZ11QJMy61EhBDNAi7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 328/393] iavf: allow changing VLAN state without calling PF
-Date: Wed,  5 Feb 2025 14:44:07 +0100
-Message-ID: <20250205134432.865993542@linuxfoundation.org>
+Subject: [PATCH 6.12 493/590] net: rose: fix timer races against user threads
+Date: Wed,  5 Feb 2025 14:44:08 +0100
+Message-ID: <20250205134514.131508061@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ee7d79433d783346430ee32f28c9df44a88b3bb6 ]
+[ Upstream commit 5de7665e0a0746b5ad7943554b34db8f8614a196 ]
 
-First case:
-> ip l a l $VF name vlanx type vlan id 100
-> ip l d vlanx
-> ip l a l $VF name vlanx type vlan id 100
+Rose timers only acquire the socket spinlock, without
+checking if the socket is owned by one user thread.
 
-As workqueue can be execute after sometime, there is a window to have
-call trace like that:
-- iavf_del_vlan
-- iavf_add_vlan
-- iavf_del_vlans (wq)
+Add a check and rearm the timers if needed.
 
-It means that our VLAN 100 will change the state from IAVF_VLAN_ACTIVE
-to IAVF_VLAN_REMOVE (iavf_del_vlan). After that in iavf_add_vlan state
-won't be changed because VLAN 100 is on the filter list. The final
-result is that the VLAN 100 filter isn't added in hardware (no
-iavf_add_vlans call).
+BUG: KASAN: slab-use-after-free in rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+Read of size 2 at addr ffff88802f09b82a by task swapper/0/0
 
-To fix that change the state if the filter wasn't removed yet directly
-to active. It is save as IAVF_VLAN_REMOVE means that virtchnl message
-wasn't sent yet.
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5-syzkaller-00172-gd1bf27c4e176 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <IRQ>
+  __dump_stack lib/dump_stack.c:94 [inline]
+  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0x169/0x550 mm/kasan/report.c:489
+  kasan_report+0x143/0x180 mm/kasan/report.c:602
+  rose_timer_expiry+0x31d/0x360 net/rose/rose_timer.c:174
+  call_timer_fn+0x187/0x650 kernel/time/timer.c:1793
+  expire_timers kernel/time/timer.c:1844 [inline]
+  __run_timers kernel/time/timer.c:2418 [inline]
+  __run_timer_base+0x66a/0x8e0 kernel/time/timer.c:2430
+  run_timer_base kernel/time/timer.c:2439 [inline]
+  run_timer_softirq+0xb7/0x170 kernel/time/timer.c:2449
+  handle_softirqs+0x2d4/0x9b0 kernel/softirq.c:561
+  __do_softirq kernel/softirq.c:595 [inline]
+  invoke_softirq kernel/softirq.c:435 [inline]
+  __irq_exit_rcu+0xf7/0x220 kernel/softirq.c:662
+  irq_exit_rcu+0x9/0x30 kernel/softirq.c:678
+  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 [inline]
+  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1049
+ </IRQ>
 
-Second case:
-> ip l a l $VF name vlanx type vlan id 100
-Any type of VF reset ex. change trust
-> ip l s $PF vf $VF_NUM trust on
-> ip l d vlanx
-> ip l a l $VF name vlanx type vlan id 100
-
-In case of reset iavf driver is responsible for readding all filters
-that are being used. To do that all VLAN filters state are changed to
-IAVF_VLAN_ADD. Here is even longer window for changing VLAN state from
-kernel side, as workqueue isn't called immediately. We can have call
-trace like that:
-
-- changing to IAVF_VLAN_ADD (after reset)
-- iavf_del_vlan (called from kernel ops)
-- iavf_del_vlans (wq)
-
-Not exsisitng VLAN filters will be removed from hardware. It isn't a
-bug, ice driver will handle it fine. However, we can have call trace
-like that:
-
-- changing to IAVF_VLAN_ADD (after reset)
-- iavf_del_vlan (called from kernel ops)
-- iavf_add_vlan (called from kernel ops)
-- iavf_del_vlans (wq)
-
-With fix for previous case we end up with no VLAN filters in hardware.
-We have to remove VLAN filters if the state is IAVF_VLAN_ADD and delete
-VLAN was called. It is save as IAVF_VLAN_ADD means that virtchnl message
-wasn't sent yet.
-
-Fixes: 0c0da0e95105 ("iavf: refactor VLAN filter states")
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250122180244.1861468-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ net/rose/rose_timer.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index ce0b919995264..fde8d7b80ca66 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -801,6 +801,11 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		f->state = IAVF_VLAN_ADD;
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
-+	} else if (f->state == IAVF_VLAN_REMOVE) {
-+		/* IAVF_VLAN_REMOVE means that VLAN wasn't yet removed.
-+		 * We can safely only change the state here.
-+		 */
-+		f->state = IAVF_VLAN_ACTIVE;
+diff --git a/net/rose/rose_timer.c b/net/rose/rose_timer.c
+index f06ddbed3fed6..1525773e94aa1 100644
+--- a/net/rose/rose_timer.c
++++ b/net/rose/rose_timer.c
+@@ -122,6 +122,10 @@ static void rose_heartbeat_expiry(struct timer_list *t)
+ 	struct rose_sock *rose = rose_sk(sk);
+ 
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &sk->sk_timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_0:
+ 		/* Magic here: If we listen() and a new link dies before it
+@@ -152,6 +156,7 @@ static void rose_heartbeat_expiry(struct timer_list *t)
  	}
  
- clearout:
-@@ -821,8 +826,18 @@ static void iavf_del_vlan(struct iavf_adapter *adapter, struct iavf_vlan vlan)
+ 	rose_start_heartbeat(sk);
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+@@ -162,6 +167,10 @@ static void rose_timer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
  
- 	f = iavf_find_vlan(adapter, vlan);
- 	if (f) {
--		f->state = IAVF_VLAN_REMOVE;
--		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_DEL_VLAN_FILTER);
-+		/* IAVF_ADD_VLAN means that VLAN wasn't even added yet.
-+		 * Remove it from the list.
-+		 */
-+		if (f->state == IAVF_VLAN_ADD) {
-+			list_del(&f->list);
-+			kfree(f);
-+			adapter->num_vlan_filters--;
-+		} else {
-+			f->state = IAVF_VLAN_REMOVE;
-+			iavf_schedule_aq_request(adapter,
-+						 IAVF_FLAG_AQ_DEL_VLAN_FILTER);
-+		}
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->timer, jiffies + HZ/20);
++		goto out;
++	}
+ 	switch (rose->state) {
+ 	case ROSE_STATE_1:	/* T1 */
+ 	case ROSE_STATE_4:	/* T2 */
+@@ -182,6 +191,7 @@ static void rose_timer_expiry(struct timer_list *t)
+ 		}
+ 		break;
  	}
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
+@@ -192,6 +202,10 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 	struct sock *sk = &rose->sock;
  
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
+ 	bh_lock_sock(sk);
++	if (sock_owned_by_user(sk)) {
++		sk_reset_timer(sk, &rose->idletimer, jiffies + HZ/20);
++		goto out;
++	}
+ 	rose_clear_queues(sk);
+ 
+ 	rose_write_internal(sk, ROSE_CLEAR_REQUEST);
+@@ -207,6 +221,7 @@ static void rose_idletimer_expiry(struct timer_list *t)
+ 		sk->sk_state_change(sk);
+ 		sock_set_flag(sk, SOCK_DEAD);
+ 	}
++out:
+ 	bh_unlock_sock(sk);
+ 	sock_put(sk);
+ }
 -- 
 2.39.5
 
