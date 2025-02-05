@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-112632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99719A28DCB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5AFA28DAE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B0C33A9AEC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F6AF7A25CF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415B814EC77;
-	Wed,  5 Feb 2025 14:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91728155725;
+	Wed,  5 Feb 2025 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0IsvgEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjhgiawM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A9DF510;
-	Wed,  5 Feb 2025 14:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE8E155333;
+	Wed,  5 Feb 2025 14:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764224; cv=none; b=NyVQGu8w8VUVUEKsim2OIDvm4e4g7SUF/Hpfu+o3X/dLhqtNjuqCoZv47BB1wLVx+klPY4bBqnszkUsiwUN9uT3gpQZL8I4flR03lqjiezOUaQatbtXfwcLldNMT6LYevy9TeUSP98A+milBedWpyl0vrzieDqN3X5qmudxfLsg=
+	t=1738764234; cv=none; b=XCuq4Ga/vohyKEuS0TDV02Jg8mBEyqAdCeCjLKUk5L3n00QJ54jQCYOtcgjXYU1o63LM1rfKUKp6vzBaqtLaFPp9338B5x0VoPb/UaN3InVpum7+cG+oI0in5B0rYQB54uo/2X4fDtWsymLNEKplNoE1cGAbauLRq+CA5x75/AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764224; c=relaxed/simple;
-	bh=0QwJ+vTsI/rsaw25tDXaaomUW6tF2oKmv0nr9jAa6uI=;
+	s=arc-20240116; t=1738764234; c=relaxed/simple;
+	bh=sL7mcvsGVo2owI6fekKY/Oxz5YkWltDaa+Yp9Ab5iIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P6s2BxCoYfx40//yDfL1xDrVTX4zhPR5SIiLd47yIjlRICQoDWjRAktJpkV+gJI2uZE+bRiUS75V8/E4RI5lBp5wtfGku1YCNjuEAJ98kwvxqfMPIxBO7FWV9k307Z2tFNAE8yi9xO2dfBQqap4Xc6VmyfUuotUQpYN4qq4og/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0IsvgEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E434C4CED1;
-	Wed,  5 Feb 2025 14:03:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V9Z1jxm2expAyp7XVMQmrPAfL4cMBfAowfAVntYZIlCMQcDMhfMbflI/wIzaYCeVAGTFl/cNaW5MfBFbMJJrgiBSyEFPzborsV6kIvNzHAi7gr3UvlTT57eUAurGRC0h+RF4IlACckq84CINd7dgz/VgfxJ0mln3taO3mEx8uWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjhgiawM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1510C4CED1;
+	Wed,  5 Feb 2025 14:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764223;
-	bh=0QwJ+vTsI/rsaw25tDXaaomUW6tF2oKmv0nr9jAa6uI=;
+	s=korg; t=1738764234;
+	bh=sL7mcvsGVo2owI6fekKY/Oxz5YkWltDaa+Yp9Ab5iIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0IsvgEbWeTbtbuWjBbPts6dRS1Q931TCtzl5sZEKWVl6xbgDNL0EZOnlSqwy5BA/
-	 FdqZGWmpHzj+iVv7CQtF9FXPpmjoOHBMzz61ZSf10RhJsCVVb+/DsJWidQgrqxaO7+
-	 alFQRQOnmvC5oKk8MmSWJbOAukKm8NwBUUWSqCVk=
+	b=FjhgiawMDmJiTX18vqPANf1LAjQWQ/Y6lCJReZecg55tJkxAVhb9XwHLoXKfFyBw5
+	 CG6zon+vuHh+ig2pNPbn+Ri6E9w3r2mzObX8XgGd3jvkluievJSxasPplRaLdt/lW+
+	 /XI64NwyyrwignsepMRmGUnCXKXYLRGiXlBjKxnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
 	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 100/590] module: Convert default symbol namespace to string literal
-Date: Wed,  5 Feb 2025 14:37:35 +0100
-Message-ID: <20250205134459.083284716@linuxfoundation.org>
+Subject: [PATCH 6.12 101/590] hwmon: (nct6775): Actually make use of the HWMON_NCT6775 symbol namespace
+Date: Wed,  5 Feb 2025 14:37:36 +0100
+Message-ID: <20250205134459.122102606@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -68,300 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit ceb8bf2ceaa77fe222fe8fe32cb7789c9099ddf1 ]
+[ Upstream commit 2505f87eb3af55f3dd7f57d7cb7783b94b52a2d9 ]
 
-Commit cdd30ebb1b9f ("module: Convert symbol namespace to string
-literal") only converted MODULE_IMPORT_NS() and EXPORT_SYMBOL_NS(),
-leaving DEFAULT_SYMBOL_NAMESPACE as a macro expansion.
+DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
+is included. So move the define above the include block.
 
-This commit converts DEFAULT_SYMBOL_NAMESPACE in the same way to avoid
-annoyance for the default namespace as well.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 2505f87eb3af ("hwmon: (nct6775): Actually make use of the HWMON_NCT6775 symbol namespace")
+Fixes: c3963bc0a0cf ("hwmon: (nct6775) Split core and platform driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/core-api/symbol-namespaces.rst                  | 4 ++--
- .../translations/it_IT/core-api/symbol-namespaces.rst         | 4 ++--
- .../translations/zh_CN/core-api/symbol-namespaces.rst         | 4 ++--
- drivers/cdx/Makefile                                          | 2 +-
- drivers/crypto/intel/iaa/Makefile                             | 2 +-
- drivers/crypto/intel/qat/qat_common/Makefile                  | 2 +-
- drivers/dma/idxd/Makefile                                     | 2 +-
- drivers/gpio/gpio-idio-16.c                                   | 2 +-
- drivers/hwmon/nct6775-core.c                                  | 2 +-
- drivers/i2c/busses/i2c-designware-common.c                    | 2 +-
- drivers/i2c/busses/i2c-designware-master.c                    | 2 +-
- drivers/i2c/busses/i2c-designware-slave.c                     | 2 +-
- drivers/pwm/core.c                                            | 2 +-
- drivers/pwm/pwm-dwc-core.c                                    | 2 +-
- drivers/pwm/pwm-lpss.c                                        | 2 +-
- drivers/tty/serial/sc16is7xx.c                                | 2 +-
- drivers/usb/storage/Makefile                                  | 2 +-
- include/linux/export.h                                        | 2 +-
- 18 files changed, 21 insertions(+), 21 deletions(-)
+ drivers/hwmon/nct6775-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/core-api/symbol-namespaces.rst b/Documentation/core-api/symbol-namespaces.rst
-index 12e4aecdae945..d1154eb438101 100644
---- a/Documentation/core-api/symbol-namespaces.rst
-+++ b/Documentation/core-api/symbol-namespaces.rst
-@@ -68,7 +68,7 @@ is to define the default namespace in the ``Makefile`` of the subsystem. E.g. to
- export all symbols defined in usb-common into the namespace USB_COMMON, add a
- line like this to drivers/usb/common/Makefile::
- 
--	ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=USB_COMMON
-+	ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"USB_COMMON"'
- 
- That will affect all EXPORT_SYMBOL() and EXPORT_SYMBOL_GPL() statements. A
- symbol exported with EXPORT_SYMBOL_NS() while this definition is present, will
-@@ -79,7 +79,7 @@ A second option to define the default namespace is directly in the compilation
- unit as preprocessor statement. The above example would then read::
- 
- 	#undef  DEFAULT_SYMBOL_NAMESPACE
--	#define DEFAULT_SYMBOL_NAMESPACE USB_COMMON
-+	#define DEFAULT_SYMBOL_NAMESPACE "USB_COMMON"
- 
- within the corresponding compilation unit before any EXPORT_SYMBOL macro is
- used.
-diff --git a/Documentation/translations/it_IT/core-api/symbol-namespaces.rst b/Documentation/translations/it_IT/core-api/symbol-namespaces.rst
-index 17abc25ee4c1e..6657f82c0101f 100644
---- a/Documentation/translations/it_IT/core-api/symbol-namespaces.rst
-+++ b/Documentation/translations/it_IT/core-api/symbol-namespaces.rst
-@@ -69,7 +69,7 @@ Per esempio per esportare tutti i simboli definiti in usb-common nello spazio
- dei nomi USB_COMMON, si può aggiungere la seguente linea in
- drivers/usb/common/Makefile::
- 
--	ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=USB_COMMON
-+	ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"USB_COMMON"'
- 
- Questo cambierà tutte le macro EXPORT_SYMBOL() ed EXPORT_SYMBOL_GPL(). Invece,
- un simbolo esportato con EXPORT_SYMBOL_NS() non verrà cambiato e il simbolo
-@@ -79,7 +79,7 @@ Una seconda possibilità è quella di definire il simbolo di preprocessore
- direttamente nei file da compilare. L'esempio precedente diventerebbe::
- 
- 	#undef  DEFAULT_SYMBOL_NAMESPACE
--	#define DEFAULT_SYMBOL_NAMESPACE USB_COMMON
-+	#define DEFAULT_SYMBOL_NAMESPACE "USB_COMMON"
- 
- Questo va messo prima di un qualsiasi uso di EXPORT_SYMBOL.
- 
-diff --git a/Documentation/translations/zh_CN/core-api/symbol-namespaces.rst b/Documentation/translations/zh_CN/core-api/symbol-namespaces.rst
-index bb16f0611046d..f3e73834f7d7d 100644
---- a/Documentation/translations/zh_CN/core-api/symbol-namespaces.rst
-+++ b/Documentation/translations/zh_CN/core-api/symbol-namespaces.rst
-@@ -66,7 +66,7 @@
- 子系统的 ``Makefile`` 中定义默认命名空间。例如，如果要将usb-common中定义的所有符号导
- 出到USB_COMMON命名空间，可以在drivers/usb/common/Makefile中添加这样一行::
- 
--       ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=USB_COMMON
-+       ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"USB_COMMON"'
- 
- 这将影响所有 EXPORT_SYMBOL() 和 EXPORT_SYMBOL_GPL() 语句。当这个定义存在时，
- 用EXPORT_SYMBOL_NS()导出的符号仍然会被导出到作为命名空间参数传递的命名空间中，
-@@ -76,7 +76,7 @@
- 成::
- 
-        #undef  DEFAULT_SYMBOL_NAMESPACE
--       #define DEFAULT_SYMBOL_NAMESPACE USB_COMMON
-+       #define DEFAULT_SYMBOL_NAMESPACE "USB_COMMON"
- 
- 应置于相关编译单元中任何 EXPORT_SYMBOL 宏之前
- 
-diff --git a/drivers/cdx/Makefile b/drivers/cdx/Makefile
-index 749a3295c2bdc..3ca7068a30525 100644
---- a/drivers/cdx/Makefile
-+++ b/drivers/cdx/Makefile
-@@ -5,7 +5,7 @@
- # Copyright (C) 2022-2023, Advanced Micro Devices, Inc.
- #
- 
--ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CDX_BUS
-+ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"CDX_BUS"'
- 
- obj-$(CONFIG_CDX_BUS) += cdx.o controller/
- 
-diff --git a/drivers/crypto/intel/iaa/Makefile b/drivers/crypto/intel/iaa/Makefile
-index b64b208d23440..55bda7770fac7 100644
---- a/drivers/crypto/intel/iaa/Makefile
-+++ b/drivers/crypto/intel/iaa/Makefile
-@@ -3,7 +3,7 @@
- # Makefile for IAA crypto device drivers
- #
- 
--ccflags-y += -I $(srctree)/drivers/dma/idxd -DDEFAULT_SYMBOL_NAMESPACE=IDXD
-+ccflags-y += -I $(srctree)/drivers/dma/idxd -DDEFAULT_SYMBOL_NAMESPACE='"IDXD"'
- 
- obj-$(CONFIG_CRYPTO_DEV_IAA_CRYPTO) := iaa_crypto.o
- 
-diff --git a/drivers/crypto/intel/qat/qat_common/Makefile b/drivers/crypto/intel/qat/qat_common/Makefile
-index eac73cbfdd38e..7acf9c576149b 100644
---- a/drivers/crypto/intel/qat/qat_common/Makefile
-+++ b/drivers/crypto/intel/qat/qat_common/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- obj-$(CONFIG_CRYPTO_DEV_QAT) += intel_qat.o
--ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=CRYPTO_QAT
-+ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"CRYPTO_QAT"'
- intel_qat-objs := adf_cfg.o \
- 	adf_isr.o \
- 	adf_ctl_drv.o \
-diff --git a/drivers/dma/idxd/Makefile b/drivers/dma/idxd/Makefile
-index 2b4a0d406e1e7..9ff9d7b87b649 100644
---- a/drivers/dma/idxd/Makefile
-+++ b/drivers/dma/idxd/Makefile
-@@ -1,4 +1,4 @@
--ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=IDXD
-+ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"IDXD"'
- 
- obj-$(CONFIG_INTEL_IDXD_BUS) += idxd_bus.o
- idxd_bus-y := bus.o
-diff --git a/drivers/gpio/gpio-idio-16.c b/drivers/gpio/gpio-idio-16.c
-index 53b1eb876a125..2c95125892972 100644
---- a/drivers/gpio/gpio-idio-16.c
-+++ b/drivers/gpio/gpio-idio-16.c
-@@ -14,7 +14,7 @@
- 
- #include "gpio-idio-16.h"
- 
--#define DEFAULT_SYMBOL_NAMESPACE GPIO_IDIO_16
-+#define DEFAULT_SYMBOL_NAMESPACE "GPIO_IDIO_16"
- 
- #define IDIO_16_DAT_BASE 0x0
- #define IDIO_16_OUT_BASE IDIO_16_DAT_BASE
 diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index ee04795b98aab..c243b51837d2f 100644
+index c243b51837d2f..fa3351351825b 100644
 --- a/drivers/hwmon/nct6775-core.c
 +++ b/drivers/hwmon/nct6775-core.c
-@@ -57,7 +57,7 @@
+@@ -42,6 +42,9 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#undef DEFAULT_SYMBOL_NAMESPACE
++#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
++
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -56,9 +59,6 @@
+ #include "lm75.h"
  #include "nct6775.h"
  
- #undef DEFAULT_SYMBOL_NAMESPACE
--#define DEFAULT_SYMBOL_NAMESPACE HWMON_NCT6775
-+#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
- 
+-#undef DEFAULT_SYMBOL_NAMESPACE
+-#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
+-
  #define USE_ALTERNATE
  
-diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
-index 9d88b4fa03e42..0e7771d21469d 100644
---- a/drivers/i2c/busses/i2c-designware-common.c
-+++ b/drivers/i2c/busses/i2c-designware-common.c
-@@ -29,7 +29,7 @@
- #include <linux/types.h>
- #include <linux/units.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	I2C_DW_COMMON
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW_COMMON"
- 
- #include "i2c-designware-core.h"
- 
-diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index e8ac9a7bf0b3d..e23f93b8974e4 100644
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -22,7 +22,7 @@
- #include <linux/regmap.h>
- #include <linux/reset.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	I2C_DW
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
- 
- #include "i2c-designware-core.h"
- 
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index 7035296aa24ce..0a76e10f77a2b 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -16,7 +16,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/regmap.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE	I2C_DW
-+#define DEFAULT_SYMBOL_NAMESPACE	"I2C_DW"
- 
- #include "i2c-designware-core.h"
- 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 210368099a064..174939359ae3e 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -6,7 +6,7 @@
-  * Copyright (C) 2011-2012 Avionic Design GmbH
-  */
- 
--#define DEFAULT_SYMBOL_NAMESPACE PWM
-+#define DEFAULT_SYMBOL_NAMESPACE "PWM"
- 
- #include <linux/acpi.h>
- #include <linux/module.h>
-diff --git a/drivers/pwm/pwm-dwc-core.c b/drivers/pwm/pwm-dwc-core.c
-index c8425493b95d8..6dabec93a3c64 100644
---- a/drivers/pwm/pwm-dwc-core.c
-+++ b/drivers/pwm/pwm-dwc-core.c
-@@ -9,7 +9,7 @@
-  * Author: Raymond Tan <raymond.tan@intel.com>
-  */
- 
--#define DEFAULT_SYMBOL_NAMESPACE dwc_pwm
-+#define DEFAULT_SYMBOL_NAMESPACE "dwc_pwm"
- 
- #include <linux/bitops.h>
- #include <linux/export.h>
-diff --git a/drivers/pwm/pwm-lpss.c b/drivers/pwm/pwm-lpss.c
-index 867e2bc8c601c..3b99feb3bb491 100644
---- a/drivers/pwm/pwm-lpss.c
-+++ b/drivers/pwm/pwm-lpss.c
-@@ -19,7 +19,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/time.h>
- 
--#define DEFAULT_SYMBOL_NAMESPACE PWM_LPSS
-+#define DEFAULT_SYMBOL_NAMESPACE "PWM_LPSS"
- 
- #include "pwm-lpss.h"
- 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ad88a33a504f5..6a0a1cce3a897 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -8,7 +8,7 @@
-  */
- 
- #undef DEFAULT_SYMBOL_NAMESPACE
--#define DEFAULT_SYMBOL_NAMESPACE SERIAL_NXP_SC16IS7XX
-+#define DEFAULT_SYMBOL_NAMESPACE "SERIAL_NXP_SC16IS7XX"
- 
- #include <linux/bits.h>
- #include <linux/clk.h>
-diff --git a/drivers/usb/storage/Makefile b/drivers/usb/storage/Makefile
-index 46635fa4a3405..28db337f190bf 100644
---- a/drivers/usb/storage/Makefile
-+++ b/drivers/usb/storage/Makefile
-@@ -8,7 +8,7 @@
- 
- ccflags-y := -I $(srctree)/drivers/scsi
- 
--ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=USB_STORAGE
-+ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE='"USB_STORAGE"'
- 
- obj-$(CONFIG_USB_UAS)		+= uas.o
- obj-$(CONFIG_USB_STORAGE)	+= usb-storage.o
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 0bbd02fd351db..1e04dbc675c2f 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -60,7 +60,7 @@
- #endif
- 
- #ifdef DEFAULT_SYMBOL_NAMESPACE
--#define _EXPORT_SYMBOL(sym, license)	__EXPORT_SYMBOL(sym, license, __stringify(DEFAULT_SYMBOL_NAMESPACE))
-+#define _EXPORT_SYMBOL(sym, license)	__EXPORT_SYMBOL(sym, license, DEFAULT_SYMBOL_NAMESPACE)
- #else
- #define _EXPORT_SYMBOL(sym, license)	__EXPORT_SYMBOL(sym, license, "")
- #endif
+ /* used to set data->name = nct6775_device_names[data->sio_kind] */
 -- 
 2.39.5
 
