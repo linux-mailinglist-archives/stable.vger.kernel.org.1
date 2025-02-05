@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CC2A29057
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CE2A2939A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1653A6A80
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:34:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6480418914F0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96D2155A30;
-	Wed,  5 Feb 2025 14:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FDD18CC15;
+	Wed,  5 Feb 2025 15:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDQY7/IJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlliiEXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6256E14B075;
-	Wed,  5 Feb 2025 14:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8354618BC26;
+	Wed,  5 Feb 2025 15:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766049; cv=none; b=Hg5fCmqJYYfF57mxkdxnvPXXii12TCQTm5XZ0kw6sE0TxlP/dZvMC2gimV4AD8uIfPPQd9kAkcSPdcZjtzzRzxjsUcXOI1veFy1jU/UC0pk4QBaOnxAEdiHKS4MCRit54883ywae34AtW9dNPmfBBYBVGe2Gwjb5tmlJBHAouDg=
+	t=1738767663; cv=none; b=S6Ivk4JOffzqezoPIwqpGHqWzDaSaXwyPh7tW+mb5zm7Lmma/8bgi9jk8DhgT1UVD8vwWxy0v5TsYsy0/0F6RVqnRgnjz23VR3AL8ttLyZZc4wGwS/UmnyOeAd5uVxsjE4WReHEt0HhHy84qvlSJ7P35udRauYlQSIRd/4d0Soc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766049; c=relaxed/simple;
-	bh=ffc/5JA+CuOV51yOEW4PUH7cI4hF1GIC9fM7HM7KGos=;
+	s=arc-20240116; t=1738767663; c=relaxed/simple;
+	bh=Dy+AS9BigNrPik5PkrP3SKkZxAv0f5b7yls7owpTlBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQGXvnmPVXdosHZjENAHJ2/ivsnkfyqi97ZO5voA6p57w8zpg4Pn3FINleu326L1ynRlBsw37IJ472x1hSWgusjzohuu9atHckvsG+k3tCePzDIb5JokO41xMSUaDvMARFiKQS4JojkPF6Ir9p8N731jSl+WtuPPlTfEFaKdvA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDQY7/IJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B302C4CED1;
-	Wed,  5 Feb 2025 14:34:08 +0000 (UTC)
+	 MIME-Version; b=XdiupGlldoinLDO66BgbB6IymUrk5SSxYkbuQ6DlY0fBb+M9YHw0p+PCSdq5cDAEooHvCTfzb3VGSGVmpxfRjop+HShppbPNNBc4GuH2ZVRt6pOMQycWWwVO1jfjVFmMClUe+oeZuU47WAXcgJ8PZkzpon0wWtmG3kocjiYVgbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlliiEXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3ED1C4CED1;
+	Wed,  5 Feb 2025 15:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766048;
-	bh=ffc/5JA+CuOV51yOEW4PUH7cI4hF1GIC9fM7HM7KGos=;
+	s=korg; t=1738767663;
+	bh=Dy+AS9BigNrPik5PkrP3SKkZxAv0f5b7yls7owpTlBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDQY7/IJEymyikmRkybXFkiHkLo/5WHsalDSserrE4grjhJOgG6zNiCwBdmjP+FwX
-	 Ux2i8BYJBPCOsutLVb4paRvSBQPlEM9Wdp9DTRgpkWo2iWZXzMGxNzS1N5KntgehPZ
-	 zT4IMeA4LG6HaZjC1tV4jTINhEc6dL5AoWW57TC4=
+	b=nlliiEXYq9VPZ9fx0V+Ga+MkVR5HEhyU7np+ozz0nFvsJNtFNgJwefgiku0f39e47
+	 LAjdsCJKkpKXUauuXaACDOCnFzJkTzgyWyOLvUEKY9NuO/99fPlw+Qq6k1PD37oqW0
+	 7+7W6bsvJYCgXoOKzrVTCdkU+zOzJoMfVsAY+dok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 325/393] net: fec: implement TSO descriptor cleanup
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 489/590] ice: remove invalid parameter of equalizer
 Date: Wed,  5 Feb 2025 14:44:04 +0100
-Message-ID: <20250205134432.749200627@linuxfoundation.org>
+Message-ID: <20250205134513.977179438@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+From: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
 
-[ Upstream commit 61dc1fd9205bc9d9918aa933a847b08e80b4dc20 ]
+[ Upstream commit c5cc2a27e04f2fcd77c74ada9aef76a758a24697 ]
 
-Implement cleanup of descriptors in the TSO error path of
-fec_enet_txq_submit_tso(). The cleanup
+It occurred that in the commit 70838938e89c ("ice: Implement driver
+functionality to dump serdes equalizer values") the invalid DRATE parameter
+for reading has been added. The output of the command:
 
-- Unmaps DMA buffers for data descriptors skipping TSO header
-- Clears all buffer descriptors
-- Handles extended descriptors by clearing cbd_esc when enabled
+  $ ethtool -d <ethX>
 
-Fixes: 79f339125ea3 ("net: fec: Add software TSO support")
-Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250120085430.99318-1-dheeraj.linuxdev@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+returns the garbage value in the place where DRATE value should be
+stored.
+
+Remove mentioned parameter to prevent return of corrupted data to
+userspace.
+
+Fixes: 70838938e89c ("ice: Implement driver functionality to dump serdes equalizer values")
+Signed-off-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 31 ++++++++++++++++++++++-
- 1 file changed, 30 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_adminq_cmd.h | 1 -
+ drivers/net/ethernet/intel/ice/ice_ethtool.c    | 1 -
+ drivers/net/ethernet/intel/ice/ice_ethtool.h    | 1 -
+ 3 files changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 8f5cc1f233188..2d6b50903c923 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -821,6 +821,8 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	struct fec_enet_private *fep = netdev_priv(ndev);
- 	int hdr_len, total_len, data_left;
- 	struct bufdesc *bdp = txq->bd.cur;
-+	struct bufdesc *tmp_bdp;
-+	struct bufdesc_ex *ebdp;
- 	struct tso_t tso;
- 	unsigned int index = 0;
- 	int ret;
-@@ -894,7 +896,34 @@ static int fec_enet_txq_submit_tso(struct fec_enet_priv_tx_q *txq,
- 	return 0;
- 
- err_release:
--	/* TODO: Release all used data descriptors for TSO */
-+	/* Release all used data descriptors for TSO */
-+	tmp_bdp = txq->bd.cur;
-+
-+	while (tmp_bdp != bdp) {
-+		/* Unmap data buffers */
-+		if (tmp_bdp->cbd_bufaddr &&
-+		    !IS_TSO_HEADER(txq, fec32_to_cpu(tmp_bdp->cbd_bufaddr)))
-+			dma_unmap_single(&fep->pdev->dev,
-+					 fec32_to_cpu(tmp_bdp->cbd_bufaddr),
-+					 fec16_to_cpu(tmp_bdp->cbd_datlen),
-+					 DMA_TO_DEVICE);
-+
-+		/* Clear standard buffer descriptor fields */
-+		tmp_bdp->cbd_sc = 0;
-+		tmp_bdp->cbd_datlen = 0;
-+		tmp_bdp->cbd_bufaddr = 0;
-+
-+		/* Handle extended descriptor if enabled */
-+		if (fep->bufdesc_ex) {
-+			ebdp = (struct bufdesc_ex *)tmp_bdp;
-+			ebdp->cbd_esc = 0;
-+		}
-+
-+		tmp_bdp = fec_enet_get_nextdesc(tmp_bdp, &txq->bd);
-+	}
-+
-+	dev_kfree_skb_any(skb);
-+
- 	return ret;
- }
- 
+diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+index 2a61e1da993ed..66ae0352c6bca 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+@@ -1491,7 +1491,6 @@ struct ice_aqc_dnl_equa_param {
+ #define ICE_AQC_RX_EQU_POST1 (0x12 << ICE_AQC_RX_EQU_SHIFT)
+ #define ICE_AQC_RX_EQU_BFLF (0x13 << ICE_AQC_RX_EQU_SHIFT)
+ #define ICE_AQC_RX_EQU_BFHF (0x14 << ICE_AQC_RX_EQU_SHIFT)
+-#define ICE_AQC_RX_EQU_DRATE (0x15 << ICE_AQC_RX_EQU_SHIFT)
+ #define ICE_AQC_RX_EQU_CTLE_GAINHF (0x20 << ICE_AQC_RX_EQU_SHIFT)
+ #define ICE_AQC_RX_EQU_CTLE_GAINLF (0x21 << ICE_AQC_RX_EQU_SHIFT)
+ #define ICE_AQC_RX_EQU_CTLE_GAINDC (0x22 << ICE_AQC_RX_EQU_SHIFT)
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index f94b6bddbeaa1..7d1feeb317be3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -710,7 +710,6 @@ static int ice_get_tx_rx_equa(struct ice_hw *hw, u8 serdes_num,
+ 		{ ICE_AQC_RX_EQU_POST1, rx, &ptr->rx_equ_post1 },
+ 		{ ICE_AQC_RX_EQU_BFLF, rx, &ptr->rx_equ_bflf },
+ 		{ ICE_AQC_RX_EQU_BFHF, rx, &ptr->rx_equ_bfhf },
+-		{ ICE_AQC_RX_EQU_DRATE, rx, &ptr->rx_equ_drate },
+ 		{ ICE_AQC_RX_EQU_CTLE_GAINHF, rx, &ptr->rx_equ_ctle_gainhf },
+ 		{ ICE_AQC_RX_EQU_CTLE_GAINLF, rx, &ptr->rx_equ_ctle_gainlf },
+ 		{ ICE_AQC_RX_EQU_CTLE_GAINDC, rx, &ptr->rx_equ_ctle_gaindc },
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.h b/drivers/net/ethernet/intel/ice/ice_ethtool.h
+index 8f2ad1c172c06..23b2cfbc9684c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.h
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.h
+@@ -15,7 +15,6 @@ struct ice_serdes_equalization_to_ethtool {
+ 	int rx_equ_post1;
+ 	int rx_equ_bflf;
+ 	int rx_equ_bfhf;
+-	int rx_equ_drate;
+ 	int rx_equ_ctle_gainhf;
+ 	int rx_equ_ctle_gainlf;
+ 	int rx_equ_ctle_gaindc;
 -- 
 2.39.5
 
