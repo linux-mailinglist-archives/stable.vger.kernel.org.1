@@ -1,217 +1,219 @@
-Return-Path: <stable+bounces-112320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763E2A28B2B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:05:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DBDA28B37
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2EE6162CF4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:05:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 772A27A249E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D67F10A3E;
-	Wed,  5 Feb 2025 13:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED5686346;
+	Wed,  5 Feb 2025 13:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HdJY9t/X";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/5HMX24D";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HdJY9t/X";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/5HMX24D"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="D2z9uaGj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874EBBA2E
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 13:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF921519B5;
+	Wed,  5 Feb 2025 13:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738760708; cv=none; b=LyuFmZXCEYPUJeQIoa8GUdbbneUu2cLCB2RfHxA27JaLqL46abH7sOyFHG/yD5xGwy3ghWrp0CxpBtKAdBHt0h5AgiOAtI3d8lZbCwtEO4bMMxTV3GspbM3BtR69JHlvgBt6Hr5AFJ2eaqsao923qVYp3n+4tm6gGi8bRMVgaQc=
+	t=1738760834; cv=none; b=c5obGGHM5iy21FasBI2N9s4Fo6ZhaikyjHw1J/CvQhj9cvV/fWmYV+L6dTqOMvvO+xzLJ4pceAtI2VzE2pez6fR6b/NmAWRuEX2JHOO61yTeMFA3VtvE08JCJi2f7RDG36Cx3Yjq6XYXXX/QkaPFlctV215T/JYuOzYSOrA12PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738760708; c=relaxed/simple;
-	bh=N9+qw1jXD9Kv0oJ9KaaEWoZaIpcoiMZXBbQx8HW3qsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7oG7G5pjemLGnWzmepEfsHjZ/dKsdwlY3hyMLed0VYa8RZtyGHv9iabkuWPubbZlUJnhHe0kEp9ERPWKqaPYZ0e+BawSnelh4AzknjdFL4dyK/vrmxl1n3ZUxYw/b7nOcn9pesyz0W6HI8cKZfO1gShGlDT4S3Rg5gYHRDiib4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HdJY9t/X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/5HMX24D; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HdJY9t/X; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/5HMX24D; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A79D02122A;
-	Wed,  5 Feb 2025 13:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738760704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T1hxKKTF2Tkd7wwVqx/X9ElblRcEFK/OJz6T2RxwZI8=;
-	b=HdJY9t/XmEGE5vxCf96Fi2/lPyzryQnWahjdjSMpka9Kvk7ZPd84qQDgkL1wOimqFC6+UX
-	rXLz/WfePss+b3KaRIv0VEc6Zl0s/fSM/yUOULi7Ye5IGTvs+X83Bul8IOHgTA2HgpBZF4
-	OWKeKTehLkEr0ufbsbHFYrL/WgoWzWU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738760704;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T1hxKKTF2Tkd7wwVqx/X9ElblRcEFK/OJz6T2RxwZI8=;
-	b=/5HMX24DVRsNeFjzfJfdW4VsGp99IwnIl1AqrUMbi8nfNLpv6ibRywwcB1coqZR8jkltNC
-	VYU6Ym+CPA7FMSBQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="HdJY9t/X";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/5HMX24D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1738760704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T1hxKKTF2Tkd7wwVqx/X9ElblRcEFK/OJz6T2RxwZI8=;
-	b=HdJY9t/XmEGE5vxCf96Fi2/lPyzryQnWahjdjSMpka9Kvk7ZPd84qQDgkL1wOimqFC6+UX
-	rXLz/WfePss+b3KaRIv0VEc6Zl0s/fSM/yUOULi7Ye5IGTvs+X83Bul8IOHgTA2HgpBZF4
-	OWKeKTehLkEr0ufbsbHFYrL/WgoWzWU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1738760704;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T1hxKKTF2Tkd7wwVqx/X9ElblRcEFK/OJz6T2RxwZI8=;
-	b=/5HMX24DVRsNeFjzfJfdW4VsGp99IwnIl1AqrUMbi8nfNLpv6ibRywwcB1coqZR8jkltNC
-	VYU6Ym+CPA7FMSBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2CD72139D8;
-	Wed,  5 Feb 2025 13:05:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cD6bBwBio2etcgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 05 Feb 2025 13:05:04 +0000
-Date: Wed, 5 Feb 2025 14:05:02 +0100
-From: Oscar Salvador <osalvador@suse.de>
-To: Ricardo =?iso-8859-1?Q?Ca=F1uelo?= Navarro <rcn@igalia.com>
-Cc: akpm@linux-foundation.org, riel@surriel.com, linux-mm@kvack.org,
-	stable@vger.kernel.org, kernel-dev@igalia.com, revest@google.com
-Subject: Re: [PATCH v2] mm,madvise,hugetlb: check for 0-length range after
- end address adjustment
-Message-ID: <Z6Nh_tNoy-E7KXsI@localhost.localdomain>
-References: <20250203075206.1452208-1-rcn@igalia.com>
+	s=arc-20240116; t=1738760834; c=relaxed/simple;
+	bh=254Gu36EuIa1v/6rTQO81KUbzPtj0rEjJ/YdLRpG7tE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p+AHlYzbI5JjOBUSnBp66zzj2A7IRPsi9E6YgKaelT2MOKum4wV9FfWDeSS5oW5Q4yLV4N7tiwQMTaLcV9XYuwiO7++JRe2BdMoWD62MaccYFHZed2AVQqwIJmWp9XxfnKJP78uMPb2tght9OL3maATK6HWMJafR0rRxx3bVJug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=D2z9uaGj; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=jVmUkPbt3zvCMkUUqNmKPtRcG1+s+WzT7PxusitKQqo=; b=D2z9uaGj20pleMWRSST0wxA3qq
+	W9+0pKF+IEk6RIkYRdaqzXNKAd73jVHIdVqNWCeBjSBtQ768fM2v3ooxlYtV6ArtlMwn+XYv/TXyT
+	5M5WhcidIGsly5yXjB18BZDjer+lpNGEd2ldllcnRG0ML8eas1qkuI29lpPyPFDxsMkVSvjVFDY4A
+	ZQW3+yxI9K3mak9t+cbYA/SDUNC1qYBLSFCLl2JrxVVXI8WytRGdrbRq60uGlnpFO8l8BvW36Pyvp
+	dOkJ2RBti36484nlqfh2ewMFx8saWEbW84VGC12iTB+EylqwvUpnGg5RKsHh7clk4BmtRvRiG9jrf
+	VO9ssb1A==;
+Received: from 179-125-64-239-dinamico.pombonet.net.br ([179.125.64.239] helo=quatroqueijos.cascardo.eti.br)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tff7G-003yER-T3; Wed, 05 Feb 2025 14:07:00 +0100
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Date: Wed, 05 Feb 2025 10:06:38 -0300
+Subject: [PATCH] drm/amd/display: avoid NPD when ASIC does not support DMUB
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250203075206.1452208-1-rcn@igalia.com>
-X-Rspamd-Queue-Id: A79D02122A
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,igalia.com:email];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
-X-Spam-Flag: NO
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250205-amdgpu-dmub-v1-1-88151fe565d8@igalia.com>
+X-B4-Tracking: v=1; b=H4sIAF1io2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDIwNT3cTclPSCUt2U3NIkXeO0ZCPTRIOkZDOLVCWgjoKi1LTMCrBp0bG
+ 1tQCctVNeXQAAAA==
+X-Change-ID: 20250205-amdgpu-dmub-3fc25a0bc68e
+To: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>, 
+ Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Tom Chung <chiahsuan.chung@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com, 
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, stable@vger.kernel.org, 
+ Daniel Wheeler <daniel.wheeler@amd.com>
+X-Mailer: b4 0.14.2
 
-On Mon, Feb 03, 2025 at 08:52:06AM +0100, Ricardo Cañuelo Navarro wrote:
-> Add a sanity check to madvise_dontneed_free() to address a corner case
-> in madvise where a race condition causes the current vma being processed
-> to be backed by a different page size.
-> 
-> During a madvise(MADV_DONTNEED) call on a memory region registered with
-> a userfaultfd, there's a period of time where the process mm lock is
-> temporarily released in order to send a UFFD_EVENT_REMOVE and let
-> userspace handle the event. During this time, the vma covering the
-> current address range may change due to an explicit mmap done
-> concurrently by another thread.
-> 
-> If, after that change, the memory region, which was originally backed by
-> 4KB pages, is now backed by hugepages, the end address is rounded down
-> to a hugepage boundary to avoid data loss (see "Fixes" below). This
-> rounding may cause the end address to be truncated to the same address
-> as the start.
-> 
-> Make this corner case follow the same semantics as in other similar
-> cases where the requested region has zero length (ie. return 0).
-> 
-> This will make madvise_walk_vmas() continue to the next vma in the
-> range (this time holding the process mm lock) which, due to the prev
-> pointer becoming stale because of the vma change, will be the same
-> hugepage-backed vma that was just checked before. The next time
-> madvise_dontneed_free() runs for this vma, if the start address isn't
-> aligned to a hugepage boundary, it'll return -EINVAL, which is also in
-> line with the madvise api.
-> 
-> From userspace perspective, madvise() will return EINVAL because the
-> start address isn't aligned according to the new vma alignment
-> requirements (hugepage), even though it was correctly page-aligned when
-> the call was issued.
-> 
-> Fixes: 8ebe0a5eaaeb ("mm,madvise,hugetlb: fix unexpected data loss with MADV_DONTNEED on hugetlbfs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+ctx->dmub_srv will de NULL if the ASIC does not support DMUB, which is
+tested in dm_dmub_sw_init.
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+However, it will be dereferenced in dmub_hw_lock_mgr_cmd if
+should_use_dmub_lock returns true.
 
-> ---
-> Changes in v2:
-> - Added documentation in the code to tell the user how this situation
->   can happen. (Andrew)
-> ---
->  mm/madvise.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 49f3a75046f6..08b207f8e61e 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -933,7 +933,16 @@ static long madvise_dontneed_free(struct vm_area_struct *vma,
->  			 */
->  			end = vma->vm_end;
->  		}
-> -		VM_WARN_ON(start >= end);
-> +		/*
-> +		 * If the memory region between start and end was
-> +		 * originally backed by 4kB pages and then remapped to
-> +		 * be backed by hugepages while mmap_lock was dropped,
-> +		 * the adjustment for hugetlb vma above may have rounded
-> +		 * end down to the start address.
-> +		 */
-> +		if (start == end)
-> +			return 0;
-> +		VM_WARN_ON(start > end);
+This has been the case since dmub support has been added for PSR1.
 
-The change itself looks fine to me, although I am wondering whether it would make
-more sense to place the check right after the call to
-madvise_dontneed_free_valid_vma().
-It looks kind of more logical to me, but not a big deal.
+Fix this by checking for dmub_srv in should_use_dmub_lock.
+
+[   37.440832] BUG: kernel NULL pointer dereference, address: 0000000000000058
+[   37.447808] #PF: supervisor read access in kernel mode
+[   37.452959] #PF: error_code(0x0000) - not-present page
+[   37.458112] PGD 0 P4D 0
+[   37.460662] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+[   37.465553] CPU: 2 UID: 1000 PID: 1745 Comm: DrmThread Not tainted 6.14.0-rc1-00003-gd62e938120f0 #23 99720e1cb1e0fc4773b8513150932a07de3c6e88
+[   37.478324] Hardware name: Google Morphius/Morphius, BIOS Google_Morphius.13434.858.0 10/26/2023
+[   37.487103] RIP: 0010:dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.492074] Code: 44 24 0e 00 00 00 00 48 c7 04 24 45 00 00 0c 40 88 74 24 0d 0f b6 02 88 44 24 0c 8b 01 89 44 24 08 85 f6 75 05 c6 44 24 0e 01 <48> 8b 7f 58 48 89 e6 ba 01 00 00 00 e8 08 3c 2a 00 65 48 8b 04 5
+[   37.510822] RSP: 0018:ffff969442853300 EFLAGS: 00010202
+[   37.516052] RAX: 0000000000000000 RBX: ffff92db03000000 RCX: ffff969442853358
+[   37.523185] RDX: ffff969442853368 RSI: 0000000000000001 RDI: 0000000000000000
+[   37.530322] RBP: 0000000000000001 R08: 00000000000004a7 R09: 00000000000004a5
+[   37.537453] R10: 0000000000000476 R11: 0000000000000062 R12: ffff92db0ade8000
+[   37.544589] R13: ffff92da01180ae0 R14: ffff92da011802a8 R15: ffff92db03000000
+[   37.551725] FS:  0000784a9cdfc6c0(0000) GS:ffff92db2af00000(0000) knlGS:0000000000000000
+[   37.559814] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   37.565562] CR2: 0000000000000058 CR3: 0000000112b1c000 CR4: 00000000003506f0
+[   37.572697] Call Trace:
+[   37.575152]  <TASK>
+[   37.577258]  ? __die_body+0x66/0xb0
+[   37.580756]  ? page_fault_oops+0x3e7/0x4a0
+[   37.584861]  ? exc_page_fault+0x3e/0xe0
+[   37.588706]  ? exc_page_fault+0x5c/0xe0
+[   37.592550]  ? asm_exc_page_fault+0x22/0x30
+[   37.596742]  ? dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.601107]  dcn10_cursor_lock+0x1e1/0x240
+[   37.605211]  program_cursor_attributes+0x81/0x190
+[   37.609923]  commit_planes_for_stream+0x998/0x1ef0
+[   37.614722]  update_planes_and_stream_v2+0x41e/0x5c0
+[   37.619703]  dc_update_planes_and_stream+0x78/0x140
+[   37.624588]  amdgpu_dm_atomic_commit_tail+0x4362/0x49f0
+[   37.629832]  ? srso_return_thunk+0x5/0x5f
+[   37.633847]  ? mark_held_locks+0x6d/0xd0
+[   37.637774]  ? _raw_spin_unlock_irq+0x24/0x50
+[   37.642135]  ? srso_return_thunk+0x5/0x5f
+[   37.646148]  ? lockdep_hardirqs_on+0x95/0x150
+[   37.650510]  ? srso_return_thunk+0x5/0x5f
+[   37.654522]  ? _raw_spin_unlock_irq+0x2f/0x50
+[   37.658883]  ? srso_return_thunk+0x5/0x5f
+[   37.662897]  ? wait_for_common+0x186/0x1c0
+[   37.666998]  ? srso_return_thunk+0x5/0x5f
+[   37.671009]  ? drm_crtc_next_vblank_start+0xc3/0x170
+[   37.675983]  commit_tail+0xf5/0x1c0
+[   37.679478]  drm_atomic_helper_commit+0x2a2/0x2b0
+[   37.684186]  drm_atomic_commit+0xd6/0x100
+[   37.688199]  ? __cfi___drm_printfn_info+0x10/0x10
+[   37.692911]  drm_atomic_helper_update_plane+0xe5/0x130
+[   37.698054]  drm_mode_cursor_common+0x501/0x670
+[   37.702600]  ? __cfi_drm_mode_cursor_ioctl+0x10/0x10
+[   37.707572]  drm_mode_cursor_ioctl+0x48/0x70
+[   37.711851]  drm_ioctl_kernel+0xf2/0x150
+[   37.715781]  drm_ioctl+0x363/0x590
+[   37.719189]  ? __cfi_drm_mode_cursor_ioctl+0x10/0x10
+[   37.724165]  amdgpu_drm_ioctl+0x41/0x80
+[   37.728013]  __se_sys_ioctl+0x7f/0xd0
+[   37.731685]  do_syscall_64+0x87/0x100
+[   37.735355]  ? vma_end_read+0x12/0xe0
+[   37.739024]  ? srso_return_thunk+0x5/0x5f
+[   37.743041]  ? find_held_lock+0x47/0xf0
+[   37.746884]  ? vma_end_read+0x12/0xe0
+[   37.750552]  ? srso_return_thunk+0x5/0x5f
+[   37.754565]  ? lock_release+0x1c4/0x2e0
+[   37.758406]  ? vma_end_read+0x12/0xe0
+[   37.762079]  ? exc_page_fault+0x84/0xe0
+[   37.765921]  ? srso_return_thunk+0x5/0x5f
+[   37.769938]  ? lockdep_hardirqs_on+0x95/0x150
+[   37.774303]  ? srso_return_thunk+0x5/0x5f
+[   37.778317]  ? exc_page_fault+0x84/0xe0
+[   37.782163]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[   37.787218] RIP: 0033:0x784aa5ec3059
+[   37.790803] Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 77 1d 48 8b 45 c8 64 48 2b 04 25 28 00 0
+[   37.809553] RSP: 002b:0000784a9cdf90e0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[   37.817121] RAX: ffffffffffffffda RBX: 0000784a9cdf917c RCX: 0000784aa5ec3059
+[   37.824256] RDX: 0000784a9cdf917c RSI: 00000000c01c64a3 RDI: 0000000000000020
+[   37.831391] RBP: 0000784a9cdf9130 R08: 0000000000000100 R09: 0000000000ff0000
+[   37.838525] R10: 0000000000000000 R11: 0000000000000246 R12: 0000025c01606ed0
+[   37.845657] R13: 0000025c00030200 R14: 00000000c01c64a3 R15: 0000000000000020
+[   37.852799]  </TASK>
+[   37.854992] Modules linked in:
+[   37.864546] gsmi: Log Shutdown Reason 0x03
+[   37.868656] CR2: 0000000000000058
+[   37.871979] ---[ end trace 0000000000000000 ]---
+[   37.880976] RIP: 0010:dmub_hw_lock_mgr_cmd+0x77/0xb0
+[   37.885954] Code: 44 24 0e 00 00 00 00 48 c7 04 24 45 00 00 0c 40 88 74 24 0d 0f b6 02 88 44 24 0c 8b 01 89 44 24 08 85 f6 75 05 c6 44 24 0e 01 <48> 8b 7f 58 48 89 e6 ba 01 00 00 00 e8 08 3c 2a 00 65 48 8b 04 5
+[   37.904703] RSP: 0018:ffff969442853300 EFLAGS: 00010202
+[   37.909933] RAX: 0000000000000000 RBX: ffff92db03000000 RCX: ffff969442853358
+[   37.917068] RDX: ffff969442853368 RSI: 0000000000000001 RDI: 0000000000000000
+[   37.924201] RBP: 0000000000000001 R08: 00000000000004a7 R09: 00000000000004a5
+[   37.931336] R10: 0000000000000476 R11: 0000000000000062 R12: ffff92db0ade8000
+[   37.938469] R13: ffff92da01180ae0 R14: ffff92da011802a8 R15: ffff92db03000000
+[   37.945602] FS:  0000784a9cdfc6c0(0000) GS:ffff92db2af00000(0000) knlGS:0000000000000000
+[   37.953689] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   37.959435] CR2: 0000000000000058 CR3: 0000000112b1c000 CR4: 00000000003506f0
+[   37.966570] Kernel panic - not syncing: Fatal exception
+[   37.971901] Kernel Offset: 0x30200000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[   37.982840] gsmi: Log Shutdown Reason 0x02
+
+Fixes: b5c764d6ed55 ("drm/amd/display: Use HW lock mgr for PSR1")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: stable@vger.kernel.org
+Cc: Sun peng Li <sunpeng.li@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+---
+ drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+index 5bb8b78bf250a0e56c3e99ce7c99ed7f70c8f0f6..eef817a4c580aca2ebc7fb1b77cfc0377d477bdc 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
+@@ -63,6 +63,9 @@ void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
  
+ bool should_use_dmub_lock(struct dc_link *link)
+ {
++	/* ASIC doesn't support DMUB */
++	if (!link->ctx->dmub_srv)
++		return false;
+ 	if (link->psr_settings.psr_version == DC_PSR_VERSION_SU_1 ||
+ 	    link->psr_settings.psr_version == DC_PSR_VERSION_1)
+ 		return true;
 
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250205-amdgpu-dmub-3fc25a0bc68e
+
+Best regards,
 -- 
-Oscar Salvador
-SUSE Labs
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+
 
