@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E85A2932F
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA33A2922D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73161164E2D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 419A77A1455
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48191A83F9;
-	Wed,  5 Feb 2025 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0EF19258E;
+	Wed,  5 Feb 2025 14:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CITMQSqR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ9mXH6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7044918BC26;
-	Wed,  5 Feb 2025 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6111662EF;
+	Wed,  5 Feb 2025 14:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767660; cv=none; b=VP+WcwSreyyIqHjLk4OrbOGW1SUdxUJtkR0SZl3a22k4pKc9rNr78ir+M9OjBs3UZArJ/Ci+F7npHL/jnlkzPjhC0ZMpeKAtAZuKO/fBzhBYpSvjido4kOjb/3l6yNfN/TaOKQjb0eAVsKlObDD7tBjQ8hzMlDwGxcR3dipv5Wc=
+	t=1738767365; cv=none; b=Y7FxwcRU9Otl9C+L3KH5HrQPQRz/Dg90rnnj1tnbDorA4YpxjyWmwzG1zzdSmfV8c3g9rYj53r++GkWJaHRqgCjYgN7w+HJ/LM8r5p/hHmYAL2rbRFxmVKkrDQpLacEka8m0Ju/pOZYg/OB2RfGi0gOS75/eCzVALtOTPFiW/yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767660; c=relaxed/simple;
-	bh=IEz68ZCEYgTdVPhc/wM+ZwLOlMOkJe8sc4v2ewPNitM=;
+	s=arc-20240116; t=1738767365; c=relaxed/simple;
+	bh=GHpwrGO/n6Jb4tVe0l0F4pg0KZMTihuOV6KlDTV7GoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtBlFM8bTqsNhpCTowqGSiWlbQnHVUs3H9/C3OIXww+AGGNiZqYKRA3vyC6+aOYUB/OfaWoVCGt2jhm7GdGHLxZ00NQ0RMz9/wpkQsQ0BGBgWwA6NrKpUBYyFvY2+2QIZmk2w//IQANyJF61OUC42WUfgnRqmv5Eli6KgE2ccI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CITMQSqR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2864C4CED1;
-	Wed,  5 Feb 2025 15:00:59 +0000 (UTC)
+	 MIME-Version; b=Po3AyPlICAa16pe1rOeCtaRR5o0mfK5GEESP0fyQ6jZcoQOnqXhiCCVtPPAdWEowIghMXnJaq3tYyOCYCzcaN1gmw9ya/abtx9GLjuWCFTA39u625haVRs3isQzpljs6+B1mbhos1tRvNJbR6xte5jWBVCS1wqrG0MkYVQQweAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ9mXH6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C682C4CED1;
+	Wed,  5 Feb 2025 14:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767660;
-	bh=IEz68ZCEYgTdVPhc/wM+ZwLOlMOkJe8sc4v2ewPNitM=;
+	s=korg; t=1738767365;
+	bh=GHpwrGO/n6Jb4tVe0l0F4pg0KZMTihuOV6KlDTV7GoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CITMQSqR+lP9yLEbNBWSdLCv6zHk0WDUh8PDwKcAWdGObAFcrZ+2/TF/YF8esq/tY
-	 i0tlxzYshzYU4aUauteuxGigoIm9z+4vTjipKC45buhF+OlsRSEo06HwrlegsGVLb/
-	 8NAjQJbRBuUfKXMm08LblH3B5KTr89TOImPlTttQ=
+	b=LZ9mXH6LmrU4K/czUDzp6xZi9teCXxhebQJH90boMum5Ico5562jDj4iItqEakfTt
+	 JvIumdjOHaN6cQcCwucckvGzy4m0+lm6IGUSbl80cZFZnqffNv+gqidWfG6+t0ON4M
+	 3NT6DOQJ3DNaFrNoABWrPjyAr09Vh96spnMR62+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c92878e123785b1fa2db@syzkaller.appspotmail.com,
-	Suraj Sonawane <surajsonawane0215@gmail.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 435/623] iommu: iommufd: fix WARNING in iommufd_device_unbind
+Subject: [PATCH 6.12 422/590] staging: media: imx: fix OF node leak in imx_media_add_of_subdevs()
 Date: Wed,  5 Feb 2025 14:42:57 +0100
-Message-ID: <20250205134512.861102122@linuxfoundation.org>
+Message-ID: <20250205134511.411471616@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suraj Sonawane <surajsonawane0215@gmail.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit d9df72c6acd683adf6dd23c061f3a414ec00b1f8 ]
+[ Upstream commit 094f5c315f756b19198e6c401aa821ac0e868750 ]
 
-Fix an issue detected by syzbot:
+imx_media_add_of_subdevs() calls of_parse_phandle() and passes the
+obtained node to imx_media_of_add_csi(). The passed node is used in
+v4l2_async_nf_add_fwnode(), which increments the refcount of the node.
+Therefore, while the current implementation only releases the node when
+imx_media_of_add_csi() fails, but should always release it. Call
+of_node_put() right after imx_media_of_add_csi().
 
-WARNING in iommufd_device_unbind iommufd: Time out waiting for iommufd object to become free
-
-Resolve a warning in iommufd_device_unbind caused by a timeout while
-waiting for the shortterm_users reference count to reach zero. The
-existing 10-second timeout is insufficient in some scenarios, resulting in
-failures the above warning.
-
-Increase the timeout in iommufd_object_dec_wait_shortterm from 10 seconds
-to 60 seconds to allow sufficient time for the reference count to drop to
-zero. This change prevents premature timeouts and reduces the likelihood
-of warnings during iommufd_device_unbind.
-
-Fixes: 6f9c4d8c468c ("iommufd: Do not UAF during iommufd_put_object()")
-Link: https://patch.msgid.link/r/20241123195900.3176-1-surajsonawane0215@gmail.com
-Reported-by: syzbot+c92878e123785b1fa2db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c92878e123785b1fa2db
-Tested-by: syzbot+c92878e123785b1fa2db@syzkaller.appspotmail.com
-Signed-off-by: Suraj Sonawane <surajsonawane0215@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: dee747f88167 ("media: imx: Don't register IPU subdevs/links if CSI port missing")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/imx/imx-media-of.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/main.c b/drivers/iommu/iommufd/main.c
-index 97c5e3567d33e..d898d05be690f 100644
---- a/drivers/iommu/iommufd/main.c
-+++ b/drivers/iommu/iommufd/main.c
-@@ -104,7 +104,7 @@ static int iommufd_object_dec_wait_shortterm(struct iommufd_ctx *ictx,
- 	if (wait_event_timeout(ictx->destroy_wait,
- 				refcount_read(&to_destroy->shortterm_users) ==
- 					0,
--				msecs_to_jiffies(10000)))
-+				msecs_to_jiffies(60000)))
- 		return 0;
+diff --git a/drivers/staging/media/imx/imx-media-of.c b/drivers/staging/media/imx/imx-media-of.c
+index 118bff988bc7e..bb28daa4d7133 100644
+--- a/drivers/staging/media/imx/imx-media-of.c
++++ b/drivers/staging/media/imx/imx-media-of.c
+@@ -54,22 +54,18 @@ int imx_media_add_of_subdevs(struct imx_media_dev *imxmd,
+ 			break;
  
- 	pr_crit("Time out waiting for iommufd object to become free\n");
+ 		ret = imx_media_of_add_csi(imxmd, csi_np);
++		of_node_put(csi_np);
+ 		if (ret) {
+ 			/* unavailable or already added is not an error */
+ 			if (ret == -ENODEV || ret == -EEXIST) {
+-				of_node_put(csi_np);
+ 				continue;
+ 			}
+ 
+ 			/* other error, can't continue */
+-			goto err_out;
++			return ret;
+ 		}
+ 	}
+ 
+ 	return 0;
+-
+-err_out:
+-	of_node_put(csi_np);
+-	return ret;
+ }
+ EXPORT_SYMBOL_GPL(imx_media_add_of_subdevs);
 -- 
 2.39.5
 
