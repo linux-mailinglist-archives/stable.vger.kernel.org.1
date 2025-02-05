@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-112947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D278A28F3A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:22:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1BFA28E29
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 947043A64C4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 531EF3A16A6
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E02F155725;
-	Wed,  5 Feb 2025 14:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC1415CD74;
+	Wed,  5 Feb 2025 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVzDrdbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvGm1BdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D0413C3F6;
-	Wed,  5 Feb 2025 14:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72A614F9E7;
+	Wed,  5 Feb 2025 14:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765299; cv=none; b=a9Zgd/cyAzZsudm0cNdEftT+3ZJVm9o7vp8XusfG9CySJ8yVAr4+5RUsOK+LZ71l1Sto1V6FJOZKB/3vFz3t48b0BETvA+Jd6J240lRXVey7rxz47laV8fDWRFmqta0I3pJGyFgTf/uBgd/tZjlLUmv5ZWHVZcelgPBfRASwFTo=
+	t=1738764551; cv=none; b=cZAEWC57q0jOAoR8b/DbXczA4tWPhWH+bVKnUQ/EG6yMo6pRQAqfqEge82+Xga38XwClJeDpsNEG1XvmiYaNw3oXqWQ1kGmjiscbzW5wJ6fSRVTnahuN2U0zXXTJDMG5p81cnes1dourqoeqPj4aefRj+sdHA5KYb/iVs4Aeprc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765299; c=relaxed/simple;
-	bh=JRQJCi0r+G9T3B9J+VGYjJhZ7rPeKedrxmpfkV4H7Lg=;
+	s=arc-20240116; t=1738764551; c=relaxed/simple;
+	bh=atlgMCwcpL1IVmx2WffOaIsdPhMvAWPo/FhfWbZ724Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUSbhnaQcO38tidl5zYwfGA5HaORZxLQ4jzJm7vKjQR29U35BIgCGSbCiiDKcIHklXCHP8mx/cmg+mClLX+4UZ38D0PzKJo5yqReAbt5WeYgL8UjCih2v3sdpXG6QQKHnBc46nIICgRHdbl7ZwpyRUjygAIDHMxVEITPaFx5n2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVzDrdbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D4BC4CED1;
-	Wed,  5 Feb 2025 14:21:37 +0000 (UTC)
+	 MIME-Version; b=GUS8rFK+3ESua1GvZKQmcXOAptXnBjvaDpJw9+f1IEs4/9KwQ8uq1Sx9Dt9vw8Ytt6j0I5ZF+U6DcummUwyc8D/YKDfXzvpX+7+2gwyUdaDN2wGM2xLvlo0UD83oXeyotqVUj7Gj0P0GRF0qqhZbzfljMaH2XjT3jVzV4TXprt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvGm1BdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BEDC4CED1;
+	Wed,  5 Feb 2025 14:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765298;
-	bh=JRQJCi0r+G9T3B9J+VGYjJhZ7rPeKedrxmpfkV4H7Lg=;
+	s=korg; t=1738764550;
+	bh=atlgMCwcpL1IVmx2WffOaIsdPhMvAWPo/FhfWbZ724Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVzDrdbOlHJP5tui3S25gXZW2FWb5J9AngEnV2nHHekkwI+ozz5umo1UcFwd+oaUC
-	 5LdgV7ovAYy/X5LhZWz28+BFPsNDR/6bAKDjWnEK35O9IClkx/gEwfl3KkTk3OVZ+w
-	 daIol+lMFoSoHuXP8knJJ1fnzfrNt3bO5jzDc+mQ=
+	b=uvGm1BdFnEPD9TovP88cq4tRMdsG8XRV4icJqdISrgewbmEVxBTtaKGXXakdpYs5/
+	 F0u3TM4RYk5JEyD3rVtxnm0k0WdLUJxcSpOU+2LAxzfPyBvU5wqqj2nPsMxzk7txWv
+	 qQGACnfMrnK7YqAMm0AiTrKD/29TBR3BERzd60Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Pankaj Dubey <pankaj.dubey@samsung.com>,
-	Lee Jones <lee@kernel.org>,
+	Cosmo Chou <chou.cosmo@gmail.com>,
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 149/623] mfd: syscon: Fix race in device_node_get_regmap()
-Date: Wed,  5 Feb 2025 14:38:11 +0100
-Message-ID: <20250205134501.935750459@linuxfoundation.org>
+Subject: [PATCH 6.12 137/590] ipmi: ssif_bmc: Fix new request loss when bmc ready for a response
+Date: Wed,  5 Feb 2025 14:38:12 +0100
+Message-ID: <20250205134500.511175011@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,127 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Quan Nguyen <quan@os.amperecomputing.com>
 
-[ Upstream commit 805f7aaf7fee14a57b56af01d270edf6c10765e8 ]
+[ Upstream commit 83d8c79aa958e37724ed9c14dc7d0f66a48ad864 ]
 
-It is possible for multiple, simultaneous callers calling
-device_node_get_regmap() with the same node to fail to find an entry in
-the syscon_list. There is a period of time while the first caller is
-calling of_syscon_register() that subsequent callers also fail to find
-an entry in the syscon_list and then call of_syscon_register() a second
-time.
+Cosmo found that when there is a new request comes in while BMC is
+ready for a response, the complete_response(), which is called to
+complete the pending response, would accidentally clear out that new
+request and force ssif_bmc to move back to abort state again.
 
-Fix this by keeping the lock held until after of_syscon_register()
-completes and adds the node to syscon_list. Convert the spinlock to a
-mutex as many of the functions called in of_syscon_register() such as
-kzalloc() and of_clk_get() may sleep.
+This commit is to address that issue.
 
-Fixes: bdb0066df96e ("mfd: syscon: Decouple syscon interface from platform devices")
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Tested-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
-Link: https://lore.kernel.org/r/20241217-syscon-fixes-v2-1-4f56d750541d@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: dd2bc5cc9e25 ("ipmi: ssif_bmc: Add SSIF BMC driver")
+Reported-by: Cosmo Chou <chou.cosmo@gmail.com>
+Closes: https://lore.kernel.org/lkml/20250101165431.2113407-1-chou.cosmo@gmail.com/
+Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
+Message-ID: <20250107034734.1842247-1-quan@os.amperecomputing.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/char/ipmi/ssif_bmc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 3e1d699ba9340..72f20de9652da 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -15,6 +15,7 @@
- #include <linux/io.h>
- #include <linux/init.h>
- #include <linux/list.h>
-+#include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_platform.h>
-@@ -27,7 +28,7 @@
- 
- static struct platform_driver syscon_driver;
- 
--static DEFINE_SPINLOCK(syscon_list_slock);
-+static DEFINE_MUTEX(syscon_list_lock);
- static LIST_HEAD(syscon_list);
- 
- struct syscon {
-@@ -54,6 +55,8 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	struct resource res;
- 	struct reset_control *reset;
- 
-+	WARN_ON(!mutex_is_locked(&syscon_list_lock));
-+
- 	struct syscon *syscon __free(kfree) = kzalloc(sizeof(*syscon), GFP_KERNEL);
- 	if (!syscon)
- 		return ERR_PTR(-ENOMEM);
-@@ -146,9 +149,7 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	syscon->regmap = regmap;
- 	syscon->np = np;
- 
--	spin_lock(&syscon_list_slock);
- 	list_add_tail(&syscon->list, &syscon_list);
--	spin_unlock(&syscon_list_slock);
- 
- 	return_ptr(syscon);
- 
-@@ -169,7 +170,7 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- {
- 	struct syscon *entry, *syscon = NULL;
- 
--	spin_lock(&syscon_list_slock);
-+	mutex_lock(&syscon_list_lock);
- 
- 	list_for_each_entry(entry, &syscon_list, list)
- 		if (entry->np == np) {
-@@ -177,11 +178,11 @@ static struct regmap *device_node_get_regmap(struct device_node *np,
- 			break;
- 		}
- 
--	spin_unlock(&syscon_list_slock);
--
- 	if (!syscon)
- 		syscon = of_syscon_register(np, check_res);
- 
-+	mutex_unlock(&syscon_list_lock);
-+
- 	if (IS_ERR(syscon))
- 		return ERR_CAST(syscon);
- 
-@@ -212,7 +213,7 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
- 		return -ENOMEM;
- 
- 	/* check if syscon entry already exists */
--	spin_lock(&syscon_list_slock);
-+	mutex_lock(&syscon_list_lock);
- 
- 	list_for_each_entry(entry, &syscon_list, list)
- 		if (entry->np == np) {
-@@ -225,12 +226,12 @@ int of_syscon_register_regmap(struct device_node *np, struct regmap *regmap)
- 
- 	/* register the regmap in syscon list */
- 	list_add_tail(&syscon->list, &syscon_list);
--	spin_unlock(&syscon_list_slock);
-+	mutex_unlock(&syscon_list_lock);
- 
- 	return 0;
- 
- err_unlock:
--	spin_unlock(&syscon_list_slock);
-+	mutex_unlock(&syscon_list_lock);
- 	kfree(syscon);
- 	return ret;
+diff --git a/drivers/char/ipmi/ssif_bmc.c b/drivers/char/ipmi/ssif_bmc.c
+index a14fafc583d4d..310f17dd9511a 100644
+--- a/drivers/char/ipmi/ssif_bmc.c
++++ b/drivers/char/ipmi/ssif_bmc.c
+@@ -292,7 +292,6 @@ static void complete_response(struct ssif_bmc_ctx *ssif_bmc)
+ 	ssif_bmc->nbytes_processed = 0;
+ 	ssif_bmc->remain_len = 0;
+ 	ssif_bmc->busy = false;
+-	memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
+ 	wake_up_all(&ssif_bmc->wait_queue);
  }
+ 
+@@ -744,9 +743,11 @@ static void on_stop_event(struct ssif_bmc_ctx *ssif_bmc, u8 *val)
+ 			ssif_bmc->aborting = true;
+ 		}
+ 	} else if (ssif_bmc->state == SSIF_RES_SENDING) {
+-		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF)
++		if (ssif_bmc->is_singlepart_read || ssif_bmc->block_num == 0xFF) {
++			memset(&ssif_bmc->part_buf, 0, sizeof(struct ssif_part_buffer));
+ 			/* Invalidate response buffer to denote it is sent */
+ 			complete_response(ssif_bmc);
++		}
+ 		ssif_bmc->state = SSIF_READY;
+ 	}
+ 
 -- 
 2.39.5
 
