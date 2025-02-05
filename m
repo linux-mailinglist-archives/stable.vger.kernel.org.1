@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D72A290FE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:43:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3C2A28DD2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 099E23A2D7E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:43:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45E8A7A1F7C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B689F1ADC7C;
-	Wed,  5 Feb 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A2B14B080;
+	Wed,  5 Feb 2025 14:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMlxMDtN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGV2SVBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AD51A83E7;
-	Wed,  5 Feb 2025 14:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE58BF510;
+	Wed,  5 Feb 2025 14:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766473; cv=none; b=uGJQsaAmqp3dibcH7EYMmneW2iT4f6CED8CC/gNIssJfdsBrlV47QfT0ixOt3K3MKFt8P//N9BrhKaVq7D/w0OX6axc46jsUm1uG3bqQ5xdVjRN8a2MFkSTZ2rP4eLX4XyhZdb18U5E1D1wc1klLGueCL4MoNYGzGfobCH+qgu0=
+	t=1738764340; cv=none; b=b+2O/sDHgmeerX3YJ1A5TUijB5mtp0/i3idHMJYdRkTIxpn9vaS+S+F0+LO7lX2aWabixOfAglhqkdAaQx+5x25/rDB+Ljog7sBr3j6JhPUQrE4Mi3+GKTLXBqgY9jRTh0k19VdDjg443L8swti9zsYPy64/bcsuyg1lpWrKbxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766473; c=relaxed/simple;
-	bh=QMl5L3R6E6pwPElOaW62Fgg0cnYmZFv8q3WLmiQMH2s=;
+	s=arc-20240116; t=1738764340; c=relaxed/simple;
+	bh=2GhGc52CwLJAuavqlSCXLBMjSCGzEz4nxHNuf/7CD0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpoJXrHW9DXTInjNZOxiM8/mMn47rCFnGIDB5lGT0TwJIDy9yXBMzDy9nBpDyprQY5W65I+Y0OjA1KmhPa6/tA7t6E5S6HYEqo2QpGpuvttALCAHUDgKBycYVqpphUW5CaPfbYIYDzDwMB61jb/9R1GWMgAwTU09+GdKcYj4yZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMlxMDtN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A84C4CED6;
-	Wed,  5 Feb 2025 14:41:12 +0000 (UTC)
+	 MIME-Version; b=UdvP6bgIJvpln/OxEcupttyyNj54/eJXTUhOrV2tRZVor5VeN5COMvImsp+Mb9WgJiu+1+gEAjbkcoIxoKcxVdgmavmNErYhQa2EniQU9tD4cvm7THrSCmsnEELYC0j3YOhftf0O0c9fgaNCN+lpOfpLuJWlnPExiCdw+KbpDAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGV2SVBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17486C4CED1;
+	Wed,  5 Feb 2025 14:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766473;
-	bh=QMl5L3R6E6pwPElOaW62Fgg0cnYmZFv8q3WLmiQMH2s=;
+	s=korg; t=1738764340;
+	bh=2GhGc52CwLJAuavqlSCXLBMjSCGzEz4nxHNuf/7CD0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMlxMDtNhVqfuUiNI8096uRmxFo51o7aHcZ9LquNwGnZGhA0g8uSkGoKxGrAN5fIg
-	 u/oJhTjpAjkvdcBqoLHVJdZuV+X8ArnQgNXrjOBpP4TdPu38EQ1eavKfh3JXvw165+
-	 KwY8JRJlISZwHCkDHbrQl2Z3UFUj/nVln6qfbpvc=
+	b=TGV2SVBUJ4CGiVdarg6lnEyZFX3jahD7RwRGoOfDY3ixwWzRsP7PonHboOdyv3h1a
+	 1+HutlkGjY+E3RDAMB/ML6BvCdAllzR5x/GLXCaF7DbMg3XL+GJocQVxkntbFr2XZR
+	 pT3LTXDvNYuHY82VmNjSQqXCM5i3wqWXZThOyHto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mamta Shukla <mamta.shukla@leica-geosystems.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/590] arm: dts: socfpga: use reset-name "stmmaceth-ocp" instead of "ahb"
+Subject: [PATCH 6.6 163/393] ASoC: renesas: rz-ssi: Use only the proper amount of dividers
 Date: Wed,  5 Feb 2025 14:41:22 +0100
-Message-ID: <20250205134507.784752605@linuxfoundation.org>
+Message-ID: <20250205134426.535278444@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mamta Shukla <mamta.shukla@leica-geosystems.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 62a40a0d5634834790f7166ab592be247390d857 ]
+[ Upstream commit 55c209cd4318c701e6e88e0b2512a0f12dd02a7d ]
 
-The ahb reset is deasserted in probe before first register access, while the
-stmmacheth-ocp reset needs to be asserted every time before changing the phy
-mode in Arria10[1].
+There is no need to populate the ckdv[] with invalid dividers as that
+part will not be indexed anyway. The ssi->audio_mck/bclk_rate should
+always be >= 0. While at it, change the ckdv type as u8, as the divider
+128 was previously using the s8 sign bit.
 
-Changed in Upstream to "ahb"(331085a423b  arm64: dts: socfpga: change the
-reset-name of "stmmaceth-ocp" to "ahb" ).This change was intended for arm64
-socfpga and it is not applicable to Arria10.
-
-Further with STMMAC-SELFTEST Driver enabled, ethtool test also FAILS.
-$ ethtool -t eth0
-[  322.946709] socfpga-dwmac ff800000.ethernet eth0: entered promiscuous mode
-[  323.374558] socfpga-dwmac ff800000.ethernet eth0: left promiscuous mode
-The test result is FAIL
-The test extra info:
- 1. MAC Loopback                 0
- 2. PHY Loopback                 -110
- 3. MMC Counters                 -110
- 4. EEE                          -95
- 5. Hash Filter MC               0
- 6. Perfect Filter UC            -110
- 7. MC Filter                    -110
- 8. UC Filter                    0
- 9. Flow Control                 -110
-10. RSS                          -95
-11. VLAN Filtering               -95
-12. VLAN Filtering (perf)        -95
-13. Double VLAN Filter           -95
-14. Double VLAN Filter (perf)    -95
-15. Flexible RX Parser           -95
-16. SA Insertion (desc)          -95
-17. SA Replacement (desc)        -95
-18. SA Insertion (reg)           -95
-19. SA Replacement (reg)         -95
-20. VLAN TX Insertion            -95
-21. SVLAN TX Insertion           -95
-22. L3 DA Filtering              -95
-23. L3 SA Filtering              -95
-24. L4 DA TCP Filtering          -95
-25. L4 SA TCP Filtering          -95
-26. L4 DA UDP Filtering          -95
-27. L4 SA UDP Filtering          -95
-28. ARP Offload                  -95
-29. Jumbo Frame                  -110
-30. Multichannel Jumbo           -95
-31. Split Header                 -95
-32. TBS (ETF Scheduler)          -95
-
-[  324.881327] socfpga-dwmac ff800000.ethernet eth0: Link is Down
-[  327.995360] socfpga-dwmac ff800000.ethernet eth0: Link is Up - 1Gbps/Full - flow control rx/tx
-
-Link:[1] https://www.intel.com/content/www/us/en/docs/programmable/683711/21-2/functional-description-of-the-emac.html
-Fixes: 331085a423b ("arm64: dts: socfpga: change the reset-name of "stmmaceth-ocp" to "ahb")
-Signed-off-by: Mamta Shukla <mamta.shukla@leica-geosystems.com>
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 03e786bd43410fa9 ("ASoC: sh: Add RZ/G2L SSIF-2 driver")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20241210170953.2936724-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/sh/rz-ssi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi b/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
-index 6b6e77596ffa8..b108265e9bde4 100644
---- a/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
-+++ b/arch/arm/boot/dts/intel/socfpga/socfpga_arria10.dtsi
-@@ -440,7 +440,7 @@
- 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
- 			clock-names = "stmmaceth", "ptp_ref";
- 			resets = <&rst EMAC0_RESET>, <&rst EMAC0_OCP_RESET>;
--			reset-names = "stmmaceth", "ahb";
-+			reset-names = "stmmaceth", "stmmaceth-ocp";
- 			snps,axi-config = <&socfpga_axi_setup>;
- 			status = "disabled";
- 		};
-@@ -460,7 +460,7 @@
- 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
- 			clock-names = "stmmaceth", "ptp_ref";
- 			resets = <&rst EMAC1_RESET>, <&rst EMAC1_OCP_RESET>;
--			reset-names = "stmmaceth", "ahb";
-+			reset-names = "stmmaceth", "stmmaceth-ocp";
- 			snps,axi-config = <&socfpga_axi_setup>;
- 			status = "disabled";
- 		};
-@@ -480,7 +480,7 @@
- 			clocks = <&l4_mp_clk>, <&peri_emac_ptp_clk>;
- 			clock-names = "stmmaceth", "ptp_ref";
- 			resets = <&rst EMAC2_RESET>, <&rst EMAC2_OCP_RESET>;
--			reset-names = "stmmaceth", "ahb";
-+			reset-names = "stmmaceth", "stmmaceth-ocp";
- 			snps,axi-config = <&socfpga_axi_setup>;
- 			status = "disabled";
- 		};
+diff --git a/sound/soc/sh/rz-ssi.c b/sound/soc/sh/rz-ssi.c
+index 1588b93cc35d0..353863f49b313 100644
+--- a/sound/soc/sh/rz-ssi.c
++++ b/sound/soc/sh/rz-ssi.c
+@@ -245,8 +245,7 @@ static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
+ static int rz_ssi_clk_setup(struct rz_ssi_priv *ssi, unsigned int rate,
+ 			    unsigned int channels)
+ {
+-	static s8 ckdv[16] = { 1,  2,  4,  8, 16, 32, 64, 128,
+-			       6, 12, 24, 48, 96, -1, -1, -1 };
++	static u8 ckdv[] = { 1,  2,  4,  8, 16, 32, 64, 128, 6, 12, 24, 48, 96 };
+ 	unsigned int channel_bits = 32;	/* System Word Length */
+ 	unsigned long bclk_rate = rate * channels * channel_bits;
+ 	unsigned int div;
 -- 
 2.39.5
 
