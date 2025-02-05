@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0818EA28DA0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:03:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DC9A28E72
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B0C7A3E70
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:02:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CF457A150D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6023F155333;
-	Wed,  5 Feb 2025 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82ED14A088;
+	Wed,  5 Feb 2025 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFCImOWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfToKZuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDC21519AA;
-	Wed,  5 Feb 2025 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758C315198D;
+	Wed,  5 Feb 2025 14:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764200; cv=none; b=QFcHuu70f7du5ghz3pmADXJFeGFKA97OPN8570RXAxRtOftSEOwGsRjDB0Tx4/X7LzJ0PG+PYGyG2VOiY8141CaS5dhpI3Sq+Fr8LaaQLK0EDUQ1VLP0HsbBV3e85Nz3MWuh9jfeIq5IxQ7rYVHjBHBqKkJDNHNRN0d5Y2hNB9c=
+	t=1738764770; cv=none; b=QwKYae9g1yskaYkbCsFcfo9OuNrXH9zRq1jzmvinEdsUnBVVsjmR18Q0FBcrSyBQzqZI2QQChWMxsckngcFT/rQngSo8iqSXuzIj4kql4GK+3h05Nz4eJU4fmqzfRTwsb7KU7eagxUuVq6qlbMD/aBAkwCZ1tGpNmEGYts8a9xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764200; c=relaxed/simple;
-	bh=LyLa5/eWTP52OrtLCMV8ghVJU7mizZNWsgP7S8J0XDY=;
+	s=arc-20240116; t=1738764770; c=relaxed/simple;
+	bh=z5bMtcdCJr7FriL9JMkNTKmLGoxn59uWfv+7+sQTOO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1bsr80+8UW73L+Ktl2sTGkdGugtdc/9UJ/EDIGibwix/5NcNUhRRuN0sXxo8cBW9nTwNF/hJB++UMc9JmiWr+SbuHpOsYFT2HFthuEZDc8GOaHQNGgQgvt3BpUAOCxm8us0WbwVB0OVlwlWAQkzrtbZifcw249P0J89r6BcKgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFCImOWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4FDC4CED6;
-	Wed,  5 Feb 2025 14:03:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eK+T68dPX73jTIpafpt+ecKXB8RsQIjko1uatfsGl7e9AX3zdOoGPVRdNAeefqZGWuntLmptK4KOYKzlkXNgPUizaL59Ermi6f8w8z/+vi7tfuP47UP/f4Oa7qsvkWz2xFJysPwOzSOdhiMKwU16kJxDxe2gj4uQ/yoFfgXtQuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfToKZuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2F4C4CED1;
+	Wed,  5 Feb 2025 14:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764200;
-	bh=LyLa5/eWTP52OrtLCMV8ghVJU7mizZNWsgP7S8J0XDY=;
+	s=korg; t=1738764770;
+	bh=z5bMtcdCJr7FriL9JMkNTKmLGoxn59uWfv+7+sQTOO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hFCImOWrGxzNoKEsRzqApQOIdywhRmLW20+J2i7bc/3G8mBR4Yt74qMUo435UIVUS
-	 Egk9kySky+57bZyQJCZWl22n91uwILjBUYO//Ko5llHeTEy7YjfmHePG16RCqz1DbV
-	 2YO8zGBy4DXI74nLFyfCBZK3G3zUxQsCGQ1jkciA=
+	b=CfToKZuzTF0ZsP4umitZUHMI2UU9J6YjDZDuXmwidUb+8MbBcRBD2YaUJtecHVAyj
+	 3llDm0NjH8nGKY9U2+iJCZLzqR+dR+FFD8Ehj7ThHAopsrj+PrUEaz9cv/qUukd/te
+	 GEx3sWrVu5ScEc8mSZ8lkk0Fq2jJJWAZURvwAZQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/590] regulator: dt-bindings: mt6315: Drop regulator-compatible property
-Date: Wed,  5 Feb 2025 14:37:33 +0100
-Message-ID: <20250205134459.006920570@linuxfoundation.org>
+Subject: [PATCH 6.13 112/623] hwmon: (nct6775): Actually make use of the HWMON_NCT6775 symbol namespace
+Date: Wed,  5 Feb 2025 14:37:34 +0100
+Message-ID: <20250205134500.500469963@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 08242719a8af603db54a2a79234a8fe600680105 ]
+[ Upstream commit 2505f87eb3af55f3dd7f57d7cb7783b94b52a2d9 ]
 
-The "regulator-compatible" property has been deprecated since 2012 in
-commit 13511def87b9 ("regulator: deprecate regulator-compatible DT
-property"), which is so old it's not even mentioned in the converted
-regulator bindings YAML file. It should not have been used for new
-submissions such as the MT6315.
+DEFAULT_SYMBOL_NAMESPACE must already be defined when <linux/export.h>
+is included. So move the define above the include block.
 
-Drop the property from the MT6315 regulator binding and its examples.
-
-Fixes: 977fb5b58469 ("regulator: document binding for MT6315 regulator")
-Fixes: 6d435a94ba5b ("regulator: mt6315: Enforce regulator-compatible, not name")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20241211052427.4178367-2-wenst@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c3963bc0a0cf ("hwmon: (nct6775) Split core and platform driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/regulator/mt6315-regulator.yaml     | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/hwmon/nct6775-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-index cd4aa27218a1b..fa6743bb269d4 100644
---- a/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/mt6315-regulator.yaml
-@@ -35,10 +35,6 @@ properties:
-         $ref: regulator.yaml#
-         unevaluatedProperties: false
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index c243b51837d2f..fa3351351825b 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -42,6 +42,9 @@
  
--        properties:
--          regulator-compatible:
--            pattern: "^vbuck[1-4]$"
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#undef DEFAULT_SYMBOL_NAMESPACE
++#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
++
+ #include <linux/module.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -56,9 +59,6 @@
+ #include "lm75.h"
+ #include "nct6775.h"
+ 
+-#undef DEFAULT_SYMBOL_NAMESPACE
+-#define DEFAULT_SYMBOL_NAMESPACE "HWMON_NCT6775"
 -
-     additionalProperties: false
+ #define USE_ALTERNATE
  
- required:
-@@ -56,7 +52,6 @@ examples:
- 
-       regulators {
-         vbuck1 {
--          regulator-compatible = "vbuck1";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
-@@ -64,7 +59,6 @@ examples:
-         };
- 
-         vbuck3 {
--          regulator-compatible = "vbuck3";
-           regulator-min-microvolt = <300000>;
-           regulator-max-microvolt = <1193750>;
-           regulator-enable-ramp-delay = <256>;
+ /* used to set data->name = nct6775_device_names[data->sio_kind] */
 -- 
 2.39.5
 
