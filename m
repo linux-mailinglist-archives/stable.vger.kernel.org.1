@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E75FA28ED2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DFFA28EDB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A882166ED0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C83D1889DB0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A134313C3F6;
-	Wed,  5 Feb 2025 14:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE21814F136;
+	Wed,  5 Feb 2025 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SOue9SKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5ASc4e8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3001519BE;
-	Wed,  5 Feb 2025 14:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8EB8634E;
+	Wed,  5 Feb 2025 14:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765050; cv=none; b=QHHYJyyWNYVUv3TGdZ3w7QwPeEO9RtEMlZUKO0SwCRRM94UlIArS/Llm078eFfikUymDEsoh+9CgKpQHKZt4RBuBvNBn5N6e3jl6cdvFhPzVBb5tMf+On0gle/XJ5f5Ala80wakHLqKmOudoju4fmsFXC2WGjV2KwCLnCDdMaZk=
+	t=1738765060; cv=none; b=hhyw2q8AviEVvZADHsgktgVa83KBCogg8q44QxhnPiS/Fz6xUyGGT3aPhqcMOVpoTRdWGyrGSsgwrEnb3xAD4P+sAKnucwczj6yeTaaVEE92JMb6sDYn5pr/8mi2m17D8ubqZiTtp8LOOWSoDFSmSRQ0O3RM8fL+qrksJ1Nj9Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765050; c=relaxed/simple;
-	bh=JYCRcn7b+bsDS5PFaqYPGtoNB02Eg/m3Z8xhp1xol3I=;
+	s=arc-20240116; t=1738765060; c=relaxed/simple;
+	bh=5m5lbgowlpt1QH7Z3WEFuYfBjEw/dHBTXXcGSxyBslA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFociIbH25L4BKPzyLewK8xk1H29p92NzngC6H200nIb8Ug8p7doYYxf9/sPzbxt/vLiNDK2hqhVzrAez17hpAnbLKkGrk3syPet2UjeZxGYMwHdG4iJP42WDJD4JEpKoWWCH+GD7HQgDBcQl96dvO5i9K8bsK4WIxZPiWQS9IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SOue9SKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01E5C4CED1;
-	Wed,  5 Feb 2025 14:17:29 +0000 (UTC)
+	 MIME-Version; b=clYAcouW8rxM2ancWlk0Tr16woyaumjOLQ2+DZxz9ric0RNaQ7k7XGXwEopC892Rk7KvzBaAKZjdIA6BgbS5/gB6asTdoZiL1pk6munXfmO1WVifQuCp5qvmVu8z7pc+UixTZcEcQelLl7C0HNdHCH+DFyxrsNeXzd24aZ/bYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5ASc4e8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74E7C4CED1;
+	Wed,  5 Feb 2025 14:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765050;
-	bh=JYCRcn7b+bsDS5PFaqYPGtoNB02Eg/m3Z8xhp1xol3I=;
+	s=korg; t=1738765060;
+	bh=5m5lbgowlpt1QH7Z3WEFuYfBjEw/dHBTXXcGSxyBslA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOue9SKqcSZEndqJ8yeBRcKvHO4575Dha73elou0/pFVbD0LCaa/xAagxY8Snh0Bj
-	 32ufWSEZ5zOJzd76P/MY3NP40zWyhYx5POvNS85xbFSiRfSd1zrFGfoqw0dS72ih3G
-	 wJnOlcYG6DEoeMwRRviKs3PggSNKMdKJH1rGysYI=
+	b=B5ASc4e8TId27UZ+Fzdt5BV2fiFi1fWpCD0ZSI4kosMJjZy2GyqThkX+8RLtUWBx3
+	 SUorhURXHlDZJqi1lwPlqwK4ajPsgp9ryMT1M7nJogGt+vh12S0DvyrhR8A0Hy04+e
+	 1/JOLcT94iuAzBw99q8ABwRUsDJefWZ0KmyyWBGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Leon Yen <leon.yen@mediatek.com>,
 	Sean Wang <sean.wang@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 185/590] wifi: mt76: mt7925: fix wrong parameter for related cmd of chan info
-Date: Wed,  5 Feb 2025 14:39:00 +0100
-Message-ID: <20250205134502.358184671@linuxfoundation.org>
+Subject: [PATCH 6.12 186/590] wifi: mt76: mt7925: Fix CNM Timeout with Single Active Link in MLO
+Date: Wed,  5 Feb 2025 14:39:01 +0100
+Message-ID: <20250205134502.395852977@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -67,73 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit 3f0d2178aaf1ed1c017e61cde9ce8a4432c804d1 ]
+[ Upstream commit 4a596010b246816d7589d8d775b83833a59e63f9 ]
 
-Fix incorrect parameters for the related channel information command.
+Fix CNM command timeout issue when only a single active link is available
+during MLO connection to fix the following kernel log error.
+
+[  741.931030] wlan0: [link 1] local address be:90:e0:22:c4:22, AP link address 08:0c:43:7a:19:2a
+[  741.931042] wlan0: [link 1] determined AP 08:0c:43:7a:19:2a to be EHT
+[  741.931052] wlan0: [link 1] connecting with EHT mode, max bandwidth 160 MHz
+[  741.931071] wlan0: WMM AC=0 acm=0 aifs=2 cWmin=3 cWmax=7 txop=47 uapsd=0, downgraded=0
+[  741.931076] wlan0: WMM AC=1 acm=0 aifs=2 cWmin=7 cWmax=15 txop=94 uapsd=0, downgraded=0
+[  741.931080] wlan0: WMM AC=2 acm=0 aifs=3 cWmin=15 cWmax=1023 txop=0 uapsd=0, downgraded=0
+[  741.931085] wlan0: WMM AC=3 acm=0 aifs=7 cWmin=15 cWmax=1023 txop=0 uapsd=0, downgraded=0
+[  741.931095] wlan0: moving STA 22:0c:43:7a:19:2a to state 3
+[  749.090928] mt7925e 0000:2b:00.0: Message 00020002 (seq 15) timeout
+[  752.162972] mt7925e 0000:2b:00.0: Message 00020003 (seq 1) timeout
+[  755.234975] mt7925e 0000:2b:00.0: Message 00020002 (seq 2) timeout
+[  758.306971] mt7925e 0000:2b:00.0: Message 00020004 (seq 3) timeout
 
 Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-Link: https://patch.msgid.link/20241211011926.5002-6-sean.wang@kernel.org
+Link: https://patch.msgid.link/20241211011926.5002-7-sean.wang@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 23 +++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 7105705113baa..23d0b1d97956e 100644
+index 23d0b1d97956e..60a12b0e45ee6 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1198,6 +1198,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
- 		req.roc[i].bw_from_ap = CMD_CBW_20MHZ;
- 		req.roc[i].center_chan = center_ch;
- 		req.roc[i].center_chan_from_ap = center_ch;
-+		req.roc[i].center_chan2 = 0;
-+		req.roc[i].center_chan2_from_ap = 0;
+@@ -1151,7 +1151,12 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+ 			u8 rsv[4];
+ 		} __packed hdr;
+ 		struct roc_acquire_tlv roc[2];
+-	} __packed req;
++	} __packed req = {
++			.roc[0].tag = cpu_to_le16(UNI_ROC_NUM),
++			.roc[0].len = cpu_to_le16(sizeof(struct roc_acquire_tlv)),
++			.roc[1].tag = cpu_to_le16(UNI_ROC_NUM),
++			.roc[1].len = cpu_to_le16(sizeof(struct roc_acquire_tlv))
++	};
  
- 		/* STR : 0xfe indicates BAND_ALL with enabling DBDC
- 		 * EMLSR : 0xff indicates (BAND_AUTO) without DBDC
-@@ -2175,11 +2177,27 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
- 	req = (struct bss_rlm_tlv *)tlv;
- 	req->control_channel = chandef->chan->hw_value;
- 	req->center_chan = ieee80211_frequency_to_channel(freq1);
--	req->center_chan2 = ieee80211_frequency_to_channel(freq2);
-+	req->center_chan2 = 0;
- 	req->tx_streams = hweight8(phy->antenna_mask);
- 	req->ht_op_info = 4; /* set HT 40M allowed */
- 	req->rx_streams = hweight8(phy->antenna_mask);
--	req->band = band;
-+	req->center_chan2 = 0;
-+	req->sco = 0;
-+	req->band = 1;
-+
-+	switch (band) {
-+	case NL80211_BAND_2GHZ:
-+		req->band = 1;
-+		break;
-+	case NL80211_BAND_5GHZ:
-+		req->band = 2;
-+		break;
-+	case NL80211_BAND_6GHZ:
-+		req->band = 3;
-+		break;
-+	default:
-+		break;
-+	}
- 
- 	switch (chandef->width) {
- 	case NL80211_CHAN_WIDTH_40:
-@@ -2190,6 +2208,7 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
- 		break;
- 	case NL80211_CHAN_WIDTH_80P80:
- 		req->bw = CMD_CBW_8080MHZ;
-+		req->center_chan2 = ieee80211_frequency_to_channel(freq2);
- 		break;
- 	case NL80211_CHAN_WIDTH_160:
- 		req->bw = CMD_CBW_160MHZ;
+ 	if (!mconf || hweight16(vif->valid_links) < 2 ||
+ 	    hweight16(sel_links) != 2)
 -- 
 2.39.5
 
