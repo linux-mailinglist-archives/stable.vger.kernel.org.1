@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2725AA28FA5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:27:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F84DA29305
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 616DE7A21D1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAD0F18894AE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2436155382;
-	Wed,  5 Feb 2025 14:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F12119750B;
+	Wed,  5 Feb 2025 14:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riyPX5Am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1jtrMhk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5908634E;
-	Wed,  5 Feb 2025 14:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2929418732B;
+	Wed,  5 Feb 2025 14:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765645; cv=none; b=V3wkRaAg1JNqZrOST6eirivV9E5LKpe+4Q89S/n/QPTq7QwaTslkgqbpdn0AUImfDYPBn1a6nKdPq1v2bkUXHv1fCj4bajtSaAAAaEWIcLXADepBJw5XsxiV7lLDb5XTW4JxhfbGEiBxV+NU0Aqb1Jk8j6aOFkEtGdUdfWgFWLY=
+	t=1738767394; cv=none; b=S7EeMIbzWg29efzrFk/jkvBFMCXw720tppLfv94yawltsYDGQ/vZ52qeZrFhGgzl9loFl2OZS0UYQVE5zcNEnI/WcsgQH4DC32DK5jv6jV6/nVJGMPBO5tj4B/72xbSHnN09fUXM7yUpyFjR8nd7zwJjmxYwZ6qS8/2d93XJt2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765645; c=relaxed/simple;
-	bh=zKQ6aTeVdjQ4BUJaaRHr+I1MVkSzszlCaRhoX29sv9k=;
+	s=arc-20240116; t=1738767394; c=relaxed/simple;
+	bh=o0wHEPGn0s31WEQVWkl75cQc617t8SUfOZLOpH2ncSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TA6Lclf4+wskN5QIPr2Mjexb0gqwCzLMxtTw3AMEusBolIz7XbxYmtWxqcOrVD7SDbsYtJxdffbU+OzqCGggRZgoe/w6lW3LQjb3soGUsqa+CqJhPKQFOb0uuSipQiCLVQYIcRMLpbUd3ZvLBkAxHnkyecLTp78cmGhiwccYirY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riyPX5Am; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9300FC4CED1;
-	Wed,  5 Feb 2025 14:27:24 +0000 (UTC)
+	 MIME-Version; b=mpdLeWLWQ/h5gHFCT/78nDsnjwY2vnfG/8vzoRmffvz/JR44SSh+0mz2YzJowsLlYVc9fWQXueGFLFUfpfXi6Hdd1vdOYfCtQVd3zsDOAV5kVsCJouxdbS0bNN7PzD99k70QbZ4uV0AoFKxEXIhdsiINcRPbpLHfrpusme+ffEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1jtrMhk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69771C4CEEC;
+	Wed,  5 Feb 2025 14:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765645;
-	bh=zKQ6aTeVdjQ4BUJaaRHr+I1MVkSzszlCaRhoX29sv9k=;
+	s=korg; t=1738767394;
+	bh=o0wHEPGn0s31WEQVWkl75cQc617t8SUfOZLOpH2ncSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riyPX5AmKbl6SmeRpTD0nrk0jgKxNtstT70Up00xtXFaJ9pBZVir40xW8JndKz4eh
-	 CH79blVuLnBsu2MVKB57zPqzGu3tDJ6erxgGDJRzOGTRAwn/5fY0ymUeZ8mjoTt1Mg
-	 1rZBA7/bGpfnbwhucLh+j0etlp3lVD1bdAGy/H/w=
+	b=M1jtrMhk8LJJSlIFKhXMo61LOmxNOPKG6j1wn/7oV0vITRL2LNCsXIi2zINyzj/yc
+	 seF2WozXWfzhI5JzW2DixGD+MZ/krQQvG8rOsZSjvMPZ9/J4tG3slSGKtdWWlCS5dS
+	 yIhYt647jCvTNkYYDeLR4J5KK4d/2A8i1IXigMTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/393] media: i2c: imx412: Add missing newline to prints
-Date: Wed,  5 Feb 2025 14:43:25 +0100
-Message-ID: <20250205134431.256928223@linuxfoundation.org>
+Subject: [PATCH 6.12 451/590] serial: 8250: Adjust the timeout for FIFO mode
+Date: Wed,  5 Feb 2025 14:43:26 +0100
+Message-ID: <20250205134512.520894146@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +64,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: John Ogness <john.ogness@linutronix.de>
 
-[ Upstream commit 33f4a7fba7229232e294f4794503283e44cd03f2 ]
+[ Upstream commit d91f98be26510f5f81ec66425bb0306d1ccd571a ]
 
-Add trailing \n to dev_dbg and dev_err prints where missing.
+After a console has written a record into UART_TX, it uses
+wait_for_xmitr() to wait until the data has been sent out before
+returning. However, wait_for_xmitr() will timeout after 10ms,
+regardless if the data has been transmitted or not.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Fixes: 9214e86c0cc1 ("media: i2c: Add imx412 camera sensor driver")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+For single bytes, this timeout is sufficient even at very slow
+baud rates, such as 1200bps. However, when FIFO mode is used,
+there may be 64 bytes pushed into the FIFO at once. At a baud
+rate of 115200bps, the 10ms timeout is still sufficient. But
+when using lower baud rates (such as 57600bps), the timeout
+is _not_ sufficient. This causes longer lines to be cut off,
+resulting in lost and horribly misformatted output on the
+console.
+
+When using FIFO mode, take the number of bytes into account to
+determine an appropriate maximum timeout. Increasing the timeout
+does not affect performance since ideally the timeout never
+occurs.
+
+Fixes: 8f3631f0f6eb ("serial/8250: Use fifo in 8250 console driver")
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Wander Lairson Costa <wander@redhat.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20250107212702.169493-2-john.ogness@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx412.c | 42 +++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ drivers/tty/serial/8250/8250_port.c | 32 +++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/imx412.c b/drivers/media/i2c/imx412.c
-index 8597f98a8dcf8..90fc8eea171f4 100644
---- a/drivers/media/i2c/imx412.c
-+++ b/drivers/media/i2c/imx412.c
-@@ -549,7 +549,7 @@ static int imx412_update_exp_gain(struct imx412 *imx412, u32 exposure, u32 gain)
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 3509af7dc52b8..11519aa2598a0 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2059,7 +2059,8 @@ static void serial8250_break_ctl(struct uart_port *port, int break_state)
+ 	serial8250_rpm_put(up);
+ }
  
- 	lpfr = imx412->vblank + imx412->cur_mode->height;
+-static void wait_for_lsr(struct uart_8250_port *up, int bits)
++/* Returns true if @bits were set, false on timeout */
++static bool wait_for_lsr(struct uart_8250_port *up, int bits)
+ {
+ 	unsigned int status, tmout = 10000;
  
--	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u",
-+	dev_dbg(imx412->dev, "Set exp %u, analog gain %u, lpfr %u\n",
- 		exposure, gain, lpfr);
- 
- 	ret = imx412_write_reg(imx412, IMX412_REG_HOLD, 1, 1);
-@@ -596,7 +596,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_VBLANK:
- 		imx412->vblank = imx412->vblank_ctrl->val;
- 
--		dev_dbg(imx412->dev, "Received vblank %u, new lpfr %u",
-+		dev_dbg(imx412->dev, "Received vblank %u, new lpfr %u\n",
- 			imx412->vblank,
- 			imx412->vblank + imx412->cur_mode->height);
- 
-@@ -615,7 +615,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 		exposure = ctrl->val;
- 		analog_gain = imx412->again_ctrl->val;
- 
--		dev_dbg(imx412->dev, "Received exp %u, analog gain %u",
-+		dev_dbg(imx412->dev, "Received exp %u, analog gain %u\n",
- 			exposure, analog_gain);
- 
- 		ret = imx412_update_exp_gain(imx412, exposure, analog_gain);
-@@ -624,7 +624,7 @@ static int imx412_set_ctrl(struct v4l2_ctrl *ctrl)
- 
- 		break;
- 	default:
--		dev_err(imx412->dev, "Invalid control %d", ctrl->id);
-+		dev_err(imx412->dev, "Invalid control %d\n", ctrl->id);
- 		ret = -EINVAL;
+@@ -2074,11 +2075,11 @@ static void wait_for_lsr(struct uart_8250_port *up, int bits)
+ 		udelay(1);
+ 		touch_nmi_watchdog();
  	}
++
++	return (tmout != 0);
+ }
  
-@@ -805,14 +805,14 @@ static int imx412_start_streaming(struct imx412 *imx412)
- 	ret = imx412_write_regs(imx412, reg_list->regs,
- 				reg_list->num_of_regs);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to write initial registers");
-+		dev_err(imx412->dev, "fail to write initial registers\n");
- 		return ret;
+-/*
+- *	Wait for transmitter & holding register to empty
+- */
++/* Wait for transmitter and holding register to empty with timeout */
+ static void wait_for_xmitr(struct uart_8250_port *up, int bits)
+ {
+ 	unsigned int tmout;
+@@ -3297,6 +3298,16 @@ static void serial8250_console_restore(struct uart_8250_port *up)
+ 	serial8250_out_MCR(up, up->mcr | UART_MCR_DTR | UART_MCR_RTS);
+ }
+ 
++static void fifo_wait_for_lsr(struct uart_8250_port *up, unsigned int count)
++{
++	unsigned int i;
++
++	for (i = 0; i < count; i++) {
++		if (wait_for_lsr(up, UART_LSR_THRE))
++			return;
++	}
++}
++
+ /*
+  * Print a string to the serial port using the device FIFO
+  *
+@@ -3306,13 +3317,15 @@ static void serial8250_console_restore(struct uart_8250_port *up)
+ static void serial8250_console_fifo_write(struct uart_8250_port *up,
+ 					  const char *s, unsigned int count)
+ {
+-	int i;
+ 	const char *end = s + count;
+ 	unsigned int fifosize = up->tx_loadsz;
++	unsigned int tx_count = 0;
+ 	bool cr_sent = false;
++	unsigned int i;
+ 
+ 	while (s != end) {
+-		wait_for_lsr(up, UART_LSR_THRE);
++		/* Allow timeout for each byte of a possibly full FIFO */
++		fifo_wait_for_lsr(up, fifosize);
+ 
+ 		for (i = 0; i < fifosize && s != end; ++i) {
+ 			if (*s == '\n' && !cr_sent) {
+@@ -3323,7 +3336,14 @@ static void serial8250_console_fifo_write(struct uart_8250_port *up,
+ 				cr_sent = false;
+ 			}
+ 		}
++		tx_count = i;
  	}
++
++	/*
++	 * Allow timeout for each byte written since the caller will only wait
++	 * for UART_LSR_BOTH_EMPTY using the timeout of a single character
++	 */
++	fifo_wait_for_lsr(up, tx_count);
+ }
  
- 	/* Setup handler will write actual exposure and gain */
- 	ret =  __v4l2_ctrl_handler_setup(imx412->sd.ctrl_handler);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to setup handler");
-+		dev_err(imx412->dev, "fail to setup handler\n");
- 		return ret;
- 	}
- 
-@@ -823,7 +823,7 @@ static int imx412_start_streaming(struct imx412 *imx412)
- 	ret = imx412_write_reg(imx412, IMX412_REG_MODE_SELECT,
- 			       1, IMX412_MODE_STREAMING);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to start streaming");
-+		dev_err(imx412->dev, "fail to start streaming\n");
- 		return ret;
- 	}
- 
-@@ -904,7 +904,7 @@ static int imx412_detect(struct imx412 *imx412)
- 		return ret;
- 
- 	if (val != IMX412_ID) {
--		dev_err(imx412->dev, "chip id mismatch: %x!=%x",
-+		dev_err(imx412->dev, "chip id mismatch: %x!=%x\n",
- 			IMX412_ID, val);
- 		return -ENXIO;
- 	}
-@@ -936,7 +936,7 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 	imx412->reset_gpio = devm_gpiod_get_optional(imx412->dev, "reset",
- 						     GPIOD_OUT_LOW);
- 	if (IS_ERR(imx412->reset_gpio)) {
--		dev_err(imx412->dev, "failed to get reset gpio %ld",
-+		dev_err(imx412->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx412->reset_gpio));
- 		return PTR_ERR(imx412->reset_gpio);
- 	}
-@@ -944,13 +944,13 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 	/* Get sensor input clock */
- 	imx412->inclk = devm_clk_get(imx412->dev, NULL);
- 	if (IS_ERR(imx412->inclk)) {
--		dev_err(imx412->dev, "could not get inclk");
-+		dev_err(imx412->dev, "could not get inclk\n");
- 		return PTR_ERR(imx412->inclk);
- 	}
- 
- 	rate = clk_get_rate(imx412->inclk);
- 	if (rate != IMX412_INCLK_RATE) {
--		dev_err(imx412->dev, "inclk frequency mismatch");
-+		dev_err(imx412->dev, "inclk frequency mismatch\n");
- 		return -EINVAL;
- 	}
- 
-@@ -975,14 +975,14 @@ static int imx412_parse_hw_config(struct imx412 *imx412)
- 
- 	if (bus_cfg.bus.mipi_csi2.num_data_lanes != IMX412_NUM_DATA_LANES) {
- 		dev_err(imx412->dev,
--			"number of CSI2 data lanes %d is not supported",
-+			"number of CSI2 data lanes %d is not supported\n",
- 			bus_cfg.bus.mipi_csi2.num_data_lanes);
- 		ret = -EINVAL;
- 		goto done_endpoint_free;
- 	}
- 
- 	if (!bus_cfg.nr_of_link_frequencies) {
--		dev_err(imx412->dev, "no link frequencies defined");
-+		dev_err(imx412->dev, "no link frequencies defined\n");
- 		ret = -EINVAL;
- 		goto done_endpoint_free;
- 	}
-@@ -1040,7 +1040,7 @@ static int imx412_power_on(struct device *dev)
- 
- 	ret = clk_prepare_enable(imx412->inclk);
- 	if (ret) {
--		dev_err(imx412->dev, "fail to enable inclk");
-+		dev_err(imx412->dev, "fail to enable inclk\n");
- 		goto error_reset;
- 	}
- 
-@@ -1151,7 +1151,7 @@ static int imx412_init_controls(struct imx412 *imx412)
- 		imx412->hblank_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY;
- 
- 	if (ctrl_hdlr->error) {
--		dev_err(imx412->dev, "control init failed: %d",
-+		dev_err(imx412->dev, "control init failed: %d\n",
- 			ctrl_hdlr->error);
- 		v4l2_ctrl_handler_free(ctrl_hdlr);
- 		return ctrl_hdlr->error;
-@@ -1188,7 +1188,7 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_parse_hw_config(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "HW configuration is not supported");
-+		dev_err(imx412->dev, "HW configuration is not supported\n");
- 		return ret;
- 	}
- 
-@@ -1196,14 +1196,14 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_power_on(imx412->dev);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to power-on the sensor");
-+		dev_err(imx412->dev, "failed to power-on the sensor\n");
- 		goto error_mutex_destroy;
- 	}
- 
- 	/* Check module identity */
- 	ret = imx412_detect(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to find sensor: %d", ret);
-+		dev_err(imx412->dev, "failed to find sensor: %d\n", ret);
- 		goto error_power_off;
- 	}
- 
-@@ -1213,7 +1213,7 @@ static int imx412_probe(struct i2c_client *client)
- 
- 	ret = imx412_init_controls(imx412);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to init controls: %d", ret);
-+		dev_err(imx412->dev, "failed to init controls: %d\n", ret);
- 		goto error_power_off;
- 	}
- 
-@@ -1227,14 +1227,14 @@ static int imx412_probe(struct i2c_client *client)
- 	imx412->pad.flags = MEDIA_PAD_FL_SOURCE;
- 	ret = media_entity_pads_init(&imx412->sd.entity, 1, &imx412->pad);
- 	if (ret) {
--		dev_err(imx412->dev, "failed to init entity pads: %d", ret);
-+		dev_err(imx412->dev, "failed to init entity pads: %d\n", ret);
- 		goto error_handler_free;
- 	}
- 
- 	ret = v4l2_async_register_subdev_sensor(&imx412->sd);
- 	if (ret < 0) {
- 		dev_err(imx412->dev,
--			"failed to register async subdev: %d", ret);
-+			"failed to register async subdev: %d\n", ret);
- 		goto error_media_entity;
- 	}
- 
+ /*
 -- 
 2.39.5
 
