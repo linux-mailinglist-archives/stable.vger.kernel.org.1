@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8163BA28D62
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD37A28E25
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4ACF1886288
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32317168285
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8B3155342;
-	Wed,  5 Feb 2025 13:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F471547E9;
+	Wed,  5 Feb 2025 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7uItu6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyQCZHaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BFB14A4E9;
-	Wed,  5 Feb 2025 13:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2101F1519AA;
+	Wed,  5 Feb 2025 14:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763981; cv=none; b=RhLcOBOpOjp07jU/zqaM3mMAEFKfCceVqzIrV/Bxob3+mL+YKVYfvoeKEiSY2V95kypBW9mV/iwoXNfVCGBOCdzCA/xjU4LjxrbAcIkLFrbqkQV+vF/xOG+UnzqaznkseFdqXYX0feU/UeEdeazwVWC7ghTW4D4+fBTSLPeIolM=
+	t=1738764568; cv=none; b=fKYqIfhhSooHvqetCOheeeT1Km+YMZ4qJvEhl3a/bjdl2hTqlvEcQnGm5hXN4UPGYFW6r+B8VbTEwPwZmtM9s7STGrUyw5a14qlj5D8GEgZQZgZjOK9N+jVb2Pvrs+2Js1/lqS8nqvMn4uzWfbBDio6I5wZUHrZYtYjcf4Ca/VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763981; c=relaxed/simple;
-	bh=bZe1f/lvjUlByHb4hVFe+IL7gAlraaTdcNMtpaqPW4E=;
+	s=arc-20240116; t=1738764568; c=relaxed/simple;
+	bh=YePPqBhOv1GcdU20Pg3i42D4LlLJvtpLhxn1dDRTAwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyqsliqVD2W13u6I+dJ+sbZhZVb5xoZANifXj7nQc3OIKrfrMdybHV8UD89J9zOZC0bc1VD2PJPRfh9iVNaB5ZryhJc2coY6IVQ9oGIiNAyISeAo8ZH9lEHtjj7ULpA+Oq7etEz4OJG1CD4KzVLighGADATANFD3RjTslpurP6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7uItu6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA3AC4CED6;
-	Wed,  5 Feb 2025 13:59:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kzYIu1eRYHkDBT3Mrxq4u0a7g0ZlIAnworsqEWFO00rJ1YLQXYFP4yM2j5Aa3ArA2W6W6QpIHbduIS8rW5H2w4CbgrOfMIQ6x9Xt2cPJNPtOjtYs/4/F+NjkqRdnOg6JwkaXpm3Hp7iXTFJqK5f8I8R/bmeiZX44Sbl9Efno1F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyQCZHaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842D7C4CED1;
+	Wed,  5 Feb 2025 14:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763980;
-	bh=bZe1f/lvjUlByHb4hVFe+IL7gAlraaTdcNMtpaqPW4E=;
+	s=korg; t=1738764568;
+	bh=YePPqBhOv1GcdU20Pg3i42D4LlLJvtpLhxn1dDRTAwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7uItu6zAiLxEhZb3HhxFwpSEp7vvMd5kSqEWM4QvwD//UT395HFD1oV+RkVXL/DP
-	 ppDdsUq5lPAtYkkkFGUr7ygg5qtqBM35X+KwUM0S1dn/e1noxjYtncw8Z7aV0hyFjF
-	 JcocYESjVuLqBSPwwHWDrXjXvWav/SARQYCuuG9g=
+	b=hyQCZHaY7WPeIHfUZodKkORFIMM2b9A73V/8GS97SyT6mqE61dp/rOb1ItvSRkkQx
+	 aWJI2HWcFQ4CB4nol/6oXSdeycgQq7iXKiYBEuMmEMXPtX64Z9xxvVaKNQegQUUsLx
+	 zE+5JmKOtZU583LuIIS+bk412LRsXOqNuLX4Pqkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/590] wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
+Subject: [PATCH 6.13 091/623] wifi: wcn36xx: fix channel survey memory allocation size
 Date: Wed,  5 Feb 2025 14:37:13 +0100
-Message-ID: <20250205134458.238450874@linuxfoundation.org>
+Message-ID: <20250205134459.707437902@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 8559a9e0c457729fe3edb3176bbf7c7874f482b0 ]
+[ Upstream commit 6200d947f050efdba4090dfefd8a01981363d954 ]
 
-Just like in commit 4dfde294b979 ("rtlwifi: rise completion at the last
-step of firmware callback"), only signal completion once the function is
-finished. Otherwise, the module removal waiting for the completion could
-free the memory that the callback will still use before returning.
+KASAN reported a memory allocation issue in wcn->chan_survey
+due to incorrect size calculation.
+This commit uses kcalloc to allocate memory for wcn->chan_survey,
+ensuring proper initialization and preventing the use of uninitialized
+values when there are no frames on the channel.
 
-Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-3-cascardo@igalia.com
+Fixes: 29696e0aa413 ("wcn36xx: Track SNR and RSSI for each RX frame")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Acked-by: Loic Poulain <loic.poulain@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://patch.msgid.link/20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/wcn36xx/main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-index bbf8ff63dcedb..e63c67b1861b5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-@@ -64,22 +64,23 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
- 
- 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
- 		"Firmware callback routine entered!\n");
--	complete(&rtlpriv->firmware_loading_complete);
- 	if (!firmware) {
- 		pr_err("Firmware %s not available\n", fw_name);
- 		rtlpriv->max_fw_size = 0;
--		return;
-+		goto exit;
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 8557d4826a46e..94d08d6ae1a3c 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1590,7 +1590,10 @@ static int wcn36xx_probe(struct platform_device *pdev)
  	}
- 	if (firmware->size > rtlpriv->max_fw_size) {
- 		pr_err("Firmware is too big!\n");
- 		rtlpriv->max_fw_size = 0;
- 		release_firmware(firmware);
--		return;
-+		goto exit;
- 	}
- 	pfirmware = (struct rt_firmware *)rtlpriv->rtlhal.pfirmware;
- 	memcpy(pfirmware->sz_fw_tmpbuffer, firmware->data, firmware->size);
- 	pfirmware->sz_fw_tmpbufferlen = firmware->size;
- 	release_firmware(firmware);
-+exit:
-+	complete(&rtlpriv->firmware_loading_complete);
- }
  
- static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
+ 	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
+-	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
++	wcn->chan_survey = devm_kcalloc(wcn->dev,
++					n_channels,
++					sizeof(struct wcn36xx_chan_survey),
++					GFP_KERNEL);
+ 	if (!wcn->chan_survey) {
+ 		ret = -ENOMEM;
+ 		goto out_wq;
 -- 
 2.39.5
 
