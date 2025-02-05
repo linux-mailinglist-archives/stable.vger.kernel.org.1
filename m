@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04AEA29298
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:03:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87020A28E49
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BACB23AB7CF
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41E533A15D5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BA518A6B7;
-	Wed,  5 Feb 2025 14:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67C4155382;
+	Wed,  5 Feb 2025 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JABMhXs+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPYoE1Nu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819011C6BE;
-	Wed,  5 Feb 2025 14:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838D11494DF;
+	Wed,  5 Feb 2025 14:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767181; cv=none; b=Rc7qbtaRbPEBCIzO9X0NY8o8sCPi2z1/aB1CwSek5kOwRyyi2fOCkCwFAX+KkbLY9vK38nwEpneXRC9kOcT48m9CmVgKcynWgIpyCS+jSGaLjVBlnbV+TM9G174kQ63Mm5WRK+D+Y0pBakGAZQYlKnZQJEVrI3UafmOd12reMZ0=
+	t=1738764648; cv=none; b=EUXCfDK4Ku1UJvFAhtSI3DacBK1asYH0RPiP4LF/wnZy3UaPQVYdoX+lPlGquy0HC9QrUSGapuXI3jw5/Scph2aaf7w6waV7e5lUE2YB+3yX4mxtRZHKnxnqCnhd3kysXnG0+i0AH0G+aWJIvfs55tdQW9+NmQywpGsa4YIS5iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767181; c=relaxed/simple;
-	bh=NIhNH7L+FvRCZVFa6Fo+75YljMeuBCagPUUhy7Y6lFk=;
+	s=arc-20240116; t=1738764648; c=relaxed/simple;
+	bh=ZYG5Aw7etZ1lx1QQ2gLgHtMcUw7Ql8Lebf9ogNoLm90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/WvimihSCboIVSrYK/AbYtPCD7vFsyjQevp7Z+79iH0cfG0Y7wUw21rQRtIHHoOWtU7l6nmgVelN8IdRsTrwdwtCu8TIObDZwpSCbeR8u8n6SagAO7+OzpymgDK1zKqzK0DvAQoSbtOUYLLk5sN1iYOqJcXS2UBkCr087NnT10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JABMhXs+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E403AC4CED1;
-	Wed,  5 Feb 2025 14:53:00 +0000 (UTC)
+	 MIME-Version; b=X1+ReErXo+vPc1N138m2M9EG21gST2RD2+DULJqJk7RgZ7KUjkSK3Xoe6qT8+hctavvEQN6b+EHRC2gR0zUKbsL+yzC+kjrnEOL9ELj3Zist6iWSIw4qWbwDX26uYrzyTCl9Fj+AcXJDIwiPugcVr4aPfkfligF4bY88N7CoLHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPYoE1Nu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D6AC4CED1;
+	Wed,  5 Feb 2025 14:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767181;
-	bh=NIhNH7L+FvRCZVFa6Fo+75YljMeuBCagPUUhy7Y6lFk=;
+	s=korg; t=1738764648;
+	bh=ZYG5Aw7etZ1lx1QQ2gLgHtMcUw7Ql8Lebf9ogNoLm90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JABMhXs+biLOkPPuTM21JYUy7vtkPkVTems2BRI1s/dCZwZncNwCCBG9X9JlEr/vI
-	 c1wAG2nj5T/+BWXwtiafLKinlweu4UiuMps+M9Z3mpxz+cX/9GykJBCDlukLObPimU
-	 zfQQIVNrsnkOyhokiL0VkUt0hJEiKAgqluS1/DkA=
+	b=EPYoE1NuslWjYP0JxIqvhZ13ftDxpNzX0sajkbPa/zb1IfeKN2uaFnK3L9IJoIPZe
+	 /qBcy/cj9r2TbBfGUBrnswgV3RYOiFphqkmJaY/MtL9ezfSrHt8y2s3h3OJhqo2kmO
+	 VBeTOPMDsWX72NEeeifioHeCS0y7Ary5XHgYIcjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 367/623] arm64: dts: qcom: msm8996-xiaomi-gemini: Fix LP5562 LED1 reg property
+Subject: [PATCH 6.6 190/393] padata: add pd get/put refcnt helper
 Date: Wed,  5 Feb 2025 14:41:49 +0100
-Message-ID: <20250205134510.260228188@linuxfoundation.org>
+Message-ID: <20250205134427.566505951@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 02e784c5023232c48c6ec79b52ac8929d4e4db34 ]
+[ Upstream commit ae154202cc6a189b035359f3c4e143d5c24d5352 ]
 
-The LP5562 led@1 reg property should likely be set to 1 to match
-the unit. Fix it.
+Add helpers for pd to get/put refcnt to make code consice.
 
-Fixes: 4ac46b3682c5 ("arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241006022012.366601-1-marex@denx.de
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-index f8e9d90afab00..dbad8f57f2fa3 100644
---- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
-@@ -64,7 +64,7 @@
- 		};
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 85ac7cfe87446..6badcbc6d3cb7 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -47,6 +47,22 @@ struct padata_mt_job_state {
+ static void padata_free_pd(struct parallel_data *pd);
+ static void __init padata_mt_helper(struct work_struct *work);
  
- 		led@1 {
--			reg = <0>;
-+			reg = <1>;
- 			chan-name = "button-backlight1";
- 			led-cur = /bits/ 8 <0x32>;
- 			max-cur = /bits/ 8 <0xc8>;
++static inline void padata_get_pd(struct parallel_data *pd)
++{
++	refcount_inc(&pd->refcnt);
++}
++
++static inline void padata_put_pd_cnt(struct parallel_data *pd, int cnt)
++{
++	if (refcount_sub_and_test(cnt, &pd->refcnt))
++		padata_free_pd(pd);
++}
++
++static inline void padata_put_pd(struct parallel_data *pd)
++{
++	padata_put_pd_cnt(pd, 1);
++}
++
+ static int padata_index_to_cpu(struct parallel_data *pd, int cpu_index)
+ {
+ 	int cpu, target_cpu;
+@@ -206,7 +222,7 @@ int padata_do_parallel(struct padata_shell *ps,
+ 	if ((pinst->flags & PADATA_RESET))
+ 		goto out;
+ 
+-	refcount_inc(&pd->refcnt);
++	padata_get_pd(pd);
+ 	padata->pd = pd;
+ 	padata->cb_cpu = *cb_cpu;
+ 
+@@ -380,8 +396,7 @@ static void padata_serial_worker(struct work_struct *serial_work)
+ 	}
+ 	local_bh_enable();
+ 
+-	if (refcount_sub_and_test(cnt, &pd->refcnt))
+-		padata_free_pd(pd);
++	padata_put_pd_cnt(pd, cnt);
+ }
+ 
+ /**
+@@ -678,8 +693,7 @@ static int padata_replace(struct padata_instance *pinst)
+ 	synchronize_rcu();
+ 
+ 	list_for_each_entry_continue_reverse(ps, &pinst->pslist, list)
+-		if (refcount_dec_and_test(&ps->opd->refcnt))
+-			padata_free_pd(ps->opd);
++		padata_put_pd(ps->opd);
+ 
+ 	pinst->flags &= ~PADATA_RESET;
+ 
+@@ -1127,8 +1141,7 @@ void padata_free_shell(struct padata_shell *ps)
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+ 	pd = rcu_dereference_protected(ps->pd, 1);
+-	if (refcount_dec_and_test(&pd->refcnt))
+-		padata_free_pd(pd);
++	padata_put_pd(pd);
+ 	mutex_unlock(&ps->pinst->lock);
+ 
+ 	kfree(ps);
 -- 
 2.39.5
 
