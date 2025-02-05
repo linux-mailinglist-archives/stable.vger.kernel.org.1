@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49748A29308
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:08:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF12DA29253
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBB043AD820
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C0003AD6F4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3249DF71;
-	Wed,  5 Feb 2025 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5648A1FECBB;
+	Wed,  5 Feb 2025 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eubvEmZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uolTm0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB2415EFA1;
-	Wed,  5 Feb 2025 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C451FECB0;
+	Wed,  5 Feb 2025 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767442; cv=none; b=onfv9Rh7G2Qng6V8dsyzGzBGecajZcT71BYcg4zwAaYnzgQe6+IMIYRmjwL/xUucK9TLKhtx9rQm2uDpbJQ4REq20fUz5gxd4jEKfqUFT4dqfcdxTazK+INwUTKmb9084KLxoN6F0XRccmi7IxMFANBe5XMRijsbIPKZlEk9SRA=
+	t=1738767011; cv=none; b=kWR4+U1RFznxyOfvE1NqcGlFtDs/zA0AydCXrI5ENQo5dDMWlFyR4s60weuBvutpVjUeYcXh0Vi8nL6AsQ7ZRjf4TSmmSZpR2Y0TF8cPmfKzG0pVAx4o0MQvlCJ8HcdFfuYHXuj4MIuO4Dk21pXdQ4vUVCFnjWf6WiuQeFeWy/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767442; c=relaxed/simple;
-	bh=dGPOW0Zajp78AXAiiqXYE0mhn/nKx4+NEV4V7/jpRcU=;
+	s=arc-20240116; t=1738767011; c=relaxed/simple;
+	bh=oZf+tnVc56SDJQSAPRX46ki8DDG4RQdZJbxmasbn7Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6qiArlAUgj02O9HMoHpiDN6vFvqQv7pZH+fb6jpBcrk73BpDMK1UCvbARQYy9h+P5axCCmpKqZxapxKW2R4oAMJvRL8p5xYjwEBN0eqWg4GvNdOlvjo7fhMuF01p8KOKZ6GRjMG2i+kc1NXemPt0K9nRwqRlUhpJF5/bENZQDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eubvEmZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C543C4CED1;
-	Wed,  5 Feb 2025 14:57:21 +0000 (UTC)
+	 MIME-Version; b=rnjmROQ3NRFhefyDVMexQySf0GcNV6aJ3MbswsARHXzk8QO4d+twW6Vxc5A76/X+/wD3liMEDRkLv87qdhL4b4LztFiXuwd793/UhISGGUVQrRfnYMwSQnor0mHSvMrn/d71jCfDIGiBUnjLCcgEC0QeHG66QxyQ2zbaVBB0mXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uolTm0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6903EC4CED1;
+	Wed,  5 Feb 2025 14:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767442;
-	bh=dGPOW0Zajp78AXAiiqXYE0mhn/nKx4+NEV4V7/jpRcU=;
+	s=korg; t=1738767010;
+	bh=oZf+tnVc56SDJQSAPRX46ki8DDG4RQdZJbxmasbn7Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eubvEmZeyDRDW45I+5ni/ZJtOAh/gw6ZIUzMkHijcbT8aNkat7GgixXWF7RIYkj5T
-	 98M3xsvCvIeHAQv89I7c/65BFnYDKMQOQ5ZdLzQvXXmCVNjy/ONh9v59iLjGGroyPb
-	 uMBs18VOUxv9eW8WuDySftc2e5bsHiqDAZsH1+PA=
+	b=2uolTm0jCk3GV2HY+SVV8l9rsJNhdj/f3GyaWKAhvvu5DDIdNrfVhiQUQVhyUQaWy
+	 pQ7dPfSLaogOb7KXpzyMQoBMmW0SXroTyMJhX8ZviaHMacqqrSdOiAm6MESTodm/sK
+	 fSAN8LEY/FLh/hHgXJI1U3Ph3en08gJKcuDxXw2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 405/623] arm64: dts: qcom: sc7180-trogdor-quackingstick: add missing avee-supply
+Subject: [PATCH 6.12 392/590] arm64: tegra: Fix DMA ID for SPI2
 Date: Wed,  5 Feb 2025 14:42:27 +0100
-Message-ID: <20250205134511.717125804@linuxfoundation.org>
+Message-ID: <20250205134510.264606239@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit aa09de104d421e7ff8d8cde9af98568ce62a002c ]
+[ Upstream commit 346bf459db26325c09ed841fdfd6678de1b1cb3a ]
 
-The bindings requires the avee-supply, use the same regulator as
-the avdd (positive voltage) which would also provide the negative
-voltage by definition.
+DMA ID for SPI2 is '16'. Update the incorrect value in the devicetree.
 
-The fixes:
-sc7180-trogdor-quackingstick-r0.dts: panel@0: 'avee-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/display/panel/boe,tv101wum-nl6.yaml#
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-3-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: bb9667d8187b ("arm64: tegra: Add SPI device tree nodes for Tegra234")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Link: https://lore.kernel.org/r/20241206105201.53596-1-akhilrajeev@nvidia.com
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-index 00229b1515e60..ff8996b4de4e1 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-@@ -78,6 +78,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&lcd_rst>;
- 		avdd-supply = <&ppvar_lcd>;
-+		avee-supply = <&ppvar_lcd>;
- 		pp1800-supply = <&v1p8_disp>;
- 		pp3300-supply = <&pp3300_dx_edp>;
- 		backlight = <&backlight>;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+index 984c85eab41af..570331baa09ee 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -3900,7 +3900,7 @@
+ 			assigned-clock-parents = <&bpmp TEGRA234_CLK_PLLP_OUT0>;
+ 			resets = <&bpmp TEGRA234_RESET_SPI2>;
+ 			reset-names = "spi";
+-			dmas = <&gpcdma 19>, <&gpcdma 19>;
++			dmas = <&gpcdma 16>, <&gpcdma 16>;
+ 			dma-names = "rx", "tx";
+ 			dma-coherent;
+ 			status = "disabled";
 -- 
 2.39.5
 
