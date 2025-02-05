@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6875EA293E6
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EEFA293C7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871C4188AAD7
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F08F7A2EF5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3403517084F;
-	Wed,  5 Feb 2025 15:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DBB193077;
+	Wed,  5 Feb 2025 15:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0el6jVrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nh3rf3U9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63311519BF;
-	Wed,  5 Feb 2025 15:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD39DF59;
+	Wed,  5 Feb 2025 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767888; cv=none; b=cQGB8cCSAWOhZGsTxmuVCPjSJC3ztpchywjJYNXt2xU5i5c+JtZbSQs/bEAV0hR3Ft8fcGROdx6cHQMW3bjW2FWPekfGGVbOBymdU/YQLnrPbdqaAgNdZy2rfWYIv/XCV5YdppSQgaWxmCgjVuxGIsA9V/mbU0WFNWXV8j3dt+g=
+	t=1738768360; cv=none; b=PYqlle8U7VSqIXPj/7O2iBg/1qCDSyimoPKVhluLBF85+PCPazQUj5+bHgtFfRpMxDNX+rRIWYGQi5qQDSzONPopCwTpLJhwgSXWCsImMfmZT4pSIZKSJHWLFfhUepDMGEkdsxmNGFL/TZBg1FT7TMdbjblyiIDLd94pfSlHpIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767888; c=relaxed/simple;
-	bh=AiCZpS/rb3CApxStFR+39F5xT9AD4acq954aY+7AZrE=;
+	s=arc-20240116; t=1738768360; c=relaxed/simple;
+	bh=NqQIHx58ywKLISQfEF2KZGGtvuWcbMtfAlqbxg7Kokg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QM9ZsVxtP3MKbM+jtXj6QdV8Fzv4c2OVRmlPn8IuuFGOjIK+N0WEEUTn2EFoKkrAU/HmgbHQROHQ+REp1GZaBoIFXD1kygJ/afHo+2yZljJ4JdFgUWZE9O7tbVt8qcCNKQtG7DLr0aUKMSsMEo3vdOhTMsy36p6FHmwXG5askO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0el6jVrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4927AC4CED1;
-	Wed,  5 Feb 2025 15:04:47 +0000 (UTC)
+	 MIME-Version; b=g1Xtlbs/vyN6jw1iZQglascN9j9tKW547LfutoSKP7ovkrAAs2KZ0lp0j1TbJoOLkqgIE/fF4Poj4DHsAO87wefU7D9Bnwxx6yBwQANX2icp52wGLCqNApNh5ySBlf1RXxs9sjhhncBP0+v0RlafpspkS1IcPguS9+xAMCN0VxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nh3rf3U9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595B3C4CED1;
+	Wed,  5 Feb 2025 15:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767887;
-	bh=AiCZpS/rb3CApxStFR+39F5xT9AD4acq954aY+7AZrE=;
+	s=korg; t=1738768359;
+	bh=NqQIHx58ywKLISQfEF2KZGGtvuWcbMtfAlqbxg7Kokg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0el6jVrl8lupM6VcTk4fhjTrWe0dQoLcVqV5b4k/coV2fk8kYGN9K/f+pOmh3VPxD
-	 8DlP4+JnNzuBrWqZFwwx7GlzCk5M9NCPrU3sKZrlWtlmnmDWDcuoQUMmWVhZQodIEi
-	 epHiTxd53EAbLIyyXTVtRKaoufKONZRLfxwGRicQ=
+	b=Nh3rf3U94naxu3aSCpTK4yt157V3BUw74HsTDltxXt6IkJDUY8m7X0inasxRrVRrQ
+	 hf2yHwGpAMWr6PmYr5nk+4lDLL89y9vYnFDgpwykzqnZMcY2hhLQbEJXfRF6FXY03x
+	 7vkW4tFYRRyBuc12p25KPP3CDiZHej2oB5Tkn9O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 522/590] hostfs: fix string handling in __dentry_name()
+Subject: [PATCH 6.13 535/623] net: stmmac: Limit the number of MTL queues to hardware capability
 Date: Wed,  5 Feb 2025 14:44:37 +0100
-Message-ID: <20250205134515.234630744@linuxfoundation.org>
+Message-ID: <20250205134516.691763141@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit 60a6002432448bb3f291d80768ae98d62efc9c77 ]
+[ Upstream commit f5fb35a3d6b36d378b2e2ecbfb9caa337d5428e6 ]
 
-strcpy() should not be used with destination potentially overlapping
-the source; what's more, strscpy() in there is pointless - we already
-know the amount we want to copy; might as well use memcpy().
+The number of MTL queues to use is specified by the parameter
+"snps,{tx,rx}-queues-to-use" from stmmac_platform layer.
 
-Fixes: c278e81b8a02 "hostfs: Remove open coded strcpy()"
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+However, the maximum numbers of queues are constrained by upper limits
+determined by the capability of each hardware feature. It's appropriate
+to limit the values not to exceed the upper limit values and display
+a warning message.
+
+This only works if the hardware capability has the upper limit values.
+
+Fixes: d976a525c371 ("net: stmmac: multiple queues dt configuration")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hostfs/hostfs_kern.c | 27 ++++++---------------------
- 1 file changed, 6 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 084f6ed2dd7a6..94f3cc42c7403 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -94,32 +94,17 @@ __uml_setup("hostfs=", hostfs_args,
- static char *__dentry_name(struct dentry *dentry, char *name)
- {
- 	char *p = dentry_path_raw(dentry, name, PATH_MAX);
--	char *root;
--	size_t len;
--	struct hostfs_fs_info *fsi;
--
--	fsi = dentry->d_sb->s_fs_info;
--	root = fsi->host_root_path;
--	len = strlen(root);
--	if (IS_ERR(p)) {
--		__putname(name);
--		return NULL;
--	}
--
--	/*
--	 * This function relies on the fact that dentry_path_raw() will place
--	 * the path name at the end of the provided buffer.
--	 */
--	BUG_ON(p + strlen(p) + 1 != name + PATH_MAX);
-+	struct hostfs_fs_info *fsi = dentry->d_sb->s_fs_info;
-+	char *root = fsi->host_root_path;
-+	size_t len = strlen(root);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index c81ea8cdfe6eb..17a5be4f57c8d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7175,6 +7175,21 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 	if (priv->dma_cap.tsoen)
+ 		dev_info(priv->device, "TSO supported\n");
  
--	strscpy(name, root, PATH_MAX);
--	if (len > p - name) {
-+	if (IS_ERR(p) || len > p - name) {
- 		__putname(name);
- 		return NULL;
- 	}
- 
--	if (p > name + len)
--		strcpy(name + len, p);
-+	memcpy(name, root, len);
-+	memmove(name + len, p, name + PATH_MAX - p);
- 
- 	return name;
- }
++	if (priv->dma_cap.number_rx_queues &&
++	    priv->plat->rx_queues_to_use > priv->dma_cap.number_rx_queues) {
++		dev_warn(priv->device,
++			 "Number of Rx queues (%u) exceeds dma capability\n",
++			 priv->plat->rx_queues_to_use);
++		priv->plat->rx_queues_to_use = priv->dma_cap.number_rx_queues;
++	}
++	if (priv->dma_cap.number_tx_queues &&
++	    priv->plat->tx_queues_to_use > priv->dma_cap.number_tx_queues) {
++		dev_warn(priv->device,
++			 "Number of Tx queues (%u) exceeds dma capability\n",
++			 priv->plat->tx_queues_to_use);
++		priv->plat->tx_queues_to_use = priv->dma_cap.number_tx_queues;
++	}
++
+ 	priv->hw->vlan_fail_q_en =
+ 		(priv->plat->flags & STMMAC_FLAG_VLAN_FAIL_Q_EN);
+ 	priv->hw->vlan_fail_q = priv->plat->vlan_fail_q;
 -- 
 2.39.5
 
