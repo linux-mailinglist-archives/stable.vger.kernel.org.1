@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-113289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10EFA290E8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:42:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287C0A293EA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86D1916A5D0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:41:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A579E188FE5F
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3439E16CD33;
-	Wed,  5 Feb 2025 14:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7727155A30;
+	Wed,  5 Feb 2025 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gRplVvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR2xqEN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D349E158870;
-	Wed,  5 Feb 2025 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D3521345;
+	Wed,  5 Feb 2025 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766456; cv=none; b=ZgScleN5sOoMSt/3Q0yKvAssDYJouZAftekanqWfil04Jo4qf4fUJAU0+88JHcqsv63w6omzxCq6PBa35leR7g1/TpaZpKpC7Y3fNK1Zb9DIpWCnBx+HeGg0vKaBCx5joUODz5ElavlVs4DpY7RMvsbZsQUIuCyF8F3r/yjIq1g=
+	t=1738768084; cv=none; b=J9kLLnw45BimDJZuhhSQShQtvZqtlqY3D6nEDstp0m5JGGf2k7JrIHWUMwZj+dqmZGoVdpmlZejArXt3LHdwFfR6i+XSrgNcwqpjZ88uobsHUt3rXSQK609vQNlhlium7wFZ6IDFsbzDPpQCf7o9TRpQygXPKXupoksctWHMUGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766456; c=relaxed/simple;
-	bh=2XOxAxSudAee3WccBV0Ik8h+UYmk6ZpHp29RoJvhfOY=;
+	s=arc-20240116; t=1738768084; c=relaxed/simple;
+	bh=nBhzGBVgS3kUiQnawUsGCUUdlr1C2utj2qJCrVfbtLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJDCqCKSBbjgw9/ESUOPQ1QDFqdwIS+j05MEPGWKWO8BoTc1J+7Icsxg+mZLRWdzNdokMb8ISnMEStptdjIXsuzJgH/FqMI+2w6lECfS0GGCBQJW0HMfkIbjeqsWJvv8fUY+Oi1RYVWPoVhzc/JVCKMNAYAmP5zDeFsLUX5bBn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gRplVvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0839BC4CEE2;
-	Wed,  5 Feb 2025 14:40:55 +0000 (UTC)
+	 MIME-Version; b=dOIHn12dNFG7CleZHK9lvqa5CEGfszG/NJKxq7912vRqKUC42Pb7otwU9EBwHTX0eBjwA0Ljv7H7jnw7piw1/n65nAmTAFBTFB/7TsLAlYNDKZxKReJFGBt9Lk6RkVyFsrj/pGEfgVKj/aHUuGliG7CsT0ENoGVlp3Db32ISXQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR2xqEN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD233C4CED1;
+	Wed,  5 Feb 2025 15:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766456;
-	bh=2XOxAxSudAee3WccBV0Ik8h+UYmk6ZpHp29RoJvhfOY=;
+	s=korg; t=1738768084;
+	bh=nBhzGBVgS3kUiQnawUsGCUUdlr1C2utj2qJCrVfbtLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gRplVvF8fTnXPRy0dA4CLNhGRNbcsJFHSyLyqpG+3RUjWiPL/THEe5PqoRokP7eQ
-	 tUPsMxmouAQz4f7HpQ1hoFwb8FzegsauAmYIOsSZp+XLpwXZvtnAltjM1rNPdKK5FZ
-	 6Nhkoh/SALlqCueib7HeV4nEqLkdBDuzgKkXzplY=
+	b=xR2xqEN1udz5QILrR+rxcmtuWIMut9CVeIh+p/9ju13h0VWy+jsVZBVA0Hri8iih5
+	 KorJ/ndBlLT0h7Z6Cml/2vocb5Uy2YKEXVG20ZOBUPPVt+ype+ksIR61LVRSOlAb6l
+	 mbmRHrJmSt9ga8TgBixS+j2/LegzYJ64CO+EeIXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Petr Vorel <pvorel@suse.cz>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 364/393] kconfig: fix memory leak in sym_warn_unmet_dep()
+Subject: [PATCH 6.12 528/590] ASoC: amd: acp: Fix possible deadlock
 Date: Wed,  5 Feb 2025 14:44:43 +0100
-Message-ID: <20250205134434.227995844@linuxfoundation.org>
+Message-ID: <20250205134515.464825228@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Daniel Baluta <daniel.baluta@nxp.com>
 
-[ Upstream commit a409fc1463d664002ea9bf700ae4674df03de111 ]
+[ Upstream commit 3ff53862c322aa7bb115d84348d5a641dc905d87 ]
 
-The string allocated in sym_warn_unmet_dep() is never freed, leading
-to a memory leak when an unmet dependency is detected.
+On error path, function acp_i2s_set_tdm_slot returns without releasing
+the lock and this could result in potential deadlocks in the future.
 
-Fixes: f8f69dc0b4e0 ("kconfig: make unmet dependency warnings readable")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Error reported by sparse:
+sound/soc/amd/acp/acp-i2s.c:95:12: error: context imbalance in
+'acp_i2s_set_tdm_slot' - different lock contexts for basic block
+
+Fixes: cd60dec8994c ("ASoC: amd: acp: Refactor TDM slots selction based on acp revision id")
+Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20250127083422.20406-1-daniel.baluta@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/symbol.c | 1 +
+ sound/soc/amd/acp/acp-i2s.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
-index 758c42621f7a1..1c0306c9d74e2 100644
---- a/scripts/kconfig/symbol.c
-+++ b/scripts/kconfig/symbol.c
-@@ -321,6 +321,7 @@ static void sym_warn_unmet_dep(struct symbol *sym)
- 			       "  Selected by [m]:\n");
- 
- 	fputs(str_get(&gs), stderr);
-+	str_free(&gs);
- 	sym_warnings++;
- }
- 
+diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
+index 56ce9e4b6accc..92c5ff0deea2c 100644
+--- a/sound/soc/amd/acp/acp-i2s.c
++++ b/sound/soc/amd/acp/acp-i2s.c
+@@ -181,6 +181,7 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
+ 			break;
+ 		default:
+ 			dev_err(dev, "Unknown chip revision %d\n", chip->acp_rev);
++			spin_unlock_irq(&adata->acp_lock);
+ 			return -EINVAL;
+ 		}
+ 	}
 -- 
 2.39.5
 
