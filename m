@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-112982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6323A28F77
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36ECA28C6D
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DE83AA47B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A56616889C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BCE2155CB3;
-	Wed,  5 Feb 2025 14:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815FB139D1B;
+	Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF0Zr/oQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOs/Coq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CF61459F6;
-	Wed,  5 Feb 2025 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6C313AD22;
+	Wed,  5 Feb 2025 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765418; cv=none; b=bx4kq+2HH8RcdwT30YrkMflLJeWCqXSmpvrYQvEPuMPsZBgC+KIZI5lj+U+iM0RAvliOT2Ki3yBTmH0JiRTwgpbN7BqmZSv/vaS1t/14rBJF4GQmFBxfK4c0+7hc8zJACXpYj5YjUIRhzoQSjSMDnxPWqg/mDd46uVXIs7Syglk=
+	t=1738763382; cv=none; b=LC4bbrz3ARXmqOAZP9RAIbTruD8Hx845sxkoWeCfKjbcmXnfIZZ/KFYNVYrpBKmdz/X0cDkN8PS9nDQg5qSxQ5iosp8fn2L+ExUIaBKiRdxwoloU+xW6UcNphKOm+q92KZACeoemVry6nntxzYFGF2kE8u7tBZRjdZ7F9vh/ERM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765418; c=relaxed/simple;
-	bh=2rFq29rEC3XCQWnz8sgDxgL5vhzLwWNjFM6qvdFlJeY=;
+	s=arc-20240116; t=1738763382; c=relaxed/simple;
+	bh=NEvgRo8kUJbXZXHOr7p72O1D9LlWkydjhs9VMQrPhp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Okz7v/dHuAsosP4/x58eRQ/Jh5oWvV0pjegxJ7TVkALTfoVO6CO2bUd1mc/WC0CYsYFMDT/LYp3jOf+6gX9HgOkVD0VLx1cKMV+kPbiKFZsqOtrQnQgiykVueuBblKPK3eXx0ReR69u0k+Ksmh29IyvaNqOjd/dFSuxRrwtzy+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF0Zr/oQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AFFC4CED1;
-	Wed,  5 Feb 2025 14:23:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O88N3yd8fkVEylldluTEqDhoHXC53yOWVnao+LLk2wGvJYEYU+8p79NMdUzK3iJwOBHiydl6IbqRQPprOr/PdE2RMhCbktN+K2grfFJYhuKWbvsthuWACFYhSCoUsDJAWIDNyBSVkDtbTCcZ1W+m1b0/U8Mj0faIijSjMHBZcX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOs/Coq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB34C4CED1;
+	Wed,  5 Feb 2025 13:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765418;
-	bh=2rFq29rEC3XCQWnz8sgDxgL5vhzLwWNjFM6qvdFlJeY=;
+	s=korg; t=1738763382;
+	bh=NEvgRo8kUJbXZXHOr7p72O1D9LlWkydjhs9VMQrPhp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF0Zr/oQ44M7xyaaOq6gqub1XObMm5O5ItWlrLrEbicQnrVAVuyYORy5qCaMIwgxU
-	 tLGC2hoI6JUwhC5rRzQTrOJ85XyfQ1XvE6MI77vDJ1Aq2pMZZHiUHnnP8MlEFrMqQL
-	 e7eRU/UIIpFSg9hj52NI/Eyi6MwlDYTFQcEhylP0=
+	b=tOs/Coq1X4m6gHwG4kBE1Ju2rvrptze2xw+R6viVGGt6ui2LURb7+wiSrqTBUm+j5
+	 RUkHpLrazfku0HZZISGFqxmEgvYl5QVM7FB2Yx1uqg8YaGoOP/sUjmbWGHrr7zxAhN
+	 MTqPV5UDXXW0tovCO+ATFmtIjly+qK1gL9kMDfu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 218/590] dev: Acquire netdev_rename_lock before restoring dev->name in dev_change_name().
+Subject: [PATCH 6.6 054/393] wifi: wcn36xx: fix channel survey memory allocation size
 Date: Wed,  5 Feb 2025 14:39:33 +0100
-Message-ID: <20250205134503.626800757@linuxfoundation.org>
+Message-ID: <20250205134422.365736557@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit e361560a7912958ba3059f51e7dd21612d119169 ]
+[ Upstream commit 6200d947f050efdba4090dfefd8a01981363d954 ]
 
-The cited commit forgot to add netdev_rename_lock in one of the
-error paths in dev_change_name().
+KASAN reported a memory allocation issue in wcn->chan_survey
+due to incorrect size calculation.
+This commit uses kcalloc to allocate memory for wcn->chan_survey,
+ensuring proper initialization and preventing the use of uninitialized
+values when there are no frames on the channel.
 
-Let's hold netdev_rename_lock before restoring the old dev->name.
-
-Fixes: 0840556e5a3a ("net: Protect dev->name by seqlock.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250115095545.52709-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 29696e0aa413 ("wcn36xx: Track SNR and RSSI for each RX frame")
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Acked-by: Loic Poulain <loic.poulain@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://patch.msgid.link/20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/wcn36xx/main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1867a6a8d76da..9bdb8fe5ffaa5 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1279,7 +1279,9 @@ int dev_change_name(struct net_device *dev, const char *newname)
- rollback:
- 	ret = device_rename(&dev->dev, dev->name);
- 	if (ret) {
-+		write_seqlock_bh(&netdev_rename_lock);
- 		memcpy(dev->name, oldname, IFNAMSIZ);
-+		write_sequnlock_bh(&netdev_rename_lock);
- 		WRITE_ONCE(dev->name_assign_type, old_assign_type);
- 		up_write(&devnet_rename_sem);
- 		return ret;
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 2bd1163177f08..9bbbc86fd2d93 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1586,7 +1586,10 @@ static int wcn36xx_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
+-	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
++	wcn->chan_survey = devm_kcalloc(wcn->dev,
++					n_channels,
++					sizeof(struct wcn36xx_chan_survey),
++					GFP_KERNEL);
+ 	if (!wcn->chan_survey) {
+ 		ret = -ENOMEM;
+ 		goto out_wq;
 -- 
 2.39.5
 
