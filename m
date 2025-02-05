@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D24A28F13
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E40A28E53
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81392160F85
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E969168A39
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6114A088;
-	Wed,  5 Feb 2025 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95ED213C9C4;
+	Wed,  5 Feb 2025 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edOHVQGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJi6Meii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A801519BE;
-	Wed,  5 Feb 2025 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5000B1519AA;
+	Wed,  5 Feb 2025 14:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765269; cv=none; b=Bp9uHrIzJV2q1LcUtTSY2xbPYjvHmQn3FJwA+krQr8DPgpBuw4XJbopXmQqNSvtMmuvTSEGAZuwSSfZ2N+kHhbNdVsJ0sqT3whW/A1jP80CklLvI4sB3oodj1+GpCm/rvU4sJdmML8tQx9/bTsmGU76mESAokdjPXfh1nxplaf8=
+	t=1738764690; cv=none; b=Vr04vs05vdT1TDekxelHzxzwWakeAqI0nn0GnQ1UixdXlujQHKkP+CgRl6mzqtzH8jhaF8tRknuXJar+F+zYpiz+ia7rYHei9o3V0BpQQurabK1G3TCZdlTtVz9DwmgCrAGlIsM6EMnU5macMCqXLKQQaYFOPO9CNj6OLxWDJ3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765269; c=relaxed/simple;
-	bh=Wen3Ic4RgLijVZvm9w030DB+wLI8R1o8+YCl3kG1HDs=;
+	s=arc-20240116; t=1738764690; c=relaxed/simple;
+	bh=KTW0WgwEANsrXgwu+GrcBBJEXKeMF+kx71bwSrcnsug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGrq6HP/ZwlWMIyBCV5TynPMamwpnFa7YYnCH6zSvz9h+6iOVuM1hEkuBun+p/KgGfQ1OJrcGkJ/K2PkG8OtShWHNTyo1jp+ipZQJIhcM4JLso6KEE3B9jFfUGr7AS6pQ/wvV+OyvcEwcRO46xrTHbZjJR1x8ivty2rBtycaPYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edOHVQGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD11C4CED1;
-	Wed,  5 Feb 2025 14:21:08 +0000 (UTC)
+	 MIME-Version; b=H/VQvJR5KEIqYNY0vIDF/PMAd2gFRRTj04TBbozP1xlIbxd+cIeGs2Ec9EFHdx+j4Lh/hMZ53WllFiZzFi3mCAVT3/Rh68I5z3VphBL24c6TjURRC9YOXaabWrtbgf6JHSW+kyPPgORQ2fuudDXqUvCc9q7tSr4pJDXfLhE1HQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJi6Meii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBA9C4CEDD;
+	Wed,  5 Feb 2025 14:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765269;
-	bh=Wen3Ic4RgLijVZvm9w030DB+wLI8R1o8+YCl3kG1HDs=;
+	s=korg; t=1738764690;
+	bh=KTW0WgwEANsrXgwu+GrcBBJEXKeMF+kx71bwSrcnsug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edOHVQGJKk29klUu1o9MHkpCxFzyn++PtIzHN7r/TfyHgIJY9GosjcU5f05hDFd7a
-	 x/2KFEKNOTf0VJJYHJj2hWOYtKzFLoUzM1nNRF7LM9IE5Yhe2wCSXSuRcbUKYKrrS/
-	 Gd3eOUUp5Sc41Mi/pZaLMwG2toXapT3Tz9qAMFU0=
+	b=kJi6MeiiezkSDWEX4w6+JGpCtIMsX+8c1BPgsm7bVmH11xgCFiYAIn47SOZSkDIxM
+	 4igE8cDxUMTgB3ZJv1CxlIb7DqvCOVDeU8NEPtJLiI5+WO9/+/iQMGnDz6mxliaqyt
+	 uLyyQvc5PmQaOMVEMAxVlNEXH2msvEAJjaeJT/80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 161/623] wifi: mt76: mt7925: fix off by one in mt7925_load_clc()
-Date: Wed,  5 Feb 2025 14:38:23 +0100
-Message-ID: <20250205134502.393936560@linuxfoundation.org>
+Subject: [PATCH 6.12 149/590] wifi: rtw89: tweak setting of channel and TX power for MLO
+Date: Wed,  5 Feb 2025 14:38:24 +0100
+Message-ID: <20250205134500.977133690@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,385 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-[ Upstream commit 08fa656c91fd5fdf47ba393795b9c0d1e97539ed ]
+[ Upstream commit 2305ebc1835b1ca921045b4f0941e82edde3249b ]
 
-This comparison should be >= instead of > to prevent an out of bounds
-read and write.
+Setting of channel and TX power depend on channel contexts, but original
+code cannot handle combination of MCC (multi-channel concurrency) and MLO
+well. So according to active interfaces, we generate a table for current
+channel contexts. And then based on entity mode, we get the corresponding
+channel context to apply during channel or TX power setting. When MLO is
+supported, there will be dual-PHY and we will apply the channel context of
+the 2nd link to the 2nd PHY.
 
-Fixes: 9679ca7326e5 ("wifi: mt76: mt7925: fix a potential array-index-out-of-bounds issue for clc")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/84bf5dd2-2fe3-4410-a7af-ae841e41082a@stanley.mountain
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241022083106.149252-5-pkshih@realtek.com
+Stable-dep-of: e47f0a589854 ("wifi: rtw89: fix proceeding MCC with wrong scanning state after sequence changes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/chan.c |  80 +++++++++++++++-
+ drivers/net/wireless/realtek/rtw89/chan.h |   8 ++
+ drivers/net/wireless/realtek/rtw89/core.c | 111 ++++++++++------------
+ drivers/net/wireless/realtek/rtw89/core.h |  15 ++-
+ 4 files changed, 149 insertions(+), 65 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 748ea6adbc6b3..0c2a2337c313d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -638,7 +638,7 @@ static int mt7925_load_clc(struct mt792x_dev *dev, const char *fw_name)
- 	for (offset = 0; offset < len; offset += le32_to_cpu(clc->len)) {
- 		clc = (const struct mt7925_clc *)(clc_base + offset);
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index 2b7e6921ff9c6..fb9449930c40a 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -299,6 +299,64 @@ static void rtw89_normalize_link_chanctx(struct rtw89_dev *rtwdev,
+ 	rtw89_swap_chanctx(rtwdev, rtwvif_link->chanctx_idx, cur->chanctx_idx);
+ }
  
--		if (clc->idx > ARRAY_SIZE(phy->clc))
-+		if (clc->idx >= ARRAY_SIZE(phy->clc))
++const struct rtw89_chan *__rtw89_mgnt_chan_get(struct rtw89_dev *rtwdev,
++					       const char *caller_message,
++					       u8 link_index)
++{
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
++	enum rtw89_chanctx_idx chanctx_idx;
++	enum rtw89_chanctx_idx roc_idx;
++	enum rtw89_entity_mode mode;
++	u8 role_index;
++
++	lockdep_assert_held(&rtwdev->mutex);
++
++	if (unlikely(link_index >= __RTW89_MLD_MAX_LINK_NUM)) {
++		WARN(1, "link index %u is invalid (max link inst num: %d)\n",
++		     link_index, __RTW89_MLD_MAX_LINK_NUM);
++		goto dflt;
++	}
++
++	mode = rtw89_get_entity_mode(rtwdev);
++	switch (mode) {
++	case RTW89_ENTITY_MODE_SCC_OR_SMLD:
++	case RTW89_ENTITY_MODE_MCC:
++		role_index = 0;
++		break;
++	case RTW89_ENTITY_MODE_MCC_PREPARE:
++		role_index = 1;
++		break;
++	default:
++		WARN(1, "Invalid ent mode: %d\n", mode);
++		goto dflt;
++	}
++
++	chanctx_idx = mgnt->chanctx_tbl[role_index][link_index];
++	if (chanctx_idx == RTW89_CHANCTX_IDLE)
++		goto dflt;
++
++	roc_idx = atomic_read(&hal->roc_chanctx_idx);
++	if (roc_idx != RTW89_CHANCTX_IDLE) {
++		/* ROC is ongoing (given ROC runs on RTW89_ROC_BY_LINK_INDEX).
++		 * If @link_index is the same as RTW89_ROC_BY_LINK_INDEX, get
++		 * the ongoing ROC chanctx.
++		 */
++		if (link_index == RTW89_ROC_BY_LINK_INDEX)
++			chanctx_idx = roc_idx;
++	}
++
++	return rtw89_chan_get(rtwdev, chanctx_idx);
++
++dflt:
++	rtw89_debug(rtwdev, RTW89_DBG_CHAN,
++		    "%s (%s): prefetch NULL on link index %u\n",
++		    __func__, caller_message ?: "", link_index);
++
++	return rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
++}
++EXPORT_SYMBOL(__rtw89_mgnt_chan_get);
++
+ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+@@ -306,13 +364,18 @@ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
+ 	struct rtw89_vif_link *link;
+ 	struct rtw89_vif *role;
+ 	u8 pos = 0;
+-	int i;
++	int i, j;
+ 
+ 	lockdep_assert_held(&rtwdev->mutex);
+ 
+ 	for (i = 0; i < RTW89_MAX_INTERFACE_NUM; i++)
+ 		mgnt->active_roles[i] = NULL;
+ 
++	for (i = 0; i < RTW89_MAX_INTERFACE_NUM; i++) {
++		for (j = 0; j < __RTW89_MLD_MAX_LINK_NUM; j++)
++			mgnt->chanctx_tbl[i][j] = RTW89_CHANCTX_IDLE;
++	}
++
+ 	/* To be consistent with legacy behavior, expect the first active role
+ 	 * which uses RTW89_CHANCTX_0 to put at position 0, and make its first
+ 	 * link instance take RTW89_CHANCTX_0. (normalizing)
+@@ -341,6 +404,14 @@ static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
  			break;
+ 		}
  
- 		/* do not init buf again if chip reset triggered */
++		for (i = 0; i < role->links_inst_valid_num; i++) {
++			link = rtw89_vif_get_link_inst(role, i);
++			if (!link || !link->chanctx_assigned)
++				continue;
++
++			mgnt->chanctx_tbl[pos][i] = link->chanctx_idx;
++		}
++
+ 		mgnt->active_roles[pos++] = role;
+ 	}
+ }
+@@ -371,9 +442,14 @@ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
+ 		set_bit(RTW89_CHANCTX_0, recalc_map);
+ 		fallthrough;
+ 	case 1:
+-		mode = RTW89_ENTITY_MODE_SCC;
++		mode = RTW89_ENTITY_MODE_SCC_OR_SMLD;
+ 		break;
+ 	case 2 ... NUM_OF_RTW89_CHANCTX:
++		if (w.active_roles == 1) {
++			mode = RTW89_ENTITY_MODE_SCC_OR_SMLD;
++			break;
++		}
++
+ 		if (w.active_roles != NUM_OF_RTW89_MCC_ROLES) {
+ 			rtw89_debug(rtwdev, RTW89_DBG_CHAN,
+ 				    "unhandled ent: %d chanctxs %d roles\n",
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.h b/drivers/net/wireless/realtek/rtw89/chan.h
+index 74de13a2e7da9..2eb31dff20831 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.h
++++ b/drivers/net/wireless/realtek/rtw89/chan.h
+@@ -101,6 +101,14 @@ void rtw89_chanctx_track(struct rtw89_dev *rtwdev);
+ void rtw89_chanctx_pause(struct rtw89_dev *rtwdev,
+ 			 enum rtw89_chanctx_pause_reasons rsn);
+ void rtw89_chanctx_proceed(struct rtw89_dev *rtwdev);
++
++const struct rtw89_chan *__rtw89_mgnt_chan_get(struct rtw89_dev *rtwdev,
++					       const char *caller_message,
++					       u8 link_index);
++
++#define rtw89_mgnt_chan_get(rtwdev, link_index) \
++	__rtw89_mgnt_chan_get(rtwdev, __func__, link_index)
++
+ int rtw89_chanctx_ops_add(struct rtw89_dev *rtwdev,
+ 			  struct ieee80211_chanctx_conf *ctx);
+ void rtw89_chanctx_ops_remove(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index e864da4d37519..d35d066c0b123 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -341,84 +341,47 @@ void rtw89_get_channel_params(const struct cfg80211_chan_def *chandef,
+ 	rtw89_chan_create(chan, center_chan, channel->hw_value, band, bandwidth);
+ }
+ 
+-void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
++static void __rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev,
++					const struct rtw89_chan *chan,
++					enum rtw89_phy_idx phy_idx)
+ {
+-	struct rtw89_hal *hal = &rtwdev->hal;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+-	const struct rtw89_chan *chan;
+-	enum rtw89_chanctx_idx chanctx_idx;
+-	enum rtw89_chanctx_idx roc_idx;
+-	enum rtw89_phy_idx phy_idx;
+-	enum rtw89_entity_mode mode;
+ 	bool entity_active;
+ 
+-	mode = rtw89_get_entity_mode(rtwdev);
+-	switch (mode) {
+-	case RTW89_ENTITY_MODE_SCC:
+-	case RTW89_ENTITY_MODE_MCC:
+-		chanctx_idx = RTW89_CHANCTX_0;
+-		break;
+-	case RTW89_ENTITY_MODE_MCC_PREPARE:
+-		chanctx_idx = RTW89_CHANCTX_1;
+-		break;
+-	default:
+-		WARN(1, "Invalid ent mode: %d\n", mode);
++	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
++	if (!entity_active)
+ 		return;
+-	}
+ 
+-	roc_idx = atomic_read(&hal->roc_chanctx_idx);
+-	if (roc_idx != RTW89_CHANCTX_IDLE)
+-		chanctx_idx = roc_idx;
++	chip->ops->set_txpwr(rtwdev, chan, phy_idx);
++}
+ 
+-	phy_idx = RTW89_PHY_0;
++void rtw89_core_set_chip_txpwr(struct rtw89_dev *rtwdev)
++{
++	const struct rtw89_chan *chan;
+ 
+-	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
+-	if (!entity_active)
++	chan = rtw89_mgnt_chan_get(rtwdev, 0);
++	__rtw89_core_set_chip_txpwr(rtwdev, chan, RTW89_PHY_0);
++
++	if (!rtwdev->support_mlo)
+ 		return;
+ 
+-	chan = rtw89_chan_get(rtwdev, chanctx_idx);
+-	chip->ops->set_txpwr(rtwdev, chan, phy_idx);
++	chan = rtw89_mgnt_chan_get(rtwdev, 1);
++	__rtw89_core_set_chip_txpwr(rtwdev, chan, RTW89_PHY_1);
+ }
+ 
+-int rtw89_set_channel(struct rtw89_dev *rtwdev)
++static void __rtw89_set_channel(struct rtw89_dev *rtwdev,
++				const struct rtw89_chan *chan,
++				enum rtw89_mac_idx mac_idx,
++				enum rtw89_phy_idx phy_idx)
+ {
+-	struct rtw89_hal *hal = &rtwdev->hal;
+ 	const struct rtw89_chip_info *chip = rtwdev->chip;
+ 	const struct rtw89_chan_rcd *chan_rcd;
+-	const struct rtw89_chan *chan;
+-	enum rtw89_chanctx_idx chanctx_idx;
+-	enum rtw89_chanctx_idx roc_idx;
+-	enum rtw89_mac_idx mac_idx;
+-	enum rtw89_phy_idx phy_idx;
+ 	struct rtw89_channel_help_params bak;
+-	enum rtw89_entity_mode mode;
+ 	bool entity_active;
+ 
+-	mode = rtw89_entity_recalc(rtwdev);
+-	switch (mode) {
+-	case RTW89_ENTITY_MODE_SCC:
+-	case RTW89_ENTITY_MODE_MCC:
+-		chanctx_idx = RTW89_CHANCTX_0;
+-		break;
+-	case RTW89_ENTITY_MODE_MCC_PREPARE:
+-		chanctx_idx = RTW89_CHANCTX_1;
+-		break;
+-	default:
+-		WARN(1, "Invalid ent mode: %d\n", mode);
+-		return -EINVAL;
+-	}
+-
+-	roc_idx = atomic_read(&hal->roc_chanctx_idx);
+-	if (roc_idx != RTW89_CHANCTX_IDLE)
+-		chanctx_idx = roc_idx;
+-
+-	mac_idx = RTW89_MAC_0;
+-	phy_idx = RTW89_PHY_0;
+-
+ 	entity_active = rtw89_get_entity_state(rtwdev, phy_idx);
+ 
+-	chan = rtw89_chan_get(rtwdev, chanctx_idx);
+-	chan_rcd = rtw89_chan_rcd_get(rtwdev, chanctx_idx);
++	chan_rcd = rtw89_chan_rcd_get_by_chan(chan);
+ 
+ 	rtw89_chip_set_channel_prepare(rtwdev, &bak, chan, mac_idx, phy_idx);
+ 
+@@ -434,6 +397,28 @@ int rtw89_set_channel(struct rtw89_dev *rtwdev)
+ 	}
+ 
+ 	rtw89_set_entity_state(rtwdev, phy_idx, true);
++}
++
++int rtw89_set_channel(struct rtw89_dev *rtwdev)
++{
++	const struct rtw89_chan *chan;
++	enum rtw89_entity_mode mode;
++
++	mode = rtw89_entity_recalc(rtwdev);
++	if (mode < 0 || mode >= NUM_OF_RTW89_ENTITY_MODE) {
++		WARN(1, "Invalid ent mode: %d\n", mode);
++		return -EINVAL;
++	}
++
++	chan = rtw89_mgnt_chan_get(rtwdev, 0);
++	__rtw89_set_channel(rtwdev, chan, RTW89_MAC_0, RTW89_PHY_0);
++
++	if (!rtwdev->support_mlo)
++		return 0;
++
++	chan = rtw89_mgnt_chan_get(rtwdev, 1);
++	__rtw89_set_channel(rtwdev, chan, RTW89_MAC_1, RTW89_PHY_1);
++
+ 	return 0;
+ }
+ 
+@@ -3158,9 +3143,10 @@ void rtw89_roc_start(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtw89_leave_ips_by_hwflags(rtwdev);
+ 	rtw89_leave_lps(rtwdev);
+ 
+-	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
++	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, RTW89_ROC_BY_LINK_INDEX);
+ 	if (unlikely(!rtwvif_link)) {
+-		rtw89_err(rtwdev, "roc start: find no link on HW-0\n");
++		rtw89_err(rtwdev, "roc start: find no link on HW-%u\n",
++			  RTW89_ROC_BY_LINK_INDEX);
+ 		return;
+ 	}
+ 
+@@ -3212,9 +3198,10 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtw89_leave_ips_by_hwflags(rtwdev);
+ 	rtw89_leave_lps(rtwdev);
+ 
+-	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
++	rtwvif_link = rtw89_vif_get_link_inst(rtwvif, RTW89_ROC_BY_LINK_INDEX);
+ 	if (unlikely(!rtwvif_link)) {
+-		rtw89_err(rtwdev, "roc end: find no link on HW-0\n");
++		rtw89_err(rtwdev, "roc end: find no link on HW-%u\n",
++			  RTW89_ROC_BY_LINK_INDEX);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 65ad3d03d0530..ff3048d2489f1 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3424,6 +3424,8 @@ enum rtw89_roc_state {
+ 	RTW89_ROC_MGMT,
+ };
+ 
++#define RTW89_ROC_BY_LINK_INDEX 0
++
+ struct rtw89_roc {
+ 	struct ieee80211_channel chan;
+ 	struct delayed_work roc_work;
+@@ -4619,7 +4621,7 @@ enum rtw89_chanctx_changes {
+ };
+ 
+ enum rtw89_entity_mode {
+-	RTW89_ENTITY_MODE_SCC,
++	RTW89_ENTITY_MODE_SCC_OR_SMLD,
+ 	RTW89_ENTITY_MODE_MCC_PREPARE,
+ 	RTW89_ENTITY_MODE_MCC,
+ 
+@@ -4634,6 +4636,8 @@ enum rtw89_entity_mode {
+ struct rtw89_entity_mgnt {
+ 	struct list_head active_list;
+ 	struct rtw89_vif *active_roles[RTW89_MAX_INTERFACE_NUM];
++	enum rtw89_chanctx_idx chanctx_tbl[RTW89_MAX_INTERFACE_NUM]
++					  [__RTW89_MLD_MAX_LINK_NUM];
+ };
+ 
+ struct rtw89_chanctx {
+@@ -6371,6 +6375,15 @@ const struct rtw89_chan_rcd *rtw89_chan_rcd_get(struct rtw89_dev *rtwdev,
+ 	return &hal->chanctx[idx].rcd;
+ }
+ 
++static inline
++const struct rtw89_chan_rcd *rtw89_chan_rcd_get_by_chan(const struct rtw89_chan *chan)
++{
++	const struct rtw89_chanctx *chanctx =
++		container_of_const(chan, struct rtw89_chanctx, chan);
++
++	return &chanctx->rcd;
++}
++
+ static inline
+ const struct rtw89_chan *rtw89_scan_chan_get(struct rtw89_dev *rtwdev)
+ {
 -- 
 2.39.5
 
