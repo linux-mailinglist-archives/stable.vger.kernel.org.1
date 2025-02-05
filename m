@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-113061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E171EA28FB2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C042A293E4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC26B1882867
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1335C188EEA5
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4B214B959;
-	Wed,  5 Feb 2025 14:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08D2172BB9;
+	Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4Q1hXba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNMw8gqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDC18634E;
-	Wed,  5 Feb 2025 14:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5DF1519BF;
+	Wed,  5 Feb 2025 15:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765689; cv=none; b=u3BvNM4WnjmlAT1mA2bUsnRVR5ibGkuyIrRBVmU5suyMnGg+GP6NiATBzz3RqAevcadcuI/PdxqeYwiNy1H1ePrpsOFssZnlXTQFncuytN8qBhU4fgepTuR01r12xFxEbQvicoAtsL97qVyIHguaT2G6bBPCCFFfMz40XOG6qIY=
+	t=1738767891; cv=none; b=d9BVqqdb45kgHr5UqqrFnkcPm4qT53HI2ayZKqzhGCCrrxyYBx5t1XkMlEZbTxTxWzkmKDNZOTF8XVtJe2aTGZVngUEvMCe8mrjfLxSU6SrKZNPQhkKEpP+2z+oIErmUvdzMOrkTu28hh5nC/rJL3wQTImY7hMgOr9wh/nyXY/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765689; c=relaxed/simple;
-	bh=tk3bq3Q4lomn+FY7sTJn0hkVJwFaI+S/RzTdht1jAcc=;
+	s=arc-20240116; t=1738767891; c=relaxed/simple;
+	bh=grWjjj+s8Q1JCP9bvUeuCpdNyBqKh1ESSNaYvqbS1zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPnOD48GJXvweItAFPIXZh7P5cwhEhQsYEodG7QWyJPH+c4XpawBLkmCp6avJRp9I0B5CWoPi8Nv32aYBavrVZstdg5d7IL9qOcwArJuFk2umCJq4qKyjVr1GOtpe9JPNImUDD5lIw3zYmGHf/kAxH/zUIpQ8VQBPuLIYyyL2es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4Q1hXba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253AAC4CED1;
-	Wed,  5 Feb 2025 14:28:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UFkSJf10Bbs0rqxPUwXrx2vE/OUp+R5/1ILbWhqp9V5MGdwmxzaq18F4+kZWXazCboSr+1i9T2yP+acZPAcxWlRClJt50PX9upataTkRXd64RnLa2gHeJZrdplt4yCgUxuWl9D4H3vYhJkZaIU6+gc02kDnbY43J0KSH7SHbV2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNMw8gqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6CBC4CED1;
+	Wed,  5 Feb 2025 15:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765689;
-	bh=tk3bq3Q4lomn+FY7sTJn0hkVJwFaI+S/RzTdht1jAcc=;
+	s=korg; t=1738767891;
+	bh=grWjjj+s8Q1JCP9bvUeuCpdNyBqKh1ESSNaYvqbS1zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4Q1hXbasbxKje9tBesbnsAx1M7RUh+5luVZYj3AKHnjwERWv/5qqY9mmQTdu12J9
-	 9JMDznOvh3lAEnlApF8J8V0UKshhKWPToODt/xAmEH69rNAxTdcSPbceD7S0wR+Dh3
-	 XFIi5T28zVR64GgD+Re8i7dSAVoIXyqUbDJJTPqQ=
+	b=nNMw8gqgj5Al7KnQDutPzui8aTmMOIj0EmTmubF23YMWEJlYTiL9j+wZVLJlxaU3O
+	 fkafnpmoIGYpNRc9OuxdWZZt4FZ3uQwLQAWNtd0nbrApEByiYD65wTYbqqX8wJgLFZ
+	 gyuhX0k2jJwQ6t43nB9ETwZSICbfwPl+6FRw+Fcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/393] media: uvcvideo: Propagate buf->error to userspace
+Subject: [PATCH 6.13 467/623] PCI: imx6: Add missing reference clock disable logic
 Date: Wed,  5 Feb 2025 14:43:29 +0100
-Message-ID: <20250205134431.407542770@linuxfoundation.org>
+Message-ID: <20250205134514.083451604@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 87ce177654e388451850905a1d376658aebe8699 ]
+[ Upstream commit 93d883f89063744a92006fc356b1c767eb62d950 ]
 
-Now we return VB2_BUF_STATE_DONE for valid and invalid frames. Propagate
-the correct value, so the user can know if the frame is valid or not via
-struct v4l2_buffer->flags.
+Ensure the *_enable_ref_clk() function is symmetric by addressing missing
+disable parts on some platforms.
 
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Closes: https://lore.kernel.org/linux-media/84b0f212-cd88-46bb-8e6f-b94ec3eccba6@redhat.com
-Fixes: 6998b6fb4b1c ("[media] uvcvideo: Use videobuf2-vmalloc")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241218-uvc-deprecate-v2-1-ab814139e983@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: d0a75c791f98 ("PCI: imx6: Factor out ref clock disable to match enable")
+Link: https://lore.kernel.org/r/20241126075702.4099164-7-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_queue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-imx6.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
-index 16fa17bbd15ea..83ed7821fa2a7 100644
---- a/drivers/media/usb/uvc/uvc_queue.c
-+++ b/drivers/media/usb/uvc/uvc_queue.c
-@@ -483,7 +483,8 @@ static void uvc_queue_buffer_complete(struct kref *ref)
+diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+index 94f5246b3a720..ad3028b755d16 100644
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -598,10 +598,9 @@ static int imx_pcie_attach_pd(struct device *dev)
  
- 	buf->state = buf->error ? UVC_BUF_STATE_ERROR : UVC_BUF_STATE_DONE;
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, buf->bytesused);
--	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
-+	vb2_buffer_done(&buf->buf.vb2_buf, buf->error ? VB2_BUF_STATE_ERROR :
-+							VB2_BUF_STATE_DONE);
+ static int imx6sx_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+-	if (enable)
+-		regmap_clear_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+-				  IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+-
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
++			   IMX6SX_GPR12_PCIE_TEST_POWERDOWN,
++			   enable ? 0 : IMX6SX_GPR12_PCIE_TEST_POWERDOWN);
+ 	return 0;
  }
  
- /*
+@@ -630,19 +629,20 @@ static int imx8mm_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+ 	int offset = imx_pcie_grp_offset(imx_pcie);
+ 
+-	if (enable) {
+-		regmap_clear_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
+-		regmap_set_bits(imx_pcie->iomuxc_gpr, offset, IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN);
+-	}
+-
++	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
++			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE,
++			   enable ? 0 : IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE);
++	regmap_update_bits(imx_pcie->iomuxc_gpr, offset,
++			   IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN,
++			   enable ? IMX8MQ_GPR_PCIE_CLK_REQ_OVERRIDE_EN : 0);
+ 	return 0;
+ }
+ 
+ static int imx7d_pcie_enable_ref_clk(struct imx_pcie *imx_pcie, bool enable)
+ {
+-	if (!enable)
+-		regmap_set_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
+-				IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
++	regmap_update_bits(imx_pcie->iomuxc_gpr, IOMUXC_GPR12,
++			   IMX7D_GPR12_PCIE_PHY_REFCLK_SEL,
++			   enable ? 0 : IMX7D_GPR12_PCIE_PHY_REFCLK_SEL);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
