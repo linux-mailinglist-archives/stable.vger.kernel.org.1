@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEACEA28E6D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:13:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDFAA291FB
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40F3D7A3EE8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C74316AE64
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ED914D2A2;
-	Wed,  5 Feb 2025 14:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F4C1FC11B;
+	Wed,  5 Feb 2025 14:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exLP04Au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOFSTDm5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B713C9C4;
-	Wed,  5 Feb 2025 14:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E89618A6D7;
+	Wed,  5 Feb 2025 14:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764738; cv=none; b=svjjIj6X+3DuNIFKqv3H4F5fhDqihVY2l4Hv7rmLUUrKtxkemrnI8zOmKiD6qCrvDRq1WQqxRRiufytIzzMAQNZs5SQeBLolBdG8wUgMrbnw8pZFhqZdGLNCbKH3vEDXNhKmApUDl5HiQC1xAYHZQnqEV89QUIG2o6ijSUjsBDE=
+	t=1738766820; cv=none; b=IDAqkxOmIOziuLVQFtkovgSxcEaFlmk+fAlGZ9WcSCx1Hxh050NXDSFTnwbSEKWM5O9KDpNQxfS/u2YlWK0S1+6r3O0Dz2nvkr7xHYigJQ0I6LxpouM9L0KpYBILD0KrrTlfl3JBbgS+J0jpQ+v2CBynO31iqoiFp4Pfm+Mp7Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764738; c=relaxed/simple;
-	bh=5w8d0bylbo/j/o45WxWaSfF7g0N7vro4RAxg4Q0y2kc=;
+	s=arc-20240116; t=1738766820; c=relaxed/simple;
+	bh=d78YJA6gRdzLKRfbafJNDjRs7ftg4FNwx8He3z+9mNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1pIVqs6D1cycu4sccut50/Zw1tUwGX3XVOYbEdbWyL/YvLSki07YrKgJCKW1rpyiOXpMY7Um2YsWF7v/dgnjkOe+MmUlqk+DYCjvTAgN5rxOahW/CCosD6aAp2Fb6unV34IjKNfkBr+fBB8F/o+iqTkNZs2hneXSyuovtUL56I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exLP04Au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B8DC4CED1;
-	Wed,  5 Feb 2025 14:12:17 +0000 (UTC)
+	 MIME-Version; b=O6pmP+WAt2dkuswJhaWVkApT2EEuCOmo1107ZdIirWNeXw/7FncRqQhXsRVklmxI5fJy50v6xHmdA611V0qBjhY74dzmz0eNdDMitWMvM9XUZmG6EoZFaCWTXX60bYq8NUuQSQEGgNskKcuuhduFrHu4Nj9M2znfXzaPuuUfu+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOFSTDm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77CDC4CED6;
+	Wed,  5 Feb 2025 14:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764738;
-	bh=5w8d0bylbo/j/o45WxWaSfF7g0N7vro4RAxg4Q0y2kc=;
+	s=korg; t=1738766820;
+	bh=d78YJA6gRdzLKRfbafJNDjRs7ftg4FNwx8He3z+9mNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exLP04AukgXKvSl+b4dIVPzAlo8u4MsxNEiyl0556nfohYOIJA8TcIr/yBbBb0PyY
-	 ilI4Mt5VoSzdBaEPGKh7AgwxwhX+CmsLVc7eoi4OXnzNZUGCB351W1el6Sz24H/biu
-	 8IOKkgvOdYGViWlKRA+wevF4Czs6n893+dVfuuHw=
+	b=dOFSTDm51aKsU7z2J8xsFoDiwnZ/Q+hqQ1rVCHoTfpGYCIkrMNp/LDUudHuRp0Rqb
+	 JJ5aSzCHofQQ1JJ6U/7a1sOgkZGMMs3MREmJl/MnvYKyzNp3PlKZL8+PyarNb9zRTC
+	 jUICSg934J9lEXmcQFwNtEVP6CiDnOHL3vXEF4aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/393] arm64: dts: mediatek: mt8516: add i2c clock-div property
-Date: Wed,  5 Feb 2025 14:41:59 +0100
-Message-ID: <20250205134427.951095780@linuxfoundation.org>
+Subject: [PATCH 6.12 365/590] arm64: dts: rockchip: Fix sdmmc access on rk3308-rock-s0 v1.1 boards
+Date: Wed,  5 Feb 2025 14:42:00 +0100
+Message-ID: <20250205134509.235272531@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit eb72341fd92b7af510d236e5a8554d855ed38d3c ]
+[ Upstream commit 26c100232b09ced0857306ac9831a4fa9c9aa231 ]
 
-Move the clock-div property from the pumpkin board dtsi to the SoC's
-since it belongs to the SoC itself and is required on other devices.
+BootROM leave GPIO4_D6 configured as SDMMC_PWREN function and DW MCI
+driver set PRWEN high on MMC_POWER_UP and low on MMC_POWER_OFF.
+Similarly U-Boot also set PRWEN high before accessing mmc.
 
-Fixes: 5236347bde42 ("arm64: dts: mediatek: add dtsi for MT8516")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241204190524.21862-4-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+However, HW revision prior to v1.2 must pull GPIO4_D6 low to access
+sdmmc. For HW revision v1.2 the state of GPIO4_D6 has no impact.
+
+Model an always-on active low fixed regulator using GPIO4_D6 to fix
+use of sdmmc on older HW revisions of the board.
+
+Fixes: adeb5d2a4ba4 ("arm64: dts: rockchip: Add Radxa ROCK S0")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20241119230838.4137130-1-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8516.dtsi         | 3 +++
- arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi | 2 --
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ .../boot/dts/rockchip/rk3308-rock-s0.dts      | 25 ++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8516.dtsi b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-index 576be8363ec1c..1ca1393fcc593 100644
---- a/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8516.dtsi
-@@ -344,6 +344,7 @@
- 			reg = <0 0x11009000 0 0x90>,
- 			      <0 0x11000180 0 0x80>;
- 			interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C0>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-@@ -358,6 +359,7 @@
- 			reg = <0 0x1100a000 0 0x90>,
- 			      <0 0x11000200 0 0x80>;
- 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C1>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-@@ -372,6 +374,7 @@
- 			reg = <0 0x1100b000 0 0x90>,
- 			      <0 0x11000280 0 0x80>;
- 			interrupts = <GIC_SPI 82 IRQ_TYPE_LEVEL_LOW>;
-+			clock-div = <2>;
- 			clocks = <&topckgen CLK_TOP_I2C2>,
- 				 <&topckgen CLK_TOP_APDMA>;
- 			clock-names = "main", "dma";
-diff --git a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-index ec8dfb3d1c6d6..a356db5fcc5f3 100644
---- a/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/pumpkin-common.dtsi
-@@ -47,7 +47,6 @@
+diff --git a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
+index bd6419a5c20a2..8311af4c8689f 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3308-rock-s0.dts
+@@ -74,6 +74,23 @@
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
+ 
++	/*
++	 * HW revision prior to v1.2 must pull GPIO4_D6 low to access sdmmc.
++	 * This is modeled as an always-on active low fixed regulator.
++	 */
++	vcc_sd: regulator-3v3-vcc-sd {
++		compatible = "regulator-fixed";
++		gpios = <&gpio4 RK_PD6 GPIO_ACTIVE_LOW>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&sdmmc_2030>;
++		regulator-name = "vcc_sd";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc_io>;
++	};
++
+ 	vcc5v0_sys: regulator-5v0-vcc-sys {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc5v0_sys";
+@@ -181,6 +198,12 @@
+ 		};
+ 	};
+ 
++	sdmmc {
++		sdmmc_2030: sdmmc-2030 {
++			rockchip,pins = <4 RK_PD6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
+ 	wifi {
+ 		wifi_reg_on: wifi-reg-on {
+ 			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+@@ -233,7 +256,7 @@
+ 	cap-mmc-highspeed;
+ 	cap-sd-highspeed;
+ 	disable-wp;
+-	vmmc-supply = <&vcc_io>;
++	vmmc-supply = <&vcc_sd>;
+ 	status = "okay";
  };
  
- &i2c0 {
--	clock-div = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c0_pins_a>;
- 	status = "okay";
-@@ -156,7 +155,6 @@
- };
- 
- &i2c2 {
--	clock-div = <2>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&i2c2_pins_a>;
- 	status = "okay";
 -- 
 2.39.5
 
