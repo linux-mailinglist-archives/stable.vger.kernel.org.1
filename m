@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-113412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD44A29246
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:59:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC06A28E8B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65611188AD83
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E884F7A103E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273771FCF63;
-	Wed,  5 Feb 2025 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBC014B959;
+	Wed,  5 Feb 2025 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxGB3SVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crPdnwXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F3518C039;
-	Wed,  5 Feb 2025 14:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7A01519AA;
+	Wed,  5 Feb 2025 14:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766872; cv=none; b=aSpBKmyymlCftWASL6nzkOY81NQ4yheKLYwPhDmoiNqb6cT4Gj5d+fsFIDOTTw0Nfg6Dc/H480fBfGUQULnY43bJnM19RUP79PSiwXLHX0vnbYGjOgOCgRm3Z9cKY6wKg7O8YQuAounWIVcE1BrI7aTAVNZaC9zjxtuAwRUTPBw=
+	t=1738764854; cv=none; b=G+yTZZ5KWVc/VANuYNoam04JzYrQGPqM6P3wb8+jPWqwqKxDW5TfdQyPoInMze80IH9v4zjROP5SgxMNtO/ddMm6cwnIEa1R4UYWECb2OYLidun52qK+y7VFaKzSnrfYIvu/znwFfV04JrKQBAHgZJVijXCi+gQ4qQi2sABk7L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766872; c=relaxed/simple;
-	bh=sBboVCvzpXUXeYlByk6qVXbm9CuvP6c7/YebJCadnHg=;
+	s=arc-20240116; t=1738764854; c=relaxed/simple;
+	bh=MDwUTO2MLSnCoVTiw+DXu8Vw5qY1SKOZ5nfZGSX2Ekg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gM8zPIVxbUdDj4HFUIlYrAiui3CMAI2W76TKiAZ9kDp1VKoQkAdVUdclvRqSyxY8fopnNc51qsb/tfNf/V66O7W9BfFrxEg2x3QDrbRfCxBRlMMkA53l+mFqYq9Vb+jYJX4fUdA6Lug198tKnoG3YyuqAUCnQ59SmljJrnTB6NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxGB3SVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A19C4CED1;
-	Wed,  5 Feb 2025 14:47:51 +0000 (UTC)
+	 MIME-Version; b=Xvzwm+lkMl8DicTUkEV7eb/LmQuT1seEjh3D6I7fBDrK2lnBxQfklN8Ttv/WtooSr1YL8yYZYogDrdlWq6uBuSt7mP3/qGouUbd2Glv7z9OyimJR3J1S/WWVdCoqjq8AkouHXRJGaoAug5d3f67ALrOLExyqvA7XWdjWV6hnIXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crPdnwXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5621BC4CED1;
+	Wed,  5 Feb 2025 14:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766872;
-	bh=sBboVCvzpXUXeYlByk6qVXbm9CuvP6c7/YebJCadnHg=;
+	s=korg; t=1738764853;
+	bh=MDwUTO2MLSnCoVTiw+DXu8Vw5qY1SKOZ5nfZGSX2Ekg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxGB3SVgKuw0AA7Iql8bR7ymVHL1x8Le6XNLZedkdEWSKIO2w+0loyjp2jv6Zue1a
-	 FUScQczlVzQkuFVryCFiupZAa86m12xvvWi27mMcyqeJ1V41uXsEUebM7MXxzqiYk2
-	 9gMjA25wT+Nv27SeQ5HgLR5MEN7T4nYKbgJJMIIs=
+	b=crPdnwXlNBoUcMkVjnLC68QWLaLQfno7y3moua3+dLptT68PdMCwUsTEpYynbfcn5
+	 m5UqGgJonevBlsaVkQJsp/ZLdKoaBRK3KHh55rcMIJITAtTsfq2m6N3qwoc0K6u67t
+	 5ALqZzh3nEuS5Ngz7EafLmPthsb+j9N6/40fRzTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 374/590] arm64: dts: qcom: sc7180-trogdor-quackingstick: add missing avee-supply
+Subject: [PATCH 6.6 210/393] arm64: dts: mediatek: mt8173-elm: Fix MT6397 PMIC sub-node names
 Date: Wed,  5 Feb 2025 14:42:09 +0100
-Message-ID: <20250205134509.579147852@linuxfoundation.org>
+Message-ID: <20250205134428.333610625@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit aa09de104d421e7ff8d8cde9af98568ce62a002c ]
+[ Upstream commit beb06b727194f68b0a4b5183e50c88265ce185af ]
 
-The bindings requires the avee-supply, use the same regulator as
-the avdd (positive voltage) which would also provide the negative
-voltage by definition.
+The MT6397 PMIC bindings specify exact names for its sub-nodes. The
+names used in the current dts don't match, causing a validation error.
 
-The fixes:
-sc7180-trogdor-quackingstick-r0.dts: panel@0: 'avee-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/display/panel/boe,tv101wum-nl6.yaml#
+Fix up the names. Also drop the label for the regulators node, since
+any reference should be against the individual regulator sub-nodes.
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241230-topic-misc-dt-fixes-v4-3-1e6880e9dda3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 689b937bedde ("arm64: dts: mediatek: add mt8173 elm and hana board")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20241210092614.3951748-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi b/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-index 00229b1515e60..ff8996b4de4e1 100644
---- a/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180-trogdor-quackingstick.dtsi
-@@ -78,6 +78,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&lcd_rst>;
- 		avdd-supply = <&ppvar_lcd>;
-+		avee-supply = <&ppvar_lcd>;
- 		pp1800-supply = <&v1p8_disp>;
- 		pp3300-supply = <&pp3300_dx_edp>;
- 		backlight = <&backlight>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+index 855babfdd8f0e..8df919d39e5ba 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173-elm.dtsi
+@@ -938,7 +938,7 @@
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+ 
+-		clock: mt6397clock {
++		clock: clocks {
+ 			compatible = "mediatek,mt6397-clk";
+ 			#clock-cells = <1>;
+ 		};
+@@ -949,7 +949,7 @@
+ 			#gpio-cells = <2>;
+ 		};
+ 
+-		regulator: mt6397regulator {
++		regulators {
+ 			compatible = "mediatek,mt6397-regulator";
+ 
+ 			mt6397_vpca15_reg: buck_vpca15 {
+@@ -1115,7 +1115,7 @@
+ 			};
+ 		};
+ 
+-		rtc: mt6397rtc {
++		rtc: rtc {
+ 			compatible = "mediatek,mt6397-rtc";
+ 		};
+ 
 -- 
 2.39.5
 
