@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-113402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1FDA29210
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CF1A29213
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69AAD3AC961
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6865D3AC9B7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268611FCCF1;
-	Wed,  5 Feb 2025 14:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4561FCD02;
+	Wed,  5 Feb 2025 14:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaIOwS3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ezqmnDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CCE1FC7C2;
-	Wed,  5 Feb 2025 14:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB33B1FCCFD;
+	Wed,  5 Feb 2025 14:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766837; cv=none; b=H4lFWdk2OMi2xpuk7bWYlLk7A2WInu19f2lneWBkTHBEFtVB+FDWYHufT9ppwfYR2xZv8fi6bdN721/LOjKaNm0y+8QVgcf3dSq2EVm7ggJYcVDJctRwvMV7f1uy02RPfYTkiSeSNH3d4ho02s95Bmy+1qyMxHuSti8U6/DVNik=
+	t=1738766844; cv=none; b=iKl4DbmdlrY7VjiLvlaMbfIgZTpz5Xk2XGhHzedUGd+Jp7+PCZKxwdBClyr/E/jKpfl8bhGt73Ecz3treAkkDd34o2FOu+CATvgYsF/2FGreyg6TBE0Jl4qUDkhHlHoeEFHYifN7w1dmHHMM3PBpL3WId5bro2HuQGD8XsmbJL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766837; c=relaxed/simple;
-	bh=CVOyGpTWt3qHXDh5PYFOKfoKCVbRKOp/jthwZrKHjBY=;
+	s=arc-20240116; t=1738766844; c=relaxed/simple;
+	bh=2GDZeLW5bEvOom70yq8yRTzZunpXjA3tlyjMjJ4LxrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bj6WAMtf9qC1KjYqak0pwHNXa/q4Havltwms0ZNb11+DO7/JUFwZVoPhUEX3+3JfqusLYQScENMwjpkN/QcoDwzzMYe/fcZ3+g0QZLFVdJRv/iSpI12+zNIQGD3axcpjlmwsL8vZI0go0hTcQIxhlUf2SwlTpFi1eMu3Gyn3O8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaIOwS3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429D3C4CED1;
-	Wed,  5 Feb 2025 14:47:17 +0000 (UTC)
+	 MIME-Version; b=Xzv5tnuivCkx+VJTW+QeBHdcsXfvPGa7+woh1eL0inIzCiKyCZ0CulB/2sTaPQOmKZ/MyZqy3/nMpnSLdDR+7hKqmG/tm5anWSSeL76MQZ4Muc0Fkx2OYrRzswqjBhr/G+7E+rso5h96WreXGiIc7WmpMvf9pHXKLhDHsjqVMio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ezqmnDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395D0C4CED1;
+	Wed,  5 Feb 2025 14:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766837;
-	bh=CVOyGpTWt3qHXDh5PYFOKfoKCVbRKOp/jthwZrKHjBY=;
+	s=korg; t=1738766844;
+	bh=2GDZeLW5bEvOom70yq8yRTzZunpXjA3tlyjMjJ4LxrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaIOwS3LqDKTHCJv6lAZ8nUMlQVMm0wSk+lhouZ2ID6G9N/Yb39mHd+sngRK9i+jk
-	 JpIl0kHu1MsnYylzqxM5uPc7XTCY7QLDAf9EAyGDTb8NGTzDK5u6lceYe60fIVKBLP
-	 9ArnNDDzEGb/Z0WFCt+MCyQnmAFtPA48B+glHQVM=
+	b=0ezqmnDb+j5u2CtXvIShq05TjxyZ1qNyvkw8JJs8ZfjZRdqKekgnFof9XxIsRo6PK
+	 vyEOhhPi1VqCETCbeyXryuF0kNRL209Dz7BcKVN+mMkOtdjsLisw3cyAEv8bCuxmEZ
+	 uCA9ovPhBQCpAChuCAL8C/ZZTGZQCsOcO23YgML0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 347/590] arm64: dts: qcom: q[dr]u1000: correct sleep clock frequency
-Date: Wed,  5 Feb 2025 14:41:42 +0100
-Message-ID: <20250205134508.548151777@linuxfoundation.org>
+Subject: [PATCH 6.12 348/590] arm64: dts: qcom: qrb4210-rb2: correct sleep clock frequency
+Date: Wed,  5 Feb 2025 14:41:43 +0100
+Message-ID: <20250205134508.586406669@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -68,48 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5546604e034b6c383b65676ff8615b346897eccd ]
+[ Upstream commit 298192f365a343d84e9d2755e47bebebf0cfb82e ]
 
-The Q[DR]U1000 platforms use PM8150 to provide sleep clock. According to
-the documentation, that clock has 32.7645 kHz frequency. Correct the
-sleep clock definition.
+Qualcomm RB2 board uses PM6125 to provide sleep clock. According to the
+documentation, that clock has 32.7645 kHz frequency. Correct the sleep
+clock definition.
 
-Fixes: d1f2cfe2f669 ("arm64: dts: qcom: Add base QDU1000/QRU1000 IDP DTs")
+Fixes: 8d58a8c0d930 ("arm64: dts: qcom: Add base qrb4210-rb2 board dts")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-5-e9b08fbeadd3@linaro.org
+Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-6-e9b08fbeadd3@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qdu1000-idp.dts | 2 +-
- arch/arm64/boot/dts/qcom/qru1000-idp.dts | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-index e65305f8136c8..c73eda75faf82 100644
---- a/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/qdu1000-idp.dts
-@@ -31,7 +31,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+index 1888d99d398b1..f99fb9159e0b6 100644
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -545,7 +545,7 @@
+ };
  
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
-diff --git a/arch/arm64/boot/dts/qcom/qru1000-idp.dts b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-index 1c781d9e24cf4..52ce51e56e2fd 100644
---- a/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/qru1000-idp.dts
-@@ -31,7 +31,7 @@
+ &sleep_clk {
+-	clock-frequency = <32000>;
++	clock-frequency = <32764>;
+ };
  
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32000>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
+ &tlmm {
 -- 
 2.39.5
 
