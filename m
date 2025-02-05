@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-113153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E877A29043
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A46DA29337
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1746169BA8
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 518B53AFBCC
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8548634E;
-	Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34D91519A9;
+	Wed,  5 Feb 2025 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lz6Q/+JQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avZ2pV0H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A992770825;
-	Wed,  5 Feb 2025 14:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED3A15EFA1;
+	Wed,  5 Feb 2025 15:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766000; cv=none; b=Mh2h0yARoi4VZwsA9+t72inT0kHYYoAk984WUxYY1vqNWTzuQUCUddDg9xyt6k4MixvLBTlgyeZ2MmxjAyhiE39vWipTKtJGfKD5cc1iaYKy297N/ZUf1AZer7IqNWg3S/LgAgch7ii7aYhjsoG3EAxNP0V85QESl9Pcr9B42rw=
+	t=1738767620; cv=none; b=aszNRIMMLgM3l3+8fZYTzdofKHr3MDghKPIYVRPy3L9SgUmt3ABMv0vNzMSFuQ9A4tM7TZPmcWRkJlkm3dqcSOdN2aDUhgoG097EufPwe6gKjsV9YkUHBTglupwhW8WsS4QfW2fPfSRQC2utDPbpcW5m0nlC78NP9IuNf43d2mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766000; c=relaxed/simple;
-	bh=/nBCFJa1Bu3RhnJFo8ZYiMy9wO8V5gpR9A5ZnOO1IVc=;
+	s=arc-20240116; t=1738767620; c=relaxed/simple;
+	bh=Rl3rzVkGtbAHOcf/4fezL1kIuBq03u9riR94VDtw6Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n++s3F0cSZMWuNC9eBoOP8fDLdLB3GjQCk4bZE+0+r9e6tj3L+qkTFh2RTXFDQnmE6+ia9bwG8yd/r5QS+2DJwH8kZjPt4QxfE9jm1L+yZs3Q/As39j/Sqc7wSmQVc2SIfRGuh36EFjY08s32OedjIgwNglxK5hO9EJsLJskjrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lz6Q/+JQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A60CC4CED1;
-	Wed,  5 Feb 2025 14:33:19 +0000 (UTC)
+	 MIME-Version; b=CapYOt7CToZjRKnIZT9W6Ze3cbKTPVd9g4DsqUyqnZ2YoN7QZFJv0XOQllN+1fwWLpBz0K36wgM0tP49xNrMV1x029bIgauabfTX2LhrbUKZvYbeB6NyxPCe2EYWQqWyodT5+34Rxggw/VW6Fyrkpam5KTWRTJ+uBoi/vNTcLSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avZ2pV0H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17CCC4CED1;
+	Wed,  5 Feb 2025 15:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766000;
-	bh=/nBCFJa1Bu3RhnJFo8ZYiMy9wO8V5gpR9A5ZnOO1IVc=;
+	s=korg; t=1738767620;
+	bh=Rl3rzVkGtbAHOcf/4fezL1kIuBq03u9riR94VDtw6Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lz6Q/+JQtAFhHYeuL0VQiEjSnM+vhWdXvFzx/R542uL6L1UZ8TCivbAfX8zI0sHy4
-	 C/pknf4dJ7xSxhvF51IBoDbO7FxLJtylxoMMiBvF6iRsaF2nK4oVbTJ29Q4EMzSgPU
-	 lERR0l+Irwk5ew2BW2w5Xvlj2HrVcNocPczdOnko=
+	b=avZ2pV0H+ShUdJ4Uq0bFehVcl9/TEMJVamZoMjpdLWdelb26AEeqdhWJ/ASOJdhgL
+	 lo29P5C88q6arNoETryLGjlcN78r3AsVEWXdiW24/XBBCmjF4V+EqE27SZUG4vE64N
+	 P9By94otXE4Inbp1LxWlQU9NDFpo4c3m2EQkSAx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Krishneil Singh <krishneil.k.singh@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/393] rtc: pcf85063: fix potential OOB write in PCF85063 NVMEM read
+Subject: [PATCH 6.12 483/590] idpf: fix transaction timeouts on reset
 Date: Wed,  5 Feb 2025 14:43:58 +0100
-Message-ID: <20250205134432.518750279@linuxfoundation.org>
+Message-ID: <20250205134513.741031263@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 3ab8c5ed4f84fa20cd16794fe8dc31f633fbc70c ]
+[ Upstream commit 137da75ba72593598898a4e79da34f4b2da5d151 ]
 
-The nvmem interface supports variable buffer sizes, while the regmap
-interface operates with fixed-size storage. If an nvmem client uses a
-buffer size less than 4 bytes, regmap_read will write out of bounds
-as it expects the buffer to point at an unsigned int.
+Restore the call to idpf_vc_xn_shutdown() at the beginning of
+idpf_vc_core_deinit() provided the function is not called on remove.
+In the reset path the mailbox is destroyed, leading to all transactions
+timing out.
 
-Fix this by using an intermediary unsigned int to hold the value.
-
-Fixes: fadfd092ee91 ("rtc: pcf85063: add nvram support")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20241218-rtc-pcf85063-stack-corruption-v1-1-12fd0ee0f046@pengutronix.de
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 09d0fb5cb30e ("idpf: deinit virtchnl transaction manager after vport and vectors")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85063.c | 11 ++++++++++-
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 11 ++++++++++-
  1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
-index fdbc07f14036a..905986c616559 100644
---- a/drivers/rtc/rtc-pcf85063.c
-+++ b/drivers/rtc/rtc-pcf85063.c
-@@ -322,7 +322,16 @@ static const struct rtc_class_ops pcf85063_rtc_ops = {
- static int pcf85063_nvmem_read(void *priv, unsigned int offset,
- 			       void *val, size_t bytes)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index d46c95f91b0d8..7639d520b8063 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3077,12 +3077,21 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+  */
+ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
  {
--	return regmap_read(priv, PCF85063_REG_RAM, val);
-+	unsigned int tmp;
-+	int ret;
++	bool remove_in_prog;
 +
-+	ret = regmap_read(priv, PCF85063_REG_RAM, &tmp);
-+	if (ret < 0)
-+		return ret;
-+
-+	*(u8 *)val = tmp;
-+
-+	return 0;
- }
+ 	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+ 		return;
  
- static int pcf85063_nvmem_write(void *priv, unsigned int offset,
++	/* Avoid transaction timeouts when called during reset */
++	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
++	if (!remove_in_prog)
++		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
++
+ 	idpf_deinit_task(adapter);
+ 	idpf_intr_rel(adapter);
+-	idpf_vc_xn_shutdown(adapter->vcxn_mngr);
++
++	if (remove_in_prog)
++		idpf_vc_xn_shutdown(adapter->vcxn_mngr);
+ 
+ 	cancel_delayed_work_sync(&adapter->serv_task);
+ 	cancel_delayed_work_sync(&adapter->mbx_task);
 -- 
 2.39.5
 
