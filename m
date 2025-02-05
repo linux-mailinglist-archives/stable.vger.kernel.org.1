@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-113276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A7DA290DD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:41:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3F6A28CD9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E4316952A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0D21887F54
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9891E376;
-	Wed,  5 Feb 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B47514A09A;
+	Wed,  5 Feb 2025 13:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNaau1Is"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9mWJupS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542C77BAEC;
-	Wed,  5 Feb 2025 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3625142E86;
+	Wed,  5 Feb 2025 13:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766414; cv=none; b=SE9SY3/xVxiW+dgqa3iR9AzqND6r/jgCG/OTzCI5NE6l26SujWuOwSVPkws+TTj5oTs3CLN3RXkY/LTyxg5cL9XiC8u6H56Frr9A/oG+Wr6T41e1MJvyauo+qY+paNLQMDUdeOxz4ph3tDlO1BI/yp6LbdAC9fNaciypAfbhIK4=
+	t=1738763674; cv=none; b=XFA4vHahRr+K+JX0gI8L0+eGR+wyxWMk7GQnMdQ3l/N3i6GhqDvmqmc9zWJhMy+ocAqZmVG31q6UuPm6yqKuoWCGHp5BHM5jGw0Hk7yZiduRFf2XYRs6WyeCUKAFKnHNRG5nqHS5SGdu4IeV9my9QGSZkFF72nZPheHxVJQhZoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766414; c=relaxed/simple;
-	bh=kv3J1Zs5E4JmFQuqd3RqzS22BrSm0UOEtdQAG765u9k=;
+	s=arc-20240116; t=1738763674; c=relaxed/simple;
+	bh=gTzFqZPGFu+y06ukQAMZEkAunfVrxWJZ9wtKuDsl91Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOMmHQhXHByxgLfpwumdRNANdfwMFCbDfyPjMRjbC3HDsVnCupXmEdSXRFsG5ZjC9adwvU8PFKzdoCvJSvXvYfVboPW6oXIcMnq6LO2lyo0AU5bfxA0C71npgt9OVmtH1yJ2S5f4SvtaZ/hZvCOoUXEGOak6mN/vaVpujSogrKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNaau1Is; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0269C4CED6;
-	Wed,  5 Feb 2025 14:40:13 +0000 (UTC)
+	 MIME-Version; b=OeMxusS+pielPPyzM51o3A+Bk3wiGXpvd4fHCchs4p2Qh9UsKUVguNXNqwqXQDm1GVZSXqETPXjPzFvqBsM2/VdeV0LKuoXRatvpPi7g3dqMap7S2P4p3dYGV20Gz5qy3h9MnUkRUuUo5mxAahIct1AM9OcQXcnsor8UzLl/gmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9mWJupS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460CEC4CED1;
+	Wed,  5 Feb 2025 13:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766414;
-	bh=kv3J1Zs5E4JmFQuqd3RqzS22BrSm0UOEtdQAG765u9k=;
+	s=korg; t=1738763673;
+	bh=gTzFqZPGFu+y06ukQAMZEkAunfVrxWJZ9wtKuDsl91Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNaau1IsX88fe69QYexVKn7qLmYQeFkZdCFXGvdIyNW2jRUsREeLASZfHatRkQYli
-	 Nb5FfjgTxIKH87XeBxAQHY5bkBZoz4JL0YALvEKiRO7N1ogzIbluzDL9uN3xWEL4fe
-	 QYcK+Dgy6s7UaPeLV0H0fUnrXvUCzUKbpeZDpfMw=
+	b=r9mWJupS4xNjDR0a6/NUuT5f2vdT76HcAILI/TeKd1mNswAnExi6AqaHqTLvzi16c
+	 T9hUT1a8Sxks2yLfvA9GhauhMBXT8WqPHbRVCUw2deph6QZU7JzzaPCjtm6P7zQRla
+	 4XcC3x4JQ+5Jw25Ti1/zlJd6QwBB629ZcxUUQc0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 271/623] tools build: Remove the libunwind feature tests from the ones detected when test-all.o builds
-Date: Wed,  5 Feb 2025 14:40:13 +0100
-Message-ID: <20250205134506.596781164@linuxfoundation.org>
+Subject: [PATCH 6.6 095/393] OPP: OF: Fix an OF node leak in _opp_add_static_v2()
+Date: Wed,  5 Feb 2025 14:40:14 +0100
+Message-ID: <20250205134423.930154820@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit b40fbeb0b1cd72912c41fb18c8b5e4b73ed191c4 ]
+[ Upstream commit 1d38eb7f7b26261a0b642f6e0923269c7c000a97 ]
 
-We have a tools/build/feature/test-all.c that has the most common set of
-features that perf uses and are expected to have its development files
-available when building perf.
+_opp_add_static_v2() leaks the obtained OF node reference when
+_of_opp_alloc_required_opps() fails. Add an of_node_put() call in the
+error path.
 
-When we made libwunwind opt-in we forgot to remove them from the list of
-features that are assumed to be available when test-all.c builds, remove
-them.
-
-Before this patch:
-
-  $ rm -rf /tmp/b ; mkdir /tmp/b ; make -C tools/perf O=/tmp/b feature-dump ; grep feature-libunwind-aarch64= /tmp/b/FEATURE-DUMP
-  feature-libunwind-aarch64=1
-  $
-
-Even tho this not being test built and those header files being
-available:
-
-  $ head -5 tools/build/feature/test-libunwind-aarch64.c
-  // SPDX-License-Identifier: GPL-2.0
-  #include <libunwind-aarch64.h>
-  #include <stdlib.h>
-
-  extern int UNW_OBJ(dwarf_search_unwind_table) (unw_addr_space_t as,
-  $
-
-After this patch:
-
-  $ grep feature-libunwind- /tmp/b/FEATURE-DUMP
-  $
-
-Now an audit on what is being enabled when test-all.c builds will be
-performed.
-
-Fixes: 176c9d1e6a06f2fa ("tools features: Don't check for libunwind devel files by default")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 3466ea2cd6b6 ("OPP: Don't drop opp->np reference while it is still in use")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/Makefile.feature | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/opp/of.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/build/Makefile.feature b/tools/build/Makefile.feature
-index bca47d136f058..8056315431860 100644
---- a/tools/build/Makefile.feature
-+++ b/tools/build/Makefile.feature
-@@ -89,13 +89,6 @@ FEATURE_TESTS_EXTRA :=                  \
-          libbfd-liberty                 \
-          libbfd-liberty-z               \
-          libopencsd                     \
--         libunwind-x86                  \
--         libunwind-x86_64               \
--         libunwind-arm                  \
--         libunwind-aarch64              \
--         libunwind-debug-frame          \
--         libunwind-debug-frame-arm      \
--         libunwind-debug-frame-aarch64  \
-          cxx                            \
-          llvm                           \
-          clang                          \
+diff --git a/drivers/opp/of.c b/drivers/opp/of.c
+index ada4963c7cfae..657c08d0ad979 100644
+--- a/drivers/opp/of.c
++++ b/drivers/opp/of.c
+@@ -932,7 +932,7 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
+ 
+ 	ret = _of_opp_alloc_required_opps(opp_table, new_opp);
+ 	if (ret)
+-		goto free_opp;
++		goto put_node;
+ 
+ 	if (!of_property_read_u32(np, "clock-latency-ns", &val))
+ 		new_opp->clock_latency_ns = val;
+@@ -982,6 +982,8 @@ static struct dev_pm_opp *_opp_add_static_v2(struct opp_table *opp_table,
+ 
+ free_required_opps:
+ 	_of_opp_free_required_opps(opp_table, new_opp);
++put_node:
++	of_node_put(np);
+ free_opp:
+ 	_opp_free(new_opp);
+ 
 -- 
 2.39.5
 
