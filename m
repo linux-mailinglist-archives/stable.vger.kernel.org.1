@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-113689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DD5A29359
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:12:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6395EA28F8B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B349E3B062A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:04:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF0C7164B41
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9899918DF64;
-	Wed,  5 Feb 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34591553AB;
+	Wed,  5 Feb 2025 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPDXxveA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEa6XDnC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AFB376;
-	Wed,  5 Feb 2025 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B38634E;
+	Wed,  5 Feb 2025 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767822; cv=none; b=GvjQA2/VkpqxiVthVyajemd6jaVdXL49KrOpdKF9Y/ZS17hEPpXJH2w/heTiUIRnyG9UhvLnMFr58PTagFNZhv64hbtAFiZD1iWPxFvOc2ta5mUS7hvas6I/X8a4Xw4Nl2UAuMUD9/qIXIErGDj81HAfzBvRzMQMpIzCWPCpKrI=
+	t=1738765590; cv=none; b=olm3uN4hsV1OObQaG4JuG92RRM0XzjcZHQbSgm9YxpKBroTMM5fTVVX5SzEMUH6NnT6kd+vLTKH3LYmKOBRyRO55R3G0A84AOy3g5cDncrae9oAOCdBrmif1cnaVLIagXYyfEnR6yDtfVAgILxgwL56RJFEqn3EcddjAPdu6JGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767822; c=relaxed/simple;
-	bh=L58wPtmvvMhySqaO9ghqMYaC7jSvcH25HLCccPkX7Rs=;
+	s=arc-20240116; t=1738765590; c=relaxed/simple;
+	bh=vLeS9xZcLfPcfYEJomkDME8vIFD8Zjlo/nOlm93+2l8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn+qGCsSQTAqCpbnG+GJba9xV+ld8JQu26Yf8vlemInIbS+LwogsBuTPKNxmt2HprHbuFdbga6e/7gPqfyWWeLuUZ5k7bK+WbV/e4ObHrlgzNbOCoqwRc/EqK/MzJ3ssbWObYc6x3g/asQCdmB9+YgWZ/cTRbHomALTGoWnVSg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPDXxveA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D38C4CED1;
-	Wed,  5 Feb 2025 15:03:41 +0000 (UTC)
+	 MIME-Version; b=eV5a4Rzt6DYSrHZaEqV4eVytYjEVW16QZLH+TA6H4iSwbOgvav/HIECJGTnk59ORQeF59Zr1hofGdhWq39O+SUmALa+VbjfWCpyuHQilFd2L9EludrfRoIfQp76BpcvzmtjmayBxckQyGGUqbavdNV0b+cJozB3JXFDDlJxETA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEa6XDnC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053FEC4CED1;
+	Wed,  5 Feb 2025 14:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767822;
-	bh=L58wPtmvvMhySqaO9ghqMYaC7jSvcH25HLCccPkX7Rs=;
+	s=korg; t=1738765590;
+	bh=vLeS9xZcLfPcfYEJomkDME8vIFD8Zjlo/nOlm93+2l8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CPDXxveAyaZeArZZYV2YLS6T4aVHHG/4XVESfMOLUBs9V//AjzKIVjGO7+Q6UfKlg
-	 lps5Z2BU/Zd8ivlVQt+wkmFKFnJLpOobRF/joP6vxIV8dh1TWHuf8DdE5Wu1K5ihes
-	 lTX7ypBi1h/X1pRzDKyieNm3ohYNHHcWhtTkPNWQ=
+	b=JEa6XDnC3h2SgSTcA0oF3kQiTwzfZuMSTJOMIrzFZoJNcTwIP79EI55zsNuf7dvfN
+	 P0i9dRMfC+Ifnc3EVqUNQv3Qd+Qwd1oGrzi6+EhaPPkSXY3Zr3dpGTTwDfegWn8bre
+	 e4OjRBDdhLJg2XGknN1YQxOt7Z649rsSwGnOCSeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com,
+	Sean Young <sean@mess.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 458/623] watchdog: rti_wdt: Fix an OF node leak in rti_wdt_probe()
+Subject: [PATCH 6.6 281/393] media: rc: iguanair: handle timeouts
 Date: Wed,  5 Feb 2025 14:43:20 +0100
-Message-ID: <20250205134513.736218035@linuxfoundation.org>
+Message-ID: <20250205134431.060478165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 143981aa63f33d469a55a55fd9fb81cd90109672 ]
+[ Upstream commit b98d5000c50544f14bacb248c34e5219fbe81287 ]
 
-rti_wdt_probe() does not release the OF node reference obtained by
-of_parse_phandle(). Add a of_node_put() call.
+In case of a timeout the IO must be cancelled or
+the next IO using the URB will fail and/or overwrite
+an operational URB.
 
-This was found by an experimental verification tool that I am
-developing. Due to the lack of the actual device, no runtime test was
-able to be performed.
+The automatic bisection fails because it arrives
+at a commit that correctly lets the test case run
+without an error.
 
-Fixes: f20ca595ae23 ("watchdog:rit_wdt: Add support for WDIOF_CARDRESET")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250105111718.4184192-1-joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: e99a7cfe93fd ("[media] iguanair: reuse existing urb callback for command responses")
+Reported-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/66f5cc9a.050a0220.46d20.0004.GAE@google.com/
+Tested-by: syzbot+ffba8e636870dac0e0c0@syzkaller.appspotmail.com
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/rc/iguanair.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
-index 58c9445c0f885..255ece133576b 100644
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -301,6 +301,7 @@ static int rti_wdt_probe(struct platform_device *pdev)
- 	node = of_parse_phandle(pdev->dev.of_node, "memory-region", 0);
- 	if (node) {
- 		ret = of_address_to_resource(node, 0, &res);
-+		of_node_put(node);
- 		if (ret) {
- 			dev_err(dev, "No memory address assigned to the region.\n");
- 			goto err_iomap;
+diff --git a/drivers/media/rc/iguanair.c b/drivers/media/rc/iguanair.c
+index 276bf3c8a8cb4..8af94246e5916 100644
+--- a/drivers/media/rc/iguanair.c
++++ b/drivers/media/rc/iguanair.c
+@@ -194,8 +194,10 @@ static int iguanair_send(struct iguanair *ir, unsigned size)
+ 	if (rc)
+ 		return rc;
+ 
+-	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0)
++	if (wait_for_completion_timeout(&ir->completion, TIMEOUT) == 0) {
++		usb_kill_urb(ir->urb_out);
+ 		return -ETIMEDOUT;
++	}
+ 
+ 	return rc;
+ }
 -- 
 2.39.5
 
