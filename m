@@ -1,109 +1,117 @@
-Return-Path: <stable+bounces-113992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DACA29C21
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:50:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D583FA29C25
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 22:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E30A166D8C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 21:50:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4831884E26
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 21:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157CA21506E;
-	Wed,  5 Feb 2025 21:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C888F215075;
+	Wed,  5 Feb 2025 21:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iKP836gG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ddpq3QPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE67215061
-	for <stable@vger.kernel.org>; Wed,  5 Feb 2025 21:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8041C1FFC4B;
+	Wed,  5 Feb 2025 21:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738792236; cv=none; b=bG0IUQIliCH1uEpsGX0FxeqjBYI7rOm5pZhvsoOz5/qojndTSXKReKfsxBAjQzvkuHJxFXchKcc6qatZzMXLx1PE4xOcW/CK8F70qMHxQD/A7pM+E3ExNBF7JfHgRnKVvvtnlPYPZTI0+NrZX/QQXKv5x294GngTo5S/ESdzFHM=
+	t=1738792404; cv=none; b=S4alCHiUJT9mL9pi2CfPPhSAOTS5MPloMQEHNODxeyonkdNrm37ohgcIK5ABgt+JRfjRIcVIxpMzG9zzhAbqz4qO3MRtjQ/nM4F4LzfxN/XAa4DYbYiBdsoTasGBOSd9ixt9JdRiPbXFKYMN5tvC6wqRrgBs9Ds+ANomW58QKkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738792236; c=relaxed/simple;
-	bh=ya/fBoSYVVIdgK88dQ9518oSzqK7Eic5Fomq5f/2f/k=;
+	s=arc-20240116; t=1738792404; c=relaxed/simple;
+	bh=x9d9cNYBFtlNcU52LjDGoQ5l6Zp8mlPVT0eIwPFJNkE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PYkETp6yxJxQ0y5Sk8D8SiAnCZuNGrV6PGvdYM+ncnGPm3Z6/paPrjGxxl5xLqEmH9fyBzmr939oZ87uzwQIasRaFu5SUpZtecgL/MmNp1gnyW7MRrddW/BgF/Iy1niKfSwyCSfSRCoWcyitX7X6GCxYaOZutZ8XIJnAVfa8ank=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iKP836gG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F77C4CED1;
-	Wed,  5 Feb 2025 21:50:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WqnAXAlfKmpoRtQEU2NP33xdwtMZQnd4XeKSqKkH19NUO0tyAxst1K+LHz2/Gs/nBakGLHYgDFzthaRrc2GnHnEnd09MWEzy943TnFtWzDjG2C7zc0otc4o/i+oBLlUG6vTUupIrqn90+Io4Os8DZvinZ3H2ZD/hafIsBRDB7zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ddpq3QPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D637C4CED1;
+	Wed,  5 Feb 2025 21:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738792236;
-	bh=ya/fBoSYVVIdgK88dQ9518oSzqK7Eic5Fomq5f/2f/k=;
+	s=k20201202; t=1738792403;
+	bh=x9d9cNYBFtlNcU52LjDGoQ5l6Zp8mlPVT0eIwPFJNkE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iKP836gGBxwnbSube4hNPNDiesXHon+kI/BC/VYc2CvG5L3aoqZSetkfIkEcbIsPF
-	 3PTuLtMED9HyHr86BJ6LC5ZfnC0r50gHWrpE8d8WEmLRUbUv9QHL6tdxSIuxqt/NV4
-	 IRQmF8XfTOr2cdLE6fOTbccHFOqi2ePhd0F+tOiwosWHYVZ+8EXwwlmJt5czRUkwIH
-	 KVCAw4eZk0fkDHGht8VyMRuplPEeBoMHHsnbqWgSz2wHO0VXIknfqiP+ZnxAJRrgmA
-	 +e10JnrOHTgWgPUkc7XfFwxnrXACk9bPfzh1uOW3pcPjmi5bSidfLPxhde26ORiPeb
-	 o5sCu6PZdRPfw==
-Date: Wed, 5 Feb 2025 21:50:30 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
-	eauger@redhat.com, fweimer@redhat.com, jeremy.linton@arm.com,
-	maz@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
-	stable@vger.kernel.org, tabba@google.com, wilco.dijkstra@arm.com,
-	will@kernel.org
-Subject: Re: [PATCH 7/8] KVM: arm64: Mark some header functions as inline
-Message-ID: <b76803b7-c1b3-426b-a375-0c01b98142c9@sirena.org.uk>
-References: <20250204152100.705610-1-mark.rutland@arm.com>
- <20250204152100.705610-8-mark.rutland@arm.com>
+	b=Ddpq3QPoxqKqJXu4nbOoGVAshaVJZnbKEirnXkeMKhNKHOhpp9xowG3WQ3X3yey/R
+	 55llMKdNRN6CX1Fl2+1wXM+P93kTa1ekSaskdQ7/KJTDPIjxQzg/0GNloe0K00SMK2
+	 wiaAnv2+nRHSSrguab5790uJ5TQ7ggsKIH0UcFk5egkbQIN0FtANdXTc0jqyGVIUQ3
+	 9z/g42e7anHkT/nB6bjILT/tUH/CticoDTSO9SPfaW5qfdZAqOph4RJmlcpmng+0ax
+	 KORxvwKv6SMCPBYV8rSA1N+JW65mbAnJQwOJGRCt+9o6OOSyVIdLBcB2rO9RuKrS/r
+	 JO1BaxUGXUoBw==
+Date: Wed, 5 Feb 2025 16:53:22 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Namhyung Kim <namhyung@gmail.com>
+Cc: Ian Rogers <irogers@google.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Ben Gainey <ben.gainey@arm.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@linaro.org>, Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Paran Lee <p4ranlee@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Steinar H . Gunderson" <sesse@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Falcon <thomas.falcon@intel.com>,
+	Weilin Wang <weilin.wang@intel.com>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Yang Li <yang.lee@linux.alibaba.com>, Ze Gao <zegao2021@gmail.com>,
+	Zixian Cai <fzczx123@gmail.com>,
+	zhaimingbing <zhaimingbing@cmss.chinamobile.com>
+Subject: Re: [PATCH AUTOSEL 6.13 06/16] tool api fs: Correctly encode errno
+ for read/write open failures
+Message-ID: <Z6Pd0oU4sa0OBxp3@lappy>
+References: <20250126150720.961959-1-sashal@kernel.org>
+ <20250126150720.961959-6-sashal@kernel.org>
+ <CAP-5=fVMYQPe5qajj34P75oT17Wi_dymJy_DvhoLd7nR4yyX9w@mail.gmail.com>
+ <CAM9d7chcUeg0C+MHGrqPuMMy7b8c-8RoUiXseoBnW+GY89O8jQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FmYGv0xfUtEYpWvS"
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20250204152100.705610-8-mark.rutland@arm.com>
-X-Cookie: Earth is a beta site.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM9d7chcUeg0C+MHGrqPuMMy7b8c-8RoUiXseoBnW+GY89O8jQ@mail.gmail.com>
 
+On Sun, Jan 26, 2025 at 12:41:31PM -0800, Namhyung Kim wrote:
+>Hello,
+>
+>On Sun, Jan 26, 2025 at 10:27 AM Ian Rogers <irogers@google.com> wrote:
+>>
+>> On Sun, Jan 26, 2025 at 7:07 AM Sasha Levin <sashal@kernel.org> wrote:
+>> >
+>> > From: Ian Rogers <irogers@google.com>
+>> >
+>> > [ Upstream commit 05be17eed774aaf56f6b1e12714325ca3a266c04 ]
+>> >
+>> > Switch from returning -1 to -errno so that callers can determine types
+>> > of failure.
+>>
+>> Hi Sasha,
+>>
+>> This change requires changes in the perf tool. The issue is the -1
+>> gets written to perf.data files in the topology, the -errno value is
+>> "corrupt." Because of this, I'd suggest not backporting this change.
+>
+>Agreed.  Please remove this patch from the all stable series.
 
---FmYGv0xfUtEYpWvS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I'll drop it, thanks!
 
-On Tue, Feb 04, 2025 at 03:20:59PM +0000, Mark Rutland wrote:
-> The shared hyp swtich header has a number of static functions which
-> might not be used by all files that include the header, and when unused
-> they will provoke compiler warnings, e.g.
-
-With at least LLVM 18 we still have some issues with unused statics
-arising from the aliased function definitions:
-
-In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
-./arch/arm64/kvm/hyp/include/hyp/switch.h:699:13: warning: unused function 'kvm_hyp_handle_iabt_low' [-Wunused-function]
-  699 | static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~
-./arch/arm64/kvm/hyp/include/hyp/switch.h:701:13: warning: unused function 'kvm_hyp_handle_watchpt_low' [-Wunused-function]
-  701 | static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The simplest thing would be to expand the alises into simple wrapper
-functions but that doesn't feel amazing, I don't know what people's
-taste is there?
-
---FmYGv0xfUtEYpWvS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmej3SUACgkQJNaLcl1U
-h9D8jAf+OsR7N7gv1mtd/NUw3staLjxx4em5B3XybTHjif1nB4OWEjvZoOxJIn4M
-Vct+xOc16qwqpSBqpNZ5J7vnqF4g0TAmHkNTQBpSg6rMFoivkllESV4ET1GfKYXS
-+K+qlRXgZLfIyk7rEvb674aEyWBhEfjDiSorQOZ+4xFP9QU+FVmycLl7gwLtQaig
-Zj5OZaGC+K2gotK5VDhMzEj7CrsIMM5wlylchlOyGdQHM1gAOOL4/ca6qcnjbqpl
-+dnJuXJnBW98ssuchtaWDIGkFup6orSyfddsfHrRZOnqDCb94NQWvbDV7TapiOnz
-PIWeEgcDvS4x1xHHAVbzmPKqx15/iw==
-=cnFK
------END PGP SIGNATURE-----
-
---FmYGv0xfUtEYpWvS--
+-- 
+Thanks,
+Sasha
 
