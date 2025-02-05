@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EB4A28D2D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:58:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E667A28DFE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B981889DAB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:57:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF02E164F96
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB2B14A4E9;
-	Wed,  5 Feb 2025 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECDE1547D8;
+	Wed,  5 Feb 2025 14:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiPMtDEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/4tWrky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC04D15573F;
-	Wed,  5 Feb 2025 13:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0C6FC0B;
+	Wed,  5 Feb 2025 14:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763856; cv=none; b=CrSJHteM1CIyM7LE6TYN2j7ypbipF0Y4Ay6WChxfKta939BThxtIolWMItLWO5DKpDwt8hpW68kVdUbCRNge6sN67CXFLiDRfMUTsH8ed/BFs/QRGjivx3v/2JQC7gnjmL/ban+IgeJvlQeqdaP/WES69PhQ2zAiOffnuY3I2MQ=
+	t=1738764460; cv=none; b=oDKw2FohPR5DxaW+lfy1ZTnvATmOZpFVOj8kwfQz5ucw2SF/CY2bevHcPhFyr6l5ULdav3gx+9r4XkOsmcHjRyLZwhcZ9JMqa6pmdhvkrMDHHXXmQYQP+QZ2hVR/ABfbCJj9uuxqgP8M4DrSud1NU140o4h5DWGTpjUhIOFcSDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763856; c=relaxed/simple;
-	bh=jiFfABDCQroDxmh4j0HC0QEt0E2PNF2Zh+RKJ853X2c=;
+	s=arc-20240116; t=1738764460; c=relaxed/simple;
+	bh=OkuosoTmt1LFEzxJd4HcbaLHfFB7oTxcQdthHurTjyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jExxPcm8TBtig2jzAW5ZjWPqn6Svxn9n2SkWy9/8wVoCpWSsUXYMaT3248HdnCp0RPdz4Y2aWolyGMoOeR5hA3q/uXKW2NQ/FJTmnCpHNeRpvEkMvP8GdqiqRtjOUZl9oxtgocICPoU5fYMbOfCnb+8rWQx0PDRL19tBdHSOELo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiPMtDEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A5BC4CED1;
-	Wed,  5 Feb 2025 13:57:35 +0000 (UTC)
+	 MIME-Version; b=CY7u8wAiW/19LD3FNmNRntNzie8Ua646JQStgFXtejcKv5bGHliyprDgVDas2tdYOkoiBOK1WMcywgNbWtDxpwpNDefy+oI1ssYieKcbdLKu9Vb4fXnfaGxz1LRAFTkGCh4oxB40krG1HM6f6P7FdZDBefp5br7hKRPFKmkNa10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/4tWrky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0669EC4CED1;
+	Wed,  5 Feb 2025 14:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763856;
-	bh=jiFfABDCQroDxmh4j0HC0QEt0E2PNF2Zh+RKJ853X2c=;
+	s=korg; t=1738764460;
+	bh=OkuosoTmt1LFEzxJd4HcbaLHfFB7oTxcQdthHurTjyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiPMtDEF6cgUE2aOpP+SIBWrefl/d1Na8yKuLcI8WHu+lxlco8c9DWdl7hG5qBXmn
-	 AagO9jtgjKRK0xQqySA/uHbEKbaoQtezM9LtkeN/lWJaKz98qT2PQa8npKqjMf1nh5
-	 K1XCWaIDcp33qVmgKjVOtgAwoqhcP8LetJ68ZwWU=
+	b=W/4tWrky0SEsz4NrXtdDxUfRnbHxfj8Wyy5JCAPHemcAEEs/rGx714BUDOamxPBhK
+	 PJnPEFV+FnBqT+WPJX6ebcnievPCp2xJQh0E0f6aCCQdgexncz8O9/PdQuV+oat8Ey
+	 u4EPvKW3HpTDFcHh9v8KOGl8gEdlkUWz2H54RsAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jiang Liu <gerry@linux.alibaba.com>,
+	Kent Russell <kent.russell@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 067/590] drm/msm: dont clean up priv->kms prematurely
+Subject: [PATCH 6.13 080/623] drm/amdgpu: tear down ttm range manager for doorbell in amdgpu_ttm_fini()
 Date: Wed,  5 Feb 2025 14:37:02 +0100
-Message-ID: <20250205134457.821469307@linuxfoundation.org>
+Message-ID: <20250205134459.285186380@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jiang Liu <gerry@linux.alibaba.com>
 
-[ Upstream commit ebc0deda3c2948d40419677d388b4e6081688a06 ]
+[ Upstream commit 60a2c0c12b644450e420ffc42291d1eb248bacb7 ]
 
-MSM display drivers provide kms structure allocated during probe().
-Don't clean up priv->kms field in case of an error. Otherwise probe
-functions might fail after KMS probe deferral.
+Tear down ttm range manager for doorbell in function amdgpu_ttm_fini(),
+to avoid memory leakage.
 
-Fixes: a2ab5d5bb6b1 ("drm/msm: allow passing struct msm_kms to msm_drv_probe()")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Fixes: 506efcba3129 ("drm/msm: carve out KMS code from msm_drv.c")
-Patchwork: https://patchwork.freedesktop.org/patch/590411/
-Link: https://lore.kernel.org/r/20240420-mdp4-fixes-v1-1-96a70f64fa85@linaro.org
+Fixes: 792b84fb9038 ("drm/amdgpu: initialize ttm for doorbells")
+Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
+Signed-off-by: Kent Russell <kent.russell@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_kms.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_kms.c b/drivers/gpu/drm/msm/msm_kms.c
-index af6a6fcb11736..6749f0fbca96d 100644
---- a/drivers/gpu/drm/msm/msm_kms.c
-+++ b/drivers/gpu/drm/msm/msm_kms.c
-@@ -244,7 +244,6 @@ int msm_drm_kms_init(struct device *dev, const struct drm_driver *drv)
- 	ret = priv->kms_init(ddev);
- 	if (ret) {
- 		DRM_DEV_ERROR(dev, "failed to load kms\n");
--		priv->kms = NULL;
- 		return ret;
- 	}
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index c8180cad0abdd..c4da62d111052 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -2065,6 +2065,7 @@ void amdgpu_ttm_fini(struct amdgpu_device *adev)
+ 	ttm_range_man_fini(&adev->mman.bdev, AMDGPU_PL_GDS);
+ 	ttm_range_man_fini(&adev->mman.bdev, AMDGPU_PL_GWS);
+ 	ttm_range_man_fini(&adev->mman.bdev, AMDGPU_PL_OA);
++	ttm_range_man_fini(&adev->mman.bdev, AMDGPU_PL_DOORBELL);
+ 	ttm_device_fini(&adev->mman.bdev);
+ 	adev->mman.initialized = false;
+ 	DRM_INFO("amdgpu: ttm finalized\n");
 -- 
 2.39.5
 
