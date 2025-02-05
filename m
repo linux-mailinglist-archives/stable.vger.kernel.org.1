@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-113934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43757A2944A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:23:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F71A2945C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3A55161CB1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6262C3B1981
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDB618CBFC;
-	Wed,  5 Feb 2025 15:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38980197A8B;
+	Wed,  5 Feb 2025 15:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZpGmRxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY4OII6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389F718A922;
-	Wed,  5 Feb 2025 15:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85E417B505;
+	Wed,  5 Feb 2025 15:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768664; cv=none; b=Ovdcb2nh8gzAgruv8spZpbUZLXnBETjuj3rxMohZmozL1avTuGmLxeebGyUau6NXRCyAK3T9yNx+ElTqwsyIQp9/OFjrgEZ5aK+3Qk+7AweGqh/GxQ9eAxVuXJiw8GwOgkTqqxUPFGLseVJLHtdGpBBzDb7GV9jRvWKv69Jt3tQ=
+	t=1738768419; cv=none; b=OTP8wWRy+Qmjv1TqXb3exB8V8o1nr/OGYTEHSEP103h11ltJWDhhqbeVXCBSdZUIbDJBTR57Fm0utC8WV4+ngvPrzvG8ha0agY37TbKmPrBRZAsIadmJMK8RHewMH/fPdfL+HH5cyuplbVR7MUtXzdKIEKneQGQxMFNRqI0dBB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768664; c=relaxed/simple;
-	bh=k/XyO6itLjIKqRsnKTRPe5LLWbHhGz57HSgUZfqaZwo=;
+	s=arc-20240116; t=1738768419; c=relaxed/simple;
+	bh=PJ4pd5GuNCzt8+zyn9VKfuwaFnZagALatr99q5zF5Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDUxmNUMdQbuaAK9SWduqsxynhw0/AonxpU1w0iF6Aqgw0jOyJZ7JMoWBl7i2Ux34Ek82meA55drVLsLtBK6TnTLg8BKE21tMfJFDoIC9PgnSp2PkbHROJSuYJEgp5Bt7f09GVax9MqiwA8NAuzQ/oep5cLyYaUAzdkKu9+70Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZpGmRxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9E2C4CED1;
-	Wed,  5 Feb 2025 15:17:42 +0000 (UTC)
+	 MIME-Version; b=Os+Gv0ahyPTdtNgYEAwWkoSC6iG4YrPUu/aFNhAsMVeMSLwIkj/HlKbDmEOuXWhS/qIIJ7eqqq2rlR3SY2R7SQJ7oj4jcjxifCLsWFsPuGbJGdSkMNw4mtftboU5ArVhFOcgz+dtu7olO1tKy4eaMKTO75OzS8Ob6GXe3Q88Li0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY4OII6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9B3C4CED1;
+	Wed,  5 Feb 2025 15:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768663;
-	bh=k/XyO6itLjIKqRsnKTRPe5LLWbHhGz57HSgUZfqaZwo=;
+	s=korg; t=1738768418;
+	bh=PJ4pd5GuNCzt8+zyn9VKfuwaFnZagALatr99q5zF5Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZpGmRxPyX5SWmIGyTLWxfiCV8inJm+mDlxPXTcoiymR2Rrntm5NPjJByfEnEcAgi
-	 +ziUPX/c8Outk9nV2TSXkA25c+Idcltyds7wbTgwTsrgpCZCvFO9MimaKSUKIXVXLV
-	 q95F+y4h46UCxSnYZYPVmCM0XUYz/QGs/Y0CxkpQ=
+	b=gY4OII6rMdLl8k6oDeHEWJQnC7id6ITeiCP+WBNsEInb5Kr2+pkNHStw1Tkvaiv11
+	 PWJHQnW0Yhe1Rsz9m4dKoHmmukn9f+D5gQjFe0wNBuWv8N/0fcxqnlVRix1NczDvAR
+	 1wALUcDqLA31XSrNT+NasG6Q7ge6TmNGQMNb9dzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.13 590/623] usb: xhci: Fix NULL pointer dereference on certain command aborts
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Christoph Hellwig <hch@lst.de>
+Subject: [PATCH 6.12 577/590] dma-mapping: save base/size instead of pointer to shared DMA pool
 Date: Wed,  5 Feb 2025 14:45:32 +0100
-Message-ID: <20250205134518.797616145@linuxfoundation.org>
+Message-ID: <20250205134517.341036113@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 1e0a19912adb68a4b2b74fd77001c96cd83eb073 upstream.
+commit 22293c33738c14bb84b9d3e771bc37150e7cf8e7 upstream.
 
-If a command is queued to the final usable TRB of a ring segment, the
-enqueue pointer is advanced to the subsequent link TRB and no further.
-If the command is later aborted, when the abort completion is handled
-the dequeue pointer is advanced to the first TRB of the next segment.
+On RZ/Five, which is non-coherent, and uses CONFIG_DMA_GLOBAL_POOL=y:
 
-If no further commands are queued, xhci_handle_stopped_cmd_ring() sees
-the ring pointers unequal and assumes that there is a pending command,
-so it calls xhci_mod_cmd_timer() which crashes if cur_cmd was NULL.
+    Oops - store (or AMO) access fault [#1]
+    CPU: 0 UID: 0 PID: 1 Comm: swapper Not tainted 6.12.0-rc1-00015-g8a6e02d0c00e #201
+    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
+    epc : __memset+0x60/0x100
+     ra : __dma_alloc_from_coherent+0x150/0x17a
+    epc : ffffffff8062d2bc ra : ffffffff80053a94 sp : ffffffc60000ba20
+     gp : ffffffff812e9938 tp : ffffffd601920000 t0 : ffffffc6000d0000
+     t1 : 0000000000000000 t2 : ffffffffe9600000 s0 : ffffffc60000baa0
+     s1 : ffffffc6000d0000 a0 : ffffffc6000d0000 a1 : 0000000000000000
+     a2 : 0000000000001000 a3 : ffffffc6000d1000 a4 : 0000000000000000
+     a5 : 0000000000000000 a6 : ffffffd601adacc0 a7 : ffffffd601a841a8
+     s2 : ffffffd6018573c0 s3 : 0000000000001000 s4 : ffffffd6019541e0
+     s5 : 0000000200000022 s6 : ffffffd6018f8410 s7 : ffffffd6018573e8
+     s8 : 0000000000000001 s9 : 0000000000000001 s10: 0000000000000010
+     s11: 0000000000000000 t3 : 0000000000000000 t4 : ffffffffdefe62d1
+     t5 : 000000001cd6a3a9 t6 : ffffffd601b2aad6
+    status: 0000000200000120 badaddr: ffffffc6000d0000 cause: 0000000000000007
+    [<ffffffff8062d2bc>] __memset+0x60/0x100
+    [<ffffffff80053e1a>] dma_alloc_from_global_coherent+0x1c/0x28
+    [<ffffffff80053056>] dma_direct_alloc+0x98/0x112
+    [<ffffffff8005238c>] dma_alloc_attrs+0x78/0x86
+    [<ffffffff8035fdb4>] rz_dmac_probe+0x3f6/0x50a
+    [<ffffffff803a0694>] platform_probe+0x4c/0x8a
 
-Don't attempt timer setup if cur_cmd is NULL. The subsequent doorbell
-ring likely is unnecessary too, but it's harmless. Leave it alone.
+If CONFIG_DMA_GLOBAL_POOL=y, the reserved_mem structure passed to
+rmem_dma_setup() is saved for later use, by saving the passed pointer.
+However, when dma_init_reserved_memory() is called later, the pointer
+has become stale, causing a crash.
 
-This is probably Bug 219532, but no confirmation has been received.
+E.g. in the RZ/Five case, the referenced memory now contains the
+reserved_mem structure for the "mmode_resv0@30000" node (with base
+0x30000 and size 0x10000), instead of the correct "pma_resv0@58000000"
+node (with base 0x58000000 and size 0x8000000).
 
-The issue has been independently reproduced and confirmed fixed using
-a USB MCU programmed to NAK the Status stage of SET_ADDRESS forever.
-Everything continued working normally after several prevented crashes.
+Fix this by saving the needed reserved_mem structure's contents instead.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219532
-Fixes: c311e391a7ef ("xhci: rework command timeout and cancellation,")
-CC: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241227120142.1035206-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a6e02d0c00e7b62 ("of: reserved_mem: Restructure how the reserved memory regions are processed")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/dma/coherent.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -422,7 +422,8 @@ static void xhci_handle_stopped_cmd_ring
- 	if ((xhci->cmd_ring->dequeue != xhci->cmd_ring->enqueue) &&
- 	    !(xhci->xhc_state & XHCI_STATE_DYING)) {
- 		xhci->current_cmd = cur_cmd;
--		xhci_mod_cmd_timer(xhci);
-+		if (cur_cmd)
-+			xhci_mod_cmd_timer(xhci);
- 		xhci_ring_cmd_db(xhci);
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -330,7 +330,8 @@ int dma_init_global_coherent(phys_addr_t
+ #include <linux/of_reserved_mem.h>
+ 
+ #ifdef CONFIG_DMA_GLOBAL_POOL
+-static struct reserved_mem *dma_reserved_default_memory __initdata;
++static phys_addr_t dma_reserved_default_memory_base __initdata;
++static phys_addr_t dma_reserved_default_memory_size __initdata;
+ #endif
+ 
+ static int rmem_dma_device_init(struct reserved_mem *rmem, struct device *dev)
+@@ -376,9 +377,10 @@ static int __init rmem_dma_setup(struct
+ 
+ #ifdef CONFIG_DMA_GLOBAL_POOL
+ 	if (of_get_flat_dt_prop(node, "linux,dma-default", NULL)) {
+-		WARN(dma_reserved_default_memory,
++		WARN(dma_reserved_default_memory_size,
+ 		     "Reserved memory: region for default DMA coherent area is redefined\n");
+-		dma_reserved_default_memory = rmem;
++		dma_reserved_default_memory_base = rmem->base;
++		dma_reserved_default_memory_size = rmem->size;
  	}
+ #endif
+ 
+@@ -391,10 +393,10 @@ static int __init rmem_dma_setup(struct
+ #ifdef CONFIG_DMA_GLOBAL_POOL
+ static int __init dma_init_reserved_memory(void)
+ {
+-	if (!dma_reserved_default_memory)
++	if (!dma_reserved_default_memory_size)
+ 		return -ENOMEM;
+-	return dma_init_global_coherent(dma_reserved_default_memory->base,
+-					dma_reserved_default_memory->size);
++	return dma_init_global_coherent(dma_reserved_default_memory_base,
++					dma_reserved_default_memory_size);
  }
+ core_initcall(dma_init_reserved_memory);
+ #endif /* CONFIG_DMA_GLOBAL_POOL */
 
 
 
