@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB44A28FCA
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:29:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF98DA28C6B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EB63A9B95
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498BF3A2B83
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C865155756;
-	Wed,  5 Feb 2025 14:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21569132111;
+	Wed,  5 Feb 2025 13:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaXYGEuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOpMigbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAF2155382;
-	Wed,  5 Feb 2025 14:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2841126C18;
+	Wed,  5 Feb 2025 13:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765706; cv=none; b=WWXBs7ucjDmhDGT/d/AX6px02KMCzzRnTOWGcugmMv4VCacJnPTT4JPj8IWnLwbIPgg/hIo1oy0ss7emJ2XFhE29MhX0ltdrRn82HaT2NzkIFbUgbCbPPLvgYGKDAx2eAwiTZx6/hCln8mmclMnsnQ+UCbNPfud81VBff1yfxmQ=
+	t=1738763378; cv=none; b=V9Y+wcZs45BH4OsoDJJ6GvUgFQD8iRYjYQU/wAbc1F72xMtWHR/kD5MH+a+Tbhiau7e/zyqgZFQ97012/aR8P8Eo8yereamTO16zygikW7M/+HEDsnxohLsUC+bczmNDCDXv8rUci1NyDfCGRAROceTp2/xsLM9ojJNGfNqTJaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765706; c=relaxed/simple;
-	bh=Y56BcKlRdBADW7I8zeIEJErbQNauliNkWAq1tKvTErE=;
+	s=arc-20240116; t=1738763378; c=relaxed/simple;
+	bh=uGXgHTrc+Rrc69f3rQlrhx8kC7CZSpCJ3O5e2Y7kWrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAqx3/NkPQD8heyiBkph2rLor+8JCzVITP56ZgkmqXZVWl5+4tAWhjMIrzw+8dpXZNrSziSAp+NYrj3JwF6mWfajV5TzD36ItXCMJwSqzXy9aSovr0CiS9HMDMD4puft3SDfrwe470MrY7GQ5fLhUOl0P+vKDnpJjwJS5R+yT+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaXYGEuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232DBC4CEE7;
-	Wed,  5 Feb 2025 14:28:25 +0000 (UTC)
+	 MIME-Version; b=ZQDcpdK84pffJCZNnkquP5mqPrcqALlGmLb3WyBZuRCH0tDqgzrFiIU8hgyLhzN8jTiYQdAq1Rcenwrs+9Dytx1eKhqqbDW2VDfGHMnipCRa39r87ZaNAIm4B48+pkNx0i548wCvBKdZelZ3qUeGtkl/pVKzhOyjD+yg30J5fRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOpMigbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCFAC4CED1;
+	Wed,  5 Feb 2025 13:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765706;
-	bh=Y56BcKlRdBADW7I8zeIEJErbQNauliNkWAq1tKvTErE=;
+	s=korg; t=1738763378;
+	bh=uGXgHTrc+Rrc69f3rQlrhx8kC7CZSpCJ3O5e2Y7kWrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaXYGEuTwJEXAPQIxz90RLCkgRIuuL14g049fiDkuFiyupY45HeGmYglx5R7MU52I
-	 FWsfvFVjHW3hbK/3zVimHuhVZ2L7Wu2Pn/Siy+6LoiOfZ2ltR4uCZHXuiWteBG6YWw
-	 OSwdh6eLAciDEPt+wZJIDyqsZDPw9tHzmeHYJMRY=
+	b=YOpMigbtSlb8ZRxMh2pPft9W83Dc3I0izn38k6fDKJZsclncLWmlUT3DVh6PQZQAe
+	 SeoOr8L7tZdBY9UaIoHF/0pIcWAeuRsalEzA9jfP2a/vuoonOkfLhvQN8nSmE0XH+q
+	 KKCQvXq3SsMpym8C9dz89dTzC+xHY6uYja/VDOv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 206/623] wifi: mt76: mt7915: fix omac index assignment after hardware reset
+Subject: [PATCH 6.6 029/393] drm/rockchip: vop2: Set YUV/RGB overlay mode
 Date: Wed,  5 Feb 2025 14:39:08 +0100
-Message-ID: <20250205134504.110016910@linuxfoundation.org>
+Message-ID: <20250205134421.414557113@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit cd043bbba6f9b71ebe0781d1bd2107565363c4b9 ]
+[ Upstream commit dd49ee4614cfb0b1f627c4353b60cecfe998a374 ]
 
-Reset per-phy mac address slot mask in order to avoid leaking entries.
+Set overlay mode register according to the
+output mode is yuv or rgb.
 
-Fixes: 8a55712d124f ("wifi: mt76: mt7915: enable full system reset support")
-Link: https://patch.msgid.link/20241230194202.95065-12-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211115805.1785073-1-andyshrk@163.com
+Stable-dep-of: 0ca953ac226e ("drm/rockchip: vop2: Fix the windows switch between different layers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_drv.h  |  1 +
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 17 ++++++++++++++---
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.h |  1 +
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index b890a58d37300..799e8d2cc7e6e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -1444,9 +1444,11 @@ static void
- mt7915_mac_full_reset(struct mt7915_dev *dev)
- {
- 	struct mt76_phy *ext_phy;
-+	struct mt7915_phy *phy2;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
+index aeb03a57240fd..9ef98968a83aa 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_drv.h
+@@ -31,6 +31,7 @@ struct rockchip_crtc_state {
+ 	int output_bpc;
+ 	int output_flags;
+ 	bool enable_afbc;
++	bool yuv_overlay;
+ 	u32 bus_format;
+ 	u32 bus_flags;
+ 	int color_space;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index f7a3b05701e9a..2504e2f762358 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1560,6 +1560,8 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
+ 
+ 	vop2->enable_count++;
+ 
++	vcstate->yuv_overlay = is_yuv_output(vcstate->bus_format);
++
+ 	vop2_crtc_enable_irq(vp, VP_INT_POST_BUF_EMPTY);
+ 
+ 	polflags = 0;
+@@ -1587,7 +1589,7 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
+ 	if (vop2_output_uv_swap(vcstate->bus_format, vcstate->output_mode))
+ 		dsp_ctrl |= RK3568_VP_DSP_CTRL__DSP_RB_SWAP;
+ 
+-	if (is_yuv_output(vcstate->bus_format))
++	if (vcstate->yuv_overlay)
+ 		dsp_ctrl |= RK3568_VP_DSP_CTRL__POST_DSP_OUT_R2Y;
+ 
+ 	vop2_dither_setup(crtc, &dsp_ctrl);
+@@ -1918,10 +1920,12 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 	u16 hdisplay;
+ 	u32 bg_dly;
+ 	u32 pre_scan_dly;
++	u32 ovl_ctrl;
  	int i;
+ 	struct vop2_video_port *vp0 = &vop2->vps[0];
+ 	struct vop2_video_port *vp1 = &vop2->vps[1];
+ 	struct vop2_video_port *vp2 = &vop2->vps[2];
++	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(vp->crtc.state);
  
- 	ext_phy = dev->mt76.phys[MT_BAND1];
-+	phy2 = ext_phy ? ext_phy->priv : NULL;
+ 	adjusted_mode = &vp->crtc.state->adjusted_mode;
+ 	hsync_len = adjusted_mode->crtc_hsync_end - adjusted_mode->crtc_hsync_start;
+@@ -1934,7 +1938,15 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 	pre_scan_dly = ((bg_dly + (hdisplay >> 1) - 1) << 16) | hsync_len;
+ 	vop2_vp_write(vp, RK3568_VP_PRE_SCAN_HTIMING, pre_scan_dly);
  
- 	dev->recovery.hw_full_reset = true;
+-	vop2_writel(vop2, RK3568_OVL_CTRL, 0);
++	ovl_ctrl = vop2_readl(vop2, RK3568_OVL_CTRL);
++	ovl_ctrl |= RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD;
++	if (vcstate->yuv_overlay)
++		ovl_ctrl |= RK3568_OVL_CTRL__YUV_MODE(vp->id);
++	else
++		ovl_ctrl &= ~RK3568_OVL_CTRL__YUV_MODE(vp->id);
++
++	vop2_writel(vop2, RK3568_OVL_CTRL, ovl_ctrl);
++
+ 	port_sel = vop2_readl(vop2, RK3568_OVL_PORT_SEL);
+ 	port_sel &= RK3568_OVL_PORT_SEL__SEL_PORT;
  
-@@ -1476,6 +1478,9 @@ mt7915_mac_full_reset(struct mt7915_dev *dev)
+@@ -2008,7 +2020,6 @@ static void vop2_setup_layer_mixer(struct vop2_video_port *vp)
  
- 	memset(dev->mt76.wcid_mask, 0, sizeof(dev->mt76.wcid_mask));
- 	dev->mt76.vif_mask = 0;
-+	dev->phy.omac_mask = 0;
-+	if (phy2)
-+		phy2->omac_mask = 0;
+ 	vop2_writel(vop2, RK3568_OVL_LAYER_SEL, layer_sel);
+ 	vop2_writel(vop2, RK3568_OVL_PORT_SEL, port_sel);
+-	vop2_writel(vop2, RK3568_OVL_CTRL, RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD);
+ }
  
- 	i = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
- 	dev->mt76.global_wcid.idx = i;
+ static void vop2_setup_dly_for_windows(struct vop2 *vop2)
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+index f1234a151130f..18f0573b20002 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+@@ -418,6 +418,7 @@ enum dst_factor_mode {
+ #define VOP2_COLOR_KEY_MASK				BIT(31)
+ 
+ #define RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD		BIT(28)
++#define RK3568_OVL_CTRL__YUV_MODE(vp)			BIT(vp)
+ 
+ #define RK3568_VP_BG_MIX_CTRL__BG_DLY			GENMASK(31, 24)
+ 
 -- 
 2.39.5
 
