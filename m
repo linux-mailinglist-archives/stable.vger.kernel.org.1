@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E347BA28C7D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:50:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDD9A2904B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60F6168B8B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:50:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8612C16A43B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61AEE1494DF;
-	Wed,  5 Feb 2025 13:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8662B14B959;
+	Wed,  5 Feb 2025 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXFT3P86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHuNRI3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA3C126C18;
-	Wed,  5 Feb 2025 13:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4193D151988;
+	Wed,  5 Feb 2025 14:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763420; cv=none; b=tVUDN4mum3l6CAy3Zkg4+8lyIdZzRiwvUH6I3WXu4m/tfJuPxdMrbUxXYyqAOlBxhu9Fzes+PfNh7GQdJdPPwuzXE6MiiHglpA3bxsN9IDrBFJY2tly/LIVpn5ooH03ySDCXWsz+v0wl9mAmcgmybyJCJ3QV1bfYMe9xbwY1vfk=
+	t=1738766032; cv=none; b=sRkbbjAykVTvYwM8iEkew3RxrdoyHOOiNCmw83BuiNe3vrpLhrp3xINutvgtvYKToLNRW2modklUdD7LyqgwHinAz5WWz8SPhAyYssQWcL2ETYpngJwC9C85WVEcZ3ldmF4r8cVwgEBAjnr4FqsuGxaqzFr1Gibd/uCN6BZQ9fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763420; c=relaxed/simple;
-	bh=jcV7gu+jnOMc1qszcGQV5NOye3r211rbQd3RjFlc2yo=;
+	s=arc-20240116; t=1738766032; c=relaxed/simple;
+	bh=l8w4JU8r6TrRXkczLp7KfW7LKD1cJ89F2bgBwIzd3UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pc6Uzt5HvbXvCC4bvlwKpVPEJ+ZodiR4Uj18ZjWoxByPBOLgmyxR4gT3svTaKHkhjZiMAfiqaRH2jGskJOl3+Gjw/zYMMF+JqRBVp1Dm1TRAhVTJUMr15YV5ms0JrxuV9tPQS1Ea9ZM+iY9dhDEMyJ0UtnrItYki0M1/iNEmcmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXFT3P86; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF4CC4CED1;
-	Wed,  5 Feb 2025 13:50:19 +0000 (UTC)
+	 MIME-Version; b=rmy2mtDs6oCSz0+rMPos3J5Sp4Zug8mTu0cIRP2w8EWorvQ827iFqkdrvFAGXFa4Q1JILkgk3tdCvgWDQTJk9wWK18DMdx7eDsSi6b9OaVJd/9IeMdnXfKFhYI3rxpU0zyLhsT4ZnQ3yUaWoizBloZOKMS/Og+zLBs4tMUsBows=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHuNRI3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45094C4CED1;
+	Wed,  5 Feb 2025 14:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763419;
-	bh=jcV7gu+jnOMc1qszcGQV5NOye3r211rbQd3RjFlc2yo=;
+	s=korg; t=1738766031;
+	bh=l8w4JU8r6TrRXkczLp7KfW7LKD1cJ89F2bgBwIzd3UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXFT3P869nRqEwAWSWWCGrGq/GyKplHHrrStPp8MKbyQU0xAXyfAsHXPTUEEA9HIO
-	 ZqZlCTZ/OF2gkckKjEO7Mpi+Q1lNMA5p3oiI7SfnUn7ib4uc3IexruxOGVDJMU5Orq
-	 M/aBviQwnJMrfv+wctZT6kIt7OjR5azglGgJBMvY=
+	b=kHuNRI3rrimNkSj2E+SYv5mANFKnhvj7CiZfFWB09xYiSW2KcDh62TKoO4axaO2A+
+	 yYu/yADQadzbqLSLTq0FRekHwYVU4Vjlwl3oSHl/fv5fHb4LbID7Uh5ol7O+aDH4eK
+	 sgIo3rYRaQv2VzaC2g67u1jvOkIH8VZ54Pa3rI1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Shinas Rasheed <srasheed@marvell.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/393] rxrpc: Fix handling of received connection abort
+Subject: [PATCH 6.13 236/623] octeon_ep_vf: remove firmware stats fetch in ndo_get_stats64
 Date: Wed,  5 Feb 2025 14:39:38 +0100
-Message-ID: <20250205134422.553747190@linuxfoundation.org>
+Message-ID: <20250205134505.254981567@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Shinas Rasheed <srasheed@marvell.com>
 
-[ Upstream commit 0e56ebde245e4799ce74d38419426f2a80d39950 ]
+[ Upstream commit cc0e510cc89fe0a6479203bc20cd964962dc6a43 ]
 
-Fix the handling of a connection abort that we've received.  Though the
-abort is at the connection level, it needs propagating to the calls on that
-connection.  Whilst the propagation bit is performed, the calls aren't then
-woken up to go and process their termination, and as no further input is
-forthcoming, they just hang.
+The firmware stats fetch call that happens in ndo_get_stats64()
+is currently not required, and causes a warning to issue.
 
-Also add some tracing for the logging of connection aborts.
+The corresponding warn log for the PF is given below:
 
-Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://patch.msgid.link/20241204074710.990092-3-dhowells@redhat.com
+[  123.316837] ------------[ cut here ]------------
+[  123.316840] Voluntary context switch within RCU read-side critical section!
+[  123.316917] pc : rcu_note_context_switch+0x2e4/0x300
+[  123.316919] lr : rcu_note_context_switch+0x2e4/0x300
+[  123.316947] Call trace:
+[  123.316949]  rcu_note_context_switch+0x2e4/0x300
+[  123.316952]  __schedule+0x84/0x584
+[  123.316955]  schedule+0x38/0x90
+[  123.316956]  schedule_timeout+0xa0/0x1d4
+[  123.316959]  octep_send_mbox_req+0x190/0x230 [octeon_ep]
+[  123.316966]  octep_ctrl_net_get_if_stats+0x78/0x100 [octeon_ep]
+[  123.316970]  octep_get_stats64+0xd4/0xf0 [octeon_ep]
+[  123.316975]  dev_get_stats+0x4c/0x114
+[  123.316977]  dev_seq_printf_stats+0x3c/0x11c
+[  123.316980]  dev_seq_show+0x1c/0x40
+[  123.316982]  seq_read_iter+0x3cc/0x4e0
+[  123.316985]  seq_read+0xc8/0x110
+[  123.316987]  proc_reg_read+0x9c/0xec
+[  123.316990]  vfs_read+0xc8/0x2ec
+[  123.316993]  ksys_read+0x70/0x100
+[  123.316995]  __arm64_sys_read+0x20/0x30
+[  123.316997]  invoke_syscall.constprop.0+0x7c/0xd0
+[  123.317000]  do_el0_svc+0xb4/0xd0
+[  123.317002]  el0_svc+0xe8/0x1f4
+[  123.317005]  el0t_64_sync_handler+0x134/0x150
+[  123.317006]  el0t_64_sync+0x17c/0x180
+[  123.317008] ---[ end trace 63399811432ab69b ]---
+
+Fixes: c3fad23cdc06 ("octeon_ep_vf: add support for ndo ops")
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Link: https://patch.msgid.link/20250117094653.2588578-4-srasheed@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h | 25 +++++++++++++++++++++++++
- net/rxrpc/conn_event.c       | 12 ++++++++----
- 2 files changed, 33 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index ed36f5f577a9d..252bb90aca599 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -117,6 +117,7 @@
- #define rxrpc_call_poke_traces \
- 	EM(rxrpc_call_poke_abort,		"Abort")	\
- 	EM(rxrpc_call_poke_complete,		"Compl")	\
-+	EM(rxrpc_call_poke_conn_abort,		"Conn-abort")	\
- 	EM(rxrpc_call_poke_error,		"Error")	\
- 	EM(rxrpc_call_poke_idle,		"Idle")		\
- 	EM(rxrpc_call_poke_start,		"Start")	\
-@@ -278,6 +279,7 @@
- 	EM(rxrpc_call_see_activate_client,	"SEE act-clnt") \
- 	EM(rxrpc_call_see_connect_failed,	"SEE con-fail") \
- 	EM(rxrpc_call_see_connected,		"SEE connect ") \
-+	EM(rxrpc_call_see_conn_abort,		"SEE conn-abt") \
- 	EM(rxrpc_call_see_disconnected,		"SEE disconn ") \
- 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
-@@ -961,6 +963,29 @@ TRACE_EVENT(rxrpc_rx_abort,
- 		      __entry->abort_code)
- 	    );
- 
-+TRACE_EVENT(rxrpc_rx_conn_abort,
-+	    TP_PROTO(const struct rxrpc_connection *conn, const struct sk_buff *skb),
-+
-+	    TP_ARGS(conn, skb),
-+
-+	    TP_STRUCT__entry(
-+		    __field(unsigned int,	conn)
-+		    __field(rxrpc_serial_t,	serial)
-+		    __field(u32,		abort_code)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->conn = conn->debug_id;
-+		    __entry->serial = rxrpc_skb(skb)->hdr.serial;
-+		    __entry->abort_code = skb->priority;
-+			   ),
-+
-+	    TP_printk("C=%08x ABORT %08x ac=%d",
-+		      __entry->conn,
-+		      __entry->serial,
-+		      __entry->abort_code)
-+	    );
-+
- TRACE_EVENT(rxrpc_rx_challenge,
- 	    TP_PROTO(struct rxrpc_connection *conn, rxrpc_serial_t serial,
- 		     u32 version, u32 nonce, u32 min_level),
-diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
-index 598b4ee389fc1..2a1396cd892f3 100644
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -63,11 +63,12 @@ int rxrpc_abort_conn(struct rxrpc_connection *conn, struct sk_buff *skb,
- /*
-  * Mark a connection as being remotely aborted.
-  */
--static bool rxrpc_input_conn_abort(struct rxrpc_connection *conn,
-+static void rxrpc_input_conn_abort(struct rxrpc_connection *conn,
- 				   struct sk_buff *skb)
- {
--	return rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
--				      RXRPC_CALL_REMOTELY_ABORTED);
-+	trace_rxrpc_rx_conn_abort(conn, skb);
-+	rxrpc_set_conn_aborted(conn, skb, skb->priority, -ECONNABORTED,
-+			       RXRPC_CALL_REMOTELY_ABORTED);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 7e6771c9cdbba..4c699514fd57a 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -799,14 +799,6 @@ static void octep_vf_get_stats64(struct net_device *netdev,
+ 	stats->tx_bytes = tx_bytes;
+ 	stats->rx_packets = rx_packets;
+ 	stats->rx_bytes = rx_bytes;
+-	if (!octep_vf_get_if_stats(oct)) {
+-		stats->multicast = oct->iface_rx_stats.mcast_pkts;
+-		stats->rx_errors = oct->iface_rx_stats.err_pkts;
+-		stats->rx_dropped = oct->iface_rx_stats.dropped_pkts_fifo_full +
+-				    oct->iface_rx_stats.err_pkts;
+-		stats->rx_missed_errors = oct->iface_rx_stats.dropped_pkts_fifo_full;
+-		stats->tx_dropped = oct->iface_tx_stats.dropped;
+-	}
  }
  
- /*
-@@ -202,11 +203,14 @@ static void rxrpc_abort_calls(struct rxrpc_connection *conn)
- 
- 	for (i = 0; i < RXRPC_MAXCALLS; i++) {
- 		call = conn->channels[i].call;
--		if (call)
-+		if (call) {
-+			rxrpc_see_call(call, rxrpc_call_see_conn_abort);
- 			rxrpc_set_call_completion(call,
- 						  conn->completion,
- 						  conn->abort_code,
- 						  conn->error);
-+			rxrpc_poke_call(call, rxrpc_call_poke_conn_abort);
-+		}
- 	}
- 
- 	_leave("");
+ /**
 -- 
 2.39.5
 
