@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-112358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC40A28C50
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7951AA28FBF
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916BE188395D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253D93A3630
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD44126C18;
-	Wed,  5 Feb 2025 13:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB98155335;
+	Wed,  5 Feb 2025 14:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipCVjM+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heA1pj8+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA56132111;
-	Wed,  5 Feb 2025 13:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E99522A;
+	Wed,  5 Feb 2025 14:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763302; cv=none; b=oMxrC1eMTws+1j2ycBDEfARlGGPhYqTXjafqYMCwbJqr+/oO+OaVsp9VjrW8RCbSRrSCXGnOxzpJnrm1xZ+cHF25IpupwAGTlw1qR77tTSCjy0DCtfCiowCvuNhetCPOLy2Eei1Z1QVDEKTg9HMCWMvbCkcDtA9h6j8AE5lhmww=
+	t=1738765683; cv=none; b=jjgfAcpB+hiGFuMbO3LJAWnQcdmONRyuinzlO54QmhPAdfEKgd2vUcxeJAHGt8tg86jLjFYcgeEEdF9ZbFzVQ2qpx3DGLkcnlkLSAoq6XePa0j0VKT7SMFGyuBAFMWTSyfJTsXY24esH6xNukFxogJjoocCDvskDjGVuOpdLntg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763302; c=relaxed/simple;
-	bh=I+LeXld/XE95o62Ffcslms1exlxj6Ider3mh1GuOXaI=;
+	s=arc-20240116; t=1738765683; c=relaxed/simple;
+	bh=3xy1NYJk11gr3d8WjhhtXoiX0Akdv89r9HCnrlWU+d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEWQyuF3yPGXhFdryBAGNZooquuEPFwHhaNczSdO/Dv904PWncQ1EtiasIwhra/1EkSvfcyYPbRffWZhrPAS5wko6t/+OWXvMjloCtxnmOq8bO3ERE0FbUHsUYxgZWAPUMlj9GmxZJRy5lKvAOAVwIoeZuUgCNvMrG+VCNI0icU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipCVjM+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C0C4CED1;
-	Wed,  5 Feb 2025 13:48:21 +0000 (UTC)
+	 MIME-Version; b=hlhUy1JG2GOvvjHl0whN1jP3xWzFWnPeb3oX5OHTuQ1h3x4AOmYMzVEGuNuNDoJri4xVVJw0oxjQaFRTJk+JJc+/DsZ4E+qs72iFlMnOrr2mtJ21PFZEQUBjrj1cXeJV/qk0ch0ta1LOdamFCZMS/fzu+Zo5FIyfhFbfJJ/Yo8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heA1pj8+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4750BC4CED1;
+	Wed,  5 Feb 2025 14:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763302;
-	bh=I+LeXld/XE95o62Ffcslms1exlxj6Ider3mh1GuOXaI=;
+	s=korg; t=1738765682;
+	bh=3xy1NYJk11gr3d8WjhhtXoiX0Akdv89r9HCnrlWU+d4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ipCVjM+RnQabwMRY3BX/1a/gk+rlGcm97X/r8oxv1ywRi+GHcu+55V74f3ByE11jC
-	 0zBGpDmSopMb7Nt/uwg4WyTUpYxO4RX8bBcLBE1yyzcpBygVKdQZo3US0gLDfeq29O
-	 rdYSBsLRudIp+P8Kmkli35G9JZ2IENfLUlNB9cRc=
+	b=heA1pj8+ZtfHu0rU4Ym5ClvZvj6CKgHVHRKBE8fc/e6bZbMzjrAV8PQlx+pt7w5TF
+	 S2/d3pP+XyzKBHzpuJKrPUFv8Uu5Rgt//XJeMZWLEPHhSr90KVVIflg5+HfuIOhdbt
+	 77pKmRI88x+8HpUyflK1Vm70djUWH/MEUOIZoXIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Derek Foreman <derek.foreman@collabora.com>,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/393] drm/rockchip: vop2: Fix cluster windows alpha ctrl regsiters offset
+Subject: [PATCH 6.13 204/623] wifi: mt76: only enable tx worker after setting the channel
 Date: Wed,  5 Feb 2025 14:39:06 +0100
-Message-ID: <20250205134421.339018422@linuxfoundation.org>
+Message-ID: <20250205134504.033989000@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 17b4b10a0df1a1421d5fbdc03bad0bd3799bc966 ]
+[ Upstream commit 228bc0e79c85269d36cc81e0288e95f2f9ba7ae1 ]
 
-The phy_id of cluster windws are not increase one for each window.
+Avoids sending packets too early
 
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Tested-by: Derek Foreman <derek.foreman@collabora.com>
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241209122943.2781431-6-andyshrk@163.com
+Fixes: 0b3be9d1d34e ("wifi: mt76: add separate tx scheduling queue for off-channel tx")
+Link: https://patch.msgid.link/20241230194202.95065-8-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index d1de12e850e74..f8fdbdf52e907 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -1741,7 +1741,6 @@ static int vop2_find_start_mixer_id_for_vp(struct vop2 *vop2, u8 port_id)
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 9d5561f441347..0ca83f1a3e3ea 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -958,11 +958,11 @@ int mt76_set_channel(struct mt76_phy *phy, struct cfg80211_chan_def *chandef,
  
- static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_win)
- {
--	u32 offset = (main_win->data->phys_id * 0x10);
- 	struct vop2_alpha_config alpha_config;
- 	struct vop2_alpha alpha;
- 	struct drm_plane_state *bottom_win_pstate;
-@@ -1749,6 +1748,7 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	u16 src_glb_alpha_val, dst_glb_alpha_val;
- 	bool premulti_en = false;
- 	bool swap = false;
-+	u32 offset = 0;
+ 	if (chandef->chan != phy->main_chan)
+ 		memset(phy->chan_state, 0, sizeof(*phy->chan_state));
+-	mt76_worker_enable(&dev->tx_worker);
  
- 	/* At one win mode, win0 is dst/bottom win, and win1 is a all zero src/top win */
- 	bottom_win_pstate = main_win->base.state;
-@@ -1767,6 +1767,22 @@ static void vop2_setup_cluster_alpha(struct vop2 *vop2, struct vop2_win *main_wi
- 	vop2_parse_alpha(&alpha_config, &alpha);
+ 	ret = dev->drv->set_channel(phy);
  
- 	alpha.src_color_ctrl.bits.src_dst_swap = swap;
-+
-+	switch (main_win->data->phys_id) {
-+	case ROCKCHIP_VOP2_CLUSTER0:
-+		offset = 0x0;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER1:
-+		offset = 0x10;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER2:
-+		offset = 0x20;
-+		break;
-+	case ROCKCHIP_VOP2_CLUSTER3:
-+		offset = 0x30;
-+		break;
-+	}
-+
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_SRC_COLOR_CTRL + offset,
- 		    alpha.src_color_ctrl.val);
- 	vop2_writel(vop2, RK3568_CLUSTER0_MIX_DST_COLOR_CTRL + offset,
+ 	clear_bit(MT76_RESET, &phy->state);
++	mt76_worker_enable(&dev->tx_worker);
+ 	mt76_worker_schedule(&dev->tx_worker);
+ 
+ 	mutex_unlock(&dev->mutex);
 -- 
 2.39.5
 
