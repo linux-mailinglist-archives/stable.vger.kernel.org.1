@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-112773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B73A28E5B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:12:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4775EA28ED4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 853163A2AE2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:11:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 920C4167C98
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:17:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B34155327;
-	Wed,  5 Feb 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845D186348;
+	Wed,  5 Feb 2025 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uikNXRD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bnw1iFjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833F21519AA;
-	Wed,  5 Feb 2025 14:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D4B1519BE;
+	Wed,  5 Feb 2025 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764703; cv=none; b=CW9Aoba4r7dN+Ce9F1J0HsVYiCf2JBJlEfHA3veI0x6theXjjV2XrJs1Oqv86eAzl/fFd1cSutrwi4Xc4w7vuvPfB+ECi6laWYnrgm6C2ZyCdq3Zqdq9SxWz0czGDFeVyf0znRFEVB8W6/4kCnVG3Tt/fDeszT2GrWlsUZLxYic=
+	t=1738765053; cv=none; b=WGvLcLocOJb+M2st0ZwyImCzZmwSDqUvgRhTLTj9w0+IE5Ig/oN2Mc8Yxm4HkGUSxkwf9BPyvxJWHMKyLi6ixtvyXIhHza8r9ztB3AreG+mQOZ9FoG1/JwJ2Wtx8LAEiDK5oQbhGaShzfdUElLtVRs6BQPMzI5CuZ7jHdB1o8Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764703; c=relaxed/simple;
-	bh=uNq1XKsjfjF2fj4UUR4zg/HD7/ZLAJo4nbyvpe/kqLg=;
+	s=arc-20240116; t=1738765053; c=relaxed/simple;
+	bh=CzGHGsPIDjicm7GIDRwR5WhOO1YgDToGoFRnPnX5NdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hkjyt4Ce8OHovtklQbeWpwKiLk7jRge4BE48EenT4WsgkTZbUnImrOQsVaczKgwgKu8ioLwqZCdPRR5LNsQ30HxY8N/RwpNoYxu+pSoBFaYZ4MDuwYCPbPLu4G0oJDQhgK/PHOgrjosoTHJM2+3coNuPohi1gulT8v8BNYVPQoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uikNXRD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AA8C4CEDD;
-	Wed,  5 Feb 2025 14:11:42 +0000 (UTC)
+	 MIME-Version; b=LCcDM6CMeUqZmfmwYczPjvBs8kJlR0r8N4t9gnT07aun1/5MyZ2sU36XUukKE3B60wr7vbltd2l5QWgJ+7gXpbbmasnxYaJfpm8wPk5Dj7J+ACQUAUAcwo6xtP5JSmg2L2mSXfg8rRBtrtFohmcdqD58d+9h3fGBO9fi2fMAS6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bnw1iFjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC20DC4CED1;
+	Wed,  5 Feb 2025 14:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764703;
-	bh=uNq1XKsjfjF2fj4UUR4zg/HD7/ZLAJo4nbyvpe/kqLg=;
+	s=korg; t=1738765053;
+	bh=CzGHGsPIDjicm7GIDRwR5WhOO1YgDToGoFRnPnX5NdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uikNXRD7FChCqTS0PlVSCQEa0QHeZNJZRJLb38DrQ6SnEDJuCfFK8Fv2Oe1Q8gmc5
-	 nRHbJ5aoTM8ML5yQIZWHq71Uuq6JakW4V0PcHAqZoDdhIK88t1dbIabpageP+Qg3Re
-	 VJDGtL64FJqognyTqDAF8KtXnuVsu8izO7ytSIb8=
+	b=Bnw1iFjkId8zmf3GkQK3ao7oQi6H1yYZKa12c59Q87HZN6lLAzSrA5SjHiMACTkiu
+	 hmyPg9LXP5mBM3LGvC34kUyuX0Bw2SasziPCb7/KcYqUC6L95OjycJ1CjdFUr5fhkk
+	 lNXOAvCZork7h3EzrBM+TpZW/KaXtzQEpohj75mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/590] arm64: dts: imx93: Use IMX93_CLK_SPDIF_IPG as SPDIF IPG clock
+Subject: [PATCH 6.13 139/623] regulator: of: Implement the unwind path of of_regulator_match()
 Date: Wed,  5 Feb 2025 14:38:01 +0100
-Message-ID: <20250205134500.081433739@linuxfoundation.org>
+Message-ID: <20250205134501.551483090@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 570b890e66334f283710af36feb2115f16c7a27c ]
+[ Upstream commit dddca3b2fc676113c58b04aaefe84bfb958ac83e ]
 
-IMX93_CLK_BUS_WAKEUP is not accurate IPG clock, which
-missed the clock gate part.
+of_regulator_match() does not release the OF node reference in the error
+path, resulting in an OF node leak. Therefore, call of_node_put() on the
+obtained nodes before returning the EINVAL error.
 
-IMX93_CLK_SPDIF_IPG is the correct clock.
+Since it is possible that some drivers call this function and do not
+exit on failure, such as s2mps11_pmic_driver, clear the init_data and
+of_node in the error path.
 
-Fixes: 1c4a4f7362fd ("arm64: dts: imx93: Add audio device nodes")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Shawn Guo <shawnguo@kernel.org>
-Link: https://lore.kernel.org/r/20241119015805.3840606-4-shengjiu.wang@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+This was reported by an experimental verification tool that I am
+developing. As I do not have access to actual devices nor the QEMU board
+configuration to test drivers that call this function, no runtime test
+was able to be performed.
+
+Fixes: 1c8fa58f4750 ("regulator: Add generic DT parsing for regulators")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Link: https://patch.msgid.link/20250104080453.2153592-1-joe@pf.is.s.u-tokyo.ac.jp
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/of_regulator.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 04b9b3d31f4fa..7bc3852c6ef8f 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -917,7 +917,7 @@
- 				reg-names = "ram", "regs", "rxfifo", "txfifo";
- 				interrupts = <GIC_SPI 203 IRQ_TYPE_LEVEL_HIGH>,
- 					     <GIC_SPI 204 IRQ_TYPE_LEVEL_HIGH>;
--				clocks = <&clk IMX93_CLK_BUS_WAKEUP>,
-+				clocks = <&clk IMX93_CLK_SPDIF_IPG>,
- 					 <&clk IMX93_CLK_SPDIF_GATE>,
- 					 <&clk IMX93_CLK_DUMMY>,
- 					 <&clk IMX93_CLK_AUD_XCVR_GATE>;
+diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+index e5b4b93c07e3f..6af8411679c76 100644
+--- a/drivers/regulator/of_regulator.c
++++ b/drivers/regulator/of_regulator.c
+@@ -446,7 +446,7 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 					"failed to parse DT for regulator %pOFn\n",
+ 					child);
+ 				of_node_put(child);
+-				return -EINVAL;
++				goto err_put;
+ 			}
+ 			match->of_node = of_node_get(child);
+ 			count++;
+@@ -455,6 +455,18 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+ 	}
+ 
+ 	return count;
++
++err_put:
++	for (i = 0; i < num_matches; i++) {
++		struct of_regulator_match *match = &matches[i];
++
++		match->init_data = NULL;
++		if (match->of_node) {
++			of_node_put(match->of_node);
++			match->of_node = NULL;
++		}
++	}
++	return -EINVAL;
+ }
+ EXPORT_SYMBOL_GPL(of_regulator_match);
+ 
 -- 
 2.39.5
 
