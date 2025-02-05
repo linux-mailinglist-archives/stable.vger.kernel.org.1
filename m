@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-113388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DE1A29197
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:53:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550D8A28EA2
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D86B7A144D
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B11AE7A265B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE79E376;
-	Wed,  5 Feb 2025 14:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82519282EE;
+	Wed,  5 Feb 2025 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pK2NwO6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lveGXW5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E5818B460;
-	Wed,  5 Feb 2025 14:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D48C151980;
+	Wed,  5 Feb 2025 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766790; cv=none; b=ApZkbr4q2MhaDSTMGvVaGZU7DCGcgjoVrS/79aN9lhF83PECZeyfJudgzGlC3h86iHO9fq5AnpMt32pQKJ6XRPKPo4XYfVcs3TbPX1HOQkGjPVHAvExuTBg53vx76bTcRwEEU6mUV67OzHi9uXmPpJRUm2EpS8kd5Yq0usJftwo=
+	t=1738764926; cv=none; b=ESi2RBvTLonHTyLu3idUYCrDlzCRLeaLL/JeKrrc3aW0btlHUpzzzOmLQUbCj8Jn27n9L2ltz+z1kU8qfbU55x9IfXejm/1K2/6diHdhg7Yz5b7Kx4hJvPODxOoylAuMSeeNUtputbYhVEjCbmCBBvU30WjAXQ+ncn0mIgEGEr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766790; c=relaxed/simple;
-	bh=ctZKat2qf0gZzoSpb4eypkaDIq6mWQmxjDrqvDKdpnE=;
+	s=arc-20240116; t=1738764926; c=relaxed/simple;
+	bh=Z1VwCjF52JNoSdU923KMQlaM13wrZ/upOKs2ByagGfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACCGg7DObQ8OdZs9Z10ntvAzkYeT/SBkmKOt3/szQwUKXBHUM1u+DfOn1mKNld8UZI5nhg3+77+mrIRjMOutXQ7VhBXQn4vPdFIKSNgyWKRhsTEwFBsmgUYpuvPzO9Zy/EULUD8U4UQu7PEznaeklGQ4kLJ2jZXkGCTOTfEYVWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pK2NwO6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87558C4CED1;
-	Wed,  5 Feb 2025 14:46:29 +0000 (UTC)
+	 MIME-Version; b=Kx+QwGAYasAy662vqOyPagE/avEt5Gfvqs+gjMp3qIFUDjZAJr2K/ax0ShusWJyTH326HUflsXQ/PrpJMLG8ubuLNM88Pb3+LpqQC7liEh4CYy+eoWbGvh2KnMKQh40r6leKHLJh3hzfWXabrDRSHBUbbn7Asa3NYtjmW+svRC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lveGXW5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28FFC4CED1;
+	Wed,  5 Feb 2025 14:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766790;
-	bh=ctZKat2qf0gZzoSpb4eypkaDIq6mWQmxjDrqvDKdpnE=;
+	s=korg; t=1738764926;
+	bh=Z1VwCjF52JNoSdU923KMQlaM13wrZ/upOKs2ByagGfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pK2NwO6SPiinnFApBR1gjY/JlIEqsvd/icNZ47GJXmbSOaHjVut9IUj3J+oZ2g2DP
-	 5uFGMbtqgN750DIil3RLM2aT9K+dhEZ2IP5ISdiEpcT2qCCJEFZUc1+9qXJK/eZHIU
-	 LN6i1+qvrnIUC+KCBBAyQ2A+++xhH2csNcn2U6R0=
+	b=lveGXW5WrlUom288+Mm01lHLnFGcIsimttnDGpuMr2tyw/H/oHyPjlDui2gF4Ocz+
+	 EIlda+qna9cebP3Qs0KU06aax51osY1QlL0/Ge/7j+vwDx6Z8/0C0M5NzUz5Dgwena
+	 Sj2velFVsN+PE5zpOFmyeRvU67prSOdWD8R6Zmfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mihai Sain <mihai.sain@microchip.com>,
-	Cristian Birsan <cristian.birsan@microchip.com>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 361/590] ARM: dts: microchip: sama5d29_curiosity: Add no-1-8-v property to sdmmc0 node
+Subject: [PATCH 6.6 197/393] arm64: dts: mt8183: set DMIC one-wire mode on Damu
 Date: Wed,  5 Feb 2025 14:41:56 +0100
-Message-ID: <20250205134509.081321236@linuxfoundation.org>
+Message-ID: <20250205134427.836256584@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Birsan <cristian.birsan@microchip.com>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-[ Upstream commit c21c23a0f2e9869676eff0d53fb89e151e14c873 ]
+[ Upstream commit 6c379e8b984815fc8f876e4bc78c4d563f13ddae ]
 
-Add no-1-8-v property to sdmmc0 node to keep VDDSDMMC power rail at 3.3V.
-This property will stop the LDO regulator from switching to 1.8V when the
-MMC core detects an UHS SD Card. VDDSDMMC power rail is used by all the
-SDMMC interface pins in GPIO mode (PA0 - PA13).
+Sets DMIC one-wire mode on Damu.
 
-On this board, PA6 is used as GPIO to enable the power switch controlling
-USB Vbus for the USB Host. The change is needed to fix the PA6 voltage
-level to 3.3V instead of 1.8V.
-
-Fixes: d85c4229e925 ("ARM: dts: at91: sama5d29_curiosity: Add device tree for sama5d29_curiosity board")
-Suggested-by: Mihai Sain <mihai.sain@microchip.com>
-Signed-off-by: Cristian Birsan <cristian.birsan@microchip.com>
-Tested-by: Andrei Simion <andrei.simion@microchip.com>
-Link: https://lore.kernel.org/r/20241119160107.598411-2-cristian.birsan@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20241113-damu-v4-1-6911b69610dd@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts b/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
-index 951a0c97d3c6b..5933840bb8f7e 100644
---- a/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
-+++ b/arch/arm/boot/dts/microchip/at91-sama5d29_curiosity.dts
-@@ -514,6 +514,7 @@
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
+index 9a166dccd727c..8f95b7270c3fa 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dts
+@@ -27,6 +27,10 @@
+ 	hid-descr-addr = <0x0001>;
+ };
  
- &sdmmc0 {
- 	bus-width = <4>;
-+	no-1-8-v;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_sdmmc0_default>;
- 	disable-wp;
++&mt6358codec {
++	mediatek,dmic-mode = <1>; /* one-wire */
++};
++
+ &qca_wifi {
+ 	qcom,ath10k-calibration-variant = "GO_DAMU";
+ };
 -- 
 2.39.5
 
