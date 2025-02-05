@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEBEA28F60
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:24:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB4FA28C55
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C00B163792
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A3917A4FC7
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9900F154C08;
-	Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13957149C7D;
+	Wed,  5 Feb 2025 13:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdzBWWu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h50NU4Y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5512B14A088;
-	Wed,  5 Feb 2025 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02FD1369A8;
+	Wed,  5 Feb 2025 13:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765463; cv=none; b=SscvMmpTKMTeeiNEE1T7VpYg3d1zMLc3P1S08MWaCnfklacHOQprFjSBzZc7wTRj5HI/P0kNsEn8EAT64wJiozpMrkBeZWAm1EhlmtrtTjb2gwOFUpZPC/VDsZMfQntO29f6gEYgK3ef5UfqEdxDlLnmAOFzFIS5ITLBuqXoYGU=
+	t=1738763141; cv=none; b=PILyrSt8dvzCvdysoxc7N9qWDStsCha27bvGlJ3labMtIu8ZdJ/G9fD48w81x2rtSQC4eYhxwU1xSkVrOGK4cx7gZUgvTsXyqjGEMKnu36zfx4k2d+jhoNNnjIhvQHt7CJQhi0i0lO57OYpAr4z4mZSHb0RqxO+1Ve+gX3kxUJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765463; c=relaxed/simple;
-	bh=7D4+eenryfWlG3QQ04/ccRhgpPPi7V+dcUi/Ekj8HHo=;
+	s=arc-20240116; t=1738763141; c=relaxed/simple;
+	bh=EH6WUwYa2rem54PxOT1and4V/tu0WVs8BhNdqyR9U6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FOJa6Vfh2mai1d5a1nj8TOUgCr+3a29PbE9WATS4lmuglv4o+8bHSo/70hj11ZN8IsZBLRr8Qc/HmzaJg0DKxhs8J+wj5UXzCWZhSJ4Ob21VcGT2RzsATEyGb+wL+TCPgMBLjNBzpi7rXQZNA9Gww9kR4FWalDptqC0s+fCg2Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdzBWWu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54DFC4CED1;
-	Wed,  5 Feb 2025 14:24:22 +0000 (UTC)
+	 MIME-Version; b=s5OnkLMsx3u95Ra8Zw1x0iQvWnAQeKeENIOU1vyYGGZcwJUvq5xmZureTItq0Uqs6g2RcapzFbfmZWgT41klyvZF7VYCph+9QY7/UUHxLY2Z5EFCerIMlhwEljjFfxw0cKXqAEoZFR+nxoehlav47eP+xDfxCcuLCXBVUyXKlPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h50NU4Y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21BEC4CED1;
+	Wed,  5 Feb 2025 13:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765463;
-	bh=7D4+eenryfWlG3QQ04/ccRhgpPPi7V+dcUi/Ekj8HHo=;
+	s=korg; t=1738763141;
+	bh=EH6WUwYa2rem54PxOT1and4V/tu0WVs8BhNdqyR9U6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdzBWWu3ImETw1AE0Fr/t0cNW3I8Fd9mfv3jXJrkT6NNh4tWmzjj385evHFCpiCam
-	 89hI1tu1aySJmVlTCatln8dGZQRZanOV3hh4xEC3K/G2+/n9EEaixlI8mM8iziYxJ2
-	 E4k6EValz+3j35M3BFG5QCdMGiPhHCU7vP7vhrKU=
+	b=h50NU4Y5sYJ5y5pTSUdabmWBjs2jd6Bc0RBCrmQuvs7lQePTsvM0eY1eMMjT/xdyZ
+	 K0qhTe+frQQB4+35GfYie3WgtbtX0E9J+rfbmi/XsMaxkK9AadUjVUDw0W21VdGj7m
+	 cdA9QX+eI+dDykh5lkbMlgOjewPaDgAkeGkDz4k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Felix Fietkau <nbd@nbd.name>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 180/623] wifi: mt76: mt7915: Fix an error handling path in mt7915_add_interface()
+Subject: [PATCH 6.6 003/393] afs: Fix EEXIST error returned from afs_rmdir() to be ENOTEMPTY
 Date: Wed,  5 Feb 2025 14:38:42 +0100
-Message-ID: <20250205134503.121516272@linuxfoundation.org>
+Message-ID: <20250205134420.419214709@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 126a516fe30639708e759678bcb10178938cc718 ]
+[ Upstream commit b49194da2aff2c879dec9c59ef8dec0f2b0809ef ]
 
-If mt76_wcid_alloc() fails, the "mt76.mutex" mutex needs to be released as
-done in the other error handling paths of mt7915_add_interface().
+AFS servers pass back a code indicating EEXIST when they're asked to remove
+a directory that is not empty rather than ENOTEMPTY because not all the
+systems that an AFS server can run on have the latter error available and
+AFS preexisted the addition of that error in general.
 
-Fixes: f3049b88b2b3 ("wifi: mt76: mt7915: allocate vif wcid in the same range as stations")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://patch.msgid.link/b9d8fbfc19360bfe60b9cea1cb0f735ab3b4bc26.1727639596.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix afs_rmdir() to translate EEXIST to ENOTEMPTY.
+
+Fixes: 260a980317da ("[AFS]: Add "directory write" support.")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241216204124.3752367-13-dhowells@redhat.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/afs/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index 8183708a9b355..351285daac99f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -246,8 +246,10 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
- 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 897569e1d3a90..cdd2abdc8975d 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -1458,7 +1458,12 @@ static int afs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		op->file[1].vnode = vnode;
+ 	}
  
- 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
--	if (idx < 0)
--		return -ENOSPC;
-+	if (idx < 0) {
-+		ret = -ENOSPC;
-+		goto out;
-+	}
+-	return afs_do_sync_operation(op);
++	ret = afs_do_sync_operation(op);
++
++	/* Not all systems that can host afs servers have ENOTEMPTY. */
++	if (ret == -EEXIST)
++		ret = -ENOTEMPTY;
++	return ret;
  
- 	INIT_LIST_HEAD(&mvif->sta.rc_list);
- 	INIT_LIST_HEAD(&mvif->sta.wcid.poll_list);
+ error:
+ 	return afs_put_operation(op);
 -- 
 2.39.5
 
