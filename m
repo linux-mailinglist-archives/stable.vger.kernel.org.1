@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-112503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4BCA28D1E
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F18A28C6A
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 362393A8DF9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8EAC3A2689
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C8E152E12;
-	Wed,  5 Feb 2025 13:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9570142E86;
+	Wed,  5 Feb 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haMPINhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bENbw3Rc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032D614D28C;
-	Wed,  5 Feb 2025 13:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67552126C18;
+	Wed,  5 Feb 2025 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763786; cv=none; b=E2kIDqYPzBBVRC/DLR6Ybgc7OY4KngLiH9zHsjZYkLlx+nJfkDIVttPGTF7OINA/pQO/I+IqoeLnYiU68lohwsxQy13gHhBExmCSnoBmnf9f2DUk1x31nHF1D21tx1J5R5oO3G+UvxnaNMsPylkzThnJmvRCAXnmPaESFLiC4xI=
+	t=1738763375; cv=none; b=d3w1pB3fRGKGGNAOIb/j/zu9RAesxqaKK/EwWIPvf9vHIplmWaJcywLpnKYR0dXcrBISH3I/w52BVsvWeIij4OeyfKwNusWjshKaLoBa9gFqo0BLbjBGvIjeLeda8e+i4ja/JIs49XmK2IfMkjtC3jYecwoyfATtM0dzTXqdxJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763786; c=relaxed/simple;
-	bh=pZeutwCIhFJzEve36Qu0O2W+K8CG/lwRKHAFnZI4MWQ=;
+	s=arc-20240116; t=1738763375; c=relaxed/simple;
+	bh=JKuSDp59z/buIH6tB14FdIE9pTKl6cdF14lY7BH2UOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lrcd98w2KcRpdRtMoKH36s/2HmfILaNmzdBOuzBX16DSm1hRL0xYhdr3hQZO+RHGlEfU1Lfyi9C/5Bay3mKf/irbHeo6HOELVIz7uEEkp5Z2GsziYADYFvuaB6YTArrAWdbuVWIRwbikInqfLO+Zo2J9OGsDozUY94nrcNqjWU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haMPINhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B2BC4CED1;
-	Wed,  5 Feb 2025 13:56:24 +0000 (UTC)
+	 MIME-Version; b=IW2NW5rz99F6hOignTsv03R0gsNcazWu8nv9/JX/LrXnWoAb4rb93khUtIjSkbcDY2wIK3UvWGLAhw5l7uJH7UFUX8viuT5qIgcjICYMQ3S9200H8JoKr/VDmHxj11/f94Te6dC2chZriKwURXG0lLMdfIFc3MmZ+LYwICt6kFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bENbw3Rc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAB3C4CED1;
+	Wed,  5 Feb 2025 13:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763785;
-	bh=pZeutwCIhFJzEve36Qu0O2W+K8CG/lwRKHAFnZI4MWQ=;
+	s=korg; t=1738763375;
+	bh=JKuSDp59z/buIH6tB14FdIE9pTKl6cdF14lY7BH2UOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haMPINhA5/Gw+tIWS4iXr/uRJdFOfD1VfYbhTTe1mks/GgnoBW7OrOmRwfXJSWl+O
-	 iXT2q7b7GkDlZqxxUMDsQhvuXgXfYIQxwlAkT4Pu+69iBrDcP+eRlvw6QOSznrRWjI
-	 mL90BIdYHgQonYTXimM3KeM8gtHZ7BUsB0/T3Ex0=
+	b=bENbw3RcJ6ihvfPoql3mQB/FsjMlSpPaEruNWGZioDUArLTYfnF382mXsfk8F8dCT
+	 peotuoAwqHcvdgcHp7AaBCkfnoOi9+IItU4p2PXdEjayoC6ToAPVj73e/H/3+GgAsc
+	 QdwK6Yw5UNFhzLHeZjTWhsMTDs9Gi4bp7/2Fk1XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 018/623] block: add a store_limit operations for sysfs entries
+Subject: [PATCH 6.12 005/590] afs: Fix EEXIST error returned from afs_rmdir() to be ENOTEMPTY
 Date: Wed,  5 Feb 2025 14:36:00 +0100
-Message-ID: <20250205134456.925844337@linuxfoundation.org>
+Message-ID: <20250205134455.435997502@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,314 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a16230649ce27f8ac7dd8a5b079d9657aa96de16 ]
+[ Upstream commit b49194da2aff2c879dec9c59ef8dec0f2b0809ef ]
 
-De-duplicate the code for updating queue limits by adding a store_limit
-method that allows having common code handle the actual queue limits
-update.
+AFS servers pass back a code indicating EEXIST when they're asked to remove
+a directory that is not empty rather than ENOTEMPTY because not all the
+systems that an AFS server can run on have the latter error available and
+AFS preexisted the addition of that error in general.
 
-Note that this is a pure refactoring patch and does not address the
-existing freeze vs limits lock order problem in the refactored code,
-which will be addressed next.
+Fix afs_rmdir() to translate EEXIST to ENOTEMPTY.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20250110054726.1499538-6-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: c99f66e4084a ("block: fix queue freeze vs limits lock order in sysfs store methods")
+Fixes: 260a980317da ("[AFS]: Add "directory write" support.")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241216204124.3752367-13-dhowells@redhat.com
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 128 ++++++++++++++++++++++------------------------
- 1 file changed, 61 insertions(+), 67 deletions(-)
+ fs/afs/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index e9f1c82b2f3e3..d2aa2177e4ba5 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -24,6 +24,8 @@ struct queue_sysfs_entry {
- 	struct attribute attr;
- 	ssize_t (*show)(struct gendisk *disk, char *page);
- 	ssize_t (*store)(struct gendisk *disk, const char *page, size_t count);
-+	int (*store_limit)(struct gendisk *disk, const char *page,
-+			size_t count, struct queue_limits *lim);
- 	void (*load_module)(struct gendisk *disk, const char *page, size_t count);
- };
- 
-@@ -153,13 +155,11 @@ QUEUE_SYSFS_SHOW_CONST(discard_zeroes_data, 0)
- QUEUE_SYSFS_SHOW_CONST(write_same_max, 0)
- QUEUE_SYSFS_SHOW_CONST(poll_delay, -1)
- 
--static ssize_t queue_max_discard_sectors_store(struct gendisk *disk,
--		const char *page, size_t count)
-+static int queue_max_discard_sectors_store(struct gendisk *disk,
-+		const char *page, size_t count, struct queue_limits *lim)
- {
- 	unsigned long max_discard_bytes;
--	struct queue_limits lim;
- 	ssize_t ret;
--	int err;
- 
- 	ret = queue_var_store(&max_discard_bytes, page, count);
- 	if (ret < 0)
-@@ -171,38 +171,28 @@ static ssize_t queue_max_discard_sectors_store(struct gendisk *disk,
- 	if ((max_discard_bytes >> SECTOR_SHIFT) > UINT_MAX)
- 		return -EINVAL;
- 
--	lim = queue_limits_start_update(disk->queue);
--	lim.max_user_discard_sectors = max_discard_bytes >> SECTOR_SHIFT;
--	err = queue_limits_commit_update(disk->queue, &lim);
--	if (err)
--		return err;
--	return ret;
-+	lim->max_user_discard_sectors = max_discard_bytes >> SECTOR_SHIFT;
-+	return 0;
- }
- 
--static ssize_t
--queue_max_sectors_store(struct gendisk *disk, const char *page, size_t count)
-+static int
-+queue_max_sectors_store(struct gendisk *disk, const char *page, size_t count,
-+		struct queue_limits *lim)
- {
- 	unsigned long max_sectors_kb;
--	struct queue_limits lim;
- 	ssize_t ret;
--	int err;
- 
- 	ret = queue_var_store(&max_sectors_kb, page, count);
- 	if (ret < 0)
- 		return ret;
- 
--	lim = queue_limits_start_update(disk->queue);
--	lim.max_user_sectors = max_sectors_kb << 1;
--	err = queue_limits_commit_update(disk->queue, &lim);
--	if (err)
--		return err;
--	return ret;
-+	lim->max_user_sectors = max_sectors_kb << 1;
-+	return 0;
- }
- 
- static ssize_t queue_feature_store(struct gendisk *disk, const char *page,
--		size_t count, blk_features_t feature)
-+		size_t count, struct queue_limits *lim, blk_features_t feature)
- {
--	struct queue_limits lim;
- 	unsigned long val;
- 	ssize_t ret;
- 
-@@ -210,15 +200,11 @@ static ssize_t queue_feature_store(struct gendisk *disk, const char *page,
- 	if (ret < 0)
- 		return ret;
- 
--	lim = queue_limits_start_update(disk->queue);
- 	if (val)
--		lim.features |= feature;
-+		lim->features |= feature;
- 	else
--		lim.features &= ~feature;
--	ret = queue_limits_commit_update(disk->queue, &lim);
--	if (ret)
--		return ret;
--	return count;
-+		lim->features &= ~feature;
-+	return 0;
- }
- 
- #define QUEUE_SYSFS_FEATURE(_name, _feature)				\
-@@ -227,10 +213,10 @@ static ssize_t queue_##_name##_show(struct gendisk *disk, char *page)	\
- 	return sysfs_emit(page, "%u\n",					\
- 		!!(disk->queue->limits.features & _feature));		\
- }									\
--static ssize_t queue_##_name##_store(struct gendisk *disk,		\
--		const char *page, size_t count)				\
-+static int queue_##_name##_store(struct gendisk *disk,			\
-+		const char *page, size_t count, struct queue_limits *lim) \
- {									\
--	return queue_feature_store(disk, page, count, _feature);	\
-+	return queue_feature_store(disk, page, count, lim, _feature);	\
- }
- 
- QUEUE_SYSFS_FEATURE(rotational, BLK_FEAT_ROTATIONAL)
-@@ -273,10 +259,9 @@ static ssize_t queue_iostats_passthrough_show(struct gendisk *disk, char *page)
- 	return queue_var_show(!!blk_queue_passthrough_stat(disk->queue), page);
- }
- 
--static ssize_t queue_iostats_passthrough_store(struct gendisk *disk,
--					       const char *page, size_t count)
-+static int queue_iostats_passthrough_store(struct gendisk *disk,
-+		const char *page, size_t count, struct queue_limits *lim)
- {
--	struct queue_limits lim;
- 	unsigned long ios;
- 	ssize_t ret;
- 
-@@ -284,18 +269,13 @@ static ssize_t queue_iostats_passthrough_store(struct gendisk *disk,
- 	if (ret < 0)
- 		return ret;
- 
--	lim = queue_limits_start_update(disk->queue);
- 	if (ios)
--		lim.flags |= BLK_FLAG_IOSTATS_PASSTHROUGH;
-+		lim->flags |= BLK_FLAG_IOSTATS_PASSTHROUGH;
- 	else
--		lim.flags &= ~BLK_FLAG_IOSTATS_PASSTHROUGH;
--
--	ret = queue_limits_commit_update(disk->queue, &lim);
--	if (ret)
--		return ret;
--
--	return count;
-+		lim->flags &= ~BLK_FLAG_IOSTATS_PASSTHROUGH;
-+	return 0;
- }
-+
- static ssize_t queue_nomerges_show(struct gendisk *disk, char *page)
- {
- 	return queue_var_show((blk_queue_nomerges(disk->queue) << 1) |
-@@ -398,12 +378,10 @@ static ssize_t queue_wc_show(struct gendisk *disk, char *page)
- 	return sysfs_emit(page, "write through\n");
- }
- 
--static ssize_t queue_wc_store(struct gendisk *disk, const char *page,
--			      size_t count)
-+static int queue_wc_store(struct gendisk *disk, const char *page,
-+		size_t count, struct queue_limits *lim)
- {
--	struct queue_limits lim;
- 	bool disable;
--	int err;
- 
- 	if (!strncmp(page, "write back", 10)) {
- 		disable = false;
-@@ -414,15 +392,11 @@ static ssize_t queue_wc_store(struct gendisk *disk, const char *page,
- 		return -EINVAL;
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index ada363af5aab8..50edd1cae28ac 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -1472,7 +1472,12 @@ static int afs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		op->file[1].vnode = vnode;
  	}
  
--	lim = queue_limits_start_update(disk->queue);
- 	if (disable)
--		lim.flags |= BLK_FLAG_WRITE_CACHE_DISABLED;
-+		lim->flags |= BLK_FLAG_WRITE_CACHE_DISABLED;
- 	else
--		lim.flags &= ~BLK_FLAG_WRITE_CACHE_DISABLED;
--	err = queue_limits_commit_update(disk->queue, &lim);
--	if (err)
--		return err;
--	return count;
-+		lim->flags &= ~BLK_FLAG_WRITE_CACHE_DISABLED;
-+	return 0;
- }
- 
- #define QUEUE_RO_ENTRY(_prefix, _name)			\
-@@ -438,6 +412,13 @@ static struct queue_sysfs_entry _prefix##_entry = {	\
- 	.store	= _prefix##_store,			\
- };
- 
-+#define QUEUE_LIM_RW_ENTRY(_prefix, _name)			\
-+static struct queue_sysfs_entry _prefix##_entry = {	\
-+	.attr		= { .name = _name, .mode = 0644 },	\
-+	.show		= _prefix##_show,			\
-+	.store_limit	= _prefix##_store,			\
-+}
+-	return afs_do_sync_operation(op);
++	ret = afs_do_sync_operation(op);
 +
- #define QUEUE_RW_LOAD_MODULE_ENTRY(_prefix, _name)		\
- static struct queue_sysfs_entry _prefix##_entry = {		\
- 	.attr		= { .name = _name, .mode = 0644 },	\
-@@ -448,7 +429,7 @@ static struct queue_sysfs_entry _prefix##_entry = {		\
++	/* Not all systems that can host afs servers have ENOTEMPTY. */
++	if (ret == -EEXIST)
++		ret = -ENOTEMPTY;
++	return ret;
  
- QUEUE_RW_ENTRY(queue_requests, "nr_requests");
- QUEUE_RW_ENTRY(queue_ra, "read_ahead_kb");
--QUEUE_RW_ENTRY(queue_max_sectors, "max_sectors_kb");
-+QUEUE_LIM_RW_ENTRY(queue_max_sectors, "max_sectors_kb");
- QUEUE_RO_ENTRY(queue_max_hw_sectors, "max_hw_sectors_kb");
- QUEUE_RO_ENTRY(queue_max_segments, "max_segments");
- QUEUE_RO_ENTRY(queue_max_integrity_segments, "max_integrity_segments");
-@@ -464,7 +445,7 @@ QUEUE_RO_ENTRY(queue_io_opt, "optimal_io_size");
- QUEUE_RO_ENTRY(queue_max_discard_segments, "max_discard_segments");
- QUEUE_RO_ENTRY(queue_discard_granularity, "discard_granularity");
- QUEUE_RO_ENTRY(queue_max_hw_discard_sectors, "discard_max_hw_bytes");
--QUEUE_RW_ENTRY(queue_max_discard_sectors, "discard_max_bytes");
-+QUEUE_LIM_RW_ENTRY(queue_max_discard_sectors, "discard_max_bytes");
- QUEUE_RO_ENTRY(queue_discard_zeroes_data, "discard_zeroes_data");
- 
- QUEUE_RO_ENTRY(queue_atomic_write_max_sectors, "atomic_write_max_bytes");
-@@ -484,11 +465,11 @@ QUEUE_RO_ENTRY(queue_max_open_zones, "max_open_zones");
- QUEUE_RO_ENTRY(queue_max_active_zones, "max_active_zones");
- 
- QUEUE_RW_ENTRY(queue_nomerges, "nomerges");
--QUEUE_RW_ENTRY(queue_iostats_passthrough, "iostats_passthrough");
-+QUEUE_LIM_RW_ENTRY(queue_iostats_passthrough, "iostats_passthrough");
- QUEUE_RW_ENTRY(queue_rq_affinity, "rq_affinity");
- QUEUE_RW_ENTRY(queue_poll, "io_poll");
- QUEUE_RW_ENTRY(queue_poll_delay, "io_poll_delay");
--QUEUE_RW_ENTRY(queue_wc, "write_cache");
-+QUEUE_LIM_RW_ENTRY(queue_wc, "write_cache");
- QUEUE_RO_ENTRY(queue_fua, "fua");
- QUEUE_RO_ENTRY(queue_dax, "dax");
- QUEUE_RW_ENTRY(queue_io_timeout, "io_timeout");
-@@ -501,10 +482,10 @@ static struct queue_sysfs_entry queue_hw_sector_size_entry = {
- 	.show = queue_logical_block_size_show,
- };
- 
--QUEUE_RW_ENTRY(queue_rotational, "rotational");
--QUEUE_RW_ENTRY(queue_iostats, "iostats");
--QUEUE_RW_ENTRY(queue_add_random, "add_random");
--QUEUE_RW_ENTRY(queue_stable_writes, "stable_writes");
-+QUEUE_LIM_RW_ENTRY(queue_rotational, "rotational");
-+QUEUE_LIM_RW_ENTRY(queue_iostats, "iostats");
-+QUEUE_LIM_RW_ENTRY(queue_add_random, "add_random");
-+QUEUE_LIM_RW_ENTRY(queue_stable_writes, "stable_writes");
- 
- #ifdef CONFIG_BLK_WBT
- static ssize_t queue_var_store64(s64 *var, const char *page)
-@@ -702,7 +683,7 @@ queue_attr_store(struct kobject *kobj, struct attribute *attr,
- 	struct request_queue *q = disk->queue;
- 	ssize_t res;
- 
--	if (!entry->store)
-+	if (!entry->store_limit && !entry->store)
- 		return -EIO;
- 
- 	/*
-@@ -713,11 +694,24 @@ queue_attr_store(struct kobject *kobj, struct attribute *attr,
- 	if (entry->load_module)
- 		entry->load_module(disk, page, length);
- 
--	blk_mq_freeze_queue(q);
- 	mutex_lock(&q->sysfs_lock);
--	res = entry->store(disk, page, length);
--	mutex_unlock(&q->sysfs_lock);
-+	blk_mq_freeze_queue(q);
-+	if (entry->store_limit) {
-+		struct queue_limits lim = queue_limits_start_update(q);
-+
-+		res = entry->store_limit(disk, page, length, &lim);
-+		if (res < 0) {
-+			queue_limits_cancel_update(q);
-+		} else {
-+			res = queue_limits_commit_update(q, &lim);
-+			if (!res)
-+				res = length;
-+		}
-+	} else {
-+		res = entry->store(disk, page, length);
-+	}
- 	blk_mq_unfreeze_queue(q);
-+	mutex_unlock(&q->sysfs_lock);
- 	return res;
- }
- 
+ error:
+ 	return afs_put_operation(op);
 -- 
 2.39.5
 
