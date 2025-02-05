@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-112649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6AA28DC9
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:05:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46D8A28CEA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B38018835DE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A529C18889FE
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5046F2E634;
-	Wed,  5 Feb 2025 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D4C14A630;
+	Wed,  5 Feb 2025 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFS3Wee7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgKXbcS3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5D4F510;
-	Wed,  5 Feb 2025 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74477FC0B;
+	Wed,  5 Feb 2025 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764279; cv=none; b=HivrtgTpbBSyYuTloyWR/tc5ZFqRpJGvv8W80KZAvk17KrMUl4AA1US3DP1Cd4tLf8lbPKZi6Mm5vjqDPeN8YVB9HkMHMkIUTrjT3/274n6wb8rVPSO986C+z0ydxsVJOcil0Jw1QmPsg9r/YsbLVF4hT9T+qC46BoZLBBeM0GM=
+	t=1738763724; cv=none; b=FlGgMSW8O0mA6zUmXH/o09cvTFoxzdq6QIYUB7LvVK4fgEN3aeQ95E0ee6B1GeZln3JVs/eD6HayEmG1nLFgacb4391XP+wLRi0U+ozX5vPOvBVXxDN29Ick9TkidSezodK6WrdIFIi3vHuIEKTemzHCXt1Km4Pi3NZKxBEmdVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764279; c=relaxed/simple;
-	bh=+giVa4inJzKJdiCINseYQ5C+3et3+unmC2EmsERKGnc=;
+	s=arc-20240116; t=1738763724; c=relaxed/simple;
+	bh=eO1faI50EkKfCIJecrCmdEltzA8oBU5/4mKzgHz7xLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZE4WsZnvmuWAFxnusXtAOc3IoL9zjWYOqQ5sBMt4UrEY/sXzzHjvAl/lyUhJyaByLvqDxO38YHtZ4Dx1S7F/m8UqKD9Sa2sL7VgqBpNdF1TmCnMZsVdw30eyeaF5sZZsJp4Mu33S+bftNeSrS9t0QfsP56XRvdnTLSy8qlJRQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFS3Wee7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FD1C4CED1;
-	Wed,  5 Feb 2025 14:04:38 +0000 (UTC)
+	 MIME-Version; b=uGzdD83oomYr7OqoHz4s3wV8pJcfFJLnUsr8rTeZIExIOLgOIbFXrXZ3yRrBglNCv0Qh+zpVTZDDl5Ttez0g8i8oEJsO7X27D/2sY3gK3GfxLGZAsx3s2mg4jDRFSGXZpoTZxCofzIV1ZrLhKa6Nw6K3DxUQlblEp3xwfPbMIOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgKXbcS3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFDFC4CED1;
+	Wed,  5 Feb 2025 13:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764278;
-	bh=+giVa4inJzKJdiCINseYQ5C+3et3+unmC2EmsERKGnc=;
+	s=korg; t=1738763724;
+	bh=eO1faI50EkKfCIJecrCmdEltzA8oBU5/4mKzgHz7xLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFS3Wee7++IAR6YdIN18UmmqXYSuWQoyA/nrbkqmhkhtsmWRFLvdoxtm1pWPp8S4T
-	 s7YQnCLwUM+oGTVQy70UUaxGXTVrhgAaJBHvFaTZv1SBpEWJQ/n44J4/62C7Nto8yr
-	 fOfkwxRT116aQiQj7Ev2vMUYexbuf1otZB5b4sU0=
+	b=QgKXbcS3mfaxHAuTPMePEw6tab4PArINoMgib6RscPKdqS7oPIUlr01CIs4WM3/Gv
+	 uROSDnfIcwlK8LkrFA39fTFbRPU+Yzb5K0iL/hBCTcn+No5Hwh9Yiygw4WxAENTmU6
+	 Y1qpOsLFbsgUBNQKCQNSXGqs5yrnQWCwip4eUDjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Bokun Zhang <bokun.zhang@amd.com>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Derek Foreman <derek.foreman@collabora.com>,
+	Detlev Casanova <detlev.casanova@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 063/623] drm/amdgpu/vcn: reset fw_shared under SRIOV
-Date: Wed,  5 Feb 2025 14:36:45 +0100
-Message-ID: <20250205134458.636130422@linuxfoundation.org>
+Subject: [PATCH 6.12 051/590] drm/rockchip: vop2: Setup delay cycle for Esmart2/3
+Date: Wed,  5 Feb 2025 14:36:46 +0100
+Message-ID: <20250205134457.208685895@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bokun Zhang <bokun.zhang@amd.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 3676f37a88432132bcff55a17dc48911239b6d98 ]
+[ Upstream commit c766998ba6df126ab6934d32ff2ff080316ec630 ]
 
-- The previous patch only considered the case for baremetal
-  and is not applicable for SRIOV code path. We also need to
-  init fw_share for SRIOV VF
+Each layer needs to set the correct delay cycle to display properly
+without unexpected offset on screen.
 
-Fixes: 928cd772e18f ("drm/amdgpu/vcn: reset fw_shared when VCPU buffers corrupted on vcn v4.0.3")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Bokun Zhang <bokun.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 5a028e8f062f ("drm/rockchip: vop2: Add support for rk3588")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Tested-by: Derek Foreman <derek.foreman@collabora.com>
+Tested-by: Detlev Casanova <detlev.casanova@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241214081719.3330518-5-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 2 ++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-index 3f69b9b2bcd07..18cc1aefb2a2b 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-@@ -957,6 +957,8 @@ static int vcn_v4_0_3_start_sriov(struct amdgpu_device *adev)
- 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
- 		vcn_inst = GET_INST(VCN, i);
- 
-+		vcn_v4_0_3_fw_shared_init(adev, vcn_inst);
-+
- 		memset(&header, 0, sizeof(struct mmsch_v4_0_3_init_header));
- 		header.version = MMSCH_VERSION;
- 		header.total_size = sizeof(struct mmsch_v4_0_3_init_header) >> 2;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index cd3fb906d0089..68b5c438cdaba 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -2493,9 +2493,11 @@ static void vop2_setup_dly_for_windows(struct vop2 *vop2)
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__ESMART1, dly);
+ 			break;
+ 		case ROCKCHIP_VOP2_SMART0:
++		case ROCKCHIP_VOP2_ESMART2:
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART0, dly);
+ 			break;
+ 		case ROCKCHIP_VOP2_SMART1:
++		case ROCKCHIP_VOP2_ESMART3:
+ 			sdly |= FIELD_PREP(RK3568_SMART_DLY_NUM__SMART1, dly);
+ 			break;
+ 		}
 -- 
 2.39.5
 
