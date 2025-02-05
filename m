@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-112353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EB8A28C4A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:48:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012F6A28EB0
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05B4518841FB
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:48:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 347ED3A4A1B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283C613C9C4;
-	Wed,  5 Feb 2025 13:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A8B13C9C4;
+	Wed,  5 Feb 2025 14:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgboZKj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOUNvHQx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ADE126C18;
-	Wed,  5 Feb 2025 13:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C824A28;
+	Wed,  5 Feb 2025 14:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763285; cv=none; b=pdP3OYzUfQtEWSiU6jk3RMgoYPWHaH5ItSWj1XSst7lh4OOmjpWvziv24oZlAoHBIV2DzKjtURvhiW1Ly9wdHi0cry8PEq6MJUycgKSr8zDEHn3gMUpvgBUBLrl6DRfvhmM9QwOKbNmL1BetUTbkYEcXmocztZDZmSh6FArnVfI=
+	t=1738764952; cv=none; b=RdDL3Gk+SanGMjxzQiSf1BRHI29VbQX9ECz3l095XMQvzOPGJMXp0MMmGsqjaicPRmuH9Gfo+RDDe5eNIVdPLVC9Enjl+bMMFEJz+hXrKJvRLmrCjIl21vK4nMl6Ox3KCAyyLPFHAvfmiuA7ZL0Yts/ymb1lODHVj+IKBHlhDqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763285; c=relaxed/simple;
-	bh=TdJ+B+aihFquNfVAxxxgrEp2EpuOvqXv77zJp1Aty/0=;
+	s=arc-20240116; t=1738764952; c=relaxed/simple;
+	bh=WqE3o7djqdkxUu0acwbdZ8nc8nTX/E/OG+MOSumW5Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RePICxWgCqystDnUNo0U/KjeDxS0ga6zOeXrzBqu0+EuQDeVL1Unz8wEvLd3peoS1IHKV1o9033guGjTkTzdCdh9cHfGroQ2n24XsAXh59Be7uoYSWdHDfsD3RBD3HI9F+dbThovxnTqxucuVhdMlmjMePhFv/qbJD1a560n8gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgboZKj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32F8C4CED1;
-	Wed,  5 Feb 2025 13:48:04 +0000 (UTC)
+	 MIME-Version; b=roeW6grKpZGl6VpJcZFGdoQ5s+OQ7GG0LcA4WUtACxyEe/qQdk7F91WYAVYSZVjay0jxIAfHSx+rxDYdE8FyMj2aNWeyoBlg3o6ALL73YM+Mm1+uvs2y1cg1WOZggpi7ETN1UbDxLTPhdVd0faZtj5laJ3qUUB+4DXlE+UnaVJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOUNvHQx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27B2C4CEDD;
+	Wed,  5 Feb 2025 14:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763285;
-	bh=TdJ+B+aihFquNfVAxxxgrEp2EpuOvqXv77zJp1Aty/0=;
+	s=korg; t=1738764952;
+	bh=WqE3o7djqdkxUu0acwbdZ8nc8nTX/E/OG+MOSumW5Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgboZKj4k1qM6jcSTsULsK8zqNf80ZrYFUc4uUNljMJJjz0HwK34EtTzuhYuKPBRf
-	 sQL4bY7Eq2fwndKmGFEuzPFPUuWfAOZItqPybXOV7T8ROBmPxTCKLraQCFNoJSxnm7
-	 c4O3OzXlxTqlPgMfBbM5+k4R8FPIGQaPPjID8FXQ=
+	b=MOUNvHQxCEv8xqgvhcN1eh73RHfCybh2aIVJj9Ge2r7zHpaH9nMmZx7yMoiPGWmxr
+	 xkZF/JcVr62R/8UbaeBVgpiCZ0Z6MVb0Sy4nyt4QnT6vbruBx42hXLZ2zJVXmlcZeu
+	 2OwgeWyIjBeyTwRV1cQj4aZuq7kksMQeqXxKwlaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keisuke Nishimura <keisuke.nishimura@inria.fr>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Eric-SY Chang <eric-sy.chang@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/393] nvme: Add error path for xa_store in nvme_init_effects
+Subject: [PATCH 6.12 176/590] wifi: mt76: mt7925: fix wrong band_idx setting when enable sniffer mode
 Date: Wed,  5 Feb 2025 14:38:51 +0100
-Message-ID: <20250205134420.766260041@linuxfoundation.org>
+Message-ID: <20250205134502.015528993@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keisuke Nishimura <keisuke.nishimura@inria.fr>
+From: Eric-SY Chang <eric-sy.chang@mediatek.com>
 
-[ Upstream commit d4a95adeabc6b5a39405e49c6d5ed14dd83682c4 ]
+[ Upstream commit 85bb7c10c1a013ab29d4be07559105dd843c6f7d ]
 
-The xa_store() may fail due to memory allocation failure because there
-is no guarantee that the index NVME_CSI_NVM is already used. This fix
-introduces a new function to handle the error path.
+Currently, sniffer mode does not support band auto,
+so set band_idx to the default 0.
 
-Fixes: cc115cbe12d9 ("nvme: always initialize known command effects")
-Signed-off-by: Keisuke Nishimura <keisuke.nishimura@inria.fr>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 0cb349d742d1 ("wifi: mt76: mt7925: update mt7925_mac_link_bss_add for MLO")
+Signed-off-by: Eric-SY Chang <eric-sy.chang@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20241101074340.26176-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 37485b8cc1281..75ea4795188f2 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2945,6 +2945,25 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
- 	return ret;
- }
- 
-+static int nvme_init_effects_log(struct nvme_ctrl *ctrl,
-+		u8 csi, struct nvme_effects_log **log)
-+{
-+	struct nvme_effects_log *effects, *old;
-+
-+	effects = kzalloc(sizeof(*effects), GFP_KERNEL);
-+	if (effects)
-+		return -ENOMEM;
-+
-+	old = xa_store(&ctrl->cels, csi, effects, GFP_KERNEL);
-+	if (xa_is_err(old)) {
-+		kfree(effects);
-+		return xa_err(old);
-+	}
-+
-+	*log = effects;
-+	return 0;
-+}
-+
- static void nvme_init_known_nvm_effects(struct nvme_ctrl *ctrl)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 0c2a2337c313d..a78883d4d6df0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1976,8 +1976,6 @@ int mt7925_get_txpwr_info(struct mt792x_dev *dev, u8 band_idx, struct mt7925_txp
+ int mt7925_mcu_set_sniffer(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 			   bool enable)
  {
- 	struct nvme_effects_log	*log = ctrl->effects;
-@@ -2991,10 +3010,9 @@ static int nvme_init_effects(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
- 	}
- 
- 	if (!ctrl->effects) {
--		ctrl->effects = kzalloc(sizeof(*ctrl->effects), GFP_KERNEL);
--		if (!ctrl->effects)
--			return -ENOMEM;
--		xa_store(&ctrl->cels, NVME_CSI_NVM, ctrl->effects, GFP_KERNEL);
-+		ret = nvme_init_effects_log(ctrl, NVME_CSI_NVM, &ctrl->effects);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	nvme_init_known_nvm_effects(ctrl);
+-	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-
+ 	struct {
+ 		struct {
+ 			u8 band_idx;
+@@ -1991,7 +1989,7 @@ int mt7925_mcu_set_sniffer(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 		} __packed enable;
+ 	} __packed req = {
+ 		.hdr = {
+-			.band_idx = mvif->bss_conf.mt76.band_idx,
++			.band_idx = 0,
+ 		},
+ 		.enable = {
+ 			.tag = cpu_to_le16(UNI_SNIFFER_ENABLE),
+@@ -2050,7 +2048,7 @@ int mt7925_mcu_config_sniffer(struct mt792x_vif *vif,
+ 		} __packed tlv;
+ 	} __packed req = {
+ 		.hdr = {
+-			.band_idx = vif->bss_conf.mt76.band_idx,
++			.band_idx = 0,
+ 		},
+ 		.tlv = {
+ 			.tag = cpu_to_le16(UNI_SNIFFER_CONFIG),
 -- 
 2.39.5
 
