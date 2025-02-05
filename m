@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-113755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92F6A293CD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32B6A293D8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB70518830E1
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13A8D7A0672
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E371591E3;
-	Wed,  5 Feb 2025 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A3E19FA93;
+	Wed,  5 Feb 2025 15:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwkw4oH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpLDqcMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13EB1519B4;
-	Wed,  5 Feb 2025 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F081547D8;
+	Wed,  5 Feb 2025 15:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768057; cv=none; b=TjrFgmuF0BYQeXIwl02cgnwWc13YnMpwuAHp81m2ZdLh7QYPmoCmbOE0xU0suCtkeLoI3I/xhitBbYIFb8KuitDTbD9F0aLtAkcddy7vXa1i3Aq1x65Zfl7ccVBGPlpI5I0NRdpyfrPCvT+fJUSY6YmJfHTvdkcGKk+htmh0t4w=
+	t=1738768449; cv=none; b=kdN1CHqp8YDfSKkf9xxy96ddzB6wShrCf/SBZELpXqMYDXyFdtzJD31VVl9Dn0a7eoYwi+epuYhVxE/xpnEauunBqFwmf/UizJAgIN8kAMPBOlXLrdeQmnndhLwssnPf6lnsq6t6VmjTq2a34KMVGWTG2+63yMQ92ESUSmAstPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768057; c=relaxed/simple;
-	bh=KBfjgZFS7dz+mThgDQOWRODwpJzqOY6+YRNgiUp4W54=;
+	s=arc-20240116; t=1738768449; c=relaxed/simple;
+	bh=K5KvwvHkPmZfwgLDi3SR3Kj2UTwppy01HjvzeXScF+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o67w1FPsuyr+P/AU6M0/YtJK0GXabDTNOsOHHOVhXPzKnjYPtqr8IoNELZiV1pn/kzlLLhGY1iT+9rheSjAm+FRsnJnx/Si0zZJ37090eD3/t5tsOTS7ICjTPfeHgk1KiTIaM5rRQfZf9CPlaH1Daszxfnkv4o4h/bvbDG88HWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nwkw4oH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5992C4CED1;
-	Wed,  5 Feb 2025 15:07:36 +0000 (UTC)
+	 MIME-Version; b=VlFGDacV/27iHZZD78HuyWsJFpXk6TS7uGA2+Nef0sXTs74mGujR6H6RGDe+f5fDdLUimWP927AD1amNJOd3Q/aI+eb9hRqF0xWJt7d4mNSgUwHKrnfGhT898KJPCh1Y1lLfNkPZg1g1kjiHL6Fb98ZqhFywMv0YOFeZXx1cINY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpLDqcMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FE2C4CED1;
+	Wed,  5 Feb 2025 15:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768057;
-	bh=KBfjgZFS7dz+mThgDQOWRODwpJzqOY6+YRNgiUp4W54=;
+	s=korg; t=1738768449;
+	bh=K5KvwvHkPmZfwgLDi3SR3Kj2UTwppy01HjvzeXScF+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nwkw4oH6nPEYDSFK3fMjzXLO+fmw097rKh0HHX07Kh74nnezAyJTkpZUk073JDZvy
-	 DWXS9/b2IhK10LsBv7s/ptjBo0j8OtyoipYIhV68D5/zUYpQ59z+OQEOwuWwmLTGXS
-	 EfCFXnHGELH8g/UudO/4lNgt3k3IWc+bYiBJXh2w=
+	b=ZpLDqcMlz87D8IkrgzGhqsCHUjbD+Ynloli8SGbBiCgIUkA8NRVgPLqmHbk70KPns
+	 0yHDS+eW8q4dzRi0z0qkZeQzF9zRQ7Y/rKVn9VMcIsV88G7T9vOSfFp79uKm+reslm
+	 fyS/QRQpwdZwKxfLHvEQDr3MWVZ+Vw7Jy38g6qQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.12 547/590] selftests/ftrace: Fix to use remount when testing mount GID option
-Date: Wed,  5 Feb 2025 14:45:02 +0100
-Message-ID: <20250205134516.198093356@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 561/623] io_uring/register: use atomic_read/write for sq_flags migration
+Date: Wed,  5 Feb 2025 14:45:03 +0100
+Message-ID: <20250205134517.680263165@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 159ca65c42d90d5ab98fc31b708b12c0be2c26e0 upstream.
+[ Upstream commit a23ad06bfee5e51cd9e51aebf11401e7b4b5d00a ]
 
-Fix mount_options.tc to use remount option to mount the tracefs.
-Since the current implementation does not umount the tracefs,
-this test always fails because of -EBUSY error.
-Using remount option will allow us to change the mount option.
+A previous commit changed all of the migration from the old to the new
+ring for resizing to use READ/WRITE_ONCE. However, ->sq_flags is an
+atomic_t, and while most archs won't complain on this, some will indeed
+flag this:
 
-Link: https://lore.kernel.org/r/173625186741.1383744.16707876180798573039.stgit@devnote2
-Fixes: 8b55572e5180 ("tracing/selftests: Add tracefs mount options test")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+io_uring/register.c:554:9: sparse: sparse: cast to non-scalar
+io_uring/register.c:554:9: sparse: sparse: cast from non-scalar
+
+Just use atomic_set/atomic_read for handling this case.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501242000.A2sKqaCL-lkp@intel.com/
+Fixes: 2c5aae129f42 ("io_uring/register: document io_register_resize_rings() shared mem usage")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/ftrace/test.d/00basic/mount_options.tc      | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ io_uring/register.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/00basic/mount_options.tc b/tools/testing/selftests/ftrace/test.d/00basic/mount_options.tc
-index 35e8d47d6072..8a7ce647a60d 100644
---- a/tools/testing/selftests/ftrace/test.d/00basic/mount_options.tc
-+++ b/tools/testing/selftests/ftrace/test.d/00basic/mount_options.tc
-@@ -15,11 +15,11 @@ find_alternate_gid() {
- 	tac /etc/group | grep -v ":$original_gid:" | head -1 | cut -d: -f3
- }
+diff --git a/io_uring/register.c b/io_uring/register.c
+index 371aec87e078c..14ece7754e4ca 100644
+--- a/io_uring/register.c
++++ b/io_uring/register.c
+@@ -553,7 +553,7 @@ static int io_register_resize_rings(struct io_ring_ctx *ctx, void __user *arg)
+ 	ctx->cqe_cached = ctx->cqe_sentinel = NULL;
  
--mount_tracefs_with_options() {
-+remount_tracefs_with_options() {
- 	local mount_point="$1"
- 	local options="$2"
- 
--	mount -t tracefs -o "$options" nodev "$mount_point"
-+	mount -t tracefs -o "remount,$options" nodev "$mount_point"
- 
- 	setup
- }
-@@ -81,7 +81,7 @@ test_gid_mount_option() {
- 
- 	# Unmount existing tracefs instance and mount with new GID
- 	unmount_tracefs "$mount_point"
--	mount_tracefs_with_options "$mount_point" "$new_options"
-+	remount_tracefs_with_options "$mount_point" "$new_options"
- 
- 	check_gid "$mount_point" "$other_group"
- 
-@@ -92,7 +92,7 @@ test_gid_mount_option() {
- 
- 	# Unmount and remount with the original GID
- 	unmount_tracefs "$mount_point"
--	mount_tracefs_with_options "$mount_point" "$mount_options"
-+	remount_tracefs_with_options "$mount_point" "$mount_options"
- 	check_gid "$mount_point" "$original_group"
- }
+ 	WRITE_ONCE(n.rings->sq_dropped, READ_ONCE(o.rings->sq_dropped));
+-	WRITE_ONCE(n.rings->sq_flags, READ_ONCE(o.rings->sq_flags));
++	atomic_set(&n.rings->sq_flags, atomic_read(&o.rings->sq_flags));
+ 	WRITE_ONCE(n.rings->cq_flags, READ_ONCE(o.rings->cq_flags));
+ 	WRITE_ONCE(n.rings->cq_overflow, READ_ONCE(o.rings->cq_overflow));
  
 -- 
-2.48.1
+2.39.5
 
 
 
