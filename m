@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-112720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8BDA28E1C
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:09:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20102A28D59
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 157C73A1EC0
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:08:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BD2C1627A9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEF51494DF;
-	Wed,  5 Feb 2025 14:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629331547E1;
+	Wed,  5 Feb 2025 13:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMCSHqj0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQQrqbi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7ACFC0B;
-	Wed,  5 Feb 2025 14:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7961514EE;
+	Wed,  5 Feb 2025 13:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764518; cv=none; b=rKs2jKt5ybyt719CJl98kWvA4Ceaa1RQDKjH5M9ejjKWEXjF/kY3SZ0LOZuWaWF6Z21upW/MtEamS5mf4E2yVmXfDsq6j2HYu1qlW2YXGTHpS1bHdSuJjIbQSKyhYRRSuWYhyKBC6JqYLVOyfITeks6/r6X5xqdmNKFsSedb4cs=
+	t=1738763935; cv=none; b=d7LRUcviXcoOYvvPG7ZFBG24aGYdgfCBvxMBT8Qp7jdBSWq0Wcxk0hcGLyXOfTclSrlDF9bojOXnePBE20WG/lbqK+uLZRx5xPSu7hTrdDhaddFpQg/5crjN+qrNTfuyAIA3vkQQ4LnudX94PZnTmLuzEaF43qdgICWgVOJYtZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764518; c=relaxed/simple;
-	bh=gqcCr5QyGWKOxdDnwRZuhtdlEIBwgLIVL23+qeJUQCY=;
+	s=arc-20240116; t=1738763935; c=relaxed/simple;
+	bh=tzpoYOTcdnyrHcrB7id0cGTh4SZUk1FCS8DfqDFVJ7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8bvBKEDg0l+Ag292UCW35wu2t9w17zKV8XqJXwb1rFGcfDEGzMixYRXEWPY2MCbTrgociISiLd1amyVEwRG3hS1XY+wbQDyKdfdgOQ/FvmJv8Wj0ckPrg27pInXlu/s/up48Zr6qyA/cHwb03cdzwVm1xSbOBa9PqNQwphYt/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMCSHqj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197D1C4CED1;
-	Wed,  5 Feb 2025 14:08:37 +0000 (UTC)
+	 MIME-Version; b=b6tRtegUVXlq2EJWZgIu4n27dNKKAYxZWSG4APga0fifm3ibglNSU72NvAnSP5prlrK1ydnQ4g4HCdN15J+GbB9kfuJgCCb8lgxY0oBO8islAM2Yjh6Zz4NjjqSuFS7C8Vr74NTTgjCGHQNyzZB9XjlecOHwMlGVxzFst/a8I5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQQrqbi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4B3C4CED6;
+	Wed,  5 Feb 2025 13:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764518;
-	bh=gqcCr5QyGWKOxdDnwRZuhtdlEIBwgLIVL23+qeJUQCY=;
+	s=korg; t=1738763935;
+	bh=tzpoYOTcdnyrHcrB7id0cGTh4SZUk1FCS8DfqDFVJ7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMCSHqj0DPSasFQId9/iZNeFsZz7VUnLU4XNazw0+NLSuzYrABL7MsqspvndJcotM
-	 U3bZK6lbOXjugv77kBwnD6EKKQPcSVkYqAh7UNcMkfrYMV2H2/ApdPeD/bEQyHf3VS
-	 Abk5gxuf/e6Qhuyj/Aqj5DmXjVF2hK2UKOC7hotw=
+	b=AQQrqbi5knJAvcFHuBjajvoiBZWmCYcTZ/F6RCh8DKM8RaJBqAgOO/iJAoLabN1pE
+	 GzB93K1WoxS3FEHp3ZeNObzrOTOPv9hPfBf0FgAM+1aPjZLqSDdTEEs7JGMm7ELl1k
+	 vUOwXjW5kVKSM+5CDD65fwzDaYzgyANyUifuf3zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 087/623] wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
+Subject: [PATCH 6.12 074/590] ipmi: ipmb: Add check devm_kasprintf() returned value
 Date: Wed,  5 Feb 2025 14:37:09 +0100
-Message-ID: <20250205134459.553099380@linuxfoundation.org>
+Message-ID: <20250205134458.086718694@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 8559a9e0c457729fe3edb3176bbf7c7874f482b0 ]
+[ Upstream commit 2378bd0b264ad3a1f76bd957caf33ee0c7945351 ]
 
-Just like in commit 4dfde294b979 ("rtlwifi: rise completion at the last
-step of firmware callback"), only signal completion once the function is
-finished. Otherwise, the module removal waiting for the completion could
-free the memory that the callback will still use before returning.
+devm_kasprintf() can return a NULL pointer on failure but this
+returned value is not checked.
 
-Fixes: b0302aba812b ("rtlwifi: Convert to asynchronous firmware load")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241107133322.855112-3-cascardo@igalia.com
+Fixes: 51bd6f291583 ("Add support for IPMB driver")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Message-ID: <20240926094419.25900-1-hanchunchao@inspur.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmb_dev_int.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-index bbf8ff63dcedb..e63c67b1861b5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c
-@@ -64,22 +64,23 @@ static void rtl92se_fw_cb(const struct firmware *firmware, void *context)
- 
- 	rtl_dbg(rtlpriv, COMP_ERR, DBG_LOUD,
- 		"Firmware callback routine entered!\n");
--	complete(&rtlpriv->firmware_loading_complete);
- 	if (!firmware) {
- 		pr_err("Firmware %s not available\n", fw_name);
- 		rtlpriv->max_fw_size = 0;
--		return;
-+		goto exit;
- 	}
- 	if (firmware->size > rtlpriv->max_fw_size) {
- 		pr_err("Firmware is too big!\n");
- 		rtlpriv->max_fw_size = 0;
- 		release_firmware(firmware);
--		return;
-+		goto exit;
- 	}
- 	pfirmware = (struct rt_firmware *)rtlpriv->rtlhal.pfirmware;
- 	memcpy(pfirmware->sz_fw_tmpbuffer, firmware->data, firmware->size);
- 	pfirmware->sz_fw_tmpbufferlen = firmware->size;
- 	release_firmware(firmware);
-+exit:
-+	complete(&rtlpriv->firmware_loading_complete);
- }
- 
- static int rtl92s_init_sw_vars(struct ieee80211_hw *hw)
+diff --git a/drivers/char/ipmi/ipmb_dev_int.c b/drivers/char/ipmi/ipmb_dev_int.c
+index 7296127181eca..8a14fd0291d89 100644
+--- a/drivers/char/ipmi/ipmb_dev_int.c
++++ b/drivers/char/ipmi/ipmb_dev_int.c
+@@ -321,6 +321,9 @@ static int ipmb_probe(struct i2c_client *client)
+ 	ipmb_dev->miscdev.name = devm_kasprintf(&client->dev, GFP_KERNEL,
+ 						"%s%d", "ipmb-",
+ 						client->adapter->nr);
++	if (!ipmb_dev->miscdev.name)
++		return -ENOMEM;
++
+ 	ipmb_dev->miscdev.fops = &ipmb_fops;
+ 	ipmb_dev->miscdev.parent = &client->dev;
+ 	ret = misc_register(&ipmb_dev->miscdev);
 -- 
 2.39.5
 
