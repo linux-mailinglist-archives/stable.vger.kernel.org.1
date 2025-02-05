@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-113792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66C7A29325
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:09:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0743A293B9
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44FC87A118A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:08:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB1AA162AAA
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07330155327;
-	Wed,  5 Feb 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE1F1519B4;
+	Wed,  5 Feb 2025 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiC5eZYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEo1vuY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72321E89C;
-	Wed,  5 Feb 2025 15:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E65217C79;
+	Wed,  5 Feb 2025 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768188; cv=none; b=AP9o5+qYwxQBMT7rXI+WFSqdZZ7nPB+SfiO8Uuj1IyVxgzeVaxWlJkPOsgSxw8FAjeZG1GdWReXesW5iyBsgqdPyz3CcSmfpFNwpSfUgVFOofnfFjxV7wjqjKaVqnocrA6ijBw0ZKsts8y4PF5il4gWa2KrT2Ei6m/86g32CT2g=
+	t=1738768209; cv=none; b=lnvTmgq1UegTn/R9hew3rLoJ2nhXNkoPV/cA4BMN8oiIVuDCw1u5bn6mnIXcj44fM0upzUIhSUiY7gZODr89+sBX5kzCh3zLvMwla+Vh7Hu2vn6SaA05yQXQPHQoZteOQHEz3xy9GH9jo9PiVTtFtf5jHH2ObpvwiOq0dRwFkgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768188; c=relaxed/simple;
-	bh=4HOGczX4n7l0SqUMM3Wxqbi21GrRLlNvACqxYKTFokU=;
+	s=arc-20240116; t=1738768209; c=relaxed/simple;
+	bh=+1MrDgLSRRXr97S9U0X3GvvgsFJvDxdpRa0/5ZYaMn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mu/d1HCRRhEr5T2ZkMjobGKz5Enz0IET3KdivLokNbIf0gnJmMMSpRbDsMw5UUmW2KCTsZTmY/PyQCL9xHYEpjcm9uVIMNARGPBwZ1Dn2tDXWcV+VeDwJj8dJir/2VnSvvCgZfc+zMDyI1uaxj2nBFzHTpcUd+pL91Uv3fbkXRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiC5eZYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256BEC4CED1;
-	Wed,  5 Feb 2025 15:09:47 +0000 (UTC)
+	 MIME-Version; b=sd1iOsFiJFop3fyvu06054b/Khu0mfEfFScudKzChxAD5PDx00LuIgsFA1X60LXy1hfm1kcd67B4nOnPrBVQjbXn6VVL3G+6ChDJuLYihaLqa9rS557vw7KHJeXNNlgOuM9EhsYARGURcsqmCI/Ut914vNeMUct/62SzfUwFJfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEo1vuY2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9ACC4CED1;
+	Wed,  5 Feb 2025 15:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768188;
-	bh=4HOGczX4n7l0SqUMM3Wxqbi21GrRLlNvACqxYKTFokU=;
+	s=korg; t=1738768209;
+	bh=+1MrDgLSRRXr97S9U0X3GvvgsFJvDxdpRa0/5ZYaMn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XiC5eZYZe0IvUvxsF4ieW8rsDe9nI4zE7DNvMAmISDgyIWwFqOLSkq4/xhtTDwWwY
-	 Zy68dlfQHZba14yFXq/rjua71sAO+e0IlL9LgYWlPNUy2yiSyOoRE6E5D8QQDMq9/y
-	 yNuhPekkr7MmoRLrmUJTahd+Dhk0ZSxc6hzny84g=
+	b=qEo1vuY2GZJLzRbwoZJXk24FnPzgI5JIRQ7MsLLHT64mW0NmbkiQUB3s5dPw+Zbhd
+	 bN7Y8+TB7LWcmJ0ZjzIaG8pbqzssmR/XrbVMKiAVMMfRj6JZMUedKAclRepD5go6X1
+	 2k+QRP1bFKS0XhY1RjHbpyDvi4+LYxRp/1oUCykc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 565/590] mptcp: blackhole only if 1st SYN retrans w/o MPC is accepted
-Date: Wed,  5 Feb 2025 14:45:20 +0100
-Message-ID: <20250205134516.881826226@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.12 568/590] media: uvcvideo: Fix double free in error path
+Date: Wed,  5 Feb 2025 14:45:23 +0100
+Message-ID: <20250205134516.998213014@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
 References: <20250205134455.220373560@linuxfoundation.org>
@@ -66,49 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit e598d8981fd34470b78a1ae777dbf131b15d5bf2 upstream.
+commit c6ef3a7fa97ec823a1e1af9085cf13db9f7b3bac upstream.
 
-The Fixes commit mentioned this:
+If the uvc_status_init() function fails to allocate the int_urb, it will
+free the dev->status pointer but doesn't reset the pointer to NULL. This
+results in the kfree() call in uvc_status_cleanup() trying to
+double-free the memory. Fix it by resetting the dev->status pointer to
+NULL after freeing it.
 
-> An MPTCP firewall blackhole can be detected if the following SYN
-> retransmission after a fallback to "plain" TCP is accepted.
-
-But in fact, this blackhole was detected if any following SYN
-retransmissions after a fallback to TCP was accepted.
-
-That's because 'mptcp_subflow_early_fallback()' will set 'request_mptcp'
-to 0, and 'mpc_drop' will never be reset to 0 after.
-
-This is an issue, because some not so unusual situations might cause the
-kernel to detect a false-positive blackhole, e.g. a client trying to
-connect to a server while the network is not ready yet, causing a few
-SYN retransmissions, before reaching the end server.
-
-Fixes: 27069e7cb3d1 ("mptcp: disable active MPTCP in case of blackhole")
+Fixes: a31a4055473b ("V4L/DVB:usbvideo:don't use part of buffer for USB transfer #4")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20241107235130.31372-1-laurent.pinchart@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/ctrl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_status.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/ctrl.c
-+++ b/net/mptcp/ctrl.c
-@@ -405,9 +405,9 @@ void mptcp_active_detect_blackhole(struc
- 			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_MPCAPABLEACTIVEDROP);
- 			subflow->mpc_drop = 1;
- 			mptcp_subflow_early_fallback(mptcp_sk(subflow->conn), subflow);
--		} else {
--			subflow->mpc_drop = 0;
- 		}
-+	} else if (ssk->sk_state == TCP_SYN_SENT) {
-+		subflow->mpc_drop = 0;
+--- a/drivers/media/usb/uvc/uvc_status.c
++++ b/drivers/media/usb/uvc/uvc_status.c
+@@ -269,6 +269,7 @@ int uvc_status_init(struct uvc_device *d
+ 	dev->int_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!dev->int_urb) {
+ 		kfree(dev->status);
++		dev->status = NULL;
+ 		return -ENOMEM;
  	}
- }
  
 
 
