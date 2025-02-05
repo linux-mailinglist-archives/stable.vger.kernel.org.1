@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-112851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 772C9A28EB5
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:16:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525B5A28F8E
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59DAE3A2C2A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:16:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FB951882BC4
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648E14A28;
-	Wed,  5 Feb 2025 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9904E155335;
+	Wed,  5 Feb 2025 14:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V99f8olB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQxdh/qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218E31519A4;
-	Wed,  5 Feb 2025 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ADD14B959;
+	Wed,  5 Feb 2025 14:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738764976; cv=none; b=rp+Y2gpgRwTcMS43eo0u7ANB1AtZGAEuFBG06TaTkldoXxVt8OwxBnqrF4jIEyexkuCfSDbRNuVz3SdHqZRnJyKz45MYiy6fjG/UVkTF98EwS9B3nd1OXa/T/WulY51T1AFtT9GOeECfnyD94uzKEU4rT1N+72+UN+evLutYfw0=
+	t=1738765587; cv=none; b=OYAKq5XBWGeccxbF0uPwe64eYsaN14uU6MEUXKWEnQUfsLsERHfG1d8AhiPyfBWWANVq1Ht4dSWPKn56CFrYjfFOQ+lgC6djJRSh0tOEavVnlFIbD/VzplRuNCU88qPbMZ9Fgq+4UWsMg3hWlUx/W1r4vu0vs9M4WfMCqYetxBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738764976; c=relaxed/simple;
-	bh=iVcDyTNfYqxWnQYUzRy1YK5RQCL2UnAypsyGaA6mggg=;
+	s=arc-20240116; t=1738765587; c=relaxed/simple;
+	bh=K4Pvq505q3yMDrxHcRdkpHHjoWi5LwycEXDRZXWOmAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCu2SZd5G0RPX0/EHyj435QWPO7i4iy5+CHkwOukoOs9AGxsXJeuqfo/6QbX5OCOmRGvmc6/Uz0I3uLGAXlw6l26oS9bwpKnwXdm8dw6L3mDqqEWzc2NZYm5cyCE8eXknLw6jiI9FseFZV33FyfhGK4168ClVzHEwU9jDDMwIJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V99f8olB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98794C4CED1;
-	Wed,  5 Feb 2025 14:16:15 +0000 (UTC)
+	 MIME-Version; b=AZD6xf+9FBk+TtMuoJvcZa5cAOCYqVekakbeM+MSnkhiBkWsrsXIUAUkq6HMacu0oL/daapZMCcUQpbKOu7Apwi9h4ZbKbGx+G6CEDAYRjpttxyTZkidg90P7eYECLDbY9T5WhheGjrJxoF6fipIllvMhGHh1fnb6JEJfUxI0xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQxdh/qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AAAC4CED1;
+	Wed,  5 Feb 2025 14:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738764976;
-	bh=iVcDyTNfYqxWnQYUzRy1YK5RQCL2UnAypsyGaA6mggg=;
+	s=korg; t=1738765587;
+	bh=K4Pvq505q3yMDrxHcRdkpHHjoWi5LwycEXDRZXWOmAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V99f8olBie4D6xInewf55OuI/eosK/LmDxr40QSz1+XHQboeGx5goqsUUyCTiyvdP
-	 /V6VUxrkLFAKpy/hy7OkgwqUvRhMMCL75cFJV4CvWl56VH93/6VO0KcMXGK5Lk3gGT
-	 acANFfdOAoAeHQ7D1dNxooYd9kEpl8AEHIUvXgMc=
+	b=yQxdh/qIkQ8Tu30SwgVU+hkERiUJW1w4fLInLha/olJpLtmNv/c7+vDAYCIEQAIuP
+	 /XT+SsRhfiEjPfxXOooco65fWDtceK0qD0ZJH129Z4tFXMkVTXWMsrWqyOTivXWYOS
+	 2dHHBaLNBJUg7mIShCX4S4Xv9m5IaeRJ/iKi2NvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/590] wifi: mt76: mt7925: fix the invalid ip address for arp offload
+Subject: [PATCH 6.13 191/623] wifi: mt76: mt7925: fix wrong parameter for related cmd of chan info
 Date: Wed,  5 Feb 2025 14:38:53 +0100
-Message-ID: <20250205134502.091388042@linuxfoundation.org>
+Message-ID: <20250205134503.544285041@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 113d469e7e23579a64b0fbb2eadf9228763092be ]
+[ Upstream commit 3f0d2178aaf1ed1c017e61cde9ce8a4432c804d1 ]
 
-The wrong ieee80211_vif will lead to get invalid ip address and
-the correct ieee80211_vif can be obtained from ieee80211_bss_conf.
+Fix incorrect parameters for the related channel information command.
 
-Fixes: 147324292979 ("wifi: mt76: mt7925: add link handling in the BSS_CHANGED_ARP_FILTER handler")
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20241107053005.10558-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Link: https://patch.msgid.link/20241211011926.5002-6-sean.wang@kernel.org
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 23 +++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index b43617dbd5fde..123a585098e3b 100644
+index 7105705113baa..23d0b1d97956e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -123,10 +123,8 @@ EXPORT_SYMBOL_GPL(mt7925_mcu_regval);
- int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
- 				 struct ieee80211_bss_conf *link_conf)
- {
--	struct ieee80211_vif *mvif = container_of((void *)link_conf->vif,
--						  struct ieee80211_vif,
--						  drv_priv);
- 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
-+	struct ieee80211_vif *mvif = link_conf->vif;
- 	struct sk_buff *skb;
- 	int i, len = min_t(int, mvif->cfg.arp_addr_cnt,
- 			   IEEE80211_BSS_ARP_ADDR_LIST_LEN);
+@@ -1198,6 +1198,8 @@ int mt7925_mcu_set_mlo_roc(struct mt792x_bss_conf *mconf, u16 sel_links,
+ 		req.roc[i].bw_from_ap = CMD_CBW_20MHZ;
+ 		req.roc[i].center_chan = center_ch;
+ 		req.roc[i].center_chan_from_ap = center_ch;
++		req.roc[i].center_chan2 = 0;
++		req.roc[i].center_chan2_from_ap = 0;
+ 
+ 		/* STR : 0xfe indicates BAND_ALL with enabling DBDC
+ 		 * EMLSR : 0xff indicates (BAND_AUTO) without DBDC
+@@ -2175,11 +2177,27 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
+ 	req = (struct bss_rlm_tlv *)tlv;
+ 	req->control_channel = chandef->chan->hw_value;
+ 	req->center_chan = ieee80211_frequency_to_channel(freq1);
+-	req->center_chan2 = ieee80211_frequency_to_channel(freq2);
++	req->center_chan2 = 0;
+ 	req->tx_streams = hweight8(phy->antenna_mask);
+ 	req->ht_op_info = 4; /* set HT 40M allowed */
+ 	req->rx_streams = hweight8(phy->antenna_mask);
+-	req->band = band;
++	req->center_chan2 = 0;
++	req->sco = 0;
++	req->band = 1;
++
++	switch (band) {
++	case NL80211_BAND_2GHZ:
++		req->band = 1;
++		break;
++	case NL80211_BAND_5GHZ:
++		req->band = 2;
++		break;
++	case NL80211_BAND_6GHZ:
++		req->band = 3;
++		break;
++	default:
++		break;
++	}
+ 
+ 	switch (chandef->width) {
+ 	case NL80211_CHAN_WIDTH_40:
+@@ -2190,6 +2208,7 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
+ 		break;
+ 	case NL80211_CHAN_WIDTH_80P80:
+ 		req->bw = CMD_CBW_8080MHZ;
++		req->center_chan2 = ieee80211_frequency_to_channel(freq2);
+ 		break;
+ 	case NL80211_CHAN_WIDTH_160:
+ 		req->bw = CMD_CBW_160MHZ;
 -- 
 2.39.5
 
