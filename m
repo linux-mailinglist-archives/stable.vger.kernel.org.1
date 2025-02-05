@@ -1,136 +1,174 @@
-Return-Path: <stable+bounces-113959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8A2A29A4A
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 20:39:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95E4A29A7C
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 20:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4120188A477
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 19:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D95E1882E28
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 19:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA7F207E0E;
-	Wed,  5 Feb 2025 19:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDF620E002;
+	Wed,  5 Feb 2025 19:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="gEriVhBj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cNwvbtXi"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C261FF1B3;
-	Wed,  5 Feb 2025 19:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983DA1E0DE4;
+	Wed,  5 Feb 2025 19:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738784359; cv=none; b=Wp2wN6ya3Dgjie0dnTtDlC+KtsZsGVlmec3xzN+vBHvlfI3qhEb0l50E7TxXupAlXGL9npjKSa0NEJqlATw51758jyHKmSAZvxnkeBdfX4hmNbKdsBdfQkNeq7jk+2MidISEol6TILxzoPVIv32Uo7Myd/TvpIJHPwVwnUwF1cw=
+	t=1738785571; cv=none; b=kSMZMl+/FvM/BUrYx32tQT90EvwU0aQD6+fyQEQJWWMNZoA0j+MwO0TTqKRjDRwTmM5pnFIjONp/QDK46uju9p6SojaOWype4tgF8ppHbQ58xNcwvcDb1mR7MHdEB6o23ljNuy+mEmhC2JKOEuf/JaccJszQeaqTMF182xNr3X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738784359; c=relaxed/simple;
-	bh=zKOiOlHpbUp4kXpTzvoyfe5HyGDtgYP/N9y2FM6xobo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=C8aAHBLOAhR33NXFuhmIigO8NhXnJ1+PgbiX5POzBhfmzm49n41PqNNZCP8xXRviLMI9H7Mo0iqQjn0dwpPNh5cbfN9xlEUnDXSEBqFd07lRzHqF1AZCYNRgn33uHnmUPX7kBgJrcdt+WzrnHlBQXqlGYdddTx6GZL+o4YSSrEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=gEriVhBj; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 515Jd8GQ3413358
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 5 Feb 2025 13:39:08 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1738784348;
-	bh=ZyjPaBbnb1ioUY1aZ/qbMWRhtW3CaVcbfAm0oTsy96M=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=gEriVhBjDKj6EJRF31VLgY0WLSgAG1iIbPaw4ULEj3TnywsHi2f5SKEE7UmorA8LL
-	 04aBEDy+Dw09lYoaLUJZb/ZCSG4ZHWkL8kaEPqw8yuHnjsSo5G9qIwgldrq1HX/fr7
-	 FzbYUnYqWr8ED1NhbtbB/hLfaR0OaeYv9CmmgWGI=
-Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 515Jd8r0056138
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 5 Feb 2025 13:39:08 -0600
-Received: from lewvowa01.ent.ti.com (10.180.75.79) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
- Feb 2025 13:39:08 -0600
-Received: from DLEE115.ent.ti.com (157.170.170.26) by lewvowa01.ent.ti.com
- (10.180.75.79) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Wed, 5 Feb
- 2025 13:39:08 -0600
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 5 Feb 2025 13:39:07 -0600
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 515Jd8Bk032794;
-	Wed, 5 Feb 2025 13:39:08 -0600
-Message-ID: <93d7e958-be62-45b3-ba8f-d3e4cf2839bf@ti.com>
-Date: Wed, 5 Feb 2025 13:39:07 -0600
+	s=arc-20240116; t=1738785571; c=relaxed/simple;
+	bh=ACKEe92ssQNFPIaS9wr4RpP7/D2sC2Fx4+a+V9MRB38=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FZ5Hs13rAh3w7kJhOFDQympDdsZiDfmiR69JOa0zxOoFN03MZjP2fqKLIBBiSjSQJO6/c4NTPy4qyBPVD01mSHHd0SStJuo/3Yn0y6PXgHmK2W8cjVc5oz9ryK3m7gSTOg6MNcQIuAiashcCMIXJcZZsGBUEmJK+Xnb4G3YOAhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cNwvbtXi; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-216728b1836so4120855ad.0;
+        Wed, 05 Feb 2025 11:59:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738785569; x=1739390369; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jLZ4yxwrmwIqGistr3nQwNXLyHVytAv2EOU/Cc1veH0=;
+        b=cNwvbtXi2imTR5wkIzm8W6B2Ou/4ybhCyGdA8ZbNbUzT3t7QZljcqo8jyyGfiMB9l4
+         551U/0x3dsz7zIXMqY8aXAePeUchn/D/V7n0FK1eLzkaTA8xn61hXjjreoKOZMyVFGL3
+         QlenTG1HM2aAjnYoDAuSxBOG9+LIR5hnGQ6DyfqmUDAadPOTcInK0hY8HKee3/bDymRg
+         B1sgJugY+rdTNKfMOGvCMCHIsx/LEHPTorrd5jCVSNAmfX2A3Qp/cZXUAs+QFsR+F/Qw
+         2h2TnIMrbyy2HV61Z2nr2ve1pNKkE7ZsiU5la7pI21U8T7CCQ3MoEXReUMCMCb8RRjAJ
+         s7bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738785569; x=1739390369;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jLZ4yxwrmwIqGistr3nQwNXLyHVytAv2EOU/Cc1veH0=;
+        b=jXoxAT7zawW/KM8uKuYSziB3hGGu6zWam2s7aOVHI0P0ga6SypBEs/FspkyVRh7HWq
+         Wky/uwPmkOJBX52KiayY130Im39wqMdvMOydvDTOwvFWX8Hj9+K+yaZIKu7muoa52dXt
+         AlwsMBpDw2oDBO6Tol6tYs0qPvwhBsRUsPsDxjbpNQjszU8Jml2330rpSBvlECbHZemu
+         BIbpEseR14wwYVeondBBzWuN+V1JidGT50DtTCggGwWHof+v3Jlzc7yL2Tt87l65u6Xs
+         m/CFpFQRZOukanWNbuxUUpZWg3Tx+m+qIfXiL/54fDZLk3scJzxi77RD7VffpJZKYju6
+         IooA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRB47OD2ZBftXXYoAqxkE9WWESjMPSaKViNOqU05Sj0c40YAXu5zkk56FaBt01ixXmN67HA6sQgIMHQio=@vger.kernel.org, AJvYcCVkDqlJsURcTleaogAIzPO8eFcPoVnbXcTr16QArwk4+W7OdAT2AkeHpNwkxc0BflorWk/OXf5U@vger.kernel.org, AJvYcCWg4H8DAqnjJGITkWTnj9bUrONSLEc5dUYUQC2W4Vdx8l2SYM0WyBJPqFOg9lhoUiI2tl++Qfd2Ig+WiqehFLE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtBEFmG6GUwMh5pv7tsvFSn694QsN2CniATjUaEkXz+e+EEgho
+	uncrrYEsJw9vSe3A/RiZW0cqQLM41Ra5v/PXNYNqZpZzTfccaIsy
+X-Gm-Gg: ASbGnctOpgogx4pB/GdK7/bKGtOvAp97tSESkTUUjcFbv0pKftfb3/5xHNGCQtPk57K
+	JDs+StySoY614Rh/o5dBlDMb9lazImJXWpudYeN7aere9Sd1qGJz27NxN7BlimzHU7Xq0kp0hN/
+	KHXPYj0hwwCGGrZwN8DqWoKX4ByLmq3FsWs2+tgsDg6AvSq9DItW6xdkG7IihZj+b7gx7cX9zpl
+	LL8cN7GaCgxecndLvE2Cg9kB3N6JrzzVxao50lt1uqqZMc+5fdWnOd0iXpJ1wx36GVeIxllJLuD
+	VpXtKXEtQ3lwt+gNPLZ1h85a
+X-Google-Smtp-Source: AGHT+IH3YxZThgSMEPi6tgul2ydkkZWAdZzh9uXNwt9wafsZTzMsZone/XEl+08Vn36Ajh/+Ooszyg==
+X-Received: by 2002:a17:903:2406:b0:21f:f02:417a with SMTP id d9443c01a7336-21f17f03200mr73805685ad.38.1738785568678;
+        Wed, 05 Feb 2025 11:59:28 -0800 (PST)
+Received: from mitchelllevy. ([174.127.224.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f1668800fsm19685765ad.158.2025.02.05.11.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 11:59:28 -0800 (PST)
+From: Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH v3 0/2] rust: lockdep: Fix soundness issue affecting
+ LockClassKeys
+Date: Wed, 05 Feb 2025 11:59:03 -0800
+Message-Id: <20250205-rust-lockdep-v3-0-5313e83a0bef@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert "mmc: sdhci_am654: Add
- sdhci_am654_start_signal_voltage_switch"
-To: Josua Mayer <josua@solid-run.com>,
-        Adrian Hunter
-	<adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-CC: <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <rabeeh@solid-run.com>, <jon@solid-run.com>, <stable@vger.kernel.org>
-References: <20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-B4-Tracking: v=1; b=H4sIAAfDo2cC/3XNTQ6CMBCG4auYrq3pDFTBlfcwLsq0hUb+0iLRE
+ O5uYWGIxuU3yfPOxILxzgR23k3Mm9EF17VxJPsdo0q1peFOx81QYCpyIbl/hIHXHd216blOTCI
+ kAmWFYpH03lj3XHPXW9yVC0PnX2t9hOX6JzQCB66RckJQKivwUjbK1QfqmqW7IBAi/UGCm1xJS
+ uUJwdIGLd9H/HwEhPwLY8T2KBOR2YIkqS2e5/kNtMx8yRoBAAA=
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Andreas Hindborg <a.hindborg@kernel.org>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Mitchell Levy <levymitchell0@gmail.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738785568; l=2949;
+ i=levymitchell0@gmail.com; s=20240719; h=from:subject:message-id;
+ bh=ACKEe92ssQNFPIaS9wr4RpP7/D2sC2Fx4+a+V9MRB38=;
+ b=Bjla0QQs8vNHx5HsuVFrueOFYKdYWUOF3JdRpG8iKzEuCUYUC29n3RmMAGZLla0qjiGwy/x2k
+ qPbjWA8d0oXDfVb4cTrO/5dJv07zbsKv+sr9hVx0up3ZYQYXcHhWump
+X-Developer-Key: i=levymitchell0@gmail.com; a=ed25519;
+ pk=n6kBmUnb+UNmjVkTnDwrLwTJAEKUfs2e8E+MFPZI93E=
 
-Hi all,
+This series is aimed at fixing a soundness issue with how dynamically
+allocated LockClassKeys are handled. Currently, LockClassKeys can be
+used without being Pin'd, which can break lockdep since it relies on
+address stability. Similarly, these keys are not automatically
+(de)registered with lockdep.
 
-On 1/27/25 2:12 PM, Josua Mayer wrote:
-> This reverts commit 941a7abd4666912b84ab209396fdb54b0dae685d.
-> 
-> This commit uses presence of device-tree properties vmmc-supply and
-> vqmmc-supply for deciding whether to enable a quirk affecting timing of
-> clock and data.
-> The intention was to address issues observed with eMMC and SD on AM62
-> platforms.
-> 
-> This new quirk is however also enabled for AM64 breaking microSD access
-> on the SolidRun HimmingBoard-T which is supported in-tree since v6.11,
-> causing a regression. During boot microSD initialization now fails with
-> the error below:
-> 
-> [    2.008520] mmc1: SDHCI controller on fa00000.mmc [fa00000.mmc] using ADMA 64-bit
-> [    2.115348] mmc1: error -110 whilst initialising SD card
-> 
-> The heuristics for enabling the quirk are clearly not correct as they
-> break at least one but potentially many existing boards.
-> 
-> Revert the change and restore original behaviour until a more
-> appropriate method of selecting the quirk is derived.
+At the suggestion of Alice Ryhl, this series includes a patch for
+-stable kernels that disables dynamically allocated keys. This prevents
+backported patches from using the unsound implementation.
 
+Currently, this series requires that all dynamically allocated
+LockClassKeys have a lifetime of 'static (i.e., they must be leaked
+after allocation). This is because Lock does not currently keep a
+reference to the LockClassKey, instead passing it to C via FFI. This
+causes a problem because the rust compiler would allow creating a
+'static Lock with a 'a LockClassKey (with 'a < 'static) while C would
+expect the LockClassKey to live as long as the lock. This problem
+represents an avenue for future work.
 
-Somehow I missed these emails, apologies.
+---
+Changes in v3:
+- Rebased on rust-next
+- Fixed clippy/compiler warninings (Thanks Boqun Feng)
+- Link to v2: https://lore.kernel.org/r/20241219-rust-lockdep-v2-0-f65308fbc5ca@gmail.com
 
-Thanks for reporting this issue Josua.
+Changes in v2:
+- Dropped formatting change that's already fixed upstream (Thanks Dirk
+  Behme).
+- Moved safety comment to the right point in the patch series (Thanks
+  Dirk Behme and Boqun Feng).
+- Added an example of dynamic LockClassKey usage (Thanks Boqun Feng).
+- Link to v1: https://lore.kernel.org/r/20241004-rust-lockdep-v1-0-e9a5c45721fc@gmail.com
 
-We do need this patch for am62x devices since it fixes timing issues
-with a variety of SD cards on those boards, but if there is a
-regression, too bad, patch had to be reverted.
+Changes from RFC:
+- Split into two commits so that dynamically allocated LockClassKeys are
+removed from stable kernels. (Thanks Alice Ryhl)
+- Extract calls to C lockdep functions into helpers so things build
+properly when LOCKDEP=n. (Thanks Benno Lossin)
+- Remove extraneous `get_ref()` calls. (Thanks Benno Lossin)
+- Provide better documentation for `new_dynamic()`. (Thanks Benno
+Lossin)
+- Ran rustfmt to fix formatting and some extraneous changes. (Thanks
+Alice Ryhl and Benno Lossin)
+- Link to RFC: https://lore.kernel.org/r/20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com
 
-I will look again into how to implement this quirk, I think using the
-voltage regulator nodes to discover if we need this quirk might not have
-been a good idea, based on your explanation. I believe I did test the
-patch on am64x SK and am64x EVM boards and saw no boot issue there,
-so the issue seems related to the voltage regulator nodes existing in DT
-(the heuristics for enabling the quirk) as you call it.
+---
+Mitchell Levy (2):
+      rust: lockdep: Remove support for dynamically allocated LockClassKeys
+      rust: lockdep: Use Pin for all LockClassKey usages
 
-Again, thanks for reporting, will look into fixing this issue for am62x
-again soon.
+ rust/helpers/helpers.c          |  1 +
+ rust/helpers/sync.c             | 13 +++++++++
+ rust/kernel/sync.rs             | 63 ++++++++++++++++++++++++++++++++++-------
+ rust/kernel/sync/condvar.rs     |  5 ++--
+ rust/kernel/sync/lock.rs        |  9 ++----
+ rust/kernel/sync/lock/global.rs |  5 ++--
+ rust/kernel/sync/poll.rs        |  2 +-
+ rust/kernel/workqueue.rs        |  2 +-
+ 8 files changed, 77 insertions(+), 23 deletions(-)
+---
+base-commit: ceff0757f5dafb5be5205988171809c877b1d3e3
+change-id: 20240905-rust-lockdep-d3e30521c8ba
 
-~ Judith
-
+Best regards,
+-- 
+Mitchell Levy <levymitchell0@gmail.com>
 
 
