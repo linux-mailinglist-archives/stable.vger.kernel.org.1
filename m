@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-112431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA391A28CAD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945CDA28DD8
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A3F1887C27
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 13:52:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EA673AA30B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B259A149DE8;
-	Wed,  5 Feb 2025 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1EB1509BD;
+	Wed,  5 Feb 2025 14:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkcLUDZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1G6AtjQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA5C146A63;
-	Wed,  5 Feb 2025 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD03A2E634;
+	Wed,  5 Feb 2025 14:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763552; cv=none; b=XUjL2m7nlKxlrtmixEDIUAHc4g8VUZKI4fIUKuSl17VpbXhb9KJHzTlvv63uyP86Vu5EqcKevTS3hv+4S+n4I1Au+FjtR1qlyse6ddG/jsEMon3XPuy4+bmG+5DzU5LJ+iUObpizUSJa+s+7Bqt6pSFlhyoTqvg99+3hKwTBhOE=
+	t=1738764241; cv=none; b=c1uObmWlYW2gW8fnlt7A6Zrm6nP2p0HA720shnjoEsDuiizgEiCPXgrUeGqmmBYjW7DMSEYsYHTQQwZ4Zh3bThzD3mKjid50iYl8K0n9Y4GJP+1K4e6DtK7LMqNK2gQ1ZMfiLkAZRfpwo8bRHo2Ql7OxWKT/uAfzbFfO0jx0GJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763552; c=relaxed/simple;
-	bh=6nNfQlrF/CT650Rmr1SR8Otel4XPiCzHSATzmY8AC8M=;
+	s=arc-20240116; t=1738764241; c=relaxed/simple;
+	bh=Uy3M7yz5S500eXqHE4+ERsQcM0NRfIAGysxTUIUlYRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3xxNG21RfCopZ0PLEta22djthrwgrMwBOn8X236Xd4EXD8HewTcoX8SwUvoMyLj0S8awBYcy6MhZ9WtEjfU/A9F9fMwK41vHxAa4PA3mk8XkdVLQwv160nw9LluAacSPsHbuNi0WNazfNnQwZBjqzM5Beb+RcIfbYj6M6VylqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkcLUDZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B05C4CED1;
-	Wed,  5 Feb 2025 13:52:31 +0000 (UTC)
+	 MIME-Version; b=BHarKwI1yywOF4EFwJmvGls/ycih/7s/5i56S2eMXA1FpuEeX6vWOOuDpUBlE2DS/xSBywD0nbH5Db3vi16mkOR+jPLkfNh/wq28ZHOc1sGTOqPDbk+9WTARNhoau7Y6y4b7DeGiwYfYjDqyex2kmYsLukKbx/qUWzscV8aAeS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1G6AtjQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C266AC4CED1;
+	Wed,  5 Feb 2025 14:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738763552;
-	bh=6nNfQlrF/CT650Rmr1SR8Otel4XPiCzHSATzmY8AC8M=;
+	s=korg; t=1738764241;
+	bh=Uy3M7yz5S500eXqHE4+ERsQcM0NRfIAGysxTUIUlYRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkcLUDZSTGob5rR0vrjCRdZZLPsDtBkcjiUhKshAGybZVHLanOF9qcrdty8XFv5FK
-	 SeMncI4f/NVd4w+PbfbSzOEg68wSNv/OguDePdlOcQjYAV+7KaZplWn6btIsU6LASl
-	 mO7jGjiqcKu8RtkGEImUGAGwD5vujlRhvrN7HX+0=
+	b=q1G6AtjQkqq1B21Uk3gOVHe8bxANJjJNkDIl06E9BiuhTsxWLwZNf1hbbhRw88H8R
+	 nqiGG6PBrYIOZ7DfgJm58giqAPbTDTaytlZCHUbreFg9Bma/Cj3bjmP9kzq9G5MOJK
+	 Y2v5r/3MI0ska4Crjd+OUtTmdn68HNKOhdXh8wXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/590] sched/fair: Fix value reported by hot tasks pulled in /proc/schedstat
+Subject: [PATCH 6.13 042/623] drm/msm/dp: fix msm_dp_utils_pack_sdp_header interface
 Date: Wed,  5 Feb 2025 14:36:24 +0100
-Message-ID: <20250205134456.360609947@linuxfoundation.org>
+Message-ID: <20250205134457.838857971@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a430d99e349026d53e2557b7b22bd2ebd61fe12a ]
+[ Upstream commit b047cbe5e54b632042941b90b808223e63742690 ]
 
-In /proc/schedstat, lb_hot_gained reports the number hot tasks pulled
-during load balance. This value is incremented in can_migrate_task()
-if the task is migratable and hot. After incrementing the value,
-load balancer can still decide not to migrate this task leading to wrong
-accounting. Fix this by incrementing stats when hot tasks are detached.
-This issue only exists in detach_tasks() where we can decide to not
-migrate hot task even if it is migratable. However, in detach_one_task(),
-we migrate it unconditionally.
+The msm_dp_utils_pack_sdp_header() accepts an unlimited-size u32 pointer
+for the header output, while it expects a two-element array. It performs
+a sizeof check which is always true on 64-bit platforms (since
+sizeof(u32*) is 8) and is always false on 32-bit platforms. It returns
+an error code which nobody actually checks.
 
-[Swapnil: Handled the case where nr_failed_migrations_hot was not accounted properly and wrote commit log]
+Fix the function interface to accept u32[2] and return void, skipping
+all the checks.
 
-Fixes: d31980846f96 ("sched: Move up affinity check to mitigate useless redoing overhead")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reported-by: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
-Not-yet-signed-off-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241220063224.17767-2-swapnil.sapkal@amd.com
+Fixes: 55fb8ffc1802 ("drm/msm/dp: add VSC SDP support for YUV420 over DP")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/626806/
+Link: https://lore.kernel.org/r/20241202-fd-dp-audio-fixup-v2-2-d9187ea96dad@linaro.org
+[quic_abhinavk@quicinc.com: minor fix in the commit message]
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h |  1 +
- kernel/sched/fair.c   | 17 +++++++++++++----
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_utils.c | 10 +---------
+ drivers/gpu/drm/msm/dp/dp_utils.h |  2 +-
+ 2 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 02eaf84c8626f..8982820dae213 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -944,6 +944,7 @@ struct task_struct {
- 	unsigned			sched_reset_on_fork:1;
- 	unsigned			sched_contributes_to_load:1;
- 	unsigned			sched_migrated:1;
-+	unsigned			sched_task_hot:1;
- 
- 	/* Force alignment to the next boundary: */
- 	unsigned			:0;
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a21110b220b7b..65e7be6448720 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9418,6 +9418,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 	int tsk_cache_hot;
- 
- 	lockdep_assert_rq_held(env->src_rq);
-+	if (p->sched_task_hot)
-+		p->sched_task_hot = 0;
- 
- 	/*
- 	 * We do not migrate tasks that are:
-@@ -9490,10 +9492,8 @@ int can_migrate_task(struct task_struct *p, struct lb_env *env)
- 
- 	if (tsk_cache_hot <= 0 ||
- 	    env->sd->nr_balance_failed > env->sd->cache_nice_tries) {
--		if (tsk_cache_hot == 1) {
--			schedstat_inc(env->sd->lb_hot_gained[env->idle]);
--			schedstat_inc(p->stats.nr_forced_migrations);
--		}
-+		if (tsk_cache_hot == 1)
-+			p->sched_task_hot = 1;
- 		return 1;
- 	}
- 
-@@ -9508,6 +9508,12 @@ static void detach_task(struct task_struct *p, struct lb_env *env)
- {
- 	lockdep_assert_rq_held(env->src_rq);
- 
-+	if (p->sched_task_hot) {
-+		p->sched_task_hot = 0;
-+		schedstat_inc(env->sd->lb_hot_gained[env->idle]);
-+		schedstat_inc(p->stats.nr_forced_migrations);
-+	}
-+
- 	deactivate_task(env->src_rq, p, DEQUEUE_NOCLOCK);
- 	set_task_cpu(p, env->dst_cpu);
+diff --git a/drivers/gpu/drm/msm/dp/dp_utils.c b/drivers/gpu/drm/msm/dp/dp_utils.c
+index 2a40f07fe2d5e..4a5ebb0c33b85 100644
+--- a/drivers/gpu/drm/msm/dp/dp_utils.c
++++ b/drivers/gpu/drm/msm/dp/dp_utils.c
+@@ -74,14 +74,8 @@ u8 msm_dp_utils_calculate_parity(u32 data)
+ 	return parity_byte;
  }
-@@ -9668,6 +9674,9 @@ static int detach_tasks(struct lb_env *env)
  
- 		continue;
- next:
-+		if (p->sched_task_hot)
-+			schedstat_inc(p->stats.nr_failed_migrations_hot);
-+
- 		list_move(&p->se.group_node, tasks);
- 	}
+-ssize_t msm_dp_utils_pack_sdp_header(struct dp_sdp_header *sdp_header, u32 *header_buff)
++void msm_dp_utils_pack_sdp_header(struct dp_sdp_header *sdp_header, u32 header_buff[2])
+ {
+-	size_t length;
+-
+-	length = sizeof(header_buff);
+-	if (length < DP_SDP_HEADER_SIZE)
+-		return -ENOSPC;
+-
+ 	header_buff[0] = FIELD_PREP(HEADER_0_MASK, sdp_header->HB0) |
+ 		FIELD_PREP(PARITY_0_MASK, msm_dp_utils_calculate_parity(sdp_header->HB0)) |
+ 		FIELD_PREP(HEADER_1_MASK, sdp_header->HB1) |
+@@ -91,6 +85,4 @@ ssize_t msm_dp_utils_pack_sdp_header(struct dp_sdp_header *sdp_header, u32 *head
+ 		FIELD_PREP(PARITY_2_MASK, msm_dp_utils_calculate_parity(sdp_header->HB2)) |
+ 		FIELD_PREP(HEADER_3_MASK, sdp_header->HB3) |
+ 		FIELD_PREP(PARITY_3_MASK, msm_dp_utils_calculate_parity(sdp_header->HB3));
+-
+-	return length;
+ }
+diff --git a/drivers/gpu/drm/msm/dp/dp_utils.h b/drivers/gpu/drm/msm/dp/dp_utils.h
+index 88d53157f5b59..2e4f98a863c4c 100644
+--- a/drivers/gpu/drm/msm/dp/dp_utils.h
++++ b/drivers/gpu/drm/msm/dp/dp_utils.h
+@@ -31,6 +31,6 @@
+ u8 msm_dp_utils_get_g0_value(u8 data);
+ u8 msm_dp_utils_get_g1_value(u8 data);
+ u8 msm_dp_utils_calculate_parity(u32 data);
+-ssize_t msm_dp_utils_pack_sdp_header(struct dp_sdp_header *sdp_header, u32 *header_buff);
++void msm_dp_utils_pack_sdp_header(struct dp_sdp_header *sdp_header, u32 header_buff[2]);
  
+ #endif /* _DP_UTILS_H_ */
 -- 
 2.39.5
 
