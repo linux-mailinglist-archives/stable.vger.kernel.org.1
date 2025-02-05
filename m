@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-113609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2801EA2933B
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 16:10:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00265A29221
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023423AC1B4
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:01:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2D816BD75
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D074418A6C5;
-	Wed,  5 Feb 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D451FDA8B;
+	Wed,  5 Feb 2025 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmOehnpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/EbGoyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1AA175D5D;
-	Wed,  5 Feb 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35F218D656;
+	Wed,  5 Feb 2025 14:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738767545; cv=none; b=bdP2ku4tEgAkt2P+HodCg8+Ze9spdnOF6o46YPvcM8xcys0NSFFYhl/Hiz8KNN6XPqZs2e20Y2ST5PNWtKE5pOs7oImzzTZ8r+vDMho6FPzTQ2U+SkUWcWwlXnlRm/bOwynH3cDFzMW2YXMIeiWeSF9CldRk8l87LKPSp03km9g=
+	t=1738766942; cv=none; b=H6n6E2+Ma2yHJlFj6n9s6+MTFJ66sBw9ZuOp6ja+yJzUAE6l3SABa7CYM9rsqn0JXwsCmFWFKFQzlcefrPF00orIJ3H/dYbfhlQ6FeDamgyBivAnLD2ts4adHvctdUkprNYoyZnhjZXmPy50G2D5KeWqPMWq//RNm9mTd9iqIvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738767545; c=relaxed/simple;
-	bh=9/EBPWXmzwzmnyj27mA/bWNyRtjTlmNdYDFknIoj93w=;
+	s=arc-20240116; t=1738766942; c=relaxed/simple;
+	bh=W36YvPwS1vTkGt6y1YU539yM4cOUAAtikAxKOCf0cYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8Fu8Cnety3W94gNi4BxboS2xjtu/by1r/kfKPb1A4JJ6eWP5sY9W6olyHPHiMiM07AndWAGQ3ILoE/Nxj2RE8zS0mUCyPyGYXJOVOtBPjhGieoaa5Xluz+DRxKDWFvyJDdvwKbcj+Mc7I5L8JeS3CLJM6qcvlTcTE8lww9X/P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmOehnpi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBA6C4CED1;
-	Wed,  5 Feb 2025 14:59:04 +0000 (UTC)
+	 MIME-Version; b=k9D8lvXp6imYyOUXcfV5MmjpVO+aZ5LV/EfqVgB5fqaQUuuwcJhQrSI+oQlvF1Sboy+GwCayz4b/Uy+fdDpaBxPhQa3T5eO8KfEJnBhSpvgNGWrSXkhVmTsGu9LUhd+nUsTfRBO0Xdu/kmoIotYRQjdc/C3GYZI2bvIGK0zYyaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/EbGoyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1A9C4CED1;
+	Wed,  5 Feb 2025 14:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738767545;
-	bh=9/EBPWXmzwzmnyj27mA/bWNyRtjTlmNdYDFknIoj93w=;
+	s=korg; t=1738766941;
+	bh=W36YvPwS1vTkGt6y1YU539yM4cOUAAtikAxKOCf0cYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmOehnpiQL2dbgxP+0IGPV27znIoTifdQm+qS7YsZpRSTjm9MjQnr5v9pV5a0Tb1G
-	 JF7KwC0QvEXiAFdD2TGxT92p+T9mRl3yXS2+rNONg8HXuGZ/oNcI2ig1T8zTIXB3Aq
-	 5JDYg4qduZx92t4Xhg8822nqPoRAmHRXvd/bDOpw=
+	b=s/EbGoyvd3FJUTfuzLPZO37wAjlUYj1G0MVzcCD+Gu2Dzqnux/kKnkhZZwpmD2FNu
+	 akEi6jd/lMeJVcDpi3JTVcY4qQbrVlxFY0UYmkRVHtDtIKcwb9KP17879TBZp7BI+f
+	 mlwy3GvmsCEu73Acp6Y4NpRT0jqeLR5pOXN9Lht4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Bryan Brattlof <bb@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Val Packett <val@packett.cool>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 396/623] arm64: dts: ti: k3-am62: Remove duplicate GICR reg
+Subject: [PATCH 6.12 383/590] arm64: dts: mediatek: add per-SoC compatibles for keypad nodes
 Date: Wed,  5 Feb 2025 14:42:18 +0100
-Message-ID: <20250205134511.371935351@linuxfoundation.org>
+Message-ID: <20250205134509.920255121@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
+References: <20250205134455.220373560@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan Brattlof <bb@ti.com>
+From: Val Packett <val@packett.cool>
 
-[ Upstream commit 72c691d77ea5d0c4636fd3e9f0ad80d813c7d1a7 ]
+[ Upstream commit 6139d9e9e397dc9711cf10f8f548a8f9da3b5323 ]
 
-The GIC Redistributor control register range is mapped twice. Remove
-the extra entry from the reg range.
+The mt6779-keypad binding specifies using a compatible for the
+actual SoC before the generic MT6779 one.
 
-Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
-Reported-by: Bin Liu <b-liu@ti.com>
-Signed-off-by: Bryan Brattlof <bb@ti.com>
-Link: https://lore.kernel.org/r/20241210-am62-gic-fixup-v1-1-758b4d5b4a0a@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: a8013418d35c ("arm64: dts: mediatek: mt8183: add keyboard node")
+Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
+Signed-off-by: Val Packett <val@packett.cool>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241225192631.25017-3-val@packett.cool
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 3 ++-
+ arch/arm64/boot/dts/mediatek/mt8365.dtsi | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index 7cd727d10a5f2..7d355aa73ea21 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-@@ -23,7 +23,6 @@
- 		interrupt-controller;
- 		reg = <0x00 0x01800000 0x00 0x10000>,	/* GICD */
- 		      <0x00 0x01880000 0x00 0xc0000>,	/* GICR */
--		      <0x00 0x01880000 0x00 0xc0000>,   /* GICR */
- 		      <0x01 0x00000000 0x00 0x2000>,    /* GICC */
- 		      <0x01 0x00010000 0x00 0x1000>,    /* GICH */
- 		      <0x01 0x00020000 0x00 0x2000>;    /* GICV */
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 0a6578aacf828..9cd5e0cef02a2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1024,7 +1024,8 @@
+ 		};
+ 
+ 		keyboard: keyboard@10010000 {
+-			compatible = "mediatek,mt6779-keypad";
++			compatible = "mediatek,mt8183-keypad",
++				     "mediatek,mt6779-keypad";
+ 			reg = <0 0x10010000 0 0x1000>;
+ 			interrupts = <GIC_SPI 186 IRQ_TYPE_EDGE_FALLING>;
+ 			clocks = <&clk26m>;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+index 9c91fe8ea0f96..2bf8c9d02b6ee 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+@@ -449,7 +449,8 @@
+ 		};
+ 
+ 		keypad: keypad@10010000 {
+-			compatible = "mediatek,mt6779-keypad";
++			compatible = "mediatek,mt8365-keypad",
++				     "mediatek,mt6779-keypad";
+ 			reg = <0 0x10010000 0 0x1000>;
+ 			wakeup-source;
+ 			interrupts = <GIC_SPI 124 IRQ_TYPE_EDGE_FALLING>;
 -- 
 2.39.5
 
