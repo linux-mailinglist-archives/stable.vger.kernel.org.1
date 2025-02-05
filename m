@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F78DA291DC
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3981FA28E45
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFE5169CF2
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:52:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20829168826
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB4C1DDA32;
-	Wed,  5 Feb 2025 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9A71537AC;
+	Wed,  5 Feb 2025 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dP1bf806"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2ISTlEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262BA1C6BE;
-	Wed,  5 Feb 2025 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957BA1519AA;
+	Wed,  5 Feb 2025 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766727; cv=none; b=aPV7giCBDjpuiie7ZvsD/nuGSv6OZ74rljn7WSlf52sfUqsbBdg2wyOiypxBQ2247EOZdX36AqXndpxFzhPnHu2LNP/5n529XGarpQcCUwuEqIOH+1zAG3WfUaSWIgt+TCWFryXBEsJDRTlxdFMY2+ZIR4b1y81FY8PRqtNL4gA=
+	t=1738764658; cv=none; b=Wsmdpb6pJhY7+LoKoxT8AJudfZw5zyyt7SvlbbywqU7deN0O4Zm6XMEpuayDOzsBUuk6LsePP9Wd7x1pS4E+1jEB5yHjANPWrCnC4N7TG2ite/giLhOHU1HWNM4lbx4gSjOjQ8LEYY3PdK5egcI4kez0LLF2MSI1iwcYqCJ3Ct0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766727; c=relaxed/simple;
-	bh=u2nhCYlGVJjFbRUOtG1syu5bUmMZDVuKCjGBurX16eY=;
+	s=arc-20240116; t=1738764658; c=relaxed/simple;
+	bh=jWOhhwYRQ0Vfo1AkrBDnpUPjBIjKCzTbUtL5r+75xOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJnh1MvxgVRwxxnfJXjktO3T68Dhpf/T/1SDOyVcqsUIcc3XStgJiSGnWBrHNfojhp4ICc+TDsvSFg0Uqwo8e0xpzm39N7OyhVv7zycLC4Yg9n9qa3P88J5sGydbetN2yBLKmDkXx1TxUsAIwxhLFn8rN9fm5erUwInqBXC7fAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dP1bf806; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C504C4CED1;
-	Wed,  5 Feb 2025 14:45:26 +0000 (UTC)
+	 MIME-Version; b=BGduDXLXZXjVke6zOW+/FC7NkR0jXAgomi2taWuFtA/P638CvbhJHzG5YVpGbLI1ASrKXYxJLHTGfmUlciGA8WgxyhecmDZYcpGM1rtQM5Awlro+Nd0piVbIohLT4hAcLnYJ4tqA4j+HvJftn0rzBezS4TePqnfjBjenYwECqMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2ISTlEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DDCC4CED1;
+	Wed,  5 Feb 2025 14:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766727;
-	bh=u2nhCYlGVJjFbRUOtG1syu5bUmMZDVuKCjGBurX16eY=;
+	s=korg; t=1738764658;
+	bh=jWOhhwYRQ0Vfo1AkrBDnpUPjBIjKCzTbUtL5r+75xOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dP1bf806B02FEh+UV53MkRPXm8VnqXmWBzlD4JoehX1vsBXrSBb/o72JwxZ2r4Bw9
-	 boRROaO3K+f86ucnYWvAUAItlz7kRtwKMhmGVVibt42HRmulkTkWE/YvwpYTJBj1Dd
-	 9y4jCK+v+vDaLJZ8TZvU70nmvrmlwAizf907B0mc=
+	b=S2ISTlEgz+/uDpsDvIYU5kvnAsA52fi9zCfYeWi8sjK3WJ9bunznRb+HQEUbGEIJt
+	 jmlJKyWI/XjLod5dCKQbryZnwYC0kSzZfXWJ96zt0+QObGdI6o6+iRUAYfq0CkaD6y
+	 tUQZj+099H7G+lxY+GlCD1312pd4hJyC6dqKHTJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chen Ridong <chenridong@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 354/590] arm64: dts: qcom: sm8250: correct sleep clock frequency
-Date: Wed,  5 Feb 2025 14:41:49 +0100
-Message-ID: <20250205134508.812755519@linuxfoundation.org>
+Subject: [PATCH 6.6 191/393] padata: avoid UAF for reorder_work
+Date: Wed,  5 Feb 2025 14:41:50 +0100
+Message-ID: <20250205134427.604416825@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 75420e437eed69fa95d1d7c339dad86dea35319a ]
+[ Upstream commit dd7d37ccf6b11f3d95e797ebe4e9e886d0332600 ]
 
-The SM8250 platform uses PM8150 to provide sleep clock. According to the
-documentation, that clock has 32.7645 kHz frequency. Correct the sleep
-clock definition.
+Although the previous patch can avoid ps and ps UAF for _do_serial, it
+can not avoid potential UAF issue for reorder_work. This issue can
+happen just as below:
 
-Fixes: 9ff8b0591fcf ("arm64: dts: qcom: sm8250: use the right clock-freqency for sleep-clk")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241224-fix-board-clocks-v3-13-e9b08fbeadd3@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+crypto_request			crypto_request		crypto_del_alg
+padata_do_serial
+  ...
+  padata_reorder
+    // processes all remaining
+    // requests then breaks
+    while (1) {
+      if (!padata)
+        break;
+      ...
+    }
+
+				padata_do_serial
+				  // new request added
+				  list_add
+    // sees the new request
+    queue_work(reorder_work)
+				  padata_reorder
+				    queue_work_on(squeue->work)
+...
+
+				<kworker context>
+				padata_serial_worker
+				// completes new request,
+				// no more outstanding
+				// requests
+
+							crypto_del_alg
+							  // free pd
+
+<kworker context>
+invoke_padata_reorder
+  // UAF of pd
+
+To avoid UAF for 'reorder_work', get 'pd' ref before put 'reorder_work'
+into the 'serial_wq' and put 'pd' ref until the 'serial_wq' finish.
+
+Fixes: bbefa1dd6a6d ("crypto: pcrypt - Avoid deadlock by using per-instance padata queues")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 630f4eff20bf8..22d99e4cf96d2 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -84,7 +84,7 @@
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 6badcbc6d3cb7..071d8cad80787 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -352,8 +352,14 @@ static void padata_reorder(struct parallel_data *pd)
+ 	smp_mb();
  
- 		sleep_clk: sleep-clk {
- 			compatible = "fixed-clock";
--			clock-frequency = <32768>;
-+			clock-frequency = <32764>;
- 			#clock-cells = <0>;
- 		};
- 	};
+ 	reorder = per_cpu_ptr(pd->reorder_list, pd->cpu);
+-	if (!list_empty(&reorder->list) && padata_find_next(pd, false))
++	if (!list_empty(&reorder->list) && padata_find_next(pd, false)) {
++		/*
++		 * Other context(eg. the padata_serial_worker) can finish the request.
++		 * To avoid UAF issue, add pd ref here, and put pd ref after reorder_work finish.
++		 */
++		padata_get_pd(pd);
+ 		queue_work(pinst->serial_wq, &pd->reorder_work);
++	}
+ }
+ 
+ static void invoke_padata_reorder(struct work_struct *work)
+@@ -364,6 +370,8 @@ static void invoke_padata_reorder(struct work_struct *work)
+ 	pd = container_of(work, struct parallel_data, reorder_work);
+ 	padata_reorder(pd);
+ 	local_bh_enable();
++	/* Pairs with putting the reorder_work in the serial_wq */
++	padata_put_pd(pd);
+ }
+ 
+ static void padata_serial_worker(struct work_struct *serial_work)
 -- 
 2.39.5
 
