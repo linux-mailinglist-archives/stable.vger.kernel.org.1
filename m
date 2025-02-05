@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-112986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-112990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE26A28F67
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2DACA28F6B
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1A718850FD
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483FA18843A1
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A621553AB;
-	Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D63A1553AB;
+	Wed,  5 Feb 2025 14:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndyWfExO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOZYr3v1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B411459F6;
-	Wed,  5 Feb 2025 14:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9C31537AC;
+	Wed,  5 Feb 2025 14:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765435; cv=none; b=emOuarKHnYgQ/isaUnkASPRwNFw8pDQrskXt4UhiL3J+IVc4zwgkaa9J872VVT2Uqi3ADFMBNX0XfdGg8NEBrkbT9O30NUCnu3oBTxnNtHw4N2SqvjUZlVMcNPtIUVWwMMGnzebHFY2R3o2ZqlXFWV8l+eq1/Tixi/ldehvjcus=
+	t=1738765449; cv=none; b=qBoQV6hgcUrTAh3xSgdyGQfn68IsSj0eJ56EkZSsDM3Nt279LlRH+Gvq1F+ZeaK1vIxyOclioh6XkDTXq/S9g/ud0Fx1vhSXGjoya53XFYZQkHuDkTDfvtNqOBl8OmWWHrihk+b9ls240u5kl45y8YJag980wyDUo8VxgmMaLeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765435; c=relaxed/simple;
-	bh=udzjODBlDu6sALCW1t1rG5KuCZZ/+jDG6ioQsEmAwPA=;
+	s=arc-20240116; t=1738765449; c=relaxed/simple;
+	bh=Dwl3F8ORH6aWYP3lbCD7RIusrS8LlTCmqouHPFiWovc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTiG1r6ELUtwJjLRwnNUL4s7UXEdR0oqPMv2VpLpFLkmTflncuYjfPaQzrDAWOZa0GNePKsguNXYnmKXLHYZHQwjwi7+ltDFQOS6+C70RW/Q6/Aja37JL2IWy+675xGYbjs/bvEmxddzLq1e1eZnwy54FnKkjwrwo7Ohsk60vmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndyWfExO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750ADC4CED1;
-	Wed,  5 Feb 2025 14:23:54 +0000 (UTC)
+	 MIME-Version; b=Z+PKbz6tUnf5N2JAoVTDEO0ToBA3SRHRRNUTJBLJKQutdxth2VTwhUAFDaF53bArqitoqZqvhevRfF/GEnw1wpCE90AIOCIVLSL7LeRzBRTawhi7hyjN9q7L4G/tgs/ZZIC36wRygReb6Y9PhSg73/Vm8cmhFa3CJo/b7XfUFXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOZYr3v1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E787C4CED1;
+	Wed,  5 Feb 2025 14:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765435;
-	bh=udzjODBlDu6sALCW1t1rG5KuCZZ/+jDG6ioQsEmAwPA=;
+	s=korg; t=1738765449;
+	bh=Dwl3F8ORH6aWYP3lbCD7RIusrS8LlTCmqouHPFiWovc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndyWfExOhv82p9BlrUMHB+pAR+MXkPbFX1Cd0c5zBVxYer1LBpVJYojgrT3GpIAIc
-	 PKVryZWkWRNiExFOA9dEzg21JT1WxS5uZRtk7WorUyPMaYUvAY29NoD37bGXAy2B2C
-	 xYJA2upzT8QqqjWLOy3YIlamRUeurPqVdUj7Yxjo=
+	b=lOZYr3v1GeH7xiom+TPP5tC+rVbTxnHer+wGARx/o1apNamxEd8JdakojW9RsHJxM
+	 4HrKXf+6JnpzpU09xCVQggZ6O8gpWrai3iEqh7o3P95XdKFwxbrGzh/zsB2xFRky5I
+	 wN0GVQ0lYowJcuBh443vQq4AHNzIMHYNByg5hQ/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/393] arm64: dts: mediatek: add per-SoC compatibles for keypad nodes
-Date: Wed,  5 Feb 2025 14:43:06 +0100
-Message-ID: <20250205134430.528741925@linuxfoundation.org>
+Subject: [PATCH 6.6 268/393] arm64: dts: qcom: sdm845: Fix interrupt types of camss interrupts
+Date: Wed,  5 Feb 2025 14:43:07 +0100
+Message-ID: <20250205134430.566071414@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
 References: <20250205134420.279368572@linuxfoundation.org>
@@ -67,54 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Val Packett <val@packett.cool>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-[ Upstream commit 6139d9e9e397dc9711cf10f8f548a8f9da3b5323 ]
+[ Upstream commit cb96722b728e81ad97f5b5b20dea64cd294a5452 ]
 
-The mt6779-keypad binding specifies using a compatible for the
-actual SoC before the generic MT6779 one.
+Qualcomm IP catalog says that all CAMSS interrupts is edge rising,
+fix it in the CAMSS device tree node for sdm845 SoC.
 
-Fixes: a8013418d35c ("arm64: dts: mediatek: mt8183: add keyboard node")
-Fixes: 6ff945376556 ("arm64: dts: mediatek: Initial mt8365-evk support")
-Signed-off-by: Val Packett <val@packett.cool>
-Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241225192631.25017-3-val@packett.cool
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: d48a6698a6b7 ("arm64: dts: qcom: sdm845: Add CAMSS ISP node")
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20241127122950.885982-6-vladimir.zapolskiy@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 3 ++-
- arch/arm64/boot/dts/mediatek/mt8365.dtsi | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 8721a5ffca30a..d1b6355148620 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1026,7 +1026,8 @@
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index dcdc8a0cd1819..4ea693a075856 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4244,16 +4244,16 @@
+ 				"vfe1",
+ 				"vfe_lite";
  
- 		keyboard: keyboard@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8183-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			interrupts = <GIC_SPI 186 IRQ_TYPE_EDGE_FALLING>;
- 			clocks = <&clk26m>;
-diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-index 413496c920695..62c5b50d3c5fb 100644
---- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
-@@ -334,7 +334,8 @@
- 		};
- 
- 		keypad: keypad@10010000 {
--			compatible = "mediatek,mt6779-keypad";
-+			compatible = "mediatek,mt8365-keypad",
-+				     "mediatek,mt6779-keypad";
- 			reg = <0 0x10010000 0 0x1000>;
- 			wakeup-source;
- 			interrupts = <GIC_SPI 124 IRQ_TYPE_EDGE_FALLING>;
+-			interrupts = <GIC_SPI 464 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 466 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 468 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 477 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 478 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 479 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 448 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 465 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 467 IRQ_TYPE_LEVEL_HIGH>,
+-				<GIC_SPI 469 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 464 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 468 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 477 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 478 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 479 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 465 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 467 IRQ_TYPE_EDGE_RISING>,
++				<GIC_SPI 469 IRQ_TYPE_EDGE_RISING>;
+ 			interrupt-names = "csid0",
+ 				"csid1",
+ 				"csid2",
 -- 
 2.39.5
 
