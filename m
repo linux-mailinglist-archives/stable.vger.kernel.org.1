@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-113251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-113415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537E6A290AE
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:39:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B90BA29223
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 15:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 930A61883C02
-	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA2A63ACBF3
+	for <lists+stable@lfdr.de>; Wed,  5 Feb 2025 14:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9C415FA7B;
-	Wed,  5 Feb 2025 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831D1FCFCA;
+	Wed,  5 Feb 2025 14:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubD3SO+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra5Ly3jN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A76F7E792;
-	Wed,  5 Feb 2025 14:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3349718CBFB;
+	Wed,  5 Feb 2025 14:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738766330; cv=none; b=RXnncmI/wVcdupYhSXFjK3Vll9t1ZG8b5Ll9NF3I4xHleIC+60HbvqXTI59w6CDKDAUuroz/Us9tVQC6RDLm6i4375AwDRcx3BC4wd3hngrWyzflfZQzBZzhik0RGdfv2kyn58UrgKv2BKbyCYPkwtiGT6Xbvi2QkyoZ0MioSeY=
+	t=1738766883; cv=none; b=WKnzHNEosdo65lzitSRTCkc/QcieXt5YHZmv4b3ZXWadE/0rI+zVVQFazGa+1tY4VGBZ9G+nrwyfYHr75rmLd6jvpGq5d69ssg53OwFuSN7hMuCb5W0ds8bHR0S2L1SCsVhUWaXHhqDWqkdmFLXKHhS69QEq760/8dOw9fnmJ+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738766330; c=relaxed/simple;
-	bh=r+m7l9/rJK5uoitkwhR4LeqB2OjcEBMZgxUdKT+A+yQ=;
+	s=arc-20240116; t=1738766883; c=relaxed/simple;
+	bh=VxLu/cyOyifC3rgEM+JqXdt0ofHeK2hZYtT+JVZBuwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HzkvHEbz1wVOci7RpPs/qCESCza1NZUALWat6pVvjeoWBm7jUQOaX+i7uQIg8k4drpW6Mb0lx57HX3ZNDf+awQ0R5PcJONuLSz8Z0MdA/TEIBZ8iSwxD4Olh1wmJsOq/SCpETg3ua7VW4szQX/pF47GjFZbn6ZEQ9Cn3QQl3XvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubD3SO+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE43BC4CED1;
-	Wed,  5 Feb 2025 14:38:49 +0000 (UTC)
+	 MIME-Version; b=pArZCgCvyNJcremAzW38FR8cjgNhmJXgrkfgyHp+xTFr4JA609ke7I4b9/2q/HZemCgmLg9nyCmJorTzDxrCvqyDU0wzuJjyPSZCN/33SuB4In6Zrh6oAEAQlxFpqPd5r5NY6UqIFI88fbq0Af5ukZ1cNBhCp8zeqRiRnx13gDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ra5Ly3jN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38559C4CED1;
+	Wed,  5 Feb 2025 14:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766330;
-	bh=r+m7l9/rJK5uoitkwhR4LeqB2OjcEBMZgxUdKT+A+yQ=;
+	s=korg; t=1738766882;
+	bh=VxLu/cyOyifC3rgEM+JqXdt0ofHeK2hZYtT+JVZBuwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubD3SO+qUiOvPKnNvnegDAHOWFqYH92VyNl3VT7yMAfqI+g0wJnLyD2bVXk3F+KoC
-	 l9pv3axWzcD2YEt/GlKpoPiQCSNsvbyTpSIilKnPXbgOd0aCmzBHs0+6yG/sir5Hla
-	 WV9RMuYNkcBOWFK7dWt/Lq5GB5z2Acz5gZUiHrAA=
+	b=Ra5Ly3jN/fdtl7r76cIhZajLFMygeP6RagxGh1UvqHMQOkOq2nO9I2UK4wdCbX0jL
+	 UnPLvNCl/9OPwXQ6AEBcmJnoMazn4Bbd+jVau0l91T+eEpfyNCu2n9FxBEGS3NuHET
+	 x4MQIeutwR0nyyyZnikN5MVo+E+Km/zmsnkB5ToU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 311/590] ARM: dts: stm32: Fix IPCC EXTI declaration on stm32mp151
+Subject: [PATCH 6.13 324/623] padata: add pd get/put refcnt helper
 Date: Wed,  5 Feb 2025 14:41:06 +0100
-Message-ID: <20250205134507.173066583@linuxfoundation.org>
+Message-ID: <20250205134508.619089510@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 4ea654242e0c75bdf6b45d3c619c5fdcb2e9312a ]
+[ Upstream commit ae154202cc6a189b035359f3c4e143d5c24d5352 ]
 
-The GIC IRQ type used for IPCC RX should be IRQ_TYPE_LEVEL_HIGH.
-Replacing the interrupt with the EXTI event changes the type to
-the numeric value 1, meaning IRQ_TYPE_EDGE_RISING.
+Add helpers for pd to get/put refcnt to make code consice.
 
-The issue is that EXTI event 61 is a direct event.The IRQ type of
-direct events is not used by EXTI and is propagated to the parent
-IRQ controller of EXTI, the GIC.
-
-Align the IRQ type to the value expected by the GIC by replacing
-the second parameter "1" with IRQ_TYPE_LEVEL_HIGH.
-
-Fixes: 7d9802bb0e34 ("ARM: dts: stm32: remove the IPCC "wakeup" IRQ on stm32mp151")
-Signed-off-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: dd7d37ccf6b1 ("padata: avoid UAF for reorder_work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp151.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/padata.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp151.dtsi b/arch/arm/boot/dts/st/stm32mp151.dtsi
-index 4f878ec102c1f..fdc42a89bd37d 100644
---- a/arch/arm/boot/dts/st/stm32mp151.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp151.dtsi
-@@ -129,7 +129,7 @@
- 			reg = <0x4c001000 0x400>;
- 			st,proc-id = <0>;
- 			interrupts-extended =
--				<&exti 61 1>,
-+				<&exti 61 IRQ_TYPE_LEVEL_HIGH>,
- 				<&intc GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "rx", "tx";
- 			clocks = <&rcc IPCC>;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 98f9fbcf3b324..de2c02a81469c 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -47,6 +47,22 @@ struct padata_mt_job_state {
+ static void padata_free_pd(struct parallel_data *pd);
+ static void __init padata_mt_helper(struct work_struct *work);
+ 
++static inline void padata_get_pd(struct parallel_data *pd)
++{
++	refcount_inc(&pd->refcnt);
++}
++
++static inline void padata_put_pd_cnt(struct parallel_data *pd, int cnt)
++{
++	if (refcount_sub_and_test(cnt, &pd->refcnt))
++		padata_free_pd(pd);
++}
++
++static inline void padata_put_pd(struct parallel_data *pd)
++{
++	padata_put_pd_cnt(pd, 1);
++}
++
+ static int padata_index_to_cpu(struct parallel_data *pd, int cpu_index)
+ {
+ 	int cpu, target_cpu;
+@@ -206,7 +222,7 @@ int padata_do_parallel(struct padata_shell *ps,
+ 	if ((pinst->flags & PADATA_RESET))
+ 		goto out;
+ 
+-	refcount_inc(&pd->refcnt);
++	padata_get_pd(pd);
+ 	padata->pd = pd;
+ 	padata->cb_cpu = *cb_cpu;
+ 
+@@ -380,8 +396,7 @@ static void padata_serial_worker(struct work_struct *serial_work)
+ 	}
+ 	local_bh_enable();
+ 
+-	if (refcount_sub_and_test(cnt, &pd->refcnt))
+-		padata_free_pd(pd);
++	padata_put_pd_cnt(pd, cnt);
+ }
+ 
+ /**
+@@ -681,8 +696,7 @@ static int padata_replace(struct padata_instance *pinst)
+ 	synchronize_rcu();
+ 
+ 	list_for_each_entry_continue_reverse(ps, &pinst->pslist, list)
+-		if (refcount_dec_and_test(&ps->opd->refcnt))
+-			padata_free_pd(ps->opd);
++		padata_put_pd(ps->opd);
+ 
+ 	pinst->flags &= ~PADATA_RESET;
+ 
+@@ -1130,8 +1144,7 @@ void padata_free_shell(struct padata_shell *ps)
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+ 	pd = rcu_dereference_protected(ps->pd, 1);
+-	if (refcount_dec_and_test(&pd->refcnt))
+-		padata_free_pd(pd);
++	padata_put_pd(pd);
+ 	mutex_unlock(&ps->pinst->lock);
+ 
+ 	kfree(ps);
 -- 
 2.39.5
 
